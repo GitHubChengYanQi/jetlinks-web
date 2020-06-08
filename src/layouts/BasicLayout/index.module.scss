@@ -1,0 +1,8 @@
+.userMenu {
+  font-size: 12px;
+  //:global{
+    &::after{
+      display: none;
+    }
+  //}
+}

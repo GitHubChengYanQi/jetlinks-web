@@ -1,0 +1,13 @@
+.userInfo {
+  height: 32px;
+  cursor: pointer;
+  .thumb {
+    float: left;
+  }
+  .username{
+    font-size: 18px;
+    height: 32px;
+    line-height: 32px;
+    margin-left: 12px;
+  }
+}
