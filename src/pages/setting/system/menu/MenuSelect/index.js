@@ -9,20 +9,14 @@ const MenuSelect = (props) => {
 
   const {request} = useRequest(menuTree);
 
-  const [data, setData] = useState([]);
+  const {data} = request();
 
-  const getTree = async () => {
-    const {error, response} = await request();
-    if (!error) {
-      setData(response.data);
-    }
+  if (data) {
+    return (<CascaderSelect changeOnSelect dataSource={data.data} value={value} {...props} />);
+  } else {
+    return null;
   }
 
-  useEffect(() => {
-    getTree();
-  }, []);
-
-  return (<CascaderSelect changeOnSelect dataSource={data} value={value} {...props} />)
 }
 
 export default MenuSelect;

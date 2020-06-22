@@ -37,7 +37,7 @@ import styles from './index.module.scss';
 export default function BasicLayout({children}) {
 
   const history = useHistory();
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
   const [, deptDispatchers] = store.useModel('dept');
 
@@ -59,25 +59,18 @@ export default function BasicLayout({children}) {
     setDevice(getDevice(e && e.target && e.target.innerWidth));
   });
 
-  const {request: requestUser} = useRequest(userInfo);
+  const {request: requestUser} = useRequest(userInfo, {manual: true});
+  const {run: getUserInfo,data:user} = requestUser();
 
-  const getUserInfo = async () => {
-    const {error,response} = await requestUser();
-    console.log(response);
-    if(!error){
-      setUser(response.data);
-    }
 
-  };
-
-  const {request: requestDept} = useRequest(deptTree);
-  const getDeptTree = async () => {
-    const {error, response} = await requestDept();
-    if (!error) {
-      // setData(response.data);
-      deptDispatchers.setDeptTree(response.data);
-    }
-  }
+  // const {request: requestDept} = useRequest(deptTree);
+  // const getDeptTree = async () => {
+  //   const {error, response} = await requestDept();
+  //   if (!error) {
+  //     // setData(response.data);
+  //     deptDispatchers.setDeptTree(response.data);
+  //   }
+  // }
 
   const logout = () => {
     cookie.remove('Authorization');
@@ -105,7 +98,7 @@ export default function BasicLayout({children}) {
       }
 
       getUserInfo();
-      getDeptTree();
+      // getDeptTree();
     } catch (e) {
       logger.error(e.message);
       cookie.remove('Authorization');

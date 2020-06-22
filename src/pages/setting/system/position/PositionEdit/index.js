@@ -1,6 +1,7 @@
 import React from 'react';
-import {Drawer, Message} from '@alifd/next';
+import {Drawer} from '@alifd/next';
 import PositionForm from '@/pages/setting/system/position/PositionEdit/PositionForm';
+import Message from '@/components/Message';
 
 const PositionEdit = ({id, onClose}) => {
   const visible = id !== null && id !== undefined;

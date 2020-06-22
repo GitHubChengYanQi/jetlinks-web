@@ -8,21 +8,12 @@ const PositionSelect = (props) => {
   const {value} = props;
 
   const {request} = useRequest(positionAllList);
-
-  const [data, setData] = useState([]);
-
-  const getTree = async () => {
-    const {error, response} = await request();
-    if (!error) {
-      setData(response.data);
-    }
+  const {data} = request();
+  if (data) {
+    return (<Select mode="multiple" dataSource={data.data} value={value} {...props} />);
+  } else {
+    return null;
   }
-
-  useEffect(() => {
-    getTree();
-  }, []);
-
-  return (<Select mode="multiple" dataSource={data} value={value} {...props} />)
 }
 
 export default PositionSelect;

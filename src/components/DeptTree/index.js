@@ -10,19 +10,8 @@ const TreeNode = Tree.Node;
 
 const DeptTree = ({onSelect}) => {
 
-  const [data, setData] = useState(null);
-
-  const {loading, request} = useRequest(deptTree);
-  const get = async () => {
-    const {error, response} = await request();
-    if (!error) {
-      setData(response.data)
-    }
-  };
-
-  useEffect(() => {
-    get();
-  }, []);
+  const {request} = useRequest(deptTree);
+  const {run:get,data} = request();
 
   const renderTreeNode = (data) => {
     if (!Array.isArray(data)) {
@@ -37,7 +26,7 @@ const DeptTree = ({onSelect}) => {
     });
   };
 
-  return data &&
+  return data?
     <Tree
       className={styles.DetpTree}
       showLine
@@ -46,7 +35,7 @@ const DeptTree = ({onSelect}) => {
         typeof onSelect === 'function' && onSelect(selectedKeys, extra);
       }}
     >
-      {renderTreeNode(data)}
-    </Tree>
+      {renderTreeNode(data.data)}
+    </Tree>:null
 };
 export default DeptTree;

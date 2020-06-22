@@ -1,6 +1,7 @@
 import React from 'react';
-import {Drawer, Message} from '@alifd/next';
+import {Drawer} from '@alifd/next';
 import RoleEditForm from '@/pages/setting/system/role/RoleEdit/RoleEditForm';
+import Message from '@/components/Message';
 
 const RoleEdit = ({id, onClose,...other}) => {
   const visible = id !== null && id !== undefined;

@@ -11,6 +11,8 @@ const success = (config) => {
   const content = typeof config === 'object' ? config : {content: config};
   AfdMessage.success({
     ...defaultConfig,
+    duration: 1500,
+    hasMask: false,
     title: '操作成功',
     ...content,
   });
@@ -52,6 +54,7 @@ const loading = (config) => {
   const content = typeof config === 'object' ? config : {content: config};
   AfdMessage.loading({
     ...defaultConfig,
+    hasMask: false,
     title: '载入中：',
     ...content,
   });

@@ -1,1 +1,5 @@
 ﻿package-lock.json
+.ice
+.idea
+build
+node_modules

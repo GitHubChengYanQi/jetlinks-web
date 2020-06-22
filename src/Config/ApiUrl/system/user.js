@@ -23,7 +23,7 @@ export const getUserInfo = {
 
 export const userList = {
   url: '/mgr/list',
-  method: 'GET',
+  method: 'POST',
 };
 
 export const userRoleSave = {

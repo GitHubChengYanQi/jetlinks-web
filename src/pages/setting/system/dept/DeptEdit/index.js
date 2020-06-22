@@ -2,7 +2,7 @@ import React from 'react';
 import {Drawer, Message} from '@alifd/next';
 import DeptEditForm from '@/pages/setting/system/dept/DeptEdit/DeptEditForm';
 
-const DeptEdit = ({id, onClose,...other}) => {
+const DeptEdit = ({id, onClose,onRefresh,...other}) => {
   const visible = id !== null && id !== undefined;
 
   return (
@@ -19,6 +19,7 @@ const DeptEdit = ({id, onClose,...other}) => {
         onSuccess={(response) => {
           Message.success(response.message);
           typeof onClose === 'function' && onClose();
+          typeof onRefresh === 'function' && onRefresh();
         }}
         onError={(error) => {
           Message.error(error.message);

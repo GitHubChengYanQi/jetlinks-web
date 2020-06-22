@@ -8,16 +8,10 @@ const TreeNode = Tree.Node;
 
 const RoleTree = ({value, onChange, ...other}) => {
 
-  const [data, setData] = useState(null);
   const [checkedKeys, setCheckedKeys] = useState([]);
 
   const {request} = useRequest(roleTree);
-  const getTree = async () => {
-    const {error, response} = await request();
-    if (!error) {
-      setData(response.data);
-    }
-  }
+  const {data} = request();
 
   const renderNode = (data) => {
     return data.map((item) => {
@@ -31,12 +25,7 @@ const RoleTree = ({value, onChange, ...other}) => {
         return (<TreeNode label={item.label} key={item.value}/>);
       }
     });
-  }
-
-
-  useEffect(() => {
-    getTree();
-  }, []);
+  };
 
   useEffect(() => {
     if (!value || value === undefined) {
@@ -45,7 +34,6 @@ const RoleTree = ({value, onChange, ...other}) => {
       setCheckedKeys(value);
     }
   }, [value]);
-
 
   return (
     <>
@@ -59,10 +47,10 @@ const RoleTree = ({value, onChange, ...other}) => {
         onCheck={(checkedKeys) => {
           setCheckedKeys([...checkedKeys]);
           typeof onChange === 'function' && onChange(checkedKeys);
-          console.log(checkedKeys);
+          // console.log(checkedKeys);
         }}
       >
-        {renderNode(data)}
+        {renderNode(data.data)}
       </Tree>}
     </>
   );

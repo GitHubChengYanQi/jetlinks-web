@@ -6,7 +6,7 @@ import {Form, Loading, Message} from '@alifd/next';
 const FormItem = Form.Item;
 let defaultValue = {};
 
-const Editform = React.forwardRef(({fieldKey, id, onSuccess, onError, onViewError, constValue, onLoad, onSubmit, ApiConfig = {}, formItemLayout, children}, ref) => {
+const EditForm = React.forwardRef(({fieldKey, id, onSuccess, onError, onViewError, constValue, onLoad, onSubmit, ApiConfig = {}, formItemLayout, children}, ref) => {
 
   const searchData = {};
   searchData[`${fieldKey}`] = id;
@@ -15,54 +15,63 @@ const Editform = React.forwardRef(({fieldKey, id, onSuccess, onError, onViewErro
 
   const [formValue, setFormValue] = useState({...defaultValue});
 
-  const {loading: addLoading, request: addRequest} = useRequest(Add);
-  const add = async (data) => {
-    const {error, response} = await addRequest({
-      data
-    });
-    if (error) {
+  const {request: addRequest} = useRequest(Add, {
+    manual: true,
+    onError: (error) => {
       typeof onError === 'function' && onError(error);
-    } else {
+    },
+    onSuccess: (response) => {
       typeof onSuccess === 'function' && onSuccess(response);
     }
-  }
+  });
+  const {loading: addLoading, run: add} = addRequest();
 
-  const {loading: saveLoading, request: saveRequest} = useRequest(Save);
-  const save = async (data) => {
-    const {error, response} = await saveRequest({
-      data
-    });
-    if (error) {
+
+  const {request: saveRequest} = useRequest(Save, {
+    manual: true,
+    onError: (error) => {
       typeof onError === 'function' && onError(error);
-    } else {
+    },
+    onSuccess: (response) => {
       typeof onSuccess === 'function' && onSuccess(response);
     }
-  }
-
+  });
+  const {loading: saveLoading, run: save} = saveRequest();
   const submit = async (value, errors) => {
     if (typeof onSubmit === 'function') {
       value = await onSubmit(value);
     }
     if (!errors) {
       if (id) {
-        save({...value, ...searchData});
+        save({
+          data: {
+            ...value,
+            ...searchData
+          }
+        });
       } else {
-        add(value);
+        add({
+          data: value
+        });
       }
     }
   }
 
-  const {loading: viewLoading, request: viewRequest} = useRequest(View);
-  const view = async () => {
-    const {error, response} = await viewRequest({
-      data: {...searchData}
-    });
-    if (error) {
-      typeof onViewError === 'function' && onViewError(error);
-    } else {
+  const {request: viewRequest} = useRequest(View, {
+    manual: true,
+    onSuccess: async (response) => {
       await clone(response.data);
       setFormValue({...defaultValue});
+    },
+    onError: (error) => {
+      typeof onViewError === 'function' && onViewError(error);
     }
+  });
+  const {loading: viewLoading, run: viewRun} = viewRequest();
+  const view = async () => {
+    viewRun({
+      data: {...searchData}
+    });
   }
 
   useEffect(() => {
@@ -79,7 +88,7 @@ const Editform = React.forwardRef(({fieldKey, id, onSuccess, onError, onViewErro
     }
     if (data !== undefined) {
       Object.keys(constValue).map((key) => {
-        if (data[key]!=='') {
+        if (data[key] !== '') {
           defaultValue[key] = typeof data[key] === 'object' ? data[key] : `${data[key]}`;
         } else {
           defaultValue[key] = '';
@@ -104,4 +113,4 @@ const Editform = React.forwardRef(({fieldKey, id, onSuccess, onError, onViewErro
   );
 });
 
-export default Editform;
+export default EditForm;

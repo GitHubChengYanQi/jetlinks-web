@@ -41,10 +41,6 @@ const UserRoleForm = ({id, ...other}) => {
       }}
       onSubmit={(value) => {
         return value;
-        // return {
-        //   userId: id,
-        //   roleIds: value.roleIds,
-        // }
       }}
     >
       <Card contentHeight='auto' className='edit-block'>
