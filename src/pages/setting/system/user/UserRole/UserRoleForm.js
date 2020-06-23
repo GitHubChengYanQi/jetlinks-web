@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, Form,} from '@alifd/next';
 import ItemWapper from '@/components/ItemWapper';
-import {roleAdd, roleSave, roleTree, roleView} from '@/Config/ApiUrl/system/role';
+import {roleSet} from '@/Config/ApiUrl/system/role';
 import Editform from '@/components/Editform';
 import RoleTree from '@/pages/setting/system/role/RoleTree';
 import {userRoleSave} from '@/Config/ApiUrl/system/user';
@@ -18,9 +18,9 @@ const constValue = {
 };
 
 const ApiConfig = {
-  View: roleTree,
+  View: roleSet,
   Save: userRoleSave
-}
+};
 const UserRoleForm = ({id, ...other}) => {
 
   return (

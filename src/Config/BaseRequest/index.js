@@ -70,7 +70,6 @@ const useTableRequest = (config, options) => {
         (response) => {
           return {list: response.data, total: response.count};
         },
-      // debounceInterval:500
     });
   };
   return {request};

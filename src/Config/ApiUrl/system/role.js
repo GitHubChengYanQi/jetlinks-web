@@ -22,8 +22,11 @@ export const roleView = {
   url: '/role/view',
   method: 'POST',
 };
-
 export const roleTree = {
+  url: '/role/roleTreeListByUserId',
+  method: 'POST'
+};
+export const roleSet = {
   url: '/role/roleTreeListByUserId',
   method: 'POST'
 };
