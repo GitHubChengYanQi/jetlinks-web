@@ -10,13 +10,14 @@ import Logo from './components/Logo';
 import UserInfo from './components/UserInfo';
 import Menu from '../../components/LeftMenu';
 import styles from './index.module.scss';
+import Header from "@/layouts/BasicLayout/components/Header";
 
 export default function BasicLayout({children}) {
 
   const history = useHistory();
 
   const {request: requestUser} = useRequest(userInfo, {manual: true});
-  const {run: getUserInfo,data:user} = requestUser();
+  const {run: getUserInfo, data: user} = requestUser();
 
   const logout = () => {
     cookie.remove('Authorization');
@@ -51,6 +52,8 @@ export default function BasicLayout({children}) {
     }
   }, []);
   return (
-    <></>
+    <>
+      <Header/>
+    </>
   );
 }

@@ -1,18 +1,26 @@
 import React from 'react';
-import {Balloon, Button, Shell} from "@alifd/next";
-import Logo from "@/layouts/BasicLayout/components/Logo";
-import UserInfo from "@/layouts/BasicLayout/components/UserInfo";
-import styles from "@/layouts/BasicLayout/index.module.scss";
-import Menu from "@/components/LeftMenu";
-import MenuConfig from "@/Config/Menu";
+import styles from './index.module.scss';
 
 const Header = () => {
 
   return (
-    <header
+    <div
       id="navigation-container"
-    >header
-    </header>
+    >
+      <header className={styles.navbar}>
+        <div className={`row-flex ${styles.inner}`}>
+          <div className={`${styles.systemBar}`}>
+            <div className={styles.left}>
+              <div style={{height:'100%'}}>
+1111
+              </div>
+            </div>
+            <div className={styles.middle}>3</div>
+            <div className={styles.right}> 3</div>
+          </div>
+        </div>
+      </header>
+    </div>
     // <Shell
     //   type="brand"
     //   style={{
