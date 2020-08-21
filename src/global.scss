@@ -6,6 +6,14 @@ body {
 .next-input {
   overflow: hidden;
 }
+a{
+  &:active{
+    color: inherit;
+  }
+  &:visited{
+    color: inherit;
+  }
+}
 
 .button-right-margin {
   margin-right: $s-1;

@@ -2,7 +2,6 @@
   "publicPath": "./",
   "plugins": [
     ["build-plugin-fusion", {
-      "themePackage": "@alifd/theme-atsoft-sing"
     }],
     ["build-plugin-moment-locales", {
       "locales": ["zh-cn"]
