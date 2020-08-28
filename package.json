@@ -45,7 +45,7 @@
     "build-plugin-fusion": "^0.1.0",
     "build-plugin-moment-locales": "^0.1.0",
     "eslint": "^6.0.1",
-    "ice.js": "^1.7.3",
+    "ice.js": "^1.8.1",
     "stylelint": "^13.2.0"
   },
   "publishConfig": {
