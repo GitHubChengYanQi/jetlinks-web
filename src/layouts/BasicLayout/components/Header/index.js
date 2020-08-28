@@ -11,7 +11,7 @@ const Header = () => {
         <div className={`row-flex ${styles.inner}`}>
           <div className={`${styles.systemBar}`}>
             <div className={styles.left}>
-              <div style={{height:'100%'}}>
+              <div>
 1111
               </div>
             </div>
