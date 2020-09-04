@@ -1,15 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {Shell, Balloon, Button,} from '@alifd/next';
+import React, {useEffect} from 'react';
 import cookie from 'js-cookie';
 import {logger, useHistory, store, APP_MODE} from 'ice';
 import {useRequest} from '@/Config/BaseRequest';
 import {userInfo} from '@/Config/ApiUrl/system/user';
-import {deptTree} from '@/Config/ApiUrl/system/dept';
-import MenuConfig from '@/Config/Menu';
-import Logo from './components/Logo';
-import UserInfo from './components/UserInfo';
-import Menu from '../../components/LeftMenu';
-import styles from './index.module.scss';
 import Header from "@/layouts/BasicLayout/components/Header";
 
 export default function BasicLayout({children}) {

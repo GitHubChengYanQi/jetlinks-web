@@ -32,6 +32,7 @@
     "@alifd/next": "^1.19.4",
     "@alifd/theme-atsoft-sing": "^0.2.7",
     "@alifd/theme-design-pro": "^0.x",
+    "@ant-design/icons": "^4.2.2",
     "@icedesign/dynamic-icon": "^0.1.8",
     "@icedesign/img": "^1.0.4",
     "ahooks": "^2.0.0",

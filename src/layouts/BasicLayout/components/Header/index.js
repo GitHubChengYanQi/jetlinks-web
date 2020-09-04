@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+  SettingOutlined,
+} from '@ant-design/icons';
 import styles from './index.module.scss';
 
 const Header = () => {
@@ -16,7 +19,8 @@ const Header = () => {
               </div>
             </div>
             <div className={styles.middle}>3</div>
-            <div className={styles.right}> 3</div>
+            <div className={styles.right}>
+              <div><SettingOutlined /></div></div>
           </div>
         </div>
       </header>
