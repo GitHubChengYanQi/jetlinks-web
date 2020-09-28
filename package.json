@@ -36,6 +36,7 @@
     "@icedesign/dynamic-icon": "^0.1.8",
     "@icedesign/img": "^1.0.4",
     "ahooks": "^2.0.0",
+    "antd": "^4.6.6",
     "js-cookie": "^2.2.1",
     "moment": "^2.24.0",
     "react": "^16.4.1",
@@ -46,7 +47,7 @@
     "build-plugin-fusion": "^0.1.0",
     "build-plugin-moment-locales": "^0.1.0",
     "eslint": "^6.0.1",
-    "ice.js": "^1.8.1",
+    "ice.js": "^1.9.6",
     "stylelint": "^13.2.0"
   },
   "publishConfig": {

@@ -1,9 +1,14 @@
 import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
+import Login from "@/pages/Login";
 import otherRouters from './AppRouters';
 
-
 const routerConfig = [
+  {
+    path: '/',
+    component: Login,
+    fallback: <div>loading...</div>,
+  },
   {
     path: '/',
     component: BasicLayout,

@@ -7,24 +7,25 @@ import styles from './index.module.scss';
 const Header = () => {
 
   return (
-    <div
-      id="navigation-container"
-    >
-      <header className={styles.navbar}>
-        <div className={`row-flex ${styles.inner}`}>
-          <div className={`${styles.systemBar}`}>
-            <div className={styles.left}>
-              <div>
-1111
-              </div>
+    // <div
+    //   id="navigation-container"
+    // >
+    <header className={styles.navbar}>
+      <div className={`row-flex ${styles.inner}`}>
+        <div className={`${styles.systemBar}`}>
+          <div className={styles.left}>
+            <div>
+              1111
             </div>
-            <div className={styles.middle}>3</div>
-            <div className={styles.right}>
-              <div><SettingOutlined /></div></div>
+          </div>
+          <div className={styles.middle}>3</div>
+          <div className={styles.right}>
+            <div><SettingOutlined/></div>
           </div>
         </div>
-      </header>
-    </div>
+      </div>
+    </header>
+    // </div>
     // <Shell
     //   type="brand"
     //   style={{

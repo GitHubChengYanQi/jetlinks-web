@@ -3,7 +3,7 @@ import {useRequest as ahooksRequest, useFusionTable as tableRequest} from 'ahook
 import cookie from 'js-cookie';
 import axios from 'axios';
 
-const baseURI = config.baseURI || window.sing.sysURI
+const baseURI = config.baseURI || window.sing.sysURI;
 
 const ajax = axios.create({
   baseURL: baseURI,
