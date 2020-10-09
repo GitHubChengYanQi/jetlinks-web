@@ -10,16 +10,17 @@ export default function Login({loading, onClick, submitText, ...others}) {
   const [result, setResult] = useState(null);
 
   const doLogin = async (values, errors) => {
-    if (typeof onClick === 'function') {
-      const result = await onClick(values, errors);
-      setResult(result);
-    }
+
   };
 
   return (
     <Form
       initialValues={{remember: true}}
-      onFinish={() => {
+      onFinish={async (values) => {
+        if (typeof onClick === 'function') {
+          const result = await onClick(values);
+          setResult(result);
+        }
       }}
     >
       <FormItem
@@ -27,18 +28,27 @@ export default function Login({loading, onClick, submitText, ...others}) {
         rules={[{required: true, message: '请填写：手机号/邮箱/账号'}]}
       >
         <Input
-          prefix={<UserOutlined />}
+          prefix={<UserOutlined/>}
           name="account"
           placeholder="手机号/邮箱/账号"
         />
       </FormItem>
       <FormItem
-        minmaxLengthMessage="密码长度输入错误：不低于6位"
         name="password"
-        rules={[{required: true, message: '请填写密码'}]}
+        rules={[
+          {required: true, message: '请填写密码'},
+          () => ({
+            validator(rule, value) {
+              if (!value || value.length > 6) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error('密码长度不应低于6位!'));
+            },
+          }),
+        ]}
       >
         <Input
-          prefix={<LockOutlined />}
+          prefix={<LockOutlined/>}
           type="password"
           placeholder="请填写最低长度为6位的密码"
         />

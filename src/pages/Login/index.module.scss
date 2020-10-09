@@ -8,7 +8,7 @@
   background: url(./img/poster-about.jpg) no-repeat center;
   background-size: cover;
   .panel{
-    padding: 0 32px;
+    padding: 32px;
     position: absolute;
     top:30%;
     right: 50%;
@@ -17,6 +17,9 @@
     background-color: rgb(255, 255, 255);
     border-radius: 2px;
     box-shadow: 1px 1px 10px 5px rgba(202, 202, 202, 0.2);
+    h3{
+      padding-top: 0;
+    }
   }
 }
 :global{
