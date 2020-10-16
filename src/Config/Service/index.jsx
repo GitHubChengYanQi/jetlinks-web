@@ -1,14 +1,16 @@
 import {config} from 'ice';
-import cookie from 'js-cookie';import axios from 'axios';
+import cookie from 'js-cookie';
+import axios from 'axios';
 
 const baseURI = config.baseURI || window.sing.sysURI;
 
 const ajaxService = axios.create({
   baseURL: baseURI,
-  headers:{
+  headers: {
     // 'Content-Type':'application/json;charset=UTF-8',
   }
 });
+
 ajaxService.interceptors.request.use((config) => {
   const token = cookie.get('header-key');
   config.headers.common.Authorization = token || '';

@@ -10,8 +10,7 @@ import SLogin from './component';
 import style from './index.module.scss';
 
 const Login = () => {
-  const history = useHistory();
-  const data = useRequest(loginUrl);
+
   // const {useTableRequest} = Request();
   // const {request} = useRequest(loginUrl, {
   //   manual: true,

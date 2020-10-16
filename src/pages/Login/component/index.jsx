@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
-import {Message} from '@alifd/next';
-import {Form, Input, Button} from 'antd';
+import {Form, Input, Button, message, Alert} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
+import {useHistory} from "ice";
+import {useRequest} from "@/Config/Request";
+import {login as loginUrl} from "@/Config/ApiUrl";
 
 const FormItem = Form.Item;
 
 export default function Login({loading, onClick, submitText, ...others}) {
+
+  const history = useHistory();
+
+  const {run, data} = useRequest(loginUrl, {
+    manual: true
+  });
 
   const [result, setResult] = useState(null);
 
@@ -39,7 +47,7 @@ export default function Login({loading, onClick, submitText, ...others}) {
           {required: true, message: '请填写密码'},
           () => ({
             validator(rule, value) {
-              if (!value || value.length > 6) {
+              if (!value || value.length >= 6) {
                 return Promise.resolve();
               }
               return Promise.reject(new Error('密码长度不应低于6位!'));
@@ -59,9 +67,9 @@ export default function Login({loading, onClick, submitText, ...others}) {
           {submitText || `登 录`}
         </Button>
       </FormItem>
-      {result && <Message title={result.title} type={result.type}>
+      {result && <Alert title={result.title} type={result.type}>
         {result.message}
-      </Message>}
+      </Alert>}
     </Form>
   );
 }
