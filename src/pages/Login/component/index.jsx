@@ -1,34 +1,35 @@
-import React, {useState} from 'react';
-import {Form, Input, Button, message, Alert} from 'antd';
+import React from 'react';
+import {Form, Input, Button, Alert} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
-import {useHistory} from "ice";
-import {useRequest} from "@/Config/Request";
-import {login as loginUrl} from "@/Config/ApiUrl";
+import {useHistory} from 'ice';
+import {useRequest} from '@/util/Request';
+import {login as loginUrl} from '@/Config/ApiUrl';
+import cookie from 'js-cookie';
 
 const FormItem = Form.Item;
 
-export default function Login({loading, onClick, submitText, ...others}) {
+export default function Login({submitText}) {
 
   const history = useHistory();
 
-  const {run, data} = useRequest(loginUrl, {
-    manual: true
+  const {run, data, error, loading} = useRequest(loginUrl, {
+    manual: true,
+    onSuccess: (result) => {
+      console.log(result);
+      cookie.set('Authorization', result);
+      history.replace('/');
+    }
   });
 
-  const [result, setResult] = useState(null);
-
-  const doLogin = async (values, errors) => {
-
-  };
 
   return (
     <Form
       initialValues={{remember: true}}
       onFinish={async (values) => {
-        if (typeof onClick === 'function') {
-          const result = await onClick(values);
-          setResult(result);
-        }
+        run({
+          data: values
+        });
+        // setResult(result);
       }}
     >
       <FormItem
@@ -63,13 +64,12 @@ export default function Login({loading, onClick, submitText, ...others}) {
       </FormItem>
 
       <FormItem>
-        <Button type="primary" htmlType="submit" block>
+        <Button type="primary" htmlType="submit" block loading={loading}>
           {submitText || `登 录`}
         </Button>
       </FormItem>
-      {result && <Alert title={result.title} type={result.type}>
-        {result.message}
-      </Alert>}
+      {error && <Alert message={error.message} type="error"/>}
+      {data && <Alert message="登录成功，请稍候..." type="success"/>}
     </Form>
   );
 }
@@ -77,4 +77,3 @@ export default function Login({loading, onClick, submitText, ...others}) {
 Login.propTypes = {};
 
 Login.defaultProps = {};
-

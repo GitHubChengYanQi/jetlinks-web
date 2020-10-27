@@ -12,7 +12,7 @@ export const userRemove = {
 };
 
 export const userInfo = {
-  url: '/mgr/getMyInfo',
+  url: '/rest/mgr/getMyInfo',
   method: 'POST',
 };
 

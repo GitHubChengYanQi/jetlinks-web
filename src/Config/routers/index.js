@@ -5,7 +5,7 @@ import otherRouters from './AppRouters';
 
 const routerConfig = [
   {
-    path: '/',
+    path: '/login',
     component: Login,
     fallback: <div>loading...</div>,
   },

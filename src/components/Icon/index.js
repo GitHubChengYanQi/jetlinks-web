@@ -1,8 +1,7 @@
-import DynamicIcon from '@icedesign/dynamic-icon';
+import { createFromIconfontCN } from '@ant-design/icons';
 
-const CustomIcon = DynamicIcon.create({
-  fontFamily: 'iconfont',
-  prefix: 'icon',
-  css: '//at.alicdn.com/t/font_1686049_zhe7311mtam.css',
+const Icon = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1686049_espmttfqzya.js', // 在 iconfont.cn 上生成
 });
-export default CustomIcon;
+
+export default Icon;

@@ -12,9 +12,8 @@ const ajaxService = axios.create({
 });
 
 ajaxService.interceptors.request.use((config) => {
-  const token = cookie.get('header-key');
+  const token = cookie.get('Authorization');
   config.headers.common.Authorization = token || '';
-  console.log(config);
   return config;
 }, (error) => {
   return error;
@@ -31,6 +30,9 @@ ajaxService.interceptors.response.use((response) => {
   return response;
 }, (error) => {
   if (error.errCode !== 0) {
+    if (parseInt(error.errCode, 0) === 1502) {
+
+    }
     throw new Error(error.message);
   }
   return error;

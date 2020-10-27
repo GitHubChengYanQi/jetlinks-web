@@ -1,16 +1,15 @@
 import React, {useEffect} from 'react';
 import cookie from 'js-cookie';
 import {logger, useHistory, store, APP_MODE} from 'ice';
-import {useRequest} from '@/Config/BaseRequest';
+import {useRequest} from '@/util/Request';
 import {userInfo} from '@/Config/ApiUrl/system/user';
-import Header from "@/layouts/BasicLayout/components/Header";
+import Header from '@/layouts/BasicLayout/components/Header';
 
 export default function BasicLayout({children}) {
 
   const history = useHistory();
 
-  const {request: requestUser} = useRequest(userInfo, {manual: true});
-  const {run: getUserInfo, data: user} = requestUser();
+  const {run: getUserInfo, data: user} = useRequest(userInfo, {manual: true});
 
   const logout = () => {
     cookie.remove('Authorization');

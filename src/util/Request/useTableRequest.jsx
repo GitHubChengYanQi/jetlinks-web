@@ -1,7 +1,7 @@
 import React from 'react';
 import {config as baseConfig} from 'ice';
-import {useAntdTable, useFusionTable} from "ahooks";
-import ajaxService from "@/Config/Service";
+import {useAntdTable, useFusionTable} from 'ahooks';
+import ajaxService from '@/util/Service';
 
 const useTableRequest = (config, options = {}) => {
 
