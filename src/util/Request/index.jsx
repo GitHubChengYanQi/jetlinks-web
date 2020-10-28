@@ -1,11 +1,14 @@
 import React from 'react';
-import tableRequest from './useTableRequest';
-import request  from './useRequest';
+import tableRequestProvide from './useTableRequest';
+import useRequestProvide from './useRequest';
+import axiosRequest from './request';
 
-export const useTableRequest = tableRequest;
-export const useRequest = request;
+export const useTableRequest = tableRequestProvide;
+export const useRequest = useRequestProvide;
+export const request = axiosRequest;
 
 export default {
+  request,
   useRequest,
   useTableRequest,
 };

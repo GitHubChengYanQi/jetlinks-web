@@ -1,12 +1,15 @@
 @import '~antd/lib/style/themes/default.less';
+
 .navbar {
   box-sizing: border-box;
   min-height: 50px;
   border: 1px solid transparent;
   border-top: 0 solid transparent;
+
   .inner {
     z-index: 100;
     height: 48px;
+
     .systemBar {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -20,18 +23,21 @@
       -webkit-box-flex: 1;
       height: 100%;
       flex: 1 1 auto;
+
       :global {
         #navigation-dock {
           height: 24px;
-          #mainMenu{
+
+          #mainMenu {
             color: @text-color-secondary;
             border-radius: 4px;
             cursor: pointer;
             height: 24px;
             width: 24px;
             padding: 2px;
-            transition:background-color .3s ease,border .3s ease,color .3s ease;
-            &:hover{
+            transition: background-color .3s ease, border .3s ease, color .3s ease;
+
+            &:hover {
               color: @link-hover-color;
               background-color: @background-color-base;
             }
@@ -42,7 +48,8 @@
           }
 
         }
-        #navigation-title{
+
+        #navigation-title {
           color: @heading-color;
           font-weight: 700;
           line-height: 24px;
@@ -53,6 +60,7 @@
           margin-left: 14px;
         }
       }
+
       .left {
         display: flex;
         flex-direction: row;
@@ -86,6 +94,23 @@
         padding-left: 16px;
         align-items: center;
       }
+    }
+  }
+}
+
+.appContent{
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 5px;
+  height: auto;
+  max-height: 2000px;
+  opacity: 1
+}
+.appItemWrap {
+  :global {
+    .item-wrap {
+      text-decoration: none;
+      margin-bottom: 14px;
     }
   }
 }

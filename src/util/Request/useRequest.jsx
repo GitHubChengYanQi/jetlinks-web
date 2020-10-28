@@ -1,11 +1,10 @@
 import React from 'react';
 import {useRequest as ahooksRequest} from 'ahooks';
-import ajaxService from '@/util/Service';
-import {useHistory} from 'ice';
+import Service from '@/util/Service';
 
 const useRequest = (config, options) => {
 
-  const history = useHistory();
+  const {ajaxService} = Service();
 
   const requestService = (params) => {
     return params || {};

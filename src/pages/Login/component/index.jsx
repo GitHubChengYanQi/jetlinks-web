@@ -15,9 +15,10 @@ export default function Login({submitText}) {
   const {run, data, error, loading} = useRequest(loginUrl, {
     manual: true,
     onSuccess: (result) => {
-      console.log(result);
       cookie.set('Authorization', result);
-      history.replace('/');
+      setTimeout(()=>{
+        history.replace('/');
+      },500);
     }
   });
 
@@ -29,7 +30,6 @@ export default function Login({submitText}) {
         run({
           data: values
         });
-        // setResult(result);
       }}
     >
       <FormItem

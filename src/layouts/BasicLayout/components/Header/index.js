@@ -4,10 +4,14 @@ import {
 } from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import {Drawer} from 'antd';
+import store from '@/store';
 
 import styles from './index.module.less';
 
 const Header = () => {
+
+  const [userInfo] = store.useModel('user');
+  const {menus} = userInfo;
 
   const [visible, setVisible] = useState(false);
   return (
@@ -43,18 +47,26 @@ const Header = () => {
         visible={visible}
         // mask={false}
         width={325}
-        maskStyle={{opacity:0,background:'none'}}
+        maskStyle={{opacity: 0, background: 'none'}}
       >
-        <div className={styles.appItemWrap}>
-          <div className="app-item">
-            <div className="item-logo-wrap">
+        <div className={styles.appContent}>
+          {menus && Array.isArray(menus) && menus.map((item, index) => {
+            return (
+              <div className={styles.appItemWrap}>
+                <div className="app-item" key={index}>
+                  <div className="item-logo-wrap">
 
-            </div>
-            <div className="app-item-name">
-              设置
-            </div>
-          </div>
+                  </div>
+                  <div className="app-item-name">
+                    {item.name}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
+
+
       </Drawer>
     </>
   );

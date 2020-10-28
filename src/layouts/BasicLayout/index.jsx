@@ -1,15 +1,17 @@
 import React, {useEffect} from 'react';
 import cookie from 'js-cookie';
-import {logger, useHistory, store, APP_MODE} from 'ice';
-import {useRequest} from '@/util/Request';
-import {userInfo} from '@/Config/ApiUrl/system/user';
+import {logger, useHistory, APP_MODE} from 'ice';
 import Header from '@/layouts/BasicLayout/components/Header';
+import {Spin} from 'antd';
+import store from '@/store';
+
+console.log(store);
 
 export default function BasicLayout({children}) {
 
   const history = useHistory();
-
-  const {run: getUserInfo, data: user} = useRequest(userInfo, {manual: true});
+  const [state, dispatchers] = store.useModel('user');
+  const effectsState = store.useModelEffectsState('user');
 
   const logout = () => {
     cookie.remove('Authorization');
@@ -19,7 +21,7 @@ export default function BasicLayout({children}) {
   useEffect(() => {
     try {
       let data = cookie.get('Authorization');
-      if (!data && APP_MODE === undefined) {
+      if (!data) {
         throw new Error('本地登录信息不存在');
       } else {
         data = '';
@@ -35,17 +37,18 @@ export default function BasicLayout({children}) {
         console.log(user);
       }
 
-      getUserInfo();
+      dispatchers.getUserInfo();
     } catch (e) {
       logger.error(e.message);
       cookie.remove('Authorization');
       // TODO 登录超时处理
-      // history.push('/user/login');
+      history.push('/login');
     }
   }, []);
   return (
     <>
-      <Header/>
+      {effectsState.getUserInfo.isLoading ? <Spin size="large"/> :
+        <Header/>}
     </>
   );
 }

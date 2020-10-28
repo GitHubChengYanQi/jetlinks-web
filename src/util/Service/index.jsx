@@ -1,8 +1,15 @@
-import {config} from 'ice';
+import React from 'react';
+import {config, useHistory} from 'ice';
 import cookie from 'js-cookie';
 import axios from 'axios';
+import {Modal} from 'antd';
 
 const baseURI = config.baseURI || window.sing.sysURI;
+
+const GotoLogin = () => {
+  const history = useHistory();
+  history.push('/login');
+};
 
 const ajaxService = axios.create({
   baseURL: baseURI,
@@ -25,17 +32,37 @@ ajaxService.interceptors.response.use((response) => {
   }
   response = response.data;
   if (response.errCode !== 0) {
+    if (parseInt(response.errCode, 0) === 1502) {
+      Modal.error({
+        title: '提示',
+        content: '您已登录超时，请重新登录。',
+        okText: '重新登录',
+        onOk: () => {
+          Modal.destroyAll();
+          try {
+            GotoLogin();
+          } catch (e) {
+            window.location.href = '/#/login';
+          }
+        }
+      });
+
+    }
     throw new Error(response.message);
   }
   return response;
 }, (error) => {
   if (error.errCode !== 0) {
-    if (parseInt(error.errCode, 0) === 1502) {
-
-    }
     throw new Error(error.message);
   }
   return error;
 });
 
-export default ajaxService;
+const requestService = () => {
+  return {
+    ajaxService
+  };
+};
+
+export const request = ajaxService;
+export default requestService;
