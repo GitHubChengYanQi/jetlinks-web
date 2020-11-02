@@ -2,21 +2,15 @@ import React, {useEffect} from 'react';
 import cookie from 'js-cookie';
 import {logger, useHistory, APP_MODE} from 'ice';
 import Header from '@/layouts/BasicLayout/components/Header';
-import {Spin} from 'antd';
+import {Alert, Spin} from 'antd';
 import store from '@/store';
 
-console.log(store);
 
 export default function BasicLayout({children}) {
 
   const history = useHistory();
-  const [state, dispatchers] = store.useModel('user');
+  const [, dispatchers] = store.useModel('user');
   const effectsState = store.useModelEffectsState('user');
-
-  const logout = () => {
-    cookie.remove('Authorization');
-    history.push('/user/login');
-  };
 
   useEffect(() => {
     try {
@@ -30,13 +24,6 @@ export default function BasicLayout({children}) {
       if (jwt.length !== 3 && APP_MODE === undefined) {
         throw new Error('本地登录信息错误');
       }
-      if (jwt.length === 3) {
-        console.log(window.atob(jwt[0]));
-        const user = window.atob(jwt[1]);
-
-        console.log(user);
-      }
-
       dispatchers.getUserInfo();
     } catch (e) {
       logger.error(e.message);
@@ -45,9 +32,19 @@ export default function BasicLayout({children}) {
       history.push('/login');
     }
   }, []);
+
   return (
     <>
-      {effectsState.getUserInfo.isLoading ? <Spin size="large"/> :
+      {effectsState.getUserInfo.isLoading ?
+        <Spin size="large">
+          <Alert
+            message="加载中"
+            description="系统正在初始化个人信息，请稍后..."
+            type="info"
+            showIcon
+            style={{width:500,margin:'100px auto'}}
+          />
+        </Spin> :
         <Header/>}
     </>
   );

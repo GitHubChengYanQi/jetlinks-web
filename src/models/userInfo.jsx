@@ -15,8 +15,13 @@ export default {
   },
   effects:(dispatch) => ({
     async getUserInfo () {
-      const response = await request(userInfo);
-      dispatch.user.update(response);
+      try {
+        const response = await request(userInfo);
+        console.log(response)
+        dispatch.user.update(response);
+      }catch (e) {
+        console.log(e);
+      }
     },
   }),
 };
