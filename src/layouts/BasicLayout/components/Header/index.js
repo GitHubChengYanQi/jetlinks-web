@@ -31,7 +31,7 @@ const Header = () => {
                 React快速开发后台框架
               </div>
             </div>
-            <div className={styles.middle}>3</div>
+            <div className={styles.middle}/>
             <div className={styles.right}>
               <div><SettingOutlined/></div>
             </div>
@@ -52,10 +52,10 @@ const Header = () => {
         <div className={styles.appContent}>
           {menus && Array.isArray(menus) && menus.map((item, index) => {
             return (
-              <div className={styles.appItemWrap}>
-                <div className="app-item" key={index}>
+              <div className={styles.appItemWrap} key={index}>
+                <div className="app-item">
                   <div className="item-logo-wrap">
-
+                    图标
                   </div>
                   <div className="app-item-name">
                     {item.name}
@@ -65,8 +65,6 @@ const Header = () => {
             );
           })}
         </div>
-
-
       </Drawer>
     </>
   );
