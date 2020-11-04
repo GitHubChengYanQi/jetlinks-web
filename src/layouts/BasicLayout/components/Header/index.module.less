@@ -1,5 +1,40 @@
 @import '~antd/lib/style/themes/default.less';
+.appItemWrap {
+  margin-bottom: 14px;
+  text-decoration: none;
 
+  :global {
+    .app-item {
+      width: 92px;
+      height: 92px;
+      cursor: pointer;
+
+      .item-logo-wrap {
+        height: 49px;
+        transition: all 0.3s ease;
+        .navigation-badge{
+          vertical-align: unset;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          position: relative;
+          display: inline-block;
+          line-height: 1;
+          .app-item-logo{
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            display: inline-block;
+            -webkit-box-shadow: 0 4px 16px 0 rgba(38,38,38,0.12);
+            box-shadow: 0 4px 16px 0 rgba(38,38,38,0.12);
+          }
+        }
+        &:hover{
+          transform: translateY(-4px);
+        }
+      }
+    }
+  }
+}
 .navbar {
   box-sizing: border-box;
   min-height: 50px;
@@ -97,8 +132,79 @@
     }
   }
 }
+:global{
+  .docker-top-container {
+    padding: 12px 14px 12px 18px;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    .docker-top-title {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
 
-.appContent{
+      .css-1b5qfbo {
+        font-size: 20px;
+        height: 24px;
+        width: 24px;
+        border-radius: 4px;
+        display: inline-flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-right: 14px;
+        color: rgb(166, 166, 166);
+        transition: all 0.3s ease 0s;
+        //transition: background-color .3s ease, border .3s ease, color .3s ease;
+
+        &:hover {
+          color: @link-hover-color;
+          background-color: @background-color-base;
+        }
+      }
+      .docker-top-text{
+        font-weight: 600;
+        line-height: 24px;
+        white-space: nowrap;
+        cursor: text;
+        user-select: text;
+      }
+    }
+  }
+  .docker-middle{
+    bottom: 45px;
+    align-content: flex-start;
+    background: linear-gradient(#fff 30%, rgba(255,255,255,0)),linear-gradient(rgba(255,255,255,0), #fff 70%) 0 100%,linear-gradient(#F0F0F0, #F0F0F0);
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-size: 100% 40px, 100% 40px, 100% 1px, 100% 1px;
+    background-attachment: local, local, scroll, scroll;
+    position: absolute;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: left;
+    justify-content: left;
+    flex-wrap: wrap;
+    top: 48px;
+    padding: 16px 5px 0 24px;
+    text-align: center;
+    overflow-y: auto;
+    left: 0;
+    width: 324px;
+    overflow-x: hidden;
+  }
+}
+.appContent {
   display: flex;
   flex-wrap: wrap;
   padding-top: 5px;
@@ -106,11 +212,5 @@
   max-height: 2000px;
   opacity: 1
 }
-.appItemWrap {
-  :global {
-    .item-wrap {
-      text-decoration: none;
-      margin-bottom: 14px;
-    }
-  }
-}
+
+

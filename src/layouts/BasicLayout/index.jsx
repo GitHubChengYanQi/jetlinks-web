@@ -13,6 +13,7 @@ export default function BasicLayout({children}) {
   const effectsState = store.useModelEffectsState('user');
 
   useEffect(() => {
+    window.document.title = '后台管理系统';
     try {
       let data = cookie.get('Authorization');
       if (!data) {
@@ -42,10 +43,16 @@ export default function BasicLayout({children}) {
             description="系统正在初始化个人信息，请稍后..."
             type="info"
             showIcon
-            style={{width:500,margin:'100px auto'}}
+            style={{width: 500, margin: '100px auto'}}
           />
         </Spin> :
-        <Header/>}
+        <div >
+          <Header/>
+          <div style={{height:'calc(100vh - 51px)'}}>
+            {children}
+          </div>
+        </div>
+      }
     </>
   );
 }
