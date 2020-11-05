@@ -1,2 +1,21 @@
 @import '~antd/dist/antd.css';
+body, html {
+  min-height: 100vh;
+}
+.web-content{
+  position: fixed;
+  top: 51px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+.content-wrap{
+  position: relative;
+  flex: 1 1 0;
+  width: 100%;
+  height: calc(100vh - 51px);
+  overflow: auto;
+  background-color: #fff;
 
+}

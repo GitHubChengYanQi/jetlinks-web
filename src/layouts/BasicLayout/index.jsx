@@ -46,9 +46,9 @@ export default function BasicLayout({children}) {
             style={{width: 500, margin: '100px auto'}}
           />
         </Spin> :
-        <div >
+        <div>
           <Header/>
-          <div style={{height:'calc(100vh - 51px)'}}>
+          <div className="web-content">
             {children}
           </div>
         </div>

@@ -8,8 +8,8 @@ import DelButton from '@/components/DelButton';
 import UserRole from '@/pages/setting/system/user/UserRole';
 import Message from '@/components/Message';
 import List from '@/components/List';
+import { useEva, createAsyncActions, createEffects } from "react-eva";
 import UserEdit from '../UserEdit';
-
 
 const defaultSearch = {
   search: {},
@@ -90,7 +90,7 @@ const UserList = () => {
         }}
       />
     );
-  }
+  };
 
   const renderOption = (value, index, record) => {
     return (
@@ -111,7 +111,7 @@ const UserList = () => {
         }}>重置密码</Button>
       </>
     );
-  }
+  };
 
   const renderRole = () => {
     return (
