@@ -17,11 +17,7 @@ const systemConfig = [
     exact: true,
     redirect: '/setting/system/user/list',
   },
-  {
-    path: '/setting/system/user/list',
-    exact: true,
-    component: lazy(() => import('@/pages/setting/system/user/UserList')),
-  },
+
   // 角色管理
   {
     path: '/setting/system/role',

@@ -56,7 +56,7 @@ const Header = () => {
         visible={visible}
         width={325}
         maskStyle={{opacity: 0, background: 'none'}}
-        bodyStyle={{padding:0,margin:0}}
+        bodyStyle={{padding: 0, margin: 0}}
       >
         <div className="docker-top-container">
           <div className="docker-top-title">
@@ -71,13 +71,14 @@ const Header = () => {
             {menus && Array.isArray(menus) && menus.map((item, index) => {
               return (
                 <div className={styles.appItemWrap} key={index} onClick={() => {
+                  setVisible(false);
                   history.push(`/${item.id}`);
                 }}>
                   <div className="app-item">
                     <div className="item-logo-wrap">
-                    <span className="navigation-badge">
-                      <img className="app-item-logo" src={AppIcon[item.id]} alt="logo"/>
-                    </span>
+                      <span className="navigation-badge">
+                        <img className="app-item-logo" src={AppIcon[item.id]} alt="logo"/>
+                      </span>
                     </div>
                     <div className="app-item-name">
                       {item.name}

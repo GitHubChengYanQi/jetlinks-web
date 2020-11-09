@@ -22,7 +22,7 @@ export const getUserInfo = {
 };
 
 export const userList = {
-  url: '/mgr/list',
+  url: '/rest/mgr/list',
   method: 'POST',
 };
 
@@ -32,14 +32,14 @@ export const userRoleSave = {
 };
 
 export const userReset = {
-  url: '/mgr/reset',
+  url: '/rest/mgr/reset',
   method: 'POST',
 };
 export const userFreeze = {
-  url: '/mgr/freeze',
+  url: '/rest/mgr/freeze',
   method: 'POST',
 };
 export const userUnfreeze = {
-  url: '/mgr/unfreeze',
+  url: '/rest/mgr/unfreeze',
   method: 'POST',
 };

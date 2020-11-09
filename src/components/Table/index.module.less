@@ -1,3 +1,37 @@
-.table-warp{
+.table-warp {
+  :global {
 
+  }
+}
+
+.listHeader {
+  display: flex;
+  height:42px;
+  padding-bottom:8px;
+
+  :global {
+    .title {
+      flex-grow: 3;
+      h2{
+        font-size: 16px;
+        line-height: 34px;
+      }
+    }
+
+    .actions {
+      text-align: right;
+      flex-grow: 27;
+      display: flex;
+
+      .search {
+        //flex: 1;
+        flex-grow: 1;
+      }
+
+      .button {
+        //flex: 0;
+        flex-grow: 0;
+      }
+    }
+  }
 }

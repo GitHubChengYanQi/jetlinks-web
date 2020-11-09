@@ -46,16 +46,16 @@ ajaxService.interceptors.response.use((response) => {
           }
         }
       });
-
+      return false;
     }
     throw new Error(response.message);
   }
   return response;
 }, (error) => {
-  if (error.errCode !== 0) {
-    throw new Error(error.message);
-  }
-  return error;
+  // if (error.errCode !== 0) {
+  throw new Error(error.message);
+  // }
+  // return error;
 });
 
 const requestService = () => {

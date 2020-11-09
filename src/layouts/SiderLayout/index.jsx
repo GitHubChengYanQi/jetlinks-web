@@ -38,8 +38,8 @@ const SiderLayout = ({children,left}) => {
             </Col>
             <Col
               xl={19}>
-              <div className={style.contentContainer}></div>
-              {children}
+              <div className={style.contentContainer}>{children}</div>
+
             </Col>
           </Row>
         </div>
