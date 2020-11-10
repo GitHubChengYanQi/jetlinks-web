@@ -20,6 +20,6 @@ export const deptTree = {
 };
 
 export const deptList = {
-  url: '/dept/list',
+  url: '/rest/dept/list',
   method: 'GET'
-}
+};

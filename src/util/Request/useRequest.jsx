@@ -7,6 +7,7 @@ const useRequest = (config, options) => {
   const {ajaxService} = Service();
 
   const requestService = (params) => {
+    console.log(params);
     return params || {};
   };
 
@@ -19,6 +20,7 @@ const useRequest = (config, options) => {
 
   return ahooksRequest(requestService, {
     requestMethod: (params) => {
+      console.log(params);
       return ajaxService({
         ...config,
         ...params

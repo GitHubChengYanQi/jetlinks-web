@@ -14,7 +14,7 @@ export const roleSave = {
 };
 
 export const roleList = {
-  url: '/role/list',
+  url: '/rest/role/list',
   method: 'GET',
 };
 

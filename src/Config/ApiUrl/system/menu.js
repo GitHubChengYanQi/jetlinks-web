@@ -13,14 +13,14 @@ export const menuSave = {
   method: 'POST',
 };
 export const menuView = {
-  url: '/menu/view',
+  url: '/rest/menu/view',
   method: 'POST',
 };
 export const menuList = {
-  url: '/menu/list',
+  url: '/rest/menu/list',
   method: 'GET',
 };
 export const menuTree = {
-  url: '/menu/selectMenuTreeList',
+  url: '/rest/menu/menuTreeList',
   method: 'GET',
 };

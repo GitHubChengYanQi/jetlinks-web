@@ -15,7 +15,7 @@ export const positionView = {
   method: 'POST',
 };
 export const positionList = {
-  url: '/position/list',
+  url: '/rest/position/list',
   method: 'GET',
 };
 export const positionAllList = {
