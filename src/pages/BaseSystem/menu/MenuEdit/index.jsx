@@ -11,13 +11,6 @@ const formItemLayout = {
   wrapperCol: {span: 18}
 };
 
-const constValue = {
-  name: '',
-  code: '',
-  pid: '',
-  url: '',
-  sort: '',
-};
 
 const ApiConfig = {
   view: menuView,
@@ -30,10 +23,16 @@ const MenuEdit = ({id, ...props}) => {
   const formRef = useRef();
 
   return (
-    <Form {...props} ref={formRef} api={ApiConfig} id={id} fieldKey="menuId">
+    <Form
+      {...props}
+      ref={formRef}
+      api={ApiConfig}
+      id={id}
+      fieldKey="menuId"
+    >
       <FormItem label="名称" name="name" component={Input}/>
       <FormItem label="编码" name="code" component={Input}/>
-      <FormItem label="上级" name="pid" component={MenuSelect}/>
+      <FormItem label="上级" name="pcodes" component={MenuSelect} allowClear={false}/>
       <FormItem label="请求地址" name="url" component={Input}/>
       <FormItem label="排序" name="sort" component={Input}/>
     </Form>

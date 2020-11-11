@@ -41,7 +41,7 @@ const MenuList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer title="编辑菜单" form={MenuEdit} ref={ref}/>
+      <Drawer width={800} title="编辑菜单" form={MenuEdit} ref={ref}/>
     </>
   );
 };

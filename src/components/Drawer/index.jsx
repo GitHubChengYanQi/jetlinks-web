@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Drawer as AntDrawer} from 'antd';
 
-const Drawer = ({title, form: FormNode, onClose, ...props}, ref) => {
+const Drawer = ({title, form: FormNode, onClose, width = 600, ...props}, ref) => {
 
   const [id, show] = useState(null);
   useImperativeHandle(ref, () => ({
@@ -17,7 +17,7 @@ const Drawer = ({title, form: FormNode, onClose, ...props}, ref) => {
         show(null);
         typeof onClose === 'function' && onClose();
       }}
-      width={600}
+      width={width}
       title={title}>
       {FormNode && <FormNode
         {...props}
