@@ -20,7 +20,13 @@ export const menuList = {
   url: '/rest/menu/list',
   method: 'GET',
 };
-export const menuTree = {
+
+export const menuTreeList = {
   url: '/rest/menu/menuTreeList',
+  method: 'GET',
+};
+
+export const menuTree = {
+  url: '/rest/menu/selectMenuTreeList',
   method: 'GET',
 };

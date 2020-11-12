@@ -1,16 +1,11 @@
 import React, {useRef} from 'react';
-import {menuAdd, menuSave, menuView} from '@/Config/ApiUrl/system/menu';
+import {menuAdd, menuSave, menuTree, menuView} from '@/Config/ApiUrl/system/menu';
 import Form from '@/components/Form';
 import {Input} from 'antd';
-import MenuSelect from '@/pages/BaseSystem/menu/MenuSelect';
+import Cascader from '@/components/Cascader';
+import SelectIcon from '@/components/SelectIcon';
 
 const {FormItem} = Form;
-
-const formItemLayout = {
-  labelCol: {span: 6},
-  wrapperCol: {span: 18}
-};
-
 
 const ApiConfig = {
   view: menuView,
@@ -32,7 +27,8 @@ const MenuEdit = ({id, ...props}) => {
     >
       <FormItem label="名称" name="name" component={Input}/>
       <FormItem label="编码" name="code" component={Input}/>
-      <FormItem label="上级" name="pcodes" component={MenuSelect} allowClear={false}/>
+      <FormItem label="上级" name="pcodes" component={Cascader} allowClear={false} api={menuTree}/>
+      <FormItem label="图标" name="url" component={SelectIcon}/>
       <FormItem label="请求地址" name="url" component={Input}/>
       <FormItem label="排序" name="sort" component={Input}/>
     </Form>

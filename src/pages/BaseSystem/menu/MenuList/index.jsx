@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {menuList, menuRemove} from '@/Config/ApiUrl/system/menu';
+import {menuList, menuRemove, menuTree, menuTreeList} from '@/Config/ApiUrl/system/menu';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -22,19 +22,17 @@ const MenuList = () => {
     <>
       <Table
         title={<h2><MenuOutlined/> 菜单管理</h2>}
-        api={menuList}
-        rowKey="menuId"
+        api={menuTreeList}
+        rowKey="value"
       >
-        <Column title="名称" dataIndex="name" width={200}/>
-        <Column title="编码" dataIndex="code" width={200}/>
-        <Column title="状态" dataIndex="statusName" width={200}/>
-        <Column title="请求地址" dataIndex="url" width={300}/>
+        <Column title="名称" dataIndex="label" width={200}/>
+        <Column title="编码" dataIndex="value" width={200}/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <Button className="button-left-margin" icon={<EditOutlined/>} onClick={() => {
-                ref.current.show(record.menuId);
+                ref.current.show(record.id);
               }}>编辑</Button>
               <DelButton/>
             </>
