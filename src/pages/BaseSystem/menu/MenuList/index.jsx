@@ -32,7 +32,7 @@ const MenuList = () => {
           return (
             <>
               <Button className="button-left-margin" icon={<EditOutlined/>} onClick={() => {
-                ref.current.show(record.id);
+                ref.current.open(record.id);
               }}>编辑</Button>
               <DelButton/>
             </>

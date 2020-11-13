@@ -4,8 +4,18 @@ import {Drawer as AntDrawer} from 'antd';
 const Drawer = ({title, form: FormNode, onClose, width = 600, ...props}, ref) => {
 
   const [id, show] = useState(null);
+
+  const open = (id) => {
+    show(id);
+  };
+
+  const close = () => {
+    show(null);
+  };
+
   useImperativeHandle(ref, () => ({
-    show
+    open,
+    close
   }));
 
   const visible = id !== null && id !== undefined;

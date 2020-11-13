@@ -11,24 +11,31 @@ import {SkeletonForm} from '@/components/Skeleton';
 
 import style from './index.module.less';
 
-const Form = ({children, labelCol, wrapperCol, api, fieldKey, id, formatResult,onSuccess}, ref) => {
+const Form = ({children, labelCol, wrapperCol, api, fieldKey, id, formatResult, onSuccess}, ref) => {
 
   // console.log(fieldKey);
   const key = {};
   key[fieldKey] = id;
 
+  // 获取数据
   const {run: find, data: findData, loading: findLoad} = useRequest(api.view, {
     manual: true,
-    formatResult:(response)=>{
+    formatResult: (response) => {
       if (!response.data) {
         return {};
       }
-      if(typeof formatResult==='function'){
+      if (typeof formatResult === 'function') {
         return formatResult(response.data);
       }
       return response.data;
     }
   });
+
+  // 提交数据
+  const {run: save, loading: saveLoad} = useRequest(api.save, {
+    manual: true
+  });
+
 
   useEffect(() => {
     if (id) {
@@ -52,6 +59,7 @@ const Form = ({children, labelCol, wrapperCol, api, fieldKey, id, formatResult,o
       wrapperCol={wrapperCol || 18}
       onSubmit={(values) => {
         console.log(values);
+        save({data: values});
       }}
       initialValues={findData}
     >

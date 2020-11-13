@@ -1,19 +1,20 @@
 import SiderLayout from '@/layouts/SiderLayout';
 import React from 'react';
-import {useRouteMatch} from 'ice';
+import {useRouteMatch, useHistory} from 'ice';
 import store from '@/store';
 import {Menu} from 'antd';
 
 const BaseSystem = ({children}) => {
 
   const match = useRouteMatch();
+  const history  = useHistory();
+
   const [userInfo] = store.useModel('user');
   const {menus} = userInfo;
 
   const subMenu = Array.isArray(menus) && menus.find((item) => {
     return `/${item.id}` === match.path;
   });
-  console.log(subMenu);
 
 
   const loopMenu = (subMenus) => {
@@ -29,10 +30,11 @@ const BaseSystem = ({children}) => {
           selectable
           onClick={(obj) => {
             console.log(obj);
+            history.push(obj.key);
           }}
           mode="inline"
           defaultSelectedKeys={[]}
-          style={{borderRight:'none'}}
+          style={{borderRight: 'none'}}
         >{loopMenu(subMenus)}</Menu>
       );
     }

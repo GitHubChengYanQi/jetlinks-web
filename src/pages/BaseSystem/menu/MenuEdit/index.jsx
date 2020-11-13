@@ -28,7 +28,7 @@ const MenuEdit = ({id, ...props}) => {
       <FormItem label="名称" name="name" component={Input}/>
       <FormItem label="编码" name="code" component={Input}/>
       <FormItem label="上级" name="pcodes" component={Cascader} allowClear={false} api={menuTree}/>
-      <FormItem label="图标" name="url" component={SelectIcon}/>
+      <FormItem label="图标" name="icon" component={SelectIcon}/>
       <FormItem label="请求地址" name="url" component={Input}/>
       <FormItem label="排序" name="sort" component={Input}/>
     </Form>

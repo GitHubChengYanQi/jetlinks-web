@@ -9,7 +9,7 @@ export const menuRemove = {
 };
 
 export const menuSave = {
-  url: '/menu/edit',
+  url: '/rest/menu/edit',
   method: 'POST',
 };
 export const menuView = {
