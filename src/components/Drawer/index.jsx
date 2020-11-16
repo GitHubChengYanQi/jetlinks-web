@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Drawer as AntDrawer} from 'antd';
+import {Drawer as AntDrawer,message} from 'antd';
 
-const Drawer = ({title, form: FormNode, onClose, width = 600, ...props}, ref) => {
+const Drawer = ({title, form: FormNode, onClose, width = 600,onSuccess=()=>{}, ...props}, ref) => {
 
   const [id, show] = useState(null);
 
@@ -33,11 +33,11 @@ const Drawer = ({title, form: FormNode, onClose, width = 600, ...props}, ref) =>
         {...props}
         id={id}
         onSuccess={(response) => {
-          // Message.success(response.message);
-          typeof onClose === 'function' && onClose();
+          message.success(response.message);
+          typeof onSuccess === 'function' && onSuccess();
         }}
         onError={(error) => {
-          // Message.error(error.message);
+          message.error(error.message);
         }}
       />}
     </AntDrawer>

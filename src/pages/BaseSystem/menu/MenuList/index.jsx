@@ -17,6 +17,7 @@ const {Column} = AntTable;
 const MenuList = () => {
 
   const ref = useRef();
+  const tableRef = useRef();
 
   return (
     <>
@@ -24,6 +25,7 @@ const MenuList = () => {
         title={<h2><MenuOutlined/> 菜单管理</h2>}
         api={menuTreeList}
         rowKey="value"
+        ref={tableRef}
       >
         <Column title="名称" dataIndex="label" width={200}/>
         <Column title="编码" dataIndex="value" width={200}/>
@@ -39,7 +41,10 @@ const MenuList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑菜单" form={MenuEdit} ref={ref}/>
+      <Drawer width={800} title="编辑菜单" form={MenuEdit} onSuccess={()=>{
+        tableRef.current.refresh();
+        ref.current.close();
+      }} ref={ref}/>
     </>
   );
 };

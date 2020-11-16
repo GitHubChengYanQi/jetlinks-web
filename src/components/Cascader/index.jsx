@@ -16,10 +16,13 @@ const Cascader = (props) => {
     for (let i = 0; i < tmpValue.length; i++) {
       const item = tmpValue[i];
       if (item) {
-        valueArray.push(item.substring(1, item.length - 1));
+        valueArray.push(item);
       }
     }
-  } else {
+    // valueArray = tmpValue;
+  } else if( typeof value==="string") {
+    valueArray = 0;
+  }else {
     valueArray = value;
   }
 

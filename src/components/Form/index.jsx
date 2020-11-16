@@ -11,7 +11,13 @@ import {SkeletonForm} from '@/components/Skeleton';
 
 import style from './index.module.less';
 
-const Form = ({children, labelCol, wrapperCol, api, fieldKey, id, formatResult, onSuccess}, ref) => {
+const Form = ({
+                children, labelCol, wrapperCol, api, fieldKey, id, formatResult,
+                onSubmit = (values) => {
+                  return values;
+                },
+                onSuccess=()=>{}
+              }, ref) => {
 
   // console.log(fieldKey);
   const key = {};
@@ -33,7 +39,13 @@ const Form = ({children, labelCol, wrapperCol, api, fieldKey, id, formatResult, 
 
   // 提交数据
   const {run: save, loading: saveLoad} = useRequest(api.save, {
-    manual: true
+    manual: true,
+    formatResult:(response)=>{
+      return response;
+    },
+    onSuccess:(result)=>{
+      onSuccess(result);
+    }
   });
 
 
@@ -58,7 +70,7 @@ const Form = ({children, labelCol, wrapperCol, api, fieldKey, id, formatResult, 
       labelCol={labelCol || 6}
       wrapperCol={wrapperCol || 18}
       onSubmit={(values) => {
-        console.log(values);
+        values = onSubmit(values);
         save({data: values});
       }}
       initialValues={findData}

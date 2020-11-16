@@ -39,7 +39,7 @@ const Table = ({children, columns, actions, effects, title, api, searchForm, ...
           </div>
           <div className="button">
             <Button className="button-left-margin" onClick={() => {
-              reset();
+              refresh();
             }}><ReloadOutlined/></Button>
           </div>
         </div>

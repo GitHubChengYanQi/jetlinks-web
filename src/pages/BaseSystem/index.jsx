@@ -3,6 +3,7 @@ import React from 'react';
 import {useRouteMatch, useHistory} from 'ice';
 import store from '@/store';
 import {Menu} from 'antd';
+import * as Icon from '@ant-design/icons';
 
 const BaseSystem = ({children}) => {
 
@@ -45,8 +46,9 @@ const BaseSystem = ({children}) => {
     if (item.children) {
       return (<Menu.ItemGroup key={item.id} title={item.name}>{loopMenu(item.children)}</Menu.ItemGroup>);
     }
+    const IconNode = item.icon?Icon[item.icon]:null;
     return (
-      <Menu.Item key={item.url}>{item.name}</Menu.Item>
+      <Menu.Item key={item.url} icon={IconNode?<IconNode />:null}>{item.name}</Menu.Item>
     );
   };
   return (
