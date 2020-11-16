@@ -29,7 +29,7 @@ const Drawer = ({title, form: FormNode, onClose, width = 600,onSuccess=()=>{}, .
       }}
       width={width}
       title={title}>
-      {FormNode && <FormNode
+      {visible && FormNode && <FormNode
         {...props}
         id={id}
         onSuccess={(response) => {

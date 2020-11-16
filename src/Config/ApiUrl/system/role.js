@@ -9,7 +9,7 @@ export const roleRemove = {
 };
 
 export const roleSave = {
-  url: '/role/edit',
+  url: '/rest/role/edit',
   method: 'POST',
 };
 
@@ -19,11 +19,11 @@ export const roleList = {
 };
 
 export const roleView = {
-  url: '/role/view',
+  url: '/rest/role/view',
   method: 'POST',
 };
 export const roleTree = {
-  url: '/role/roleTreeListByUserId',
+  url: '/rest/role/roleTreeList',
   method: 'POST'
 };
 export const roleSet = {

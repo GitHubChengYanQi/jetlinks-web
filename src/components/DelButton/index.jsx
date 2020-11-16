@@ -29,7 +29,7 @@ const DelButton = ({onSuccess, onCancel, ...props}) => {
   };
 
   return (
-    <Button {...props} danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined />}>删除</Button>
+    <Button  {...props} danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined />}>删除</Button>
   );
 };
 

@@ -16,7 +16,10 @@ const routerConfig = [
     fallback: <div>loading...</div>,
     children: [
       ...baseSystem,
-      ...otherRouters
+      ...otherRouters,
+      {
+        component: lazy(() => import('@/pages/NotFound')),
+      }
     ],
   },
 ];

@@ -42,6 +42,7 @@ ajaxService.interceptors.response.use((response) => {
           try {
             GotoLogin();
           } catch (e) {
+            console.log('不能使用hook跳转');
             window.location.href = '/#/login';
           }
         }

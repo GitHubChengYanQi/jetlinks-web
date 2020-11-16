@@ -11,13 +11,15 @@ import {SkeletonForm} from '@/components/Skeleton';
 
 import style from './index.module.less';
 
-const Form = ({
-                children, labelCol, wrapperCol, api, fieldKey, id, formatResult,
-                onSubmit = (values) => {
-                  return values;
-                },
-                onSuccess=()=>{}
-              }, ref) => {
+const Form = (
+  {
+    children, labelCol, wrapperCol, api, fieldKey, id, formatResult,
+    onSubmit = (values) => {
+      return values;
+    },
+    onSuccess = () => {
+    }
+  }, ref) => {
 
   // console.log(fieldKey);
   const key = {};
@@ -40,14 +42,13 @@ const Form = ({
   // 提交数据
   const {run: save, loading: saveLoad} = useRequest(api.save, {
     manual: true,
-    formatResult:(response)=>{
+    formatResult: (response) => {
       return response;
     },
-    onSuccess:(result)=>{
+    onSuccess: (result) => {
       onSuccess(result);
     }
   });
-
 
   useEffect(() => {
     if (id) {
@@ -68,7 +69,7 @@ const Form = ({
     <FormilyForm
       className={style.formWarp}
       labelCol={labelCol || 6}
-      wrapperCol={wrapperCol || 18}
+      wrapperCol={wrapperCol || 15}
       onSubmit={(values) => {
         values = onSubmit(values);
         save({data: values});
