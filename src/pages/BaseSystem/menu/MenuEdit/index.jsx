@@ -15,7 +15,7 @@ const ApiConfig = {
   save: menuSave
 };
 
-const MenuEdit = ({id, ...props}) => {
+const MenuEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -24,7 +24,6 @@ const MenuEdit = ({id, ...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      id={id}
       fieldKey="menuId"
       onSubmit={(values) => {
         if (Array.isArray(values.pids) && values.pids.length > 0) {

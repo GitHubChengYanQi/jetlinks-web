@@ -11,23 +11,40 @@ import {SkeletonForm} from '@/components/Skeleton';
 
 import style from './index.module.less';
 
-const Form = (
+const FormWrapper = (
   {
-    children, labelCol, wrapperCol, api, fieldKey, id, formatResult,
+    children,
+    labelCol,
+    wrapperCol,
+    api,
+    fieldKey,
+    value,
+    formatResult,
     onSubmit = (values) => {
       return values;
     },
     onSuccess = () => {
+    },
+    onError = () => {
     }
   }, ref) => {
 
-  // console.log(fieldKey);
+  if (!api || !api.view) {
+    throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
+  }
+  if (!fieldKey) {
+    fieldKey = api.view.rowKey;
+  }
+
   const key = {};
-  key[fieldKey] = id;
+  key[fieldKey] = value;
 
   // 获取数据
   const {run: find, data: findData, loading: findLoad} = useRequest(api.view, {
     manual: true,
+    onError: (error) => {
+      onError(error);
+    },
     formatResult: (response) => {
       if (!response.data) {
         return {};
@@ -51,13 +68,16 @@ const Form = (
   });
 
   useEffect(() => {
-    if (id) {
+    if (value) {
+      if (!fieldKey) {
+        throw new Error('Table component: fieldKey cannot be empty,But now it doesn\'t exist!');
+      }
       find({params: key});
     }
     return () => {
 
     };
-  }, [id]);
+  }, [value]);
 
   if (findLoad) {
     return (
@@ -85,9 +105,9 @@ const Form = (
   );
 };
 
-const forwardRefForm = forwardRef(Form);
+const Form = forwardRef(FormWrapper);
 
-forwardRefForm.FormItem = AntFormItem;
-forwardRefForm.MegaLayout = antMegaLayout;
+Form.FormItem = AntFormItem;
+Form.MegaLayout = antMegaLayout;
 
-export default forwardRefForm;
+export default Form;

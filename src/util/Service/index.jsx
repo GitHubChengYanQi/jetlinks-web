@@ -43,13 +43,14 @@ ajaxService.interceptors.response.use((response) => {
             GotoLogin();
           } catch (e) {
             console.log('不能使用hook跳转');
-            window.location.href = '/#/login';
+            window.location.href = `/#/login?backUrl=${encodeURIComponent(window.location.href)}`;
           }
         }
       });
       return false;
     }
-    throw new Error(response.message);
+    const message = response.message || '未知错误';
+    throw new Error(message);
   }
   return response;
 }, (error) => {

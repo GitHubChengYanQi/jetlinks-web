@@ -3,8 +3,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Grid, Card, Icon, Dialog, Loading, Pagination} from '@alifd/next';
 
 import {userFreeze, userList, userRemove, userReset, userUnfreeze} from '@/Config/ApiUrl/system/user';
-import DeptTree from '@/components/DeptTree';
-import DelButton from '@/components/DelButton';
 import Message from '@/components/Message';
 import Table from '@/components/Table';
 import {Form, Input, Button, Switch} from 'antd';
@@ -25,7 +23,6 @@ const UserList = () => {
     );
   };
 
-  const [id, setId] = useState(null);
   const [roleUserId, setRoleUserId] = useState(null);
 
   // 冻结账号

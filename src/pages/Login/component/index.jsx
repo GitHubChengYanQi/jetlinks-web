@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form, Input, Button, Alert} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
-import {useHistory} from 'ice';
+import {useHistory, getSearchParams} from 'ice';
 import {useRequest} from '@/util/Request';
 import {login as loginUrl} from '@/Config/ApiUrl';
 import cookie from 'js-cookie';
@@ -11,14 +11,21 @@ const FormItem = Form.Item;
 export default function Login({submitText}) {
 
   const history = useHistory();
+  const params = getSearchParams();
+
+  console.log(params);
 
   const {run, data, error, loading} = useRequest(loginUrl, {
     manual: true,
     onSuccess: (result) => {
       cookie.set('Authorization', result);
-      setTimeout(()=>{
-        history.replace('/');
-      },500);
+      setTimeout(() => {
+        if (params.backUrl) {
+          window.location.href = decodeURIComponent(params.backUrl);
+        } else {
+          history.replace('/');
+        }
+      }, 500);
     }
   });
 

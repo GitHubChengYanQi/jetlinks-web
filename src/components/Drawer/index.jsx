@@ -1,12 +1,22 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Drawer as AntDrawer,message} from 'antd';
+import {Drawer as AntDrawer, message} from 'antd';
 
-const Drawer = ({title, form: FormNode, onClose, width = 600,onSuccess=()=>{}, ...props}, ref) => {
+const Drawer = (
+  {
+    title,
+    component: Component,
+    width = 600,
+    onSuccess = () => {
+    },
+    onClose = () => {
+    },
+    ...props
+  }, ref) => {
 
-  const [id, show] = useState(null);
+  const [value, show] = useState(null);
 
-  const open = (id) => {
-    show(id);
+  const open = (value) => {
+    show(value);
   };
 
   const close = () => {
@@ -18,26 +28,28 @@ const Drawer = ({title, form: FormNode, onClose, width = 600,onSuccess=()=>{}, .
     close
   }));
 
-  const visible = id !== null && id !== undefined;
+  const visible = value !== null && value !== undefined;
 
   return (
     <AntDrawer
       visible={visible}
       onClose={() => {
         show(null);
-        typeof onClose === 'function' && onClose();
+        onClose();
       }}
       width={width}
       title={title}>
-      {visible && FormNode && <FormNode
+      {Component && <Component
         {...props}
-        id={id}
+        value={value}
         onSuccess={(response) => {
           message.success(response.message);
-          typeof onSuccess === 'function' && onSuccess();
+          onSuccess();
         }}
         onError={(error) => {
           message.error(error.message);
+          show(null);
+          onClose();
         }}
       />}
     </AntDrawer>

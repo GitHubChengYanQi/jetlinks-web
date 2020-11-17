@@ -59,7 +59,7 @@ const RoleList = () => {
         rowKey="roleId"
         ref={tableRef}
       />
-      <Drawer width={800} title="编辑菜单" form={RoleEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑菜单" component={RoleEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

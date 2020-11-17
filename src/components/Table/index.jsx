@@ -1,17 +1,27 @@
 import React, {forwardRef, useImperativeHandle} from 'react';
-import {Form, Table as AntdTable, Button} from 'antd';
+import {Table as AntdTable, Button,Form} from 'antd';
 import {ReloadOutlined} from '@ant-design/icons';
 import {useTableRequest} from '@/util/Request';
 
 import style from './index.module.less';
 
-const Table = ({children, columns, actions, effects, title, api, searchForm, ...props}, ref) => {
+const {Column} = AntdTable;
 
-  if(!api){
+const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, ...props}, ref) => {
+
+  if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
 
+  if (!rowKey) {
+    rowKey = api.rowKey;
+  }
+  if (!rowKey) {
+    console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
+  }
+
   const [form] = Form.useForm();
+
   const {tableProps, search, refresh} = useTableRequest(api, {
     form
   });
@@ -38,17 +48,21 @@ const Table = ({children, columns, actions, effects, title, api, searchForm, ...
             </Form>
           </div>
           <div className="button">
+            <>{actions}</>
             <Button className="button-left-margin" onClick={() => {
               refresh();
             }}><ReloadOutlined/></Button>
           </div>
         </div>
       </div>
-      <AntdTable columns={columns} {...tableProps} {...props}>
+      <AntdTable rowKey={rowKey} columns={columns} {...tableProps} {...props}>
         {children}
       </AntdTable>
     </div>
   );
 };
 
-export default forwardRef(Table);
+const Table = forwardRef(TableWarp);
+Table.Column = Column;
+
+export default Table;

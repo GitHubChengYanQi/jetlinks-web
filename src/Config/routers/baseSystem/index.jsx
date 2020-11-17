@@ -37,6 +37,17 @@ const systemConfig = [
         exact: true,
       },
       {
+        path: '/dictType',
+        component: lazy(() => import('@/pages/BaseSystem/dictType/List')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },
+      {
+        path: '/dictType/:dictTypeId',
+        component: lazy(() => import('@/pages/BaseSystem/dictType/dict/List')),
+        fallback: <div>loading...</div>,
+      },
+      {
         redirect:'/BASE_SYSTEM/mgr',
       }
     ]

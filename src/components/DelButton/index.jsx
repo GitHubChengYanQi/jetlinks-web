@@ -19,8 +19,6 @@ const DelButton = ({onSuccess, onCancel, ...props}) => {
         }).catch(() => {
           console.log('Oops errors!');
         });
-        // typeof onSuccess === 'function' && onSuccess();
-        // return false;
       },
       onCancel: () => {
         typeof onCancel === 'function' && onCancel();

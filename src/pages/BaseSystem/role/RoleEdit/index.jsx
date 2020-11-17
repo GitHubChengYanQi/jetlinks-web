@@ -12,12 +12,11 @@ const ApiConfig = {
   save: roleSave
 };
 
-const RoleEdit = ({id, ...props}) => {
+const RoleEdit = ({...props}) => {
 
   return (
     <Form
       api={ApiConfig}
-      id={id}
       fieldKey="roleId"
       onSubmit={(values) => {
         if (Array.isArray(values.pids) && values.pids.length > 0) {

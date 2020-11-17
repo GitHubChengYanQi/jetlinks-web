@@ -41,7 +41,7 @@ const MenuList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑菜单" form={MenuEdit} onSuccess={()=>{
+      <Drawer width={800} title="编辑菜单" component={MenuEdit} onSuccess={()=>{
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
