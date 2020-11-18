@@ -4,19 +4,21 @@ import {Space, Row, Col, Skeleton as AntSkeleton} from "antd";
 
 import style from './index.module.less';
 
+const node = [];
+for (let i = 0; i < 4; i++) {
+  const w = 20 + Math.floor(Math.random() * 60);
+  node.push(
+    <Row key={i} gutter={8} style={{paddingTop: 8, paddingBottom: 8}}>
+      <Col span={6} style={{textAlign: 'right'}}><AntSkeleton.Button size="small"/></Col>
+      <Col span={18}>
+        <AntSkeleton.Input style={{width: `${w}%`}} active size="small"/>
+      </Col>
+    </Row>
+  );
+}
+
 export const SkeletonForm = () => {
-  const node = [];
-  for (let i = 0; i < 4; i++) {
-    const w = 20 + Math.floor(Math.random() * 60);
-    node.push(
-      <Row key={i} gutter={8} style={{paddingTop: 8, paddingBottom: 8}}>
-        <Col span={6} style={{textAlign: 'right'}}><AntSkeleton.Button size="small"/></Col>
-        <Col span={18}>
-          <AntSkeleton.Input style={{width: `${w}%`}} active size="small"/>
-        </Col>
-      </Row>
-    );
-  }
+
 
   return (
     <div className={style.Skeleton}>

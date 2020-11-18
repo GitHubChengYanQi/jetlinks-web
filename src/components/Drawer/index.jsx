@@ -14,6 +14,7 @@ const Drawer = (
   }, ref) => {
 
   const [value, show] = useState(null);
+  const [s, setShow] = useState(false);
 
   const open = (value) => {
     show(value);
@@ -38,7 +39,11 @@ const Drawer = (
         onClose();
       }}
       width={width}
-      title={title}>
+      title={title}
+      afterVisibleChange={(v) => {
+        setShow(v);
+      }}
+    >
       {Component && <Component
         {...props}
         value={value}

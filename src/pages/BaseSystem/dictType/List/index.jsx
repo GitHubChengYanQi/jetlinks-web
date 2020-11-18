@@ -19,7 +19,7 @@ const DictTypeList = () => {
     <>
       <Table
         api={dictTypeList}
-        title="字典管理"
+        title={<h2>字典管理</h2>}
       >
         <Column title="名称" width={200} render={(value, row) => {
           return (

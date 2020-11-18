@@ -24,3 +24,20 @@ export const dictList = {
   method: 'POST',
   rowKey:'dictId'
 };
+
+export const dictDetail = {
+  url: '/rest/dict/detail',
+  method: 'POST',
+  rowKey:'dictId'
+};
+
+export const dictSave = {
+  url: '/rest/dict/editItem',
+  method: 'POST',
+  rowKey:'dictId'
+};
+export const dictAdd = {
+  url: '/rest/dict/addItem',
+  method: 'POST',
+  rowKey:'dictId'
+};

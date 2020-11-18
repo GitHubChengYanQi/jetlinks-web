@@ -1,16 +1,18 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {dictList} from '@/Config/ApiUrl/system/dict';
-import {Input, Form, Button} from 'antd';
+import {Input, Button} from 'antd';
 import {useParams} from 'ice';
 import EditButton from '@/components/EditButton';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
-import DictEdit from "@/pages/BaseSystem/dictType/dict/Edit";
-import AddButton from "@/components/AddButton";
+import DictEdit from '@/pages/BaseSystem/dictType/dict/Edit';
+import AddButton from '@/components/AddButton';
 import {RollbackOutlined} from '@ant-design/icons';
+import Form from '@/components/Form';
 
 const {Column} = Table;
+const {FormItem} = Form;
 
 const DictList = () => {
   const tableRef = useRef();
@@ -20,17 +22,19 @@ const DictList = () => {
   const actions = () => {
     return (
       <>
-        <Button><RollbackOutlined />返回</Button>
-        <AddButton />
+        <Button onClick={() => {
+          window.history.back();
+        }}><RollbackOutlined/>返回</Button>
+        <AddButton onClick={() => {
+          ref.current.open(false);
+        }}/>
       </>
     );
   };
 
   const searchForm = () => {
     return (
-      <Form.Item name="dictTypeId" label="" initialValue={dictTypeId}>
-        <Input placeholder="父级Id" type="hidden"/>
-      </Form.Item>
+      <FormItem name="dictTypeId" label="" component={Input} initialValue={dictTypeId} placeholder="父级Id" type="hidden" />
     );
   };
 
@@ -56,14 +60,17 @@ const DictList = () => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(row.dictTypeId);
+                ref.current.open(row.dictId);
               }}/>
               <DelButton/>
             </>
           );
         }}/>
       </Table>
-      <Drawer ref={ref} component={DictEdit}/>
+      <Drawer title="编辑字典" ref={ref} component={DictEdit} onSuccess={()=>{
+        ref.current.close();
+        tableRef.current.refresh();
+      }}/>
     </>
   );
 };
