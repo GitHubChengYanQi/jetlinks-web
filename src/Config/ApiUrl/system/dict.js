@@ -10,6 +10,12 @@ export const dictTypeDetail = {
   rowKey: 'dictTypeId'
 };
 
+export const dictTypeSelect = {
+  url: '/rest/dictType/select',
+  method: 'POST',
+  rowKey:'dictId'
+};
+
 export const dictByCode = {
   url: '/rest/dict/listDictsByCode',
   method: 'POST',
@@ -41,3 +47,4 @@ export const dictAdd = {
   method: 'POST',
   rowKey:'dictId'
 };
+

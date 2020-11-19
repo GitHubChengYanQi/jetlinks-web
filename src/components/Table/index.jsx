@@ -36,7 +36,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
   const {ajaxService} = Service();
 
   const requestMethod = async (params) => {
-    console.log(params);
     const {values, pagination, ...other} = params;
     const page = {};
     page.limit = pagination.pageSize;
@@ -61,16 +60,15 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
   const {form, table: tableProps} = useFormTableQuery(requestMethod);
 
   const {submit} = form;
+
   console.log(formActions);
   useImperativeHandle(ref, () => ({
-    refresh: submit,
+    refresh: formActions.submit,
     submit: formActions.submit,
     // reset,
     // changeType,
     // type
   }));
-
-  console.log(form);
 
   return (
     <div className={style.tableWarp}>
