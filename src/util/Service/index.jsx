@@ -47,7 +47,7 @@ ajaxService.interceptors.response.use((response) => {
           }
         }
       });
-      return false;
+      throw new Error(response.message);
     }
     const message = response.message || '未知错误';
     throw new Error(message);

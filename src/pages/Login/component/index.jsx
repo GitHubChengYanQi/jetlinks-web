@@ -19,13 +19,13 @@ export default function Login({submitText}) {
     manual: true,
     onSuccess: (result) => {
       cookie.set('Authorization', result);
-      setTimeout(() => {
-        if (params.backUrl) {
-          window.location.href = decodeURIComponent(params.backUrl);
-        } else {
-          history.replace('/');
-        }
-      }, 500);
+      // setTimeout(() => {
+      //   if (params.backUrl) {
+      //     window.location.href = decodeURIComponent(params.backUrl);
+      //   } else {
+      //     history.replace('/');
+      //   }
+      // }, 1500);
     }
   });
 
@@ -34,9 +34,18 @@ export default function Login({submitText}) {
     <Form
       initialValues={{remember: true}}
       onFinish={async (values) => {
-        run({
+        const response = await run({
           data: values
         });
+        if(response){
+          setTimeout(() => {
+            if (params.backUrl) {
+              window.location.href = decodeURIComponent(params.backUrl);
+            } else {
+              history.replace('/');
+            }
+          }, 1500);
+        }
       }}
     >
       <FormItem
