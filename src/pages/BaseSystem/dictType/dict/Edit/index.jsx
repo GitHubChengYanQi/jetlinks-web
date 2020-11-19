@@ -1,11 +1,12 @@
 import React from 'react';
 import Form from '@/components/Form';
 import {Input, Radio} from 'antd';
-import {dictAdd, dictDetail, dictSave} from '@/Config/ApiUrl/system/dict';
+import {dictAdd, dictDetail, dictSave, dictTypeSelect} from '@/Config/ApiUrl/system/dict';
+import Select from '@/components/Select';
 
 const {FormItem} = Form;
 
-const DictEdit = (props) => {
+const DictEdit = ({dictTypeId,...props}) => {
 
   return (
     <Form
@@ -21,6 +22,16 @@ const DictEdit = (props) => {
       }}
       {...props}
     >
+      <FormItem
+        label="类型"
+        required
+        name="dictTypeId"
+        component={Select}
+        initialValue={dictTypeId}
+        defaultValue={dictTypeId}
+        api={dictTypeSelect}
+        disabled
+      />
       <FormItem label="名称" required name="name" component={Input}/>
       <FormItem label="编码" required name="code" component={Input}/>
       <FormItem

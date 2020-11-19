@@ -19,6 +19,8 @@ const DictList = () => {
   const ref = useRef();
   const {dictTypeId} = useParams();
 
+  console.log(tableRef);
+
   const actions = () => {
     return (
       <>
@@ -34,7 +36,7 @@ const DictList = () => {
 
   const searchForm = () => {
     return (
-      <FormItem name="dictTypeId" label="" component={Input} initialValue={dictTypeId} placeholder="父级Id" type="hidden" />
+      <FormItem name="dictTypeId" label="" component={Input} initialValue={dictTypeId} placeholder="父级Id" type="hidden"/>
     );
   };
 
@@ -67,10 +69,11 @@ const DictList = () => {
           );
         }}/>
       </Table>
-      <Drawer title="编辑字典" ref={ref} component={DictEdit} onSuccess={()=>{
+      <Drawer title="编辑字典" ref={ref} component={DictEdit} onSuccess={() => {
         ref.current.close();
         tableRef.current.refresh();
-      }}/>
+      }} dictTypeId={dictTypeId}
+      />
     </>
   );
 };
