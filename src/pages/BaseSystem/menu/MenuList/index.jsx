@@ -1,23 +1,31 @@
-import React, {useRef, useState} from 'react';
-import {menuList, menuRemove, menuTree, menuTreeList} from '@/Config/ApiUrl/system/menu';
+import React, {useRef} from 'react';
+import {menuTreeList} from '@/Config/ApiUrl/system/menu';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import {EditOutlined, MenuOutlined} from '@ant-design/icons';
 import MenuEdit from '@/pages/BaseSystem/menu/MenuEdit';
 import Drawer from "@/components/Drawer";
+import AddButton from "@/components/AddButton";
 
-const ApiConfig = {
-  listApi: menuList,
-  delApi: menuRemove,
-};
 
 const {Column} = AntTable;
 
 const MenuList = () => {
 
-  const ref = useRef();
-  const tableRef = useRef();
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+
+  const actions = () => {
+    return (
+      <>
+        <AddButton onClick={() => {
+          ref.current.open(false);
+        }}/>
+      </>
+    );
+  }
+
 
   return (
     <>
@@ -25,6 +33,7 @@ const MenuList = () => {
         title={<h2><MenuOutlined/> 菜单管理</h2>}
         api={menuTreeList}
         rowKey="value"
+        actions={actions()}
         ref={tableRef}
       >
         <Column title="名称" dataIndex="label" width={200}/>
@@ -41,7 +50,7 @@ const MenuList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑菜单" component={MenuEdit} onSuccess={()=>{
+      <Drawer width={800} title="编辑菜单" component={MenuEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

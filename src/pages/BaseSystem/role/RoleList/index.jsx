@@ -9,12 +9,15 @@ import EditButton from "@/components/EditButton";
 import MenuEdit from "@/pages/BaseSystem/menu/MenuEdit";
 import Drawer from "@/components/Drawer";
 import RoleEdit from "@/pages/BaseSystem/role/RoleEdit";
+import RoleSet from "@/pages/BaseSystem/role/RoleSet";
+import AddButton from "@/components/AddButton";
 
 
 const RoleList = () => {
 
-  const tableRef = useRef();
-  const ref = useRef();
+  const tableRef = useRef(null);
+  const ref = useRef(null);
+  const refRoleSet = useRef(null);
 
   const columns = [
     {
@@ -40,7 +43,12 @@ const RoleList = () => {
       render: (value, record) => {
         return (
           <>
-            <Button type="dashed" className="button-left-margin">权限配置</Button>
+            <Button
+              type="dashed"
+              className="button-left-margin"
+              onClick={() => {
+                refRoleSet.current.open(record.roleId);
+              }}>权限配置</Button>
             <EditButton onClick={() => {
               ref.current.open(record.roleId);
             }}/>
@@ -50,6 +58,18 @@ const RoleList = () => {
       }
     }
   ];
+
+  const actions = () => {
+
+    return (
+      <>
+        <AddButton onClick={() => {
+          ref.current.open(false);
+        }}/>
+      </>
+    );
+  };
+
   return (
     <>
       <Table
@@ -57,12 +77,21 @@ const RoleList = () => {
         title={<h2>角色管理</h2>}
         columns={columns}
         rowKey="roleId"
+        actions={<>
+          <AddButton onClick={() => {
+            ref.current.open(false);
+          }}/>
+        </>}
         ref={tableRef}
       />
-      <Drawer width={800} title="编辑菜单" component={RoleEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑角色" component={RoleEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Drawer width={800} title="设置权限" component={RoleSet} onSuccess={() => {
+        tableRef.current.refresh();
+        refRoleSet.current.close();
+      }} ref={refRoleSet}/>
     </>
   );
 };

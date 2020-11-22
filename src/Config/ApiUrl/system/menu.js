@@ -1,5 +1,5 @@
 export const menuAdd = {
-  url: '/menu/add',
+  url: '/rest/menu/add',
   method: 'POST',
 };
 
@@ -28,5 +28,9 @@ export const menuTreeList = {
 
 export const menuTree = {
   url: '/rest/menu/selectMenuTreeList',
+  method: 'GET',
+};
+export const menuTreeNow = {
+  url: '/rest/menu/menuTree',
   method: 'GET',
 };

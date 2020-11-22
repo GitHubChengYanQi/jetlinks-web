@@ -1,5 +1,5 @@
 export const roleAdd = {
-  url: '/role/add',
+  url: '/rest/role/add',
   method: 'POST',
 };
 
@@ -26,7 +26,21 @@ export const roleTree = {
   url: '/rest/role/roleTreeList',
   method: 'POST'
 };
-export const roleSet = {
-  url: '/role/roleTreeListByUserId',
+export const roleTreeList = {
+  url: '/rest/role/roleTree',
   method: 'POST'
+};
+export const roleSet = {
+  url: '/rest/role/setAuthority',
+  method: 'POST'
+};
+export const roleSetView = {
+  url: '/rest/menu/menuTreeListByRoleId',
+  method: 'POST',
+  rowKey: 'roleId'
+};
+export const roleListByUserId = {
+  url: '/rest/role/roleTreeListByUserId',
+  method: 'POST',
+  rowKey: 'userId'
 };

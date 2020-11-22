@@ -15,7 +15,7 @@ export const deptSave = {
   method: 'POST',
 };
 export const deptTree = {
-  url: '/dept/getTree',
+  url: '/rest/dept/tree',
   method: 'POST',
 };
 

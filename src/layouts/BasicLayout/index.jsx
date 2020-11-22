@@ -9,7 +9,7 @@ import store from '@/store';
 export default function BasicLayout({children}) {
 
   const history = useHistory();
-  const [, dispatchers] = store.useModel('user');
+  const [state, dispatchers] = store.useModel('user');
   const effectsState = store.useModelEffectsState('user');
 
   useEffect(() => {
@@ -33,10 +33,9 @@ export default function BasicLayout({children}) {
       history.push('/login');
     }
   }, []);
-
   return (
     <>
-      {effectsState.getUserInfo.isLoading ?
+      {Object.keys(state).length === 0 ?
         <Spin size="large">
           <Alert
             message="加载中"

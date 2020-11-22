@@ -12,7 +12,6 @@ import {message} from 'antd';
 import style from './index.module.less';
 
 
-
 const FormWrapper = (
   {
     children,
@@ -40,7 +39,7 @@ const FormWrapper = (
   if (value && (!api.view || !api.save)) {
     throw new Error('Table component: api.view,api.save cannot be empty,But now it doesn\'t exist!');
   }
-  if (value===false && !api.add){
+  if (value === false && !api.add) {
     throw new Error('Table component: api.add cannot be empty,But now it doesn\'t exist!');
   }
   if (!fieldKey && api.view) {
@@ -48,7 +47,9 @@ const FormWrapper = (
   }
 
 
-  key[fieldKey] = value;
+  if(value){
+    key[fieldKey] = value;
+  }
 
   const [findData, setFindData] = useState(undefined);
   // 获取数据
@@ -81,7 +82,7 @@ const FormWrapper = (
     onSuccess: (result) => {
       onSuccess(result);
     },
-    onError:(error)=>{
+    onError: (error) => {
       message.error(error.message);
     }
   });
@@ -113,7 +114,14 @@ const FormWrapper = (
     wrapperCol={wrapperCol || 15}
     onSubmit={async (values) => {
       const submitValues = onSubmit(values);
-      return await save({data: submitValues});
+      return await save(
+        {
+          data:{
+            ...submitValues ,
+            ...key
+          }
+        }
+      );
     }}
     initialValues={findData}
     {...props}

@@ -40,28 +40,35 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
-
-    const response = await ajaxService({
-      ...api,
-      data: values,
-      ...other,
-      params: page
-    });
-
-    return new Promise((resolve, reject) => {
-      console.log(response);
-      resolve({
-        dataSource: response.data,
-        total: response.count
+    let response;
+    try {
+      response = await ajaxService({
+        ...api,
+        data: values,
+        ...other,
+        params: page
       });
-    });
+      return new Promise((resolve) => {
+        console.log(response);
+        resolve({
+          dataSource: response.data,
+          total: response.count
+        });
+      });
+    } catch (e) {
+      console.warn(e.message);
+      return new Promise((resolve, reject) => {
+        reject(e.message);
+      });
+    }
+
+
   };
 
   const {form, table: tableProps} = useFormTableQuery(requestMethod);
 
   const {submit} = form;
 
-  console.log(formActions);
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
     submit: formActions.submit,
@@ -69,6 +76,8 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
     // changeType,
     // type
   }));
+
+  const {loading, dataSource, ...other} = tableProps;
 
   return (
     <div className={style.tableWarp}>
@@ -97,7 +106,14 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
           </div>
         </div>
       </div>
-      <AntdTable rowKey={rowKey} columns={columns} {...tableProps} {...props}>
+      <AntdTable
+        loading={loading}
+        dataSource={dataSource || []}
+        rowKey={rowKey}
+        columns={columns}
+        {...other}
+        {...props}
+      >
         {children}
       </AntdTable>
     </div>

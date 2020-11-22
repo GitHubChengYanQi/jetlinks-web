@@ -19,6 +19,6 @@ export const positionList = {
   method: 'GET',
 };
 export const positionAllList = {
-  url: '/position/listPositions',
+  url: '/rest/position/listPositions',
   method: 'GET',
 };

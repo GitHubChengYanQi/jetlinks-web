@@ -1,9 +1,9 @@
 export const userAdd = {
-  url: '/mgr/add',
+  url: '/rest/mgr/add',
   method: 'POST',
 };
 export const userSave = {
-  url: '/mgr/edit',
+  url: '/rest/mgr/edit',
   method: 'POST',
 };
 export const userRemove = {
@@ -17,8 +17,9 @@ export const userInfo = {
 };
 
 export const getUserInfo = {
-  url: '/mgr/getUserInfo',
+  url: '/rest/mgr/getUserInfo',
   method: 'POST',
+  rowKey: 'userId'
 };
 
 export const userList = {
@@ -27,7 +28,7 @@ export const userList = {
 };
 
 export const userRoleSave = {
-  url: '/mgr/setRole',
+  url: '/rest/mgr/setRole',
   method: 'POST',
 };
 

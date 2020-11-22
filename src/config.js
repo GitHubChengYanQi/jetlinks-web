@@ -7,7 +7,7 @@ export default {
   home: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://127.0.0.1:9666'
+    baseURI: 'http://127.0.0.1:8081'
   },
   production: {
     logLevel: 'error'

@@ -8,9 +8,18 @@ import Table from '@/components/Table';
 import {Form, Input, Button, Switch} from 'antd';
 import {useRequest} from '@/util/Request';
 import {UserOutlined} from '@ant-design/icons';
+import AddButton from "@/components/AddButton";
+import EditButton from "@/components/EditButton";
+import DelButton from "@/components/DelButton";
+import UserEdit from "@/pages/BaseSystem/user/UserEdit";
+import Drawer from "@/components/Drawer";
+import UserRole from "@/pages/BaseSystem/user/UserRole";
 
 const UserList = () => {
-  const ref = useRef();
+  const ref = useRef(null);
+  const dfRef = useRef(null);
+  const roRef = useRef(null);
+
   const searchForm = () => {
     return (
       <>
@@ -22,6 +31,16 @@ const UserList = () => {
       </>
     );
   };
+
+  const actions = () => {
+    return (
+      <>
+        <AddButton onClick={() => {
+          dfRef.current.open(false);
+        }}/>
+      </>
+    );
+  }
 
   const [roleUserId, setRoleUserId] = useState(null);
 
@@ -117,10 +136,10 @@ const UserList = () => {
       render: (value, record) => {
         return (
           <>
-            <Button type='secondary' className="button-left-margin" onClick={() => {
-              setRoleUserId(record.userId);
+            <Button type='ghost' className="button-left-margin" onClick={() => {
+              roRef.current.open(record.userId);
             }}>分配角色</Button>
-            <Button type='normal' className="button-left-margin" onClick={() => {
+            <Button type='ghost' className="button-left-margin" onClick={() => {
               Dialog.confirm({
                 title: '提示',
                 content: '系统初始化为111111，实际请参考系统设置。',
@@ -131,6 +150,10 @@ const UserList = () => {
                 }
               });
             }}>重置密码</Button>
+            <EditButton onClick={() => {
+              dfRef.current.open(record.userId);
+            }}/>
+            <DelButton/>
           </>
         );
       }
@@ -138,14 +161,25 @@ const UserList = () => {
   ];
 
   return (
-    <Table
-      ref={ref}
-      title={<h2><UserOutlined/> 用户管理</h2>}
-      api={userList}
-      columns={columns}
-      rowKey="userId"
-      searchForm={searchForm}
-    />
+    <>
+      <Table
+        ref={ref}
+        title={<h2><UserOutlined/> 用户管理</h2>}
+        api={userList}
+        columns={columns}
+        rowKey="userId"
+        searchForm={searchForm}
+        actions={actions()}
+      />
+      <Drawer ref={dfRef} component={UserEdit} onSuccess={() => {
+        ref.current.refresh();
+        dfRef.current.close();
+      }}/>
+      <Drawer ref={roRef} component={UserRole} onSuccess={() => {
+        ref.current.refresh();
+        roRef.current.close();
+      }}/>
+    </>
   );
 };
 
