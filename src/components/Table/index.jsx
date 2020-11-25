@@ -52,7 +52,9 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
         console.log(response);
         resolve({
           dataSource: response.data,
-          total: response.count
+          total: response.count,
+          current: response.current,
+          pageSize: response.pageSize,
         });
       });
     } catch (e) {
@@ -67,12 +69,10 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
 
   const {form, table: tableProps} = useFormTableQuery(requestMethod);
 
-  const {submit} = form;
-
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
     submit: formActions.submit,
-    // reset,
+    reset: formActions.reset,
     // changeType,
     // type
   }));
@@ -93,9 +93,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
               style={{float: title ? 'right' : 'left'}}>
               {searchForm}
             </Form>
-            {/* <Form layout="inline" form={form} style={{float: title ? 'right' : 'left'}}> */}
-            {/*  {searchForm}* /}
-            {/* </Form> */}
           </div>
           <div className="button">
             <>{actions}</>
