@@ -24,15 +24,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
 
-  // const [form] = Form.useForm();
-  //
-  // const {tableProps, search, refresh} = useTableRequest(api, {
-  //   form
-  // });
-  //
-  // const {submit, reset, changeType, type} = search;
-
-
   const {ajaxService} = Service();
 
   const requestMethod = async (params) => {
@@ -69,12 +60,11 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
 
   const {form, table: tableProps} = useFormTableQuery(requestMethod);
 
+  const {submit, reset} = formActions;
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
     submit: formActions.submit,
     reset: formActions.reset,
-    // changeType,
-    // type
   }));
 
   const {loading, dataSource, ...other} = tableProps;
@@ -96,9 +86,8 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
           </div>
           <div className="button">
             <>{actions}</>
-            <Button className="button-left-margin" onClick={() => {
-              // refresh();
-              formActions.reset();
+            <Button className="button-left-margin" onClick={async () => {
+              await reset();
             }}><ReloadOutlined/></Button>
           </div>
         </div>
