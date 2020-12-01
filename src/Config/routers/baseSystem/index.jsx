@@ -1,11 +1,13 @@
 import React, {lazy} from 'react';
 import BaseSystem from '@/pages/BaseSystem';
+import {GenRouter} from '@/pages/BaseSystem/gen/GenRouter';
 
 const systemConfig = [
   {
     path: '/BASE_SYSTEM',
     component: BaseSystem,
     children:[
+      ...GenRouter,
       {
         path: '/mgr',
         component: lazy(() => import('@/pages/BaseSystem/user/UserList')),

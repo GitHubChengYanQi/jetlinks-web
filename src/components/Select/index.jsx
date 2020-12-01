@@ -12,7 +12,6 @@ const Select = (props) => {
   let valueArray = [];
   const {mode} = other;
   if (value) {
-    console.log(value);
     if (!Array.isArray(value)) {
       if (mode === 'multiple' || mode === 'tag') {
         const tmpValue = value.split(',');

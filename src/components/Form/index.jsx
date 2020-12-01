@@ -47,7 +47,7 @@ const FormWrapper = (
   }
 
 
-  if(value){
+  if (value) {
     key[fieldKey] = value;
   }
 
@@ -114,10 +114,13 @@ const FormWrapper = (
     wrapperCol={wrapperCol || 15}
     onSubmit={async (values) => {
       const submitValues = onSubmit(values);
+      if (submitValues === false) {
+        return false;
+      }
       return await save(
         {
-          data:{
-            ...submitValues ,
+          data: {
+            ...submitValues,
             ...key
           }
         }
@@ -127,7 +130,7 @@ const FormWrapper = (
     {...props}
   >
     {children}
-    <FormButtonGroup offset={6} sticky>
+    <FormButtonGroup offset={6}>
       <Submit showLoading>保存</Submit>
       <Reset>重置</Reset>
     </FormButtonGroup>

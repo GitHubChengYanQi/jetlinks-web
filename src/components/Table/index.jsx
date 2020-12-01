@@ -23,7 +23,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
   if (!rowKey) {
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
-
   const {ajaxService} = Service();
 
   const requestMethod = async (params) => {
@@ -42,7 +41,7 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
       return new Promise((resolve) => {
         console.log(response);
         resolve({
-          dataSource: response.data,
+          dataSource: Array.isArray(response.data) ? response.data : [],
           total: response.count,
           current: response.current,
           pageSize: response.pageSize,
