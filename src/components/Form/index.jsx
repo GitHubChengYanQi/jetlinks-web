@@ -1,8 +1,8 @@
-import React, {forwardRef, useEffect, useRef, useState} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {
   Form as FormilyForm, FormItem as AntFormItem, Submit,
   Reset,
-  FormButtonGroup,
+  FormButtonGroup, createFormActions,
 } from '@formily/antd';
 import {MegaLayout as antMegaLayout} from '@formily/antd-components';
 import useRequest from '@/util/Request/useRequest';
@@ -11,6 +11,7 @@ import {message} from 'antd';
 
 import style from './index.module.less';
 
+const formActions = createFormActions();
 
 const FormWrapper = (
   {
@@ -87,6 +88,11 @@ const FormWrapper = (
     }
   });
 
+
+  useImperativeHandle(ref, () => ({
+    ...formActions,
+  }));
+
   useEffect(() => {
     if (value) {
       if (!fieldKey) {
@@ -109,6 +115,7 @@ const FormWrapper = (
   }
 
   return findData && <FormilyForm
+    actions={formActions}
     className={style.formWarp}
     labelCol={labelCol || 6}
     wrapperCol={wrapperCol || 15}
