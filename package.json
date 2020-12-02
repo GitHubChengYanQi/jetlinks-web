@@ -41,6 +41,7 @@
     "@icedesign/img": "^1.0.4",
     "ahooks": "^2.9.1",
     "antd": "^4.8.2",
+    "braft-editor": "^2.3.9",
     "js-cookie": "^2.2.1",
     "moment": "^2.24.0",
     "react": "^16.4.1",
