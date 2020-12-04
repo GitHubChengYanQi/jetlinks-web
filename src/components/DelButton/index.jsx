@@ -1,33 +1,52 @@
 import React from 'react';
 import {Button, Modal} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
+import {useRequest} from "@/util/Request";
 
-const DelButton = ({onSuccess, onCancel, ...props}) => {
+const DelButton = ({onSuccess=()=>{}, onCancel=()=>{}, api, rowKey, value, ...props}) => {
+
+  if (!api) {
+    console.error('Table component: api cannot be empty,But now it doesn\'t exist!');
+  }
+
+  if (!rowKey) {
+    rowKey = api.rowKey;
+  }
+
+  const {run} = useRequest(api, {
+    manual: true
+  });
 
   const onClick = () => {
     Modal.confirm({
       title: '提示',
       content: '删除后不可恢复，是否确认删除？',
       confirmLoading: true,
-      onOk: () => {
-        return new Promise((resolve, reject) => {
-          const k = Math.random();
-          console.log(k);
-          setTimeout(k > 0.5 ? resolve : () => {
-            reject(new Error('删除失败'));
-          }, 1000);
-        }).catch(() => {
-          console.log('Oops errors!');
-        });
+      onOk: async () => {
+        const params = {};
+        params[rowKey] = value;
+        try {
+          await run({
+            params
+          });
+          onSuccess();
+          return new Promise((resolve, reject) => {
+            resolve();
+          });
+        }catch (e) {
+          return new Promise((resolve, reject) => {
+            reject(new Error(e.message));
+          });
+        }
       },
       onCancel: () => {
-        typeof onCancel === 'function' && onCancel();
+        onCancel();
       }
     });
   };
 
   return (
-    <Button  {...props} danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined />}>删除</Button>
+    <Button  {...props} danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined/>}>删除</Button>
   );
 };
 

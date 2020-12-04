@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {menuTreeList} from '@/Config/ApiUrl/system/menu';
+import {menuRemove, menuTreeList} from '@/Config/ApiUrl/system/menu';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -45,7 +45,9 @@ const MenuList = () => {
               <Button className="button-left-margin" icon={<EditOutlined/>} onClick={() => {
                 ref.current.open(record.id);
               }}>编辑</Button>
-              <DelButton/>
+              <DelButton api={menuRemove} value={record.id} onSuccess={()=>{
+                tableRef.current.refresh();
+              }}/>
             </>
           );
         }} width={300}/>

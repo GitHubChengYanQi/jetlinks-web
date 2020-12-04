@@ -4,8 +4,9 @@ export const menuAdd = {
 };
 
 export const menuRemove = {
-  url: '/menu/remove',
-  method: 'POST',
+  url: '/rest/menu/remove',
+  method: 'GET',
+  rowKey:'menuId'
 };
 
 export const menuSave = {
