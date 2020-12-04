@@ -24,7 +24,7 @@ const MenuList = () => {
         }}/>
       </>
     );
-  }
+  };
 
 
   return (
