@@ -1,19 +1,35 @@
 import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
-import {Card, Input} from 'antd';
+import {Card, Input, Radio} from 'antd';
 import {DataBaseInfo} from '@/pages/BaseSystem/gen/GenUrl';
 import Select from '@/components/Select';
 import GenDataBaseInfo from '@/pages/BaseSystem/gen/GenDataBaseInfo';
 import {LifeCycleTypes} from '@formily/antd';
+import cookie from 'js-cookie';
+import qs from 'qs';
 
 const {FormItem} = Form;
 
 const GenEdit = () => {
 
-  const dbInfoRef = useRef(null);
-  const formRef = useRef(null);
+  let javaGenPack = {
+    author: '',
+    proPackage: '',
+    removePrefix: '',
+    version:'at',
+    genLocation:'DEFAULT_PATH',
+    dataSourceId:''
+  };
+  const javaGen = cookie.get('java-gen');
+  try {
+    if (javaGen) {
+      javaGenPack = JSON.parse(javaGen);
+    }
+  } catch (e) {
+    console.warn('javaGen error');
+  }
 
-  console.log(formRef);
+  const formRef = useRef(null);
 
   const [dataSourceId, setDataSourceId] = useState(0);
 
@@ -29,13 +45,10 @@ const GenEdit = () => {
           add: {}
         }}
         value={false}
-        initialValues={{
-          author: '1111111',
-          proPackage: '222',
-          removePrefix: '3333'
-        }}
+        initialValues={javaGenPack}
         onSubmit={(values) => {
           console.log(values);
+          console.log(qs.stringify(values));
           return false;
         }}
         labelCol={3}
@@ -48,23 +61,36 @@ const GenEdit = () => {
           });
 
           $(LifeCycleTypes.ON_FIELD_VALUE_CHANGE, 'dataSourceId').subscribe(fieldState => {
-            console.log(fieldState);
-            // console.log(getFieldState);
-            getFieldState('tables', (state) => {
-              console.log(state);
-            });
             setFieldState('tables', state => {
-              setDataSourceId(fieldState.value);
+              if(fieldState.value){
+                setDataSourceId(fieldState.value);
+              }
               state.visible = fieldState.value !== '';
             });
           });
         }}
       >
-        <FormItem label="作者" name="author" component={Input}/>
-        <FormItem label="包名" name="proPackage" component={Input}/>
-        <FormItem label="表前缀移除" name="removePrefix" component={Input}/>
-        <FormItem label="数据源选择" name="dataSourceId" component={Select} api={DataBaseInfo}/>
-        <FormItem label="选择表" name="tables" component={GenDataBaseInfo} dataSourceId={dataSourceId}/>
+        <FormItem label="作者" name="author" component={Input} help="作者写在代码中的注释"/>
+        <FormItem label="包名" required name="proPackage" component={Input} placeholder="cn.at-soft.dasheng" help="一般是把域名（或您的邮箱）反转过来做前缀，后面增加产品名称的字符。"/>
+        <FormItem label="表前缀移除" name="removePrefix" component={Input} style={{width:200}} help="移除表前缀的关键词"/>
+        <FormItem label="版本" required name="version" component={Radio.Group} options={[
+          {
+            label: 'React前后端分离版',
+            value: 'at'
+          }
+        ]}/>
+        <FormItem label="生成位置" required name="genLocation" component={Radio.Group} options={[
+          {
+            label: '文件默认的下载路径',
+            value: 'DEFAULT_PATH'
+          },
+          {
+            label: '下载并生成到本项目',
+            value: 'PROJECT_PATH'
+          }
+        ]}/>
+        <FormItem label="数据源选择" required name="dataSourceId" component={Select} api={DataBaseInfo} placeholder="请选择数据源" style={{width:200}} />
+        <FormItem label="选择表" name="tables" component={GenDataBaseInfo} dataSourceId={dataSourceId} />
       </Form>
     </Card>
   );

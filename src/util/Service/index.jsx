@@ -13,6 +13,7 @@ const GotoLogin = () => {
 
 const ajaxService = axios.create({
   baseURL: baseURI,
+  withCredentials: true,
   headers: {
     // 'Content-Type':'application/json;charset=UTF-8',
   }

@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {dbTableList} from '@/pages/BaseSystem/gen/GenUrl';
-import {Button, Drawer, Input, Table} from 'antd';
-import Form from '@/components/Form';
+import {Table} from 'antd';
 import {useRequest} from '@/util/Request';
-
-console.log(dbTableList);
 
 const {Column} = Table;
 
 
-const GenDataBaseInfo = ({onChange,dataSourceId}) => {
+const GenDataBaseInfo = ({onChange, dataSourceId}) => {
 
-  const {data,run} = useRequest(dbTableList, {
+  const {data, run} = useRequest(dbTableList, {
     manual: true,
   });
   useEffect(() => {
+    console.log(dataSourceId);
     if (dataSourceId) {
       run({
         data: {
@@ -32,7 +30,7 @@ const GenDataBaseInfo = ({onChange,dataSourceId}) => {
       pagination={false}
       rowKey="tableName"
       rowSelection={{
-        onChange:(selectedRowKeys)=>{
+        onChange: (selectedRowKeys) => {
           onChange(selectedRowKeys);
         }
       }}
