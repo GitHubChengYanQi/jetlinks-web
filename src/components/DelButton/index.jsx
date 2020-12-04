@@ -3,7 +3,11 @@ import {Button, Modal} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 
-const DelButton = ({onSuccess=()=>{}, onCancel=()=>{}, api, rowKey, value, ...props}) => {
+const DelButton = ({
+                     onSuccess = () => {
+                     }, onCancel = () => {
+  }, api, rowKey, value, ...props
+                   }) => {
 
   if (!api) {
     api = {};
@@ -28,13 +32,14 @@ const DelButton = ({onSuccess=()=>{}, onCancel=()=>{}, api, rowKey, value, ...pr
         params[rowKey] = value;
         try {
           await run({
+            data: params,
             params
           });
           onSuccess();
           return new Promise((resolve, reject) => {
             resolve();
           });
-        }catch (e) {
+        } catch (e) {
           return new Promise((resolve, reject) => {
             reject(new Error(e.message));
           });
