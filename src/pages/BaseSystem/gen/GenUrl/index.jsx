@@ -8,3 +8,7 @@ export const dbTableList = {
   method: 'POST',
   rowKey:'tableName'
 };
+
+export const execute = {
+  url:'/execute'
+};

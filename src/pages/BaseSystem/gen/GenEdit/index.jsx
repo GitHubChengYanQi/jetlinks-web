@@ -1,12 +1,13 @@
 import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {Card, Input, Radio} from 'antd';
-import {DataBaseInfo} from '@/pages/BaseSystem/gen/GenUrl';
+import {DataBaseInfo, execute} from '@/pages/BaseSystem/gen/GenUrl';
 import Select from '@/components/Select';
 import GenDataBaseInfo from '@/pages/BaseSystem/gen/GenDataBaseInfo';
 import {LifeCycleTypes} from '@formily/antd';
 import cookie from 'js-cookie';
 import qs from 'qs';
+import {config} from 'ice';
 
 const {FormItem} = Form;
 
@@ -48,7 +49,16 @@ const GenEdit = () => {
         initialValues={javaGenPack}
         onSubmit={(values) => {
           console.log(values);
-          console.log(qs.stringify(values));
+          const result = {
+            ...values,
+            tables:[
+              '',
+              ...values.tables
+            ]
+          };
+          result.tables = result.tables.join('CAT');
+          console.log(qs.stringify(result));
+          window.open(`${config.baseURI}${execute.url}?${qs.stringify(result)}`);
           return false;
         }}
         labelCol={3}
@@ -90,7 +100,7 @@ const GenEdit = () => {
           }
         ]}/>
         <FormItem label="数据源选择" required name="dataSourceId" component={Select} api={DataBaseInfo} placeholder="请选择数据源" style={{width:200}} />
-        <FormItem label="选择表" name="tables" component={GenDataBaseInfo} dataSourceId={dataSourceId} />
+        <FormItem label="选择表" required name="tables" component={GenDataBaseInfo} dataSourceId={dataSourceId} />
       </Form>
     </Card>
   );
