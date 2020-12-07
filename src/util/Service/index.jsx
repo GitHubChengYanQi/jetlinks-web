@@ -20,7 +20,7 @@ const ajaxService = axios.create({
 });
 
 ajaxService.interceptors.request.use((config) => {
-  const token = cookie.get('Authorization');
+  const token = cookie.get('tianpeng-token');
   config.headers.common.Authorization = token || '';
   return config;
 }, (error) => {

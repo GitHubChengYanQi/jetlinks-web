@@ -13,19 +13,10 @@ export default function Login({submitText}) {
   const history = useHistory();
   const params = getSearchParams();
 
-  console.log(params);
-
   const {run, data, error, loading} = useRequest(loginUrl, {
     manual: true,
     onSuccess: (result) => {
-      cookie.set('Authorization', result);
-      // setTimeout(() => {
-      //   if (params.backUrl) {
-      //     window.location.href = decodeURIComponent(params.backUrl);
-      //   } else {
-      //     history.replace('/');
-      //   }
-      // }, 1500);
+      cookie.set('tianpeng-token', result);
     }
   });
 

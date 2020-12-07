@@ -10,12 +10,11 @@ export default function BasicLayout({children}) {
 
   const history = useHistory();
   const [state, dispatchers] = store.useModel('user');
-  const effectsState = store.useModelEffectsState('user');
 
   useEffect(() => {
     window.document.title = '后台管理系统';
     try {
-      let data = cookie.get('Authorization');
+      let data = cookie.get('tianpeng-token');
       if (!data) {
         throw new Error('本地登录信息不存在');
       } else {
@@ -28,7 +27,7 @@ export default function BasicLayout({children}) {
       dispatchers.getUserInfo();
     } catch (e) {
       logger.error(e.message);
-      cookie.remove('Authorization');
+      cookie.remove('tianpeng-token');
       // TODO 登录超时处理
       history.push('/login');
     }

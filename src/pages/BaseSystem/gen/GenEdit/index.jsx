@@ -15,7 +15,7 @@ const GenEdit = () => {
 
   let javaGenPack = {
     author: '',
-    proPackage: '',
+    proPackage: 'cn.atsoft.dasheng.app',
     removePrefix: '',
     version:'at',
     genLocation:'DEFAULT_PATH',
