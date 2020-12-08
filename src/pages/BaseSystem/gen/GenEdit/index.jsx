@@ -17,9 +17,9 @@ const GenEdit = () => {
     author: '',
     proPackage: 'cn.atsoft.dasheng.app',
     removePrefix: '',
-    version:'at',
-    genLocation:'DEFAULT_PATH',
-    dataSourceId:''
+    version: 'at',
+    genLocation: 'DEFAULT_PATH',
+    dataSourceId: ''
   };
   const javaGen = cookie.get('java-gen');
   try {
@@ -51,7 +51,7 @@ const GenEdit = () => {
           console.log(values);
           const result = {
             ...values,
-            tables:[
+            tables: [
               '',
               ...values.tables
             ]
@@ -72,7 +72,7 @@ const GenEdit = () => {
 
           $(LifeCycleTypes.ON_FIELD_VALUE_CHANGE, 'dataSourceId').subscribe(fieldState => {
             setFieldState('tables', state => {
-              if(fieldState.value){
+              if (fieldState.value) {
                 setDataSourceId(fieldState.value);
               }
               state.visible = fieldState.value !== '';
@@ -82,7 +82,7 @@ const GenEdit = () => {
       >
         <FormItem label="作者" name="author" component={Input} help="作者写在代码中的注释"/>
         <FormItem label="包名" required name="proPackage" component={Input} placeholder="cn.at-soft.dasheng" help="一般是把域名（或您的邮箱）反转过来做前缀，后面增加产品名称的字符。"/>
-        <FormItem label="表前缀移除" name="removePrefix" component={Input} style={{width:200}} help="移除表前缀的关键词"/>
+        <FormItem label="表前缀移除" name="removePrefix" component={Input} style={{width: 200}} help="移除表前缀的关键词"/>
         <FormItem label="版本" required name="version" component={Radio.Group} options={[
           {
             label: 'React前后端分离版',
@@ -96,11 +96,12 @@ const GenEdit = () => {
           },
           {
             label: '下载并生成到本项目',
-            value: 'PROJECT_PATH'
+            value: 'PROJECT_PATH',
+            disabled: true
           }
         ]}/>
-        <FormItem label="数据源选择" required name="dataSourceId" component={Select} api={DataBaseInfo} placeholder="请选择数据源" style={{width:200}} />
-        <FormItem label="选择表" required name="tables" component={GenDataBaseInfo} dataSourceId={dataSourceId} />
+        <FormItem label="数据源选择" required name="dataSourceId" component={Select} api={DataBaseInfo} placeholder="请选择数据源" style={{width: 200}}/>
+        <FormItem label="选择表" required name="tables" component={GenDataBaseInfo} dataSourceId={dataSourceId}/>
       </Form>
     </Card>
   );
