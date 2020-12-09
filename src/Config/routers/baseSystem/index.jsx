@@ -1,12 +1,14 @@
 import React, {lazy} from 'react';
 import BaseSystem from '@/pages/BaseSystem';
 import {GenRouter} from '@/pages/BaseSystem/gen/GenRouter';
+import {LoginLogRouter} from '@/pages/BaseSystem/loginLog/loginLogRouter';
 
 const systemConfig = [
   {
     path: '/BASE_SYSTEM',
     component: BaseSystem,
-    children:[
+    children: [
+      ...LoginLogRouter,
       ...GenRouter,
       {
         path: '/mgr',
@@ -50,7 +52,12 @@ const systemConfig = [
         fallback: <div>loading...</div>,
       },
       {
-        redirect:'/BASE_SYSTEM/mgr',
+        path: '/swagger',
+        component: lazy(() => import('@/pages/BaseSystem/swagger')),
+        fallback: <div>loading...</div>,
+      },
+      {
+        redirect: '/BASE_SYSTEM/mgr',
       }
     ]
   },

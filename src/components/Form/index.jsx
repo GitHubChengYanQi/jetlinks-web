@@ -98,7 +98,7 @@ const FormWrapper = (
       if (!fieldKey) {
         throw new Error('Table component: fieldKey cannot be empty,But now it doesn\'t exist!');
       }
-      find({params: key});
+      find({params: key,data:key});
     } else if (value === false) {
       setFindData({});
     }

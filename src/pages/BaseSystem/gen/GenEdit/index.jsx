@@ -48,7 +48,6 @@ const GenEdit = () => {
         value={false}
         initialValues={javaGenPack}
         onSubmit={(values) => {
-          console.log(values);
           const result = {
             ...values,
             tables: [
