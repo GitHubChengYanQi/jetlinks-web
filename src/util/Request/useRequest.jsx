@@ -12,7 +12,7 @@ const useRequest = (config, options) => {
 
   const formatResult = (response) => {
     if (!response.data) {
-      return {};
+      return response;
     }
     return response.data;
   };

@@ -50,8 +50,8 @@ ajaxService.interceptors.response.use((response) => {
       });
       throw new Error(response.message);
     }
-    const message = response.message || '未知错误';
-    throw new Error(message);
+    // const message = response.message || '未知错误';
+    // throw new Error(message);
   }
   return response;
 }, (error) => {
