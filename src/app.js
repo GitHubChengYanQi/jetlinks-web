@@ -1,6 +1,7 @@
 import React from 'react';
 import {createApp} from 'ice';
 import moment from 'moment';
+import LoadingPage from '@/components/LoadingPage';
 
 
 moment.locale('zh-cn');
@@ -10,7 +11,7 @@ const appConfig = {
   },
   router: {
     basename: '/',
-    fallback: <div>loading...</div>
+    fallback: <LoadingPage />
   }
 };
 createApp(appConfig);

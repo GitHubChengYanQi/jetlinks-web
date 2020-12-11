@@ -25,7 +25,7 @@ const Response = (props) => {
               style={{marginBottom: 24}}
             >
               {
-                response.schema && <Model modelObj={model}/>
+                response.schema && <Model modelObj={model} data={apiData}/>
               }
               {
                 !response.schema && <span>没有更多描述...</span>

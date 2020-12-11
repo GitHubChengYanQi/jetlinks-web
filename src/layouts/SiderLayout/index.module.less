@@ -76,13 +76,20 @@
   right: 0;
   bottom: 0;
   left: 0;
+  width:90%;
   overflow: hidden;
+  //background-color: rgba(255,255,255,1);
+
 
   :global {
     .Scroller {
-      width: 90% !important;
+      //width: 90% !important;
       .sidebar{
         margin-top: 40px;
+        padding-top: 20px;
+        padding-left:8px;
+        background-color: rgba(255,255,255,1);
+
         .ant-menu-item-active{
           //ant-menu-item-selected
           background-color: @primary-1;
@@ -94,5 +101,7 @@
 .contentContainer{
   z-index: 1;
   min-width: 720px;
-  padding-top: 40px;
+  margin-top: 40px;
+  padding: 16px;
+  background-color: rgba(255,255,255,1);
 }

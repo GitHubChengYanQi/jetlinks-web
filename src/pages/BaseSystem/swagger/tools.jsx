@@ -1,5 +1,9 @@
+export const splitPath = ($ref) => {
+  return $ref.replace('#/definitions/', '').split('/');
+};
+
 export const getDefinitionModel = (schema, apiData) => {
-  if (!schema) return ['',''];
+  if (!schema) return ['', ''];
   const {type} = schema;
   // 获取数组类型的响应
   if (type && type === 'array') {
@@ -13,9 +17,6 @@ export const getDefinitionModel = (schema, apiData) => {
     return resovleDefinitions(splitPath(schema.$ref));
   }
 
-  function splitPath($ref) {
-    return $ref.replace('#/definitions/', '').split('/');
-  }
 
   function resovleDefinitions(modelPath) {
     let index = 0;
@@ -27,4 +28,6 @@ export const getDefinitionModel = (schema, apiData) => {
 
     return [modelPath, models];
   }
+
+  return ['', ''];
 };

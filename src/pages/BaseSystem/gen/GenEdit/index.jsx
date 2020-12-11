@@ -8,6 +8,7 @@ import {LifeCycleTypes} from '@formily/antd';
 import cookie from 'js-cookie';
 import qs from 'qs';
 import {config} from 'ice';
+import LoadingPage from "@/components/LoadingPage";
 
 const {FormItem} = Form;
 
@@ -37,7 +38,7 @@ const GenEdit = () => {
   return (
     <Card
       title="代码生成"
-      style={{width: 800, margin: '0px auto '}}
+      style={{width: 960, margin: '0px auto '}}
       bordered={false}
     >
       <Form
@@ -62,7 +63,7 @@ const GenEdit = () => {
         }}
         labelCol={3}
         wrapperCol={21}
-        effects={($, {setFieldState, getFieldState}) => {
+        effects={($, {setFieldState}) => {
           $(LifeCycleTypes.ON_FORM_INIT).subscribe(() => {
             setFieldState('tables', state => {
               state.visible = false;
@@ -79,8 +80,8 @@ const GenEdit = () => {
           });
         }}
       >
-        <FormItem label="作者" name="author" component={Input} help="作者写在代码中的注释"/>
-        <FormItem label="包名" required name="proPackage" component={Input} placeholder="cn.at-soft.dasheng" help="一般是把域名（或您的邮箱）反转过来做前缀，后面增加产品名称的字符。"/>
+        <FormItem label="作者" name="author" component={Input} help="作者写在代码中的注释" style={{width: 420}}/>
+        <FormItem label="包名" required name="proPackage" component={Input} placeholder="cn.at-soft.dasheng" style={{width: 420}} help="一般是把域名（或您的邮箱）反转过来做前缀，后面增加产品名称的字符。"/>
         <FormItem label="表前缀移除" name="removePrefix" component={Input} style={{width: 200}} help="移除表前缀的关键词"/>
         <FormItem label="版本" required name="version" component={Radio.Group} options={[
           {
@@ -90,11 +91,11 @@ const GenEdit = () => {
         ]}/>
         <FormItem label="生成位置" required name="genLocation" component={Radio.Group} options={[
           {
-            label: '文件默认的下载路径',
+            label: '下载代码',
             value: 'DEFAULT_PATH'
           },
           {
-            label: '下载并生成到本项目',
+            label: '生成到本项目（覆盖）',
             value: 'PROJECT_PATH',
             disabled: true
           }
