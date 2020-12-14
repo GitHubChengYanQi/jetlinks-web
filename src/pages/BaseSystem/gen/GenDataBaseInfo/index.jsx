@@ -42,10 +42,10 @@ const GenDataBaseInfo = ({onChange, dataSourceId}) => {
       >
         <Column title="表名" dataIndex="tableName" width={200}/>
         <Column title="名称" dataIndex="tableComment" width={200}/>
-        <Column title="字段配置" align="right" render={() => {
+        <Column title="字段配置" align="right" render={(text,values) => {
           return (
             <Button onClick={() => {
-              setVisible(true);
+              setVisible(values.tableName);
             }}>配置</Button>
           );
         }}/>
@@ -60,8 +60,9 @@ const GenDataBaseInfo = ({onChange, dataSourceId}) => {
         onCancel={() => {
           setVisible(false);
         }}
+        width={1200}
       >
-        <FieldConfigList/>
+        <FieldConfigList dbId={dataSourceId} tableName={visible}/>
       </Modal>
     </>
   );

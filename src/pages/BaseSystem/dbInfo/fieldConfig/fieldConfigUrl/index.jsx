@@ -30,7 +30,7 @@ export const fieldConfigDetail = {
 };
 
 export const fieldConfigList = {
-  url: '/fieldConfig/list',
+  url: '/getTableField',
   method: 'POST',
   rowKey:'fieldId'
 };
