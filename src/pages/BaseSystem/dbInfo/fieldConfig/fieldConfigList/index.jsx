@@ -7,9 +7,9 @@
 
 import React, {useEffect, useState} from 'react';
 import {Form, FormItem, InternalFieldList as FieldList, FormButtonGroup, Submit} from '@formily/antd';
-import {Table, Skeleton, Checkbox, Select} from 'antd';
+import {Table, Skeleton, Checkbox, Select, Input} from 'antd';
 import {useRequest} from '@/util/Request';
-import {fieldConfigList} from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigUrl';
+import {fieldConfigAdd, fieldConfigList} from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigUrl';
 
 import styles from './index.module.less';
 
@@ -22,6 +22,16 @@ const FieldConfigList = ({dbId, tableName}) => {
       setFieldLists(result);
     }
   });
+
+  const {run: save} = useRequest(fieldConfigAdd, {
+    manual: true
+  });
+
+  const submit = (values) => {
+    save({
+      data: values
+    });
+  };
 
   useEffect(() => {
     setFieldLists(null);
@@ -42,12 +52,15 @@ const FieldConfigList = ({dbId, tableName}) => {
     fieldLists && <Form
       onSubmit={(values) => {
         console.log(values);
+        submit(values);
       }}
       initialValues={{
+        tableName,
         fieldLists
       }}
       className={styles.table}
     >
+      <FormItem name="tableName" component={Input} display={false}/>
       <FieldList
         name="fieldLists"
       >
@@ -59,7 +72,18 @@ const FieldConfigList = ({dbId, tableName}) => {
                 rowKey="columnName"
                 pagination={false}
               >
-                <Table.Column dataIndex="columnName" title="字段名" width={200}/>
+                <Table.Column
+                  dataIndex="columnName"
+                  title="字段名"
+                  width={200}
+                  render={(text, values, index) => {
+                    return (
+                      <>{values.columnName}
+                        <FormItem name={`fieldLists.${index}.fieldName`} value={values.columnName} component={Input} display={false}/>
+                      </>
+                    );
+                  }}
+                />
                 <Table.Column dataIndex="columnComment" title="字段注释"/>
                 <Table.Column title="列表显示" width={100} align="center" render={(text, values, index) => {
                   return (
