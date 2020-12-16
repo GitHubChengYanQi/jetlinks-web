@@ -105,7 +105,7 @@ const FieldConfigList = ({dbId, tableName}) => {
                       {label: '不指定', value: ''},
                       {label: 'Input', value: 'input'},
                       {label: 'Title标题', value: 'title'},
-                      {label: '上级ID', value: 'printKey'},
+                      {label: '上级ID', value: 'parentKey'},
                       {label: '文本区域', value: 'textArea'},
                     ]}/>
                   );
