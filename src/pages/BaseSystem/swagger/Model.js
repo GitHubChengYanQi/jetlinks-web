@@ -2,8 +2,9 @@ import React from 'react';
 import {getDefinitionModel, splitPath} from '@/pages/BaseSystem/swagger/tools';
 import {Table} from 'antd';
 
-const loppData = (modelObj, apiData) => {
+const loopData = (modelObj, apiData) => {
   const {properties: model} = modelObj;
+  if (!model) return [];
   const data = Object.keys(model).map((key) => {
     const item = {
       name: key,
@@ -12,7 +13,7 @@ const loppData = (modelObj, apiData) => {
     };
     const [path, models] = getDefinitionModel(model[key], apiData);
     if (path) {
-      item.children = loppData(models, apiData);
+      // item.children = loopData(models, apiData);
       item.$ref = path;
     } else {
       item.$ref = '';
@@ -28,7 +29,7 @@ const Model = ({modelObj, data: apiData}) => {
   if (!modelObj.properties) {
     return null;
   }
-  const dataSource = loppData(modelObj, apiData);
+  const dataSource = loopData(modelObj, apiData);
 
   return (
     <Table
@@ -43,7 +44,7 @@ const Model = ({modelObj, data: apiData}) => {
           render: (text, values) => {
             return (
               <span>
-                {values.name}{values.type==='array'&&'[]'}
+                {values.name}{values.type === 'array' && '[]'}
               </span>
             );
           }
