@@ -85,6 +85,13 @@ const FieldConfigList = ({dbId, tableName}) => {
                   }}
                 />
                 <Table.Column dataIndex="columnComment" title="字段注释"/>
+                <Table.Column title="编辑页" width={100} align="center" render={(text, values, index) => {
+                  return (
+                    <FormItem name={`fieldLists.${index}.inEdit`} component={Checkbox.Group} options={[
+                      {label: '', value: 'true'}
+                    ]} itemStyle={{width: 16, display: 'inline-block'}}/>
+                  );
+                }}/>
                 <Table.Column title="列表显示" width={100} align="center" render={(text, values, index) => {
                   return (
                     <FormItem name={`fieldLists.${index}.showList`} component={Checkbox.Group} options={[
@@ -105,6 +112,7 @@ const FieldConfigList = ({dbId, tableName}) => {
                       {label: '不指定', value: ''},
                       {label: 'Input', value: 'input'},
                       {label: 'Title标题', value: 'title'},
+                      {label: '数字', value: 'number'},
                       {label: '上级ID', value: 'parentKey'},
                       {label: '文本区域', value: 'textArea'},
                     ]}/>
