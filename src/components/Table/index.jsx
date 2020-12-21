@@ -79,7 +79,7 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
               layout="inline"
               {...form}
               actions={formActions}
-              style={{float: title ? 'right' : 'left'}}>
+              style={{float: title ? 'right' : 'left',textAlign:'left'}}>
               {searchForm}
             </Form>
           </div>

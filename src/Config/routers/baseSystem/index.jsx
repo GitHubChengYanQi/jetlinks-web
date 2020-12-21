@@ -2,12 +2,14 @@ import React, {lazy} from 'react';
 import BaseSystem from '@/pages/BaseSystem';
 import {GenRouter} from '@/pages/BaseSystem/gen/GenRouter';
 import {LoginLogRouter} from '@/pages/BaseSystem/loginLog/loginLogRouter';
+import {SysDeptRouter} from "@/pages/BaseSystem/sysDept/sysDeptRouter";
 
 const systemConfig = [
   {
     path: '/BASE_SYSTEM',
     component: BaseSystem,
     children: [
+      ...SysDeptRouter,
       ...LoginLogRouter,
       ...GenRouter,
       {
