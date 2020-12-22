@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {getDefinitionModel, splitPath} from '@/pages/BaseSystem/swagger/tools';
-import {Table} from 'antd';
+import {Button, Modal, Table} from 'antd';
 
 const loopData = (modelObj, apiData) => {
   const {properties: model} = modelObj;
@@ -12,11 +12,13 @@ const loopData = (modelObj, apiData) => {
       description: model[key].description,
     };
     const [path, models] = getDefinitionModel(model[key], apiData);
-    if (path) {
+    if (path && models.properties) {
       // item.children = loopData(models, apiData);
       item.$ref = path;
+      item.models = models;
     } else {
       item.$ref = '';
+      item.models = model[key].items?model[key].items.type:'';
     }
 
     return item;
@@ -26,8 +28,10 @@ const loopData = (modelObj, apiData) => {
 
 const Model = ({modelObj, data: apiData}) => {
 
+  const [visible, setVisible] = useState(false);
+
   if (!modelObj.properties) {
-    return null;
+    return (<h2>暂无数据</h2>);
   }
   const dataSource = loopData(modelObj, apiData);
 
@@ -44,7 +48,8 @@ const Model = ({modelObj, data: apiData}) => {
           render: (text, values) => {
             return (
               <span>
-                {values.name}{values.type === 'array' && '[]'}
+                {values.name}
+                {/* {values.type === 'array' && '[]'} */}
               </span>
             );
           }
@@ -54,11 +59,35 @@ const Model = ({modelObj, data: apiData}) => {
           title: '类型',
           width: 180,
           render: (text, values) => {
-            return (
-              <span>
-                {values.$ref || values.type}
-              </span>
-            );
+            const model = values.models;
+            const path = values.$ref;
+            if (values.$ref && model) {
+              return(<>
+                <Button type="link" onClick={() => {
+                  setVisible(model);
+                }}>{path}</Button>
+                <Modal
+                  title={path}
+                  visible={visible}
+                  onOk={() => {
+                    setVisible(false);
+                  }}
+                  onCancel={() => {
+                    setVisible(false);
+                  }}
+                  okText="确认"
+                  cancelText="取消"
+                  cancelButtonProps={{style:{display:'none'}}}
+                  width={900}
+                >
+                  <Model modelObj={visible} data={apiData}/>
+                </Modal>
+              </>);
+            } else {
+              return (
+                <span>{values.type}{values.models&&<>[{values.models}]</>}</span>
+              );
+            }
           }
         },
         {
@@ -68,15 +97,6 @@ const Model = ({modelObj, data: apiData}) => {
       ]}
     />
   );
-  // return (
-  //   <ReactJson
-  //     name={false}
-  //     enableClipboard={false}
-  //     displayDataTypes={false}
-  //     displayObjectSize={false}
-  //     src={modelObj.properties}/>
-  // );
-
 };
 
 export default Model;

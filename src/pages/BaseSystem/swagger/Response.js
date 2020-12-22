@@ -13,7 +13,7 @@ const Response = (props) => {
           const response = responses[key];
           const [path, model] = getDefinitionModel(response.schema, apiData);
           return (
-            <Card
+            response.schema && <Card
               key={key}
               title={
                 <div>
@@ -27,9 +27,9 @@ const Response = (props) => {
               {
                 response.schema && <Model modelObj={model} data={apiData}/>
               }
-              {
-                !response.schema && <span>没有更多描述...</span>
-              }
+              {/* { */}
+              {/*  !response.schema && <span>没有更多描述...</span> */}
+              {/* } */}
             </Card>
           );
         })

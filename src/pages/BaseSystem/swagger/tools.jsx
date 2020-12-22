@@ -1,4 +1,7 @@
 export const splitPath = ($ref) => {
+  if (!$ref) {
+    return false;
+  }
   return $ref.replace('#/definitions/', '').split('/');
 };
 
@@ -10,6 +13,9 @@ export const getDefinitionModel = (schema, apiData) => {
     if (schema.items) {
       const $ref = schema.items.$ref;
       const modelPath = splitPath($ref);
+      if (!modelPath) {
+        return ['',schema.items.type?schema.items.type:''];
+      }
       return resovleDefinitions(modelPath);
     }
   }
