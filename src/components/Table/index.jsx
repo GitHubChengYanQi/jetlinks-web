@@ -1,9 +1,8 @@
 import React, {forwardRef, useImperativeHandle} from 'react';
-import {Table as AntdTable, Button} from 'antd';
-import {ReloadOutlined} from '@ant-design/icons';
-import {useTableRequest} from '@/util/Request';
+import {Table as AntdTable, Button, Divider} from 'antd';
+import {ReloadOutlined, SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
-import {useFormTableQuery, createFormActions, Form} from '@formily/antd';
+import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
 
 import style from './index.module.less';
 
@@ -39,7 +38,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
         params: page
       });
       return new Promise((resolve) => {
-        console.log(response);
         resolve({
           dataSource: Array.isArray(response.data) ? response.data : [],
           total: response.count,
@@ -59,7 +57,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
 
   const {form, table: tableProps} = useFormTableQuery(requestMethod);
 
-  const {submit, reset} = formActions;
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
     submit: formActions.submit,
@@ -67,7 +64,6 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
   }));
 
   const {loading, dataSource, ...other} = tableProps;
-
   return (
     <div className={style.tableWarp}>
       <div className={style.listHeader}>
@@ -79,15 +75,19 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
               layout="inline"
               {...form}
               actions={formActions}
-              style={{float: title ? 'right' : 'left',textAlign:'left'}}>
-              {searchForm}
+              style={{float: title ? 'right' : 'left', textAlign: 'left'}}>
+              {typeof searchForm === 'function' && searchForm()}
+
+              {searchForm && <><FormButtonGroup>
+                <Submit><SearchOutlined/>查询</Submit>
+              </FormButtonGroup></>}
             </Form>
           </div>
           <div className="button">
-            <>{actions}</>
             <Button className="button-left-margin" onClick={async () => {
-              await reset();
+              await formActions.submit();
             }}><ReloadOutlined/></Button>
+            <>{actions && <Divider type="vertical"/>}{actions}</>
           </div>
         </div>
       </div>

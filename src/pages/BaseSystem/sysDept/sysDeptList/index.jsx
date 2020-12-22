@@ -13,9 +13,11 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import SearchButton from '@/components/SearchButton';
 import {sysDeptDelete, sysDeptList} from '../sysDeptUrl';
 import SysDeptEdit from '../sysDeptEdit';
 import * as SysField from '../sysDeptField';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,9 +41,6 @@ const MenuList = () => {
         <FormItem label="父部门id" name="pidValue" component={SysField.Pid}/>
         <FormItem label="简称" name="simpleName" component={SysField.SimpleName}/>
         <FormItem label="全称" name="fullName" component={SysField.FullName}/>
-        <Button onClick={()=>{
-          tableRef.current.submit();
-        }}>搜索</Button>
       </>
     );
   };

@@ -30,7 +30,6 @@ const BaseSystem = ({children}) => {
         <Menu
           selectable
           onClick={(obj) => {
-            console.log(obj);
             history.push(obj.key);
           }}
           mode="inline"
