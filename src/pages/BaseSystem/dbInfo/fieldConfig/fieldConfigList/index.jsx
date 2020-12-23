@@ -5,15 +5,33 @@
  * @Date 2020-12-12 10:33:42
  */
 
-import React, {useEffect, useState} from 'react';
-import {Form, FormItem, InternalFieldList as FieldList, FormButtonGroup, Submit} from '@formily/antd';
+import React, {useEffect, useState, useImperativeHandle} from 'react';
+import {
+  Form,
+  FormItem,
+  InternalFieldList as FieldList,
+  FormButtonGroup,
+  Submit,
+  createFormActions
+} from '@formily/antd';
 import {Table, Skeleton, Checkbox, Select, Input} from 'antd';
 import {useRequest} from '@/util/Request';
 import {fieldConfigAdd, fieldConfigList} from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigUrl';
 
 import styles from './index.module.less';
 
-const FieldConfigList = ({dbId, tableName}) => {
+const actions = createFormActions();
+
+const FieldConfigList = (
+  {
+    dbId,
+    tableName,
+    onLoading = () => {
+    },
+    Loaded = () => {
+    }
+  }
+  , ref) => {
 
   const [fieldLists, setFieldLists] = useState(null);
   const {run, data, loading} = useRequest(fieldConfigList, {
@@ -27,10 +45,12 @@ const FieldConfigList = ({dbId, tableName}) => {
     manual: true
   });
 
-  const submit = (values) => {
-    save({
+  const submit = async (values) => {
+    onLoading();
+    const response = await save({
       data: values
     });
+    Loaded(response);
   };
 
   useEffect(() => {
@@ -45,13 +65,16 @@ const FieldConfigList = ({dbId, tableName}) => {
     }
   }, [dbId, tableName]);
 
+  useImperativeHandle(ref, () => ({
+    submit: actions.submit
+  }));
+
   if (loading) {
     return (<Skeleton active/>);
   }
   return (
     fieldLists && <Form
       onSubmit={(values) => {
-        console.log(values);
         submit(values);
       }}
       initialValues={{
@@ -59,6 +82,7 @@ const FieldConfigList = ({dbId, tableName}) => {
         fieldLists
       }}
       className={styles.table}
+      actions={actions}
     >
       <FormItem name="tableName" component={Input} display={false}/>
       <FieldList
@@ -79,7 +103,8 @@ const FieldConfigList = ({dbId, tableName}) => {
                   render={(text, values, index) => {
                     return (
                       <>{values.columnName}
-                        <FormItem name={`fieldLists.${index}.fieldName`} value={values.columnName} component={Input} display={false}/>
+                        <FormItem name={`fieldLists.${index}.fieldName`} value={values.columnName} component={Input}
+                                  display={false}/>
                       </>
                     );
                   }}
@@ -124,11 +149,8 @@ const FieldConfigList = ({dbId, tableName}) => {
           }
         }
       </FieldList>
-      <FormButtonGroup offset={7}>
-        <Submit>提交</Submit>
-      </FormButtonGroup>
     </Form>
   );
 };
 
-export default FieldConfigList;
+export default React.forwardRef(FieldConfigList);
