@@ -10,17 +10,19 @@ import {
   Form,
   FormItem,
   InternalFieldList as FieldList,
-  FormButtonGroup,
-  Submit,
-  createFormActions
+  createFormActions,
+  FormEffectHooks,
+  FormPath
 } from '@formily/antd';
 import {Table, Skeleton, Checkbox, Select, Input} from 'antd';
 import {useRequest} from '@/util/Request';
 import {fieldConfigAdd, fieldConfigList} from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigUrl';
 
 import styles from './index.module.less';
+import DbSourceConfig from "@/pages/BaseSystem/dbInfo/fieldConfig/dbSourceConfig";
 
 const actions = createFormActions();
+const {onFieldValueChange$} = FormEffectHooks;
 
 const FieldConfigList = (
   {
@@ -34,7 +36,7 @@ const FieldConfigList = (
   , ref) => {
 
   const [fieldLists, setFieldLists] = useState(null);
-  const {run, data, loading} = useRequest(fieldConfigList, {
+  const {run, loading} = useRequest(fieldConfigList, {
     manual: true,
     onSuccess: (result) => {
       setFieldLists(result);
@@ -83,6 +85,19 @@ const FieldConfigList = (
       }}
       className={styles.table}
       actions={actions}
+      effects={({setFieldValue}) => {
+        onFieldValueChange$('fieldLists.*.type').subscribe(({name, value}) => {
+          console.log(value);
+          setFieldValue(
+            FormPath.transform(name, /\d/, $1 => {
+              return `fieldLists.${$1}.config`;
+            }),
+            {
+              type: value
+            }
+          );
+        });
+      }}
     >
       <FormItem name="tableName" component={Input} display={false}/>
       <FieldList
@@ -103,8 +118,12 @@ const FieldConfigList = (
                   render={(text, values, index) => {
                     return (
                       <>{values.columnName}
-                        <FormItem name={`fieldLists.${index}.fieldName`} value={values.columnName} component={Input}
-                                  display={false}/>
+                        <FormItem
+                          name={`fieldLists.${index}.fieldName`}
+                          value={values.columnName}
+                          component={Input}
+                          display={false}
+                        />
                       </>
                     );
                   }}
@@ -139,11 +158,19 @@ const FieldConfigList = (
                       {label: 'Title标题', value: 'title'},
                       {label: '数字', value: 'number'},
                       {label: '上级ID', value: 'parentKey'},
+                      {label: 'Select控件', value: 'select'},
+                      {label: 'Checkbox控件', value: 'checkbox'},
                       {label: '文本区域', value: 'textArea'},
+                      {label: '时间控件', value: 'time'},
+                      {label: '日期控件', value: 'date'},
                     ]}/>
                   );
                 }}/>
-                <Table.Column dataIndex="type" title="数据配置"/>
+                <Table.Column title="数据配置" render={(text, values, index) => {
+                  return (
+                    <FormItem name={`fieldLists.${index}.config`} component={DbSourceConfig}/>
+                  );
+                }}/>
               </Table>
             );
           }
