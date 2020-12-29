@@ -13,7 +13,9 @@ const DbSourceConfig = ({value}) => {
       case 'select':
         return (
           <>
-            <Button>选择数据接口</Button>
+            <Button onClick={()=>{
+              setIsModalVisible(true);
+            }}>选择数据接口</Button>
           </>
         );
       case 'checkbox':
