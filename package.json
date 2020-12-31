@@ -42,6 +42,7 @@
     "ahooks": "^2.9.1",
     "antd": "^4.8.2",
     "braft-editor": "^2.3.9",
+    "braft-utils": "^3.0.12",
     "js-cookie": "^2.2.1",
     "moment": "^2.24.0",
     "qs": "^6.9.4",
