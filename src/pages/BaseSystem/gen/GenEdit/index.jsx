@@ -82,7 +82,7 @@ const GenEdit = () => {
         }}
       >
         <FormItem label="作者" name="author" component={Input} help="作者写在代码中的注释" style={{width: 420}}/>
-        <FormItem label="作者" name="edit" component={Editor} help="作者写在代码中的注释" style={{width: 420}}/>
+        {/*<FormItem label="作者" name="edit" component={Editor} help="作者写在代码中的注释" style={{width: 420}}/>*/}
         <FormItem label="包名" required name="proPackage" component={Input} placeholder="cn.at-soft.dasheng" style={{width: 420}} help="一般是把域名（或您的邮箱）反转过来做前缀，后面增加产品名称的字符。"/>
         <FormItem label="表前缀移除" name="removePrefix" component={Input} style={{width: 200}} help="移除表前缀的关键词"/>
         <FormItem label="版本" required name="version" component={Radio.Group} options={[

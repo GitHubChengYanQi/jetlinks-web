@@ -158,12 +158,15 @@ const FieldConfigList = (
                       {label: 'Title标题', value: 'title'},
                       {label: '数字', value: 'number'},
                       {label: '上级ID', value: 'parentKey'},
-                      {label: 'Select控件', value: 'select'},
+                      {label: '联级选择控件（接口）', value: 'cascader'},
+                      {label: 'Select控件（接口）', value: 'select'},
+                      {label: 'Select空间（固定值）', value: 'selectValue'},
                       {label: 'Checkbox控件', value: 'checkbox'},
+                      {label: 'Radio控件', value: 'radio'},
                       {label: '文本区域', value: 'textArea'},
                       {label: '时间控件', value: 'time'},
                       {label: '日期控件', value: 'date'},
-                    ]}/>
+                    ]} style={{minWidth:175}}/>
                   );
                 }}/>
                 <Table.Column title="数据配置" render={(text, values, index) => {

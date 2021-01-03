@@ -15,7 +15,7 @@ const GenDataBaseInfo = ({onChange, dataSourceId}) => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
 
 
-  const {data, run} = useRequest(dbTableList, {
+  const {loading,data, run} = useRequest(dbTableList, {
     manual: true,
   });
 
@@ -42,6 +42,7 @@ const GenDataBaseInfo = ({onChange, dataSourceId}) => {
             onChange(selectedRowKeys);
           }
         }}
+        loading={loading}
       >
         <Column title="表名" dataIndex="tableName" width={200}/>
         <Column title="名称" dataIndex="tableComment" width={200}/>
