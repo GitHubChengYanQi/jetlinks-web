@@ -1,36 +1,58 @@
 import React from 'react';
-import {Cascader as AntCascader} from 'antd';
-import {useRequest} from '@/util/Request';
+import { Cascader as AntCascader } from 'antd';
+import { useRequest } from '@/util/Request';
 
+const getParentValue = (value, data) => {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+  for (let i = 0; i < data.length; i++) {
+    if (`${data[i].value}` === `${value}`) {
+      return [`${value}`];
+    }
+    if (data[i].children.length > 0) {
+      const values = getParentValue(value, data[i].children);
+      if (values.length > 0) {
+        return [`${data[i].value}`, ...values];
+      }
+    }
+  }
+  return [];
+};
 
 const Cascader = (props) => {
-  const {value, api, ...other} = props;
+  const { value, api, ...other } = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {data} = useRequest(api);
+  const { data } = useRequest(api);
 
-  let valueArray = [];
-  if (value && !Array.isArray(value)) {
-    const tmpValue = value.split(',');
-    for (let i = 0; i < tmpValue.length; i++) {
-      const item = tmpValue[i];
-      if (item) {
-        valueArray.push(item);
-      }
-    }
-    // valueArray = tmpValue;
-  } else if( typeof value==="string") {
-    valueArray = 0;
-  }else {
-    valueArray = value;
-  }
-
-  if (data) {
-    return (<AntCascader changeOnSelect options={data} defaultValue={valueArray}  {...other} />);
-  } else {
+  if (!data) {
     return null;
   }
+
+  let valueArray = [];
+  if (value && typeof `${value}` === 'string') {
+    const $tmpValue = `${value}`;
+    if ($tmpValue.indexOf(',')>=0) {
+      const tmpValue = $tmpValue.split(',');
+      for (let i = 0; i < tmpValue.length; i++) {
+        const item = tmpValue[i];
+        if (item) {
+          valueArray.push(item);
+        }
+      }
+    } else {
+      valueArray = getParentValue($tmpValue, data);
+    }
+  } else if (Array.isArray(value)) {
+    valueArray = value;
+  } else {
+    valueArray = '';
+  }
+
+  return (<AntCascader changeOnSelect options={data} defaultValue={valueArray}  {...other} />);
+
 
 };
 
