@@ -1,34 +1,31 @@
 import React from 'react';
-import {Form, Input, Button, Alert} from 'antd';
-import {UserOutlined, LockOutlined} from '@ant-design/icons';
-import {useHistory, getSearchParams} from 'ice';
-import {useRequest} from '@/util/Request';
-import {login as loginUrl} from '@/Config/ApiUrl';
+import { Form, Input, Button, Alert } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useHistory, getSearchParams } from 'ice';
+import { useRequest } from '@/util/Request';
+import { login as loginUrl } from '@/Config/ApiUrl';
 import cookie from 'js-cookie';
 
 const FormItem = Form.Item;
 
-export default function Login({submitText}) {
+export default function Login({ submitText }) {
 
   const history = useHistory();
   const params = getSearchParams();
 
-  const {run, data, error, loading} = useRequest(loginUrl, {
+  const { run, data, error, loading } = useRequest(loginUrl, {
     manual: true,
-    onSuccess: (result) => {
-      cookie.set('tianpeng-token', result);
-    }
   });
-
 
   return (
     <Form
-      initialValues={{remember: true}}
+      initialValues={{ remember: true }}
       onFinish={async (values) => {
         const response = await run({
           data: values
         });
-        if(response){
+        if (response) {
+          cookie.set('tianpeng-token', response);
           setTimeout(() => {
             if (params.backUrl) {
               window.location.href = decodeURIComponent(params.backUrl);
@@ -41,7 +38,7 @@ export default function Login({submitText}) {
     >
       <FormItem
         name="username"
-        rules={[{required: true, message: '请填写：手机号/邮箱/账号'}]}
+        rules={[{ required: true, message: '请填写：手机号/邮箱/账号' }]}
       >
         <Input
           prefix={<UserOutlined/>}
@@ -52,7 +49,7 @@ export default function Login({submitText}) {
       <FormItem
         name="password"
         rules={[
-          {required: true, message: '请填写密码'},
+          { required: true, message: '请填写密码' },
           () => ({
             validator(rule, value) {
               if (!value || value.length >= 6) {
@@ -69,14 +66,13 @@ export default function Login({submitText}) {
           placeholder="请填写最低长度为6位的密码"
         />
       </FormItem>
-
       <FormItem>
         <Button type="primary" htmlType="submit" block loading={loading}>
           {submitText || `登 录`}
         </Button>
       </FormItem>
       {error && <Alert message={error.message} type="error"/>}
-      {data && <Alert message="登录成功，请稍候..." type="success"/>}
+      {data && <Alert message='登录成功，请稍候...' type='success'/>}
     </Form>
   );
 }

@@ -14,24 +14,24 @@ export default function BasicLayout({children}) {
   useEffect(() => {
     window.document.title = '后台管理系统';
     try {
-      let data = cookie.get('tianpeng-token');
+      const data = cookie.get('tianpeng-token');
+      console.log(data);
       if (!data) {
         throw new Error('本地登录信息不存在');
-      } else {
-        data = '';
       }
       const jwt = data.split('.');
-      if (jwt.length !== 3 && APP_MODE === undefined) {
+      if (jwt.length !== 3) {
         throw new Error('本地登录信息错误');
       }
       dispatchers.getUserInfo();
     } catch (e) {
       logger.error(e.message);
-      cookie.remove('tianpeng-token');
+      // cookie.remove('tianpeng-token');
       // TODO 登录超时处理
       history.push('/login');
     }
   }, []);
+
   return (
     <>
       {Object.keys(state).length === 0 ?

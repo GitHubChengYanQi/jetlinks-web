@@ -1,8 +1,8 @@
 import React from 'react';
-import {config, useHistory} from 'ice';
+import { config, useHistory } from 'ice';
 import cookie from 'js-cookie';
 import axios from 'axios';
-import {Modal} from 'antd';
+import { Modal } from 'antd';
 
 const baseURI = config.baseURI || window.sing.sysURI;
 
@@ -32,8 +32,9 @@ ajaxService.interceptors.response.use((response) => {
     throw new Error('网络错误');
   }
   response = response.data;
-  if (response.errCode !== 0) {
-    if (parseInt(response.errCode, 0) === 1502) {
+  const errCode = typeof response.errCode!=='undefined'?parseInt(response.errCode, 0):0;
+  if (errCode !== 0) {
+    if (errCode === 1502) {
       Modal.error({
         title: '提示',
         content: '您已登录超时，请重新登录。',
@@ -50,8 +51,8 @@ ajaxService.interceptors.response.use((response) => {
       });
       throw new Error(response.message);
     }
-    // const message = response.message || '未知错误';
-    // throw new Error(message);
+    const message = response.message || '未知错误';
+    throw new Error(message);
   }
   return response;
 }, (error) => {
