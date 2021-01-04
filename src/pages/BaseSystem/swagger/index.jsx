@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Row, Col, Menu, Tag, Divider, Table} from 'antd';
-import {useRequest} from "@/util/Request";
-import {swaggerUrl} from "@/pages/BaseSystem/swagger/swaggerUrl";
-import Parameters from "@/pages/BaseSystem/swagger/Parameters";
-import Response from "@/pages/BaseSystem/swagger/Response";
+import {useRequest} from '@/util/Request';
+import {swaggerUrl} from '@/pages/BaseSystem/swagger/swaggerUrl';
+import Parameters from '@/pages/BaseSystem/swagger/Parameters';
+import Response from '@/pages/BaseSystem/swagger/Response';
 import {useRouteMatch} from 'ice';
 
 import styles from './index.module.scss';

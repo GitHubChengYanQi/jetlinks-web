@@ -1,8 +1,16 @@
-import React,{useState} from 'react';
-import {Button,Modal} from 'antd';
+import React, { useState, useRef } from 'react';
+import { Button, Modal } from 'antd';
+import Swagger from '@/pages/BaseSystem/dbInfo/fieldConfig/dbSourceConfig/swagger';
 
-const DbSourceConfig = ({value}) => {
+const DbSourceConfig = (
+  {
+    value,
+    onChange = () => {
+    }
+  }
+) => {
 
+  const ref = useRef(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   if (typeof value !== 'object') {
@@ -11,11 +19,13 @@ const DbSourceConfig = ({value}) => {
   const renderButton = () => {
     switch (value.type) {
       case 'select':
+      case 'cascader':
         return (
           <>
-            <Button onClick={()=>{
+            <Button onClick={() => {
               setIsModalVisible(true);
-            }}>选择数据接口</Button>
+            }}>
+              {value.config?`接口：${value.config.apiUrl}`:'选择数据接口'}</Button>
           </>
         );
       case 'checkbox':
@@ -29,13 +39,13 @@ const DbSourceConfig = ({value}) => {
     }
   };
 
-  const renderForm = ()=>{
+  const renderForm = () => {
     switch (value.type) {
       case 'select':
+      case 'cascader':
         return (
           <>
-            <Button>选择数据接口</Button>
-
+            <Swagger ref={ref}/>
           </>
         );
       case 'checkbox':
@@ -53,13 +63,27 @@ const DbSourceConfig = ({value}) => {
     <>
       {renderButton()}
       <Modal
+        title="配置数据"
         visible={isModalVisible}
+        onCancel={() => {
+          setIsModalVisible(false);
+        }}
+        onOk={() => {
+          // console.log(ref.current.getConfig());
+          const config = ref.current.getConfig();
+          if (config) {
+            onChange({
+              ...value,
+              config
+            });
+          }
+          setIsModalVisible(false);
+        }}
       >
         {renderForm()}
       </Modal>
     </>
   );
-
 };
 
 export default DbSourceConfig;

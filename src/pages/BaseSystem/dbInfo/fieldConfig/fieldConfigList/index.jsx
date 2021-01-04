@@ -17,12 +17,12 @@ import {
 import {Table, Skeleton, Checkbox, Select, Input} from 'antd';
 import {useRequest} from '@/util/Request';
 import {fieldConfigAdd, fieldConfigList} from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigUrl';
-
+import DbSourceConfig from '@/pages/BaseSystem/dbInfo/fieldConfig/dbSourceConfig';
 import styles from './index.module.less';
-import DbSourceConfig from "@/pages/BaseSystem/dbInfo/fieldConfig/dbSourceConfig";
+
 
 const actions = createFormActions();
-const {onFieldValueChange$} = FormEffectHooks;
+const {onFieldValueChange$,onFieldInputChange$} = FormEffectHooks;
 
 const FieldConfigList = (
   {
@@ -86,8 +86,7 @@ const FieldConfigList = (
       className={styles.table}
       actions={actions}
       effects={({setFieldValue}) => {
-        onFieldValueChange$('fieldLists.*.type').subscribe(({name, value}) => {
-          console.log(value);
+        onFieldInputChange$('fieldLists.*.type').subscribe(({name, value}) => {
           setFieldValue(
             FormPath.transform(name, /\d/, $1 => {
               return `fieldLists.${$1}.config`;

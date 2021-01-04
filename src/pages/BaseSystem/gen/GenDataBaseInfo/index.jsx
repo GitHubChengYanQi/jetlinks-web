@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {dbTableList} from '@/pages/BaseSystem/gen/GenUrl';
-import {Button, Table, Modal} from 'antd';
-import {useRequest} from '@/util/Request';
+import React, { useEffect, useRef, useState } from 'react';
+import { dbTableList } from '@/pages/BaseSystem/gen/GenUrl';
+import { Button, Table, Modal } from 'antd';
+import { useRequest } from '@/util/Request';
 import FieldConfigList from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigList';
 
-const {Column} = Table;
+const { Column } = Table;
 
 
-const GenDataBaseInfo = ({onChange, dataSourceId}) => {
+const GenDataBaseInfo = ({ onChange, dataSourceId }) => {
 
   const fieldRef = useRef();
 
@@ -15,7 +15,7 @@ const GenDataBaseInfo = ({onChange, dataSourceId}) => {
   const [confirmLoading, setConfirmLoading] = React.useState(false);
 
 
-  const {loading,data, run} = useRequest(dbTableList, {
+  const { loading, data, run } = useRequest(dbTableList, {
     manual: true,
   });
 
@@ -66,9 +66,11 @@ const GenDataBaseInfo = ({onChange, dataSourceId}) => {
         }}
         width={1200}
       >
-        <FieldConfigList onLoading={()=>{setConfirmLoading(true);}} Loaded={(response)=>{
+        <FieldConfigList onLoading={() => {
+          setConfirmLoading(true);
+        }} Loaded={(response) => {
           setConfirmLoading(false);
-          if(response.errCode===0){
+          if (response !== undefined) {
             setVisible(false);
           }
         }} ref={fieldRef} dbId={dataSourceId} tableName={visible}/>
