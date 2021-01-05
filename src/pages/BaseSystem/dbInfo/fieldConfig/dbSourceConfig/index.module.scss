@@ -1,0 +1,13 @@
+.row {
+  :global{
+    .ant-btn {
+      margin-right: 16px;
+    }
+
+    .ant-form-item {
+      display: inline-flex;
+      margin-right: 16px;
+      margin-bottom: 16px;
+    }
+  }
+}

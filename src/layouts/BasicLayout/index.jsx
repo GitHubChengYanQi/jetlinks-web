@@ -15,7 +15,6 @@ export default function BasicLayout({children}) {
     window.document.title = '后台管理系统';
     try {
       const data = cookie.get('tianpeng-token');
-      console.log(data);
       if (!data) {
         throw new Error('本地登录信息不存在');
       }
@@ -26,7 +25,7 @@ export default function BasicLayout({children}) {
       dispatchers.getUserInfo();
     } catch (e) {
       logger.error(e.message);
-      // cookie.remove('tianpeng-token');
+      cookie.remove('tianpeng-token');
       // TODO 登录超时处理
       history.push('/login');
     }
