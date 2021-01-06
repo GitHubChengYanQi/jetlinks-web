@@ -36,7 +36,7 @@ const Select = (props) => {
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect options={data} value={valueArray} {...other}  />}
+        {!loading &&<AntSelect options={data} value={valueArray} style={{width:200}} {...other}  />}
         <Button loading={loading} className="button-left-margin" icon={<RedoOutlined/>} onClick={() => {
           typeof other.onChange === 'function' && other.onChange('');
           run();
