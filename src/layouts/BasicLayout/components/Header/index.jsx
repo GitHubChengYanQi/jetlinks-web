@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SettingOutlined,
+  BellOutlined,
+  FullscreenOutlined
 } from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {Drawer} from 'antd';
+import { Menu, Drawer, Avatar, Image, Button, Dropdown } from 'antd';
 import store from '@/store';
-import {useHistory} from 'ice';
+import { useHistory, config } from 'ice';
 import AppEntFUNC from '@/asseset/imgs/88.png';
 
 import styles from './index.module.less';
@@ -20,7 +22,7 @@ const Header = () => {
   const history = useHistory();
 
   const [userInfo] = store.useModel('user');
-  const {menus} = userInfo;
+  const { menus } = userInfo;
 
   const [visible, setVisible] = useState(false);
   return (
@@ -42,7 +44,39 @@ const Header = () => {
             </div>
             <div className={styles.middle}/>
             <div className={styles.right}>
-              <div><SettingOutlined/></div>
+              <Dropdown trigger="click" overlay={
+                <Menu style={{ width: 220 }}>
+                  <div style={{padding:12,fontSize:16,color:'#7f7f7f'}}>
+                    {userInfo.name}
+                  </div>
+                  <Menu.Divider/>
+                  <Menu.Item>
+                    <span className={styles.dropdownMenuItem}>个人中心</span>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <span className={styles.dropdownMenuItem}>修改密码</span>
+                  </Menu.Item>
+                  <Menu.Divider/>
+                  <Menu.Item>
+                    <span className={styles.dropdownMenuItem}>退出登录</span>
+                  </Menu.Item>
+                </Menu>
+              } placement="bottomRight">
+                <Button type="text" size="large" style={{ height: 48 }}>
+                  <Avatar
+                    style={{ float: 'left' }}
+                    src={<Image
+                      src={`${config.baseURI}${userInfo.avatar}`}
+                      preview={false}/>}
+                    // size="small"
+                  />
+                  <span
+                    style={{ float: 'left', marginLeft: 8, height: 32, lineHeight: '32px' }}>{userInfo.name}</span>
+                  {/* <CaretDownOutlined /> */}
+                </Button>
+              </Dropdown>
+              <Button type="text" size="large" icon={<BellOutlined/>} style={{ height: 48 }}/>
+              <Button type="text" size="large" icon={<FullscreenOutlined/>} style={{ height: 48 }}/>
             </div>
           </div>
         </div>
@@ -55,8 +89,8 @@ const Header = () => {
         }}
         visible={visible}
         width={325}
-        maskStyle={{opacity: 0, background: 'none'}}
-        bodyStyle={{padding: 0, margin: 0}}
+        maskStyle={{ opacity: 0, background: 'none' }}
+        bodyStyle={{ padding: 0, margin: 0 }}
       >
         <div className="docker-top-container">
           <div className="docker-top-title">
@@ -77,7 +111,7 @@ const Header = () => {
                   <div className="app-item">
                     <div className="item-logo-wrap">
                       <span className="navigation-badge">
-                        <img className="app-item-logo" src={AppIcon[item.id]||AppEntFUNC} alt="logo"/>
+                        <img className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo"/>
                       </span>
                     </div>
                     <div className="app-item-name">
