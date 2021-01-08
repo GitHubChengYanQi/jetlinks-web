@@ -1,6 +1,5 @@
 import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
-import LoadingPage from '@/components/LoadingPage';
 import baseSystem from './baseSystem';
 import otherRouters from './AppRouters';
 
@@ -8,18 +7,24 @@ import otherRouters from './AppRouters';
 const routerConfig = [
   {
     path: '/login',
-    component: lazy(() => import('@/pages/Login')),// Login,
-    fallback: LoadingPage,
+    component: lazy(() => import((`@/pages/Login`))),// Login,
+  },
+  {
+    path: '/logout',
+    component: lazy(() => import((`@/pages/Logout`))),
   },
   {
     path: '/',
     component: BasicLayout,
-    fallback: LoadingPage,
     children: [
       ...baseSystem,
       ...otherRouters,
       {
-        component: lazy(() => import('@/pages/NotFound')),
+        path: '/member',
+        component: lazy(() => import((`@/pages/Member`))),
+      },
+      {
+        component: lazy(() => import((`@/pages/NotFound`))),
       }
     ],
   },

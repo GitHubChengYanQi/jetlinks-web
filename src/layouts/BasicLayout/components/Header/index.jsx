@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  SettingOutlined,
   BellOutlined,
   FullscreenOutlined
 } from '@ant-design/icons';
@@ -45,19 +44,21 @@ const Header = () => {
             <div className={styles.middle}/>
             <div className={styles.right}>
               <Dropdown trigger="click" overlay={
-                <Menu style={{ width: 220 }}>
+                <Menu style={{ width: 220 }} onClick={({key})=>{
+                  history.push(key);
+                }}>
                   <div style={{padding:12,fontSize:16,color:'#7f7f7f'}}>
                     {userInfo.name}
                   </div>
                   <Menu.Divider/>
-                  <Menu.Item>
+                  <Menu.Item key="/member">
                     <span className={styles.dropdownMenuItem}>个人中心</span>
                   </Menu.Item>
-                  <Menu.Item>
+                  <Menu.Item key="/password">
                     <span className={styles.dropdownMenuItem}>修改密码</span>
                   </Menu.Item>
                   <Menu.Divider/>
-                  <Menu.Item>
+                  <Menu.Item key="/logout">
                     <span className={styles.dropdownMenuItem}>退出登录</span>
                   </Menu.Item>
                 </Menu>

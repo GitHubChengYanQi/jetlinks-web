@@ -38,7 +38,7 @@ const Select = (props) => {
       <>
         {!loading &&<AntSelect options={data} value={valueArray} style={{width:200}} {...other}  />}
         <Button loading={loading} className="button-left-margin" icon={<RedoOutlined/>} onClick={() => {
-          typeof other.onChange === 'function' && other.onChange('');
+          // typeof other.onChange === 'function' && other.onChange('');
           run();
         }}/>
       </>
