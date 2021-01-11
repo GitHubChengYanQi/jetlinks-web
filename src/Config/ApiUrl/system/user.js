@@ -15,6 +15,10 @@ export const userInfo = {
   url: '/rest/mgr/getMyInfo',
   method: 'POST',
 };
+export const changePwd = {
+  url: '/rest/mgr/changePwd',
+  method: 'POST',
+};
 
 export const getUserInfo = {
   url: '/rest/mgr/getUserInfo',

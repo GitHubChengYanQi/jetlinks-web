@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Drawer} from 'antd';
-import * as Icon from '@ant-design/icons';
+// import * as Icon from '@ant-design/icons';
 
 import style from './index.module.less';
+
+const Icon = [];
 
 const SelectIcon = ({onChange, value}) => {
 

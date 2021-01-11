@@ -1,12 +1,13 @@
 import React from 'react';
+
+import moment from 'moment';
 import styles from './index.module.scss';
 
 export default function Footer() {
   return (
-    <p className={styles.footer}>
-      <span className={styles.logo}>AtSoft SuperPowers</span>
-      <br />
-      <span className={styles.copyright}>© 2019-现在 AtSoft</span>
-    </p>
+    <div className={styles.footer}>
+      <p className={styles.logo}>AtSoft</p>
+      <p className={styles.copyright}>© 2019 - {moment().year()}</p>
+    </div>
   );
 }

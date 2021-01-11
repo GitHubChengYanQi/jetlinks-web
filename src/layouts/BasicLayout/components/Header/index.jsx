@@ -4,12 +4,13 @@ import {
   FullscreenOutlined
 } from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import { Menu, Drawer, Avatar, Image, Button, Dropdown } from 'antd';
+import { Menu, Drawer, Avatar, Image, Button, Dropdown, Modal } from 'antd';
 import store from '@/store';
 import { useHistory, config } from 'ice';
 import AppEntFUNC from '@/asseset/imgs/88.png';
-
+import PassWord from '@/pages/Member/passWord';
 import styles from './index.module.less';
+
 
 const AppIcon = {
   ENT_FUNC: AppEntFUNC,
@@ -17,6 +18,8 @@ const AppIcon = {
 };
 
 const Header = () => {
+
+  const [visiblePwd,setVisiblePwd]= useState(false);
 
   const history = useHistory();
 
@@ -45,7 +48,11 @@ const Header = () => {
             <div className={styles.right}>
               <Dropdown trigger="click" overlay={
                 <Menu style={{ width: 220 }} onClick={({key})=>{
-                  history.push(key);
+                  if(key==='/password'){
+                    setVisiblePwd(true);
+                  }else{
+                    history.push(key);
+                  }
                 }}>
                   <div style={{padding:12,fontSize:16,color:'#7f7f7f'}}>
                     {userInfo.name}
@@ -125,6 +132,7 @@ const Header = () => {
           </div>
         </div>
       </Drawer>
+      <PassWord visible={visiblePwd} onClose={()=>setVisiblePwd(false)} />
     </>
   );
 };

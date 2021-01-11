@@ -4,6 +4,7 @@ import {logger, useHistory, APP_MODE} from 'ice';
 import Header from '@/layouts/BasicLayout/components/Header';
 import {Alert, Spin} from 'antd';
 import store from '@/store';
+import Footer from '@/layouts/BasicLayout/components/Footer';
 
 
 export default function BasicLayout({children}) {
@@ -43,12 +44,14 @@ export default function BasicLayout({children}) {
             style={{width: 500, margin: '100px auto'}}
           />
         </Spin> :
-        <div>
+        <>
           <Header/>
           <div className="web-content">
             {children}
+            <Footer />
           </div>
-        </div>
+
+        </>
       }
     </>
   );

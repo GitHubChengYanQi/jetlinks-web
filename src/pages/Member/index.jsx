@@ -5,14 +5,16 @@ import moment from 'moment';
 import { useRequest } from '@/util/Request';
 import store from '@/store';
 import { config } from 'ice';
+import { userSave } from '@/Config/ApiUrl/system/user';
+
 import { currentUserInfo } from './apiUrl';
 
 import styles from './index.module.scss';
 
-
 const Member = () => {
 
-  const { data } = useRequest(currentUserInfo, {
+
+  const { data, run: get } = useRequest(currentUserInfo, {
     formatResult: ({ data }) => {
       console.log(data);
       const values = {
@@ -23,6 +25,12 @@ const Member = () => {
     }
   });
   const [userInfo] = store.useModel('user');
+  const { run: save, loading } = useRequest(userSave, {
+    manual: true,
+    onSuccess: () => {
+      get();
+    }
+  });
 
   return (
     <Row style={{ marginTop: 16 }}>
@@ -59,8 +67,8 @@ const Member = () => {
                   labelCol={5}
                   wrapperCol={7}
                   initialValues={data}
-                  onSubmit={(values) => {
-                    console.log(values);
+                  onSubmit={async (values) => {
+                    return await save({ data: values });
                   }}>
                   <FormItem component={Input} label="账号" placeholder="请输入账号" name="account" editable={false}/>
                   <FormItem component={Input} label="姓名" required placeholder="请输入姓名" name="name"/>
@@ -73,7 +81,7 @@ const Member = () => {
                   <FormItem component={Input} label="邮箱" required placeholder="请输入邮箱" name="email"/>
                   <FormItem component={Input} label="电话" placeholder="请输入电话" name="phone"/>
                   <FormButtonGroup offset={5}>
-                    <Submit>更新基本信息</Submit>
+                    <Submit showLoading loading={loading}>更新基本信息</Submit>
                   </FormButtonGroup>
                 </Form>
               </> : <Skeleton/>}

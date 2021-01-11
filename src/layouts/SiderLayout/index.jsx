@@ -1,10 +1,10 @@
 import React from 'react';
-import {Row, Col} from 'antd';
-import {Scrollbars} from 'react-custom-scrollbars-2';
+import { Row, Col } from 'antd';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import style from './index.module.less';
 
-const SiderLayout = ({children, left}) => {
+const SiderLayout = ({ children, left }) => {
 
   return (
     <div className="baseSystem-workspace-section">
@@ -26,8 +26,10 @@ const SiderLayout = ({children, left}) => {
                   autoHide
                   autoHideTimeout={500}
                   className="Scroller">
-                  <div className="sidebar">
-                      {left}
+                  <div
+                    className="sidebar"
+                  >
+                    {left}
                   </div>
 
                 </Scrollbars>
