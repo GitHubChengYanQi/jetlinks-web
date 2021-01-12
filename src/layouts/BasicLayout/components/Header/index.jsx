@@ -70,21 +70,19 @@ const Header = () => {
                   </Menu.Item>
                 </Menu>
               } placement="bottomRight">
-                <Button type="text" size="large" style={{ height: 48 }}>
+                <Button type="text" size="large" style={{ height: 60 }}>
                   <Avatar
                     style={{ float: 'left' }}
-                    src={<Image
-                      src={`${config.baseURI}${userInfo.avatar}`}
-                      preview={false}/>}
+                    src={`${config.baseURI}${userInfo.avatar}`}
                     // size="small"
                   />
-                  <span
-                    style={{ float: 'left', marginLeft: 8, height: 32, lineHeight: '32px' }}>{userInfo.name}</span>
+                  {/* <span */}
+                  {/*  style={{ float: 'left', marginLeft: 8, height: 32, lineHeight: '32px' }}>{userInfo.name}</span> */}
                   {/* <CaretDownOutlined /> */}
                 </Button>
               </Dropdown>
-              <Button type="text" size="large" icon={<BellOutlined/>} style={{ height: 48 }}/>
-              <Button type="text" size="large" icon={<FullscreenOutlined/>} style={{ height: 48 }}/>
+              <Button type="text" size="large" icon={<BellOutlined/>} style={{ height: 60,color:'#FFF' }}/>
+              <Button type="text" size="large" icon={<FullscreenOutlined/>} style={{ height: 60,color:'#FFF' }}/>
             </div>
           </div>
         </div>

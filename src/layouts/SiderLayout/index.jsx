@@ -13,9 +13,10 @@ const SiderLayout = ({ children, left }) => {
           <Row
             justify="center"
             className={style.main}
+            gutter={32}
           >
             <Col
-              xl={5}
+              xl={4}
               style={{
                 position: 'sticky',
                 top: 0,
@@ -37,7 +38,7 @@ const SiderLayout = ({ children, left }) => {
               </div>
             </Col>
             <Col
-              xl={19}>
+              xl={20}>
               <div className={style.contentContainer}>{children}</div>
 
             </Col>

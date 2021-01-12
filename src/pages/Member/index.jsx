@@ -43,7 +43,7 @@ const Member = () => {
                   <Typography.Paragraph className={styles.center}>
                     <Avatar
                       size={104}
-                      src={<Image src={`${config.baseURI}${userInfo.avatar}`} preview={false}/>}
+                      src={`${config.baseURI}${userInfo.avatar}`}
 
                     />
                     <Typography.Title level={3}>{data.name}</Typography.Title>

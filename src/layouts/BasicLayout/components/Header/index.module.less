@@ -1,4 +1,5 @@
 @import '~antd/lib/style/themes/default.less';
+
 .appItemWrap {
   margin-bottom: 14px;
   text-decoration: none;
@@ -12,40 +13,51 @@
       .item-logo-wrap {
         height: 49px;
         transition: all 0.3s ease;
-        .navigation-badge{
+
+        .navigation-badge {
           vertical-align: unset;
           -webkit-box-sizing: border-box;
           box-sizing: border-box;
           position: relative;
           display: inline-block;
           line-height: 1;
-          .app-item-logo{
+
+          .app-item-logo {
             width: 44px;
             height: 44px;
             border-radius: 4px;
             display: inline-block;
-            -webkit-box-shadow: 0 4px 16px 0 rgba(38,38,38,0.12);
-            box-shadow: 0 4px 16px 0 rgba(38,38,38,0.12);
+            -webkit-box-shadow: 0 4px 16px 0 rgba(38, 38, 38, 0.12);
+            box-shadow: 0 4px 16px 0 rgba(38, 38, 38, 0.12);
           }
         }
-        &:hover{
+
+        &:hover {
           transform: translateY(-4px);
         }
       }
     }
   }
 }
+
 .navbar {
-  background-color: rgba(255,255,255,1);
+  min-height: 62px;
   box-sizing: border-box;
-  min-height: 50px;
+  background-color: rgba(255, 255, 255, 1);
+  background-repeat: no-repeat;
+  background-image: url("./images/header-bg.png");
+  background-position: right center;
+
+  //background-size: auto 90%;
+
+
   border: 1px solid transparent;
   border-top: 0 solid transparent;
 
 
   .inner {
     z-index: 100;
-    height: 48px;
+    height: 60px;
 
     .systemBar {
       display: -webkit-box;
@@ -63,14 +75,14 @@
 
       :global {
         #navigation-dock {
-          height: 24px;
+          height: 32px;
 
           #mainMenu {
             color: @text-color-secondary;
             border-radius: 4px;
             cursor: pointer;
-            height: 24px;
-            width: 24px;
+            height: 32px;
+            width: 32px;
             padding: 2px;
             transition: background-color .3s ease, border .3s ease, color .3s ease;
 
@@ -80,7 +92,7 @@
             }
 
             .anticon {
-              font-size: 20px;
+              font-size: 28px;
             }
           }
 
@@ -89,8 +101,8 @@
         #navigation-title {
           color: @heading-color;
           font-weight: 700;
-          line-height: 24px;
-          font-size: 14px;
+          line-height: 32px;
+          font-size: 18px;
           display: flex;
           -webkit-box-align: center;
           align-items: center;
@@ -135,10 +147,12 @@
     }
   }
 }
-.dropdownMenuItem{
+
+.dropdownMenuItem {
   line-height: 28px;
 }
-:global{
+
+:global {
   .docker-top-container {
     padding: 12px 14px 12px 18px;
     display: flex;
@@ -151,6 +165,7 @@
     left: 0;
     right: 0;
     z-index: 10;
+
     .docker-top-title {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -177,7 +192,8 @@
           background-color: @background-color-base;
         }
       }
-      .docker-top-text{
+
+      .docker-top-text {
         font-weight: 600;
         line-height: 24px;
         white-space: nowrap;
@@ -186,10 +202,11 @@
       }
     }
   }
-  .docker-middle{
+
+  .docker-middle {
     bottom: 45px;
     align-content: flex-start;
-    background: linear-gradient(#fff 30%, rgba(255,255,255,0)),linear-gradient(rgba(255,255,255,0), #fff 70%) 0 100%,linear-gradient(#F0F0F0, #F0F0F0);
+    background: linear-gradient(#fff 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #fff 70%) 0 100%, linear-gradient(#F0F0F0, #F0F0F0);
     background-repeat: no-repeat;
     background-color: #fff;
     background-size: 100% 40px, 100% 40px, 100% 1px, 100% 1px;
@@ -210,6 +227,7 @@
     overflow-x: hidden;
   }
 }
+
 .appContent {
   display: flex;
   flex-wrap: wrap;

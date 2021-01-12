@@ -38,7 +38,7 @@ const RoleList = () => {
     {},
     {
       title: '操作',
-      width: 300,
+      width: 360,
       align: 'right',
       render: (value, record) => {
         return (
@@ -58,17 +58,6 @@ const RoleList = () => {
       }
     }
   ];
-
-  const actions = () => {
-
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
-      </>
-    );
-  };
 
   return (
     <>
