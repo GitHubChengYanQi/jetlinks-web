@@ -47,7 +47,9 @@
   background-repeat: no-repeat;
   background-image: url("./images/header-bg.png");
   background-position: right center;
-
+  position: fixed;
+  z-index: 1;
+  width: 100%;
   //background-size: auto 90%;
 
 
@@ -235,6 +237,19 @@
   height: auto;
   max-height: 2000px;
   opacity: 1
+}
+
+.message{
+  background-color: #FFF;
+  width: 340px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+  :global{
+    .noMessage{
+      color: #8d8d8d;
+      text-align: center;
+      padding: 32px;
+    }
+  }
 }
 
 

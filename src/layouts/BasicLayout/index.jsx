@@ -1,13 +1,14 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import cookie from 'js-cookie';
-import {logger, useHistory, APP_MODE} from 'ice';
+import { logger, useHistory, APP_MODE } from 'ice';
 import Header from '@/layouts/BasicLayout/components/Header';
-import {Alert, Spin} from 'antd';
+import { Alert, Spin, Layout } from 'antd';
 import store from '@/store';
 import Footer from '@/layouts/BasicLayout/components/Footer';
 
+const { Header: AntHeader, Content, Footer: AntFooter } = Layout;
 
-export default function BasicLayout({children}) {
+export default function BasicLayout({ children }) {
 
   const history = useHistory();
   const [state, dispatchers] = store.useModel('user');
@@ -41,15 +42,15 @@ export default function BasicLayout({children}) {
             description="系统正在初始化个人信息，请稍后..."
             type="info"
             showIcon
-            style={{width: 500, margin: '100px auto'}}
+            style={{ width: 500, margin: '100px auto' }}
           />
         </Spin> :
         <>
           <Header/>
-          <div className="web-content">
+          <Content className="web-content">
             {children}
-            <Footer />
-          </div>
+            <Footer/>
+          </Content>
 
         </>
       }

@@ -4,13 +4,14 @@ import {
   FullscreenOutlined
 } from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import { Menu, Drawer, Avatar, Image, Button, Dropdown, Modal } from 'antd';
+import { Menu, Drawer, Avatar, Image, Button, Dropdown, Modal, Card, Tabs } from 'antd';
 import store from '@/store';
 import { useHistory, config } from 'ice';
 import AppEntFUNC from '@/asseset/imgs/88.png';
 import PassWord from '@/pages/Member/passWord';
 import styles from './index.module.less';
 
+const { TabPane } = Tabs;
 
 const AppIcon = {
   ENT_FUNC: AppEntFUNC,
@@ -19,7 +20,7 @@ const AppIcon = {
 
 const Header = () => {
 
-  const [visiblePwd,setVisiblePwd]= useState(false);
+  const [visiblePwd, setVisiblePwd] = useState(false);
 
   const history = useHistory();
 
@@ -47,14 +48,14 @@ const Header = () => {
             <div className={styles.middle}/>
             <div className={styles.right}>
               <Dropdown trigger="click" overlay={
-                <Menu style={{ width: 220 }} onClick={({key})=>{
-                  if(key==='/password'){
+                <Menu style={{ width: 220 }} onClick={({ key }) => {
+                  if (key === '/password') {
                     setVisiblePwd(true);
-                  }else{
+                  } else {
                     history.push(key);
                   }
                 }}>
-                  <div style={{padding:12,fontSize:16,color:'#7f7f7f'}}>
+                  <div style={{ padding: 12, fontSize: 16, color: '#7f7f7f' }}>
                     {userInfo.name}
                   </div>
                   <Menu.Divider/>
@@ -81,8 +82,24 @@ const Header = () => {
                   {/* <CaretDownOutlined /> */}
                 </Button>
               </Dropdown>
-              <Button type="text" size="large" icon={<BellOutlined/>} style={{ height: 60,color:'#FFF' }}/>
-              <Button type="text" size="large" icon={<FullscreenOutlined/>} style={{ height: 60,color:'#FFF' }}/>
+              <Dropdown trigger="click" overlay={
+                <div className={styles.message}>
+                  <Tabs centered>
+                    <TabPane tab="消息" key="1">
+                      <div className="noMessage">暂无消息</div>
+                    </TabPane>
+                    <TabPane tab="通知" key="2">
+                      <div className="noMessage">暂无通知</div>
+                    </TabPane>
+                    <TabPane tab="待办" key="3">
+                      <div className="noMessage">暂无待办</div>
+                    </TabPane>
+                  </Tabs>
+                </div>
+              } placement="bottomRight">
+                <Button type="text" size="large" icon={<BellOutlined/>} style={{ height: 60, color: '#FFF' }}/>
+              </Dropdown>
+              <Button type="text" size="large" icon={<FullscreenOutlined/>} style={{ height: 60, color: '#FFF' }}/>
             </div>
           </div>
         </div>
@@ -130,7 +147,7 @@ const Header = () => {
           </div>
         </div>
       </Drawer>
-      <PassWord visible={visiblePwd} onClose={()=>setVisiblePwd(false)} />
+      <PassWord visible={visiblePwd} onClose={() => setVisiblePwd(false)}/>
     </>
   );
 };
