@@ -8,8 +8,7 @@ import {LifeCycleTypes} from '@formily/antd';
 import cookie from 'js-cookie';
 import qs from 'qs';
 import {config} from 'ice';
-import LoadingPage from "@/components/LoadingPage";
-import Editor from "@/components/Editor";
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {FormItem} = Form;
 
@@ -38,8 +37,8 @@ const GenEdit = () => {
 
   return (
     <Card
-      title="代码生成"
-      style={{width: 960, margin: '0px auto '}}
+      title={<Breadcrumb />}
+      style={{width: 960, margin: '16px auto '}}
       bordered={false}
     >
       <Form

@@ -2,6 +2,7 @@ import React from 'react';
 import {positionDel, positionList} from '@/Config/ApiUrl/system/position';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const ApiConfig = {
   listApi: positionList,
@@ -15,6 +16,7 @@ const PositionList = () => {
   return (
     <Table
       api={positionList}
+      title={<Breadcrumb />}
       rowKey="positionId"
     >
       <Column title="职位名称" dataIndex="name" width={120}/>

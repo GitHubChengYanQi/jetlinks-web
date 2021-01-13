@@ -7,6 +7,7 @@ import DictTypeEdit from '@/pages/BaseSystem/dictType/Edit';
 import Drawer from '@/components/Drawer';
 import {Button} from 'antd';
 import {useHistory} from 'ice';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = Table;
 
@@ -19,7 +20,7 @@ const DictTypeList = () => {
     <>
       <Table
         api={dictTypeList}
-        title={<h2>字典管理</h2>}
+        title={<Breadcrumb />}
       >
         <Column title="名称" width={200} render={(value, row) => {
           return (

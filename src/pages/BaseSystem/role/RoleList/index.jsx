@@ -11,6 +11,7 @@ import Drawer from "@/components/Drawer";
 import RoleEdit from "@/pages/BaseSystem/role/RoleEdit";
 import RoleSet from "@/pages/BaseSystem/role/RoleSet";
 import AddButton from "@/components/AddButton";
+import Breadcrumb from '@/components/Breadcrumb';
 
 
 const RoleList = () => {
@@ -63,7 +64,7 @@ const RoleList = () => {
     <>
       <Table
         api={roleList}
-        title={<h2>角色管理</h2>}
+        title={<Breadcrumb />}
         columns={columns}
         rowKey="roleId"
         actions={<>

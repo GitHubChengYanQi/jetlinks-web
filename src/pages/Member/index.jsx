@@ -33,7 +33,7 @@ const Member = () => {
   });
 
   return (
-    <Row style={{ marginTop: 16 }}>
+    <Row style={{ margin: 16 }}>
       <Col span={12} offset={6}>
         <Row gutter={16}>
           <Col span={8}>

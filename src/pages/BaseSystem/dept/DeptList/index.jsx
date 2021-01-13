@@ -1,6 +1,7 @@
 import React from 'react';
 import {deptDelete, deptList} from '@/Config/ApiUrl/system/dept';
 import Table from '@/components/Table';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const DeptList = () => {
 
@@ -30,7 +31,7 @@ const DeptList = () => {
     <Table
       rowKey="deptId"
       api={deptList}
-      title={<h2>部门管理</h2>}
+      title={<Breadcrumb />}
       columns={columns}
     />
   );

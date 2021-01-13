@@ -1,19 +1,17 @@
-import React, {useEffect, useRef, useState} from 'react';
-
-import {Grid, Card, Icon, Dialog, Loading, Pagination} from '@alifd/next';
-
-import {userFreeze, userList, userRemove, userReset, userUnfreeze} from '@/Config/ApiUrl/system/user';
+import React, { useRef, useState} from 'react';
+import {Dialog} from '@alifd/next';
+import {userFreeze, userList, userReset, userUnfreeze} from '@/Config/ApiUrl/system/user';
 import Message from '@/components/Message';
 import Table from '@/components/Table';
 import {Form, Input, Button, Switch} from 'antd';
 import {useRequest} from '@/util/Request';
-import {UserOutlined} from '@ant-design/icons';
-import AddButton from "@/components/AddButton";
-import EditButton from "@/components/EditButton";
-import DelButton from "@/components/DelButton";
-import UserEdit from "@/pages/BaseSystem/user/UserEdit";
-import Drawer from "@/components/Drawer";
-import UserRole from "@/pages/BaseSystem/user/UserRole";
+import AddButton from '@/components/AddButton';
+import EditButton from '@/components/EditButton';
+import DelButton from '@/components/DelButton';
+import UserEdit from '@/pages/BaseSystem/user/UserEdit';
+import Drawer from '@/components/Drawer';
+import UserRole from '@/pages/BaseSystem/user/UserRole';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const UserList = () => {
   const ref = useRef(null);
@@ -40,7 +38,7 @@ const UserList = () => {
         }}/>
       </>
     );
-  }
+  };
 
   const [roleUserId, setRoleUserId] = useState(null);
 
@@ -164,7 +162,7 @@ const UserList = () => {
     <>
       <Table
         ref={ref}
-        title={<h2><UserOutlined/> 用户管理</h2>}
+        title={<Breadcrumb />}
         api={userList}
         columns={columns}
         rowKey="userId"

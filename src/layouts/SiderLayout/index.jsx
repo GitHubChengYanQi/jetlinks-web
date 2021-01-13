@@ -1,51 +1,17 @@
 import React from 'react';
-import { Row, Col } from 'antd';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Layout } from 'antd';
 
-import style from './index.module.less';
+
+
+const { Sider, Content } = Layout;
 
 const SiderLayout = ({ children, left }) => {
 
   return (
-    <div className="baseSystem-workspace-section">
-      <div className="baseSystem-tab-content">
-        <div className="baseSystem-portal-view">
-          <Row
-            justify="center"
-            className={style.main}
-            gutter={32}
-          >
-            <Col
-              xl={4}
-              style={{
-                position: 'sticky',
-                top: 0,
-                height: 'calc(100vh - 51px)',
-              }}>
-              <div className={style.leftWarp}>
-                <Scrollbars
-                  autoHide
-                  autoHideTimeout={500}
-                  className="Scroller">
-                  <div
-                    className="sidebar"
-                  >
-                    {left}
-                  </div>
-
-                </Scrollbars>
-
-              </div>
-            </Col>
-            <Col
-              xl={20}>
-              <div className={style.contentContainer}>{children}</div>
-
-            </Col>
-          </Row>
-        </div>
-      </div>
-    </div>
+    <Layout>
+      <Sider theme="light" width={220}>{left}</Sider>
+      <Content>{children}</Content>
+    </Layout>
   );
 };
 

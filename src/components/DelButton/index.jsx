@@ -11,7 +11,7 @@ const DelButton = ({
 
   if (!api) {
     api = {};
-    console.error('Table component: api cannot be empty,But now it doesn\'t exist!');
+    console.warn('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
 
   if (!rowKey) {

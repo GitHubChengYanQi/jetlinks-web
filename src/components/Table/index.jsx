@@ -1,16 +1,16 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
-import {Table as AntdTable, Button, Divider} from 'antd';
-import {ReloadOutlined, SearchOutlined} from '@ant-design/icons';
+import React, { forwardRef, useImperativeHandle } from 'react';
+import { Table as AntdTable } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import Service from '@/util/Service';
-import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
+import { useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup } from '@formily/antd';
 
 import style from './index.module.less';
 
-const {Column} = AntdTable;
+const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, ...props}, ref) => {
+const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -22,10 +22,10 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
   if (!rowKey) {
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
-  const {ajaxService} = Service();
+  const { ajaxService } = Service();
 
   const requestMethod = async (params) => {
-    const {values, pagination, ...other} = params;
+    const { values, pagination, ...other } = params;
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
@@ -55,7 +55,7 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
 
   };
 
-  const {form, table: tableProps} = useFormTableQuery(requestMethod);
+  const { form, table: tableProps } = useFormTableQuery(requestMethod);
 
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
@@ -63,39 +63,45 @@ const TableWarp = ({children, columns, actions, title, api, searchForm, rowKey, 
     reset: formActions.reset,
   }));
 
-  const {loading, dataSource, ...other} = tableProps;
+  const { loading, dataSource,pagination, ...other } = tableProps;
+  // pagination
   return (
     <div className={style.tableWarp}>
       <div className={style.listHeader}>
         {title && <div className="title">{title}</div>}
         <div className="actions">
-          <div className="search" style={{textAlign: title ? 'right' : 'left'}}>
-
-            <Form
-              layout="inline"
-              {...form}
-              actions={formActions}
-              style={{float: title ? 'right' : 'left', textAlign: 'left'}}>
-              {typeof searchForm === 'function' && searchForm()}
-
-              {searchForm && <><FormButtonGroup>
-                <Submit><SearchOutlined/>查询</Submit>
-              </FormButtonGroup></>}
-            </Form>
-          </div>
-          <div className="button">
-            <Button className="button-left-margin" onClick={async () => {
-              await formActions.submit();
-            }}><ReloadOutlined/></Button>
-            <>{actions && <Divider type="vertical"/>}{actions}</>
-          </div>
+          {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
+          <div className="button">{actions}</div>
         </div>
       </div>
+      {searchForm ? <div className="search">
+        <Form
+          layout="inline"
+          {...form}
+          actions={formActions}
+        >
+          {typeof searchForm === 'function' && searchForm()}
+          <FormButtonGroup>
+            <Submit><SearchOutlined/>查询</Submit>
+          </FormButtonGroup>
+        </Form>
+      </div> : <Form
+        layout="inline"
+        {...form}
+        actions={formActions}
+      />}
       <AntdTable
+        showTotal
         loading={loading}
         dataSource={dataSource || []}
         rowKey={rowKey}
         columns={columns}
+        pagination={
+          {
+            ...pagination,
+            showTotal: (total, range) => `当前${range[0]}-${range[1]}/共${total}条`
+          }
+        }
         {...other}
         {...props}
       >

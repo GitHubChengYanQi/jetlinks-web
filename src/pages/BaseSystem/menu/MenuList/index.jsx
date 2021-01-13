@@ -8,6 +8,7 @@ import MenuEdit from '@/pages/BaseSystem/menu/MenuEdit';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
+import Breadcrumb from '@/components/Breadcrumb';
 
 
 const {Column} = AntTable;
@@ -28,7 +29,7 @@ const MenuList = () => {
   return (
     <>
       <Table
-        title={<h2><MenuOutlined/> 菜单管理</h2>}
+        title={<Breadcrumb />}
         api={menuTreeList}
         rowKey="value"
         actions={actions()}

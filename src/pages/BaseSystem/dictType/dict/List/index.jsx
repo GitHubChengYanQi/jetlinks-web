@@ -10,6 +10,7 @@ import DictEdit from '@/pages/BaseSystem/dictType/dict/Edit';
 import AddButton from '@/components/AddButton';
 import {RollbackOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -18,8 +19,6 @@ const DictList = () => {
   const tableRef = useRef();
   const ref = useRef();
   const {dictTypeId} = useParams();
-
-  console.log(tableRef);
 
   const actions = () => {
     return (
@@ -43,7 +42,7 @@ const DictList = () => {
   return (
     <>
       <Table
-        title={<h2>字典管理</h2>}
+        title={<Breadcrumb />}
         ref={tableRef}
         api={dictList}
         searchForm={searchForm}

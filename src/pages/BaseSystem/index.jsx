@@ -1,17 +1,17 @@
 import SiderLayout from '@/layouts/SiderLayout';
 import React from 'react';
-import {useRouteMatch, useHistory} from 'ice';
+import { useRouteMatch, useHistory } from 'ice';
 import store from '@/store';
-import {Menu} from 'antd';
+import { Menu } from 'antd';
 // import * as Icon from '@ant-design/icons';
 
-const BaseSystem = ({children}) => {
+const BaseSystem = ({ children }) => {
 
   const match = useRouteMatch();
-  const history  = useHistory();
+  const history = useHistory();
 
   const [userInfo] = store.useModel('user');
-  const {menus} = userInfo;
+  const { menus } = userInfo;
 
   const subMenu = Array.isArray(menus) && menus.find((item) => {
     return `/${item.id}` === match.path;
@@ -34,7 +34,7 @@ const BaseSystem = ({children}) => {
           }}
           mode="inline"
           defaultSelectedKeys={[]}
-          style={{borderRight: 'none'}}
+          // style={{ borderRight: 'none' }}
         >{loopMenu(subMenus)}</Menu>
       );
     }
@@ -47,13 +47,11 @@ const BaseSystem = ({children}) => {
     }
     const IconNode = null;// item.icon?Icon[item.icon]:null;
     return (
-      <Menu.Item key={item.url} icon={IconNode?<IconNode />:null}>{item.name}</Menu.Item>
+      <Menu.Item key={item.url} icon={IconNode ? <IconNode/> : null}>{item.name}</Menu.Item>
     );
   };
   return (
-    <div className="content-wrap">
-      <SiderLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</SiderLayout>
-    </div>
+    <SiderLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</SiderLayout>
   );
 };
 
