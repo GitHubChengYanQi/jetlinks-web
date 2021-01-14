@@ -9,7 +9,7 @@ const Logout = () => {
   cookie.remove('tianpeng-token');
 
   const history = useHistory();
-  const [count, setCount] = useState(6);
+  const [count, setCount] = useState(5);
   useInterval(() => {
 
     if (count <=1) {

@@ -43,17 +43,18 @@ const DictEdit = ({dictTypeId,...props}) => {
         options={
           [
             {
-              label: '是',
+              label: '启用',
               value: 'ENABLE',
             },
             {
-              label: '否',
+              label: '禁用',
               value: 'DISABLE',
             }
           ]
         }
       />
       <FormItem label="描述" name="description" component={Input.TextArea}/>
+      <FormItem label="排序" name="sort" component={Input}/>
     </Form>
   );
 };

@@ -1,30 +1,33 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import Table from '@/components/Table';
-import {dictList} from '@/Config/ApiUrl/system/dict';
-import {Input, Button} from 'antd';
-import {useParams} from 'ice';
+import { dictList } from '@/Config/ApiUrl/system/dict';
+import { Input, Button } from 'antd';
+import { useParams, useHistory } from 'ice';
 import EditButton from '@/components/EditButton';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import DictEdit from '@/pages/BaseSystem/dictType/dict/Edit';
 import AddButton from '@/components/AddButton';
-import {RollbackOutlined} from '@ant-design/icons';
+import { RollbackOutlined } from '@ant-design/icons';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 
-const {Column} = Table;
-const {FormItem} = Form;
+const { Column } = Table;
+const { FormItem } = Form;
 
 const DictList = () => {
+
+  const history = useHistory();
+
   const tableRef = useRef();
   const ref = useRef();
-  const {dictTypeId} = useParams();
+  const { dictTypeId } = useParams();
 
   const actions = () => {
     return (
       <>
         <Button onClick={() => {
-          window.history.back();
+          history.push('/BASE_SYSTEM/dictType');
         }}><RollbackOutlined/>返回</Button>
         <AddButton onClick={() => {
           ref.current.open(false);
@@ -35,14 +38,21 @@ const DictList = () => {
 
   const searchForm = () => {
     return (
-      <FormItem name="dictTypeId" label="" component={Input} initialValue={dictTypeId} placeholder="父级Id" type="hidden"/>
+      <FormItem
+        name="dictTypeId"
+        label=""
+        component={Input}
+        initialValue={dictTypeId}
+        placeholder="父级Id"
+        type="hidden"
+      />
     );
   };
 
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb/>}
         ref={tableRef}
         api={dictList}
         searchForm={searchForm}

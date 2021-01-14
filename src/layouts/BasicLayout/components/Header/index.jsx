@@ -21,6 +21,7 @@ const AppIcon = {
 const Header = () => {
 
   const [visiblePwd, setVisiblePwd] = useState(false);
+  const [messageVisible, setMessageVisible] = useState(false);
 
   const history = useHistory();
 
@@ -42,12 +43,12 @@ const Header = () => {
                 </div>
               </div>
               <div id="navigation-title">
-                React快速开发后台框架
+                {config.projectName}
               </div>
             </div>
             <div className={styles.middle}/>
             <div className={styles.right}>
-              <Dropdown trigger="click" overlay={
+              <Dropdown trigger={['click','hover']} overlay={
                 <Menu style={{ width: 220 }} onClick={({ key }) => {
                   if (key === '/password') {
                     setVisiblePwd(true);
@@ -75,14 +76,12 @@ const Header = () => {
                   <Avatar
                     style={{ float: 'left' }}
                     src={`${config.baseURI}${userInfo.avatar}`}
-                    // size="small"
                   />
-                  {/* <span */}
-                  {/*  style={{ float: 'left', marginLeft: 8, height: 32, lineHeight: '32px' }}>{userInfo.name}</span> */}
-                  {/* <CaretDownOutlined /> */}
                 </Button>
               </Dropdown>
-              <Dropdown trigger="click" overlay={
+              <Dropdown visible={messageVisible} onVisibleChange={(value)=>{
+                setMessageVisible(value);
+              }} trigger={['click']} overlay={
                 <div className={styles.message}>
                   <Tabs centered>
                     <TabPane tab="消息" key="1">
@@ -120,7 +119,7 @@ const Header = () => {
             <div className="css-1b5qfbo">
               <Icon type="icon-gongnengtubiao-134"/>
             </div>
-            <div className="docker-top-text"><span aria-haspopup="true" aria-expanded="false">AT-Soft</span></div>
+            <div className="docker-top-text"><span aria-haspopup="true" aria-expanded="false">{config.projectName}</span></div>
           </div>
         </div>
         <div className="docker-middle">

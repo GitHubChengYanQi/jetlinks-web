@@ -25,7 +25,7 @@ const ApiConfig = {
   Add: deptAdd,
   Save: deptSave,
   View: deptView,
-}
+};
 
 const DeptEditForm = (props) => {
   return (
