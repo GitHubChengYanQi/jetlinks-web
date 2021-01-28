@@ -1,6 +1,6 @@
 import React from 'react';
-import { Cascader as AntCascader } from 'antd';
-import { useRequest } from '@/util/Request';
+import {Cascader as AntCascader} from 'antd';
+import {useRequest} from '@/util/Request';
 
 const getParentValue = (value, data) => {
   if (!Array.isArray(data)) {
@@ -21,11 +21,14 @@ const getParentValue = (value, data) => {
 };
 
 const Cascader = (props) => {
-  const { value, api, ...other } = props;
+  const {
+    value, api, onChange = () => {
+    }, ...other
+  } = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const { data } = useRequest(api);
+  const {data} = useRequest(api);
 
   if (!data) {
     return null;
@@ -34,7 +37,7 @@ const Cascader = (props) => {
   let valueArray = [];
   if (value && typeof `${value}` === 'string') {
     const $tmpValue = `${value}`;
-    if ($tmpValue.indexOf(',')>=0) {
+    if ($tmpValue.indexOf(',') >= 0) {
       const tmpValue = $tmpValue.split(',');
       for (let i = 0; i < tmpValue.length; i++) {
         const item = tmpValue[i];
@@ -51,7 +54,12 @@ const Cascader = (props) => {
     valueArray = '';
   }
 
-  return (<AntCascader changeOnSelect options={data} defaultValue={valueArray}  {...other} />);
+  const change = (value) => {
+    const result = value ? value[value.length - 1] : value;
+    onChange(result);
+  }
+
+  return (<AntCascader changeOnSelect options={data} defaultValue={valueArray} onChange={change}  {...other} />);
 
 
 };

@@ -17,7 +17,7 @@ const ApiConfig = {
 
 const MenuEdit = ({...props}) => {
 
-  const formRef = useRef();
+  const formRef = useRef(null);
 
   return (
     <Form
