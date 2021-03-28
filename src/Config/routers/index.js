@@ -1,13 +1,14 @@
-import React, { lazy } from 'react';
+import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
 import otherRouters from './AppRouters';
+import {SysDeptRouter} from "@/pages/BaseSystem/sysDept/sysDeptRouter";
 
 
 const routerConfig = [
   {
     path: '/login',
-    name:'登录',
+    name: '登录',
     component: lazy(() => import((`@/pages/Login`))),// Login,
   },
   {
