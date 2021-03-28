@@ -159,7 +159,7 @@ const FieldConfigList = (
                       {label: '上级ID', value: 'parentKey'},
                       {label: '联级选择控件（接口）', value: 'cascader'},
                       {label: 'Select控件（接口）', value: 'select'},
-                      {label: 'Select空间（固定值）', value: 'selectValue'},
+                      {label: 'Select控件（固定值）', value: 'selectValue'},
                       {label: 'Checkbox控件', value: 'checkbox'},
                       {label: 'Radio控件', value: 'radio'},
                       {label: '文本区域', value: 'textArea'},
