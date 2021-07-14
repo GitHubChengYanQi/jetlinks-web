@@ -43,6 +43,7 @@ const systemConfig = [
         component: lazy(() => import('@/pages/BaseSystem/menu/MenuList')),
         exact: true,
       },
+
       {
         path: '/dictType',
         name:'字典管理',
