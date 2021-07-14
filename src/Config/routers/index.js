@@ -2,10 +2,10 @@ import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
 import otherRouters from './AppRouters';
-import {DaoxinMaterialRouter} from '@/pages/daoxin/daoxinMaterial/daoxinMaterialRouter';
 import {ItemsRouter} from '@/pages/daoxin/items/itemsRouter';
 import {BrandRouter} from '@/pages/daoxin/brand/brandRouter';
 import {PartsRouter} from '@/pages/daoxin/parts/partsRouter';
+import {MaterialRouter} from '@/pages/daoxin/material/materialRouter';
 
 const routerConfig = [
   {
@@ -24,7 +24,7 @@ const routerConfig = [
     children: [
       ...baseSystem,
       ...otherRouters,
-      ...DaoxinMaterialRouter,
+      ...MaterialRouter,
       ...ItemsRouter,
       ...BrandRouter,
       ...PartsRouter,

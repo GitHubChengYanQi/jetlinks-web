@@ -1,25 +1,25 @@
 /**
  * 材质编辑页
  *
- * @author 
- * @Date 2021-07-14 11:47:53
+ * @author cheng
+ * @Date 2021-07-14 15:56:05
  */
 
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {daoxinMaterialDetail, daoxinMaterialAdd, daoxinMaterialEdit} from '../daoxinMaterialUrl';
-import * as SysField from '../daoxinMaterialField';
+import {materialDetail, materialAdd, materialEdit} from '../materialUrl';
+import * as SysField from '../materialField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: daoxinMaterialDetail,
-  add: daoxinMaterialAdd,
-  save: daoxinMaterialEdit
+  view: materialDetail,
+  add: materialAdd,
+  save: materialEdit
 };
 
-const DaoxinMaterialEdit = ({...props}) => {
+const MaterialEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -35,4 +35,4 @@ const DaoxinMaterialEdit = ({...props}) => {
   );
 };
 
-export default DaoxinMaterialEdit;
+export default MaterialEdit;

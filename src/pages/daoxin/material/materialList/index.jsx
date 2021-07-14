@@ -1,8 +1,8 @@
 /**
  * 材质列表页
  *
- * @author 
- * @Date 2021-07-14 11:47:53
+ * @author cheng
+ * @Date 2021-07-14 15:56:05
  */
 
 import React, {useRef} from 'react';
@@ -13,14 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {daoxinMaterialDelete, daoxinMaterialList} from '../daoxinMaterialUrl';
-import DaoxinMaterialEdit from '../daoxinMaterialEdit';
-import * as SysField from '../daoxinMaterialField';
+import {materialDelete, materialList} from '../materialUrl';
+import MaterialEdit from '../materialEdit';
+import * as SysField from '../materialField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const DaoxinMaterialList = () => {
+const MaterialList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -45,7 +45,7 @@ const DaoxinMaterialList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
-        api={daoxinMaterialList}
+        api={materialList}
         rowKey="materialId"
         searchForm={searchForm}
         actions={actions()}
@@ -59,14 +59,14 @@ const DaoxinMaterialList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.materialId);
               }}/>
-              <DelButton api={daoxinMaterialDelete} value={record.materialId} onSuccess={()=>{
+              <DelButton api={materialDelete} value={record.materialId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={DaoxinMaterialEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={MaterialEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -74,4 +74,4 @@ const DaoxinMaterialList = () => {
   );
 };
 
-export default DaoxinMaterialList;
+export default MaterialList;
