@@ -1,7 +1,7 @@
 /**
  * 清单列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:30:20
  */
 
@@ -51,8 +51,8 @@ const PartsList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="物品id" dataIndex="itemId"/>
-        <Column title="品牌id" dataIndex="brandId"/>
+        <Column title="物品" dataIndex="itemName"/>
+        <Column title="品牌" dataIndex="brandName"/>
         <Column title="零件数量" dataIndex="number"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {

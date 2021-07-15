@@ -57,7 +57,7 @@ const ItemsList = () => {
         <Column title="生产日期" dataIndex="productionTime" />
         <Column title="重要程度" dataIndex="important" />
         <Column title="物品重量" dataIndex="weight" />
-        <Column title="材质" dataIndex="name" />
+        <Column title="材质" dataIndex="materialName" />
         <Column title="成本" dataIndex="cost" />
         <Column title="易损" dataIndex="vulnerability" />
         <Column />
@@ -80,6 +80,6 @@ const ItemsList = () => {
       }} ref={ref} />
     </>
   );
-}
+};
 
 export default ItemsList;

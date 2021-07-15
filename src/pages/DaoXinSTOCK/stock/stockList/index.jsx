@@ -1,7 +1,7 @@
 /**
  * 仓库总表列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 11:13:02
  */
 
@@ -51,9 +51,9 @@ const StockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="地点id" dataIndex="palceId"/>
-        <Column title="物品id" dataIndex="itemId"/>
-        <Column title="品牌id" dataIndex="brandId"/>
+        <Column title="地点" dataIndex="pname"/>
+        <Column title="物品" dataIndex="iname"/>
+        <Column title="品牌" dataIndex="bname"/>
         <Column title="数量" dataIndex="inventory"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {

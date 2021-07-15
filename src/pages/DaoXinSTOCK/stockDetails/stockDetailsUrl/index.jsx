@@ -36,7 +36,7 @@ export const stockDetailsList = {
 };
 
 export const stockIdSelect = {
-  url: '/stockDetails/listSelect',
+  url: '/stock/listSelect',
   method:'POST',
   rowKey:'stockItemId'
 };
