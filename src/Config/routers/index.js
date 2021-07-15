@@ -3,6 +3,8 @@ import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
 import otherRouters from './AppRouters';
 import bomRouterConfig from '@/pages/DaoxinBOM/router';
+import {StockRouter} from '@/pages/DaoxinBOM/stock/stockRouter';
+import {PlaceRouter} from '@/pages/DaoxinBOM/place/placeRouter';
 
 const routerConfig = [
   {
