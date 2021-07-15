@@ -1,7 +1,7 @@
 /**
  * 物品表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:04:26
  */
 
@@ -41,6 +41,6 @@ export const itemsListSelect = {
 };
 
 export const materialIdSelect = {
-  url: '/daoxinMaterial/listSelect',
+  url: '/material/listSelect',
   method: 'POST'
 };

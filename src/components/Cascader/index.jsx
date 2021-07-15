@@ -57,7 +57,7 @@ const Cascader = (props) => {
   const change = (value) => {
     const result = value ? value[value.length - 1] : value;
     onChange(result);
-  }
+  };
 
   return (<AntCascader changeOnSelect options={data} defaultValue={valueArray} onChange={change}  {...other} />);
 

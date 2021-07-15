@@ -26,31 +26,34 @@ const MenuEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="menuId"
       onSubmit={(values) => {
+
         if (Array.isArray(values.pids) && values.pids.length > 0) {
           values.pid = values.pids[values.pids.length - 1];
+        } else {
+          values.pid = values.pids;
         }
         return values;
       }}
     >
-      <FormItem label="名称" required name="name" component={Input}/>
+      <FormItem label="名称" required name="name" component={Input} />
       <FormItem label="分类" required name="systemType" component={Radio} api={dictRadioByCode} options={{
         defaultParams: {
           data: {
             dictTypeCode: 'SYSTEM_TYPE'
           }
         }
-      }}/>
-      <FormItem label="编码" required name="code" component={Input}/>
-      <FormItem label="上级" required name="pids" component={Cascader} allowClear={false} api={menuTree}/>
+      }} />
+      <FormItem label="编码" required name="code" component={Input} />
+      <FormItem label="上级" required name="pids" component={Cascader} allowClear={false} api={menuTree} />
       <FormItem
         label="菜单"
         name="menuFlag"
         component={AntRadio.Group}
         options={[{label: '是', value: 'Y'}, {label: '否', value: 'N'}]}
       />
-      <FormItem label="图标" name="icon" component={SelectIcon}/>
-      <FormItem label="请求地址" required name="url" component={Input}/>
-      <FormItem label="排序" name="sort" component={Input}/>
+      <FormItem label="图标" name="icon" component={SelectIcon} />
+      <FormItem label="请求地址" required name="url" component={Input} />
+      <FormItem label="排序" name="sort" component={Input} />
     </Form>
   );
 };

@@ -2,10 +2,7 @@ import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
 import otherRouters from './AppRouters';
-import {ItemsRouter} from '@/pages/daoxin/items/itemsRouter';
-import {BrandRouter} from '@/pages/daoxin/brand/brandRouter';
-import {PartsRouter} from '@/pages/daoxin/parts/partsRouter';
-import {MaterialRouter} from '@/pages/daoxin/material/materialRouter';
+import bomRouterConfig from '@/pages/DaoxinBOM/router';
 
 const routerConfig = [
   {
@@ -23,11 +20,8 @@ const routerConfig = [
     component: BasicLayout,
     children: [
       ...baseSystem,
+      ...bomRouterConfig,
       ...otherRouters,
-      ...MaterialRouter,
-      ...ItemsRouter,
-      ...BrandRouter,
-      ...PartsRouter,
       {
         path: '/member',
         component: lazy(() => import((`@/pages/Member`))),
