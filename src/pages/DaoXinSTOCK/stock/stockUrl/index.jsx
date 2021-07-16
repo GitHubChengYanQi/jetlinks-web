@@ -1,7 +1,7 @@
 /**
  * 仓库总表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-15 11:13:02
  */
 
@@ -42,6 +42,7 @@ export const palceIdSelect = {
 export const itemIdSelect = {
   url: '/brand/listSelect',
   method: 'POST'
+
 };
 export const brandIdSelect = {
   url: '/brand/listSelect',

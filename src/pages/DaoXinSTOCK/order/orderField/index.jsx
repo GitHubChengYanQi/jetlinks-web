@@ -1,7 +1,7 @@
 /**
  * 发货表字段配置页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -12,15 +12,16 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../orderUrl';
 
-export const OutboundId = (props) =>{
-  return (<Select api={apiUrl.outboundIdSelect} {...props}/>);
+export const outboundId = (props) =>{
+  return (<Select api={apiUrl.outboundIDSelect} {...props}/>);
+};
+export const orderId = (props) =>{
+  return (<Select api={apiUrl.orderIdSelect} {...props}/>);
 };
 export const Consignor = (props) =>{
   return (<Input {...props}/>);
 };
-export const ClientId = (props) =>{
-  return (<Select api={apiUrl.clientIdSelect} {...props}/>);
-};
+
 export const Shipping = (props) =>{
   return (<Input {...props}/>);
 };

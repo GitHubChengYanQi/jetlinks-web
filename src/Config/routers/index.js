@@ -1,9 +1,11 @@
 import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
-import baseSystem from './baseSystem';
-import otherRouters from './AppRouters';
 import bomRouterConfig from '@/pages/DaoxinBOM/router';
 import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
+import baseSystem from './baseSystem';
+import otherRouters from './AppRouters';
+import ClientRouterConfig from '@/pages/DaoxinClient/router';
+import {ClientRouter} from '@/pages/DaoxinClient/client/clientRouter';
 
 const routerConfig = [
   {
@@ -20,6 +22,7 @@ const routerConfig = [
     name: 'Home',
     component: BasicLayout,
     children: [
+      ...ClientRouterConfig,
       ...STOCKRouterConfig,
       ...baseSystem,
       ...bomRouterConfig,

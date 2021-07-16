@@ -1,7 +1,7 @@
 /**
  * 出库表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -36,7 +36,7 @@ export const outboundList = {
 };
 
 export const itemIdSelect = {
-  url: '',
+  url: '/items/listSelect',
   method: 'POST'
 };
 export const placeIdSelect = {

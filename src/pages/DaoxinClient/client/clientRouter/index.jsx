@@ -1,13 +1,13 @@
 /**
- * 客户表路由文件
+ * 客户管理表路由文件
  *
- * @author 
- * @Date 2021-07-15 17:41:40
+ * @author
+ * @Date 2021-07-16 12:55:35
  */
 
 import React, {lazy} from 'react';
 
-export const ClientRouter = [
+export const Client = [
   {
     path: '/client',
     component: lazy(() => import('../clientList')),

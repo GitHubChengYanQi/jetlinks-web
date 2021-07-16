@@ -1,7 +1,7 @@
 /**
  * 出库表列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -51,11 +51,12 @@ const OutboundList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="仓库id" dataIndex="stockId"/>
-        <Column title="出库物品" dataIndex="itemId"/>
-        <Column title="出库数量" dataIndex="number"/>
-        <Column title="出库时间" dataIndex="outtime"/>
-        <Column title="出库地点" dataIndex="placeId"/>
+
+        <Column title="仓库" dataIndex="name"/>
+        <Column title="出库物品" dataIndex="name"/>
+        <Column title="出库数量" dataIndex="name"/>
+        <Column title="出库时间" dataIndex="name"/>
+        <Column title="出库地点" dataIndex="name"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

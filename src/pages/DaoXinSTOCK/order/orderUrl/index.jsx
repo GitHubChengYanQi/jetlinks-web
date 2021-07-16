@@ -29,17 +29,13 @@ export const orderDetail = {
   rowKey:'orderId'
 };
 
-export const orderList = {
-  url: '/order/list',
-  method: 'POST',
-  rowKey:'orderId'
-};
-
-export const outboundIdSelect = {
+export const outboundIDSelect = {
   url: '/order/listSelect',
   method: 'POST'
 };
-export const clientIdSelect = {
-  url: '/client/listSelect',
+export const orderIdSelect = {
+  url: '/order/listSelect',
   method: 'POST'
 };
+//export const order
+

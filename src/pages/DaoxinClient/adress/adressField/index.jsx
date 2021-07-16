@@ -1,8 +1,8 @@
 /**
- * 客户表字段配置页
+ * 客户地址表字段配置页
  *
  * @author 
- * @Date 2021-07-15 17:41:40
+ * @Date 2021-07-16 12:55:35
  */
 
 import React from 'react';
@@ -10,26 +10,20 @@ import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Ra
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
-import * as apiUrl from '../clientUrl';
+import * as apiUrl from '../adressUrl';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
 };
-export const Adress = (props) =>{
+export const Adress1Id = (props) =>{
   return (<Input {...props}/>);
 };
-export const Phone = (props) =>{
+export const Adress1 = (props) =>{
   return (<Input {...props}/>);
 };
-export const OrderId = (props) =>{
-  return (<Select api={apiUrl.orderIdSelect} {...props}/>);
-};
-export const OrderTime = (props) =>{
+export const Adress2Id = (props) =>{
   return (<Input {...props}/>);
 };
-export const Price = (props) =>{
+export const Adress2 = (props) =>{
   return (<Input {...props}/>);
-};
-export const LogisticsId = (props) =>{
-  return (<Select api={apiUrl.logisticsIdSelect} {...props}/>);
 };

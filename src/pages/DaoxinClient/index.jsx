@@ -5,7 +5,7 @@ import store from '@/store';
 import { Menu } from 'antd';
 
 
-const BomSystem = ({ children }) => {
+const ClientSystem = ({ children }) => {
 
   const match = useRouteMatch();
   const history = useHistory();
@@ -55,4 +55,4 @@ const BomSystem = ({ children }) => {
   );
 };
 
-export default BomSystem;
+export default ClientSystem;

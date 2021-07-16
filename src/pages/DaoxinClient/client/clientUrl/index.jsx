@@ -1,8 +1,8 @@
 /**
- * 客户表接口配置
+ * 客户管理表接口配置
  *
- * @author 
- * @Date 2021-07-15 17:41:40
+ * @author
+ * @Date 2021-07-16 12:55:35
  */
 
 export const clientAdd = {
@@ -41,10 +41,6 @@ export const clientListSelect = {
 };
 
 export const orderIdSelect = {
-  url: '',
-  method: 'POST'
-};
-export const logisticsIdSelect = {
-  url: '',
+  url: '/client/listSelect',
   method: 'POST'
 };

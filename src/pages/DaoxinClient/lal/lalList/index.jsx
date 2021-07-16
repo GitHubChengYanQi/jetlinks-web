@@ -1,8 +1,8 @@
 /**
- * 发货表列表页
+ * 经纬度表列表页
  *
- * @author
- * @Date 2021-07-15 17:41:40
+ * @author 
+ * @Date 2021-07-16 12:55:35
  */
 
 import React, {useRef} from 'react';
@@ -13,14 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {orderDelete, orderList} from '../orderUrl';
-import OrderEdit from '../orderEdit';
-import * as SysField from '../orderField';
+import {lalDelete, lalList} from '../lalUrl';
+import LalEdit from '../lalEdit';
+import * as SysField from '../lalField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const OrderList = () => {
+const LalList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -36,7 +36,7 @@ const OrderList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="出库编号" name="outboundId" component={SysField.outboundId}/>
+       <FormItem label="客户名称" name="name" component={SysField.Name}/>
      </>
     );
   };
@@ -45,36 +45,30 @@ const OrderList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
-        api={orderList}
-        rowKey="orderId"
+        api={lalList}
+        rowKey="lalId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="出库编号" dataIndex="outboundId"/>
-        <Column title="发货人" dataIndex="consignor"/>
-        <Column title="收货人" dataIndex="clientId"/>
-        <Column title="收货地址" dataIndex="shipping"/>
-        <Column title="发货时间" dataIndex="outtime"/>
-        <Column title="发货价格" dataIndex="price"/>
-        <Column title="物品重量" dataIndex="weight"/>
-        <Column title="物品面积" dataIndex="area"/>
-        <Column title="发货编号" dataIndex="orderId"/>
-
+        <Column title="客户名称" dataIndex="name"/>
+        <Column title="经度" dataIndex="ewItude"/>
+        <Column title="纬度" dataIndex="snItude"/>
+        <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.orderId);
+                ref.current.open(record.lalId);
               }}/>
-              <DelButton api={orderDelete} value={record.orderId} onSuccess={()=>{
+              <DelButton api={lalDelete} value={record.lalId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={OrderEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={LalEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -82,4 +76,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default LalList;

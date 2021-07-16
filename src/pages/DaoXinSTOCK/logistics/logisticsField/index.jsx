@@ -1,7 +1,7 @@
 /**
  * 物流表字段配置页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -21,9 +21,13 @@ export const ClientId = (props) =>{
 export const Position = (props) =>{
   return (<Input {...props}/>);
 };
-export const Adress = (props) =>{
+export const adressId = (props) =>{
   return (<Input {...props}/>);
 };
-export const Phone = (props) =>{
+
+export const Phone1 = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Phone2 = (props) =>{
   return (<Input {...props}/>);
 };

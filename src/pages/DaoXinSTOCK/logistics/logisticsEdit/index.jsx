@@ -1,7 +1,7 @@
 /**
  * 物流表编辑页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -33,8 +33,9 @@ const LogisticsEdit = ({...props}) => {
       <FormItem label="发货编号" name="orderId" component={SysField.OrderId} required/>
       <FormItem label="到货地址" name="clientId" component={SysField.ClientId} required/>
       <FormItem label="当前位置" name="position" component={SysField.Position} required/>
-      <FormItem label="到货地址" name="adress" component={SysField.Adress} required/>
-      <FormItem label="物流电话" name="phone" component={SysField.Phone} required/>
+      <FormItem label="当前位置" name="adressId" component={SysField.adressId} required/>
+      <FormItem label="物流电话" name="phone1" component={SysField.Phone1} required/>
+      \<FormItem label="物流电话" name="phone2" component={SysField.Phone2} required/>
     </Form>
   );
 };

@@ -1,7 +1,7 @@
 /**
  * 物流表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -36,7 +36,7 @@ export const logisticsList = {
 };
 
 export const orderIdSelect = {
-  url: '',
+  url: '/order/listSelect',
   method: 'POST'
 };
 export const clientIdSelect = {

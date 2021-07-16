@@ -18,6 +18,8 @@ export const ItemId = (props) =>{
 export const BrandId = (props) =>{
   return (<Select api={apiUrl.brandIdSelect} {...props}/>);
 };
+
+
 export const Number = (props) =>{
   return (<Input {...props}/>);
 };

@@ -1,7 +1,7 @@
 /**
  * 出库表编辑页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 17:41:40
  */
 
@@ -30,6 +30,7 @@ const OutboundEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="outboundId"
     >
+
       <FormItem label="仓库id" name="stockId" component={SysField.StockId} required/>
       <FormItem label="出库物品" name="itemId" component={SysField.ItemId} required/>
       <FormItem label="出库数量" name="number" component={SysField.Number} required/>
