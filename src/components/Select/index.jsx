@@ -5,7 +5,6 @@ import {RedoOutlined} from '@ant-design/icons';
 
 const Select = (props) => {
   const {value, api, defaultValue, ...other} = props;
-  console.log(props);
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }

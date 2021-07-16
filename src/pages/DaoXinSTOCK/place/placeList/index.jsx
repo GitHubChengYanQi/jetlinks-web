@@ -1,7 +1,7 @@
 /**
  * 地点表列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 11:13:02
  */
 
@@ -36,7 +36,8 @@ const PlaceList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="名称" name="name" component={SysField.Name}/>
+       <FormItem label="仓库名称" name="name" component={SysField.Name}/>
+       <FormItem label="仓库地点" name="position" component={SysField.Position}/>
      </>
     );
   };
@@ -51,12 +52,11 @@ const PlaceList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="名称" dataIndex="name"/>
-        <Column title="地点" dataIndex="position"/>
-        <Column title="位置" dataIndex="palce"/>
-        <Column title="面积" dataIndex="measure"/>
-        <Column title="容量" dataIndex="
-capacity"/>
+        <Column title="仓库名称" dataIndex="name"/>
+        <Column title="仓库地点" dataIndex="position"/>
+        <Column title="仓库导航" dataIndex="palce"/>
+        <Column title="仓库面积" dataIndex="measure"/>
+        <Column title="仓库容量" dataIndex="capacity"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

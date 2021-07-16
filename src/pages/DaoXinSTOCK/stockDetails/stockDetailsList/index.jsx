@@ -1,7 +1,7 @@
 /**
  * 仓库物品明细表列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 11:13:02
  */
 
@@ -36,7 +36,7 @@ const StockDetailsList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="仓库id" name="stockId" component={SysField.StockId}/>
+       <FormItem label="库存编号" name="stockId" component={SysField.StockId}/>
      </>
     );
   };
@@ -51,8 +51,8 @@ const StockDetailsList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="仓库id" dataIndex="stockId"/>
-        <Column title="价格" dataIndex="price"/>
+        <Column title="库存编号" dataIndex="stockId"/>
+        <Column title="物品价格" dataIndex="price"/>
         <Column title="入库时间" dataIndex="storageTime"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {

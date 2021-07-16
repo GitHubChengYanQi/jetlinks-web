@@ -64,9 +64,7 @@ const ItemsList = () => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.itemId);
-              }} />
+              <EditButton onClick={() => {ref.current.open(record.itemId);}} />
               <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />

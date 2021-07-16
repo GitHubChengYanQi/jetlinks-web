@@ -31,11 +31,11 @@ const PlaceEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="palceId"
     >
-      <FormItem label="名称" name="name" component={SysField.Name} required/>
-      <FormItem label="地点" name="position" component={SysField.Position} required/>
-      <FormItem label="位置" name="palce" component={SysField.Palce} required/>
-      <FormItem label="面积" name="measure" component={SysField.Measure} required/>
-      <FormItem label="容量" name="capacity" component={SysField.Capacity} required/>
+      <FormItem label="仓库名称" name="name" component={SysField.Name} required/>
+      <FormItem label="仓库地点" name="position" component={SysField.Position} required/>
+      <FormItem label="仓库位置" name="palce" component={SysField.Palce} required/>
+      <FormItem label="仓库面积" name="measure" component={SysField.Measure} required/>
+      <FormItem label="仓库容量" name="capacity" component={SysField.Capacity} required/>
     </Form>
   );
 };

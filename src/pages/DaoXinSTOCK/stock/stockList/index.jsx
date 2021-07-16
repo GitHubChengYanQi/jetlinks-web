@@ -36,7 +36,8 @@ const StockList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="物品id" name="itemId" component={SysField.ItemId}/>
+       <FormItem label="仓库地点" name="pname" component={SysField.PalceId}/>
+       <FormItem label="物品名称" name="iname" component={SysField.ItemId}/>
      </>
     );
   };
@@ -51,8 +52,8 @@ const StockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="地点" dataIndex="pname"/>
-        <Column title="物品" dataIndex="iname"/>
+        <Column title="仓库名称" dataIndex="pname"/>
+        <Column title="物品名称" dataIndex="iname"/>
         <Column title="品牌" dataIndex="bname"/>
         <Column title="数量" dataIndex="inventory"/>
         <Column/>
@@ -74,6 +75,7 @@ const StockList = () => {
         ref.current.close();
       }} ref={ref}/>
     </>
+
   );
 };
 

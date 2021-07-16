@@ -1,15 +1,19 @@
 /**
  * 仓库总表编辑页
  *
- * @author 
+ * @author
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useRef} from 'react';
-import {Input} from 'antd';
+
+import React, {useRef, useState} from 'react';
+import {Button, Input} from 'antd';
 import Form from '@/components/Form';
 import {stockDetail, stockAdd, stockEdit} from '../stockUrl';
 import * as SysField from '../stockField';
+import StockPlaceList from '@/pages/DaoXinSTOCK/stock/stockEdit/placeList';
+import './index.scss';
+import StockList from '@/pages/DaoXinSTOCK/stock/stockList';
 
 const {FormItem} = Form;
 
@@ -22,7 +26,6 @@ const ApiConfig = {
 const StockEdit = ({...props}) => {
 
   const formRef = useRef();
-
   return (
     <Form
       {...props}
@@ -30,9 +33,10 @@ const StockEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="stockId"
     >
-      <FormItem label="地点id" name="palceId" component={SysField.PalceId} required/>
-      <FormItem label="物品id" name="itemId" component={SysField.ItemId} required/>
-      <FormItem label="品牌id" name="brandId" component={SysField.BrandId} required/>
+
+      <FormItem label="仓库名称" name="palceId" component= {SysField.Palce}   required />
+      <FormItem label="物品名称" name="itemId" component={SysField.Item} required/>
+      <FormItem label="品牌" name="brandId" component={SysField.BrandId} required/>
       <FormItem label="数量" name="inventory" component={SysField.Inventory} required/>
     </Form>
   );
