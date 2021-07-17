@@ -1,24 +1,23 @@
 /**
- * 客户表字段配置页
+ * 客户管理表字段配置页
  *
  * @author
- * @Date 2021-07-15 17:41:40
+ * @Date 2021-07-16 12:55:35
  */
 
 import React from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+
 import Select from '@/components/Select';
 import * as apiUrl from '../clientUrl';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
 };
-export const Adress = (props) =>{
-  return (<Input {...props}/>);
+export const AdressId = (props) =>{
+  return (<Select api={apiUrl.addressIdSelect} {...props}/>);
 };
-export const Phone = (props) =>{
+export const Phone1 = (props) =>{
   return (<Input {...props}/>);
 };
 export const OrderId = (props) =>{
@@ -27,10 +26,27 @@ export const OrderId = (props) =>{
 export const OrderTime = (props) =>{
   return (<Input {...props}/>);
 };
-export const Price = (props) =>{
+export const Phone2 = (props) =>{
   return (<Input {...props}/>);
 };
-export const LogisticsId = (props) =>{
-  console.log(props);
-  return (<Select api={apiUrl.logisticsIdSelect} {...props}/>);
+export const Setup = (props) =>{
+  return (<TimePicker {...props}/>);
+};
+export const Legal = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Utscc = (props) =>{
+  return (<Input {...props}/>);
+};
+export const CompanyType = (props) =>{
+  return (<Input {...props}/>);
+};
+export const BusinessTerm = (props) =>{
+  return (<DatePicker {...props}/>);
+};
+export const SignIn = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Introduction = (props) =>{
+  return (<Input {...props}/>);
 };

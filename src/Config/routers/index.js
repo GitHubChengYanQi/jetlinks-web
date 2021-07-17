@@ -1,7 +1,6 @@
 import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
-import otherRouters from './AppRouters';
 import bomRouterConfig from '@/pages/DaoxinBOM/router';
 import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
 import ClientRouterConfig from '@/pages/DaoXinClient/router';
@@ -25,7 +24,6 @@ const routerConfig = [
       ...STOCKRouterConfig,
       ...baseSystem,
       ...bomRouterConfig,
-      ...otherRouters,
       {
         path: '/member',
         component: lazy(() => import((`@/pages/Member`))),

@@ -9,6 +9,7 @@ import React, {useRef, useState} from 'react';
 import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
 import Drawer from '@/components/Drawer';
 import Stocks from '@/pages/DaoXinSTOCK/stockDetails/stockDetailsEdit/stock';
+import {DatePicker2} from '@alifd/next';
 
 export const Stock = (props) =>{
   const {onChange} = props;
@@ -34,6 +35,6 @@ export const Price = (props) =>{
   return (<Input {...props}/>);
 };
 export const StorageTime = (props) =>{
-  return (<DatePicker {...props}/>);
+  return (<DatePicker2 {...props}/>);
 };
 

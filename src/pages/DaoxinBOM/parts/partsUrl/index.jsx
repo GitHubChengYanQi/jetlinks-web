@@ -1,7 +1,7 @@
 /**
  * 清单接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:30:20
  */
 
@@ -47,4 +47,9 @@ export const itemIdSelect = {
 export const brandIdSelect = {
   url: '/brand/listSelect',
   method: 'POST'
+};
+export const materialListSelect = {
+  url: '/material/listSelect',
+  method: 'POST',
+  rowKey:'materialId'
 };

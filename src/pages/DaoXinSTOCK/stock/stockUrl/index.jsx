@@ -42,6 +42,7 @@ export const palceIdSelect = {
 export const itemIdSelect = {
   url: '/items/listSelect',
   method: 'POST'
+
 };
 export const brandIdSelect = {
   url: '/brand/listSelect',

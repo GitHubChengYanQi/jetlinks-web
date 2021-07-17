@@ -11,6 +11,7 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../itemsUrl';
+import {DatePicker2} from '@alifd/next';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
@@ -22,7 +23,7 @@ export const Inventory = (props) =>{
   return (<Input {...props}/>);
 };
 export const ProductionTime = (props) =>{
-  return (<DatePicker {...props}/>);
+  return (<DatePicker2 {...props}/>);
 };
 export const Important = (props) =>{
   return (<Input {...props}/>);

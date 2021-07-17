@@ -10,21 +10,19 @@ const systemConfig = [
     name: '设置',
     component: BaseSystem,
     children: [
+
+
       ...SysDeptRouter,
       ...LoginLogRouter,
       ...GenRouter,
+
       {
         path: '/mgr',
         name: '用户管理',
         component: lazy(() => import('@/pages/BaseSystem/user/UserList')),
         exact: true,
       },
-      {
-        path: '/role',
-        name: '角色管理',
-        component: lazy(() => import('@/pages/BaseSystem/role/RoleList')),
-        exact: true,
-      },
+
       {
         path: '/dept',
         name: '部门管理',

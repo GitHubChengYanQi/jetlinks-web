@@ -36,7 +36,7 @@ export const StockId = (props) =>{
   return (<Input {...props}/>);
 };
 export const DeliveryTime = (props) =>{
-  return (<DatePicker {...props}/>);
+  return (<DatePicker2 {...props}/>);
 };
 export const Number = (props) =>{
   return (<Input {...props}/>);

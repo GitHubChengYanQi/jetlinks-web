@@ -5,7 +5,7 @@ import store from '@/store';
 import { Menu } from 'antd';
 // import * as Icon from '@ant-design/icons';
 
-const STOCKSystem = ({ children }) => {
+const StockSystem = ({ children }) => {
 
   const match = useRouteMatch();
   const history = useHistory();
@@ -55,4 +55,4 @@ const STOCKSystem = ({ children }) => {
   );
 };
 
-export default STOCKSystem;
+export default StockSystem;

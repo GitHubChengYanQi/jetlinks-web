@@ -13,6 +13,8 @@ import Select from '@/components/Select';
 import * as apiUrl from '../instockUrl';
 import Drawer from '@/components/Drawer';
 import Items from '@/pages/DaoXinSTOCK/instock/instockEdit/item';
+import StockPlaceList from '@/pages/DaoXinSTOCK/instock/instockEdit/placeList';
+import {DatePicker2} from '@alifd/next';
 export const Item = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
@@ -35,9 +37,25 @@ export const ItemId = (props) =>{
 export const RegisterTime = (props) =>{
   return (
     <>
-    <DatePicker {...props}/>
+    <DatePicker2 {...props}/>
     </>
 );
+};
+export const PlaceId = (props) =>{
+  const {onChange} = props;
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+  return (<>
+    <Input {...props}/>
+    <Button className='placeName' onClick={()=>{
+      ref.current.open(false);}}>
+      搜索仓库
+    </Button>
+    <Drawer width={800} title="选择" component={StockPlaceList}  onSuccess={() => {
+      tableRef.current.refresh();
+      ref.current.close();
+    }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+  </>);
 };
 export const Number = (props) =>{
   return (<Input {...props}/>);

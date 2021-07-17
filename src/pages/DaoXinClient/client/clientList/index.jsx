@@ -1,8 +1,8 @@
 /**
- * 客户表列表页
+ * 客户管理表列表页
  *
  * @author
- * @Date 2021-07-15 17:41:40
+ * @Date 2021-07-16 12:55:35
  */
 
 import React, {useRef} from 'react';
@@ -36,7 +36,9 @@ const ClientList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="姓名" name="name" component={SysField.Name}/>
+       <FormItem label="客户名称" name="name" component={SysField.Name}/>
+       <FormItem label="联系电话" name="phone1" component={SysField.Phone1}/>
+       <FormItem label="固定电话" name="phone2" component={SysField.Phone2}/>
      </>
     );
   };
@@ -51,12 +53,20 @@ const ClientList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="姓名" dataIndex="name"/>
-        <Column title="居住地址" dataIndex="adress"/>
-        <Column title="联系电话" dataIndex="phone"/>
+        <Column title="客户名称" dataIndex="name"/>
+        <Column title="客户地址编号" dataIndex="adressId"/>
+        <Column title="联系电话" dataIndex="phone1"/>
+        <Column title="固定电话" dataIndex="phone2"/>
         <Column title="订单号" dataIndex="orderId"/>
         <Column title="下单时间" dataIndex="orderTime"/>
-        <Column title="价格" dataIndex="price"/>
+
+        <Column title="成立时间" dataIndex="setup"/>
+        <Column title="法定代表人" dataIndex="legal"/>
+        <Column title="统一社会信用代码" dataIndex="utscc"/>
+        <Column title="公司类型" dataIndex="companyType"/>
+        <Column title="营业期限" dataIndex="businessTerm"/>
+        <Column title="注册地址" dataIndex="signIn"/>
+        <Column title="简介" dataIndex="introduction"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
