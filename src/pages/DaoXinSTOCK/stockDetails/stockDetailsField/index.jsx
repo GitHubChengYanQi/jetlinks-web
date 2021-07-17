@@ -14,8 +14,7 @@ export const Stock = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const [val,setVal] = useState();
-  onChange(val);
+
   return (<>
     <Input {...props}/>
     <Button className='placeName' onClick={()=>{
@@ -25,7 +24,7 @@ export const Stock = (props) =>{
     <Drawer width={800} title="选择" component={Stocks}  onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
-    }} ref={ref} ckeck={(id)=>{setVal(id);ref.current.close();}}/>
+    }} ref={ref} ckeck={(id)=>{ onChange(id);ref.current.close();}}/>
   </>);
 };
 export const StockId = (props) =>{

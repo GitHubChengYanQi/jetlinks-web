@@ -14,6 +14,9 @@ const bomRouterConfig = [
       ...ItemsRouter,
       ...BrandRouter,
       ...PartsRouter,
+      {
+        redirect: '/BOM/items',
+      }
     ]
   }
 ];

@@ -1,7 +1,7 @@
 /**
  * 物品表编辑页
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:04:26
  */
 
@@ -36,7 +36,7 @@ const ItemsEdit = ({...props}) => {
       <FormItem label="生产日期" name="productionTime" component={SysField.ProductionTime} required/>
       <FormItem label="重要程度" name="important" component={SysField.Important} required/>
       <FormItem label="物品重量" name="weight" component={SysField.Weight} required/>
-      <FormItem label="材质id" name="materialId" component={SysField.MaterialId} required/>
+      <FormItem label="材质名称" name="materialId" component={SysField.MaterialId} required/>
       <FormItem label="成本" name="cost" component={SysField.Cost} required/>
       <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} required/>
     </Form>

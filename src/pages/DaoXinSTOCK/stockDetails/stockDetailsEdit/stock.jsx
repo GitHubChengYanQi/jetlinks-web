@@ -46,8 +46,8 @@ const Stocks = (props) => {
           return (
             <>
               <CheckButton onClick={() => {
-                setVal(record.palceId);
-                ckeck(record.palceId);
+                setVal(record.stockId);
+                ckeck(record.stockId);
               }}
               />
             </>

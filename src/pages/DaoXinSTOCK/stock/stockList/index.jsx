@@ -36,7 +36,7 @@ const StockList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="仓库地点" name="pname" component={SysField.PalceId}/>
+       <FormItem label="仓库名称" name="pname" component={SysField.PalceId}/>
        <FormItem label="物品名称" name="iname" component={SysField.ItemId}/>
      </>
     );
