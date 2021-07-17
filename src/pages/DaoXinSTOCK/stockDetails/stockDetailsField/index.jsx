@@ -34,6 +34,6 @@ export const Price = (props) =>{
   return (<Input {...props}/>);
 };
 export const StorageTime = (props) =>{
-  return (<Input {...props}/>);
+  return (<DatePicker {...props}/>);
 };
 

@@ -3,9 +3,8 @@ import {StockDetailsRouter} from '@/pages/DaoXinSTOCK/stockDetails/stockDetailsR
 import {StockRouter} from '@/pages/DaoXinSTOCK/stock/stockRouter';
 import {PlaceRouter} from '@/pages/DaoXinSTOCK/place/placeRouter';
 import STOCKSystem from '@/pages/DaoXinSTOCK';
-import {LogisticsRouter} from '@/pages/DaoXinSTOCK/logistics/logisticsRouter';
-import {OrderRouter} from '@/pages/DaoXinSTOCK/order/orderRouter';
-import {OutboundRouter} from '@/pages/DaoXinSTOCK/outbound/outboundRouter';
+import {DeliveryRouter} from '@/pages/DaoXinSTOCK/delivery/deliveryRouter';
+import {InstockRouter} from '@/pages/DaoXinSTOCK/instock/instockRouter';
 
 const STOCKRouterConfig = [
   {
@@ -16,9 +15,8 @@ const STOCKRouterConfig = [
       ...StockDetailsRouter,
       ...StockRouter,
       ...PlaceRouter,
-      ...LogisticsRouter,
-      ...OrderRouter,
-      ...OutboundRouter,
+      ...DeliveryRouter,
+      ...InstockRouter,
       {
         redirect: '/STOCK_SYSTEM/stock',
       }

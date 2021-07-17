@@ -1,8 +1,8 @@
 /**
- * 物流表列表页
+ * 出库表列表页
  *
- * @author
- * @Date 2021-07-15 17:41:40
+ * @author song
+ * @Date 2021-07-17 10:46:08
  */
 
 import React, {useRef} from 'react';
@@ -13,14 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {logisticsDelete, logisticsList} from '../logisticsUrl';
-import LogisticsEdit from '../logisticsEdit';
-import * as SysField from '../logisticsField';
+import {deliveryDelete, deliveryList} from '../deliveryUrl';
+import DeliveryEdit from '../deliveryEdit';
+import * as SysField from '../deliveryField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const LogisticsList = () => {
+const DeliveryList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -36,7 +36,9 @@ const LogisticsList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="发货编号" name="orderId" component={SysField.OrderId}/>
+       <FormItem label="物品名称" name="name" component={SysField.StockId}/>
+       <FormItem label="出库时间" name="deliveryTime" component={SysField.DeliveryTime}/>
+       <FormItem label="品牌名称" name="brandName" component={SysField.StockId}/>
      </>
     );
   };
@@ -45,32 +47,32 @@ const LogisticsList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
-        api={logisticsList}
-        rowKey="logisticsId"
+        api={deliveryList}
+        rowKey="deliveryId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="发货编号" dataIndex="orderId"/>
-        <Column title="客户id" dataIndex="clientId"/>
-        <Column title="当前位置" dataIndex="position"/>
-        <Column title="到货地址" dataIndex="adress"/>
-        <Column title="物流电话" dataIndex="phone"/>
+        <Column title="物品名称" dataIndex="name"/>
+        <Column title="出库时间" dataIndex="deliveryTime"/>
+        <Column title="出库数量" dataIndex="number"/>
+        <Column title="出库价格" dataIndex="price"/>
+        <Column title="品牌名称" dataIndex="brandName"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.logisticsId);
+                ref.current.open(record.deliveryId);
               }}/>
-              <DelButton api={logisticsDelete} value={record.logisticsId} onSuccess={()=>{
+              <DelButton api={deliveryDelete} value={record.deliveryId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={LogisticsEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={DeliveryEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -78,4 +80,4 @@ const LogisticsList = () => {
   );
 };
 
-export default LogisticsList;
+export default DeliveryList;

@@ -11,9 +11,7 @@ import {Button, Input} from 'antd';
 import Form from '@/components/Form';
 import {stockDetail, stockAdd, stockEdit} from '../stockUrl';
 import * as SysField from '../stockField';
-import StockPlaceList from '@/pages/DaoXinSTOCK/stock/stockEdit/placeList';
 import './index.scss';
-import StockList from '@/pages/DaoXinSTOCK/stock/stockList';
 
 const {FormItem} = Form;
 

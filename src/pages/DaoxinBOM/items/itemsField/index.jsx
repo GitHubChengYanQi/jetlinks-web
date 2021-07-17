@@ -1,7 +1,7 @@
 /**
  * 物品表字段配置页
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:04:26
  */
 
@@ -22,7 +22,7 @@ export const Inventory = (props) =>{
   return (<Input {...props}/>);
 };
 export const ProductionTime = (props) =>{
-  return (<Input {...props}/>);
+  return (<DatePicker {...props}/>);
 };
 export const Important = (props) =>{
   return (<Input {...props}/>);
