@@ -1,7 +1,7 @@
-import ClientSystem from '@/pages/DaoxinClient';
-import {AdressRouter} from '@/pages/DaoxinClient/adress/adressRouter';
-import {LalRouter} from '@/pages/DaoxinClient/lal/lalRouter';
-import {Client} from '@/pages/DaoxinClient/client/clientRouter';
+import ClientSystem from '@/pages/DaoXinClient';
+import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
+import {LalRouter} from '@/pages/DaoXinClient/lal/lalRouter';
+import {Client} from '@/pages/DaoXinClient/client/clientRouter';
 
 
 const ClientRouterConfig = [
@@ -13,7 +13,6 @@ const ClientRouterConfig = [
       ...AdressRouter,
       ...Client,
       ...LalRouter,
-
       {
 
         redirect: '/CLIENT_SYSTEM/client',

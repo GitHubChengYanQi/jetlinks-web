@@ -22,7 +22,12 @@ const systemConfig = [
         component: lazy(() => import('@/pages/BaseSystem/user/UserList')),
         exact: true,
       },
-
+      {
+        path: '/role',
+        name: '用户管理',
+        component: lazy(() => import('@/pages/BaseSystem/role/RoleList')),
+        exact: true,
+      },
       {
         path: '/dept',
         name: '部门管理',

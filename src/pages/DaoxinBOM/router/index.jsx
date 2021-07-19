@@ -4,6 +4,7 @@ import {ItemsRouter} from '@/pages/DaoxinBOM/items/itemsRouter';
 import {BrandRouter} from '@/pages/DaoxinBOM/brand/brandRouter';
 import {PartsRouter} from '@/pages/DaoxinBOM/parts/partsRouter';
 
+
 const bomRouterConfig = [
   {
     path: '/BOM',
@@ -15,8 +16,10 @@ const bomRouterConfig = [
       ...BrandRouter,
       ...PartsRouter,
       {
+
         redirect: '/BOM/items',
       }
+
     ]
   }
 ];
