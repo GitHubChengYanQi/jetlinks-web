@@ -10,7 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {placeDetail, placeAdd, placeEdit} from '../placeUrl';
 import * as SysField from '../placeField';
-import {Capacity} from '../placeField';
+import {Capacity, Palce} from '../placeField';
 
 const {FormItem} = Form;
 
@@ -32,8 +32,9 @@ const PlaceEdit = ({...props}) => {
       fieldKey="palceId"
     >
       <FormItem label="仓库名称" name="name" component={SysField.Name} required/>
-      <FormItem label="仓库地点" name="position" component={SysField.Position} required/>
-      <FormItem label="仓库位置" name="palce" component={SysField.Palce} required/>
+      <FormItem label="仓库地点" name="palce" component={SysField.Palce} required/>
+      <FormItem label="经度" name="longitude" component={SysField.Longitude} required/>
+      <FormItem label="纬度" name="latitude" component={SysField.Latitude} required/>
       <FormItem label="仓库面积" name="measure" component={SysField.Measure} required/>
       <FormItem label="仓库容量" name="capacity" component={SysField.Capacity} required/>
     </Form>

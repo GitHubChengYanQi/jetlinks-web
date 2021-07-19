@@ -36,8 +36,8 @@ const PartsList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="物品名称" name="itemId" component={SysField.ItemId}/>
-       <FormItem label="品牌名称" name="brandName" component={SysField.ItemId}/>
+       <FormItem label="物品名称" name="name" component={SysField.Number}/>
+       <FormItem label="品牌名称" name="brandName" component={SysField.Number}/>
      </>
     );
   };

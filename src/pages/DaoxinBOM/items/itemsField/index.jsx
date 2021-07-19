@@ -26,17 +26,17 @@ export const ProductionTime = (props) =>{
   return (<DatePicker2 {...props}/>);
 };
 export const Important = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Weight = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const MaterialId = (props) =>{
   return (<Select api={apiUrl.materialIdSelect} {...props}/>);
 };
 export const Cost = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Vulnerability = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };

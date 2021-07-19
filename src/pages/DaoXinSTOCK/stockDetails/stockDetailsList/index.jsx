@@ -26,9 +26,7 @@ const StockDetailsList = () => {
   const actions = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
+
       </>
     );
   };
@@ -37,6 +35,9 @@ const StockDetailsList = () => {
    return (
      <>
        <FormItem label="库存编号" name="stockId" component={SysField.StockId}/>
+       <FormItem label="仓库名称" name="pname" component={SysField.StockId}/>
+       <FormItem label="物品名称" name="iname" component={SysField.StockId}/>
+       <FormItem label="入库时间" name="storageTime" component={SysField.StorageTime}/>
      </>
     );
   };
@@ -52,27 +53,13 @@ const StockDetailsList = () => {
         ref={tableRef}
       >
         <Column title="库存编号" dataIndex="stockId"/>
+        <Column title="仓库名称" dataIndex="pname"/>
+        <Column title="物品名称" dataIndex="iname"/>
         <Column title="物品价格" dataIndex="price"/>
         <Column title="入库时间" dataIndex="storageTime"/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.stockItemId);
-              }}/>
-              <DelButton api={stockDetailsDelete} value={record.stockItemId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
-            </>
-          );
-        }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={StockDetailsEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref}/>
-    </>
+      </>
+
   );
 };
 

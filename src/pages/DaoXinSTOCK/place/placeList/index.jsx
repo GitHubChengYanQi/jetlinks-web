@@ -38,6 +38,8 @@ const PlaceList = () => {
      <>
        <FormItem label="仓库名称" name="name" component={SysField.Name}/>
        <FormItem label="仓库地点" name="position" component={SysField.Position}/>
+       <FormItem label="经度" name="longitude" component={SysField.Longitude}/>
+       <FormItem label="纬度" name="latitude" component={SysField.Latitude}/>
      </>
     );
   };
@@ -53,8 +55,9 @@ const PlaceList = () => {
         ref={tableRef}
       >
         <Column title="仓库名称" dataIndex="name"/>
-        <Column title="仓库地点" dataIndex="position"/>
-        <Column title="仓库导航" dataIndex="palce"/>
+        <Column title="仓库地点" dataIndex="palce"/>
+        <Column title="经度" dataIndex="longitude"/>
+        <Column title="纬度" dataIndex="latitude"/>
         <Column title="仓库面积" dataIndex="measure"/>
         <Column title="仓库容量" dataIndex="capacity"/>
         <Column/>

@@ -21,9 +21,15 @@ export const Position = (props) =>{
 export const Palce = (props) =>{
   return (<Input {...props}/>);
 };
+export const Longitude = (props) =>{
+  return (<InputNumber {...props}/>);
+};
+export const Latitude = (props) =>{
+  return (<InputNumber {...props}/>);
+};
 export const Measure = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Capacity = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };

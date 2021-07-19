@@ -24,7 +24,7 @@ export const Stock = (props) =>{
     <Input {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
-      搜索仓库
+      搜索库存
     </Button>
     <Drawer width={800} title="选择" component={Stocks}  onSuccess={() => {
       tableRef.current.refresh();
@@ -39,10 +39,10 @@ export const DeliveryTime = (props) =>{
   return (<DatePicker2 {...props}/>);
 };
 export const Number = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Price = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Brand = (props) =>{
   return (<Select api={apiUrl.brandSelect} {...props}/>);

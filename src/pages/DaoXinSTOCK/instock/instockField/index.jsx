@@ -36,9 +36,7 @@ export const ItemId = (props) =>{
 };
 export const RegisterTime = (props) =>{
   return (
-    <>
     <DatePicker2 {...props}/>
-    </>
 );
 };
 export const PlaceId = (props) =>{
@@ -58,10 +56,10 @@ export const PlaceId = (props) =>{
   </>);
 };
 export const Number = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Price = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}  />);
 };
 export const BrandId = (props) =>{
   return (<Select api={apiUrl.brandIdSelect} {...props}/>);

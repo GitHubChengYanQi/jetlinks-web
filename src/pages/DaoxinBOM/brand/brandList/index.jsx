@@ -16,7 +16,6 @@ import Form from '@/components/Form';
 import {brandDelete, brandList} from '../brandUrl';
 import BrandEdit from '../brandEdit';
 import * as SysField from '../brandField';
-import './index.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

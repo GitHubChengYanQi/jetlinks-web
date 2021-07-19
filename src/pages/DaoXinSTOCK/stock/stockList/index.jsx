@@ -26,9 +26,7 @@ const StockList = () => {
   const actions = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
+
       </>
     );
   };
@@ -57,23 +55,9 @@ const StockList = () => {
         <Column title="品牌" dataIndex="bname"/>
         <Column title="数量" dataIndex="inventory"/>
         <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.stockId);
-              }}/>
-              <DelButton api={stockDelete} value={record.stockId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
-            </>
-          );
-        }} width={300}/>
+
       </Table>
-      <Drawer width={800} title="编辑" component={StockEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref}/>
+
     </>
 
   );

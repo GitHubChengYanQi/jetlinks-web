@@ -54,8 +54,9 @@ const StockPlaceList = (props) => {
         ref={tableRef}
       >
         <Column title="仓库名称" dataIndex="name"/>
-        <Column title="仓库地点" dataIndex="position"/>
-        <Column title="仓库导航" dataIndex="palce"/>
+        <Column title="仓库地点" dataIndex="palce"/>
+        <Column title="经度" dataIndex="longitude"/>
+        <Column title="纬度" dataIndex="latitude"/>
         <Column title="仓库面积" dataIndex="measure"/>
         <Column title="仓库容量" dataIndex="capacity"/>
         <Column title="操作" align="right" render={(value, record) => {

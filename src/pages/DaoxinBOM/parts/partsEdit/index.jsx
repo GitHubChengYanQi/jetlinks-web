@@ -30,7 +30,7 @@ const PartsEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="partsId"
     >
-      <FormItem label="物品id" name="itemId" component={SysField.ItemId} required/>
+      <FormItem label="物品id" name="itemId" component={SysField.Item} required/>
       <FormItem label="品牌id" name="brandId" component={SysField.BrandId} required/>
       <FormItem label="零件数量" name="number" component={SysField.Number} required/>
     </Form>

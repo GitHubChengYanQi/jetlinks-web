@@ -1,37 +1,17 @@
-/**
- * 物品表列表页
- *
- * @author
- * @Date 2021-07-14 14:04:26
- */
-
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
+import {Input, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import {itemsDelete, itemsList} from '../itemsUrl';
-import ItemsEdit from '../itemsEdit';
-import * as SysField from '../itemsField';
+import React, {useRef, useState} from 'react';
+import * as SysField from '@/pages/DaoxinBOM/items/itemsField';
+import Table from '@/components/Table';
+import CheckButton from '@/components/CheckButton';
+import {items, places, stockAdd, stockDetail, stockEdit} from '@/pages/DaoXinSTOCK/stock/stockUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ItemsList = () => {
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
+const Items = (props) => {
+  const {ckeck} = props;
+
 
   const searchForm = () => {
     return (
@@ -45,12 +25,23 @@ const ItemsList = () => {
       </>
     );
   };
+  const [val,setVal] = useState();
+
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+  const actions = () => {
+    return (
+      <>
+
+      </>
+    );
+  };
 
   return (
     <>
+      <Input value={val}/>
       <Table
-        title={<h2>列表</h2>}
-        api={itemsList}
+        api={items}
         rowKey="itemId"
         searchForm={searchForm}
         actions={actions()}
@@ -65,24 +56,20 @@ const ItemsList = () => {
         <Column title="材质" dataIndex="materialName" />
         <Column title="成本" dataIndex="cost" />
         <Column title="易损" dataIndex="vulnerability" />
-        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <EditButton onClick={() => {ref.current.open(record.itemId);}} />
-              <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
+              <CheckButton onClick={() => {
+                setVal(record.itemId);
+                ckeck(record.itemId);
+              }}
+              />
             </>
           );
-        }} width={300} />
+        }}/>
       </Table>
-      <Drawer width={800} title="编辑" component={ItemsEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
     </>
   );
 };
 
-export default ItemsList;
+export default Items;
