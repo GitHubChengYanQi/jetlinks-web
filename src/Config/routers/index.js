@@ -1,11 +1,10 @@
 import React, {lazy} from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
-import bomRouterConfig from '@/pages/DaoxinBOM/router';
-import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
 import baseSystem from './baseSystem';
 import otherRouters from './AppRouters';
-import ClientRouterConfig from '@/pages/DaoxinClient/router';
-import {ClientRouter} from '@/pages/DaoxinClient/client/clientRouter';
+import bomRouterConfig from '@/pages/DaoxinBOM/router';
+import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
+import ClientRouterConfig from '@/pages/DaoXinClient/router';
 
 const routerConfig = [
   {
