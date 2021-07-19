@@ -4,6 +4,7 @@ import baseSystem from './baseSystem';
 import bomRouterConfig from '@/pages/DaoxinBOM/router';
 import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
 import ClientRouterConfig from '@/pages/DaoXinClient/router';
+import BusinessRouterConfig from '@/pages/DaoXinBusiness/router';
 
 const routerConfig = [
   {
@@ -24,6 +25,7 @@ const routerConfig = [
       ...STOCKRouterConfig,
       ...baseSystem,
       ...bomRouterConfig,
+      ...BusinessRouterConfig,
       {
         path: '/member',
         component: lazy(() => import((`@/pages/Member`))),

@@ -17,6 +17,11 @@ const Items = (props) => {
     return (
       <>
         <FormItem label="物品名字" name="name" component={SysField.Name} />
+        <FormItem label="生产日期" name="productionTime" component={SysField.ProductionTime} />
+        <FormItem label="重要程度" name="important" component={SysField.Name} />
+        <FormItem label="物品重量" name="weight" component={SysField.Name} />
+        <FormItem label="材质" name="materialName" component={SysField.Name} />
+        <FormItem label="易损" name="vulnerability" component={SysField.Name} />
       </>
     );
   };
