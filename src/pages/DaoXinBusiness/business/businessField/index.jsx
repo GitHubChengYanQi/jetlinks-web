@@ -15,12 +15,29 @@ import {DatePicker2} from '@alifd/next';
 import Drawer from '@/components/Drawer';
 import StockPlaceList from '@/pages/DaoXinSTOCK/instock/instockEdit/placeList';
 import Clients from '@/pages/DaoXinBusiness/business/businessEdit/clients';
+import Stocks from '@/pages/DaoXinBusiness/quotation/quotationEdit/stock';
 
 export const ClitenId = (props) =>{
   return (<Input {...props}/>);
 };
 export const Source = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select api={apiUrl.SourceIdSelect} {...props}/>);
+};
+export const Stock = (props) =>{
+  const {onChange} = props;
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+  return (<>
+    <Input {...props}/>
+    <Button className='placeName' onClick={()=>{
+      ref.current.open(false);}}>
+      搜索库存
+    </Button>
+    <Drawer width={800} title="选择" component={Stocks}  onSuccess={() => {
+      tableRef.current.refresh();
+      ref.current.close();
+    }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+  </>);
 };
 export const Client = (props) =>{
   const {onChange} = props;
@@ -51,5 +68,5 @@ export const Stage = (props) =>{
   return (<AntdSelect options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
 };
 export const Person = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input  {...props} />);
 };

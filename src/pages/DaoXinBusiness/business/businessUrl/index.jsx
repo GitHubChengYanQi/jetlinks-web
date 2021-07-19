@@ -40,3 +40,14 @@ export const ClientList = {
   method: 'POST',
 };
 
+export const SourceIdSelect = {
+  url: '/source/listSelect',
+  method: 'POST',
+};
+
+export const UserIdSelect = {
+  url: '/mgr/listSelect',
+  method: 'POST',
+};
+
+

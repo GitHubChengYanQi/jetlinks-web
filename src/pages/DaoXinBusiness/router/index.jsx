@@ -6,6 +6,7 @@ import {PartsRouter} from '@/pages/DaoxinBOM/parts/partsRouter';
 import BusinessSystem from '@/pages/DaoXinBusiness';
 import {BusinessRouter} from '@/pages/DaoXinBusiness/business/businessRouter';
 import {QuotationRouter} from '@/pages/DaoXinBusiness/quotation/quotationRouter';
+import {SourceRouter} from '@/pages/DaoXinBusiness/source/sourceRouter';
 
 
 const BusinessRouterConfig = [
@@ -16,6 +17,7 @@ const BusinessRouterConfig = [
     children:[
       ...BusinessRouter,
       ...QuotationRouter,
+      ...SourceRouter,
       {
         redirect: '/BUSINESS_SYSTEM/business',
       }

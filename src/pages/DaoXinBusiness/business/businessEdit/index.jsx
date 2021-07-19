@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {businessDetail, businessAdd, businessEdit} from '../businessUrl';
 import * as SysField from '../businessField';
+import {Stock} from '../businessField';
 
 const {FormItem} = Form;
 
@@ -31,7 +32,8 @@ const BusinessEdit = ({...props}) => {
       fieldKey="businessId"
     >
       <FormItem label="客户编号" name="clitenId" component={SysField.Client} required/>
-      <FormItem label="机会来源" name="source" component={SysField.Source} required/>
+      <FormItem label="物品编号" name="stockId" component={SysField.Stock} required/>
+      <FormItem label="机会来源" name="sourceId" component={SysField.Source} required/>
       <FormItem label="立项日期" name="time" component={SysField.Time} required/>
       <FormItem label="商机状态" name="state" component={SysField.State} required/>
       <FormItem label="商机阶段" name="stage" component={SysField.Stage} required/>

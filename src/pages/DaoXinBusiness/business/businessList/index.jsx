@@ -37,7 +37,8 @@ const BusinessList = () => {
    return (
      <>
        <FormItem label="客户名称" name="name" component={SysField.ClitenId}/>
-       <FormItem label="机会来源" name="source" component={SysField.Source}/>
+       <FormItem label="物品名称" name="iname" component={SysField.ClitenId}/>
+       <FormItem label="机会来源" name="name" component={SysField.Source}/>
        <FormItem label="立项日期" name="time" component={SysField.TimeSearch}/>
        <FormItem label="商机状态" name="state" component={SysField.State}/>
        <FormItem label="商机阶段" name="stage" component={SysField.Stage}/>
@@ -57,7 +58,8 @@ const BusinessList = () => {
         ref={tableRef}
       >
         <Column title="客户名称" dataIndex="name"/>
-        <Column title="机会来源" dataIndex="source"/>
+        <Column title="物品名称" dataIndex="iname"/>
+        <Column title="机会来源" dataIndex="sname"/>
         <Column title="立项日期" dataIndex="time"/>
         <Column title="商机状态" dataIndex="state"/>
         <Column title="商机阶段" dataIndex="stage"/>
