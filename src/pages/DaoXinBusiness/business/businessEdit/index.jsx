@@ -37,7 +37,7 @@ const BusinessEdit = ({...props}) => {
       <FormItem label="立项日期" name="time" component={SysField.Time} required/>
       <FormItem label="商机状态" name="state" component={SysField.State} required/>
       <FormItem label="商机阶段" name="stage" component={SysField.Stage} required/>
-      <FormItem label="负责人" name="person" component={SysField.Person} required/>
+      <FormItem label="负责人" name="account" component={SysField.Person} required/>
     </Form>
   );
 };

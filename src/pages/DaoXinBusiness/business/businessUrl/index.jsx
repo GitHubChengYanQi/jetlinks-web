@@ -46,7 +46,7 @@ export const SourceIdSelect = {
 };
 
 export const UserIdSelect = {
-  url: '/mgr/listSelect',
+  url: '/rest/mgr/listSelect',
   method: 'POST',
 };
 

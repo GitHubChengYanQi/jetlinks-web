@@ -68,5 +68,5 @@ export const Stage = (props) =>{
   return (<AntdSelect options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
 };
 export const Person = (props) =>{
-  return (<Input  {...props} />);
+  return (<Select api={apiUrl.UserIdSelect}  {...props}  />);
 };

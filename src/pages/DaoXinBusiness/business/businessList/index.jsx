@@ -63,7 +63,7 @@ const BusinessList = () => {
         <Column title="立项日期" dataIndex="time"/>
         <Column title="商机状态" dataIndex="state"/>
         <Column title="商机阶段" dataIndex="stage"/>
-        <Column title="负责人" dataIndex="person"/>
+        <Column title="负责人" dataIndex="account"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

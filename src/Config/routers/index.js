@@ -5,6 +5,7 @@ import bomRouterConfig from '@/pages/DaoxinBOM/router';
 import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
 import BusinessRouterConfig from '@/pages/DaoXinBusiness/router';
 import ClientRouterConfig from '@/pages/DaoXinClient/router';
+import ContracRouterConfig from '@/pages/DaoxinContrac/router';
 
 const routerConfig = [
   {
@@ -21,6 +22,7 @@ const routerConfig = [
     name: 'Home',
     component: BasicLayout,
     children: [
+      ...ContracRouterConfig,
       ...ClientRouterConfig,
       ...STOCKRouterConfig,
       ...baseSystem,
