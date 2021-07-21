@@ -31,8 +31,8 @@ const ClientEdit = ({...props}) => {
       fieldKey="clientId"
     >
       <FormItem label="客户名称" name="name" component={SysField.Name} required/>
-      <FormItem label="客户地址id" name="adressId" component={SysField.AdressId} required/>
-      <FormItem label="联系人id" name="contactsId" component={SysField.ContactsId} required/>
+      <FormItem label="客户地址编号" name="adressId" component={SysField.AdressId} required/>
+      <FormItem label="联系人编号" name="contactsId" component={SysField.ContactsId} required/>
       <FormItem label="固定电话" name="tel" component={SysField.Tel} required/>
       <FormItem label="成立时间" name="setup" component={SysField.Setup} required/>
       <FormItem label="法定代表人" name="legal" component={SysField.Legal} required/>

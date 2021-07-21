@@ -4,7 +4,7 @@
  * @author ta
  * @Date 2021-07-19 14:50:54
  */
-
+import './index.scss';
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Select, Table as AntTable} from 'antd';
@@ -36,8 +36,10 @@ const ClientList = () => {
  const searchForm = () => {
    return (
      <>
-         <FormItem label="客户名称" name="name" component={SysField.Name}/>
-         <FormItem label="公司类型" name="companyType" component={SysField.CompanyType}/>
+       <FormItem label="客户名称" name="name" component={SysField.Name} />
+       <div className='sel'>
+         <FormItem  label="公司类型" name="companyType" component={SysField.CompanyType} value=""/>
+       </div>
       </>
     );
   };
@@ -53,8 +55,8 @@ const ClientList = () => {
         ref={tableRef}
       >
         <Column title="客户名称" dataIndex="name"/>
-        <Column title="客户地址id" dataIndex="adressId"/>
-        <Column title="联系人id" dataIndex="contactsId"/>
+        <Column title="客户地址编号" dataIndex="adressId"/>
+        <Column title="联系人编号" dataIndex="contactsId"/>
         <Column title="固定电话" dataIndex="tel"/>
         <Column title="成立时间" dataIndex="setup"/>
         <Column title="法定代表人" dataIndex="legal"/>

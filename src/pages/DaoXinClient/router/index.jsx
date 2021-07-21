@@ -1,9 +1,8 @@
 
-
-import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
-import {ClientRouter} from '@/pages/DaoXinClient/client/clientRouter';
-import {ContactsRouter} from '@/pages/DaoXinClient/contacts/contactsRouter';
-import ClientSystem from '@/pages/DaoXinClient';
+import {AdressRouter} from '@/pages/DaoxinClient/adress/adressRouter';
+import {ClientRouter} from '@/pages/DaoxinClient/client/clientRouter';
+import {ContactsRouter} from '@/pages/DaoxinClient/contacts/contactsRouter';
+import ClientSystem from '@/pages/DaoxinClient';
 
 
 const ClientRouterConfig = [
@@ -15,9 +14,12 @@ const ClientRouterConfig = [
       ...AdressRouter,
       ...ClientRouter,
       ...ContactsRouter,
+
       {
         redirect: '/CLIENT_SYSTEM/client',
       }
+
+
     ]
   }
 ];

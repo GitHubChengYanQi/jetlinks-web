@@ -30,7 +30,7 @@ const ContactsEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="id"
     >
-      <FormItem label="联系人id" name="contactsId" component={SysField.ContactsId} required/>
+      <FormItem label="联系人编号" name="contactsId" component={SysField.ContactsId} required/>
       <FormItem label="联系人姓名" name="name" component={SysField.Name} required/>
       <FormItem label="职务" name="job" component={SysField.Job} required/>
       <FormItem label="联系电话" name="phone" component={SysField.Phone} required/>

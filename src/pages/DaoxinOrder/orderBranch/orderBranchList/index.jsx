@@ -1,8 +1,8 @@
 /**
- * 联系人表列表页
+ * 订单分表列表页
  *
  * @author ta
- * @Date 2021-07-19 14:50:54
+ * @Date 2021-07-20 16:22:28
  */
 
 import React, {useRef} from 'react';
@@ -13,14 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsDelete, contactsList} from '../contactsUrl';
-import ContactsEdit from '../contactsEdit';
-import * as SysField from '../contactsField';
+import {orderBranchDelete, orderBranchList} from '../orderBranchUrl';
+import OrderBranchEdit from '../orderBranchEdit';
+import * as SysField from '../orderBranchField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ContactsList = () => {
+const OrderBranchList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -33,14 +33,13 @@ const ContactsList = () => {
     );
   };
 
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="联系人id" name="contactsId" component={SysField.ContactsId}/>
-        <FormItem label="联系人姓名" name="name" component={SysField.Name}/>
-        <FormItem label="职务" name="job" component={SysField.Job}/>
-        <FormItem label="联系电话" name="phone" component={SysField.Phone}/>
-      </>
+ const searchForm = () => {
+   return (
+     <>
+       <FormItem label="订单编号" name="orderId" component={SysField.OrderId}/>
+       <FormItem label="物品id" name="itemId" component={SysField.ItemId}/>
+       <FormItem label="物品名称" name="name" component={SysField.Name}/>
+     </>
     );
   };
 
@@ -48,16 +47,16 @@ const ContactsList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
-        api={contactsList}
+        api={orderBranchList}
         rowKey="id"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="联系人id" dataIndex="contactsId"/>
-        <Column title="联系人姓名" dataIndex="name"/>
-        <Column title="职务" dataIndex="job"/>
-        <Column title="联系电话" dataIndex="phone"/>
+        <Column title="订单编号" dataIndex="orderId"/>
+        <Column title="物品id" dataIndex="itemId"/>
+        <Column title="物品名称" dataIndex="name"/>
+        <Column title="物品单价" dataIndex="price"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -65,14 +64,14 @@ const ContactsList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.id);
               }}/>
-              <DelButton api={contactsDelete} value={record.id} onSuccess={()=>{
+              <DelButton api={orderBranchDelete} value={record.id} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={ContactsEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={OrderBranchEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -80,4 +79,4 @@ const ContactsList = () => {
   );
 };
 
-export default ContactsList;
+export default OrderBranchList;
