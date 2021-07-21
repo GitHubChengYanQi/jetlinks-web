@@ -6,11 +6,48 @@
  */
 
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
 import {DatePicker2} from '@alifd/next';
+import Editor from '@/components/Editor';
+import TextArea from 'antd/es/input/TextArea';
 
-export const name = (props) =>{
+
+
+
+
+
+
+export const Content = (props) =>{
+  const [data,setData] = useState(props.value);
+
+  const input = "<input type='text' {...props}>";
+  const number = "<input type='number'  {...props}/>";
+  const date = "<input type='date'  {...props}/>";
+  const select = "<select  {...props}><option value='123'>123</option><option value='456'>456</option></select>";
+
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{__html:data.replaceAll("$(input)",input).replaceAll("$(date)",date).replaceAll("$(select)",select).replaceAll("$(number)",number) }} />
+    </>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const Name = (props) =>{
   return (<Input {...props}/>);
 };
 export const time = (props) =>{

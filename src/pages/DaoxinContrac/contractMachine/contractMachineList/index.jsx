@@ -8,15 +8,14 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contractMachineDelete, contractMachineList} from '../contractMachineUrl';
 import ContractMachineEdit from '../contractMachineEdit';
 import '../contractMachineEdit/index.scss';
 import * as SysField from '@/pages/DaoxinContrac/contractMachine/contractMachineField';
+import {templateDelete, templateList} from '@/pages/DaoxinContrac/template/templateUrl';
+import TemplateEdit from '@/pages/DaoxinContrac/template/templateEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -27,9 +26,7 @@ const ContractMachineList1 = () => {
   const actions = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
+
       </>
     );
   };
@@ -37,8 +34,7 @@ const ContractMachineList1 = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="合同名称" name="contractName" component={SysField.name}/>
-       <FormItem label="创建时间" name="creationTime" component={SysField.time}/>
+       <FormItem label="合同模板" name="name" component={SysField.Name}/>
      </>
     );
   };
@@ -47,23 +43,17 @@ const ContractMachineList1 = () => {
     <>
       <Table
         title={<h2>列表</h2>}
-        api={contractMachineList}
-        rowKey="contractId"
+        api={templateList}
+        rowKey="templateId"
         searchForm={searchForm}
-        actions={actions()}
         ref={tableRef}
       >
-        <Column title="合同名称" dataIndex="contractName"/>
-        <Column title="创建时间" dataIndex="creationTime"/>
-        <Column title="备注" dataIndex="note"/>
+        <Column title="合同模板" dataIndex="name"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.contractId);
-              }}/>
-              <DelButton api={contractMachineDelete} value={record.contractId} onSuccess={()=>{
-                tableRef.current.refresh();
+              <AddButton onClick={() => {
+                ref.current.open(record.templateId);
               }}/>
             </>
           );

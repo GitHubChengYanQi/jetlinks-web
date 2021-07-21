@@ -9,6 +9,8 @@ import {InstockRouter} from '@/pages/DaoXinSTOCK/instock/instockRouter';
 import {DeliveryRouter} from '@/pages/DaoXinSTOCK/delivery/deliveryRouter';
 import ContracSystem from '@/pages/DaoxinContrac';
 import {ContractMachineRouter} from '@/pages/DaoxinContrac/contractMachine/contractMachineRouter';
+import {TemplateRouter} from '@/pages/DaoxinContrac/template/templateRouter';
+import {ContractRouter} from '@/pages/DaoxinContrac/contract/contractRouter';
 
 const ContracRouterConfig = [{
 
@@ -18,6 +20,8 @@ const ContracRouterConfig = [{
     component: ContracSystem,
     children:[
       ...ContractMachineRouter,
+      ...TemplateRouter,
+      ...ContractRouter,
       {
         redirect: '/CONTRAC_SYSTEM/contractMachine',
       }

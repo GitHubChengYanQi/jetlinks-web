@@ -11,6 +11,7 @@ import Drawer from '@/components/Drawer';
 import Busines from '@/pages/DaoXinBusiness/quotation/quotationEdit/business';
 import Stocks from '@/pages/DaoXinBusiness/quotation/quotationEdit/stock';
 import {DatePicker2} from '@alifd/next';
+import TextArea from 'antd/es/input/TextArea';
 
 export const BusinessId = (props) =>{
   return (<Input {...props}/>);
@@ -65,5 +66,5 @@ export const Stage = (props) =>{
 };
 
 export const Note = (props) => {
-  return (<Input {...props} />);
+  return (<TextArea  {...props} />);
 };
