@@ -17,7 +17,7 @@ export const Name = (props) =>{
   return (<Input {...props}/>);
 };
 export const ShelfLife = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Inventory = (props) =>{
   return (<Input {...props}/>);

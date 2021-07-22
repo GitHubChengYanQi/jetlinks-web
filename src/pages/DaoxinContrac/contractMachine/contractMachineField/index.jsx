@@ -22,26 +22,27 @@ export const Content = (props) =>{
 
   const renderContrac=(template)=>{
     return(
-      <div>
+      <>
         {
           parse(template, {
             replace:domNode =>{
-              if (domNode.name === 'p' ){
-                return <Input />;
+              console.log(domNode);
+              if (domNode.name === 'em' ){
+                return <Input style={{width : '100px',margin : '0 10px'}} />;
               }
-              if (domNode.name === 'num'){
-                return <InputNumber />;
+              if (domNode.name === 'sub'){
+                return <InputNumber style={{margin : '0 10px'}} />;
               }
-              if (domNode.name === 'date'){
-                return <DatePicker2 />;
+              if (domNode.name === 'sup'){
+                return <DatePicker2 style={{margin : '0 10px'}} />;
               }
-              if (domNode.name === 'select'){
-                return <AntdSelect options={[{value:'分期付款',label:'分期付款'},{value:'全额付款',label:'全额付款'}]} {...props}/>;
+              if (domNode.name === 'strong'){
+                return <AntdSelect style={{width : '100px',margin : '0 10px'}} options={[{value:'分期付款',label:'分期付款'},{value:'全额付款',label:'全额付款'}]}/>;
               }
             }
           })
         }
-      </div>
+      </>
     );
   };
 

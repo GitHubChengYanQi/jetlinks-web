@@ -31,7 +31,6 @@ const TemplateEdit = ({...props}) => {
       fieldKey="templateId"
     >
       <FormItem label="合同姓名" name="name" component={SysField.Name} required/>
-      <p style={{textAlign:'center'}}> 提示：文本  $(input)   数字  $(number)   时间  $(date)   下拉列表  $(select) </p>
       <FormItem label="合同内容" name="content" component={SysField.Content} required/>
 
     </Form>

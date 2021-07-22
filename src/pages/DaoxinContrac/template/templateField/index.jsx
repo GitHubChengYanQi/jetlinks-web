@@ -13,5 +13,5 @@ export const Name = (props) =>{
   return (<Input {...props}/>);
 };
 export const Content = (props) =>{
-  return (<Editor  {...props}/>);
+  return (<Editor  {...props} />);
 };
