@@ -12,6 +12,7 @@ import {Button, DatePicker2} from '@alifd/next';
 import Drawer from '@/components/Drawer';
 import ContactsList from '@/pages/DaoxinClient/contacts/contactsList';
 import * as apiUrl from '../clientUrl';
+import {contactsIdListSelect, contactsList} from '../clientUrl';
 
 
 export const Name = (props) =>{
@@ -21,15 +22,14 @@ export const AdressId = (props) =>{
   return (<Select api={apiUrl.AdressSelect} {...props}/>);
 };
 export const ContactsId = (props) =>{
-  return (<Select api={apiUrl.ContactsSelect} {...props}/>);
+    return (<Select api={apiUrl.contactsIdListSelect} {...props}/>);
+return (<Input {...props}/>);
 };
-
-
-
 
 export const Tel = (props) =>{
   return (<Input {...props}/>);
 };
+
 export const Setup = (props) =>{
   return (<DatePicker2 {...props}/>);
 };

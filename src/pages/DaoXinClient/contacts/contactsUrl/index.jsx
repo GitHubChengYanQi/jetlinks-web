@@ -29,11 +29,36 @@ export const contactsDetail = {
   rowKey:'id'
 };
 
+
 export const contactsList = {
   url: '/contacts/list',
   method: 'POST',
   rowKey:'id'
+
 };
 
+export const nameListSelect = {
+  url: '/client/listSelect',
+  method: 'POST',
+  row:'Id'
+
+};
+
+// export const phoneListSelect = {
+//   url: '/client/listSelect',
+//   method: 'POST',
+//   rowKey:'clientId'
+//
+// };
 
 
+
+//
+//
+// export const jobListSelect = {
+//   url: '/contacts/listSelect',
+//   method: 'POST',
+//
+// };
+//
+//

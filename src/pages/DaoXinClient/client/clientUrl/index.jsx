@@ -34,20 +34,28 @@ export const clientList = {
   method: 'POST',
   rowKey:'clientId'
 };
-export const ClientSelect = {
-  url: '/client/listSelect',
-  method: 'POST'
-};
 
 export const AdressSelect = {
   url: '/adress/listSelect',
   method: 'POST'
 };
 
-export const ContactsSelect = {
-  url: '/contacts/listSelect',
-  method: 'POST'
+export const adressIdListSelect = {
+  url:'/adress/listSelect',
+  method:'POST',
+  rowKey:'adressId'
+
 };
 
 
+export const contactsIdListSelect = {
+  url: '/contacts/listSelect',
+  method: 'POST',
+  rowKey:'contactsId'
+};
 
+export const contactsList = {
+  url: '/contacts/listSelect',
+  method: 'POST',
+  rowKey:'contactsId'
+};

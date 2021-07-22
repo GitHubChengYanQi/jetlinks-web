@@ -43,5 +43,4 @@ const ClientEdit = ({...props}) => {
       <FormItem label="简介" name="introduction" component={SysField.Introduction} required/>
     </Form>
   );
-};
-export default ClientEdit;
+};export default ClientEdit;

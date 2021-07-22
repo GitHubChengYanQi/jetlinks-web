@@ -55,8 +55,8 @@ const ClientList = () => {
         ref={tableRef}
       >
         <Column title="客户名称" dataIndex="name"/>
-        <Column title="客户地址编号" dataIndex="adressId"/>
-        <Column title="联系人编号" dataIndex="contactsId"/>
+        <Column title="客户地址编号" dataIndex="bname"/>
+        <Column title="联系人编号" dataIndex="aname"/>
         <Column title="固定电话" dataIndex="tel"/>
         <Column title="成立时间" dataIndex="setup"/>
         <Column title="法定代表人" dataIndex="legal"/>
@@ -67,6 +67,7 @@ const ClientList = () => {
         <Column title="简介" dataIndex="introduction"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
+          console.log(record);
           return (
             <>
               <EditButton onClick={() => {
@@ -79,7 +80,6 @@ const ClientList = () => {
           );
         }} width={300}/>
       </Table>
-
       <Drawer width={800} title="编辑" component={ClientEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();

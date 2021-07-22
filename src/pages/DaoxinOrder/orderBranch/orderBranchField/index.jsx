@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import {Input} from 'antd';
+import {Input, Select} from 'antd';
 
 
 export const OrderId = (props) =>{

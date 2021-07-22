@@ -1,3 +1,5 @@
+import {AdressSelect} from '@/pages/DaoxinClient/client/clientUrl';
+
 /**
  * 客户地址表接口配置
  *
@@ -34,4 +36,24 @@ export const adressList = {
   method: 'POST',
   rowKey:'adressId'
 };
+
+export const nameListSelect = {
+  url: '/client/listSelect',
+  method: 'POST'
+
+};
+
+export const adressIdListSelect = {
+  url: '/adress/listSelect',
+  method: 'POST'
+
+};
+
+export const locatIdListSelect = {
+  url: '/adress/listSelect',
+  method: 'POST'
+
+};
+
+
 

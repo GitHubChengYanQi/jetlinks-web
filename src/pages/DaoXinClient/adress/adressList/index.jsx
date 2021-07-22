@@ -52,7 +52,7 @@ const AdressList = () => {
         ref={tableRef}
       >
         <Column title="客户名称" dataIndex="name"/>
-        <Column title="地址" dataIndex="location"/>
+        <Column title="地址编号" dataIndex="location"/>
         <Column title="经度" dataIndex="longitude"/>
         <Column title="纬度" dataIndex="latitude"/>
         <Column/>

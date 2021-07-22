@@ -31,9 +31,10 @@ const AdressEdit = ({...props}) => {
       fieldKey="adressId"
     >
       <FormItem label="客户名称" name="name" component={SysField.Name} required/>
-      <FormItem label="地址" name="location" component={SysField.Location} required/>
+      <FormItem label="地址编号" name="location" component={SysField.Location} required/>
       <FormItem label="经度" name="longitude" component={SysField.Longitude} required/>
       <FormItem label="纬度" name="latitude" component={SysField.Latitude} required/>
+
     </Form>
   );
 };
