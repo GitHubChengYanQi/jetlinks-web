@@ -9,8 +9,7 @@
 import React, {useState} from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
 import {DatePicker2} from '@alifd/next';
-import Editor from '@/components/Editor';
-import TextArea from 'antd/es/input/TextArea';
+import parse from 'html-react-parser';
 
 
 
@@ -19,16 +18,40 @@ import TextArea from 'antd/es/input/TextArea';
 
 
 export const Content = (props) =>{
-  const [data,setData] = useState(props.value);
 
-  const input = "<input type='text' {...props}>";
-  const number = "<input type='number'  {...props}/>";
-  const date = "<input type='date'  {...props}/>";
-  const select = "<select  {...props}><option value='123'>123</option><option value='456'>456</option></select>";
+
+  const renderContrac=(template)=>{
+    return(
+      <div>
+        {
+          parse(template, {
+            replace:domNode =>{
+              if (domNode.name === 'p' ){
+                return <Input />;
+              }
+              if (domNode.name === 'num'){
+                return <InputNumber />;
+              }
+              if (domNode.name === 'date'){
+                return <DatePicker2 />;
+              }
+              if (domNode.name === 'select'){
+                return <AntdSelect options={[{value:'分期付款',label:'分期付款'},{value:'全额付款',label:'全额付款'}]} {...props}/>;
+              }
+            }
+          })
+        }
+      </div>
+    );
+  };
+
+
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{__html:data.replaceAll("$(input)",input).replaceAll("$(date)",date).replaceAll("$(select)",select).replaceAll("$(number)",number) }} />
+      {
+        renderContrac(props.value)
+      }
     </>
   );
 };

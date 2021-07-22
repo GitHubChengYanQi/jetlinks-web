@@ -1,7 +1,7 @@
 import React, {useEffect, useImperativeHandle, useState} from 'react';
 import BraftEditor from 'braft-editor';
-import {ContentUtils} from 'braft-utils'
-import {Button, Upload} from 'antd';
+import {ContentUtils} from 'braft-utils';
+import {Button, Input, Upload} from 'antd';
 import {
   FileImageOutlined
 } from '@ant-design/icons';
@@ -9,18 +9,52 @@ import 'braft-editor/dist/index.css';
 
 const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 
-  const [state, setState] = useState(null);
+  const [state, setState] = useState();
 
-  const imgUploadHandler = (object) => {
+  const imgUploadHandler = () => {
+
     setState(
       ContentUtils.insertMedias(state, [{
         type: 'IMAGE',
         url: URL.createObjectURL
       }])
     );
-  }
+  };
 
-  const extendControls = [];
+  const insertHTML = () => {
+    const tmpState = ContentUtils.insertHTML(state, '<li>客户</li>');
+    console.log(tmpState);
+    onChange(tmpState.toHTML());
+    setState(
+      state
+    );
+  };
+
+
+  const insertTEXT = () => {
+    setState(
+      ContentUtils.insertText(state, '<input>')
+    );
+  };
+
+  const extendControls = [
+    {
+      key: 'my-button', // 控件唯一标识，必传
+      type: 'button',
+      title: '文字输入框', // 指定鼠标悬停提示文案
+      className: 'my-button', // 指定按钮的样式名
+      text: '插入输入框', // 指定按钮文字，此处可传入jsx，若已指定html，则text不会显示
+      onClick: insertHTML
+    },
+    {
+      key: 'my-123', // 控件唯一标识，必传
+      type: 'button',
+      title: '文字输入框', // 指定鼠标悬停提示文案
+      className: 'my-button', // 指定按钮的样式名
+      text: '输入框', // 指定按钮文字，此处可传入jsx，若已指定html，则text不会显示
+      onClick: insertTEXT
+    }
+  ];
   if (imgUploadProps) {
     extendControls.push({
       key: 'antd-uploader',
@@ -31,7 +65,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
           showUploadList={false}
           {...imgUploadProps}
         >
-          <Button type="text" icon={<FileImageOutlined/>}>
+          <Button type="text" icon={<FileImageOutlined />}>
             插入图片
           </Button>
         </Upload>
@@ -40,10 +74,18 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
   }
 
   useEffect(() => {
-    BraftEditor.createEditorState(value);
-  }, [value]);
+    console.log(11111);
+    const editorState = BraftEditor.createEditorState(null);
+    setState(editorState);
+  }, []);
 
-  useImperativeHandle(ref, () => ({
+  useEffect(()=>{
+    console.log(value);
+    setState(BraftEditor.createEditorState(value));
+  },[value]);
+
+  useImperativeHandle(ref,
+    () => ({
       getState: () => {
         return state;
       },
@@ -51,16 +93,18 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
     })
   );
 
+
   return (
     <BraftEditor
       className="my-editor"
       placeholder="请输入正文内容"
       value={state}
       onBlur={(content) => {
+        console.log(content.toHTML());
         onChange(content.toHTML());
       }}
       extendControls={extendControls}
-      {...props}
+
     />
   );
 };

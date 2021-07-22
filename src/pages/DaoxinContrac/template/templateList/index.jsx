@@ -5,9 +5,9 @@
  * @Date 2021-07-21 08:22:02
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState,createElement} from 'react';
 import Table from '@/components/Table';
-import {Input, Table as AntTable} from 'antd';
+import {Input, InputNumber, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,9 +16,6 @@ import Form from '@/components/Form';
 import {templateDelete, templateList} from '../templateUrl';
 import TemplateEdit from '../templateEdit';
 import * as SysField from '../templateField';
-import {logger} from 'ice';
-import {InputNumber} from 'antd/es';
-
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -36,27 +33,19 @@ const TemplateList = () => {
   };
 
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="合同模板" name="name" component={SysField.Name}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="合同模板" name="name" component={SysField.Name} />
+      </>
     );
   };
 
 
 
 
-
-
-
-
-
-
-
   return (
     <>
-
       <Table
         title={<h2>列表</h2>}
         api={templateList}
@@ -66,11 +55,6 @@ const TemplateList = () => {
         ref={tableRef}
       >
         <Column title="合同模板" dataIndex="name"/>
-        {/*<Column title="合同内容" render={(value,record)=>{*/}
-        {/*  return (*/}
-        {/*    <div  dangerouslySetInnerHTML={{__html:record.content.replaceAll('input','<Input />').replaceAll('Number','<Input />')}}></div>*/}
-        {/*  );*/}
-        {/*}} />*/}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

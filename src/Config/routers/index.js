@@ -5,8 +5,8 @@ import bomRouterConfig from '@/pages/DaoxinBOM/router';
 import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
 import BusinessRouterConfig from '@/pages/DaoXinBusiness/router';
 import ContracRouterConfig from '@/pages/DaoxinContrac/router';
-import ClientRouterConfig from '@/pages/DaoxinClient/router';
 import OrderRouterConfig from '@/pages/DaoxinOrder/router';
+import ClientRouterConfig from '@/pages/DaoXinClient/router';
 
 const routerConfig = [
   {
