@@ -1,7 +1,7 @@
 import React, {useEffect, useImperativeHandle, useState} from 'react';
 import BraftEditor from 'braft-editor';
 import {ContentUtils} from 'braft-utils';
-import {Button, Input, Upload} from 'antd';
+import {Button, Upload} from 'antd';
 import {
   FileImageOutlined
 } from '@ant-design/icons';
@@ -9,27 +9,30 @@ import 'braft-editor/dist/index.css';
 
 const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 
-  const [state, setState] = useState();
+  const [state, setState] = useState(BraftEditor.createEditorState(""));
 
-  const imgUploadHandler = () => {
-
-    setState(
-      ContentUtils.insertMedias(state, [{
-        type: 'IMAGE',
-        url: URL.createObjectURL
-      }])
-    );
+  const imgUploadHandler = (object) => {
+    console.log(object);
+    if (!object.file) {
+      return false;
+    }
+    const {status, response} = object.file;
+    if (status === 'done') {
+      // message.success(`${object.file.name} 图片上传成功.`);
+      setState(
+        ContentUtils.insertMedias(state, [{
+          type: 'IMAGE',
+          url: response.data.fileSavePath
+        }])
+      );
+      // ContentUtils.focus();
+      // console.log(state.toHTML());
+      onChange(state.toHTML());
+    } else if (status === 'error') {
+      // message.error(`${object.file.name} 图片上传失败.`);
+      console.log('图片上传失败');
+    }
   };
-
-  const insertHTML = () => {
-    const tmpState = ContentUtils.insertHTML(state, '<li>客户</li>');
-    console.log(tmpState);
-    onChange(tmpState.toHTML());
-    setState(
-      state
-    );
-  };
-
 
   const insertTEXT = () => {
     setState(
@@ -64,6 +67,8 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
           accept="image/*"
           showUploadList={false}
           {...imgUploadProps}
+          onChange={imgUploadHandler}
+          // customRequest={imgUploadHandler}
         >
           <Button type="text" icon={<FileImageOutlined />}>
             插入图片
@@ -74,24 +79,13 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
   }
 
   useEffect(() => {
-    console.log(11111);
-    const editorState = BraftEditor.createEditorState(null);
-    setState(editorState);
-  }, []);
+    // setState(BraftEditor.createEditorState(value));
+    // console.log(props)
+    if (value !== state.toHTML()) {
+      setState(BraftEditor.createEditorState(value));
+    }
+  }, [value]);
 
-  useEffect(()=>{
-    console.log(value);
-    setState(BraftEditor.createEditorState(value));
-  },[value]);
-
-  useImperativeHandle(ref,
-    () => ({
-      getState: () => {
-        return state;
-      },
-      ...ContentUtils
-    })
-  );
 
 
   return (
@@ -102,6 +96,10 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
       onBlur={(content) => {
         console.log(content.toHTML());
         onChange(content.toHTML());
+      }}
+      onChange={(editorState) => {
+
+        setState(editorState);
       }}
       extendControls={extendControls}
 
