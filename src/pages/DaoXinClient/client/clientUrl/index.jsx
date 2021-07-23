@@ -1,8 +1,8 @@
 /**
  * 客户管理表接口配置
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author
+ * @Date 2021-07-23 10:06:12
  */
 
 export const clientAdd = {
@@ -34,20 +34,9 @@ export const clientList = {
   method: 'POST',
   rowKey:'clientId'
 };
-export const ClientSelect = {
-  url: '/client/listSelect',
-  method: 'POST'
+
+export const contactsListLike = {
+  url: '/contacts/list',
+  method: 'POST',
 };
-
-export const AdressSelect = {
-  url: '/adress/listSelect',
-  method: 'POST'
-};
-
-export const ContactsSelect = {
-  url: '/contacts/listSelect',
-  method: 'POST'
-};
-
-
 

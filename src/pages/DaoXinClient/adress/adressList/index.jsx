@@ -1,8 +1,8 @@
 /**
  * 客户地址表列表页
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author 
+ * @Date 2021-07-23 10:06:11
  */
 
 import React, {useRef} from 'react';
@@ -36,7 +36,7 @@ const AdressList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="客户名称" name="name" component={SysField.Name}/>
+       <FormItem label="客户id" name="clientId" component={SysField.ClientId}/>
      </>
     );
   };
@@ -51,10 +51,11 @@ const AdressList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="name"/>
         <Column title="地址" dataIndex="location"/>
         <Column title="经度" dataIndex="longitude"/>
         <Column title="纬度" dataIndex="latitude"/>
+        <Column title="部门id" dataIndex="deptId"/>
+        <Column title="客户id" dataIndex="clientId"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

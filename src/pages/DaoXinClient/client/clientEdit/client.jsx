@@ -13,14 +13,17 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsDelete, contactsList} from '../contactsUrl';
-import ContactsEdit from '../contactsEdit';
-import * as SysField from '../contactsField';
+import {contactsListLike} from '@/pages/DaoXinClient/client/clientUrl';
+import {contactsDelete} from '@/pages/DaoXinClient/contacts/contactsUrl';
+import ContactsEdit from '@/pages/DaoXinClient/contacts/contactsEdit';
+import * as SysField from '@/pages/DaoXinClient/contacts/contactsField';
+import {client} from '@/pages/DaoXinClient/contacts/contactsField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ContactsList = () => {
+const ContactsList = (props) => {
+  const {clientId} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -36,21 +39,29 @@ const ContactsList = () => {
  const searchForm = () => {
    return (
      <>
+       <FormItem label="客户" name="clientId" component={SysField.client}/>
        <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}/>
        <FormItem label="职务" name="job" component={SysField.Job}/>
        <FormItem label="联系电话" name="phone" component={SysField.Phone}/>
-       <FormItem label="客户id" name="clientId" component={SysField.ClientId}/>
      </>
     );
   };
 
+
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
-        api={contactsList}
-        rowKey="contactsId"
+        title={<h2>添加联系人</h2>}
+        api={
+          {
+            url: '/contacts/list',
+            method: 'post',
+            data:{clientId:clientId}
+          }
+        }
         searchForm={searchForm}
+        rowKey="contactsId"
         actions={actions()}
         ref={tableRef}
       >
@@ -58,7 +69,6 @@ const ContactsList = () => {
         <Column title="职务" dataIndex="job"/>
         <Column title="联系电话" dataIndex="phone"/>
         <Column title="部门编号" dataIndex="deptId"/>
-        <Column title="客户id" dataIndex="clientId"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

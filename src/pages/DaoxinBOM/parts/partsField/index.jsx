@@ -40,5 +40,5 @@ export const Item = (props) =>{
 
 
 export const Number = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };

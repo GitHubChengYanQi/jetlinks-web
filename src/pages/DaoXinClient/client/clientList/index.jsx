@@ -1,13 +1,13 @@
 /**
  * 客户管理表列表页
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author
+ * @Date 2021-07-23 10:06:12
  */
-import './index.scss';
-import React, {useRef} from 'react';
+
+import React, {lazy, useRef} from 'react';
 import Table from '@/components/Table';
-import {Select, Table as AntTable} from 'antd';
+import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -27,7 +27,7 @@ const ClientList = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ref.current.open(false);
+
         }}/>
       </>
     );
@@ -36,11 +36,10 @@ const ClientList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="客户名称" name="name" component={SysField.Name} />
-       <div className='sel'>
-         <FormItem  label="公司类型" name="companyType" component={SysField.CompanyType} value=""/>
-       </div>
-      </>
+       <FormItem label="客户名称" name="clientName" component={SysField.ClientName}/>
+       <FormItem label="联系人id" name="contactsId" component={SysField.ContactsId}/>
+       <FormItem label="公司类型" name="companyType" component={SysField.CompanyType}/>
+     </>
     );
   };
 
@@ -54,10 +53,9 @@ const ClientList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="name"/>
-        <Column title="客户地址编号" dataIndex="adressId"/>
-        <Column title="联系人编号" dataIndex="contactsId"/>
-        <Column title="固定电话" dataIndex="tel"/>
+        <Column title="客户名称" dataIndex="clientName"/>
+        <Column title="客户地址id" dataIndex="adressId"/>
+        <Column title="联系人id" dataIndex="contactsId"/>
         <Column title="成立时间" dataIndex="setup"/>
         <Column title="法定代表人" dataIndex="legal"/>
         <Column title="统一社会信用代码" dataIndex="utscc"/>
@@ -67,7 +65,6 @@ const ClientList = () => {
         <Column title="简介" dataIndex="introduction"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
-          console.log(record);
           return (
             <>
               <EditButton onClick={() => {
@@ -80,13 +77,11 @@ const ClientList = () => {
           );
         }} width={300}/>
       </Table>
-
-      <Drawer width={800} title="编辑" component={ClientEdit} onSuccess={() => {
+      <Drawer width={1500} title="编辑" component={ClientEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
     </>
-
   );
 };
 

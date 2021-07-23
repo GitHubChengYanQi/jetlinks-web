@@ -1,8 +1,8 @@
 /**
  * 客户地址表接口配置
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author
+ * @Date 2021-07-23 10:06:11
  */
 
 export const adressAdd = {
@@ -35,3 +35,11 @@ export const adressList = {
   rowKey:'adressId'
 };
 
+export const adressIdSelect = {
+  url: '/adress/listSelect',
+  method: 'POST'
+};
+export const clientIdSelect = {
+  url: '/client/listSelect',
+  method: 'POST'
+};

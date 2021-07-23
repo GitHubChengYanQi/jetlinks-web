@@ -1,8 +1,8 @@
 /**
  * 联系人表编辑页
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author
+ * @Date 2021-07-23 10:06:12
  */
 
 import React, {useRef} from 'react';
@@ -28,12 +28,13 @@ const ContactsEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      fieldKey="id"
+      fieldKey="contactsId"
     >
-      <FormItem label="联系人编号" name="contactsId" component={SysField.ContactsId} required/>
-      <FormItem label="联系人姓名" name="name" component={SysField.Name} required/>
+      <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName} required/>
       <FormItem label="职务" name="job" component={SysField.Job} required/>
       <FormItem label="联系电话" name="phone" component={SysField.Phone} required/>
+      <FormItem label="部门编号" name="deptId" component={SysField.DeptId} required/>
+      <FormItem label="客户id" name="clientId" component={SysField.ClientId} required/>
     </Form>
   );
 };

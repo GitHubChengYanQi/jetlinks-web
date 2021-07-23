@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {partsDetail, partsAdd, partsEdit} from '../partsUrl';
 import * as SysField from '../partsField';
@@ -22,7 +21,6 @@ const ApiConfig = {
 const PartsEdit = ({...props}) => {
 
   const formRef = useRef();
-
   return (
     <Form
       {...props}
@@ -30,8 +28,9 @@ const PartsEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="partsId"
     >
-      <FormItem label="物品id" name="itemId" component={SysField.Item} required/>
-      <FormItem label="品牌id" name="brandId" component={SysField.BrandId} required/>
+      <FormItem label="物品编号" name="itemId" component={SysField.Item} required/>
+      <FormItem label="零件" name="items" component={SysField.Item} required/>
+      <FormItem label="品牌编号" name="brandId" component={SysField.BrandId} required/>
       <FormItem label="零件数量" name="number" component={SysField.Number} required/>
     </Form>
   );

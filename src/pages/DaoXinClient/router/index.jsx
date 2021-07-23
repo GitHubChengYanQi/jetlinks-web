@@ -3,6 +3,7 @@ import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
 import {ClientRouter} from '@/pages/DaoXinClient/client/clientRouter';
 import {ContactsRouter} from '@/pages/DaoXinClient/contacts/contactsRouter';
 import ClientSystem from '@/pages/DaoXinClient';
+import {ContactsRouterEdit} from '@/pages/DaoXinClient/contacts/contactsRouter/edit';
 
 
 const ClientRouterConfig = [
@@ -14,7 +15,7 @@ const ClientRouterConfig = [
       ...AdressRouter,
       ...ClientRouter,
       ...ContactsRouter,
-
+      ...ContactsRouterEdit,
       {
         redirect: '/CLIENT_SYSTEM/client',
       }

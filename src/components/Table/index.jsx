@@ -16,6 +16,8 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
 
+
+
   if (!rowKey) {
     rowKey = api.rowKey;
   }
@@ -32,8 +34,9 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
     let response;
     try {
       response = await ajaxService({
+
+          data: values,
         ...api,
-        data: values,
         ...other,
         params: page
       });

@@ -1,8 +1,8 @@
 /**
  * 联系人表字段配置页
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author
+ * @Date 2021-07-23 10:06:12
  */
 
 import React from 'react';
@@ -12,15 +12,22 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../contactsUrl';
 
-export const ContactsId = (props) =>{
-  return (<Input {...props}/>);
+
+export const client = (props) =>{
+  return (<Input {...props} />);
 };
-export const Name = (props) =>{
+export const ContactsName = (props) =>{
   return (<Input {...props}/>);
 };
 export const Job = (props) =>{
   return (<Input {...props}/>);
 };
 export const Phone = (props) =>{
+  return (<InputNumber {...props}/>);
+};
+export const DeptId = (props) =>{
   return (<Input {...props}/>);
+};
+export const ClientId = (props) =>{
+  return (<Select api={apiUrl.clientIdSelect} {...props}/>);
 };

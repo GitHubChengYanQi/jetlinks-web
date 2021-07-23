@@ -1,8 +1,8 @@
 /**
  * 客户管理表编辑页
  *
- * @author ta
- * @Date 2021-07-19 14:50:54
+ * @author
+ * @Date 2021-07-23 10:06:12
  */
 
 import React, {useRef} from 'react';
@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {clientDetail, clientAdd, clientEdit} from '../clientUrl';
 import * as SysField from '../clientField';
+import ContactsList from '@/pages/DaoXinClient/client/clientEdit/client';
 
 const {FormItem} = Form;
 
@@ -21,6 +22,8 @@ const ApiConfig = {
 
 const ClientEdit = ({...props}) => {
 
+  const {value} = {...props};
+
   const formRef = useRef();
 
   return (
@@ -30,10 +33,8 @@ const ClientEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="clientId"
     >
-      <FormItem label="客户名称" name="name" component={SysField.Name} required/>
-      <FormItem label="客户地址编号" name="adressId" component={SysField.AdressId} required/>
-      <FormItem label="联系人编号" name="contactsId" component={SysField.ContactsId} required/>
-      <FormItem label="固定电话" name="tel" component={SysField.Tel} required/>
+      <FormItem label="客户名称" name="clientName" component={SysField.ClientName} required/>
+      <FormItem label="客户地址id" name="adressId" component={SysField.AdressId} required/>
       <FormItem label="成立时间" name="setup" component={SysField.Setup} required/>
       <FormItem label="法定代表人" name="legal" component={SysField.Legal} required/>
       <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} required/>
@@ -41,7 +42,9 @@ const ClientEdit = ({...props}) => {
       <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} required/>
       <FormItem label="注册地址" name="signIn" component={SysField.SignIn} required/>
       <FormItem label="简介" name="introduction" component={SysField.Introduction} required/>
+      <ContactsList clientId={value}/>
     </Form>
   );
 };
+
 export default ClientEdit;
