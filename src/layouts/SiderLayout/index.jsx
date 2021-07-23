@@ -10,7 +10,7 @@ const SiderLayout = ({ children, left }) => {
   return (
     <Layout>
       <Sider theme="light" width={220}>{left}</Sider>
-      <Content>{children}</Content>
+      <Content style={{overflow:'hidden'}}>{children}</Content>
     </Layout>
   );
 };
