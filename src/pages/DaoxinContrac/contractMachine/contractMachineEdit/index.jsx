@@ -6,13 +6,15 @@
  */
 
 import React, {useRef} from 'react';
-import {Input, Table as AntTable} from 'antd';
+import {Input, InputNumber, Select as AntdSelect, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import {templateAdd, templateDetail, templateEdit, templateList} from '@/pages/DaoxinContrac/template/templateUrl';
 import * as SysField from '@/pages/DaoxinContrac/contractMachine/contractMachineField';
 import Table from '@/components/Table';
 import {Content} from '@/pages/DaoxinContrac/contractMachine/contractMachineField';
 import {contractAdd} from '@/pages/DaoxinContrac/contractMachine/contractMachineUrl';
+import parse from 'html-react-parser';
+import {DatePicker2} from '@alifd/next';
 const {FormItem} = Form;
 const {Column} = AntTable;
 const ApiConfig = {
@@ -33,8 +35,7 @@ const TemplateEdit = ({...props}) => {
       fieldKey="templateId"
     >
 
-      <FormItem name="content" component={SysField.Content}/>
-
+      <FormItem name="content" component={SysField.Content} required/>
 
     </Form>
   );

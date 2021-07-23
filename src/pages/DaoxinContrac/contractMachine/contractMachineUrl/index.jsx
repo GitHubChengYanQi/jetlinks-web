@@ -6,6 +6,7 @@
  */
 
 export const contractAdd = {
+
   url: '/contract/add',
   method: 'POST',
 };
