@@ -34,7 +34,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
     }
   };
   const insertSelect = () => {
-    const tmpState = ContentUtils.insertHTML(state, '<strong>|下拉列表...|</strong>');
+    const tmpState = ContentUtils.insertHTML(state, '<strong class="123">|下拉列表...|</strong>');
     onChange(tmpState.toHTML());
     setState(
       state
@@ -135,7 +135,6 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
       placeholder="请输入正文内容"
       value={state}
       onBlur={(content) => {
-        console.log(content.toHTML());
         onChange(content.toHTML());
       }}
       onChange={(editorState) => {

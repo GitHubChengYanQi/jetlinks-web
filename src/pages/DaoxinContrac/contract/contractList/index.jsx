@@ -56,7 +56,6 @@ const ContractList = () => {
         <Column title="负责人id" dataIndex="userId"/>
         <Column title="备注" dataIndex="note"/>
         <Column title="创建时间" dataIndex="time"/>
-        <Column title="内容" dataIndex="content"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -71,7 +70,7 @@ const ContractList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={ContractEdit} onSuccess={() => {
+      <Drawer width={1500} title="编辑" component={ContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

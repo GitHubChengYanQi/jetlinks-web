@@ -23,6 +23,7 @@ const ApiConfig = {
   save: contractAdd
 };
 
+
 const TemplateEdit = ({...props}) => {
 
   const formRef = useRef();
@@ -36,6 +37,7 @@ const TemplateEdit = ({...props}) => {
     >
 
       <FormItem name="content" component={SysField.Content} required/>
+
 
     </Form>
   );

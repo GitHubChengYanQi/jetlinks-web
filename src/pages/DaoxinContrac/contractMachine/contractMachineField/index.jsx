@@ -19,44 +19,62 @@ import parse from 'html-react-parser';
 
 export const Content = (props) =>{
 
+  const [state,setState] = useState();
 
-  const renderContrac=(template)=>{
-    return(
-      <>
-        {
-          parse(template, {
-            replace:domNode =>{
-              console.log(domNode);
-              if (domNode.name === 'em' ){
-                return <Input style={{width : '100px',margin : '0 10px'}} />;
-              }
-              if (domNode.name === 'sub'){
-                return <InputNumber style={{margin : '0 10px'}} />;
-              }
-              if (domNode.name === 'sup'){
-                return <DatePicker2 style={{margin : '0 10px'}} />;
-              }
-              if (domNode.name === 'strong'){
-                return <AntdSelect style={{width : '100px',margin : '0 10px'}} options={[{value:'分期付款',label:'分期付款'},{value:'全额付款',label:'全额付款'}]}/>;
-              }
-            }
-          })
-        }
-      </>
-    );
+  const handelChange = (e) => {
+    setState(e.target.value);
   };
 
 
 
-  return (
+  return(
     <>
       {
-        renderContrac(props.value)
+        parse(props.value, {
+          replace:domNode =>{
+            if (domNode.name === 'em' ){
+              return <Input style={{width : '100px',margin : '0 10px'}}    onChange={(value)=>{
+                handelChange(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const value = props.value.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }} />;
+            }
+            if (domNode.name === 'sub'){
+              return <InputNumber style={{margin : '0 10px'}}     onChange={(value)=>{
+                setState(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const value = props.value.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }} />;
+            }
+            if (domNode.name === 'sup'){
+              return <DatePicker2 style={{margin : '0 10px'}}   onChange={(value)=>{
+                setState(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const value = props.value.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }} />;
+            }
+            if (domNode.name === 'strong'){
+              return <AntdSelect style={{width : '100px',margin : '0 10px'}} options={[{value:'分期付款',label:'分期付款'},{value:'全额付款',label:'全额付款'}]}   onChange={(value)=>{
+                setState(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const value = props.value.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }}/>;
+            }
+          }
+        })
       }
+
     </>
   );
 };
-
 
 
 

@@ -1,16 +1,18 @@
 /**
  * 合同表字段配置页
  *
- * @author 
+ * @author
  * @Date 2021-07-21 13:36:21
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../contractUrl';
+import parse from 'html-react-parser';
+import {DatePicker2} from '@alifd/next';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
@@ -25,5 +27,21 @@ export const Time = (props) =>{
   return (<Input {...props}/>);
 };
 export const Content = (props) =>{
-  return (<Input {...props}/>);
-};
+
+  const [state,setState] = useState();
+
+  const handelChange = (e) => {
+    setState(e.target.value);
+  };
+
+
+
+  return(
+    <>
+      {
+        parse(props.value)
+      }
+
+    </>
+  );
+}
