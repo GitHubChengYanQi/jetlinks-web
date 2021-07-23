@@ -52,7 +52,9 @@
     "react-dom": "^16.4.1",
     "react-eva": "^1.1.12",
     "react-json-view": "^1.19.1",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "wangeditor": "^4.7.5",
+    "wangeditor-for-react": "^1.5.0"
   },
   "devDependencies": {
     "@ice/spec": "^1.0.0",

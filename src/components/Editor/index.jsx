@@ -1,85 +1,44 @@
-import React, {useEffect, useImperativeHandle, useState} from 'react';
-import BraftEditor from 'braft-editor';
-import {ContentUtils} from 'braft-utils';
-import {Button, Upload} from 'antd';
-import {
-  FileImageOutlined
-} from '@ant-design/icons';
-import 'braft-editor/dist/index.css';
+import React, {useEffect, useRef} from 'react';
+import ReactWEditor from 'wangeditor-for-react';
 
 const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 
-  const [state, setState] = useState(BraftEditor.createEditorState(""));
-
-  const imgUploadHandler = (object) => {
-    console.log(object);
-    if (!object.file) {
-      return false;
-    }
-    const {status, response} = object.file;
-    if (status === 'done') {
-      // message.success(`${object.file.name} 图片上传成功.`);
-      setState(
-        ContentUtils.insertMedias(state, [{
-          type: 'IMAGE',
-          url: response.data.fileSavePath
-        }])
-      );
-      // ContentUtils.focus();
-      // console.log(state.toHTML());
-      onChange(state.toHTML());
-    } else if (status === 'error') {
-      // message.error(`${object.file.name} 图片上传失败.`);
-      console.log('图片上传失败');
-    }
-  };
-
-  const extendControls = [];
-  if (imgUploadProps) {
-    extendControls.push({
-      key: 'antd-uploader',
-      type: 'component',
-      component: (
-        <Upload
-          accept="image/*"
-          showUploadList={false}
-          {...imgUploadProps}
-          onChange={imgUploadHandler}
-          // customRequest={imgUploadHandler}
-        >
-          <Button type="text" icon={<FileImageOutlined/>}>
-            插入图片
-          </Button>
-        </Upload>
-      )
-    });
-  }
+  const editorRef = useRef(null);
 
   useEffect(() => {
-    // setState(BraftEditor.createEditorState(value));
-    // console.log(props)
-    if (value !== state.toHTML()) {
-      setState(BraftEditor.createEditorState(value));
+    if(editorRef.current){
+      console.log(editorRef.current);
+      editorRef.current.editor.txt.html(value);
     }
+
   }, [value]);
 
-
   return (
-    <BraftEditor
-      className="my-editor"
-      placeholder="请输入正文内容"
-      value={state}
-      onBlur={(content) => {
-        onChange(content.toHTML());
+    <ReactWEditor
+      ref={editorRef}
+      defaultValue={value}
+      linkImgCallback={(src, alt, href) => {
+        // 插入网络图片的回调事件
+        console.log('图片 src ', src);
+        console.log('图片文字说明', alt);
+        console.log('跳转链接', href);
       }}
-      onChange={(editorState) => {
-
-        setState(editorState);
+      onlineVideoCallback={(video) => {
+        // 插入网络视频的回调事件
+        console.log('插入视频内容', video);
       }}
-      extendControls={extendControls}
+      onChange={(html) => {
+        console.log('onChange html:', html);
+      }}
+      onBlur={(html) => {
+        console.log('onBlur html:', html);
+        onChange(html);
+      }}
+      onFocus={(html) => {
+        console.log('onFocus html:', html);
+      }}
       {...props}
     />
   );
 };
-
 export default React.forwardRef(Editor);
