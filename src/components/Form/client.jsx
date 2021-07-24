@@ -138,16 +138,12 @@ const FormWrapper = (
   >
     {children}
 
-    <FormButtonGroup offset={6}>
-      <Submit showLoading>保存</Submit>
-      <Reset>重置</Reset>
-    </FormButtonGroup>
   </FormilyForm>;
 };
 
-const Form = forwardRef(FormWrapper);
+const FormClient = forwardRef(FormWrapper);
 
-Form.FormItem = AntFormItem;
-Form.MegaLayout = antMegaLayout;
+FormClient.FormItem = AntFormItem;
+FormClient.MegaLayout = antMegaLayout;
 
-export default Form;
+export default FormClient;

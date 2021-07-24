@@ -13,11 +13,9 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsListLike} from '@/pages/DaoXinClient/client/clientUrl';
 import {contactsDelete} from '@/pages/DaoXinClient/contacts/contactsUrl';
-import ContactsEdit from '@/pages/DaoXinClient/contacts/contactsEdit';
 import * as SysField from '@/pages/DaoXinClient/contacts/contactsField';
-import {client} from '@/pages/DaoXinClient/contacts/contactsField';
+import ContactsEdit from '@/pages/DaoXinClient/client/clientEdit/clientedit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
