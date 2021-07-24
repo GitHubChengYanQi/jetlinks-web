@@ -31,13 +31,16 @@ export const Item = (props) =>{
       ref.current.open(false);}}>
       搜索仓库
     </Button>
-    <Drawer width={800} title="选择" component={Items}  onSuccess={() => {
+    <Drawer width={1700} title="选择" component={Items}  onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
     }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
   </>);
 };
 
+export const Name = (props) =>{
+  return (<Input {...props}/>);
+};
 
 export const Number = (props) =>{
   return (<InputNumber {...props}/>);

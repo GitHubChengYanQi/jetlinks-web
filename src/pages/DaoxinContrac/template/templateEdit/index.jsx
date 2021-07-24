@@ -30,7 +30,7 @@ const TemplateEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="templateId"
     >
-      <FormItem label="合同姓名" name="name" component={SysField.Name} required/>
+      <FormItem label="合同名" name="name" component={SysField.Name} required/>
       <FormItem label="合同内容" name="content" component={SysField.Content} required/>
 
     </Form>

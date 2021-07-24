@@ -29,24 +29,20 @@ const ContactsList = (props) => {
   const actions = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
+
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="客户" name="clientId" component={SysField.client}/>
-       <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}/>
-       <FormItem label="职务" name="job" component={SysField.Job}/>
-       <FormItem label="联系电话" name="phone" component={SysField.Phone}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName} />
+        <FormItem label="职务" name="job" component={SysField.Job} />
+        <FormItem label="联系电话" name="phone" component={SysField.Phone} />
+      </>
     );
   };
-
 
 
   return (
@@ -57,7 +53,7 @@ const ContactsList = (props) => {
           {
             url: '/contacts/list',
             method: 'post',
-            data:{clientId:clientId}
+            values: clientId
           }
         }
         searchForm={searchForm}
@@ -65,28 +61,33 @@ const ContactsList = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="联系人姓名" dataIndex="contactsName"/>
-        <Column title="职务" dataIndex="job"/>
-        <Column title="联系电话" dataIndex="phone"/>
-        <Column title="部门编号" dataIndex="deptId"/>
-        <Column/>
+        <Column title="联系人姓名" dataIndex="contactsName" />
+        <Column title="职务" dataIndex="job" />
+        <Column title="联系电话" dataIndex="phone" />
+        <Column title="部门编号" dataIndex="deptId" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
-              }}/>
-              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={()=>{
+              }} />
+              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
+      <div style={{textAlign:'center'}}>
+        <AddButton onClick={() => {
+          ref.current.open(false);
+        }} />
+      </div>
       <Drawer width={800} title="编辑" component={ContactsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

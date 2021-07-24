@@ -24,19 +24,21 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
   if (!rowKey) {
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
+
   const { ajaxService } = Service();
+
 
   const requestMethod = async (params) => {
     const { values, pagination, ...other } = params;
+    values.clientId = api.values;
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
     let response;
     try {
       response = await ajaxService({
-
-          data: values,
         ...api,
+        data: values,
         ...other,
         params: page
       });

@@ -8,7 +8,6 @@
 import React from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
 import Editor from '@/components/Editor';
-import BraftEditor from 'braft-editor';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
