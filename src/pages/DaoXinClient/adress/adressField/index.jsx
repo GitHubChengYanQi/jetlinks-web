@@ -11,9 +11,10 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../adressUrl';
+import {} from '../adressUrl';
 
 export const Location = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select api={apiUrl.adressIdListSelect} {...props}/>);
 };
 export const Longitude = (props) =>{
   return (<Input {...props}/>);

@@ -65,6 +65,7 @@ const ClientList = () => {
         <Column title="简介" dataIndex="introduction"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
+          console.log(record);
           return (
             <>
               <EditButton onClick={() => {

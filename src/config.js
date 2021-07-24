@@ -2,13 +2,19 @@ export default {
   default: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.230',
+    baseURI: 'http://192.168.1.142',
+    projectName:'At-Soft软件平台'
+  },
+  zhu: {
+    logLevel: 'info',
+    component: 'ant',
+    baseURI: 'http://192.168.1.254',
     projectName:'At-Soft软件平台'
   },
   home: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://localhost',
+    baseURI: 'http://192.168.1.230',
     projectName:'At-Soft软件平台'
   },
   devOnline: {

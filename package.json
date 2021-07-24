@@ -23,6 +23,7 @@
   "scripts": {
     "start": "icejs start --port 5555",
     "home": "icejs start --port 5555 --mode home",
+    "zhu": "icejs start --port 5555 --mode zhu",
     "devOnline": "icejs build --mode devOnline",
     "build": "icejs build",
     "screenshot": "screenshot -l",

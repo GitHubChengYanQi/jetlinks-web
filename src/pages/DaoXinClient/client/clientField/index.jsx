@@ -22,6 +22,7 @@ export const AdressId = (props) =>{
 export const ContactsId = (props) =>{
   return (<InputNumber {...props}/>);
 };
+
 export const Setup = (props) =>{
   return (<DatePicker2 {...props}/>);
 };

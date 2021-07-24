@@ -45,5 +45,5 @@ export const Price = (props) =>{
   return (<InputNumber {...props}/>);
 };
 export const Brand = (props) =>{
-  return (<Select api={apiUrl.brandSelect} {...props}/>);
+  return (<Input {...props}/>);
 };

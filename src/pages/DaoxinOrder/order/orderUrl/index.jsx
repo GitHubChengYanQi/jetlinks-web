@@ -1,3 +1,5 @@
+import {contactsList} from '@/pages/DaoxinClient/contacts/contactsUrl';
+
 /**
  * 订单表接口配置
  *
@@ -46,17 +48,13 @@ export const orderListSelect = {
   method: 'POST',
   rowKey:'orderId'
 };
-export const orderBranchList = {
-  url: '/orderBranch/list',
+export const orderBranchListSelect = {
+  url: '/orderBranch/listSelect',
   method: 'POST',
   rowKey:'id'
 };
 
-export const orderBranchListSelect = {
-  url: '/orderBranch/listSelect',
-  method: 'POST',
-  rowKey:'orderId'
-};
+
 
 export const ClientIdListSelect = {
   url: '/client/listSelect',
@@ -69,3 +67,39 @@ export const orderIdSelect = {
   rowKey:'orderId'
 
 };
+export const AdressIdListSelect = {
+  url: '/adress/listSelect',
+  method: 'POST',
+};
+
+export const locationListSelect = {
+  url: '/adress/listSelect',
+  method: 'POST',
+  rowKey:'ClientId'
+};
+
+export const deliveryTimeListSelect = {
+  url:'/delivery/list',
+  method:'POST',
+  rwoKey:'deliveryId'
+};
+export const TelListSelect = {
+  url:'/client/listSelect',
+  method:'POST',
+  rowKey:'clientId'
+};
+
+export const OrderIdListSelect = {
+  url:'/contacts/listSelect',
+  method:'POST',
+  rowKey:'ContactsId'
+
+};
+
+
+
+
+
+
+
+

@@ -13,6 +13,7 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+// eslint-disable-next-line import/named
 import {orderDelete, orderList} from '../orderUrl';
 import OrderEdit from '../orderEdit';
 import * as SysField from '../orderField';
@@ -38,14 +39,11 @@ const OrderList = () => {
    return (
      <>
 
-       <div className="state">
-         <FormItem label="订单编号" name="orderId" component={SysField.OrderId}/>
-
-       </div>
+       <FormItem label="订单编号" name="orderId" component={SysField.OrderId}/>
        <FormItem label="订单人姓名" name="name" component={SysField.Name}/>
+
        <div className="state">
          <FormItem label="订单状态" name="state" component={SysField.State}/>
-
        </div>
 
 
@@ -63,16 +61,18 @@ const OrderList = () => {
         actions={actions()}
         ref={tableRef}
       >
+
         <Column title="订单编号" dataIndex="orderId"/>
-        <Column title="订单人姓名" dataIndex="name"/>
+        <Column title="订单人姓名" dataIndex="contactsId"/>
         <Column title="订单地址" dataIndex="adressId"/>
-        <Column title="订单数量" dataIndex="numbers"/>
+        <Column title="订单数量" dataIndex="number"/>
         <Column title="订单状态" dataIndex="state"/>
-        <Column title="联系电话" dataIndex="phone"/>
+        <Column title="联系电话" dataIndex="clientId"/>
         <Column title="订单时间" dataIndex="orderTime"/>
         <Column title="付款时间" dataIndex="payTime"/>
-        <Column title="发货时间" dataIndex="deliveryTime"/>
-        <Column title="订单总金额" dataIndex="total"/>
+        <Column title="发货时间" dataIndex="deliveryId"/>
+        <Column title="物品名称" dataIndex="itemId"/>
+        <Column title="金额" dataIndex="stockItemId"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

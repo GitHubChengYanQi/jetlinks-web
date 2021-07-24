@@ -29,6 +29,7 @@ export const contactsDetail = {
   rowKey:'contactsId'
 };
 
+
 export const contactsList = {
   url: '/contacts/list',
   method: 'POST',

@@ -43,3 +43,11 @@ export const brandSelect = {
   url: '/brand/listSelect',
   method: 'POST'
 };
+export const deliveryTimeListSelect = {
+  url:'/delivery/listSelect',
+  method:'POST',
+  rowKey:'deliveryId'
+
+};
+
+
