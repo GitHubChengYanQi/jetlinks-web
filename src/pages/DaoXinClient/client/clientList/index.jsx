@@ -7,7 +7,7 @@
 
 import React, {lazy, useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {clientDelete, clientList} from '../clientUrl';
 import ClientEdit from '../clientEdit';
 import * as SysField from '../clientField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -42,10 +43,25 @@ const ClientList = () => {
     );
   };
 
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/CRM',
+      breadcrumbName: 'CRM',
+    },
+    {
+      path: '/CRM/customer',
+      breadcrumbName: '客户管理',
+    },
+  ];
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={clientList}
         rowKey="clientId"
         searchForm={searchForm}

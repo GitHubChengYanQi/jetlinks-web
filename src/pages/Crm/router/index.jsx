@@ -1,8 +1,7 @@
 
-import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
+
 import {CustomerRouter} from '@/pages/DaoXinClient/client/clientRouter';
 import {ContactsRouter} from '@/pages/DaoXinClient/contacts/contactsRouter';
-import {ContactsRouterEdit} from '@/pages/DaoXinClient/contacts/contactsRouter/edit';
 import CrmLayout from '@/pages/Crm';
 import {BusinessRouter} from '@/pages/DaoXinBusiness/business/businessRouter';
 import {QuotationRouter} from '@/pages/DaoXinBusiness/quotation/quotationRouter';
@@ -10,24 +9,28 @@ import {SourceRouter} from '@/pages/DaoXinBusiness/source/sourceRouter';
 import {ContractMachineRouter} from '@/pages/DaoxinContrac/contractMachine/contractMachineRouter';
 import {TemplateRouter} from '@/pages/DaoxinContrac/template/templateRouter';
 import {ContractRouter} from '@/pages/DaoxinContrac/contract/contractRouter';
+import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
+import {OrderRouter} from '@/pages/DaoxinOrder/order/orderRouter';
+import {OrderBranchRouter} from '@/pages/DaoxinOrder/orderBranch/orderBranchRouter';
 
 
 const CrmRouterConfig = [
   {
     path: '/CRM',
-    name: '客户管理',
+    name: 'CRM',
     component: CrmLayout,
     children:[
+      ...OrderRouter,
+      ...OrderBranchRouter,
       ...AdressRouter,
       ...CustomerRouter,
       ...ContactsRouter,
-      ...ContactsRouterEdit,
       ...BusinessRouter,
       ...QuotationRouter,
       ...SourceRouter,
-      ...ContractMachineRouter,
       ...TemplateRouter,
       ...ContractRouter,
+      ...ContractMachineRouter,
       {
         redirect: '/CRM/customer',
       }

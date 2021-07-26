@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const MaterialRouter = [
   {
     path: '/material',
+    name: '材质管理',
     component: lazy(() => import('../materialList')),
     fallback: <div>loading...</div>,
     exact: true,

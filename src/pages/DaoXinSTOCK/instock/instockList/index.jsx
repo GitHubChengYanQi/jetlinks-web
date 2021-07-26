@@ -17,6 +17,7 @@ import {instockDelete, instockList} from '../instockUrl';
 import InstockEdit from '../instockEdit';
 import * as SysField from '../instockField';
 import {RegisterTime} from '../instockField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -48,7 +49,7 @@ const InstockList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={instockList}
         rowKey="instockId"
         searchForm={searchForm}

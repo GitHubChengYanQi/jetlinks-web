@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const  BrandRouter = [
   {
     path: '/brand',
+    name: '品牌管理',
     component: lazy(() => import('../brandList')),
     fallback: <div>loading...</div>,
     exact: true,

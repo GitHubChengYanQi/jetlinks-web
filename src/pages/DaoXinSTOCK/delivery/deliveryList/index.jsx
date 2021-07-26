@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {deliveryDelete, deliveryList} from '../deliveryUrl';
 import DeliveryEdit from '../deliveryEdit';
 import * as SysField from '../deliveryField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -46,7 +47,7 @@ const DeliveryList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={deliveryList}
         rowKey="deliveryId"
         searchForm={searchForm}

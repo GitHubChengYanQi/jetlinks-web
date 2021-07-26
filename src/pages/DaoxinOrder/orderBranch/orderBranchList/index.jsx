@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -43,10 +43,30 @@ const OrderBranchList = () => {
     );
   };
 
+  const routes = [
+    {
+      path: '/',
+      breadcrumbName: 'Home',
+    },
+    {
+      path: '/CRM',
+      breadcrumbName: 'CRM',
+    },
+    {
+      path: '/CRM/orderBranch',
+      breadcrumbName: '订单管理',
+    },
+  ];
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={
+          <PageHeader
+            className="site-page-header"
+            breadcrumb={{ routes }}
+          />
+        }
         api={orderBranchList}
         rowKey="id"
         searchForm={searchForm}
