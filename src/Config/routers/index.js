@@ -26,7 +26,7 @@ const routerConfig = [
     children: [
       ...CrmRouterConfig,
       ...OrderRouterConfig,
-      ...ClientRouterConfig,
+      // ...ClientRouterConfig,
       ...ContracRouterConfig,
       ...STOCKRouterConfig,
       ...baseSystem,

@@ -19,8 +19,6 @@ const CrmRouterConfig = [
       {
         redirect: '/CRM/client',
       }
-
-
     ]
   }
 ];
