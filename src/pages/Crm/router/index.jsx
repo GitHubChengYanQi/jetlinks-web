@@ -1,9 +1,15 @@
 
 import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
-import {ClientRouter} from '@/pages/DaoXinClient/client/clientRouter';
+import {CustomerRouter} from '@/pages/DaoXinClient/client/clientRouter';
 import {ContactsRouter} from '@/pages/DaoXinClient/contacts/contactsRouter';
 import {ContactsRouterEdit} from '@/pages/DaoXinClient/contacts/contactsRouter/edit';
 import CrmLayout from '@/pages/Crm';
+import {BusinessRouter} from '@/pages/DaoXinBusiness/business/businessRouter';
+import {QuotationRouter} from '@/pages/DaoXinBusiness/quotation/quotationRouter';
+import {SourceRouter} from '@/pages/DaoXinBusiness/source/sourceRouter';
+import {ContractMachineRouter} from '@/pages/DaoxinContrac/contractMachine/contractMachineRouter';
+import {TemplateRouter} from '@/pages/DaoxinContrac/template/templateRouter';
+import {ContractRouter} from '@/pages/DaoxinContrac/contract/contractRouter';
 
 
 const CrmRouterConfig = [
@@ -13,11 +19,17 @@ const CrmRouterConfig = [
     component: CrmLayout,
     children:[
       ...AdressRouter,
-      ...ClientRouter,
+      ...CustomerRouter,
       ...ContactsRouter,
       ...ContactsRouterEdit,
+      ...BusinessRouter,
+      ...QuotationRouter,
+      ...SourceRouter,
+      ...ContractMachineRouter,
+      ...TemplateRouter,
+      ...ContractRouter,
       {
-        redirect: '/CRM/client',
+        redirect: '/CRM/customer',
       }
 
 

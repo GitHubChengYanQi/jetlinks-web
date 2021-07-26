@@ -50,6 +50,7 @@ const BaseSystem = ({ children }) => {
       <Menu.Item key={item.url} icon={IconNode ? <IconNode/> : null}>{item.name}</Menu.Item>
     );
   };
+  console.log(subMenu);
   return (
     <SiderLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</SiderLayout>
   );

@@ -1,27 +1,25 @@
 
 import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
-import {ClientRouter} from '@/pages/DaoXinClient/client/clientRouter';
 import {ContactsRouter} from '@/pages/DaoXinClient/contacts/contactsRouter';
-import ClientSystem from '@/pages/DaoXinClient';
 import {ContactsRouterEdit} from '@/pages/DaoXinClient/contacts/contactsRouter/edit';
+import CrmLayout from '@/pages/Crm';
 
 
-const ClientRouterConfig = [
+const ErpRouterConfig = [
   {
-    path: '/CLIENT_SYSTEM',
+    path: '/ERP',
     name: '客户管理',
-    component: ClientSystem,
+    component: CrmLayout,
     children:[
       ...AdressRouter,
-      ...ClientRouter,
       ...ContactsRouter,
       ...ContactsRouterEdit,
       {
-        redirect: '/CLIENT_SYSTEM/client',
+        redirect: '/ERP/client',
       }
 
 
     ]
   }
 ];
-export default ClientRouterConfig;
+export default ErpRouterConfig;

@@ -48,6 +48,7 @@ const CrmLayout = ({ children }) => {
       <Menu.Item key={item.url} icon={IconNode ? <IconNode/> : null}>{item.name}</Menu.Item>
     );
   };
+
 console.log(subMenu);
 
 if(!subMenu){

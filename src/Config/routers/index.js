@@ -1,13 +1,8 @@
 import React, {lazy} from 'react';
-import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
-import bomRouterConfig from '@/pages/DaoxinBOM/router';
-import STOCKRouterConfig from '@/pages/DaoXinSTOCK/router';
-import BusinessRouterConfig from '@/pages/DaoXinBusiness/router';
-import ContracRouterConfig from '@/pages/DaoxinContrac/router';
-import OrderRouterConfig from '@/pages/DaoxinOrder/router';
-import ClientRouterConfig from '@/pages/DaoXinClient/router';
 import CrmRouterConfig from '@/pages/Crm/router';
+import ErpRouterConfig from '@/pages/Erp/router';
+import BasicLayout from '@/layouts/BasicLayout';
 
 const routerConfig = [
   {
@@ -25,13 +20,8 @@ const routerConfig = [
     component: BasicLayout,
     children: [
       ...CrmRouterConfig,
-      ...OrderRouterConfig,
-      ...ClientRouterConfig,
-      ...ContracRouterConfig,
-      ...STOCKRouterConfig,
+      ...ErpRouterConfig,
       ...baseSystem,
-      ...bomRouterConfig,
-      ...BusinessRouterConfig,
       {
         path: '/member',
         component: lazy(() => import((`@/pages/Member`))),

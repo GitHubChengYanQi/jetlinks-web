@@ -10,8 +10,6 @@ const systemConfig = [
     name: '设置',
     component: BaseSystem,
     children: [
-
-
       ...SysDeptRouter,
       ...LoginLogRouter,
       ...GenRouter,
