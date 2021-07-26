@@ -14,7 +14,7 @@ export default {
   home: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.230',
+    baseURI: 'http://localhost',
     projectName:'At-Soft软件平台'
   },
   devOnline: {

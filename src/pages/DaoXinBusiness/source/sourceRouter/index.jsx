@@ -9,7 +9,7 @@ import React, {lazy} from 'react';
 
 export const SourceRouter = [
   {
-    path: '/source',
+    path: '/origin',
     name: '商机来源',
     component: lazy(() => import('../sourceList')),
     fallback: <div>loading...</div>,

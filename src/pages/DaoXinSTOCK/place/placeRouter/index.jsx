@@ -9,7 +9,7 @@ import React, {lazy} from 'react';
 
 export const PlaceRouter = [
   {
-    path: '/place',
+    path: '/storehouse',
     name: '仓库管理',
     component: lazy(() => import('../placeList')),
     fallback: <div>loading...</div>,

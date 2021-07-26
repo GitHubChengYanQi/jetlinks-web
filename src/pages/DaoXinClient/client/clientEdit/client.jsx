@@ -22,6 +22,9 @@ const {FormItem} = Form;
 
 const ContactsList = (props) => {
   const {clientId} = props;
+  if (!clientId){
+    alert('请先保存客户信息！');
+  }
   const ref = useRef(null);
   const tableRef = useRef(null);
 

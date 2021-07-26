@@ -9,7 +9,7 @@ import React, {lazy} from 'react';
 
 export const QuotationRouter = [
   {
-    path: '/quotation',
+    path: '/track',
     name: '报价管理',
     component: lazy(() => import('../quotationList')),
     fallback: <div>loading...</div>,
