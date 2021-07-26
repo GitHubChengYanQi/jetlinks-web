@@ -39,7 +39,7 @@ const BusinessList = () => {
      <>
        <FormItem label="客户名称" name="name" component={SysField.ClitenId}/>
        <FormItem label="物品名称" name="iname" component={SysField.ClitenId}/>
-       <FormItem label="机会来源" name="name" component={SysField.Source}/>
+       <FormItem label="机会来源" name="sname" component={SysField.Source}/>
        <FormItem label="立项日期" name="time" component={SysField.TimeSearch}/>
        <FormItem label="商机状态" name="state" component={SysField.State}/>
        <FormItem label="商机阶段" name="stage" component={SysField.Stage}/>

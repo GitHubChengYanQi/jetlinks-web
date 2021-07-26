@@ -50,4 +50,10 @@ export const deliveryTimeListSelect = {
 
 };
 
+export const brandIdSelect = {
+  url: '/brand/listSelect',
+  method: 'POST'
+};
+
+
 

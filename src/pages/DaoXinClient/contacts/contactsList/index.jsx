@@ -40,7 +40,6 @@ const ContactsList = () => {
        <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}/>
        <FormItem label="职务" name="job" component={SysField.Job}/>
        <FormItem label="联系电话" name="phone" component={SysField.Phone}/>
-       <FormItem label="客户id" name="clientId" component={SysField.ClientId}/>
      </>
     );
   };

@@ -33,7 +33,7 @@ export const Utscc = (props) =>{
   return (<Input {...props}/>);
 };
 export const CompanyType = (props) =>{
-  return (<AntdSelect options={[{value:'yxzr1',label:'有限责任公司（自然人独资）'},{value:'yxzr2',label:'有限责任公司（自然人投资或控股）'},{value:'gfyx',label:'股份有限公司'},{value:'yxhh',label:'有限合伙企业'},{value:'wsdz',label:'外商独资企业'},{value:'grdz',label:'个人独资企业'},{value:'gydz',label:'国有独资公司'},{value:'others',label:'其他类型'}]} {...props}/>);
+  return (<AntdSelect style={{width:'300px'}} options={[{value:'yxzr1',label:'有限责任公司（自然人独资）'},{value:'yxzr2',label:'有限责任公司（自然人投资或控股）'},{value:'gfyx',label:'股份有限公司'},{value:'yxhh',label:'有限合伙企业'},{value:'wsdz',label:'外商独资企业'},{value:'grdz',label:'个人独资企业'},{value:'gydz',label:'国有独资公司'},{value:'others',label:'其他类型'}]} {...props}/>);
 };
 export const BusinessTerm = (props) =>{
   return (<Input.TextArea {...props}/>);
