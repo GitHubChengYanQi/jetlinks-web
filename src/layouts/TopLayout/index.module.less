@@ -1,111 +1,11 @@
-@import '~antd/lib/style/themes/default.less';
-:global {
-  .baseSystem-workspace-section {
-    width: 944px;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    min-height: 100%
-  }
-
-  @media only screen and (min-width: 1200px) {
-    .baseSystem-workspace-section {
-      width: auto;
-    }
-  }
-
-  @media only screen and (max-width: 1199px) {
-    .baseSystem-workspace-section {
-      width: auto
-    }
-  }
-
-  .baseSystem-workspace-section .baseSystem-tab-content {
-    -webkit-flex: initial;
-    -ms-flex: initial;
-    flex: initial;
-
-  }
-
-  .baseSystem-tab-content {
-    position: relative;
-    flex: 1 1 0%;
-    width: 100%;
-  }
-
-  .baseSystem-portal-view {
-    margin: 0 auto;
-    display: flex;
-    min-height: 100%;
-  }
-}
-
-.main {
-  //height: calc(100vh - 51px);
-  //@media only screen and (min-width: 1921px) {
-  //  width: 1904px;
-  //}
-  //@media only screen and (max-width: 1920px) {
-  //  width: 1648px;
-  //}
-  //@media only screen and (max-width: 1680px) {
-  //  width: 1392px;
-  //}
-  //@media only screen and (max-width: 1440px) {
-  //  width: 1264px;
-  //}
-   @media only screen and (min-width: 1281px) {
-    width: 100%;
-  }
-  @media only screen and (max-width: 1280px) {
-    width: 1136px;
-  }
-  //@media only screen and (max-width: 1162px) {
-  //  width: 1008px;
-  //}
-  //@media only screen and (max-width: 1024px) {
-  //  width: 944px;
-  //}
-}
-
-.leftWarp {
-  position: absolute;
-  top: 16px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin-bottom: 16px;
-  width:100%;
-  //overflow: hidden;
-  //max-height: calc(100vh - 359px);
-  //background-color: rgba(255,255,255,1);
+.header {
+  padding: 0;
+  height: 48px !important;
+  line-height: 48px !important;
 
   :global {
-    .Scroller {
-      //width: 90% !important;
-
-      .sidebar{
-        margin-top: 0;
-        padding-top: 20px;
-        padding-left:8px;
-        background-color: rgba(255,255,255,1);
-
-        .ant-menu-item-active{
-          //ant-menu-item-selected
-          background-color: @primary-1;
-        }
-      }
+    ul.ant-menu-horizontal {
+      padding: 0 50px;
     }
   }
-}
-.contentContainer{
-  z-index: 1;
-  min-width: 720px;
-  margin-top: 16px;
-  padding: 16px;
-  background-color: rgba(255,255,255,1);
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 }

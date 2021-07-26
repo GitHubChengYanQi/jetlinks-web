@@ -49,7 +49,6 @@ export default function BasicLayout({ children }) {
           <Header/>
           <Content className="web-content">
             {children}
-            <Footer/>
           </Content>
         </>
       }
