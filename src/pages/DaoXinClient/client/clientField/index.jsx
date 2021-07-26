@@ -44,3 +44,40 @@ export const SignIn = (props) =>{
 export const Introduction = (props) =>{
   return (<Input {...props}/>);
 };
+
+export const Location = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Longitude = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Latitude = (props) =>{
+  return (<Input {...props}/>);
+};
+export const DeptId = (props) =>{
+  return (<Input {...props}/>);
+};
+export const ClientId = (props) =>{
+  return (<Select api={apiUrl.clientIdSelect} {...props}/>);
+};
+
+export const client = (props) =>{
+  return (<Input {...props} />);
+};
+export const ContactsName = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Job = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Phone = (props) =>{
+  return (<InputNumber {...props}/>);
+};
+export const Dept = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Client = (props) =>{
+  return (<Select api={apiUrl.clientIdSelect} {...props}/>);
+};
+
+

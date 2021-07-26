@@ -17,7 +17,7 @@ const Clients = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="客户名称" name="name" component={SysField.Name}/>
+        <FormItem label="客户名称" name="clientName" component={SysField.ClientName}/>
         <FormItem label="公司类型" name="companyType" component={SysField.CompanyType}/>
       </>
     );
@@ -44,10 +44,7 @@ const Clients = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="name"/>
-        <Column title="客户地址id" dataIndex="adressId"/>
-        <Column title="联系人id" dataIndex="contactsId"/>
-        <Column title="固定电话" dataIndex="tel"/>
+        <Column title="客户名称" dataIndex="clientName"/>
         <Column title="成立时间" dataIndex="setup"/>
         <Column title="法定代表人" dataIndex="legal"/>
         <Column title="统一社会信用代码" dataIndex="utscc"/>

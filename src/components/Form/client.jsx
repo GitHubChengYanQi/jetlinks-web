@@ -15,6 +15,7 @@ const formActions = createFormActions();
 
 const FormWrapper = (
   {
+    aa,
     children,
     labelCol,
     wrapperCol,
@@ -26,7 +27,9 @@ const FormWrapper = (
       return values;
     },
     onSuccess = () => {
-    },
+
+      }
+    ,
     onError = () => {
     },
     ...props
@@ -80,7 +83,7 @@ const FormWrapper = (
       return response;
     },
     onSuccess: (result) => {
-      onSuccess(result);
+      aa(result);
     },
     onError: (error) => {
       message.error(error.message);
@@ -135,18 +138,14 @@ const FormWrapper = (
     initialValues={findData}
     {...props}
   >
-    {children}
 
-    <FormButtonGroup offset={6}>
-      <Submit showLoading>保存</Submit>
-      <Reset>重置</Reset>
-    </FormButtonGroup>
+    {children}
   </FormilyForm>;
 };
 
-const Form = forwardRef(FormWrapper);
+const FormClient = forwardRef(FormWrapper);
 
-Form.FormItem = AntFormItem;
-Form.MegaLayout = antMegaLayout;
+FormClient.FormItem = AntFormItem;
+FormClient.MegaLayout = antMegaLayout;
 
-export default Form;
+export default FormClient;

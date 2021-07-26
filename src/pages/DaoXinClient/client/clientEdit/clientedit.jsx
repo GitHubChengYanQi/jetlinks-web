@@ -6,10 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
-import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
-import * as SysField from '../contactsField';
+import * as SysField from '@/pages/DaoXinClient/contacts/contactsField';
+import {contactsAdd, contactsDetail, contactsEdit} from '@/pages/DaoXinClient/contacts/contactsUrl';
 
 const {FormItem} = Form;
 
@@ -34,7 +33,6 @@ const ContactsEdit = ({...props}) => {
       <FormItem label="职务" name="job" component={SysField.Job} required/>
       <FormItem label="联系电话" name="phone" component={SysField.Phone} required/>
       <FormItem label="部门编号" name="deptId" component={SysField.DeptId} required/>
-      <FormItem label="客户id" name="clientId" component={SysField.ClientId} required/>
     </Form>
   );
 };

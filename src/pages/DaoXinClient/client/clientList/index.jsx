@@ -27,7 +27,7 @@ const ClientList = () => {
     return (
       <>
         <AddButton onClick={() => {
-
+          ref.current.open(false);
         }}/>
       </>
     );
@@ -37,7 +37,6 @@ const ClientList = () => {
    return (
      <>
        <FormItem label="客户名称" name="clientName" component={SysField.ClientName}/>
-       <FormItem label="联系人id" name="contactsId" component={SysField.ContactsId}/>
        <FormItem label="公司类型" name="companyType" component={SysField.CompanyType}/>
      </>
     );
@@ -54,8 +53,6 @@ const ClientList = () => {
         ref={tableRef}
       >
         <Column title="客户名称" dataIndex="clientName"/>
-        <Column title="客户地址id" dataIndex="adressId"/>
-        <Column title="联系人id" dataIndex="contactsId"/>
         <Column title="成立时间" dataIndex="setup"/>
         <Column title="法定代表人" dataIndex="legal"/>
         <Column title="统一社会信用代码" dataIndex="utscc"/>
