@@ -25,7 +25,7 @@ export const Item = (props) =>{
       ref.current.open(false);}}>
       搜索物品
     </Button>
-    <Drawer width={800} title="选择" component={Items}  onSuccess={() => {
+    <Drawer width={1700} title="选择" component={Items}  onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
     }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
@@ -49,7 +49,7 @@ export const PlaceId = (props) =>{
       ref.current.open(false);}}>
       搜索仓库
     </Button>
-    <Drawer width={800} title="选择" component={StockPlaceList}  onSuccess={() => {
+    <Drawer width={1300} title="选择" component={StockPlaceList}  onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
     }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>

@@ -8,7 +8,7 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import * as SysField from '../adressField';
+import * as SysField from '@/pages/DaoXinClient/adress/adressField';
 import {adressAdd, adressDetail, adressEdit} from '@/pages/DaoXinClient/adress/adressUrl';
 
 const {FormItem} = Form;
@@ -33,8 +33,6 @@ const AdressEdit = ({...props}) => {
       <FormItem label="地址" name="location" component={SysField.Location} required/>
       <FormItem label="经度" name="longitude" component={SysField.Longitude} required/>
       <FormItem label="纬度" name="latitude" component={SysField.Latitude} required/>
-      <FormItem label="部门id" name="deptId" component={SysField.DeptId} required/>
-      <FormItem label="客户id" name="clientId" component={SysField.ClientId} required/>
     </Form>
   );
 };

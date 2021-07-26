@@ -1,8 +1,8 @@
 /**
- * 联系人表列表页
+ * 客户地址表列表页
  *
  * @author
- * @Date 2021-07-23 10:06:12
+ * @Date 2021-07-23 10:06:11
  */
 
 import React, {useRef} from 'react';
@@ -13,63 +13,59 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsDelete} from '@/pages/DaoXinClient/contacts/contactsUrl';
-import * as SysField from '@/pages/DaoXinClient/contacts/contactsField';
-import ContactsEdit from '@/pages/DaoXinClient/client/clientEdit/clientedit';
+import {adressDelete} from '@/pages/DaoXinClient/adress/adressUrl';
+import AdressEdit from '@/pages/DaoXinClient/client/clientEdit/adressEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ContactsList = (props) => {
+const AdressList = (props) => {
   const {clientId} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-
-
-
   return (
     <>
       <Table
+        title={<h2>列表</h2>}
         api={
           {
-            url: '/contacts/list',
+            url: '/adress/list',
             method: 'post',
             values: clientId
           }
         }
-        rowKey="contactsId"
+        rowKey="adressId"
         ref={tableRef}
       >
-        <Column title="联系人姓名" dataIndex="contactsName" />
-        <Column title="职务" dataIndex="job" />
-        <Column title="联系电话" dataIndex="phone" />
-        <Column title="部门编号" dataIndex="deptId" />
-        <Column />
+        <Column title="地址" dataIndex="location"/>
+        <Column title="经度" dataIndex="longitude"/>
+        <Column title="纬度" dataIndex="latitude"/>
+        <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.contactsId);
-              }} />
-              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={() => {
+                ref.current.open(record.adressId);
+              }}/>
+              <DelButton api={adressDelete} value={record.adressId} onSuccess={()=>{
                 tableRef.current.refresh();
-              }} />
+              }}/>
             </>
           );
-        }} width={300} />
+        }} width={300}/>
       </Table>
       <div style={{textAlign:'center'}}>
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
       </div>
-      <Drawer width={800} title="编辑" component={ContactsEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={AdressEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} />
+      }} ref={ref}/>
     </>
   );
 };
 
-export default ContactsList;
+export default AdressList;

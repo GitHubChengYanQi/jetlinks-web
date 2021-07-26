@@ -15,6 +15,7 @@ const formActions = createFormActions();
 
 const FormWrapper = (
   {
+    aa,
     children,
     labelCol,
     wrapperCol,
@@ -26,12 +27,13 @@ const FormWrapper = (
       return values;
     },
     onSuccess = () => {
-    },
+
+      }
+    ,
     onError = () => {
     },
     ...props
   }, ref) => {
-
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
@@ -81,7 +83,7 @@ const FormWrapper = (
       return response;
     },
     onSuccess: (result) => {
-      onSuccess(result);
+      aa(result);
     },
     onError: (error) => {
       message.error(error.message);
@@ -136,8 +138,8 @@ const FormWrapper = (
     initialValues={findData}
     {...props}
   >
-    {children}
 
+    {children}
   </FormilyForm>;
 };
 

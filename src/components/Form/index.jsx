@@ -31,7 +31,6 @@ const FormWrapper = (
     },
     ...props
   }, ref) => {
-
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }

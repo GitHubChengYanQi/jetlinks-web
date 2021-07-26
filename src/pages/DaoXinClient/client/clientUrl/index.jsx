@@ -40,3 +40,8 @@ export const contactsListLike = {
   method: 'POST',
 };
 
+export const clientIdSelect = {
+  url: '/client/listSelect',
+  method: 'POST'
+};
+
