@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {placeDelete, placeList} from '../placeUrl';
 import PlaceEdit from '../placeEdit';
 import * as SysField from '../placeField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,7 +48,7 @@ const PlaceList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={placeList}
         rowKey="palceId"
         searchForm={searchForm}

@@ -1,7 +1,7 @@
 /**
  * 来源表列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-19 17:59:08
  */
 
@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {sourceDelete, sourceList} from '../sourceUrl';
 import SourceEdit from '../sourceEdit';
 import * as SysField from '../sourceField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -44,7 +45,7 @@ const SourceList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={sourceList}
         rowKey="sourceId"
         searchForm={searchForm}

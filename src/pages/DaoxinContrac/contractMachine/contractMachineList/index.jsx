@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {PageHeader, Table as AntTable} from 'antd';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
@@ -16,6 +16,7 @@ import '../contractMachineEdit/index.scss';
 import * as SysField from '@/pages/DaoxinContrac/contractMachine/contractMachineField';
 import {templateDelete, templateList} from '@/pages/DaoxinContrac/template/templateUrl';
 import TemplateEdit from '@/pages/DaoxinContrac/template/templateEdit';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,10 +40,12 @@ const ContractMachineList1 = () => {
     );
   };
 
+
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={templateList}
         rowKey="templateId"
         searchForm={searchForm}

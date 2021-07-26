@@ -1,21 +1,36 @@
 
-import {AdressRouter} from '@/pages/DaoXinClient/adress/adressRouter';
-import {ContactsRouter} from '@/pages/DaoXinClient/contacts/contactsRouter';
-import {ContactsRouterEdit} from '@/pages/DaoXinClient/contacts/contactsRouter/edit';
+
+
+
 import CrmLayout from '@/pages/Crm';
+import {MaterialRouter} from '@/pages/DaoxinBOM/material/materialRouter';
+import {ItemsRouter} from '@/pages/DaoxinBOM/items/itemsRouter';
+import {BrandRouter} from '@/pages/DaoxinBOM/brand/brandRouter';
+import {PartsRouter} from '@/pages/DaoxinBOM/parts/partsRouter';
+import {PlaceRouter} from '@/pages/DaoXinSTOCK/place/placeRouter';
+import {StockRouter} from '@/pages/DaoXinSTOCK/stock/stockRouter';
+import {StockDetailsRouter} from '@/pages/DaoXinSTOCK/stockDetails/stockDetailsRouter';
+import {InstockRouter} from '@/pages/DaoXinSTOCK/instock/instockRouter';
+import {OutstockRouter} from '@/pages/DaoXinSTOCK/delivery/deliveryRouter';
 
 
 const ErpRouterConfig = [
   {
     path: '/ERP',
-    name: '客户管理',
+    name: '物品库存管理',
     component: CrmLayout,
     children:[
-      ...AdressRouter,
-      ...ContactsRouter,
-      ...ContactsRouterEdit,
+      ...OutstockRouter,
+      ...MaterialRouter,
+      ...ItemsRouter,
+      ...BrandRouter,
+      ...PartsRouter,
+      ...PlaceRouter,
+      ...StockRouter,
+      ...StockDetailsRouter,
+      ...InstockRouter,
       {
-        redirect: '/ERP/client',
+        redirect: '/ERP/items',
       }
 
 

@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const StockRouter = [
   {
     path: '/stock',
+    name: '库存管理',
     component: lazy(() => import('../stockList')),
     fallback: <div>loading...</div>,
     exact: true,

@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -18,6 +18,7 @@ import {orderDelete, orderList} from '../orderUrl';
 import OrderEdit from '../orderEdit';
 import * as SysField from '../orderField';
 import './index.scss';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,10 +52,11 @@ const OrderList = () => {
     );
   };
 
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={orderList}
         rowKey="id"
         searchForm={searchForm}

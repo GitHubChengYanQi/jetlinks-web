@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {partsDelete, partsList} from '../partsUrl';
 import PartsEdit from '../partsEdit';
 import * as SysField from '../partsField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -45,7 +46,7 @@ const PartsList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={partsList}
         rowKey="partsId"
         searchForm={searchForm}

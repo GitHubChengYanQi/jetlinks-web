@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {stockDelete, stockList} from '../stockUrl';
 import StockEdit from '../stockEdit';
 import * as SysField from '../stockField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -43,7 +44,7 @@ const StockList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={stockList}
         rowKey="stockId"
         searchForm={searchForm}

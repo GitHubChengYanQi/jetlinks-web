@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import {Input,Select as AntdSelect} from 'antd';
+import {Input, InputNumber, Select as AntdSelect} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';

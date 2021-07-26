@@ -1,7 +1,7 @@
 /**
  * 合同模板路由文件
  *
- * @author 
+ * @author
  * @Date 2021-07-21 08:22:02
  */
 
@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const TemplateRouter = [
   {
     path: '/template',
+    name: '合同模板',
     component: lazy(() => import('../templateList')),
     fallback: <div>loading...</div>,
     exact: true,

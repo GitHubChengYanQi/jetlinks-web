@@ -1,7 +1,7 @@
 /**
  * 客户地址表列表页
  *
- * @author 
+ * @author
  * @Date 2021-07-23 10:06:11
  */
 
@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {adressDelete, adressList} from '../adressUrl';
 import AdressEdit from '../adressEdit';
 import * as SysField from '../adressField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -44,7 +45,7 @@ const AdressList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={adressList}
         rowKey="adressId"
         searchForm={searchForm}

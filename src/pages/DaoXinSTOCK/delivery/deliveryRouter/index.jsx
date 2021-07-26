@@ -7,9 +7,10 @@
 
 import React, {lazy} from 'react';
 
-export const DeliveryRouter = [
+export const OutstockRouter = [
   {
-    path: '/delivery',
+    path: '/outstock',
+    name: '出库管理',
     component: lazy(() => import('../deliveryList')),
     fallback: <div>loading...</div>,
     exact: true,

@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const  CustomerRouter = [
   {
     path: '/customer',
+    name: '客户管理',
     component: lazy(() => import('../clientList')),
     fallback: <div>loading...</div>,
     exact: true,

@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const BusinessRouter = [
   {
     path: '/business',
+    name: '商机管理',
     component: lazy(() => import('../businessList')),
     fallback: <div>loading...</div>,
     exact: true,
