@@ -1,12 +1,10 @@
-import SiderLayout from '@/layouts/SiderLayout';
 import React from 'react';
 import { useRouteMatch, useHistory } from 'ice';
 import store from '@/store';
 import { Menu } from 'antd';
 import TopLayout from '@/layouts/TopLayout';
-// import * as Icon from '@ant-design/icons';
 
-const ClientSystem = ({ children }) => {
+const CrmLayout = ({ children }) => {
 
   const match = useRouteMatch();
   const history = useHistory();
@@ -50,9 +48,13 @@ const ClientSystem = ({ children }) => {
       <Menu.Item key={item.url} icon={IconNode ? <IconNode/> : null}>{item.name}</Menu.Item>
     );
   };
+console.log(subMenu);
 
+if(!subMenu){
+  return <div>菜单不存在</div>;
+}
   return (
     <TopLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</TopLayout>
   );
 };
-export default ClientSystem;
+export default CrmLayout;

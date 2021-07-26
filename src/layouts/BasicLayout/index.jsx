@@ -51,7 +51,6 @@ export default function BasicLayout({ children }) {
             {children}
             <Footer/>
           </Content>
-
         </>
       }
     </>

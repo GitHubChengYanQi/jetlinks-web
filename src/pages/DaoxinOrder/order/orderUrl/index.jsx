@@ -1,4 +1,3 @@
-import {contactsList} from '@/pages/DaoxinClient/contacts/contactsUrl';
 
 /**
  * 订单表接口配置

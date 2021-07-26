@@ -1,4 +1,3 @@
-import {AdressSelect} from '@/pages/DaoxinClient/client/clientUrl';
 
 /**
  * 客户地址表接口配置
