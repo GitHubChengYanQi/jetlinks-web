@@ -48,14 +48,23 @@ const CrmLayout = ({children}) => {
       <Menu.Item key={item.url} icon={IconNode ? <IconNode /> : null}>{item.name}</Menu.Item>
     );
   };
-console.log(subMenu);
+
+  const rightMenu = ()=>{
+    return(
+      <Menu
+        mode="horizontal"
+      >
+        <Menu.Item>设置</Menu.Item>
+      </Menu>
+    );
+  };
 
   if (!subMenu) {
     return <div>菜单不存在</div>;
   }
   console.log(children);
   return (
-    <TopLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</TopLayout>
+    <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>{children}</TopLayout>
   );
 };
 export default CrmLayout;
