@@ -1,7 +1,7 @@
 /**
  * 客户地址表字段配置页
  *
- * @author 
+ * @author
  * @Date 2021-07-23 10:06:11
  */
 
@@ -14,7 +14,7 @@ import * as apiUrl from '../adressUrl';
 import {} from '../adressUrl';
 
 export const Location = (props) =>{
-  return (<Select api={apiUrl.adressIdListSelect} {...props}/>);
+  return (<Input {...props}/>);
 };
 export const Longitude = (props) =>{
   return (<Input {...props}/>);

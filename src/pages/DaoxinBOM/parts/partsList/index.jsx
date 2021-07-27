@@ -53,8 +53,16 @@ const PartsList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="物品名称" dataIndex="itemName"/>
-        <Column title="零件名称" dataIndex="items"/>
+        <Column title="物品名称" dataIndex="name"/>
+        <Column title="零件名称" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.getitem[0].name
+              }
+            </div>
+          );
+        }}/>
         <Column title="品牌名称" dataIndex="brandName"/>
         <Column title="零件数量" dataIndex="number"/>
         <Column/>
