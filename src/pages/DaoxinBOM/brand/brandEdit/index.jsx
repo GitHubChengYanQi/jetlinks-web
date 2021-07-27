@@ -1,7 +1,7 @@
 /**
  * 品牌表编辑页
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:19:04
  */
 
@@ -20,6 +20,8 @@ const ApiConfig = {
 };
 
 const BrandEdit = ({...props}) => {
+
+
 
   const formRef = useRef();
 

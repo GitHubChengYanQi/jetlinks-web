@@ -1,11 +1,11 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Drawer as AntDrawer, message} from 'antd';
+import {Drawer, Drawer as AntDrawer, message, Modal} from 'antd';
 
-const Drawer = (
+const Modal2 = (
   {
     title,
     component: Component,
-    width = 600,
+    width,
     onSuccess = () => {
     },
     onClose = () => {
@@ -31,17 +31,17 @@ const Drawer = (
   const visible = value !== null && value !== undefined;
 
   return (
-    <AntDrawer
+    <Modal
+      style={{margin:'auto'}}
+      footer={[]}
       visible={visible}
-      onClose={() => {
+      onCancel={() => {
         show(null);
         onClose();
       }}
       width={width}
       title={value ? '编辑' : '添加'}
-      afterVisibleChange={(v) => {
-        setShow(v);
-      }}
+      destroyOnClose
     >
       {Component && <Component
         {...props}
@@ -56,9 +56,9 @@ const Drawer = (
           onClose();
         }}
       />}
-    </AntDrawer>
+    </Modal>
   );
 };
 
 
-export default forwardRef(Drawer);
+export default forwardRef(Modal2);

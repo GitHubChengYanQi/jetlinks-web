@@ -2,6 +2,7 @@ import React from 'react';
 import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
 import {RedoOutlined} from '@ant-design/icons';
+import {Option} from 'antd/lib/mentions';
 
 const Select = (props) => {
   const {value, api, defaultValue, ...other} = props;
@@ -33,14 +34,12 @@ const Select = (props) => {
     valueArray = '';
   }
 
+
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect options={data} value={valueArray} style={{width:200}} {...other}  />}
-        <Button loading={loading} className="button-left-margin" icon={<RedoOutlined/>} onClick={() => {
-          // typeof other.onChange === 'function' && other.onChange('');
-          run();
-        }}/>
+        {!loading &&<AntSelect options={data} style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        />}
       </>
     );
   } else {

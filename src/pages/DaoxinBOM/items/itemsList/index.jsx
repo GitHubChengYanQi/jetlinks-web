@@ -5,9 +5,9 @@
  * @Date 2021-07-14 14:04:26
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Modal, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,6 +17,7 @@ import {itemsDelete, itemsList} from '../itemsUrl';
 import ItemsEdit from '../itemsEdit';
 import * as SysField from '../itemsField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -24,12 +25,15 @@ const {FormItem} = Form;
 const ItemsList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
+
+
       </>
     );
   };
@@ -78,10 +82,10 @@ const ItemsList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={ItemsEdit} onSuccess={() => {
+      <Modal2 width={800} component={ItemsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} />
+      }} ref={ref}/>
     </>
   );
 };

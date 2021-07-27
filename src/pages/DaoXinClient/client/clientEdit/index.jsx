@@ -28,12 +28,7 @@ const {Step} = Steps;
 
 const ClientEdit = ({...props}) => {
 
-  const [result,setResult] = useState();
-
-
-
-
-
+  const [result, setResult] = useState();
 
 
   const [current, setCurrent] = React.useState(0);
@@ -74,7 +69,8 @@ const ClientEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 0'}}>
-           <ContactsList clientId={ props.value ? props.value : result } />
+
+            <ContactsList clientId={props.value ? props.value : result} />
           </div>
         </>
     },
@@ -83,7 +79,7 @@ const ClientEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 0'}}>
-           <AdressList clientId={props.value ? props.value : result} />
+            <AdressList clientId={props.value ? props.value : result} />
           </div>
 
         </>,
@@ -107,8 +103,9 @@ const ClientEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="clientId"
-        aa={(result)=>{
-          setResult(result.data);}}
+        aa={(result) => {
+          setResult(result.data);
+        }}
       >
 
 
@@ -123,6 +120,7 @@ const ClientEdit = ({...props}) => {
         {current < steps.length - 1 && (
           <Button type="primary" htmlType="submit" onClick={() => next()}>
             Next
+
           </Button>
         )}
         {current === steps.length - 1 && (
