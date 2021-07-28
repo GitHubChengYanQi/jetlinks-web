@@ -22,7 +22,7 @@ import * as SysField from '@/pages/DaoXinCustomer/customer/customerField';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ClientList = () => {
+const CustomerTable = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -84,4 +84,4 @@ const ClientList = () => {
   );
 };
 
-export default ClientList;
+export default CustomerTable;
