@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   BellOutlined,
   FullscreenOutlined
 } from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import { Menu, Drawer, Avatar, Image, Button, Dropdown, Modal, Card, Tabs } from 'antd';
+import {Menu, Drawer, Avatar, Image, Button, Dropdown, Modal, Card, Tabs} from 'antd';
 import store from '@/store';
-import { useHistory, config } from 'ice';
+import {useHistory, config} from 'ice';
 import AppEntFUNC from '@/asseset/imgs/88.png';
 import PassWord from '@/pages/Member/passWord';
 import styles from './index.module.less';
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 const AppIcon = {
   ENT_FUNC: AppEntFUNC,
@@ -26,7 +26,7 @@ const Header = () => {
   const history = useHistory();
 
   const [userInfo] = store.useModel('user');
-  const { menus } = userInfo;
+  const {menus} = userInfo;
 
   const [visible, setVisible] = useState(false);
   return (
@@ -39,47 +39,50 @@ const Header = () => {
                 <div id="mainMenu" onClick={() => {
                   setVisible(true);
                 }}>
-                  <Icon type="icon-gongnengtubiao-134"/>
+                  <Icon type="icon-gongnengtubiao-134" />
                 </div>
               </div>
               <div id="navigation-title">
                 {config.projectName}
               </div>
             </div>
-            <div className={styles.middle}/>
+            <div className={styles.middle} />
             <div className={styles.right}>
-              <Dropdown trigger={['click','hover']} overlay={
-                <Menu style={{ width: 220 }} onClick={({ key }) => {
+              <Dropdown trigger={['click']} overlay={
+                <Menu style={{width: 220}} onClick={({key}) => {
+                  if (key === 'name') {
+                    return;
+                  }
                   if (key === '/password') {
                     setVisiblePwd(true);
                   } else {
                     history.push(key);
                   }
                 }}>
-                  <div style={{ padding: 12, fontSize: 16, color: '#7f7f7f' }}>
+                  <Menu.Item key="name" style={{padding: 12, fontSize: 16, color: '#7f7f7f'}}>
                     {userInfo.name}
-                  </div>
-                  <Menu.Divider/>
+                  </Menu.Item>
+                  <Menu.Divider />
                   <Menu.Item key="/member">
                     <span className={styles.dropdownMenuItem}>个人中心</span>
                   </Menu.Item>
                   <Menu.Item key="/password">
                     <span className={styles.dropdownMenuItem}>修改密码</span>
                   </Menu.Item>
-                  <Menu.Divider/>
+                  <Menu.Divider />
                   <Menu.Item key="/logout">
                     <span className={styles.dropdownMenuItem}>退出登录</span>
                   </Menu.Item>
                 </Menu>
               } placement="bottomRight">
-                <Button type="text" size="large" style={{ height: 60 }}>
+                <Button type="text" size="large" style={{height: 60}}>
                   <Avatar
-                    style={{ float: 'left' }}
+                    style={{float: 'left'}}
                     src={`${config.baseURI}${userInfo.avatar}`}
                   />
                 </Button>
               </Dropdown>
-              <Dropdown visible={messageVisible} onVisibleChange={(value)=>{
+              <Dropdown visible={messageVisible} onVisibleChange={(value) => {
                 setMessageVisible(value);
               }} trigger={['click']} overlay={
                 <div className={styles.message}>
@@ -96,9 +99,9 @@ const Header = () => {
                   </Tabs>
                 </div>
               } placement="bottomRight">
-                <Button type="text" size="large" icon={<BellOutlined/>} style={{ height: 60, color: '#FFF' }}/>
+                <Button type="text" size="large" icon={<BellOutlined />} style={{height: 60, color: '#FFF'}} />
               </Dropdown>
-              <Button type="text" size="large" icon={<FullscreenOutlined/>} style={{ height: 60, color: '#FFF' }}/>
+              <Button type="text" size="large" icon={<FullscreenOutlined />} style={{height: 60, color: '#FFF'}} />
             </div>
           </div>
         </div>
@@ -111,15 +114,16 @@ const Header = () => {
         }}
         visible={visible}
         width={325}
-        maskStyle={{ opacity: 0, background: 'none' }}
-        bodyStyle={{ padding: 0, margin: 0 }}
+        maskStyle={{opacity: 0, background: 'none'}}
+        bodyStyle={{padding: 0, margin: 0}}
       >
         <div className="docker-top-container">
           <div className="docker-top-title">
             <div className="css-1b5qfbo">
-              <Icon type="icon-gongnengtubiao-134"/>
+              <Icon type="icon-gongnengtubiao-134" />
             </div>
-            <div className="docker-top-text"><span aria-haspopup="true" aria-expanded="false">{config.projectName}</span></div>
+            <div className="docker-top-text"><span aria-haspopup="true"
+                                                   aria-expanded="false">{config.projectName}</span></div>
           </div>
         </div>
         <div className="docker-middle">
@@ -133,7 +137,7 @@ const Header = () => {
                   <div className="app-item">
                     <div className="item-logo-wrap">
                       <span className="navigation-badge">
-                        <img className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo"/>
+                        <img className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo" />
                       </span>
                     </div>
                     <div className="app-item-name">
@@ -146,7 +150,7 @@ const Header = () => {
           </div>
         </div>
       </Drawer>
-      <PassWord visible={visiblePwd} onClose={() => setVisiblePwd(false)}/>
+      <PassWord visible={visiblePwd} onClose={() => setVisiblePwd(false)} />
     </>
   );
 };

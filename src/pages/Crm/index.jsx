@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {useRouteMatch, useHistory} from 'ice';
 import store from '@/store';
-import {Menu} from 'antd';
+import {Drawer, Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
+import styles from './index.module.scss';
 
 const CrmLayout = ({children}) => {
 
   const match = useRouteMatch();
   const history = useHistory();
 
+  const [drawerIsShow, showDrawer] = useState(false);
   const [userInfo] = store.useModel('user');
   const {menus} = userInfo;
 
@@ -49,12 +51,14 @@ const CrmLayout = ({children}) => {
     );
   };
 
-  const rightMenu = ()=>{
-    return(
+  const rightMenu = () => {
+    return (
       <Menu
         mode="horizontal"
       >
-        <Menu.Item>设置</Menu.Item>
+        <Menu.Item key="setting" onClick={() => {
+          showDrawer(true);
+        }}>设置</Menu.Item>
       </Menu>
     );
   };
@@ -62,9 +66,36 @@ const CrmLayout = ({children}) => {
   if (!subMenu) {
     return <div>菜单不存在</div>;
   }
-  console.log(children);
   return (
-    <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>{children}</TopLayout>
+    <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>
+      {children}
+      <Drawer
+        title={<span>设置</span>}
+        style={{height: 'calc(100% - 112px)', top: 112}}
+        visible={drawerIsShow}
+        getContainer={false}
+        bodyStyle={{padding:0}}
+        onClose={() => {
+          showDrawer(false);
+        }}>
+        <div className={styles.settingMenu}>
+          <Menu
+            style={{width: '100%'}}
+            onClick={({key}) => {
+              history.push(key);
+              showDrawer(false);
+            }}>
+            <Menu.Item key="/CRM/origin">
+              <span className={styles.dropdownMenuItem}>商机来源管理</span>
+            </Menu.Item>
+            <Menu.Item key="/CRM/template">
+              <span className={styles.dropdownMenuItem}>合同模板管理</span>
+            </Menu.Item>
+            <Menu.Divider />
+          </Menu>
+        </div>
+      </Drawer>
+    </TopLayout>
   );
 };
 export default CrmLayout;
