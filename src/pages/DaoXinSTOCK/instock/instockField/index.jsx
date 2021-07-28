@@ -28,7 +28,7 @@ export const Item = (props) =>{
       ref.current.open(false);}}>
       搜索物品
     </Button>
-    <Drawer width={1700} title="选择" component={Items}  onSuccess={() => {
+    <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
     }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>

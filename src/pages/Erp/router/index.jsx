@@ -12,13 +12,14 @@ import {StockRouter} from '@/pages/DaoXinSTOCK/stock/stockRouter';
 import {StockDetailsRouter} from '@/pages/DaoXinSTOCK/stockDetails/stockDetailsRouter';
 import {InstockRouter} from '@/pages/DaoXinSTOCK/instock/instockRouter';
 import {OutstockRouter} from '@/pages/DaoXinSTOCK/outstock/outstockRouter';
+import ErpLayout from '@/pages/Erp';
 
 
 const ErpRouterConfig = [
   {
     path: '/ERP',
     name: '物品库存管理',
-    component: CrmLayout,
+    component: ErpLayout,
     children:[
       ...OutstockRouter,
       ...MaterialRouter,

@@ -12,19 +12,14 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../adressUrl';
 import {} from '../adressUrl';
+const w = 200;
 
 export const Location = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}} {...props}/>);
 };
 export const Longitude = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber  style={{width:w}} {...props}/>);
 };
 export const Latitude = (props) =>{
-  return (<Input {...props}/>);
-};
-export const DeptId = (props) =>{
-  return (<Input {...props}/>);
-};
-export const ClientId = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber style={{width:w}}  {...props}/>);
 };

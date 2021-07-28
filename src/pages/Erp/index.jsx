@@ -4,7 +4,7 @@ import store from '@/store';
 import { Menu } from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 
-const CrmLayout = ({ children }) => {
+const ErpLayout = ({ children }) => {
 
   const match = useRouteMatch();
   const history = useHistory();
@@ -57,4 +57,4 @@ if(!subMenu){
     <TopLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</TopLayout>
   );
 };
-export default CrmLayout;
+export default ErpLayout;

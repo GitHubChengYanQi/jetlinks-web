@@ -77,7 +77,7 @@ const InstockList = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={InstockEdit} onSuccess={() => {
+      <Modal2 title="编辑" component={InstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

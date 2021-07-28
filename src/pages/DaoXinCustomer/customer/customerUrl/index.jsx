@@ -8,31 +8,31 @@
 export const clientAdd = {
   url: '/customer/addcusid',
   method: 'POST',
-  rowKey:'clientId'
+  rowKey:'customerId'
 };
 
 export const clientEdit = {
   url: '/customer/edit',
   method: 'POST',
-  rowKey:'clientId'
+  rowKey:'customerId'
 };
 
 export const clientDelete = {
   url: '/customer/delete',
   method: 'POST',
-  rowKey:'clientId'
+  rowKey:'customerId'
 };
 
 export const clientDetail = {
   url: '/customer/detail',
   method: 'POST',
-  rowKey:'clientId'
+  rowKey:'customerId'
 };
 
 export const clientList = {
   url: '/customer/list',
   method: 'POST',
-  rowKey:'clientId'
+  rowKey:'customerId'
 };
 
 export const contactsListLike = {
