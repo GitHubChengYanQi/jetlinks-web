@@ -15,7 +15,7 @@ const formActions = createFormActions();
 
 const FormWrapper = (
   {
-    aa,
+    success,
     children,
     labelCol,
     wrapperCol,
@@ -83,7 +83,8 @@ const FormWrapper = (
       return response;
     },
     onSuccess: (result) => {
-      aa(result);
+      success(result);
+      // onSuccess(result);
     },
     onError: (error) => {
       message.error(error.message);
@@ -143,9 +144,9 @@ const FormWrapper = (
   </FormilyForm>;
 };
 
-const FormClient = forwardRef(FormWrapper);
+const FormIndex = forwardRef(FormWrapper);
 
-FormClient.FormItem = AntFormItem;
-FormClient.MegaLayout = antMegaLayout;
+FormIndex.FormItem = AntFormItem;
+FormIndex.MegaLayout = antMegaLayout;
 
-export default FormClient;
+export default FormIndex;

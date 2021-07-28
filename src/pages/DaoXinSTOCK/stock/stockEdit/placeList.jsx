@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
-import * as SysField from '@/pages/DaoXinSTOCK/place/placeField';
+import * as SysField from '@/pages/DaoXinSTOCK/storehouse/storehouseField';
 import Table from '@/components/Table';
-import {placeDelete, placeList} from '@/pages/DaoXinSTOCK/place/placeUrl';
+import {placeDelete, placeList} from '@/pages/DaoXinSTOCK/storehouse/storehouseUrl';
 import {FormItem} from '@formily/antd';
 import {Input, Table as AntTable} from 'antd';
 import CheckButton from '@/components/CheckButton';

@@ -18,6 +18,7 @@ import InstockEdit from '../instockEdit';
 import * as SysField from '../instockField';
 import {RegisterTime} from '../instockField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -76,7 +77,7 @@ const InstockList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={InstockEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={InstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

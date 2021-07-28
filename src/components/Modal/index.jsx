@@ -56,6 +56,7 @@ const Modal2 = (
           onClose();
         }}
       />}
+
     </Modal>
   );
 };

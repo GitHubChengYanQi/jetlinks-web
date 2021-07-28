@@ -14,17 +14,19 @@ import * as apiUrl from '../contractUrl';
 import parse from 'html-react-parser';
 import {DatePicker2} from '@alifd/next';
 
+const w = 200;
+
 export const Name = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 export const UserId = (props) =>{
-  return (<Select api={apiUrl.userIdSelect} {...props}/>);
+  return (<Select style={{width:w}}  api={apiUrl.userIdSelect} {...props}/>);
 };
 export const Note = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input  style={{width:w}} {...props}/>);
 };
 export const Time = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 export const Content = (props) =>{
 

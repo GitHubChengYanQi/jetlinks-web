@@ -14,11 +14,13 @@ import * as apiUrl from '../partsUrl';
 import Drawer from '@/components/Drawer';
 import Items from '@/pages/DaoxinBOM/parts/partsEdit/item';
 
+const w = 200;
+
 export const ItemId = (props) =>{
-  return (<Select api={apiUrl.itemIdSelect} {...props}/>);
+  return (<Select style={{width:w}} api={apiUrl.itemIdSelect} {...props}/>);
 };
 export const BrandId = (props) =>{
-  return (<Select api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select style={{width:w}}  api={apiUrl.brandIdSelect} {...props}/>);
 };
 
 export const Item = (props) =>{
@@ -26,7 +28,7 @@ export const Item = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索仓库
@@ -39,9 +41,9 @@ export const Item = (props) =>{
 };
 
 export const Name = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 
 export const Number = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber style={{width:w}}  {...props}/>);
 };

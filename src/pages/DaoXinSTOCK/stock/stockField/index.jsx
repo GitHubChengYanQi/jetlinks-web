@@ -12,19 +12,21 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../stockUrl';
 import StockPlaceList from '@/pages/DaoXinSTOCK/stock/stockEdit/placeList';
-import PlaceEdit from '@/pages/DaoXinSTOCK/place/placeEdit';
+import PlaceEdit from '@/pages/DaoXinSTOCK/storehouse/storehouseEdit';
 import Items from '@/pages/DaoXinSTOCK/stock/stockEdit/item';
 import Drawer from '@/components/Drawer';
 import ItemsEdit from '@/pages/DaoxinBOM/items/itemsEdit';
 import EditButton from '@/components/EditButton';
 
 
+const w = 200;
+
 export const Palce = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索仓库
@@ -41,7 +43,7 @@ export const Item = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索物品
@@ -54,50 +56,15 @@ export const Item = (props) =>{
 };
 
 export const PalceId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 
-
-// export const Item = (props) =>{
-//   const [val,setVal] = useState();
-//
-//   const [dis,setDis] = useState('查找物品');
-//   const [none,setNone] = useState('none');
-//
-//   const placeName = () => {
-//     if (dis==='查找物品'){
-//       setNone('block');
-//       setDis('隐藏物品');
-//     }else {
-//       setNone('none');
-//       setDis('查找物品');
-//     }
-//
-//   };
-//
-//
-//   return (<>
-//     <Input {...props} value={val}/>
-//     <Button className='placeName' onClick={()=>placeName() }>
-//       {dis}
-//     </Button>
-//
-//     <div style={{display : none}}>
-//       <Items
-//         ckeck={(id)=>{
-//           setVal(id);
-//         } }
-//       />
-//     </div>
-//
-//   </>);
-// };
 export const ItemId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 export const BrandId = (props) =>{
-  return (<Select api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select style={{width:w}}  api={apiUrl.brandIdSelect} {...props}/>);
 };
 export const Inventory = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input  style={{width:w}} {...props}/>);
 };

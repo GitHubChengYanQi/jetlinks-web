@@ -17,6 +17,7 @@ import {brandDelete, brandList} from '../brandUrl';
 import BrandEdit from '../brandEdit';
 import * as SysField from '../brandField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -67,7 +68,7 @@ const BrandList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={BrandEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={BrandEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

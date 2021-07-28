@@ -17,6 +17,7 @@ import {materialDelete, materialList} from '../materialUrl';
 import MaterialEdit from '../materialEdit';
 import * as SysField from '../materialField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -67,7 +68,7 @@ const MaterialList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={MaterialEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={MaterialEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
