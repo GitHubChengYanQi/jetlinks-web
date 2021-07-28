@@ -41,7 +41,7 @@ export const ClientList = {
 };
 
 export const SourceIdSelect = {
-  url: '/source/listSelect',
+  url: '/origin/listSelect',
   method: 'POST',
 };
 

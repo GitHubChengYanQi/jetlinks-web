@@ -17,18 +17,20 @@ import StockPlaceList from '@/pages/DaoXinSTOCK/instock/instockEdit/placeList';
 import Clients from '@/pages/DaoXinBusiness/business/businessEdit/clients';
 import Stocks from '@/pages/DaoXinBusiness/track/trackEdit/stock';
 
+const w = 200;
+
 export const ClitenId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}} {...props}/>);
 };
 export const Source = (props) =>{
-  return (<Select api={apiUrl.SourceIdSelect} {...props}/>);
+  return (<Select style={{width:w}} api={apiUrl.SourceIdSelect} {...props}/>);
 };
 export const Stock = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input  style={{width:w}} {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索库存
@@ -44,7 +46,7 @@ export const Client = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索客户
@@ -56,17 +58,17 @@ export const Client = (props) =>{
   </>);
 };
 export const TimeSearch = (props) =>{
-    return (<DatePicker2 {...props}/>);
+    return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
 };
 export const Time = (props) =>{
-  return (<DatePicker2 {...props}/>);
+  return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
 };
 export const State = (props) =>{
-  return (<AntdSelect options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
+  return (<AntdSelect style={{width:w}}  options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
 };
 export const Stage = (props) =>{
-  return (<AntdSelect options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
+  return (<AntdSelect style={{width:w}}  options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
 };
 export const Person = (props) =>{
-  return (<Select api={apiUrl.UserIdSelect}  {...props}  />);
+  return (<Select style={{width:w}}  api={apiUrl.UserIdSelect}  {...props}  />);
 };

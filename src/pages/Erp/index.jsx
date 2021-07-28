@@ -48,13 +48,14 @@ const ErpLayout = ({ children }) => {
       <Menu.Item key={item.url} icon={IconNode ? <IconNode/> : null}>{item.name}</Menu.Item>
     );
   };
-console.log(subMenu);
+  console.log(subMenu);
 
-if(!subMenu){
-  return <div>菜单不存在</div>;
-}
+  if(!subMenu){
+    return <div>菜单不存在</div>;
+  }
   return (
     <TopLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</TopLayout>
   );
 };
 export default ErpLayout;
+
