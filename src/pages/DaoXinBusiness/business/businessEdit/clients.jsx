@@ -7,7 +7,7 @@ import CheckButton from '@/components/CheckButton';
 import {items, places, stockAdd, stockDetail, stockEdit} from '@/pages/DaoXinSTOCK/stock/stockUrl';
 import {ClientList} from '@/pages/DaoXinBusiness/business/businessUrl';
 import Breadcrumb from '@/components/Breadcrumb';
-import {clientDelete, clientList} from '@/pages/DaoXinCustomer/customer/customerUrl';
+import {clientDelete, clientList, customerList} from '@/pages/DaoXinCustomer/customer/customerUrl';
 import EditButton from '@/components/EditButton';
 import DelButton from '@/components/DelButton';
 
@@ -43,7 +43,7 @@ const Clients = (props) => {
       <Input value={val}/>
       <Table
         title={<Breadcrumb />}
-        api={clientList}
+        api={customerList}
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}

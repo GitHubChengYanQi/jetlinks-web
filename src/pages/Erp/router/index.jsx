@@ -7,7 +7,7 @@ import {MaterialRouter} from '@/pages/DaoxinBOM/material/materialRouter';
 import {ItemsRouter} from '@/pages/DaoxinBOM/items/itemsRouter';
 import {BrandRouter} from '@/pages/DaoxinBOM/brand/brandRouter';
 import {PartsRouter} from '@/pages/DaoxinBOM/parts/partsRouter';
-import {PlaceRouter} from '@/pages/DaoXinSTOCK/storehouse/storehouseRouter';
+import {PlaceRouter, StorehouseRouter} from '@/pages/DaoXinSTOCK/storehouse/storehouseRouter';
 import {StockRouter} from '@/pages/DaoXinSTOCK/stock/stockRouter';
 import {StockDetailsRouter} from '@/pages/DaoXinSTOCK/stockDetails/stockDetailsRouter';
 import {InstockRouter} from '@/pages/DaoXinSTOCK/instock/instockRouter';
@@ -26,7 +26,7 @@ const ErpRouterConfig = [
       ...ItemsRouter,
       ...BrandRouter,
       ...PartsRouter,
-      ...PlaceRouter,
+      ...StorehouseRouter,
       ...StockRouter,
       ...StockDetailsRouter,
       ...InstockRouter,

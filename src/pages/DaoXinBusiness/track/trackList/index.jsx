@@ -13,16 +13,17 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {quotationDelete, quotationList} from '../trackUrl';
+import {quotationDelete, quotationList, trackDelete, trackList} from '../trackUrl';
 import QuotationEdit from '../trackEdit';
 import * as SysField from '../trackField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import TrackEdit from '../trackEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const QuotationList = () => {
+const TrackList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -51,7 +52,7 @@ const QuotationList = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={quotationList}
+        api={trackList}
         rowKey="trackId"
         searchForm={searchForm}
         actions={actions()}
@@ -71,14 +72,14 @@ const QuotationList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.trackId);
               }}/>
-              <DelButton api={quotationDelete} value={record.trackId} onSuccess={()=>{
+              <DelButton api={trackDelete} value={record.trackId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={QuotationEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={TrackEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -86,4 +87,4 @@ const QuotationList = () => {
   );
 };
 
-export default QuotationList;
+export default TrackList;

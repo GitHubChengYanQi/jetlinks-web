@@ -14,7 +14,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {contactsDelete} from '@/pages/DaoXinCustomer/contacts/contactsUrl';
-import ContactsEdit from '@/pages/DaoXinCustomer/customer/customerEdit/clientedit';
+import ContactsEdit from '@/pages/DaoXinCustomer/customer/customerEdit/Contactsedit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

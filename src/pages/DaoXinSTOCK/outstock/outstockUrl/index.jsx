@@ -5,37 +5,37 @@
  * @Date 2021-07-17 10:46:08
  */
 
-export const deliveryAdd = {
+export const outstockAdd = {
   url: '/outstock/add',
   method: 'POST',
   rowKey:'outstockId'
 };
 
-export const deliveryEdit = {
+export const outstockEdit = {
   url: '/outstock/edit',
   method: 'POST',
   rowKey:'outstockId'
 };
 
-export const deliveryDelete = {
+export const outstockDelete = {
   url: '/outstock/delete',
   method: 'POST',
   rowKey:'outstockId'
 };
 
-export const deliveryDetail = {
+export const outstockDetail = {
   url: '/outstock/detail',
   method: 'POST',
   rowKey:'outstockId'
 };
 
-export const deliveryList = {
+export const outstockList = {
   url: '/outstock/list',
   method: 'POST',
   rowKey:'outstockId'
 };
 
-export const deliveryTimeListSelect = {
+export const outstockTimeListSelect = {
   url:'/outstock/listSelect',
   method:'POST',
   rowKey:'outstockId'

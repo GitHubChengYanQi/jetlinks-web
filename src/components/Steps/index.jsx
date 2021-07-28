@@ -1,6 +1,6 @@
 import {Button, Steps} from 'antd';
 import React, {useRef, useState} from 'react';
-import FormClient from '@/components/Form/client';
+import FormClient from '@/components/Form/FormIndex';
 import * as SysField from '@/pages/DaoXinCustomer/client/clientField';
 import ContactsList from '@/pages/DaoXinCustomer/client/clientEdit/client';
 import AdressList from '@/pages/DaoXinCustomer/client/clientEdit/adress';

@@ -10,7 +10,7 @@ import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
 import {brandDetail, brandAdd, brandEdit} from '../brandUrl';
 import * as SysField from '../brandField';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 

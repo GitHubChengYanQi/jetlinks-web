@@ -9,7 +9,7 @@ import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {partsDetail, partsAdd, partsEdit} from '../partsUrl';
 import * as SysField from '../partsField';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 import {Button, Steps} from 'antd';
 
 const {FormItem} = Form;

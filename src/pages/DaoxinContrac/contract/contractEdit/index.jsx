@@ -10,7 +10,7 @@ import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
 import {contractDetail, contractAdd, contractEdit} from '../contractUrl';
 import * as SysField from '../contractField';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 

@@ -8,24 +8,23 @@
 import React, {useRef, useState} from 'react';
 import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
-import {placeDetail, placeAdd, placeEdit} from '../storehouseUrl';
+import {placeDetail, placeAdd, placeEdit, storehouseDetail, storehouseAdd, storehouseEdit} from '../storehouseUrl';
 import * as SysField from '../storehouseField';
 import {Capacity, Palce} from '../storehouseField';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: placeDetail,
-  add: placeAdd,
-  save: placeEdit
+  view: storehouseDetail,
+  add: storehouseAdd,
+  save: storehouseEdit
 };
 
-const PlaceEdit = ({...props}) => {
+const StorehouseEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
-  console.log(result);
 
   const [current, setCurrent] = React.useState(0);
 
@@ -136,4 +135,4 @@ const PlaceEdit = ({...props}) => {
 
 };
 
-export default PlaceEdit;
+export default StorehouseEdit;

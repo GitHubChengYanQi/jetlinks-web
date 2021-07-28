@@ -7,7 +7,7 @@
 
 import React, {lazy} from 'react';
 
-export const SourceRouter = [
+export const OriginRouter = [
   {
     path: '/origin',
     name: '商机来源',

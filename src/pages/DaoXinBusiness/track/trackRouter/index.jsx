@@ -7,7 +7,7 @@
 
 import React, {lazy} from 'react';
 
-export const QuotationRouter = [
+export const TrackRouter = [
   {
     path: '/track',
     name: '报价管理',

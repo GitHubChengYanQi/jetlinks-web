@@ -8,18 +8,18 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {sourceDetail, sourceAdd, sourceEdit} from '../originUrl';
+import {sourceDetail, sourceAdd, sourceEdit, originDetail, originAdd, originEdit} from '../originUrl';
 import * as SysField from '../originField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: sourceDetail,
-  add: sourceAdd,
-  save: sourceEdit
+  view: originDetail,
+  add: originAdd,
+  save: originEdit
 };
 
-const SourceEdit = ({...props}) => {
+const OriginEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -35,4 +35,4 @@ const SourceEdit = ({...props}) => {
   );
 };
 
-export default SourceEdit;
+export default OriginEdit;

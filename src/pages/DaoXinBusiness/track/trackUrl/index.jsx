@@ -5,38 +5,34 @@
  * @Date 2021-07-19 15:13:58
  */
 
-export const quotationAdd = {
+export const trackAdd = {
   url: '/track/add',
   method: 'POST',
   rowKey:'trackId'
 };
 
-export const quotationEdit = {
+export const trackEdit = {
   url: '/track/edit',
   method: 'POST',
   rowKey:'trackId'
 };
 
-export const quotationDelete = {
+export const trackDelete = {
   url: '/track/delete',
   method: 'POST',
   rowKey:'trackId'
 };
 
-export const quotationDetail = {
+export const trackDetail = {
   url: '/track/detail',
   method: 'POST',
   rowKey:'trackId'
 };
 
-export const quotationList = {
+export const trackList = {
   url: '/track/list',
   method: 'POST',
   rowKey:'trackId'
 };
 
-export const BusinessList = {
-  url: '/business/list',
-  method: 'POST',
-};
 

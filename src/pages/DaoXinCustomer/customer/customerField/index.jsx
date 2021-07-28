@@ -62,7 +62,7 @@ export const DeptId = (props) =>{
   return (<Input style={{width:w}}  {...props}/>);
 };
 export const ClientId = (props) =>{
-  return (<Select style={{width:w}}  api={apiUrl.clientIdSelect} {...props}/>);
+  return (<Select style={{width:w}}  api={apiUrl.customerIdSelect} {...props}/>);
 };
 
 export const client = (props) =>{
@@ -81,7 +81,7 @@ export const Dept = (props) =>{
   return (<Input style={{width:w}}  {...props}/>);
 };
 export const Client = (props) =>{
-  return (<Select style={{width:w}}  api={apiUrl.clientIdSelect} {...props}/>);
+  return (<Select style={{width:w}}  api={apiUrl.customerIdSelect} {...props}/>);
 };
 
 

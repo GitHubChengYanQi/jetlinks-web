@@ -3,8 +3,8 @@
 import {ContactsRouter} from '@/pages/DaoXinCustomer/contacts/contactsRouter';
 import CrmLayout from '@/pages/Crm';
 import {BusinessRouter} from '@/pages/DaoXinBusiness/business/businessRouter';
-import {QuotationRouter} from '@/pages/DaoXinBusiness/track/trackRouter';
-import {SourceRouter} from '@/pages/DaoXinBusiness/origin/originRouter';
+import {QuotationRouter, TrackRouter, trackRouter} from '@/pages/DaoXinBusiness/track/trackRouter';
+import {OriginRouter, originRouter, SourceRouter} from '@/pages/DaoXinBusiness/origin/originRouter';
 import {ContractMachineRouter} from '@/pages/DaoxinContrac/contractMachine/contractMachineRouter';
 import {TemplateRouter} from '@/pages/DaoxinContrac/template/templateRouter';
 import {ContractRouter} from '@/pages/DaoxinContrac/contract/contractRouter';
@@ -26,8 +26,8 @@ const CrmRouterConfig = [
       ...CustomerRouter,
       ...ContactsRouter,
       ...BusinessRouter,
-      ...QuotationRouter,
-      ...SourceRouter,
+      ...TrackRouter,
+      ...OriginRouter,
       ...TemplateRouter,
       ...ContractRouter,
       ...ContractMachineRouter,

@@ -7,7 +7,7 @@
 
 import React, {lazy} from 'react';
 
-export const PlaceRouter = [
+export const StorehouseRouter = [
   {
     path: '/storehouse',
     name: '仓库管理',

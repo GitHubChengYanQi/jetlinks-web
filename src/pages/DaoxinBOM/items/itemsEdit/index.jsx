@@ -10,7 +10,7 @@ import {Button, Divider, Input, message, Select, Steps} from 'antd';
 import Form from '@/components/Form';
 import {itemsDetail, itemsAdd, itemsEdit} from '../itemsUrl';
 import * as SysField from '../itemsField';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 
 
 

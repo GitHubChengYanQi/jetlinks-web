@@ -11,7 +11,7 @@ import Form from '@/components/Form';
 import {businessDetail, businessAdd, businessEdit} from '../businessUrl';
 import * as SysField from '../businessField';
 import {Stock} from '../businessField';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 

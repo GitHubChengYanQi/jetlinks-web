@@ -13,16 +13,17 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {deliveryDelete, deliveryList} from '../outstockUrl';
+import {deliveryDelete, deliveryList, outstockDelete, outstockList} from '../outstockUrl';
 import * as SysField from '../outstockField';
 import Breadcrumb from '@/components/Breadcrumb';
 import DeliveryEdit from '@/pages/DaoXinSTOCK/outstock/outstockEdit';
 import Modal2 from '@/components/Modal';
+import OutstockEdit from '@/pages/DaoXinSTOCK/outstock/outstockEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const DeliveryList = () => {
+const OutstockList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -49,7 +50,7 @@ const DeliveryList = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={deliveryList}
+        api={outstockList}
         rowKey="outstockId"
         searchForm={searchForm}
         actions={actions()}
@@ -67,14 +68,14 @@ const DeliveryList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.outstockId);
               }}/>
-              <DelButton api={deliveryDelete} value={record.outstockId} onSuccess={()=>{
+              <DelButton api={outstockDelete} value={record.outstockId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Modal2 title="编辑" component={DeliveryEdit} onSuccess={() => {
+      <Modal2 title="编辑" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -82,4 +83,4 @@ const DeliveryList = () => {
   );
 };
 
-export default DeliveryList;
+export default OutstockList;

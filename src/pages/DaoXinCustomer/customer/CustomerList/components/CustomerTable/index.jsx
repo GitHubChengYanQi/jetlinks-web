@@ -15,9 +15,14 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {clientDelete, clientList} from '@/pages/DaoXinCustomer/customer/customerUrl';
-import ClientEdit from '@/pages/DaoXinCustomer/customer/customerEdit';
+import customerEdit, {
+  clientDelete,
+  clientList,
+  customerDelete,
+  customerList
+} from '@/pages/DaoXinCustomer/customer/customerUrl';
 import * as SysField from '@/pages/DaoXinCustomer/customer/customerField';
+import CustomerEdit from '@/pages/DaoXinCustomer/customer/customerEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -48,7 +53,7 @@ const CustomerTable = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={clientList}
+        api={customerList}
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
@@ -69,14 +74,14 @@ const CustomerTable = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.customerId);
               }} />
-              <DelButton api={clientDelete} value={record.customerId} onSuccess={() => {
+              <DelButton api={customerDelete} value={record.customerId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500}  title="编辑" component={ClientEdit} onSuccess={() => {
+      <Modal2 width={1500}  title="编辑" component={CustomerEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

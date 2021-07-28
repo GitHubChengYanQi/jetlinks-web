@@ -8,18 +8,18 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {deliveryDetail, deliveryAdd, deliveryEdit} from '../outstockUrl';
+import {deliveryDetail, deliveryAdd, deliveryEdit, outstockDetail, outstockAdd, outstockEdit} from '../outstockUrl';
 import * as SysField from '../outstockField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: deliveryDetail,
-  add: deliveryAdd,
-  save: deliveryEdit
+  view: outstockDetail,
+  add: outstockAdd,
+  save: outstockEdit
 };
 
-const DeliveryEdit = ({...props}) => {
+const OutstockEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -39,4 +39,4 @@ const DeliveryEdit = ({...props}) => {
   );
 };
 
-export default DeliveryEdit;
+export default OutstockEdit;

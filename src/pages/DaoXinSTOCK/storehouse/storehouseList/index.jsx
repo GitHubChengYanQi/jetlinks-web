@@ -13,16 +13,17 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {placeDelete, placeList} from '../storehouseUrl';
+import {placeDelete, placeList, storehouseDelete, storehouseList} from '../storehouseUrl';
 import PlaceEdit from '../storehouseEdit';
 import * as SysField from '../storehouseField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import StorehouseEdit from '../storehouseEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const PlaceList = () => {
+const StorehouseList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -50,7 +51,7 @@ const PlaceList = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={placeList}
+        api={storehouseList}
         rowKey="storehouseid"
         searchForm={searchForm}
         actions={actions()}
@@ -69,14 +70,14 @@ const PlaceList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.storehouseId);
               }}/>
-              <DelButton api={placeDelete} value={record.storehouseId} onSuccess={()=>{
+              <DelButton api={storehouseDelete} value={record.storehouseId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={PlaceEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={StorehouseEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -84,4 +85,4 @@ const PlaceList = () => {
   );
 };
 
-export default PlaceList;
+export default StorehouseList;

@@ -8,18 +8,18 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {quotationDetail, quotationAdd, quotationEdit} from '../trackUrl';
+import {trackDetail, trackAdd, trackEdit} from '../trackUrl';
 import * as SysField from '../trackField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: quotationDetail,
-  add: quotationAdd,
-  save: quotationEdit
+  view: trackDetail,
+  add: trackAdd,
+  save: trackEdit
 };
 
-const QuotationEdit = ({...props}) => {
+const TrackEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -41,4 +41,4 @@ const QuotationEdit = ({...props}) => {
   );
 };
 
-export default QuotationEdit;
+export default TrackEdit;

@@ -8,24 +8,27 @@
 import React, {useRef, useState} from 'react';
 import {Button, Input, message, Steps, Table} from 'antd';
 import Form from '@/components/Form';
-import {clientAdd, clientDetail, clientEdit} from '@/pages/DaoXinCustomer/customer/customerUrl';
+import {
+  customerAdd,
+  customerDetail, customerEdit
+} from '@/pages/DaoXinCustomer/customer/customerUrl';
 import * as SysField from '@/pages/DaoXinCustomer/customer/customerField';
-import ContactsList from '@/pages/DaoXinCustomer/customer/customerEdit/client';
+import ContactsList from '@/pages/DaoXinCustomer/customer/customerEdit/Contacts';
 import AdressList from '@/pages/DaoXinCustomer/customer/customerEdit/adress';
-import FormIndex from '@/components/Form/client';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: clientDetail,
-  add: clientAdd,
-  save: clientEdit
+  view: customerDetail,
+  add: customerAdd,
+  save: customerEdit
 };
 
 const {Step} = Steps;
 
 
-const ClientEdit = ({...props}) => {
+const CustomerEdit = ({...props}) => {
 
   const [result, setResult] = useState(props.value);
 
@@ -46,18 +49,16 @@ const ClientEdit = ({...props}) => {
               api={ApiConfig}
               fieldKey="customerId"
               success={(result) => {
-                if (result.data!==""){
+                if (result.data !== '') {
                   setResult(result.data);
                 }
                 next();
               }}
             >
-            <FormItem label="客户名称" name="clientName" component={SysField.ClientName} required />
-            <FormItem label="法定代表人" name="legal" component={SysField.Legal} required />
-            <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} required />
-            <Button type="primary" htmlType="submit">
-              Next
-            </Button>
+              <FormItem label="客户名称" name="clientName" component={SysField.ClientName} required />
+              <Button type="primary" htmlType="submit">
+                Next
+              </Button>
             </FormIndex>
           </div>
         </>
@@ -78,14 +79,16 @@ const ClientEdit = ({...props}) => {
                 next();
               }}
             >
-            <FormItem label="成立时间" name="setup" component={SysField.Setup} />
-            <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} />
-            <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
-            <FormItem label="注册地址" name="signIn" component={SysField.SignIn} />
-            <FormItem label="简介" name="introduction" component={SysField.Introduction} />
-            <Button type="primary" htmlType="submit">
-              Next
-            </Button>
+              <FormItem label="法定代表人" name="legal" component={SysField.Legal} required />
+              <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} required />
+              <FormItem label="成立时间" name="setup" component={SysField.Setup} />
+              <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} />
+              <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
+              <FormItem label="注册地址" name="signIn" component={SysField.SignIn} />
+              <FormItem label="简介" name="introduction" component={SysField.Introduction} />
+              <Button type="primary" htmlType="submit">
+                Next
+              </Button>
             </FormIndex>
           </div>
 
@@ -97,7 +100,9 @@ const ClientEdit = ({...props}) => {
         <>
           <div style={{margin: '50px 0'}}>
             <ContactsList clientId={props.value ? props.value : result} />
-            <Button type="primary" onClick={()=>{next();}}>
+            <Button type="primary" onClick={() => {
+              next();
+            }}>
               Next
             </Button>
           </div>
@@ -110,7 +115,7 @@ const ClientEdit = ({...props}) => {
           <div style={{margin: '50px 0'}}>
             <AdressList clientId={props.value ? props.value : result} />
             <Button type="primary" onClick={() => {
-                  props.onSuccess();
+              props.onSuccess();
             }}>
               Done
             </Button>
@@ -134,16 +139,15 @@ const ClientEdit = ({...props}) => {
     <>
 
 
-
-        <Steps current={current} >
-          {steps.map(item => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <div className="steps-content">{steps[current].content}</div>
+      <Steps current={current}>
+        {steps.map(item => (
+          <Step key={item.title} title={item.title} />
+        ))}
+      </Steps>
+      <div className="steps-content">{steps[current].content}</div>
 
     </>
   );
 };
 
-export default ClientEdit;
+export default CustomerEdit;

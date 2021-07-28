@@ -13,16 +13,17 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {sourceDelete, sourceList} from '../originUrl';
+import {originDelete, originEdit, originList, sourceDelete, sourceList} from '../originUrl';
 import SourceEdit from '../originEdit';
 import * as SysField from '../originField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import OriginEdit from '../originEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const SourceList = () => {
+const OriginList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -47,7 +48,7 @@ const SourceList = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={sourceList}
+        api={originList}
         rowKey="originId"
         searchForm={searchForm}
         actions={actions()}
@@ -62,14 +63,14 @@ const SourceList = () => {
                 console.log(record);
                 ref.current.open(record.originId);
               }}/>
-              <DelButton api={sourceDelete} value={record.originId} onSuccess={()=>{
+              <DelButton api={originDelete} value={record.originId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={SourceEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={OriginEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -77,4 +78,4 @@ const SourceList = () => {
   );
 };
 
-export default SourceList;
+export default OriginList;
