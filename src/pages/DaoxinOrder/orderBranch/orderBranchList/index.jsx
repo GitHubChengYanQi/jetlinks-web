@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {orderBranchDelete, orderBranchList} from '../orderBranchUrl';
 import OrderBranchEdit from '../orderBranchEdit';
 import * as SysField from '../orderBranchField';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -91,7 +92,7 @@ const OrderBranchList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={OrderBranchEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={OrderBranchEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

@@ -17,6 +17,7 @@ import {templateDelete, templateList} from '../templateUrl';
 import TemplateEdit from '../templateEdit';
 import * as SysField from '../templateField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -69,7 +70,7 @@ const TemplateList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={1500} title="编辑" component={TemplateEdit} onSuccess={() => {
+      <Modal2 width={1500} title="编辑" component={TemplateEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

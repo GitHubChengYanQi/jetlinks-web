@@ -35,10 +35,7 @@ export const stockList = {
   rowKey:'stockId'
 };
 
-export const palceIdSelect = {
-  url: '/place/listSelect',
-  method: 'POST'
-};
+
 export const itemIdSelect = {
   url: '/items/listSelect',
   method: 'POST'
@@ -53,6 +50,6 @@ export const items = {
   method: 'POST'
 };
 export const places = {
-  url: '/place/list',
+  url: '/storehouse/list',
   method: 'POST'
 };

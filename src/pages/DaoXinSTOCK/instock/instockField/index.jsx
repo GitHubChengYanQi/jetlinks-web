@@ -15,12 +15,15 @@ import Drawer from '@/components/Drawer';
 import Items from '@/pages/DaoXinSTOCK/instock/instockEdit/item';
 import StockPlaceList from '@/pages/DaoXinSTOCK/instock/instockEdit/placeList';
 import {DatePicker2} from '@alifd/next';
+
+const w = 200;
+
 export const Item = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索物品
@@ -32,11 +35,11 @@ export const Item = (props) =>{
   </>);
 };
 export const ItemId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 export const RegisterTime = (props) =>{
   return (
-    <DatePicker2 {...props}/>
+    <DatePicker2 style={{width:w}}  {...props}/>
 );
 };
 export const PlaceId = (props) =>{
@@ -44,7 +47,7 @@ export const PlaceId = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索仓库
@@ -56,11 +59,11 @@ export const PlaceId = (props) =>{
   </>);
 };
 export const Number = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber style={{width:w}}  {...props}/>);
 };
 export const Price = (props) =>{
-  return (<InputNumber {...props}  />);
+  return (<InputNumber style={{width:w}}  {...props}  />);
 };
 export const BrandId = (props) =>{
-  return (<Select api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select style={{width:w}}  api={apiUrl.brandIdSelect} {...props}/>);
 };

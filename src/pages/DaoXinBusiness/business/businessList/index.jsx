@@ -17,6 +17,7 @@ import {businessDelete, businessList} from '../businessUrl';
 import BusinessEdit from '../businessEdit';
 import * as SysField from '../businessField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -79,7 +80,7 @@ const BusinessList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

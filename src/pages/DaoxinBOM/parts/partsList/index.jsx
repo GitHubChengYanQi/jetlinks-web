@@ -17,6 +17,7 @@ import {partsDelete, partsList} from '../partsUrl';
 import PartsEdit from '../partsEdit';
 import * as SysField from '../partsField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -58,7 +59,7 @@ const PartsList = () => {
           return (
             <div>
               {
-                record.getitem[0].name
+                record.getitem.length > 0 ? record.getitem[0].name : ''
               }
             </div>
           );
@@ -79,7 +80,7 @@ const PartsList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={PartsEdit} onSuccess={() => {
+      <Modal2 width={900} title="编辑" component={PartsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

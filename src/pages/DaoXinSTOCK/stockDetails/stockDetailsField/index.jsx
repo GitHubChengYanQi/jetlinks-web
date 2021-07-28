@@ -11,13 +11,14 @@ import Drawer from '@/components/Drawer';
 import Stocks from '@/pages/DaoXinSTOCK/stockDetails/stockDetailsEdit/stock';
 import {DatePicker2} from '@alifd/next';
 
+const w = 200;
 export const Stock = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
 
   return (<>
-    <Input {...props}/>
+    <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索库存
@@ -29,12 +30,12 @@ export const Stock = (props) =>{
   </>);
 };
 export const StockId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 export const Price = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 export const StorageTime = (props) =>{
-  return (<DatePicker2 {...props}/>);
+  return (<DatePicker2 style={{width:w}}  {...props}/>);
 };
 

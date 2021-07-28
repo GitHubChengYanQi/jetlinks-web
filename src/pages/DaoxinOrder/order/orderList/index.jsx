@@ -19,6 +19,7 @@ import OrderEdit from '../orderEdit';
 import * as SysField from '../orderField';
 import './index.scss';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -89,7 +90,7 @@ const OrderList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={OrderEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

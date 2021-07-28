@@ -17,6 +17,7 @@ import {contractDelete, contractList} from '../contractUrl';
 import ContractEdit from '../contractEdit';
 import * as SysField from '../contractField';
 import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -72,7 +73,7 @@ const ContractList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={1500} title="编辑" component={ContractEdit} onSuccess={() => {
+      <Modal2 width={1500} title="编辑" component={ContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

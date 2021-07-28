@@ -15,7 +15,7 @@ import {DatePicker2} from '@alifd/next';
 import Drawer from '@/components/Drawer';
 import StockPlaceList from '@/pages/DaoXinSTOCK/instock/instockEdit/placeList';
 import Clients from '@/pages/DaoXinBusiness/business/businessEdit/clients';
-import Stocks from '@/pages/DaoXinBusiness/quotation/quotationEdit/stock';
+import Stocks from '@/pages/DaoXinBusiness/track/trackEdit/stock';
 
 export const ClitenId = (props) =>{
   return (<Input {...props}/>);
