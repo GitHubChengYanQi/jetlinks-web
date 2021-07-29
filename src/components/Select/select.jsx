@@ -1,43 +1,21 @@
 import React, {useState} from 'react';
 import {Select as AntSelect, Button} from 'antd';
-import {useRequest} from '@/util/Request';
 import {RedoOutlined} from '@ant-design/icons';
 import {Option} from 'antd/lib/mentions';
+import {useRequest} from '@/util/Request';
 
 const Select2 = (props) => {
-  const {api, defaultValue, ...other} = props;
+  const {api, defaultValue,onChange, ...other} = props;
 
+  const [values, setValues] = useState(props.value);
 
-  let valueArray = [];
-  const {mode} = other;
-  if (props.value) {
-    if (!Array.isArray(props.value)) {
-      if (mode === 'multiple' || mode === 'tag') {
-        const tmpValue = props.value.split(',');
-        for (let i = 0; i < tmpValue.length; i++) {
-          const item = tmpValue[i];
-          if (item) {
-            valueArray.push(item);
-          }
-        }
-      } else {
-        const tmpValue = props.value.split(',');
-        valueArray = tmpValue[0] || [];
-      }
-    } else {
-      valueArray = props.value;
-    }
-  } else if (mode !== 'multiple' && mode !== 'tag') {
-    valueArray = '';
-  }
-
-  const [values, setValues] = useState();
-  const {loading, data, run} = useRequest({url: '/items/list', method: 'POST', data: {name: values}}, {
-    debounceInterval: 700,
+  const {data, run} = useRequest({url: '/items/list', method: 'POST', data: {name: values}}, {
+    debounceInterval: 300,
     manual: true,
   });
 
   let value;
+
   if (data !== undefined) {
     value = new Array(data.length);
 
@@ -46,42 +24,50 @@ const Select2 = (props) => {
     }
   }
 
-  const [open,setOpen] = useState(false);
 
-  // if (value!==undefined){
-  //   if (value.length>0){
-  //     setOpen(true);
-  //   }else {}
-  // }
+  let [open,setOpen] = useState(false);
 
 
+    if (value!==undefined) {
+      if (value.length > 0 && open != null) {
+        open = true;
+      } else {
+        open = false;
+      }
+    }
 
 
 
-  props.onChange(values);
+
+
+
+
 
 
   return (
     <>
-      {!loading &&
       <AntSelect
         onSearch={(value) => {
           if (value !== '') {
             setValues(value);
+            setOpen(false);
           }
           run();
         }}
         open={open}
         onChange={(value) => {
-          setOpen(false);
+          setOpen(null);
           setValues(value);
+        }}
+        onBlur={()=>{
+          onChange(values);
         }}
         options={value}
         style={{width: 200}}
         value={values}
         allowClear
         showSearch
-      />}
+      />
     </>
   );
 };
