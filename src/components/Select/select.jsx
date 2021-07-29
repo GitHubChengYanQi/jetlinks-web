@@ -5,10 +5,9 @@ import {RedoOutlined} from '@ant-design/icons';
 import {Option} from 'antd/lib/mentions';
 
 const Select2 = (props) => {
-  const {value,api, defaultValue, ...other} = props;
+  const {value, defaultValue, ...other} = props;
 
-  const {loading, data,mutate, run} = useRequest(api);
-  console.log(api);
+
   let valueArray = [];
   const {mode} = other;
   if (value) {
@@ -32,12 +31,19 @@ const Select2 = (props) => {
     valueArray = '';
   }
 
-  const [values, setValues] = useState(valueArray);
 
 
-  const val = (value) => {
+  const {loading, data,run} = useRequest({ url: '/items/listSelect', method: 'POST'});
 
-  };
+  const [values, setValues] = useState(false);
+
+
+
+
+
+
+
+
 
 
   if (data) {
@@ -50,12 +56,15 @@ const Select2 = (props) => {
               setValues(value);
             };
           }}
+          onFocus={()=>{
+            setValues(values);
+          }}
+          open={false}
           onChange={values}
           options={data}
           allowClear={false}
           style={{width: 200}}
           value={values}
-          {...other}
           showSearch
           // filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         />}

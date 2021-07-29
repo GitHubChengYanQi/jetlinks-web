@@ -21,5 +21,12 @@ export const  CustomerRouter = [
     component: lazy(() => import('../CustomerDetail')),
     fallback: <div>loading...</div>,
     exact: true,
+  },
+  {
+    path: '/customer/add',
+    name: '客户管理',
+    component: lazy(() => import('../CustomerEdit')),
+    fallback: <div>loading...</div>,
+    exact: true,
   }
 ];

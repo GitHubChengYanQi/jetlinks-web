@@ -15,14 +15,12 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import customerEdit, {
-  clientDelete,
-  clientList,
+import {
   customerDelete,
   customerList
-} from '@/pages/DaoXinCustomer/customer/CustomerUrl';
-import * as SysField from '@/pages/DaoXinCustomer/customer/CustomerField';
-import CustomerEdit from '@/pages/DaoXinCustomer/customer/CustomerEdit';
+} from '@/pages/Crm/customer/CustomerUrl';
+import * as SysField from '@/pages/Crm/customer/CustomerField';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import {useHistory} from 'ice';
 
 const {Column} = AntTable;
@@ -63,7 +61,7 @@ const CustomerTable = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="clientName" render={(text, record, index)=>{
+        <Column title="客户名称" dataIndex="customerName" render={(text, record, index)=>{
           return (
             <Button type="link" onClick={()=>{
               history.push(`/CRM/customer/${record.customerId}`);

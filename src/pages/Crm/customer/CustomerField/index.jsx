@@ -20,7 +20,7 @@ export const Name = (props) => {
   return (<Input style={{width: w}} {...props} />);
 };
 export const ClientName = (props) => {
-  return ((<Select2 style={{width: w}} api={{url: '/customer/list', method: 'POST',data:{customerName:''}}} {...props}  />));
+  return ((<Select2 style={{width: w}}  {...props}  />));
 };
 export const AdressId = (props) => {
   return (<InputNumber style={{width: w}} {...props} />);
