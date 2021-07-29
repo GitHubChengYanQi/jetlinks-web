@@ -7,7 +7,7 @@
 
 import React, {lazy, useRef} from 'react';
 import Table from '@/components/Table';
-import {PageHeader, Table as AntTable} from 'antd';
+import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -23,11 +23,15 @@ import customerEdit, {
 } from '@/pages/DaoXinCustomer/customer/customerUrl';
 import * as SysField from '@/pages/DaoXinCustomer/customer/customerField';
 import CustomerEdit from '@/pages/DaoXinCustomer/customer/customerEdit';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = () => {
+
+  const history = useHistory();
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -59,7 +63,13 @@ const CustomerTable = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="clientName" />
+        <Column title="客户名称" dataIndex="clientName" render={(text, record, index)=>{
+          return (
+            <Button type="link" onClick={()=>{
+              history.push(`/CRM/customer/${record.customerId}`);
+            }}>{text}</Button>
+          );
+        }} />
         <Column title="成立时间" dataIndex="setup" />
         <Column title="法定代表人" dataIndex="legal" />
         <Column title="统一社会信用代码" dataIndex="utscc" />
