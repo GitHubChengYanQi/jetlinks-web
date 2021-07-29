@@ -18,18 +18,22 @@ import ContractEdit from '../ContractEdit';
 import * as SysField from '../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ContractList = () => {
+
+  const history = useHistory();
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ref.current.open(false);
+         history.push('/CRM/contract/addContract');
         }}/>
       </>
     );
@@ -39,8 +43,7 @@ const ContractList = () => {
    return (
      <>
        <FormItem label="合同名称" name="name" component={SysField.Name}/>
-       <FormItem label="负责人id" name="userId" component={SysField.UserId}/>
-       <FormItem label="创建时间" name="time" component={SysField.Time}/>
+       <FormItem label="负责人" name="userId" component={SysField.UserId}/>
      </>
     );
   };
@@ -51,12 +54,13 @@ const ContractList = () => {
       <Table
         title={<Breadcrumb />}
         api={contractList}
+        actions={actions()}
         rowKey="contractId"
         searchForm={searchForm}
         ref={tableRef}
       >
         <Column title="合同名称" dataIndex="name"/>
-        <Column title="负责人id" dataIndex="userId"/>
+        <Column title="负责人" dataIndex="userId"/>
         <Column title="备注" dataIndex="note"/>
         <Column title="创建时间" dataIndex="time"/>
         <Column/>

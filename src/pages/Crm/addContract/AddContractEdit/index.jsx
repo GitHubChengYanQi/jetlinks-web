@@ -1,29 +1,30 @@
 /**
- * 合同表编辑页
+ * 合同模板编辑页
  *
  * @author
- * @Date 2021-07-21 13:36:21
+ * @Date 2021-07-21 08:22:02
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Input, Steps} from 'antd';
+import {Button, Input, InputNumber, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import {contractDetail, contractAdd, contractEdit} from '../ContractUrl';
-import * as SysField from '../ContractField';
+import {templateAdd, templateDetail, templateEdit, templateList} from '@/pages/Crm/template/TemplateUrl';
+import * as SysField from '@/pages/Crm/addContract/AddContractField';
+import {contractAdd} from '@/pages/Crm/addContract/AddContractUrl';
+import styles from './index.model.scss';
 import FormIndex from '@/components/Form/FormIndex';
-import {templateAdd, templateDetail} from '@/pages/Crm/template/TemplateUrl';
+
 
 const {FormItem} = Form;
-
+const {Column} = AntTable;
 const ApiConfig = {
-  view: contractDetail,
-  add: contractAdd,
-  save: contractEdit
+  view: templateDetail,
+  add: templateAdd,
+  save: contractAdd
 };
 
 
-
-const ContractEdit = ({...props}) => {
+const AddContractEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
@@ -43,7 +44,7 @@ const ContractEdit = ({...props}) => {
               {...props}
               ref={formRef}
               api={ApiConfig}
-              fieldKey="contractId"
+              fieldKey="templateId"
               success={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
@@ -71,10 +72,9 @@ const ContractEdit = ({...props}) => {
 
             <FormIndex
               {...props}
-              value={result}
               ref={formRef}
               api={ApiConfig}
-              fieldKey="contractId"
+              fieldKey="templateId"
               success={(result) => {
                 props.onSuccess();
               }}
@@ -116,4 +116,4 @@ const ContractEdit = ({...props}) => {
 
 };
 
-export default ContractEdit;
+export default AddContractEdit;

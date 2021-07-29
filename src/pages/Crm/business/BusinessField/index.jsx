@@ -61,10 +61,10 @@ export const Time = (props) =>{
   return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
 };
 export const State = (props) =>{
-  return (<AntdSelect style={{width:w}}  options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
+  return (<AntdSelect style={{width:w}}  options={[{value:'预测评估',label:'预测评估'},{value:'初期沟通',label:'初期沟通'},{value:'需求分析',label:'需求分析'}]} {...props}/>);
 };
 export const Stage = (props) =>{
-  return (<AntdSelect style={{width:w}}  options={[{value:'0',label:'预测评估'},{value:'1',label:'初期沟通'},{value:'2',label:'需求分析'}]} {...props}/>);
+  return (<AntdSelect style={{width:w}}  options={[{value:'预测评估',label:'预测评估'},{value:'初期沟通',label:'初期沟通'},{value:'需求分析',label:'需求分析'}]} {...props}/>);
 };
 export const Person = (props) =>{
   return (<Select style={{width:w}}  api={apiUrl.UserIdSelect}  {...props}  />);

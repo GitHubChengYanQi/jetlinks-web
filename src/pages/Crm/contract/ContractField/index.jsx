@@ -26,7 +26,7 @@ export const Note = (props) =>{
   return (<Input  style={{width:w}} {...props}/>);
 };
 export const Time = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
 };
 export const Content = (props) =>{
 
