@@ -16,7 +16,9 @@ const CustomerDetail = () => {
         <h3 className={styles.title}>客户名称写在这里</h3>
         <div className={styles.titleButton}>
           <Button type="primary">编辑</Button>
-          <Button>返回</Button>
+          <Button onClick={()=>{
+            history.back();
+          }}>返回</Button>
         </div>
       </Card>
       <div
