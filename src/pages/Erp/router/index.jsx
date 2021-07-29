@@ -3,15 +3,15 @@
 
 
 import CrmLayout from '@/pages/Crm';
-import {MaterialRouter} from '@/pages/DaoxinBOM/material/MaterialRouter';
-import {ItemsRouter} from '@/pages/DaoxinBOM/items/ItemsRouter';
-import {BrandRouter} from '@/pages/DaoxinBOM/brand/BrandRouter';
-import {PartsRouter} from '@/pages/DaoxinBOM/parts/PartsRouter';
-import {PlaceRouter, StorehouseRouter} from '@/pages/DaoXinSTOCK/storehouse/StorehouseRouter';
-import {StockRouter} from '@/pages/DaoXinSTOCK/stock/StockRouter';
-import {StockDetailsRouter} from '@/pages/DaoXinSTOCK/stockDetails/StockDetailsRouter';
-import {InstockRouter} from '@/pages/DaoXinSTOCK/instock/InstockRouter';
-import {OutstockRouter} from '@/pages/DaoXinSTOCK/outstock/OutstockRouter';
+import {MaterialRouter} from '@/pages/Erp/material/MaterialRouter';
+import {ItemsRouter} from '@/pages/Erp/items/ItemsRouter';
+import {BrandRouter} from '@/pages/Erp/brand/BrandRouter';
+import {PartsRouter} from '@/pages/Erp/parts/PartsRouter';
+import {PlaceRouter, StorehouseRouter} from '@/pages/Erp/storehouse/StorehouseRouter';
+import {StockRouter} from '@/pages/Erp/stock/StockRouter';
+import {StockDetailsRouter} from '@/pages/Erp/stockDetails/StockDetailsRouter';
+import {InstockRouter} from '@/pages/Erp/instock/InstockRouter';
+import {OutstockRouter} from '@/pages/Erp/outstock/OutstockRouter';
 import ErpLayout from '@/pages/Erp';
 
 

@@ -1,17 +1,17 @@
 
 
-import {ContactsRouter} from '@/pages/DaoXinCustomer/contacts/ContactsRouter';
+import {ContactsRouter} from '@/pages/Crm/contacts/ContactsRouter';
 import CrmLayout from '@/pages/Crm';
-import {BusinessRouter} from '@/pages/DaoXinBusiness/business/BusinessRouter';
-import {QuotationRouter, TrackRouter, trackRouter} from '@/pages/DaoXinBusiness/track/TrackRouter';
-import {OriginRouter, originRouter, SourceRouter} from '@/pages/DaoXinBusiness/origin/OriginRouter';
-import {ContractMachineRouter} from '@/pages/DaoxinContrac/contractMachine/ContractMachineRouter';
-import {TemplateRouter} from '@/pages/DaoxinContrac/template/TemplateRouter';
-import {ContractRouter} from '@/pages/DaoxinContrac/contract/ContractRouter';
-import {AdressRouter} from '@/pages/DaoXinCustomer/adress/AdressRouter';
-import {OrderRouter} from '@/pages/DaoxinOrder/order/OrderRouter';
-import {OrderBranchRouter} from '@/pages/DaoxinOrder/orderBranch/OrderBranchRouter';
-import {CustomerRouter} from '@/pages/DaoXinCustomer/customer/CustomerRouter';
+import {BusinessRouter} from '@/pages/Crm/business/BusinessRouter';
+import {QuotationRouter, TrackRouter, trackRouter} from '@/pages/Crm/track/TrackRouter';
+import {OriginRouter, originRouter, SourceRouter} from '@/pages/Crm/origin/OriginRouter';
+import {ContractMachineRouter} from '@/pages/Crm/contractMachine/ContractMachineRouter';
+import {TemplateRouter} from '@/pages/Crm/template/TemplateRouter';
+import {ContractRouter} from '@/pages/Crm/contract/ContractRouter';
+import {AdressRouter} from '@/pages/Crm/adress/AdressRouter';
+import {OrderRouter} from '@/pages/Crm/order/OrderRouter';
+import {OrderBranchRouter} from '@/pages/Crm/orderBranch/OrderBranchRouter';
+import {CustomerRouter} from '@/pages/Crm/customer/CustomerRouter';
 
 
 const CrmRouterConfig = [

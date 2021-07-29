@@ -8,7 +8,7 @@ const Select2 = (props) => {
   const {value,api, defaultValue, ...other} = props;
 
   const {loading, data,mutate, run} = useRequest(api);
-
+  console.log(api);
   let valueArray = [];
   const {mode} = other;
   if (value) {
@@ -33,6 +33,11 @@ const Select2 = (props) => {
   }
 
   const [values, setValues] = useState(valueArray);
+
+
+  const val = (value) => {
+
+  };
 
 
   if (data) {
