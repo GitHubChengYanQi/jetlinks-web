@@ -3,7 +3,6 @@ import { useRequest as ahooksRequest } from 'ahooks';
 import Service from '@/util/Service';
 
 const useRequest = (config, options) => {
-
   const { ajaxService } = Service();
 
   const requestService = (params) => {

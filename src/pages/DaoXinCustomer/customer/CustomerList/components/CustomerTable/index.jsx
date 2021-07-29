@@ -20,9 +20,9 @@ import customerEdit, {
   clientList,
   customerDelete,
   customerList
-} from '@/pages/DaoXinCustomer/customer/customerUrl';
-import * as SysField from '@/pages/DaoXinCustomer/customer/customerField';
-import CustomerEdit from '@/pages/DaoXinCustomer/customer/customerEdit';
+} from '@/pages/DaoXinCustomer/customer/CustomerUrl';
+import * as SysField from '@/pages/DaoXinCustomer/customer/CustomerField';
+import CustomerEdit from '@/pages/DaoXinCustomer/customer/CustomerEdit';
 import {useHistory} from 'ice';
 
 const {Column} = AntTable;
