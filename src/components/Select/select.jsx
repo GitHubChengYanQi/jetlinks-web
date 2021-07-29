@@ -5,7 +5,7 @@ import {RedoOutlined} from '@ant-design/icons';
 import {Option} from 'antd/lib/mentions';
 
 const Select2 = (props) => {
-  const {value, defaultValue, ...other} = props;
+  const {value, api, defaultValue, ...other} = props;
 
 
   let valueArray = [];
@@ -32,18 +32,16 @@ const Select2 = (props) => {
   }
 
 
+  const {loading, data, run} = useRequest(api);
 
-  const {loading, data,run} = useRequest({ url: '/items/listSelect', method: 'POST'});
-
-  const [values, setValues] = useState(false);
-
+  const [values, setValues] = useState(value);
 
 
+  const [open, setOpen] = useState(false);
 
+  console.log(data);
 
-
-
-
+  props.onChange(values);
 
 
   if (data) {
@@ -54,19 +52,26 @@ const Select2 = (props) => {
           onSearch={(value) => {
             if (value !== '') {
               setValues(value);
-            };
+              setOpen(true);
+            } else {
+              setOpen(false);
+            }
           }}
-          onFocus={()=>{
-            setValues(values);
+          onFocus={() => {
+            setOpen(false);
           }}
-          open={false}
-          onChange={values}
+          onBlur={() => {
+            setOpen(false);
+          }}
+          open={open}
+          onChange={(value) => {
+          setValues(value);}}
           options={data}
-          allowClear={false}
           style={{width: 200}}
           value={values}
+          allowClear
           showSearch
-          // filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         />}
       </>
     );
