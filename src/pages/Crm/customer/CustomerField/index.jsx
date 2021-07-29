@@ -10,7 +10,7 @@ import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkb
 import Select from '@/components/Select';
 import {DatePicker2} from '@alifd/next';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
-import Select2 from '@/components/Select/select';
+import Select2 from '@/components/Select/Select2';
 import axios from 'axios';
 
 const w = 200;
