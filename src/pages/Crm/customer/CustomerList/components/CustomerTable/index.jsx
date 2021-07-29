@@ -7,7 +7,7 @@
 
 import React, {lazy, useRef} from 'react';
 import Table from '@/components/Table';
-import {PageHeader, Table as AntTable} from 'antd';
+import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -20,14 +20,18 @@ import customerEdit, {
   clientList,
   customerDelete,
   customerList
-} from '@/pages/Crm/customer/CustomerUrl';
-import * as SysField from '@/pages/Crm/customer/CustomerField';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+} from '@/pages/DaoXinCustomer/customer/CustomerUrl';
+import * as SysField from '@/pages/DaoXinCustomer/customer/CustomerField';
+import CustomerEdit from '@/pages/DaoXinCustomer/customer/CustomerEdit';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = () => {
+
+  const history = useHistory();
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -43,7 +47,7 @@ const CustomerTable = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="客户名称" name="customerName" component={SysField.Name} />
+        <FormItem label="客户名称" name="clientName" component={SysField.Name} />
         <FormItem label="公司类型" name="companyType" component={SysField.Name} />
       </>
     );
@@ -59,7 +63,13 @@ const CustomerTable = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="customerName" />
+        <Column title="客户名称" dataIndex="clientName" render={(text, record, index)=>{
+          return (
+            <Button type="link" onClick={()=>{
+              history.push(`/CRM/customer/${record.customerId}`);
+            }}>{text}</Button>
+          );
+        }} />
         <Column title="成立时间" dataIndex="setup" />
         <Column title="法定代表人" dataIndex="legal" />
         <Column title="统一社会信用代码" dataIndex="utscc" />
