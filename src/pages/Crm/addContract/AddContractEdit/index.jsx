@@ -30,7 +30,6 @@ const AddContractEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
-  console.log(result);
 
   const [current, setCurrent] = React.useState(0);
 
@@ -54,10 +53,7 @@ const AddContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="合同名称" name="name" component={SysField.Name} required/>
-              <FormItem label="负责人" name="userId" component={SysField.UserId} required/>
-              <FormItem label="备注" name="note" component={SysField.Note} required/>
-              <FormItem label="创建时间" name="time" component={SysField.Time} required/>
+              <FormItem label="选择合同模板" name="content" component={SysField.Template} />
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
@@ -78,10 +74,35 @@ const AddContractEdit = ({...props}) => {
               api={ApiConfig}
               fieldKey="contractId"
               success={(result) => {
+                next();
+              }}
+            >
+              <FormItem label="合同名称" name="name" component={SysField.Name} required/>
+              <Button type="primary" htmlType="submit">
+                Next
+              </Button>
+            </FormIndex>
+          </div>
+
+        </>
+    },
+    {
+      title: '选填项',
+      content:
+        <>
+          <div style={{margin: '50px 150px'}}>
+
+            <FormIndex
+              {...props}
+              value={result}
+              ref={formRef}
+              api={ApiConfig}
+              fieldKey="contractId"
+              success={(result) => {
                 props.onSuccess();
               }}
             >
-              <FormItem label="选择合同模板" name="content" component={SysField.Template} />
+              <FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required/>
               <Button type="primary" htmlType="submit">
                 Done
               </Button>

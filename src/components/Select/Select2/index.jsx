@@ -37,13 +37,6 @@ const Select2 = (props) => {
     }
 
 
-
-
-
-
-
-
-
   return (
     <>
       <AntSelect
