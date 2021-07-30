@@ -1,11 +1,12 @@
-import React from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
+import React, {useState} from 'react';
+import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {useParams} from 'ice';
-
+import ProCard from '@ant-design/pro-card';
+import RcResizeObserver from 'rc-resize-observer';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.scss';
 
@@ -15,6 +16,7 @@ const CustomerDetail = () => {
   const params = useParams();
 
   console.log(params);
+  const [responsive, setResponsive] = useState(false);
 
   const {loading, data, run} = useRequest(customerDetail, {
     defaultParams: {
@@ -64,10 +66,24 @@ const CustomerDetail = () => {
       </div>
       <div
         className={styles.main}>
-        <Card
-        >
-          一些统计数据放这里
-        </Card>
+
+          <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
+            <ProCard>
+              <Statistic title="今日UV" value={79.0} precision={2} />
+            </ProCard>
+            <Divider type={responsive ? 'horizontal' : 'vertical'} />
+            <ProCard>
+              <Statistic title="冻结金额" value={112893.0} precision={2} />
+            </ProCard>
+            <Divider type={responsive ? 'horizontal' : 'vertical'} />
+            <ProCard>
+              <Statistic title="信息完整度" value={93} suffix="/ 100" />
+            </ProCard>
+            <Divider type={responsive ? 'horizontal' : 'vertical'} />
+            <ProCard>
+              <Statistic title="冻结金额" value={112893.0} />
+            </ProCard>
+          </ProCard.Group>
       </div>
       <div
         className={styles.main}>
