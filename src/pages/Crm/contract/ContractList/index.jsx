@@ -29,13 +29,12 @@ const ContractList = () => {
   const history = useHistory();
 
   const ref = useRef(null);
-  const refadd = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          refadd.current.open(false);
+          ref.current.open(false);
         }}/>
       </>
     );
@@ -79,14 +78,10 @@ const ContractList = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={1500} title="编辑" component={ContractEdit} onSuccess={() => {
+      <Modal2 width={1500} title="编辑" component={AddContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-      <Modal2 width={1500} title="编辑" component={AddContractEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        refadd.current.close();
-      }} ref={refadd}/>
     </>
   );
 };

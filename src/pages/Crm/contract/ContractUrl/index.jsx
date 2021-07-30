@@ -1,7 +1,7 @@
 /**
  * 合同表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-21 13:36:21
  */
 
@@ -37,5 +37,10 @@ export const contractList = {
 
 export const userIdSelect = {
   url: '/rest/mgr/listSelect',
+  method: 'POST'
+};
+
+export const templateSelect = {
+  url: 'template/listSelect',
   method: 'POST'
 };
