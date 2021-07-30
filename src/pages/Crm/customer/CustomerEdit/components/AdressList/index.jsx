@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -15,12 +14,13 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {adressDelete} from '@/pages/Crm/adress/AdressUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/AdressEdit';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const AdressList = (props) => {
-  const {clientId} = props;
+  const {customerId} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -32,7 +32,7 @@ const AdressList = (props) => {
           {
             url: '/adress/list',
             method: 'post',
-            values: clientId
+            values: customerId
           }
         }
         rowKey="adressId"

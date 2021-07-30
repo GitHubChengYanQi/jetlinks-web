@@ -21,6 +21,8 @@ const ApiConfig = {
 
 const Index = ({...props}) => {
 
+  console.log(props.value);
+
   const formRef = useRef();
 
   return (

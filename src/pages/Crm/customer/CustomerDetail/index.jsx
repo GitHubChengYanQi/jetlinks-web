@@ -11,13 +11,15 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.scss';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
+import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
+import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
 
 const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
   const params = useParams();
 
-  console.log(params);
+
   const [responsive, setResponsive] = useState(false);
 
   const {loading, data, run} = useRequest(customerDetail, {
@@ -27,6 +29,8 @@ const CustomerDetail = () => {
       }
     }
   });
+
+  console.log(data);
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -97,10 +101,10 @@ const CustomerDetail = () => {
                  <Description data={data}/>
                 </TabPane>
                 <TabPane tab="联系人" key="2">
-                  Content of Tab Pane 2
+                  <ContactsList customerId={data.customerId}  />
                 </TabPane>
                 <TabPane tab="地址" key="3">
-                  Content of Tab Pane 3
+                  <AdressList customerId={data.customerId}/>
                 </TabPane>
                 <TabPane tab="合同" key="4">
                   Content of Tab Pane 3

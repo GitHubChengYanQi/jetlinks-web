@@ -7,7 +7,7 @@ const Description = (props) => {
 
   return (
     <>
-      <Descriptions column={2} bordered labelStyle={{width:'10%',border:'none'}} >
+      <Descriptions column={2} bordered labelStyle={{width:120}} >
         <Descriptions.Item label="客户名称">{data.customerLevelId === "" ? '未填写' :  data.customerName}</Descriptions.Item>
         <Descriptions.Item label="客户编号">{data.customerId === "" ? '未填写' :  data.customerId}</Descriptions.Item>
         <Descriptions.Item label="客户级别">{data.customerLevelId === "" ? '未填写' :  data.customerLevelId}</Descriptions.Item>

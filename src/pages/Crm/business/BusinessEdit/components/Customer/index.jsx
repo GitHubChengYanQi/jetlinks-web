@@ -4,12 +4,7 @@ import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
 import Table from '@/components/Table';
 import CheckButton from '@/components/CheckButton';
-import {items, places, stockAdd, stockDetail, stockEdit} from '@/pages/Erp/stock/StockUrl';
-import {ClientList} from '@/pages/Crm/business/BusinessUrl';
-import Breadcrumb from '@/components/Breadcrumb';
 import {clientDelete, clientList, customerList} from '@/pages/Crm/customer/CustomerUrl';
-import EditButton from '@/components/EditButton';
-import DelButton from '@/components/DelButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
