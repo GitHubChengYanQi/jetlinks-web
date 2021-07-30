@@ -13,14 +13,16 @@ import * as SysField from '@/pages/Crm/addContract/AddContractField';
 import {contractAdd} from '@/pages/Crm/addContract/AddContractUrl';
 import styles from './index.model.scss';
 import FormIndex from '@/components/Form/FormIndex';
+import {Template} from '@/pages/Crm/addContract/AddContractField';
+import {contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 
 
 const {FormItem} = Form;
 const {Column} = AntTable;
 const ApiConfig = {
-  view: templateDetail,
-  add: templateAdd,
-  save: contractAdd
+  view: contractDetail,
+  add: contractAdd,
+  save: contractEdit
 };
 
 
@@ -44,7 +46,7 @@ const AddContractEdit = ({...props}) => {
               {...props}
               ref={formRef}
               api={ApiConfig}
-              fieldKey="templateId"
+              fieldKey="contractId"
               success={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
@@ -67,19 +69,19 @@ const AddContractEdit = ({...props}) => {
       title: '选填项',
       content:
         <>
-
           <div style={{margin: '50px 150px'}}>
 
             <FormIndex
               {...props}
+              value={result}
               ref={formRef}
               api={ApiConfig}
-              fieldKey="templateId"
+              fieldKey="contractId"
               success={(result) => {
                 props.onSuccess();
               }}
             >
-              <FormItem name="content" component={SysField.Content} required/>
+              <FormItem label="选择合同模板" name="content" component={SysField.Template} />
               <Button type="primary" htmlType="submit">
                 Done
               </Button>

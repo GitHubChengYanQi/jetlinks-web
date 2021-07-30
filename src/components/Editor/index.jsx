@@ -1,10 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ReactWEditor from 'wangeditor-for-react';
 import {Button} from 'antd';
+import Drawer from '@/components/Drawer';
+import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 
 const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 
   const editorRef = useRef(null);
+
+  const re = useRef(null);
 
   const [state, setState] = useState();
 
@@ -26,12 +30,16 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
   const insertHtmlDate = () => {
     editorRef.current.editor.cmd.do('insertHTML', '<strong class="date">时间框</strong>');
   };
+  const insertName = (value) => {
+    editorRef.current.editor.cmd.do('insertHTML', value);;
+  };
 
   return (
     <>
-      <Button onClick={() => insertHtmlInput()}> input</Button>
-      <Button onClick={() => insertHtmlNumber()}> number</Button>
-      <Button onClick={() => insertHtmlDate()}> date</Button>
+      <Button onClick={() => insertHtmlInput()}> 文本框</Button>
+      <Button onClick={() => insertHtmlNumber()}> 数字框</Button>
+      <Button onClick={() => insertHtmlDate()}> 时间框</Button>
+      <Button onClick={() =>  re.current.open(false)}> 选择客户</Button>
       <ReactWEditor
         placeholder="自定义 placeholder"
         ref={editorRef}
@@ -58,6 +66,10 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
         }}
         {...props}
       />
+      <Drawer width={1500} title="编辑" component={Index} onSuccess={() => {
+        re.current.close();
+      }} ref={re} check={(value)=>{
+        insertName(value);}}/>
     </>
   );
 };

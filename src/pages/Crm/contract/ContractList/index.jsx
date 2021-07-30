@@ -19,6 +19,7 @@ import * as SysField from '../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {useHistory} from 'ice';
+import AddContractEdit from '@/pages/Crm/addContract/AddContractEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -28,12 +29,13 @@ const ContractList = () => {
   const history = useHistory();
 
   const ref = useRef(null);
+  const refadd = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-         history.push('/CRM/contract/addContract');
+          refadd.current.open(false);
         }}/>
       </>
     );
@@ -81,6 +83,10 @@ const ContractList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Modal2 width={1500} title="编辑" component={AddContractEdit} onSuccess={() => {
+        tableRef.current.refresh();
+        refadd.current.close();
+      }} ref={refadd}/>
     </>
   );
 };

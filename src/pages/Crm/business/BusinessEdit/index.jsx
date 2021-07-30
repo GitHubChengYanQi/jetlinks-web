@@ -27,7 +27,6 @@ const BusinessEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
-  console.log(result);
 
   const [current, setCurrent] = React.useState(0);
 

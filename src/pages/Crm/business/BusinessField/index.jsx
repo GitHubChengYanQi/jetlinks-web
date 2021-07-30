@@ -11,7 +11,7 @@ import Select from '@/components/Select';
 import * as apiUrl from '../BusinessUrl';
 import {DatePicker2} from '@alifd/next';
 import Drawer from '@/components/Drawer';
-import Index from '@/pages/Crm/business/BusinessEdit/components/Clients';
+import Index from '@/pages/Crm/business/BusinessEdit/components/Customer';
 import Stocks from '@/pages/Crm/track/TrackEdit/components/Stocks';
 
 const w = 200;
@@ -51,7 +51,7 @@ export const Client = (props) =>{
     <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
-    }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+    }} ref={ref} check={(id)=>{onChange(id);ref.current.close();}}/>
   </>);
 };
 export const TimeSearch = (props) =>{

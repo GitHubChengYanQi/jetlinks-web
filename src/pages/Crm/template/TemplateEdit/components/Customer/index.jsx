@@ -15,7 +15,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const Index = (props) => {
-  const {ckeck} = props;
+  const {check} = props;
 
 
   const searchForm = () => {
@@ -26,7 +26,7 @@ const Index = (props) => {
       </>
     );
   };
-  const [val,setVal] = useState();
+  const [val, setVal] = useState();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -40,16 +40,15 @@ const Index = (props) => {
 
   return (
     <>
-      <Input value={val}/>
+      <Input value={val} />
       <Table
-        title={<Breadcrumb />}
         api={customerList}
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="clientName" />
+        <Column title="成立时间" dataIndex="customerName" />
         <Column title="成立时间" dataIndex="setup" />
         <Column title="法定代表人" dataIndex="legal" />
         <Column title="统一社会信用代码" dataIndex="utscc" />
@@ -60,10 +59,11 @@ const Index = (props) => {
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
-              <CheckButton onClick={() => {
-                setVal(record.customerId);
-                ckeck(record.customerId);
-              }} />
+            <CheckButton onClick={() => {
+              setVal(record.customerId);
+              check(record.customerName);
+              props.onSuccess();
+            }} />
           );
         }} width={300} />
       </Table>
