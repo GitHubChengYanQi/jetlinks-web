@@ -8,9 +8,8 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 
   const editorRef = useRef(null);
 
-  const re = useRef(null);
 
-  const [state, setState] = useState();
+
 
   useEffect(() => {
     if (editorRef.current) {
@@ -31,7 +30,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
     editorRef.current.editor.cmd.do('insertHTML', '<strong class="date">时间框</strong>');
   };
   const insertName = (value) => {
-    editorRef.current.editor.cmd.do('insertHTML', value);;
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="but">选择客户</strong>');;
   };
 
   return (
@@ -39,7 +38,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
       <Button onClick={() => insertHtmlInput()}> 文本框</Button>
       <Button onClick={() => insertHtmlNumber()}> 数字框</Button>
       <Button onClick={() => insertHtmlDate()}> 时间框</Button>
-      <Button onClick={() =>  re.current.open(false)}> 选择客户</Button>
+      <Button onClick={() => insertName()}> 选择客户</Button>
       <ReactWEditor
         placeholder="自定义 placeholder"
         ref={editorRef}
@@ -66,10 +65,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
         }}
         {...props}
       />
-      <Drawer width={1500} title="编辑" component={Index} onSuccess={() => {
-        re.current.close();
-      }} ref={re} check={(value)=>{
-        insertName(value);}}/>
+
     </>
   );
 };
