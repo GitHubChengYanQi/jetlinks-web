@@ -8,13 +8,15 @@ import {useParams} from 'ice';
 
 import ProSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.scss';
+import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
+import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 
 const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
   const params = useParams();
 
-  console.log(params);
+
 
   const {loading, data, run} = useRequest(customerDetail, {
     defaultParams: {
@@ -59,7 +61,7 @@ const CustomerDetail = () => {
         className={styles.main}>
         <Card
         >
-          基础数据
+          <Desc data={data} />
         </Card>
       </div>
       <div
@@ -76,7 +78,7 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
-                  Content of Tab Pane 1
+                 <Description data={data}/>
                 </TabPane>
                 <TabPane tab="联系人" key="2">
                   Content of Tab Pane 2

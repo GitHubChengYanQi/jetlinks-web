@@ -11,6 +11,7 @@ import {AdressRouter} from '@/pages/Crm/adress/AdressRouter';
 import {OrderRouter} from '@/pages/Crm/order/OrderRouter';
 import {OrderBranchRouter} from '@/pages/Crm/orderBranch/OrderBranchRouter';
 import {CustomerRouter} from '@/pages/Crm/customer/CustomerRouter';
+import {CrmCustomerLevelRouter} from '@/pages/Crm/crmCustomerLevel/crmCustomerLevelRouter';
 
 
 const CrmRouterConfig = [
@@ -29,6 +30,7 @@ const CrmRouterConfig = [
       ...OriginRouter,
       ...TemplateRouter,
       ...ContractRouter,
+      ...CrmCustomerLevelRouter,
       {
         redirect: '/CRM/customer',
       }

@@ -55,16 +55,19 @@ export const Time = (props) => {
 export const Template = (props) => {
 
   return (<>
-  <Select api={apiUrl.templateSelect} {...props} />
+    <Select api={apiUrl.templateSelect} {...props} />
   </>);
 };
 
-export const ContentUpdate = (props) =>{
-  return(
+export const ContentUpdate = (props) => {
+
+
+  return (
     <>
       {
         parse(props.value)
       }
+
     </>
   );
 };
@@ -74,14 +77,12 @@ export const Content = (props) => {
 
   const [state, setState] = useState();
 
-  const [name,setName] = useState();
 
   const ref = useRef(null);
 
   const handelChange = (e) => {
     setState(e.target.value);
   };
-
 
 
   return (
@@ -116,20 +117,22 @@ export const Content = (props) => {
               }} />;
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
-              props.onChange(props.value.replace(domNode.children[0].data, name));
-              console.log(props.value);
-              return (<><Input style={{width: '100px', margin: '0 10px'}} value={name}  onChange={()=>{
-
-              }} /><Button style={{margin: '0 10px'}} onClick={()=>{ref.current.open(false);}}>选择客户</Button></>);
+              return (<>
+                <Input style={{width:w}}  value={domNode.children[0].data}/>
+                <Button className='placeName' onClick={()=>{
+                  ref.current.open(false);}}>
+                  搜索客户
+                </Button>
+                <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
+                  ref.current.close();
+                }} ref={ref} check={(name)=>{
+                  props.onChange(props.value.replace(domNode.children[0].data,name));ref.current.close();}}
+                />
+              </>);
             }
           }
         })
       }
-      <Drawer width={1500} title="编辑" component={Index} onSuccess={() => {
-        ref.current.close();
-      }} ref={ref} check={(value) => {
-        setName(value);
-      }} />
     </>
   );
 };

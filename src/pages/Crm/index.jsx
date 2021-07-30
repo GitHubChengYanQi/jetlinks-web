@@ -93,6 +93,12 @@ const CrmLayout = ({children}) => {
             <Menu.Item key="/CRM/template">
               <span className={styles.dropdownMenuItem}>合同模板管理</span>
             </Menu.Item>
+            <Menu.Item key="/CRM/crmCustomerLevel">
+              <span className={styles.dropdownMenuItem}>客户级别</span>
+            </Menu.Item>
+            <Menu.Item key="/CRM">
+              <span className={styles.dropdownMenuItem}>客户状态</span>
+            </Menu.Item>
             <Menu.Divider />
           </Menu>
         </div>

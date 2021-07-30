@@ -32,6 +32,7 @@ const Drawer = (
 
   return (
     <AntDrawer
+      destroyOnClose
       visible={visible}
       onClose={() => {
         show(null);
