@@ -11,27 +11,20 @@ import {PageHeader, Table as AntTable} from 'antd';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
-import ContractMachineEdit from '../ContractMachineEdit';
-import '../ContractMachineEdit/index.model.scss';
-import * as SysField from '@/pages/Crm/contractMachine/ContractMachineField';
+import ContractMachineEdit from '../AddContractEdit';
+import '../AddContractEdit/index.model.scss';
+import * as SysField from '@/pages/Crm/contract/ContractField';
 import {templateDelete, templateList} from '@/pages/Crm/template/TemplateUrl';
-import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import AddContractEdit from '../AddContractEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ContractMachineList1 = () => {
+const AddContractList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-
-      </>
-    );
-  };
 
  const searchForm = () => {
    return (
@@ -63,7 +56,7 @@ const ContractMachineList1 = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={1500} title="编辑" component={ContractMachineEdit} onSuccess={() => {
+      <Modal2 width={1500} title="编辑" component={AddContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -71,4 +64,4 @@ const ContractMachineList1 = () => {
   );
 };
 
-export default ContractMachineList1;
+export default AddContractList;

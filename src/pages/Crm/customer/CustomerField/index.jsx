@@ -10,7 +10,7 @@ import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkb
 import Select from '@/components/Select';
 import {DatePicker2} from '@alifd/next';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
-import Select2 from '@/components/Select/select';
+import Select2 from '@/components/Select/Select2';
 import axios from 'axios';
 
 const w = 200;
@@ -20,7 +20,7 @@ export const Name = (props) => {
   return (<Input style={{width: w}} {...props} />);
 };
 export const ClientName = (props) => {
-  return ((<Select2 style={{width: w}} api={apiUrl.customerIdSelect}  {...props}  />));
+  return ((<Select2 style={{width: w}}  {...props}  />));
 };
 export const AdressId = (props) => {
   return (<InputNumber style={{width: w}} {...props} />);

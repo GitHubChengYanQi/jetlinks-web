@@ -26,8 +26,28 @@ export const Note = (props) =>{
   return (<Input  style={{width:w}} {...props}/>);
 };
 export const Time = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
 };
+// export const Content = (props) =>{
+//
+//   const [state,setState] = useState();
+//
+//   const handelChange = (e) => {
+//     setState(e.target.value);
+//   };
+//
+//
+//
+//   return(
+//     <>
+//       {
+//         parse(props.value)
+//       }
+//
+//     </>
+//   );
+// }
+
 export const Content = (props) =>{
 
   const [state,setState] = useState();
@@ -41,9 +61,42 @@ export const Content = (props) =>{
   return(
     <>
       {
-        parse(props.value)
+        parse(props.value, {
+          replace:domNode =>{
+            if (domNode.name === 'strong' && domNode.attribs.class === 'inp' ){
+              return <Input style={{width : '100px',margin : '0 10px'}}    onChange={(value)=>{
+                handelChange(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const val = props.value.replace(domNode.attribs.class,state);
+                const value = val.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }} />;
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'number' ){
+              return <InputNumber style={{margin : '0 10px'}}     onChange={(value)=>{
+                setState(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const val = props.value.replace(domNode.attribs.class,state);
+                const value = val.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }} />;
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'date' ){
+              return <DatePicker2 style={{margin : '0 10px'}}   onChange={(value)=>{
+                setState(value);
+              }} onBlur={()=>{
+                // domNode.children[0].data=state;
+                const val = props.value.replace(domNode.attribs.class,state);
+                const value = val.replace( domNode.children[0].data,state);
+                props.onChange(value);
+              }} />;
+            }
+          }
+        })
       }
 
     </>
   );
-}
+};

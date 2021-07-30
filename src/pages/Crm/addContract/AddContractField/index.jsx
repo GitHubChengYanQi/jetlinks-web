@@ -6,14 +6,47 @@
  */
 
 
-import React, {useState} from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
 import {DatePicker2} from '@alifd/next';
 import parse from 'html-react-parser';
+import Select from '@/components/Select';
+import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
+import Drawer from '@/components/Drawer';
+import Stocks from '@/pages/Crm/track/TrackEdit/components/Stocks';
+import TemplateList from '@/pages/Crm/addContract/AddContractEdit/Template';
 
+const w = 200;
 
+export const Name = (props) =>{
+  return (<Input style={{width:w}}  {...props}/>);
+};
+export const UserId = (props) =>{
+  return (<Select style={{width:w}}  api={apiUrl.userIdSelect} {...props}/>);
+};
+export const Note = (props) =>{
+  return (<Input  style={{width:w}} {...props}/>);
+};
+export const Time = (props) =>{
+  return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
+};
 
-
+export const Template = (props) =>{
+  const {onChange} = props;
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+  return (<>
+    <Input  style={{width:w}} {...props}/>
+    <Button className='placeName' onClick={()=>{
+      ref.current.open(false);}}>
+      搜索模板
+    </Button>
+    <Drawer width={800} title="选择" component={TemplateList}  onSuccess={() => {
+      tableRef.current.refresh();
+      ref.current.close();
+    }} ref={ref} check={(id)=>{onChange(id);ref.current.close();}}/>
+  </>);
+};
 
 
 

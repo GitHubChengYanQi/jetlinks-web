@@ -10,3 +10,8 @@ export const contractAdd = {
   url: '/contract/add',
   method: 'POST',
 };
+export const contractUpdate = {
+
+  url: '/contract/edit',
+  method: 'POST',
+};

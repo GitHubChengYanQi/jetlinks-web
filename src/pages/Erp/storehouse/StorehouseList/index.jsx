@@ -40,7 +40,7 @@ const StorehouseList = () => {
    return (
      <>
        <FormItem label="仓库名称" name="name" component={SysField.Name}/>
-       <FormItem label="仓库地点" name="position" component={SysField.Position}/>
+       <FormItem label="仓库地点" name="palce" component={SysField.Position}/>
        <FormItem label="经度" name="longitude" component={SysField.Longitude}/>
        <FormItem label="纬度" name="latitude" component={SysField.Latitude}/>
      </>
