@@ -1,6 +1,7 @@
 {
   "publicPath": "./",
   "plugins": [
+    "build-plugin-fast-refresh",
     [
       "build-plugin-fusion",
       {
@@ -19,6 +20,13 @@
       {
         "outputPath": "assets",
         "relativeCssPath": "../"
+      }
+    ],
+    [
+      "build-plugin-antd",
+      {
+        "themeConfig": {
+        }
       }
     ]
   ]

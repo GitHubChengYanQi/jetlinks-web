@@ -10,8 +10,8 @@ const TopLayout = ({children, leftMenu, rightMenu}) => {
   return (
     <Layout>
       <Header theme="light" className={styles.header}>
-          <div className={styles.leftMenu}>{leftMenu}</div>
-          <div className={styles.rightMenu}>{rightMenu}</div>
+        <div className={styles.leftMenu}>{leftMenu}</div>
+        <div className={styles.rightMenu}>{rightMenu}</div>
       </Header>
       <Content style={{overflowY: 'auto', height: 'calc(100vh - 112px)'}}>{children}</Content>
     </Layout>

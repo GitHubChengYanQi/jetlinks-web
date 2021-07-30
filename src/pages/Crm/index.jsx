@@ -3,6 +3,8 @@ import {useRouteMatch, useHistory} from 'ice';
 import store from '@/store';
 import {Drawer, Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
+import Icon from '@/components/Icon';
+
 import styles from './index.module.scss';
 
 const CrmLayout = ({children}) => {
@@ -58,7 +60,7 @@ const CrmLayout = ({children}) => {
       >
         <Menu.Item key="setting" onClick={() => {
           showDrawer(true);
-        }}>设置</Menu.Item>
+        }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
       </Menu>
     );
   };

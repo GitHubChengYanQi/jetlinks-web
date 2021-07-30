@@ -1,26 +1,67 @@
 import React from 'react';
-import {Button, Card, Col, Row, Tabs} from 'antd';
+import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
+import Icon from '@/components/Icon';
+import {useRequest} from '@/util/Request';
+import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
+import {useParams} from 'ice';
 
+import ProSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
+  const params = useParams();
+
+  console.log(params);
+
+  const {loading, data, run} = useRequest(customerDetail, {
+    defaultParams: {
+      data: {
+        customerId: params.cid
+      }
+    }
+  });
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
+
   return (
     <div className={styles.detail}>
       <Card>
         <Breadcrumb />
       </Card>
       <Card>
-        <h3 className={styles.title}>客户名称写在这里</h3>
+        <div className={styles.title}>
+          <Row gutter={24}>
+            <Col>
+              <Avatar size={64}>LOGO</Avatar>
+            </Col>
+            <Col>
+              <h3>{data.customerName}</h3>
+              <div>
+                <em>{data.signIn}</em>
+              </div>
+            </Col>
+          </Row>
+
+        </div>
         <div className={styles.titleButton}>
           <Button type="primary">编辑</Button>
-          <Button onClick={()=>{
+          <Button onClick={() => {
             history.back();
-          }}>返回</Button>
+          }}><Icon type="icon-back" /> 返回</Button>
         </div>
       </Card>
+      <div
+        className={styles.main}>
+        <Card
+        >
+          基础数据
+        </Card>
+      </div>
       <div
         className={styles.main}>
         <Card

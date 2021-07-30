@@ -35,6 +35,29 @@ const CustomerList = () => {
             ]}
           />
           <Divider />
+          <Tree
+            showLine
+            // switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['0']}
+            // onSelect={this.onSelect}
+            treeData={[
+              {
+                title: '客户分类',
+                key: '0',
+                children: [
+                  {
+                    title: '代理商',
+                    key: '0-0',
+                  },
+                  {
+                    title: '终端用户',
+                    key: '0-1',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Divider />
         </div>
       </Sider>
       <Content>
