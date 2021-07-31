@@ -75,7 +75,6 @@ const AddContractEdit = ({...props}) => {
               }}
             >
               <FormItem label="合同名称" name="name" component={SysField.Name} required/>
-              <FormItem label="签约客户" name="customerId" component={SysField.Customer} required/>
               <Button type="primary" htmlType="submit">
                 Next
               </Button>

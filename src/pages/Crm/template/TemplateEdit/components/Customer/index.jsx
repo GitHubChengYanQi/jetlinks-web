@@ -61,7 +61,7 @@ const Index = (props) => {
           return (
             <CheckButton onClick={() => {
               setVal(record.customerId);
-              check(record.customerName);
+              check(record.customerId);
               props.onSuccess();
             }} />
           );

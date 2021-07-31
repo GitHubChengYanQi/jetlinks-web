@@ -15,11 +15,14 @@ import Form from '@/components/Form';
 import {contactsDelete} from '@/pages/Crm/contacts/contactsUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import {contractDelete} from '@/pages/Crm/contract/ContractUrl';
+import Modal2 from '@/components/Modal';
+import AddContractEdit from '@/pages/Crm/customer/CustomerDetail/compontents/AddContract';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ContactsList = (props) => {
+const Contract = (props) => {
   const {customerId} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -32,43 +35,39 @@ const ContactsList = (props) => {
       <Table
         api={
           {
-            url: '/contacts/list',
-            method: 'post',
+            url: '/contract/listCustomer',
+            method: 'POST',
             values: customerId,
           }
         }
         rowKey="contactsId"
         ref={tableRef}
       >
-        <Column title="联系人姓名" dataIndex="contactsName" />
-        <Column title="职务" dataIndex="job" />
-        <Column title="联系电话" dataIndex="phone" />
-        <Column title="部门编号" dataIndex="deptId" />
+        <Column title="合同名称" dataIndex="name"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.contactsId);
-              }} />
-              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={() => {
+                ref.current.open(record.contractId);
+              }}/>
+              <DelButton api={contractDelete} value={record.contractId} onSuccess={()=>{
                 tableRef.current.refresh();
-              }} />
+              }}/>
             </>
           );
-        }} width={300} />
+        }} width={300}/>
       </Table>
       <div style={{textAlign:'center'}}>
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
       </div>
-      <Drawer width={800} title="编辑" component={Index} onSuccess={() => {
-        console.log('lxr');
+      <Modal2 width={1500} title="编辑" component={AddContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} />
+      }} ref={ref}/>
     </>
   );
 };
 
-export default ContactsList;
+export default Contract;

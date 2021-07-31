@@ -4,6 +4,7 @@ import {Drawer, Drawer as AntDrawer, message, Modal} from 'antd';
 const Modal2 = (
   {
     title,
+    modal,
     component: Component,
     width,
     onSuccess = () => {
@@ -13,8 +14,14 @@ const Modal2 = (
     ...props
   }, ref) => {
 
+
+
   const [value, show] = useState(null);
-  const [s, setShow] = useState(false);
+  console.log(modal);
+  if (modal!==undefined){
+    show(false);
+  }
+
   const open = (value) => {
     show(value);
   };
@@ -40,7 +47,7 @@ const Modal2 = (
         onClose();
       }}
       width={width}
-      title={value ? '编辑' : '添加'}
+      title={value ? `编辑${title}` : `添加${title}`}
       destroyOnClose
     >
       {Component && <Component

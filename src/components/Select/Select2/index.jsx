@@ -56,7 +56,7 @@ const Select2 = (props) => {
           onChange(values);
         }}
         options={value}
-        style={{width: 200}}
+        style={{width: 300}}
         value={values}
         allowClear
         showSearch

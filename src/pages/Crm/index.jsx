@@ -6,6 +6,12 @@ import TopLayout from '@/layouts/TopLayout';
 import Icon from '@/components/Icon';
 
 import styles from './index.module.scss';
+import Modal2 from '@/components/Modal';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import OriginList from '@/pages/Crm/origin/OriginList';
+import TemplateList from '@/pages/Crm/template/TemplateList';
+import CrmCustomerLevelList from '@/pages/Crm/crmCustomerLevel/crmCustomerLevelList';
+import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 
 const CrmLayout = ({children}) => {
 
@@ -68,6 +74,13 @@ const CrmLayout = ({children}) => {
   if (!subMenu) {
     return <div>菜单不存在</div>;
   }
+
+
+  const refOriginList = useRef(null);
+  const refTemplateList = useRef(null);
+  const refCrmCustomerLevelList = useRef(null);
+  const refCrmIndustryList = useRef(null);
+
   return (
     <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>
       {children}
@@ -76,28 +89,29 @@ const CrmLayout = ({children}) => {
         style={{height: 'calc(100% - 112px)', top: 112}}
         visible={drawerIsShow}
         getContainer={false}
-        bodyStyle={{padding:0}}
+        bodyStyle={{padding: 0}}
         onClose={() => {
           showDrawer(false);
         }}>
         <div className={styles.settingMenu}>
           <Menu
             style={{width: '100%'}}
-            onClick={({key}) => {
-              history.push(key);
-              showDrawer(false);
-            }}>
-            <Menu.Item key="/CRM/origin">
-              <span className={styles.dropdownMenuItem}>商机来源管理</span>
+          >
+            <Menu.Item>
+              <span className={styles.dropdownMenuItem} onClick={() => {refOriginList.current.open(false);}}>商机来源管理</span>
+              <Modal2 title="商机来源" width={800} component={OriginList} ref={refOriginList} />
             </Menu.Item>
-            <Menu.Item key="/CRM/template">
-              <span className={styles.dropdownMenuItem}>合同模板管理</span>
+            <Menu.Item>
+              <span className={styles.dropdownMenuItem} onClick={() => {refTemplateList.current.open(false);}}>合同模板管理</span>
+              <Modal2 title="合同模板" width={800} component={TemplateList} ref={refTemplateList} />
             </Menu.Item>
-            <Menu.Item key="/CRM/crmCustomerLevel">
-              <span className={styles.dropdownMenuItem}>客户级别</span>
+            <Menu.Item>
+              <span className={styles.dropdownMenuItem} onClick={() => {refCrmCustomerLevelList.current.open(false);}}>客户级别管理</span>
+              <Modal2 title="客户级别" width={800} component={CrmCustomerLevelList} ref={refCrmCustomerLevelList} />
             </Menu.Item>
-            <Menu.Item key="/CRM">
-              <span className={styles.dropdownMenuItem}>客户状态</span>
+            <Menu.Item>
+              <span className={styles.dropdownMenuItem} onClick={() => {refCrmIndustryList.current.open(false);}}>行业管理</span>
+              <Modal2 title="行业" width={800} component={CrmIndustryList} ref={refCrmIndustryList} />
             </Menu.Item>
             <Menu.Divider />
           </Menu>

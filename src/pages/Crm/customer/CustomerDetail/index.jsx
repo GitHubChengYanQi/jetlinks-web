@@ -13,6 +13,7 @@ import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Descrip
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
+import Contract from '@/pages/Crm/customer/CustomerDetail/compontents/Contract';
 
 const {TabPane} = Tabs;
 
@@ -107,7 +108,7 @@ const CustomerDetail = () => {
                   <AdressList customerId={data.customerId}/>
                 </TabPane>
                 <TabPane tab="合同" key="4">
-                  Content of Tab Pane 3
+                 <Contract customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="订单" key="5">
                   Content of Tab Pane 3

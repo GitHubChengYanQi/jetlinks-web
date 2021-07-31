@@ -44,7 +44,6 @@ const ContractList = () => {
    return (
      <>
        <FormItem label="合同名称" name="name" component={SysField.Name}/>
-       <FormItem label="负责人" name="userId" component={SysField.UserId}/>
      </>
     );
   };

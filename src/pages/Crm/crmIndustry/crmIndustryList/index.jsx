@@ -1,8 +1,8 @@
 /**
- * 来源表列表页
+ * 行业表列表页
  *
- * @author
- * @Date 2021-07-19 17:59:08
+ * @author 
+ * @Date 2021-07-31 16:28:22
  */
 
 import React, {useRef} from 'react';
@@ -13,17 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {originDelete, originEdit, originList, sourceDelete, sourceList} from '../OriginUrl';
-import SourceEdit from '../OriginEdit';
-import * as SysField from '../OriginField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
-import OriginEdit from '../OriginEdit';
+import {crmIndustryDelete, crmIndustryList} from '../crmIndustryUrl';
+import CrmIndustryEdit from '../crmIndustryEdit';
+import * as SysField from '../crmIndustryField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const OriginList = () => {
+const CrmIndustryList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -39,7 +36,8 @@ const OriginList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="来源名称" name="name" component={SysField.Name}/>
+       <FormItem label="行业名称" name="industryName" component={SysField.IndustryName}/>
+       <FormItem label="上级" name="parentId" component={SysField.ParentId}/>
      </>
     );
   };
@@ -47,30 +45,30 @@ const OriginList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
-        api={originList}
-        rowKey="originId"
+        title={<h2>列表</h2>}
+        api={crmIndustryList}
+        rowKey="industryId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="来源名称" dataIndex="name"/>
+        <Column title="行业名称" dataIndex="industryName"/>
+        <Column title="上级" dataIndex="parentId"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                console.log(record);
-                ref.current.open(record.originId);
+                ref.current.open(record.industryId);
               }}/>
-              <DelButton api={originDelete} value={record.originId} onSuccess={()=>{
+              <DelButton api={crmIndustryDelete} value={record.industryId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={OriginEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={CrmIndustryEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -78,4 +76,4 @@ const OriginList = () => {
   );
 };
 
-export default OriginList;
+export default CrmIndustryList;

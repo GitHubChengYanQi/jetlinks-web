@@ -19,6 +19,23 @@ import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 
 const w = 200;
 
+
+export const Customer = (props) =>{
+  const {onChange} = props;
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+  return (<>
+    <Input style={{width:w}}  {...props}/>
+    <Button className='placeName' onClick={()=>{
+      ref.current.open(false);}}>
+      搜索客户
+    </Button>
+    <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
+      ref.current.close();
+    }} ref={ref} check={(id)=>{onChange(id);ref.current.close();}}/>
+  </>);
+};
+
 export const Name = (props) => {
   return (<Input style={{width: w}}  {...props} />);
 };
@@ -125,8 +142,8 @@ export const Content = (props) => {
                 </Button>
                 <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
                   ref.current.close();
-                }} ref={ref} check={(name)=>{
-                  props.onChange(props.value.replace(domNode.children[0].data,name));ref.current.close();}}
+                }} ref={ref} check={(record)=>{
+                  props.onChange(props.value.replace(domNode.children[0].data,record));ref.current.close();}}
                 />
               </>);
             }

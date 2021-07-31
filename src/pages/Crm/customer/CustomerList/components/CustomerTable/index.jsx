@@ -20,8 +20,8 @@ import {
   customerList
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import {useHistory} from 'ice';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -98,7 +98,7 @@ const CustomerTable = () => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500}  title="编辑" component={CustomerEdit} onSuccess={() => {
+      <Modal2 width={1500}  title="客户" component={CustomerEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

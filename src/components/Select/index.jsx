@@ -16,7 +16,7 @@ const Select = (props) => {
   if (value) {
     if (!Array.isArray(value)) {
       if (mode === 'multiple' || mode === 'tag') {
-        const tmpValue = value.split(',');
+        const tmpValue = `${value}`.split(',');
         for (let i = 0; i < tmpValue.length; i++) {
           const item = tmpValue[i];
           if (item) {
@@ -24,7 +24,7 @@ const Select = (props) => {
           }
         }
       } else {
-        const tmpValue = value.split(',');
+        const tmpValue = `${value}`.split(',');
         valueArray = tmpValue[0] || [];
       }
     } else {
