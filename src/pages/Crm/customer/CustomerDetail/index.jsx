@@ -6,13 +6,12 @@ import {useRequest} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
-import RcResizeObserver from 'rc-resize-observer';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import styles from './index.module.scss';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
