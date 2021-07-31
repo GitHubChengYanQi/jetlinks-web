@@ -1,91 +1,72 @@
-/**
- * 商机表列表页
- *
- * @author cheng
- * @Date 2021-07-19 15:13:58
- */
+import React from 'react';
+import {Divider, Layout, Tree} from 'antd';
+import BusinessTable from '@/pages/Crm/business/BusinessList/BusinessTable';
+import styles from './index.module.scss';
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {businessDelete, businessList} from '../BusinessUrl';
-import BusinessEdit from '../BusinessEdit';
-import * as SysField from '../BusinessField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
-import {ClitenId} from '../BusinessField';
-
-const {Column} = AntTable;
-const {FormItem} = Form;
+const {Sider, Content} = Layout;
 
 const BusinessList = () => {
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
-      </>
-    );
-  };
-
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="客户名称" name="name" component={SysField.ClitenId}/>
-       <FormItem label="物品名称" name="iname" component={SysField.ClitenId}/>
-       <FormItem label="机会来源" name="sname" component={SysField.ClitenId}/>
-       <FormItem label="商机状态" name="state" component={SysField.State}/>
-       <FormItem label="商机阶段" name="stage" component={SysField.Stage}/>
-       <FormItem label="负责人" name="person" component={SysField.Person}/>
-     </>
-    );
-  };
 
   return (
-    <>
-      <Table
-        title={<Breadcrumb />}
-        api={businessList}
-        rowKey="businessId"
-        searchForm={searchForm}
-        actions={actions()}
-        ref={tableRef}
-      >
-        <Column title="客户名称" dataIndex="name"/>
-        <Column title="物品名称" dataIndex="iname"/>
-        <Column title="机会来源" dataIndex="sname"/>
-        <Column title="立项日期" dataIndex="time"/>
-        <Column title="商机状态" dataIndex="state"/>
-        <Column title="商机阶段" dataIndex="stage"/>
-        <Column title="负责人" dataIndex="account"/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.businessId);
-              }}/>
-              <DelButton api={businessDelete} value={record.businessId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
-            </>
-          );
-        }} width={300}/>
-      </Table>
-      <Modal2 width={800} title="编辑" component={BusinessEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref}/>
-    </>
+    <Layout style={{height: '100%'}}>
+      <Sider className={styles.sider} width={260}>
+        <div style={{padding: 24}}>
+          <Tree
+            showLine
+            // switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['0']}
+            // onSelect={this.onSelect}
+            treeData={[
+              {
+                title: '销售流程',
+                key: '0',
+                children: [
+                  {
+                    title: '流程1',
+                    key: '0-0',
+                  },
+                  {
+                    title: '流程2',
+                    key: '0-1',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Divider />
+          <Tree
+            showLine
+            // switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['0']}
+            // onSelect={this.onSelect}
+            treeData={[
+              {
+                title: '所有来源',
+                key: '0',
+                children: [
+                  {
+                    title: '网站',
+                    key: '0-0',
+                  },
+                  {
+                    title: '线下',
+                    key: '0-1',
+                  },
+                  {
+                    title: '公众号',
+                    key: '0-2',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Divider />
+        </div>
+      </Sider>
+      <Content>
+        <BusinessTable />
+      </Content>
+    </Layout>
   );
 };
-
 export default BusinessList;
