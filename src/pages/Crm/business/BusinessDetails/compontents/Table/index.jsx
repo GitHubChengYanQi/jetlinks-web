@@ -3,7 +3,6 @@ import { Table as AntdTable } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Service from '@/util/Service';
 import { useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup } from '@formily/antd';
-import style from './index.module.less';
 
 
 const { Column } = AntdTable;
@@ -26,6 +25,7 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
   }
 
   const { ajaxService } = Service();
+
 
   const requestMethod = async (params) => {
     const { values, pagination, ...other } = params;
@@ -65,19 +65,14 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
     refresh: formActions.submit,
     submit: formActions.submit,
     reset: formActions.reset,
-    formActions,
   }));
 
   const { loading, dataSource,pagination, ...other } = tableProps;
   // pagination
   return (
-    <div className={style.tableWarp}>
-      <div className={style.listHeader}>
+    <div>
+      <div>
         {title && <div className="title">{title}</div>}
-        <div className="actions">
-          {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
-          <div className="button">{actions}</div>
-        </div>
       </div>
       {searchForm ? <div className="search">
         <Form

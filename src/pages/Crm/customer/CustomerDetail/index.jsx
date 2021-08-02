@@ -76,8 +76,7 @@ const CustomerDetail = () => {
       </Card>
       <div
         className={styles.main}>
-        <Card
-        >
+        <Card>
           <Desc data={data} />
         </Card>
       </div>
