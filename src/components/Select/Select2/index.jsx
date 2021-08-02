@@ -5,7 +5,7 @@ import {Option} from 'antd/lib/mentions';
 import {useRequest} from '@/util/Request';
 
 const Select2 = (props) => {
-  const {api, defaultValue,onChange, ...other} = props;
+  const {w,api, defaultValue,onChange, ...other} = props;
 
   const [values, setValues] = useState(props.value);
 
@@ -56,7 +56,7 @@ const Select2 = (props) => {
           onChange(values);
         }}
         options={value}
-        style={{width: 300}}
+        style={{width: w}}
         value={values}
         allowClear
         showSearch

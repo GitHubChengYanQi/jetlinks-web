@@ -5,11 +5,9 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {lazy, useRef} from 'react';
-import Table from '@/components/Table';
+import React, {lazy, useRef, useState} from 'react';
 import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -17,21 +15,36 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {
   customerDelete,
-  customerList
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {useHistory} from 'ice';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const CustomerTable = () => {
+const CustomerTable = (props) => {
+
+  const {status} = props;
+
+  const [statu,setStatu] = useState(0);
+
 
   const history = useHistory();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+
+  if (status!==undefined){
+    if (status.length >  0 && status[0] !== statu){
+      setStatu(status[0]);
+      tableRef.current.refresh();
+    }
+  }
+
+
   const actions = () => {
     return (
       <>
@@ -51,19 +64,24 @@ const CustomerTable = () => {
     );
   };
 
+
   return (
     <>
       <Table
         title={<Breadcrumb />}
-        api={customerList}
+        api={{
+          url: '/customer/list',
+          method: 'POST',
+          values: statu,
+        }}
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户名称" dataIndex="customerName" render={(text, record, index)=>{
+        <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
           return (
-            <Button type="link" onClick={()=>{
+            <Button type="link" onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
             }}>{text}</Button>
           );
@@ -75,7 +93,6 @@ const CustomerTable = () => {
         <Column title="负责人" dataIndex="userName" />
         <Column title="一级行业" dataIndex="industryOne" />
         <Column title="二级行业" dataIndex="industryTwo" />
-        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -89,7 +106,7 @@ const CustomerTable = () => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500}  title="客户" component={CustomerEdit} onSuccess={() => {
+      <Modal2 width={1000} title="客户" component={CustomerEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

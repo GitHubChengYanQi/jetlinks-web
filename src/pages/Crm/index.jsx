@@ -15,6 +15,11 @@ import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 
 const CrmLayout = ({children}) => {
 
+  const refOriginList = useRef(null);
+  const refTemplateList = useRef(null);
+  const refCrmCustomerLevelList = useRef(null);
+  const refCrmIndustryList = useRef(null);
+
   const match = useRouteMatch();
   const history = useHistory();
 
@@ -27,6 +32,8 @@ const CrmLayout = ({children}) => {
   });
 
   const loopMenu = (subMenus) => {
+
+
     return subMenus.map((item) => {
       return renderItem(item);
     });
@@ -76,10 +83,7 @@ const CrmLayout = ({children}) => {
   }
 
 
-  const refOriginList = useRef(null);
-  const refTemplateList = useRef(null);
-  const refCrmCustomerLevelList = useRef(null);
-  const refCrmIndustryList = useRef(null);
+
 
   return (
     <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>
@@ -97,22 +101,22 @@ const CrmLayout = ({children}) => {
           <Menu
             style={{width: '100%'}}
           >
-            <Menu.Item>
-              <span className={styles.dropdownMenuItem} onClick={() => {refOriginList.current.open(false);}}>商机来源管理</span>
-              <Modal2 title="商机来源" width={800} component={OriginList} ref={refOriginList} />
+            <Menu.Item  onClick={() => {refOriginList.current.open(false);}}>
+              <span className={styles.dropdownMenuItem}>商机来源管理</span>
             </Menu.Item>
-            <Menu.Item>
-              <span className={styles.dropdownMenuItem} onClick={() => {refTemplateList.current.open(false);}}>合同模板管理</span>
-              <Modal2 title="合同模板" width={800} component={TemplateList} ref={refTemplateList} />
+            <Modal2 title="商机来源" width={800} component={OriginList} ref={refOriginList} />
+            <Menu.Item  onClick={() => {refTemplateList.current.open(false);}}>
+              <span className={styles.dropdownMenuItem}>合同模板管理</span>
             </Menu.Item>
-            <Menu.Item>
-              <span className={styles.dropdownMenuItem} onClick={() => {refCrmCustomerLevelList.current.open(false);}}>客户级别管理</span>
-              <Modal2 title="客户级别" width={800} component={CrmCustomerLevelList} ref={refCrmCustomerLevelList} />
+            <Modal2 title="合同模板" width={800} component={TemplateList} ref={refTemplateList} />
+            <Menu.Item onClick={() => {refCrmCustomerLevelList.current.open(false);}}>
+              <span className={styles.dropdownMenuItem} >客户级别管理</span>
             </Menu.Item>
-            <Menu.Item>
-              <span className={styles.dropdownMenuItem} onClick={() => {refCrmIndustryList.current.open(false);}}>行业管理</span>
-              <Modal2 title="行业" width={800} component={CrmIndustryList} ref={refCrmIndustryList} />
+            <Modal2 title="客户级别" width={800} component={CrmCustomerLevelList} ref={refCrmCustomerLevelList} />
+            <Menu.Item onClick={() => {refCrmIndustryList.current.open(false);}}>
+              <span className={styles.dropdownMenuItem} >行业管理</span>
             </Menu.Item>
+            <Modal2 title="行业" width={800} component={CrmIndustryList} ref={refCrmIndustryList} />
             <Menu.Divider />
           </Menu>
         </div>

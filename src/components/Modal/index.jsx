@@ -17,7 +17,6 @@ const Modal2 = (
 
 
   const [value, show] = useState(null);
-  console.log(modal);
   if (modal!==undefined){
     show(false);
   }

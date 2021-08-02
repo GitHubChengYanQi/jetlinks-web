@@ -12,9 +12,9 @@ import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
 import Contract from '@/pages/Crm/customer/CustomerDetail/compontents/Contract';
-import styles from './index.module.scss';
 import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
@@ -71,7 +71,7 @@ const CustomerDetail = () => {
           }} ref={ref} />
           <Button onClick={() => {
             history.back();
-          }}><Icon type="icon-back" /> 返回</Button>
+          }}><Icon type="icon-back" />返回</Button>
         </div>
       </Card>
       <div
@@ -83,7 +83,6 @@ const CustomerDetail = () => {
       </div>
       <div
         className={styles.main}>
-
         <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
           <ProCard>
             <Statistic title="今日UV" value={79.0} precision={2} />

@@ -1,7 +1,7 @@
 /**
  * 行业表列表页
  *
- * @author 
+ * @author
  * @Date 2021-08-02 08:25:03
  */
 
@@ -68,7 +68,7 @@ const CrmIndustryList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={CrmIndustryEdit} onSuccess={() => {
+      <Drawer width={800} title="行业" component={CrmIndustryEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

@@ -28,7 +28,7 @@ const CrmCustomerLevelEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      fieldKey="id"
+      fieldKey="customerLevelId"
     >
       <FormItem label="级别" name="level" component={SysField.Level} required/>
     </Form>

@@ -28,16 +28,16 @@ const CrmCustomerLevelList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="客户级别id" name="customerLevelId" component={SysField.CustomerLevelId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="客户级别id" name="customerLevelId" component={SysField.CustomerLevelId} />
+      </>
     );
   };
 
@@ -46,30 +46,32 @@ const CrmCustomerLevelList = () => {
       <Table
         title={<h2>列表</h2>}
         api={crmCustomerLevelList}
-        rowKey="id"
+        rowKey="customerLevelId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="级别" dataIndex="level"/>
-        <Column/>
+        <Column title="级别" dataIndex="level" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.id);
-              }}/>
-              <DelButton api={crmCustomerLevelDelete} value={record.id} onSuccess={()=>{
+                console.log(123);
+                ref.current.open(record.customerLevelId);
+              }} />
+              <DelButton api={crmCustomerLevelDelete} value={record.customerLevelId} onSuccess={() => {
+                console.log(123);
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={CrmCustomerLevelEdit} onSuccess={() => {
+      <Drawer width={800} title="客户级别" component={CrmCustomerLevelEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

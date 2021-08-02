@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CustomerTable from '@/pages/Crm/customer/CustomerList/components/CustomerTable';
 import {Divider, Layout, Tree} from 'antd';
 
@@ -8,27 +8,32 @@ const {Sider, Content} = Layout;
 
 const CustomerList = () => {
 
+  const [status,setStatus] = useState();
+
   return (
     <Layout style={{height: '100%'}}>
       <Sider className={styles.sider} width={260}>
         <div style={{padding: 24}}>
           <Tree
+            onSelect={(value)=>{
+              setStatus(value);
+            }}
             showLine
             // switcherIcon={<DownOutlined />}
-            defaultExpandedKeys={['0']}
+            defaultExpandedKeys={['']}
             // onSelect={this.onSelect}
             treeData={[
               {
                 title: '所有客户',
-                key: '0',
+                key: '',
                 children: [
                   {
                     title: '潜在客户',
-                    key: '0-0',
+                    key: '0',
                   },
                   {
                     title: '正式客户',
-                    key: '0-1',
+                    key: '1',
                   },
                 ],
               },
@@ -61,7 +66,7 @@ const CustomerList = () => {
         </div>
       </Sider>
       <Content>
-        <CustomerTable />
+        <CustomerTable status={status} />
       </Content>
     </Layout>
   );

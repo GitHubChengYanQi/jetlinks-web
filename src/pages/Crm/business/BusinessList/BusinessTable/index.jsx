@@ -78,7 +78,7 @@ const BusinessTable = () => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={800} title="编辑" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={800} title="商机" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

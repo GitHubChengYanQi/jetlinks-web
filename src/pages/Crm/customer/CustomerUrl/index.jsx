@@ -38,6 +38,7 @@ export const customerList = {
 };
 
 
+
 export const customerIdSelect = {
   url: '/items/list',
   method: 'POST'
@@ -61,6 +62,12 @@ export const UserIdSelect = {
 export const CrmIndustryIdSelect = {
   url: '/crmIndustry/list',
   method: 'POST',
+};
+
+export const crmIndustryTreeView = {
+  url: '/crmIndustry/treeView',
+  method: 'POST',
+  rowKey:'industryId'
 };
 
 

@@ -73,7 +73,7 @@ const ContractList = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={1500} title="编辑" component={AddContractEdit} onSuccess={() => {
+      <Modal2 width={1500} title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

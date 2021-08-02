@@ -12,15 +12,15 @@ import {DatePicker2} from '@alifd/next';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import Select2 from '@/components/Select/Select2';
 import TreeSelect from '@/components/TreeSelect';
-import {CrmIndustryIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {CrmIndustryIdSelect, crmIndustryTreeView} from '@/pages/Crm/customer/CustomerUrl';
 
-const w = 300;
+const w = 200;
 
 export const Name = (props) => {
   return (<Input style={{width: w}} {...props} />);
 };
 export const ClientName = (props) => {
-  return ((<Select2 style={{width: w}}  {...props} />));
+  return ((<Select2 w={w}  {...props} />));
 };
 export const AdressId = (props) => {
   return (<InputNumber style={{width: w}} {...props} />);
@@ -39,18 +39,11 @@ export const Utscc = (props) => {
   return (<Input style={{width: w}}  {...props} />);
 };
 export const CompanyType = (props) => {
-  return (<AntdSelect showSearch style={{width: w}}
-                      filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                      options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {
-                        value: '有限责任公司（自然人投资或控股）',
-                        label: '有限责任公司（自然人投资或控股）'
-                      }, {value: '股份有限公司', label: '股份有限公司'}, {value: '有限合伙企业', label: '有限合伙企业'}, {
-                        value: '外商独资企业',
-                        label: '外商独资企业'
-                      }, {value: '个人独资企业', label: '个人独资企业'}, {value: '国有独资公司', label: '国有独资公司'}, {
-                        value: '其他类型',
-                        label: '其他类型'
-                      }]} {...props} />);
+  return (<AntdSelect
+    showSearch
+    style={{width: w}}
+    filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+    options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {value: '有限合伙企业', label: '有限合伙企业'}, {value: '外商独资企业',label: '外商独资企业'}, {value: '个人独资企业', label: '个人独资企业'}, {value: '国有独资公司', label: '国有独资公司'}, {value: '其他类型', label: '其他类型'}]} {...props} />);
 };
 export const BusinessTerm = (props) => {
   return (<DatePicker2 showTime style={{width: w}}  {...props} />);
@@ -88,13 +81,11 @@ export const Client = (props) => {
 };
 
 export const Status = (props) => {
-  return (<AntdSelect showSearch style={{width: w}}
-                      filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                      options={[{
-                        value: '0', label: '潜在客户'
-                      }, {
-                        value: '1', label: '正式客户'
-                      }]} {...props} />);
+  return (<AntdSelect
+    showSearch
+    style={{width: w}}
+    filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+    options={[{value: '0', label: '潜在客户'}, {value: '1', label: '正式客户' }]} {...props} />);
 };
 
 export const Note = (props) => {
@@ -123,7 +114,7 @@ export const Url = (props) => {
 
 
 export const IndustryOne = (props) => {
-  return (<TreeSelect api={apiUrl.CrmIndustryIdSelect} style={{width: w}} {...props}/>);
+  return (<TreeSelect api={apiUrl.crmIndustryTreeView} style={{width: w}} {...props}/>);
 };
 
 export const IndustryTwo = (props) => {

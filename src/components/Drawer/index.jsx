@@ -38,7 +38,7 @@ const Drawer = (
         onClose();
       }}
       width={width}
-      title={value ? '编辑' : '添加'}
+      title={value ? `编辑${title}` : `添加${title}`}
       afterVisibleChange={(v) => {
         setShow(v);
       }}

@@ -1,7 +1,7 @@
 /**
  * 行业表编辑页
  *
- * @author 
+ * @author
  * @Date 2021-08-02 08:25:03
  */
 
@@ -31,7 +31,7 @@ const CrmIndustryEdit = ({...props}) => {
       fieldKey="industryId"
     >
       <FormItem label="行业名称" name="industryName" component={SysField.IndustryName} required/>
-      <FormItem label="上级" name="parentId" component={SysField.ParentId} required/>
+      <FormItem label="上级" name="parentId" component={SysField.ParentId} />
     </Form>
   );
 };

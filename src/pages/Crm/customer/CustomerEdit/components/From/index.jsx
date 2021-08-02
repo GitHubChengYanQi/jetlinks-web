@@ -123,8 +123,8 @@ const FormWrapper = (
       layout='horizontal'
       actions={formActions}
       className={style.formWarp}
-      labelCol={labelCol || 3}
-      wrapperCol={wrapperCol || 15}
+      labelCol={9}
+      wrapperCol={15}
       onSubmit={async (values) => {
         const submitValues = onSubmit(values);
         if (submitValues === false) {
@@ -144,7 +144,7 @@ const FormWrapper = (
     >
       {children}
 
-      <FormButtonGroup offset={6}>
+      <FormButtonGroup offset={8}>
         <Submit showLoading>保存</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>
