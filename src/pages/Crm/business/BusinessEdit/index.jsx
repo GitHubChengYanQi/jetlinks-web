@@ -8,10 +8,16 @@
 import React, {useRef, useState} from 'react';
 import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
-import {businessDetail, businessAdd, businessEdit} from '../BusinessUrl';
-import * as SysField from '../BusinessField';
-import {Stock} from '../BusinessField';
 import FormIndex from '@/components/Form/FormIndex';
+import {
+  businessDetail,
+  businessAdd,
+  businessEdit,
+  NameListSelect,
+  MainCableListSelect6
+} from '../BusinessUrl';
+import * as SysField from '../BusinessField';
+
 
 const {FormItem} = Form;
 
@@ -34,7 +40,7 @@ const BusinessEdit = ({...props}) => {
 
   const steps = [
     {
-      title: '必填项',
+      title: '商机名称',
       content:
         <>
           <div style={{margin: '50px 150px'}}>
@@ -50,7 +56,7 @@ const BusinessEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="客户编号" name="customerId" component={SysField.Client} required/>
+              <FormItem label="商机名称" name="businessName" component={SysField.BusinessName} required/>
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
@@ -59,10 +65,9 @@ const BusinessEdit = ({...props}) => {
         </>
     },
     {
-      title: '选填项',
+      title: '商机详细信息',
       content:
         <>
-
           <div style={{margin: '50px 150px'}}>
             <FormIndex
               {...props}
@@ -74,11 +79,47 @@ const BusinessEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="物品编号" name="stockId" component={SysField.Stock} />
-              <FormItem label="机会来源" name="originId" component={SysField.Source} />
-              <FormItem label="立项日期" name="time" component={SysField.Time} />
+
+              <FormItem label="负责人" name="person" component={SysField.PersonListSelect} />
+              <FormItem label="客户名称" name="customerName" component={SysField.CustomerNameListSelect1} />
+              <FormItem label="物品名称" name="name" component={SysField.NameListSelect} />
+              <FormItem label="机会来源" name="name" component={SysField.OrgNameListSelect} />
+              <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+              <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
+              <FormItem label="销售流程" name="salesId" component={SysField.SalesIdListSelect} />
+              <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
+              <FormItem label="整单折扣" name="orderDiscount" component={SysField.OrderDiscountListSelect5} />
+              <FormItem label="主线索" name="mainCable" component={SysField.MainCableListSelect6} />
               <Button type="primary" htmlType="submit">
                 Next
+              </Button>
+            </FormIndex>
+          </div>
+
+        </>
+    },
+    {
+      title: '系统信息',
+      content:
+        <>
+          <div style={{margin: '50px 150px'}}>
+            <FormIndex
+              {...props}
+              value={result}
+              ref={formRef}
+              api={ApiConfig}
+              fieldKey="businessId"
+              success={(result) => {
+                props.onSuccess();
+              }}
+            >
+              <FormItem label="创建人" name="createUser" component={SysField.CreateUserListSelect7} />
+              <FormItem label="最后修改人" name="updateUser" component={SysField.UpdateUserListSelect8} />
+              <FormItem label="创建时间" name="createTime" component={SysField.CreateTimeListSelect9} />
+              <FormItem label="最后修改时间" name="updateTime" component={SysField.UpdateTimeListSelect10} />
+              <FormItem label="负责人主属部门" name="deptId" component={SysField.DeptIdListSelect11} />
+              <Button type="primary" htmlType="submit">
+                next
               </Button>
             </FormIndex>
           </div>
@@ -100,9 +141,12 @@ const BusinessEdit = ({...props}) => {
                 props.onSuccess();
               }}
             >
-              <FormItem label="商机状态" name="state" component={SysField.State} />
-              <FormItem label="商机阶段" name="stage" component={SysField.Stage} />
-              <FormItem label="负责人" name="person" component={SysField.Person} />
+              <FormItem label="商机状态" name="state" component={SysField.StateListSelect12} />
+              <FormItem label="商机阶段" name="stage" component={SysField.StageListSelect13} />
+              <FormItem label="结单日期" name="statementTime" component={SysField.StatementTimeListSelect14} />
+              <FormItem label="赢率" name="salesProcessId" component={SysField.SalesProcessIdListSelect15} />
+              <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
+              <FormItem label="输单原因" name="reason" component={SysField.ReasonListSelect18} />
               <Button type="primary" htmlType="submit">
                 Done
               </Button>
