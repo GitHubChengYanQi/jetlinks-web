@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
+import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Input} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
@@ -8,11 +8,12 @@ import {useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
 import RcResizeObserver from 'rc-resize-observer';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import styles from './index.module.scss';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
+import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
@@ -22,10 +23,10 @@ const CustomerDetail = () => {
 
   const [responsive, setResponsive] = useState(false);
 
-  const {loading, data, run} = useRequest(customerDetail, {
+  const {loading, data, run} = useRequest(businessDetail, {
     defaultParams: {
       data: {
-        customerId: params.cid
+        businessId: params.cid
       }
     }
   });
@@ -48,12 +49,13 @@ const CustomerDetail = () => {
               <Avatar size={64}>LOGO</Avatar>
             </Col>
             <Col>
-              <h3>{data.customerName}</h3>
+              <h3>{data.businessName}</h3>
               <div>
                 <em>{data.signIn}</em>
               </div>
             </Col>
           </Row>
+
 
         </div>
         <div className={styles.titleButton}>
@@ -63,30 +65,19 @@ const CustomerDetail = () => {
           }}><Icon type="icon-back" /> 返回</Button>
         </div>
       </Card>
-      <div
-        className={styles.main}>
+      <div className={styles.main}>
+        <Card>
+          <Descsales data={data} />
+        </Card>
         <Card>
           <Desc data={data} />
         </Card>
       </div>
-      <div
-        className={styles.main}>
+      <div className={styles.main}>
 
           <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
             <ProCard>
               <Statistic title="今日UV" value={79.0} precision={2} />
-            </ProCard>
-            <Divider type={responsive ? 'horizontal' : 'vertical'} />
-            <ProCard>
-              <Statistic title="冻结金额" value={112893.0} precision={2} />
-            </ProCard>
-            <Divider type={responsive ? 'horizontal' : 'vertical'} />
-            <ProCard>
-              <Statistic title="信息完整度" value={93} suffix="/ 100" />
-            </ProCard>
-            <Divider type={responsive ? 'horizontal' : 'vertical'} />
-            <ProCard>
-              <Statistic title="冻结金额" value={112893.0} />
             </ProCard>
           </ProCard.Group>
       </div>
@@ -99,33 +90,20 @@ const CustomerDetail = () => {
                 <TabPane tab="详细信息" key="1">
                  <Description data={data}/>
                 </TabPane>
-                <TabPane tab="联系人" key="2">
-                  <ContactsList customerId={data.customerId}  />
-                </TabPane>
-                <TabPane tab="地址" key="3">
-                  <AdressList customerId={data.customerId}/>
-                </TabPane>
-                <TabPane tab="合同" key="4">
-                  Content of Tab Pane 3
-                </TabPane>
-                <TabPane tab="订单" key="5">
-                  Content of Tab Pane 3
-                </TabPane>
-                <TabPane tab="回款" key="6">
-                  Content of Tab Pane 3
-                </TabPane>
-                <TabPane tab="附件" key="7">
-                  Content of Tab Pane 3
-                </TabPane>
               </Tabs>
             </Card>
           </Col>
           <Col span={8}>
             <Card>
               <Tabs defaultActiveKey="1">
-                <TabPane tab="动态" key="1">
+                <TabPane tab="相关团队" key="1">
                   Content of Tab Pane 1
+                  <Input />相关团队
                 </TabPane>
+                <TabPane tab="跟进动态" key="1">
+                  Content of Tab Pane 1
+                  <Input />发布销售记录
+                  </TabPane>
               </Tabs>
             </Card>
           </Col>

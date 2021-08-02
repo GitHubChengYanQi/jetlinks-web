@@ -15,10 +15,11 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import { businessDelete, businessList} from '@/pages/Crm/business/BusinessUrl';
+import {businessDelete, businessList, CustomerNameListSelect} from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
+import {BusinessNameListSelect, CustomerNameListSelect1} from '@/pages/Crm/business/BusinessField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -42,9 +43,9 @@ const BusinessTable = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="商机编号" name="BusicessId" component={SysField.BusicessIdListSelect} />
-        <FormItem label="商机名称" name="businessName" component={SysField.BusicessName} />
-        <FormItem label="客户名称" name="customerName" component={SysField.customerName} />
+
+        <FormItem label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
+        <FormItem label="客户名称" name="customerName" component={SysField.BusinessNameListSelect} />
       </>
     );
   };
@@ -62,11 +63,11 @@ const BusinessTable = () => {
         <Column title="商机名称" dataIndex="BusicessName" render={(text, record, index)=>{
           return (
             <Button type="link" onClick={()=>{
-              history.push(`/CRM/business/${record.BusicessName}`);
+              history.push(`/CRM/business/${record.BusicessId}`);
             }}>{text}</Button>
           );
         }} />
-        <Column title="商机名称" dataIndex="businessName" />
+
         <Column title="负责人" dataIndex="person" />
         <Column title="客户名称" dataIndex="customerName" />
         <Column title="物品名称" dataIndex="itemName" />

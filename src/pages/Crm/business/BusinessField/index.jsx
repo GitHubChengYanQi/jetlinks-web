@@ -16,16 +16,17 @@ import * as apiUrl from '../BusinessUrl';
 
 const w = 200;
 // 商机名称
-export const BusinessName = (props) =>{
+export const BusinessNameListSelect = (props) =>{
   return (<Input style={{width:w}} {...props}/>);
 };
 // 负责人
 export const PersonListSelect = (props) =>{
-  return (<Select api={apiUrl.PersonListSelect} style={{width:w}} {...props}/>);
+
+  return (<Input style={{width:w}} {...props}/>);
 };
 // 客户名称
-export const CustomerNameListSelect1 = (props) =>{
-  return (<Select api={apiUrl.CustomerNameListSelect1} style={{width:w}} {...props}/>);
+export const CustomerNameListSelect = (props) =>{
+  return (<Select api={apiUrl.CustomerNameListSelect} style={{width:w}} {...props}/>);
 };
 // 物品名称
 export const NameListSelect = (props) =>{
@@ -33,7 +34,7 @@ export const NameListSelect = (props) =>{
 };
 // 机会来源
 export const OrgNameListSelect = (props) =>{
-  return (<Select api={apiUrl.NameListSelect} style={{width:w}} {...props}/>);
+  return (<Select api={apiUrl.OrgNameListSelect} style={{width:w}} {...props}/>);
 };
 
 
@@ -49,6 +50,7 @@ export const OpportunityAmountListSelect3 = (props) =>{
 // 销售流程
 export const SalesIdListSelect = (props) =>{
   return (<Select api={apiUrl.SalesIdListSelect} style={{width:w}} {...props}/>);
+
 };
 // 产品合计
 export const TotalProductsListSelect4 = (props) =>{
@@ -60,7 +62,7 @@ export const OrderDiscountListSelect5 = (props) =>{
 };
 // 主线索
 export const MainCableListSelect6 = (props) =>{
-  return (<Input style={{width:w}} value="请填写主线索" {...props}/>);
+  return (<Input style={{width:w}}  {...props}/>);
 };
 
 

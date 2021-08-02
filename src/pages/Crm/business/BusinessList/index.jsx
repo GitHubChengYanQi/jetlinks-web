@@ -1,9 +1,8 @@
 import React from 'react';
+import {Divider, Layout, Tree} from 'antd';
 
-import BusinessTable from '@/pages/Crm/business/BusinessList/components/BusinessTable';
-import { Layout, Tree} from 'antd';
-
-import styles from '@/pages/Crm/business/BusinessDetails/index.module.scss';
+import BusinessTable from '@/pages/Crm/business/BusinessList/components/BusinessTable'
+import styles from '@/pages/Crm/business/BusinessList/index.module.scss';
 
 const {Sider, Content} = Layout;
 
@@ -20,22 +19,49 @@ const BusinessList = () => {
             // onSelect={this.onSelect}
             treeData={[
               {
-                title: '商机管理',
+                title: '销售流程',
                 key: '0',
                 children: [
                   {
-                    title: '商机2.0明细',
+                    title: '流程1',
                     key: '0-0',
                   },
                   {
-                    title: '商机2.0明细',
+                    title: '流程2',
                     key: '0-1',
                   },
                 ],
               },
             ]}
           />
-
+          <Divider />
+          <Tree
+            showLine
+            // switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['0']}
+            // onSelect={this.onSelect}
+            treeData={[
+              {
+                title: '所有来源',
+                key: '0',
+                children: [
+                  {
+                    title: '网站',
+                    key: '0-0',
+                  },
+                  {
+                    title: '线下',
+                    key: '0-1',
+                  },
+                  {
+                    title: '公众号',
+                    key: '0-2',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Divider />
         </div>
       </Sider>
       <Content>

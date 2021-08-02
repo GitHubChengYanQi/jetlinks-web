@@ -29,6 +29,7 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
   const requestMethod = async (params) => {
     const { values, pagination, ...other } = params;
     values.customerId = api.values;
+
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;

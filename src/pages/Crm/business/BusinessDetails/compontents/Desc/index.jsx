@@ -10,7 +10,7 @@ const Desc = (props) => {
       <Descriptions title="基本信息">
 
         <Descriptions.Item label="商机名称">{data.businessName === "" ? '未填写' :  data.businessName}</Descriptions.Item>
-        <Descriptions.Item label="负责人">{data.userId === "" ? '未填写' :  data.userId}</Descriptions.Item>
+        <Descriptions.Item label="负责人">{data.Person === "" ? '未填写' :  data.Person}</Descriptions.Item>
         <Descriptions.Item label="客户名称">{data.customerName === "" ? '未填写' :  data.customerName}</Descriptions.Item>
         <Descriptions.Item label="机会来源">{data.orignName === "" ? '未填写' :  data.orignName}</Descriptions.Item>
         <Descriptions.Item label="立项日期">{data.time === "" ? '未填写' :  data.time}</Descriptions.Item>
@@ -19,7 +19,7 @@ const Desc = (props) => {
         <Descriptions.Item label="阶段变更时间">{data.changeTime === "" ? '未填写' :  data.changeTime}</Descriptions.Item>
         <Descriptions.Item label="商机金额">{data.opportunityAmount === "" ? '未填写' :  data.opportunityAmount}</Descriptions.Item>
         <Descriptions.Item label="商机状态">{data.state === "" ? '未填写' :  data.state}</Descriptions.Item>
-        <Descriptions.Item label="销售流程">{data.salesName === "" ? '未填写' :  data.salesId}</Descriptions.Item>
+        <Descriptions.Item label="销售流程">{data.salesId === "" ? '未填写' :  data.salesId}</Descriptions.Item>
         <Descriptions.Item label="产品合计">{data.totalProducts === "" ? '未填写' :  data.totalProducts}</Descriptions.Item>
         <Descriptions.Item label="整单折扣">{data.orderDiscount === "" ? '未填写' :  data.orderDiscount}</Descriptions.Item>
         <Descriptions.Item label="输单原因">{data.reason === "" ? '未填写' :  data.reason}</Descriptions.Item>

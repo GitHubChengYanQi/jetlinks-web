@@ -40,8 +40,11 @@ export const CustomerNameList = {
 };
 
 
-
-
+// 商机名称
+export const BusinessNameListSelect = {
+  url: '/business/listSelect',
+  method: 'POST',
+};
 //  负责人姓名
 export const PersonListSelect = {
   url: '/business/listSelect',
@@ -49,8 +52,8 @@ export const PersonListSelect = {
 };
 
 // 客户名称
-export const CustomerNameListSelect1 = {
-  url: '/customer/listSelect1',
+export const CustomerNameListSelect = {
+  url: '/customer/listSelect',
   method: 'POST',
 };
 // 物品名称
@@ -60,7 +63,7 @@ export const NameListSelect = {
 };
 // 机会来源
 export const OrgNameListSelect = {
-  url: '/orign/listSelect',
+  url: '/origin/listSelect',
   method: 'POST',
 };
 // 立项日期
@@ -150,7 +153,6 @@ export const ChangeTimeListSelect17 = {
   url: '/business/listSelect17',
   method: 'POST',
 };
-
 // 输单原因
 export const ReasonListSelect18 = {
   url: '/business/listSelect18',
