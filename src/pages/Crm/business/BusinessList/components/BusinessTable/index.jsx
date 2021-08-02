@@ -43,7 +43,6 @@ const BusinessTable = () => {
   const searchForm = () => {
     return (
       <>
-
         <FormItem label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
         <FormItem label="客户名称" name="customerName" component={SysField.BusinessNameListSelect} />
       </>
@@ -63,15 +62,14 @@ const BusinessTable = () => {
         <Column title="商机名称" dataIndex="BusicessName" render={(text, record, index)=>{
           return (
             <Button type="link" onClick={()=>{
-              history.push(`/CRM/business/${record.BusicessId}`);
+              history.push(`/CRM/business/${record.BusicessName}`);
             }}>{text}</Button>
           );
         }} />
-
         <Column title="负责人" dataIndex="person" />
         <Column title="客户名称" dataIndex="customerName" />
         <Column title="物品名称" dataIndex="itemName" />
-        <Column title="机会来源" dataIndex="name" />
+        <Column title="机会来源" dataIndex="originName" />
         <Column title="立项日期" dataIndex="time" />
         <Column title="结单日期" dataIndex="statementTime" />
         <Column title="赢率" dataIndex="salesProcessId" />

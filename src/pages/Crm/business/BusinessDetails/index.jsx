@@ -66,9 +66,9 @@ const CustomerDetail = () => {
         </div>
       </Card>
       <div className={styles.main}>
-        <Card>
-          <Descsales data={data} />
-        </Card>
+        {/*<Card>*/}
+        {/*  <Descsales data={data} />*/}
+        {/*</Card>*/}
         <Card>
           <Desc data={data} />
         </Card>
