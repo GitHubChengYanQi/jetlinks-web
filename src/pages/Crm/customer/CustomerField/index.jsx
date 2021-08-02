@@ -123,7 +123,7 @@ export const Url = (props) => {
 
 
 export const IndustryOne = (props) => {
-  return (<TreeSelect api={apiUrl.CrmIndustryIdSelect} {...props}/>);
+  return (<TreeSelect api={apiUrl.CrmIndustryIdSelect} style={{width: w}} {...props}/>);
 };
 
 export const IndustryTwo = (props) => {

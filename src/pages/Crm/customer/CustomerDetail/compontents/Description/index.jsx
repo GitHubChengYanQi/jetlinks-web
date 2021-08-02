@@ -25,7 +25,7 @@ const Description = (props) => {
         <Descriptions.Item label="邮箱">{data.emall === "" ? '未填写' :  data.emall}</Descriptions.Item>
         <Descriptions.Item label="网址">{data.url === "" ? '未填写' :  data.url}</Descriptions.Item>
         <Descriptions.Item label="一级行业">{data.industryOne === "" ? '未填写' :  data.industryOne}</Descriptions.Item>
-        <Descriptions.Item label="二级行业">{data.industryTwo === "" ? '未填写' :  data.industryTwo}</Descriptions.Item>
+        {/*<Descriptions.Item label="二级行业">{data.industryTwo === "" ? '未填写' :  data.industryTwo}</Descriptions.Item>*/}
       </Descriptions>
     </>
   );

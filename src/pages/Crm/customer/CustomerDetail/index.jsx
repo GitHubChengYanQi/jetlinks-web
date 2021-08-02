@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
@@ -12,6 +12,9 @@ import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
 import Contract from '@/pages/Crm/customer/CustomerDetail/compontents/Contract';
+import styles from './index.module.scss';
+import Modal2 from '@/components/Modal';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 const {TabPane} = Tabs;
 
@@ -20,6 +23,9 @@ const CustomerDetail = () => {
 
 
   const [responsive, setResponsive] = useState(false);
+
+  const ref = useRef(null);
+  const tableRef = useRef(null);
 
   const {loading, data, run} = useRequest(customerDetail, {
     defaultParams: {
@@ -56,7 +62,13 @@ const CustomerDetail = () => {
 
         </div>
         <div className={styles.titleButton}>
-          <Button type="primary">编辑</Button>
+          <Button type="primary" onClick={() => {
+            ref.current.open(data.customerId);
+          }}>编辑</Button>
+          <Modal2 width={1500} title="客户" component={CustomerEdit} onSuccess={() => {
+            tableRef.current.refresh();
+            ref.current.close();
+          }} ref={ref} />
           <Button onClick={() => {
             history.back();
           }}><Icon type="icon-back" /> 返回</Button>
@@ -72,23 +84,23 @@ const CustomerDetail = () => {
       <div
         className={styles.main}>
 
-          <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
-            <ProCard>
-              <Statistic title="今日UV" value={79.0} precision={2} />
-            </ProCard>
-            <Divider type={responsive ? 'horizontal' : 'vertical'} />
-            <ProCard>
-              <Statistic title="冻结金额" value={112893.0} precision={2} />
-            </ProCard>
-            <Divider type={responsive ? 'horizontal' : 'vertical'} />
-            <ProCard>
-              <Statistic title="信息完整度" value={93} suffix="/ 100" />
-            </ProCard>
-            <Divider type={responsive ? 'horizontal' : 'vertical'} />
-            <ProCard>
-              <Statistic title="冻结金额" value={112893.0} />
-            </ProCard>
-          </ProCard.Group>
+        <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
+          <Divider type={responsive ? 'horizontal' : 'vertical'} />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} precision={2} />
+          </ProCard>
+          <Divider type={responsive ? 'horizontal' : 'vertical'} />
+          <ProCard>
+            <Statistic title="信息完整度" value={93} suffix="/ 100" />
+          </ProCard>
+          <Divider type={responsive ? 'horizontal' : 'vertical'} />
+          <ProCard>
+            <Statistic title="冻结金额" value={112893.0} />
+          </ProCard>
+        </ProCard.Group>
       </div>
       <div
         className={styles.main}>
@@ -97,16 +109,16 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
-                 <Description data={data}/>
+                  <Description data={data} />
                 </TabPane>
                 <TabPane tab="联系人" key="2">
-                  <ContactsList customerId={data.customerId}  />
+                  <ContactsList customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="地址" key="3">
-                  <AdressList customerId={data.customerId}/>
+                  <AdressList customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="合同" key="4">
-                 <Contract customerId={data.customerId} />
+                  <Contract customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="订单" key="5">
                   Content of Tab Pane 3

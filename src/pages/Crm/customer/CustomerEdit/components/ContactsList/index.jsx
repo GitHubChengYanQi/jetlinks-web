@@ -63,7 +63,6 @@ const ContactsList = (props) => {
         }} />
       </div>
       <Drawer width={800} title="编辑" component={Index} onSuccess={() => {
-        console.log('lxr');
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

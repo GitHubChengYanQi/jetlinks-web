@@ -2,7 +2,7 @@
  * 行业表接口配置
  *
  * @author 
- * @Date 2021-07-31 16:28:22
+ * @Date 2021-08-02 08:25:03
  */
 
 export const crmIndustryAdd = {
@@ -31,6 +31,16 @@ export const crmIndustryDetail = {
 
 export const crmIndustryList = {
   url: '/crmIndustry/list',
+  method: 'POST',
+  rowKey:'industryId'
+};
+export const crmIndustryListSelect = {
+  url: '/crmIndustry/listSelect',
+  method: 'POST',
+  rowKey:'industryId'
+};
+export const crmIndustryTreeView = {
+  url: '/crmIndustry/treeView',
   method: 'POST',
   rowKey:'industryId'
 };

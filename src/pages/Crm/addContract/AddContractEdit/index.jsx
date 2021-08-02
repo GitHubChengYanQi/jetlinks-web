@@ -50,7 +50,7 @@ const AddContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="选择合同模板" name="content" component={SysField.Template} required/>
+              <FormItem label="选择合同模板" name="name" component={SysField.Template} required/>
               <Button type="primary" htmlType="submit">
                 Next
               </Button>

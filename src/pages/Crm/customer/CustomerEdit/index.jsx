@@ -51,7 +51,7 @@ const CustomerEdit = ({...props}) => {
         fieldKey="customerId"
       >
         <ProCard style={{ marginTop: 8 }} gutter={[16, 16]} wrap title="基本信息">
-          <Row gutter={20}>
+          <Row gutter={20} style={{padding:'0 30px'}}>
             <Col span={10}>
               <FormItem label="客户名称" name="customerName" component={SysField.ClientName} required />
             </Col>
@@ -60,7 +60,7 @@ const CustomerEdit = ({...props}) => {
             </Col>
           </Row>
 
-          <Row gutter={20}>
+          <Row gutter={20} style={{padding:'0 30px'}}>
             <Col span={10}>
               <FormItem label="客户状态" name="status" component={SysField.Status} />
             </Col>
@@ -75,7 +75,7 @@ const CustomerEdit = ({...props}) => {
           defaultCollapsed
         >
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
               </Col>
@@ -84,7 +84,7 @@ const CustomerEdit = ({...props}) => {
               </Col>
             </Row>
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="成立时间" name="setup" component={SysField.Setup} />
               </Col>
@@ -94,7 +94,7 @@ const CustomerEdit = ({...props}) => {
               </Col>
             </Row>
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
               </Col>
@@ -104,7 +104,7 @@ const CustomerEdit = ({...props}) => {
               </Col>
             </Row>
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="简介" name="introduction" component={SysField.Introduction} />
               </Col>
@@ -113,7 +113,7 @@ const CustomerEdit = ({...props}) => {
               </Col>
             </Row>
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="网址" name="url" component={SysField.Url} />
               </Col>
@@ -123,7 +123,7 @@ const CustomerEdit = ({...props}) => {
               </Col>
             </Row>
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
               </Col>
@@ -132,7 +132,7 @@ const CustomerEdit = ({...props}) => {
               </Col>
             </Row>
 
-            <Row gutter={20}>
+            <Row gutter={20} style={{padding:'0 30px'}}>
               <Col span={10}>
                 <FormItem label="一级行业" name="industryOne" component={SysField.IndustryOne} />
 
