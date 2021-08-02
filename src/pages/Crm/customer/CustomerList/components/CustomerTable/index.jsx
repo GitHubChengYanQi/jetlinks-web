@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {lazy, useRef, useState} from 'react';
+import React, {lazy, useEffect, useRef, useState} from 'react';
 import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -14,7 +14,7 @@ import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {
-  customerDelete,
+  customerDelete, customerList,
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {useHistory} from 'ice';
@@ -28,7 +28,7 @@ const CustomerTable = (props) => {
 
   const {status} = props;
 
-  const [statu,setStatu] = useState(0);
+
 
 
   const history = useHistory();
@@ -36,12 +36,9 @@ const CustomerTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-
   if (status!==undefined){
-    if (status.length >  0 && status[0] !== statu){
-      setStatu(status[0]);
-      tableRef.current.refresh();
-    }
+    tableRef.current.formActions.setFieldValue('status', status[0]);
+    tableRef.current.submit();
   }
 
 
@@ -58,8 +55,9 @@ const CustomerTable = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="客户名称" name="clientName" component={SysField.Name} />
+        <FormItem label="客户名称" name="customerName" component={SysField.Name} />
         <FormItem label="公司类型" name="companyType" component={SysField.Name} />
+        <FormItem style={{display:'none'}} name="status" component={SysField.Name} />
       </>
     );
   };
@@ -69,11 +67,7 @@ const CustomerTable = (props) => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={{
-          url: '/customer/list',
-          method: 'POST',
-          values: statu,
-        }}
+        api={customerList}
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
@@ -91,8 +85,7 @@ const CustomerTable = (props) => {
         <Column title="客户级别" dataIndex="lname" />
         <Column title="客户来源" dataIndex="oname" />
         <Column title="负责人" dataIndex="userName" />
-        <Column title="一级行业" dataIndex="industryOne" />
-        <Column title="二级行业" dataIndex="industryTwo" />
+        <Column title="行业" dataIndex="industryOne" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

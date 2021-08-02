@@ -1,67 +1,75 @@
 import React, {useState} from 'react';
-import {Select as AntSelect, Button} from 'antd';
-import {RedoOutlined} from '@ant-design/icons';
-import {Option} from 'antd/lib/mentions';
-import {useRequest} from '@/util/Request';
+import {Select} from 'antd';
+import jsonp from 'fetch-jsonp';
+import querystring from 'querystring';
 
-const Select2 = (props) => {
-  const {w,api, defaultValue,onChange, ...other} = props;
+const {Option} = Select;
 
-  const [values, setValues] = useState(props.value);
+let timeout;
+let currentValue;
 
-  const {data, run} = useRequest({url: '/items/list', method: 'POST', data: {name: values}}, {
-    debounceInterval: 300,
-    manual: true,
-  });
+function fetch(value, callback) {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = null;
+  }
+  currentValue = value;
 
-  let value;
-
-  if (data !== undefined) {
-    value = new Array(data.length);
-
-    for (let i = 0; i < data.length; i++) {
-      value[i] = {value: data[i].name, lable: data[i].name};
-    }
+  function fake() {
+    const str = querystring.encode({
+      code: 'utf-8',
+      q: value,
+    });
+    jsonp(`https://suggest.taobao.com/sug?${str}`)
+      .then(response => response.json())
+      .then(d => {
+        if (currentValue === value) {
+          const {result} = d;
+          const data = [];
+          result.forEach(r => {
+            data.push({
+              value: r[0],
+              text: r[0],
+            });
+          });
+          callback(data);
+        }
+      });
   }
 
+  timeout = setTimeout(fake, 300);
+}
 
-  let [open,setOpen] = useState(false);
+const Select2 = (props) => {
+  const [data, setData] = useState([]);
+  const [value, setValue] = useState(undefined);
 
-
-    if (value!==undefined) {
-      if (value.length > 0 && open != null) {
-        open = true;
-      } else {
-        open = false;
-      }
+  const handleSearch = value => {
+    if (value) {
+      fetch(value, data => setData(data));
+    } else {
+      setData([]);
     }
+  };
 
+  const handleChange = value => {
+    setValue({value});
+  };
 
+  const options = data.map(d => <Option key={d.value}>{d.text}</Option>);
   return (
-    <>
-      <AntSelect
-        onSearch={(value) => {
-          if (value !== '') {
-            setValues(value);
-            setOpen(false);
-          }
-          run();
-        }}
-        open={open}
-        onChange={(value) => {
-          setOpen(null);
-          setValues(value);
-        }}
-        onBlur={()=>{
-          onChange(values);
-        }}
-        options={value}
-        style={{width: w}}
-        value={values}
-        allowClear
-        showSearch
-      />
-    </>
+    <Select
+      showSearch
+      value={value}
+      defaultActiveFirstOption={false}
+      showArrow={false}
+      filterOption={false}
+      onSearch={handleSearch}
+      onChange={handleChange}
+      notFoundContent={null}
+    >
+      {options}
+    </Select>
   );
 };
 

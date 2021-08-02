@@ -117,7 +117,4 @@ export const IndustryOne = (props) => {
   return (<TreeSelect api={apiUrl.crmIndustryTreeView} style={{width: w}} {...props}/>);
 };
 
-export const IndustryTwo = (props) => {
-  return (<Input style={{width: w}}  {...props} />);
-};
 
