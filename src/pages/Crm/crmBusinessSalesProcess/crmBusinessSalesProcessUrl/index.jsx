@@ -1,8 +1,8 @@
 /**
  * 销售流程接口配置
  *
- * @author 
- * @Date 2021-07-31 13:28:44
+ * @author
+ * @Date 2021-08-02 15:47:16
  */
 
 export const crmBusinessSalesProcessAdd = {
@@ -35,5 +35,3 @@ export const crmBusinessSalesProcessList = {
   rowKey:'salesProcessId'
 };
 
-export const salesProcessIdSelect = {
-  url: '

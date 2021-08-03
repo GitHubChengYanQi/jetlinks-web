@@ -3,14 +3,23 @@ import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
-  const {value, api, defaultValue, ...other} = props;
-  if (!api) {
-    throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
-  }
-  const {loading, data, run} = useRequest(api);
+
+
+  const {value, values,api, defaultValue,width, data: da, handleSearch, handleChange,onChange ,...other} = props;
+
+
+
+
+
+
+  const {loading, data, run} = useRequest(api, {
+    manual: !!da
+  });
+
 
   let valueArray = [];
   const {mode} = other;
+
   if (value) {
     if (!Array.isArray(value)) {
       if (mode === 'multiple' || mode === 'tag') {
@@ -32,25 +41,32 @@ const Select = (props) => {
     valueArray = '';
   }
 
-
-  if (data) {
-    return (
-      <>
-        {!loading &&
-        <AntSelect
-          options={data}
-          allowClear={false}
-          style={{ width: 200 }}
-          value={valueArray}
-          {...other}
-          showSearch
-          filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        />}
-      </>
-    );
-  } else {
-    return null;
+  if (values){
+    props.onChange(values);
+  }else if (value){
+    props.onChange(valueArray);
   }
+
+
+
+  return (
+    <>
+      {!loading &&
+      <AntSelect
+        showSearch
+        defaultActiveFirstOption={false}
+        showArrow={false}
+        filterOption={false}
+        onSearch={handleSearch}
+        onChange={handleChange || onChange}
+        notFoundContent={null}
+        options={da || data}
+        allowClear={false}
+        style={{width: width}}
+        value={valueArray || values}
+      />}
+    </>
+  );
 };
 
 export default Select;

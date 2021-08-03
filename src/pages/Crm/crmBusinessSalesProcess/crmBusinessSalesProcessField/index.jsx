@@ -1,8 +1,8 @@
 /**
  * 销售流程字段配置页
  *
- * @author 
- * @Date 2021-07-31 13:28:44
+ * @author
+ * @Date 2021-08-02 15:47:16
  */
 
 import React from 'react';
@@ -12,21 +12,15 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../crmBusinessSalesProcessUrl';
 
-export const Name1 = (props) =>{
+export const Name = (props) =>{
   return (<Input {...props}/>);
 };
-export const Name2 = (props) =>{
+export const Percentage = (props) =>{
   return (<Input {...props}/>);
 };
-export const Name3 = (props) =>{
+export const SalesId = (props) =>{
   return (<Input {...props}/>);
 };
-export const Name4 = (props) =>{
-  return (<Input {...props}/>);
-};
-export const Name5 = (props) =>{
-  return (<Input {...props}/>);
-};
-export const State = (props) =>{
+export const Sort = (props) =>{
   return (<Input {...props}/>);
 };

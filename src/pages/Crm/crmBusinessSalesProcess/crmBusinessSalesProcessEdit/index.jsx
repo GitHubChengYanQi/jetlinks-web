@@ -2,7 +2,7 @@
  * 销售流程编辑页
  *
  * @author 
- * @Date 2021-07-31 13:28:44
+ * @Date 2021-08-02 15:47:16
  */
 
 import React, {useRef} from 'react';
@@ -30,12 +30,10 @@ const CrmBusinessSalesProcessEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="salesProcessId"
     >
-      <FormItem label="流程名称" name="name1" component={SysField.Name1} required/>
-      <FormItem label="" name="name2" component={SysField.Name2} required/>
-      <FormItem label="" name="name3" component={SysField.Name3} required/>
-      <FormItem label="" name="name4" component={SysField.Name4} required/>
-      <FormItem label="" name="name5" component={SysField.Name5} required/>
-      <FormItem label="状态" name="state" component={SysField.State} required/>
+      <FormItem label="流程名称" name="name" component={SysField.Name} required/>
+      <FormItem label="百分比" name="percentage" component={SysField.Percentage} required/>
+      <FormItem label="流程id" name="salesId" component={SysField.SalesId} required/>
+      <FormItem label="排序" name="sort" component={SysField.Sort} required/>
     </Form>
   );
 };

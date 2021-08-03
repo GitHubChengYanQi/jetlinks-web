@@ -28,6 +28,8 @@ export const PersonListSelect = (props) =>{
 export const CustomerNameListSelect = (props) =>{
   return (<Select api={apiUrl.CustomerNameListSelect} style={{width:w}} {...props}/>);
 };
+
+
 // 物品名称
 export const NameListSelect = (props) =>{
   return (<Select api={apiUrl.NameListSelect} style={{width:w}} {...props}/>);
@@ -36,6 +38,7 @@ export const NameListSelect = (props) =>{
 export const OrgNameListSelect = (props) =>{
   return (<Select api={apiUrl.OrgNameListSelect} style={{width:w}} {...props}/>);
 };
+
 
 
 

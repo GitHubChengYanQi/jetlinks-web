@@ -9,6 +9,7 @@ const {Sider, Content} = Layout;
 const CustomerList = () => {
 
   const [status,setStatus] = useState();
+  const [state,setState] = useState();
 
   return (
     <Layout style={{height: '100%'}}>
@@ -42,21 +43,24 @@ const CustomerList = () => {
           <Divider />
           <Tree
             showLine
+            onSelect={(value)=>{
+              setState(value);
+            }}
             // switcherIcon={<DownOutlined />}
-            defaultExpandedKeys={['0']}
+            defaultExpandedKeys={['']}
             // onSelect={this.onSelect}
             treeData={[
               {
                 title: '客户分类',
-                key: '0',
+                key: '',
                 children: [
                   {
                     title: '代理商',
-                    key: '0-0',
+                    key: '0',
                   },
                   {
                     title: '终端用户',
-                    key: '0-1',
+                    key: '1',
                   },
                 ],
               },
@@ -66,7 +70,7 @@ const CustomerList = () => {
         </div>
       </Sider>
       <Content>
-        <CustomerTable status={status} />
+        <CustomerTable status={status} state={state} />
       </Content>
     </Layout>
   );

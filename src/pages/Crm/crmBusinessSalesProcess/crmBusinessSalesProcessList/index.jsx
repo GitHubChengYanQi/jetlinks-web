@@ -2,7 +2,7 @@
  * 销售流程列表页
  *
  * @author 
- * @Date 2021-07-31 13:28:44
+ * @Date 2021-08-02 15:47:16
  */
 
 import React, {useRef} from 'react';
@@ -36,6 +36,7 @@ const CrmBusinessSalesProcessList = () => {
  const searchForm = () => {
    return (
      <>
+       <FormItem label="流程id" name="salesId" component={SysField.SalesId}/>
      </>
     );
   };
@@ -50,12 +51,10 @@ const CrmBusinessSalesProcessList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="流程名称" dataIndex="name1"/>
-        <Column title="" dataIndex="name2"/>
-        <Column title="" dataIndex="name3"/>
-        <Column title="" dataIndex="name4"/>
-        <Column title="" dataIndex="name5"/>
-        <Column title="状态" dataIndex="state"/>
+        <Column title="流程名称" dataIndex="name"/>
+        <Column title="百分比" dataIndex="percentage"/>
+        <Column title="流程id" dataIndex="salesId"/>
+        <Column title="排序" dataIndex="sort"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

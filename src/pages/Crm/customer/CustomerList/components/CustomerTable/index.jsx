@@ -26,7 +26,7 @@ const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status} = props;
+  const {status,state} = props;
 
 
 
@@ -36,8 +36,9 @@ const CustomerTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-  if (status!==undefined){
-    tableRef.current.formActions.setFieldValue('status', status[0]);
+  if (status!==undefined || state !==undefined){
+    tableRef.current.formActions.setFieldValue('status', status?status[0] : '');
+    tableRef.current.formActions.setFieldValue('classification', state?state[0]:'');
     tableRef.current.submit();
   }
 
@@ -58,6 +59,7 @@ const CustomerTable = (props) => {
         <FormItem label="客户名称" name="customerName" component={SysField.Name} />
         <FormItem label="公司类型" name="companyType" component={SysField.Name} />
         <FormItem style={{display:'none'}} name="status" component={SysField.Name} />
+        <FormItem style={{display:'none'}} name="classification" component={SysField.Name} />
       </>
     );
   };
@@ -81,6 +83,7 @@ const CustomerTable = (props) => {
           );
         }} />
         <Column title="公司类型" dataIndex="companyType" />
+        <Column title="客户分类" dataIndex="classification" />
         <Column title="客户状态" dataIndex="status" />
         <Column title="客户级别" dataIndex="lname" />
         <Column title="客户来源" dataIndex="oname" />

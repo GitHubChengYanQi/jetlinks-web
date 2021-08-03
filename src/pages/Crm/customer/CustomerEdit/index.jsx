@@ -16,6 +16,7 @@ import Form from '@/pages/Crm/customer/CustomerEdit/components/From';
 import ProCard from '@ant-design/pro-card';
 import {Button} from 'antd';
 import {RightOutlined} from '@ant-design/icons';
+import {useHistory} from 'ice';
 
 const {FormItem} = Form;
 
@@ -34,6 +35,7 @@ const CustomerEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const history = useHistory();
 
 
   return (
@@ -44,21 +46,28 @@ const CustomerEdit = ({...props}) => {
         {...props}
         ref={formRef}
         api={ApiConfig}
+        labelCol={9}
+        wrapperCol={13}
         fieldKey="customerId"
       >
-        <ProCard style={{marginTop: 8}} gutter={[16, 16]} wrap title="基本信息">
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
-              <FormItem label="客户名称" name="customerName" component={SysField.ClientName} required />
+        <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={24}>
+              <FormItem labelCol={4} wrapperCol={21} label="客户名称" name="customerName" component={SysField.ClientName} onSuccess={(customerId)=>{props.onSuccess();history.push(`/CRM/customer/${customerId}`);}} val={props.value}  required />
             </Col>
-            <Col span={10}>
-              <FormItem label="负责人" name="userId" component={SysField.UserName} />
+          </Row>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
+              <FormItem label="客户状态" name="status" component={SysField.Status} />
+            </Col>
+            <Col span={12}>
+              <FormItem label="客户分类" name="classification" component={SysField.Classification} />
             </Col>
           </Row>
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
-              <FormItem label="客户状态" name="status" component={SysField.Status} />
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
+              <FormItem label="负责人" name="userId" component={SysField.UserName} />
             </Col>
           </Row>
         </ProCard>
@@ -66,67 +75,65 @@ const CustomerEdit = ({...props}) => {
         <ProCard
           title="详细信息"
           headerBordered
-          collapsible
         >
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
             </Col>
-            <Col span={10}>
+            <Col span={12}>
               <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} />
             </Col>
           </Row>
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="成立时间" name="setup" component={SysField.Setup} />
             </Col>
-            <Col span={10}>
-
+            <Col span={12}>
               <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} />
             </Col>
           </Row>
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
             </Col>
-            <Col span={10}>
+            <Col span={12}>
               <FormItem label="注册地址" name="signIn" component={SysField.SignIn} />
 
             </Col>
           </Row>
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="简介" name="introduction" component={SysField.Introduction} />
             </Col>
-            <Col span={10}>
+            <Col span={12}>
               <FormItem label="备注" name="note" component={SysField.Note} />
             </Col>
           </Row>
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="网址" name="url" component={SysField.Url} />
             </Col>
-            <Col span={10}>
+            <Col span={12}>
 
               <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
             </Col>
           </Row>
 
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
             </Col>
-            <Col span={10}>
+            <Col span={12}>
               <FormItem label="邮箱" name="emall" component={SysField.Emall} />
             </Col>
           </Row>
-          <Row gutter={20} style={{padding: '0 30px'}}>
-            <Col span={10}>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={12}>
               <FormItem label="行业" name="industryOne" component={SysField.IndustryOne} />
 
             </Col>
