@@ -10,10 +10,9 @@ import RcResizeObserver from 'rc-resize-observer';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
-import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
-import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
 import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
 import styles from './index.module.scss';
+import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
 
 const {TabPane} = Tabs;
 
@@ -31,7 +30,6 @@ const CustomerDetail = () => {
     }
   });
 
-  console.log(data);
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -51,7 +49,7 @@ const CustomerDetail = () => {
             <Col>
               <h3>{data.businessName}</h3>
               <div>
-                <em>{data.signIn}</em>
+                <em>{data.time}</em>
               </div>
             </Col>
           </Row>
@@ -65,21 +63,24 @@ const CustomerDetail = () => {
           }}><Icon type="icon-back" /> 返回</Button>
         </div>
       </Card>
+
       <div className={styles.main}>
-        {/*<Card>*/}
-        {/*  <Descsales data={data} />*/}
-        {/*</Card>*/}
+        <Card title='商机销售流程' bodyStyle={{padding:30}}>
+         <StepList />
+        </Card>
+      </div>
+      <div className={styles.main}>
         <Card>
-          <Desc data={data} />
+          基础数据
         </Card>
       </div>
       <div className={styles.main}>
 
-          <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
-            <ProCard>
-              <Statistic title="今日UV" value={79.0} precision={2} />
-            </ProCard>
-          </ProCard.Group>
+        <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
+        </ProCard.Group>
       </div>
       <div
         className={styles.main}>
@@ -88,7 +89,7 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
-                 <Description data={data}/>
+                  详细信息
                 </TabPane>
               </Tabs>
             </Card>
@@ -103,7 +104,7 @@ const CustomerDetail = () => {
                 <TabPane tab="跟进动态" key="1">
                   Content of Tab Pane 1
                   <Input />发布销售记录
-                  </TabPane>
+                </TabPane>
               </Tabs>
             </Card>
           </Col>

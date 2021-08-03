@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {lazy, useRef} from 'react';
+import React, {lazy, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -25,6 +25,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const BusinessTable = () => {
+
 
   const history = useHistory();
 
@@ -62,7 +63,7 @@ const BusinessTable = () => {
         <Column title="商机名称" dataIndex="businessName" render={(text, record, index)=>{
           return (
             <Button type="link" onClick={()=>{
-              history.push(`/CRM/business/${record.BusicessName}`);
+              history.push(`/CRM/business/${record.businessId}`);
             }}>{text}</Button>
           );
         }} />

@@ -125,7 +125,7 @@ export const Status = (props) => {
 export const Classification = (props) => {
   return (
     <Radio.Group {...props}>
-      <Radio value={0} defaultChecked checked>代理商</Radio>
+      <Radio value={0}>代理商</Radio>
       <Radio value={1}>终端用户</Radio>
     </Radio.Group>
   );

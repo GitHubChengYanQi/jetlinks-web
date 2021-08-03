@@ -14,5 +14,13 @@ export const BusinessRouter = [
     component: lazy(() => import('../BusinessList')),
     fallback: <div>loading...</div>,
     exact: true,
-  }
+  },
+
+  {
+    path: '/business/:cid',
+    name: '商机详情',
+    component: lazy(() => import('../BusinessDetails')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
 ];
