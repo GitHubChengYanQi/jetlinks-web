@@ -1,8 +1,6 @@
 import React from 'react';
 import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
-import {RedoOutlined} from '@ant-design/icons';
-import {Option} from 'antd/lib/mentions';
 
 const Select = (props) => {
   const {value, api, defaultValue, ...other} = props;
@@ -38,7 +36,15 @@ const Select = (props) => {
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect options={data} allowClear={false} style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        {!loading &&
+        <AntSelect
+          options={data}
+          allowClear={false}
+          style={{ width: 200 }}
+          value={valueArray}
+          {...other}
+          showSearch
+          filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         />}
       </>
     );

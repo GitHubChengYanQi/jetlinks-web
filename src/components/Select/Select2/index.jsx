@@ -1,62 +1,37 @@
 import React, {useState} from 'react';
 import {Select} from 'antd';
-import jsonp from 'fetch-jsonp';
-import querystring from 'querystring';
+import {useRequest} from '@/util/Request';
+import * as querystring from 'querystring';
 
 const {Option} = Select;
 
-let timeout;
-let currentValue;
-
-function fetch(value, callback) {
-  if (timeout) {
-    clearTimeout(timeout);
-    timeout = null;
-  }
-  currentValue = value;
-
-  function fake() {
-    const str = querystring.encode({
-      code: 'utf-8',
-      q: value,
-    });
-    jsonp(`https://suggest.taobao.com/sug?${str}`)
-      .then(response => response.json())
-      .then(d => {
-        if (currentValue === value) {
-          const {result} = d;
-          const data = [];
-          result.forEach(r => {
-            data.push({
-              value: r[0],
-              text: r[0],
-            });
-          });
-          callback(data);
-        }
-      });
-  }
-
-  timeout = setTimeout(fake, 300);
-}
-
 const Select2 = (props) => {
-  const [data, setData] = useState([]);
-  const [value, setValue] = useState(undefined);
+  const [value, setValue] = useState(' ');
 
-  const handleSearch = value => {
+  const {data, run} = useRequest({url: props.url, method: 'POST',data: {customerName: value}}, {
+    debounceInterval: 300,
+  });
+
+  const handleSearch = async value => {
     if (value) {
-      fetch(value, data => setData(data));
-    } else {
-      setData([]);
+      setValue(value);
+      await run();
     }
   };
 
   const handleChange = value => {
-    setValue({value});
+    setValue(value);
   };
 
-  const options = data.map(d => <Option key={d.value}>{d.text}</Option>);
+  const options = data ? data.map((values) => {
+    return (
+      <Option key={values.customerName}>{values.customerName}</Option>
+    );
+  }) : null;
+
+  props.onChange(value);
+
+
   return (
     <Select
       showSearch

@@ -85,7 +85,7 @@ const CustomerTable = (props) => {
         <Column title="客户级别" dataIndex="lname" />
         <Column title="客户来源" dataIndex="oname" />
         <Column title="负责人" dataIndex="userName" />
-        <Column title="行业" dataIndex="industryOne" />
+        <Column title="行业" dataIndex="industryName" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
