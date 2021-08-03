@@ -22,16 +22,21 @@ export const Name = (props) => {
 };
 export const ClientName = (props) => {
 
-  const [value, setValue] = useState(' ');
+  // const [value, setValue] = useState(' ');
 
-  const {data, run} = useRequest({url: '/customer/list', method: 'POST', data: {customerName: value}}, {
+  const value = props.value;
+
+  const {data, run} = useRequest({url: '/customer/list', method: 'POST',}, {
     debounceInterval: 300,
   });
 
   const handleSearch = async value => {
     if (value) {
-      setValue(value);
-      await run();
+      await run({
+        data:{
+          customerName: value
+        }
+      });
     }
   };
 
@@ -44,12 +49,10 @@ export const ClientName = (props) => {
 
   const handleChange = (values) => {
     props.onSuccess(values);
-    setValue(values);
   };
 
-
   return ((
-    <Select values={value} handleSearch={(value) => handleSearch(value)} handleChange={(value) => handleChange(value)}data={da} {...props} />));
+    <Select showSearch value={value} handleSearch={(value) => handleSearch(value)} handleChange={(value) => handleChange(value)} data={da} {...props} />));
 };
 
 export const ContactsId = (props) => {
