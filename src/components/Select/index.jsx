@@ -7,11 +7,6 @@ const Select = (props) => {
 
   const {value, values,api, defaultValue,width, data: da, handleSearch, handleChange,onChange ,...other} = props;
 
-
-
-
-
-
   const {loading, data, run} = useRequest(api, {
     manual: !!da
   });
@@ -47,23 +42,13 @@ const Select = (props) => {
     props.onChange(valueArray);
   }
 
-
-
   return (
     <>
       {!loading &&
       <AntSelect
-        showSearch
-        defaultActiveFirstOption={false}
-        showArrow={false}
-        filterOption={false}
-        onSearch={handleSearch}
-        onChange={handleChange || onChange}
-        notFoundContent={null}
         options={da || data}
-        allowClear={false}
-        style={{width: width}}
         value={valueArray || values}
+        {...other}
       />}
     </>
   );
