@@ -69,7 +69,15 @@ const BusinessTable = () => {
         }} />
         <Column title="客户名称" dataIndex="customerName" />
         <Column title="产品名称" dataIndex="itemName" />
-        <Column title="销售流程" dataIndex="salesId" />
+        <Column title="销售流程" dataIndex="salesId" render={(value, record)=>{
+          return (
+            <div>
+              {
+                record.getsales[0] ? record.getsales[0].name : null
+              }
+            </div>
+          );
+        }} />
         <Column title="机会来源" dataIndex="originName" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

@@ -5,15 +5,16 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsDelete} from '@/pages/Crm/contacts/contactsUrl';
+import {contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
+import * as SysField from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
@@ -24,21 +25,32 @@ const ContactsList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
+  useEffect(()=>{
+    if (customerId) {
+      tableRef.current.formActions.setFieldValue('customerId', customerId);
+      tableRef.current.submit();
+    }
+  },[customerId]);
+
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label='联系人姓名' name="contactsName" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} name="customerId" component={SysField.SalesId} />
+      </>
+    );
+  };
+
 
 
 
   return (
     <>
       <Table
-        api={
-          {
-            url: '/contacts/list',
-            method: 'post',
-            values: customerId,
-          }
-        }
+        api={contactsList}
         rowKey="contactsId"
         ref={tableRef}
+        searchForm={searchForm}
       >
         <Column title="联系人姓名" dataIndex="contactsName" />
         <Column title="职务" dataIndex="job" />

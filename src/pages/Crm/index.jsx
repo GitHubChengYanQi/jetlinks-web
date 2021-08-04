@@ -110,10 +110,6 @@ const CrmLayout = ({children}) => {
               <span className={styles.dropdownMenuItem}>销售流程管理</span>
             </Menu.Item>
             <Modal title="商机来源" width={800} component={CrmBusinessSalesList} ref={refCrmBusinessSalesList} />
-            {/*<Menu.Item key='lcmx'  onClick={() => {refCrmBusinessSalesProcessList.current.open(false);}}>*/}
-            {/*  <span className={styles.dropdownMenuItem}>流程明细管理</span>*/}
-            {/*</Menu.Item>*/}
-            {/*<Modal title="商机来源" width={800} component={CrmBusinessSalesProcessList} ref={refCrmBusinessSalesProcessList} />*/}
             <Menu.Item key='htmb'  onClick={() => {refTemplateList.current.open(false);}}>
               <span className={styles.dropdownMenuItem}>合同模板管理</span>
             </Menu.Item>

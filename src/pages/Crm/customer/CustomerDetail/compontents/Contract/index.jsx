@@ -5,19 +5,18 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsDelete} from '@/pages/Crm/contacts/contactsUrl';
-import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
-import {contractDelete} from '@/pages/Crm/contract/ContractUrl';
+import {contractDelete, contractList} from '@/pages/Crm/contract/ContractUrl';
 import Modal2 from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/customer/CustomerDetail/compontents/AddContract';
+import * as SysField from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessField';
+import {contactsList} from '@/pages/Crm/contacts/contactsUrl';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -27,19 +26,30 @@ const Contract = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
+  useEffect(()=>{
+    if (customerId) {
+      tableRef.current.formActions.setFieldValue('customerId', customerId);
+      tableRef.current.submit();
+    }
+  },[customerId]);
+
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label='合同名称' name="name" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} name="customerId" component={SysField.SalesId} />
+      </>
+    );
+  };
+
 
 
 
   return (
     <>
       <Table
-        api={
-          {
-            url: '/contract/listCustomer',
-            method: 'POST',
-            values: customerId,
-          }
-        }
+        api={contractList}
+        searchForm={searchForm}
         rowKey="contactsId"
         ref={tableRef}
       >

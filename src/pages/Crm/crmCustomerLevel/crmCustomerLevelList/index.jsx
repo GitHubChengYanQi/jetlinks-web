@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {crmCustomerLevelDelete, crmCustomerLevelList} from '../crmCustomerLevelUrl';
 import CrmCustomerLevelEdit from '../crmCustomerLevelEdit';
 import * as SysField from '../crmCustomerLevelField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -36,7 +37,7 @@ const CrmCustomerLevelList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="客户级别id" name="customerLevelId" component={SysField.CustomerLevelId} />
+        <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
       </>
     );
   };
@@ -44,7 +45,7 @@ const CrmCustomerLevelList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title='客户级别管理' />}
         api={crmCustomerLevelList}
         rowKey="customerLevelId"
         searchForm={searchForm}

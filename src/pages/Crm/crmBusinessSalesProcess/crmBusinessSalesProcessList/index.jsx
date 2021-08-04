@@ -5,7 +5,7 @@
  * @Date 2021-08-02 15:47:16
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -21,9 +21,10 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CrmBusinessSalesProcessList = (props) => {
-  console.log(props);
+  const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
+
   const actions = () => {
     return (
       <>
@@ -37,10 +38,18 @@ const CrmBusinessSalesProcessList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="流程id" name="salesId" component={SysField.SalesId} />
+        <FormItem label="流程名称" name="name" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} name="salesId" component={SysField.SalesId} />
       </>
     );
   };
+
+  useEffect(()=>{
+    if (value) {
+      tableRef.current.formActions.setFieldValue('salesId', value);
+      tableRef.current.submit();
+    }
+  },[value]);
 
   return (
     <>
@@ -54,7 +63,6 @@ const CrmBusinessSalesProcessList = (props) => {
       >
         <Column title="流程名称" dataIndex="name" />
         <Column title="百分比" dataIndex="percentage" />
-        <Column title="流程id" dataIndex="salesId" />
         <Column title="排序" dataIndex="sort" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

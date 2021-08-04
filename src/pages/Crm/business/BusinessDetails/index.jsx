@@ -1,23 +1,25 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Input} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
-import RcResizeObserver from 'rc-resize-observer';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
-import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
 import styles from './index.module.scss';
 import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
+import Modal2 from '@/components/Modal';
+import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
+import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
+import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 
 const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
   const params = useParams();
+
+  const ref = useRef(null);
 
 
   const [responsive, setResponsive] = useState(false);
@@ -29,6 +31,8 @@ const CustomerDetail = () => {
       }
     }
   });
+
+
 
 
   if (loading) {
@@ -49,7 +53,7 @@ const CustomerDetail = () => {
             <Col>
               <h3>{data.businessName}</h3>
               <div>
-                <em>{data.time}</em>
+                <em>立项日期：{data.time}</em>
               </div>
             </Col>
           </Row>
@@ -57,7 +61,12 @@ const CustomerDetail = () => {
 
         </div>
         <div className={styles.titleButton}>
-          <Button type="primary">编辑</Button>
+          <Button type="primary" onClick={() => {
+            ref.current.open(data.businessId);
+          }}>编辑</Button>
+          <Modal2 width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
+            ref.current.close();
+          }} ref={ref} />
           <Button onClick={() => {
             history.back();
           }}><Icon type="icon-back" /> 返回</Button>
@@ -65,18 +74,24 @@ const CustomerDetail = () => {
       </Card>
 
       <div className={styles.main}>
-        <Card title='商机销售流程' bodyStyle={{padding:30}}>
-         <StepList />
+        <Card title="商机销售流程" bodyStyle={{padding: 30}}>
+          <StepList salesId={data.salesId} />
         </Card>
       </div>
       <div className={styles.main}>
         <Card>
-          基础数据
+          <Desc data={data}/>
         </Card>
       </div>
       <div className={styles.main}>
 
         <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
+          <ProCard>
+            <Statistic title="今日UV" value={79.0} precision={2} />
+          </ProCard>
           <ProCard>
             <Statistic title="今日UV" value={79.0} precision={2} />
           </ProCard>
@@ -89,19 +104,19 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
-                  详细信息
+                  <Description data={data}/>
                 </TabPane>
               </Tabs>
             </Card>
           </Col>
           <Col span={8}>
             <Card>
-              <Tabs defaultActiveKey="1">
+              <Tabs defaultActiveKey="2">
                 <TabPane tab="相关团队" key="1">
                   Content of Tab Pane 1
                   <Input />相关团队
                 </TabPane>
-                <TabPane tab="跟进动态" key="1">
+                <TabPane tab="跟进动态" key="2">
                   Content of Tab Pane 1
                   <Input />发布销售记录
                 </TabPane>

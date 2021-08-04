@@ -5,15 +5,16 @@
  * @Date 2021-07-23 10:06:11
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {adressDelete} from '@/pages/Crm/adress/AdressUrl';
+import {adressDelete, adressList} from '@/pages/Crm/adress/AdressUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/AdressEdit';
+import * as SysField from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
@@ -24,18 +25,28 @@ const AdressList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
+  useEffect(()=>{
+    if (customerId) {
+      tableRef.current.formActions.setFieldValue('customerId', customerId);
+      tableRef.current.submit();
+    }
+  },[customerId]);
+
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label='地址' name="location" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} name="customerId" component={SysField.SalesId} />
+      </>
+    );
+  };
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
-        api={
-          {
-            url: '/adress/list',
-            method: 'post',
-            values: customerId
-          }
-        }
+        api={adressList}
         rowKey="adressId"
+        searchForm={searchForm}
         ref={tableRef}
       >
         <Column title="地址" dataIndex="location"/>
@@ -61,7 +72,6 @@ const AdressList = (props) => {
         }} />
       </div>
       <Drawer width={800} title="编辑" component={Index} onSuccess={() => {
-        console.log('dz');
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

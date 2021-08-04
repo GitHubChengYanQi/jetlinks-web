@@ -3,14 +3,14 @@ import { Table as AntdTable } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Service from '@/util/Service';
 import { useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup } from '@formily/antd';
-import style from './index.module.less';
 
+import style from './index.module.less';
 
 const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey, ...props }, ref) => {
+const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -27,9 +27,9 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
 
   const { ajaxService } = Service();
 
+
   const requestMethod = async (params) => {
     const { values, pagination, ...other } = params;
-    values.customerId = api.values;
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
@@ -72,13 +72,6 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
   // pagination
   return (
     <div className={style.tableWarp}>
-      {/*<div className={style.listHeader}>*/}
-      {/*  {title && <div className="title">{title}</div>}*/}
-      {/*  <div className="actions">*/}
-      {/*    /!* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> *!/*/}
-      {/*    <div className="button">{actions}</div>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
       {searchForm ? <div className="search">
         <Form
           layout="inline"

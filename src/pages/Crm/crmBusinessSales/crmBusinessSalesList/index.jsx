@@ -18,6 +18,8 @@ import CrmBusinessSalesEdit from '../crmBusinessSalesEdit';
 import * as SysField from '../crmBusinessSalesField';
 import Modal2 from '@/components/Modal';
 import CrmBusinessSalesProcessList from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessList';
+import {Name} from '../crmBusinessSalesField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,6 +41,7 @@ const CrmBusinessSalesList = () => {
   const searchForm = () => {
     return (
       <>
+        <FormItem label='流程名称' name="name" component={SysField.Name} />
       </>
     );
   };
@@ -46,14 +49,14 @@ const CrmBusinessSalesList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title="销售流程管理" />}
         api={crmBusinessSalesList}
         rowKey="salesId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="名称" dataIndex="name" render={(text, record, index) => {
+        <Column title="流程名称" dataIndex="name" render={(text, record,) => {
           return (
             <Button type="link" onClick={() => {
               refCrmBusinessSalesProcessList.current.open(record.salesId);

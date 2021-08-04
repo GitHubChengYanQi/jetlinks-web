@@ -55,7 +55,7 @@ export const CustomerName = (props) => {
   };
 
 
-  let visi;
+
 
   const content = data ? data.map((value) => {
     return (
@@ -68,10 +68,10 @@ export const CustomerName = (props) => {
   }) : null;
 
 
-  const visibility = content!==null && content.length>0 && visi;
+
   return ((
     <>
-      <Popover placement="bottomLeft" visible={method ? false : visibility} content={content} trigger="focus">
+      <Popover placement="bottomLeft" visible={content && !method ? content.length : false} content={content} trigger="focus">
         <Input
           onChange={(value) => {
             handleChange(value.target.value);

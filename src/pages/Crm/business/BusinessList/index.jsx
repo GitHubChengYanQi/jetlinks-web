@@ -10,7 +10,6 @@ const BusinessList = () => {
   const {loading, data} = useRequest({ url: '/crmBusinessSales/list',method: 'POST',rowKey:'salesId'});
   const {loading:log, data:da} = useRequest({  url: '/origin/list',method: 'POST',rowKey:'originId'});
 
-  // console.log(data);
   const crmBusinessSales = data ? data.map((values)=>{
     return {
       title: values.name,

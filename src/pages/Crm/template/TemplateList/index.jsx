@@ -49,7 +49,7 @@ const TemplateList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='合同模板管理' />}
         api={templateList}
         rowKey="templateId"
         searchForm={searchForm}

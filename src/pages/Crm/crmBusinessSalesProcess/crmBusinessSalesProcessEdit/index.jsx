@@ -1,7 +1,7 @@
 /**
  * 销售流程编辑页
  *
- * @author 
+ * @author
  * @Date 2021-08-02 15:47:16
  */
 
@@ -32,7 +32,6 @@ const CrmBusinessSalesProcessEdit = ({...props}) => {
     >
       <FormItem label="流程名称" name="name" component={SysField.Name} required/>
       <FormItem label="百分比" name="percentage" component={SysField.Percentage} required/>
-      <FormItem label="流程id" name="salesId" component={SysField.SalesId} required/>
       <FormItem label="排序" name="sort" component={SysField.Sort} required/>
     </Form>
   );

@@ -1,15 +1,25 @@
 import React, {useState} from 'react';
 import { Steps } from 'antd';
 import {useRequest} from '@/util/Request';
-import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
+import styles from './index.module.scss';
 
 const { Step } = Steps;
 
-const StepList = () => {
+const StepList = (props) => {
+
 
   const [current,setCurrent] = useState();
 
-  const {loading, data, run} = useRequest(businessDetail);
+  const {loading, data, run} = useRequest({url: '/crmBusinessSalesProcess/list',
+    method: 'POST',data:{salesId:props.salesId}});
+
+  const step = data ? data.map((value,index)=>{
+    return (
+      <>
+        <Step title={value.name} description={`盈率：${value.percentage}%`} />
+      </>
+    );
+  }) : null;
 
   const onChange = (current) => {
     setCurrent(current);
@@ -21,10 +31,7 @@ const StepList = () => {
       current={current}
       onChange={onChange}
     >
-      <Step title="Step 1" />
-      <Step title="Step 2" />
-      <Step title="Step 3" />
-      <Step title="Step 4" />
+      {step}
     </Steps>
   );
 
