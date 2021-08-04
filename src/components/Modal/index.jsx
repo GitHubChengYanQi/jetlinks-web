@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Drawer, Drawer as AntDrawer, message, Modal} from 'antd';
+import {message, Modal as AntdModal} from 'antd';
 
-const Modal2 = (
+const Modal = (
   {
     title,
     modal,
@@ -13,8 +13,6 @@ const Modal2 = (
     },
     ...props
   }, ref) => {
-
-
 
   const [value, show] = useState(null);
   if (modal!==undefined){
@@ -37,7 +35,7 @@ const Modal2 = (
   const visible = value !== null && value !== undefined;
 
   return (
-    <Modal
+    <AntdModal
       style={{margin:'auto'}}
       footer={[]}
       visible={visible}
@@ -46,7 +44,7 @@ const Modal2 = (
         onClose();
       }}
       width={width}
-      title={value ? `编辑${title}` : `添加${title}`}
+      // title={value ? `编辑${title}` : `添加${title}`}
       destroyOnClose
     >
       {Component && <Component
@@ -62,10 +60,9 @@ const Modal2 = (
           onClose();
         }}
       />}
-
-    </Modal>
+    </AntdModal>
   );
 };
 
 
-export default forwardRef(Modal2);
+export default forwardRef(Modal);

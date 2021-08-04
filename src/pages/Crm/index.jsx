@@ -4,16 +4,15 @@ import store from '@/store';
 import {Drawer, Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import Icon from '@/components/Icon';
-
-import styles from './index.module.scss';
-import Modal2 from '@/components/Modal';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import Modal from '@/components/Modal';
 import OriginList from '@/pages/Crm/origin/OriginList';
 import TemplateList from '@/pages/Crm/template/TemplateList';
 import CrmCustomerLevelList from '@/pages/Crm/crmCustomerLevel/crmCustomerLevelList';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 import CrmBusinessSalesList from '@/pages/Crm/crmBusinessSales/crmBusinessSalesList';
 import CrmBusinessSalesProcessList from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessList';
+
+import styles from './index.module.scss';
 
 const CrmLayout = ({children}) => {
 
@@ -87,9 +86,6 @@ const CrmLayout = ({children}) => {
     return <div>菜单不存在</div>;
   }
 
-
-
-
   return (
     <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>
       {children}
@@ -106,42 +102,30 @@ const CrmLayout = ({children}) => {
           <Menu
             style={{width: '100%'}}
           >
-            <Menu.Item  onClick={() => {refOriginList.current.open(false);}}>
+            <Menu.Item key='sjly' onClick={() => {refOriginList.current.open(false);}}>
               <span className={styles.dropdownMenuItem}>商机来源管理</span>
             </Menu.Item>
-            <Modal2 title="商机来源" width={800} component={OriginList} ref={refOriginList} />
-
-            <Menu.Item  onClick={() => {refCrmBusinessSalesList.current.open(false);}}>
+            <Modal width={800} component={OriginList} ref={refOriginList} />
+            <Menu.Item key='sslc'  onClick={() => {refCrmBusinessSalesList.current.open(false);}}>
               <span className={styles.dropdownMenuItem}>销售流程管理</span>
             </Menu.Item>
-            <Modal2 title="商机来源" width={800} component={CrmBusinessSalesList} ref={refCrmBusinessSalesList} />
-
-
-            <Menu.Item  onClick={() => {refCrmBusinessSalesProcessList.current.open(false);}}>
+            <Modal title="商机来源" width={800} component={CrmBusinessSalesList} ref={refCrmBusinessSalesList} />
+            <Menu.Item key='lcmx'  onClick={() => {refCrmBusinessSalesProcessList.current.open(false);}}>
               <span className={styles.dropdownMenuItem}>流程明细管理</span>
             </Menu.Item>
-            <Modal2 title="商机来源" width={800} component={CrmBusinessSalesProcessList} ref={refCrmBusinessSalesProcessList} />
-
-            <Menu.Item  onClick={() => {refOriginList.current.open(false);}}>
-              <span className={styles.dropdownMenuItem}>商机来源管理</span>
-            </Menu.Item>
-            <Modal2 title="商机来源" width={800} component={OriginList} ref={refOriginList} />
-
-            <Menu.Item  onClick={() => {refTemplateList.current.open(false);}}>
+            <Modal title="商机来源" width={800} component={CrmBusinessSalesProcessList} ref={refCrmBusinessSalesProcessList} />
+            <Menu.Item key='htmb'  onClick={() => {refTemplateList.current.open(false);}}>
               <span className={styles.dropdownMenuItem}>合同模板管理</span>
             </Menu.Item>
-            <Modal2 title="合同模板" width={800} component={TemplateList} ref={refTemplateList} />
-
-            <Menu.Item onClick={() => {refCrmCustomerLevelList.current.open(false);}}>
+            <Modal title="合同模板" width={800} component={TemplateList} ref={refTemplateList} />
+            <Menu.Item key='khjb'  onClick={() => {refCrmCustomerLevelList.current.open(false);}}>
               <span className={styles.dropdownMenuItem} >客户级别管理</span>
             </Menu.Item>
-            <Modal2 title="客户级别" width={800} component={CrmCustomerLevelList} ref={refCrmCustomerLevelList} />
-
-            <Menu.Item onClick={() => {refCrmIndustryList.current.open(false);}}>
+            <Modal title="客户级别" width={800} component={CrmCustomerLevelList} ref={refCrmCustomerLevelList} />
+            <Menu.Item key='yegl'  onClick={() => {refCrmIndustryList.current.open(false);}}>
               <span className={styles.dropdownMenuItem} >行业管理</span>
             </Menu.Item>
-            <Modal2 title="行业" width={800} component={CrmIndustryList} ref={refCrmIndustryList} />
-
+            <Modal width={860} component={CrmIndustryList} ref={refCrmIndustryList} />
             <Menu.Divider />
           </Menu>
         </div>

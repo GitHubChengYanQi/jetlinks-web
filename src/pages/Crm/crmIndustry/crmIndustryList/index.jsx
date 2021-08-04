@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {crmIndustryDelete, crmIndustryList} from '../crmIndustryUrl';
 import CrmIndustryEdit from '../crmIndustryEdit';
 import * as SysField from '../crmIndustryField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,19 +34,19 @@ const CrmIndustryList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="行业名称" name="industryName" component={SysField.IndustryName}/>
-       <FormItem label="上级" name="parentId" component={SysField.ParentId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="行业名称" name="industryName" component={SysField.IndustryName}/>
+        <FormItem label="上级" name="parentId" component={SysField.ParentId}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title="行业管理" />}
         api={crmIndustryList}
         rowKey="industryId"
         searchForm={searchForm}
@@ -75,5 +76,4 @@ const CrmIndustryList = () => {
     </>
   );
 };
-
 export default CrmIndustryList;
