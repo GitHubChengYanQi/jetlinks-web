@@ -38,7 +38,7 @@ const PartsList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="物品名称" name="name" component={SysField.Name}/>
+       <FormItem label="产品名称" name="name" component={SysField.Name}/>
        <FormItem label="品牌名称" name="brandName" component={SysField.Name}/>
      </>
     );
@@ -54,7 +54,7 @@ const PartsList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="物品名称" dataIndex="name"/>
+        <Column title="产品名称" dataIndex="name"/>
         <Column title="零件名称" render={(value,record)=>{
           return (
             <div>

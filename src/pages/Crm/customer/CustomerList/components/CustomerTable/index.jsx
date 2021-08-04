@@ -19,7 +19,7 @@ import {
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {useHistory} from 'ice';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

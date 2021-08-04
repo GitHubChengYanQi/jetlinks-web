@@ -1,5 +1,5 @@
 /**
- * 仓库物品明细表列表页
+ * 仓库产品明细表列表页
  *
  * @author
  * @Date 2021-07-15 11:13:02
@@ -37,7 +37,7 @@ const StockDetailsList = () => {
      <>
        <FormItem label="库存编号" name="stockId" component={SysField.StockId}/>
        <FormItem label="仓库名称" name="pname" component={SysField.StockId}/>
-       <FormItem label="物品名称" name="iname" component={SysField.StockId}/>
+       <FormItem label="产品名称" name="iname" component={SysField.StockId}/>
        <FormItem label="入库时间" name="storageTime" component={SysField.StorageTime}/>
      </>
     );
@@ -55,8 +55,8 @@ const StockDetailsList = () => {
       >
         <Column title="库存编号" dataIndex="stockId"/>
         <Column title="仓库名称" dataIndex="pname"/>
-        <Column title="物品名称" dataIndex="iname"/>
-        <Column title="物品价格" dataIndex="price"/>
+        <Column title="产品名称" dataIndex="iname"/>
+        <Column title="产品价格" dataIndex="price"/>
         <Column title="入库时间" dataIndex="storageTime"/>
       </Table>
       </>

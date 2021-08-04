@@ -16,7 +16,7 @@ const Items = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="物品名字" name="name" component={SysField.Name} />
+        <FormItem label="产品名字" name="name" component={SysField.Name} />
       </>
     );
   };
@@ -42,12 +42,12 @@ const Items = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="物品名字" dataIndex="name" />
+        <Column title="产品名字" dataIndex="name" />
         <Column title="质保期" dataIndex="shelfLife" />
-        <Column title="物品库存" dataIndex="inventory" />
+        <Column title="产品库存" dataIndex="inventory" />
         <Column title="生产日期" dataIndex="productionTime" />
         <Column title="重要程度" dataIndex="important" />
-        <Column title="物品重量" dataIndex="weight" />
+        <Column title="产品重量" dataIndex="weight" />
         <Column title="材质" dataIndex="materialName" />
         <Column title="成本" dataIndex="cost" />
         <Column title="易损" dataIndex="vulnerability" />

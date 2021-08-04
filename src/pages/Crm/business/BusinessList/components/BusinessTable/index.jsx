@@ -68,7 +68,7 @@ const BusinessTable = () => {
           );
         }} />
         <Column title="客户名称" dataIndex="customerName" />
-        <Column title="物品名称" dataIndex="itemName" />
+        <Column title="产品名称" dataIndex="itemName" />
         <Column title="销售流程" dataIndex="salesId" />
         <Column title="机会来源" dataIndex="originName" />
         <Column />

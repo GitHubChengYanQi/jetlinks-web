@@ -40,7 +40,7 @@ const OrderEdit = ({...props}) => {
       <FormItem label="订单时间" name="orderTime" component={SysField.OrderTime} required/>
       <FormItem label="付款时间" name="payTime" component={SysField.PayTime} required/>
       <FormItem label="发货时间" name="deliveryTime" component={SysField.DeliveryId} required/>
-      <FormItem label="物品名称" name="itemId" component={SysField.ItemId} required/>
+      <FormItem label="产品名称" name="itemId" component={SysField.ItemId} required/>
       <FormItem label="金额" name="stock_item_id" component={SysField.StockItemId} required/>
 
 

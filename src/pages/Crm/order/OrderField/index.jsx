@@ -20,46 +20,50 @@ import * as apiUrl from '../OrderUrl';
 
 const w = 200;
 
- export const OrderId = (props) =>{
-   return(<Input style={{width:w}}  {...props}/>);
+export const OrderId = (props) => {
+  return (<Input style={{width: w}}  {...props} />);
 };
-                                                                             // 收件人姓名
-export const ContactsId = (props) =>{
-  return(<Select style={{width:w}}  api={apiUrl.OrderIdListSelect}{...props}/>);
+
+export const Name = (props) => {
+  return (<Input style={{width: w}}  {...props} />);
 };
-                                                                              //  收件地址
-export const AdressId = (props) =>{
-  return(<Select style={{width:w}}  api={apiUrl.locationListSelect}{...props}/>);
+// 收件人姓名
+export const ContactsId = (props) => {
+  return (<Select style={{width: w}} api={apiUrl.OrderIdListSelect}{...props} />);
 };
-                                                                                // 订单数量
-export const Number = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+//  收件地址
+export const AdressId = (props) => {
+  return (<Select style={{width: w}} api={apiUrl.locationListSelect}{...props} />);
 };
-                                                                                //  订单状态
-export const State = (props) =>{
-  return (<AntdSelect style={{width:w}}  options={[{label:'未完成',value:'未完成'}, {value:'已完成',label:'已完成'}]} {...props}/>);
+// 订单数量
+export const Number = (props) => {
+  return (<Input style={{width: w}} {...props} />);
 };
-                                                                          //  联系电话
-export const ClientId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+//  订单状态
+export const State = (props) => {
+  return (<AntdSelect style={{width: w}} options={[{label: '未完成', value: '未完成'}, {value: '已完成', label: '已完成'}]} {...props} />);
 };
-                                                                             // 下单时间
-export const OrderTime = (props) =>{
-  return (<DatePicker2 style={{width:w}}  {...props}/>);
+//  联系电话
+export const ClientId = (props) => {
+  return (<Input style={{width: w}}  {...props} />);
 };
-                                                                              //  付款时间
-export const PayTime = (props) =>{
-  return (<DatePicker2 style={{width:w}}  {...props}/>);
+// 下单时间
+export const OrderTime = (props) => {
+  return (<DatePicker2 style={{width: w}}  {...props} />);
 };
-                                                                                // 出库时间
-export const DeliveryId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+//  付款时间
+export const PayTime = (props) => {
+  return (<DatePicker2 style={{width: w}}  {...props} />);
 };
-                                                                               // 物品名称
-export const ItemId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+// 出库时间
+export const DeliveryId = (props) => {
+  return (<Input style={{width: w}}  {...props} />);
 };
-                                                                          //  物品金额
-export const StockItemId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+// 产品名称
+export const ItemId = (props) => {
+  return (<Input style={{width: w}}  {...props} />);
+};
+//  产品金额
+export const StockItemId = (props) => {
+  return (<Input style={{width: w}}  {...props} />);
 };

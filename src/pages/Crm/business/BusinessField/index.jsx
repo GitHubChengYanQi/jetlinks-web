@@ -40,7 +40,7 @@ export const CustomerNameListSelect = (props) =>{
 };
 
 
-// 物品名称
+// 产品名称
 export const NameListSelect = (props) =>{
   return (<Select api={apiUrl.NameListSelect} style={{width:w}} {...props}/>);
 };

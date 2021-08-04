@@ -51,7 +51,7 @@ export const CustomerNameListSelect = {
   url: '/customer/listSelect',
   method: 'POST',
 };
-// 物品名称
+// 产品名称
 export const NameListSelect = {
   url: '/stock/listSelect',
   method: 'POST',

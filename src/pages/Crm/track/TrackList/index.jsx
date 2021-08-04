@@ -40,7 +40,7 @@ const TrackList = () => {
    return (
      <>
        <FormItem label="商机名称" name="name" component={SysField.BusinessId}/>
-       <FormItem label="商品名称" name="iname" component={SysField.StockId}/>
+       <FormItem label="产品名称" name="iname" component={SysField.StockId}/>
        <FormItem label="报价时间" name="time" component={SysField.Time}/>
        <FormItem label="报价阶段" name="stage" component={SysField.Stage}/>
      </>
@@ -59,7 +59,7 @@ const TrackList = () => {
         ref={tableRef}
       >
         <Column title="商机名称" dataIndex="name"/>
-        <Column title="商品名称" dataIndex="iname"/>
+        <Column title="产品名称" dataIndex="iname"/>
         <Column title="报价金额" dataIndex="money"/>
         <Column title="数量" dataIndex="number"/>
         <Column title="报价时间" dataIndex="time"/>

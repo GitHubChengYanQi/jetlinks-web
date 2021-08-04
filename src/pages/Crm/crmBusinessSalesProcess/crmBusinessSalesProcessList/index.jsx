@@ -1,7 +1,7 @@
 /**
  * 销售流程列表页
  *
- * @author 
+ * @author
  * @Date 2021-08-02 15:47:16
  */
 
@@ -20,7 +20,8 @@ import * as SysField from '../crmBusinessSalesProcessField';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const CrmBusinessSalesProcessList = () => {
+const CrmBusinessSalesProcessList = (props) => {
+  console.log(props);
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -28,16 +29,16 @@ const CrmBusinessSalesProcessList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="流程id" name="salesId" component={SysField.SalesId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="流程id" name="salesId" component={SysField.SalesId} />
+      </>
     );
   };
 
@@ -51,28 +52,28 @@ const CrmBusinessSalesProcessList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="流程名称" dataIndex="name"/>
-        <Column title="百分比" dataIndex="percentage"/>
-        <Column title="流程id" dataIndex="salesId"/>
-        <Column title="排序" dataIndex="sort"/>
-        <Column/>
+        <Column title="流程名称" dataIndex="name" />
+        <Column title="百分比" dataIndex="percentage" />
+        <Column title="流程id" dataIndex="salesId" />
+        <Column title="排序" dataIndex="sort" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.salesProcessId);
-              }}/>
-              <DelButton api={crmBusinessSalesProcessDelete} value={record.salesProcessId} onSuccess={()=>{
+              }} />
+              <DelButton api={crmBusinessSalesProcessDelete} value={record.salesProcessId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={CrmBusinessSalesProcessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

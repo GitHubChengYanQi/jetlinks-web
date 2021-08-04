@@ -71,13 +71,13 @@ const TableWarp = ({ children, columns, actions, title, api, searchForm, rowKey,
   // pagination
   return (
     <div className={style.tableWarp}>
-      <div className={style.listHeader}>
-        {title && <div className="title">{title}</div>}
-        <div className="actions">
-          {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
-          <div className="button">{actions}</div>
-        </div>
-      </div>
+      {/*<div className={style.listHeader}>*/}
+      {/*  {title && <div className="title">{title}</div>}*/}
+      {/*  <div className="actions">*/}
+      {/*    /!* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> *!/*/}
+      {/*    <div className="button">{actions}</div>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
       {searchForm ? <div className="search">
         <Form
           layout="inline"

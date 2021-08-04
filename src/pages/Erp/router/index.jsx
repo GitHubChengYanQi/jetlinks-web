@@ -18,7 +18,7 @@ import ErpLayout from '@/pages/Erp';
 const ErpRouterConfig = [
   {
     path: '/ERP',
-    name: '物品库存管理',
+    name: '产品库存管理',
     component: ErpLayout,
     children:[
       ...OutstockRouter,

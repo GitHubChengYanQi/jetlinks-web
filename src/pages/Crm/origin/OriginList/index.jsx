@@ -13,11 +13,10 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {originDelete, originEdit, originList, sourceDelete, sourceList} from '../OriginUrl';
-import SourceEdit from '../OriginEdit';
-import * as SysField from '../OriginField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+import {originDelete,  originList} from '../OriginUrl';
+import * as SysField from '../OriginField';
+
 import OriginEdit from '../OriginEdit';
 
 const {Column} = AntTable;
@@ -35,19 +34,18 @@ const OriginList = () => {
       </>
     );
   };
-
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="来源名称" name="name" component={SysField.Name}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="来源名称" name="name" component={SysField.Name}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb title="商机来源" />}
         api={originList}
         rowKey="originId"
         searchForm={searchForm}

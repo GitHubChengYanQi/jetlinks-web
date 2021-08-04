@@ -31,9 +31,9 @@ const OrderBranchEdit = ({...props}) => {
       fieldKey="id"
     >
 
-      <FormItem label="物品id" name="itemId" component={SysField.ItemId} required/>
-      <FormItem label="物品名称" name="name" component={SysField.Name} required/>
-      <FormItem label="物品单价" name="price" component={SysField.Price} required/>
+      <FormItem label="产品id" name="itemId" component={SysField.ItemId} required/>
+      <FormItem label="产品名称" name="name" component={SysField.Name} required/>
+      <FormItem label="产品单价" name="price" component={SysField.Price} required/>
     </Form>
   );
 };

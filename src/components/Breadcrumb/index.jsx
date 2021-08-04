@@ -40,7 +40,7 @@ const getRoute = (path, routes) => {
   return [];
 };
 
-const Breadcrumb = () => {
+const Breadcrumb = ({title}) => {
   const match = useRouteMatch();
   const routesArray = getRoute(match.path, routes);
   return (
@@ -50,6 +50,7 @@ const Breadcrumb = () => {
           return (<AntBreadcrumb.Item key={index}>{item.name}</AntBreadcrumb.Item>);
         })
       }
+      {title && <AntBreadcrumb.Item key={title}>{title}</AntBreadcrumb.Item>}
     </AntBreadcrumb>);
 
 };

@@ -26,7 +26,7 @@ export const Item = (props) =>{
     <Input style={{width:w}}  {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
-      搜索物品
+      搜索产品
     </Button>
     <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
       tableRef.current.refresh();
