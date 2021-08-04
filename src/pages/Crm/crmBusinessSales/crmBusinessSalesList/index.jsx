@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,12 +17,14 @@ import {crmBusinessSalesDelete, crmBusinessSalesList} from '../crmBusinessSalesU
 import CrmBusinessSalesEdit from '../crmBusinessSalesEdit';
 import * as SysField from '../crmBusinessSalesField';
 import Modal2 from '@/components/Modal';
+import CrmBusinessSalesProcessList from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CrmBusinessSalesList = () => {
   const ref = useRef(null);
+  const refCrmBusinessSalesProcessList = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -51,7 +53,13 @@ const CrmBusinessSalesList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="名称" dataIndex="name" />
+        <Column title="名称" dataIndex="name" render={(text, record, index) => {
+          return (
+            <Button type="link" onClick={() => {
+              refCrmBusinessSalesProcessList.current.open(false);
+            }}>{text}</Button>
+          );
+        }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -70,6 +78,10 @@ const CrmBusinessSalesList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+
+      <Modal2 width={800} title="编辑" component={CrmBusinessSalesProcessList} onSuccess={() => {
+        refCrmBusinessSalesProcessList.current.close();
+      }} ref={refCrmBusinessSalesProcessList} />
     </>
   );
 };
