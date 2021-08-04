@@ -73,15 +73,13 @@ const BusinessEdit = ({...props}) => {
               <FormItem label="商机阶段" name="stage"
                 rules={[{ required: true, message: '请输入商机阶段!' }]}
                 component={SysField.StageListSelect13} required/>
-              {/*<FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="商机跟踪" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="结单日期" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="阶段变更时间" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="阶段状态" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="产品合计" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="立项日期" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-              {/*<FormItem label="产品合计" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />*/}
-
+              <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
+              <FormItem label="商机跟踪" name="trackId" component={SysField.StageListSelect13} />
+              <FormItem label="结单日期" name="statementTime" component={SysField.StatementTimeListSelect14} />
+              <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
+              <FormItem label="阶段状态" name="state" component={SysField.StateListSelect12} />
+              <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
+              <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
               <div style={{textAlign:'center'}}>
                 <Button type="primary" htmlType="submit">
                   下一步
@@ -103,7 +101,10 @@ const BusinessEdit = ({...props}) => {
               ref.current.close();
             }} ref={ref} />
             <div style={{textAlign:'center'}}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={()=>{
+                props.onSuccess();
+              }
+              }>
                 保存
               </Button>
               <Button onClick={()=> prev()}>
