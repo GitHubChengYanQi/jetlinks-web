@@ -20,15 +20,17 @@ const w = 250;
 export const Name = (props) => {
   return (<Input style={{width: w}} {...props} />);
 };
-export const ClientName = (props) => {
+export const CustomerName = (props) => {
 
-  // const [value, setValue] = useState(' ');
+  const [values, setValues] = useState(' ');
 
-  const value = props.value;
+  const value = props.value ? props.value : values;
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST',}, {
     debounceInterval: 300,
   });
+
+
 
   const handleSearch = async value => {
     if (value) {
@@ -37,6 +39,7 @@ export const ClientName = (props) => {
           customerName: value
         }
       });
+      setValues(value);
     }
   };
 
@@ -47,12 +50,24 @@ export const ClientName = (props) => {
     };
   }) : [];
 
+  console.log(da);
+
   const handleChange = (values) => {
+    if (values){
+      setValues(values);
+    }
     props.onSuccess(values);
   };
 
   return ((
-    <Select showSearch value={value} handleSearch={(value) => handleSearch(value)} handleChange={(value) => handleChange(value)} data={da} {...props} />));
+    <AntdSelect
+      showSearch
+      options={da}
+      value={value}
+      {...props}
+      onSearch={(value)=>{handleSearch(value);}}
+      onChange={(value) => handleChange(value)}
+       />));
 };
 
 export const ContactsId = (props) => {

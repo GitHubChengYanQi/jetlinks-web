@@ -17,6 +17,7 @@ import ProCard from '@ant-design/pro-card';
 import {Button} from 'antd';
 import {RightOutlined} from '@ant-design/icons';
 import {useHistory} from 'ice';
+import {CustomerName} from '@/pages/Crm/customer/CustomerField';
 
 const {FormItem} = Form;
 
@@ -53,7 +54,7 @@ const CustomerEdit = ({...props}) => {
         <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
           <Row gutter={24} style={{padding: '0 30px'}}>
             <Col span={24}>
-              <FormItem labelCol={4} wrapperCol={21} label="客户名称" name="customerName" component={SysField.ClientName} onSuccess={(customerId)=>{props.onSuccess();history.push(`/CRM/customer/${customerId}`);}} val={props.value}  required />
+              <FormItem labelCol={4} wrapperCol={21} label="客户名称" name="customerName" component={SysField.CustomerName} onSuccess={(customerId)=>{props.onSuccess();history.push(`/CRM/customer/${customerId}`);}} val={props.value}  required />
             </Col>
           </Row>
           <Row gutter={24} style={{padding: '0 30px'}}>

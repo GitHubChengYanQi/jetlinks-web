@@ -3,22 +3,18 @@ import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
-
-
-  const {value, values,api, defaultValue,width, data: da, handleSearch, handleChange,onChange ,...other} = props;
-
-  const {loading, data, run} = useRequest(api, {
-    manual: !!da
-  });
-
+  const {value, api, defaultValue, ...other} = props;
+  if (!api) {
+    throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
+  }
+  const {loading, data, run} = useRequest(api);
 
   let valueArray = [];
   const {mode} = other;
-
   if (value) {
     if (!Array.isArray(value)) {
       if (mode === 'multiple' || mode === 'tag') {
-        const tmpValue = `${value}`.split(',');
+        const tmpValue = value.split(',');
         for (let i = 0; i < tmpValue.length; i++) {
           const item = tmpValue[i];
           if (item) {
@@ -26,7 +22,7 @@ const Select = (props) => {
           }
         }
       } else {
-        const tmpValue = `${value}`.split(',');
+        const tmpValue = value.split(',');
         valueArray = tmpValue[0] || [];
       }
     } else {
@@ -36,22 +32,17 @@ const Select = (props) => {
     valueArray = '';
   }
 
-  if (values){
-    props.onChange(values);
-  }else if (value){
-    props.onChange(valueArray);
-  }
 
-  return (
-    <>
-      {!loading &&
-      <AntSelect
-        options={da || data}
-        value={valueArray || values}
-        {...other}
-      />}
-    </>
-  );
+  if (data) {
+    return (
+      <>
+        {!loading &&<AntSelect options={data} allowClear={false} style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        />}
+      </>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default Select;
