@@ -31,7 +31,7 @@ const TrackEdit = ({...props}) => {
       fieldKey="trackId"
     >
       <FormItem label="客户名称" name="businessId" component={SysField.Business} required/>
-      <FormItem label="商品名称" name="stockId" component={SysField.Stock} required/>
+      <FormItem label="产品名称" name="stockId" component={SysField.Stock} required/>
       <FormItem label="报价金额" name="money" component={SysField.Money} required/>
       <FormItem label="数量" name="number" component={SysField.Number} required/>
       <FormItem label="报价时间" name="time" component={SysField.Time} required/>

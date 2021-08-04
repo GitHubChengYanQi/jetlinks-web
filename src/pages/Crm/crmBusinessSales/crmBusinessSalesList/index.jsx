@@ -56,7 +56,7 @@ const CrmBusinessSalesList = () => {
         <Column title="名称" dataIndex="name" render={(text, record, index) => {
           return (
             <Button type="link" onClick={() => {
-              refCrmBusinessSalesProcessList.current.open(false);
+              refCrmBusinessSalesProcessList.current.open(record.salesId);
             }}>{text}</Button>
           );
         }} />

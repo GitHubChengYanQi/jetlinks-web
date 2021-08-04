@@ -81,7 +81,7 @@ const BusinessEdit = ({...props}) => {
             >
               <FormItem label="负责人" name="person" component={SysField.PersonListSelect} />
               <FormItem label="客户名称" name="customerName" component={SysField.CustomerNameListSelect} />
-              <FormItem label="物品名称" name="name" component={SysField.NameListSelect} />
+              <FormItem label="产品名称" name="name" component={SysField.NameListSelect} />
               <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
               <FormItem label="销售流程" name="originId" component={SysField.SalesIdListSelect} />
               <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />

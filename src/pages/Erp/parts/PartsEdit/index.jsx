@@ -48,7 +48,7 @@ const PartsEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="物品编号" name="itemId" component={SysField.Item} required/>
+              <FormItem label="产品编号" name="itemId" component={SysField.Item} required/>
               <FormItem label="品牌编号" name="brandId" component={SysField.BrandId} required/>
               <Button type="primary" htmlType="submit">
                 Next

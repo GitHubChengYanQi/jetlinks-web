@@ -14,22 +14,22 @@ const MenuConfig = [
     path: '/overview',
   },
   {
-    label: <span style={styles.span}> 商品</span>,
+    label: <span style={styles.span}> 产品</span>,
     icon: <CustomIcon type="shangpinguanli" size="s" />, // 'picture',
     path: '/goods',
     child: [
       {
-        label: '商品管理',
+        label: '产品管理',
         icon: '',
         path: '/m',
         child: [
           {
-            label: '商品管理',
+            label: '产品管理',
             icon: '',
             path: '/list',
           },
           {
-            label: '商品分组',
+            label: '产品分组',
             icon: '',
             path: '/category',
           },
@@ -37,7 +37,7 @@ const MenuConfig = [
 
       },
       {
-        label: '商品工具',
+        label: '产品工具',
         icon: '',
         path: '/tools',
         child: [
@@ -47,7 +47,7 @@ const MenuConfig = [
             path: '/gj',
           },
           {
-            label: '商品导入',
+            label: '产品导入',
             icon: '',
             path: '/import',
           },

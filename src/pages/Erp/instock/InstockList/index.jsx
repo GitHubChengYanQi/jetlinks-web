@@ -39,7 +39,7 @@ const InstockList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="物品名称" name="name" component={SysField.ItemId}/>
+       <FormItem label="产品名称" name="name" component={SysField.ItemId}/>
        <FormItem label="仓库名称" name="placeName" component={SysField.ItemId}/>
        <FormItem label="登记时间" name="registerTime" component={SysField.RegisterTime}/>
        <FormItem label="品牌" name="brandName" component={SysField.ItemId}/>
@@ -57,7 +57,7 @@ const InstockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="物品名称" dataIndex="name"/>
+        <Column title="产品名称" dataIndex="name"/>
         <Column title="仓库名称" dataIndex="placeName"/>
         <Column title="登记时间" dataIndex="registerTime"/>
         <Column title="入库数量" dataIndex="number"/>

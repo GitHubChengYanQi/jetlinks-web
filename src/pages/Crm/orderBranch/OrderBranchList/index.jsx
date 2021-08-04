@@ -38,8 +38,8 @@ const OrderBranchList = () => {
    return (
      <>
        <FormItem label="订单编号" name="orderId" component={SysField.OrderId}/>
-       <FormItem label="物品id" name="itemId" component={SysField.ItemId}/>
-       <FormItem label="物品名称" name="name" component={SysField.Name}/>
+       <FormItem label="产品id" name="itemId" component={SysField.ItemId}/>
+       <FormItem label="产品名称" name="name" component={SysField.Name}/>
      </>
     );
   };
@@ -75,9 +75,9 @@ const OrderBranchList = () => {
         ref={tableRef}
       >
         <Column title="订单编号" dataIndex="orderId"/>
-        <Column title="物品id" dataIndex="itemId"/>
-        <Column title="物品名称" dataIndex="name"/>
-        <Column title="物品单价" dataIndex="price"/>
+        <Column title="产品id" dataIndex="itemId"/>
+        <Column title="产品名称" dataIndex="name"/>
+        <Column title="产品单价" dataIndex="price"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

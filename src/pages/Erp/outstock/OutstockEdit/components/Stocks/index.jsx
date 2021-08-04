@@ -22,7 +22,7 @@ const Stocks = (props) => {
     return (
       <>
         <FormItem label="仓库名称" name="pname" component={SysField.PalceId}/>
-        <FormItem label="物品名称" name="iname" component={SysField.ItemId}/>
+        <FormItem label="产品名称" name="iname" component={SysField.ItemId}/>
       </>
     );
   };
@@ -38,7 +38,7 @@ const Stocks = (props) => {
         searchForm={searchForm}
       >
         <Column title="仓库名称" dataIndex="pname"/>
-        <Column title="物品名称" dataIndex="iname"/>
+        <Column title="产品名称" dataIndex="iname"/>
         <Column title="品牌" dataIndex="bname"/>
         <Column title="数量" dataIndex="inventory"/>
         <Column/>

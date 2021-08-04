@@ -57,10 +57,10 @@ export const CustomerName = (props) => {
 
   let visi;
 
-  const content = data ? data.map((value, index) => {
+  const content = data ? data.map((value) => {
     return (
       <>
-        <a id={index} onClick={() => {
+        <a onClick={() => {
           onSuccess(value.customerId);
         }}>{value.customerName}</a> <br />
       </>
