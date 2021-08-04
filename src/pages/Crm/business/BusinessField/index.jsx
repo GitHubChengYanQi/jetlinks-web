@@ -15,6 +15,16 @@ import Stocks from '@/pages/Crm/track/TrackEdit/components/Stocks';
 import * as apiUrl from '../BusinessUrl';
 
 const w = 200;
+// 商机Id
+export const BusinessId = (props) =>{
+  return (<Input style={{width:w}} {...props}/>);
+};
+
+// 产品名称
+export const itemId = (props) =>{
+  return (<Input style={{width:w}} {...props}/>);
+};
+
 // 商机名称
 export const BusinessNameListSelect = (props) =>{
   return (<Input style={{width:w}} {...props}/>);

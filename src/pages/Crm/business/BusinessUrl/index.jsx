@@ -73,7 +73,7 @@ export const OpportunityAmountListSelect3 = {
 };
 // 销售流程
 export const SalesIdListSelect = {
-  url: '/businessSales/listSelect',
+  url: '/crmBusinessSales/listSelect',
   method: 'POST',
 };
 // 产品合计
@@ -154,4 +154,23 @@ export const ReasonListSelect18 = {
   method: 'POST',
 };
 
+// 产品明细显示
+export const crmBusinessDetailedList = {
+  url: '/crmBusinessDetailed/list',
+  method: 'POST',
+  rowKey:'id'
+};
 
+// 产品明细删除
+export const crmBusinessDetailedDelete = {
+  url: '/crmBusinessDetailed/delete',
+  method: 'POST',
+  rowKey:'id'
+};
+
+// 产品明细添加
+export const crmBusinessDetailedAdd = {
+  url: '/crmBusinessDetailed/add',
+  method: 'POST',
+  rowKey:'businessId'
+};

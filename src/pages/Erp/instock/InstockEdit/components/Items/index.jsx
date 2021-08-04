@@ -10,7 +10,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const Items = (props) => {
-  const {ckeck} = props;
+  const {allData} = props;
 
 
   const searchForm = () => {
@@ -61,7 +61,7 @@ const Items = (props) => {
             <>
               <CheckButton onClick={() => {
                 setVal(record.itemId);
-                ckeck(record.itemId);
+                allData(record);
               }}
               />
             </>
