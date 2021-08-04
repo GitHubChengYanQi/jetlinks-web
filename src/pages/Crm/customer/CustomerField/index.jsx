@@ -6,9 +6,9 @@
  */
 
 import React, {useState} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
+import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Popover} from 'antd';
 import Select from '@/components/Select';
-import {DatePicker2} from '@alifd/next';
+import {Button, DatePicker2} from '@alifd/next';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import TreeSelect from '@/components/TreeSelect';
 import {useRequest} from '@/util/Request';
@@ -22,52 +22,64 @@ export const Name = (props) => {
 };
 export const CustomerName = (props) => {
 
-  const [values, setValues] = useState(' ');
 
-  const value = props.value ? props.value : values;
+  const {value, onChange, method, onSuccess, ...other} = props;
 
-  const {data, run} = useRequest({url: '/customer/list', method: 'POST',}, {
+  const [val, setVal] = useState(value);
+
+
+  const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
+    manual: true,
   });
 
 
-
-  const handleSearch = async value => {
-    if (value) {
+  const handleChange = async value => {
+    if (value){
+      setVal(value);
+      onChange(value);
       await run({
-        data:{
+        data: {
           customerName: value
         }
       });
-      setValues(value);
+    }else {
+      setVal(value);
+      await run({
+        data: {
+          customerName: ' '
+        }
+      });
     }
+
   };
 
-  const da = data ? data.map((values) => {
-    return {
-      label: values.customerName,
-      value: values.customerId,
-    };
-  }) : [];
 
-  console.log(da);
+  let visi;
 
-  const handleChange = (values) => {
-    if (values){
-      setValues(values);
-    }
-    props.onSuccess(values);
-  };
+  const content = data ? data.map((value, index) => {
+    return (
+      <>
+        <a id={index} onClick={() => {
+          onSuccess(value.customerId);
+        }}>{value.customerName}</a> <br />
+      </>
+    );
+  }) : null;
 
+
+  const visibility = content!==null && content.length>0 && visi;
   return ((
-    <AntdSelect
-      showSearch
-      options={da}
-      value={value}
-      {...props}
-      onSearch={(value)=>{handleSearch(value);}}
-      onChange={(value) => handleChange(value)}
-       />));
+    <>
+      <Popover placement="bottomLeft" visible={method ? false : visibility} content={content} trigger="focus">
+        <Input
+          onChange={(value) => {
+            handleChange(value.target.value);
+          }}
+          value={val}
+        />
+      </Popover>
+    </>));
 };
 
 export const ContactsId = (props) => {

@@ -29,7 +29,7 @@ const CrmIndustryList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
@@ -53,26 +53,29 @@ const CrmIndustryList = () => {
         actions={actions()}
         ref={tableRef}
       >
+        <Column title="行业名称" dataIndex="industryName" />
+        <Column title="上级" dataIndex="parentId" />
+        <Column />
         <Column title="行业名称" dataIndex="industryName"/>
-        <Column title="上级" dataIndex="parentId"/>
         <Column/>
+        <Column title="上级" dataIndex="parentId"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.industryId);
-              }}/>
-              <DelButton api={crmIndustryDelete} value={record.industryId} onSuccess={()=>{
+              }} />
+              <DelButton api={crmIndustryDelete} value={record.industryId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="行业" component={CrmIndustryEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };
