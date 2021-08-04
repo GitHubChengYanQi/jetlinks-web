@@ -1,5 +1,5 @@
 import React from 'react';
-import { createApp } from 'ice';
+import {createApp, runApp} from 'ice';
 import LoadingPage from '@/components/LoadingPage';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
@@ -17,4 +17,4 @@ const appConfig = {
   },
 
 };
-createApp(appConfig);
+runApp(appConfig);
