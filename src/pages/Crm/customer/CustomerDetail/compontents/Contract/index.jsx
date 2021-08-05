@@ -26,18 +26,13 @@ const Contract = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-  useEffect(()=>{
-    if (customerId) {
-      tableRef.current.formActions.setFieldValue('customerId', customerId);
-      tableRef.current.submit();
-    }
-  },[customerId]);
+
 
   const searchForm = () => {
     return (
       <>
         <FormItem label='合同名称' name="name" component={SysField.SalesId} />
-        <FormItem style={{display: 'none'}} name="customerId" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
       </>
     );
   };

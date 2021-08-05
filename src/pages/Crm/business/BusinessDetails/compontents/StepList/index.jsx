@@ -7,16 +7,25 @@ const { Step } = Steps;
 
 const StepList = (props) => {
 
-
+  const {value,res} = props;
   const [current,setCurrent] = useState();
 
-  const {loading, data, run} = useRequest({url: '/crmBusinessSalesProcess/list',
-    method: 'POST',data:{salesId:props.salesId}});
 
-  const step = data ? data.map((value,index)=>{
+
+  const {data} = useRequest({url: '/crmBusinessSalesProcess/list',
+    method: 'POST',data:{salesId:value.salesId}});
+
+  const {run} = useRequest({url: '/crmBusinessTrack/add', method: 'POST'},{manual:true} );
+
+  const step = data ? data.map((values,index)=>{
     return (
       <>
-        <Step title={value.name} description={`盈率：${value.percentage}%`} />
+        <Step title={values.name} description={`盈率：${values.percentage}%`} onClick={()=>{
+          // run({
+          //   data:{note: `更改流程为${values.name}`,userId: value.person,businessId: value.businessId}}
+          // );
+          res();
+        }} />
       </>
     );
   }) : null;

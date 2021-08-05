@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Divider, Layout, Tree} from 'antd';
-import BusinessTable from '@/pages/Crm/business/BusinessList/components/BusinessTable'
+import BusinessTable from '@/pages/Crm/business/BusinessList/components/BusinessTable';
 import styles from '@/pages/Crm/business/BusinessList/index.module.scss';
 import {useRequest} from '@/util/Request';
 const {Sider, Content} = Layout;
@@ -19,10 +19,13 @@ const BusinessList = () => {
 
   const origin = da ? da.map((values)=>{
     return {
-      title: values.name,
-      key:values.salesId,
+      title: values.originName,
+      key:values.originId,
     };
   }) : [];
+
+  const [status,setStatus] = useState();
+  const [state,setState] = useState();
 
 
 
@@ -32,6 +35,9 @@ const BusinessList = () => {
         <div style={{padding: 24}}>
           <Tree
             showLine
+            onSelect={(value)=>{
+              setStatus(value);
+            }}
             // switcherIcon={<DownOutlined />}
             defaultExpandedKeys={['0']}
             // onSelect={this.onSelect}
@@ -46,6 +52,9 @@ const BusinessList = () => {
           <Divider />
           <Tree
             showLine
+            onSelect={(value)=>{
+              setState(value);
+            }}
             // switcherIcon={<DownOutlined />}
             defaultExpandedKeys={['0']}
             // onSelect={this.onSelect}
@@ -61,7 +70,7 @@ const BusinessList = () => {
         </div>
       </Sider>
       <Content>
-        <BusinessTable />
+        <BusinessTable status={status} state={state} />
       </Content>
     </Layout>
   );

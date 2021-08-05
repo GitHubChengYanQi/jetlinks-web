@@ -13,6 +13,7 @@ import Modal2 from '@/components/Modal';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
+import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 
 const {TabPane} = Tabs;
 
@@ -20,6 +21,8 @@ const CustomerDetail = () => {
   const params = useParams();
 
   const ref = useRef(null);
+
+  const [res,setRes] = useState();
 
 
   const [responsive, setResponsive] = useState(false);
@@ -75,7 +78,7 @@ const CustomerDetail = () => {
 
       <div className={styles.main}>
         <Card title="商机销售流程" bodyStyle={{padding: 30}}>
-          <StepList salesId={data.salesId} />
+          <StepList res={()=>{setRes(true);}} value={data} />
         </Card>
       </div>
       <div className={styles.main}>
@@ -117,8 +120,7 @@ const CustomerDetail = () => {
                   <Input />相关团队
                 </TabPane>
                 <TabPane tab="跟进动态" key="2">
-                  Content of Tab Pane 1
-                  <Input />发布销售记录
+                  <Track res={res} value={data} />
                 </TabPane>
               </Tabs>
             </Card>

@@ -20,17 +20,28 @@ import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {BusinessNameListSelect, CustomerNameListSelect1} from '@/pages/Crm/business/BusinessField';
+import {Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const BusinessTable = () => {
+const BusinessTable = (props) => {
+
+  const {status,state} = props;
 
 
   const history = useHistory();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  if (status!==undefined || state !==undefined){
+    tableRef.current.formActions.setFieldValue('salesId', status?status[0] : '');
+    tableRef.current.formActions.setFieldValue('originId', state?state[0]:'');
+    tableRef.current.submit();
+  }
+
   const actions = () => {
     return (
       <>
@@ -44,6 +55,8 @@ const BusinessTable = () => {
   const searchForm = () => {
     return (
       <>
+        <FormItem style={{display:'none'}} name="salesId"  component={SysField.BusinessNameListSelect} />
+        <FormItem style={{display:'none'}} name="originId" component={SysField.BusinessNameListSelect} />
         <FormItem label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
         <FormItem label="客户名称" name="customerName" component={SysField.BusinessNameListSelect} />
       </>

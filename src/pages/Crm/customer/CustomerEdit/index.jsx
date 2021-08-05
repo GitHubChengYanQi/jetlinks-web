@@ -135,7 +135,7 @@ const CustomerEdit = ({...props}) => {
           </Row>
           <Row gutter={24} style={{padding: '0 30px'}}>
             <Col span={12}>
-              <FormItem label="行业" name="industryOne" component={SysField.IndustryOne} />
+              <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
 
             </Col>
           </Row>
