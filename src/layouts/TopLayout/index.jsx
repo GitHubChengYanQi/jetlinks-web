@@ -1,10 +1,8 @@
-import React, {useState} from 'react';
-import {Layout, Row, Col, Menu} from 'antd';
+import React from 'react';
+import {Layout, Menu} from 'antd';
 import store from '@/store';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
 import styles from './index.module.less';
-
-
 
 const {Header, Content} = Layout;
 
@@ -42,10 +40,13 @@ const TopLayout = ({children, rightMenu}) => {
 
   const renderLeftMenu = () => {
     if (subMenu.subMenus) {
+      const pathName = location.pathname;
+      const pathArray = pathName.split('/');
+      const key = `/${pathArray[1]}/${pathArray[2]}`;
       return (
         <Menu
           selectable
-          selectedKeys={[location.pathname]}
+          selectedKeys={[key]}
           onClick={(obj) => {
             history.push(obj.key);
           }}
