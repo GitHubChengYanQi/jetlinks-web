@@ -13,6 +13,7 @@ import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
 import Stocks from '@/pages/Crm/track/TrackEdit/components/Stocks';
 import * as apiUrl from '../BusinessUrl';
+import {UserIdSelect} from "@/pages/Crm/customer/CustomerUrl";
 
 const w = 200;
 // 商机Id
@@ -32,7 +33,7 @@ export const BusinessNameListSelect = (props) =>{
 // 负责人
 export const PersonListSelect = (props) =>{
 
-  return (<Input style={{width:w}} {...props}/>);
+  return (<Select api={apiUrl.UserIdSelect} style={{width:w}} {...props}/>);
 };
 // 客户名称
 export const CustomerNameListSelect = (props) =>{
@@ -165,7 +166,7 @@ export const SalesProcessIdListSelect15 = (props) =>{
 
 // 阶段变更时间
 export const ChangeTimeListSelect17 = (props) =>{
-  return (<DatePicker2 style={{width:w}} api={apiUrl.ChangeTimeListSelect17} {...props}/>);
+  return (<DatePicker2 style={{width:w}} api={apiUrl.ChangeTimeListSelect17} showTime {...props}/>);
 };
 
 // 输单原因
