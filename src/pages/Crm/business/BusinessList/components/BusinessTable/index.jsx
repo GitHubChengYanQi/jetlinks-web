@@ -85,7 +85,15 @@ const BusinessTable = () => {
             </div>
           );
         }} />
-        <Column title="机会来源" dataIndex="originName" />
+        <Column title="机会来源" dataIndex="originName" render={(value, record)=>{
+          return (
+            <div>
+              {
+                record.getorigin[0] ? record.getorigin[0].originName : null
+              }
+            </div>
+          );
+        }} />
         <Column title="负责人" dataIndex="person" render={(value, record)=>{
           return (
             <div>

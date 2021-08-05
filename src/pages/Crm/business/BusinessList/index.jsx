@@ -19,8 +19,8 @@ const BusinessList = () => {
 
   const origin = da ? da.map((values)=>{
     return {
-      title: values.name,
-      key:values.salesId,
+      title: values.originName,
+      key:values.originId,
     };
   }) : [];
 

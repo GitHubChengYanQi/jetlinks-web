@@ -117,8 +117,7 @@ const CustomerDetail = () => {
                   <Input />相关团队
                 </TabPane>
                 <TabPane tab="跟进动态" key="2">
-                  Content of Tab Pane 1
-                  <Input />发布销售记录
+
                 </TabPane>
               </Tabs>
             </Card>
