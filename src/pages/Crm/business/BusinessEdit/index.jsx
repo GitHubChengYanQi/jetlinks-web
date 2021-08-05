@@ -56,28 +56,69 @@ const BusinessEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="商机名称" name="businessName"
-                rules={[{ required: true, message: '请输入商机名称!' }]}
-                component={SysField.BusinessNameListSelect} required/>
-              <FormItem label="负责人" name="person"
-                rules={[{ required: true, message: '请输入负责人!' }]}
-                component={SysField.PersonListSelect} required/>
-              <FormItem label="客户名称" name="customerId"
-                rules={[{ required: true, message: '请输入商客户名称!' }]}
-                component={SysField.CustomerNameListSelect} required/>
-              <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
-              <FormItem label="销售流程" name="salesId"
-                rules={[{ required: true, message: '请输入销售流程!' }]}
-                component={SysField.SalesIdListSelect} required/>
-              <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
-              <FormItem label="商机阶段" name="stage"
-                rules={[{ required: true, message: '请输入商机阶段!' }]}
-                component={SysField.StageListSelect13} required/>
-              <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
-              <FormItem label="结单日期" name="statementTime" component={SysField.StatementTimeListSelect14} />
-              <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
-              <FormItem label="阶段状态" name="state" component={SysField.StateListSelect12} />
-              <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="商机名称" name="businessName"
+                    rules={[{ required: true, message: '请输入商机名称!' }]}
+                    component={SysField.BusinessNameListSelect} required/>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="负责人" name="person"
+                    rules={[{ required: true, message: '请输入负责人!' }]}
+                    component={SysField.PersonListSelect} required/>
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="客户名称" name="customerId"
+                    rules={[{ required: true, message: '请输入商客户名称!' }]}
+                    component={SysField.CustomerNameListSelect} required/>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="销售流程" name="salesId"
+                    rules={[{ required: true, message: '请输入销售流程!' }]}
+                    component={SysField.SalesIdListSelect} required/>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="商机阶段" name="stage"
+                    rules={[{ required: true, message: '请输入商机阶段!' }]}
+                    component={SysField.StageListSelect13} required/>
+                </Col>
+                <Col span={12}>
+                  <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+                </Col>
+                <Col span={12}>
+                  <FormItem label="结单日期" name="statementTime" component={SysField.StatementTimeListSelect14} />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
+                </Col>
+                <Col span={12}>
+                  <FormItem label="阶段状态" name="state" component={SysField.StateListSelect12} />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
+                </Col>
+              </Row>
               <div style={{textAlign:'center'}}>
                 <Button type="primary" htmlType="submit">
                   下一步
