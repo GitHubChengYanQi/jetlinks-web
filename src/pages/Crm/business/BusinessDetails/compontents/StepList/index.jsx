@@ -28,7 +28,6 @@ const StepList = (props) => {
   return (
     <Steps
       type="navigation"
-      style={{padding: '30px 150px '}}
       current={current}
       onChange={onChange}
     >
