@@ -174,3 +174,10 @@ export const crmBusinessDetailedAdd = {
   method: 'POST',
   rowKey:'businessId'
 };
+
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
+};
+

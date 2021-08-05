@@ -104,7 +104,7 @@ const ContractEdit = ({...props}) => {
     <>
 
 
-      <Steps current={current}>
+      <Steps current={current} style={{padding: '30px 150px '}}>
         {steps.map(item => (
           <Step key={item.title} title={item.title} />
         ))}

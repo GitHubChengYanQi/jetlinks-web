@@ -39,7 +39,7 @@ const BusinessEdit = ({...props}) => {
 
   const steps = [
     {
-      title: '商机详细信息',
+      title: '添加商机信息',
       content:
         <>
           <div style={{margin: '50px 150px'}}>
@@ -130,7 +130,7 @@ const BusinessEdit = ({...props}) => {
         </>
     },
     {
-      title: '商机明细',
+      title: '添加商机明细',
       content:
         <>
           <div style={{margin: '5px 150px'}}>
@@ -165,7 +165,7 @@ const BusinessEdit = ({...props}) => {
 
   return (
     <>
-      <Steps current={current}>
+      <Steps current={current} style={{padding: '30px 150px '}}>
         {steps.map(item => (
           <Step key={item.title} title={item.title} />
         ))}
