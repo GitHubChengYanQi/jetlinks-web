@@ -41,8 +41,8 @@ export const BusinessNameListSelect = {
   method: 'POST',
 };
 //  负责人姓名
-export const PersonListSelect = {
-  url: '/crmBusiness/listSelect',
+export const UserIdSelect = {
+  url: '/rest/mgr/Select',
   method: 'POST',
 };
 
