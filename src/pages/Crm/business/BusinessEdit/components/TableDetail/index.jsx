@@ -10,6 +10,7 @@ import Form from "@/components/Form";
 import Items from "@/pages/Erp/instock/InstockEdit/components/Items";
 import {useRequest} from "@/util/Request";
 import CrmBusinessDetailedEdit from "@/pages/Crm/crmBusinessDetailed/crmBusinessDetailedEdit";
+import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -37,20 +38,20 @@ const TableDetail = (props) => {
   return (
     <>
       <div style={{textAlign:'right'}}>
-        <Button className='placeName' onClick={()=>{
+        <Button type="primary" className='placeName' onClick={()=>{
           refAddOne.current.open(false);}}>
           添加产品
         </Button>
         <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
           refAddOne.current.open(false);
         }} ref={refAddOne}  allData={(data) => {setDa({businessId: value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
-        <Button className='placeName' onClick={()=>{
+        <Button type="primary" className='placeName' onClick={()=>{
           refAddAll.current.open(false);}}>
           添加产品套餐
         </Button>
-        <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
+        <Drawer width={800} title="选择" component={ItemPackage}  onSuccess={() => {
           refAddAll.current.close();
-        }} ref={refAddAll}  allData={(data) => {setDa({itemId:data.itemId}); run();}}/>
+        }} ref={refAddAll}  allData={(data) => {setDa({businessId: value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
       </div>
       <Table
         api={crmBusinessDetailedList}

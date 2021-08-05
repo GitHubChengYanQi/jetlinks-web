@@ -2,7 +2,7 @@ import {Input, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
-import Table from '@/components/Table';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
 import {items, places, stockAdd, stockDetail, stockEdit} from '@/pages/Erp/stock/StockUrl';
 
@@ -39,7 +39,6 @@ const Items = (props) => {
 
   return (
     <>
-      <Input value={val}/>
       <Table
         api={items}
         rowKey="itemId"
