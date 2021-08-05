@@ -5,12 +5,15 @@ const AvatarList = (props) => {
 
   const {value} = props;
 
+  if (value){
+    return(
+      <>
+        <Avatar size={40}>{value.user ? value.user.account : null}</Avatar>
+      </>
+    );
+  }
 
-  return(
-    <>
-      <Avatar size={40}>{value.getuser[0] ? value.getuser[0].account : null}</Avatar>
-    </>
-  );
+
 };
 
 export default AvatarList;

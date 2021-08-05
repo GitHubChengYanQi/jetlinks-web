@@ -4,20 +4,16 @@ import Modal2 from '@/components/Modal';
 import {Button, Comment, List} from 'antd';
 import CrmBusinessTrackEdit from '@/pages/Crm/crmBusinessTrack/crmBusinessTrackEdit';
 import {useRequest} from '@/util/Request';
+import styles from './index.module.scss';
 
 
 const Track = (props) => {
 
-  const {value,res} = props;
+  const {value} = props;
 
   const ref = useRef(null);
 
   const {data, run} = useRequest({url: '/crmBusinessTrack/list', method: 'POST', data: {businessId: value.businessId}});
-
-  // if (res){
-  //   console.log(1111);
-  //   run();
-  // }
 
   const datas = data ? data.map((value, index) => {
     return {
@@ -42,12 +38,12 @@ const Track = (props) => {
   }) : [];
 
   return (
-    <>
-      <Button style={{width: '100%'}} onClick={() => {
+    <div style={{overflowY:'auto',height:700,overflowX:'hidden',position:'relative'}}>
+      <Button style={{width: '100%',position:'absolute',top:0,left:0}} onClick={() => {
         ref.current.open(false);
       }} className="button-left-margin" icon={<EditOutlined />}>添加跟踪</Button>
       <List
-        className="comment-list"
+        className={styles.list}
         header={`${datas.length} 条跟踪`}
         itemLayout="horizontal"
         dataSource={datas}
@@ -67,7 +63,7 @@ const Track = (props) => {
         run();
         ref.current.close();
       }} ref={ref} val={value} />
-    </>
+    </div>
   );
 };
 

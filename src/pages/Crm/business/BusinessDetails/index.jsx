@@ -23,12 +23,10 @@ const CustomerDetail = () => {
 
   const ref = useRef(null);
 
-  const [res,setRes] = useState();
-
 
   const [responsive, setResponsive] = useState(false);
 
-  const {loading, data, run} = useRequest(businessDetail, {
+  const {loading, data, run,refresh} = useRequest(businessDetail, {
     defaultParams: {
       data: {
         businessId: params.cid
@@ -36,17 +34,11 @@ const CustomerDetail = () => {
     }
   });
 
-
-
-
-
-
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
-
-  return (
-    <div className={styles.detail}>
+  if(data){
+    return <div className={styles.detail}>
       <Card>
         <Breadcrumb />
       </Card>
@@ -81,12 +73,14 @@ const CustomerDetail = () => {
 
       <div className={styles.main}>
         <Card title="商机销售流程" bodyStyle={{padding: 30}}>
-          <StepList res={()=>{setRes(true);}} value={data} />
+          <StepList onChange={() => {
+            refresh();
+          }} value={data} />
         </Card>
       </div>
       <div className={styles.main}>
         <Card>
-          <Desc data={data}/>
+          <Desc data={data} />
         </Card>
       </div>
       <div className={styles.main}>
@@ -110,7 +104,7 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
-                  <Description data={data}/>
+                  <Description data={data} />
                 </TabPane>
               </Tabs>
             </Card>
@@ -119,10 +113,10 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="2">
                 <TabPane tab="相关团队" key="1">
-                  <AvatarList value={data}/>
+                  <AvatarList value={data} />
                 </TabPane>
                 <TabPane tab="跟进动态" key="2">
-                  <Track res={res} value={data} />
+                  <Track value={data} />
                 </TabPane>
               </Tabs>
             </Card>
@@ -132,9 +126,11 @@ const CustomerDetail = () => {
 
       </div>
 
-    </div>
+    </div>;
+  }
+  return null;
 
-  );
+
 };
 
 export default CustomerDetail;
