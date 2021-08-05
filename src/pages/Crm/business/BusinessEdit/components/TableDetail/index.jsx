@@ -15,16 +15,8 @@ const {FormItem} = Form;
 const {Column} = AntTable;
 
 
-const searchForm = () => {
-  return (
-    <>
-      <FormItem style={{'display': 'none'}} name="businessId" component={SysField.BusinessId}/>
-      <FormItem label='产品名称' name="itemId" component={SysField.itemId}/>
-    </>
-  );
-};
-
 const TableDetail = (props) => {
+  const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const refAddOne = useRef();
@@ -33,16 +25,17 @@ const TableDetail = (props) => {
   const [da,setDa] = useState();
   const {data,run} = useRequest({url: '/crmBusinessDetailed/add',method: 'POST',data:da},{manual:true});
 
-  useEffect(()=>{
-    if (props.value) {
-      tableRef.current.formActions.setFieldValue('businessId', props.value);
-      tableRef.current.submit();
-    }
-  },[props.value]);
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem style={{'display': 'none'}} name="businessId" value={value} component={SysField.BusinessId}/>
+        <FormItem label='产品名称' name="itemId" component={SysField.itemId}/>
+      </>
+    );
+  };
 
   return (
     <>
-
       <div style={{textAlign:'right'}}>
         <Button className='placeName' onClick={()=>{
           refAddOne.current.open(false);}}>
@@ -50,7 +43,7 @@ const TableDetail = (props) => {
         </Button>
         <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
           refAddOne.current.open(false);
-        }} ref={refAddOne}  allData={(data) => {setDa({businessId: props.value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
+        }} ref={refAddOne}  allData={(data) => {setDa({businessId: value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
         <Button className='placeName' onClick={()=>{
           refAddAll.current.open(false);}}>
           添加产品套餐
@@ -65,7 +58,6 @@ const TableDetail = (props) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-
         <Column title="产品名称" dataIndex="items" render={(value, record)=>{
           return (
             <div>

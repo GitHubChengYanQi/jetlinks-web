@@ -21,7 +21,7 @@ export const BusinessId = (props) =>{
 
 // 产品名称
 export const itemId = (props) =>{
-  return (<Input style={{width:w}} {...props}/>);
+  return (<Select api={apiUrl.ProductNameListSelect} Selectstyle={{width:w}} {...props}/>);
 };
 
 // 商机名称
