@@ -13,6 +13,8 @@ import {StockDetailsRouter} from '@/pages/Erp/stockDetails/StockDetailsRouter';
 import {InstockRouter} from '@/pages/Erp/instock/InstockRouter';
 import {OutstockRouter} from '@/pages/Erp/outstock/OutstockRouter';
 import ErpLayout from '@/pages/Erp';
+import {ErpPackageRouter} from "@/pages/Erp/erpPackage/erpPackageRouter";
+import {OrderRouter} from "@/pages/Crm/order/OrderRouter";
 
 
 const ErpRouterConfig = [
@@ -30,6 +32,8 @@ const ErpRouterConfig = [
       ...StockRouter,
       ...StockDetailsRouter,
       ...InstockRouter,
+      ...OrderRouter,
+      ...ErpPackageRouter,
       {
         redirect: '/ERP/items',
       }

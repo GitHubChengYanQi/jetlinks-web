@@ -12,6 +12,16 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../erpPackageUrl';
 
-export const ProductName = (props) =>{
+export const productName = (props) =>{
+  return (<Input {...props}/>);
+};
+
+
+export const packageId = (props) =>{
+  return (<Input {...props}/>);
+};
+
+
+export const itemId = (props) =>{
   return (<Input {...props}/>);
 };

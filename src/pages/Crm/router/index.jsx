@@ -20,7 +20,6 @@ const CrmRouterConfig = [
     name: 'CRM',
     component: CrmLayout,
     children:[
-      ...OrderRouter,
       ...OrderBranchRouter,
       ...CustomerRouter,
       ...BusinessRouter,

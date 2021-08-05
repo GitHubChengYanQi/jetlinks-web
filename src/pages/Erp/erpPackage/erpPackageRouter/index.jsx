@@ -9,6 +9,7 @@ import React, {lazy} from 'react';
 
 export const ErpPackageRouter = [
   {
+    name: '套餐管理',
     path: '/erpPackage',
     component: lazy(() => import('../erpPackageList')),
     fallback: <div>loading...</div>,

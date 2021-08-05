@@ -14,9 +14,7 @@ const {FormItem} = Form;
 const ItemPackage = (props) => {
   const {allData} = props;
 
-  const [da,setDa] = useState();
-  const {data,run} = useRequest({  url: '/erpPackageTable/list', method: 'POST',  rowKey:'packageId',data:da},{manual:true});
-  const  tableDate = data;
+  const {data, setData} = useState(null);
   const searchForm = () => {
     return (
       <>
@@ -36,7 +34,9 @@ const ItemPackage = (props) => {
         rowKey="id"
         searchForm={searchForm}
         ref={tableRef}
-        expandable={{expandedRowRender: record => <TableList value={record.packageId} />}}
+        expandable={{
+          expandedRowRender: record => <TableList value = {record.list}/>
+        }}
       >
         <Column title="套餐名称" dataIndex="productName" />
         <Column title="操作" align="right" render={(value, record) => {

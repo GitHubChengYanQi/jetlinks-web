@@ -6,10 +6,11 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
+import {Col, Input, Row} from 'antd';
 import Form from '@/components/Form';
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../erpPackageUrl';
 import * as SysField from '../erpPackageField';
+import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
 
 const {FormItem} = Form;
 
@@ -19,7 +20,7 @@ const ApiConfig = {
   save: erpPackageEdit
 };
 
-const ErpPackageEdit = ({...props}) => {
+const ErpPackageEdit = (props) => {
 
   const formRef = useRef();
 
@@ -30,8 +31,14 @@ const ErpPackageEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="packageId"
     >
-      <FormItem label="产品名称" name="productName" component={SysField.ProductName} required/>
+      <Row gutter={24}>
+        <Col span={12}>
+          <FormItem label="套餐名称" name="productName" component={SysField.productName} required/>
+        </Col>
+      </Row>
+      <TableDetail value={111}/>
     </Form>
+
   );
 };
 

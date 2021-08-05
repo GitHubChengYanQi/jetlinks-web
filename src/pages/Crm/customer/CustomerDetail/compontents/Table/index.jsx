@@ -10,7 +10,7 @@ const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey, ...props }, ref) => {
+const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,showSearchButton=true, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -79,9 +79,10 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
           actions={formActions}
         >
           {typeof searchForm === 'function' && searchForm()}
+          {showSearchButton&&
           <FormButtonGroup>
             <Submit><SearchOutlined/>查询</Submit>
-          </FormButtonGroup>
+          </FormButtonGroup>}
         </Form>
       </div> : <Form
         layout="inline"
