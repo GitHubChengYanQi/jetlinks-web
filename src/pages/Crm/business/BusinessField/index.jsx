@@ -11,9 +11,7 @@ import Select from '@/components/Select';
 import {DatePicker2} from '@alifd/next';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
-import Stocks from '@/pages/Crm/track/TrackEdit/components/Stocks';
 import * as apiUrl from '../BusinessUrl';
-import {UserIdSelect} from "@/pages/Crm/customer/CustomerUrl";
 
 const w = 200;
 // 商机Id
@@ -59,7 +57,7 @@ export const TimeListSelect2 = (props) =>{
 };
 // 商机金额
 export const OpportunityAmountListSelect3 = (props) =>{
-  return (<Input style={{width:w}} {...props}/>);
+  return (<InputNumber style={{width:w}} {...props}/>);
 };
 // 销售流程
 export const SalesIdListSelect = (props) =>{
@@ -68,7 +66,7 @@ export const SalesIdListSelect = (props) =>{
 };
 // 产品合计
 export const TotalProductsListSelect4 = (props) =>{
-  return (<Input style={{width:w}} {...props}/>);
+  return (<InputNumber style={{width:w}} {...props}/>);
 };
 // 整单折扣
 export const OrderDiscountListSelect5 = (props) =>{
