@@ -165,7 +165,7 @@ export const SalesProcessIdListSelect15 = (props) =>{
 
 // 阶段变更时间
 export const ChangeTimeListSelect17 = (props) =>{
-  return (<Input style={{width:w}} api={apiUrl.ChangeTimeListSelect17} {...props}/>);
+  return (<DatePicker2 style={{width:w}} api={apiUrl.ChangeTimeListSelect17} {...props}/>);
 };
 
 // 输单原因
