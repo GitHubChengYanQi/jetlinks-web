@@ -1,31 +1,47 @@
 import React, {useState} from 'react';
-import { Steps } from 'antd';
+import {Select, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
 
-const { Step } = Steps;
+const {Step} = Steps;
 
 const StepList = (props) => {
 
-  const {value,res} = props;
-  const [current,setCurrent] = useState();
+  const {value, onChange: pOnChange} = props;
+  const [current, setCurrent] = useState(2);
 
 
+  const {data} = useRequest({
+    url: '/crmBusinessSalesProcess/list',
+    method: 'POST', data: {salesId: value.salesId}
+  });
 
-  const {data} = useRequest({url: '/crmBusinessSalesProcess/list',
-    method: 'POST',data:{salesId:value.salesId}});
+  const {run} = useRequest({
+    url: '/crmBusiness/edit',
+    method: 'POST',
+    onError() {
 
-  const {run} = useRequest({url: '/crmBusinessTrack/add', method: 'POST'},{manual:true} );
+    }
+  }, {
+    manual: true
+  });
 
-  const step = data ? data.map((values,index)=>{
+  const step = data ? data.map((values, index) => {
     return (
       <>
-        <Step title={values.name} description={`盈率：${values.percentage}%`} onClick={()=>{
-          // run({
-          //   data:{note: `更改流程为${values.name}`,userId: value.person,businessId: value.businessId}}
-          // );
-          res();
-        }} />
+        <Step title={values.name} description={`盈率：${values.percentage}%`}
+          onClick={async () => {
+            await run(
+              {
+                data: {
+                  processId: values.salesProcessId,
+                  businessId: value.businessId
+                }
+              }
+            );
+            typeof pOnChange === 'function' && pOnChange();
+          }}
+        />
       </>
     );
   }) : null;
@@ -41,6 +57,7 @@ const StepList = (props) => {
       onChange={onChange}
     >
       {step}
+      <Step title={<Select options={[{label:111,value:222}]} />} />
     </Steps>
   );
 

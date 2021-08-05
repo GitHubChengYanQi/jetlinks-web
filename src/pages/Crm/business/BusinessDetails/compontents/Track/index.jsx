@@ -67,7 +67,6 @@ const Track = (props) => {
         run();
         ref.current.close();
       }} ref={ref} val={value} />
-
     </>
   );
 };
