@@ -5,7 +5,6 @@ import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/bu
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
 import Drawer from "@/components/Drawer";
-import Index from "@/pages/Crm/customer/CustomerEdit/components/ContactsEdit";
 import * as SysField from "@/pages/Crm/business/BusinessField";
 import Form from "@/components/Form";
 import Items from "@/pages/Erp/instock/InstockEdit/components/Items";

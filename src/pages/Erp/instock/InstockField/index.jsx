@@ -31,7 +31,7 @@ export const Item = (props) =>{
     <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
       tableRef.current.refresh();
       ref.current.close();
-    }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+    }} ref={ref} allData={(data)=>{onChange(data.itemId);ref.current.close();}}/>
   </>);
 };
 export const ItemId = (props) =>{
