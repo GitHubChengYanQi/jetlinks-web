@@ -89,24 +89,6 @@ const BusinessTable = (props) => {
             </div>
           );
         }}/>
-        <Column title="销售流程" dataIndex="salesId" render={(value, record)=>{
-          return (
-            <div>
-              {
-                record.getsales[0] ? record.getsales[0].name : null
-              }
-            </div>
-          );
-        }} />
-        <Column title="机会来源" dataIndex="originName" render={(value, record)=>{
-          return (
-            <div>
-              {
-                record.getorigin[0] ? record.getorigin[0].originName : null
-              }
-            </div>
-          );
-        }} />
         <Column title="负责人" dataIndex="person" render={(value, record)=>{
           return (
             <div>
@@ -118,9 +100,6 @@ const BusinessTable = (props) => {
         }}/>
         <Column title="立项日期" dataIndex="time" />
         <Column title="商机阶段" dataIndex="stage" />
-        <Column title="商机金额" dataIndex="opportunityAmount" />
-        <Column title="结单日期" dataIndex="statementTime" />
-        <Column title="阶段变更时间" dataIndex="changeTime" />
         <Column title="阶段状态" dataIndex="state" />
         <Column title="产品合计" dataIndex="totalProducts" />
         <Column title="操作" align="right" render={(value, record) => {

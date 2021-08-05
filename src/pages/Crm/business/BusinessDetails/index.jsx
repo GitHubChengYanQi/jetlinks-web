@@ -14,6 +14,7 @@ import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
+import AvatarList from '@/pages/Crm/business/BusinessDetails/compontents/Avatar';
 
 const {TabPane} = Tabs;
 
@@ -34,6 +35,8 @@ const CustomerDetail = () => {
       }
     }
   });
+
+
 
 
 
@@ -72,7 +75,7 @@ const CustomerDetail = () => {
           }} ref={ref} />
           <Button onClick={() => {
             history.back();
-          }}><Icon type="icon-back" /> 返回</Button>
+          }}><Icon type="icon-back" />返回</Button>
         </div>
       </Card>
 
@@ -116,8 +119,7 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="2">
                 <TabPane tab="相关团队" key="1">
-                  Content of Tab Pane 1
-                  <Input />相关团队
+                  <AvatarList value={data}/>
                 </TabPane>
                 <TabPane tab="跟进动态" key="2">
                   <Track res={res} value={data} />
