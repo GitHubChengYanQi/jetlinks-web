@@ -39,17 +39,11 @@ const CrmBusinessSalesProcessList = (props) => {
     return (
       <>
         <FormItem label="流程名称" name="name" component={SysField.SalesId} />
-        <FormItem style={{display: 'none'}} name="salesId" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} value={value} name="salesId" component={SysField.SalesId} />
       </>
     );
   };
 
-  useEffect(()=>{
-    if (value) {
-      tableRef.current.formActions.setFieldValue('salesId', value);
-      tableRef.current.submit();
-    }
-  },[value]);
 
   return (
     <>

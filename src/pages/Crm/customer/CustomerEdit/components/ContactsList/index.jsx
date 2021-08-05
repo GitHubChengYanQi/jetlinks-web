@@ -36,7 +36,7 @@ const ContactsList = (props) => {
     return (
       <>
         <FormItem label='联系人姓名' name="contactsName" component={SysField.SalesId} />
-        <FormItem style={{display: 'none'}} name="customerId" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
       </>
     );
   };
