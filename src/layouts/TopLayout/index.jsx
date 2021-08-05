@@ -41,9 +41,6 @@ const TopLayout = ({children, rightMenu}) => {
   };
 
   const renderLeftMenu = () => {
-
-    console.log(location);
-
     if (subMenu.subMenus) {
       return (
         <Menu
