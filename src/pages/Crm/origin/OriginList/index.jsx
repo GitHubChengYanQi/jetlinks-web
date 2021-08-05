@@ -37,7 +37,7 @@ const OriginList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="来源名称" name="name" component={SysField.Name}/>
+        <FormItem label="来源名称" name="originName" component={SysField.Name}/>
       </>
     );
   };
@@ -52,13 +52,12 @@ const OriginList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="来源名称" dataIndex="name"/>
+        <Column title="来源名称" dataIndex="originName"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                console.log(record);
                 ref.current.open(record.originId);
               }}/>
               <DelButton api={originDelete} value={record.originId} onSuccess={()=>{

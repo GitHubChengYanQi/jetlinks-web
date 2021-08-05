@@ -84,7 +84,7 @@ const BusinessTable = (props) => {
           return (
             <div>
               {
-                record.getcustomer[0] ? record.getcustomer[0].customerName : null
+                record.customer ? record.customer.customerName : null
               }
             </div>
           );
@@ -93,7 +93,7 @@ const BusinessTable = (props) => {
           return (
             <div>
               {
-                record.getsales[0] ? record.getsales[0].name : null
+                record.sales ? record.sales.name : null
               }
             </div>
           );
@@ -102,7 +102,7 @@ const BusinessTable = (props) => {
           return (
             <div>
               {
-                record.getorigin[0] ? record.getorigin[0].originName : null
+                record.origin ? record.origin.originName : null
               }
             </div>
           );
@@ -111,7 +111,7 @@ const BusinessTable = (props) => {
           return (
             <div>
               {
-                record.getuser[0] ? record.getuser[0].account : null
+                record.user ? record.user.account : null
               }
             </div>
           );
