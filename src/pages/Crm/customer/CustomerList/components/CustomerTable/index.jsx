@@ -20,6 +20,7 @@ import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {useHistory} from 'ice';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
+import BadgeState from '@/pages/Crm/customer/CustomerList/components/BadgeState';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -32,11 +33,14 @@ const CustomerTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-  if (status!==undefined || state !==undefined){
-    tableRef.current.formActions.setFieldValue('status', status?status[0] : '');
-    tableRef.current.formActions.setFieldValue('classification', state?state[0]:'');
-    tableRef.current.submit();
-  }
+
+  useEffect(() => {
+    if (status || state) {
+      tableRef.current.formActions.setFieldValue('status', status?status[0] : null);
+      tableRef.current.formActions.setFieldValue('classification', state?state[0]:null);
+      tableRef.current.submit();
+    }
+  }, [status, state]);
 
 
   const actions = () => {
@@ -80,7 +84,11 @@ const CustomerTable = (props) => {
         }} />
         <Column title="公司类型" dataIndex="companyType" />
         <Column title="客户分类" dataIndex="classification" />
-        <Column title="客户状态" dataIndex="status" />
+        <Column title="客户状态" render={(text, record) => {
+          return (
+            <BadgeState state={record.status} text={['潜在客户' ,'正式客户']} color={['red' ,'green']} />
+          );
+        }} />
         <Column title="客户级别" dataIndex="lname" />
         <Column title="客户来源" dataIndex="oname" />
         <Column title="负责人" dataIndex="userName" />

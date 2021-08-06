@@ -52,7 +52,7 @@ const DelButton = ({
   };
 
   return (
-    <Button  {...props} danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined/>}>删除</Button>
+    <Button  {...props} danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined/>} type='text' />
   );
 };
 
