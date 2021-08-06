@@ -116,12 +116,13 @@ const BusinessTable = (props) => {
             </div>
           );
         }}/>
+
         <Column title="立项日期" dataIndex="time" />
         <Column title="商机阶段" dataIndex="stage" />
         <Column title="商机金额" dataIndex="opportunityAmount" />
         <Column title="结单日期" dataIndex="statementTime" />
         <Column title="阶段变更时间" dataIndex="changeTime" />
-        <Column title="阶段状态" dataIndex="state" />
+        <Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
         <Column title="产品合计" dataIndex="totalProducts" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
