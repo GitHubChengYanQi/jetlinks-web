@@ -27,17 +27,19 @@ const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status,state} = props;
+  const {status, state} = props;
   const history = useHistory();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
 
+  const [ids, setIds] = useState([]);
+
 
   useEffect(() => {
     if (status || state) {
-      tableRef.current.formActions.setFieldValue('status', status?status[0] : null);
-      tableRef.current.formActions.setFieldValue('classification', state?state[0]:null);
+      tableRef.current.formActions.setFieldValue('status', status ? status[0] : null);
+      tableRef.current.formActions.setFieldValue('classification', state ? state[0] : null);
       tableRef.current.submit();
     }
   }, [status, state]);
@@ -58,12 +60,21 @@ const CustomerTable = (props) => {
       <>
         <FormItem label="客户名称" name="customerName" component={SysField.Name} />
         <FormItem label="公司类型" name="companyType" component={SysField.Name} />
-        <FormItem style={{display:'none'}} name="status" component={SysField.Name} />
-        <FormItem style={{display:'none'}} name="classification" component={SysField.Name} />
+        <FormItem style={{display: 'none'}} name="status" component={SysField.Name} />
+        <FormItem style={{display: 'none'}} name="classification" component={SysField.Name} />
       </>
     );
   };
 
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      url:'/',
+      method:"POST"
+    }} value={ids}>批量删除</DelButton>);
+  };
 
   return (
     <>
@@ -74,6 +85,10 @@ const CustomerTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(keys)=>{
+          setIds(keys);
+        }}
       >
         <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
           return (
@@ -82,18 +97,18 @@ const CustomerTable = (props) => {
             }}>{text}</Button>
           );
         }} />
-        <Column title="公司类型" dataIndex="companyType" />
-        <Column title="客户分类" dataIndex="classification" />
-        <Column title="客户状态" render={(text, record) => {
+        <Column title="公司类型" dataIndex="companyType" ellipsis />
+        <Column title="客户分类" width={120} dataIndex="classification" />
+        <Column title="客户状态" width={120} render={(text, record) => {
           return (
-            <BadgeState state={record.status} text={['潜在客户' ,'正式客户']} color={['red' ,'green']} />
+            <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
-        <Column title="客户级别" dataIndex="lname" />
-        <Column title="客户来源" dataIndex="oname" />
-        <Column title="负责人" dataIndex="userName" />
-        <Column title="行业" dataIndex="industryName" />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="客户级别" width={120} dataIndex="lname" />
+        <Column title="客户来源" width={120} dataIndex="oname" />
+        <Column title="负责人" width={120} dataIndex="userName" />
+        <Column title="行业" width={120} dataIndex="industryName" />
+        <Column title="操作" width={100} align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
@@ -104,7 +119,7 @@ const CustomerTable = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} />
       </Table>
       <Modal2 width={1000} title="客户" component={CustomerEdit} onSuccess={() => {
         tableRef.current.refresh();

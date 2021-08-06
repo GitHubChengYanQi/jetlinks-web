@@ -1,17 +1,17 @@
 import React from 'react';
-import {Button, Modal} from 'antd';
+import {Button, message, Modal} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 
 const DelButton = ({
-                     onSuccess = () => {
-                     }, onCancel = () => {
-  }, api, rowKey, value, ...props
-                   }) => {
+  onSuccess = () => {
+  }, onCancel = () => {
+  }, api, rowKey, value, children, ...props
+}) => {
 
   if (!api) {
     api = {};
-    console.warn('Table component: api cannot be empty,But now it doesn\'t exist!');
+    console.warn('DelButton Component: api cannot be empty,But now it doesn\'t exist!');
   }
 
   if (!rowKey) {
@@ -19,7 +19,10 @@ const DelButton = ({
   }
 
   const {run} = useRequest(api, {
-    manual: true
+    manual: true,
+    onError(err){
+      message.error(err.message);
+    }
   });
 
   const onClick = () => {
@@ -52,7 +55,9 @@ const DelButton = ({
   };
 
   return (
-    <Button size="small"  danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined/>} type='text' {...props} />
+    <Button
+      size="small" danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined />}
+      type="text" {...props} >{children}</Button>
   );
 };
 

@@ -148,7 +148,4 @@ const BusinessTable = (props) => {
     </>
   );
 };
-
 export default BusinessTable;
-
-
