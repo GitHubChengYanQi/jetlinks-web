@@ -126,7 +126,6 @@ const BusinessTable = (props) => {
         <Column title="结单日期" dataIndex="statementTime" />
         <Column title="阶段变更时间" dataIndex="changeTime" />
         <Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
-        <Column title="阶段状态" dataIndex="state" />
         <Column title="产品合计" dataIndex="totalProducts" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
