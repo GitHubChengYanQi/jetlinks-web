@@ -101,7 +101,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="机会来源" dataIndex="originName" render={(value, record) => {
+
         <Column title="机会来源" dataIndex="originName" render={(value, record)=>{
           return (
             <div>
