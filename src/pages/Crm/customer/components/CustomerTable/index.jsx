@@ -20,7 +20,7 @@ import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {useHistory} from 'ice';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
-import BadgeState from '@/pages/Crm/customer/CustomerList/components/BadgeState';
+import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -77,7 +77,7 @@ const CustomerTable = (props) => {
       >
         <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
           return (
-            <Button type="link" onClick={() => {
+            <Button size="small" type="link" onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
             }}>{text}</Button>
           );

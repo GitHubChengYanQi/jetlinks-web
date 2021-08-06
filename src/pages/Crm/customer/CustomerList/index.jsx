@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/CustomerList/components/CustomerTable';
+import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 
