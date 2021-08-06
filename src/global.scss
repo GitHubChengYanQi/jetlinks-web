@@ -1,14 +1,26 @@
 @import '~antd/dist/antd.css';
+
 @keyframes fade-in {
-  0% {opacity: 0;}/* 初始状态 透明度为0 */
-  40% {opacity: 0;}/* 过渡状态 透明度为0 */
-  100% {opacity: 1;}/* 结束状态 透明度为1 */
+  0% {
+    opacity: 0;
+  }
+  /* 初始状态 透明度为0 */
+  40% {
+    opacity: 0;
+  }
+  /* 过渡状态 透明度为0 */
+  100% {
+    opacity: 1;
+  }
+  /* 结束状态 透明度为1 */
 }
+
 body, html {
   min-height: 100vh;
 
 }
-.web-content{
+
+.web-content {
   position: fixed;
   top: 63px;
   //padding-top: 63px;
@@ -18,7 +30,8 @@ body, html {
   overflow-y: auto;
   background-color: #F6F6F8 !important;
 }
-.content-wrap{
+
+.content-wrap {
   position: relative;
   flex: 1 1 0;
   width: 100%;
@@ -27,6 +40,39 @@ body, html {
   //background-color: #f0f2f5;
 
 }
-.button-left-margin{
+
+.button-left-margin {
   margin-left: 10px;
+}
+
+/*
+滚动条样式
+ */
+::-webkit-scrollbar {
+  /* 滚动条整体样式 */
+  width: 10px; /* 高宽分别对应横竖滚动条的尺寸 */
+  height: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  /* 滚动条里面小方块 */
+  background-color: #2e90e7;
+  background-image: -webkit-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+  );
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  /* 滚动条里面轨道 */
+  background: #ededed;
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }

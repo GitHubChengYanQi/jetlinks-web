@@ -29,7 +29,6 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
 
 
   const requestMethod = async (params) => {
-    console.log(params);
     const { values, pagination,sorter, ...other } = params;
     const page = {};
     page.limit = pagination.pageSize;
@@ -62,8 +61,6 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
         reject(e.message);
       });
     }
-
-
   };
 
   const { form, table: tableProps } = useFormTableQuery(requestMethod);

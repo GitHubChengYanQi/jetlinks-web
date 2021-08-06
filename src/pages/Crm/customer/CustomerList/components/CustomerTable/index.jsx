@@ -27,10 +27,6 @@ const {FormItem} = Form;
 const CustomerTable = (props) => {
 
   const {status,state} = props;
-
-
-
-
   const history = useHistory();
 
   const ref = useRef(null);
