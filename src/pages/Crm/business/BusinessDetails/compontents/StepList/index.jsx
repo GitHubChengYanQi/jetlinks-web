@@ -19,8 +19,6 @@ const StepList = (props) => {
   };
 
 
-
-
   const {data} = useRequest({
     url: '/crmBusinessSalesProcess/list',
     method: 'POST', data: {salesId: value.salesId}
@@ -75,7 +73,7 @@ const StepList = (props) => {
       style: {margin: 'auto'},
       cancelText: '取消',
       onOk: async () => {
-        await edit(null,name);
+        await edit(null, name);
         typeof pOnChange === 'function' && pOnChange();
         openNotificationWithIcon('success', name);
       }
@@ -96,11 +94,11 @@ const StepList = (props) => {
 
   }) : null;
 
-  if (step){
+  if (step) {
     return (
       <Steps
         type="navigation"
-        current={ value.state==='赢单' || value.state==='输单' ? step.length  :  value.process.sort }
+        current={value.state === '赢单' || value.state === '输单' ? step.length : value.process.sort}
       >
         {step}
 
@@ -126,11 +124,9 @@ const StepList = (props) => {
         </>
       </Steps>
     );
-  }else {
+  } else {
     return null;
   }
-
-
 
 
 };

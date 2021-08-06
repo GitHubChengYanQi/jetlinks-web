@@ -18,6 +18,7 @@ import {Button} from 'antd';
 import {RightOutlined} from '@ant-design/icons';
 import {useHistory} from 'ice';
 import {CustomerName} from '@/pages/Crm/customer/CustomerField';
+import {MegaLayout} from '@formily/antd-components';
 
 const {FormItem} = Form;
 
@@ -50,13 +51,12 @@ const CustomerEdit = ({...props}) => {
         labelCol={9}
         wrapperCol={13}
         fieldKey="customerId"
+        labelAlign='right'
       >
         <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={24}>
-              <FormItem labelCol={4} wrapperCol={21} label="客户名称" name="customerName" component={SysField.CustomerName} method={props.value} onSuccess={(customerId)=>{props.onSuccess();history.push(`/CRM/customer/${customerId}`);}} required />
-            </Col>
-          </Row>
+          <MegaLayout full>
+              <FormItem label="客户名称" name="customerName" component={SysField.CustomerName} method={props.value} onSuccess={(customerId)=>{props.onSuccess();history.push(`/CRM/customer/${customerId}`);}} required />
+          </MegaLayout>
           <Row gutter={24} style={{padding: '0 30px'}}>
             <Col span={12}>
               <FormItem label="客户状态" name="status" component={SysField.Status} />
@@ -108,15 +108,6 @@ const CustomerEdit = ({...props}) => {
 
           <Row gutter={24} style={{padding: '0 30px'}}>
             <Col span={12}>
-              <FormItem label="简介" name="introduction" component={SysField.Introduction} />
-            </Col>
-            <Col span={12}>
-              <FormItem label="备注" name="note" component={SysField.Note} />
-            </Col>
-          </Row>
-
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
               <FormItem label="网址" name="url" component={SysField.Url} />
             </Col>
             <Col span={12}>
@@ -137,6 +128,17 @@ const CustomerEdit = ({...props}) => {
             <Col span={12}>
               <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
 
+            </Col>
+          </Row>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={24}>
+              <FormItem labelCol={4} wrapperCol={20} label="简介" name="introduction" component={SysField.Introduction} />
+            </Col>
+
+          </Row>
+          <Row gutter={24} style={{padding: '0 30px'}}>
+            <Col span={24}>
+              <FormItem  labelCol={4} wrapperCol={20} label="备注" name="note" component={SysField.Note} />
             </Col>
           </Row>
 

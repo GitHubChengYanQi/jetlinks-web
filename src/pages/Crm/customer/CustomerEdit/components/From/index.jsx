@@ -17,6 +17,7 @@ const FormWrapper = (
   {
     children,
     labelCol,
+    labelAlign,
     wrapperCol,
     api,
     fieldKey,
@@ -119,7 +120,7 @@ const FormWrapper = (
 
   return findData &&
     <FormilyForm
-      labelAlign='left'
+      labelAlign={labelAlign || 'left'}
       layout='horizontal'
       actions={formActions}
       className={style.formWarp}
