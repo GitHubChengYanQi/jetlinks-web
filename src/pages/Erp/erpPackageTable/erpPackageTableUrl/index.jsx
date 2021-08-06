@@ -35,3 +35,10 @@ export const erpPackageTableList = {
   rowKey:'id'
 };
 
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
+};
+
+
