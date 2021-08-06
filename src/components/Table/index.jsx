@@ -89,7 +89,7 @@ const TableWarp = ({
   const footer = () => {
     return (
       <div className={style.footer}>
-        <div className={style.left}>{parentFooter()}</div>
+        {parentFooter && <div className={style.left}>{parentFooter()}</div>}
         {pagination && <div className={style.right}>共{pagination.total}条</div>}
         <br style={{clear: 'both'}} />
       </div>
