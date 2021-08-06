@@ -56,7 +56,7 @@ const DelButton = ({
 
   return (
     <Button
-      size="small" danger onClick={onClick} className="button-left-margin" icon={<DeleteOutlined />}
+      size="small" danger onClick={onClick}  icon={<DeleteOutlined />}
       type="text" {...props} >{children}</Button>
   );
 };
