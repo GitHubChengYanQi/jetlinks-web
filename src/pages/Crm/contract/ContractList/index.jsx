@@ -5,7 +5,7 @@
  * @Date 2021-07-21 13:36:21
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Table from '@/components/Table';
 import {PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -26,7 +26,6 @@ const {FormItem} = Form;
 
 const ContractList = () => {
 
-  const history = useHistory();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -35,18 +34,20 @@ const ContractList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="合同名称" name="name" component={SysField.Name}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="合同名称" name="name" component={SysField.Name} />
+      </>
     );
   };
+
+
 
 
   return (
@@ -59,24 +60,24 @@ const ContractList = () => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="合同名称" dataIndex="name"/>
+        <Column title="合同名称" dataIndex="name" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.contractId);
-              }}/>
-              <DelButton api={contractDelete} value={record.contractId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
+              }} />
+              <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
+                tableRef.current.submit();
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Modal2 width={1500} title="合同" component={AddContractEdit} onSuccess={() => {
-        tableRef.current.refresh();
+        tableRef.current.submit();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

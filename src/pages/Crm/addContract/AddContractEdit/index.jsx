@@ -15,7 +15,6 @@ import {contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 
 
 const {FormItem} = Form;
-const {Column} = AntTable;
 const ApiConfig = {
   view: contractDetail,
   add: contractAdd,
@@ -50,38 +49,15 @@ const AddContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="选择合同模板" name="name" component={SysField.Template} required/>
+              <FormItem label="选择合同模板" name="content" component={SysField.Template} required />
+              <FormItem label="合同名称" name="name" component={SysField.Name} required />
+              <FormItem label="甲方" name="partyA" component={SysField.Customer} required />
+              <FormItem label="乙方" name="partyB" component={SysField.Customer} required />
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
             </FormIndex>
           </div>
-        </>
-    },
-    {
-      title: '选填项',
-      content:
-        <>
-          <div style={{margin: '50px 150px'}}>
-
-            <FormIndex
-              {...props}
-              value={result}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="contractId"
-              success={(result) => {
-                next();
-              }}
-            >
-              <FormItem label="合同名称" name="name" component={SysField.Name} required/>
-              <FormItem label="签约客户" name="customerId" component={SysField.Customer} required/>
-              <Button type="primary" htmlType="submit">
-                Next
-              </Button>
-            </FormIndex>
-          </div>
-
         </>
     },
     {
@@ -100,7 +76,7 @@ const AddContractEdit = ({...props}) => {
                 props.onSuccess();
               }}
             >
-              <FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required/>
+              <FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required />
               <Button type="primary" htmlType="submit">
                 Done
               </Button>

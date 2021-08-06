@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {lazy, useRef, useState} from 'react';
+import React, {lazy, useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -28,7 +28,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status,state} = props;
+  const {status, state} = props;
 
 
   const history = useHistory();
@@ -36,11 +36,14 @@ const BusinessTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-  if (status!==undefined || state !==undefined){
-    tableRef.current.formActions.setFieldValue('salesId', status?status[0] : '');
-    tableRef.current.formActions.setFieldValue('originId', state?state[0]:'');
-    tableRef.current.submit();
-  }
+
+  useEffect(() => {
+    if (status || state) {
+      tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : null);
+      tableRef.current.formActions.setFieldValue('originId', state ? state[0] : null);
+      tableRef.current.submit();
+    }
+  }, [status, state]);
 
   const actions = () => {
     return (
@@ -55,8 +58,8 @@ const BusinessTable = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem style={{display:'none'}} name="salesId"  component={SysField.BusinessNameListSelect} />
-        <FormItem style={{display:'none'}} name="originId" component={SysField.BusinessNameListSelect} />
+        <FormItem style={{display: 'none'}} name="salesId" component={SysField.BusinessNameListSelect} />
+        <FormItem style={{display: 'none'}} name="originId" component={SysField.BusinessNameListSelect} />
         <FormItem label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
         <FormItem label="客户名称" name="customerName" component={SysField.BusinessNameListSelect} />
       </>
@@ -73,14 +76,14 @@ const BusinessTable = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="商机名称" dataIndex="businessName" render={(text, record, index)=>{
+        <Column title="商机名称" dataIndex="businessName" render={(text, record, index) => {
           return (
-            <Button type="link" onClick={()=>{
+            <Button type="link" onClick={() => {
               history.push(`/CRM/business/${record.businessId}`);
             }}>{text}</Button>
           );
         }} />
-        <Column title="客户名称" dataIndex="customerName" render={(value, record)=>{
+        <Column title="客户名称" dataIndex="customerName" render={(value, record) => {
           return (
             <div>
               {
@@ -88,8 +91,8 @@ const BusinessTable = (props) => {
               }
             </div>
           );
-        }}/>
-        <Column title="销售流程" dataIndex="salesId" render={(value, record)=>{
+        }} />
+        <Column title="销售流程" dataIndex="salesId" render={(value, record) => {
           return (
             <div>
               {
@@ -98,6 +101,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
+
         <Column title="机会来源" dataIndex="originName" render={(value, record)=>{
           return (
             <div>
@@ -107,7 +111,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="负责人" dataIndex="person" render={(value, record)=>{
+        <Column title="负责人" dataIndex="person" render={(value, record) => {
           return (
             <div>
               {
@@ -121,7 +125,7 @@ const BusinessTable = (props) => {
         <Column title="商机金额" dataIndex="opportunityAmount" />
         <Column title="结单日期" dataIndex="statementTime" />
         <Column title="阶段变更时间" dataIndex="changeTime" />
-        <Column title="阶段状态" dataIndex="state" />
+        <Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
         <Column title="产品合计" dataIndex="totalProducts" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -136,14 +140,11 @@ const BusinessTable = (props) => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500}  title="编辑" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={1500} title="编辑" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
     </>
   );
 };
-
 export default BusinessTable;
-
-
