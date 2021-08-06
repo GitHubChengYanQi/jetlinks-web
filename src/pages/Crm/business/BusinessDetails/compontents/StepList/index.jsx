@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Modal, notification, Popconfirm, Popover, Select, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {Step} = Steps;
 
@@ -19,7 +19,6 @@ const StepList = (props) => {
   };
 
 
-  const [current, setCurrent] = useState(value.process ? value.process.sort : 0);
 
 
   const {data} = useRequest({
@@ -38,51 +37,28 @@ const StepList = (props) => {
   });
 
 
-
-  const {run: runs} = useRequest({
-    url: '/crmBusinessSalesProcess/edit',
-    method: 'POST',
-    onError() {
-      openNotificationWithIcon('error');
-    }
-  }, {
-    manual: true
-  });
-
-  const edit = async (salesProcessId) => {
+  const edit = async (salesProcessId, name) => {
     await run(
       {
         data: {
-          processId: salesProcessId,
-          businessId: value.businessId
+          processId: salesProcessId || null,
+          businessId: value.businessId,
+          state: name || '结束',
         }
       }
     );
   };
 
 
-
-  const runEdit = async (salesProcess,names,percent) => {
-    await runs(
-      {
-        data: {
-          salesProcessId: salesProcess,
-          name: names,
-          percentage:percent,
-        }
-      }
-    );
-  };
-
-  function confirm(name,values) {
+  function confirm(name, values) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
       okText: '确认',
-      style:{margin:'auto'},
+      style: {margin: 'auto'},
       cancelText: '取消',
-      onOk:async () => {
+      onOk: async () => {
         await edit(values.salesProcessId);
         await openNotificationWithIcon('success', values.name);
         typeof pOnChange === 'function' && pOnChange();
@@ -90,71 +66,72 @@ const StepList = (props) => {
     });
   }
 
-  function confirmOk(name,values,value,percent) {
+  function confirmOk(name, percent) {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
       okText: '确认',
-      style:{margin:'auto'},
+      style: {margin: 'auto'},
       cancelText: '取消',
-      onOk:async () => {
-        await runEdit(values.salesProcessId,value,percent);
-        await edit(values.salesProcessId);
+      onOk: async () => {
+        await edit(null,name);
         typeof pOnChange === 'function' && pOnChange();
-        openNotificationWithIcon('success', value);
+        openNotificationWithIcon('success', name);
       }
     });
   }
 
 
   const step = data ? data.map((values, index) => {
-    if (index === data.length - 1) {
-      return (
+    return (
+      <>
+        <Step key={index} title={values.name} description={`盈率：${values.percentage}%`}
+              onClick={async () => {
+                confirm(values.name, values);
+              }}
+        />
+      </>
+    );
+
+  }) : null;
+
+  if (step){
+    return (
+      <Steps
+        type="navigation"
+        current={ value.state==='赢单' || value.state==='输单' ? step.length  :  value.process.sort }
+      >
+        {step}
+
+
         <>
-          <Step key={index} title={
+          <Step title={
             <>
               <Popover placement="bottom" content={
                 <div>
                   <a className={styles.state} onClick={async () => {
-                    confirmOk(values.name,values,'赢单',100);
+                    confirmOk('赢单', 100);
                   }}>赢单 100%</a>
                   <a className={styles.state} onClick={async () => {
-                    confirmOk(values.name,values,'输单',0);
+                    confirmOk('输单', 0);
                   }}>输单 0%</a>
                 </div>
               } trigger="hover">
-                {values.name}
+                {value.state}
               </Popover>
             </>}
 
           />
         </>
-      );
-    } else {
-      return (
-        <>
-          <Step key={index} title={values.name} description={`盈率：${values.percentage}%`}
-                onClick={async () => {
-                  confirm(values.name,values);
-                }}
-          />
-        </>
-      );
-    }
-  }) : null;
+      </Steps>
+    );
+  }else {
+    return null;
+  }
 
 
 
-  return (
-    <Steps
-      type="navigation"
-      current={current}
-    >
-      {step}
-
-    </Steps>
-  );
 
 };
 
