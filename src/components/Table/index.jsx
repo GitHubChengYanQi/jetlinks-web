@@ -120,7 +120,8 @@ const TableWarp = ({
         pagination={
           {
             ...pagination,
-            showTotal: (total, range) => `共${total}条`
+            // showTotal: (total, range) => `共${total}条`,
+            position:['bottomCenter']
             // showTotal: (total, range) => `当前${range[0]}-${range[1]}/共${total}条`
           }
         }
