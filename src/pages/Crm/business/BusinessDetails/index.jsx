@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Input} from 'antd';
+import {Avatar, Button, Card, Col, Row, Tabs, Statistic} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
@@ -22,7 +22,6 @@ const CustomerDetail = () => {
   const params = useParams();
 
   const ref = useRef(null);
-
 
   const [responsive, setResponsive] = useState(false);
 

@@ -35,16 +35,16 @@ const ContractList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="合同名称" name="name" component={SysField.Name}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="合同名称" name="name" component={SysField.Name} />
+      </>
     );
   };
 
@@ -59,24 +59,24 @@ const ContractList = () => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="合同名称" dataIndex="name"/>
+        <Column title="合同名称" dataIndex="name" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.contractId);
-              }}/>
-              <DelButton api={contractDelete} value={record.contractId} onSuccess={()=>{
+              }} />
+              <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Modal2 width={1500} title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };
