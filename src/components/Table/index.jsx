@@ -29,7 +29,8 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
 
 
   const requestMethod = async (params) => {
-    const { values, pagination, ...other } = params;
+    console.log(params);
+    const { values, pagination,sorter, ...other } = params;
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
@@ -37,7 +38,13 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
     try {
       response = await ajaxService({
         ...api,
-        data: values,
+        data: {
+          ...values,
+          sorter:sorter && {
+            field:sorter.field,
+            order:sorter.order
+          }
+        },
         ...other,
         params: page
       });
