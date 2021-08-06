@@ -69,7 +69,7 @@ const CustomerList = () => {
           <Divider />
         </div>
       </Sider>
-      <Content>
+      <Content style={{marginLeft:260}}>
         <CustomerTable status={status} state={state} />
       </Content>
     </Layout>
