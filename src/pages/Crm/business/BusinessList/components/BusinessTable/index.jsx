@@ -5,23 +5,20 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {lazy, useRef, useState} from 'react';
+import React, { useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, PageHeader, Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {businessDelete, businessList, CustomerNameListSelect} from '@/pages/Crm/business/BusinessUrl';
+import {businessDelete, businessList} from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
-import {BusinessNameListSelect, CustomerNameListSelect1} from '@/pages/Crm/business/BusinessField';
-import {Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -73,14 +70,14 @@ const BusinessTable = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="商机名称" dataIndex="businessName" render={(text, record, index)=>{
+        <Column title="商机名称" dataIndex="businessName" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(text, record, index)=>{
           return (
             <Button type="link" onClick={()=>{
               history.push(`/CRM/business/${record.businessId}`);
             }}>{text}</Button>
           );
         }} />
-        <Column title="客户名称" dataIndex="customerName" render={(value, record)=>{
+        <Column title="客户名称" dataIndex="customerName"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(value, record)=>{
           return (
             <div>
               {
@@ -89,7 +86,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }}/>
-        <Column title="销售流程" dataIndex="salesId" render={(value, record)=>{
+        <Column title="销售流程" dataIndex="salesId"  render={(value, record)=>{
           return (
             <div>
               {
@@ -98,7 +95,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="机会来源" dataIndex="originName" render={(value, record)=>{
+        <Column title="机会来源" dataIndex="originName"  render={(value, record)=>{
           return (
             <div>
               {
@@ -107,7 +104,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="负责人" dataIndex="person" render={(value, record)=>{
+        <Column title="负责人" dataIndex="person"  render={(value, record)=>{
           return (
             <div>
               {
@@ -116,14 +113,13 @@ const BusinessTable = (props) => {
             </div>
           );
         }}/>
-
-        <Column title="立项日期" dataIndex="time" />
-        <Column title="商机阶段" dataIndex="stage" />
-        <Column title="商机金额" dataIndex="opportunityAmount" />
-        <Column title="结单日期" dataIndex="statementTime" />
-        <Column title="阶段变更时间" dataIndex="changeTime" />
+        <Column title="立项日期" dataIndex="time"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
+        <Column title="商机阶段" dataIndex="stage" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
+        <Column title="商机金额" dataIndex="opportunityAmount" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
+        <Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
+        <Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
         <Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
-        <Column title="产品合计" dataIndex="totalProducts" />
+        <Column title="产品合计" dataIndex="totalProducts"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}   />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

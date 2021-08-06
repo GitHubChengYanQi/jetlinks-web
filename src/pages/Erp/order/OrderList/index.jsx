@@ -7,17 +7,17 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {PageHeader, Table as AntTable} from 'antd';
+import { Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 import {orderDelete, orderList} from '../OrderUrl';
 import OrderEdit from '../OrderEdit';
 import * as SysField from '../OrderField';
 import './index.scss';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -41,7 +41,6 @@ const OrderList = () => {
 
         <FormItem label="订单编号" name="orderId" component={SysField.OrderId} />
         <FormItem label="订单人姓名" name="name" component={SysField.Name} />
-
         <div className="state">
           <FormItem label="订单状态" name="state" component={SysField.State} />
         </div>
@@ -64,16 +63,16 @@ const OrderList = () => {
       >
 
         <Column title="订单编号" dataIndex="orderId" />
-        <Column title="订单人姓名" dataIndex="contactsId" />
+        <Column title="订单人姓名" dataIndex="contactsId"   sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}/>
         <Column title="订单地址" dataIndex="adressId" />
         <Column title="订单数量" dataIndex="number" />
-        <Column title="订单状态" dataIndex="state" />
+        <Column title="订单状态" dataIndex="state"   sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}/>
         <Column title="联系电话" dataIndex="clientId" />
-        <Column title="订单时间" dataIndex="orderTime" />
-        <Column title="付款时间" dataIndex="payTime" />
-        <Column title="发货时间" dataIndex="deliveryId" />
-        <Column title="产品名称" dataIndex="itemId" />
-        <Column title="金额" dataIndex="stockItemId" />
+        <Column title="订单时间" dataIndex="orderTime" sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']}/>
+        <Column title="付款时间" dataIndex="payTime" sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']}/>
+        <Column title="发货时间" dataIndex="deliveryId" sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']}/>
+        <Column title="产品名称" dataIndex="itemId"   />
+        <Column title="金额" dataIndex="stockItemId"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

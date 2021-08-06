@@ -30,7 +30,7 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
 
   const requestMethod = async (params) => {
     console.log(params);
-    const { values, pagination,sorter, ...other } = params;
+    const { values, pagination,sorter,  ...other } = params;
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
@@ -42,9 +42,10 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
           ...values,
           sorter:sorter && {
             field:sorter.field,
-            order:sorter.order
-          }
+             order:sorter.order
+          },
         },
+
         ...other,
         params: page
       });

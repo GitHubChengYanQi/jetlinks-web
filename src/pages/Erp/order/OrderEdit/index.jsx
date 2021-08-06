@@ -6,11 +6,11 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
+
 import Form from '@/components/Form';
 import {orderDetail, orderAdd, orderEdit} from '../OrderUrl';
 import * as SysField from '../OrderField';
-import {StockItemId} from '../OrderField';
+
 
 const {FormItem} = Form;
 
