@@ -5,7 +5,7 @@
  * @Date 2021-07-21 13:36:21
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Table from '@/components/Table';
 import {PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -26,7 +26,6 @@ const {FormItem} = Form;
 
 const ContractList = () => {
 
-  const history = useHistory();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -49,6 +48,8 @@ const ContractList = () => {
   };
 
 
+
+
   return (
     <>
       <Table
@@ -67,14 +68,14 @@ const ContractList = () => {
                 ref.current.open(record.contractId);
               }} />
               <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
-                tableRef.current.refresh();
+                tableRef.current.submit();
               }} />
             </>
           );
         }} width={300} />
       </Table>
       <Modal2 width={1500} title="合同" component={AddContractEdit} onSuccess={() => {
-        tableRef.current.refresh();
+        tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />
     </>

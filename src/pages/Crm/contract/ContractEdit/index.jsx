@@ -27,7 +27,6 @@ const ContractEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
-  console.log(result);
 
   const [current, setCurrent] = React.useState(0);
 
@@ -96,9 +95,6 @@ const ContractEdit = ({...props}) => {
   };
 
 
-  const prev = () => {
-    setCurrent(current - 1);
-  };
 
   return (
     <>

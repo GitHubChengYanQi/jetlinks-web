@@ -49,10 +49,10 @@ const AddContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="选择合同模板" name="content" component={SysField.Template} required/>
-              <FormItem label="合同名称" name="name" component={SysField.Name} required/>
-              <FormItem label="甲方" name="partyA" component={SysField.Customer} required/>
-              <FormItem label="乙方" name="partyB" component={SysField.Customer} required/>
+              <FormItem label="选择合同模板" name="content" component={SysField.Template} required />
+              <FormItem label="合同名称" name="name" component={SysField.Name} required />
+              <FormItem label="甲方" name="partyA" component={SysField.Customer} required />
+              <FormItem label="乙方" name="partyB" component={SysField.Customer} required />
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
@@ -76,7 +76,7 @@ const AddContractEdit = ({...props}) => {
                 props.onSuccess();
               }}
             >
-              <FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required/>
+              <FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required />
               <Button type="primary" htmlType="submit">
                 Done
               </Button>
