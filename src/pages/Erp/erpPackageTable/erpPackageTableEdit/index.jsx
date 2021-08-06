@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {erpPackageTableDetail, erpPackageTableAdd, erpPackageTableEdit} from '../erpPackageTableUrl';
 import * as SysField from '../erpPackageTableField';
+import {itemId, quantity} from "../erpPackageTableField";
 
 const {FormItem} = Form;
 
@@ -30,8 +31,10 @@ const ErpPackageTableEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="id"
     >
-      <FormItem label="套餐id" name="packageId" component={SysField.PackageId} required/>
-      <FormItem label="套餐" name="package" component={SysField.Package} required/>
+      <FormItem style={{'display': 'none'}} name="packageId" component={SysField.PackageId} required/>
+      <FormItem style={{'display': 'none'}} name="itemId" component={SysField.itemId} required/>
+      <FormItem label="销售单价" name="salePrice" component={SysField.salePrice} required/>
+      <FormItem label="数量" name="quantity" component={SysField.Quantity} required/>
     </Form>
   );
 };

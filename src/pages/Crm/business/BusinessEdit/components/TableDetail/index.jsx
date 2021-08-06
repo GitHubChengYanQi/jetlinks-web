@@ -44,14 +44,44 @@ const TableDetail = (props) => {
         </Button>
         <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
           refAddOne.current.open(false);
-        }} ref={refAddOne}  allData={(data) => {setDa({businessId: value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
+        }} ref={refAddOne}
+        allData={(data) => {
+          run(
+            {
+              data:{
+                businessId: value,
+                itemId: data.itemId,
+                salePrice: 0,
+                totalPrice: 0,
+                quantity: 0
+              }
+            });
+          refAddOne.current.close();
+          tableRef.current.refresh();
+        }}/>
         <Button type="primary" className='placeName' onClick={()=>{
           refAddAll.current.open(false);}}>
           添加产品套餐
         </Button>
         <Drawer width={800} title="选择" component={ItemPackage}  onSuccess={() => {
           refAddAll.current.close();
-        }} ref={refAddAll}  allData={(data) => {setDa({businessId: value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
+        }} ref={refAddAll}
+        allData={(data) => {
+          const origin = data.map((val) => {
+            return {
+              businessId: value,
+              itemId: val.itemId,
+              salePrice: 0,
+              totalPrice: 0,
+              quantity: 0
+            };
+
+          });
+          run(origin);
+          refAddOne.current.close();
+          tableRef.current.refresh();
+        }}/>
+
       </div>
       <Table
         api={crmBusinessDetailedList}
@@ -63,7 +93,7 @@ const TableDetail = (props) => {
           return (
             <div>
               {
-                record.items[0] ? record.items[0].name : null
+                record.itemsResult ? record.itemsResult.name : null
               }
             </div>
           );

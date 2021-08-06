@@ -18,6 +18,8 @@ import ErpPackageEdit from '../erpPackageEdit';
 import * as SysField from '../erpPackageField';
 import Breadcrumb from "@/components/Breadcrumb";
 import TableList from "@/pages/Erp/erpPackage/erpPackageList/components/TableList";
+import useRequest from "../../../../util/Request/useRequest";
+import {erpPackageTableDelete, erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -25,6 +27,15 @@ const ErpPackageList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const [data, setData] = useState();
+  const [PackageId, setPackageId] = useState();
+
+
+
+  const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
+  console.log(daGet);
+  const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
+
+
   const actions = () => {
     return (
       <>
@@ -75,6 +86,9 @@ const ErpPackageList = () => {
                   ref.current.open(record.packageId);
                 }}/>
                 <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
+                  console.log(record);
+                  run(record.packageId);
+
                   tableRef.current.refresh();
                 }}/>
               </>
@@ -86,7 +100,6 @@ const ErpPackageList = () => {
 
         {/*  </Col>*/}
         {/*</Row>*/}
-
 
       </div>
 

@@ -18,7 +18,6 @@ const TableList = (props) => {
     return (
       <>
         <FormItem  style={{'display': 'none'}} name="packageId" value={value} component={SysField.packageId}/>
-        <FormItem  label='产品名称' name="itemsId" component={SysField.itemId}/>
       </>
     );
   };
@@ -28,15 +27,16 @@ const TableList = (props) => {
       <Table
         api={erpPackageTableList}
         rowKey="id"
+        value={value}
         ref={tableRef}
         searchForm={searchForm}
-
+        showSearchButton={false}
       >
         <Column title="产品名称" dataIndex="items" render={(value, record)=>{
           return (
             <div>
               {
-                record.items[0] ? record.items[0].name : null
+                record.itemsResult ? record.itemsResult.name : null
               }
             </div>
           );

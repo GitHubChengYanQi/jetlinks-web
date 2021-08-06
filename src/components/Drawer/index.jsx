@@ -37,6 +37,7 @@ const Drawer = (
         show(null);
         onClose();
       }}
+      destroyOnClose
       width={width}
       title={value ? `编辑${title}` : `添加${title}`}
       afterVisibleChange={(v) => {
