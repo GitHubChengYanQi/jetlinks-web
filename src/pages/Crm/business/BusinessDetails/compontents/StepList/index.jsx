@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {Menu, notification, Popconfirm, Popover, Select, Steps} from 'antd';
+import {Modal, notification, Popconfirm, Popover, Select, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
-import { Modal, Button, Space } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const {Step} = Steps;
@@ -50,12 +49,12 @@ const StepList = (props) => {
     manual: true
   });
 
-  const edit = async (salesProcessId, business) => {
+  const edit = async (salesProcessId) => {
     await run(
       {
         data: {
           processId: salesProcessId,
-          businessId: business
+          businessId: value.businessId
         }
       }
     );
@@ -63,12 +62,13 @@ const StepList = (props) => {
 
 
 
-  const runEdit = async (salesProcessId) => {
-    await run(
+  const runEdit = async (salesProcess,names,percent) => {
+    await runs(
       {
         data: {
-          processId: salesProcessId,
-          businessId: value.businessId
+          salesProcessId: salesProcess,
+          name: names,
+          percentage:percent,
         }
       }
     );
@@ -83,9 +83,26 @@ const StepList = (props) => {
       style:{margin:'auto'},
       cancelText: '取消',
       onOk:async () => {
-        await edit(values.salesProcessId, value.businessId);
+        await edit(values.salesProcessId);
         await openNotificationWithIcon('success', values.name);
         typeof pOnChange === 'function' && pOnChange();
+      }
+    });
+  }
+
+  function confirmOk(name,values,value,percent) {
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `是否变更到${name}`,
+      okText: '确认',
+      style:{margin:'auto'},
+      cancelText: '取消',
+      onOk:async () => {
+        await runEdit(values.salesProcessId,value,percent);
+        await edit(values.salesProcessId);
+        typeof pOnChange === 'function' && pOnChange();
+        openNotificationWithIcon('success', value);
       }
     });
   }
@@ -100,16 +117,10 @@ const StepList = (props) => {
               <Popover placement="bottom" content={
                 <div>
                   <a className={styles.state} onClick={async () => {
-                    await runEdit(values.salesProcessId);
-                    await edit(values.salesProcessId, value.businessId);
-                    typeof pOnChange === 'function' && pOnChange();
-                    openNotificationWithIcon('success', '赢单');
+                    confirmOk(values.name,values,'赢单',100);
                   }}>赢单 100%</a>
                   <a className={styles.state} onClick={async () => {
-                    await runEdit(values.salesProcessId);
-                    await edit(values.salesProcessId, value.businessId);
-                    typeof pOnChange === 'function' && pOnChange();
-                    openNotificationWithIcon('success', '输单');
+                    confirmOk(values.name,values,'输单',0);
                   }}>输单 0%</a>
                 </div>
               } trigger="hover">

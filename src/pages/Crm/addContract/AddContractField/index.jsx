@@ -20,6 +20,7 @@ import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 const w = 200;
 
 
+
 export const Customer = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);

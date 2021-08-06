@@ -32,7 +32,7 @@ const Contract = (props) => {
     return (
       <>
         <FormItem label='合同名称' name="name" component={SysField.SalesId} />
-        <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} value={customerId} name="partyA" component={SysField.SalesId} />
       </>
     );
   };
