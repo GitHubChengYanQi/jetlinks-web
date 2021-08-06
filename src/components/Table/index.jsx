@@ -20,7 +20,7 @@ const TableWarp = ({
   rowKey,
   selectionType,
   onChange,
-  footer: Footer,
+  footer: parentFooter,
   ...props
 }, ref) => {
 
@@ -35,6 +35,7 @@ const TableWarp = ({
   if (!rowKey) {
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
+
 
   const {ajaxService} = Service();
 
@@ -84,7 +85,16 @@ const TableWarp = ({
   }));
 
   const {loading, dataSource, pagination, ...other} = tableProps;
-  // pagination
+
+  const footer = () => {
+    return (
+      <div className={style.footer}>
+        {parentFooter && <div className={style.left}>{parentFooter()}</div>}
+        {pagination && <div className={style.right}>共{pagination.total}条</div>}
+        <br style={{clear: 'both'}} />
+      </div>
+    );
+  };
   return (
     <div className={style.tableWarp}>
       <div className={style.listHeader}>
@@ -120,7 +130,8 @@ const TableWarp = ({
         pagination={
           {
             ...pagination,
-            showTotal: (total, range) => `共${total}条`
+            // showTotal: (total, range) => `共${total}条`,
+            position: ['bottomCenter']
             // showTotal: (total, range) => `当前${range[0]}-${range[1]}/共${total}条`
           }
         }
@@ -130,7 +141,7 @@ const TableWarp = ({
             typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
           }
         }}
-        footer={Footer}
+        footer={footer}
         {...other}
         {...props}
       >

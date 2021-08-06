@@ -71,8 +71,8 @@ const CustomerTable = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-      url:'/',
-      method:"POST"
+      url: '/',
+      method: 'POST'
     }} value={ids}>批量删除</DelButton>);
   };
 
@@ -86,7 +86,7 @@ const CustomerTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        onChange={(keys)=>{
+        onChange={(keys) => {
           setIds(keys);
         }}
       >
@@ -97,14 +97,17 @@ const CustomerTable = (props) => {
             }}>{text}</Button>
           );
         }} />
-        <Column title="公司类型" dataIndex="companyType" ellipsis />
-        <Column title="客户分类" width={120} dataIndex="classification" />
         <Column title="客户状态" width={120} render={(text, record) => {
           return (
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
         <Column title="客户级别" width={120} dataIndex="lname" />
+        <Column title="客户分类" width={120} dataIndex="classification" />
+        <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
+
+
+
         <Column title="客户来源" width={120} dataIndex="oname" />
         <Column title="负责人" width={120} dataIndex="userName" />
         <Column title="行业" width={120} dataIndex="industryName" />
