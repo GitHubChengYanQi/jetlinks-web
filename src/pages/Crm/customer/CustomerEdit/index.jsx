@@ -47,30 +47,29 @@ const CustomerEdit = ({...props}) => {
       <Form
         {...props}
         ref={formRef}
+        labelCol={7}
+        wrapperCol={20}
         api={ApiConfig}
-        labelCol={9}
-        wrapperCol={13}
         fieldKey="customerId"
-        labelAlign='right'
+        labelAlign="right"
       >
         <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
           <MegaLayout full>
-              <FormItem label="客户名称" name="customerName" component={SysField.CustomerName} method={props.value} onSuccess={(customerId)=>{props.onSuccess();history.push(`/CRM/customer/${customerId}`);}} required />
+          <FormItem labelCol={4} label="客户名称" name="customerName" component={SysField.CustomerName} method={props.value}
+                    onSuccess={(customerId) => {
+                      props.onSuccess();
+                      history.push(`/CRM/customer/${customerId}`);
+                    }} required />
           </MegaLayout>
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="客户状态" name="status" component={SysField.Status} />
-            </Col>
-            <Col span={12}>
-              <FormItem label="客户分类" name="classification" component={SysField.Classification} />
-            </Col>
-          </Row>
+          <MegaLayout grid>
+            <FormItem label="客户状态" name="status" component={SysField.Status} />
+            <FormItem label="客户分类" name="classification" component={SysField.Classification} />
+          </MegaLayout>
 
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="负责人" name="userId" component={SysField.UserName} />
-            </Col>
-          </Row>
+          <MegaLayout grid>
+            <FormItem label="负责人" name="userId" component={SysField.UserName} />
+          </MegaLayout>
+
         </ProCard>
 
         <ProCard
@@ -78,69 +77,47 @@ const CustomerEdit = ({...props}) => {
           headerBordered
         >
 
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
-            </Col>
-            <Col span={12}>
-              <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} />
-            </Col>
-          </Row>
 
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="成立时间" name="setup" component={SysField.Setup} />
-            </Col>
-            <Col span={12}>
-              <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} />
-            </Col>
-          </Row>
+          <MegaLayout grid>
+            <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
+            <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} />
+          </MegaLayout>
 
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
-            </Col>
-            <Col span={12}>
-              <FormItem label="注册地址" name="signIn" component={SysField.SignIn} />
+          <MegaLayout grid>
+            <FormItem label="成立时间" name="setup" component={SysField.Setup} />
+            <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} />
+          </MegaLayout>
 
-            </Col>
-          </Row>
+          <MegaLayout grid>
 
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="网址" name="url" component={SysField.Url} />
-            </Col>
-            <Col span={12}>
+            <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
+            <FormItem label="注册地址" name="signIn" component={SysField.SignIn} />
 
-              <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
-            </Col>
-          </Row>
+          </MegaLayout>
 
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
-            </Col>
-            <Col span={12}>
-              <FormItem label="邮箱" name="emall" component={SysField.Emall} />
-            </Col>
-          </Row>
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={12}>
-              <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
+          <MegaLayout grid>
+            <FormItem label="网址" name="url" component={SysField.Url} />
+            <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
+          </MegaLayout>
 
-            </Col>
-          </Row>
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={24}>
-              <FormItem labelCol={4} wrapperCol={20} label="简介" name="introduction" component={SysField.Introduction} />
-            </Col>
+          <MegaLayout grid>
+            <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
+            <FormItem label="邮箱" name="emall" component={SysField.Emall} />
+          </MegaLayout>
 
-          </Row>
-          <Row gutter={24} style={{padding: '0 30px'}}>
-            <Col span={24}>
-              <FormItem  labelCol={4} wrapperCol={20} label="备注" name="note" component={SysField.Note} />
-            </Col>
-          </Row>
+          <MegaLayout grid>
+            <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
+
+          </MegaLayout>
+
+          <MegaLayout>
+            <FormItem label="简介" name="introduction" component={SysField.Introduction} />
+          </MegaLayout>
+
+          <MegaLayout>
+            <FormItem label="备注" name="note" component={SysField.Note} />
+          </MegaLayout>
+
 
         </ProCard>
 

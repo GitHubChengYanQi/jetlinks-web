@@ -2,12 +2,24 @@ import React, {useState} from 'react';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
+import {useRequest} from '@/util/Request';
 
 
 const CustomerList = () => {
 
+  const {loading, data} = useRequest({ url: '/crmCustomerLevel/list',method: 'POST',rowKey:'customerLevelId'});
+
+  const crmCustomerLevel = data ? data.map((values)=>{
+    return {
+      title: values.level,
+      key:values.customerLevelId,
+    };
+  }) : [];
+
+
   const [status, setStatus] = useState();
   const [state, setState] = useState();
+  const [level, setLevel] = useState();
 
   const Left = () => {
     return (
@@ -63,11 +75,28 @@ const CustomerList = () => {
             },
           ]}
         />
+        <Divider />
+        <Tree
+          showLine
+          onSelect={(value) => {
+            setLevel(value);
+          }}
+          // switcherIcon={<DownOutlined />}
+          defaultExpandedKeys={['']}
+          // onSelect={this.onSelect}
+          treeData={[
+            {
+              title: '客户级别',
+              key: '',
+              children: crmCustomerLevel
+            },
+          ]}
+        />
       </>);
   };
   return (
     <ListLayout left={Left()}>
-      <CustomerTable status={status} state={state} />
+      <CustomerTable status={status} state={state} level={level} />
     </ListLayout>
   );
 };

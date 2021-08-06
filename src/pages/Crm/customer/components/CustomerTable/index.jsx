@@ -27,7 +27,7 @@ const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state} = props;
+  const {status, state,level} = props;
   const history = useHistory();
 
   const ref = useRef(null);
@@ -37,12 +37,13 @@ const CustomerTable = (props) => {
 
 
   useEffect(() => {
-    if (status || state) {
+    if (status || state || level) {
       tableRef.current.formActions.setFieldValue('status', status ? status[0] : null);
       tableRef.current.formActions.setFieldValue('classification', state ? state[0] : null);
+      tableRef.current.formActions.setFieldValue('customerLevelId', level ? level[0] : null);
       tableRef.current.submit();
     }
-  }, [status, state]);
+  }, [status, state,level]);
 
 
   const actions = () => {
@@ -62,6 +63,7 @@ const CustomerTable = (props) => {
         <FormItem label="公司类型" name="companyType" component={SysField.Name} />
         <FormItem style={{display: 'none'}} name="status" component={SysField.Name} />
         <FormItem style={{display: 'none'}} name="classification" component={SysField.Name} />
+        <FormItem style={{display: 'none'}} name="customerLevelId" component={SysField.Name} />
       </>
     );
   };
@@ -90,7 +92,7 @@ const CustomerTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
+        <Column title="客户名称" width={120} dataIndex="customerName" render={(text, record, index) => {
           return (
             <Button size="small" type="link" onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
@@ -103,11 +105,8 @@ const CustomerTable = (props) => {
           );
         }} />
         <Column title="客户级别" width={120} dataIndex="lname" />
-        <Column title="客户分类" width={120} dataIndex="classification" />
+        <Column title="客户分类" width={120} dataIndex="classificationName" />
         <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
-
-
-
         <Column title="客户来源" width={120} dataIndex="oname" />
         <Column title="负责人" width={120} dataIndex="userName" />
         <Column title="行业" width={120} dataIndex="industryName" />
