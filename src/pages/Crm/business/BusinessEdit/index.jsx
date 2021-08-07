@@ -72,7 +72,7 @@ const BusinessEdit = ({...props}) => {
                 <Col span={12}>
                   <FormItem label="客户名称" name="customerId"
                     rules={[{ required: true, message: '请输入商客户名称!' }]}
-                    component={SysField.CustomerNameListSelect} required/>
+                    component={SysField.CustomerNameListSelect} />
                 </Col>
                 <Col span={12}>
                   <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
@@ -110,11 +110,6 @@ const BusinessEdit = ({...props}) => {
                 <Col span={12}>
                   <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
                 </Col>
-                <Col span={12}>
-                  <FormItem label="阶段状态" name="state" component={SysField.StateListSelect12} />
-                </Col>
-              </Row>
-              <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
                   <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
                 </Col>

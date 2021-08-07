@@ -5,56 +5,98 @@
  * @Date 2021-08-04 11:01:43
  */
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Button, Table as AntTable} from 'antd';
+import Table from "@/components/Table";
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {erpPackageTableDelete, erpPackageTableList} from '../erpPackageTableUrl';
+import useRequest from '@/util/Request/useRequest';
+import Modal2 from '@/components/Modal';
+import ItemsTable from "@/pages/Erp/erpPackageTable/erpPackageTableList/components/ItemsTable";
 import ErpPackageTableEdit from '../erpPackageTableEdit';
+import {erpPackageTableDelete, erpPackageTableList} from '../erpPackageTableUrl';
 import * as SysField from '../erpPackageTableField';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ErpPackageTableList = () => {
-  const ref = useRef(null);
+const ErpPackageTableList = ({onChange,...props}) => {
+
+  const ref = useRef();
   const tableRef = useRef(null);
-  const actions = () => {
+  const refAddOne = useRef(null);
+  const [da,setDa] = useState(null);
+  const [ids, setIds] = useState([]);
+
+  const refesh = (data, params) => {
+    console.log('data');
+    tableRef.current.refresh();
+  };
+
+  const {data,run} = useRequest({url: '/erpPackageTable/add',method: 'POST'},{manual:true}, {onSuccess:refesh});
+
+
+  const searchForm = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
+        <FormItem style={{'display': 'none'}} name="packageId" value={props.value} component={SysField.PackageId}/>
+        <FormItem label="" name="packageId" value={props.value} component={SysField.PackageId}/>
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="套餐id" name="packageId" component={SysField.PackageId}/>
-       <FormItem label="套餐" name="package" component={SysField.Package}/>
-     </>
-    );
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      url: '/',
+      method: 'POST'
+    }} value={ids}>批量删除</DelButton>);
   };
 
   return (
     <>
+      <div style={{textAlign:'right'}}>
+        <Button type="primary" className='placeName' onClick={()=>{
+          refAddOne.current.open(false);}}>
+          添加产品
+        </Button>
+        <Modal2 width={1900} title="选择" component={ItemsTable}
+          onSuccess={()=>{
+            tableRef.current.refresh();
+            refAddOne.current.close();
+          }}
+          ref={refAddOne}
+          packageId={props.value}
+        />
+      </div>
       <Table
-        title={<h2>列表</h2>}
         api={erpPackageTableList}
         rowKey="id"
         searchForm={searchForm}
-        actions={actions()}
         ref={tableRef}
+        showSearchButton={false}
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
       >
-        <Column title="套餐id" dataIndex="packageId"/>
-        <Column title="套餐" dataIndex="package"/>
-        <Column/>
+        <Column title="产品名称" dataIndex="items" render={(value, record)=>{
+          return (
+            <div>
+              {
+                record.itemsResult ? record.itemsResult.name : null
+              }
+            </div>
+          );
+        }} />
+        <Column title="销售单价" dataIndex="salePrice"/>
+        <Column title="数量" dataIndex="quantity"/>
+        <Column title="小计" dataIndex="totalPrice"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -66,7 +108,7 @@ const ErpPackageTableList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} />
       </Table>
       <Drawer width={800} title="编辑" component={ErpPackageTableEdit} onSuccess={() => {
         tableRef.current.refresh();

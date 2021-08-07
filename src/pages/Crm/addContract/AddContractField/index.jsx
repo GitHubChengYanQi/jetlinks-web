@@ -20,6 +20,7 @@ import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 const w = 200;
 
 
+
 export const Customer = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
@@ -37,16 +38,16 @@ export const Customer = (props) =>{
 };
 
 export const Name = (props) => {
-  return (<Input style={{width: w}}  {...props} />);
+  return (<Input   {...props} />);
 };
 export const UserId = (props) => {
-  return (<Select style={{width: w}} api={apiUrl.userIdSelect} {...props} />);
+  return (<Select  api={apiUrl.userIdSelect} {...props} />);
 };
 export const Note = (props) => {
-  return (<Input style={{width: w}} {...props} />);
+  return (<Input  {...props} />);
 };
 export const Time = (props) => {
-  return (<DatePicker2 showTime style={{width: w}}  {...props} />);
+  return (<DatePicker2 showTime   {...props} />);
 };
 
 // export const Template = (props) => {
@@ -54,7 +55,7 @@ export const Time = (props) => {
 //   const ref = useRef(null);
 //   const tableRef = useRef(null);
 //   return (<>
-//     <Input style={{width: w}} {...props} />
+//     <Input  {...props} />
 //     <Button className="placeName" onClick={() => {
 //       ref.current.open(false);
 //     }}>

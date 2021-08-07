@@ -16,8 +16,11 @@ import Form from '@/components/Form';
 import {erpPackageDelete, erpPackageList} from '../erpPackageUrl';
 import ErpPackageEdit from '../erpPackageEdit';
 import * as SysField from '../erpPackageField';
+import Modal2 from '@/components/Modal';
 import Breadcrumb from "@/components/Breadcrumb";
 import TableList from "@/pages/Erp/erpPackage/erpPackageList/components/TableList";
+import useRequest from "../../../../util/Request/useRequest";
+import {erpPackageTableDelete, erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -25,6 +28,16 @@ const ErpPackageList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const [data, setData] = useState();
+  const [PackageId, setPackageId] = useState();
+  const [ids, setIds] = useState([]);
+
+
+
+  const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
+  console.log(daGet);
+  const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
+
+
   const actions = () => {
     return (
       <>
@@ -43,6 +56,15 @@ const ErpPackageList = () => {
       </>
     );
   };
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      url: '/',
+      method: 'POST'
+    }} value={ids}>批量删除</DelButton>);
+  };
 
   return (
     <>
@@ -59,6 +81,7 @@ const ErpPackageList = () => {
           expandable={{
             expandedRowRender: record => <TableList value = {record.packageId}/>
           }}
+          footer={footer}
         >
           <Column title="套餐名称" dataIndex="productName" render={(text, record, index)=>{
             return (
@@ -75,6 +98,9 @@ const ErpPackageList = () => {
                   ref.current.open(record.packageId);
                 }}/>
                 <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
+                  console.log(record);
+                  run(record.packageId);
+
                   tableRef.current.refresh();
                 }}/>
               </>
@@ -87,10 +113,9 @@ const ErpPackageList = () => {
         {/*  </Col>*/}
         {/*</Row>*/}
 
-
       </div>
 
-      <Drawer width={800}  title="套餐" component={ErpPackageEdit} onSuccess={() => {
+      <Modal2 width={900}  title="套餐" component={ErpPackageEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

@@ -39,6 +39,8 @@ const Modal = (
       style={{margin:'auto'}}
       footer={[]}
       visible={visible}
+      centered
+      maskClosable={false}
       onCancel={() => {
         show(null);
         onClose();

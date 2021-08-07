@@ -70,7 +70,7 @@ const BusinessList = () => {
           <Divider />
         </div>
       </Sider>
-      <Content>
+      <Content style={{marginLeft:260}}>
         <BusinessTable status={status} state={state} />
       </Content>
     </Layout>

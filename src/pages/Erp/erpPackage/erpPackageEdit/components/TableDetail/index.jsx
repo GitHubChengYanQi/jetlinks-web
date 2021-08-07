@@ -1,27 +1,25 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {Button, Table as AntTable} from 'antd';
 import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
-import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/business/BusinessUrl";
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
 import Drawer from "@/components/Drawer";
-import * as SysField from "@/pages/Crm/business/BusinessField";
 import Form from "@/components/Form";
 import Items from "@/pages/Erp/instock/InstockEdit/components/Items";
 import {useRequest} from "@/util/Request";
 import CrmBusinessDetailedEdit from "@/pages/Crm/crmBusinessDetailed/crmBusinessDetailedEdit";
-import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
+import {erpPackageTableDelete, erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
 
 const {FormItem} = Form;
 const {Column} = AntTable;
 
 
 const TableDetail = (props) => {
+  console.log(props);
   const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const refAddOne = useRef();
-  const refAddAll = useRef();
 
   const [da,setDa] = useState();
   const {data,run} = useRequest({url: '/crmBusinessDetailed/add',method: 'POST',data:da},{manual:true});
@@ -39,7 +37,8 @@ const TableDetail = (props) => {
         }} ref={refAddOne}  allData={(data) => {setDa({businessId: value, itemId:data.itemId, salePrice: 0, quantity: 0, totalPrice: 0}); run(); refAddOne.current.close(); tableRef.current.refresh();}}/>
       </div>
       <Table
-        api={crmBusinessDetailedList}
+        api={erpPackageTableList}
+        value={value}
         rowKey="id"
         ref={tableRef}
       >
@@ -47,7 +46,7 @@ const TableDetail = (props) => {
           return (
             <div>
               {
-                record.items[0] ? record.items[0].name : null
+                record.itemsResult ? record.itemsResult.name : null
               }
             </div>
           );
@@ -61,7 +60,7 @@ const TableDetail = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.id);
               }}/>
-              <DelButton api={crmBusinessDetailedDelete} value={record.id} onSuccess={() => {
+              <DelButton api={erpPackageTableDelete} value={record.id} onSuccess={() => {
                 tableRef.current.refresh();
               }}/>
             </>

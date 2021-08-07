@@ -23,7 +23,6 @@ const CrmBusinessTrackEdit = ({...props}) => {
 
   const {val} = props;
 
-  console.log(val);
 
   const formRef = useRef();
 
@@ -37,8 +36,10 @@ const CrmBusinessTrackEdit = ({...props}) => {
       >
         <FormItem label="备注" name="note" component={SysField.Note}/>
         <FormItem label="跟踪类型" name="type" component={SysField.Type}  />
-        <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val.businessId}  />
-        <FormItem label="负责人" name="userId" component={SysField.UserId} val={val.person} />
+        <FormItem label="下次跟踪提醒时间" name="time" component={SysField.Time}  />
+        <FormItem label="是否报价" name="offer" component={SysField.Offer}  />
+        <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
+        <FormItem label="负责人" name="userId" component={SysField.UserId} val={val} />
       </Form>
     </Card>
   );

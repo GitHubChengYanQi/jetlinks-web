@@ -5,7 +5,7 @@ import {EditOutlined} from '@ant-design/icons';
 const EditButton = ({onClick, ...props}) => {
 
   return (
-    <Button  {...props} onClick={onClick} className="button-left-margin" icon={<EditOutlined />}>编辑</Button>
+    <Button size="small" onClick={onClick} className="right-margin" icon={<EditOutlined />} type='link'  {...props}/>
   );
 };
 

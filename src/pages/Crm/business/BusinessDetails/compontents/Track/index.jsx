@@ -38,12 +38,11 @@ const Track = (props) => {
   }) : [];
 
   return (
-    <div style={{overflowY:'auto',height:700,overflowX:'hidden',position:'relative'}}>
-      <Button style={{width: '100%',position:'absolute',top:0,left:0}} onClick={() => {
+    <div>
+      <Button style={{width: '100%'}} onClick={() => {
         ref.current.open(false);
       }} className="button-left-margin" icon={<EditOutlined />}>添加跟踪</Button>
       <List
-        className={styles.list}
         header={`${datas.length} 条跟踪`}
         itemLayout="horizontal"
         dataSource={datas}

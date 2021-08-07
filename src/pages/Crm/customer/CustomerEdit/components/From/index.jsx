@@ -17,6 +17,7 @@ const FormWrapper = (
   {
     children,
     labelCol,
+    labelAlign,
     wrapperCol,
     api,
     fieldKey,
@@ -119,12 +120,12 @@ const FormWrapper = (
 
   return findData &&
     <FormilyForm
-      labelAlign='left'
+      labelAlign={labelAlign || 'left'}
       layout='horizontal'
       actions={formActions}
       className={style.formWarp}
-      labelCol={labelCol || 9}
-      wrapperCol={wrapperCol || 15}
+      labelCol={labelCol || null}
+      wrapperCol={wrapperCol || null}
       onSubmit={async (values) => {
         const submitValues = onSubmit(values);
         if (submitValues === false) {

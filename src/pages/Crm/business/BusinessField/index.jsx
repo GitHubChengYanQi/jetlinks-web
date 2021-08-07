@@ -145,7 +145,7 @@ export const DeptIdListSelect11 = (props) =>{
 
 // 商机状态
 export const StateListSelect12 = (props) =>{
-  return (<AntdSelect style={{width:w}}  options={[{value:'预测评估',label:'预测评估'},{value:'初期沟通',label:'初期沟通'},{value:'需求分析',label:'需求分析'}]} {...props}/>);
+  return (<AntdSelect style={{width:w}}  options={[{value:0,label:'预测评估'},{value:1,label:'初期沟通'},{value:2,label:'需求分析'}]} {...props}/>);
 };
 // 商机阶段
 export const StageListSelect13 = (props) =>{

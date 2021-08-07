@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Input} from 'antd';
+import {Avatar, Button, Card, Col, Row, Tabs, Statistic} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
@@ -23,10 +23,9 @@ const CustomerDetail = () => {
 
   const ref = useRef(null);
 
-
   const [responsive, setResponsive] = useState(false);
 
-  const {loading, data, run,refresh} = useRequest(businessDetail, {
+  const {loading, data, run, refresh} = useRequest(businessDetail, {
     defaultParams: {
       data: {
         businessId: params.cid
@@ -37,7 +36,7 @@ const CustomerDetail = () => {
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
-  if(data){
+  if (data) {
     return <div className={styles.detail}>
       <Card>
         <Breadcrumb />
@@ -71,36 +70,36 @@ const CustomerDetail = () => {
         </div>
       </Card>
 
-      <div className={styles.main}>
-        <Card title="商机销售流程" bodyStyle={{padding: 30}}>
-          <StepList onChange={() => {
-            refresh();
-          }} value={data} />
-        </Card>
-      </div>
-      <div className={styles.main}>
-        <Card>
-          <Desc data={data} />
-        </Card>
-      </div>
-      <div className={styles.main}>
+      <Row>
+        <Col span={16}>
+          <div className={styles.main}>
+            <Card title="商机销售流程" bodyStyle={{padding: 30}}>
+              <StepList onChange={() => {
+                refresh();
+              }} value={data} />
+            </Card>
+          </div>
+          <div className={styles.main}>
+            <Card>
+              <Desc data={data} />
+            </Card>
+          </div>
+          <div className={styles.main}>
 
-        <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
-          <ProCard>
-            <Statistic title="今日UV" value={79.0} precision={2} />
-          </ProCard>
-          <ProCard>
-            <Statistic title="今日UV" value={79.0} precision={2} />
-          </ProCard>
-          <ProCard>
-            <Statistic title="今日UV" value={79.0} precision={2} />
-          </ProCard>
-        </ProCard.Group>
-      </div>
-      <div
-        className={styles.main}>
-        <Row gutter={12}>
-          <Col span={16}>
+            <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
+              <ProCard>
+                <Statistic title="今日UV" value={79.0} precision={2} />
+              </ProCard>
+              <ProCard>
+                <Statistic title="今日UV" value={79.0} precision={2} />
+              </ProCard>
+              <ProCard>
+                <Statistic title="今日UV" value={79.0} precision={2} />
+              </ProCard>
+            </ProCard.Group>
+          </div>
+          <div
+            className={styles.main}>
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
@@ -108,8 +107,12 @@ const CustomerDetail = () => {
                 </TabPane>
               </Tabs>
             </Card>
-          </Col>
-          <Col span={8}>
+
+
+          </div>
+        </Col>
+        <Col span={8}>
+          <div className={styles.main} style={{height:'100%'}}>
             <Card>
               <Tabs defaultActiveKey="2">
                 <TabPane tab="相关团队" key="1">
@@ -120,11 +123,9 @@ const CustomerDetail = () => {
                 </TabPane>
               </Tabs>
             </Card>
-          </Col>
-        </Row>
-
-
-      </div>
+          </div>
+        </Col>
+      </Row>
 
     </div>;
   }
