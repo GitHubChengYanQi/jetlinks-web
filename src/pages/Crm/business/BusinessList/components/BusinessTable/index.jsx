@@ -115,9 +115,9 @@ const BusinessTable = (props) => {
         }}/>
         <Column title="立项日期" dataIndex="time"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
         <Column title="商机阶段" dataIndex="stage" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
-        <Column title="商机金额" dataIndex="opportunityAmount" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
+        <Column title="商机金额" dataIndex="opportunityAmount" sorter showSorterTooltip  sortDirections={['ascend', 'descend']} />
         <Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
-        <Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
+        <Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
         <Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
         <Column title="产品合计" dataIndex="totalProducts"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}   />
         <Column title="操作" align="right" render={(value, record) => {

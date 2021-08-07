@@ -8,9 +8,9 @@
 import React, {useRef} from 'react';
 import {Col, Input, Row} from 'antd';
 import Form from '@/components/Form';
+import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../erpPackageUrl';
 import * as SysField from '../erpPackageField';
-import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
 
 const {FormItem} = Form;
 
