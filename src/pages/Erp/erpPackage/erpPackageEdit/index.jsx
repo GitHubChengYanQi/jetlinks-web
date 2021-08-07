@@ -8,6 +8,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Col, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
+import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../erpPackageUrl';
 import * as SysField from '../erpPackageField';
 import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";

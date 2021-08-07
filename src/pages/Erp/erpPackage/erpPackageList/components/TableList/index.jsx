@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef} from 'react';
 import {Button, Table as AntTable} from 'antd';
 import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import * as SysField from "@/pages/Erp/erpPackage/erpPackageField";

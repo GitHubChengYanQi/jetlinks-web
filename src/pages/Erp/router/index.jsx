@@ -1,21 +1,19 @@
 
 
 
-
-import CrmLayout from '@/pages/Crm';
 import {MaterialRouter} from '@/pages/Erp/material/MaterialRouter';
 import {ItemsRouter} from '@/pages/Erp/items/ItemsRouter';
 import {BrandRouter} from '@/pages/Erp/brand/BrandRouter';
 import {PartsRouter} from '@/pages/Erp/parts/PartsRouter';
-import {PlaceRouter, StorehouseRouter} from '@/pages/Erp/storehouse/StorehouseRouter';
+import { StorehouseRouter} from '@/pages/Erp/storehouse/StorehouseRouter';
 import {StockRouter} from '@/pages/Erp/stock/StockRouter';
 import {StockDetailsRouter} from '@/pages/Erp/stockDetails/StockDetailsRouter';
 import {InstockRouter} from '@/pages/Erp/instock/InstockRouter';
 import {OutstockRouter} from '@/pages/Erp/outstock/OutstockRouter';
 import ErpLayout from '@/pages/Erp';
 import {ErpPackageRouter} from "@/pages/Erp/erpPackage/erpPackageRouter";
-import {OrderRouter} from "@/pages/Crm/order/OrderRouter";
-
+import {OrderBranchRouter} from '@/pages/Erp/orderBranch/OrderBranchRouter';
+import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
 
 const ErpRouterConfig = [
   {
@@ -32,10 +30,11 @@ const ErpRouterConfig = [
       ...StockRouter,
       ...StockDetailsRouter,
       ...InstockRouter,
-      ...OrderRouter,
       ...ErpPackageRouter,
+      ...OrderRouter,
+      ...OrderBranchRouter,
       {
-        redirect: '/ERP/items',
+        redirect: '/ERP/order',
       }
 
 

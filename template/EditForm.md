@@ -40,7 +40,8 @@ const ${COMPONENT_NAME} = ({id, ...other}) => {
   const formRef = useRef();
 
   const checkPWD = (field, value, callback) => {
-    switch (field.field) {
+    switch (field.
+      field) {
       case 'password':
         password = value;
         if(password.length<6){
