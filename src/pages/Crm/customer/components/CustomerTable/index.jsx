@@ -107,12 +107,36 @@ const CustomerTable = (props) => {
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
-        <Column title="客户级别" width={120} dataIndex="lname" />
+        <Column title="客户级别" width={120}  render={(text,record)=>{
+          return (
+            <>
+              {record.crmCustomerLevelResult.level}
+            </>
+          );
+        }} />
         <Column title="客户分类" width={120} dataIndex="classificationName" />
         <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
-        <Column title="客户来源" width={120} dataIndex="oname" />
-        <Column title="负责人" width={120} dataIndex="userName" />
-        <Column title="行业" width={120} dataIndex="industryName" />
+        <Column title="客户来源" width={120} render={(text,record)=>{
+          return (
+            <>
+              {record.originResult.originName}
+            </>
+          );
+        }} />
+        <Column title="负责人" width={120} render={(text,record)=>{
+          return (
+            <>
+              {record.userResult.account}
+            </>
+          );
+        }} />
+        <Column title="行业" width={120} render={(text,record)=>{
+          return (
+            <>
+              {record.crmIndustryResult.industryName}
+            </>
+          );
+        }} />
         <Column title="操作" width={100} align="right" render={(value, record) => {
           return (
             <>
