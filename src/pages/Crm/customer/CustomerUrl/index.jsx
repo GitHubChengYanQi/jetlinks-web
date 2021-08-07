@@ -19,8 +19,15 @@ export const customerEdit = {
   rowKey:'customerId'
 };
 
+
 export const customerDelete = {
   url: '/customer/delete',
+  method: 'POST',
+  rowKey:'customerId'
+};
+
+export const customerBatchDelete = {
+  url: '/customer/batchDelete',
   method: 'POST',
   rowKey:'customerId'
 };

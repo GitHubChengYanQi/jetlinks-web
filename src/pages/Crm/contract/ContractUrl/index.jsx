@@ -23,6 +23,13 @@ export const contractDelete = {
   rowKey:'contractId'
 };
 
+export const contractBatchDelete = {
+  url: '/contract/batchDelete',
+  method: 'POST',
+  rowKey:'contractId'
+};
+
+
 export const contractDetail = {
   url: '/contract/detail',
   method: 'POST',

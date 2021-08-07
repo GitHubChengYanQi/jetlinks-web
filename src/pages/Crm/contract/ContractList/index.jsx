@@ -5,7 +5,7 @@
  * @Date 2021-07-21 13:36:21
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,13 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contractDelete, contractList} from '../ContractUrl';
+import {contractBatchDelete, contractDelete, contractList} from '../ContractUrl';
 import ContractEdit from '../ContractEdit';
 import * as SysField from '../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {useHistory} from 'ice';
 import AddContractEdit from '@/pages/Crm/addContract/AddContractEdit';
+import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,7 +48,19 @@ const ContractList = () => {
     );
   };
 
+  const [ids, setIds] = useState([]);
 
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...contractBatchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
 
 
   return (
@@ -59,6 +72,10 @@ const ContractList = () => {
         rowKey="contractId"
         searchForm={searchForm}
         ref={tableRef}
+        footer={footer}
+        onChange={(value) => {
+          setIds(value);
+        }}
       >
         <Column title="合同名称" dataIndex="name" />
         <Column title="操作" align="right" render={(value, record) => {

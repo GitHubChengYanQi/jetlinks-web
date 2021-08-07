@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {Modal, notification, Popconfirm, Popover, Select, Steps} from 'antd';
+import React from 'react';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
+import {Modal, notification, Popover, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {Step} = Steps;
 
@@ -41,7 +41,7 @@ const StepList = (props) => {
         data: {
           processId: salesProcessId || null,
           businessId: value.businessId,
-          state: name || '结束',
+          state: name || null,
         }
       }
     );
@@ -51,6 +51,7 @@ const StepList = (props) => {
   function confirm(name, values) {
     Modal.confirm({
       title: 'Confirm',
+      centered:true,
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
       okText: '确认',
@@ -67,6 +68,7 @@ const StepList = (props) => {
   function confirmOk(name, percent) {
     Modal.confirm({
       title: 'Confirm',
+      centered:true,
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
       okText: '确认',
@@ -84,9 +86,9 @@ const StepList = (props) => {
   const step = data ? data.map((values, index) => {
     return (
       <>
-        <Step key={index} title={values.name} description={`盈率：${values.percentage}%`}
+        <Step disabled={value.state} key={index} title={values.name} description={`盈率：${values.percentage}%`}
               onClick={async () => {
-                confirm(values.name, values);
+                value.state ? null : confirm(values.name, values);
               }}
         />
       </>
@@ -98,25 +100,25 @@ const StepList = (props) => {
     return (
       <Steps
         type="navigation"
-        current={value.state === '赢单' || value.state === '输单' ? step.length : value.process.sort}
+        current={value.state ? step.length : value.process.sort}
       >
         {step}
 
 
         <>
-          <Step title={
+          <Step title={value.state ? value.state :
             <>
               <Popover placement="bottom" content={
-                <div>
-                  <a className={styles.state} onClick={async () => {
-                    confirmOk('赢单', 100);
-                  }}>赢单 100%</a>
-                  <a className={styles.state} onClick={async () => {
-                    confirmOk('输单', 0);
-                  }}>输单 0%</a>
-                </div>
+               ( <div>
+                 <a className={styles.state} onClick={async () => {
+                   confirmOk('赢单', 100);
+                 }}>赢单 100%</a>
+                 <a className={styles.state} onClick={async () => {
+                   confirmOk('输单', 0);
+                 }}>输单 0%</a>
+               </div>)
               } trigger="hover">
-                {value.state}
+                完成
               </Popover>
             </>}
 

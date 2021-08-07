@@ -124,8 +124,8 @@ const FormWrapper = (
       layout='horizontal'
       actions={formActions}
       className={style.formWarp}
-      labelCol={labelCol || 9}
-      wrapperCol={wrapperCol || 15}
+      labelCol={labelCol || null}
+      wrapperCol={wrapperCol || null}
       onSubmit={async (values) => {
         const submitValues = onSubmit(values);
         if (submitValues === false) {

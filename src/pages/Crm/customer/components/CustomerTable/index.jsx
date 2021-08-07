@@ -14,6 +14,7 @@ import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {
+  customerBatchDelete,
   customerDelete, customerList,
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
@@ -73,8 +74,9 @@ const CustomerTable = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-      url: '/',
-      method: 'POST'
+    ...customerBatchDelete
+    }} onSuccess={()=>{
+      tableRef.current.refresh();
     }} value={ids}>批量删除</DelButton>);
   };
 
@@ -91,8 +93,9 @@ const CustomerTable = (props) => {
         onChange={(keys) => {
           setIds(keys);
         }}
+        scroll={{x:1200}}
       >
-        <Column title="客户名称" width={120} dataIndex="customerName" render={(text, record, index) => {
+        <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
           return (
             <Button size="small" type="link" onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
@@ -116,7 +119,9 @@ const CustomerTable = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.customerId);
               }} />
-              <DelButton api={customerDelete} value={record.customerId} onSuccess={() => {
+              <DelButton api={{ url: '/customer/batchDelete',
+                method: 'POST',
+                rowKey:'customerId'}} value={record.customerId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>

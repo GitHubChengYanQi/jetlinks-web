@@ -22,6 +22,7 @@ import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {BusinessNameListSelect, CustomerNameListSelect1} from '@/pages/Crm/business/BusinessField';
 import {Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
+import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,6 +36,8 @@ const BusinessTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  const [ids, setIds] = useState([]);
 
 
   useEffect(() => {
@@ -66,6 +69,15 @@ const BusinessTable = (props) => {
     );
   };
 
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...businessDelete
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
@@ -74,6 +86,10 @@ const BusinessTable = (props) => {
         rowKey="businessId"
         searchForm={searchForm}
         actions={actions()}
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
         ref={tableRef}
       >
         <Column title="商机名称" dataIndex="businessName" render={(text, record, index) => {

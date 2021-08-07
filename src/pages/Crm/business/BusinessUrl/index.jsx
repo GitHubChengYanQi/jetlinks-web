@@ -22,6 +22,13 @@ export const businessDelete = {
   method: 'POST',
   rowKey:'businessId'
 };
+export const businessBatchDelete = {
+  url: '/crmBusiness/batchDelete',
+  method: 'POST',
+  rowKey:'businessId'
+};
+
+
 
 export const businessDetail = {
   url: '/crmBusiness/detail',

@@ -6,12 +6,8 @@
  */
 
 import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
-import * as apiUrl from '../crmBusinessTrackUrl';
-import Editor from '@/components/Editor';
+import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
+import DatePicker from '@/components/DatePicker';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -19,6 +15,21 @@ export const NoteId = (props) => {
 export const Note = (props) => {
   return (<Input.TextArea cols={5} rows={7} {...props} />);
 };
+
+export const Time = (props) => {
+  return (<DatePicker {...props} />);
+};
+
+
+export const Offer = (props) => {
+  return (<AntdSelect
+    options={[
+      {label: '否', value: '0'},
+      {label: '是', value: '1'},
+    ]}
+    {...props} />);
+};
+
 export const Type = (props) => {
   return (<AntdSelect
     options={[
@@ -34,10 +45,11 @@ export const Type = (props) => {
     {...props} />);
 };
 export const BusinessId = (props) => {
-  props.onChange(props.val);
-  return (<Input {...props} value={props.val} disabled  />);
+  console.log(props.val);
+  props.onChange(props.val.businessId);
+  return (<Input {...props} value={props.val.businessName} disabled  />);
 };
 export const UserId = (props) => {
-  props.onChange(props.val);
-  return (<Input {...props} value={props.val} disabled />);
+  props.onChange(props.val.person);
+  return (<Input {...props} value={props.val.user.account} disabled />);
 };

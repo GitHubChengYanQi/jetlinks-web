@@ -9,6 +9,7 @@ const DelButton = ({
   }, api, rowKey, value, children, ...props
 }) => {
 
+
   if (!api) {
     api = {};
     console.warn('DelButton Component: api cannot be empty,But now it doesn\'t exist!');
@@ -35,8 +36,8 @@ const DelButton = ({
         params[rowKey] = value;
         try {
           await run({
-            data: params,
-            params
+            data: api.method==='POST' && params,
+            params: api.method==='GET' && params,
           });
           onSuccess();
           return new Promise((resolve, reject) => {
