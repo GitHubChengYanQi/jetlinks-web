@@ -11,7 +11,6 @@ import Form from '@/components/Form';
 import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../erpPackageUrl';
 import * as SysField from '../erpPackageField';
-import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
 import FormIndex from "@/components/Form/FormIndex";
 import ErpPackageTableList from "@/pages/Erp/erpPackageTable/erpPackageTableList";
 
