@@ -1,32 +1,21 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
-import {Table as AntdTable} from 'antd';
-import {SearchOutlined} from '@ant-design/icons';
+import React, { forwardRef, useImperativeHandle } from 'react';
+import { Table as AntdTable } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import Service from '@/util/Service';
-import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
+import { useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup } from '@formily/antd';
 
 import style from './index.module.less';
 
-const {Column} = AntdTable;
+const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({
-  children,
-  columns,
-  actions,
-  title,
-  api,
-  searchForm,
-  rowKey,
-  selectionType,
-  onChange,
-  footer: parentFooter,
-  ...props
-}, ref) => {
+const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
+
 
 
   if (!rowKey) {
@@ -36,8 +25,7 @@ const TableWarp = ({
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
 
-
-  const {ajaxService} = Service();
+  const { ajaxService } = Service();
 
 
   const requestMethod = async (params) => {
@@ -74,9 +62,11 @@ const TableWarp = ({
         reject(e.message);
       });
     }
+
+
   };
 
-  const {form, table: tableProps} = useFormTableQuery(requestMethod);
+  const { form, table: tableProps } = useFormTableQuery(requestMethod);
 
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
@@ -85,17 +75,8 @@ const TableWarp = ({
     formActions,
   }));
 
-  const {loading, dataSource, pagination, ...other} = tableProps;
-
-  const footer = () => {
-    return (
-      <div className={style.footer}>
-        {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {pagination && <div className={style.right}>共{pagination.total}条</div>}
-        <br style={{clear: 'both'}} />
-      </div>
-    );
-  };
+  const { loading, dataSource,pagination, ...other } = tableProps;
+  // pagination
   return (
     <div className={style.tableWarp}>
       <div className={style.listHeader}>
@@ -113,7 +94,7 @@ const TableWarp = ({
         >
           {typeof searchForm === 'function' && searchForm()}
           <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
+            <Submit><SearchOutlined/>查询</Submit>
           </FormButtonGroup>
         </Form>
       </div> : <Form
@@ -127,20 +108,12 @@ const TableWarp = ({
         dataSource={dataSource || []}
         rowKey={rowKey}
         columns={columns}
-        sticky
         pagination={
           {
             ...pagination,
-            position: ['bottomCenter']
+            showTotal: (total, range) => `当前${range[0]}-${range[1]}/共${total}条`
           }
         }
-        rowSelection={{
-          type: selectionType || 'checkbox',
-          onChange: (selectedRowKeys, selectedRows) => {
-            typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
-          }
-        }}
-        footer={footer}
         {...other}
         {...props}
       >

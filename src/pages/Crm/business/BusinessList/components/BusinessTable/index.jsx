@@ -28,7 +28,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state} = props;
+  const {status,state} = props;
 
 
   const history = useHistory();
@@ -36,16 +36,11 @@ const BusinessTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-  const [ids, setIds] = useState([]);
-
-
-  useEffect(() => {
-    if (status || state) {
-      tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : null);
-      tableRef.current.formActions.setFieldValue('originId', state ? state[0] : null);
-      tableRef.current.submit();
-    }
-  }, [status, state]);
+  if (status!==undefined || state !==undefined){
+    tableRef.current.formActions.setFieldValue('salesId', status?status[0] : '');
+    tableRef.current.formActions.setFieldValue('originId', state?state[0]:'');
+    tableRef.current.submit();
+  }
 
   const actions = () => {
     return (
@@ -69,15 +64,6 @@ const BusinessTable = (props) => {
     );
   };
 
-  const footer = () => {
-    /**
-     * 批量删除例子，根据实际情况修改接口地址
-     */
-    return (<DelButton api={{
-      ...businessDelete
-    }} value={ids}>批量删除</DelButton>);
-  };
-
   return (
     <>
       <Table
@@ -86,15 +72,11 @@ const BusinessTable = (props) => {
         rowKey="businessId"
         searchForm={searchForm}
         actions={actions()}
-        footer={footer}
-        onChange={(keys) => {
-          setIds(keys);
-        }}
         ref={tableRef}
       >
         <Column title="商机名称" dataIndex="businessName" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(text, record, index)=>{
           return (
-            <Button type="link" onClick={() => {
+            <Button type="link" onClick={()=>{
               history.push(`/CRM/business/${record.businessId}`);
             }}>{text}</Button>
           );
@@ -155,7 +137,6 @@ const BusinessTable = (props) => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500} title="编辑" component={BusinessEdit} onSuccess={() => {
       <Modal2 width={1500}  title="编辑" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
@@ -163,4 +144,7 @@ const BusinessTable = (props) => {
     </>
   );
 };
+
 export default BusinessTable;
+
+
