@@ -10,7 +10,7 @@ const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,showSearchButton=true, ...props }, ref) => {
+const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,showSearchButton=true,footer: parentFooter, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -69,6 +69,17 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
   }));
 
   const { loading, dataSource,pagination, ...other } = tableProps;
+
+  const footer = () => {
+    return (
+      <div className={style.footer}>
+        {parentFooter && <div className={style.left}>{parentFooter()}</div>}
+        {pagination && <div className={style.right}>共{pagination.total}条</div>}
+        <br style={{clear: 'both'}} />
+      </div>
+    );
+  };
+
   // pagination
   return (
     <div className={style.tableWarp}>
@@ -95,12 +106,16 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
         dataSource={dataSource || []}
         rowKey={rowKey}
         columns={columns}
+        sticky
         pagination={
           {
             ...pagination,
-            showTotal: (total, range) => `当前${range[0]}-${range[1]}/共${total}条`
+            // showTotal: (total, range) => `共${total}条`,
+            position: ['bottomCenter']
+            // showTotal: (total, range) => `当前${range[0]}-${range[1]}/共${total}条`
           }
         }
+        footer={footer}
         {...other}
         {...props}
       >
