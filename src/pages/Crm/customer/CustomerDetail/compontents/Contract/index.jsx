@@ -14,7 +14,7 @@ import Form from '@/components/Form';
 import {contractDelete, contractList} from '@/pages/Crm/contract/ContractUrl';
 import Modal2 from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/customer/CustomerDetail/compontents/AddContract';
-import * as SysField from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessField';
+import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import {contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 

@@ -71,8 +71,7 @@ const BusinessEdit = ({...props}) => {
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
                   <FormItem label="客户名称" name="customerId"
-                    rules={[{ required: true, message: '请输入商客户名称!' }]}
-                    component={SysField.CustomerNameListSelect} />
+                    component={SysField.CustomerNameListSelect}/>
                 </Col>
                 <Col span={12}>
                   <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />

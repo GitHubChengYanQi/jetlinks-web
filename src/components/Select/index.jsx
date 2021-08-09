@@ -36,7 +36,7 @@ const Select = (props) => {
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect options={data} allowClear={false} style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        {!loading &&<AntSelect  options={data} allowClear style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         />}
       </>
     );

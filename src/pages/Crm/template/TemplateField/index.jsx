@@ -11,7 +11,7 @@ import Editor from '@/components/Editor';
 
 const w = 200;
 export const Name = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Content = (props) =>{
   return (<Editor   {...props} />);

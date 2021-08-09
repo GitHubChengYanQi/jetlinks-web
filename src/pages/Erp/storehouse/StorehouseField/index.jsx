@@ -14,23 +14,23 @@ import * as apiUrl from '../StorehouseUrl';
 const w = 200;
 
 export const Name = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Position = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Palce = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Longitude = (props) =>{
-  return (<InputNumber  style={{width:w}} {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Latitude = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Measure = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Capacity = (props) =>{
-  return (<InputNumber  style={{width:w}} {...props}/>);
+  return (<InputNumber   {...props}/>);
 };

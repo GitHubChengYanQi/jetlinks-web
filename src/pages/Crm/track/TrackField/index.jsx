@@ -16,26 +16,26 @@ import TextArea from 'antd/es/input/TextArea';
 const w = 200;
 
 export const BusinessId = (props) =>{
-  return (<Input style={{width:w}} {...props}/>);
+  return (<Input  {...props}/>);
 };
 export const StockId = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Money = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Number = (props) =>{
-  return (<InputNumber  style={{width:w}} {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Time = (props) =>{
-  return (<DatePicker2  showTim s style={{width:w}} {...props}/>);
+  return (<DatePicker2  showTim s  {...props}/>);
 };
 export const Business = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索商机列表
@@ -52,7 +52,7 @@ export const Stock = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input  style={{width:w}} {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索库存
@@ -64,9 +64,9 @@ export const Stock = (props) =>{
   </>);
 };
 export const Stage = (props) =>{
-  return (<AntdSelect style={{width:w}}  options={[{value:'0',label:'初始报价'},{value:'1',label:'执行中'},{value:'2',label:'已完成'}]} {...props}/>);
+  return (<AntdSelect   options={[{value:'0',label:'初始报价'},{value:'1',label:'执行中'},{value:'2',label:'已完成'}]} {...props}/>);
 };
 
 export const Note = (props) => {
-  return (<TextArea style={{width:w}}   {...props} />);
+  return (<TextArea    {...props} />);
 };

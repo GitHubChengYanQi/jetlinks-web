@@ -17,7 +17,7 @@ import {crmBusinessSalesDelete, crmBusinessSalesList} from '../crmBusinessSalesU
 import CrmBusinessSalesEdit from '../crmBusinessSalesEdit';
 import * as SysField from '../crmBusinessSalesField';
 import Modal2 from '@/components/Modal';
-import CrmBusinessSalesProcessList from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessList';
+import CrmBusinessSalesProcessList from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessList';
 import {Name} from '../crmBusinessSalesField';
 import Breadcrumb from '@/components/Breadcrumb';
 

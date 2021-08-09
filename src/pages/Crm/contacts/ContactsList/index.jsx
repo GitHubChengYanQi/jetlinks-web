@@ -61,7 +61,7 @@ const ContactsList = () => {
         <Column title="职务" dataIndex="job"/>
         <Column title="联系电话" dataIndex="phone"/>
         <Column title="部门编号" dataIndex="deptId"/>
-        <Column title="客户id" dataIndex="clientId"/>
+        <Column title="客户名称" dataIndex="clientId"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

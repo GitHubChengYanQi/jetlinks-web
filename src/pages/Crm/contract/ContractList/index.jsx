@@ -19,7 +19,7 @@ import * as SysField from '../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {useHistory} from 'ice';
-import AddContractEdit from '@/pages/Crm/addContract/AddContractEdit';
+import AddContractEdit from '@/pages/Crm/contract/addContract/AddContractEdit';
 import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;

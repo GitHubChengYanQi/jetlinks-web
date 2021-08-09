@@ -31,6 +31,7 @@ const CrmCustomerLevelEdit = ({...props}) => {
       fieldKey="customerLevelId"
     >
       <FormItem label="级别" name="level" component={SysField.Level} required/>
+      <FormItem label="数字级别" name="rank" component={SysField.Level} required/>
     </Form>
   );
 };

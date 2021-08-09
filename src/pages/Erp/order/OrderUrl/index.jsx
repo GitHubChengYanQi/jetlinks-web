@@ -7,68 +7,33 @@
  */
 
 export const orderAdd = {
-  url: '/order/add',
+  url: '/erpOrder/add',
   method: 'POST',
   rowKey:'id'
 };
 
 export const orderEdit = {
-  url: '/order/edit',
+  url: '/erpOrder/edit',
   method: 'POST',
   rowKey:'id'
 };
 
 export const orderDelete = {
-  url: '/order/delete',
+  url: '/erpOrder/delete',
   method: 'POST',
   rowKey:'id'
 };
 
 export const orderDetail = {
-  url: '/order/detail',
+  url: '/erpOrder/detail',
   method: 'POST',
   rowKey:'id'
 };
 
 export const orderList = {
-  url: '/order/list',
+  url: '/erpOrder/list',
   method: 'POST',
   rowKey:'id'
-};
-
-export const orderIdList = {
-  url: '/order/list',
-  method: 'POST',
-  rowKey:'orderId'
-};
-
-export const orderListSelect = {
-  url: '/order/listSelect',
-  method: 'POST',
-  rowKey:'orderId'
-};
-export const orderBranchListSelect = {
-  url: '/orderBranch/listSelect',
-  method: 'POST',
-  rowKey:'id'
-};
-
-
-
-export const ClientIdListSelect = {
-  url: '/client/listSelect',
-  method: 'POST',
-};
-
-export const orderIdSelect = {
-  url:'/order/Select',
-  method:'POST',
-  rowKey:'orderId'
-
-};
-export const AdressIdListSelect = {
-  url: '/adress/listSelect',
-  method: 'POST',
 };
 
 export const locationListSelect = {
@@ -82,11 +47,7 @@ export const deliveryTimeListSelect = {
   method:'POST',
   rwoKey:'deliveryId'
 };
-export const TelListSelect = {
-  url:'/client/listSelect',
-  method:'POST',
-  rowKey:'clientId'
-};
+
 
 export const OrderIdListSelect = {
   url:'/contacts/listSelect',

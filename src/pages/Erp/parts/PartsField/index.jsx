@@ -17,10 +17,10 @@ import Items from '@/pages/Erp/parts/PartsEdit/components/Items';
 const w = 200;
 
 export const ItemId = (props) =>{
-  return (<Select style={{width:w}} api={apiUrl.itemIdSelect} {...props}/>);
+  return (<Select  api={apiUrl.itemIdSelect} {...props}/>);
 };
 export const BrandId = (props) =>{
-  return (<Select style={{width:w}}  api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
 };
 
 export const Item = (props) =>{
@@ -28,7 +28,7 @@ export const Item = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索仓库
@@ -41,9 +41,9 @@ export const Item = (props) =>{
 };
 
 export const Name = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 
 export const Number = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}/>);
+  return (<InputNumber   {...props}/>);
 };

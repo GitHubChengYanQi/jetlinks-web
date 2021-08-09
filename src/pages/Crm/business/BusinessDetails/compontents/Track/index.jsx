@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import {EditOutlined} from '@ant-design/icons';
 import Modal2 from '@/components/Modal';
 import {Button, Comment, List} from 'antd';
-import CrmBusinessTrackEdit from '@/pages/Crm/crmBusinessTrack/crmBusinessTrackEdit';
+import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
 

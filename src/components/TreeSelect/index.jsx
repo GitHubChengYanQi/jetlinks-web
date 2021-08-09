@@ -10,7 +10,7 @@ const TreeSelect = (props) => {
   const {data} = useRequest(api);
 
   if (data) {
-    return (<AntTreeSelect treeData={data} value={value?`${value}`:''} {...other}  />);
+    return (<AntTreeSelect allowClear treeData={data} value={value?`${value}`:''} {...other}  />);
   } else {
     return null;
   }

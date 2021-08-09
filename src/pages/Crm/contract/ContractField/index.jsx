@@ -17,16 +17,16 @@ import {DatePicker2} from '@alifd/next';
 const w = 200;
 
 export const Name = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const UserId = (props) =>{
-  return (<Select style={{width:w}}  api={apiUrl.userIdSelect} {...props}/>);
+  return (<Select   api={apiUrl.userIdSelect} {...props}/>);
 };
 export const Note = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Time = (props) =>{
-  return (<DatePicker2 showTime style={{width:w}}  {...props}/>);
+  return (<DatePicker2 showTime   {...props}/>);
 };
 // export const Content = (props) =>{
 //

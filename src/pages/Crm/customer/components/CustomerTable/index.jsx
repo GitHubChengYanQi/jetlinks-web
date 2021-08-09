@@ -37,6 +37,8 @@ const CustomerTable = (props) => {
 
   const [ids, setIds] = useState([]);
 
+  const [search, setSearch] = useState(false);
+
 
   useEffect(() => {
     if (status || state || level) {
@@ -59,13 +61,35 @@ const CustomerTable = (props) => {
   };
 
   const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem style={{width:200}} label="公司类型" name="companyType" component={SysField.CompanyType} />
+          <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
+          <FormItem label="负责人" name="userId" component={SysField.UserName} />
+          <FormItem style={{width:200}} label="行业" name="industryId" component={SysField.IndustryOne} />
+        </>
+      );
+    };
+
+
     return (
       <>
         <FormItem label="客户名称" name="customerName" component={SysField.Name} />
-        <FormItem label="公司类型" name="companyType" component={SysField.Name} />
-        <FormItem style={{display: 'none'}} name="status" component={SysField.Name} />
-        <FormItem style={{display: 'none'}} name="classification" component={SysField.Name} />
-        <FormItem style={{display: 'none'}} name="customerLevelId" component={SysField.Name} />
+        {search ? formItem() : null}
+        <FormItem hidden name="status" component={SysField.Name} />
+        <FormItem hidden name="classification" component={SysField.Name} />
+        <FormItem hidden name="customerLevelId" component={SysField.Name} />
+
+        <Button style={{marginRight: 20}} onClick={() => {
+          if (search){
+            setSearch(false);
+          }else {
+            setSearch(true);
+          }
+
+        }}>高级搜索</Button>
       </>
     );
   };

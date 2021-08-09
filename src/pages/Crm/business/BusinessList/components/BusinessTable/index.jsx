@@ -14,14 +14,10 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {businessDelete, businessList} from '@/pages/Crm/business/BusinessUrl';
+import {businessDelete, businessList, CustomerNameListSelect} from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
-import {BusinessNameListSelect, CustomerNameListSelect1} from '@/pages/Crm/business/BusinessField';
-import {Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,6 +31,8 @@ const BusinessTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  const [search, setSearch] = useState(false);
 
   if (status!==undefined || state !==undefined){
     tableRef.current.formActions.setFieldValue('salesId', status?status[0] : '');
@@ -53,13 +51,31 @@ const BusinessTable = (props) => {
   };
 
   const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem label="客户名称" name="customerId" component={SysField.CustomerNameListSelect} />
+          <FormItem label="负责人" name="person" component={SysField.PersonListSelect} />
+          <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+        </>
+      );
+    };
+
     return (
       <>
-        <FormItem style={{display: 'none'}} name="salesId" component={SysField.BusinessNameListSelect} />
-        <FormItem style={{display: 'none'}} name="originId" component={SysField.BusinessNameListSelect} />
-        <FormItem style={{display:'none'}} name="salesId"  component={SysField.BusinessNameListSelect} />
         <FormItem label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
-        <FormItem label="客户名称" name="customerName" component={SysField.BusinessNameListSelect} />
+        {search ? formItem() : null}
+        <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
+        <FormItem hidden name="salesId"  component={SysField.BusinessNameListSelect} />
+        <Button style={{marginRight: 20}} onClick={() => {
+          if (search){
+            setSearch(false);
+          }else {
+            setSearch(true);
+          }
+
+        }}>高级搜索</Button>
       </>
     );
   };
@@ -120,10 +136,10 @@ const BusinessTable = (props) => {
         <Column title="立项日期" dataIndex="time"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
         <Column title="商机阶段" dataIndex="stage" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
         <Column title="商机金额" dataIndex="opportunityAmount" sorter showSorterTooltip  sortDirections={['ascend', 'descend']} />
-        <Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
-        <Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
-        <Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />
-        <Column title="产品合计" dataIndex="totalProducts"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}   />
+        {/*<Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
+        {/*<Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
+        {/*<Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />*/}
+        {/*<Column title="产品合计" dataIndex="totalProducts"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}   />*/}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
