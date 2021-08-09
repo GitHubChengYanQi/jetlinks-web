@@ -7,18 +7,23 @@
 
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, Table as AntTable} from 'antd';
+import { message,  Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import {useRequest} from "@/util/Request";
+import Modal2 from '@/components/Modal';
+import Breadcrumb from '@/components/Breadcrumb';
+import CheckButton from "@/components/CheckButton";
+import {erpPackageTableAdd} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
 import {itemsDelete, itemsList} from '../ItemsUrl';
 import ItemsEdit from '../ItemsEdit';
 import * as SysField from '../ItemsField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
-import CheckButton from "@/components/CheckButton";
+import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
+
+
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -27,6 +32,33 @@ const ItemsList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const [ids, setIds] = useState([]);
+
+
+
+  const { run: add} = useRequest(erpPackageTableAdd, {
+    manual: true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      ref.current.close();
+      props.onSuccess();
+    }
+  });
+
+  const { run: addTc} = useRequest(crmBusinessDetailedAdd, {
+    manual: true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      ref.current.close();
+      props.onSuccess();
+    }
+  });
+
+
+
   const footer = () => {
     /**
      * 批量删除例子，根据实际情况修改接口地址
@@ -45,6 +77,20 @@ const ItemsList = (props) => {
       </>
     );
   };
+
+  let disabled = true;
+  if(props.disabled === undefined){
+    disabled = true;
+  }else{
+    disabled = false;
+  }
+
+  let TcDisabled = true;
+  if(props.TcDisabled === undefined){
+    TcDisabled = true;
+  }else{
+    TcDisabled = false;
+  }
 
   const searchForm = () => {
     return (
@@ -69,8 +115,7 @@ const ItemsList = (props) => {
         actions={actions()}
         ref={tableRef}
         onChange={(keys)=>{
-          setIds(ids);
-          props.onChange(keys);
+          setIds(keys);
         }}
         footer={footer}
       >
@@ -86,6 +131,35 @@ const ItemsList = (props) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              {!disabled&&
+              <CheckButton onClick={() => {
+                add(
+                  {
+                    data: {
+                      packageId: props.packageId,
+                      itemId: record.itemId,
+                      salePrice: 0,
+                      totalPrice: 0,
+                      quantity: 0
+                    }
+                  }
+                );
+
+              }}/>}
+              {!TcDisabled&&
+              <CheckButton onClick={() => {
+                addTc(
+                  {
+                    data: {
+                      businessId: props.businessId,
+                      itemId: record.itemId,
+                      salePrice: 0,
+                      totalPrice: 0,
+                      quantity: 0
+                    }
+                  }
+                );
+              }}/>}
               <EditButton onClick={() => {ref.current.open(record.itemId);}} />
               <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
                 tableRef.current.refresh();

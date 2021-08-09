@@ -14,10 +14,12 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import useRequest from '@/util/Request/useRequest';
 import Modal2 from '@/components/Modal';
-import ItemsTable from "@/pages/Erp/erpPackageTable/erpPackageTableList/components/ItemsTable";
+import ItemsList from "@/pages/Erp/items/ItemsList";
 import ErpPackageTableEdit from '../erpPackageTableEdit';
 import {erpPackageTableDelete, erpPackageTableList} from '../erpPackageTableUrl';
 import * as SysField from '../erpPackageTableField';
+import {name} from "../erpPackageTableField";
+
 
 
 const {Column} = AntTable;
@@ -36,14 +38,14 @@ const ErpPackageTableList = ({onChange,...props}) => {
     tableRef.current.refresh();
   };
 
-  const {data,run} = useRequest({url: '/erpPackageTable/add',method: 'POST'},{manual:true}, {onSuccess:refesh});
+  const {data,run} = useRequest({url: '/erpPackageTable/list',method: 'POST'},{manual:true});
 
 
   const searchForm = () => {
     return (
       <>
         <FormItem style={{'display': 'none'}} name="packageId" value={props.value} component={SysField.PackageId}/>
-        <FormItem label="" name="packageId" value={props.value} component={SysField.PackageId}/>
+        <FormItem  label='产品名称' name="name" component={SysField.name}/>
       </>
     );
   };
@@ -65,14 +67,6 @@ const ErpPackageTableList = ({onChange,...props}) => {
           refAddOne.current.open(false);}}>
           添加产品
         </Button>
-        <Modal2 width={1900} title="选择" component={ItemsTable}
-          onSuccess={()=>{
-            tableRef.current.refresh();
-            refAddOne.current.close();
-          }}
-          ref={refAddOne}
-          packageId={props.value}
-        />
       </div>
       <Table
         api={erpPackageTableList}
@@ -114,6 +108,14 @@ const ErpPackageTableList = ({onChange,...props}) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Modal2 width={1900} title="选择" component={ItemsList}
+        onSuccess={()=>{
+          refAddOne.current.close();
+        }}
+        ref={refAddOne}
+        packageId={props.value}
+        disabled={false}
+      />
     </>
   );
 };

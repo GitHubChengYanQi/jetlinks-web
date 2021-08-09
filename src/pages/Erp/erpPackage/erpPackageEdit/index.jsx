@@ -8,7 +8,9 @@ import * as SysField from '../erpPackageField';
 
 const {FormItem} = Form;
 const ApiConfig = {
-  save: erpPackageEdit
+  save: erpPackageEdit,
+  add:erpPackageAdd,
+  view:erpPackageDetail
 };
 
 const ErpPackageEdit = ({...props}) => {

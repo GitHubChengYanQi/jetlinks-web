@@ -4,6 +4,7 @@ import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import * as SysField from "@/pages/Erp/erpPackage/erpPackageField";
 import Form from "@/components/Form";
 import {erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
+import {productName} from "@/pages/Erp/erpPackage/erpPackageField";
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -18,6 +19,7 @@ const TableList = (props) => {
     return (
       <>
         <FormItem  style={{'display': 'none'}} name="packageId" value={value} component={SysField.packageId}/>
+        <FormItem  label='产品名称' name="productName" component={SysField.productName}/>
       </>
     );
   };
@@ -27,10 +29,8 @@ const TableList = (props) => {
       <Table
         api={erpPackageTableList}
         rowKey="id"
-        value={value}
         ref={tableRef}
         searchForm={searchForm}
-        showSearchButton={false}
       >
         <Column title="产品名称" dataIndex="items" render={(value, record)=>{
           return (
