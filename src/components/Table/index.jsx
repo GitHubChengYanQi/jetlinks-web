@@ -21,6 +21,8 @@ const TableWarp = ({
   Search,
   selectionType,
   onChange,
+  layout,
+  labelAlign,
   footer: parentFooter,
   ...props
 }, ref) => {
@@ -107,14 +109,13 @@ const TableWarp = ({
       </div>
       {searchForm ? <div className="search">
         <Form
-          layout="inline"
+          layout= {layout || "inline" }
           {...form}
           actions={formActions}
         >
           {typeof searchForm === 'function' && searchForm()}
           <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            {Search || null}
+            {Search || <Submit><SearchOutlined />查询</Submit>}
           </FormButtonGroup>
         </Form>
       </div> : <Form
