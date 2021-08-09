@@ -134,7 +134,7 @@ const BusinessEdit = ({...props}) => {
               ref.current.close();
             }} ref={ref} />
             <div style={{textAlign:'center'}}>
-              <Button type="primary" onClick={()=>{
+              <Button style={{marginRight:20}} type="primary" onClick={()=>{
                 props.onSuccess();
               }
               }>

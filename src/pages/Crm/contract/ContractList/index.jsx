@@ -86,6 +86,7 @@ const ContractList = () => {
         <Column title="甲方" dataIndex="partAName" />
         <Column title="乙方" dataIndex="partBName" />
         <Column title="创建时间" dataIndex="time" />
+        <Column title="审核" dataIndex="audit" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

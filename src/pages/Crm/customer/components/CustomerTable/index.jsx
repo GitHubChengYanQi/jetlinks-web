@@ -81,16 +81,20 @@ const CustomerTable = (props) => {
         <FormItem hidden name="status" component={SysField.Name} />
         <FormItem hidden name="classification" component={SysField.Name} />
         <FormItem hidden name="customerLevelId" component={SysField.Name} />
-
-        <Button style={{marginRight: 20}} onClick={() => {
-          if (search){
-            setSearch(false);
-          }else {
-            setSearch(true);
-          }
-
-        }}>高级搜索</Button>
       </>
+    );
+  };
+
+  const Search = () => {
+    return (
+      <Button style={{marginRight: 20}} onClick={() => {
+        if (search){
+          setSearch(false);
+        }else {
+          setSearch(true);
+        }
+
+      }}>高级搜索</Button>
     );
   };
 
@@ -115,6 +119,7 @@ const CustomerTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
+        Search={Search()}
         onChange={(keys) => {
           setIds(keys);
         }}
