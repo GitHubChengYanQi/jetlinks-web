@@ -168,6 +168,7 @@ const CustomerTable = (props) => {
             </>
           );
         }} />
+        <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
         <Column title="操作" width={100} align="right" render={(value, record) => {
           return (
             <>
