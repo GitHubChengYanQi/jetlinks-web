@@ -6,7 +6,7 @@ const DatePicker = ({value,onChange})=>{
 
   const val = moment(value);
 
-  return <AntDatePicker value={val} onChange={(date, dateString)=>{
+  return <AntDatePicker value={val} showTime onChange={(date, dateString)=>{
     onChange(date, dateString);
   }} />;
 };

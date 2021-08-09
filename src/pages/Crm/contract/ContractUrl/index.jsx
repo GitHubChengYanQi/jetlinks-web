@@ -48,6 +48,6 @@ export const userIdSelect = {
 };
 
 export const templateSelect = {
-  url: 'template/listSelect',
+  url: '/template/listSelect',
   method: 'POST'
 };

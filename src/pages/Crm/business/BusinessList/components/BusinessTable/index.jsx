@@ -14,10 +14,16 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {businessDelete, businessList, CustomerNameListSelect} from '@/pages/Crm/business/BusinessUrl';
+import {
+  businessBatchDelete,
+  businessDelete,
+  businessList,
+  CustomerNameListSelect
+} from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
+import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,6 +31,8 @@ const {FormItem} = Form;
 const BusinessTable = (props) => {
 
   const {status,state} = props;
+
+  const [ids, setIds] = useState([]);
 
 
   const history = useHistory();
@@ -48,6 +56,17 @@ const BusinessTable = (props) => {
         }} />
       </>
     );
+  };
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...businessBatchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
   };
 
   const searchForm = () => {
@@ -89,15 +108,24 @@ const BusinessTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
+        sticky={{
+          getContainer:() => {
+            return document.getElementById('listLayout');
+          }
+        }}
       >
-        <Column title="商机名称" dataIndex="businessName" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(text, record, index)=>{
+        <Column title="商机名称"  dataIndex="businessName" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(text, record, index)=>{
           return (
             <Button type="link" onClick={()=>{
               history.push(`/CRM/business/${record.businessId}`);
             }}>{text}</Button>
           );
         }} />
-        <Column title="客户名称" dataIndex="customerName"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(value, record)=>{
+        <Column title="客户名称"  dataIndex="customerName"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(value, record)=>{
           return (
             <div>
               {
@@ -106,7 +134,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }}/>
-        <Column title="销售流程" dataIndex="salesId"  render={(value, record)=>{
+        <Column title="销售流程" width={150} dataIndex="salesId"  render={(value, record)=>{
           return (
             <div>
               {
@@ -115,7 +143,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="机会来源" dataIndex="originName"  render={(value, record)=>{
+        <Column title="机会来源" width={120} dataIndex="originName"  render={(value, record)=>{
           return (
             <div>
               {
@@ -124,7 +152,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="负责人" dataIndex="person"  render={(value, record)=>{
+        <Column title="负责人" width={120} align='center' dataIndex="person"  render={(value, record)=>{
           return (
             <div>
               {
@@ -133,9 +161,9 @@ const BusinessTable = (props) => {
             </div>
           );
         }}/>
-        <Column title="立项日期" dataIndex="time"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
-        <Column title="商机阶段" dataIndex="stage" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
-        <Column title="商机金额" dataIndex="opportunityAmount" sorter showSorterTooltip  sortDirections={['ascend', 'descend']} />
+        <Column title="立项日期" width={200} dataIndex="time"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
+        <Column title="商机阶段" width={120} align='center' dataIndex="stage" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
+        <Column title="商机金额" width={120} align='center' dataIndex="opportunityAmount" sorter showSorterTooltip  sortDirections={['ascend', 'descend']} />
         {/*<Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
         {/*<Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
         {/*<Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />*/}

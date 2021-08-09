@@ -38,8 +38,6 @@ const DelButton = ({
           await run({
             data: api.method==='POST' && params,
             params: api.method==='GET' && params,
-            data: params,
-            params
           });
           onSuccess();
           return new Promise((resolve, reject) => {
