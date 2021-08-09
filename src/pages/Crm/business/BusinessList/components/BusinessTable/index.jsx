@@ -87,16 +87,21 @@ const BusinessTable = (props) => {
         {search ? formItem() : null}
         <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
         <FormItem hidden name="salesId"  component={SysField.BusinessNameListSelect} />
-        <Button style={{marginRight: 20}} onClick={() => {
-          if (search){
-            setSearch(false);
-          }else {
-            setSearch(true);
-          }
-
-        }}>高级搜索</Button>
       </>
     );
+  };
+
+  const Search = () => {
+    return (
+      <Button style={{marginRight: 20}} onClick={() => {
+        if (search){
+          setSearch(false);
+        }else {
+          setSearch(true);
+        }
+
+      }}>高级搜索</Button>
+  );
   };
 
   return (
@@ -109,6 +114,7 @@ const BusinessTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
+        Search={Search()}
         onChange={(keys) => {
           setIds(keys);
         }}

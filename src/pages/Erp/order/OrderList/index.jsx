@@ -63,7 +63,8 @@ const OrderList = () => {
       >
 
         <Column title="订单编号" dataIndex="orderId" />
-        <Column title="订单人姓名" dataIndex="contactsId"   sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}/>
+        <Column title="客户编号" dataIndex="customerId" />
+        <Column title="订单人姓名" dataIndex="contactsId"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}/>
         <Column title="订单地址" dataIndex="adressId" />
         <Column title="订单数量" dataIndex="number" />
         <Column title="订单状态" dataIndex="state"   sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}/>
@@ -78,9 +79,9 @@ const OrderList = () => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.id);
+                ref.current.open(record.orderId);
               }} />
-              <DelButton api={orderDelete} value={record.id} onSuccess={() => {
+              <DelButton api={orderDelete} value={record.orderId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>

@@ -11,8 +11,7 @@ import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import FormIndex from '@/components/Form/FormIndex';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
-import {useRequest} from '@/util/Request';
-
+import {Audit} from '@/pages/Crm/contract/ContractField';
 
 const {FormItem} = Form;
 const ApiConfig = {
@@ -28,7 +27,6 @@ const AddContractEdit = ({...props}) => {
   const {value, ...other} = props;
 
   const [result, setResult] = useState(value ? value.contractId : value);
-
 
   const [current, setCurrent] = React.useState(0);
 
@@ -58,6 +56,7 @@ const AddContractEdit = ({...props}) => {
               <FormItem label="甲方" name="partyA" component={SysField.Customer} placeholder="请选择甲方客户" val={value ? value.partAName : null} required />
               <FormItem label="乙方" name="partyB" component={SysField.Customer} placeholder="请选择乙方客户" val={value ? value.partBName : null} required />
               <FormItem label="创建时间" name="time" component={SysField.Time} required />
+              <FormItem label="审核" name="audit" component={SysField.Audit} required />
               <Button type="primary" htmlType="submit">
                 Next
               </Button>

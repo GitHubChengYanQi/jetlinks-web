@@ -7,7 +7,7 @@
 
 
 import React, {useRef, useState} from 'react';
-import {Input, InputNumber, Button} from 'antd';
+import {Input, InputNumber,Select as AntSelect} from 'antd';
 import {DatePicker2} from '@alifd/next';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
@@ -39,14 +39,20 @@ export const Customer = (props) =>{
 export const Name = (props) => {
   return (<Input  style={{width:200}}  {...props} />);
 };
+
 export const UserId = (props) => {
   return (<Select  api={apiUrl.userIdSelect} {...props} />);
 };
+
 export const Note = (props) => {
   return (<Input  {...props} />);
 };
+
 export const Time = (props) => {
-  return (<DatePicker showTime   {...props} />);
+  return (<DatePicker showTime {...props} />);
+};
+export const Audit = (props) => {
+  return (<AntSelect style={{width:200}} options={[{label:'不合格',value:0},{label:'合格',value:1}]} showTime   {...props} />);
 };
 
 export const Template = (props) => {
@@ -71,6 +77,7 @@ export const ContentUpdate = (props) => {
 
 
 export const Content = (props) => {
+
 
   const [state, setState] = useState('文本框');
 
@@ -115,11 +122,9 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
               return (<>
-                <Input style={{width:120}} value={domNode.children[0].data}/>
-                <Button className='placeName' onClick={()=>{
-                  ref.current.open(false);}}>
-                  搜索客户
-                </Button>
+                <Search style={{width:200,margin:'0 10px'}} value={domNode.children[0].data} onSearch={()=>{
+                  ref.current.open(false);
+                }} enterButton />
                 <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
                   ref.current.close();
                 }} ref={ref} check={(record)=>{

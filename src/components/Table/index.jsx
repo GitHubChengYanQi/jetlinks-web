@@ -18,6 +18,7 @@ const TableWarp = ({
   api,
   searchForm,
   rowKey,
+  Search,
   selectionType,
   onChange,
   footer: parentFooter,
@@ -113,6 +114,7 @@ const TableWarp = ({
           {typeof searchForm === 'function' && searchForm()}
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
+            {Search || null}
           </FormButtonGroup>
         </Form>
       </div> : <Form
