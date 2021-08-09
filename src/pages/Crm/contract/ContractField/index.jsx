@@ -22,8 +22,8 @@ const w = 200;
 
 
 export const Customer = (props) =>{
-  const {onChange,placeholder} = props;
-  const [value,setValue] = useState();
+  const {onChange,placeholder,val} = props;
+  const [value,setValue] = useState(val);
   const ref = useRef(null);
   return (<>
     <Search style={{width:200}} placeholder={placeholder}  {...props} value={value} onSearch={()=>{
@@ -72,7 +72,7 @@ export const ContentUpdate = (props) => {
 
 export const Content = (props) => {
 
-  const [state, setState] = useState();
+  const [state, setState] = useState('文本框');
 
 
   const ref = useRef(null);

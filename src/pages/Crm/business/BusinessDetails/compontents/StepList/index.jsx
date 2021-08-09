@@ -24,8 +24,9 @@ const StepList = (props) => {
     method: 'POST', data: {salesId: value.salesId}
   });
 
+
   const {run} = useRequest({
-    url: '/crmBusiness/edit',
+    url: '/crmBusiness/batchDelete',
     method: 'POST',
     onError(error) {
       openNotificationWithIcon('error');
@@ -51,7 +52,7 @@ const StepList = (props) => {
   function confirm(name, values) {
     Modal.confirm({
       title: 'Confirm',
-      centered:true,
+      centered: true,
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
       okText: '确认',
@@ -68,7 +69,7 @@ const StepList = (props) => {
   function confirmOk(name, percent) {
     Modal.confirm({
       title: 'Confirm',
-      centered:true,
+      centered: true,
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
       okText: '确认',
@@ -109,14 +110,14 @@ const StepList = (props) => {
           <Step title={value.state ? value.state :
             <>
               <Popover placement="bottom" content={
-               ( <div>
-                 <a className={styles.state} onClick={async () => {
-                   confirmOk('赢单', 100);
-                 }}>赢单 100%</a>
-                 <a className={styles.state} onClick={async () => {
-                   confirmOk('输单', 0);
-                 }}>输单 0%</a>
-               </div>)
+                (<div>
+                  <a className={styles.state} onClick={async () => {
+                    confirmOk('赢单', 100);
+                  }}>赢单 100%</a>
+                  <a className={styles.state} onClick={async () => {
+                    confirmOk('输单', 0);
+                  }}>输单 0%</a>
+                </div>)
               } trigger="hover">
                 完成
               </Popover>

@@ -11,6 +11,7 @@ import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import FormIndex from '@/components/Form/FormIndex';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
+import {useRequest} from '@/util/Request';
 
 
 const {FormItem} = Form;
@@ -24,7 +25,10 @@ const ApiConfig = {
 const AddContractEdit = ({...props}) => {
   const {Step} = Steps;
 
-  const [result, setResult] = useState(props.value);
+  const {value, ...other} = props;
+
+  const [result, setResult] = useState(value ? value.contractId : value);
+
 
   const [current, setCurrent] = React.useState(0);
 
@@ -37,7 +41,8 @@ const AddContractEdit = ({...props}) => {
         <>
           <div style={{margin: '50px 150px'}}>
             <FormIndex
-              {...props}
+              value={result}
+              {...other}
               ref={formRef}
               api={ApiConfig}
               fieldKey="contractId"
@@ -48,11 +53,11 @@ const AddContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="选择合同模板" name="content" component={SysField.Template} required />
+              <FormItem label="选择合同模板" name="templateId" component={SysField.Template} required />
               <FormItem label="合同名称" name="name" component={SysField.Name} required />
-              <FormItem label="甲方" name="partyA" component={SysField.Customer} placeholder="请选择甲方客户" required />
-              <FormItem label="乙方" name="partyB" component={SysField.Customer} placeholder="请选择乙方方客户" required />
-              <FormItem label='创建时间' name='time' component={SysField.Time} required />
+              <FormItem label="甲方" name="partyA" component={SysField.Customer} placeholder="请选择甲方客户" val={value ? value.partAName : null} required />
+              <FormItem label="乙方" name="partyB" component={SysField.Customer} placeholder="请选择乙方客户" val={value ? value.partBName : null} required />
+              <FormItem label="创建时间" name="time" component={SysField.Time} required />
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
@@ -65,7 +70,6 @@ const AddContractEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-
             <FormIndex
               {...props}
               value={result}
@@ -76,7 +80,6 @@ const AddContractEdit = ({...props}) => {
                 props.onSuccess();
               }}
             >
-              {/*<FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required />*/}
               <FormItem name="content" component={SysField.Content} required />
               <Button type="primary" htmlType="submit">
                 Done
