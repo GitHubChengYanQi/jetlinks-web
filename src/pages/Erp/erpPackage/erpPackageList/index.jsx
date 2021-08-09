@@ -34,7 +34,6 @@ const ErpPackageList = () => {
 
 
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
-  console.log(daGet);
   const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
 
 

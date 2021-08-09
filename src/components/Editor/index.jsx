@@ -1,8 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ReactWEditor from 'wangeditor-for-react';
 import {Button} from 'antd';
-import Drawer from '@/components/Drawer';
-import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 
 const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 

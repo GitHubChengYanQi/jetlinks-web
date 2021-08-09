@@ -13,6 +13,7 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import {MegaLayout} from '@formily/antd-components';
 import {
   customerBatchDelete,
   customerDelete, customerList,
@@ -23,13 +24,16 @@ import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
+import {SearchOutlined} from '@ant-design/icons';
+import {Submit} from '@formily/antd';
+import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level} = props;
+  const {status, state, level,customer} = props;
   const history = useHistory();
 
   const ref = useRef(null);
@@ -65,10 +69,11 @@ const CustomerTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem style={{width:200}} label="公司类型" name="companyType" component={SysField.CompanyType} />
-          <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
-          <FormItem label="负责人" name="userId" component={SysField.UserName} />
-          <FormItem style={{width:200}} label="行业" name="industryId" component={SysField.IndustryOne} />
+          <FormItem mega-props={{span: 1}} label="公司类型" name="companyType" component={SysField.CompanyType} />
+          <FormItem mega-props={{span: 1}} label="客户来源" name="originId" component={SysField.OriginId} />
+          <FormItem mega-props={{span: 1}} label="负责人" name="userId" component={SysField.UserName} />
+          <FormItem mega-props={{span: 1}} label="行业" name="industryId" component={SysField.IndustryOne} />
+
         </>
       );
     };
@@ -76,11 +81,27 @@ const CustomerTable = (props) => {
 
     return (
       <>
-        <FormItem label="客户名称" name="customerName" component={SysField.Name} />
-        {search ? formItem() : null}
-        <FormItem hidden name="status" component={SysField.Name} />
-        <FormItem hidden name="classification" component={SysField.Name} />
-        <FormItem hidden name="customerLevelId" component={SysField.Name} />
+        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} label="客户名称" name="customerName" component={SysField.Name} />
+          {search ? formItem() : null}
+          <MegaLayout>
+            <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
+            <Button style={{width: 100}} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}>高级搜索</Button>
+            <MegaLayout>
+              <FormItem hidden name="status" component={SysField.Name} />
+              <FormItem hidden name="classification" component={SysField.Name} />
+              <FormItem hidden name="customerLevelId" component={SysField.Name} />
+            </MegaLayout>
+          </MegaLayout>
+        </MegaLayout>
+
+
       </>
     );
   };
@@ -88,12 +109,11 @@ const CustomerTable = (props) => {
   const Search = () => {
     return (
       <Button style={{marginRight: 20}} onClick={() => {
-        if (search){
+        if (search) {
           setSearch(false);
-        }else {
+        } else {
           setSearch(true);
         }
-
       }}>高级搜索</Button>
     );
   };
@@ -119,19 +139,19 @@ const CustomerTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        Search={Search()}
+        Search
         onChange={(keys) => {
           setIds(keys);
         }}
+        layout
         scroll={{x: 'max-content'}}
         sticky={{
           getContainer: () => {
-            console.log(document.getElementById('listLayout'));
             return document.getElementById('listLayout');
           }
         }}
       >
-        <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
+        <Column title="客户名称" dataIndex="customerName" render={(text, record) => {
           return (
             <Button size="small" type="link" onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
@@ -177,6 +197,10 @@ const CustomerTable = (props) => {
         <Column title="操作" width={100} align="right" render={(value, record) => {
           return (
             <>
+              {customer ? <CheckButton onClick={()=>{
+                customer(record);
+                props.onSuccess();
+              }} /> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.customerId);
               }} />
