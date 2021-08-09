@@ -14,7 +14,7 @@ import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
 import Drawer from '@/components/Drawer';
 import Stocks from '@/pages/Crm/track/TrackEdit/components/Stocks';
-import TemplateList from '@/pages/Crm/addContract/AddContractEdit/Template';
+import TemplateList from '@/pages/Crm/contract/addContract/AddContractEdit/Template';
 import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 
 const w = 200;
@@ -26,7 +26,7 @@ export const Customer = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索客户
@@ -136,7 +136,7 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
               return (<>
-                <Input style={{width:w}}  value={domNode.children[0].data}/>
+                <Input   value={domNode.children[0].data}/>
                 <Button className='placeName' onClick={()=>{
                   ref.current.open(false);}}>
                   搜索客户

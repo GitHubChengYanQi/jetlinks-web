@@ -53,16 +53,15 @@ const CrmCustomerLevelList = () => {
         ref={tableRef}
       >
         <Column title="级别" dataIndex="level" />
+        <Column title="数字级别" dataIndex="rank" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                console.log(123);
                 ref.current.open(record.customerLevelId);
               }} />
               <DelButton api={crmCustomerLevelDelete} value={record.customerLevelId} onSuccess={() => {
-                console.log(123);
                 tableRef.current.refresh();
               }} />
             </>

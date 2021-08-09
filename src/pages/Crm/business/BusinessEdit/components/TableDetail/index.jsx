@@ -9,7 +9,7 @@ import * as SysField from "@/pages/Crm/business/BusinessField";
 import Form from "@/components/Form";
 import Items from "@/pages/Erp/instock/InstockEdit/components/Items";
 import {useRequest} from "@/util/Request";
-import CrmBusinessDetailedEdit from "@/pages/Crm/crmBusinessDetailed/crmBusinessDetailedEdit";
+import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit";
 import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
 
 const {FormItem} = Form;

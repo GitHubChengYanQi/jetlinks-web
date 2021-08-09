@@ -7,8 +7,9 @@ import {OriginRouter, originRouter, SourceRouter} from '@/pages/Crm/origin/Origi
 import {TemplateRouter} from '@/pages/Crm/template/TemplateRouter';
 import {ContractRouter} from '@/pages/Crm/contract/ContractRouter';
 import {CustomerRouter} from '@/pages/Crm/customer/CustomerRouter';
-import {CrmCustomerLevelRouter} from '@/pages/Crm/crmCustomerLevel/crmCustomerLevelRouter';
+import {CrmCustomerLevelRouter} from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelRouter';
 import {CrmIndustryRouter} from '@/pages/Crm/crmIndustry/crmIndustryRouter';
+import {ContactsRouter} from '@/pages/Crm/contacts/ContactsRouter';
 
 
 const CrmRouterConfig = [
@@ -25,6 +26,7 @@ const CrmRouterConfig = [
       ...ContractRouter,
       ...CrmCustomerLevelRouter,
       ...CrmIndustryRouter,
+      ...ContactsRouter,
       {
         redirect: '/CRM/customer',
       }

@@ -26,7 +26,7 @@ export const Palce = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索仓库
@@ -43,7 +43,7 @@ export const Item = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索产品
@@ -56,15 +56,15 @@ export const Item = (props) =>{
 };
 
 export const PalceId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 
 export const ItemId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const BrandId = (props) =>{
-  return (<Select style={{width:w}}  api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
 };
 export const Inventory = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+  return (<Input   {...props}/>);
 };

@@ -28,13 +28,15 @@ const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state,level} = props;
+  const {status, state, level} = props;
   const history = useHistory();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
 
   const [ids, setIds] = useState([]);
+
+  const [search, setSearch] = useState(false);
 
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const CustomerTable = (props) => {
       tableRef.current.formActions.setFieldValue('customerLevelId', level ? level[0] : null);
       tableRef.current.submit();
     }
-  }, [status, state,level]);
+  }, [status, state, level]);
 
 
   const actions = () => {
@@ -58,13 +60,35 @@ const CustomerTable = (props) => {
   };
 
   const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem style={{width:200}} label="公司类型" name="companyType" component={SysField.CompanyType} />
+          <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
+          <FormItem label="负责人" name="userId" component={SysField.UserName} />
+          <FormItem style={{width:200}} label="行业" name="industryId" component={SysField.IndustryOne} />
+        </>
+      );
+    };
+
+
     return (
       <>
         <FormItem label="客户名称" name="customerName" component={SysField.Name} />
-        <FormItem label="公司类型" name="companyType" component={SysField.Name} />
-        <FormItem style={{display: 'none'}} name="status" component={SysField.Name} />
-        <FormItem style={{display: 'none'}} name="classification" component={SysField.Name} />
-        <FormItem style={{display: 'none'}} name="customerLevelId" component={SysField.Name} />
+        {search ? formItem() : null}
+        <FormItem hidden name="status" component={SysField.Name} />
+        <FormItem hidden name="classification" component={SysField.Name} />
+        <FormItem hidden name="customerLevelId" component={SysField.Name} />
+
+        <Button style={{marginRight: 20}} onClick={() => {
+          if (search){
+            setSearch(false);
+          }else {
+            setSearch(true);
+          }
+
+        }}>高级搜索</Button>
       </>
     );
   };
@@ -74,8 +98,8 @@ const CustomerTable = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-    ...customerBatchDelete
-    }} onSuccess={()=>{
+      ...customerBatchDelete
+    }} onSuccess={() => {
       tableRef.current.refresh();
     }} value={ids}>批量删除</DelButton>);
   };
@@ -93,7 +117,7 @@ const CustomerTable = (props) => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        scroll={{x:1200}}
+        scroll={{x: 1200}}
       >
         <Column title="客户名称" dataIndex="customerName" render={(text, record, index) => {
           return (
@@ -107,7 +131,7 @@ const CustomerTable = (props) => {
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
-        <Column title="客户级别" width={120}  render={(text,record)=>{
+        <Column title="客户级别" width={120} render={(text, record) => {
           return (
             <>
               {record.crmCustomerLevelResult.level}
@@ -116,21 +140,21 @@ const CustomerTable = (props) => {
         }} />
         <Column title="客户分类" width={120} dataIndex="classificationName" />
         <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
-        <Column title="客户来源" width={120} render={(text,record)=>{
+        <Column title="客户来源" width={120} render={(text, record) => {
           return (
             <>
               {record.originResult.originName}
             </>
           );
         }} />
-        <Column title="负责人" width={120} render={(text,record)=>{
+        <Column title="负责人" width={120} render={(text, record) => {
           return (
             <>
               {record.userResult.account}
             </>
           );
         }} />
-        <Column title="行业" width={120} render={(text,record)=>{
+        <Column title="行业" width={120} render={(text, record) => {
           return (
             <>
               {record.crmIndustryResult.industryName}
@@ -143,9 +167,11 @@ const CustomerTable = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.customerId);
               }} />
-              <DelButton api={{ url: '/customer/batchDelete',
+              <DelButton api={{
+                url: '/customer/batchDelete',
                 method: 'POST',
-                rowKey:'customerId'}} value={record.customerId} onSuccess={() => {
+                rowKey: 'customerId'
+              }} value={record.customerId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>

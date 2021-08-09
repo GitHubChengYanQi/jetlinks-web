@@ -18,3 +18,6 @@ export const CustomerLevelId = (props) =>{
 export const Level = (props) =>{
   return (<Input {...props}/>);
 };
+export const Rank = (props) =>{
+  return (<Input {...props}/>);
+};

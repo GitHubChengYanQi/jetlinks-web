@@ -14,7 +14,7 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {adressDelete, adressList} from '@/pages/Crm/adress/AdressUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/AdressEdit';
-import * as SysField from '@/pages/Crm/crmBusinessSalesProcess/crmBusinessSalesProcessField';
+import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;

@@ -11,11 +11,11 @@ import {} from '../AdressUrl';
 const w = 200;
 
 export const Location = (props) =>{
-  return (<Input style={{width:w}} {...props}/>);
+  return (<Input  {...props}/>);
 };
 export const Longitude = (props) =>{
-  return (<InputNumber  style={{width:w}} {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Latitude = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}/>);
+  return (<InputNumber   {...props}/>);
 };

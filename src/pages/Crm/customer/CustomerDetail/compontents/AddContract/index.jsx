@@ -8,8 +8,8 @@
 import React, {useRef, useState} from 'react';
 import {Button, Input, InputNumber, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import * as SysField from '@/pages/Crm/addContract/AddContractField';
-import {contractAdd} from '@/pages/Crm/addContract/AddContractUrl';
+import * as SysField from '@/pages/Crm/contract/addContract/AddContractField';
+import {contractAdd} from '@/pages/Crm/contract/addContract/AddContractUrl';
 import FormIndex from '@/components/Form/FormIndex';
 import {contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 

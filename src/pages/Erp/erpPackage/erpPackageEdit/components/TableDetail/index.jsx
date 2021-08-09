@@ -7,7 +7,7 @@ import Drawer from "@/components/Drawer";
 import Form from "@/components/Form";
 import Items from "@/pages/Erp/instock/InstockEdit/components/Items";
 import {useRequest} from "@/util/Request";
-import CrmBusinessDetailedEdit from "@/pages/Crm/crmBusinessDetailed/crmBusinessDetailedEdit";
+import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit";
 import {erpPackageTableDelete, erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
 
 const {FormItem} = Form;

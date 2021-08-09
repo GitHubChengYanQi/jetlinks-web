@@ -18,20 +18,20 @@ import {clientListSelect, nameListSelect, phoneListSelect} from '../contactsUrl'
 const w = 200;
 
 export const client = (props) =>{
-  return (<Input style={{width:w}} {...props} />);
+  return (<Input  {...props} />);
 };
 export const ContactsName = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Job = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Phone = (props) =>{
-  return (<InputNumber  style={{width:w}} {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const DeptId = (props) =>{
-  return (<Input  style={{width:w}} {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const ClientId = (props) =>{
-  return (<Select  style={{width:w}} api={apiUrl.clientIdSelect} {...props}/>);
+  return (<Select   api={apiUrl.clientIdSelect} {...props}/>);
 };

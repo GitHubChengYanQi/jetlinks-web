@@ -18,7 +18,7 @@ export const Stock = (props) =>{
   const tableRef = useRef(null);
 
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索库存
@@ -30,12 +30,12 @@ export const Stock = (props) =>{
   </>);
 };
 export const StockId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const Price = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const StorageTime = (props) =>{
-  return (<DatePicker2 style={{width:w}}  {...props}/>);
+  return (<DatePicker2   {...props}/>);
 };
 

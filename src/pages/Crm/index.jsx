@@ -4,9 +4,9 @@ import TopLayout from '@/layouts/TopLayout';
 import Icon from '@/components/Icon';
 import OriginList from '@/pages/Crm/origin/OriginList';
 import TemplateList from '@/pages/Crm/template/TemplateList';
-import CrmCustomerLevelList from '@/pages/Crm/crmCustomerLevel/crmCustomerLevelList';
+import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
-import CrmBusinessSalesList from '@/pages/Crm/crmBusinessSales/crmBusinessSalesList';
+import CrmBusinessSalesList from '@/pages/Crm/business/crmBusinessSales/crmBusinessSalesList';
 
 import styles from './index.module.scss';
 

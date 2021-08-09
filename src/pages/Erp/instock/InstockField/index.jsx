@@ -23,7 +23,7 @@ export const Item = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索产品
@@ -35,11 +35,11 @@ export const Item = (props) =>{
   </>);
 };
 export const ItemId = (props) =>{
-  return (<Input style={{width:w}}  {...props}/>);
+  return (<Input   {...props}/>);
 };
 export const RegisterTime = (props) =>{
   return (
-    <DatePicker2 style={{width:w}}  {...props}/>
+    <DatePicker2   {...props}/>
 );
 };
 export const PlaceId = (props) =>{
@@ -47,7 +47,7 @@ export const PlaceId = (props) =>{
   const ref = useRef(null);
   const tableRef = useRef(null);
   return (<>
-    <Input style={{width:w}}  {...props}/>
+    <Input   {...props}/>
     <Button className='placeName' onClick={()=>{
       ref.current.open(false);}}>
       搜索仓库
@@ -59,11 +59,11 @@ export const PlaceId = (props) =>{
   </>);
 };
 export const Number = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}/>);
+  return (<InputNumber   {...props}/>);
 };
 export const Price = (props) =>{
-  return (<InputNumber style={{width:w}}  {...props}  />);
+  return (<InputNumber   {...props}  />);
 };
 export const BrandId = (props) =>{
-  return (<Select style={{width:w}}  api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
 };

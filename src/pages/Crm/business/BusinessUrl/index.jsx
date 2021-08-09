@@ -89,11 +89,6 @@ export const TotalProductsListSelect4 = {
   url: '/crmBusiness/listSelect4',
   method: 'POST',
 };
-// 整单折扣
-export const OrderDiscountListSelect5 = {
-  url: '/crmBusiness/listSelect5',
-  method: 'POST',
-};
 
 
 
