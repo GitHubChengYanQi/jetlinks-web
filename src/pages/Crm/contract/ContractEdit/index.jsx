@@ -1,20 +1,19 @@
 /**
- * 合同表编辑页
+ * 合同模板编辑页
  *
  * @author
- * @Date 2021-07-21 13:36:21
+ * @Date 2021-07-21 08:22:02
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Input, Steps} from 'antd';
+import {Button, Input, InputNumber, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import {contractDetail, contractAdd, contractEdit} from '../ContractUrl';
-import * as SysField from '../ContractField';
+import * as SysField from '@/pages/Crm/contract/ContractField';
 import FormIndex from '@/components/Form/FormIndex';
-import {templateAdd, templateDetail} from '@/pages/Crm/template/TemplateUrl';
+import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
+
 
 const {FormItem} = Form;
-
 const ApiConfig = {
   view: contractDetail,
   add: contractAdd,
@@ -22,8 +21,7 @@ const ApiConfig = {
 };
 
 
-
-const ContractEdit = ({...props}) => {
+const AddContractEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
@@ -50,10 +48,11 @@ const ContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="合同名称" name="name" component={SysField.Name} required/>
-              <FormItem label="负责人" name="userId" component={SysField.UserId} required/>
-              <FormItem label="备注" name="note" component={SysField.Note} required/>
-              <FormItem label="创建时间" name="time" component={SysField.Time} required/>
+              <FormItem label="选择合同模板" name="content" component={SysField.Template} required />
+              <FormItem label="合同名称" name="name" component={SysField.Name} required />
+              <FormItem label="甲方" name="partyA" component={SysField.Customer} placeholder="请选择甲方客户" required />
+              <FormItem label="乙方" name="partyB" component={SysField.Customer} placeholder="请选择乙方方客户" required />
+              <FormItem label='创建时间' name='time' component={SysField.Time} required />
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
@@ -65,7 +64,6 @@ const ContractEdit = ({...props}) => {
       title: '选填项',
       content:
         <>
-
           <div style={{margin: '50px 150px'}}>
 
             <FormIndex
@@ -78,7 +76,8 @@ const ContractEdit = ({...props}) => {
                 props.onSuccess();
               }}
             >
-              <FormItem name="content" component={SysField.Content} required/>
+              {/*<FormItem name="content" component={props.value ? SysField.ContentUpdate : SysField.Content} required />*/}
+              <FormItem name="content" component={SysField.Content} required />
               <Button type="primary" htmlType="submit">
                 Done
               </Button>
@@ -95,6 +94,9 @@ const ContractEdit = ({...props}) => {
   };
 
 
+  const prev = () => {
+    setCurrent(current - 1);
+  };
 
   return (
     <>
@@ -112,4 +114,4 @@ const ContractEdit = ({...props}) => {
 
 };
 
-export default ContractEdit;
+export default AddContractEdit;

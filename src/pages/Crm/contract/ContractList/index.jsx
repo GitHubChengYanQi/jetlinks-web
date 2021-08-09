@@ -14,13 +14,10 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {contractBatchDelete, contractDelete, contractList} from '../ContractUrl';
-import ContractEdit from '../ContractEdit';
 import * as SysField from '../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {useHistory} from 'ice';
-import AddContractEdit from '@/pages/Crm/contract/addContract/AddContractEdit';
-import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
+import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -78,6 +75,9 @@ const ContractList = () => {
         }}
       >
         <Column title="合同名称" dataIndex="name" />
+        <Column title="甲方" dataIndex="partAName" />
+        <Column title="乙方" dataIndex="partBName" />
+        <Column title="创建时间" dataIndex="time" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

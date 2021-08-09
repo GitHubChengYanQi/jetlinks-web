@@ -28,7 +28,6 @@ const Index = (props) => {
   };
   const [val, setVal] = useState();
 
-  const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -40,7 +39,6 @@ const Index = (props) => {
 
   return (
     <>
-      <Input value={val} />
       <Table
         api={customerList}
         rowKey="customerId"
@@ -61,7 +59,7 @@ const Index = (props) => {
           return (
             <CheckButton onClick={() => {
               setVal(record.customerId);
-              check(record.customerId);
+              check(record);
               props.onSuccess();
             }} />
           );

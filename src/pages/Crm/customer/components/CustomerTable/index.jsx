@@ -120,7 +120,6 @@ const CustomerTable = (props) => {
         scroll={{x:'max-content' }}
         sticky={{
           getContainer:() => {
-            console.log(document.getElementById('listLayout'));
             return document.getElementById('listLayout');
           }
         }}
@@ -132,12 +131,12 @@ const CustomerTable = (props) => {
             }}>{text}</Button>
           );
         }} />
-        <Column title="客户状态" width={120} render={(text, record) => {
+        <Column title="客户状态" width={120} align='center' render={(text, record) => {
           return (
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
-        <Column title="客户级别" width={120} render={(text, record) => {
+        <Column title="客户级别" width={120} align='center' render={(text, record) => {
           return (
             <>
               {record.crmCustomerLevelResult.level}
@@ -153,14 +152,14 @@ const CustomerTable = (props) => {
             </>
           );
         }} />
-        <Column title="负责人" width={120} render={(text, record) => {
+        <Column title="负责人" width={120} align='center' render={(text, record) => {
           return (
             <>
               {record.userResult.account}
             </>
           );
         }} />
-        <Column title="行业" width={120} render={(text, record) => {
+        <Column title="行业" width={120} align='center' render={(text, record) => {
           return (
             <>
               {record.crmIndustryResult.industryName}
