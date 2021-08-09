@@ -26,13 +26,14 @@ import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import {SearchOutlined} from '@ant-design/icons';
 import {Submit} from '@formily/antd';
+import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level} = props;
+  const {status, state, level,customer} = props;
   const history = useHistory();
 
   const ref = useRef(null);
@@ -196,6 +197,10 @@ const CustomerTable = (props) => {
         <Column title="操作" width={100} align="right" render={(value, record) => {
           return (
             <>
+              {customer ? <CheckButton onClick={()=>{
+                customer(record);
+                props.onSuccess();
+              }} /> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.customerId);
               }} />

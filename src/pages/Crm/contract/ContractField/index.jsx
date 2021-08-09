@@ -13,14 +13,12 @@ import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
 import Drawer from '@/components/Drawer';
-import Index from '@/pages/Crm/template/TemplateEdit/components/Customer';
 import DatePicker from '@/components/DatePicker';
 import Items from '@/pages/Erp/instock/InstockEdit/components/Items';
 import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
+import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 
 const {Search} = Input;
-
-const w = 200;
 
 
 export const Customer = (props) => {
@@ -31,9 +29,9 @@ export const Customer = (props) => {
     <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
       ref.current.open(false);
     }} enterButton />
-    <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
+    <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
       ref.current.close();
-    }} ref={ref} check={(customer) => {
+    }} ref={ref} customer={(customer) => {
       setValue(customer.customerName);
       onChange(customer.customerId);
       ref.current.close();
@@ -133,9 +131,9 @@ export const SeeContent = (props) => {
                 <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
                   ref.current.open(false);
                 }} enterButton />
-                <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
+                <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
                   ref.current.close();
-                }} ref={ref} check={(record) => {
+                }} ref={ref} customer={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.customerName);
                   props.onChange(value);
                   ref.current.close();
@@ -231,9 +229,9 @@ export const Content = (props) => {
                 <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
                   ref.current.open(false);
                 }} enterButton />
-                <Drawer width={1500} title="选择" component={Index} onSuccess={() => {
+                <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
                   ref.current.close();
-                }} ref={ref} check={(record) => {
+                }} ref={ref} customer={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.customerName);
                   props.onChange(value);
                   ref.current.close();

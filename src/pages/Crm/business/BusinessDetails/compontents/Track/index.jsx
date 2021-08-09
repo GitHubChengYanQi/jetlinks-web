@@ -18,7 +18,7 @@ const Track = (props) => {
   const datas = data ? data.map((value, index) => {
     return {
       actions: [<span onClick={()=>{ref.current.open(value.trackId);}}>编辑</span>],
-      author: value.user[0] ? value.user[0].account : '--',
+      author: value.user.account ? value.user.account : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
