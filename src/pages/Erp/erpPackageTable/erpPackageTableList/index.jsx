@@ -7,36 +7,55 @@
 
 import React, {useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from "@/components/Table";
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import Items from "@/pages/Erp/instock/InstockEdit/components/Items";
 import useRequest from '@/util/Request/useRequest';
-import {erpPackageTableDelete, erpPackageTableList} from '../erpPackageTableUrl';
+import Modal2 from '@/components/Modal';
+import ItemsTable from "@/pages/Erp/erpPackageTable/erpPackageTableList/components/ItemsTable";
 import ErpPackageTableEdit from '../erpPackageTableEdit';
+import {erpPackageTableDelete, erpPackageTableList} from '../erpPackageTableUrl';
 import * as SysField from '../erpPackageTableField';
 
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ErpPackageTableList = ({...props}) => {
+const ErpPackageTableList = ({onChange,...props}) => {
 
   const ref = useRef();
   const tableRef = useRef(null);
   const refAddOne = useRef(null);
   const [da,setDa] = useState(null);
+  const [ids, setIds] = useState([]);
 
-  const {data,run} = useRequest({url: '/erpPackageTable/add',method: 'POST'},{manual:true});
+  const refesh = (data, params) => {
+    console.log('data');
+    tableRef.current.refresh();
+  };
+
+  const {data,run} = useRequest({url: '/erpPackageTable/add',method: 'POST'},{manual:true}, {onSuccess:refesh});
+
 
   const searchForm = () => {
     return (
       <>
         <FormItem style={{'display': 'none'}} name="packageId" value={props.value} component={SysField.PackageId}/>
+        <FormItem label="" name="packageId" value={props.value} component={SysField.PackageId}/>
       </>
     );
+  };
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      url: '/',
+      method: 'POST'
+    }} value={ids}>批量删除</DelButton>);
   };
 
   return (
@@ -46,23 +65,14 @@ const ErpPackageTableList = ({...props}) => {
           refAddOne.current.open(false);}}>
           添加产品
         </Button>
-        <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
-          refAddOne.current.open(false);
-
-        }} ref={refAddOne}
-        allData={(data) => {
-          run(
-            {
-              data:{
-                packageId: props.value,
-                itemId: data.itemId,
-                salePrice: 0,
-                totalPrice: 0,
-                quantity: 0
-              }
-            });
-          refAddOne.current.close();
-        }}/>
+        <Modal2 width={1900} title="选择" component={ItemsTable}
+          onSuccess={()=>{
+            tableRef.current.refresh();
+            refAddOne.current.close();
+          }}
+          ref={refAddOne}
+          packageId={props.value}
+        />
       </div>
       <Table
         api={erpPackageTableList}
@@ -70,6 +80,10 @@ const ErpPackageTableList = ({...props}) => {
         searchForm={searchForm}
         ref={tableRef}
         showSearchButton={false}
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
       >
         <Column title="产品名称" dataIndex="items" render={(value, record)=>{
           return (
