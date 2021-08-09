@@ -18,30 +18,22 @@ import ItemsEdit from '../ItemsEdit';
 import * as SysField from '../ItemsField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import CheckButton from "@/components/CheckButton";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ItemsList = (props) => {
+const ItemsList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const [ids, setIds] = useState([]);
-  const footer = () => {
-    /**
-     * 批量删除例子，根据实际情况修改接口地址
-     */
-    return (<DelButton api={{
-      url: '/',
-      method: 'POST'
-    }} value={ids}>批量删除</DelButton>);
-  };
+
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
+
+
       </>
     );
   };
@@ -68,11 +60,6 @@ const ItemsList = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
-        onChange={(keys)=>{
-          setIds(ids);
-          props.onChange(keys);
-        }}
-        footer={footer}
       >
         <Column title="产品名字" dataIndex="name" />
         <Column title="质保期" dataIndex="shelfLife" />
@@ -83,6 +70,7 @@ const ItemsList = (props) => {
         <Column title="材质" dataIndex="materialName" />
         <Column title="成本" dataIndex="cost" />
         <Column title="易损" dataIndex="vulnerability" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
