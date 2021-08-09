@@ -126,7 +126,6 @@ const TableWarp = ({
         dataSource={dataSource || []}
         rowKey={rowKey}
         columns={columns}
-        sticky
         pagination={
           {
             ...pagination,
