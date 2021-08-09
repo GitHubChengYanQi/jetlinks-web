@@ -1,9 +1,12 @@
 import React, {useRef, useState} from 'react';
 import {Button, Col, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
-import TableDetail from "@/pages/Erp/erpPackage/erpPackageEdit/components/TableDetail";
+import FormIndex from "@/components/Form/FormIndex";
+import ErpPackageTableList from "@/pages/Erp/erpPackageTable/erpPackageTableList";
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../erpPackageUrl';
+import * as SysField from '../erpPackageField';
 
+const {FormItem} = Form;
 const ApiConfig = {
   save: erpPackageEdit
 };
@@ -84,4 +87,6 @@ const ErpPackageEdit = ({...props}) => {
     </>
   );
 };
+
+export default ErpPackageEdit;
 
