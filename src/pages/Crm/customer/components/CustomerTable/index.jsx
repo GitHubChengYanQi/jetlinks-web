@@ -153,7 +153,7 @@ const CustomerTable = (props) => {
         }} />
         <Column title="客户分类" width={120} align="center" dataIndex="classificationName" />
         <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
-        <Column title="客户来源" width={120} render={(text, record) => {
+        <Column title="客户来源" width={120} align="center" render={(text, record) => {
           return (
             <>
               {record.originResult.originName}
@@ -161,7 +161,7 @@ const CustomerTable = (props) => {
           );
         }} />
 
-        <Column title="行业" width={120} render={(text, record) => {
+        <Column title="行业" width={120} align="center" render={(text, record) => {
           return (
             <>
               {record.crmIndustryResult.industryName}
