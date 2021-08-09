@@ -22,6 +22,7 @@ import {useHistory} from 'ice';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
+import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -105,7 +106,7 @@ const CustomerTable = (props) => {
   };
 
   return (
-    <div id="listLayout" style={{height:'100%',overflowY:'auto'}}>
+    <div id="listLayout" style={{height: '100%', overflowY: 'auto'}}>
       <Table
         title={<Breadcrumb />}
         api={customerList}
@@ -117,9 +118,10 @@ const CustomerTable = (props) => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        scroll={{x:'max-content' }}
+        scroll={{x: 'max-content'}}
         sticky={{
-          getContainer:() => {
+          getContainer: () => {
+            console.log(document.getElementById('listLayout'));
             return document.getElementById('listLayout');
           }
         }}
@@ -131,35 +133,35 @@ const CustomerTable = (props) => {
             }}>{text}</Button>
           );
         }} />
-        <Column title="客户状态" width={120} align='center' render={(text, record) => {
-          return (
-            <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
-          );
-        }} />
-        <Column title="客户级别" width={120} align='center' render={(text, record) => {
-          return (
-            <>
-              {record.crmCustomerLevelResult.level}
-            </>
-          );
-        }} />
-        <Column title="客户分类" width={120} dataIndex="classificationName" />
-        <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
-        <Column title="客户来源" width={120} render={(text, record) => {
-          return (
-            <>
-              {record.originResult.originName}
-            </>
-          );
-        }} />
-        <Column title="负责人" width={120} align='center' render={(text, record) => {
+        <Column title="负责人" width={200} render={(text, record) => {
           return (
             <>
               {record.userResult.account}
             </>
           );
         }} />
-        <Column title="行业" width={120} align='center' render={(text, record) => {
+        <Column title="客户状态" width={140} align="center" render={(text, record) => {
+          return (
+            <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
+          );
+        }} />
+        <Column title="客户级别" width={120} align="center" render={(text, record) => {
+          const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
+          return (
+            <CustomerLevel
+              level={level.rank}>{level.level}</CustomerLevel>);
+        }} />
+        <Column title="客户分类" width={120} align="center" dataIndex="classificationName" />
+        <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
+        <Column title="客户来源" width={120} align="center" render={(text, record) => {
+          return (
+            <>
+              {record.originResult.originName}
+            </>
+          );
+        }} />
+
+        <Column title="行业" width={120} align="center" render={(text, record) => {
           return (
             <>
               {record.crmIndustryResult.industryName}
