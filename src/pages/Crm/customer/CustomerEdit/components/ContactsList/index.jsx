@@ -35,7 +35,6 @@ const ContactsList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label='联系人姓名' name="contactsName" component={SysField.SalesId} />
         <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
       </>
     );
@@ -50,12 +49,12 @@ const ContactsList = (props) => {
         api={contactsList}
         rowKey="contactsId"
         ref={tableRef}
+        showSearchButton={false}
         searchForm={searchForm}
       >
         <Column title="联系人姓名" dataIndex="contactsName" />
         <Column title="职务" dataIndex="job" />
         <Column title="联系电话" dataIndex="phone" />
-        <Column title="部门编号" dataIndex="deptId" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

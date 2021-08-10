@@ -82,8 +82,8 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
 
   // pagination
   return (
-    <div className={style.tableWarp}>
-      {searchForm ? <div className="search">
+    <div  className={style.tableWarp}>
+      {searchForm ? <div style={showSearchButton ? null : {height:0,margin:0,padding:0} } className="search">
         <Form
           layout="inline"
           {...form}

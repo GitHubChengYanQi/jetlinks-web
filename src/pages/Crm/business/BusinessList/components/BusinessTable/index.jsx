@@ -24,9 +24,10 @@ import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
-import {Submit} from '@formily/antd';
+import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
+import Icon from '@/components/Icon';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -45,11 +46,14 @@ const BusinessTable = (props) => {
 
   const [search, setSearch] = useState(false);
 
-  if (status !== undefined || state !== undefined) {
-    tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
-    tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
-    tableRef.current.submit();
-  }
+  useEffect(() => {
+    if (status || state) {
+      tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
+      tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
+      tableRef.current.submit();
+    }
+  }, [status, state]);
+
 
   const actions = () => {
     return (
@@ -72,37 +76,51 @@ const BusinessTable = (props) => {
     }} value={ids}>批量删除</DelButton>);
   };
 
+
   const searchForm = () => {
 
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} label="客户名称" name="customerId" component={SysField.CustomerNameListSelect} />
-          <FormItem mega-props={{span: 1}} label="负责人" name="person" component={SysField.PersonListSelect} />
-          <FormItem mega-props={{span: 1}} label="立项日期" name="time" component={SysField.TimeListSelect2} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
+                    component={SysField.CustomerNameListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="立项日期" name="time" component={SysField.TimeListSelect2} />
+
         </>
       );
     };
 
     return (
       <>
-        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
+        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="商机名称" name="businessName"
+                    component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
-          <MegaLayout>
-            <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
-            <Button style={{width: 100}} onClick={() => {
+        </MegaLayout>
+      </>
+    );
+  };
+
+  const Search = () => {
+    return (
+      <>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
                 setSearch(true);
               }
-            }}>高级搜索</Button>
-            <MegaLayout>
+            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            <MegaLayout inline>
               <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
               <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />
             </MegaLayout>
-          </MegaLayout>
+          </FormButtonGroup>
+
         </MegaLayout>
       </>
     );
@@ -119,8 +137,8 @@ const BusinessTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        Search
-        layout
+        SearchButton={Search()}
+        layout={search}
         onChange={(keys) => {
           setIds(keys);
         }}

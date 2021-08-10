@@ -5,7 +5,7 @@
  * @Date 2021-08-02 15:47:16
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -46,9 +46,26 @@ const CrmBusinessSalesList = () => {
     );
   };
 
+  const [ids, setIds] = useState([]);
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      // ...customerBatchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
         title={<Breadcrumb title="销售流程管理" />}
         api={crmBusinessSalesList}
         rowKey="salesId"

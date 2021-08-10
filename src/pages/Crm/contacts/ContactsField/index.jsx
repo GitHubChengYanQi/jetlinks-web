@@ -5,14 +5,13 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React from 'react';
-import {Input, InputNumber, Select as AntdSelect} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import React, {useRef, useState} from 'react';
+import {Input, InputNumber} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../contactsUrl';
-// eslint-disable-next-line import/named
-import {clientListSelect, nameListSelect, phoneListSelect} from '../contactsUrl';
+import Drawer from '@/components/Drawer';
+import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
+import Search from 'antd/es/input/Search';
 
 
 const w = 200;
@@ -21,7 +20,7 @@ export const client = (props) =>{
   return (<Input  {...props} />);
 };
 export const ContactsName = (props) =>{
-  return (<Input   {...props}/>);
+  return (<Input  {...props}/>);
 };
 export const Job = (props) =>{
   return (<Input   {...props}/>);
@@ -32,6 +31,25 @@ export const Phone = (props) =>{
 export const DeptId = (props) =>{
   return (<Input   {...props}/>);
 };
-export const ClientId = (props) =>{
-  return (<Select   api={apiUrl.clientIdSelect} {...props}/>);
+
+export const Customer = (props) =>{
+  return (<Select api={apiUrl.customerIdSelect}   {...props}/>);
+};
+
+export const CustomerId = (props) =>{
+  const {onChange, placeholder, val} = props;
+  const [value, setValue] = useState(val);
+  const ref = useRef(null);
+  return (<>
+    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
+      ref.current.open(false);
+    }} enterButton />
+    <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
+      ref.current.close();
+    }} ref={ref} customer={(customer) => {
+      setValue(customer.customerName);
+      onChange(customer.customerId);
+      ref.current.close();
+    }} />
+  </>);
 };

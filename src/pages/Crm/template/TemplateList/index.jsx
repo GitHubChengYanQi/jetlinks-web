@@ -46,9 +46,26 @@ const TemplateList = () => {
 
 
 
+  const [ids, setIds] = useState([]);
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      // ...customerBatchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
         title={<Breadcrumb title='合同模板管理' />}
         api={templateList}
         rowKey="templateId"
