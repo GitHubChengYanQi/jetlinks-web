@@ -27,6 +27,9 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ItemsList = (props) => {
+
+  const {item} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const listRef = useRef(null);
@@ -88,15 +91,39 @@ const ItemsList = (props) => {
     TcDisabled = false;
   }
 
+  const [search,setSearch] = useState(false);
+
   const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} label="生产日期" name="productionTime" component={SysField.ProductionTime} />
+          <FormItem mega-props={{span: 1}} label="重要程度" name="important" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} label="产品重量" name="weight" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} label="材质" name="materialName" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} label="易损" name="vulnerability" component={SysField.Name} />
+        </>
+      );
+    };
+
     return (
       <>
+        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} label="产品名称" name="name" component={SysField.Name} />
+          {search ? formItem() : null}
+          <MegaLayout>
+            <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
+            <Button style={{width: 100}} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}>高级搜索</Button>
+          </MegaLayout>
+        </MegaLayout>
         <FormItem label="产品名称" name="name" component={SysField.Name} />
-        <FormItem label="生产日期" name="productionTime" component={SysField.ProductionTime} />
-        <FormItem label="重要程度" name="important" component={SysField.Name} />
-        <FormItem label="产品重量" name="weight" component={SysField.Name} />
-        <FormItem label="材质" name="materialName" component={SysField.Name} />
-        <FormItem label="易损" name="vulnerability" component={SysField.Name} />
       </>
     );
   };
@@ -110,6 +137,8 @@ const ItemsList = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        Search
+        layout
         onChange={(keys)=>{
           setIds(keys);
         }}
@@ -136,6 +165,10 @@ const ItemsList = (props) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              {item ? <CheckButton onClick={()=>{
+                item(record);
+                props.onSuccess();
+              }} /> : null}
               {!disabled&&
               <CheckButton onClick={() => {
                 add(

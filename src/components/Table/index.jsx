@@ -18,7 +18,7 @@ const TableWarp = ({
   api,
   searchForm,
   rowKey,
-  Search,
+  SearchButton,
   selectionType,
   onChange,
   layout,
@@ -99,7 +99,7 @@ const TableWarp = ({
     );
   };
   return (
-    <div className={style.tableWarp}>
+    <div className={style.tableWarp}  id="listLayout" style={{height: '100%', overflowY: 'auto',overflowX:'hidden'}}>
       <div className={style.listHeader}>
         {title && <div className="title">{title}</div>}
         <div className="actions">
@@ -109,14 +109,13 @@ const TableWarp = ({
       </div>
       {searchForm ? <div className="search">
         <Form
-          layout= {layout || "inline" }
+          layout={layout || 'inline'}
           {...form}
           actions={formActions}
         >
           {typeof searchForm === 'function' && searchForm()}
-          <FormButtonGroup>
-            {Search || <Submit><SearchOutlined />查询</Submit>}
-          </FormButtonGroup>
+          {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+
         </Form>
       </div> : <Form
         layout="inline"
@@ -142,6 +141,13 @@ const TableWarp = ({
           }
         }}
         footer={footer}
+        layout
+        scroll={{x: 'max-content'}}
+        sticky={{
+          getContainer: () => {
+            return document.getElementById('listLayout');
+          }
+        }}
         {...other}
         {...props}
       >

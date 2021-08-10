@@ -5,7 +5,7 @@
  * @Date 2021-08-02 15:47:16
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -22,6 +22,9 @@ const {FormItem} = Form;
 
 const CrmBusinessSalesProcessList = (props) => {
   const {value} = props;
+
+  const [sort,setSort] = useState();
+
   const ref = useRef(null);
   const tableRef = useRef(null);
 

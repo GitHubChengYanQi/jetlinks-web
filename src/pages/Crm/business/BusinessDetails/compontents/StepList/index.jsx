@@ -26,7 +26,7 @@ const StepList = (props) => {
 
 
   const {run} = useRequest({
-    url: '/crmBusiness/batchDelete',
+    url: '/crmBusiness/UpdateStatus',
     method: 'POST',
     onError(error) {
       openNotificationWithIcon('error');

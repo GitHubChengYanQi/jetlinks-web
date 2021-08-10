@@ -51,3 +51,8 @@ export const templateSelect = {
   url: '/template/listSelect',
   method: 'POST'
 };
+
+export const CustomerNameListSelect = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
