@@ -25,15 +25,16 @@ import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import {SearchOutlined} from '@ant-design/icons';
-import {Submit} from '@formily/antd';
+import {FormButtonGroup, Submit} from '@formily/antd';
 import CheckButton from '@/components/CheckButton';
+import Icon from '@/components/Icon';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level,customer} = props;
+  const {status, state, level, customer} = props;
   const history = useHistory();
 
   const ref = useRef(null);
@@ -69,11 +70,15 @@ const CustomerTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} label="公司类型" name="companyType" component={SysField.CompanyType} />
-          <FormItem mega-props={{span: 1}} label="客户来源" name="originId" component={SysField.OriginId} />
-          <FormItem mega-props={{span: 1}} label="负责人" name="userId" component={SysField.UserName} />
-          <FormItem mega-props={{span: 1}} label="行业" name="industryId" component={SysField.IndustryOne} />
-
+          <FormItem mega-props={{span: 2}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
+          <FormItem mega-props={{span: 2}} placeholder="客户来源" name="originId" component={SysField.OriginId} />
+          <FormItem mega-props={{span: 2}} placeholder="负责人" name="userId" component={SysField.UserName} />
+          <FormItem mega-props={{span: 2}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
+          <MegaLayout>
+            <FormItem hidden name="status" component={SysField.Name} />
+            <FormItem hidden name="classification" component={SysField.Name} />
+            <FormItem hidden name="customerLevelId" component={SysField.Name} />
+          </MegaLayout>
         </>
       );
     };
@@ -81,39 +86,32 @@ const CustomerTable = (props) => {
 
     return (
       <>
-        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerName" component={SysField.Name} />
+        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 2}} placeholder="客户名称" name="customerName" component={SysField.Name} />
           {search ? formItem() : null}
-          <MegaLayout>
-            <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
-            <Button style={{width: 100}} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}>高级</Button>
-            <MegaLayout>
-              <FormItem hidden name="status" component={SysField.Name} />
-              <FormItem hidden name="classification" component={SysField.Name} />
-              <FormItem hidden name="customerLevelId" component={SysField.Name} />
-            </MegaLayout>
-          </MegaLayout>
         </MegaLayout>
 
       </>
     );
   };
 
+
   const Search = () => {
     return (
-      <Button style={{marginRight: 20}} onClick={() => {
-        if (search) {
-          setSearch(false);
-        } else {
-          setSearch(true);
-        }
-      }}>高级搜索</Button>
+      <>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button title={search ? '收起高级搜索':'展开高级搜索'} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}><Icon type={search ? "icon-shanchuzijiedian" : "icon-tianjiazijiedian"} /></Button>
+          </FormButtonGroup>
+        </MegaLayout>
+      </>
     );
   };
 
@@ -138,7 +136,8 @@ const CustomerTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        Search
+        layout={search}
+        SearchButton={Search()}
         onChange={(keys) => {
           setIds(keys);
         }}
@@ -189,7 +188,7 @@ const CustomerTable = (props) => {
         <Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {
           return (
             <>
-              {customer ? <CheckButton onClick={()=>{
+              {customer ? <CheckButton onClick={() => {
                 customer(record);
                 props.onSuccess();
               }} /> : null}

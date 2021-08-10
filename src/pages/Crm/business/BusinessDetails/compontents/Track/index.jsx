@@ -4,7 +4,6 @@ import Modal2 from '@/components/Modal';
 import {Button, Comment, List} from 'antd';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {useRequest} from '@/util/Request';
-import styles from './index.module.scss';
 
 
 const Track = (props) => {
@@ -60,7 +59,6 @@ const Track = (props) => {
       />,
       <Modal2 width={800} title="编辑" component={CrmBusinessTrackEdit} onSuccess={() => {
         run();
-        ref.current.close();
       }} ref={ref} val={value} />
     </div>
   );

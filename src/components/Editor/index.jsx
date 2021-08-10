@@ -57,17 +57,13 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
         }}
         onlineVideoCallback={(video) => {
           // 插入网络视频的回调事件
-          console.log('插入视频内容', video);
         }}
         onChange={(html) => {
-          console.log('onChange html:', html);
         }}
         onBlur={(html) => {
-          console.log('onBlur html:', html);
           onChange(html);
         }}
         onFocus={(html) => {
-          console.log('onFocus html:', html);
         }}
         {...props}
       />

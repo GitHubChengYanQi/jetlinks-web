@@ -3,7 +3,7 @@ import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
-  const {value, api, defaultValue, ...other} = props;
+  const {value, api, placeholder,defaultValue, ...other} = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
@@ -29,14 +29,14 @@ const Select = (props) => {
       valueArray = value;
     }
   } else if (mode !== 'multiple' && mode !== 'tag') {
-    valueArray = '';
+    valueArray = null;
   }
 
 
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect  options={data} allowClear style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        {!loading &&<AntSelect  options={data} placeholder={placeholder} allowClear style={{ width: 200 }} value={valueArray} {...other} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         />}
       </>
     );

@@ -98,6 +98,7 @@ export const Utscc = (props) => {
 export const CompanyType = (props) => {
   return (<AntdSelect
     showSearch
+    allowClear
     filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {
       value: '有限合伙企业',

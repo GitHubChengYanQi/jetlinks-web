@@ -54,7 +54,7 @@ const PartsList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="name"/>
+        <Column title="产品名称" dataIndex="name" sorter/>
         <Column title="零件名称" render={(value,record)=>{
           return (
             <div>
