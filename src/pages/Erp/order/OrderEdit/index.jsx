@@ -29,10 +29,10 @@ const OrderEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      fieldKey="id"
+      fieldKey="order_id"
     >
       <FormItem label="订单编号" name="orderId" component={SysField.OrderId} required/>
-      <FormItem label="订单人姓名" name="name" component={SysField.ContactsId} required/>
+      <FormItem label="订单人姓名" name="contactsId" component={SysField.ContactsId} required/>
       <FormItem label="订单地址" name="adressId" component={SysField.AdressId} required/>
       <FormItem label="订单数量" name="numbers" component={SysField.Number} required/>
       <FormItem label="订单状态" name="state" component={SysField.State} required/>

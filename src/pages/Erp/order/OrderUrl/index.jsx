@@ -15,7 +15,7 @@ export const orderAdd = {
 export const orderEdit = {
   url: '/erpOrder/edit',
   method: 'POST',
-  rowKey:'id'
+  rowKey:'order_id'
 };
 
 export const orderDelete = {
@@ -27,13 +27,13 @@ export const orderDelete = {
 export const orderDetail = {
   url: '/erpOrder/detail',
   method: 'POST',
-  rowKey:'id'
+  rowKey:'order_id'
 };
 
 export const orderList = {
   url: '/erpOrder/list',
   method: 'POST',
-  rowKey:'id'
+  rowKey:'order_id'
 };
 
 export const locationListSelect = {
