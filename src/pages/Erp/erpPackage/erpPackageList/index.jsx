@@ -107,13 +107,7 @@ const ErpPackageList = (props) => {
           }}
           footer={footer}
         >
-          <Column title="套餐名称" dataIndex="productName" render={(text, record, index)=>{
-            return (
-              <Button type="link" onClick={()=>{
-                setData(record.packageId);
-              }}>{text}</Button>
-            );
-          }} />
+          <Column title="套餐名称" width={500} dataIndex="productName" sorter/>
           <Column/>
           <Column title="操作" align="right" render={(value, record) => {
 

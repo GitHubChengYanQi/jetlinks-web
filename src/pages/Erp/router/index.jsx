@@ -36,8 +36,6 @@ const ErpRouterConfig = [
       {
         redirect: '/ERP/items',
       }
-
-
     ]
   }
 ];
