@@ -9,15 +9,13 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {placeDelete, placeList, storehouseDelete, storehouseList} from '../StorehouseUrl';
-import PlaceEdit from '../StorehouseEdit';
-import * as SysField from '../StorehouseField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import { storehouseDelete, storehouseList} from '../StorehouseUrl';
+import * as SysField from '../StorehouseField';
 import StorehouseEdit from '../StorehouseEdit';
 
 const {Column} = AntTable;
@@ -36,33 +34,33 @@ const StorehouseList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="仓库名称" name="name" component={SysField.Name}/>
-       <FormItem label="仓库地点" name="palce" component={SysField.Position}/>
-       <FormItem label="经度" name="longitude" component={SysField.Longitude}/>
-       <FormItem label="纬度" name="latitude" component={SysField.Latitude}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="仓库名称" name="name" component={SysField.Name}/>
+        <FormItem label="仓库地点" name="palce" component={SysField.Position}/>
+        <FormItem label="经度" name="longitude" component={SysField.Longitude}/>
+        <FormItem label="纬度" name="latitude" component={SysField.Latitude}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='仓库管理'/>}
         api={storehouseList}
         rowKey="storehouseid"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="仓库名称" dataIndex="name"/>
-        <Column title="仓库地点" dataIndex="palce"/>
-        <Column title="经度" dataIndex="longitude"/>
-        <Column title="纬度" dataIndex="latitude"/>
-        <Column title="仓库面积" dataIndex="measure"/>
-        <Column title="仓库容量" dataIndex="capacity"/>
+        <Column title="仓库名称" dataIndex="name" sorter/>
+        <Column title="仓库地点" dataIndex="palce" sorter/>
+        <Column title="经度" dataIndex="longitude" sorter/>
+        <Column title="纬度" dataIndex="latitude" sorter/>
+        <Column title="仓库面积" dataIndex="measure" sorter/>
+        <Column title="仓库容量" dataIndex="capacity" sorter/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

@@ -8,15 +8,10 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {stockDetailsDelete, stockDetailsList} from '../StockDetailsUrl';
-import StockDetailsEdit from '../StockDetailsEdit';
-import * as SysField from '../StockDetailsField';
 import Breadcrumb from '@/components/Breadcrumb';
+import { stockDetailsList} from '../StockDetailsUrl';
+import * as SysField from '../StockDetailsField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -32,14 +27,14 @@ const StockDetailsList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="库存编号" name="stockId" component={SysField.StockId}/>
-       <FormItem label="仓库名称" name="pname" component={SysField.StockId}/>
-       <FormItem label="产品名称" name="iname" component={SysField.StockId}/>
-       <FormItem label="入库时间" name="storageTime" component={SysField.StorageTime}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="库存编号" name="stockId" component={SysField.StockId}/>
+        <FormItem label="仓库名称" name="pname" component={SysField.StockId}/>
+        <FormItem label="产品名称" name="iname" component={SysField.StockId}/>
+        <FormItem label="入库时间" name="storageTime" component={SysField.StorageTime}/>
+      </>
     );
   };
 
@@ -55,12 +50,11 @@ const StockDetailsList = () => {
       >
         <Column title="库存编号" dataIndex="stockId"/>
         <Column title="仓库名称" dataIndex="pname"/>
-        <Column title="产品名称" dataIndex="iname"/>
-        <Column title="产品价格" dataIndex="price"/>
-        <Column title="入库时间" dataIndex="storageTime"/>
+        <Column title="产品名称" dataIndex="iname" sorter/>
+        <Column title="产品价格" dataIndex="price" sorter/>
+        <Column title="入库时间" dataIndex="storageTime" sorter/>
       </Table>
-      </>
-
+    </>
   );
 };
 

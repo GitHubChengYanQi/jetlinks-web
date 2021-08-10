@@ -9,15 +9,14 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 import {materialDelete, materialList} from '../MaterialUrl';
 import MaterialEdit from '../MaterialEdit';
 import * as SysField from '../MaterialField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,26 +34,25 @@ const MaterialList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="材质名字" name="name" component={SysField.Name}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="材质名字" name="name" component={SysField.Name}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='材质管理'/>}
         api={materialList}
         rowKey="materialId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="材质名字" dataIndex="name"/>
-        <Column/>
+        <Column title="材质名字" dataIndex="name" sorter/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

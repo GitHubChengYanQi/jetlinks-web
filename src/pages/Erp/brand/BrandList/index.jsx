@@ -9,15 +9,14 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 import {brandDelete, brandList} from '../BrandUrl';
 import BrandEdit from '../BrandEdit';
 import * as SysField from '../BrandField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,26 +34,25 @@ const BrandList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="品牌名称" name="brandName" component={SysField.BrandName}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="品牌名称" name="brandName" component={SysField.BrandName}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='品牌管理'/>}
         api={brandList}
         rowKey="brandId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="品牌名称" dataIndex="brandName"/>
-        <Column/>
+        <Column title="品牌名称" dataIndex="brandName" sorter/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
