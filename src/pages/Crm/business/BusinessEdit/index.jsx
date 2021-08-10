@@ -128,7 +128,9 @@ const BusinessEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '5px 150px'}}>
-            <TableDetail value={result}/>
+            <TableDetail value={result} onSuccess={() => {
+              tableRef.current.refresh();
+            }} ref={ref} />
             <Drawer width={800} title="编辑" component={Index} onSuccess={() => {
               tableRef.current.refresh();
               ref.current.close();

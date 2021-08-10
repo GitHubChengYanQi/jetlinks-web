@@ -82,7 +82,7 @@ const CustomerTable = (props) => {
     return (
       <>
         <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} label="客户名称" name="customerName" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerName" component={SysField.Name} />
           {search ? formItem() : null}
           <MegaLayout>
             <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
@@ -92,7 +92,7 @@ const CustomerTable = (props) => {
               } else {
                 setSearch(true);
               }
-            }}>高级搜索</Button>
+            }}>高级</Button>
             <MegaLayout>
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
@@ -117,7 +117,7 @@ const CustomerTable = (props) => {
   };
 
   return (
-    <div id="listLayout" style={{height: '100%', overflowY: 'auto'}}>
+    <div id="listLayout" style={{height: '100%', overflowY: 'auto',overflowX:'hidden'}}>
       <Table
         title={<Breadcrumb />}
         api={customerList}
@@ -138,7 +138,7 @@ const CustomerTable = (props) => {
           }
         }}
       >
-        <Column title="客户名称" dataIndex="customerName" render={(text, record) => {
+        <Column title="客户名称" fixed dataIndex="customerName" render={(text, record) => {
           return (
             <Button size="small" type="link" onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
@@ -181,7 +181,7 @@ const CustomerTable = (props) => {
           );
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column title="操作" width={200} align="right" render={(value, record) => {
+        <Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {
           return (
             <>
               {customer ? <CheckButton onClick={()=>{
