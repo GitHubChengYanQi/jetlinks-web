@@ -102,13 +102,13 @@ const CustomerTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button onClick={() => {
+            <Button title={search ? '收起高级搜索':'展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
                 setSearch(true);
               }
-            }}><Icon title='高级搜索' type={search ? "icon-shanchuzijiedian" : "icon-tianjiazijiedian"} /></Button>
+            }}><Icon type={search ? "icon-shanchuzijiedian" : "icon-tianjiazijiedian"} /></Button>
           </FormButtonGroup>
         </MegaLayout>
       </>
