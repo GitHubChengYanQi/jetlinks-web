@@ -8,9 +8,9 @@
 import React, {useRef} from 'react';
 import {Input, InputNumber, DatePicker, Button} from 'antd';
 import Drawer from '@/components/Drawer';
+import Select from '@/components/Select';
 import Stocks from '@/pages/Erp/stockDetails/StockDetailsEdit/components/Stocks';
 import * as apiUrl from '../StockDetailsUrl/index';
-import Select from '@/components/Select';
 
 export const Stock = (props) =>{
   const {onChange} = props;
