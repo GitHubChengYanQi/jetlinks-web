@@ -13,12 +13,15 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contractBatchDelete, contractDelete, contractList} from '../ContractUrl';
+import {contractBatchDelete, contractDelete, contractList, CustomerNameListSelect} from '../ContractUrl';
 import * as SysField from '../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import Contract from '@/pages/Crm/contract/ContractList/components/Contract';
+import {MegaLayout} from '@formily/antd-components';
+import {Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -29,6 +32,9 @@ const ContractList = () => {
   const ref = useRef(null);
   const content = useRef(null);
   const tableRef = useRef(null);
+
+  const [search, setSearch] = useState(false);
+
   const actions = () => {
     return (
       <>
@@ -40,9 +46,31 @@ const ContractList = () => {
   };
 
   const searchForm = () => {
+    const formItem = () => {
+      return (
+        <>
+          <FormItem label="甲方" name="partyA" component={SysField.CustomerNameListSelect} />
+          <FormItem label="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
+          <FormItem label="审核" name="audit" component={SysField.Audit} />
+        </>
+      );
+    };
     return (
       <>
-        <FormItem label="合同名称" name="name" component={SysField.Name} />
+        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
+          <FormItem label="合同名称" name="name" component={SysField.Name} />
+          {search ? formItem() : null}
+          <MegaLayout>
+            <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
+            <Button style={{width: 100}} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}>高级搜索</Button>
+          </MegaLayout>
+        </MegaLayout>
       </>
     );
   };
@@ -72,6 +100,8 @@ const ContractList = () => {
         searchForm={searchForm}
         ref={tableRef}
         footer={footer}
+        Search
+        layout
         onChange={(value) => {
           setIds(value);
         }}

@@ -100,23 +100,10 @@ const CustomerTable = (props) => {
             </MegaLayout>
           </MegaLayout>
         </MegaLayout>
-
-
       </>
     );
   };
 
-  const Search = () => {
-    return (
-      <Button style={{marginRight: 20}} onClick={() => {
-        if (search) {
-          setSearch(false);
-        } else {
-          setSearch(true);
-        }
-      }}>高级搜索</Button>
-    );
-  };
 
   const footer = () => {
     /**
@@ -140,10 +127,10 @@ const CustomerTable = (props) => {
         ref={tableRef}
         footer={footer}
         Search
+        layout
         onChange={(keys) => {
           setIds(keys);
         }}
-        layout
         scroll={{x: 'max-content'}}
         sticky={{
           getContainer: () => {
@@ -194,7 +181,7 @@ const CustomerTable = (props) => {
           );
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column title="操作" width={100} align="right" render={(value, record) => {
+        <Column title="操作" width={200} align="right" render={(value, record) => {
           return (
             <>
               {customer ? <CheckButton onClick={()=>{

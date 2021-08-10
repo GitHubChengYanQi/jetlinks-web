@@ -15,6 +15,7 @@ import Contract from '@/pages/Crm/customer/CustomerDetail/compontents/Contract';
 import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import styles from './index.module.scss';
+import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 
 const {TabPane} = Tabs;
 
@@ -134,7 +135,7 @@ const CustomerDetail = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="动态" key="1">
-                  Content of Tab Pane 1
+                  <Dynamic value={data} />
                 </TabPane>
               </Tabs>
             </Card>
