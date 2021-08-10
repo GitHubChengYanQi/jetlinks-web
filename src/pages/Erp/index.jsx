@@ -1,13 +1,26 @@
 import React, {useRef, useState} from 'react';
 import {useRouteMatch, useHistory} from 'ice';
 import store from '@/store';
-import {Drawer, Menu} from 'antd';
+import {Drawer, Menu, Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
+import Icon from "@/components/Icon";
+import styles from "@/pages/Crm/index.module.scss";
+import OriginList from "@/pages/Crm/origin/OriginList";
+import CrmBusinessSalesList from "@/pages/Crm/business/crmBusinessSales/crmBusinessSalesList";
+import TemplateList from "@/pages/Crm/template/TemplateList";
+import CrmCustomerLevelList from "@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList";
+import CrmIndustryList from "@/pages/Crm/crmIndustry/crmIndustryList";
+import BrandList from "@/pages/Erp/brand/BrandList";
+import MaterialList from "@/pages/Erp/material/MaterialList";
+import StockList from "@/pages/Erp/stock/StockList";
+import OrderList from "@/pages/Erp/order/OrderList";
 
 const ErpLayout = ({children}) => {
 
   const match = useRouteMatch();
-  const history = useHistory();
+
+  const [visible, showModel] = useState(false);
+  const [type, setType] = useState(null);
 
   const [drawerIsShow, showDrawer] = useState(false);
   const [userInfo] = store.useModel('user');
@@ -17,48 +30,71 @@ const ErpLayout = ({children}) => {
     return `/${item.id}` === match.path;
   });
 
-  const loopMenu = (subMenus) => {
-    return subMenus.map((item) => {
-      return renderItem(item);
-    });
+  const RenderComponent = () => {
+    switch (type) {
+      case 'ppgl':
+        return <BrandList />;
+      case 'czgl':
+        return <MaterialList />;
+      case 'ckgl':
+        return <StockList />;
+      case 'ddgl':
+        return <OrderList />;
+      default:
+        return null;
+    }
   };
 
-  const renderLeftMenu = (subMenus) => {
-    if (subMenus) {
-      return (
-        <Menu
-          selectable
-          onClick={(obj) => {
-            history.push(obj.key);
-          }}
-          mode="horizontal"
-          defaultSelectedKeys={[]}
-          // style={{ borderRight: 'none' }}
-        >{loopMenu(subMenus)}</Menu>
-      );
-    }
-    return null;
-  };
-
-  const renderItem = (item) => {
-    if (item.children) {
-      return (<Menu.SubMenu key={item.id} title={item.name}>{loopMenu(item.children)}</Menu.SubMenu>);
-    }
-    const IconNode = null;// item.icon?Icon[item.icon]:null;
-    return (
-      <Menu.Item key={item.url} icon={IconNode ? <IconNode /> : null}>{item.name}</Menu.Item>
-    );
-  };
 
   const rightMenu = () => {
     return (
-      <Menu
-        mode="horizontal"
-      >
-        <Menu.Item key="setting" onClick={() => {
-          showDrawer(true);
-        }}>设置</Menu.Item>
-      </Menu>
+      <>
+        <Menu
+          selectable={false}
+          mode="horizontal"
+        >
+          <Menu.Item key="setting" onClick={() => {
+            showDrawer(true);
+          }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
+        </Menu>
+        <Drawer
+          title={<span>设置</span>}
+          style={{height: 'calc(100% - 112px)', top: 112}}
+          visible={drawerIsShow}
+          getContainer={false}
+          bodyStyle={{padding: 0}}
+          onClose={() => {
+            showDrawer(false);
+          }}>
+          <div className={styles.settingMenu}>
+            <Menu
+              selectable={false}
+              style={{width: '100%'}}
+              onClick={(item) => {
+                setType(item.key);
+                showModel(true);
+              }}
+            >
+              <Menu.Item key="ppgl">
+                <span>品牌管理</span>
+              </Menu.Item>
+              <Menu.Item key="czgl">
+                <span>材质管理</span>
+              </Menu.Item>
+              <Menu.Item key="ckgl">
+                <span>仓库管理</span>
+              </Menu.Item>
+              <Menu.Item key="ddgl">
+                <span>订单管理</span>
+              </Menu.Item>
+              <Menu.Divider />
+            </Menu>
+            <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={()=>{
+              showModel(false);
+            }} footer={null}>{RenderComponent()}</Modal>
+          </div>
+        </Drawer>
+      </>
     );
   };
 
@@ -66,7 +102,7 @@ const ErpLayout = ({children}) => {
     return <div>菜单不存在</div>;
   }
   return (
-    <TopLayout leftMenu={renderLeftMenu(subMenu.subMenus)} rightMenu={rightMenu()}>
+    <TopLayout rightMenu={rightMenu()}>
       {children}
     </TopLayout>
   );

@@ -7,7 +7,7 @@
 
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import { message,  Table as AntTable} from 'antd';
+import {Button, message, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -119,13 +119,20 @@ const ItemsList = (props) => {
         }}
         footer={footer}
       >
-        <Column title="产品名字" dataIndex="name" />
-        <Column title="质保期" dataIndex="shelfLife" />
-        <Column title="产品库存" dataIndex="inventory" />
-        <Column title="生产日期" dataIndex="productionTime" />
-        <Column title="重要程度" dataIndex="important" />
-        <Column title="产品重量" dataIndex="weight" />
-        <Column title="材质" dataIndex="materialName" />
+        <Column title="产品名字" dataIndex="name" sorter
+          render={(value, row) => {
+            return (
+              <Button type="link" onClick={() => {
+                history.push(`/BASE_SYSTEM/dictType/${row.materialId}`);
+              }}>{row.name}</Button>
+            );
+          }}/>
+        <Column title="质保期" dataIndex="shelfLife" sorter/>
+        <Column title="产品库存" dataIndex="inventory" sorter/>
+        <Column title="生产日期" dataIndex="productionTime" sorter/>
+        <Column title="重要程度" dataIndex="important" sorter/>
+        <Column title="产品重量" dataIndex="weight" sorter/>
+        <Column title="材质" dataIndex="materialName" sorter/>
         <Column title="成本" dataIndex="cost" />
         <Column title="易损" dataIndex="vulnerability" />
         <Column title="操作" align="right" render={(value, record) => {
