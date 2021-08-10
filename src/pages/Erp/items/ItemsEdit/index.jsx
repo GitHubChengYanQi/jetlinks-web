@@ -27,7 +27,6 @@ const ItemsEdit = ({...props}) => {
   const {Step} = Steps;
 
   const [result, setResult] = useState(props.value);
-  console.log(result);
 
   const [current, setCurrent] = React.useState(0);
 
@@ -35,7 +34,7 @@ const ItemsEdit = ({...props}) => {
 
   const steps = [
     {
-      title: '必填项',
+      title: '添加产品',
       content:
         <>
           <div style={{margin: '50px 150px'}}>
@@ -55,15 +54,17 @@ const ItemsEdit = ({...props}) => {
               <FormItem label="生产日期" name="productionTime" component={SysField.ProductionTime} required />
               <FormItem label="材质名称" name="materialId" component={SysField.MaterialId} required />
               <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} required />
-              <Button type="primary" htmlType="submit">
-                Next
-              </Button>
+              <div style={{textAlign:'center'}}>
+                <Button type="primary" htmlType="submit">
+                  下一步
+                </Button>
+              </div>
             </FormIndex>
           </div>
         </>
     },
     {
-      title: '选填项',
+      title: '产品选填项',
       content:
         <>
 
@@ -83,9 +84,14 @@ const ItemsEdit = ({...props}) => {
               <FormItem label="重要程度" name="important" component={SysField.Important} />
               <FormItem label="产品重量" name="weight" component={SysField.Weight} />
               <FormItem label="成本" name="cost" component={SysField.Cost} />
-              <Button type="primary" htmlType="submit">
-                Done
-              </Button>
+              <div style={{textAlign:'center'}}>
+                <Button style={{marginRight:20}} type="primary" htmlType="submit">
+                  保存
+                </Button>
+                <Button onClick={()=> prev()}>
+                  返回
+                </Button>
+              </div>
             </FormIndex>
           </div>
 

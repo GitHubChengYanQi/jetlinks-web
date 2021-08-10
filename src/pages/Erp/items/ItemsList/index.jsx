@@ -17,16 +17,14 @@ import Modal2 from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import CheckButton from "@/components/CheckButton";
 import {erpPackageTableAdd} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
+import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
+import PartsList from "@/pages/Erp/parts/PartsList";
+import {MegaLayout} from "@formily/antd-components";
+import {Submit} from '@formily/antd';
+import {SearchOutlined} from "@ant-design/icons";
 import {itemsDelete, itemsList} from '../ItemsUrl';
 import ItemsEdit from '../ItemsEdit';
 import * as SysField from '../ItemsField';
-import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
-import {MegaLayout} from '@formily/antd-components';
-import {Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-
-
-
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -37,9 +35,9 @@ const ItemsList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const listRef = useRef(null);
   const [ids, setIds] = useState([]);
-
-
+  const [itemsId, setItemsId] = useState([]);
 
   const { run: add} = useRequest(erpPackageTableAdd, {
     manual: true,
@@ -62,8 +60,6 @@ const ItemsList = (props) => {
       props.onSuccess();
     }
   });
-
-
 
   const footer = () => {
     /**
@@ -130,6 +126,7 @@ const ItemsList = (props) => {
             }}>高级搜索</Button>
           </MegaLayout>
         </MegaLayout>
+        <FormItem label="产品名称" name="name" component={SysField.Name} />
       </>
     );
   };
@@ -154,10 +151,12 @@ const ItemsList = (props) => {
           render={(value, row) => {
             return (
               <Button type="link" onClick={() => {
-                history.push(`/BASE_SYSTEM/dictType/${row.materialId}`);
+                setItemsId(row.itemId);
+                listRef.current.open(false);
               }}>{row.name}</Button>
             );
           }}/>
+
         <Column title="质保期" dataIndex="shelfLife" sorter/>
         <Column title="产品库存" dataIndex="inventory" sorter/>
         <Column title="生产日期" dataIndex="productionTime" sorter/>
@@ -214,6 +213,10 @@ const ItemsList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Modal2 width={1000} component={PartsList} itemsId={itemsId} onSuccess={() => {
+        tableRef.current.refresh();
+        ref.current.close();
+      }} ref={listRef}/>
     </>
   );
 };

@@ -8,8 +8,8 @@
 import React from 'react';
 import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Space} from 'antd';
 import Select from '@/components/Select';
-import * as apiUrl from '../ItemsUrl';
 import {DatePicker2} from '@alifd/next';
+import * as apiUrl from '../ItemsUrl';
 
 const { RangePicker } = DatePicker;
 
@@ -28,7 +28,18 @@ export const ProductionTime = (props) =>{
   return (<DatePicker2  style={{ width: w }} showTime {...props} />);
 };
 export const Important = (props) =>{
-  return (<InputNumber style={{ width: w }} {...props}/>);
+  return (<InputNumber {...props}
+    onChange={(value)=> {
+      props.onChange(value);
+    }}
+    onBlur={()=>{
+      if(props.value>100){
+        props.onChange(100);
+      }else if (props.value < 0){
+        props.onChange(0);
+      }
+    }}
+    style={{ width: w }}/>);
 };
 export const Weight = (props) =>{
   return (<InputNumber  style={{ width: w }} {...props}/>);
