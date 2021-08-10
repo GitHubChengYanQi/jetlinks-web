@@ -32,7 +32,7 @@ const StorehouseEdit = ({...props}) => {
 
   const steps = [
     {
-      title: '必填项',
+      title: '仓库必填项',
       content:
         <>
           <div style={{margin: '50px 150px'}}>
@@ -50,33 +50,13 @@ const StorehouseEdit = ({...props}) => {
             >
               <FormItem label="仓库名称" name="name" component={SysField.Name} required/>
               <FormItem label="仓库地点" name="palce" component={SysField.Palce} required/>
-              <Button type="primary" htmlType="submit">
-                Next
-              </Button>
-            </FormIndex>
-          </div>
-        </>
-    },
-    {
-      title: '必填项',
-      content:
-        <>
-          <div style={{margin: '50px 150px'}}>
-            <FormIndex
-              {...props}
-              value={result}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="storehouseId"
-              success={(result) => {
-                next();
-              }}
-            >
               <FormItem label="经度" name="longitude" component={SysField.Longitude} required/>
               <FormItem label="纬度" name="latitude" component={SysField.Latitude} required/>
-              <Button type="primary" htmlType="submit">
-                Next
-              </Button>
+              <div style={{textAlign:'center'}}>
+                <Button type="primary" htmlType="submit">
+                  下一步
+                </Button>
+              </div>
             </FormIndex>
           </div>
         </>
@@ -99,9 +79,14 @@ const StorehouseEdit = ({...props}) => {
             >
               <FormItem label="仓库面积" name="measure" component={SysField.Measure} />
               <FormItem label="仓库容量" name="capacity" component={SysField.Capacity} />
-              <Button type="primary" htmlType="submit">
-                Done
-              </Button>
+              <div style={{textAlign:'center'}}>
+                <Button style={{marginRight:20}} type="primary" htmlType="submit">
+                  保存
+                </Button>
+                <Button onClick={()=> prev()}>
+                  返回
+                </Button>
+              </div>
             </FormIndex>
           </div>
 

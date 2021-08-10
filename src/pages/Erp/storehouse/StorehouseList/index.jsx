@@ -75,7 +75,7 @@ const StorehouseList = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={StorehouseEdit} onSuccess={() => {
+      <Modal2 width={800} title="仓库" component={StorehouseEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
