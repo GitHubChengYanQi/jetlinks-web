@@ -130,7 +130,7 @@ const CustomerTable = (props) => {
   };
 
   return (
-    <div id="listLayout" style={{height: '100%', overflowY: 'auto'}}>
+    <div id="listLayout" style={{height: '100%', overflowY: 'auto',overflowX:'hidden'}}>
       <Table
         title={<Breadcrumb />}
         api={customerList}
