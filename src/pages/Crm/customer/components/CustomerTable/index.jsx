@@ -28,13 +28,14 @@ import {SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import CheckButton from '@/components/CheckButton';
 import Icon from '@/components/Icon';
+import {useBoolean} from 'ahooks';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level, customer} = props;
+  const {status, state, level, choose} = props;
   const history = useHistory();
 
   const ref = useRef(null);
@@ -61,7 +62,9 @@ const CustomerTable = (props) => {
     );
   };
 
-  const [search, setSearch] = useState(false);
+  // const [search, setSearch] = useState(false);
+
+  const [search,{toggle}]  = useBoolean(false);
 
   const searchForm = () => {
 
@@ -96,11 +99,7 @@ const CustomerTable = (props) => {
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
             <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
+              toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
             <MegaLayout inline>
@@ -189,8 +188,8 @@ const CustomerTable = (props) => {
         <Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {
           return (
             <>
-              {customer ? <CheckButton onClick={() => {
-                customer(record);
+              {choose ? <CheckButton onClick={() => {
+                choose(record);
                 props.onSuccess();
               }} /> : null}
               <EditButton onClick={() => {
@@ -208,8 +207,8 @@ const CustomerTable = (props) => {
         }} />
       </Table>
       <Modal2 width={1000} title="客户" component={CustomerEdit} onSuccess={() => {
-        tableRef.current.refresh();
         ref.current.close();
+        tableRef.current.refresh();
       }} ref={ref} />
     </>
   );

@@ -11,7 +11,7 @@ export const ContractRouter = [
   {
     path: '/contract',
     name: '合同管理',
-    component: lazy(() => import('../ContractList')),
+    component: lazy(() => import('../ContractList/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }

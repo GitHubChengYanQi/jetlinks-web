@@ -26,6 +26,9 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ErpPackageList = (props) => {
+
+  const {choose} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const [data, setData] = useState();
@@ -113,6 +116,10 @@ const ErpPackageList = (props) => {
 
             return (
               <>
+                {choose ? <CheckButton onClick={()=>{
+                  choose(record);
+                  props.onSuccess();
+                }} /> : null}
                 {!disabled&&
                 <CheckButton onClick={() => {
                   select({data:{packageId:record.packageId}});

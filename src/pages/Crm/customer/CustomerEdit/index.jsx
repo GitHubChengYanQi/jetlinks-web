@@ -42,8 +42,6 @@ const CustomerEdit = ({...props}) => {
       <Form
         {...props}
         ref={formRef}
-        // labelCol={7}
-        // wrapperCol={20}
         api={ApiConfig}
         fieldKey="customerId"
         labelAlign="right"

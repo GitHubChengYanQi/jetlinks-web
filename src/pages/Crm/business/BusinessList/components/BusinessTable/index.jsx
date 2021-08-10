@@ -92,13 +92,13 @@ const BusinessTable = (props) => {
     };
 
     return (
-      <>
-        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid={search} columns={4} full autoRow>
+      <div style={{maxWidth:800}} >
+        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="商机名称" name="businessName"
                     component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
-      </>
+      </div>
     );
   };
 

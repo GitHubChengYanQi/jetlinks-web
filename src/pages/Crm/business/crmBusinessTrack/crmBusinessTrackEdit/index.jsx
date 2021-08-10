@@ -42,7 +42,7 @@ const CrmBusinessTrackEdit = ({...props}) => {
         <FormItem label="是否报价" name="offer" component={SysField.Offer} visi={(visi)=>{
           setHidden(visi);
         }} />
-        <FormItem label="报价金额" name="money" hidden={hidden} component={SysField.Money} val={val}  />
+        { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} val={val}  /> : null}
         <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
       </Form>
     </Card>

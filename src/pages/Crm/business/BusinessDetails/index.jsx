@@ -15,6 +15,7 @@ import Description from '@/pages/Crm/business/BusinessDetails/compontents/Descri
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import AvatarList from '@/pages/Crm/business/BusinessDetails/compontents/Avatar';
+import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 
 const {TabPane} = Tabs;
 
@@ -114,11 +115,11 @@ const CustomerDetail = () => {
         <Col span={8}>
           <div className={styles.main} style={{height:'100%'}}>
             <Card>
-              <Tabs defaultActiveKey="2">
-                <TabPane tab="相关团队" key="1">
-                  <AvatarList value={data} />
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="动态" key="1">
+                  <Dynamic value={data} />
                 </TabPane>
-                <TabPane tab="跟进动态" key="2">
+                <TabPane tab="跟踪" key="2">
                   <Track value={data} />
                 </TabPane>
               </Tabs>

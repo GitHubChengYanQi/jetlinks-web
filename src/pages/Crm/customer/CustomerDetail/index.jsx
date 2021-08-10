@@ -26,9 +26,8 @@ const CustomerDetail = () => {
   const [responsive, setResponsive] = useState(false);
 
   const ref = useRef(null);
-  const tableRef = useRef(null);
 
-  const {loading, data, run} = useRequest(customerDetail, {
+  const {loading, data, run,refresh} = useRequest(customerDetail, {
     defaultParams: {
       data: {
         customerId: params.cid
@@ -67,8 +66,8 @@ const CustomerDetail = () => {
             ref.current.open(data.customerId);
           }}>编辑</Button>
           <Modal2 width={1500} title="客户" component={CustomerEdit} onSuccess={() => {
-            tableRef.current.refresh();
             ref.current.close();
+            refresh();
           }} ref={ref} />
           <Button onClick={() => {
             history.back();

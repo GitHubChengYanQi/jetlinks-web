@@ -16,17 +16,25 @@ const Track = (props) => {
 
   const datas = data ? data.map((value, index) => {
     return {
-      actions: [<span onClick={()=>{ref.current.open(value.trackId);}}>编辑</span>],
+      actions: [<span onClick={() => {
+        ref.current.open(value.trackId);
+      }}>编辑</span>],
       author: value.user.account ? value.user.account : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
           <p>
-            <p style={{color:'#91959e'}}>记录内容</p>
-            <p style={{padding:10}}>{value.note}</p>
+            <p style={{color: '#91959e'}}>记录内容</p>
+            <p style={{padding: 10}}>{value.note}</p>
           </p>
-          {value.type ?<p>
-            <span style={{color:'#91959e'}}>跟进类型：{value.type}</span>
+          {value.type ? <p>
+            <span style={{color: '#91959e'}}>跟进类型：{value.type}</span>
+          </p> : null}
+          <p>
+            <span style={{color: '#91959e'}}>是否报价：{value.offer === 0 ? '是' : '否'}</span>
+          </p>
+          {value.money ? <p>
+            <span style={{color: '#91959e'}}>报价金额：{value.money}</span>
           </p> : null}
         </>
       ),

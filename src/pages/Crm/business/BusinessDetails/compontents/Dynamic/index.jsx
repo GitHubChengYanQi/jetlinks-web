@@ -9,7 +9,7 @@ const Dynamic = (props) => {
   const {value} = props;
 
 
-  const {data, run} = useRequest({url: '/customerDynamic/list', method: 'POST', data: {customerId: value.customerId}});
+  const {data, run} = useRequest({url: '/businessDynamic/list', method: 'POST', data: {businessId: value.businessId}});
 
   const datas = data ? data.map((value, index) => {
     return {
