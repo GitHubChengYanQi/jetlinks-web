@@ -72,7 +72,7 @@ const CustomerDetail = () => {
           }} ref={ref} />
           <Button onClick={() => {
             history.back();
-          }}><Icon type="icon-back" />返回</Button>
+          }}><Icon type="icon-huifu" />返回</Button>
         </div>
       </Card>
       <div

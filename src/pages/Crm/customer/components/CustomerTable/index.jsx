@@ -101,7 +101,8 @@ const CustomerTable = (props) => {
               } else {
                 setSearch(true);
               }
-            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
@@ -127,7 +128,7 @@ const CustomerTable = (props) => {
   };
 
   return (
-    <div id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
+    <>
       <Table
         title={<Breadcrumb />}
         api={customerList}
@@ -140,12 +141,6 @@ const CustomerTable = (props) => {
         SearchButton={Search()}
         onChange={(keys) => {
           setIds(keys);
-        }}
-        scroll={{x: 'max-content'}}
-        sticky={{
-          getContainer: () => {
-            return document.getElementById('listLayout');
-          }
         }}
       >
         <Column title="客户名称" fixed dataIndex="customerName" render={(text, record) => {
@@ -216,7 +211,7 @@ const CustomerTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </div>
+    </>
   );
 };
 
