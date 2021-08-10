@@ -45,9 +45,6 @@ export const Name = (props) => {
   return (<Input style={{width: 200}}  {...props} />);
 };
 
-export const UserId = (props) => {
-  return (<Select api={apiUrl.userIdSelect} {...props} />);
-};
 
 export const Note = (props) => {
   return (<Input  {...props} />);

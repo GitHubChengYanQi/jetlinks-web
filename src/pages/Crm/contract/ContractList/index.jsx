@@ -22,6 +22,7 @@ import Contract from '@/pages/Crm/contract/ContractList/components/Contract';
 import {MegaLayout} from '@formily/antd-components';
 import {Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
+import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -115,8 +116,12 @@ const ContractList = () => {
         }} />
         <Column title="甲方" dataIndex="partAName" />
         <Column title="乙方" dataIndex="partBName" />
-        <Column title="创建时间" dataIndex="time" />
-        <Column title="审核" dataIndex="audit" />
+        <Column title="创建时间" width={200} dataIndex="time" sorter />
+        <Column title="审核" width={120} align='left' render={(value,record)=>{
+          return (
+            <BadgeState state={record.audit} text={['不合格', '合格']} color={['red', 'green']} />
+          );
+        }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -134,7 +139,7 @@ const ContractList = () => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />
-      <Modal2 width={1500} title="合同" component={Contract} onSuccess={() => {
+      <Modal2 width={1500} component={Contract} onSuccess={() => {
         tableRef.current.submit();
         content.current.close();
       }} ref={content} />

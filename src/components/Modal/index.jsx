@@ -46,7 +46,7 @@ const Modal = (
         onClose();
       }}
       width={width}
-      // title={value ? `编辑${title}` : `添加${title}`}
+      title={title ? (value ? `编辑${title}` : `添加${title}`) : null}
       destroyOnClose
     >
       {Component && <Component
