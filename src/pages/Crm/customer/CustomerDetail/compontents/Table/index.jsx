@@ -10,7 +10,7 @@ const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,showSearchButton=true,footer: parentFooter, ...props }, ref) => {
+const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,showSearchButton=true,footer: parentFooter, disabled = true, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');

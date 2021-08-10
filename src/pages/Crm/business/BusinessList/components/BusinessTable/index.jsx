@@ -24,13 +24,16 @@ import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
+import {Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
+import {MegaLayout} from '@formily/antd-components';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status,state} = props;
+  const {status, state} = props;
 
   const [ids, setIds] = useState([]);
 
@@ -42,9 +45,9 @@ const BusinessTable = (props) => {
 
   const [search, setSearch] = useState(false);
 
-  if (status!==undefined || state !==undefined){
-    tableRef.current.formActions.setFieldValue('salesId', status?status[0] : '');
-    tableRef.current.formActions.setFieldValue('originId', state?state[0]:'');
+  if (status !== undefined || state !== undefined) {
+    tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
+    tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
     tableRef.current.submit();
   }
 
@@ -74,35 +77,37 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem label="客户名称" name="customerId" component={SysField.CustomerNameListSelect} />
-          <FormItem label="负责人" name="person" component={SysField.PersonListSelect} />
-          <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+          <FormItem mega-props={{span: 1}} label="客户名称" name="customerId" component={SysField.CustomerNameListSelect} />
+          <FormItem mega-props={{span: 1}} label="负责人" name="person" component={SysField.PersonListSelect} />
+          <FormItem mega-props={{span: 1}} label="立项日期" name="time" component={SysField.TimeListSelect2} />
         </>
       );
     };
 
     return (
       <>
-        <FormItem label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
-        {search ? formItem() : null}
-        <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
-        <FormItem hidden name="salesId"  component={SysField.BusinessNameListSelect} />
+        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} label="商机名称" name="businessName" component={SysField.BusinessNameListSelect} />
+          {search ? formItem() : null}
+          <MegaLayout>
+            <Submit style={{width: 100}}><SearchOutlined />查询</Submit>
+            <Button style={{width: 100}} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}>高级搜索</Button>
+            <MegaLayout>
+              <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
+              <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />
+            </MegaLayout>
+          </MegaLayout>
+        </MegaLayout>
       </>
     );
   };
 
-  const Search = () => {
-    return (
-      <Button style={{marginRight: 20}} onClick={() => {
-        if (search){
-          setSearch(false);
-        }else {
-          setSearch(true);
-        }
-
-      }}>高级搜索</Button>
-  );
-  };
 
   return (
     <>
@@ -114,24 +119,27 @@ const BusinessTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        Search={Search()}
+        Search
+        layout
         onChange={(keys) => {
           setIds(keys);
         }}
         sticky={{
-          getContainer:() => {
+          getContainer: () => {
             return document.getElementById('listLayout');
           }
         }}
       >
-        <Column title="商机名称"  dataIndex="businessName" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(text, record, index)=>{
+        <Column title="商机名称" dataIndex="businessName" sorter showSorterTooltip={false}
+                sortDirections={['ascend', 'descend']} render={(text, record, index) => {
           return (
-            <Button type="link" onClick={()=>{
+            <Button type="link" onClick={() => {
               history.push(`/CRM/business/${record.businessId}`);
             }}>{text}</Button>
           );
         }} />
-        <Column title="客户名称"  dataIndex="customerName"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} render={(value, record)=>{
+        <Column title="客户名称" dataIndex="customerName" sorter showSorterTooltip={false}
+                sortDirections={['ascend', 'descend']} render={(value, record) => {
           return (
             <div>
               {
@@ -139,8 +147,8 @@ const BusinessTable = (props) => {
               }
             </div>
           );
-        }}/>
-        <Column title="销售流程" width={150} dataIndex="salesId"  render={(value, record)=>{
+        }} />
+        <Column title="销售流程" width={150} dataIndex="salesId" render={(value, record) => {
           return (
             <div>
               {
@@ -149,7 +157,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="机会来源" width={120} dataIndex="originName"  render={(value, record)=>{
+        <Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
           return (
             <div>
               {
@@ -158,7 +166,7 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="负责人" width={120} align='center' dataIndex="person"  render={(value, record)=>{
+        <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {
           return (
             <div>
               {
@@ -166,10 +174,13 @@ const BusinessTable = (props) => {
               }
             </div>
           );
-        }}/>
-        <Column title="立项日期" width={200} dataIndex="time"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />
-        <Column title="商机阶段" width={120} align='center' dataIndex="stage" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}  />
-        <Column title="商机金额" width={120} align='center' dataIndex="opportunityAmount" sorter showSorterTooltip  sortDirections={['ascend', 'descend']} />
+        }} />
+        <Column title="立项日期" width={200} dataIndex="time" sorter showSorterTooltip={false} defaultSortOrder="descend"
+                sortDirections={['ascend', 'descend']} />
+        <Column title="商机阶段" width={120} align="center" dataIndex="stage" sorter showSorterTooltip={false}
+                sortDirections={['ascend', 'descend']} />
+        <Column title="商机金额" width={120} align="center" dataIndex="opportunityAmount" sorter showSorterTooltip
+                sortDirections={['ascend', 'descend']} />
         {/*<Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
         {/*<Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
         {/*<Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />*/}
@@ -187,7 +198,7 @@ const BusinessTable = (props) => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500}  title="编辑" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={1500} title="编辑" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

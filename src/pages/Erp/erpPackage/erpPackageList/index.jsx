@@ -34,7 +34,6 @@ const ErpPackageList = () => {
 
 
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
-  console.log(daGet);
   const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
 
 
@@ -69,8 +68,6 @@ const ErpPackageList = () => {
   return (
     <>
       <div>
-        {/*<Row gutter={12}>*/}
-        {/*  <Col span={16}>*/}
         <Table
           title={<Breadcrumb />}
           api={erpPackageList}
@@ -107,11 +104,6 @@ const ErpPackageList = () => {
             );
           }} width={300}/>
         </Table>
-          {/*</Col>*/}
-          {/*<Col span={8}>*/}
-
-        {/*  </Col>*/}
-        {/*</Row>*/}
 
       </div>
 

@@ -26,7 +26,7 @@ const Contract = (props) => {
           props.onSuccess();
         }}
       >
-        <FormItem name="content" component={SysField.Content} required />
+        <FormItem name="content" component={SysField.SeeContent} required />
         <Button onClick={()=>{
           props.onSuccess();
         }}>
