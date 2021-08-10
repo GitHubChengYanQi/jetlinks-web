@@ -14,12 +14,12 @@ const Dynamic = (props) => {
   const datas = data ? data.map((value, index) => {
     return {
       actions: [<span onClick={()=>{}}>编辑</span>],
-      author: value.user.account ? value.user.account : '--',
+      author: value.user ? value.user.account : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
           <p>
-            <p style={{padding:10}}>{value.note}</p>
+            <p style={{padding:10}}>{value.content}</p>
           </p>
         </>
       ),

@@ -18,7 +18,7 @@ const TableWarp = ({
   api,
   searchForm,
   rowKey,
-  Search,
+  SearchButton,
   selectionType,
   onChange,
   layout,
@@ -109,14 +109,13 @@ const TableWarp = ({
       </div>
       {searchForm ? <div className="search">
         <Form
-          layout= {layout || "inline" }
+          layout={layout || 'inline'}
           {...form}
           actions={formActions}
         >
           {typeof searchForm === 'function' && searchForm()}
-          <FormButtonGroup>
-            {Search || <Submit><SearchOutlined />查询</Submit>}
-          </FormButtonGroup>
+          {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+
         </Form>
       </div> : <Form
         layout="inline"
