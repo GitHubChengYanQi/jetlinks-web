@@ -129,7 +129,7 @@ const CustomerTable = (props) => {
   };
 
   return (
-    <div id="listLayout" style={{height: '100%', overflowY: 'auto',overflowX:'hidden'}}>
+    <>
       <Table
         title={<Breadcrumb />}
         api={customerList}
@@ -141,13 +141,6 @@ const CustomerTable = (props) => {
         Search
         onChange={(keys) => {
           setIds(keys);
-        }}
-        layout
-        scroll={{x: 'max-content'}}
-        sticky={{
-          getContainer: () => {
-            return document.getElementById('listLayout');
-          }
         }}
       >
         <Column title="客户名称" fixed dataIndex="customerName" render={(text, record) => {
@@ -218,7 +211,7 @@ const CustomerTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </div>
+    </>
   );
 };
 
