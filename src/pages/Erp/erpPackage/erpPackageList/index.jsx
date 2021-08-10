@@ -7,35 +7,62 @@
 
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Card, Col, Input, Row, Table as AntTable, Tabs} from 'antd';
+import {Button, Card, Col, Input, message, Row, Table as AntTable, Tabs} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {erpPackageDelete, erpPackageList} from '../erpPackageUrl';
-import ErpPackageEdit from '../erpPackageEdit';
-import * as SysField from '../erpPackageField';
 import Modal2 from '@/components/Modal';
 import Breadcrumb from "@/components/Breadcrumb";
 import TableList from "@/pages/Erp/erpPackage/erpPackageList/components/TableList";
-import useRequest from "../../../../util/Request/useRequest";
 import {erpPackageTableDelete, erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
+import CheckButton from "@/components/CheckButton";
+import useRequest from "../../../../util/Request/useRequest";
+import ErpPackageEdit from '../erpPackageEdit';
+import * as SysField from '../erpPackageField';
+import {erpPackageDelete, erpPackageList} from '../erpPackageUrl';
+import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ErpPackageList = () => {
+const ErpPackageList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const [data, setData] = useState();
   const [PackageId, setPackageId] = useState();
   const [ids, setIds] = useState([]);
 
-
-
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
   const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
+  const {run:select} = useRequest(erpPackageTableList,
+    {manual: true,
+      onError: (error) => {
+        message.error(error.message);
+      },
+      onSuccess: (response) => {
+        response.map(value => {
+          return add({
+            data:{
+              businessId: props.businessId,
+              itemId: value.itemId,
+              salePrice: 0,
+              totalPrice: 0,
+              quantity: 0
+            }
+          });
+        });
+        props.onSuccess();
+      }
+    });
 
+  const {run:add} = useRequest(crmBusinessDetailedAdd,{manual:true});
+
+  let disabled = true;
+  if(props.disabled === undefined){
+    disabled = true;
+  }else{
+    disabled = false;
+  }
 
   const actions = () => {
     return (
@@ -89,15 +116,18 @@ const ErpPackageList = () => {
           }} />
           <Column/>
           <Column title="操作" align="right" render={(value, record) => {
+
             return (
               <>
+                {!disabled&&
+                <CheckButton onClick={() => {
+                  select({data:{packageId:record.packageId}});
+                }}/>}
                 <EditButton onClick={() => {
                   ref.current.open(record.packageId);
                 }}/>
                 <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
-                  console.log(record);
                   run(record.packageId);
-
                   tableRef.current.refresh();
                 }}/>
               </>
