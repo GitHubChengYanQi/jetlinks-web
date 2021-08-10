@@ -47,32 +47,24 @@ const TableDetail = (props) => {
         <Modal2 width={1900} title="选择" component={ItemsList}
           onSuccess={() => {
             refAddOne.current.close();
+            tableRef.current.refresh();
           }} ref={refAddOne}
           businessId={value}
           TcDisabled={false}
         />
         <Button type="primary" className='placeName' onClick={()=>{
-          refAddAll.current.open(false);}}>
+          refAddAll.current.open(false);
+        }}>
           添加产品套餐
         </Button>
-        <Modal2 width={800} title="选择" component={ErpPackageList}  onSuccess={() => {
-          refAddAll.current.close();
-        }} ref={refAddAll}
-        allData={(data) => {
-          const origin = data.map((val) => {
-            return {
-              businessId: value,
-              itemId: val.itemId,
-              salePrice: 0,
-              totalPrice: 0,
-              quantity: 0
-            };
-
-          });
-          run(origin);
-          refAddOne.current.close();
-          tableRef.current.refresh();
-        }}/>
+        <Modal2 width={800} title="选择" component={ErpPackageList}
+          onSuccess={() => {
+            refAddAll.current.close();
+            tableRef.current.refresh();
+          }} ref={refAddAll}
+          disabled={false}
+          businessId={value}
+        />
 
       </div>
       <Table
