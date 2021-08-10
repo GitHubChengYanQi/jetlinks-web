@@ -10,15 +10,14 @@ import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Form from '@/components/Form';
-import {stockList} from '../StockUrl';
-import * as SysField from '../StockField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {Inventory, Storehouse} from '../StockField';
+import {stockList} from '../StockUrl';
+import * as SysField from '../StockField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -73,11 +72,6 @@ const StockList = () => {
                 setSearch(true);
               }
             }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
-            <MegaLayout inline>
-              <FormItem hidden name="status" component={SysField.Name} />
-              <FormItem hidden name="classification" component={SysField.Name} />
-              <FormItem hidden name="customerLevelId" component={SysField.Name} />
-            </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
       </>
@@ -114,16 +108,13 @@ const StockList = () => {
           setIds(keys);
         }}
       >
-        <Column title="仓库名称" dataIndex="pname" />
-        <Column title="产品名称" dataIndex="iname" />
-        <Column title="品牌" dataIndex="bname" />
-        <Column title="数量" dataIndex="inventory" />
-        <Column />
-
+        <Column title="仓库名称" dataIndex="pname" sorter/>
+        <Column title="产品名称" dataIndex="iname" sorter/>
+        <Column title="品牌" dataIndex="bname" sorter/>
+        <Column title="数量" dataIndex="inventory"/>
+        <Column/>
       </Table>
-
     </>
-
   );
 };
 

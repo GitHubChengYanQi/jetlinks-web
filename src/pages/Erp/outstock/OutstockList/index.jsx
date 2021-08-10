@@ -36,13 +36,13 @@ const OutstockList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="产品名称" name="name" component={SysField.StockId}/>
-       <FormItem label="出库时间" name="deliveryTime" component={SysField.DeliveryTime}/>
-       <FormItem label="品牌名称" name="brandName" component={SysField.StockId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="产品名称" name="name" component={SysField.StockId}/>
+        <FormItem label="出库时间" name="deliveryTime" component={SysField.DeliveryTime}/>
+        <FormItem label="品牌名称" name="brandName" component={SysField.StockId}/>
+      </>
     );
   };
 
@@ -56,12 +56,11 @@ const OutstockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="name"/>
-        <Column title="出库时间" dataIndex="deliveryTime"/>
-        <Column title="出库数量" dataIndex="number"/>
-        <Column title="出库价格" dataIndex="price"/>
-        <Column title="品牌名称" dataIndex="brandName"/>
-        <Column/>
+        <Column title="产品名称" dataIndex="name" sorter/>
+        <Column title="出库时间" dataIndex="deliveryTime" sorter/>
+        <Column title="出库数量" dataIndex="number" sorter/>
+        <Column title="出库价格" dataIndex="price" sorter/>
+        <Column title="品牌名称" dataIndex="brandName" sorter/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

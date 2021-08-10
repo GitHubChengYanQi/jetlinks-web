@@ -8,6 +8,7 @@ import styles from "@/pages/Crm/index.module.scss";
 import BrandList from "@/pages/Erp/brand/BrandList";
 import MaterialList from "@/pages/Erp/material/MaterialList";
 import StockList from "@/pages/Erp/stock/StockList";
+import StorehouseList from "@/pages/Erp/storehouse/StorehouseList";
 
 const ErpLayout = ({children}) => {
 
@@ -31,7 +32,7 @@ const ErpLayout = ({children}) => {
       case 'czgl':
         return <MaterialList />;
       case 'ckgl':
-        return <StockList />;
+        return <StorehouseList />;
       default:
         return null;
     }
@@ -78,7 +79,7 @@ const ErpLayout = ({children}) => {
               </Menu.Item>
               <Menu.Divider />
             </Menu>
-            <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={()=>{
+            <Modal centered destroyOnClose maskClosable={false} width={1100} visible={visible} onCancel={()=>{
               showModel(false);
             }} footer={null}>{RenderComponent()}</Modal>
           </div>

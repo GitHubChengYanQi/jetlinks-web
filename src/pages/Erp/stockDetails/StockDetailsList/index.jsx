@@ -9,21 +9,15 @@ import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {stockDetailsDelete, stockDetailsList} from '../StockDetailsUrl';
-import StockDetailsEdit from '../StockDetailsEdit';
-import * as SysField from '../StockDetailsField';
 import Breadcrumb from '@/components/Breadcrumb';
+import {stockDetailsList} from "@/pages/Erp/stockDetails/StockDetailsUrl";
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
-import {set} from 'js-cookie';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {Price, Storehouse} from '../StockDetailsField';
+import * as SysField from '../StockDetailsField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -116,14 +110,13 @@ const StockDetailsList = () => {
         }}
         ref={tableRef}
       >
-        <Column title="库存编号" dataIndex="stockId" />
-        <Column title="仓库名称" dataIndex="pname" />
-        <Column title="产品名称" dataIndex="iname" />
-        <Column title="产品价格" dataIndex="price" />
-        <Column title="入库时间" dataIndex="storageTime" />
+        <Column title="库存编号" dataIndex="stockId"/>
+        <Column title="仓库名称" dataIndex="pname"/>
+        <Column title="产品名称" dataIndex="iname" sorter/>
+        <Column title="产品价格" dataIndex="price" sorter/>
+        <Column title="入库时间" dataIndex="storageTime" sorter/>
       </Table>
     </>
-
   );
 };
 

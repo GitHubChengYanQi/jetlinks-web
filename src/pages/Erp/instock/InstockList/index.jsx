@@ -9,16 +9,14 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 import {instockDelete, instockList} from '../InstockUrl';
 import InstockEdit from '../InstockEdit';
 import * as SysField from '../InstockField';
-import {RegisterTime} from '../InstockField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -36,14 +34,14 @@ const InstockList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="产品名称" name="name" component={SysField.ItemId}/>
-       <FormItem label="仓库名称" name="placeName" component={SysField.ItemId}/>
-       <FormItem label="登记时间" name="registerTime" component={SysField.RegisterTime}/>
-       <FormItem label="品牌" name="brandName" component={SysField.ItemId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="产品名称" name="name" component={SysField.ItemId}/>
+        <FormItem label="仓库名称" name="placeName" component={SysField.ItemId}/>
+        <FormItem label="登记时间" name="registerTime" component={SysField.RegisterTime}/>
+        <FormItem label="品牌" name="brandName" component={SysField.ItemId}/>
+      </>
     );
   };
 
@@ -57,12 +55,12 @@ const InstockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="name"/>
-        <Column title="仓库名称" dataIndex="placeName"/>
-        <Column title="登记时间" dataIndex="registerTime"/>
-        <Column title="入库数量" dataIndex="number"/>
-        <Column title="价格" dataIndex="price"/>
-        <Column title="品牌" dataIndex="brandName"/>
+        <Column title="产品名称" dataIndex="name" sorter/>
+        <Column title="仓库名称" dataIndex="placeName" sorter/>
+        <Column title="登记时间" dataIndex="registerTime" sorter/>
+        <Column title="入库数量" dataIndex="number" sorter/>
+        <Column title="价格" dataIndex="price" sorter/>
+        <Column title="品牌" dataIndex="brandName" sorter/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

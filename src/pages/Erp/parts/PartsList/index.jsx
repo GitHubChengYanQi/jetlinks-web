@@ -9,16 +9,14 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
 import {partsDelete, partsList} from '../PartsUrl';
 import PartsEdit from '../PartsEdit';
 import * as SysField from '../PartsField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
-import {BrandId, ItemId} from "../PartsField";
 
 const {Column} = AntTable;
 const {FormItem} = Form;

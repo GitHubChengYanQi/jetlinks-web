@@ -30,7 +30,9 @@ const MaterialEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="materialId"
     >
-      <FormItem label="材质名字" name="name" component={SysField.Name} required/>
+      <FormItem label="材质名字" name="name" component={SysField.Name}
+        rules={[{ required: true, message: '请输入材质名称!' }]}
+        required/>
     </Form>
   );
 };
