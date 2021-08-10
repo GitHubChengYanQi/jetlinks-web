@@ -46,16 +46,16 @@ const TableWarp = ({
     const page = {};
     page.limit = pagination.pageSize;
     page.page = pagination.current;
+    page.sorter = sorter && {
+      field: sorter.field,
+      order: sorter.order
+    };
     let response;
     try {
       response = await ajaxService({
         ...api,
         data: {
-          ...values,
-          sorter: sorter && {
-            field: sorter.field,
-            order: sorter.order
-          }
+          ...values
         },
         ...other,
         params: page
