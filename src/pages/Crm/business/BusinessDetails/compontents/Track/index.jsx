@@ -59,6 +59,7 @@ const Track = (props) => {
       />,
       <Modal2 width={800} title="编辑" component={CrmBusinessTrackEdit} onSuccess={() => {
         run();
+        ref.current.close();
       }} ref={ref} val={value} />
     </div>
   );

@@ -22,12 +22,23 @@ export const Time = (props) => {
 
 
 export const Offer = (props) => {
+  const {visi} = props;
   return (<AntdSelect
     options={[
       {label: '否', value: '0'},
       {label: '是', value: '1'},
     ]}
-    {...props} />);
+    {...props} onChange={(value)=>{
+      if (value === 1){
+        visi(true);
+      }else {
+        visi(false);
+      }
+  }} />);
+};
+
+const Money = (props) => {
+  return (<InputNumber {...props} />);
 };
 
 export const Type = (props) => {
@@ -45,7 +56,6 @@ export const Type = (props) => {
     {...props} />);
 };
 export const BusinessId = (props) => {
-  console.log(props.val);
   props.onChange(props.val.businessId);
   return (<Input {...props} value={props.val.businessName} disabled  />);
 };

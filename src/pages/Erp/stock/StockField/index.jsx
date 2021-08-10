@@ -55,16 +55,16 @@ export const Item = (props) =>{
   </>);
 };
 
-export const PalceId = (props) =>{
-  return (<Input   {...props}/>);
+export const Storehouse = (props) =>{
+  return (<Select width={300} api={apiUrl.storehouse}   {...props}/>);
 };
 
 export const ItemId = (props) =>{
-  return (<Input   {...props}/>);
+  return (<Select api={apiUrl.itemIdSelect}   {...props}/>);
 };
 export const BrandId = (props) =>{
   return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
 };
 export const Inventory = (props) =>{
-  return (<Input   {...props}/>);
+  return (<InputNumber   {...props}/>);
 };

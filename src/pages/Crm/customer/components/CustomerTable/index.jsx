@@ -16,7 +16,7 @@ import Modal2 from '@/components/Modal';
 import {MegaLayout} from '@formily/antd-components';
 import {
   customerBatchDelete,
-  customerDelete, customerList,
+  customerList,
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {useHistory} from 'ice';
@@ -40,10 +40,6 @@ const CustomerTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
-  const [ids, setIds] = useState([]);
-
-  const [search, setSearch] = useState(false);
-
 
   useEffect(() => {
     if (status || state || level) {
@@ -65,33 +61,30 @@ const CustomerTable = (props) => {
     );
   };
 
+  const [search, setSearch] = useState(false);
+
   const searchForm = () => {
 
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 2}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
-          <FormItem mega-props={{span: 2}} placeholder="客户来源" name="originId" component={SysField.OriginId} />
-          <FormItem mega-props={{span: 2}} placeholder="负责人" name="userId" component={SysField.UserName} />
-          <FormItem mega-props={{span: 2}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
-          <MegaLayout>
-            <FormItem hidden name="status" component={SysField.Name} />
-            <FormItem hidden name="classification" component={SysField.Name} />
-            <FormItem hidden name="customerLevelId" component={SysField.Name} />
-          </MegaLayout>
+          <FormItem mega-props={{span: 1}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
+          <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />
+          <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserName} />
+          <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
         </>
       );
     };
 
 
     return (
-      <>
-        <MegaLayout labelAlign="left" labelWidth={120} wrapperWidth={200} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 2}} placeholder="客户名称" name="customerName" component={SysField.Name} />
+      <div style={{maxWidth:800}} >
+        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerName" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
 
-      </>
+      </div>
     );
   };
 
@@ -102,18 +95,25 @@ const CustomerTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索':'展开高级搜索'} onClick={() => {
+            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
                 setSearch(true);
               }
-            }}><Icon type={search ? "icon-shanchuzijiedian" : "icon-tianjiazijiedian"} /></Button>
+            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            <MegaLayout inline>
+              <FormItem hidden name="status" component={SysField.Name} />
+              <FormItem hidden name="classification" component={SysField.Name} />
+              <FormItem hidden name="customerLevelId" component={SysField.Name} />
+            </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
       </>
     );
   };
+
+  const [ids, setIds] = useState([]);
 
   const footer = () => {
     /**

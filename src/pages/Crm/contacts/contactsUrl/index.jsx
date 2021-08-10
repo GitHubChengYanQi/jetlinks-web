@@ -1,7 +1,7 @@
 /**
  * 联系人表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-23 10:06:12
  */
 
@@ -40,7 +40,7 @@ export const contactsIdSelect = {
   url: '/client/listSelect',
   method: 'POST'
 };
-export const clientIdSelect = {
-  url: '/client/listSelect',
+export const customerIdSelect = {
+  url: '/customer/listSelect',
   method: 'POST'
 };

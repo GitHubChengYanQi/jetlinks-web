@@ -16,7 +16,6 @@ import {adressDelete, adressList} from '@/pages/Crm/adress/AdressUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/AdressEdit';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
-
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -29,7 +28,6 @@ const AdressList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label='地址' name="location" component={SysField.SalesId} />
         <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
       </>
     );
@@ -40,6 +38,7 @@ const AdressList = (props) => {
       <Table
         api={adressList}
         rowKey="adressId"
+        showSearchButton={false}
         searchForm={searchForm}
         ref={tableRef}
       >

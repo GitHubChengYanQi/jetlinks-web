@@ -49,7 +49,7 @@ export const items = {
   url: '/items/list',
   method: 'POST'
 };
-export const places = {
-  url: '/storehouse/list',
+export const storehouse = {
+  url: '/storehouse/listSelect',
   method: 'POST'
 };

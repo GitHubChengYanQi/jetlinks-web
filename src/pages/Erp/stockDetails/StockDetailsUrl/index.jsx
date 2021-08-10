@@ -40,3 +40,13 @@ export const stockIdSelect = {
   method:'POST',
   rowKey:'stockItemId'
 };
+export const storehouseIdSelect = {
+  url: '/storehouse/listSelect',
+  method:'POST',
+  rowKey:'stockItemId'
+};
+export const itemIdSelect = {
+  url: '/storehouse/listSelect',
+  method:'POST',
+  rowKey:'stockItemId'
+};

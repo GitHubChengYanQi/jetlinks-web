@@ -5,9 +5,9 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {PageHeader, Table as AntTable} from 'antd';
+import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -18,6 +18,12 @@ import ContactsEdit from '../ContactsEdit';
 import * as SysField from '../ContactsField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
+import Icon from '@/components/Icon';
+import {Customer} from '../ContactsField';
+import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,19 +36,74 @@ const ContactsList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}/>
-       <FormItem label="职务" name="job" component={SysField.Job}/>
-       <FormItem label="联系电话" name="phone" component={SysField.Phone}/>
-     </>
+  const [search, setSearch] = useState(false);
+
+  const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} placeholder="职务" name="job" component={SysField.Job} />
+          <FormItem mega-props={{span: 1}} placeholder="联系电话" name="phone" component={SysField.Phone} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.Customer} />
+        </>
+      );
+    };
+
+
+    return (
+      <>
+        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="联系人姓名" name="contactsName" component={SysField.ContactsName} />
+          {search ? formItem() : null}
+
+        </MegaLayout>
+
+      </>
     );
+  };
+
+
+  const Search = () => {
+    return (
+      <>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            <MegaLayout inline>
+              <FormItem hidden name="status" component={SysField.Name} />
+              <FormItem hidden name="classification" component={SysField.Name} />
+              <FormItem hidden name="customerLevelId" component={SysField.Name} />
+            </MegaLayout>
+          </FormButtonGroup>
+        </MegaLayout>
+      </>
+    );
+  };
+  const [ids, setIds] = useState([]);
+
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      // ...customerBatchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
   };
 
 
@@ -54,32 +115,41 @@ const ContactsList = () => {
         api={contactsList}
         rowKey="contactsId"
         searchForm={searchForm}
+        SearchButton={Search()}
+        layout={search}
+        footer={footer}
         actions={actions()}
         ref={tableRef}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
       >
-        <Column title="联系人姓名" dataIndex="contactsName"/>
-        <Column title="职务" dataIndex="job"/>
-        <Column title="联系电话" dataIndex="phone"/>
-        <Column title="部门编号" dataIndex="deptId"/>
-        <Column title="客户名称" dataIndex="clientId"/>
-        <Column/>
+        <Column title="联系人姓名" dataIndex="contactsName" />
+        <Column title="职务" dataIndex="job" />
+        <Column title="联系电话" dataIndex="phone" />
+        <Column title="客户名称" dataIndex="clientId" render={(value,record)=>{
+          return (
+            record.customerResult ? record.customerResult.customerName : null
+          );
+        }} />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
-              }}/>
-              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={()=>{
+              }} />
+              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Modal2 width={800} title="编辑" component={ContactsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };
