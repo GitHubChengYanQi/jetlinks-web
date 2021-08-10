@@ -10,15 +10,14 @@ import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Form from '@/components/Form';
-import {stockList} from '../StockUrl';
-import * as SysField from '../StockField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {Inventory, Storehouse} from '../StockField';
+import {stockList} from '../StockUrl';
+import * as SysField from '../StockField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -73,11 +72,6 @@ const StockList = () => {
                 setSearch(true);
               }
             }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
-            <MegaLayout inline>
-              <FormItem hidden name="status" component={SysField.Name} />
-              <FormItem hidden name="classification" component={SysField.Name} />
-              <FormItem hidden name="customerLevelId" component={SysField.Name} />
-            </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
       </>
