@@ -32,7 +32,7 @@ const PartsEdit = ({...props}) => {
 
   const steps = [
     {
-      title: '必填项',
+      title: '添加清单',
       content:
         <>
           <div style={{margin: '50px 150px'}}>
@@ -58,7 +58,7 @@ const PartsEdit = ({...props}) => {
         </>
     },
     {
-      title: '选填项',
+      title: '清单选填项',
       content:
         <>
 

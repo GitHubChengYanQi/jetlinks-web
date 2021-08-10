@@ -18,11 +18,12 @@ import PartsEdit from '../PartsEdit';
 import * as SysField from '../PartsField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import {BrandId, ItemId} from "../PartsField";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const PartsList = () => {
+const PartsList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -35,26 +36,25 @@ const PartsList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="产品名称" name="name" component={SysField.Name}/>
-       <FormItem label="品牌名称" name="brandName" component={SysField.Name}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="产品名称" disabled name="ItemId" value={props.itemsId} component={SysField.ItemId}/>
+        <FormItem label="品牌名称" name="brandId" component={SysField.BrandId}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='清单管理'/>}
         api={partsList}
         rowKey="partsId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="name" sorter/>
         <Column title="零件名称" render={(value,record)=>{
           return (
             <div>

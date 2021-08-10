@@ -13,6 +13,7 @@ import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
 import Drawer from '@/components/Drawer';
 import Items from '@/pages/Erp/parts/PartsEdit/components/Items';
+import Search from "antd/es/input/Search";
 
 const w = 200;
 
@@ -27,17 +28,21 @@ export const Item = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
-  return (<>
-    <Input   {...props}/>
-    <Button className='placeName' onClick={()=>{
-      ref.current.open(false);}}>
-      搜索仓库
-    </Button>
-    <Drawer width={1700} title="选择" component={Items}  onSuccess={() => {
-      tableRef.current.refresh();
-      ref.current.close();
-    }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
-  </>);
+  const onSearch = value => ref.current.open(false);;
+  return (
+    <>
+      <div>
+        <Search onSearch={onSearch}
+          style={{width:250}}
+          placeholder="请搜索仓库"
+          enterButton
+          {...props}/>
+      </div>
+      <Drawer width={1500} title="选择" component={Items}  onSuccess={() => {
+        tableRef.current.refresh();
+        ref.current.close();
+      }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+    </>);
 };
 
 export const Name = (props) =>{
@@ -46,4 +51,8 @@ export const Name = (props) =>{
 
 export const Number = (props) =>{
   return (<InputNumber   {...props}/>);
+};
+
+export const brandName = (props) =>{
+  return (<Input   {...props}/>);
 };
