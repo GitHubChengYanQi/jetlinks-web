@@ -18,12 +18,14 @@ import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
+import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
+import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
 
 const {Search} = Input;
 
 
 export const Customer = (props) => {
-  const {onChange, placeholder, val} = props;
+  const {onChange, placeholder, val,customerId} = props;
   const [value, setValue] = useState(val);
   const ref = useRef(null);
   return (<>
@@ -35,6 +37,42 @@ export const Customer = (props) => {
     }} ref={ref} choose={(customer) => {
       setValue(customer.customerName);
       onChange(customer.customerId);
+      customerId(customer.customerId);
+      ref.current.close();
+    }} />
+  </>);
+};
+
+export const Contacts = (props) => {
+  const {onChange, placeholder, val,customerId} = props;
+  const [value, setValue] = useState(val);
+  const ref = useRef(null);
+  return (<>
+    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
+      ref.current.open(false);
+    }} enterButton />
+    <Drawer width={1700} title="选择" component={ContactsList} onSuccess={() => {
+      ref.current.close();
+    }} ref={ref} customerId={customerId} choose={(customer) => {
+      setValue(customer.contactsName);
+      onChange(customer.contactsId);
+      ref.current.close();
+    }} />
+  </>);
+};
+export const Adress = (props) => {
+  const {onChange, placeholder, val,customerId} = props;
+  const [value, setValue] = useState(val);
+  const ref = useRef(null);
+  return (<>
+    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
+      ref.current.open(false);
+    }} enterButton />
+    <Drawer width={1700} title="选择" component={AdressList} onSuccess={() => {
+      ref.current.close();
+    }} ref={ref} customerId={customerId} choose={(customer) => {
+      setValue(customer.location);
+      onChange(customer.adressId);
       ref.current.close();
     }} />
   </>);
@@ -54,7 +92,7 @@ export const Time = (props) => {
   return (<DatePicker showTime {...props} />);
 };
 export const Audit = (props) => {
-  props.onChange(0);
+  props.onChange(props.value || 0);
   return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}} options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]} showTime   {...props} />);
 };
 

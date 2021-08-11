@@ -173,7 +173,11 @@ const ContractTable = (props) => {
           );
         }} />
         <Column title="甲方" dataIndex="partAName" />
+        <Column title="甲方联系人" align="center" width={120} dataIndex="partyAContactsId" />
+        <Column title="甲方地址" width={200} dataIndex="partyAAdressId" />
         <Column title="乙方" dataIndex="partBName" />
+        <Column title="乙方联系人" align="center" width={120} dataIndex="partyBContactsId" />
+        <Column title="乙方地址" width={200} dataIndex="partyBAdressId" />
         <Column title="创建时间" width={200} dataIndex="time" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (

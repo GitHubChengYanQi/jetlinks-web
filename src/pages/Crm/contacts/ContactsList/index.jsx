@@ -21,11 +21,15 @@ import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
+import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ContactsList = () => {
+const ContactsList = (props) => {
+
+  const {choose} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -134,6 +138,10 @@ const ContactsList = () => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              {choose ? <CheckButton onClick={() => {
+                choose(record);
+                props.onSuccess();
+              }} /> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />

@@ -16,12 +16,13 @@ import {contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ContactsList = (props) => {
-  const {customerId} = props;
+  const {customerId,choose} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -58,6 +59,10 @@ const ContactsList = (props) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              {choose ? <CheckButton onClick={() => {
+                choose(record);
+                props.onSuccess();
+              }} /> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
