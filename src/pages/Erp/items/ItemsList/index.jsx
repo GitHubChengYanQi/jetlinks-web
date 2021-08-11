@@ -38,7 +38,7 @@ const ItemsList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const listRef = useRef(null);
+  // const listRef = useRef(null);
   const [ids, setIds] = useState([]);
   const [itemsId, setItemsId] = useState([]);
   const history = useHistory();
@@ -165,9 +165,9 @@ const ItemsList = (props) => {
             return (
               <Button type="link" onClick={() => {
                 setItemsId(row.itemId);
-                props.onSuccess();
-                // history.push(`/ERP/parts/${row.itemId}`);
-                // listRef.current.open(false);
+                // console.log(history);
+                history.push(`/ERP/parts/${row.itemId}`);
+                console.log(history);
               }}>{row.name}</Button>
             );
           }}/>
@@ -228,10 +228,10 @@ const ItemsList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-      <Modal2 width={1000} component={PartsList} itemsId={itemsId} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={listRef}/>
+      {/*<Modal2 width={1000} component={PartsList} itemsId={itemsId} onSuccess={() => {*/}
+      {/*  tableRef.current.refresh();*/}
+      {/*  ref.current.close();*/}
+      {/*}} ref={listRef}/>*/}
     </>
   );
 };
