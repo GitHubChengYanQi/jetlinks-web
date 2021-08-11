@@ -36,10 +36,14 @@ export const instockList = {
 };
 
 export const itemIdSelect = {
-  url: '',
+  url: '/items/listSelect',
   method: 'POST'
 };
 export const brandIdSelect = {
   url: '/brand/listSelect',
+  method: 'POST'
+};
+export const storeHouseSelect = {
+  url: '/storehouse/listSelect',
   method: 'POST'
 };

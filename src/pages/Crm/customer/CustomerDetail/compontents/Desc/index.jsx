@@ -13,7 +13,7 @@ const Desc = (props) => {
           <Descriptions.Item label="法定代表人">{data.legal ?  data.legal :'未填写' }</Descriptions.Item>
           <Descriptions.Item label="客户级别">{data.crmCustomerLevelResult ?  data.crmCustomerLevelResult.level :'未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户状态">{data.status  ? data.status :'未填写'}</Descriptions.Item>
-          <Descriptions.Item label="负责人">{data.userResult  ? data.userResult.account :'未填写'}</Descriptions.Item>
+          <Descriptions.Item label="负责人">{data.userResult  ? data.userResult.name :'未填写'}</Descriptions.Item>
         </Descriptions>
       </>
     );

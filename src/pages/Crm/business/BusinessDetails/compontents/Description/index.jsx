@@ -17,7 +17,7 @@ const Description = (props) => {
           <Descriptions.Item label="机会来源">{data.origin ? data.origin.originName: '未填写'}</Descriptions.Item>
           <Descriptions.Item label="商机跟踪">{data.trackId ? data.trackId: '未填写'}</Descriptions.Item>
           <Descriptions.Item label="商机名称">{data.businessName ?  data.businessName: '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="负责人">{data.user ?  data.user.account: '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="负责人">{data.user ?  data.user.name: '未填写'}</Descriptions.Item>
           <Descriptions.Item label="结单日期">{data.statementTime ?   data.statementTime: '未填写'}</Descriptions.Item>
           <Descriptions.Item label="阶段变更时间">{data.changeTime  ?  data.changeTime: '未填写'}</Descriptions.Item>
           <Descriptions.Item label="商机金额">{data.opportunityAmount ?  data.opportunityAmount: '未填写'}</Descriptions.Item>

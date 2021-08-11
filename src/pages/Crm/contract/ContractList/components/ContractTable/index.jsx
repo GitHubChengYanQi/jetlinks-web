@@ -183,9 +183,9 @@ const ContractTable = (props) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <Button style={{margin:'0 10px'}} onClick={() => {
-                record.audit === 0 ? confirmOk(record) : openNotificationWithIcon('error');
-              }}><Icon type={record.audit === 0 ? 'icon-shenhe' : 'icon-yishenhe'} />{record.audit === 0 ? '审核' : '已审核'}</Button>
+              {record.audit === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
+                confirmOk(record);
+              }}><Icon type="icon-shenhe" />审核</Button> : null}
               <EditButton onClick={() => {
                 ref.current.open(record);
               }} />

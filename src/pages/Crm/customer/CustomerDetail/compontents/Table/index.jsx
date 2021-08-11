@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle} from 'react';
 import { Table as AntdTable } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Service from '@/util/Service';
@@ -10,7 +10,7 @@ const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,showSearchButton=true,footer: parentFooter, disabled = true, ...props }, ref) => {
+const TableWarp = ({ children, columns ,actions,listHeader,  title ,api,showHeader=true ,searchForm, rowKey,showSearchButton=true,footer: parentFooter, disabled = true, ...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -80,9 +80,17 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
     );
   };
 
+
   // pagination
   return (
     <div  className={style.tableWarp}>
+      {listHeader ?<div className={style.listHeader}>
+        {title && <div className="title">{title}</div>}
+        <div className="actions">
+          {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
+          <div className="button">{actions}</div>
+        </div>
+      </div> : null }
       {searchForm ? <div style={showSearchButton ? null : {height:0,margin:0,padding:0} } className="search">
         <Form
           layout="inline"
@@ -105,6 +113,7 @@ const TableWarp = ({ children, columns, actions, title ,api, searchForm, rowKey,
         loading={loading}
         dataSource={dataSource || []}
         rowKey={rowKey}
+        showHeader={showHeader}
         columns={columns}
         sticky
         pagination={

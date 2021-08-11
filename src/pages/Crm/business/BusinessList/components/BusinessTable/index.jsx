@@ -189,7 +189,7 @@ const BusinessTable = (props) => {
           return (
             <div>
               {
-                record.user ? record.user.account : null
+                record.user ? record.user.name : null
               }
             </div>
           );

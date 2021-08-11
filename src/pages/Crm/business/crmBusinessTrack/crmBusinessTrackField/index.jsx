@@ -61,5 +61,5 @@ export const BusinessId = (props) => {
 };
 export const UserId = (props) => {
   props.onChange(props.val.person);
-  return (<Input {...props} value={props.val.user.account} disabled />);
+  return (<Input {...props} value={props.val.user.name} disabled />);
 };

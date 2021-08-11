@@ -7,16 +7,22 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {instockDelete, instockList} from '../InstockUrl';
+import {instockDelete, instockList, itemIdSelect} from '../InstockUrl';
 import InstockEdit from '../InstockEdit';
 import * as SysField from '../InstockField';
+import {useBoolean} from 'ahooks';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
+import Icon from '@/components/Icon';
+import {BrandId, StoreHouseSelect} from '../InstockField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -34,16 +40,47 @@ const InstockList = () => {
     );
   };
 
+  const [search,{toggle}]  = useBoolean(false);
+
   const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="placeName" component={SysField.StoreHouseSelect}/>
+          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandName" component={SysField.BrandId}/>
+        </>
+      );
+    };
+
+
+    return (
+      <div style={{maxWidth:800}} >
+        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="name" component={SysField.ItemIdSelect}/>
+          {search ? formItem() : null}
+        </MegaLayout>
+
+      </div>
+    );
+  };
+
+  const Search = () => {
     return (
       <>
-        <FormItem label="产品名称" name="name" component={SysField.ItemId}/>
-        <FormItem label="仓库名称" name="placeName" component={SysField.ItemId}/>
-        <FormItem label="登记时间" name="registerTime" component={SysField.RegisterTime}/>
-        <FormItem label="品牌" name="brandName" component={SysField.ItemId}/>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+              toggle();
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
+          </FormButtonGroup>
+        </MegaLayout>
       </>
     );
   };
+
 
   return (
     <>
@@ -51,6 +88,8 @@ const InstockList = () => {
         title={<Breadcrumb />}
         api={instockList}
         rowKey="instockId"
+        SearchButton={Search()}
+        layout={search}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
@@ -66,7 +105,7 @@ const InstockList = () => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.instockId);
+                ref.current.open(record);
               }}/>
               <DelButton api={instockDelete} value={record.instockId} onSuccess={()=>{
                 tableRef.current.refresh();

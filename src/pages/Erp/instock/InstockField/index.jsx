@@ -5,33 +5,34 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useRef} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import React, {useRef, useState} from 'react';
+import {Input, InputNumber, Button} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../InstockUrl';
 import Drawer from '@/components/Drawer';
-import {DatePicker2} from '@alifd/next';
-import StockPlaceList from '@/pages/Erp/instock/InstockEdit/components/StockPlaceList';
-import Items from '@/pages/Erp/instock/InstockEdit/components/Items';
+import DatePicker from '@/components/DatePicker';
+import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
+import ItemsList from '@/pages/Erp/items/ItemsList';
 
-const w = 200;
+const {Search} = Input;
+
+
 
 export const Item = (props) =>{
-  const {onChange} = props;
+  const {onChange,val} = props;
+  const [value, setValue] = useState(val);
   const ref = useRef(null);
-  const tableRef = useRef(null);
   return (<>
-    <Input   {...props}/>
-    <Button className='placeName' onClick={()=>{
-      ref.current.open(false);}}>
-      搜索产品
-    </Button>
-    <Drawer width={1900} title="选择" component={Items}  onSuccess={() => {
-      tableRef.current.refresh();
+    <Search style={{width: 200}} {...props} value={value} onSearch={() => {
+      ref.current.open(false);
+    }} enterButton />
+    <Drawer width={1700} title="选择" component={ItemsList} onSuccess={() => {
       ref.current.close();
-    }} ref={ref} allData={(data)=>{onChange(data.itemId);ref.current.close();}}/>
+    }} ref={ref} choose={(choose) => {
+      setValue(choose.name);
+      onChange(choose.itemId);
+      ref.current.close();
+    }} />
   </>);
 };
 export const ItemId = (props) =>{
@@ -39,23 +40,24 @@ export const ItemId = (props) =>{
 };
 export const RegisterTime = (props) =>{
   return (
-    <DatePicker2   {...props}/>
+    <DatePicker  {...props}/>
 );
 };
-export const PlaceId = (props) =>{
-  const {onChange} = props;
+export const StorehouseId = (props) =>{
+  const {onChange,val} = props;
+  const [value, setValue] = useState(val);
   const ref = useRef(null);
-  const tableRef = useRef(null);
   return (<>
-    <Input   {...props}/>
-    <Button className='placeName' onClick={()=>{
-      ref.current.open(false);}}>
-      搜索仓库
-    </Button>
-    <Drawer width={1300} title="选择" component={StockPlaceList}  onSuccess={() => {
-      tableRef.current.refresh();
+    <Search style={{width: 200}} {...props} value={value} onSearch={() => {
+      ref.current.open(false);
+    }} enterButton />
+    <Drawer width={1700} title="选择" component={StorehouseList} onSuccess={() => {
       ref.current.close();
-    }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+    }} ref={ref} choose={(choose) => {
+      setValue(choose.name);
+      onChange(choose.storehouseId);
+      ref.current.close();
+    }} />
   </>);
 };
 export const Number = (props) =>{
@@ -66,4 +68,10 @@ export const Price = (props) =>{
 };
 export const BrandId = (props) =>{
   return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
+};
+export const  ItemIdSelect = (props) =>{
+  return (<Select   api={apiUrl.itemIdSelect} {...props}/>);
+};
+export const  StoreHouseSelect = (props) =>{
+  return (<Select   api={apiUrl.storeHouseSelect} {...props}/>);
 };

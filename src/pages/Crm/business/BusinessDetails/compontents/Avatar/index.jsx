@@ -8,7 +8,7 @@ const AvatarList = (props) => {
   if (value){
     return(
       <>
-        <Avatar size={40}>{value.user ? value.user.account : null}</Avatar>
+        <Avatar size={40}>{value.user ? value.user.name : null}</Avatar>
       </>
     );
   }
