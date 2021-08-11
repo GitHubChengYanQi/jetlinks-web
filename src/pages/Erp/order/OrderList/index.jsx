@@ -8,21 +8,20 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
-import { Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {orderDelete, orderList} from '../OrderUrl';
-import OrderEdit from '../OrderEdit';
-import * as SysField from '../OrderField';
 import './index.scss';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
+import OrderEdit from '../OrderEdit';
+import {orderDelete, orderList} from '../OrderUrl';
+import * as SysField from '../OrderField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
