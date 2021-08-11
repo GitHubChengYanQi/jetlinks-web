@@ -7,10 +7,10 @@
 
 import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
+import {Button, Steps} from 'antd';
+import FormIndex from '@/components/Form/FormIndex';
 import {partsDetail, partsAdd, partsEdit} from '../PartsUrl';
 import * as SysField from '../PartsField';
-import FormIndex from '@/components/Form/FormIndex';
-import {Button, Steps} from 'antd';
 
 const {FormItem} = Form;
 
@@ -24,88 +24,28 @@ const ApiConfig = {
 
 const PartsEdit = ({...props}) => {
 
-  const [result, setResult] = useState(props.value);
+  const {value} = props;
 
-  const [current, setCurrent] = React.useState(0);
-
-  const formRef = useRef();
-
-  const steps = [
-    {
-      title: '添加清单',
-      content:
-        <>
-          <div style={{margin: '50px 150px'}}>
-            <FormIndex
-              {...props}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="partsId"
-              success={(result) => {
-                if (result.data !== '') {
-                  setResult(result.data);
-                }
-                next();
-              }}
-            >
-              <FormItem label="产品编号" name="itemId" component={SysField.Item} required/>
-              <FormItem label="品牌编号" name="brandId" component={SysField.BrandId} required/>
-              <Button type="primary" htmlType="submit">
-                Next
-              </Button>
-            </FormIndex>
-          </div>
-        </>
-    },
-    {
-      title: '清单选填项',
-      content:
-        <>
-
-          <div style={{margin: '50px 150px'}}>
-            <FormIndex
-              {...props}
-              value={result}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="partsId"
-              success={(result) => {
-                props.onSuccess();
-              }}
-            >
-              <FormItem label="零件" name="items" component={SysField.Item} />
-              <FormItem label="零件数量" name="number" component={SysField.Number} />
-              <Button type="primary" htmlType="submit">
-                Done
-              </Button>
-            </FormIndex>
-          </div>
-
-        </>
-    },
-  ];
+  const [result, setResult] = useState(value ? value.partsId : value );
 
 
-  const next = () => {
-    setCurrent(current + 1);
-  };
-
-
-  const prev = () => {
-    setCurrent(current - 1);
-  };
+  const formRef = useRef(null);
 
   return (
     <>
-
-
-      <Steps current={current} style={{padding: '30px 150px '}}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[current].content}</div>
-
+      <div style={{margin: '50px 150px'}}>
+        <Form
+          {...props}
+          value={result}
+          ref={formRef}
+          api={ApiConfig}
+          fieldKey="partsId"
+        >
+          <FormItem style={{'display': 'none'}}  name="itemId" value={props.itemsId} required/>
+          <FormItem label="零件" name="items" val={value ? value.itemsResult.name : null} component={SysField.Item} />
+          <FormItem label="零件数量" name="number" component={SysField.Number} />
+        </Form>
+      </div>
     </>
   );
 };

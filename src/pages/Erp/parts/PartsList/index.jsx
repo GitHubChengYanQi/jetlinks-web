@@ -38,7 +38,6 @@ const PartsList = (props) => {
     return (
       <>
         <FormItem label="产品名称" disabled name="ItemId" value={props.itemsId} component={SysField.ItemId}/>
-        <FormItem label="品牌名称" name="brandId" component={SysField.BrandId}/>
       </>
     );
   };
@@ -50,6 +49,7 @@ const PartsList = (props) => {
         api={partsList}
         rowKey="partsId"
         searchForm={searchForm}
+        SearchButton
         actions={actions()}
         ref={tableRef}
       >
@@ -57,19 +57,18 @@ const PartsList = (props) => {
           return (
             <div>
               {
-                record.getitem.length > 0 ? record.getitem[0].name : ''
+                record.itemsResult ? record.itemsResult.name : ''
               }
             </div>
           );
         }}/>
-        <Column title="品牌名称" dataIndex="brandName"/>
         <Column title="零件数量" dataIndex="number"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.partsId);
+                ref.current.open(record);
               }}/>
               <DelButton api={partsDelete} value={record.partsId} onSuccess={()=>{
                 tableRef.current.refresh();
@@ -78,10 +77,10 @@ const PartsList = (props) => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={900} title="编辑" component={PartsEdit} onSuccess={() => {
+      <Modal2 width={900} title="清单" component={PartsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} itemsId={props.itemsId}/>
     </>
   );
 };

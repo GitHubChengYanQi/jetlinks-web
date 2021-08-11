@@ -7,16 +7,9 @@
 
 import React from 'react';
 import {Input, Select as AntdSelect} from 'antd';
-import {DatePicker2} from '@alifd/next';
 import Select from '@/components/Select';
-
-
+import DatePicker from "@/components/DatePicker";
 import * as apiUrl from '../OrderUrl';
-// eslint-disable-next-line import/named
-
-// eslint-disable-next-line import/named
-
-// eslint-disable-next-line import/named
 
 const w = 200;
 
@@ -49,11 +42,11 @@ export const ClientId = (props) => {
 };
 // 下单时间
 export const OrderTime = (props) => {
-  return (<DatePicker2   {...props} />);
+  return (<DatePicker   {...props} />);
 };
 //  付款时间
 export const PayTime = (props) => {
-  return (<DatePicker2   {...props} />);
+  return (<DatePicker   {...props} />);
 };
 // 出库时间
 export const DeliveryId = (props) => {
@@ -61,9 +54,10 @@ export const DeliveryId = (props) => {
 };
 // 产品名称
 export const ItemId = (props) => {
-  return (<Input   {...props} />);
+  return (<Select api={apiUrl.ProductNameListSelect} Select {...props}/>);
 };
 //  产品金额
 export const StockItemId = (props) => {
   return (<Input   {...props} />);
 };
+

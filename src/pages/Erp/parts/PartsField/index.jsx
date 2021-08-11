@@ -5,15 +5,14 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
-import * as apiUrl from '../PartsUrl';
-import Drawer from '@/components/Drawer';
-import Items from '@/pages/Erp/parts/PartsEdit/components/Items';
+import Modal2 from '@/components/Modal';
 import Search from "antd/es/input/Search";
+import ItemsList from "@/pages/Erp/items/ItemsList";
+import * as apiUrl from '../PartsUrl';
+
 
 const w = 200;
 
@@ -28,6 +27,7 @@ export const Item = (props) =>{
   const {onChange} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const [itemName, setItemName] = useState(props.val);
   const onSearch = value => ref.current.open(false);;
   return (
     <>
@@ -36,12 +36,18 @@ export const Item = (props) =>{
           style={{width:250}}
           placeholder="请搜索仓库"
           enterButton
-          {...props}/>
+          {...props}
+          value={itemName}/>
       </div>
-      <Drawer width={1500} title="选择" component={Items}  onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} ckeck={(id)=>{onChange(id);ref.current.close();}}/>
+      <Modal2 width={1500} title="选择" component={ItemsList}
+        onSuccess={() => {
+          ref.current.close();
+        }} ref={ref}
+        choose={(items) =>{
+          onChange(items.itemId);
+          setItemName(items.name);
+        }}
+      />
     </>);
 };
 
