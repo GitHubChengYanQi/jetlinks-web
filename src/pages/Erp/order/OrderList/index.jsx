@@ -37,7 +37,6 @@ const OrderList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="订单编号" name="orderId" component={SysField.OrderId} />
           <FormItem mega-props={{span: 1}} placeholder="订单人姓名" name="name" component={SysField.Name} />
           <FormItem mega-props={{span: 1}} placeholder="订单状态" name="state" component={SysField.State} />
         </>
