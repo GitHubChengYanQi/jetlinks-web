@@ -20,6 +20,7 @@ const FormWrapper = (
     labelCol,
     wrapperCol,
     api,
+    effects,
     fieldKey,
     value,
     formatResult,
@@ -118,6 +119,9 @@ const FormWrapper = (
   }
 
   return findData && <FormilyForm
+    effects={()=>{
+      effects ? effects() : null;
+    }}
     actions={formActions}
     className={style.formWarp}
     labelCol={labelCol || 6}

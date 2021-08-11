@@ -8,38 +8,38 @@
 export const contractAdd = {
   url: '/contract/add',
   method: 'POST',
-  rowKey:'contractId'
+  rowKey: 'contractId'
 };
 
 export const contractEdit = {
   url: '/contract/edit',
   method: 'POST',
-  rowKey:'contractId'
+  rowKey: 'contractId'
 };
 
 export const contractDelete = {
   url: '/contract/delete',
   method: 'POST',
-  rowKey:'contractId'
+  rowKey: 'contractId'
 };
 
 export const contractBatchDelete = {
   url: '/contract/batchDelete',
   method: 'POST',
-  rowKey:'contractId'
+  rowKey: 'contractId'
 };
 
 
 export const contractDetail = {
   url: '/contract/detail',
   method: 'POST',
-  rowKey:'contractId'
+  rowKey: 'contractId'
 };
 
 export const contractList = {
   url: '/contract/list',
   method: 'POST',
-  rowKey:'contractId'
+  rowKey: 'contractId'
 };
 
 export const userIdSelect = {
@@ -52,7 +52,16 @@ export const templateSelect = {
   method: 'POST'
 };
 
+
 export const CustomerNameListSelect = {
   url: '/customer/listSelect',
+  method: 'POST',
+};
+export const CuntactsListSelect = {
+  url: '/contacts/listSelect',
+  method: 'POST',
+};
+export const AdressListSelect = {
+  url: '/adress/listSelect',
   method: 'POST',
 };

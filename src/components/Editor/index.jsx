@@ -27,14 +27,45 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
   const insertHtmlDate = () => {
     editorRef.current.editor.cmd.do('insertHTML', '<strong class="date">时间框</strong>');
   };
-  const insertCustomer = (value) => {
+  const insertCustomer = () => {
     editorRef.current.editor.cmd.do('insertHTML', '<strong class="but">选择客户</strong>');;
   };
-  const insertItems = (value) => {
+  const insertItems = () => {
     editorRef.current.editor.cmd.do('insertHTML', '<strong class="items">选择产品</strong>');;
   };
-  const insertPackage = (value) => {
-    editorRef.current.editor.cmd.do('insertHTML', '<strong class="package">选择套餐</strong>');;
+  const insertAcontacts = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertAcontacts">选择甲方联系人</strong>');;
+  };
+
+  const insertBcontacts = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertBcontacts">选择乙方联系人</strong>');;
+  };
+
+  const insertAAdress = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertAAdress">选择甲方地址</strong>');;
+  };
+
+  const insertBAdress = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertBAdress">选择乙方地址</strong>');;
+  };
+
+  const insertAPhone = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertAPhone">选择甲方电话</strong>');;
+  };
+
+  const insertBPhone = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertBPhone">选择乙方电话</strong>');;
+  };
+
+  const insertACustomer = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertACustomer">选择甲方客户</strong>');;
+  };
+
+  const insertBCustomer = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertBCustomer">选择套乙方客户</strong>');;
+  };
+  const insertPackage = () => {
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertPackage">选择套餐</strong>');;
   };
 
   return (
@@ -45,6 +76,15 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
       <Button onClick={() => insertCustomer()}> 选择客户</Button>
       <Button onClick={() => insertItems()}> 选择产品</Button>
       <Button onClick={() => insertPackage()}> 选择套餐</Button>
+
+      <Button onClick={() => insertAcontacts()}> 选择甲方联系人</Button>
+      <Button onClick={() => insertBcontacts()}> 选择乙方联系人</Button>
+      <Button onClick={() => insertAAdress()}> 选择甲方地址</Button>
+      <Button onClick={() => insertBAdress()}> 选择乙方地址</Button>
+      <Button onClick={() => insertAPhone()}> 选择甲方电话</Button>
+      <Button onClick={() => insertBPhone()}> 选择乙方电话</Button>
+      <Button onClick={() => insertACustomer()}> 选择甲方客户</Button>
+      <Button onClick={() => insertBCustomer()}> 选择套乙方客户</Button>
       <ReactWEditor
         placeholder="自定义 placeholder"
         ref={editorRef}

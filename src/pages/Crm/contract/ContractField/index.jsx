@@ -6,75 +6,47 @@
  */
 
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Input, InputNumber, Select as AntSelect} from 'antd';
 import {DatePicker2} from '@alifd/next';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
-import Drawer from '@/components/Drawer';
 import DatePicker from '@/components/DatePicker';
 import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
-import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
-import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
-
-const {Search} = Input;
-
 
 export const Customer = (props) => {
-  const {onChange, placeholder, val,customerId} = props;
-  const [value, setValue] = useState(val);
-  const ref = useRef(null);
+  const {customerId,onChange} = props;
   return (<>
-    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
-      ref.current.open(false);
-    }} enterButton />
-    <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
-      ref.current.close();
-    }} ref={ref} choose={(customer) => {
-      setValue(customer.customerName);
-      onChange(customer.customerId);
-      customerId(customer.customerId);
-      ref.current.close();
-    }} />
+    <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value)=>{onChange(value);customerId(value);}}/>
   </>);
 };
 
 export const Contacts = (props) => {
-  const {onChange, placeholder, val,customerId} = props;
-  const [value, setValue] = useState(val);
-  const ref = useRef(null);
+  const {customerId} = props;
+  const data = customerId ? customerId.map((value)=>{
+    return {
+      label:value.contactsName,
+      value:value.contactsId,
+    };
+  }) : null;
   return (<>
-    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
-      ref.current.open(false);
-    }} enterButton />
-    <Drawer width={1700} title="选择" component={ContactsList} onSuccess={() => {
-      ref.current.close();
-    }} ref={ref} customerId={customerId} choose={(customer) => {
-      setValue(customer.contactsName);
-      onChange(customer.contactsId);
-      ref.current.close();
-    }} />
+    <AntSelect style={{width:200}} options={data} {...props}/>
   </>);
 };
 export const Adress = (props) => {
-  const {onChange, placeholder, val,customerId} = props;
-  const [value, setValue] = useState(val);
-  const ref = useRef(null);
+  const {customerId} = props;
+  const data = customerId ? customerId.map((value)=>{
+    return {
+      label:value.location,
+      value:value.adressId,
+    };
+  }) : null;
   return (<>
-    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
-      ref.current.open(false);
-    }} enterButton />
-    <Drawer width={1700} title="选择" component={AdressList} onSuccess={() => {
-      ref.current.close();
-    }} ref={ref} customerId={customerId} choose={(customer) => {
-      setValue(customer.location);
-      onChange(customer.adressId);
-      ref.current.close();
-    }} />
+    <AntSelect style={{width:200}} options={data} {...props}/>
   </>);
 };
 
@@ -89,11 +61,12 @@ export const Note = (props) => {
 };
 
 export const Time = (props) => {
-  return (<DatePicker showTime {...props} />);
+  return (<DatePicker showtime {...props} />);
 };
 export const Audit = (props) => {
   props.onChange(props.value || 0);
-  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}} options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]} showTime   {...props} />);
+  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}}
+                     options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
 };
 
 export const CustomerNameListSelect = (props) => {
@@ -122,6 +95,8 @@ export const ContentUpdate = (props) => {
 
 
 export const Content = (props) => {
+
+  const {result} = props;
 
 
   const [state, setState] = useState('文本框');
@@ -165,7 +140,7 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
               return (<>
-                <ChooseCustomer Table={CustomerTable} domNode={domNode} record={(record)=>{
+                <ChooseCustomer Table={CustomerTable} domNode={domNode} record={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.customerName);
                   props.onChange(value);
                 }} {...props} />
@@ -173,7 +148,7 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'items') {
               return (<>
-                <ChooseCustomer Table={ItemsList} domNode={domNode} record={(record)=>{
+                <ChooseCustomer Table={ItemsList} domNode={domNode} record={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.name);
                   props.onChange(value);
                 }} {...props} />
@@ -181,11 +156,58 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'package') {
               return (<>
-                <ChooseCustomer Table={ErpPackageList} domNode={domNode} record={(record)=>{
+                <ChooseCustomer Table={ErpPackageList} domNode={domNode} record={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.productName);
                   props.onChange(value);
                 }} {...props} />
               </>);
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAcontacts') {
+              const value = props.value.replace(domNode.children[0].data, result.partyAContactsId);
+              props.onChange(value);
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBcontacts') {
+              return (
+                <>
+                  {result.partyBContactsId}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAAdress') {
+              return (
+                <>
+                  {result.partyAAdressId}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBAdress') {
+              return (
+                <>
+                  {result.partyBAdressId}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAPhone') {
+              return (
+                <>
+                  {result.partyAPhone}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBPhone') {
+              return (
+                <>
+                  {result.partyBPhone}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertACustomer') {
+              const value = props.value.replace(domNode.children[0].data, result.partAName);
+              props.onChange(value);
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBCustomer') {
+              const value = props.value.replace(domNode.children[0].data, result.partBName);
+              props.onChange(value);
             }
           }
         })
