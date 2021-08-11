@@ -101,9 +101,7 @@ const AddContractEdit = ({...props}) => {
   };
 
   return (
-    <>
-
-
+    <div style={{minWidth:800}}>
       <Steps current={current} style={{padding: '30px 150px '}}>
         {steps.map(item => (
           <Step key={item.title} title={item.title} />
@@ -111,7 +109,7 @@ const AddContractEdit = ({...props}) => {
       </Steps>
       <div className="steps-content">{steps[current].content}</div>
 
-    </>
+    </div>
   );
 
 };

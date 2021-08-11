@@ -14,11 +14,7 @@ import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import Search from 'antd/es/input/Search';
 
 
-const w = 200;
 
-export const client = (props) =>{
-  return (<Input  {...props} />);
-};
 export const ContactsName = (props) =>{
   return (<Input  {...props}/>);
 };

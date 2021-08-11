@@ -60,7 +60,7 @@ const CustomerList = () => {
           // onSelect={this.onSelect}
           treeData={[
             {
-              title: '客户分类',
+              title: '所有分类',
               key: '',
               children: [
                 {
@@ -81,12 +81,10 @@ const CustomerList = () => {
           onSelect={(value) => {
             setLevel(value);
           }}
-          // switcherIcon={<DownOutlined />}
           defaultExpandedKeys={['']}
-          // onSelect={this.onSelect}
           treeData={[
             {
-              title: '客户级别',
+              title: '所有级别',
               key: '',
               children: crmCustomerLevel
             },

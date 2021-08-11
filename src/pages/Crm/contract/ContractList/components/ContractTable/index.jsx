@@ -7,12 +7,12 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Modal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contractBatchDelete, contractDelete, contractList,} from '../../../ContractUrl';
+import {contractBatchDelete, contractDelete, contractEdit, contractList,} from '../../../ContractUrl';
 import * as SysField from '../../../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
@@ -20,9 +20,11 @@ import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import Contract from '@/pages/Crm/contract/ContractList/components/Contract';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
+import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import Icon from '@/components/Icon';
+import {useBoolean} from 'ahooks';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -32,19 +34,19 @@ const ContractTable = (props) => {
   const {state} = props;
 
 
-
   const ref = useRef(null);
   const content = useRef(null);
   const tableRef = useRef(null);
 
-  useEffect(()=>{
-    if (state){
+  useEffect(() => {
+    if (state) {
       tableRef.current.formActions.setFieldValue('audit', state ? state[0] : null);
       tableRef.current.refresh();
     }
-  },[state]);
+  }, [state]);
 
-  const [search, setSearch] = useState(false);
+  const [search, {toggle}] = useBoolean(false);
+
 
   const actions = () => {
     return (
@@ -68,28 +70,26 @@ const ContractTable = (props) => {
       );
     };
     return (
-      <>
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+      <div style={{maxWidth: 800}}>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="合同名称" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
-      </>
+      </div>
     );
   };
 
   const Search = () => {
     return (
-      <div style={{width:800}}>
+      <div style={{width: 800}}>
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
             <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+              toggle();
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="audit" component={SysField.Name} />
             </MegaLayout>
@@ -112,6 +112,41 @@ const ContractTable = (props) => {
       tableRef.current.refresh();
     }} value={ids}>批量删除</DelButton>);
   };
+
+  const {run} = useRequest(contractEdit, {
+    manual: true, onSuccess: () => {
+      openNotificationWithIcon('success');
+      tableRef.current.refresh();
+    }
+  });
+
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: type === 'success' ? '审核成功！' : '已审核！',
+    });
+  };
+
+  function confirmOk(record) {
+    Modal.confirm({
+      title: '审核',
+      centered: true,
+      icon: <ExclamationCircleOutlined />,
+      content: `确认审核`,
+      okText: '确认',
+      style: {margin: 'auto'},
+      cancelText: '取消',
+      onOk: async () => {
+        await run(
+          {
+            data: {
+              contractId: record.contractId,
+              audit: 1,
+            }
+          }
+        );
+      }
+    });
+  }
 
 
   return (
@@ -142,12 +177,15 @@ const ContractTable = (props) => {
         <Column title="创建时间" width={200} dataIndex="time" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
-            <BadgeState state={record.audit} text={['不合格', '合格']} color={['red', 'green']} />
+            <BadgeState state={record.audit} text={['未通过', '通过']} color={['red', 'green']} />
           );
         }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              <Button style={{margin:'0 10px'}} onClick={() => {
+                record.audit === 0 ? confirmOk(record) : openNotificationWithIcon('error');
+              }}><Icon type={record.audit === 0 ? 'icon-shenhe' : 'icon-yishenhe'} />{record.audit === 0 ? '审核' : '已审核'}</Button>
               <EditButton onClick={() => {
                 ref.current.open(record);
               }} />
@@ -158,11 +196,11 @@ const ContractTable = (props) => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={1500} title="合同" component={AddContractEdit} onSuccess={() => {
+      <Modal2 title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />
-      <Modal2 width={1500} component={Contract} onSuccess={() => {
+      <Modal2 component={Contract} onSuccess={() => {
         tableRef.current.submit();
         content.current.close();
       }} ref={content} />

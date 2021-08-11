@@ -114,7 +114,8 @@ const BusinessTable = (props) => {
               } else {
                 setSearch(true);
               }
-            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
               <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />

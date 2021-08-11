@@ -54,7 +54,8 @@ export const Time = (props) => {
   return (<DatePicker showTime {...props} />);
 };
 export const Audit = (props) => {
-  return (<AntSelect allowClear style={{width: 200}} options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]} showTime   {...props} />);
+  props.onChange(0);
+  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}} options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]} showTime   {...props} />);
 };
 
 export const CustomerNameListSelect = (props) => {
