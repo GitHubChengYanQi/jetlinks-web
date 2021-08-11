@@ -13,8 +13,10 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {unitDelete, unitList} from '../unitUrl';
 import UnitEdit from '../unitEdit';
+import Breadcrumb from "@/components/Breadcrumb";
+import {unitDelete, unitList} from '../unitUrl';
+
 import * as SysField from '../unitField';
 
 const {Column} = AntTable;
@@ -33,18 +35,18 @@ const UnitList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="单位名称" name="unitName" component={SysField.UnitName}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="单位名称" name="unitName" component={SysField.UnitName}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title='单位管理'/>}
         api={unitList}
         rowKey="unitId"
         searchForm={searchForm}

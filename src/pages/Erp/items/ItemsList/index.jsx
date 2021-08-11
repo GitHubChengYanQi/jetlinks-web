@@ -25,7 +25,9 @@ import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
+import {useHistory} from "ice";
 import {itemsDelete, itemsList} from '../ItemsUrl';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,6 +41,7 @@ const ItemsList = (props) => {
   const listRef = useRef(null);
   const [ids, setIds] = useState([]);
   const [itemsId, setItemsId] = useState([]);
+  const history = useHistory();
 
   const { run: add} = useRequest(erpPackageTableAdd, {
     manual: true,
@@ -162,7 +165,9 @@ const ItemsList = (props) => {
             return (
               <Button type="link" onClick={() => {
                 setItemsId(row.itemId);
-                listRef.current.open(false);
+                props.onSuccess();
+                // history.push(`/ERP/parts/${row.itemId}`);
+                // listRef.current.open(false);
               }}>{row.name}</Button>
             );
           }}/>

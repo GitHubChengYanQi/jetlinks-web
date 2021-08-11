@@ -30,7 +30,9 @@ const UnitEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="unitId"
     >
-      <FormItem label="单位名称" name="unitName" component={SysField.UnitName} required/>
+      <FormItem label="单位名称" name="unitName" component={SysField.UnitName}
+        rules= {[{ required: true, message: '请输入单位名称!' }]}
+        required/>
     </Form>
   );
 };

@@ -13,9 +13,11 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from "@/components/Breadcrumb";
 import {itemClassDelete, itemClassList} from '../itemClassUrl';
 import ItemClassEdit from '../itemClassEdit';
 import * as SysField from '../itemClassField';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,18 +35,18 @@ const ItemClassList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="产品分类名称" name="className" component={SysField.ClassName}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="产品分类名称" name="className" component={SysField.ClassName}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title='产品分类'/>}
         api={itemClassList}
         rowKey="classId"
         searchForm={searchForm}

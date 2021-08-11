@@ -30,7 +30,9 @@ const ItemClassEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="classId"
     >
-      <FormItem label="产品分类名称" name="className" component={SysField.ClassName} required/>
+      <FormItem label="产品分类名称" name="className" component={SysField.ClassName}
+        rules= {[{ required: true, message: '请输入产品分类名称!' }]}
+        required/>
     </Form>
   );
 };
