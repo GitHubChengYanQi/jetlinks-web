@@ -17,11 +17,15 @@ import Modal2 from '@/components/Modal';
 import { storehouseDelete, storehouseList} from '../StorehouseUrl';
 import * as SysField from '../StorehouseField';
 import StorehouseEdit from '../StorehouseEdit';
+import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const StorehouseList = () => {
+const StorehouseList = (props) => {
+
+  const {choose} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -65,6 +69,10 @@ const StorehouseList = () => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              {choose ? <CheckButton onClick={() => {
+                choose(record);
+                props.onSuccess();
+              }} /> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.storehouseId);
               }}/>

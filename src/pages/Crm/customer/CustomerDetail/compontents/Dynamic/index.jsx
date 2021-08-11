@@ -1,25 +1,28 @@
-import React, {useRef} from 'react';
-import {useRequest} from '@/util/Request';
-import {Button, Comment, List} from 'antd';
-import {EditOutlined} from '@ant-design/icons';
+import React from 'react';
+import { Comment,  Table as AntTable} from 'antd';
+import * as SysField from '@/pages/Crm/customer/CustomerField';
+import Form from '@/components/Form';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+
+const {Column} = AntTable;
 
 const Dynamic = (props) => {
 
 
   const {value} = props;
+  const {FormItem} = Form;
 
 
-  const {data, run} = useRequest({url: '/customerDynamic/list', method: 'POST', data: {customerId: value.customerId}});
-
-  const datas = data ? data.map((value, index) => {
+  const datas = (value) => {
     return {
-      actions: [<span onClick={()=>{}}>编辑</span>],
-      author: value.userResult ? value.userResult.account : '--',
+      actions: [<span onClick={() => {
+      }}>编辑</span>],
+      author: value.userResult ? value.userResult.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
           <p>
-            <p style={{padding:10}}>{value.content}</p>
+            <p style={{padding: 10}}>{value.content}</p>
           </p>
         </>
       ),
@@ -27,26 +30,39 @@ const Dynamic = (props) => {
         <span>{value.createTime}</span>
       ),
     };
-  }) : [];
+  };
+
+  const searchForm = () => {
+
+    return (
+      <div style={{maxWidth: 800}}>
+        <FormItem placeholder="customerId" hidden value={value.customerId} name="customerId" component={SysField.Name} />
+      </div>
+    );
+  };
 
   return (
     <div>
-      <List
-        header={`${datas.length} 条动态`}
-        itemLayout="horizontal"
-        dataSource={datas}
-        renderItem={item => (
-          <li>
+      <Table
+        searchForm={searchForm}
+        selectionType
+        showHeader={false}
+        dynamic
+        showSearchButton={false}
+        api={{
+          url: '/customerDynamic/list', method: 'POST'
+        }}
+        rowKey="dynamicId"
+      >
+        <Column render={(text, record) => {
+          return (
             <Comment
-              actions={item.actions}
-              author={item.author}
-              avatar={item.avatar}
-              content={item.content}
-              datetime={item.datetime}
+              {...datas(record)}
             />
-          </li>
-        )}
-      />,
+          );
+        }} />
+
+      </Table>
     </div>
   );
 };

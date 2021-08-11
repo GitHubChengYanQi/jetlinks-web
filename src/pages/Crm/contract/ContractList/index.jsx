@@ -24,15 +24,15 @@ const ContractList = () => {
           defaultExpandedKeys={['']}
           treeData={[
             {
-              title: '审核状态',
+              title: '所有审核',
               key: '',
               children: [
                 {
-                  title: '合格',
+                  title: '通过',
                   key: '1',
                 },
                 {
-                  title: '不合格',
+                  title: '未通过',
                   key: '0',
                 },
               ],

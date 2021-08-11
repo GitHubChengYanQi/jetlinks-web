@@ -44,7 +44,7 @@ const BusinessList = () => {
             // onSelect={this.onSelect}
             treeData={[
               {
-                title: '销售流程',
+                title: '所有流程',
                 key: '0',
                 children: crmBusinessSales,
               },

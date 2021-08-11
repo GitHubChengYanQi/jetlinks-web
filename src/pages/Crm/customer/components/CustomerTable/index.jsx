@@ -62,7 +62,6 @@ const CustomerTable = (props) => {
     );
   };
 
-  // const [search, setSearch] = useState(false);
 
   const [search,{toggle}]  = useBoolean(false);
 
@@ -152,7 +151,7 @@ const CustomerTable = (props) => {
         <Column title="负责人" width={200} render={(text, record) => {
           return (
             <>
-              {record.userResult.account}
+              {record.userResult.name}
             </>
           );
         }} />

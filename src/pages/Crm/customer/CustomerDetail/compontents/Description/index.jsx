@@ -12,7 +12,7 @@ const Description = (props) => {
           <Descriptions.Item label="客户编号">{data.customerId ? data.customerId : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户级别">{data.crmCustomerLevelResult.level ? data.crmCustomerLevelResult.level : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="法定代表人">{data.legal ? data.legal : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="负责人">{data.userResult.account ? data.userResult.account : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="负责人">{data.userResult.name ? data.userResult.name : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户状态">{data.status ? data.status : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="统一社会信用代码">{data.utscc ? data.utscc : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="公司类型">{data.companyType ? data.companyType : '未填写'}</Descriptions.Item>

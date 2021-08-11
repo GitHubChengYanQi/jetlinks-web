@@ -32,6 +32,7 @@
     "stylelint": "stylelint ./**/*.scss"
   },
   "dependencies": {
+    "@ahooksjs/use-url-state": "^2.5.8",
     "@alifd/next": "^1.19.4",
     "@alifd/theme-atsoft-sing": "^0.2.7",
     "@alifd/theme-design-pro": "^0.x",

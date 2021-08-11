@@ -134,10 +134,9 @@ const ItemsList = (props) => {
               } else {
                 setSearch(true);
               }
-            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            }}>  <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
           </FormButtonGroup>
         </MegaLayout>
-        <FormItem label="产品名称" name="name" component={SysField.Name} />
       </>
     );
   };

@@ -36,7 +36,7 @@ const Modal = (
 
   return (
     <AntdModal
-      style={{margin:'auto'}}
+      style={{minWidth:1000}}
       footer={[]}
       visible={visible}
       centered

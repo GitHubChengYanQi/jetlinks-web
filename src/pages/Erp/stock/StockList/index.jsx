@@ -18,11 +18,17 @@ import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import {stockList} from '../StockUrl';
 import * as SysField from '../StockField';
+import CheckButton from '@/components/CheckButton';
+import EditButton from '@/components/EditButton';
+import {storehouseDelete} from '@/pages/Erp/storehouse/StorehouseUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const StockList = () => {
+const StockList = (props) => {
+
+  const {choose} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -49,15 +55,15 @@ const StockList = () => {
 
 
     return (
-      <div style={{maxWidth:800}}>
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+      <div style={{maxWidth: 800}}>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="palceId" component={SysField.Storehouse} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
     );
   };
-
 
   const Search = () => {
     return (
@@ -71,7 +77,7 @@ const StockList = () => {
               } else {
                 setSearch(true);
               }
-            }}><Icon type={search ? 'icon-shanchuzijiedian' : 'icon-tianjiazijiedian'} /></Button>
+            }}> <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
           </FormButtonGroup>
         </MegaLayout>
       </>
@@ -103,16 +109,26 @@ const StockList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
-        footer={footer }
-        onChange={(keys)=>{
+        footer={footer}
+        onChange={(keys) => {
           setIds(keys);
         }}
       >
-        <Column title="仓库名称" dataIndex="pname" sorter/>
-        <Column title="产品名称" dataIndex="iname" sorter/>
-        <Column title="品牌" dataIndex="bname" sorter/>
-        <Column title="数量" dataIndex="inventory"/>
-        <Column/>
+        <Column title="仓库名称" dataIndex="pname" sorter />
+        <Column title="产品名称" dataIndex="iname" sorter />
+        <Column title="品牌" dataIndex="bname" sorter />
+        <Column title="数量" dataIndex="inventory" />
+        <Column />
+        {choose ? <Column title="操作" align="right" render={(value, record) => {
+          return (
+            <>
+              <CheckButton onClick={() => {
+                choose(record);
+                props.onSuccess();
+              }} />
+            </>
+          );
+        }} width={300} /> : null}
       </Table>
     </>
   );

@@ -1,9 +1,15 @@
 import React, {useRef} from 'react';
 import {EditOutlined} from '@ant-design/icons';
 import Modal2 from '@/components/Modal';
-import {Button, Comment, List} from 'antd';
+import {Button, Comment, List, Table as AntTable} from 'antd';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {useRequest} from '@/util/Request';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import * as SysField from '@/pages/Crm/customer/CustomerField';
+import Form from '@/components/Form';
+
+const {Column} = AntTable;
+const {FormItem} = Form;
 
 
 const Track = (props) => {
@@ -11,15 +17,15 @@ const Track = (props) => {
   const {value} = props;
 
   const ref = useRef(null);
+  const tableRef = useRef(null);
 
-  const {data, run} = useRequest({url: '/crmBusinessTrack/list', method: 'POST', data: {businessId: value.businessId}});
 
-  const datas = data ? data.map((value, index) => {
+  const datas = (value) => {
     return {
       actions: [<span onClick={() => {
         ref.current.open(value.trackId);
       }}>编辑</span>],
-      author: value.user.account ? value.user.account : '--',
+      author: value.user.name ? value.user.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
@@ -42,32 +48,46 @@ const Track = (props) => {
         <span>{value.createTime}</span>
       ),
     };
-  }) : [];
+  };
+
+  const searchForm = () => {
+
+    return (
+      <div style={{maxWidth: 800}}>
+        <FormItem placeholder="businessId" hidden value={value.businessId} name="businessId" component={SysField.Name} />
+      </div>
+    );
+  };
 
   return (
     <div>
       <Button style={{width: '100%'}} onClick={() => {
         ref.current.open(false);
       }} className="button-left-margin" icon={<EditOutlined />}>添加跟踪</Button>
-      <List
-        header={`${datas.length} 条跟踪`}
-        itemLayout="horizontal"
-        dataSource={datas}
-        renderItem={item => (
-          <li>
+      <Table
+        searchForm={searchForm}
+        selectionType
+        showHeader={false}
+        dynamic
+        ref={tableRef}
+        showSearchButton={false}
+        api={{
+          url: '/crmBusinessTrack/list', method: 'POST'
+        }}
+        rowKey="trackId"
+      >
+        <Column render={(text, record) => {
+          return (
             <Comment
-              actions={item.actions}
-              author={item.author}
-              avatar={item.avatar}
-              content={item.content}
-              datetime={item.datetime}
+              {...datas(record)}
             />
-          </li>
-        )}
-      />,
+          );
+        }} />
+
+      </Table>
       <Modal2 width={800} title="编辑" component={CrmBusinessTrackEdit} onSuccess={() => {
-        run();
         ref.current.close();
+        tableRef.current.refresh();
       }} ref={ref} val={value} />
     </div>
   );
