@@ -42,7 +42,9 @@ const BrandEdit = ({...props}) => {
           props.onSuccess();
         }}
       >
-        <FormItem label="品牌名称" name="brandName" component={SysField.BrandName} required/>
+        <FormItem label="品牌名称" name="brandName" component={SysField.BrandName}
+          rules={[{ required: true, message: '请输入品牌名称!' }]}
+          required/>
       </Form>
 
     </>

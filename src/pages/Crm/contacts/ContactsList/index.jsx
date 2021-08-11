@@ -9,7 +9,6 @@ import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -22,8 +21,6 @@ import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {Customer} from '../ContactsField';
-import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -124,7 +121,7 @@ const ContactsList = () => {
           setIds(keys);
         }}
       >
-        <Column title="联系人姓名" dataIndex="contactsName" />
+        <Column title="联系人姓名" align='center' width={200} dataIndex="contactsName" />
         <Column title="职务" dataIndex="job" />
         <Column title="联系电话" dataIndex="phone" />
         <Column title="客户名称" dataIndex="clientId" render={(value,record)=>{

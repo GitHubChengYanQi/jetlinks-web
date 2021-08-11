@@ -14,10 +14,10 @@ import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
 import Drawer from '@/components/Drawer';
 import DatePicker from '@/components/DatePicker';
-import Items from '@/pages/Erp/instock/InstockEdit/components/Items';
 import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ItemsList from '@/pages/Erp/items/ItemsList';
+import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
 
 const {Search} = Input;
 
@@ -32,7 +32,7 @@ export const Customer = (props) => {
     }} enterButton />
     <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
       ref.current.close();
-    }} ref={ref} customer={(customer) => {
+    }} ref={ref} choose={(customer) => {
       setValue(customer.customerName);
       onChange(customer.customerId);
       ref.current.close();
@@ -82,16 +82,11 @@ export const ContentUpdate = (props) => {
 };
 
 
-
 export const Content = (props) => {
 
 
   const [state, setState] = useState('文本框');
 
-
-  const ref = useRef(null);
-  const refItems = useRef(null);
-  const refPackage = useRef(null);
 
   const handelChange = (e) => {
     setState(e.target.value);
@@ -131,47 +126,26 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
               return (<>
-                <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-                  ref.current.open(false);
-                }} enterButton />
-                <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
-                  ref.current.close();
-                }} ref={ref} customer={(record) => {
+                <ChooseCustomer Table={CustomerTable} domNode={domNode} record={(record)=>{
                   const value = props.value.replace(domNode.children[0].data, record.customerName);
                   props.onChange(value);
-                  ref.current.close();
-                }}
-                />
+                }} {...props} />
               </>);
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'items') {
               return (<>
-                <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-                  refItems.current.open(false);
-                }} enterButton />
-                <Drawer width={1500} title="选择" component={ItemsList} onSuccess={() => {
-                  refItems.current.close();
-                }} ref={refItems} item={(data) => {
-                  const value = props.value.replace(domNode.children[0].data, data.name);
+                <ChooseCustomer Table={ItemsList} domNode={domNode} record={(record)=>{
+                  const value = props.value.replace(domNode.children[0].data, record.name);
                   props.onChange(value);
-                  refItems.current.close();
-                }}
-                />
+                }} {...props} />
               </>);
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'package') {
               return (<>
-                <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-                  refPackage.current.open(false);
-                }} enterButton />
-                <Drawer width={1500} title="选择" component={ErpPackageList} onSuccess={() => {
-                  refPackage.current.close();
-                }} ref={refPackage} check={(record) => {
-                  const value = props.value.replace(domNode.children[0].data, record.customerName);
+                <ChooseCustomer Table={ErpPackageList} domNode={domNode} record={(record)=>{
+                  const value = props.value.replace(domNode.children[0].data, record.productName);
                   props.onChange(value);
-                  refPackage.current.close();
-                }}
-                />
+                }} {...props} />
               </>);
             }
           }
@@ -183,99 +157,8 @@ export const Content = (props) => {
 
 export const SeeContent = (props) => {
 
-
-  const [state, setState] = useState('文本框');
-
-
-  const ref = useRef(null);
-  const refItems = useRef(null);
-  const refPackage = useRef(null);
-
-  const handelChange = (e) => {
-    setState(e.target.value);
-  };
-
-
   return (
-    <>
-      {
-        parse(props.value, {
-          replace: domNode => {
-            if (domNode.name === 'strong' && domNode.attribs.class === 'inp' && domNode.children[0].data === '文本框') {
-              return <Input style={{width: '100px', margin: '0 10px'}} onChange={(value) => {
-                handelChange(value);
-              }} onBlur={() => {
-                // domNode.children[0].data=state;
-                const value = props.value.replace(domNode.children[0].data, state);
-                props.onChange(value);
-              }} />;
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'number' && domNode.children[0].data === '数字框') {
-              return <InputNumber style={{margin: '0 10px'}} onChange={(value) => {
-                setState(value);
-              }} onBlur={() => {
-                // domNode.children[0].data=state;
-                const value = props.value.replace(domNode.children[0].data, state);
-                props.onChange(value);
-              }} />;
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'date' && domNode.children[0].data === '时间框') {
-              return <DatePicker2 style={{margin: '0 10px'}} onChange={(value) => {
-                setState(value);
-              }} onBlur={() => {
-                const value = props.value.replace(domNode.children[0].data, state);
-                props.onChange(value);
-              }} />;
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'but' && domNode.children[0].data === '选择客户') {
-              return (<>
-                <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-                  ref.current.open(false);
-                }} enterButton />
-                <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
-                  ref.current.close();
-                }} ref={ref} customer={(record) => {
-                  const value = props.value.replace(domNode.children[0].data, record.customerName);
-                  props.onChange(value);
-                  ref.current.close();
-                }}
-                />
-              </>);
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'items' && domNode.children[0].data === '选择产品') {
-              return (<>
-                <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-                  refItems.current.open(false);
-                }} enterButton />
-                <Drawer width={1500} title="选择" component={Items} onSuccess={() => {
-                  refItems.current.close();
-                }} ref={refItems} allData={(allData) => {
-                  const value = props.value.replace(domNode.children[0].data, allData.name);
-                  props.onChange(value);
-                  refItems.current.close();
-                }}
-                />
-              </>);
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'package' && domNode.children[0].data === '选择套餐') {
-              return (<>
-                <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-                  refPackage.current.open(false);
-                }} enterButton />
-                <Drawer width={1500} title="选择" component={ErpPackageList} onSuccess={() => {
-                  refPackage.current.close();
-                }} ref={refPackage} check={(record) => {
-                  const value = props.value.replace(domNode.children[0].data, record.customerName);
-                  props.onChange(value);
-                  refPackage.current.close();
-                }}
-                />
-              </>);
-            }
-          }
-        })
-      }
-    </>
+    parse(props.value)
   );
 };
 

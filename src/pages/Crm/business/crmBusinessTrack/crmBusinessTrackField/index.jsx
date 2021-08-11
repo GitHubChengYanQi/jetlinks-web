@@ -28,16 +28,16 @@ export const Offer = (props) => {
       {label: '否', value: '0'},
       {label: '是', value: '1'},
     ]}
-    {...props} onChange={(value)=>{
-      if (value === 1){
-        visi(true);
-      }else {
-        visi(false);
-      }
+    {...props} onChange={(value) => {
+    if (value === '1') {
+      visi(true);
+    } else {
+      visi(false);
+    }
   }} />);
 };
 
-const Money = (props) => {
+export const Money = (props) => {
   return (<InputNumber {...props} />);
 };
 
@@ -57,7 +57,7 @@ export const Type = (props) => {
 };
 export const BusinessId = (props) => {
   props.onChange(props.val.businessId);
-  return (<Input {...props} value={props.val.businessName} disabled  />);
+  return (<Input {...props} value={props.val.businessName} disabled />);
 };
 export const UserId = (props) => {
   props.onChange(props.val.person);

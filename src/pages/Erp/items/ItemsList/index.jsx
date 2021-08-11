@@ -32,7 +32,7 @@ const {FormItem} = Form;
 
 const ItemsList = (props) => {
 
-  const {item} = props;
+  const {choose} = props;
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -179,8 +179,8 @@ const ItemsList = (props) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              {item ? <CheckButton onClick={()=>{
-                item(record);
+              {choose ? <CheckButton onClick={()=>{
+                choose(record);
                 props.onSuccess();
               }} /> : null}
               {!disabled&&

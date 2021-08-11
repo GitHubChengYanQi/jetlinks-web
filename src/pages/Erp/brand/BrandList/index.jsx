@@ -66,7 +66,7 @@ const BrandList = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={BrandEdit} onSuccess={() => {
+      <Modal2 width={800} title="品牌" component={BrandEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
