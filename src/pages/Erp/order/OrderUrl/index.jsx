@@ -1,3 +1,5 @@
+import Select from "@/components/Select";
+import React from "react";
 
 /**
  * 订单表接口配置
@@ -53,6 +55,12 @@ export const OrderIdListSelect = {
   url:'/contacts/listSelect',
   method:'POST',
   rowKey:'ContactsId'
+};
+
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
 };
 
 

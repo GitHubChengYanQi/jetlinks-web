@@ -10,6 +10,7 @@ import React, {useRef} from 'react';
 import Form from '@/components/Form';
 import {orderDetail, orderAdd, orderEdit} from '../OrderUrl';
 import * as SysField from '../OrderField';
+import {Col, Row} from "antd";
 
 
 const {FormItem} = Form;
@@ -25,26 +26,50 @@ const OrderEdit = ({...props}) => {
   const formRef = useRef();
 
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="order_id"
-    >
-      <FormItem label="订单编号" name="orderId" component={SysField.OrderId} required/>
-      <FormItem label="订单人姓名" name="contactsId" component={SysField.ContactsId} required/>
-      <FormItem label="订单地址" name="adressId" component={SysField.AdressId} required/>
-      <FormItem label="订单数量" name="numbers" component={SysField.Number} required/>
-      <FormItem label="订单状态" name="state" component={SysField.State} required/>
-      <FormItem label="联系电话" name="clientId" component={SysField.ClientId} required/>
-      <FormItem label="订单时间" name="orderTime" component={SysField.OrderTime} required/>
-      <FormItem label="付款时间" name="payTime" component={SysField.PayTime} required/>
-      <FormItem label="发货时间" name="deliveryTime" component={SysField.DeliveryId} required/>
-      <FormItem label="产品名称" name="itemId" component={SysField.ItemId} required/>
-      <FormItem label="金额" name="stock_item_id" component={SysField.StockItemId} required/>
+    <>
 
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="order_id"
+      >
+        <Row gutter={24} style={{padding: '0 30px'}}>
+          <Col span={13}>
+            <FormItem label="订单人姓名" name="contactsId" component={SysField.ContactsId} required/>
+          </Col>
+          <Col span={11}>
+            <FormItem label="联系电话" name="phone" component={SysField.ClientId} required/>
 
-    </Form>
+          </Col>
+        </Row>
+        <Row gutter={24} style={{padding: '0 30px'}}>
+          <Col span={13}>
+            <FormItem label="订单数量" name="number" component={SysField.Number} disabled required/>
+          </Col>
+          <Col span={11}>
+            <FormItem label="金额" name="price" component={SysField.StockItemId} disabled required/>
+          </Col>
+        </Row>
+        <Row gutter={24} style={{padding: '0 30px'}}>
+          <Col span={13}>
+            <FormItem label="订单地址" name="adressId" component={SysField.AdressId} required/>
+          </Col>
+          <Col span={11}>
+            <FormItem label="订单状态" name="state" component={SysField.State} required/>
+          </Col>
+        </Row>
+        <Row gutter={24} style={{padding: '0 30px'}}>
+          <Col span={13}>
+            <FormItem label="产品名称" name="itemId" component={SysField.ItemId} disabled required/>
+          </Col>
+          <Col span={11}>
+            <FormItem label="订单时间" name="orderTime" component={SysField.OrderTime} required/>
+          </Col>
+        </Row>
+      </Form>
+
+    </>
   );
 };
 

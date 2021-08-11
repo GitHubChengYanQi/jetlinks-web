@@ -14,5 +14,10 @@ export const ItemsRouter = [
     component: lazy(() => import('../ItemsList')),
     fallback: <div>loading...</div>,
     exact: true,
+  },  {
+    path: '/parts/:id',
+    component: lazy(() => import('../../parts/PartsList')),
+    fallback: <div>loading...</div>,
+    exact: true,
   }
 ];

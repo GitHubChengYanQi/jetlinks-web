@@ -14,5 +14,10 @@ export const PartsRouter = [
     component: lazy(() => import('../PartsList')),
     fallback: <div>loading...</div>,
     exact: true,
+  },{
+    path: '/parts/:id',
+    component: lazy(() => import('../PartsList')),
+    fallback: <div>loading...</div>,
+    exact: true,
   }
 ];

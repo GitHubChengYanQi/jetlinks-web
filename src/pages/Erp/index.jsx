@@ -9,6 +9,8 @@ import BrandList from "@/pages/Erp/brand/BrandList";
 import MaterialList from "@/pages/Erp/material/MaterialList";
 import StockList from "@/pages/Erp/stock/StockList";
 import StorehouseList from "@/pages/Erp/storehouse/StorehouseList";
+import UnitList from "@/pages/Erp/unit/unitList";
+import ItemClassList from "@/pages/Erp/itemClass/itemClassList";
 
 const ErpLayout = ({children}) => {
 
@@ -33,6 +35,10 @@ const ErpLayout = ({children}) => {
         return <MaterialList />;
       case 'ckgl':
         return <StorehouseList />;
+      case 'cpflgl':
+        return <ItemClassList />;
+      case 'dwgl':
+        return <UnitList />;
       default:
         return null;
     }
@@ -76,6 +82,12 @@ const ErpLayout = ({children}) => {
               </Menu.Item>
               <Menu.Item key="ckgl">
                 <span>仓库管理</span>
+              </Menu.Item>
+              <Menu.Item key="cpflgl">
+                <span>产品分类管理</span>
+              </Menu.Item>
+              <Menu.Item key="dwgl">
+                <span>单位管理</span>
               </Menu.Item>
               <Menu.Divider />
             </Menu>

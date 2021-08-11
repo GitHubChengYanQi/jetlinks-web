@@ -25,7 +25,9 @@ import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
+import {useHistory} from "ice";
 import {itemsDelete, itemsList} from '../ItemsUrl';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -36,9 +38,10 @@ const ItemsList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const listRef = useRef(null);
+  // const listRef = useRef(null);
   const [ids, setIds] = useState([]);
   const [itemsId, setItemsId] = useState([]);
+  const history = useHistory();
 
   const { run: add} = useRequest(erpPackageTableAdd, {
     manual: true,
@@ -157,25 +160,27 @@ const ItemsList = (props) => {
         }}
         footer={footer}
       >
-        <Column title="产品名字" dataIndex="name" sorter
+        <Column title="产品名字" fixed dataIndex="name" sorter
           render={(value, row) => {
             return (
               <Button type="link" onClick={() => {
                 setItemsId(row.itemId);
-                listRef.current.open(false);
+                // console.log(history);
+                history.push(`/ERP/parts/${row.itemId}`);
+                console.log(history);
               }}>{row.name}</Button>
             );
           }}/>
 
-        <Column title="质保期" dataIndex="shelfLife" sorter/>
+        <Column title="质保期" width={150} dataIndex="shelfLife" sorter/>
         <Column title="产品库存" dataIndex="inventory" sorter/>
-        <Column title="生产日期" dataIndex="productionTime" sorter/>
-        <Column title="重要程度" dataIndex="important" sorter/>
-        <Column title="产品重量" dataIndex="weight" sorter/>
-        <Column title="材质" dataIndex="materialName" sorter/>
-        <Column title="成本" dataIndex="cost" />
-        <Column title="易损" dataIndex="vulnerability" />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="生产日期" width={230} dataIndex="productionTime" sorter/>
+        <Column title="重要程度" width={100} dataIndex="important" sorter/>
+        <Column title="产品重量" width={130} dataIndex="weight" sorter/>
+        <Column title="材质" width={120} dataIndex="materialName" sorter/>
+        <Column title="成本" width={120} dataIndex="cost" />
+        <Column title="易损" width={120} dataIndex="vulnerability" />
+        <Column title="操作" fixed="right" width={100}  align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={()=>{
@@ -223,10 +228,6 @@ const ItemsList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-      <Modal2 width={1000} component={PartsList} itemsId={itemsId} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={listRef}/>
     </>
   );
 };

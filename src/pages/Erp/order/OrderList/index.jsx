@@ -9,20 +9,19 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {orderDelete, orderList} from '../OrderUrl';
-import OrderEdit from '../OrderEdit';
-import * as SysField from '../OrderField';
 import './index.scss';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
+import OrderEdit from '../OrderEdit';
+import {orderDelete, orderList} from '../OrderUrl';
+import * as SysField from '../OrderField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,20 +37,17 @@ const OrderList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="订单编号" name="orderId" component={SysField.OrderId} />
-          <FormItem mega-props={{span: 1}} placeholder="订单人姓名" name="name" component={SysField.Name} />
           <FormItem mega-props={{span: 1}} placeholder="订单状态" name="state" component={SysField.State} />
         </>
       );
     };
 
-
     return (
       <div style={{maxWidth:800}} >
         <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="订单人姓名" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
-
       </div>
     );
   };
@@ -87,19 +83,49 @@ const OrderList = () => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="订单编号" dataIndex="orderId" />
-        <Column title="客户编号" dataIndex="customerId" />
-        <Column title="订单人姓名" dataIndex="contactsId"  sorter/>
-        <Column title="订单地址" dataIndex="adressId" />
-        <Column title="订单数量" dataIndex="number" />
-        <Column title="订单状态" dataIndex="state"   sorter/>
-        <Column title="联系电话" dataIndex="phone" />
-        <Column title="订单时间" dataIndex="orderTime" sorter/>
-        <Column title="付款时间" dataIndex="payTime" sorter />
-        <Column title="发货时间" dataIndex="deliveryId" sorter/>
-        <Column title="产品名称" dataIndex="itemId"   />
-        <Column title="金额" dataIndex="stockItemId"  sorter />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="客户名称" fixed dataIndex="customerId" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.customerResult ? record.customerResult.customerName : ''
+              }
+            </div>
+          );
+        }} />
+        <Column title="联系电话" width={100} dataIndex="phone" sorter/>
+        <Column title="订单人姓名" width={150} dataIndex="contactsId" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.contactsResult ? record.contactsResult.contactsName : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="订单地址" width={500} dataIndex="adressId" />
+        <Column title="订单数量" width={100} dataIndex="number" />
+        <Column title="订单状态" width={100} dataIndex="state"   sorter/>
+        <Column title="订单时间" width={200} dataIndex="orderTime" sorter/>
+        <Column title="发货时间" width={200} dataIndex="deliveryTime" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.outstockResult ? record.outstockResult.deliveryTime : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="产品名称" width={200} dataIndex="itemId"  render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.itemsResult ? record.itemsResult.name : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="金额" width={100} dataIndex="price"  sorter />
+        <Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
@@ -112,7 +138,7 @@ const OrderList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={800} title="编辑" component={OrderEdit} onSuccess={() => {
+      <Modal2 width={800} title="订单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
