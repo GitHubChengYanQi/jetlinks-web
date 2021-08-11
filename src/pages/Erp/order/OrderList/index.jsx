@@ -37,19 +37,17 @@ const OrderList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="订单人姓名" name="name" component={SysField.Name} />
           <FormItem mega-props={{span: 1}} placeholder="订单状态" name="state" component={SysField.State} />
         </>
       );
     };
 
-
     return (
       <div style={{maxWidth:800}} >
         <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="订单人姓名" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
-
       </div>
     );
   };
