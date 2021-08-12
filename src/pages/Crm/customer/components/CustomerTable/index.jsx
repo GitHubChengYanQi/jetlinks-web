@@ -15,7 +15,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import {MegaLayout} from '@formily/antd-components';
 import {
-  customerBatchDelete,
+  customerBatchDelete, customerEdit,
   customerList,
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
@@ -194,11 +194,7 @@ const CustomerTable = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.customerId);
               }} />
-              <DelButton api={{
-                url: '/customer/batchDelete',
-                method: 'POST',
-                rowKey: 'customerId'
-              }} value={record.customerId} onSuccess={() => {
+              <DelButton api={customerEdit} value={record.customerId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>

@@ -44,7 +44,7 @@ const AddContractEdit = ({...props}) => {
               fieldKey="contractId"
               success={(result) => {
                 if (result.data !== '') {
-                  setResult(result.data);
+                  setResult(result.data.contractId);
                 }
                 next();
               }}

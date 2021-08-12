@@ -172,12 +172,78 @@ const ContractTable = (props) => {
             }}>{text}</Button>
           );
         }} />
-        <Column title="甲方" dataIndex="partAName" />
-        <Column title="甲方联系人" align="center" width={120} dataIndex="partyAContactsId" />
-        <Column title="甲方地址" width={200} dataIndex="partyAAdressId" />
-        <Column title="乙方" dataIndex="partBName" />
-        <Column title="乙方联系人" align="center" width={120} dataIndex="partyBContactsId" />
-        <Column title="乙方地址" width={200} dataIndex="partyBAdressId" />
+        <Column title="甲方" dataIndex="partAName" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.partA ? record.partA.customerName : null
+              }
+            </>
+          );
+        }} />
+        <Column title="甲方联系人" align="center" width={120} dataIndex="partyAContactsId" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.partyAContacts ? record.partyAContacts.contactsName : null
+              }
+            </>
+          );
+        }} />
+        <Column title="甲方联系人电话" width={200} dataIndex="partyAPhone" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.phoneA ? record.phoneA.phoneNumber : null
+              }
+            </>
+          );
+        }} />
+        <Column title="甲方地址" width={200} dataIndex="partyAAdressId" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.partyAAdress ? record.partyAAdress.location : null
+              }
+            </>
+          );
+        }} />
+        <Column title="乙方" dataIndex="partBName" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.partB ? record.partB.customerName : null
+              }
+            </>
+          );
+        }} />
+        <Column title="乙方联系人" align="center" width={120} dataIndex="partyBContactsId" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.partyBContacts ? record.partyBContacts.contactsName : null
+              }
+            </>
+          );
+        }} />
+        <Column title="乙方联系人电话" width={200} dataIndex="partyBPhone" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.phoneB ? record.phoneB.phoneNumber : null
+              }
+            </>
+          );
+        }} />
+        <Column title="乙方地址" width={200} dataIndex="partyBAdressId" render={(text,record)=>{
+          return (
+            <>
+              {
+                record.partyBAdress ? record.partyBAdress.location : null
+              }
+            </>
+          );
+        }} />
         <Column title="创建时间" width={200} dataIndex="time" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
