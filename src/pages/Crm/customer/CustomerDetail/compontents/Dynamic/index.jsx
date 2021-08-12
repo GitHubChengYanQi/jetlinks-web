@@ -1,5 +1,5 @@
 import React from 'react';
-import { Comment,  Table as AntTable} from 'antd';
+import {Comment, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
@@ -15,8 +15,6 @@ const Dynamic = (props) => {
 
   const datas = (value) => {
     return {
-      actions: [<span onClick={() => {
-      }}>编辑</span>],
       author: value.userResult ? value.userResult.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
@@ -36,7 +34,8 @@ const Dynamic = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <FormItem placeholder="customerId" hidden value={value.customerId} name="customerId" component={SysField.Name} />
+        <FormItem placeholder="customerId" hidden value={value.customerId} name="customerId"
+                  component={SysField.Name} />
       </div>
     );
   };
@@ -56,12 +55,11 @@ const Dynamic = (props) => {
       >
         <Column render={(text, record) => {
           return (
-            <Comment
+            <Comment style={{margin:-20}}
               {...datas(record)}
             />
           );
         }} />
-
       </Table>
     </div>
   );

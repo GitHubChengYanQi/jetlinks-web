@@ -8,15 +8,15 @@
 
 import React, {useEffect, useState} from 'react';
 import {Input, InputNumber, Select as AntSelect} from 'antd';
-import {DatePicker2} from '@alifd/next';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
-import DatePicker from '@/components/DatePicker';
-import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
-import ItemsList from '@/pages/Erp/items/ItemsList';
 import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
+import DatePicker from '@/components/DatePicker';
+import ItemsList from '@/pages/Erp/items/ItemsList';
+import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
+import {DatePicker2} from '@alifd/next';
 
 export const Customer = (props) => {
   const {customerId, onChange} = props;
@@ -31,11 +31,11 @@ export const Customer = (props) => {
 export const Contacts = (props) => {
   const {customerId, contactsId, onChange} = props;
 
-  useEffect(()=>{
-    onChange(null);
-    },[customerId]);
+  useEffect(() => {
+    props.onChange(null);
+  }, [customerId]);
 
-  const data = customerId ? customerId.map((value) => {
+  const data = customerId ? customerId.map((value, index) => {
     return {
       label: value.contactsName,
       value: value.contactsId,
@@ -43,9 +43,8 @@ export const Contacts = (props) => {
   }) : null;
 
 
-
   return (<>
-    <AntSelect style={{width: 200}} options={data} {...props} onChange={(value) => {
+    <AntSelect style={{width: 200}} options={data}  {...props} onChange={(value) => {
       onChange(value);
       contactsId(value);
     }} />
@@ -53,9 +52,9 @@ export const Contacts = (props) => {
 };
 export const Phone = (props) => {
   const {contactsId} = props;
-  useEffect(()=>{
+  useEffect(() => {
     props.onChange(null);
-  },[contactsId]);
+  }, [contactsId]);
   const data = contactsId ? contactsId.map((value) => {
     return {
       label: value.phoneNumber,
@@ -68,9 +67,9 @@ export const Phone = (props) => {
 };
 export const Adress = (props) => {
   const {customerId} = props;
-  useEffect(()=>{
+  useEffect(() => {
     props.onChange(null);
-  },[customerId]);
+  }, [customerId]);
   const data = customerId ? customerId.map((value) => {
     return {
       label: value.location,
@@ -97,7 +96,8 @@ export const Time = (props) => {
 };
 export const Audit = (props) => {
   props.onChange(props.value || 0);
-  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}} options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
+  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}}
+                     options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
 };
 
 export const CustomerNameListSelect = (props) => {
@@ -119,7 +119,6 @@ export const ContentUpdate = (props) => {
       {
         parse(props.value)
       }
-
     </>
   );
 };
@@ -129,7 +128,6 @@ export const Content = (props) => {
 
 
   const {result} = props;
-
 
 
   const [state, setState] = useState('文本框');
@@ -145,6 +143,7 @@ export const Content = (props) => {
       {
         parse(props.value, {
           replace: domNode => {
+
             if (domNode.name === 'strong' && domNode.attribs.class === 'inp' && domNode.children[0].data === '文本框') {
               return <Input style={{width: '100px', margin: '0 10px'}} onChange={(value) => {
                 handelChange(value);
@@ -187,7 +186,7 @@ export const Content = (props) => {
                 }} {...props} />
               </>);
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'package' && domNode.children[0].data === '选择套餐') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertPackage' && domNode.children[0].data === '选择套餐') {
               return (<>
                 <ChooseCustomer Table={ErpPackageList} domNode={domNode} record={(rec) => {
                   const value = props.value.replace(domNode.children[0].data, rec.productName);
@@ -195,9 +194,11 @@ export const Content = (props) => {
                 }} {...props} />
               </>);
             }
+
+
+
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertAcontacts' && domNode.children[0].data === '选择甲方联系人') {
               const value = props.value.replace(domNode.children[0].data, result.partyAContacts ? result.partyAContacts.contactsName : ' ');
-              console.log(domNode.children[0].data);
               props.onChange(value);
               return (
                 <>
@@ -208,11 +209,11 @@ export const Content = (props) => {
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertBcontacts' && domNode.children[0].data === '选择乙方联系人') {
-              const value = props.value.replace(domNode.children[0].data,  result.partyBContacts ? result.partyBContacts.contactsName : ' ');
+              const value = props.value.replace(domNode.children[0].data, result.partyBContacts ? result.partyBContacts.contactsName : ' ');
               props.onChange(value);
               return (
                 <>
-                  { result.partyBContacts ? result.partyBContacts.contactsName : ' '}
+                  {result.partyBContacts ? result.partyBContacts.contactsName : ' '}
                 </>
               );
             }
@@ -237,26 +238,25 @@ export const Content = (props) => {
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertAPhone' && domNode.children[0].data === '选择甲方电话') {
-              const value = props.value.replace(domNode.children[0].data,  result.phoneA ? result.phoneA.phoneNumber : ' ');
+              const value = props.value.replace(domNode.children[0].data, result.phoneA ? result.phoneA.phoneNumber : ' ');
               props.onChange(value);
               return (
                 <>
-                  { result.phoneA ? result.phoneA.phoneNumber : ' '}
+                  {result.phoneA ? result.phoneA.phoneNumber : ' '}
                 </>
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertBPhone' && domNode.children[0].data === '选择乙方电话') {
-              const value = props.value.replace(domNode.children[0].data,  result.phoneB ? result.phoneB.phoneNumber : ' ');
+              const value = props.value.replace(domNode.children[0].data, result.phoneB ? result.phoneB.phoneNumber : ' ');
               props.onChange(value);
               return (
                 <>
-                  { result.phoneB ? result.phoneB.phoneNumber : ' '}
+                  {result.phoneB ? result.phoneB.phoneNumber : ' '}
                 </>
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertACustomer' && domNode.children[0].data === '选择甲方客户') {
-              console.log(domNode.children[0].data);
-              const value = props.value.replace(domNode.children[0].data,  result.partA ? result.partA.customerName : ' ');
+              const value = props.value.replace(domNode.children[0].data, result.partA ? result.partA.customerName : ' ');
               props.onChange(value);
               return (
                 <>
@@ -267,7 +267,7 @@ export const Content = (props) => {
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertBCustomer' && domNode.children[0].data === '选择乙方客户') {
-              const value = props.value.replace(domNode.children[0].data,  result.partB ? result.partB.customerName : ' ');
+              const value = props.value.replace(domNode.children[0].data, result.partB ? result.partB.customerName : ' ');
               props.onChange(value);
               return (
                 <>

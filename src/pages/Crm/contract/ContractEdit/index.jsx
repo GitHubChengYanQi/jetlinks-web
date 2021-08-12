@@ -30,11 +30,32 @@ const ApiConfig = {
 const AddContractEdit = ({...props}) => {
 
 
+
   const {Step} = Steps;
 
   const {value, ...other} = props;
 
   const [result, setResult] = useState(value);
+
+  const content = () => {
+    return <FormIndex
+      {...props}
+      value={result ? result.contractId : false}
+      ref={formRef}
+      api={ApiConfig}
+      fieldKey="contractId"
+      success={(result) => {
+        props.onSuccess();
+      }}
+    >
+      <FormItem name="content" component={SysField.Content} result={result} required />
+      <Button type="primary" htmlType="submit">
+        Done
+      </Button>
+    </FormIndex>;
+  };
+
+
 
   const [current, setCurrent] = React.useState(0);
 
@@ -81,8 +102,15 @@ const AddContractEdit = ({...props}) => {
       customerId: result.partyB,
     }
   });
-
   const formRef = useRef();
+
+
+
+
+  if (props.value){
+    return content();
+  }
+
 
   const steps = [
     {
@@ -279,21 +307,7 @@ const AddContractEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-            <FormIndex
-              {...props}
-              value={result ? result.contractId : false}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="contractId"
-              success={(result) => {
-                props.onSuccess();
-              }}
-            >
-              <FormItem name="content" component={SysField.Content} result={result} required />
-              <Button type="primary" htmlType="submit">
-                Done
-              </Button>
-            </FormIndex>
+            {content()}
           </div>
 
         </>
