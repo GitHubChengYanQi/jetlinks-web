@@ -56,3 +56,12 @@ export const ProductNameListSelect = {
   url: '/items/listSelect',
   method: 'POST',
 };
+
+// 品牌名称
+export const brandListSelect = {
+  url: '/brand/listSelect',
+  method: 'POST',
+  rowKey:'brandId'
+};
+
+

@@ -5,7 +5,7 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,72 +13,45 @@ import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import {stockDetailsList} from "@/pages/Erp/stockDetails/StockDetailsUrl";
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
-import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-import Icon from '@/components/Icon';
 import * as SysField from '../StockDetailsField';
-import {ItemId} from "../StockDetailsField";
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const StockDetailsList = () => {
+const StockDetailsList = (props) => {
+
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
 
-      </>
-    );
-  };
+
+  const {storehouseId, brandId, itemId} = props.location.params || [];
 
   const [search, setSearch] = useState(false);
 
+  useEffect(() => {
+    if (storehouseId || brandId || itemId) {
+      console.log(storehouseId);
+      console.log(brandId);
+      console.log(itemId);
+      tableRef.current.formActions.setFieldValue('storehouseId', storehouseId || '');
+      tableRef.current.formActions.setFieldValue('brandId', brandId  || '');
+      tableRef.current.formActions.setFieldValue('itemId', itemId  || '');
+      tableRef.current.submit();
+    }
+  }, [storehouseId, brandId, itemId]);
+
   const searchForm = () => {
 
-    const formItem = () => {
-      return (
-        <>
-          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="storehouseId" component={SysField.Storehouse} />
-          <FormItem mega-props={{span: 1}} placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
-          <FormItem mega-props={{span: 1}} placeholder="产品价格" name="price" component={SysField.Price} />
-        </>
-      );
-    };
-
-    return (
-      <div style={{maxWidth:800}}>
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
-    );
-  };
-
-
-  const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}>  <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId} component={SysField.Storehouse} />
+        <FormItem disabled placeholder="品牌名称" name="brandId" value={brandId} component={SysField.brandeId} />
+        <FormItem disabled placeholder="产品名称" name="itemId" value={itemId} component={SysField.ItemId} />
+        <FormItem placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
       </>
     );
   };
-
 
   const [ids, setIds] = useState([]);
 
@@ -100,16 +73,13 @@ const StockDetailsList = () => {
         api={stockDetailsList}
         rowKey="stockItemId"
         searchForm={searchForm}
-        actions={actions()}
         footer={footer}
-        SearchButton={Search()}
         layout={search}
         onChange={(keys) => {
           setIds(keys);
         }}
         ref={tableRef}
       >
-        {/*<Column title="库存编号" dataIndex="stockId"/>*/}
         <Column title="仓库名称" dataIndex="pname" render={(text, record) => {
           return (
             <>
@@ -124,6 +94,14 @@ const StockDetailsList = () => {
             </>
           );
         }} sorter />
+        <Column title="品牌名称" dataIndex="brandId" render={(text, record) => {
+          return (
+            <>
+              {record.brandResult.brandName}
+            </>
+          );
+        }} />
+        <Column title="条形码" dataIndex="barcode"/>
         <Column title="产品价格" dataIndex="price" sorter/>
         <Column title="入库时间" dataIndex="storageTime" sorter/>
       </Table>

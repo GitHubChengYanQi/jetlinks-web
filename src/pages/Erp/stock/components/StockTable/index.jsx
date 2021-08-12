@@ -17,10 +17,11 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
-import {stockList} from '../../StockUrl';
-import * as SysField from '../../StockField';
 import {useBoolean} from "ahooks";
 import {useHistory} from "ice";
+import {stockList} from '../../StockUrl';
+import * as SysField from '../../StockField';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -28,7 +29,6 @@ const {FormItem} = Form;
 const StockTable = (props) => {
 
   const {choose, state} = props;
-  console.log(state);
   const ref = useRef(null);
   const tableRef = useRef(null);
   const history = useHistory();
@@ -42,7 +42,6 @@ const StockTable = (props) => {
   }, [state]);
 
   const searchForm = () => {
-
     const formItem = () => {
       return (
         <>
@@ -50,7 +49,6 @@ const StockTable = (props) => {
         </>
       );
     };
-
 
     return (
       <div style={{maxWidth: 800}}>
@@ -115,9 +113,9 @@ const StockTable = (props) => {
           return (
             <>
               <Button type="link" onClick={() => {
-                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`, params:{storehouseId:'',brandId:'',itemId:''}});
-              }}>
-                {record.storehouseResult.name}</Button>
+                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,
+                  params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});
+              }}>{record.storehouseResult.name}</Button>
             </>
           );
         }} sorter />
