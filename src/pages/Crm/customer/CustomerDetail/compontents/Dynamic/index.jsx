@@ -34,8 +34,7 @@ const Dynamic = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <FormItem placeholder="customerId" hidden value={value.customerId} name="customerId"
-                  component={SysField.Name} />
+        <FormItem placeholder="customerId" hidden value={value.customerId} name="customerId" component={SysField.Name} />
       </div>
     );
   };
