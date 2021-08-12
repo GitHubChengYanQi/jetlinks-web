@@ -19,34 +19,66 @@ import ItemsList from '@/pages/Erp/items/ItemsList';
 import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
 
 export const Customer = (props) => {
-  const {customerId,onChange} = props;
+  const {customerId, onChange} = props;
   return (<>
-    <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value)=>{onChange(value);customerId(value);}}/>
+    <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value) => {
+      onChange(value);
+      customerId(value);
+    }} />
   </>);
 };
 
 export const Contacts = (props) => {
-  const {customerId} = props;
-  const data = customerId ? customerId.map((value)=>{
+  const {customerId, contactsId, onChange} = props;
+
+  useEffect(()=>{
+    onChange(null);
+    },[customerId]);
+
+  const data = customerId ? customerId.map((value) => {
     return {
-      label:value.contactsName,
-      value:value.contactsId,
+      label: value.contactsName,
+      value: value.contactsId,
+    };
+  }) : null;
+
+
+
+  return (<>
+    <AntSelect style={{width: 200}} options={data} {...props} onChange={(value) => {
+      onChange(value);
+      contactsId(value);
+    }} />
+  </>);
+};
+export const Phone = (props) => {
+  const {contactsId} = props;
+  useEffect(()=>{
+    props.onChange(null);
+  },[contactsId]);
+  const data = contactsId ? contactsId.map((value) => {
+    return {
+      label: value.phoneNumber,
+      value: value.phoneId,
     };
   }) : null;
   return (<>
-    <AntSelect style={{width:200}} options={data} {...props}/>
+    <AntSelect style={{width: 200}} options={data} {...props} />
   </>);
 };
 export const Adress = (props) => {
   const {customerId} = props;
-  const data = customerId ? customerId.map((value)=>{
+  useEffect(()=>{
+    props.onChange(null);
+  },[customerId]);
+  const data = customerId ? customerId.map((value) => {
     return {
-      label:value.location,
-      value:value.adressId,
+      label: value.location,
+      value: value.adressId,
     };
   }) : null;
   return (<>
-    <AntSelect style={{width:200}} options={data} {...props}/>
+    <AntSelect style={{width: 200}} options={data} {...props} />
   </>);
 };
 
@@ -65,8 +97,7 @@ export const Time = (props) => {
 };
 export const Audit = (props) => {
   props.onChange(props.value || 0);
-  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}}
-                     options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
+  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}} options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
 };
 
 export const CustomerNameListSelect = (props) => {
@@ -96,6 +127,7 @@ export const ContentUpdate = (props) => {
 
 export const Content = (props) => {
 
+
   const {result} = props;
 
 
@@ -112,7 +144,7 @@ export const Content = (props) => {
       {
         parse(props.value, {
           replace: domNode => {
-            if (domNode.name === 'strong' && domNode.attribs.class === 'inp') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'inp' && domNode.children[0].data === '文本框') {
               return <Input style={{width: '100px', margin: '0 10px'}} onChange={(value) => {
                 handelChange(value);
               }} onBlur={() => {
@@ -121,7 +153,7 @@ export const Content = (props) => {
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'number') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'number' && domNode.children[0].data === '数字框') {
               return <InputNumber style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
               }} onBlur={() => {
@@ -130,7 +162,7 @@ export const Content = (props) => {
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'date') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'date' && domNode.children[0].data === '时间框') {
               return <DatePicker2 style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
               }} onBlur={() => {
@@ -138,7 +170,7 @@ export const Content = (props) => {
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'but' && domNode.children[0].data === '选择客户') {
               return (<>
                 <ChooseCustomer Table={CustomerTable} domNode={domNode} record={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.customerName);
@@ -146,7 +178,7 @@ export const Content = (props) => {
                 }} {...props} />
               </>);
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'items') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'items' && domNode.children[0].data === '选择产品') {
               return (<>
                 <ChooseCustomer Table={ItemsList} domNode={domNode} record={(record) => {
                   const value = props.value.replace(domNode.children[0].data, record.name);
@@ -154,60 +186,93 @@ export const Content = (props) => {
                 }} {...props} />
               </>);
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'package') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'package' && domNode.children[0].data === '选择套餐') {
               return (<>
-                <ChooseCustomer Table={ErpPackageList} domNode={domNode} record={(record) => {
-                  const value = props.value.replace(domNode.children[0].data, record.productName);
+                <ChooseCustomer Table={ErpPackageList} domNode={domNode} record={(rec) => {
+                  const value = props.value.replace(domNode.children[0].data, rec.productName);
                   props.onChange(value);
                 }} {...props} />
               </>);
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAcontacts') {
-              const value = props.value.replace(domNode.children[0].data, result.partyAContactsId);
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAcontacts' && domNode.children[0].data === '选择甲方联系人') {
+              const value = props.value.replace(domNode.children[0].data, result.partyAContacts ? result.partyAContacts.contactsName : ' ');
               props.onChange(value);
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBcontacts') {
               return (
                 <>
-                  {result.partyBContactsId}
+                  {
+                    result.partyAContacts ? result.partyAContacts.contactsName : ' '
+                  }
                 </>
               );
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAAdress') {
-              return (
-                <>
-                  {result.partyAAdressId}
-                </>
-              );
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBAdress') {
-              return (
-                <>
-                  {result.partyBAdressId}
-                </>
-              );
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAPhone') {
-              return (
-                <>
-                  {result.partyAPhone}
-                </>
-              );
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBPhone') {
-              return (
-                <>
-                  {result.partyBPhone}
-                </>
-              );
-            }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertACustomer') {
-              const value = props.value.replace(domNode.children[0].data, result.partAName);
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBcontacts' && domNode.children[0].data === '选择乙方联系人') {
+              const value = props.value.replace(domNode.children[0].data,  result.partyBContacts ? result.partyBContacts.contactsName : ' ');
               props.onChange(value);
+              return (
+                <>
+                  { result.partyBContacts ? result.partyBContacts.contactsName : ' '}
+                </>
+              );
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBCustomer') {
-              const value = props.value.replace(domNode.children[0].data, result.partBName);
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAAdress' && domNode.children[0].data === '选择甲方地址') {
+              const value = props.value.replace(domNode.children[0].data, result.partyAAdress ? result.partyAAdress.location : ' ');
               props.onChange(value);
+              return (
+                <>
+                  {
+                    result.partyAAdress ? result.partyAAdress.location : ' '
+                  }
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBAdress' && domNode.children[0].data === '选择乙方地址') {
+              const value = props.value.replace(domNode.children[0].data, result.partyBAdress ? result.partyBAdress.location : ' ');
+              props.onChange(value);
+              return (
+                <>
+                  {result.partyBAdress ? result.partyBAdress.location : ' '}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertAPhone' && domNode.children[0].data === '选择甲方电话') {
+              const value = props.value.replace(domNode.children[0].data,  result.phoneA ? result.phoneA.phoneNumber : ' ');
+              props.onChange(value);
+              return (
+                <>
+                  { result.phoneA ? result.phoneA.phoneNumber : ' '}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBPhone' && domNode.children[0].data === '选择乙方电话') {
+              const value = props.value.replace(domNode.children[0].data,  result.phoneB ? result.phoneB.phoneNumber : ' ');
+              props.onChange(value);
+              return (
+                <>
+                  { result.phoneB ? result.phoneB.phoneNumber : ' '}
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertACustomer' && domNode.children[0].data === '选择甲方客户') {
+              const value = props.value.replace(domNode.children[0].data, result.partAName || ' ');
+              props.onChange(value);
+              return (
+                <>
+                  {
+                    result.partAName
+                  }
+                </>
+              );
+            }
+            if (domNode.name === 'strong' && domNode.attribs.class === 'insertBCustomer' && domNode.children[0].data === '选择乙方客户') {
+              const value = props.value.replace(domNode.children[0].data, result.partBName || ' ');
+              props.onChange(value);
+              return (
+                <>
+                  {
+                    result.partBName
+                  }
+                </>
+              );
             }
           }
         })
@@ -217,7 +282,6 @@ export const Content = (props) => {
 };
 
 export const SeeContent = (props) => {
-
   return (
     parse(props.value)
   );

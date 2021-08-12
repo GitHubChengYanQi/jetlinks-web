@@ -62,7 +62,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
   };
 
   const insertBCustomer = () => {
-    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertBCustomer">选择套乙方客户</strong>');;
+    editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertBCustomer">选择乙方客户</strong>');;
   };
   const insertPackage = () => {
     editorRef.current.editor.cmd.do('insertHTML', '<strong class="insertPackage">选择套餐</strong>');;

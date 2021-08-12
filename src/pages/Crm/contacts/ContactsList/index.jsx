@@ -22,6 +22,7 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
+import PhoneList from '@/pages/Crm/phone/phoneList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -32,6 +33,7 @@ const ContactsList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const refPhone = useRef(null);
   const actions = () => {
     return (
       <>
@@ -58,8 +60,9 @@ const ContactsList = (props) => {
 
 
     return (
-      <div style={{maxWidth:800}}>
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+      <div style={{maxWidth: 800}}>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="联系人姓名" name="contactsName" component={SysField.ContactsName} />
           {search ? formItem() : null}
 
@@ -83,7 +86,7 @@ const ContactsList = (props) => {
                 setSearch(true);
               }
             }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
@@ -109,7 +112,6 @@ const ContactsList = (props) => {
   };
 
 
-
   return (
     <>
       <Table
@@ -126,10 +128,16 @@ const ContactsList = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="联系人姓名" align='center' width={120} dataIndex="contactsName" />
-        <Column title="职务" align='center' width={200} dataIndex="job" />
-        <Column title="联系电话" align='center' width={200} dataIndex="phone" />
-        <Column title="客户名称" dataIndex="clientId" render={(value,record)=>{
+        <Column title="联系人姓名" align="center" width={120} dataIndex="contactsName" render={(text, record) => {
+          return (
+            <Button size="small" type="link" onClick={() => {
+              refPhone.current.open(record.contactsId);
+            }}>{text}</Button>
+          );
+        }} />
+        <Column title="职务" align="center" width={200} dataIndex="job" />
+        <Column title="联系电话" align="center" width={200} dataIndex="phone" />
+        <Column title="客户名称" dataIndex="clientId" render={(value, record) => {
           return (
             record.customerResult ? record.customerResult.customerName : null
           );
@@ -156,6 +164,9 @@ const ContactsList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal2 width={800} title="编辑" component={PhoneList} onSuccess={() => {
+        refPhone.current.close();
+      }} ref={refPhone} />
     </>
   );
 };

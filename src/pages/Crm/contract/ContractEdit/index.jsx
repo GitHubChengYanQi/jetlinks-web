@@ -41,20 +41,46 @@ const AddContractEdit = ({...props}) => {
   const {data: Acontacts, run: AcontactsRun} = useRequest({
     url: '/contacts/list',
     method: 'POST',
-  }, {manual: true});
+    data:{
+      customerId: result.partyA,
+    }
+  }, );
+  const {data: APhone, run: runAPhone} = useRequest({
+    url: '/phone/list',
+    method: 'POST',
+    data:{
+      contactsId: result.partyAContactsId,
+    }
+  });
   const {data: Aadress, run: AadressRun} = useRequest({
     url: '/adress/list',
     method: 'POST',
-  }, {manual: true});
+    data:{
+      customerId: result.partyA,
+    }
+  });
 
   const {data: Bcontacts, run: BcontactsRun} = useRequest({
     url: '/contacts/list',
     method: 'POST',
-  }, {manual: true});
+    data:{
+      customerId: result.partyB,
+    }
+  });
+  const {data: BPhone, run: runBPhone} = useRequest({
+    url: '/phone/list',
+    method: 'POST',
+    data:{
+      contactsId: result.partyBContactsId,
+    }
+  });
   const {data: Badress, run: BadressRun} = useRequest({
     url: '/adress/list',
     method: 'POST',
-  }, {manual: true});
+    data:{
+      customerId: result.partyB,
+    }
+  });
 
   const formRef = useRef();
 
@@ -65,7 +91,7 @@ const AddContractEdit = ({...props}) => {
         <>
           <div style={{margin: '50px 150px'}}>
             <FormIndex
-              value={ result ? result.contractId : false}
+              value={result ? result.contractId : false}
               {...other}
               ref={formRef}
               api={ApiConfig}
@@ -78,16 +104,27 @@ const AddContractEdit = ({...props}) => {
                   });
                 });
                 onFieldValueChange$('partyAContactsId').subscribe(({value}) => {
+                  setFieldState('partyAPhone', state => {
+                    state.visible = value;
+                  });
+                });
+                onFieldValueChange$('partyAPhone').subscribe(({value}) => {
                   setFieldState('partyAAdressId', state => {
                     state.visible = value;
                   });
                 });
+
                 onFieldValueChange$('partyB').subscribe(({value}) => {
                   setFieldState('partyBContactsId', state => {
                     state.visible = value;
                   });
                 });
                 onFieldValueChange$('partyBContactsId').subscribe(({value}) => {
+                  setFieldState('partyBPhone', state => {
+                    state.visible = value;
+                  });
+                });
+                onFieldValueChange$('partyBPhone').subscribe(({value}) => {
                   setFieldState('partyBAdressId', state => {
                     state.visible = value;
                   });
@@ -130,9 +167,28 @@ const AddContractEdit = ({...props}) => {
                 label="甲方联系人"
                 name="partyAContactsId"
                 component={SysField.Contacts}
-                placeholder="请选择甲方联系人"
+                placeholder="甲方联系人"
                 val={value ? value.partyAContactsId : null}
                 customerId={Acontacts || null}
+                contactsId={async (contacts) => {
+                  if (contacts) {
+                    await runAPhone({
+                      data: {
+                        contactsId: contacts
+                      }
+                    });
+                  }
+                }}
+                required
+              />
+              <FormItem
+                initialValue={false}
+                label="甲方联系人电话"
+                name="partyAPhone"
+                component={SysField.Phone}
+                placeholder="请选择甲方联系人电话"
+                val={value ? value.partyAPhone : null}
+                contactsId={APhone || null}
                 required
               />
               <FormItem
@@ -178,7 +234,26 @@ const AddContractEdit = ({...props}) => {
                 placeholder="请选择乙方联系人"
                 val={value ? value.partyBContactsId : null}
                 customerId={Bcontacts || null}
+                contactsId={async (contacts) => {
+                  if (contacts) {
+                    await runBPhone({
+                      data: {
+                        contactsId: contacts
+                      }
+                    });
+                  }
+                }}
                 required />
+              <FormItem
+                initialValue={false}
+                label="乙方联系人电话"
+                name="partyBPhone"
+                component={SysField.Phone}
+                placeholder="请选择乙方联系人电话"
+                val={value ? value.partyAPhone : null}
+                contactsId={BPhone || null}
+                required
+              />
 
               <FormItem
                 initialValue={false}
@@ -214,7 +289,7 @@ const AddContractEdit = ({...props}) => {
                 props.onSuccess();
               }}
             >
-              <FormItem name="content" component={SysField.Content} result={result}  required />
+              <FormItem name="content" component={SysField.Content} result={result} required />
               <Button type="primary" htmlType="submit">
                 Done
               </Button>
