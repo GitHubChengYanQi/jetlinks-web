@@ -131,6 +131,7 @@ export const Content = (props) => {
   const {result} = props;
 
 
+
   const [state, setState] = useState('文本框');
 
 
@@ -196,6 +197,7 @@ export const Content = (props) => {
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertAcontacts' && domNode.children[0].data === '选择甲方联系人') {
               const value = props.value.replace(domNode.children[0].data, result.partyAContacts ? result.partyAContacts.contactsName : ' ');
+              console.log(domNode.children[0].data);
               props.onChange(value);
               return (
                 <>
@@ -253,23 +255,24 @@ export const Content = (props) => {
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertACustomer' && domNode.children[0].data === '选择甲方客户') {
-              const value = props.value.replace(domNode.children[0].data, result.partAName || ' ');
+              console.log(domNode.children[0].data);
+              const value = props.value.replace(domNode.children[0].data,  result.partA ? result.partA.customerName : ' ');
               props.onChange(value);
               return (
                 <>
                   {
-                    result.partAName
+                    result.partA ? result.partA.customerName : ' '
                   }
                 </>
               );
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertBCustomer' && domNode.children[0].data === '选择乙方客户') {
-              const value = props.value.replace(domNode.children[0].data, result.partBName || ' ');
+              const value = props.value.replace(domNode.children[0].data,  result.partB ? result.partB.customerName : ' ');
               props.onChange(value);
               return (
                 <>
                   {
-                    result.partBName
+                    result.partB ? result.partB.customerName : ' '
                   }
                 </>
               );
