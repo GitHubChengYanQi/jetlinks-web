@@ -50,3 +50,9 @@ export const itemIdSelect = {
   method:'POST',
   rowKey:'stockItemId'
 };
+
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
+};
