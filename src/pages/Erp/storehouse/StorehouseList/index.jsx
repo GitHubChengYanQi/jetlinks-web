@@ -14,10 +14,11 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import CheckButton from '@/components/CheckButton';
 import { storehouseDelete, storehouseList} from '../StorehouseUrl';
 import * as SysField from '../StorehouseField';
 import StorehouseEdit from '../StorehouseEdit';
-import CheckButton from '@/components/CheckButton';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -59,14 +60,13 @@ const StorehouseList = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="仓库名称" dataIndex="name" sorter/>
-        <Column title="仓库地点" dataIndex="palce" sorter/>
-        <Column title="经度" dataIndex="longitude" sorter/>
-        <Column title="纬度" dataIndex="latitude" sorter/>
-        <Column title="仓库面积" dataIndex="measure" sorter/>
-        <Column title="仓库容量" dataIndex="capacity" sorter/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="仓库名称" fixed dataIndex="name" sorter/>
+        <Column title="仓库地点" width={180} dataIndex="palce" sorter/>
+        <Column title="经度" width={80} dataIndex="longitude" sorter/>
+        <Column title="纬度" width={80} dataIndex="latitude" sorter/>
+        <Column title="仓库面积" width={100} dataIndex="measure" sorter/>
+        <Column title="仓库容量" width={100} dataIndex="capacity" sorter/>
+        <Column title="操作" fixed width={150} align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={() => {
@@ -81,7 +81,7 @@ const StorehouseList = (props) => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} />
       </Table>
       <Modal2 width={800} title="仓库" component={StorehouseEdit} onSuccess={() => {
         tableRef.current.refresh();

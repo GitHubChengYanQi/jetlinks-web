@@ -53,3 +53,9 @@ export const materialListSelect = {
   method: 'POST',
   rowKey:'materialId'
 };
+
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
+};
