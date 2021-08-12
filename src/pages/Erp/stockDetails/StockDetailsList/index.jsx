@@ -18,6 +18,7 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../StockDetailsField';
+import {ItemId} from "../StockDetailsField";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -40,19 +41,17 @@ const StockDetailsList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="storehouse" component={SysField.Storehouse} />
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.StockId} />
+          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="storehouseId" component={SysField.Storehouse} />
           <FormItem mega-props={{span: 1}} placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
           <FormItem mega-props={{span: 1}} placeholder="产品价格" name="price" component={SysField.Price} />
         </>
       );
     };
 
-
     return (
       <div style={{maxWidth:800}}>
         <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="库存名称" name="stockId" component={SysField.StockId} />
+          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -110,9 +109,21 @@ const StockDetailsList = () => {
         }}
         ref={tableRef}
       >
-        <Column title="库存编号" dataIndex="stockId"/>
-        <Column title="仓库名称" dataIndex="pname"/>
-        <Column title="产品名称" dataIndex="iname" sorter/>
+        {/*<Column title="库存编号" dataIndex="stockId"/>*/}
+        <Column title="仓库名称" dataIndex="pname" render={(text, record) => {
+          return (
+            <>
+              {record.storehouseResult.name}
+            </>
+          );
+        }} sorter />
+        <Column title="产品名称" dataIndex="iname" render={(text, record) => {
+          return (
+            <>
+              {record.itemsResult.name}
+            </>
+          );
+        }} sorter />
         <Column title="产品价格" dataIndex="price" sorter/>
         <Column title="入库时间" dataIndex="storageTime" sorter/>
       </Table>

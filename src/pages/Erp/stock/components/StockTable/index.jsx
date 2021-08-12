@@ -20,6 +20,7 @@ import CheckButton from '@/components/CheckButton';
 import {stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
 import {useBoolean} from "ahooks";
+import {useHistory} from "ice";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,6 +31,7 @@ const StockTable = (props) => {
   console.log(state);
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const history = useHistory();
 
   const [search,{toggle}]  = useBoolean(false);
   useEffect(() => {
@@ -112,7 +114,10 @@ const StockTable = (props) => {
         <Column title="仓库名称" dataIndex="pname" render={(text, record) => {
           return (
             <>
-              {record.storehouseResult.name}
+              <Button type="link" onClick={() => {
+                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`, params:{storehouseId:'',brandId:'',itemId:''}});
+              }}>
+                {record.storehouseResult.name}</Button>
             </>
           );
         }} sorter />
@@ -131,7 +136,6 @@ const StockTable = (props) => {
           );
         }} sorter />
         <Column title="数量" dataIndex="inventory" />
-        <Column />
         {choose ? <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
