@@ -92,8 +92,8 @@ const OrderList = () => {
             </div>
           );
         }} />
-        <Column title="联系电话" width={100} dataIndex="phone" sorter/>
-        <Column title="订单人姓名" width={150} dataIndex="contactsId" render={(value,record)=>{
+        <Column title="联系电话" width={120} dataIndex="phone" sorter/>
+        <Column title="订单人姓名" width={120} align='center' dataIndex="contactsId" render={(value,record)=>{
           return (
             <div>
               {
@@ -102,9 +102,9 @@ const OrderList = () => {
             </div>
           );
         }} sorter/>
-        <Column title="订单地址" width={500} dataIndex="adressId" />
-        <Column title="订单数量" width={100} dataIndex="number" />
-        <Column title="订单状态" width={100} dataIndex="state"   sorter/>
+        <Column title="订单地址" dataIndex="adressId" />
+        <Column title="订单数量" width={120} align='center' dataIndex="number" />
+        <Column title="订单状态" width={120} align='center' dataIndex="state"   sorter/>
         <Column title="订单时间" width={200} dataIndex="orderTime" sorter/>
         <Column title="发货时间" width={200} dataIndex="deliveryTime" render={(value,record)=>{
           return (
@@ -115,7 +115,7 @@ const OrderList = () => {
             </div>
           );
         }} sorter/>
-        <Column title="产品名称" width={200} dataIndex="itemId"  render={(value,record)=>{
+        <Column title="产品名称" dataIndex="itemId"  render={(value,record)=>{
           return (
             <div>
               {
@@ -124,7 +124,7 @@ const OrderList = () => {
             </div>
           );
         }} sorter/>
-        <Column title="金额" width={100} dataIndex="price"  sorter />
+        <Column title="金额" width={120} align='center' dataIndex="price"  sorter />
         <Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {
           return (
             <>
@@ -136,7 +136,7 @@ const OrderList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} />
       </Table>
       <Modal2 width={800} title="订单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();

@@ -185,7 +185,7 @@ const ItemsList = (props) => {
         }}/>
         <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
         <Column title="易损" width={120} align='center' dataIndex="vulnerability" sorter />
-        <Column title="操作" fixed="right" width={100}  align="right" render={(value, record) => {
+        <Column title="操作" fixed="right" width={ choose ? 200 : 100}  align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={()=>{

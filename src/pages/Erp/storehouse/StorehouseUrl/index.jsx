@@ -22,6 +22,11 @@ export const storehouseDelete = {
   method: 'POST',
   rowKey:'storehouseId'
 };
+export const batchDelete = {
+  url: '/storehouse/batchDelete',
+  method: 'POST',
+  rowKey:'storehouseId'
+};
 
 export const storehouseDetail = {
   url: '/storehouse/detail',

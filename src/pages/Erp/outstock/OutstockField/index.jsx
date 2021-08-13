@@ -12,6 +12,7 @@ import * as apiUrl from '../OutstockUrl';
 import Drawer from '@/components/Drawer';
 import {DatePicker2} from '@alifd/next';
 import StockList from '@/pages/Erp/stock/StockList';
+import DatePicker from '@/components/DatePicker';
 
 const {Search} = Input;
 
@@ -37,7 +38,7 @@ export const StockId = (props) =>{
   return (<Input   {...props}/>);
 };
 export const DeliveryTime = (props) =>{
-  return (<DatePicker2   {...props}/>);
+  return (<DatePicker   {...props}/>);
 };
 export const Number = (props) =>{
   return (<InputNumber   {...props}/>);

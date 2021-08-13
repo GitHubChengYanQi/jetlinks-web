@@ -103,12 +103,11 @@ const StockTable = (props) => {
         rowKey="stockId"
         searchForm={searchForm}
         ref={tableRef}
-        footer={footer}
         onChange={(keys) => {
           setIds(keys);
         }}
       >
-        <Column title="仓库名称" style={{maxWidth:200}} dataIndex="pname" render={(text, record) => {
+        <Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {
           return (
             <>
               <Button type="link" onClick={() => {
@@ -118,14 +117,14 @@ const StockTable = (props) => {
             </>
           );
         }} sorter />
-        <Column title="产品名称" dataIndex="iname" render={(text, record) => {
+        <Column title="产品名称"  render={(text, record) => {
           return (
             <>
               {record.itemsResult.name}
             </>
           );
         }} sorter />
-        <Column title="品牌" dataIndex="bname" render={(text, record) => {
+        <Column title="品牌"  width={200} render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}

@@ -5,7 +5,7 @@
  * @Date 2021-07-14 14:19:04
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -17,6 +17,7 @@ import Modal2 from '@/components/Modal';
 import {brandDelete, brandList} from '../BrandUrl';
 import BrandEdit from '../BrandEdit';
 import * as SysField from '../BrandField';
+import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -42,6 +43,19 @@ const BrandList = () => {
     );
   };
 
+  const [ids,setIds] = useState([]);
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...batchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
@@ -51,8 +65,13 @@ const BrandList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(value)=>{
+          setIds(value);
+        }}
       >
         <Column title="品牌名称" dataIndex="brandName" sorter/>
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -64,7 +83,7 @@ const BrandList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} width={100}/>
       </Table>
       <Modal2 width={800} title="品牌" component={BrandEdit} onSuccess={() => {
         tableRef.current.refresh();

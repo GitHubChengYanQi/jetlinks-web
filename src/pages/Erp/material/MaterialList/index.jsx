@@ -5,7 +5,7 @@
  * @Date 2021-07-14 15:56:05
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -14,9 +14,9 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {materialDelete, materialList} from '../MaterialUrl';
 import MaterialEdit from '../MaterialEdit';
 import * as SysField from '../MaterialField';
+import {batchDelete, materialDelete, materialList} from '../MaterialUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -42,6 +42,19 @@ const MaterialList = () => {
     );
   };
 
+  const [ids,setIds] = useState([]);
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...batchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
@@ -51,8 +64,13 @@ const MaterialList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(value)=>{
+          setIds(value);
+        }}
       >
         <Column title="材质名字" dataIndex="name" sorter/>
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -64,7 +82,7 @@ const MaterialList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} width={100}/>
       </Table>
       <Modal2 width={800} title="材质" component={MaterialEdit} onSuccess={() => {
         tableRef.current.refresh();

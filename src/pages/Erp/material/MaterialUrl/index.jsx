@@ -22,6 +22,11 @@ export const materialDelete = {
   method: 'POST',
   rowKey:'materialId'
 };
+export const batchDelete = {
+  url: '/material/batchDelete',
+  method: 'POST',
+  rowKey:'materialId'
+};
 
 export const materialDetail = {
   url: '/material/detail',
