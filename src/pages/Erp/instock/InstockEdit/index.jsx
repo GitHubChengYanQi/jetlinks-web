@@ -6,11 +6,9 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {instockDetail, instockAdd, instockEdit} from '../InstockUrl';
 import * as SysField from '../InstockField';
-import {ItemIdSelect, StorehouseId, StoreHouseSelect} from '../InstockField';
 
 const {FormItem} = Form;
 
@@ -42,6 +40,7 @@ const InstockEdit = ({...props}) => {
       <FormItem label="入库数量" name="number" component={SysField.Number} required/>
       <FormItem label="价格" name="price" component={SysField.Price} required/>
       <FormItem label="品牌" name="brandId" component={SysField.BrandId} required/>
+      <FormItem label="条形码" name="barcode" component={SysField.barcode}/>
     </Form>
   );
 };

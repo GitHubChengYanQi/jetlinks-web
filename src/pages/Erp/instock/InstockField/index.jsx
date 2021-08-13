@@ -80,3 +80,7 @@ export const  StoreHouseSelect = (props) =>{
 export const itemId = (props) =>{
   return (<Select api={apiUrl.ProductNameListSelect} Select {...props}/>);
 };
+
+export const barcode = (props) =>{
+  return (<Input   {...props}/>);
+};
