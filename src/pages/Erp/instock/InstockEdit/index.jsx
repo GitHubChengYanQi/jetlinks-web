@@ -20,22 +20,17 @@ const ApiConfig = {
 
 const InstockEdit = ({...props}) => {
 
-  const {value} = props;
-
   const formRef = useRef();
-
-  const [data,setData] = useState(props.value ? value.instockId : props.value );
 
   return (
     <Form
       {...props}
-      value={data}
       ref={formRef}
       api={ApiConfig}
       fieldKey="instockId"
     >
-      <FormItem label="仓库名称" name="storehouseId" component={SysField.StoreHouseSelect} val={value.placeName} required/>
-      <FormItem label="产品名称" name="itemId" component={SysField.ItemIdSelect} val={value.iame} required/>
+      <FormItem label="仓库名称" name="storehouseId" component={SysField.StoreHouseSelect}  required/>
+      <FormItem label="产品名称" name="itemId" component={SysField.ItemIdSelect} required/>
       <FormItem label="登记时间" name="registerTime" component={SysField.RegisterTime} required/>
       <FormItem label="入库数量" name="number" component={SysField.Number} required/>
       <FormItem label="价格" name="price" component={SysField.Price} required/>

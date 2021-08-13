@@ -6,9 +6,8 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
-import {deliveryDetail, deliveryAdd, deliveryEdit, outstockDetail, outstockAdd, outstockEdit} from '../OutstockUrl';
+import {outstockDetail, outstockAdd, outstockEdit} from '../OutstockUrl';
 import * as SysField from '../OutstockField';
 
 const {FormItem} = Form;
@@ -21,25 +20,21 @@ const ApiConfig = {
 
 const OutstockEdit = ({...props}) => {
 
-  const {value} = props;
-
-  const [data,setData] = useState(props.value ? value.outstockId : props.value);
-
   const formRef = useRef();
 
   return (
     <Form
       {...props}
-      value={data}
       ref={formRef}
       api={ApiConfig}
       fieldKey="outstockId"
     >
-      <FormItem label="库存编号" name="stockId" component={SysField.Stock} val={value.stockId} required/>
-      <FormItem label="出库时间" name="deliveryTime" component={SysField.DeliveryTime} required/>
+      <FormItem label="仓库名称" name="storehouseId" component={SysField.StoreHouseSelect}  required/>
+      <FormItem label="产品名称" name="itemId" component={SysField.ItemIdSelect} required/>
+      <FormItem label="出库品牌" name="brandId" component={SysField.BrandId} required/>
       <FormItem label="出库数量" name="number" component={SysField.Number} required/>
       <FormItem label="出库价格" name="price" component={SysField.Price} required/>
-      <FormItem label="出库品牌" name="brand" component={SysField.Brand} required/>
+      <FormItem label="出库时间" name="deliveryTime" component={SysField.DeliveryTime} required/>
     </Form>
   );
 };
