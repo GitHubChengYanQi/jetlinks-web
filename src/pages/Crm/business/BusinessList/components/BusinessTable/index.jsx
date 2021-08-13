@@ -92,8 +92,9 @@ const BusinessTable = (props) => {
     };
 
     return (
-      <div style={{maxWidth:800}} >
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+      <div style={{maxWidth: 800}}>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="商机名称" name="businessName"
                     component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
@@ -115,7 +116,7 @@ const BusinessTable = (props) => {
                 setSearch(true);
               }
             }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
               <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />
@@ -149,24 +150,35 @@ const BusinessTable = (props) => {
           }
         }}
       >
-        <Column title="商机名称" dataIndex="businessName" sorter showSorterTooltip={false}
-                sortDirections={['ascend', 'descend']} render={(text, record, index) => {
-          return (
-            <Button type="link" onClick={() => {
-              history.push(`/CRM/business/${record.businessId}`);
-            }}>{text}</Button>
-          );
-        }} />
-        <Column title="客户名称" dataIndex="customerName" sorter showSorterTooltip={false}
-                sortDirections={['ascend', 'descend']} render={(value, record) => {
-          return (
-            <div>
-              {
-                record.customer ? record.customer.customerName : null
-              }
-            </div>
-          );
-        }} />
+        <Column
+          title="商机名称"
+          dataIndex="businessName"
+          sorter
+          fixed
+          showSorterTooltip={false}
+          sortDirections={['ascend', 'descend']}
+          render={(text, record, index) => {
+            return (
+              <Button type="link" onClick={() => {
+                history.push(`/CRM/business/${record.businessId}`);
+              }}>{text}</Button>
+            );
+          }} />
+        <Column
+          title="客户名称"
+          dataIndex="customerName"
+          sorter
+          showSorterTooltip={false}
+          sortDirections={['ascend', 'descend']}
+          render={(value, record) => {
+            return (
+              <div>
+                {
+                  record.customer ? record.customer.customerName : null
+                }
+              </div>
+            );
+          }} />
         <Column title="销售流程" width={150} dataIndex="salesId" render={(value, record) => {
           return (
             <div>
@@ -194,17 +206,31 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="立项日期" width={200} dataIndex="time" sorter showSorterTooltip={false} defaultSortOrder="descend"
-                sortDirections={['ascend', 'descend']} />
-        <Column title="商机阶段" width={120} align="center" dataIndex="stage" sorter showSorterTooltip={false}
-                sortDirections={['ascend', 'descend']} />
-        <Column title="商机金额" width={120} align="center" dataIndex="opportunityAmount" sorter showSorterTooltip
-                sortDirections={['ascend', 'descend']} />
-        {/*<Column title="结单日期" dataIndex="statementTime"  sorter showSorterTooltip={false} defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
-        {/*<Column title="阶段变更时间" dataIndex="changeTime" sorter showSorterTooltip defaultSortOrder='descend' sortDirections={['ascend', 'descend']} />*/}
-        {/*<Column title="阶段状态" dataIndex="state" sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']} />*/}
-        {/*<Column title="产品合计" dataIndex="totalProducts"  sorter showSorterTooltip={false} sortDirections={['ascend', 'descend']}   />*/}
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column
+          title="立项日期"
+          width={200}
+          dataIndex="time"
+          sorter
+          showSorterTooltip={false}
+          defaultSortOrder="descend"
+          sortDirections={['ascend', 'descend']} />
+        <Column
+          title="商机阶段"
+          width={120}
+          align="center"
+          dataIndex="stage"
+          sorter
+          showSorterTooltip={false}
+          sortDirections={['ascend', 'descend']} />
+        <Column
+          title="商机金额"
+          width={120}
+          align="center"
+          dataIndex="opportunityAmount"
+          sorter
+          showSorterTooltip
+          sortDirections={['ascend', 'descend']} />
+        <Column title="操作" fixed='right' align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
@@ -215,7 +241,7 @@ const BusinessTable = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
       </Table>
       <Modal2 width={1500} title="编辑" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();

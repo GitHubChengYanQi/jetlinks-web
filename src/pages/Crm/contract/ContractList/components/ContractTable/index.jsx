@@ -165,7 +165,7 @@ const ContractTable = (props) => {
           setIds(value);
         }}
       >
-        <Column title="合同名称" dataIndex="name" render={(text, record) => {
+        <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
           return (
             <Button size="small" type="link" onClick={() => {
               content.current.open(record.contractId);
@@ -199,7 +199,7 @@ const ContractTable = (props) => {
             </>
           );
         }} />
-        <Column title="甲方地址" width={200} dataIndex="partyAAdressId" render={(text,record)=>{
+        <Column title="甲方地址"  dataIndex="partyAAdressId" render={(text,record)=>{
           return (
             <>
               {
@@ -235,7 +235,7 @@ const ContractTable = (props) => {
             </>
           );
         }} />
-        <Column title="乙方地址" width={200} dataIndex="partyBAdressId" render={(text,record)=>{
+        <Column title="乙方地址" dataIndex="partyBAdressId" render={(text,record)=>{
           return (
             <>
               {
@@ -250,7 +250,7 @@ const ContractTable = (props) => {
             <BadgeState state={record.audit} text={['未通过', '通过']} color={['red', 'green']} />
           );
         }} />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="操作" fixed='right' align="right" render={(value, record) => {
           return (
             <>
               {record.audit === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
@@ -264,7 +264,7 @@ const ContractTable = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={200} />
       </Table>
       <Modal2 title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.submit();
