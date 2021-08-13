@@ -19,23 +19,23 @@ import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
 import {DatePicker2} from '@alifd/next';
 
 export const Customer = (props) => {
-  const {customerId, onChange} = props;
+  const {customerid, onChange} = props;
   return (<>
     <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value) => {
       onChange(value);
-      customerId(value);
+      customerid(value);
     }} />
   </>);
 };
 
 export const Contacts = (props) => {
-  const {customerId, contactsId, onChange} = props;
+  const {customerid, contactsid, onChange} = props;
 
   useEffect(() => {
     props.onChange(null);
-  }, [customerId]);
+  }, [customerid || null]);
 
-  const data = customerId ? customerId.map((value, index) => {
+  const data = customerid ? customerid.map((value, index) => {
     return {
       label: value.contactsName,
       value: value.contactsId,
@@ -46,16 +46,16 @@ export const Contacts = (props) => {
   return (<>
     <AntSelect style={{width: 200}} options={data}  {...props} onChange={(value) => {
       onChange(value);
-      contactsId(value);
+      contactsid ? contactsid(value) : null;
     }} />
   </>);
 };
 export const Phone = (props) => {
-  const {contactsId} = props;
+  const {contactsid} = props;
   useEffect(() => {
     props.onChange(null);
-  }, [contactsId]);
-  const data = contactsId ? contactsId.map((value) => {
+  }, [ contactsid || null]);
+  const data = contactsid ? contactsid.map((value) => {
     return {
       label: value.phoneNumber,
       value: value.phoneId,
@@ -66,11 +66,11 @@ export const Phone = (props) => {
   </>);
 };
 export const Adress = (props) => {
-  const {customerId} = props;
+  const {customerid} = props;
   useEffect(() => {
     props.onChange(null);
-  }, [customerId]);
-  const data = customerId ? customerId.map((value) => {
+  }, [customerid || null]);
+  const data = customerid ? customerid.map((value) => {
     return {
       label: value.location,
       value: value.adressId,

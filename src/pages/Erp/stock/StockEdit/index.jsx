@@ -31,7 +31,7 @@ const StockEdit = ({...props}) => {
       fieldKey="stockId"
     >
 
-      <FormItem label="仓库名称" name="palceId" component= {SysField.Palce}   required />
+      <FormItem label="仓库名称" name="storehouse" component= {SysField.Palce}   required />
       <FormItem label="产品名称" name="itemId" component={SysField.Item} required/>
       <FormItem label="品牌" name="brandId" component={SysField.BrandId} required/>
       <FormItem label="数量" name="inventory" component={SysField.Inventory} required/>

@@ -62,7 +62,7 @@ const CustomerEdit = ({...props}) => {
             <FormItem label="客户分类" name="classification" component={SysField.Classification} />
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
-            <FormItem m label="负责人" name="userId" component={SysField.UserName} />
+            <FormItem label="负责人" name="userId" component={SysField.UserName} />
           </MegaLayout>
 
 

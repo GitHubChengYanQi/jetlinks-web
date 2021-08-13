@@ -7,28 +7,11 @@
 
 import React, {useRef} from 'react';
 import {Input, InputNumber, DatePicker, Button} from 'antd';
-import Drawer from '@/components/Drawer';
 import Select from '@/components/Select';
-import Stocks from '@/pages/Erp/stockDetails/StockDetailsEdit/components/Stocks';
 import * as apiUrl from '../StockDetailsUrl/index';
-import {brandListSelect, ProductNameListSelect} from "../StockDetailsUrl/index";
 
 export const Stock = (props) =>{
-  const {onChange} = props;
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-
-  return (<>
-    <Input {...props}/>
-    <Button className='placeName' onClick={()=>{
-      ref.current.open(false);}}>
-      搜索库存
-    </Button>
-    <Drawer width={800} title="选择" component={Stocks}  onSuccess={() => {
-      tableRef.current.refresh();
-      ref.current.close();
-    }} ref={ref} ckeck={(id)=>{ onChange(id);ref.current.close();}}/>
-  </>);
+  return (<Input {...props} />);
 };
 export const StockId = (props) =>{
   return (<Select api={apiUrl.stockIdSelect}   {...props}/>);

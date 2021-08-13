@@ -85,7 +85,7 @@ const Track = (props) => {
         }} />
 
       </Table>
-      <Modal2 width={800} title="编辑" component={CrmBusinessTrackEdit} onSuccess={() => {
+      <Modal2 width={800} component={CrmBusinessTrackEdit} onSuccess={() => {
         ref.current.close();
         tableRef.current.refresh();
       }} ref={ref} val={value} />

@@ -25,7 +25,7 @@ export const Search = (props) => {
 
 // 产品名称
 export const itemId = (props) =>{
-  return (<Select api={apiUrl.ProductNameListSelect} Select {...props}/>);
+  return (<Select api={apiUrl.ProductNameListSelect} {...props}/>);
 };
 
 // 商机名称
