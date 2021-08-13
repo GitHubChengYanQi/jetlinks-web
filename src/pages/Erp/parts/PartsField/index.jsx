@@ -24,31 +24,33 @@ export const BrandId = (props) =>{
 };
 
 export const Item = (props) =>{
-  const {onChange} = props;
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const [itemName, setItemName] = useState(props.val);
-  const onSearch = value => ref.current.open(false);;
-  return (
-    <>
-      <div>
-        <Search onSearch={onSearch}
-          style={{width:250}}
-          placeholder="请搜索仓库"
-          enterButton
-          {...props}
-          value={itemName}/>
-      </div>
-      <Modal2 width={1500} title="选择" component={ItemsList}
-        onSuccess={() => {
-          ref.current.close();
-        }} ref={ref}
-        choose={(items) =>{
-          onChange(items.itemId);
-          setItemName(items.name);
-        }}
-      />
-    </>);
+  console.log(props);
+  return (<Select api={apiUrl.ProductNameListSelect} Select {...props} />);
+//   const {onChange} = props;
+//   const ref = useRef(null);
+//   const tableRef = useRef(null);
+//   const [itemName, setItemName] = useState(props.val);
+//   const onSearch = value => ref.current.open(false);;
+//   return (
+//     <>
+//       <div>
+//         <Search onSearch={onSearch}
+//           style={{width:250}}
+//           placeholder="请搜索仓库"
+//           enterButton
+//           {...props}
+//           value={itemName}/>
+//       </div>
+//       <Modal2 width={1500} title="选择" component={ItemsList}
+//         onSuccess={() => {
+//           ref.current.close();
+//         }} ref={ref}
+//         choose={(items) =>{
+//           onChange(items.itemId);
+//           setItemName(items.name);
+//         }}
+//       />
+//     </>);
 };
 
 export const Name = (props) =>{

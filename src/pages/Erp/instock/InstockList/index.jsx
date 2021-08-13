@@ -14,15 +14,14 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
-import {instockDelete, instockList, itemIdSelect} from '../InstockUrl';
-import InstockEdit from '../InstockEdit';
-import * as SysField from '../InstockField';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {BrandId, StoreHouseSelect} from '../InstockField';
+import InstockEdit from '../InstockEdit';
+import {instockDelete, instockList, itemIdSelect} from '../InstockUrl';
+import * as SysField from '../InstockField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,8 +46,8 @@ const InstockList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="placeName" component={SysField.StoreHouseSelect}/>
-          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandName" component={SysField.BrandId}/>
+          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemIdSelect}/>
+          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandId" component={SysField.BrandId}/>
         </>
       );
     };
@@ -57,7 +56,7 @@ const InstockList = () => {
     return (
       <div style={{maxWidth:800}} >
         <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="name" component={SysField.ItemIdSelect}/>
+          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="storehouseId" component={SysField.StoreHouseSelect}/>
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -94,14 +93,31 @@ const InstockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="name" sorter/>
-        <Column title="仓库名称" dataIndex="placeName" sorter/>
-        <Column title="登记时间" dataIndex="registerTime" sorter/>
-        <Column title="入库数量" dataIndex="number" sorter/>
-        <Column title="价格" dataIndex="price" sorter/>
-        <Column title="品牌" dataIndex="brandName" sorter/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="仓库名称" fixed dataIndex="placeName" render={(text, record) => {
+          return (
+            <>
+              {record.storehouseResult.name}
+            </>
+          );
+        }} sorter/>
+        <Column title="产品名称" width={120} dataIndex="name" render={(text, record) => {
+          return (
+            <>
+              {record.itemsResult.name}
+            </>
+          );
+        }} sorter/>
+        <Column title="品牌" width={120} dataIndex="brandName" render={(text, record) => {
+          return (
+            <>
+              {record.brandResult.brandName}
+            </>
+          );
+        }} sorter/>
+        <Column title="入库数量" width={120} dataIndex="number" sorter/>
+        <Column title="价格" width={120} dataIndex="price" sorter/>
+        <Column title="登记时间" width={200} dataIndex="registerTime" sorter/>
+        <Column title="操作" fixed align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

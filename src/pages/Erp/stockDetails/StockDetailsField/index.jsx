@@ -11,6 +11,7 @@ import Drawer from '@/components/Drawer';
 import Select from '@/components/Select';
 import Stocks from '@/pages/Erp/stockDetails/StockDetailsEdit/components/Stocks';
 import * as apiUrl from '../StockDetailsUrl/index';
+import {brandListSelect, ProductNameListSelect} from "../StockDetailsUrl/index";
 
 export const Stock = (props) =>{
   const {onChange} = props;
@@ -33,7 +34,7 @@ export const StockId = (props) =>{
   return (<Select api={apiUrl.stockIdSelect}   {...props}/>);
 };
 export const ItemId = (props) =>{
-  return (<Select api={apiUrl.stockIdSelect}   {...props}/>);
+  return (<Select api={apiUrl.ProductNameListSelect}   {...props}/>);
 };
 export const  Storehouse= (props) =>{
   return (<Select api={apiUrl.storehouseIdSelect}   {...props}/>);
@@ -44,4 +45,9 @@ export const Price = (props) =>{
 export const StorageTime = (props) =>{
   return (<DatePicker   {...props}/>);
 };
+
+export const  brandeId= (props) =>{
+  return (<Select api={apiUrl.brandListSelect}   {...props}/>);
+};
+
 

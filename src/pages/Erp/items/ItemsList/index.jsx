@@ -165,9 +165,7 @@ const ItemsList = (props) => {
             return (
               <Button type="link" onClick={() => {
                 setItemsId(row.itemId);
-                // console.log(history);
                 history.push(`/ERP/parts/${row.itemId}`);
-                console.log(history);
               }}>{row.name}</Button>
             );
           }}/>

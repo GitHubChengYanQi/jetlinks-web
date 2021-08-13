@@ -3,16 +3,18 @@ import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
+import Select from '@/components/Select';
+import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 
 
 const CustomerList = () => {
 
-  const {loading, data} = useRequest({ url: '/crmCustomerLevel/list',method: 'POST',rowKey:'customerLevelId'});
+  const {loading, data,run} = useRequest({url: '/crmCustomerLevel/list', method: 'POST', rowKey: 'customerLevelId'});
 
-  const crmCustomerLevel = data ? data.map((values)=>{
+  const crmCustomerLevel = data ? data.map((values) => {
     return {
       title: values.level,
-      key:values.customerLevelId,
+      key: values.customerLevelId,
     };
   }) : [];
 
@@ -20,6 +22,10 @@ const CustomerList = () => {
   const [status, setStatus] = useState();
   const [state, setState] = useState();
   const [level, setLevel] = useState();
+
+  const [value,setValue] = useState();
+
+
 
   const Left = () => {
     return (
@@ -76,6 +82,18 @@ const CustomerList = () => {
           ]}
         />
         <Divider />
+        <div>
+          <Select api={CustomerLevelIdSelect} placeholder='搜索级别' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
+            await run(
+              {
+                data:{
+                  customerLevelId : value
+                }
+              }
+            );
+            setValue(value);
+          }} />
+        </div>
         <Tree
           showLine
           onSelect={(value) => {

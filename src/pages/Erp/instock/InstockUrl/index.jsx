@@ -47,3 +47,8 @@ export const storeHouseSelect = {
   url: '/storehouse/listSelect',
   method: 'POST'
 };
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
+};

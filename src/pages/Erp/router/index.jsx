@@ -28,7 +28,6 @@ const ErpRouterConfig = [
       ...PartsRouter,
       ...StorehouseRouter,
       ...StockRouter,
-      ...StockDetailsRouter,
       ...InstockRouter,
       ...ErpPackageRouter,
       ...OrderRouter,
