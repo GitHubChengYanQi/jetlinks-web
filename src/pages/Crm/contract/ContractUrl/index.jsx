@@ -11,6 +11,11 @@ export const contractAdd = {
   rowKey: 'contractId'
 };
 
+export const contractEditContent = {
+  url: '/contract/editContent',
+  method: 'POST',
+  rowKey: 'contractId'
+};
 export const contractEdit = {
   url: '/contract/edit',
   method: 'POST',
