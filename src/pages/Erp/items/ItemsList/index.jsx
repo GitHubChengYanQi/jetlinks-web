@@ -7,6 +7,7 @@
 
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
+import {useHistory} from "ice";
 import {Button, message, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -18,14 +19,12 @@ import Breadcrumb from '@/components/Breadcrumb';
 import CheckButton from '@/components/CheckButton';
 import {erpPackageTableAdd} from '@/pages/Erp/erpPackageTable/erpPackageTableUrl';
 import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
-import PartsList from '@/pages/Erp/parts/PartsList';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup,Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
-import {useHistory} from "ice";
 import {batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
 
 

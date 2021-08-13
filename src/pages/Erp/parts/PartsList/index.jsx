@@ -51,7 +51,6 @@ const PartsList = (props) => {
   });
 
   useEffect(()=>{
-    console.log(itemId);
     tableRef.current.formActions.setFieldValue('ItemId', itemId);
     tableRef.current.refresh();
   },[itemId]);
