@@ -5,10 +5,6 @@ import AddButton from '@/components/AddButton';
 import * as SysField from '@/pages/Erp/stock/StockField';
 import Table from '@/components/Table';
 import {stockDelete, stockList} from '@/pages/Erp/stock/StockUrl';
-import EditButton from '@/components/EditButton';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import StockEdit from '@/pages/Erp/stock/StockEdit';
 import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;

@@ -11,7 +11,6 @@ import {Button, Divider, Table as AntTable, Tree} from 'antd';
 import DelButton from '@/components/DelButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
@@ -19,7 +18,7 @@ import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
 import {useBoolean} from "ahooks";
 import {useHistory} from "ice";
-import {stockList} from '../../StockUrl';
+import {batchDelete, stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
 
 
@@ -86,7 +85,7 @@ const StockTable = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-      ...customerBatchDelete
+      ...batchDelete
     }} onSuccess={() => {
       tableRef.current.refresh();
     }} value={ids}>批量删除</DelButton>);

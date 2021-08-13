@@ -133,7 +133,7 @@ const ContactsTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="联系人姓名" align="center" width={120} dataIndex="contactsName" render={(text, record) => {
+        <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" render={(text, record) => {
           return (
             <Button size="small" type="link" onClick={() => {
               refPhone.current.open(record.contactsId);
@@ -147,7 +147,7 @@ const ContactsTable = (props) => {
           );
         }} />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="操作" fixed='right' width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={() => {
@@ -162,7 +162,7 @@ const ContactsTable = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} />
       </Table>
       <Modal2 width={800} title="联系人" component={ContactsEdit} onSuccess={() => {
         tableRef.current.refresh();
