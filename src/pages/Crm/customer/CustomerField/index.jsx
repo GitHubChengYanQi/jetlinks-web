@@ -27,7 +27,6 @@ export const CustomerName = (props) => {
 
   const [val, setVal] = useState(value);
 
-
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
     manual: true,
@@ -55,18 +54,15 @@ export const CustomerName = (props) => {
   };
 
 
-
-
-  const content = data ? data.map((value) => {
+  const content = data ? data.map((value,index) => {
     return (
-      <>
+      <div key={index}>
         <a onClick={() => {
           onSuccess(value.customerId);
-        }}>{value.customerName}</a> <br />
-      </>
+        }}>{value.customerName}</a>
+      </div>
     );
   }) : null;
-
 
 
   return ((
@@ -139,6 +135,7 @@ export const Job = (props) => {
 export const Dept = (props) => {
   return (<Input   {...props} />);
 };
+
 export const Client = (props) => {
   return (<Select  api={apiUrl.customerIdSelect} {...props} />);
 };
