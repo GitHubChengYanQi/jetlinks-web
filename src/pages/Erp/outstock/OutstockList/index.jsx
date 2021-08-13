@@ -24,6 +24,7 @@ import Icon from '@/components/Icon';
 import {useRequest} from "@/util/Request";
 import {outstockDelete, outstockEdit, outstockList} from '../OutstockUrl';
 import * as SysField from '../OutstockField';
+import Message from "@/components/Message";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,12 +48,15 @@ const OutstockList = () => {
     manual: true, onSuccess: () => {
       openNotificationWithIcon('success');
       tableRef.current.refresh();
+    },
+    onError: (error) => {
+      Message.error(error.message);
     }
   });
 
   const openNotificationWithIcon = (type) => {
     notification[type]({
-      message: type === 'success' ? '入库成功！' : '已入库！',
+      message: type === 'success' ? '出库成功！' : '已出库！',
     });
   };
 
@@ -155,7 +159,7 @@ const OutstockList = () => {
         <Column title="出库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
             <>
-              {record.state ? '已入库':'未入库'}
+              {record.state ? '已出库':'未出库'}
             </>
           );
         }} />
