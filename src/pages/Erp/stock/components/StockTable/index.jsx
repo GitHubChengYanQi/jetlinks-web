@@ -115,7 +115,6 @@ const StockTable = (props) => {
                 history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,
                   params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});
               }}>{record.storehouseResult.name}</Button>
-              }}>
             </>
           );
         }} sorter />
@@ -133,7 +132,8 @@ const StockTable = (props) => {
             </>
           );
         }} sorter />
-        <Column title="数量" dataIndex="inventory" />
+        <Column title="数量" width={120} align='center' sorter dataIndex="inventory" />
+        <Column />
         {choose ? <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

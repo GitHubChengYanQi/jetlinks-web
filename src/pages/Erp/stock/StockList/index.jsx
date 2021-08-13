@@ -17,32 +17,49 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
-import {stockList} from '../StockUrl';
+import {stockList, storehouse} from '../StockUrl';
 import * as SysField from '../StockField';
 import {useRequest} from "@/util/Request";
 import ListLayout from "@/layouts/ListLayout";
 import CustomerTable from "@/pages/Crm/customer/components/CustomerTable";
 import StockTable from "@/pages/Erp/stock/components/StockTable";
+import Select from '@/components/Select';
+import {customerIdSelect} from '@/pages/Crm/contacts/contactsUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const StockList = (props) => {
 
-  const {loading, data} = useRequest({ url: '/storehouse/listSelect',method: 'POST'});
+  const {loading, data,run} = useRequest({ url: '/storehouse/list',method: 'POST'});
 
-  const crmStocklist = data ? data.map((values)=>{
+  const Storehouse = data ? data.map((values) => {
     return {
-      title: values.label,
-      key: values.value,
+      title: values.name,
+      key: values.storehouseId,
     };
   }) : [];
+
+  const [value,setValue] = useState();
+
 
   const [state, setState] = useState();
 
   const Left = () => {
     return (
       <>
+        <div>
+          <Select api={storehouse} placeholder='搜索仓库' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
+            await run(
+              {
+                data:{
+                  storehouseId : value
+                }
+              }
+            );
+            setValue(value);
+          }} />
+        </div>
         <Tree
           showLine
           onSelect={(value) => {
@@ -53,7 +70,7 @@ const StockList = (props) => {
             {
               title: '所有仓库',
               key: '',
-              children: crmStocklist
+              children: Storehouse
             },
           ]}
         />
