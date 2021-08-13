@@ -157,18 +157,18 @@ const InstockList = () => {
             </>
           );
         }} />
-        <Column title="操作" fixed='right' align="right" width={100} render={(value, record) => {
+        <Column title="操作" fixed='right' align="right" width={200} render={(value, record) => {
           return (
             <>
               {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
                 confirmOk(record);
-              }}><Icon type="icon-shenhe" />入库</Button> : null}
-              <EditButton onClick={() => {
+              }}><Icon type="icon-shenhe" />入库</Button>: null}
+              {record.state === 0 ? <EditButton onClick={() => {
                 ref.current.open(record);
-              }}/>
-              <DelButton api={instockDelete} value={record.instockId} onSuccess={()=>{
+              }}/>: null}
+              {record.state === 0 ? <DelButton api={instockDelete} value={record.instockId} onSuccess={()=>{
                 tableRef.current.refresh();
-              }}/>
+              }}/>: null}
             </>
           );
         }}/>
