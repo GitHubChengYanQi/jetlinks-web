@@ -31,9 +31,7 @@ const StockDetailsList = (props) => {
 
   useEffect(() => {
     if (storehouseId || brandId || itemId) {
-      console.log(storehouseId);
-      console.log(brandId);
-      console.log(itemId);
+      console.log(props.location.params);
       tableRef.current.formActions.setFieldValue('storehouseId', storehouseId || '');
       tableRef.current.formActions.setFieldValue('brandId', brandId  || '');
       tableRef.current.formActions.setFieldValue('itemId', itemId  || '');
