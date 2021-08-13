@@ -126,21 +126,21 @@ const InstockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="仓库名称" fixed dataIndex="placeName" render={(text, record) => {
+        <Column title="仓库名称" fixed dataIndex="storehouseId" render={(text, record) => {
           return (
             <>
               {record.storehouseResult.name}
             </>
           );
         }} sorter/>
-        <Column title="产品名称" dataIndex="name" render={(text, record) => {
+        <Column title="产品名称" dataIndex="itemId" render={(text, record) => {
           return (
             <>
               {record.itemsResult.name}
             </>
           );
         }} sorter/>
-        <Column title="品牌" width={200} dataIndex="brandName" render={(text, record) => {
+        <Column title="品牌" width={200} dataIndex="brandId" render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}
@@ -150,6 +150,7 @@ const InstockList = () => {
         <Column title="入库数量" width={120} align='center' dataIndex="number" sorter/>
         <Column title="价格" width={120} align='center' dataIndex="price" sorter/>
         <Column title="登记时间" width={200} dataIndex="registerTime" sorter/>
+        <Column title="条形码" width={200} dataIndex="barcode" sorter/>
         <Column title="入库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
             <>
@@ -164,7 +165,7 @@ const InstockList = () => {
                 confirmOk(record);
               }}><Icon type="icon-shenhe" />入库</Button>: null}
               {record.state === 0 ? <EditButton onClick={() => {
-                ref.current.open(record);
+                ref.current.open(record.instockId);
               }}/>: null}
               {record.state === 0 ? <DelButton api={instockDelete} value={record.instockId} onSuccess={()=>{
                 tableRef.current.refresh();
