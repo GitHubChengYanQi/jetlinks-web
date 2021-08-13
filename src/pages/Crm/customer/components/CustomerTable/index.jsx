@@ -185,7 +185,7 @@ const CustomerTable = (props) => {
           );
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column title="操作" fixed="right" width={200} align="right" render={(value, record) => {
+        <Column title="操作" fixed="right" width={ choose ? 200 : 100 } align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={() => {

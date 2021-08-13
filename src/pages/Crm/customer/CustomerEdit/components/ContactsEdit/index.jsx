@@ -11,6 +11,7 @@ import * as SysField from '@/pages/Crm/contacts/ContactsField';
 import {contactsAdd, contactsDetail, contactsEdit} from '@/pages/Crm/contacts/contactsUrl';
 import FormIndex from '@/components/Form/FormIndex';
 import {Reset, Submit} from '@formily/antd';
+import {CustomerAdd} from '@/pages/Crm/contacts/ContactsField';
 
 const {FormItem} = Form;
 
@@ -21,6 +22,8 @@ const ApiConfig = {
 };
 
 const Index = ({...props}) => {
+
+  const {customerId} = props;
 
   const formRef = useRef();
 
@@ -33,8 +36,8 @@ const Index = ({...props}) => {
     >
       <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName} required/>
       <FormItem label="职务" name="job" component={SysField.Job} required/>
-      <FormItem label="联系电话" name="phone" component={SysField.Phone} required/>
       <FormItem label="部门编号" name="deptId" component={SysField.DeptId} required/>
+      <FormItem hidden name="customerId" component={SysField.CustomerAdd} customerId={customerId} required/>
     </Form>
   );
 };

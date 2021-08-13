@@ -6,10 +6,10 @@
  */
 
 import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Space} from 'antd';
+import {Input, InputNumber, Select as AntdSelect} from 'antd';
 import Select from '@/components/Select';
-import {DatePicker2} from '@alifd/next';
 import * as apiUrl from '../ItemsUrl';
+import DatePicker from '@/components/DatePicker';
 
 const { RangePicker } = DatePicker;
 
@@ -25,7 +25,7 @@ export const Inventory = (props) =>{
   return (<InputNumber style={{ width: w }} {...props}/>);
 };
 export const ProductionTime = (props) =>{
-  return (<DatePicker2  style={{ width: w }} showTime {...props} />);
+  return (<DatePicker  style={{ width: w }} showTime {...props} />);
 };
 export const Important = (props) =>{
   return (<InputNumber {...props}

@@ -1,7 +1,7 @@
 /**
  * 品牌表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-07-14 14:19:04
  */
 
@@ -19,6 +19,11 @@ export const brandEdit = {
 
 export const brandDelete = {
   url: '/brand/delete',
+  method: 'POST',
+  rowKey:'brandId'
+};
+export const batchDelete = {
+  url: '/brand/batchDelete',
   method: 'POST',
   rowKey:'brandId'
 };

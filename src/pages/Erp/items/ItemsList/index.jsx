@@ -26,7 +26,7 @@ import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
 import {useHistory} from "ice";
-import {itemsDelete, itemsList} from '../ItemsUrl';
+import {batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
 
 
 const {Column} = AntTable;
@@ -38,7 +38,6 @@ const ItemsList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  // const listRef = useRef(null);
   const [ids, setIds] = useState([]);
   const [itemsId, setItemsId] = useState([]);
   const history = useHistory();
@@ -70,10 +69,10 @@ const ItemsList = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-      url: '/',
-      method: 'POST'
+      ...batchDelete
     }} value={ids}>批量删除</DelButton>);
   };
+
   const actions = () => {
     return (
       <>
@@ -170,15 +169,23 @@ const ItemsList = (props) => {
             );
           }}/>
 
-        <Column title="质保期" width={150} dataIndex="shelfLife" sorter/>
-        <Column title="产品库存" dataIndex="inventory" sorter/>
-        <Column title="生产日期" width={230} dataIndex="productionTime" sorter/>
-        <Column title="重要程度" width={100} dataIndex="important" sorter/>
-        <Column title="产品重量" width={130} dataIndex="weight" sorter/>
-        <Column title="材质" width={120} dataIndex="materialName" sorter/>
-        <Column title="成本" width={120} dataIndex="cost" />
-        <Column title="易损" width={120} dataIndex="vulnerability" />
-        <Column title="操作" fixed="right" width={100}  align="right" render={(value, record) => {
+        <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
+        <Column title="产品库存" width={120} align='center' dataIndex="inventory" sorter/>
+        <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
+        <Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>
+        <Column title="产品重量" width={120} align='center' dataIndex="weight" sorter />
+        <Column title="材质" width={150} align='center' dataIndex="materialName" sorter render={(value,record)=>{
+          return (
+            <>
+              {
+                record.materialResult ? record.materialResult.name : null
+              }
+            </>
+          );
+        }}/>
+        <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
+        <Column title="易损" width={120} align='center' dataIndex="vulnerability" sorter />
+        <Column title="操作" fixed="right" width={ choose ? 200 : 100}  align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={()=>{
@@ -220,7 +227,7 @@ const ItemsList = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} />
       </Table>
       <Modal2 width={800} component={ItemsEdit} onSuccess={() => {
         tableRef.current.refresh();

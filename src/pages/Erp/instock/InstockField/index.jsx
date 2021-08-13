@@ -13,7 +13,6 @@ import Drawer from '@/components/Drawer';
 import DatePicker from '@/components/DatePicker';
 import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
 import ItemsList from '@/pages/Erp/items/ItemsList';
-import {storeHouseSelect} from "../InstockUrl";
 
 const {Search} = Input;
 

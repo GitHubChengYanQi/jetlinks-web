@@ -97,12 +97,12 @@ const OutstockList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="name" sorter/>
-        <Column title="品牌名称" dataIndex="brandName" sorter/>
-        <Column title="出库数量" dataIndex="number" sorter/>
-        <Column title="出库价格" dataIndex="price" sorter/>
-        <Column title="出库时间" dataIndex="deliveryTime" sorter/>
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="产品名称" fixed dataIndex="name" sorter/>
+        <Column title="出库时间" width={200}  dataIndex="deliveryTime" sorter/>
+        <Column title="出库数量" width={120} align='center' dataIndex="number" sorter/>
+        <Column title="出库价格"  width={120} align='center' dataIndex="price" sorter/>
+        <Column title="品牌名称" width={200} dataIndex="brandName" sorter/>
+        <Column title="操作" fixed='right' align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
@@ -113,9 +113,9 @@ const OutstockList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} width={100}/>
       </Table>
-      <Modal2 title="编辑" component={OutstockEdit} onSuccess={() => {
+      <Modal2 title="产品出库" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

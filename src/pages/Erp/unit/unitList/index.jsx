@@ -5,7 +5,7 @@
  * @Date 2021-08-11 15:37:57
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -15,7 +15,7 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import UnitEdit from '../unitEdit';
 import Breadcrumb from "@/components/Breadcrumb";
-import {unitDelete, unitList} from '../unitUrl';
+import {batchDelete, unitDelete, unitList} from '../unitUrl';
 
 import * as SysField from '../unitField';
 
@@ -43,6 +43,19 @@ const UnitList = () => {
     );
   };
 
+  const [ids,setIds] = useState([]);
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...batchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
@@ -52,8 +65,12 @@ const UnitList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(value)=>{
+          setIds(value);
+        }}
       >
-        <Column title="单位名称" dataIndex="unitName"/>
+        <Column title="单位名称" dataIndex="unitName" sorter />
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -66,7 +83,7 @@ const UnitList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} width={100}/>
       </Table>
       <Drawer width={800} title="编辑" component={UnitEdit} onSuccess={() => {
         tableRef.current.refresh();

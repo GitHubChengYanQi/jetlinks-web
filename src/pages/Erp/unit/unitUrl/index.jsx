@@ -22,6 +22,11 @@ export const unitDelete = {
   method: 'POST',
   rowKey:'unitId'
 };
+export const batchDelete = {
+  url: '/unit/batchDelete',
+  method: 'POST',
+  rowKey:'unitId'
+};
 
 export const unitDetail = {
   url: '/unit/detail',

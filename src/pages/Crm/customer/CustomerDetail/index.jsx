@@ -16,6 +16,9 @@ import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import styles from './index.module.scss';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
+import OrderList from '@/pages/Erp/order/OrderList';
+import ContractList from '@/pages/Crm/contract/ContractList';
+import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
 
 const {TabPane} = Tabs;
 
@@ -116,10 +119,10 @@ const CustomerDetail = () => {
                   <AdressList customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="合同" key="4">
-                  <Contract customerId={data.customerId} />
+                  <ContractTable customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="订单" key="5">
-                  Content of Tab Pane 3
+                  <OrderList />
                 </TabPane>
                 <TabPane tab="回款" key="6">
                   Content of Tab Pane 3

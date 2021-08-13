@@ -5,7 +5,7 @@
  * @Date 2021-08-11 15:37:57
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -17,6 +17,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import {itemClassDelete, itemClassList} from '../itemClassUrl';
 import ItemClassEdit from '../itemClassEdit';
 import * as SysField from '../itemClassField';
+import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
 
 
 const {Column} = AntTable;
@@ -43,6 +44,19 @@ const ItemClassList = () => {
     );
   };
 
+  const [ids,setIds] = useState([]);
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...batchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
@@ -52,8 +66,12 @@ const ItemClassList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(value)=>{
+          setIds(value);
+        }}
       >
-        <Column title="产品分类名称" dataIndex="className"/>
+        <Column title="产品分类名称" dataIndex="className" sorter/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -66,7 +84,7 @@ const ItemClassList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }} width={100}/>
       </Table>
       <Drawer width={800} title="编辑" component={ItemClassEdit} onSuccess={() => {
         tableRef.current.refresh();

@@ -21,7 +21,7 @@ const ApiConfig = {
 
 const Index = ({...props}) => {
 
-  console.log(props.value);
+  const {customerId} = props;
 
   const formRef = useRef();
 
@@ -35,6 +35,7 @@ const Index = ({...props}) => {
       <FormItem label="地址" name="location" component={SysField.Location} required/>
       <FormItem label="经度" name="longitude" component={SysField.Longitude} required/>
       <FormItem label="纬度" name="latitude" component={SysField.Latitude} required/>
+      <FormItem hidden customerId={customerId} name="customerId" component={SysField.CustomerId} required/>
     </Form>
   );
 };

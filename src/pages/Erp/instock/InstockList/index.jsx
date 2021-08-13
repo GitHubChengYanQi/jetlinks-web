@@ -133,22 +133,22 @@ const InstockList = () => {
             </>
           );
         }} sorter/>
-        <Column title="产品名称" width={120} dataIndex="name" render={(text, record) => {
+        <Column title="产品名称" dataIndex="name" render={(text, record) => {
           return (
             <>
               {record.itemsResult.name}
             </>
           );
         }} sorter/>
-        <Column title="品牌" width={120} dataIndex="brandName" render={(text, record) => {
+        <Column title="品牌" width={200} dataIndex="brandName" render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}
             </>
           );
         }} sorter/>
-        <Column title="入库数量" width={120} dataIndex="number" sorter/>
-        <Column title="价格" width={120} dataIndex="price" sorter/>
+        <Column title="入库数量" width={120} align='center' dataIndex="number" sorter/>
+        <Column title="价格" width={120} align='center' dataIndex="price" sorter/>
         <Column title="登记时间" width={200} dataIndex="registerTime" sorter/>
         <Column title="入库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
@@ -157,7 +157,7 @@ const InstockList = () => {
             </>
           );
         }} />
-        <Column title="操作" fixed align="right" render={(value, record) => {
+        <Column title="操作" fixed='right' align="right" width={100} render={(value, record) => {
           return (
             <>
               {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
@@ -171,9 +171,9 @@ const InstockList = () => {
               }}/>
             </>
           );
-        }} width={300}/>
+        }}/>
       </Table>
-      <Modal2 width={800} title="编辑" component={InstockEdit} onSuccess={() => {
+      <Modal2 width={800} title="产品入库" component={InstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

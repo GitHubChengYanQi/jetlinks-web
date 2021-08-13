@@ -7,13 +7,8 @@ import CheckButton from '@/components/CheckButton';
 import {items, places, stockAdd, stockDetail, stockEdit} from '@/pages/Erp/stock/StockUrl';
 import {
   businessList,
-  ClientList, PersonListSelect,
-  StageListSelect13,
-  StateListSelect12,
-  TimeListSelect2
 } from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
-import {OrgNameListSelect} from '@/pages/Crm/business/BusinessField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

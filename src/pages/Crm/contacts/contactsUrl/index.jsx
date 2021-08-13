@@ -22,6 +22,11 @@ export const contactsDelete = {
   method: 'POST',
   rowKey:'contactsId'
 };
+export const batchDelete = {
+  url: '/contacts/batchDelete',
+  method: 'POST',
+  rowKey:'contactsId'
+};
 
 export const contactsDetail = {
   url: '/contacts/detail',

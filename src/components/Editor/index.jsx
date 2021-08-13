@@ -111,7 +111,7 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
           <Button onClick={() => insertACustomer()}> 选择甲方客户</Button>
         </Col>
         <Col span={4}>
-          <Button onClick={() => insertBCustomer()}> 选择套乙方客户</Button>
+          <Button onClick={() => insertBCustomer()}> 选择乙方客户</Button>
         </Col>
       </Row>
       <ReactWEditor
