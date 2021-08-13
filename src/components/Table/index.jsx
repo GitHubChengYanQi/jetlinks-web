@@ -3,6 +3,7 @@ import {Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
 import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
+import useUrlState from '@ahooksjs/use-url-state';
 
 import style from './index.module.less';
 
@@ -42,6 +43,12 @@ const TableWarp = ({
 
   const {ajaxService} = Service();
 
+  const [, setState] = useUrlState(
+    {},
+    {
+      navigateMode: 'push',
+    },
+  );
 
   const requestMethod = async (params) => {
     const {values, pagination, sorter, ...other} = params;
@@ -52,6 +59,11 @@ const TableWarp = ({
       field: sorter.field,
       order: sorter.order
     };
+    setState({
+      params:JSON.stringify({
+        ...page,...values
+      })
+    });
     let response;
     try {
       response = await ajaxService({
@@ -99,7 +111,7 @@ const TableWarp = ({
     );
   };
   return (
-    <div className={style.tableWarp}  id="listLayout" style={{height: '100%', overflowY: 'auto',overflowX:'hidden'}}>
+    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       <div className={style.listHeader}>
         {title && <div className="title">{title}</div>}
         <div className="actions">
