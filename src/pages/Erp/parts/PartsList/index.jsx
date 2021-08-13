@@ -82,7 +82,7 @@ const PartsList = (props) => {
             }}>{record.itemsResult ? record.itemsResult.name : ''}  </Button>
           );
         }}/>
-        <Column title="零件数量" dataIndex="number"/>
+        <Column title="零件数量" width={120} align='center' dataIndex="number"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

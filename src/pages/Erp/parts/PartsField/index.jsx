@@ -24,7 +24,6 @@ export const BrandId = (props) =>{
 };
 
 export const Item = (props) =>{
-  console.log(props);
   return (<Select api={apiUrl.ProductNameListSelect} Select {...props} />);
 //   const {onChange} = props;
 //   const ref = useRef(null);
