@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Modal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -17,10 +17,11 @@ import Modal2 from '@/components/Modal';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
+import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import InstockEdit from '../InstockEdit';
-import {instockDelete, instockList, itemIdSelect} from '../InstockUrl';
+import {useRequest} from "@/util/Request";
+import {instockDelete, instockEdit, instockList, itemIdSelect} from '../InstockUrl';
 import * as SysField from '../InstockField';
 
 const {Column} = AntTable;
@@ -40,6 +41,38 @@ const InstockList = () => {
   };
 
   const [search,{toggle}]  = useBoolean(false);
+
+  const {run} = useRequest(instockEdit, {
+    manual: true, onSuccess: () => {
+      openNotificationWithIcon('success');
+      tableRef.current.refresh();
+    }
+  });
+
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: type === 'success' ? '入库成功！' : '已入库！',
+    });
+  };
+
+  function confirmOk(record) {
+
+    Modal.confirm({
+      title: '入库',
+      centered: true,
+      content: `请确认是否执行入库操作!注意：入库之后不可删除。`,
+      style: {margin: 'auto'},
+      cancelText: '取消',
+      onOk: async () => {
+        record.state = 1;
+        await run(
+          {
+            data: record
+          }
+        );
+      }
+    });
+  }
 
   const searchForm = () => {
 
@@ -117,9 +150,19 @@ const InstockList = () => {
         <Column title="入库数量" width={120} dataIndex="number" sorter/>
         <Column title="价格" width={120} dataIndex="price" sorter/>
         <Column title="登记时间" width={200} dataIndex="registerTime" sorter/>
+        <Column title="入库状态" width={200} dataIndex="state" render={(text, record) => {
+          return (
+            <>
+              {record.state ? '已入库':'未入库'}
+            </>
+          );
+        }} />
         <Column title="操作" fixed align="right" render={(value, record) => {
           return (
             <>
+              {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
+                confirmOk(record);
+              }}><Icon type="icon-shenhe" />入库</Button> : null}
               <EditButton onClick={() => {
                 ref.current.open(record);
               }}/>

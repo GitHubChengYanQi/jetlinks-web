@@ -98,10 +98,10 @@ const OutstockList = () => {
         ref={tableRef}
       >
         <Column title="产品名称" dataIndex="name" sorter/>
-        <Column title="出库时间" dataIndex="deliveryTime" sorter/>
+        <Column title="品牌名称" dataIndex="brandName" sorter/>
         <Column title="出库数量" dataIndex="number" sorter/>
         <Column title="出库价格" dataIndex="price" sorter/>
-        <Column title="品牌名称" dataIndex="brandName" sorter/>
+        <Column title="出库时间" dataIndex="deliveryTime" sorter/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
