@@ -28,8 +28,6 @@ const {FormItem} = Form;
 const StockTable = (props) => {
 
   const {choose, state} = props;
-  console.log(state);
-  const ref = useRef(null);
   const tableRef = useRef(null);
   const history = useHistory();
 
@@ -111,7 +109,7 @@ const StockTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="仓库名称" dataIndex="pname" render={(text, record) => {
+        <Column title="仓库名称" style={{maxWidth:200}} dataIndex="pname" render={(text, record) => {
           return (
             <>
               <Button type="link" onClick={() => {

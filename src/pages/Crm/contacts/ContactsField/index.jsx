@@ -31,21 +31,11 @@ export const DeptId = (props) =>{
 export const Customer = (props) =>{
   return (<Select api={apiUrl.customerIdSelect}   {...props}/>);
 };
+export const CustomerAdd = (props) =>{
+  props.onChange(props.customerId);
+  return (<Input    {...props}/>);
+};
 
 export const CustomerId = (props) =>{
-  const {onChange, placeholder, val} = props;
-  const [value, setValue] = useState(val);
-  const ref = useRef(null);
-  return (<>
-    <Search style={{width: 200}} placeholder={placeholder}  {...props} value={value} onSearch={() => {
-      ref.current.open(false);
-    }} enterButton />
-    <Drawer width={1700} title="选择" component={CustomerTable} onSuccess={() => {
-      ref.current.close();
-    }} ref={ref} customer={(customer) => {
-      setValue(customer.customerName);
-      onChange(customer.customerId);
-      ref.current.close();
-    }} />
-  </>);
+ return (<Select api={apiUrl.customerIdSelect} {...props} />);
 };

@@ -100,35 +100,6 @@ export const CustomerList = (props) =>{
 
 
 
-// 创建者
-export const CreateUserListSelect7 = (props) =>{
-  return (<Select api={apiUrl.CreateUserListSelect7} api={apiUrl.CreateUserListSelect7}   {...props}/>);
-};
-
-// 修改者
-export const UpdateUserListSelect8 = (props) =>{
-  return (<Select api={apiUrl.UpdateUserListSelect8}  {...props}/>);
-};
-
-// 创建时间
-export const CreateTimeListSelect9 = (props) =>{
-  return (<DatePicker2    showTime   {...props}/>);
-};
-
-// 修改时间
-export const UpdateTimeListSelect10 = (props) =>{
-  return (<DatePicker2  showTime {...props}/>);
-};
-
-
-// 负责人主属部门id
-export const DeptIdListSelect11 = (props) =>{
-  return (<Select api={apiUrl.DeptIdListSelect11}  {...props}/>);
-};
-
-
-
-
 
 // 商机状态
 export const StateListSelect12 = (props) =>{
@@ -144,19 +115,8 @@ export const StatementTimeListSelect14 = (props) =>{
   return (<DatePicker2  showTime {...props}/>);
 };
 
-//  赢率
-export const SalesProcessIdListSelect15 = (props) =>{
-  return (<Select   api={apiUrl.SalesProcessIdListSelect15} {...props}/>);
-};
-
 // 阶段变更时间
 export const ChangeTimeListSelect17 = (props) =>{
   return (<DatePicker2  api={apiUrl.ChangeTimeListSelect17} showTime {...props}/>);
 };
-
-// 输单原因
-export const ReasonListSelect18 = (props) =>{
-  return (<Input  api={apiUrl.ReasonListSelect18} {...props}/>);
-};
-
 

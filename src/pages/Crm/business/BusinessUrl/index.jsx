@@ -109,43 +109,10 @@ export const UpdateUserListSelect8 = {
   url: '/crmBusiness/listSelect8',
   method: 'POST',
 };
-// 创建时间
-export const CreateTimeListSelect9 = {
-  url: '/crmBusiness/listSelect9',
-  method: 'POST',
-};
 
-// 修改时间
-export const UpdateTimeListSelect10 = {
-  url: '/crmBusiness/listSelect10',
-  method: 'POST',
-};
-// 负责人主属部门id
-export const DeptIdListSelect11 = {
-  url: '/crmBusiness/listSelect11',
-  method: 'POST',
-};
 
-// 商机状态
-export const StateListSelect12 = {
-  url: '/crmBusiness/listSelect12',
-  method: 'POST',
-};
-// 商机阶段
-export const StageListSelect13 = {
-  url: '/crmBusiness/listSelect13',
-  method: 'POST',
-};
-// 结单日期
-export const StatementTimeListSelect14 = {
-  url: '/crmBusiness/listSelect14',
-  method: 'POST',
-};
-// 赢率
-export const SalesProcessIdListSelect15 = {
-  url: '/crmBusiness/listSelect15',
-  method: 'POST',
-};
+
+
 // 阶段变更时间
 export const ChangeTimeListSelect17 = {
   url: '/crmBusiness/listSelect17',
@@ -181,6 +148,12 @@ export const crmBusinessDetailedAdd = {
 // 产品名称
 export const ProductNameListSelect = {
   url: '/items/listSelect',
+  method: 'POST',
+};
+
+
+export const crmBusinessSalesListSelect = {
+  url: '/crmBusinessSales/listSelect',
   method: 'POST',
 };
 

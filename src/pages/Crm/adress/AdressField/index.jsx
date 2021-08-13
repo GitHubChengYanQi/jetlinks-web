@@ -19,3 +19,7 @@ export const Longitude = (props) =>{
 export const Latitude = (props) =>{
   return (<InputNumber   {...props}/>);
 };
+export const CustomerId = (props) =>{
+  props.onChange(props.customerId);
+  return (<Input   {...props}/>);
+};

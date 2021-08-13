@@ -31,7 +31,7 @@ const {FormItem} = Form;
 
 const ContractTable = (props) => {
 
-  const {state} = props;
+  const {state,customerId} = props;
 
 
   const ref = useRef(null);
@@ -63,7 +63,7 @@ const ContractTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="甲方" name="partyA" component={SysField.CustomerNameListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="甲方" value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="审核" name="audit" component={SysField.Audit} />
         </>
