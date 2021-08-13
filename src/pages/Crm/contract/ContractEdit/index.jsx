@@ -174,7 +174,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Customer}
                 placeholder="请选择甲方客户"
                 val={value ? value.partAName : null}
-                customerId={async (customer) => {
+                customerid={async (customer) => {
                   if (customer) {
                     await AcontactsRun({
                       data: {
@@ -197,8 +197,8 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Contacts}
                 placeholder="甲方联系人"
                 val={value ? value.partyAContactsId : null}
-                customerId={Acontacts || null}
-                contactsId={async (contacts) => {
+                customerid={Acontacts || null}
+                contactsid={async (contacts) => {
                   if (contacts) {
                     await runAPhone({
                       data: {
@@ -216,7 +216,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Phone}
                 placeholder="请选择甲方联系人电话"
                 val={value ? value.partyAPhone : null}
-                contactsId={APhone || null}
+                contactsid={APhone || null}
                 required
               />
               <FormItem
@@ -226,7 +226,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Adress}
                 placeholder="请选择甲方地址"
                 val={value ? value.partyAAdressId : null}
-                customerId={Aadress || null}
+                customerid={Aadress || null}
                 required
               />
 
@@ -238,7 +238,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Customer}
                 placeholder="请选择乙方客户"
                 val={value ? value.partBName : null}
-                customerId={async (customer) => {
+                customerid={async (customer) => {
                   if (customer) {
                     await BcontactsRun({
                       data: {
@@ -261,8 +261,8 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Contacts}
                 placeholder="请选择乙方联系人"
                 val={value ? value.partyBContactsId : null}
-                customerId={Bcontacts || null}
-                contactsId={async (contacts) => {
+                customerid={Bcontacts || null}
+                contactsid={async (contacts) => {
                   if (contacts) {
                     await runBPhone({
                       data: {
@@ -279,7 +279,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Phone}
                 placeholder="请选择乙方联系人电话"
                 val={value ? value.partyAPhone : null}
-                contactsId={BPhone || null}
+                contactsid={BPhone || null}
                 required
               />
 
@@ -290,7 +290,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Adress}
                 placeholder="请选择乙方地址"
                 val={value ? value.partyBAdressId : null}
-                customerId={Badress || null}
+                customerid={Badress || null}
                 required
               />
               <FormItem label="创建时间" name="time" component={SysField.Time} required />

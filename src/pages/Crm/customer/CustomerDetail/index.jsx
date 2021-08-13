@@ -38,7 +38,7 @@ const CustomerDetail = () => {
     }
   });
 
-  console.log(data);
+
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -68,7 +68,7 @@ const CustomerDetail = () => {
           <Button type="primary" onClick={() => {
             ref.current.open(data.customerId);
           }}>编辑</Button>
-          <Modal2 width={1500} title="客户" component={CustomerEdit} onSuccess={() => {
+          <Modal2 width={1000} title="客户" component={CustomerEdit} onSuccess={() => {
             ref.current.close();
             refresh();
           }} ref={ref} />

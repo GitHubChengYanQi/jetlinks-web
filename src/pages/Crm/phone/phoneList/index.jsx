@@ -21,7 +21,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const PhoneList = (props) => {
-  const {value,choose} = props;
+  const {value, choose} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -29,20 +29,18 @@ const PhoneList = (props) => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
 
-
-
- const searchForm = () => {
-   return (
-     <>
-       <FormItem hidden contactsId={value} name="contactsId" component={SysField.ContactsId}/>
-       <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem hidden contactsid={value} name="contactsId" component={SysField.ContactsId} />
+        <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} />
+      </>
     );
   };
 
@@ -56,25 +54,25 @@ const PhoneList = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="电话号码" dataIndex="phoneNumber"/>
-        <Column/>
+        <Column title="电话号码" dataIndex="phoneNumber" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.phoneId);
-              }}/>
-              <DelButton api={phoneDelete} value={record.phoneId} onSuccess={()=>{
+              }} />
+              <DelButton api={phoneDelete} value={record.phoneId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={PhoneEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} contactsId={value}/>
+      }} ref={ref} contactsId={value} />
     </>
   );
 };

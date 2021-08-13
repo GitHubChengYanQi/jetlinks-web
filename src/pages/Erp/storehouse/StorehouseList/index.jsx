@@ -15,16 +15,15 @@ import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
 import CheckButton from '@/components/CheckButton';
-import { storehouseDelete, storehouseList} from '../StorehouseUrl';
-import * as SysField from '../StorehouseField';
-import StorehouseEdit from '../StorehouseEdit';
 import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-
+import { storehouseDelete, storehouseList} from '../StorehouseUrl';
+import * as SysField from '../StorehouseField';
+import StorehouseEdit from '../StorehouseEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -109,7 +108,7 @@ const StorehouseList = (props) => {
       <Table
         title={<Breadcrumb title='仓库管理'/>}
         api={storehouseList}
-        rowKey="storehouseid"
+        rowKey="storehouseId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

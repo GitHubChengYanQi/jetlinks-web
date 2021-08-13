@@ -16,8 +16,6 @@ const Dynamic = (props) => {
 
   const datas = (value) => {
     return {
-      actions: [<span onClick={() => {
-      }}>编辑</span>],
       author: value.userResult ? value.userResult.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
@@ -58,7 +56,7 @@ const Dynamic = (props) => {
       >
         <Column render={(text, record) => {
           return (
-            <Comment
+            <Comment style={{margin:-20}}
               {...datas(record)}
             />
           );

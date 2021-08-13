@@ -25,8 +25,6 @@ const TableDetail = (props) => {
   const refAddOne = useRef(null);
   const refAddAll = useRef(null);
 
-  const [da,setDa] = useState();
-  const {data,run} = useRequest({url: '/crmBusinessDetailed/add',method: 'POST',data:da},{manual:true});
 
   const searchForm = () => {
     return (

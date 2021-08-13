@@ -70,7 +70,10 @@ const ItemsList = (props) => {
      */
     return (<DelButton api={{
       ...batchDelete
-    }} value={ids}>批量删除</DelButton>);
+    }} onSuccess={()=>{
+      tableRef.current.refresh();
+    }
+    } value={ids}>批量删除</DelButton>);
   };
 
   const actions = () => {

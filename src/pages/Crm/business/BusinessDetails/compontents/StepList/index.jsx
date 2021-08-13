@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {Modal, notification, Popover, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
@@ -10,6 +10,7 @@ const StepList = (props) => {
 
   const {value, onChange: pOnChange} = props;
 
+  let current = 0;
 
   const openNotificationWithIcon = (type, content) => {
     notification[type]({
@@ -85,14 +86,20 @@ const StepList = (props) => {
 
 
   const step = data ? data.map((values, index) => {
+    if (value.processId === values.salesProcessId) {
+      current = index;
+    }
+    ;
     return (
-      <>
-        <Step disabled={value.state} key={index} title={values.name} description={`盈率：${values.percentage}%`}
-              onClick={async () => {
-                value.state ? null : confirm(values.name, values);
-              }}
-        />
-      </>
+      <Step
+        disabled={value.state}
+        key={index}
+        title={values.name}
+        description={`盈率：${values.percentage}%`}
+        onClick={async () => {
+          value.state ? null : confirm(values.name, values);
+        }}
+      />
     );
 
   }) : null;
@@ -101,7 +108,7 @@ const StepList = (props) => {
     return (
       <Steps
         type="navigation"
-        current={value.state ? step.length : value.process.sort}
+        current={value.state ? step.length : current}
       >
         {step}
 

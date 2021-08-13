@@ -13,8 +13,8 @@ import Select from '@/components/Select';
 import * as apiUrl from '../phoneUrl';
 
 export const ContactsId = (props) =>{
-  const {contactsId} = props;
-  props.onChange(contactsId);
+  const {contactsid} = props;
+  props.onChange(contactsid);
   return (<Input  {...props}/>);
 };
 export const PhoneNumber = (props) =>{

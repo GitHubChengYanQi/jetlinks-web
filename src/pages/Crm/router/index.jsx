@@ -2,8 +2,7 @@
 
 import CrmLayout from '@/pages/Crm';
 import {BusinessRouter} from '@/pages/Crm/business/BusinessRouter';
-import {QuotationRouter, TrackRouter, trackRouter} from '@/pages/Crm/track/TrackRouter';
-import {OriginRouter, originRouter, SourceRouter} from '@/pages/Crm/origin/OriginRouter';
+import {OriginRouter} from '@/pages/Crm/origin/OriginRouter';
 import {TemplateRouter} from '@/pages/Crm/template/TemplateRouter';
 import {ContractRouter} from '@/pages/Crm/contract/ContractRouter';
 import {CustomerRouter} from '@/pages/Crm/customer/CustomerRouter';
@@ -20,7 +19,6 @@ const CrmRouterConfig = [
     children:[
       ...CustomerRouter,
       ...BusinessRouter,
-      ...TrackRouter,
       ...OriginRouter,
       ...TemplateRouter,
       ...ContractRouter,
