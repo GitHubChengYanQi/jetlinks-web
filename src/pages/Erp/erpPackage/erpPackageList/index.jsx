@@ -112,7 +112,7 @@ const ErpPackageList = (props) => {
         >
           <Column title="套餐名称" width={500} dataIndex="productName" sorter/>
           <Column/>
-          <Column title="操作" align="right" render={(value, record) => {
+          <Column title="操作" fixed='right' width={ choose ? 200 : 100} align="right" render={(value, record) => {
 
             return (
               <>
@@ -133,7 +133,7 @@ const ErpPackageList = (props) => {
                 }}/>
               </>
             );
-          }} width={300}/>
+          }} />
         </Table>
 
       </div>

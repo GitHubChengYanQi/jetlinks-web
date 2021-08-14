@@ -7,13 +7,12 @@ import {BrandRouter} from '@/pages/Erp/brand/BrandRouter';
 import {PartsRouter} from '@/pages/Erp/parts/PartsRouter';
 import { StorehouseRouter} from '@/pages/Erp/storehouse/StorehouseRouter';
 import {StockRouter} from '@/pages/Erp/stock/StockRouter';
-import {StockDetailsRouter} from '@/pages/Erp/stockDetails/StockDetailsRouter';
 import {InstockRouter} from '@/pages/Erp/instock/InstockRouter';
 import {OutstockRouter} from '@/pages/Erp/outstock/OutstockRouter';
 import ErpLayout from '@/pages/Erp';
-import {ErpPackageRouter} from "@/pages/Erp/erpPackage/erpPackageRouter";
 import {OrderBranchRouter} from '@/pages/Erp/orderBranch/OrderBranchRouter';
 import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
+import {PackageRouter} from '@/pages/Erp/erpPackage/packageRouter';
 
 const ErpRouterConfig = [
   {
@@ -28,8 +27,8 @@ const ErpRouterConfig = [
       ...PartsRouter,
       ...StorehouseRouter,
       ...StockRouter,
+      ...PackageRouter,
       ...InstockRouter,
-      ...ErpPackageRouter,
       ...OrderRouter,
       ...OrderBranchRouter,
       {

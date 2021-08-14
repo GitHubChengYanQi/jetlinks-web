@@ -5,20 +5,19 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useRef, useState} from 'react';
-import {Input, InputNumber} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Input,Select as AntSelect ,InputNumber} from 'antd';
 import Select from '@/components/Select';
-import * as apiUrl from '../OutstockUrl';
 import Drawer from '@/components/Drawer';
-import {DatePicker2} from '@alifd/next';
 import StockList from '@/pages/Erp/stock/StockList';
 import DatePicker from '@/components/DatePicker';
+import * as apiUrl from '../OutstockUrl';
 
 const {Search} = Input;
 
 
-export const Stock = (props) =>{
-  const {onChange,val} = props;
+export const Stock = (props) => {
+  const {onChange, val} = props;
   const [value, setValue] = useState(val);
   const ref = useRef(null);
   return (<>
@@ -34,25 +33,62 @@ export const Stock = (props) =>{
     }} />
   </>);
 };
-export const StockId = (props) =>{
-  return (<Input   {...props}/>);
+export const StockId = (props) => {
+  return (<Input   {...props} />);
 };
-export const DeliveryTime = (props) =>{
-  return (<DatePicker   {...props}/>);
+export const DeliveryTime = (props) => {
+  return (<DatePicker   {...props} />);
 };
-export const Number = (props) =>{
-  return (<InputNumber   {...props}/>);
+export const Number = (props) => {
+  return (<InputNumber   {...props} />);
 };
-export const Price = (props) =>{
-  return (<InputNumber   {...props}/>);
+export const Price = (props) => {
+  return (<InputNumber   {...props} />);
 };
-export const BrandId = (props) =>{
-  return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
+export const BrandId = (props) => {
+  const {storehouseid} = props;
+
+  useEffect(()=>{
+    props.onChange(null);
+  },[storehouseid]);
+
+  const data = storehouseid ? storehouseid.map((value,index)=>{
+    return {
+      label : value.brandResult ? value.brandResult.brandName : null,
+      value : value.brandId,
+    };
+  }) : null;
+
+  return (<AntSelect options={data} style={{width:200}}  {...props} />);
 };
-export const ItemIdSelect = (props) =>{
-  return (<Select   api={apiUrl.itemIdSelect} {...props}/>);
+export const ItemIdSelect = (props) => {
+  const {storehouseid,itemid} = props;
+
+  console.log(storehouseid);
+
+  useEffect(()=>{
+    props.onChange(null);
+  },[storehouseid]);
+
+  const data = storehouseid ? storehouseid.map((value,index)=>{
+    return {
+      label : value.itemsResult ? value.itemsResult.name : null,
+      value : value.itemId,
+    };
+  }) : null;
+
+  return (<AntSelect options={data} style={{width:200}}  {...props} onChange={(value)=>{
+    props.onChange(value);
+    itemid ? itemid(value) : null;
+  }} />);
 };
 
-export const  StoreHouseSelect = (props) =>{
-  return (<Select   api={apiUrl.storeHouseSelect} {...props}/>);
+export const StoreHouseSelect = (props) => {
+
+  const {storehouseid, onChange} = props;
+
+  return (<Select api={apiUrl.storeHouseSelect} {...props} onChange={(value) => {
+    onChange(value);
+    storehouseid(value);
+  }} />);
 };

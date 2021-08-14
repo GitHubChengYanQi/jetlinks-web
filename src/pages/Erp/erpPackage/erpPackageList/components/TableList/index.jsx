@@ -32,7 +32,7 @@ const TableList = (props) => {
         ref={tableRef}
         searchForm={searchForm}
       >
-        <Column title="产品名称" dataIndex="items" render={(value, record)=>{
+        <Column title="产品名称"  dataIndex="items" render={(value, record)=>{
           return (
             <div>
               {
@@ -41,9 +41,9 @@ const TableList = (props) => {
             </div>
           );
         }} />
-        <Column title="销售单价" dataIndex="salePrice"/>
-        <Column title="数量" dataIndex="quantity"/>
-        <Column title="小计" dataIndex="totalPrice"/>
+        <Column title="销售单价" align='center' dataIndex="salePrice"/>
+        <Column title="数量" align='center' dataIndex="quantity"/>
+        <Column title="小计" align='center' dataIndex="totalPrice"/>
       </Table>
     </>
   );

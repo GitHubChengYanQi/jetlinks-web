@@ -21,6 +21,7 @@ const FormWrapper = (
     api,
     fieldKey,
     value,
+    effects,
     formatResult,
     onSubmit = (values) => {
       return values;
@@ -130,6 +131,10 @@ const FormWrapper = (
     className={style.formWarp}
     labelCol={labelCol || 6}
     wrapperCol={wrapperCol || 15}
+    effects={ () => {
+      effects ? effects() :  null;
+    }
+    }
     onSubmit={async (values) => {
       const submitValues = onSubmit(values);
       if (submitValues === false) {
