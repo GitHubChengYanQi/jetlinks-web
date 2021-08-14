@@ -46,11 +46,15 @@ export const Price = (props) => {
   return (<InputNumber   {...props} />);
 };
 export const BrandId = (props) => {
-  const {storehouseid} = props;
+  const {storehouseid,state} = props;
 
-  useEffect(()=>{
-    props.onChange(null);
-  },[storehouseid]);
+  if (state){
+    useEffect(()=>{
+      props.onChange(null);
+    },[storehouseid]);
+  }
+
+
 
   const data = storehouseid ? storehouseid.map((value,index)=>{
     return {
@@ -62,13 +66,14 @@ export const BrandId = (props) => {
   return (<AntSelect options={data} style={{width:200}}  {...props} />);
 };
 export const ItemIdSelect = (props) => {
-  const {storehouseid,itemid} = props;
+  const {storehouseid,itemid,state} = props;
 
-  console.log(storehouseid);
+  if (state){
+    useEffect(()=>{
+      props.onChange(null);
+    },[storehouseid]);
+  }
 
-  useEffect(()=>{
-    props.onChange(null);
-  },[storehouseid]);
 
   const data = storehouseid ? storehouseid.map((value,index)=>{
     return {
@@ -92,3 +97,13 @@ export const StoreHouseSelect = (props) => {
     storehouseid(value);
   }} />);
 };
+
+// export const Items = (props) => {
+//
+//   const {storehouseid, onChange} = props;
+//
+//   return (<Select api={apiUrl.storeHouseSelect} {...props} />);
+// };
+
+
+

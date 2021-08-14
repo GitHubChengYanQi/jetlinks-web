@@ -170,7 +170,7 @@ const OutstockList = () => {
                 confirmOk(record);
               }}><Icon type="icon-shenhe" />出库</Button>: null}
               {record.state === 0 ?<EditButton onClick={() => {
-                ref.current.open(record.outstockId);
+                ref.current.open(record);
               }}/> : null}
               {record.state === 0 ? <DelButton api={outstockDelete} value={record.outstockId} onSuccess={()=>{
                 tableRef.current.refresh();

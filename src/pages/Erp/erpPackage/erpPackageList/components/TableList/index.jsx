@@ -4,7 +4,6 @@ import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import * as SysField from "@/pages/Erp/erpPackage/erpPackageField";
 import Form from "@/components/Form";
 import {erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
-import {productName} from "@/pages/Erp/erpPackage/erpPackageField";
 
 const {FormItem} = Form;
 const {Column} = AntTable;

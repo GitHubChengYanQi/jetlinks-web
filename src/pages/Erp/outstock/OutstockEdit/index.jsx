@@ -25,14 +25,19 @@ const OutstockEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {data, run} = useRequest({url: '/stock/list', method: 'POST'});
-  const {data:itemData, run:itemRun} = useRequest({url: '/stock/list', method: 'POST'});
+  const {value} = props;
+
+  const {data, run} = useRequest({url: '/stock/list', method: 'POST',data:{storehouseId:value.storehouseId}});
+  const {data:itemData, run:itemRun} = useRequest({url: '/stock/list', method: 'POST',data:{storehouseId:value.storehouseId,itemId:value.itemId}});
 
   const [storehouse,setStorehouse] = useState();
+
+  const [state,setState] = useState(false);
 
   return (
     <Form
       {...props}
+      value={value.outstockId || false}
       ref={formRef}
       api={ApiConfig}
       fieldKey="outstockId"
@@ -52,6 +57,7 @@ const OutstockEdit = ({...props}) => {
     >
       <FormItem label="仓库名称" initialValue={false} name="storehouseId" component={SysField.StoreHouseSelect} storehouseid={async (value) => {
         setStorehouse(value);
+        setState(true);
         await run(
           {
             data: {
@@ -60,7 +66,7 @@ const OutstockEdit = ({...props}) => {
           }
         );
       }} required />
-      <FormItem label="产品名称" initialValue={false} name="itemId" component={SysField.ItemIdSelect} storehouseid={data || null} itemid={async (value)=>{
+      <FormItem label="产品名称" initialValue={false} name="itemId" state={state} component={SysField.ItemIdSelect} storehouseid={data || null} itemid={async (value)=>{
         await itemRun(
           {
             data: {
