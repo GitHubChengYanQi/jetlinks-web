@@ -7,7 +7,7 @@
 
 import React from 'react';
 import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button, Select} from 'antd';
-import * as apiUrl from '../erpPackageTableUrl';
+import * as apiUrl from '../packageTableUrl';
 
 // 套餐Id
 export const PackageId = (props) =>{

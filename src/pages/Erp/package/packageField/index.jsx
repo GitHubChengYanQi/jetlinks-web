@@ -10,7 +10,7 @@ import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Ra
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
-import * as apiUrl from '../erpPackageUrl';
+import * as apiUrl from '../packageUrl';
 
 export const productName = (props) =>{
   return (<Input {...props}/>);

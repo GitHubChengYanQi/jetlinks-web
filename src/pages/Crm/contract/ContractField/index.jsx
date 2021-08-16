@@ -15,7 +15,7 @@ import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
 import DatePicker from '@/components/DatePicker';
 import ItemsList from '@/pages/Erp/items/ItemsList';
-import ErpPackageList from '@/pages/Erp/erpPackage/erpPackageList';
+import ErpPackageList from '@/pages/Erp/package/packageList';
 import {DatePicker2} from '@alifd/next';
 
 export const Customer = (props) => {

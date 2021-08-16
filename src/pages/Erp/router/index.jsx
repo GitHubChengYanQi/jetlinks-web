@@ -12,7 +12,7 @@ import {OutstockRouter} from '@/pages/Erp/outstock/OutstockRouter';
 import ErpLayout from '@/pages/Erp';
 import {OrderBranchRouter} from '@/pages/Erp/orderBranch/OrderBranchRouter';
 import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
-import {PackageRouter} from '@/pages/Erp/erpPackage/packageRouter';
+import {PackageRouter} from '@/pages/Erp/package/packageRouter';
 
 const ErpRouterConfig = [
   {

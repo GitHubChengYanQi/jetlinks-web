@@ -4,9 +4,9 @@ import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
-import {erpPackageList} from "@/pages/Erp/erpPackage/erpPackageUrl";
+import {erpPackageList} from "@/pages/Erp/package/packageUrl";
 import {useRequest} from "@/util/Request";
-import TableList from "@/pages/Erp/erpPackage/erpPackageList/components/TableList";
+import TableList from "@/pages/Erp/package/packageList/components/TableList";
 
 const {Column} = AntTable;
 const {FormItem} = Form;

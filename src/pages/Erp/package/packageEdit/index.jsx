@@ -2,9 +2,9 @@ import React, {useRef, useState} from 'react';
 import {Button, Col, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
 import FormIndex from "@/components/Form/FormIndex";
-import ErpPackageTableList from "@/pages/Erp/erpPackageTable/erpPackageTableList";
-import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../erpPackageUrl';
-import * as SysField from '../erpPackageField';
+import ErpPackageTableList from "@/pages/Erp/packageTable/packageTableList";
+import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../packageUrl';
+import * as SysField from '../packageField';
 
 const {FormItem} = Form;
 const ApiConfig = {

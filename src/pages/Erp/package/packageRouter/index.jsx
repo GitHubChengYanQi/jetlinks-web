@@ -11,7 +11,7 @@ export const PackageRouter = [
   {
     name: '套餐管理',
     path: '/package',
-    component: lazy(() => import('../erpPackageList')),
+    component: lazy(() => import('../packageList')),
     fallback: <div>loading...</div>,
     exact: true,
   }

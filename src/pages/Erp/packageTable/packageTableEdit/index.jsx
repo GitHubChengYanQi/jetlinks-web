@@ -8,9 +8,9 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {erpPackageTableDetail, erpPackageTableAdd, erpPackageTableEdit} from '../erpPackageTableUrl';
-import * as SysField from '../erpPackageTableField';
-import {itemId, quantity} from "../erpPackageTableField";
+import {erpPackageTableDetail, erpPackageTableAdd, erpPackageTableEdit} from '../packageTableUrl';
+import * as SysField from '../packageTableField';
+import {itemId, quantity} from "../packageTableField";
 
 const {FormItem} = Form;
 

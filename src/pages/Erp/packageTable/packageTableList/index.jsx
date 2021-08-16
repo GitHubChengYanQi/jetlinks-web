@@ -15,9 +15,9 @@ import Form from '@/components/Form';
 import useRequest from '@/util/Request/useRequest';
 import Modal2 from '@/components/Modal';
 import ItemsList from "@/pages/Erp/items/ItemsList";
-import ErpPackageTableEdit from '../erpPackageTableEdit';
-import {erpPackageTableDelete, erpPackageTableList} from '../erpPackageTableUrl';
-import * as SysField from '../erpPackageTableField';
+import ErpPackageTableEdit from '../packageTableEdit';
+import {erpPackageTableDelete, erpPackageTableList} from '../packageTableUrl';
+import * as SysField from '../packageTableField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

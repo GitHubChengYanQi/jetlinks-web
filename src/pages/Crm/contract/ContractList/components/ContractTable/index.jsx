@@ -63,16 +63,15 @@ const ContractTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="甲方" value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="审核" name="audit" component={SysField.Audit} />
+          <FormItem mega-props={{span: 1}} placeholder="甲方" hidden={customerId || null} value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} />
         </>
       );
     };
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="合同名称" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>

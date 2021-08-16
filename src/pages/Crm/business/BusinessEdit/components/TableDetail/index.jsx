@@ -12,7 +12,7 @@ import {useRequest} from "@/util/Request";
 import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit";
 import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
 import ItemsList from "@/pages/Erp/items/ItemsList";
-import ErpPackageList from "@/pages/Erp/erpPackage/erpPackageList";
+import ErpPackageList from "@/pages/Erp/package/packageList";
 
 const {FormItem} = Form;
 const {Column} = AntTable;

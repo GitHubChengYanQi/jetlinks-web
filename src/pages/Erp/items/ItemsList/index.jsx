@@ -17,7 +17,7 @@ import {useRequest} from '@/util/Request';
 import Modal2 from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import CheckButton from '@/components/CheckButton';
-import {erpPackageTableAdd} from '@/pages/Erp/erpPackageTable/erpPackageTableUrl';
+import {erpPackageTableAdd} from '@/pages/Erp/packageTable/packageTableUrl';
 import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup,Submit} from '@formily/antd';

@@ -1,9 +1,9 @@
 import React, {useRef} from 'react';
 import {Button, Table as AntTable} from 'antd';
 import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
-import * as SysField from "@/pages/Erp/erpPackage/erpPackageField";
+import * as SysField from "@/pages/Erp/package/packageField";
 import Form from "@/components/Form";
-import {erpPackageTableList} from "@/pages/Erp/erpPackageTable/erpPackageTableUrl";
+import {erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
 
 const {FormItem} = Form;
 const {Column} = AntTable;

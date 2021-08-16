@@ -1,68 +1,170 @@
-import React, {useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
-import {Divider, Tree} from 'antd';
-import ListLayout from '@/layouts/ListLayout';
-import {useRequest} from '@/util/Request';
-import Select from '@/components/Select';
-import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
-import ContactsList from '@/pages/Crm/contacts/components/ContactsTable';
-import {customerIdSelect} from '@/pages/Crm/contacts/contactsUrl';
-import ContactsTable from '@/pages/Crm/contacts/components/ContactsTable';
+/**
+ * 联系人表列表页
+ *
+ * @author
+ * @Date 2021-07-23 10:06:12
+ */
+
+import React, {useEffect, useRef, useState} from 'react';
+import Table from '@/components/Table';
+import {Button, Table as AntTable} from 'antd';
+import DelButton from '@/components/DelButton';
+import AddButton from '@/components/AddButton';
+import EditButton from '@/components/EditButton';
+import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Modal2 from '@/components/Modal';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
+import Icon from '@/components/Icon';
+import CheckButton from '@/components/CheckButton';
+import PhoneList from '@/pages/Crm/phone/phoneList';
+import {batchDelete, contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
+import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
+import * as SysField from '@/pages/Crm/contacts/ContactsField';
+
+const {Column} = AntTable;
+const {FormItem} = Form;
+
+const ContactsTable = (props) => {
+
+  const {choose} = props;
 
 
-const CustomerList = () => {
-
-  const {loading, data,run} = useRequest({url: '/customer/list', method: 'POST', rowKey: 'customerId'});
-
-  const customer = data ? data.map((values) => {
-    return {
-      title: values.customerName,
-      key: values.customerId,
-    };
-  }) : [];
-
-
-  const [customerId, setCustomerId] = useState();
-
-  const [value,setValue] = useState();
-
-
-
-  const Left = () => {
+  const ref = useRef(null);
+  const tableRef = useRef(null);
+  const refPhone = useRef(null);
+  const actions = () => {
     return (
       <>
-        <div>
-          <Select api={customerIdSelect} placeholder='搜索客户' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
-            await run(
-              {
-                data:{
-                  customerId : value
-                }
-              }
-            );
-            setValue(value);
-          }} />
-        </div>
-        <Tree
-          showLine
-          onSelect={(value) => {
-            setCustomerId(value);
-          }}
-          defaultExpandedKeys={['']}
-          treeData={[
-            {
-              title: '所有客户',
-              key: '',
-              children: customer
-            },
-          ]}
-        />
-      </>);
+        <AddButton onClick={() => {
+          ref.current.open(false);
+        }} />
+      </>
+    );
   };
+
+
+  const [search, setSearch] = useState(false);
+
+  const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} placeholder="职务" name="job" component={SysField.Job} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerId} />
+        </>
+      );
+    };
+
+
+    return (
+      <div style={{maxWidth: 800}}>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="联系人姓名" name="contactsName" component={SysField.ContactsName} />
+          {search ? formItem() : null}
+
+        </MegaLayout>
+
+      </div>
+    );
+  };
+
+
+  const Search = () => {
+    return (
+      <>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+              if (search) {
+                setSearch(false);
+              } else {
+                setSearch(true);
+              }
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          </FormButtonGroup>
+        </MegaLayout>
+      </>
+    );
+  };
+  const [ids, setIds] = useState([]);
+
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...batchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
+
+
   return (
-    <ListLayout left={Left()}>
-      <ContactsTable customerId={customerId} />
-    </ListLayout>
+    <>
+      <Table
+        title={<Breadcrumb />}
+        api={contactsList}
+        rowKey="contactsId"
+        searchForm={searchForm}
+        SearchButton={Search()}
+        layout={search}
+        footer={footer}
+        actions={actions()}
+        ref={tableRef}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
+      >
+        <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" render={(text, record) => {
+          return (
+            <Button size="small" type="link" onClick={() => {
+              refPhone.current.open(record.contactsId);
+            }}>{text}</Button>
+          );
+        }} />
+        <Column title="职务" align="center" width={200} dataIndex="job" />
+        <Column title="客户名称" dataIndex="clientId" render={(value, record) => {
+          return (
+            record.customerResult ? record.customerResult.customerName : null
+          );
+        }} />
+        <Column />
+        <Column title="操作" fixed='right' width={choose ? 200 : 100} align="right" render={(value, record) => {
+          return (
+            <>
+              {choose ? <CheckButton onClick={() => {
+                choose(record);
+                props.onSuccess();
+              }} /> : null}
+              <EditButton onClick={() => {
+                ref.current.open(record.contactsId);
+              }} />
+              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={() => {
+                tableRef.current.refresh();
+              }} />
+            </>
+          );
+        }} />
+      </Table>
+      <Modal2 width={800} title="联系人" component={ContactsEdit} onSuccess={() => {
+        tableRef.current.refresh();
+        ref.current.close();
+      }} ref={ref} />
+      <Modal2 width={800}  component={PhoneList} onSuccess={() => {
+        refPhone.current.close();
+      }} ref={refPhone} />
+    </>
   );
 };
-export default CustomerList;
+
+export default ContactsTable;

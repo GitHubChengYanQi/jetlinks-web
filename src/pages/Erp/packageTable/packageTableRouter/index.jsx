@@ -9,8 +9,8 @@ import React, {lazy} from 'react';
 
 export const ErpPackageTableRouter = [
   {
-    path: '/erpPackageTable',
-    component: lazy(() => import('../erpPackageTableList')),
+    path: '/packageTable',
+    component: lazy(() => import('../packageTableList')),
     fallback: <div>loading...</div>,
     exact: true,
   }

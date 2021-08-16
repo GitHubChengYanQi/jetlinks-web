@@ -122,7 +122,7 @@ const CustomerDetail = () => {
                   <ContractTable customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="订单" key="5">
-                  <OrderList />
+                  <OrderList customerId={data.customerId} />
                 </TabPane>
                 <TabPane tab="回款" key="6">
                   Content of Tab Pane 3

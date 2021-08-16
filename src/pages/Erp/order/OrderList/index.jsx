@@ -26,7 +26,10 @@ import * as SysField from '../OrderField';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const OrderList = () => {
+const OrderList = (props) => {
+
+  const {customerId} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
 
