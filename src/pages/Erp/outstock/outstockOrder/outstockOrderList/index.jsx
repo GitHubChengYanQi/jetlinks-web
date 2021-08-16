@@ -9,18 +9,15 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Button, Modal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {outstockList, outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
-import OutstockOrderEdit from '../outstockOrderEdit';
-import * as SysField from '../outstockOrderField';
+
 import Modal2 from '@/components/Modal';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import {outstockEdit} from '@/pages/Erp/outstock/OutstockUrl';
 import Message from '@/components/Message';
+import { outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
+import OutstockOrderEdit from '../outstockOrderEdit';
 
 const {Column} = AntTable;
 
@@ -102,12 +99,12 @@ const OutstockOrderList = () => {
               {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
                 confirmOk(record);
               }}><Icon type="icon-chuku" />出库</Button>: null}
-              <EditButton onClick={() => {
+              {record.state === 0 ? <EditButton onClick={() => {
                 ref.current.open(record.outstockOrderId);
-              }}/>
-              <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={()=>{
+              }}/> : null }
+              {record.state === 0 ? <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={()=>{
                 tableRef.current.refresh();
-              }}/>
+              }}/> : null }
             </>
           );
         }} width={300}/>

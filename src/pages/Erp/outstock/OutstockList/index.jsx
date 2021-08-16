@@ -85,7 +85,7 @@ const OutstockList = (props) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.outstockId);
+                ref.current.open(record);
               }} />
               <DelButton api={outstockDelete} value={record.outstockId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -97,7 +97,7 @@ const OutstockList = (props) => {
       <Modal2 title="产品出库" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} outstockOrderId={outstockOrderId}  />
+      }} ref={ref} outstockOrderId={outstockOrderId} />
     </>
   );
 };
