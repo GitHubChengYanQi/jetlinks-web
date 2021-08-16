@@ -6,11 +6,11 @@
  */
 
 import React, {useRef, useState} from 'react';
+import {useRequest} from '@/util/Request';
+import {createFormActions, FormEffectHooks} from '@formily/antd';
 import Form from '@/components/Form';
 import {outstockDetail, outstockAdd, outstockEdit} from '../OutstockUrl';
 import * as SysField from '../OutstockField';
-import {useRequest} from '@/util/Request';
-import {createFormActions, FormEffectHooks} from '@formily/antd';
 
 const {FormItem} = Form;
 const {onFieldValueChange$} = FormEffectHooks;
