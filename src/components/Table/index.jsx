@@ -23,6 +23,7 @@ const TableWarp = ({
   selectionType,
   onChange,
   layout,
+  listHeader,
   labelAlign,
   footer: parentFooter,
   ...props
@@ -112,13 +113,13 @@ const TableWarp = ({
   };
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
-      <div className={style.listHeader}>
+      {listHeader ? <div className={style.listHeader}>
         {title && <div className="title">{title}</div>}
         <div className="actions">
           {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
           <div className="button">{actions}</div>
         </div>
-      </div>
+      </div> : null}
       {searchForm ? <div className="search">
         <Form
           layout={layout || 'inline'}

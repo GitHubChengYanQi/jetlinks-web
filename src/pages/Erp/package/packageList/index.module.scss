@@ -9,3 +9,36 @@
   min-width:50%;
   margin:10px auto;
 }
+
+
+.tableWarp {
+  width: 100%;
+  margin: 12px 0;
+}
+
+.listHeader {
+  display: flex;
+  box-sizing: content-box;
+  height: 32px;
+  padding: 16px 16px;
+  background-color: #FFF;
+  border-bottom: 1px solid #f0f0f0;
+
+
+  :global {
+    .title {
+      flex-grow: 3;
+    }
+
+    .actions {
+      display: flex;
+      flex-grow: 27;
+      text-align: right;
+
+      .button {
+        //flex: 0;
+        flex-grow: 1;
+      }
+    }
+  }
+}

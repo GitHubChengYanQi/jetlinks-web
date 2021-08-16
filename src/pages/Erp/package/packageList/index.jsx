@@ -5,7 +5,7 @@
  * @Date 2021-08-04 11:01:43
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {Button, Card, Col, Input, message, Row, Table as AntTable, Tabs} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -15,7 +15,6 @@ import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
 import style from "@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less";
-import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import Breadcrumb from "@/components/Breadcrumb";
 import {erpPackageTableDelete, erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
@@ -25,6 +24,7 @@ import styles from './index.module.scss';
 import useRequest from '../../../../util/Request/useRequest';
 import {erpPackageDelete, erpPackageList} from '../packageUrl';
 import * as SysField from '../packageField';
+import Table from "@/components/Table";
 
 
 
@@ -116,8 +116,8 @@ const ErpPackageList = (props) => {
             <Table
               api={erpPackageList}
               rowKey="packageId"
-              // searchForm={searchForm}
-              actions={actions()}
+              searchForm={searchForm}
+              // actions={actions()}
               ref={tableRef}
               listHeader={false}
               footer={footer}
@@ -131,7 +131,6 @@ const ErpPackageList = (props) => {
               }} sorter/>
               <Column/>
               <Column title="操作" fixed='right' width={200} align="right" render={(value, record) => {
-
                 return (
                   <>
                     {choose ? <CheckButton onClick={()=>{
