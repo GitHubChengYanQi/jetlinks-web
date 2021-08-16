@@ -40,13 +40,21 @@ export const DeliveryTime = (props) => {
   return (<DatePicker   {...props} />);
 };
 export const Number = (props) => {
-  return (<InputNumber   {...props} />);
+  const {number} = props;
+  const inventory = number ? number[0].inventory : null;
+  return (<InputNumber   {...props} onChange={(value)=>{
+    if (value > inventory){
+     props.onChange(null);
+    }else {
+      props.onChange(value);
+    }
+  }} />);
 };
 export const Price = (props) => {
   return (<InputNumber   {...props} />);
 };
 export const BrandId = (props) => {
-  const {storehouseid,state} = props;
+  const {storehouseid,state,brandid} = props;
 
   if (state){
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -64,7 +72,10 @@ export const BrandId = (props) => {
     };
   }) : null;
 
-  return (<AntSelect options={data} style={{width:200}}  {...props} />);
+  return (<AntSelect options={data} style={{width:200}}  {...props} onChange={(value)=>{
+    props.onChange(value);
+    brandid ? brandid(value) : null;
+  }} />);
 };
 export const ItemIdSelect = (props) => {
   const {storehouseid,itemid,state} = props;
