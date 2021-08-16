@@ -27,7 +27,7 @@ const {FormItem} = Form;
 
 const OutstockList = (props) => {
 
-  const {outstockOrderId} = props;
+  const {outstockOrderId,value} = props;
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -40,17 +40,17 @@ const OutstockList = (props) => {
 
 
     return (
-      <FormItem mega-props={{span: 1}} placeholder="出库单" name="outstockOrderId" hidden value={outstockOrderId} component={SysField.ItemIdSelect} />
+      <FormItem mega-props={{span: 1}} placeholder="出库单" name="outstockOrderId" hidden value={outstockOrderId || value} component={SysField.ItemIdSelect} />
     );
   };
 
   return (
     <>
-      <Button style={{width:'100%'}} onClick={()=>{
+      {value ? <>出库产品</> : <Button style={{width: '100%'}} onClick={() => {
         ref.current.open(false);
       }}>
         添加库存
-      </Button>
+      </Button>}
       <Table
         api={outstockList}
         rowKey="outstockId"

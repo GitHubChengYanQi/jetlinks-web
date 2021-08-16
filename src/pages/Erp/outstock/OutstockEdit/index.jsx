@@ -32,7 +32,7 @@ const OutstockEdit = ({...props}) => {
 
   const [storehouse,setStorehouse] = useState();
 
-  const [state,setState] = useState(false);
+  const [state,setState] = useState();
 
   return (
     <Form

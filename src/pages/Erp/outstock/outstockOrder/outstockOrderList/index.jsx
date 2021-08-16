@@ -16,26 +16,26 @@ import Modal2 from '@/components/Modal';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
-import { outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
+import {outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
+import Breadcrumb from '@/components/Breadcrumb';
+import OutstockList from '@/pages/Erp/outstock/OutstockList';
 
 const {Column} = AntTable;
 
 const OutstockOrderList = () => {
   const ref = useRef(null);
+  const refSee = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
-
-
-
 
 
   const {run} = useRequest(outstockOrderEdit, {
@@ -75,44 +75,53 @@ const OutstockOrderList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={outstockOrderList}
         rowKey="outstockOrderId"
         // searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="出库单号" dataIndex="outstockOrderId"/>
-        <Column title="计划出库时间" dataIndex="time"/>
+        <Column title="出库单号" dataIndex="outstockOrderId" render={(text, record) => {
+          return <Button type="link" onClick={() => {
+            refSee.current.open(record.outstockOrderId);
+          }}>{text}</Button>;
+        }} />
+        <Column title="计划出库时间" dataIndex="time" />
         <Column title="出库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
             <>
-              {record.state ? '已出库':'未出库'}
+              {record.state ? '已出库' : '未出库'}
             </>
           );
         }} />
 
-        <Column/>
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
                 confirmOk(record);
-              }}><Icon type="icon-chuku" />出库</Button>: null}
+              }}><Icon type="icon-chuku" />出库</Button> : null}
               {record.state === 0 ? <EditButton onClick={() => {
                 ref.current.open(record.outstockOrderId);
-              }}/> : null }
-              {record.state === 0 ? <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/> : null }
+              }} /> : null}
+              {record.state === 0 ?
+                <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
+                  tableRef.current.refresh();
+                }} /> : null}
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Modal2 width={1200} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
+      <Modal2 width={1200}  component={OutstockList} onSuccess={() => {
+        tableRef.current.refresh();
+        ref.current.close();
+      }} ref={refSee} />
     </>
   );
 };
