@@ -33,28 +33,26 @@ const TableList = (props) => {
 
   return (
     <>
-      <div style={{marginTop: 81}} >
-        <Table
-          title={<Breadcrumb />}
-          api={erpPackageTableList}
-          rowKey="id"
-          ref={tableRef}
-          searchForm={searchForm}
-        >
-          <Column title="产品名称"  dataIndex="items" render={(value, record)=>{
-            return (
-              <div>
-                {
-                  record.itemsResult ? record.itemsResult.name : null
-                }
-              </div>
-            );
-          }} />
-          <Column title="销售单价" align='center' dataIndex="salePrice"/>
-          <Column title="数量" align='center' dataIndex="quantity"/>
-          <Column title="小计" align='center' dataIndex="totalPrice"/>
-        </Table>
-      </div>
+      <Table
+        title={<Breadcrumb />}
+        api={erpPackageTableList}
+        rowKey="id"
+        ref={tableRef}
+        searchForm={searchForm}
+      >
+        <Column title="产品名称"  dataIndex="items" render={(value, record)=>{
+          return (
+            <div>
+              {
+                record.itemsResult ? record.itemsResult.name : null
+              }
+            </div>
+          );
+        }} />
+        <Column title="销售单价" align='center' dataIndex="salePrice"/>
+        <Column title="数量" align='center' dataIndex="quantity"/>
+        <Column title="小计" align='center' dataIndex="totalPrice"/>
+      </Table>
     </>
   );
 };

@@ -55,7 +55,7 @@ const TableDetail = (props) => {
         }}>
           添加产品套餐
         </Button>
-        <Modal2 width={800} title="选择" component={ErpPackageList}
+        <Modal2 width={1900} title="选择" component={ErpPackageList}
           onSuccess={() => {
             refAddAll.current.close();
             tableRef.current.refresh();

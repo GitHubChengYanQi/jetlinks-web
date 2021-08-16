@@ -13,20 +13,19 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
-import Breadcrumb from '@/components/Breadcrumb';
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
+import style from "@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less";
+import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
+import Breadcrumb from "@/components/Breadcrumb";
 import {erpPackageTableDelete, erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
 import CheckButton from '@/components/CheckButton';
-import style from '@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less';
-import Table from '@/components/Table';
-import useRequest from '../../../../util/Request/useRequest';
 import ErpPackageEdit from '../packageEdit';
 import styles from './index.module.scss';
+import useRequest from '../../../../util/Request/useRequest';
 import {erpPackageDelete, erpPackageList} from '../packageUrl';
 import * as SysField from '../packageField';
-import {packageId} from "../packageField";
-import ErpPackageTableList from "@/pages/Erp/packageTable/packageTableList";
+
 
 
 const {Column} = AntTable;
@@ -105,56 +104,64 @@ const ErpPackageList = (props) => {
 
   return (
     <>
-      <div className={styles.wrap}>
-        <div className={styles.col}>
-          <Table
-            title={<Breadcrumb />}
-            api={erpPackageList}
-            rowKey="packageId"
-            searchForm={searchForm}
-            actions={actions()}
-            ref={tableRef}
-            footer={footer}
-          >
-            <Column title="套餐名称" width={500} dataIndex="productName" render={(value, record) => {
-              return (
-                <Button type="link" onClick={() => {
-                  setPackageId(record.packageId);
-                }}>{record.productName}</Button>
-              );
-            }} sorter/>
-            <Column/>
-            <Column title="操作" fixed='right' width={ choose ? 200 : 100} align="right" render={(value, record) => {
-
-              return (
-                <>
-                  {choose ? <CheckButton onClick={()=>{
-                    choose(record);
-                    props.onSuccess();
-                  }} /> : null}
-                  {!disabled&&
-                  <CheckButton onClick={() => {
-                    select({data:{packageId:record.packageId}});
-                  }}/>}
-                  <EditButton onClick={() => {
-                    ref.current.open(record.packageId);
-                  }}/>
-                  <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
-                    run(record.packageId);
-                    tableRef.current.refresh();
-                  }}/>
-                </>
-              );
-            }} />
-          </Table>
-
-          <Modal2 width={900}  title="套餐" component={ErpPackageEdit} onSuccess={() => {
-            tableRef.current.refresh();
-            ref.current.close();
-          }} ref={ref} />
+      <div  className={style.tableWarp}>
+        <div className={style.listHeader}>
+          <div className="title"><Breadcrumb /></div>
+          <div className="actions">
+            <div className="button">{actions()}</div>
+          </div>
         </div>
-        <div className={styles.col}>
-          <TableList packageId = {PackageId === undefined ? 111 : PackageId} />
+        <div className={styles.wrap}>
+          <div className={styles.col}>
+            <Table
+              api={erpPackageList}
+              rowKey="packageId"
+              // searchForm={searchForm}
+              actions={actions()}
+              ref={tableRef}
+              listHeader={false}
+              footer={footer}
+            >
+              <Column title="套餐名称" width={500} dataIndex="productName" render={(value, record) => {
+                return (
+                  <Button type="link" onClick={() => {
+                    setPackageId(record.packageId);
+                  }}>{record.productName}</Button>
+                );
+              }} sorter/>
+              <Column/>
+              <Column title="操作" fixed='right' width={200} align="right" render={(value, record) => {
+
+                return (
+                  <>
+                    {choose ? <CheckButton onClick={()=>{
+                      choose(record);
+                      props.onSuccess();
+                    }} /> : null}
+                    {!disabled&&
+                    <CheckButton onClick={() => {
+                      select({data:{packageId:record.packageId}});
+                    }}/>}
+                    <EditButton onClick={() => {
+                      ref.current.open(record.packageId);
+                    }}/>
+                    <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
+                      run(record.packageId);
+                      tableRef.current.refresh();
+                    }}/>
+                  </>
+                );
+              }} />
+            </Table>
+
+            <Modal2 width={900}  title="套餐" component={ErpPackageEdit}  onSuccess={() => {
+              tableRef.current.refresh();
+              ref.current.close();
+            }} ref={ref} />
+          </div>
+          <div className={styles.col}>
+            <TableList packageId = {PackageId === undefined ? 111 : PackageId} />
+          </div>
         </div>
       </div>
     </>
