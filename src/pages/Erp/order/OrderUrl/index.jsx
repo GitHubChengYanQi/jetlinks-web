@@ -63,6 +63,11 @@ export const ProductNameListSelect = {
   method: 'POST',
 };
 
+export const CustomerListSelect = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
+
 
 
 

@@ -56,6 +56,9 @@ export const DeliveryId = (props) => {
 export const ItemId = (props) => {
   return (<Select api={apiUrl.ProductNameListSelect} Select {...props}/>);
 };
+export const CustomerListSelect = (props) => {
+  return (<Select api={apiUrl.CustomerListSelect} Select {...props}/>);
+};
 //  产品金额
 export const StockItemId = (props) => {
   return (<Input   {...props} />);

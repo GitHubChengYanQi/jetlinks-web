@@ -27,8 +27,9 @@ const OutstockEdit = ({...props}) => {
 
   const {value} = props;
 
-  const {data, run} = useRequest({url: '/stock/list', method: 'POST',data:{storehouseId:value.storehouseId}});
-  const {data:itemData, run:itemRun} = useRequest({url: '/stock/list', method: 'POST',data:{storehouseId:value.storehouseId,itemId:value.itemId}});
+  const {data, run} = useRequest({url: '/stock/listAll', method: 'POST',data:{storehouseId:value.storehouseId}});
+  const {data:itemData, run:itemRun} = useRequest({url: '/stock/listAll', method: 'POST',data:{storehouseId:value.storehouseId,itemId:value.itemId}});
+
 
   const [storehouse,setStorehouse] = useState();
 
@@ -41,7 +42,7 @@ const OutstockEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="outstockId"
-      effects={() => {
+      effect={() => {
         const {setFieldState} = createFormActions();
         onFieldValueChange$('storehouseId').subscribe(({value}) => {
           setFieldState('itemId', state => {
@@ -76,7 +77,7 @@ const OutstockEdit = ({...props}) => {
           }
         );
       }} required />
-      <FormItem label="出库品牌" initialValue={false} name="brandId" component={SysField.BrandId} storehouseid={itemData || null} required />
+      <FormItem label="出库品牌" initialValue={false} name="brandId" component={SysField.BrandId} storehouseid={itemData || null} state={state} required />
       <FormItem label="出库数量" name="number" component={SysField.Number} required />
       <FormItem label="出库价格" name="price" component={SysField.Price} required />
       <FormItem label="出库时间" name="deliveryTime" component={SysField.DeliveryTime} required />

@@ -64,8 +64,9 @@ const ContractTable = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
-          <FormItem mega-props={{span: 1}} placeholder="审核" name="audit" component={SysField.Audit} />
-          <FormItem mega-props={{span: 1}} placeholder="甲方" hidden={customerId || null} value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} />
+          {
+            customerId ? null :  <FormItem mega-props={{span: 1}} placeholder="甲方"  value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} />
+          }
         </>
       );
     };
@@ -91,6 +92,9 @@ const ContractTable = (props) => {
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="audit" component={SysField.Name} />
+              {
+                customerId ?  <FormItem mega-props={{span: 1}} placeholder="甲方"  hidden value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} /> : null
+              }
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>

@@ -49,6 +49,7 @@ export const BrandId = (props) => {
   const {storehouseid,state} = props;
 
   if (state){
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(()=>{
       props.onChange(null);
     },[storehouseid]);
@@ -69,6 +70,7 @@ export const ItemIdSelect = (props) => {
   const {storehouseid,itemid,state} = props;
 
   if (state){
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(()=>{
       props.onChange(null);
     },[storehouseid]);

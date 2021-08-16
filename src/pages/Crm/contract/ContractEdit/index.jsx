@@ -124,7 +124,7 @@ const AddContractEdit = ({...props}) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="contractId"
-              effects={() => {
+              effect={() => {
                 const {setFieldState} = createFormActions();
                 onFieldValueChange$('partyA').subscribe(({value}) => {
                   setFieldState('partyAContactsId', state => {
