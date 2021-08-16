@@ -11,15 +11,14 @@ import {Button, Modal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-
+import Breadcrumb from '@/components/Breadcrumb';
+import OutstockList from '@/pages/Erp/outstock/OutstockList';
 import Modal2 from '@/components/Modal';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
-import {outstock, outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
+import {outstock, outstockOrderDelete, outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
-import Breadcrumb from '@/components/Breadcrumb';
-import OutstockList from '@/pages/Erp/outstock/OutstockList';
 
 const {Column} = AntTable;
 

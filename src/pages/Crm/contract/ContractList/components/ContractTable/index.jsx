@@ -151,7 +151,6 @@ const ContractTable = (props) => {
     });
   }
 
-
   return (
     <>
       <Table
