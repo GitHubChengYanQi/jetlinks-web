@@ -42,7 +42,7 @@ const OutstockEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="outstockId"
-      effects={() => {
+      effect={() => {
         const {setFieldState} = createFormActions();
         onFieldValueChange$('storehouseId').subscribe(({value}) => {
           setFieldState('itemId', state => {
