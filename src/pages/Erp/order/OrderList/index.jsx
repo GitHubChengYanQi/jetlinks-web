@@ -22,6 +22,7 @@ import Icon from '@/components/Icon';
 import OrderEdit from '../OrderEdit';
 import {orderDelete, orderList} from '../OrderUrl';
 import * as SysField from '../OrderField';
+import {CustomerListSelect} from '../OrderField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -41,6 +42,9 @@ const OrderList = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="订单状态" name="state" component={SysField.State} />
+          {
+            customerId ? null :  <FormItem mega-props={{span: 1}} placeholder="客户名称"  value={customerId || null} name="customerId" component={SysField.CustomerListSelect} />
+          }
         </>
       );
     };
@@ -66,8 +70,14 @@ const OrderList = (props) => {
               toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
+            <MegaLayout inline>
+              {
+                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || null} name="customerId" component={SysField.CustomerListSelect} /> : null
+              }
+            </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
+
       </>
     );
   };
