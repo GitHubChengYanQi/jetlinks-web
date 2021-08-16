@@ -41,3 +41,8 @@ export const outstockList = {
   rowKey:'outstockId'
 };
 
+export const outstock = {
+  url: '/outstockOrder/outStock',
+  method: 'POST',
+  rowKey:'outstockId'
+};

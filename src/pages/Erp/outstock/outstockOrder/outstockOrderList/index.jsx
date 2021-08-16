@@ -16,7 +16,7 @@ import Modal2 from '@/components/Modal';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
-import { outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
+import {outstock, outstockOrderDelete, outstockOrderEdit, outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
 
 const {Column} = AntTable;
@@ -38,7 +38,7 @@ const OutstockOrderList = () => {
 
 
 
-  const {run} = useRequest(outstockOrderEdit, {
+  const {run} = useRequest(outstock, {
     manual: true, onSuccess: () => {
       openNotificationWithIcon('success');
       tableRef.current.refresh();
