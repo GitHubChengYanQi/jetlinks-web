@@ -6,22 +6,29 @@
  */
 
 import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
+
 import {Button, Card, Col, Input, message, Row, Table as AntTable, Tabs} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
-import Breadcrumb from "@/components/Breadcrumb";
-import TableList from "@/pages/Erp/package/packageList/components/TableList";
-import {erpPackageTableDelete, erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
-import CheckButton from "@/components/CheckButton";
-import useRequest from "../../../../util/Request/useRequest";
+import Breadcrumb from '@/components/Breadcrumb';
+import TableList from '@/pages/Erp/package/packageList/components/TableList';
+import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
+import {erpPackageTableDelete, erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
+import CheckButton from '@/components/CheckButton';
+import style from '@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less';
+import Table from '@/components/Table';
+import useRequest from '../../../../util/Request/useRequest';
 import ErpPackageEdit from '../packageEdit';
-import * as SysField from '../packageField';
+import styles from './index.module.scss';
 import {erpPackageDelete, erpPackageList} from '../packageUrl';
-import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
+import * as SysField from '../packageField';
+import {packageId} from "../packageField";
+import ErpPackageTableList from "@/pages/Erp/packageTable/packageTableList";
+
+
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -31,12 +38,13 @@ const ErpPackageList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const [data, setData] = useState();
+  const packageRef = useRef(null);
+  // const [data, setData] = useState();
   const [PackageId, setPackageId] = useState();
   const [ids, setIds] = useState([]);
 
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
-  const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
+  // const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
   const {run:select} = useRequest(erpPackageTableList,
     {manual: true,
       onError: (error) => {
@@ -97,51 +105,58 @@ const ErpPackageList = (props) => {
 
   return (
     <>
-      <div>
-        <Table
-          title={<Breadcrumb />}
-          api={erpPackageList}
-          rowKey="packageId"
-          searchForm={searchForm}
-          actions={actions()}
-          ref={tableRef}
-          expandable={{
-            expandedRowRender: record => <TableList value = {record.packageId}/>
-          }}
-          footer={footer}
-        >
-          <Column title="套餐名称" width={500} dataIndex="productName" sorter/>
-          <Column/>
-          <Column title="操作" fixed='right' width={ choose ? 200 : 100} align="right" render={(value, record) => {
+      <div className={styles.wrap}>
+        <div className={styles.col}>
+          <Table
+            title={<Breadcrumb />}
+            api={erpPackageList}
+            rowKey="packageId"
+            searchForm={searchForm}
+            actions={actions()}
+            ref={tableRef}
+            footer={footer}
+          >
+            <Column title="套餐名称" width={500} dataIndex="productName" render={(value, record) => {
+              return (
+                <Button type="link" onClick={() => {
+                  setPackageId(record.packageId);
+                }}>{record.productName}</Button>
+              );
+            }} sorter/>
+            <Column/>
+            <Column title="操作" fixed='right' width={ choose ? 200 : 100} align="right" render={(value, record) => {
 
-            return (
-              <>
-                {choose ? <CheckButton onClick={()=>{
-                  choose(record);
-                  props.onSuccess();
-                }} /> : null}
-                {!disabled&&
-                <CheckButton onClick={() => {
-                  select({data:{packageId:record.packageId}});
-                }}/>}
-                <EditButton onClick={() => {
-                  ref.current.open(record.packageId);
-                }}/>
-                <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
-                  run(record.packageId);
-                  tableRef.current.refresh();
-                }}/>
-              </>
-            );
-          }} />
-        </Table>
+              return (
+                <>
+                  {choose ? <CheckButton onClick={()=>{
+                    choose(record);
+                    props.onSuccess();
+                  }} /> : null}
+                  {!disabled&&
+                  <CheckButton onClick={() => {
+                    select({data:{packageId:record.packageId}});
+                  }}/>}
+                  <EditButton onClick={() => {
+                    ref.current.open(record.packageId);
+                  }}/>
+                  <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
+                    run(record.packageId);
+                    tableRef.current.refresh();
+                  }}/>
+                </>
+              );
+            }} />
+          </Table>
 
+          <Modal2 width={900}  title="套餐" component={ErpPackageEdit} onSuccess={() => {
+            tableRef.current.refresh();
+            ref.current.close();
+          }} ref={ref} />
+        </div>
+        <div className={styles.col}>
+          <TableList packageId = {PackageId === undefined ? 111 : PackageId} />
+        </div>
       </div>
-
-      <Modal2 width={900}  title="套餐" component={ErpPackageEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
     </>
   );
 };

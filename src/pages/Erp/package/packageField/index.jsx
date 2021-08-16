@@ -22,6 +22,7 @@ export const packageId = (props) =>{
 };
 
 
+// 产品名称
 export const itemId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select api={apiUrl.ProductNameListSelect} {...props}/>);
 };
