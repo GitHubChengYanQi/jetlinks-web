@@ -6,106 +6,66 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input,Select as AntSelect ,InputNumber} from 'antd';
+import {Input, Select as AntSelect, InputNumber} from 'antd';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
 import StockList from '@/pages/Erp/stock/StockList';
 import DatePicker from '@/components/DatePicker';
 import * as apiUrl from '../OutstockUrl';
+import StockTable from '@/pages/Erp/stock/components/StockTable';
 
 const {Search} = Input;
 
 
-export const Stock = (props) => {
-  const {onChange, val} = props;
-  const [value, setValue] = useState(val);
-  const ref = useRef(null);
-  return (<>
-    <Search style={{width: 200}} {...props} value={value} onSearch={() => {
-      ref.current.open(false);
-    }} enterButton />
-    <Drawer width={1700} title="选择" component={StockList} onSuccess={() => {
-      ref.current.close();
-    }} ref={ref} choose={(choose) => {
-      setValue(choose.name);
-      onChange(choose.stockId);
-      ref.current.close();
-    }} />
-  </>);
-};
 export const StockId = (props) => {
-  return (<Input   {...props} />);
+
+  const {onchange,onChange} = props;
+
+
+  const ref = useRef(null);
+
+  return (
+    <>
+      <Search style={{width: 200}} onSearch={() => {
+        ref.current.open(false);
+      }} enterButton {...props} />
+      <Drawer width={1700} title="选择" component={StockTable} onSuccess={() => {
+        ref.current.close();
+      }} ref={ref} choose={(record) => {
+        onchange(record);
+        onChange(record.stockId);
+      }}
+      />
+    </>);
 };
-export const DeliveryTime = (props) => {
-  return (<DatePicker   {...props} />);
+export const Storehouse = (props) => {
+  const {val,onChange} = props;
+  onChange(val ? val.storehouseId : null);
+  // eslint-disable-next-line no-nested-ternary
+  return (<Input style={{width:200}} value={val ? (val.storehouseResult ? val.storehouseResult.name : null) : null} disabled   />);
 };
+export const Items = (props) => {
+  const {val,onChange} = props;
+  onChange(val ? val.itemId : null);
+
+  // eslint-disable-next-line no-nested-ternary
+  return (<Input style={{width:200}} value={val ? (val.itemsResult ? val.itemsResult.name : null) : null}  disabled />);
+};
+export const Brand = (props) => {
+  const {val,onChange} = props;
+  onChange(val ? val.brandId : null);
+
+  // eslint-disable-next-line no-nested-ternary
+  return (<Input style={{width:200}} value={val ? (val.brandResult ? val.brandResult.brandName : null) : null} disabled />);
+};
+
 export const Number = (props) => {
   return (<InputNumber   {...props} />);
 };
-export const Price = (props) => {
-  return (<InputNumber   {...props} />);
+export const OutstockOrderId = (props) => {
+  props.onChange(props.val);
+  return (<Input   {...props} />);
 };
-export const BrandId = (props) => {
-  const {storehouseid,state} = props;
-
-  if (state){
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(()=>{
-      props.onChange(null);
-    },[storehouseid]);
-  }
-
-
-
-  const data = storehouseid ? storehouseid.map((value,index)=>{
-    return {
-      label : value.brandResult ? value.brandResult.brandName : null,
-      value : value.brandId,
-    };
-  }) : null;
-
-  return (<AntSelect options={data} style={{width:200}}  {...props} />);
-};
-export const ItemIdSelect = (props) => {
-  const {storehouseid,itemid,state} = props;
-
-  if (state){
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(()=>{
-      props.onChange(null);
-    },[storehouseid]);
-  }
-
-
-  const data = storehouseid ? storehouseid.map((value,index)=>{
-    return {
-      label : value.itemsResult ? value.itemsResult.name : null,
-      value : value.itemId,
-    };
-  }) : null;
-
-  return (<AntSelect options={data} style={{width:200}}  {...props} onChange={(value)=>{
-    props.onChange(value);
-    itemid ? itemid(value) : null;
-  }} />);
-};
-
-export const StoreHouseSelect = (props) => {
-
-  const {storehouseid, onChange} = props;
-
-  return (<Select api={apiUrl.storeHouseSelect} {...props} onChange={(value) => {
-    onChange(value);
-    storehouseid(value);
-  }} />);
-};
-
-// export const Items = (props) => {
-//
-//   const {storehouseid, onChange} = props;
-//
-//   return (<Select api={apiUrl.storeHouseSelect} {...props} />);
-// };
 
 
 

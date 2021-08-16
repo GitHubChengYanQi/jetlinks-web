@@ -11,7 +11,7 @@ export const OutstockRouter = [
   {
     path: '/outstock',
     name: '出库管理',
-    component: lazy(() => import('../OutstockList')),
+    component: lazy(() => import('../outstockOrder/outstockOrderList/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }
