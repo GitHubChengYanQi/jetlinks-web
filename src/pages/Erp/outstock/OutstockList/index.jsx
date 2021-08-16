@@ -168,7 +168,7 @@ const OutstockList = () => {
             <>
               {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
                 confirmOk(record);
-              }}><Icon type="icon-shenhe" />出库</Button>: null}
+              }}><Icon type="icon-chuku" />出库</Button>: null}
               {record.state === 0 ?<EditButton onClick={() => {
                 ref.current.open(record);
               }}/> : null}
