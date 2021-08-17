@@ -23,7 +23,7 @@ const TableWarp = ({
   selectionType,
   onChange,
   layout,
-  listHeader,
+  listHeader = true,
   labelAlign,
   footer: parentFooter,
   ...props

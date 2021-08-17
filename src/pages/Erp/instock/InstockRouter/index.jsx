@@ -10,7 +10,7 @@ import React, {lazy} from 'react';
 export const InstockRouter = [
   {
     path: '/instock',
-    name: '入库干管理',
+    name: '入库管理',
     component: lazy(() => import('../InstockList')),
     fallback: <div>loading...</div>,
     exact: true,
