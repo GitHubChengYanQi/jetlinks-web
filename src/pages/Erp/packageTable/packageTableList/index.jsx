@@ -109,6 +109,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
           console.log(tableRef1);
           tableRef1.current.refresh();
           refAddOne.current.close();
+          tableRef.current.refresh();
         }}
         ref={refAddOne}
         packageId={props.value}

@@ -34,27 +34,30 @@ const TableList = (props) => {
 
   return (
     <>
-      <Table
-        title={<Breadcrumb />}
-        api={erpPackageTableList}
-        rowKey="id"
-        ref={tableRef}
-        listHeader={false}
-        searchForm={searchForm}
-      >
-        <Column title="产品名称"  dataIndex="items" render={(value, record)=>{
-          return (
-            <div>
-              {
-                record.itemsResult ? record.itemsResult.name : null
-              }
-            </div>
-          );
-        }} />
-        <Column title="销售单价" align='center' dataIndex="salePrice"/>
-        <Column title="数量" align='center' dataIndex="quantity"/>
-        <Column title="小计" align='center' dataIndex="totalPrice"/>
-      </Table>
+
+      <div style={{marginTop: 60}}>
+        <div style={{marginLeft: 18}}>套餐明细</div>
+        <Table
+          api={erpPackageTableList}
+          rowKey="id"
+          ref={tableRef}
+          listHeader={false}
+          searchForm={searchForm}
+        >
+          <Column title="产品名称"  dataIndex="items" render={(value, record)=>{
+            return (
+              <div>
+                {
+                  record.itemsResult ? record.itemsResult.name : null
+                }
+              </div>
+            );
+          }} />
+          <Column title="销售单价" align='center' dataIndex="salePrice"/>
+          <Column title="数量" align='center' dataIndex="quantity"/>
+          <Column title="小计" align='center' dataIndex="totalPrice"/>
+        </Table>
+      </div>
     </>
   );
 };
