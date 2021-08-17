@@ -76,6 +76,7 @@ const ErpPackageList = (props) => {
     }} value={ids}>批量删除</DelButton>);
   };
 
+
   return (
     <>
       <div  className={style.tableWarp}>
@@ -123,7 +124,6 @@ const ErpPackageList = (props) => {
                 );
               }} />
             </Table>
-
             <Modal2 width={900}  title="套餐" component={ErpPackageEdit}  onSuccess={() => {
               tableRef.current.refresh();
               ref.current.close();
