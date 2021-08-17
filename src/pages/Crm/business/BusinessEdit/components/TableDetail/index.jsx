@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, message, Table as AntTable} from 'antd';
 import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/business/BusinessUrl";
 import EditButton from "@/components/EditButton";
@@ -13,6 +13,7 @@ import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/cr
 import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
 import ItemsList from "@/pages/Erp/items/ItemsList";
 import ErpPackageList from "@/pages/Erp/package/packageList";
+import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -25,6 +26,13 @@ const TableDetail = (props) => {
   const refAddOne = useRef(null);
   const refAddAll = useRef(null);
 
+  const {run:select} = useRequest(crmBusinessDetailedList,{manual:true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      tableRef.current.refresh();
+    }});
 
   const searchForm = () => {
     return (
@@ -63,7 +71,6 @@ const TableDetail = (props) => {
           disabled={false}
           businessId={value}
         />
-
       </div>
       <Table
         api={crmBusinessDetailedList}

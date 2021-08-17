@@ -28,15 +28,24 @@ const ItemPackage = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const MxRef = useRef(null);
-  const {run:add} = useRequest(crmBusinessDetailedAdd,{manual:true});
+  const {run:add} = useRequest(crmBusinessDetailedAdd,{manual:true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      MxRef.current.close();
+      // props.onChange(props.businessId);
+      props.onSuccess();
+    }});
+
   const {run:select} = useRequest(erpPackageTableList,
     {manual: true,
       onError: (error) => {
         message.error(error.message);
       },
       onSuccess: (response) => {
-        response.map(value => {
-          return add({
+        response.forEach((value) => {
+          add({
             data:{
               businessId: props.businessId,
               itemId: value.itemId,
@@ -46,7 +55,6 @@ const ItemPackage = (props) => {
             }
           });
         });
-        props.onSuccess();
       }
     });
 

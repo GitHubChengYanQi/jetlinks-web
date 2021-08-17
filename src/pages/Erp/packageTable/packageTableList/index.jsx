@@ -108,6 +108,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
       <Modal2 width={1900} title="选择" component={ItemsList}
         onSuccess={()=>{
           refAddOne.current.close();
+          tableRef.current.refresh();
         }}
         ref={refAddOne}
         packageId={props.value}
