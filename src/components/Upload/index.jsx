@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Upload as UploadS, message, Modal} from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
+import {useRequest as aUseRequest} from 'ahooks';
+import axios from 'axios';
 
 const Upload = (props) => {
 
@@ -10,7 +12,7 @@ const Upload = (props) => {
   const {data,run} = useRequest({url:'/media/getToken?type=jpeg',method:'GET'},{manual:true});
 
 
-  const {data:da,run:upload} = useRequest({},{manual:true});
+  const {data:da,run:upload} = aUseRequest(axios,{manual:true});
 
 
   const getBase64 = (img, callback) =>  {
@@ -22,10 +24,11 @@ const Upload = (props) => {
   const beforeUpload = async (file) =>{
     const response = await run();
     const res = await upload({
-      url:response.host,
+      withCredentials:false,
+      url:response.host.replace('https','http'),
       method:'POST',
       data:{
-        ...data,
+        ...response,
         file
       }
     });
@@ -76,21 +79,21 @@ const Upload = (props) => {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        action={
-          (file)=>upload({
-            url:data.host,
-            method:'POST',
-            data:{
-              ...data,
-              file
-            }
-          })
-        }
+        // action={
+        //   (file)=>upload({
+        //     url:data.host,
+        //     method:'POST',
+        //     data:{
+        //       ...data,
+        //       file
+        //     }
+        //   })
+        // }
         method='GET'
         beforeUpload={beforeUpload}
         onChange={(value)=>handleChange(value)}
       >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}
+        {imageUrl ? <img  src={imageUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}
       </UploadS>
     </>
   );
