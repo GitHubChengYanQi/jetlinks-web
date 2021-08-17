@@ -47,6 +47,7 @@ const ItemsList = (props) => {
       message.error(error.message);
     },
     onSuccess: () => {
+      console.log(123);
       ref.current.close();
       props.onSuccess();
     }

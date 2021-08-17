@@ -5,13 +5,8 @@ import {Drawer, Menu, Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import Icon from "@/components/Icon";
 import styles from "@/pages/Crm/index.module.scss";
-import BrandList from "@/pages/Erp/brand/BrandList";
-import MaterialList from "@/pages/Erp/material/MaterialList";
-import StorehouseList from "@/pages/Erp/storehouse/StorehouseList";
-import UnitList from "@/pages/Erp/unit/unitList";
-import ItemClassList from "@/pages/Erp/itemClass/itemClassList";
 
-const ErpLayout = ({children}) => {
+const OemLayout = ({children}) => {
 
   const match = useRouteMatch();
 
@@ -28,16 +23,6 @@ const ErpLayout = ({children}) => {
 
   const RenderComponent = () => {
     switch (type) {
-      case 'ppgl':
-        return <BrandList />;
-      case 'czgl':
-        return <MaterialList />;
-      case 'ckgl':
-        return <StorehouseList />;
-      case 'cpflgl':
-        return <ItemClassList />;
-      case 'dwgl':
-        return <UnitList />;
       default:
         return null;
     }
@@ -73,21 +58,6 @@ const ErpLayout = ({children}) => {
                 showModel(true);
               }}
             >
-              <Menu.Item key="ppgl">
-                <span>品牌管理</span>
-              </Menu.Item>
-              <Menu.Item key="czgl">
-                <span>材质管理</span>
-              </Menu.Item>
-              <Menu.Item key="ckgl">
-                <span>仓库管理</span>
-              </Menu.Item>
-              <Menu.Item key="cpflgl">
-                <span>产品分类管理</span>
-              </Menu.Item>
-              <Menu.Item key="dwgl">
-                <span>单位管理</span>
-              </Menu.Item>
               <Menu.Divider />
             </Menu>
             <Modal centered destroyOnClose maskClosable={false} width={1100} visible={visible} onCancel={()=>{
@@ -108,4 +78,4 @@ const ErpLayout = ({children}) => {
     </TopLayout>
   );
 };
-export default ErpLayout;
+export default OemLayout;
