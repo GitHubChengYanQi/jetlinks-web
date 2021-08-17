@@ -13,6 +13,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
+import Table from "@/components/Table";
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
 import style from "@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less";
 import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
@@ -24,9 +25,6 @@ import styles from './index.module.scss';
 import useRequest from '../../../../util/Request/useRequest';
 import {erpPackageDelete, erpPackageList} from '../packageUrl';
 import * as SysField from '../packageField';
-import Table from "@/components/Table";
-
-
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,34 +36,10 @@ const ErpPackageList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const packageRef = useRef(null);
-  // const [data, setData] = useState();
   const [PackageId, setPackageId] = useState();
   const [ids, setIds] = useState([]);
 
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
-  // const {daDelete,runDelete} = useRequest(erpPackageTableDelete,{manual:true});
-  const {run:select} = useRequest(erpPackageTableList,
-    {manual: true,
-      onError: (error) => {
-        message.error(error.message);
-      },
-      onSuccess: (response) => {
-        response.map(value => {
-          return add({
-            data:{
-              businessId: props.businessId,
-              itemId: value.itemId,
-              salePrice: 0,
-              totalPrice: 0,
-              quantity: 0
-            }
-          });
-        });
-        props.onSuccess();
-      }
-    });
-
-  const {run:add} = useRequest(crmBusinessDetailedAdd,{manual:true});
 
   let disabled = true;
   if(props.disabled === undefined){
@@ -137,10 +111,7 @@ const ErpPackageList = (props) => {
                       choose(record);
                       props.onSuccess();
                     }} /> : null}
-                    {!disabled&&
-                    <CheckButton onClick={() => {
-                      select({data:{packageId:record.packageId}});
-                    }}/>}
+
                     <EditButton onClick={() => {
                       ref.current.open(record.packageId);
                     }}/>

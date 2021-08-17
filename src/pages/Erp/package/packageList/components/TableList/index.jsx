@@ -1,11 +1,10 @@
 import React, {useEffect, useRef} from 'react';
 import {Button, Table as AntTable} from 'antd';
-import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 import * as SysField from "@/pages/Erp/package/packageField";
 import Form from "@/components/Form";
 import {erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
 import Breadcrumb from "@/components/Breadcrumb";
-import {itemId} from "@/pages/Erp/package/packageField";
+import Table from "@/components/Table";
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -13,6 +12,7 @@ const {Column} = AntTable;
 
 const TableList = (props) => {
   const {packageId} = props;
+  console.log(packageId);
   const ref = useRef(null);
   const tableRef = useRef(null);
 

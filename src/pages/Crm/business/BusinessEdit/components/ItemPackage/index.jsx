@@ -1,4 +1,4 @@
-import {Input, Table as AntTable} from 'antd';
+import {Button, Input, message, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
@@ -7,14 +7,16 @@ import CheckButton from '@/components/CheckButton';
 import {erpPackageList} from "@/pages/Erp/package/packageUrl";
 import {useRequest} from "@/util/Request";
 import TableList from "@/pages/Erp/package/packageList/components/TableList";
+import {erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
+import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
+import Modal2 from "@/components/Modal";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ItemPackage = (props) => {
-  const {allData} = props;
 
-  const {data, setData} = useState(null);
+  const [PackageId, setPackageId] = useState();
   const searchForm = () => {
     return (
       <>
@@ -22,10 +24,31 @@ const ItemPackage = (props) => {
       </>
     );
   };
-  const [val,setVal] = useState();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const MxRef = useRef(null);
+  const {run:add} = useRequest(crmBusinessDetailedAdd,{manual:true});
+  const {run:select} = useRequest(erpPackageTableList,
+    {manual: true,
+      onError: (error) => {
+        message.error(error.message);
+      },
+      onSuccess: (response) => {
+        response.map(value => {
+          return add({
+            data:{
+              businessId: props.businessId,
+              itemId: value.itemId,
+              salePrice: 0,
+              totalPrice: 0,
+              quantity: 0
+            }
+          });
+        });
+        props.onSuccess();
+      }
+    });
 
   return (
     <>
@@ -34,23 +57,29 @@ const ItemPackage = (props) => {
         rowKey="id"
         searchForm={searchForm}
         ref={tableRef}
-        expandable={{
-          expandedRowRender: record => <TableList value = {record}/>
-        }}
       >
-        <Column title="套餐名称" dataIndex="productName" />
+        <Column title="套餐名称" dataIndex="productName" render={(value, record) => {
+          return (
+            <Button type="link" onClick={() => {
+              setPackageId(record.packageId);
+              MxRef.current.open(false);
+            }}>{record.productName}</Button>
+          );
+        }}/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <CheckButton onClick={() => {
-                setVal(record.itemId);
-                allData(record);
-              }}
-              />
+                select({data:{packageId:record.packageId}});
+              }}/>
             </>
           );
         }}/>
       </Table>
+      <Modal2 width={900}  title="套餐明细" component={TableList} packageId={PackageId} onSuccess={() => {
+        MxRef.current.refresh();
+        ref.current.close();
+      }} ref={MxRef} />
     </>
   );
 };
