@@ -111,25 +111,25 @@ const StepList = (props) => {
         current={value.state ? step.length : current}
       >
         {step}
-
-
         <>
-          <Step title={value.state ? value.state :
+          <Step
+            title={value.state ? value.state :
             <>
-              <Popover placement="bottom" content={
-                (<div>
-                  <a className={styles.state} onClick={async () => {
-                    confirmOk('赢单', 100);
-                  }}>赢单 100%</a>
-                  <a className={styles.state} onClick={async () => {
-                    confirmOk('输单', 0);
-                  }}>输单 0%</a>
-                </div>)
-              } trigger="hover">
+              <Popover
+                placement="bottom"
+                content={
+                  (<div>
+                    <a className={styles.state} onClick={async () => {
+                      confirmOk('赢单', 100);
+                    }}>赢单 100%</a>
+                    <a className={styles.state} onClick={async () => {
+                      confirmOk('输单', 0);
+                    }}>输单 0%</a>
+                  </div>)
+                } trigger="hover">
                 完成
               </Popover>
             </>}
-
           />
         </>
       </Steps>
