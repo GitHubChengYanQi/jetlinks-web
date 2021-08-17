@@ -13,6 +13,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
+import Table from "@/components/Table";
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
 import style from "@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -23,7 +24,6 @@ import styles from './index.module.scss';
 import useRequest from '../../../../util/Request/useRequest';
 import {erpPackageDelete, erpPackageList} from '../packageUrl';
 import * as SysField from '../packageField';
-import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -84,6 +84,7 @@ const ErpPackageList = (props) => {
               rowKey="packageId"
               searchForm={searchForm}
               ref={tableRef}
+              listHeader={false}
               footer={footer}
             >
               <Column title="套餐名称" width={500} dataIndex="productName" render={(value, record) => {
