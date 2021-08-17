@@ -12,7 +12,6 @@ const {Column} = AntTable;
 
 const TableList = (props) => {
   const {packageId} = props;
-  console.log(packageId);
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -38,6 +37,7 @@ const TableList = (props) => {
         api={erpPackageTableList}
         rowKey="id"
         ref={tableRef}
+        listHeader={false}
         searchForm={searchForm}
       >
         <Column title="产品名称"  dataIndex="items" render={(value, record)=>{

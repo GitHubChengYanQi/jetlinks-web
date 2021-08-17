@@ -5,26 +5,25 @@
  * @Date 2021-08-04 11:01:43
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 
-import {Button, Card, Col, Input, message, Row, Table as AntTable, Tabs} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
-import Table from "@/components/Table";
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
 import style from "@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less";
-import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import Breadcrumb from "@/components/Breadcrumb";
-import {erpPackageTableDelete, erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
+import {erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
 import CheckButton from '@/components/CheckButton';
 import ErpPackageEdit from '../packageEdit';
 import styles from './index.module.scss';
 import useRequest from '../../../../util/Request/useRequest';
 import {erpPackageDelete, erpPackageList} from '../packageUrl';
 import * as SysField from '../packageField';
+import Table from "@/pages/Crm/customer/CustomerDetail/compontents/Table";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,18 +34,10 @@ const ErpPackageList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const packageRef = useRef(null);
   const [PackageId, setPackageId] = useState();
   const [ids, setIds] = useState([]);
 
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
-
-  let disabled = true;
-  if(props.disabled === undefined){
-    disabled = true;
-  }else{
-    disabled = false;
-  }
 
   const actions = () => {
     return (
@@ -91,9 +82,7 @@ const ErpPackageList = (props) => {
               api={erpPackageList}
               rowKey="packageId"
               searchForm={searchForm}
-              // actions={actions()}
               ref={tableRef}
-              listHeader={false}
               footer={footer}
             >
               <Column title="套餐名称" width={500} dataIndex="productName" render={(value, record) => {
@@ -123,7 +112,6 @@ const ErpPackageList = (props) => {
                 );
               }} />
             </Table>
-
             <Modal2 width={900}  title="套餐" component={ErpPackageEdit}  onSuccess={() => {
               tableRef.current.refresh();
               ref.current.close();
@@ -134,6 +122,7 @@ const ErpPackageList = (props) => {
           </div>
         </div>
       </div>
+
     </>
   );
 };
