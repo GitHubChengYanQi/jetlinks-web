@@ -7,7 +7,6 @@
 
 import React, {useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
-import Table from "@/components/Table";
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import EditButton from '@/components/EditButton';
@@ -18,6 +17,7 @@ import ItemsList from "@/pages/Erp/items/ItemsList";
 import ErpPackageTableEdit from '../packageTableEdit';
 import {erpPackageTableDelete, erpPackageTableList} from '../packageTableUrl';
 import * as SysField from '../packageTableField';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,14 +25,14 @@ const {FormItem} = Form;
 const ErpPackageTableList = ({onChange,...props}) => {
 
   const ref = useRef();
-  const tableRef = useRef(null);
+  const tableRef1 = useRef(null);
   const refAddOne = useRef(null);
   const [da,setDa] = useState(null);
   const [ids, setIds] = useState([]);
 
   const refesh = (data, params) => {
     console.log('data');
-    tableRef.current.refresh();
+    tableRef1.current.refresh();
   };
 
   const {data,run} = useRequest({url: '/erpPackageTable/list',method: 'POST'},{manual:true});
@@ -42,7 +42,6 @@ const ErpPackageTableList = ({onChange,...props}) => {
     return (
       <>
         <FormItem style={{'display': 'none'}} name="packageId" value={props.value} component={SysField.PackageId}/>
-        <FormItem  label='产品名称' name="name" component={SysField.name}/>
       </>
     );
   };
@@ -69,9 +68,9 @@ const ErpPackageTableList = ({onChange,...props}) => {
         api={erpPackageTableList}
         rowKey="id"
         searchForm={searchForm}
-        ref={tableRef}
+        ref={tableRef1}
         showSearchButton={false}
-        footer={footer}
+        // footer={footer}
         onChange={(keys) => {
           setIds(keys);
         }}
@@ -95,18 +94,20 @@ const ErpPackageTableList = ({onChange,...props}) => {
                 ref.current.open(record.id);
               }}/>
               <DelButton api={erpPackageTableDelete} value={record.id} onSuccess={()=>{
-                tableRef.current.refresh();
+                tableRef1.current.refresh();
               }}/>
             </>
           );
         }} />
       </Table>
       <Drawer width={800} title="编辑" component={ErpPackageTableEdit} onSuccess={() => {
-        tableRef.current.refresh();
+        tableRef1.current.refresh();
         ref.current.close();
       }} ref={ref}/>
       <Modal2 width={1900} title="选择" component={ItemsList}
         onSuccess={()=>{
+          console.log(tableRef1);
+          tableRef1.current.refresh();
           refAddOne.current.close();
           tableRef.current.refresh();
         }}

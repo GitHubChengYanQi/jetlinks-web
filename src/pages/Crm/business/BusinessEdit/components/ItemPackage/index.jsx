@@ -2,7 +2,6 @@ import {Button, Input, message, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
 import {erpPackageList} from "@/pages/Erp/package/packageUrl";
 import {useRequest} from "@/util/Request";
@@ -10,6 +9,7 @@ import TableList from "@/pages/Erp/package/packageList/components/TableList";
 import {erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
 import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
 import Modal2 from "@/components/Modal";
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

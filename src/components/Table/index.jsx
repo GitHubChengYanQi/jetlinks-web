@@ -29,6 +29,11 @@ const TableWarp = ({
   ...props
 }, ref) => {
 
+
+
+
+
+
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
@@ -44,7 +49,7 @@ const TableWarp = ({
 
   const {ajaxService} = Service();
 
-  const [, setState] = useUrlState(
+  const [state, setState] = useUrlState(
     {},
     {
       navigateMode: 'push',
