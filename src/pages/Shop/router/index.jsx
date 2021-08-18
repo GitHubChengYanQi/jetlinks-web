@@ -1,7 +1,4 @@
 
-import OemLayout from '@/pages/Portal';
-import {BannerRouter} from '@/pages/Portal/banner/bannerRouter';
-import {NavigationRouter} from '@/pages/Portal/navigation/navigationRouter';
 import {ClassDifferenceDetailsRouter} from '@/pages/Shop/classDifferenceDetails/classDifferenceDetailsRouter';
 import ShopLayout from '@/pages/Shop';
 import {DaoxinPortalClassRouter} from '@/pages/Shop/daoxinPortalClass/daoxinPortalClassRouter';

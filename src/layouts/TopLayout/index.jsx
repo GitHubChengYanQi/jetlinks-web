@@ -43,7 +43,7 @@ const TopLayout = ({children, rightMenu}) => {
       const pathName = location.pathname;
       const pathArray = pathName.split('/');
       const key = `/${pathArray[1]}/${pathArray[2]}`;
-      
+      console.log(key);
       return (
         <Menu
           selectable

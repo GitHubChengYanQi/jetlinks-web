@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,12 +16,15 @@ import Form from '@/components/Form';
 import {daoxinPortalClassDelete, daoxinPortalClassList} from '../daoxinPortalClassUrl';
 import DaoxinPortalClassEdit from '../daoxinPortalClassEdit';
 import * as SysField from '../daoxinPortalClassField';
+import Modal from '@/components/Modal';
+import ClassDifferenceList from '@/pages/Shop/classDifference/classDifferenceList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const DaoxinPortalClassList = () => {
   const ref = useRef(null);
+  const refClass = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -53,7 +56,13 @@ const DaoxinPortalClassList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="分类名称" dataIndex="className"/>
+        <Column title="分类名称" dataIndex="className" render={(value,record)=>{
+          return (
+            <Button size="small" type="link" onClick={() => {
+              refClass.current.open(record.classId);
+            }}>{value}</Button>
+          );
+        }} />
         <Column title="排序" dataIndex="sort"/>
         <Column title="轮播图分类id" dataIndex="classificationId"/>
         <Column/>
@@ -74,6 +83,10 @@ const DaoxinPortalClassList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Modal width={800} title="编辑" component={ClassDifferenceList} onSuccess={() => {
+        tableRef.current.refresh();
+        refClass.current.close();
+      }} ref={refClass}/>
     </>
   );
 };

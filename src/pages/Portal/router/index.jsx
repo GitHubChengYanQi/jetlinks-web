@@ -2,7 +2,6 @@
 import OemLayout from '@/pages/Portal';
 import {BannerRouter} from '@/pages/Portal/banner/bannerRouter';
 import {NavigationRouter} from '@/pages/Portal/navigation/navigationRouter';
-import {ClassDifferenceDetailsRouter} from '@/pages/Shop/classDifferenceDetails/classDifferenceDetailsRouter';
 
 const ProtalRouterConfig = [
   {
@@ -12,7 +11,6 @@ const ProtalRouterConfig = [
     children:[
       ...BannerRouter,
       ...NavigationRouter,
-      ...ClassDifferenceDetailsRouter,
       {
         redirect: '/protal/banner',
       }

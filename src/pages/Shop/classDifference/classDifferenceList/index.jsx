@@ -20,7 +20,12 @@ import * as SysField from '../classDifferenceField';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ClassDifferenceList = () => {
+const ClassDifferenceList = (props) => {
+
+  const {value} = props;
+
+  console.log(value);
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
