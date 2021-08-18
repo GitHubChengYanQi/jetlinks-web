@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
-import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
-import BannerTable from '@/pages/Portal/banner/components/BannerTable';
 import NavigationTable from '@/pages/Portal/navigation/components/NavigationTable';
+import Select from '@/components/Select';
+import {Difference} from '@/pages/Portal/navigation/navigationUrl';
 
 
 const NavigationList = () => {
@@ -19,21 +18,35 @@ const NavigationList = () => {
     };
   }) : [];
 
+  const [value,setValue] = useState();
+
   const [state, setState] = useState();
 
   const Left = () => {
     return (
       <>
+        <div>
+          <Select api={Difference} placeholder='搜索分类' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
+            await run(
+              {
+                data:{
+                  classificationId : value
+                }
+              }
+            );
+            setValue(value);
+          }} />
+        </div>
         <Tree
           onSelect={(value) => {
             setState(value);
           }}
           showLine
-          defaultExpandedKeys={[' ']}
+          defaultExpandedKeys={['']}
           treeData={[
             {
               title: '所有分类',
-              key: ' ',
+              key: '',
               children: classification
             },
           ]}

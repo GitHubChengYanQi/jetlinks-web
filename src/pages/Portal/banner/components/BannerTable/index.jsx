@@ -85,7 +85,7 @@ const BannerTable = (props) => {
         }}
       >
         <Column title="轮播图标题" dataIndex="title"  />
-        <Column title="图片路径"  dataIndex="imgUrl" render={(value, record) => {
+        <Column title="图片"  dataIndex="imgUrl" render={(value, record) => {
           return (
             <>
               <Image width={100} height={50} src={value} />

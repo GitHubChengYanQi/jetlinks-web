@@ -31,7 +31,7 @@ const BannerEdit = ({...props}) => {
       fieldKey="bannerId"
     >
       <FormItem label="轮播图标题" name="title" component={SysField.Title} required/>
-      <FormItem label="图片路径" name="imgUrl" component={SysField.ImgUrl} required/>
+      <FormItem label="图片" name="imgUrl" component={SysField.ImgUrl} required/>
       <FormItem label="排序" name="sort" component={SysField.Sort} required/>
       <FormItem label="链接" name="link" component={SysField.Link} required/>
       <FormItem label="分类" name="difference" component={SysField.Difference} required/>

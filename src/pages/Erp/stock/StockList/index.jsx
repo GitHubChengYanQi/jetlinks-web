@@ -29,7 +29,7 @@ import {customerIdSelect} from '@/pages/Crm/contacts/contactsUrl';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const StockList = (props) => {
+const StockList = () => {
 
   const {loading, data,run} = useRequest({ url: '/storehouse/list',method: 'POST'});
 
