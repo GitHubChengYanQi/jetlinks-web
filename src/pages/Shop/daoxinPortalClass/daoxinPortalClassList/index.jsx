@@ -2,7 +2,7 @@
  * 分类导航列表页
  *
  * @author siqiang
- * @Date 2021-08-18 15:53:56
+ * @Date 2021-08-18 16:13:41
  */
 
 import React, {useRef} from 'react';
@@ -13,14 +13,14 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {classDelete, classList} from '../classUrl';
-import ClassEdit from '../classEdit';
-import * as SysField from '../classField';
+import {daoxinPortalClassDelete, daoxinPortalClassList} from '../daoxinPortalClassUrl';
+import DaoxinPortalClassEdit from '../daoxinPortalClassEdit';
+import * as SysField from '../daoxinPortalClassField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ClassList = () => {
+const DaoxinPortalClassList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -47,7 +47,7 @@ const ClassList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
-        api={classList}
+        api={daoxinPortalClassList}
         rowKey="classId"
         searchForm={searchForm}
         actions={actions()}
@@ -63,14 +63,14 @@ const ClassList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.classId);
               }}/>
-              <DelButton api={classDelete} value={record.classId} onSuccess={()=>{
+              <DelButton api={daoxinPortalClassDelete} value={record.classId} onSuccess={()=>{
                 tableRef.current.refresh();
               }}/>
             </>
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={ClassEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={DaoxinPortalClassEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
@@ -78,4 +78,4 @@ const ClassList = () => {
   );
 };
 
-export default ClassList;
+export default DaoxinPortalClassList;

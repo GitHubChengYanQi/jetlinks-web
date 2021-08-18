@@ -2,24 +2,24 @@
  * 分类导航编辑页
  *
  * @author siqiang
- * @Date 2021-08-18 15:53:56
+ * @Date 2021-08-18 16:13:41
  */
 
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {classDetail, classAdd, classEdit} from '../classUrl';
-import * as SysField from '../classField';
+import {daoxinPortalClassDetail, daoxinPortalClassAdd, daoxinPortalClassEdit} from '../daoxinPortalClassUrl';
+import * as SysField from '../daoxinPortalClassField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: classDetail,
-  add: classAdd,
-  save: classEdit
+  view: daoxinPortalClassDetail,
+  add: daoxinPortalClassAdd,
+  save: daoxinPortalClassEdit
 };
 
-const ClassEdit = ({...props}) => {
+const DaoxinPortalClassEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -37,4 +37,4 @@ const ClassEdit = ({...props}) => {
   );
 };
 
-export default ClassEdit;
+export default DaoxinPortalClassEdit;

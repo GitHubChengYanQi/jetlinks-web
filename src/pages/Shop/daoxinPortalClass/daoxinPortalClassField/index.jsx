@@ -2,7 +2,7 @@
  * 分类导航字段配置页
  *
  * @author siqiang
- * @Date 2021-08-18 15:53:56
+ * @Date 2021-08-18 16:13:41
  */
 
 import React from 'react';
@@ -10,7 +10,7 @@ import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Ra
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
-import * as apiUrl from '../classUrl';
+import * as apiUrl from '../daoxinPortalClassUrl';
 
 export const ClassName = (props) =>{
   return (<Input {...props}/>);

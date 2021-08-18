@@ -3,20 +3,21 @@ import OemLayout from '@/pages/Portal';
 import {BannerRouter} from '@/pages/Portal/banner/bannerRouter';
 import {NavigationRouter} from '@/pages/Portal/navigation/navigationRouter';
 import {ClassDifferenceDetailsRouter} from '@/pages/Shop/classDifferenceDetails/classDifferenceDetailsRouter';
+import ShopLayout from '@/pages/Shop';
+import {DaoxinPortalClassRouter} from '@/pages/Shop/daoxinPortalClass/daoxinPortalClassRouter';
 
-const ProtalRouterConfig = [
+const ShopRouterConfig = [
   {
-    path: '/protal',
-    name: '门户管理',
-    component: OemLayout,
+    path: '/shop',
+    name: '商城管理',
+    component: ShopLayout,
     children:[
-      ...BannerRouter,
-      ...NavigationRouter,
       ...ClassDifferenceDetailsRouter,
+      ...DaoxinPortalClassRouter,
       {
-        redirect: '/protal/banner',
+        redirect: '/shop/classDifferenceDetails',
       }
     ]
   }
 ];
-export default ProtalRouterConfig;
+export default ShopRouterConfig;
