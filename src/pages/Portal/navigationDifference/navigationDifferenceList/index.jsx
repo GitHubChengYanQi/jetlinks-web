@@ -1,7 +1,7 @@
 /**
  * 导航分类列表页
  *
- * @author 
+ * @author
  * @Date 2021-08-18 10:38:50
  */
 
@@ -59,9 +59,9 @@ const NavigationDifferenceList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.classificationId);
               }}/>
-              <DelButton api={navigationDifferenceDelete} value={record.classificationId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
+              {/*<DelButton api={navigationDifferenceDelete} value={record.classificationId} onSuccess={()=>{*/}
+              {/*  tableRef.current.refresh();*/}
+              {/*}}/>*/}
             </>
           );
         }} width={300}/>

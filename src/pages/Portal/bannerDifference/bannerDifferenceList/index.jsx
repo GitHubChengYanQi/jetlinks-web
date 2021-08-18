@@ -59,9 +59,9 @@ const BannerDifferenceList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.classificationId);
               }}/>
-              <DelButton api={bannerDifferenceDelete} value={record.classificationId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
+              {/*<DelButton api={bannerDifferenceDelete} value={record.classificationId} onSuccess={()=>{*/}
+              {/*  tableRef.current.refresh();*/}
+              {/*}}/>*/}
             </>
           );
         }} width={300}/>
