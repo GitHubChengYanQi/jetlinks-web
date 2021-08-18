@@ -7,11 +7,11 @@
 
 import React from 'react';
 import {Input} from 'antd';
-import Upload from '@/components/Upload';
+import UpLoadImg from '@/components/Upload';
 
 export const Title = (props) =>{
   return (<Input {...props}/>);
 };
 export const ImgUrl = (props) =>{
-  return (<Upload {...props} />);
+  return (<UpLoadImg {...props} />);
 };

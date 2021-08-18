@@ -1,102 +1,114 @@
-import React, {useState} from 'react';
-import {Upload as UploadS, message, Modal} from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import React, {useState,useEffect} from 'react';
+import { Upload, message } from 'antd';
+import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
-import {useRequest as aUseRequest} from 'ahooks';
-import axios from 'axios';
-
-const Upload = (props) => {
-
-  const {value,onChange} = props;
-
-  const {data,run} = useRequest({url:'/media/getToken?type=jpeg',method:'GET'},{manual:true});
 
 
-  const {data:da,run:upload} = aUseRequest(axios,{manual:true});
+const  UpLoadImg = (props)=>{
+  const {value,onChange,bannerSrc} = props;
+  const [loading,setLoading] = useState(false); // loading 状态
+  const [imageUrl ,setImageUrl ] = useState(''); // 图片地址
+  const [oss,setOss] = useState({}); // OSS上传所需参数
 
+  useEffect(()=>{
+    console.log('picId', value);
+    if(value){
+      // getImgDetail({data:{bannerId:value}});
+      setImageUrl(value);
+    }else{
+      setImageUrl('');
+    }
+  },[value]);
 
-  const getBase64 = (img, callback) =>  {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
-
-  const beforeUpload = async (file) =>{
-    const response = await run();
-    const res = await upload({
-      withCredentials:false,
-      url:response.host.replace('https','http'),
-      method:'POST',
-      data:{
-        ...response,
-        file
-      }
+  // 上传前获取上传OSS所需参数 - 传入上传文件类型："png", "jpg", "gif", "mp4", "mp3","flac"
+  const beforUpLoad = (imgType) =>{
+    setLoading(true);
+    return new Promise((resolve)=>{
+      getOssObj({params:{type:imgType}}).then(res=>{
+        resolve();
+      });
     });
-    console.log(res);
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
   };
 
-  const [loading, setLoging] = useState(false);
-  const [imageUrl, setImgurl] = useState(value);
-
-  onChange(imageUrl);
-
-  const handleChange = info => {
-    if (info.file.status === 'uploading') {
-      setLoging(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => {
-         setImgurl(imageUrl);
-         setLoging(false);
-        }
-      );
-    }
+  const getSTSToken = {
+    url: '/media/getToken', // 获取OSS凭证接口
+    data:{}
   };
 
+  const getImg = {
+    url: '/banner/detail', // 根据ID获取图片
+    method:'POST',
+    data:{}
+  };
 
+  // 获取OSS配置
+  const {run:getOssObj} = useRequest(getSTSToken,{
+    manual:true,
+    formatResult: (e) => {
+      return e;
+    },
+    onSuccess: (res) => {
+      console.log(res);
+      if (res.errCode === 0) {
+        oss.key = res.data.key;
+        oss.host = res.data.host;
+        oss.policy = res.data.policy;
+        oss.Signature = res.data.Signature;
+        oss.mediaId = res.data.mediaId;
+        oss.OSSAccessKeyId = res.data.OSSAccessKeyId;
+        setOss({...oss});
+      }
+      setLoading(false);
+    }
+  });
+
+  // // 获取图片
+  // const {run:getImgDetail} = useRequest(getImg,{
+  //   manual:true,
+  //   formatResult: (e) => {
+  //     return e;
+  //   },
+  //   onSuccess: (res) => {
+  //     console.log(res,'eee');
+  //     if (res.errCode === 0) {
+  //       setTimeout(()=>{
+  //         setImageUrl(res.data.picUrl);
+  //       },500);
+  //     }
+  //   }
+  // });
+
+  // 按钮
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{marginTop: 8}}>Upload</div>
+      <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
 
-  return (
-    <>
-      <UploadS
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        // action={
-        //   (file)=>upload({
-        //     url:data.host,
-        //     method:'POST',
-        //     data:{
-        //       ...data,
-        //       file
-        //     }
-        //   })
-        // }
-        method='GET'
-        beforeUpload={beforeUpload}
-        onChange={(value)=>handleChange(value)}
-      >
-        {imageUrl ? <img  src={imageUrl} alt="avatar" style={{width: '100%'}} /> : uploadButton}
-      </UploadS>
-    </>
+  return(
+    // name 为发送到后台的文件名
+    <Upload
+      listType="picture-card"
+      className="avatar-uploader"
+      showUploadList={false}
+      data={oss}
+      action={oss.host}
+      beforeUpload={(file)=>{
+        return beforUpLoad(file.type.split('/')[1]);
+      }
+      }
+      onChange={({event})=>{
+        if (event && event.percent >= 100) {
+          setImageUrl(`${oss.host}/${oss.key}`);
+          typeof onChange ==='function' && onChange(`${oss.host}/${oss.key}`);
+        }
+      }
+      }
+    >
+      {imageUrl ? <img src={imageUrl} alt="" style={{ width: '100%', height:'100%' }} /> : uploadButton}
+    </Upload>
   );
 };
 
-export default Upload;
+export default UpLoadImg;

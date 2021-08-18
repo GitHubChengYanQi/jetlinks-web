@@ -35,6 +35,7 @@ const ErpPackageList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const [PackageId, setPackageId] = useState();
+  const [productName, setProductName] = useState();
   const [ids, setIds] = useState([]);
 
   const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
@@ -91,6 +92,7 @@ const ErpPackageList = (props) => {
                 return (
                   <Button type="link" onClick={() => {
                     setPackageId(record.packageId);
+                    setProductName(record.productName);
                   }}>{record.productName}</Button>
                 );
               }} sorter/>
@@ -120,7 +122,7 @@ const ErpPackageList = (props) => {
             }} ref={ref} />
           </div>
           <div className={styles.col}>
-            <TableList packageId = {PackageId === undefined ? 111 : PackageId} />
+            <TableList packageId = {PackageId || 111} productName = {productName || null} />
           </div>
         </div>
       </div>

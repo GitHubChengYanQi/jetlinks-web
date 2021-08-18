@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Input, Table as AntTable} from 'antd';
 import * as SysField from "@/pages/Erp/package/packageField";
 import Form from "@/components/Form";
 import {erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
@@ -11,7 +11,7 @@ const {Column} = AntTable;
 
 
 const TableList = (props) => {
-  const {packageId} = props;
+  const {packageId,productName} = props;
 
 
   const ref = useRef(null);
@@ -34,9 +34,8 @@ const TableList = (props) => {
 
   return (
     <>
-
-      <div style={{marginTop: 60}}>
-        <div style={{marginLeft: 18}}>套餐明细</div>
+      <div>
+        <div style={{margin:16,backgroundColor:'white',padding:16}}>{productName || '套餐'}明细<Button style={{visibility:'hidden'}}>123</Button></div>
         <Table
           api={erpPackageTableList}
           rowKey="id"
