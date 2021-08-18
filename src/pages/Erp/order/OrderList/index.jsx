@@ -96,60 +96,96 @@ const OrderList = (props) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="客户名称" fixed dataIndex="customerId" render={(value,record)=>{
+        <Column title="合同名称" fixed dataIndex="contractName"/>
+        <Column title="甲方" width={120} dataIndex="partyA" render={(value,record)=>{
           return (
             <div>
               {
-                record.customerResult ? record.customerResult.customerName : ''
-              }
-            </div>
-          );
-        }} />
-        <Column title="联系电话" width={120} dataIndex="phone" sorter/>
-        <Column title="订单人姓名" width={120} align='center' dataIndex="contactsId" render={(value,record)=>{
-          return (
-            <div>
-              {
-                record.contactsResult ? record.contactsResult.contactsName : ''
+                record.partA ? record.partA.customerName : ''
               }
             </div>
           );
         }} sorter/>
-        <Column title="订单地址" dataIndex="adressId" />
+        <Column title="甲方联系人"  width={120}  dataIndex="partyAContactsId" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.partyAContacts ? record.partyAContacts.contactsName : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="甲方联系地址"  width={120}  dataIndex="partyAAdressId" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.partyAAdress ? record.partyAAdress.location : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="甲方联系人电话"  width={150}  dataIndex="partyAPhone" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.phoneA ? record.phoneA.phoneNumber : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="乙方"  width={120}  dataIndex="partyB" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.partB ? record.partB.customerName : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="乙方联系人"  width={120}  dataIndex="partyBContactsId" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.partyBContacts ? record.partyBContacts.contactsName : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="乙方联系地址"  width={120}  dataIndex="partyBAdressId" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.partyBAdress ? record.partyBAdress.location : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="乙方联系人电话"  width={150}  dataIndex="partyBPhone" render={(value,record)=>{
+          return (
+            <div>
+              {
+                record.phoneB ? record.phoneB.phoneNumber : ''
+              }
+            </div>
+          );
+        }} sorter/>
+        <Column title="产品名称" width={120} dataIndex="itemId"  />
         <Column title="订单数量" width={120} align='center' dataIndex="number" />
+        <Column title="金额" width={120} align='center' dataIndex="price"  sorter />
         <Column title="订单状态" width={120} align='center' dataIndex="state"   sorter/>
         <Column title="订单时间" width={200} dataIndex="orderTime" sorter/>
-        <Column title="发货时间" width={200} dataIndex="deliveryTime" render={(value,record)=>{
-          return (
-            <div>
-              {
-                record.outstockResult ? record.outstockResult.deliveryTime : ''
-              }
-            </div>
-          );
-        }} sorter/>
-        <Column title="产品名称" dataIndex="itemId"  render={(value,record)=>{
-          return (
-            <div>
-              {
-                record.itemsResult ? record.itemsResult.name : ''
-              }
-            </div>
-          );
-        }} sorter/>
-        <Column title="金额" width={120} align='center' dataIndex="price"  sorter />
-        <Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.orderId);
-              }} />
-              <DelButton api={orderDelete} value={record.orderId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} />
+        {/*<Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      <EditButton onClick={() => {*/}
+        {/*        ref.current.open(record.orderId);*/}
+        {/*      }} />*/}
+        {/*      <DelButton api={orderDelete} value={record.orderId} onSuccess={() => {*/}
+        {/*        tableRef.current.refresh();*/}
+        {/*      }} />*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} />*/}
       </Table>
       <Modal2 width={800} title="订单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();
