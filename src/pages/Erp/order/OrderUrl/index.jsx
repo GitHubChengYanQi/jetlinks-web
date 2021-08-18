@@ -68,10 +68,17 @@ export const CustomerListSelect = {
   method: 'POST',
 };
 
+export const customerIdSelect = {
+  url: '/customer/listSelect',
+  method: 'POST'
+};
 
+export const contactsIdSelect = {
+  url: '/contacts/listSelect',
+  method: 'POST'
+};
 
-
-
-
-
-
+export const phoneSelect = {
+  url: '/phone/listSelect',
+  method: 'POST'
+};

@@ -10,6 +10,7 @@ import {Input, Select as AntdSelect} from 'antd';
 import Select from '@/components/Select';
 import DatePicker from "@/components/DatePicker";
 import * as apiUrl from '../OrderUrl';
+import {contactsIdSelect} from "../OrderUrl";
 
 const w = 200;
 
@@ -17,13 +18,22 @@ export const OrderId = (props) => {
   return (<Input   {...props} />);
 };
 
-export const Name = (props) => {
+export const contractName = (props) => {
   return (<Input   {...props} />);
 };
 // 收件人姓名
 export const ContactsId = (props) => {
   return (<Select  api={apiUrl.OrderIdListSelect}{...props} />);
 };
+
+export const Customer = (props) =>{
+  return (<Select api={apiUrl.customerIdSelect}   {...props}/>);
+};
+
+export const Phone = (props) => {
+  return (<Select api={apiUrl.phoneSelect}   {...props}/>);
+};
+
 //  收件地址
 export const AdressId = (props) => {
   return (<Select  api={apiUrl.locationListSelect}{...props} />);
@@ -34,7 +44,7 @@ export const Number = (props) => {
 };
 //  订单状态
 export const State = (props) => {
-  return (<AntdSelect  options={[{label: '未完成', value: '未完成'}, {value: '已完成', label: '已完成'}]} {...props} />);
+  return (<AntdSelect  options={[{label: '未审核', value: '未审核'}, {value: '已审核', label: '已审核'}]} {...props} />);
 };
 //  联系电话
 export const ClientId = (props) => {

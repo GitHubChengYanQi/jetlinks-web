@@ -45,6 +45,7 @@ export const contactsIdSelect = {
   url: '/client/listSelect',
   method: 'POST'
 };
+
 export const customerIdSelect = {
   url: '/customer/listSelect',
   method: 'POST'

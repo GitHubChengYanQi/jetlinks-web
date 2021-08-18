@@ -5,7 +5,7 @@
  * @Date 2021-07-20 16:22:28
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -23,6 +23,7 @@ import OrderEdit from '../OrderEdit';
 import {orderDelete, orderList} from '../OrderUrl';
 import * as SysField from '../OrderField';
 import {CustomerListSelect} from '../OrderField';
+import OrderDetailsList from "@/pages/Erp/orderDetails/orderDetailsList";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,8 +34,10 @@ const OrderList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const orderDetailRef = useRef(null);
 
   const [search,{toggle}]  = useBoolean(false);
+  const [value, setValue] = useState(null);
 
   const searchForm = () => {
 
@@ -52,7 +55,7 @@ const OrderList = (props) => {
     return (
       <div style={{maxWidth:800}} >
         <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="订单人姓名" name="name" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} placeholder="合同名称" name="contractName" component={SysField.contractName} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -82,21 +85,24 @@ const OrderList = (props) => {
     );
   };
 
-
-
-
   return (
     <>
       <Table
         title={<Breadcrumb />}
         api={orderList}
-        rowKey="id"
+        rowKey="order_id"
         SearchButton={Search()}
         layout={search}
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="合同名称" fixed dataIndex="contractName"/>
+        <Column title="合同名称" fixed dataIndex="contractName" render={(value,record)=>{
+          return (
+            <Button type="link" onClick={() => {
+              orderDetailRef.current.open(record.orderId);
+            }}>{record.contractName}</Button>
+          );
+        }} sorter/>
         <Column title="甲方" width={120} dataIndex="partyA" render={(value,record)=>{
           return (
             <div>
@@ -115,7 +121,7 @@ const OrderList = (props) => {
             </div>
           );
         }} sorter/>
-        <Column title="甲方联系地址"  width={120}  dataIndex="partyAAdressId" render={(value,record)=>{
+        <Column title="甲方联系地址"  width={200}  dataIndex="partyAAdressId" render={(value,record)=>{
           return (
             <div>
               {
@@ -151,7 +157,7 @@ const OrderList = (props) => {
             </div>
           );
         }} sorter/>
-        <Column title="乙方联系地址"  width={120}  dataIndex="partyBAdressId" render={(value,record)=>{
+        <Column title="乙方联系地址"  width={200}  dataIndex="partyBAdressId" render={(value,record)=>{
           return (
             <div>
               {
@@ -169,28 +175,17 @@ const OrderList = (props) => {
             </div>
           );
         }} sorter/>
-        <Column title="产品名称" width={120} dataIndex="itemId"  />
-        <Column title="订单数量" width={120} align='center' dataIndex="number" />
-        <Column title="金额" width={120} align='center' dataIndex="price"  sorter />
         <Column title="订单状态" width={120} align='center' dataIndex="state"   sorter/>
         <Column title="订单时间" width={200} dataIndex="orderTime" sorter/>
-        {/*<Column title="操作" fixed="right" width={100} align="right" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      <EditButton onClick={() => {*/}
-        {/*        ref.current.open(record.orderId);*/}
-        {/*      }} />*/}
-        {/*      <DelButton api={orderDelete} value={record.orderId} onSuccess={() => {*/}
-        {/*        tableRef.current.refresh();*/}
-        {/*      }} />*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} />*/}
       </Table>
-      <Modal2 width={800} title="订单" component={OrderEdit} onSuccess={() => {
+      <Modal2 width={1200} title="订单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal2 width={1200} title="订单明细" component={OrderDetailsList} onSuccess={() => {
+        orderDetailRef.current.refresh();
+        ref.current.close();
+      }} ref={orderDetailRef} />
     </>
   );
 };
