@@ -22,6 +22,11 @@ export const bannerDelete = {
   method: 'POST',
   rowKey:'bannerId'
 };
+export const batchDelete = {
+  url: '/banner/batchDelete',
+  method: 'POST',
+  rowKey:'bannerId'
+};
 
 export const bannerDetail = {
   url: '/banner/detail',
@@ -37,5 +42,10 @@ export const bannerList = {
 export const getToken = {
   url: '/media/getToken',
   method: 'GET'
+};
+
+export const Difference = {
+  url: '/bannerDifference/listSelect',
+  method: 'POST'
 };
 

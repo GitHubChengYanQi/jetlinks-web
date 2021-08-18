@@ -1,19 +1,15 @@
 import React, {useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
-import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
-import BannerTable from '@/pages/Portal/banner/components/BannerTable';
+import NavigationTable from '@/pages/Portal/navigation/components/NavigationTable';
 import Select from '@/components/Select';
-import {storehouse} from '@/pages/Erp/stock/StockUrl';
-import {bannerDifferenceList} from '@/pages/Portal/bannerDifference/bannerDifferenceUrl';
-import {Difference} from '@/pages/Portal/banner/bannerUrl';
+import {Difference} from '@/pages/Portal/navigation/navigationUrl';
 
 
-const BannerList = () => {
+const NavigationList = () => {
 
-  const {loading, data,run} = useRequest({url: '/bannerDifference/list', method: 'POST', rowKey: 'classificationId'});
+  const {loading, data,run} = useRequest({url: '/navigationDifference/list', method: 'POST', rowKey: 'classificationId'});
 
   const classification = data ? data.map((values) => {
     return {
@@ -60,8 +56,8 @@ const BannerList = () => {
   };
   return (
     <ListLayout left={Left()}>
-      <BannerTable state={state}  />
+      <NavigationTable state={state}  />
     </ListLayout>
   );
 };
-export default BannerList;
+export default NavigationList;

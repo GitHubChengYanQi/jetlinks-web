@@ -1,25 +1,26 @@
 /**
- * 轮播图编辑页
+ * 导航表编辑页
  *
  * @author
- * @Date 2021-08-17 14:05:06
+ * @Date 2021-08-18 08:40:30
  */
 
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {bannerDetail, bannerAdd, bannerEdit} from '../bannerUrl';
-import * as SysField from '../bannerField';
+import {navigationDetail, navigationAdd, navigationEdit} from '../navigationUrl';
+import * as SysField from '../navigationField';
+import {Sort} from '../navigationField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: bannerDetail,
-  add: bannerAdd,
-  save: bannerEdit
+  view: navigationDetail,
+  add: navigationAdd,
+  save: navigationEdit
 };
 
-const BannerEdit = ({...props}) => {
+const NavigationEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -28,10 +29,10 @@ const BannerEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      fieldKey="bannerId"
+      fieldKey="navigationId"
     >
-      <FormItem label="轮播图标题" name="title" component={SysField.Title} required/>
-      <FormItem label="图片" name="imgUrl" component={SysField.ImgUrl} required/>
+      <FormItem label="标题" name="title" component={SysField.Title} required/>
+      <FormItem label="图标" name="icon" component={SysField.Icon} required/>
       <FormItem label="排序" name="sort" component={SysField.Sort} required/>
       <FormItem label="链接" name="link" component={SysField.Link} required/>
       <FormItem label="分类" name="difference" component={SysField.Difference} required/>
@@ -39,4 +40,4 @@ const BannerEdit = ({...props}) => {
   );
 };
 
-export default BannerEdit;
+export default NavigationEdit;
