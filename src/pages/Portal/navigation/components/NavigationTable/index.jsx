@@ -5,7 +5,7 @@
  * @Date 2021-08-18 08:40:30
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Image, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,10 +13,10 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {navigationDelete, navigationList} from '../../navigationUrl';
+import Breadcrumb from '@/components/Breadcrumb';
+import {batchDelete, navigationDelete, navigationList} from '../../navigationUrl';
 import NavigationEdit from '../../navigationEdit';
 import * as SysField from '../../navigationField';
-import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,6 +51,20 @@ const NavigationTable = (props) => {
     );
   };
 
+  const [ids, setIds] = useState([]);
+
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...batchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
+
   return (
     <>
       <Table
@@ -60,6 +74,10 @@ const NavigationTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(value) => {
+          setIds(value);
+        }}
       >
         <Column title="标题" dataIndex="title" />
         <Column title="图标" dataIndex="icon" render={(value, record) => {

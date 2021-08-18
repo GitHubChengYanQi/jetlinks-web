@@ -22,6 +22,11 @@ export const navigationDelete = {
   method: 'POST',
   rowKey:'navigationId'
 };
+export const batchDelete = {
+  url: '/navigation/batchDelete',
+  method: 'POST',
+  rowKey:'navigationId'
+};
 
 export const navigationDetail = {
   url: '/navigation/detail',

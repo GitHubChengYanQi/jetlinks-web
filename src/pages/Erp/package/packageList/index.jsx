@@ -21,8 +21,8 @@ import {erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
 import CheckButton from '@/components/CheckButton';
 import ErpPackageEdit from '../packageEdit';
 import styles from './index.module.scss';
+import {batchDelete, erpPackageDelete, erpPackageList} from '../packageUrl';
 import useRequest from '../../../../util/Request/useRequest';
-import {erpPackageDelete, erpPackageList} from '../packageUrl';
 import * as SysField from '../packageField';
 
 const {Column} = AntTable;
@@ -63,8 +63,7 @@ const ErpPackageList = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-      url: '/',
-      method: 'POST'
+        ...batchDelete
     }} value={ids}>批量删除</DelButton>);
   };
 

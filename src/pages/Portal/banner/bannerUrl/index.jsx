@@ -22,6 +22,11 @@ export const bannerDelete = {
   method: 'POST',
   rowKey:'bannerId'
 };
+export const batchDelete = {
+  url: '/banner/batchDelete',
+  method: 'POST',
+  rowKey:'bannerId'
+};
 
 export const bannerDetail = {
   url: '/banner/detail',

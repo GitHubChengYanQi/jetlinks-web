@@ -8,14 +8,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
-import {batchDelete} from '@/pages/Erp/items/ItemsUrl';
 import {Image, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {bannerDelete, bannerList} from '../../bannerUrl';
+import {bannerDelete, bannerList, batchDelete} from '../../bannerUrl';
 import BannerEdit from '../../bannerEdit';
 import * as SysField from '../../bannerField';
 
