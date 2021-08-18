@@ -39,3 +39,8 @@ export const getToken = {
   method: 'GET'
 };
 
+export const Difference = {
+  url: '/bannerDifference/listSelect',
+  method: 'POST'
+};
+
