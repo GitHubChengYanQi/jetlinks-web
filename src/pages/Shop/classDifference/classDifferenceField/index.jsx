@@ -15,3 +15,10 @@ import * as apiUrl from '../classDifferenceUrl';
 export const Title = (props) =>{
   return (<Input {...props}/>);
 };
+export const Sort = (props) =>{
+  return (<InputNumber {...props}/>);
+};
+export const ClassId = (props) =>{
+  props.onChange(props.classId);
+  return (<Input {...props}/>);
+};

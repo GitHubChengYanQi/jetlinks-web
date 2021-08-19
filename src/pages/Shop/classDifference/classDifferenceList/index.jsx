@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {classDifferenceDelete, classDifferenceList} from '../classDifferenceUrl';
 import ClassDifferenceEdit from '../classDifferenceEdit';
 import * as SysField from '../classDifferenceField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -24,8 +25,6 @@ const ClassDifferenceList = (props) => {
 
   const {value} = props;
 
-  console.log(value);
-
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -33,48 +32,50 @@ const ClassDifferenceList = (props) => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="分类名" name="title" component={SysField.Title}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="分类名" name="title" component={SysField.Title} />
+        <FormItem hidden value={value || null} name="classId" component={SysField.Title} />
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={classDifferenceList}
         rowKey="classDifferenceId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="分类名" dataIndex="title"/>
-        <Column/>
+        <Column title="分类名" dataIndex="title" />
+        <Column title="排序" dataIndex="sort" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.classDifferenceId);
-              }}/>
-              <DelButton api={classDifferenceDelete} value={record.classDifferenceId} onSuccess={()=>{
+              }} />
+              <DelButton api={classDifferenceDelete} value={record.classDifferenceId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={ClassDifferenceEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} classId={value} />
     </>
   );
 };

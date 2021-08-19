@@ -18,75 +18,73 @@ import DaoxinPortalClassEdit from '../daoxinPortalClassEdit';
 import * as SysField from '../daoxinPortalClassField';
 import Modal from '@/components/Modal';
 import ClassDifferenceList from '@/pages/Shop/classDifference/classDifferenceList';
+import {useHistory} from 'ice';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const DaoxinPortalClassList = () => {
   const ref = useRef(null);
-  const refClass = useRef(null);
+  const history = useHistory();
   const tableRef = useRef(null);
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="分类名称" name="className" component={SysField.ClassName}/>
-       <FormItem label="排序" name="sort" component={SysField.Sort}/>
-       <FormItem label="轮播图分类id" name="classificationId" component={SysField.ClassificationId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="分类名称" name="className" component={SysField.ClassName} />
+        <FormItem label="排序" name="sort" component={SysField.Sort} />
+        <FormItem label="轮播图分类" name="classificationId" component={SysField.ClassificationId} />
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={daoxinPortalClassList}
         rowKey="classId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="分类名称" dataIndex="className" render={(value,record)=>{
+        <Column title="分类名称" dataIndex="className" render={(value, record) => {
           return (
             <Button size="small" type="link" onClick={() => {
-              refClass.current.open(record.classId);
+              history.push(`/shop/daoxinPortalClass/${record.classId}`);
             }}>{value}</Button>
           );
         }} />
-        <Column title="排序" dataIndex="sort"/>
-        <Column title="轮播图分类id" dataIndex="classificationId"/>
-        <Column/>
+        <Column title="排序" dataIndex="sort" />
+        <Column title="轮播图分类" dataIndex="classificationId" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.classId);
-              }}/>
-              <DelButton api={daoxinPortalClassDelete} value={record.classId} onSuccess={()=>{
+              }} />
+              <DelButton api={daoxinPortalClassDelete} value={record.classId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={DaoxinPortalClassEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
-      <Modal width={800} title="编辑" component={ClassDifferenceList} onSuccess={() => {
-        tableRef.current.refresh();
-        refClass.current.close();
-      }} ref={refClass}/>
+      }} ref={ref} />
     </>
   );
 };
