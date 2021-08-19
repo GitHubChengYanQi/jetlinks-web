@@ -35,3 +35,7 @@ export const goodsDetailsList = {
   rowKey:'goodDetailsId'
 };
 
+export const goodslistSelect = {
+  url: '/goods/listSelect',
+  method: 'POST'
+};

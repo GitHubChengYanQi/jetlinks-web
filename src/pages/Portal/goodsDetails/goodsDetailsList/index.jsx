@@ -7,15 +7,19 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import {Breadcrumb} from "@alifd/next";
 import {goodsDetailsDelete, goodsDetailsList} from '../goodsDetailsUrl';
 import GoodsDetailsEdit from '../goodsDetailsEdit';
 import * as SysField from '../goodsDetailsField';
+import Modal2 from "@/components/Modal";
+import GoodsDetailsBannerList from "@/pages/Portal/goodsDetailsBanner/goodsDetailsBannerList";
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -23,43 +27,32 @@ const {FormItem} = Form;
 const GoodsDetailsList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
-      </>
-    );
-  };
-
- const searchForm = () => {
-   return (
-     <>
-     </>
-    );
-  };
-
+  const bannerRef =useRef(null);
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb/>}
         api={goodsDetailsList}
         rowKey="goodDetailsId"
-        searchForm={searchForm}
-        actions={actions()}
+        searchForm={false}
+        actions={false}
         ref={tableRef}
       >
-        <Column title="商品id" dataIndex="goodId"/>
-        <Column title="商品轮播图id" dataIndex="detailBannerId"/>
-        <Column title="商品标题" dataIndex="title"/>
-        <Column title="商品售价" dataIndex="price"/>
-        <Column title="商品原价" dataIndex="lastPrice"/>
-        <Column title="服务" dataIndex="server"/>
-        <Column title="规格id" dataIndex="specificationId"/>
-        <Column title="商品详情" dataIndex="details"/>
-        <Column title="排序" dataIndex="sort"/>
-        <Column/>
+        {/*<Column title="商品名称" fixed dataIndex="goodId"/>*/}
+        <Column title="商品图片" fixed width={200} dataIndex="detailBannerId"render={(text, record) => {
+          return (
+            <Button type="link" onClick={() => {
+              bannerRef.current.open(record.goodDetailsId);
+            }}>{text}</Button>
+          );
+        }} />
+        <Column title="商品标题" width={400} dataIndex="title"/>
+        <Column title="商品售价" width={90} dataIndex="price"/>
+        <Column title="商品原价" width={90} dataIndex="lastPrice"/>
+        <Column title="服务" width={200}  dataIndex="server"/>
+        <Column title="规格" width={100} dataIndex="specificationId"/>
+        <Column title="商品详情" width={200} dataIndex="details"/>
+        {/*<Column title="排序" dataIndex="sort"/>*/}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -77,6 +70,10 @@ const GoodsDetailsList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Modal2 width={1000} title="商品图片" component={GoodsDetailsBannerList} onSuccess={() => {
+        bannerRef.current.refresh();
+        ref.current.close();
+      }} ref={bannerRef}/>
     </>
   );
 };

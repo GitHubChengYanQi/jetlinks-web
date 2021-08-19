@@ -7,15 +7,19 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Modal2 from '@/components/Modal';
+import Breadcrumb from "@/components/Breadcrumb";
 import {goodsDelete, goodsList} from '../goodsUrl';
 import GoodsEdit from '../goodsEdit';
 import * as SysField from '../goodsField';
+import GoodsDetailsList from "@/pages/Portal/goodsDetails/goodsDetailsList";
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -23,6 +27,7 @@ const {FormItem} = Form;
 const GoodsList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const goodsDetailRef = useRef(null);
   const actions = () => {
     return (
       <>
@@ -33,29 +38,35 @@ const GoodsList = () => {
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="商品名称" name="goodName" component={SysField.GoodName}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="商品名称" name="goodName" component={SysField.GoodName}/>
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={goodsList}
         rowKey="goodId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="商品名称" fixed width={100} dataIndex="goodName"/>
+        <Column title="商品名称" fixed width={100} dataIndex="goodName" render={(text, record) => {
+          return (
+            <Button type="link" onClick={() => {
+              goodsDetailRef.current.open(record.goodId);
+            }}>{text}</Button>
+          );
+        }} />
         <Column title="商品标题" width={1000} dataIndex="title"/>
         <Column title="商品售价" width={100} dataIndex="price"/>
         <Column title="商品原价" width={100} dataIndex="lastPrice"/>
-        <Column title="商品图片" width={100} dataIndex="imgUrl"/>
+        <Column title="商品封面图片" width={100} dataIndex="imgUrl"/>
         {/*<Column title="评论" dataIndex="comment"/>*/}
         {/*<Column title="排序" dataIndex="sort"/>*/}
         <Column title="操作" fixed align="right" render={(value, record) => {
@@ -75,6 +86,10 @@ const GoodsList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+      <Modal2 width={1900} title="商品详情" component={GoodsDetailsList} onSuccess={() => {
+        goodsDetailRef.current.refresh();
+        ref.current.close();
+      }} ref={goodsDetailRef}/>
     </>
   );
 };
