@@ -34,4 +34,12 @@ export const classDifferenceDetailsList = {
   method: 'POST',
   rowKey:'detailId'
 };
+export const classDifferenceListSelect = {
+  url: '/classDifference/listSelect',
+  method: 'POST',
+};
+export const daoxinPortalClass = {
+  url: '/daoxinPortalClass/list',
+  method: 'POST',
+};
 

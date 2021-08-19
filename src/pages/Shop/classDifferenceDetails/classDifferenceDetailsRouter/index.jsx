@@ -10,7 +10,7 @@ import React, {lazy} from 'react';
 export const ClassDifferenceDetailsRouter = [
   {
     path: '/classDifferenceDetails',
-    component: lazy(() => import('../classDifferenceDetailsList')),
+    component: lazy(() => import('../components/ClassDifferenceDatailsTable')),
     fallback: <div>loading...</div>,
     exact: true,
   }

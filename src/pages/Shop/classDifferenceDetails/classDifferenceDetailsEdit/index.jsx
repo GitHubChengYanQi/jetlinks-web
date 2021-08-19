@@ -21,6 +21,8 @@ const ApiConfig = {
 
 const ClassDifferenceDetailsEdit = ({...props}) => {
 
+  const {classDifferenceId} = props;
+
   const formRef = useRef();
 
   return (
@@ -32,7 +34,9 @@ const ClassDifferenceDetailsEdit = ({...props}) => {
     >
       <FormItem label="产品名" name="title" component={SysField.Title} required/>
       <FormItem label="图片路径" name="imgUrl" component={SysField.ImgUrl} required/>
-      <FormItem label="链接" name="link" component={SysField.Link} required/>
+      <FormItem label="排序" name="sort" component={SysField.Sort} required/>
+      <FormItem label="链接" name="link" component={SysField.Link} />
+      <FormItem hidden name="classDifferenceId" component={SysField.ClassDifferenceId} classDifferenceId={classDifferenceId || null}/>
     </Form>
   );
 };

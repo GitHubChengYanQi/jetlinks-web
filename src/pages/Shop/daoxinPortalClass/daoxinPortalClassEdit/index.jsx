@@ -32,7 +32,7 @@ const DaoxinPortalClassEdit = ({...props}) => {
     >
       <FormItem label="分类名称" name="className" component={SysField.ClassName} required/>
       <FormItem label="排序" name="sort" component={SysField.Sort} required/>
-      <FormItem label="轮播图分类id" name="classificationId" component={SysField.ClassificationId} required/>
+      <FormItem label="轮播图分类" name="classificationId" component={SysField.ClassificationId}/>
     </Form>
   );
 };

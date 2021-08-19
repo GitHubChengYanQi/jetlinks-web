@@ -21,6 +21,8 @@ const ApiConfig = {
 
 const ClassDifferenceEdit = ({...props}) => {
 
+  const {classId} = props;
+
   const formRef = useRef();
 
   return (
@@ -29,8 +31,13 @@ const ClassDifferenceEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="classDifferenceId"
+      onSuccess={()=>{
+        props.onSuccess();
+      }}
     >
       <FormItem label="分类名" name="title" component={SysField.Title} required/>
+      <FormItem label="排序" name="sort" component={SysField.Sort} required/>
+      <FormItem hidden name="classId" component={SysField.ClassId} classId={classId || null} required/>
     </Form>
   );
 };
