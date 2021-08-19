@@ -2,6 +2,7 @@
 import OemLayout from '@/pages/Portal';
 import {BannerRouter} from '@/pages/Portal/banner/bannerRouter';
 import {NavigationRouter} from '@/pages/Portal/navigation/navigationRouter';
+import {GoodsRouter} from "@/pages/Portal/goods/goodsRouter";
 
 const ProtalRouterConfig = [
   {
@@ -11,6 +12,7 @@ const ProtalRouterConfig = [
     children:[
       ...BannerRouter,
       ...NavigationRouter,
+      ...GoodsRouter,
       {
         redirect: '/protal/banner',
       }
