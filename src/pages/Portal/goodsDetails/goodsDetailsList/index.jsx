@@ -5,7 +5,7 @@
  * @Date 2021-08-19 13:30:45
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -24,18 +24,35 @@ import GoodsDetailsBannerList from "@/pages/Portal/goodsDetailsBanner/goodsDetai
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const GoodsDetailsList = () => {
+const GoodsDetailsList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const bannerRef =useRef(null);
+
+
+
+  useEffect(()=>{
+    tableRef.current.formActions.setFieldValue('good_id', props.value);
+    tableRef.current.submit();
+  }, [props.value]);
+
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem disabled label="商品名称" name="goodId" component={SysField.GoodId} value={props.value}  />
+      </>
+    );
+  };
+
   return (
     <>
       <Table
         title={<Breadcrumb/>}
         api={goodsDetailsList}
         rowKey="goodDetailsId"
-        searchForm={false}
+        searchForm={searchForm}
         actions={false}
+        SearchButton
         ref={tableRef}
       >
         {/*<Column title="商品名称" fixed dataIndex="goodId"/>*/}
@@ -43,7 +60,7 @@ const GoodsDetailsList = () => {
           return (
             <Button type="link" onClick={() => {
               bannerRef.current.open(record.goodDetailsId);
-            }}>{text}</Button>
+            }}>商品图片</Button>
           );
         }} />
         <Column title="商品标题" width={400} dataIndex="title"/>
@@ -66,11 +83,11 @@ const GoodsDetailsList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={GoodsDetailsEdit} onSuccess={() => {
+      <Drawer width={800} title="商品详情" component={GoodsDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-      <Modal2 width={1000} title="商品图片" component={GoodsDetailsBannerList} onSuccess={() => {
+      <Modal2 width={800} title="商品图片" component={GoodsDetailsBannerList} onSuccess={() => {
         bannerRef.current.refresh();
         ref.current.close();
       }} ref={bannerRef}/>

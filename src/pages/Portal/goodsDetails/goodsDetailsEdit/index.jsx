@@ -31,10 +31,10 @@ const GoodsDetailsEdit = ({...props}) => {
       fieldKey="goodDetailsId"
     >
       {/*<FormItem label="商品id" name="goodId" component={SysField.GoodId} required/>*/}
-      <FormItem label="商品图片" name="detailBannerId" component={SysField.DetailBannerId} required/>
-      <FormItem label="商品标题" name="title" component={SysField.Title} required/>
-      <FormItem label="商品售价" name="price" component={SysField.Price} required/>
-      <FormItem label="商品原价" name="lastPrice" component={SysField.LastPrice} required/>
+      {/*<FormItem label="商品图片" name="detailBannerId" component={SysField.DetailBannerId} required/>*/}
+      <FormItem label="商品标题" name="title" component={SysField.Title} disabled required/>
+      <FormItem label="商品售价" name="price" component={SysField.Price} disabled required/>
+      <FormItem label="商品原价" name="lastPrice" component={SysField.LastPrice} disabled required/>
       <FormItem label="服务" name="server" component={SysField.Server} required/>
       <FormItem label="规格id" name="specificationId" component={SysField.SpecificationId} required/>
       <FormItem label="商品详情" name="details" component={SysField.Details} required/>

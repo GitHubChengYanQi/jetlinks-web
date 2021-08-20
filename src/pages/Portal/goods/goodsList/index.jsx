@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Image, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -66,7 +66,13 @@ const GoodsList = () => {
         <Column title="商品标题" width={1000} dataIndex="title"/>
         <Column title="商品售价" width={100} dataIndex="price"/>
         <Column title="商品原价" width={100} dataIndex="lastPrice"/>
-        <Column title="商品封面图片" width={100} dataIndex="imgUrl"/>
+        <Column title="商品封面图片" width={100} dataIndex="imgUrl"render={(value, record) => {
+          return (
+            <>
+              <Image width={100} height={50} src={value} />
+            </>
+          );
+        }} />
         {/*<Column title="评论" dataIndex="comment"/>*/}
         {/*<Column title="排序" dataIndex="sort"/>*/}
         <Column title="操作" fixed align="right" render={(value, record) => {

@@ -5,9 +5,9 @@
  * @Date 2021-08-19 16:34:29
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Image, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,42 +16,59 @@ import Form from '@/components/Form';
 import {goodsDetailsBannerDelete, goodsDetailsBannerList} from '../goodsDetailsBannerUrl';
 import GoodsDetailsBannerEdit from '../goodsDetailsBannerEdit';
 import * as SysField from '../goodsDetailsBannerField';
+import {Breadcrumb} from "@alifd/next";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const GoodsDetailsBannerList = () => {
+const GoodsDetailsBannerList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const [goodDetailId, setGoodDetailId] = useState(null);
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
+          setGoodDetailId(props.value);
           ref.current.open(false);
         }}/>
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-     </>
+  useEffect(()=>{
+    tableRef.current.formActions.setFieldValue('good_details_id', props.value);
+    tableRef.current.submit();
+  }, [props.value]);
+
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem style={{'display':'none'}}  name="goodDetailsId" component={SysField.goodDetailsId} value={props.value}  />
+      </>
     );
   };
+
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={goodsDetailsBannerList}
         rowKey="detailBannerId"
         searchForm={searchForm}
+        SearchButton
         actions={actions()}
         ref={tableRef}
       >
         <Column title="排序" dataIndex="sort"/>
-        <Column title="图片路径" dataIndex="imgUrl"/>
+        <Column title="商品图片" dataIndex="imgUrl" render={(value, record) => {
+          return (
+            <>
+              <Image width={100} height={80} src={value} />
+            </>
+          );
+        }} />
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -66,7 +83,7 @@ const GoodsDetailsBannerList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={GoodsDetailsBannerEdit} onSuccess={() => {
+      <Drawer width={800} title="商品图片" component={GoodsDetailsBannerEdit} goodDetailId={goodDetailId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
