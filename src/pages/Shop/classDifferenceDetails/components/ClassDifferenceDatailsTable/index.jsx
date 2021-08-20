@@ -44,12 +44,14 @@ const ClassDifferenceDatailsTable = (props) => {
     }
   },[classDifferenceId]);
 
+
+
   const searchForm = () => {
     return (
       <>
         <FormItem label="产品名" name="title" component={SysField.Title} />
         <FormItem label="链接" name="link" component={SysField.Link} />
-        <FormItem hidden name="classDifferenceId" component={SysField.ClassDifference} />
+        <FormItem hidden name="classDifferenceId" value={classDifferenceId} component={SysField.ClassDifference} />
       </>
     );
   };
