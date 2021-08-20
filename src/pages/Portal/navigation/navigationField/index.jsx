@@ -9,6 +9,7 @@ import React from 'react';
 import {Input,InputNumber} from 'antd';
 import Select from '@/components/Select';
 import UpLoadImg from '@/components/Upload';
+import Links from '@/pages/Portal/Links';
 import * as apiUrl from '../navigationUrl';
 
 export const Title = (props) =>{
@@ -21,7 +22,7 @@ export const Sort = (props) =>{
   return (<InputNumber {...props}/>);
 };
 export const Link = (props) =>{
-  return (<Input {...props}/>);
+  return (<Links {...props}/>);
 };
 export const Difference = (props) =>{
   return (<Select api={apiUrl.Difference} {...props}/>);

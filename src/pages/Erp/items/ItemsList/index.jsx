@@ -107,7 +107,6 @@ const ItemsList = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="生产日期" name="productionTime" component={SysField.ProductionTime} />
           <FormItem mega-props={{span: 1}} placeholder="重要程度" name="important" component={SysField.Name} />
           <FormItem mega-props={{span: 1}} placeholder="产品重量" name="weight" component={SysField.Name} />
           <FormItem mega-props={{span: 1}} placeholder="材质" name="materialName" component={SysField.Name} />

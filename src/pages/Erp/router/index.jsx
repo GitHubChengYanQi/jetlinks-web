@@ -13,6 +13,7 @@ import ErpLayout from '@/pages/Erp';
 import {OrderBranchRouter} from '@/pages/Erp/orderBranch/OrderBranchRouter';
 import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
 import {PackageRouter} from '@/pages/Erp/package/packageRouter';
+import {DeliveryRouter} from '@/pages/Erp/delivery/deliveryRouter';
 
 const ErpRouterConfig = [
   {
@@ -31,6 +32,7 @@ const ErpRouterConfig = [
       ...InstockRouter,
       ...OrderRouter,
       ...OrderBranchRouter,
+      ...DeliveryRouter,
       {
         redirect: '/ERP/items',
       }

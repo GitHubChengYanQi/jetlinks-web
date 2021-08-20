@@ -56,7 +56,6 @@ const InstockList = () => {
   };
 
   function confirmOk(record) {
-
     Modal.confirm({
       title: '入库',
       centered: true,

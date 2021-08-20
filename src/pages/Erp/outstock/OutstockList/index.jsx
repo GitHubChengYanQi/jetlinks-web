@@ -7,20 +7,14 @@
 
 import React, {useRef} from 'react';
 import {Button, Modal, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Modal2 from '@/components/Modal';
 import OutstockEdit from '@/pages/Erp/outstock/OutstockEdit';
 import {useBoolean} from 'ahooks';
-import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-import Icon from '@/components/Icon';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import {outstockDelete, outstockEdit, outstockList} from '../OutstockUrl';
 import * as SysField from '../OutstockField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,7 +27,6 @@ const OutstockList = (props) => {
   const tableRef = useRef(null);
 
 
-  const [search, {toggle}] = useBoolean(false);
 
 
   const searchForm = () => {
@@ -81,18 +74,18 @@ const OutstockList = (props) => {
           );
         }} />
         <Column title="出库数量" width={120} align="center" dataIndex="number" sorter />
-        <Column title="操作" fixed="right" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record);
-              }} />
-              <DelButton api={outstockDelete} value={record.outstockId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={100} />
+        {/*<Column title="操作" fixed="right" align="right" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      <EditButton onClick={() => {*/}
+        {/*        ref.current.open(record);*/}
+        {/*      }} />*/}
+        {/*      <DelButton api={outstockDelete} value={record.outstockId} onSuccess={() => {*/}
+        {/*        tableRef.current.refresh();*/}
+        {/*      }} />*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} width={100} />*/}
       </Table>
       <Modal2 title="产品出库" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
