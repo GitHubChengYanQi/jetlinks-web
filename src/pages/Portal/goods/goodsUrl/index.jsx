@@ -35,3 +35,9 @@ export const goodsList = {
   rowKey:'goodId'
 };
 
+export const goodsListSelect = {
+  url: '/goods/listSelect',
+  method: 'POST',
+};
+
+

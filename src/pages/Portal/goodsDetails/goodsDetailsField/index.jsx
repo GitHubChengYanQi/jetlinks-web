@@ -6,16 +6,15 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import {Input} from 'antd';
 import Select from '@/components/Select';
-import * as apiUrl from '../goodsDetailsUrl';
 import TextArea from "antd/es/input/TextArea";
+import * as apiUrl from '../goodsDetailsUrl';
 
 export const GoodId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select  api={apiUrl.goodslistSelect}{...props} />);
 };
+
 export const DetailBannerId = (props) =>{
   return (<Input {...props}/>);
 };
