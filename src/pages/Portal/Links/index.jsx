@@ -94,6 +94,10 @@ const Links = (props) => {
             {
               value: '/pages/refundSelect/index',
               label: '申请售后1.1'
+            },
+            {
+              value: '/pages/rapidRepairOut/index',
+              label: '一键报修'
             }
           ]
         }
