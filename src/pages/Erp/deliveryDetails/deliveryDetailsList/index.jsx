@@ -8,8 +8,6 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Button, Modal, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -20,7 +18,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {useParams} from 'ice';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import {instockEdit} from '@/pages/Erp/instock/InstockUrl';
+import Modal2 from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -78,12 +76,11 @@ const DeliveryDetailsList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="产品id" name="itemId" component={SysField.ItemId} />
-        <FormItem label="客户id" name="customerId" component={SysField.CustomerId} />
-        <FormItem label="地址id" name="adressId" component={SysField.AdressId} />
-        <FormItem label="联系人id" name="contactsId" component={SysField.ContactsId} />
-        <FormItem label="电话id" name="phoneId" component={SysField.PhoneId} />
-        <FormItem label="出库明细id" name="stockItemId" component={SysField.StockItemId} />
+        <FormItem label="产品" name="itemId" component={SysField.ItemId} />
+        <FormItem label="客户" name="customerId" component={SysField.CustomerId} />
+        <FormItem label="地址" name="adressId" component={SysField.AdressId} />
+        <FormItem label="联系人" name="contactsId" component={SysField.ContactsId} />
+        <FormItem label="电话" name="phoneId" component={SysField.PhoneId} />
         <FormItem hidden value={params ? params.cid : null} name="deliveryId" component={SysField.DeliveryId} />
       </>
     );
@@ -100,13 +97,53 @@ const DeliveryDetailsList = () => {
         ref={tableRef}
       >
         <Column title="产品编号" dataIndex="stockItemId" />
-        <Column title="产品" dataIndex="itemId" />
-        <Column title="客户" dataIndex="customerId" />
-        <Column title="地址" dataIndex="adressId" />
-        <Column title="联系人" dataIndex="contactsId" />
-        <Column title="电话" dataIndex="phoneId" />
+        <Column title="产品" dataIndex="itemId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.itemsResult && record.itemsResult.name
+              }
+            </>
+          );
+        }} />
+        <Column title="客户" dataIndex="customerId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.customerResult && record.customerResult.customerName
+              }
+            </>
+          );
+        }}/>
+        <Column title="地址" dataIndex="adressId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.adressResult && record.adressResult.location
+              }
+            </>
+          );
+        }}/>
+        <Column title="联系人" dataIndex="contactsId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.contactsResult && record.contactsResult.contactsName
+              }
+            </>
+          );
+        }}/>
+        <Column title="电话" dataIndex="phoneId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.phoneResult && record.phoneResult.phoneNumber
+              }
+            </>
+          );
+        }}/>
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="操作" fixed='right' align="right" render={(value, record) => {
           return (
             <>
               {record.stage === 0 ?
@@ -116,10 +153,10 @@ const DeliveryDetailsList = () => {
                     onClick={() => {
                       confirmOk(record);
                     }}>
-                    <Icon type="icon-ruku" />发货</Button>
+                    <Icon type="icon-chuhuo" />发货</Button>
                   <EditButton
                     onClick={() => {
-                      ref.current.open(record.deliveryDetailsId);
+                      ref.current.open(record);
                     }} />
                 </> : null}
               {/*<DelButton api={deliveryDetailsDelete} value={record.deliveryDetailsId} onSuccess={() => {*/}
@@ -129,7 +166,7 @@ const DeliveryDetailsList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={DeliveryDetailsEdit} onSuccess={() => {
+      <Modal2 width={800} title="编辑" component={DeliveryDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

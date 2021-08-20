@@ -28,6 +28,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const InstockList = () => {
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {

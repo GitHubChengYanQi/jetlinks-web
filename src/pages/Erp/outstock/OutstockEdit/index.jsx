@@ -28,6 +28,7 @@ const OutstockEdit = ({...props}) => {
   const {value} = props;
 
   const {data, run} = useRequest({url: '/stock/listAll', method: 'POST', data: {storehouseId: value.storehouseId}});
+
   const {data: itemData, run: itemRun} = useRequest({
     url: '/stock/listAll',
     method: 'POST',

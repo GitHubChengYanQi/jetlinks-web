@@ -1,7 +1,7 @@
 /**
  * 接口配置
  *
- * @author  
+ * @author
  * @Date 2021-08-20 13:14:51
  */
 
@@ -33,5 +33,30 @@ export const deliveryDetailsList = {
   url: '/deliveryDetails/list',
   method: 'POST',
   rowKey:'deliveryDetailsId'
+};
+
+export const CustomerNameListSelect = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
+export const items = {
+  url: '/items/listSelect',
+  method: 'POST',
+};
+export const customer = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
+export const adress = {
+  url: '/adress/listSelect',
+  method: 'POST',
+};
+export const contacts = {
+  url: '/contacts/listSelect',
+  method: 'POST',
+};
+export const phone = {
+  url: '/phone/listSelect',
+  method: 'POST',
 };
 

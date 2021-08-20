@@ -14,6 +14,8 @@ import {useBoolean} from 'ahooks';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import {outstockDelete, outstockEdit, outstockList} from '../OutstockUrl';
 import * as SysField from '../OutstockField';
+import EditButton from '@/components/EditButton';
+import DelButton from '@/components/DelButton';
 
 
 const {Column} = AntTable;
@@ -74,18 +76,18 @@ const OutstockList = (props) => {
           );
         }} />
         <Column title="出库数量" width={120} align="center" dataIndex="number" sorter />
-        {/*<Column title="操作" fixed="right" align="right" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      <EditButton onClick={() => {*/}
-        {/*        ref.current.open(record);*/}
-        {/*      }} />*/}
-        {/*      <DelButton api={outstockDelete} value={record.outstockId} onSuccess={() => {*/}
-        {/*        tableRef.current.refresh();*/}
-        {/*      }} />*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} width={100} />*/}
+        {value ? null : <Column title="操作" fixed="right" align="right" render={(value, record) => {
+          return (
+            <>
+              <EditButton onClick={() => {
+                ref.current.open(record);
+              }} />
+              <DelButton api={outstockDelete} value={record.outstockId} onSuccess={() => {
+                tableRef.current.refresh();
+              }} />
+            </>
+          );
+        }} width={100} /> }
       </Table>
       <Modal2 title="产品出库" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
