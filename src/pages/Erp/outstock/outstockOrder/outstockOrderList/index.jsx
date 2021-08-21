@@ -19,6 +19,7 @@ import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
 import {outstock, outstockOrderDelete, outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
+import StockDetailsList from '@/pages/Erp/stockDetails/StockDetailsList';
 
 const {Column} = AntTable;
 
@@ -120,9 +121,9 @@ const OutstockOrderList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal2 width={1200}  component={OutstockList} onSuccess={() => {
+      <Modal2 width={1200}  component={StockDetailsList} onSuccess={() => {
         tableRef.current.refresh();
-        ref.current.close();
+        refSee.current.close();
       }} ref={refSee} />
     </>
   );

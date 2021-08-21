@@ -11,7 +11,7 @@ import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import {stockDetailsList} from "@/pages/Erp/stockDetails/StockDetailsUrl";
+import {stockDetailsList} from '@/pages/Erp/stockDetails/StockDetailsUrl';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '../StockDetailsField';
 
@@ -24,17 +24,19 @@ const StockDetailsList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
+  const {value} = props;
 
-  const {storehouseId, brandId, itemId} = props.location.params || [];
+
+
+  const {storehouseId, brandId, itemId} = value ? [] : props.location.params || [];
 
   const [search, setSearch] = useState(false);
 
   useEffect(() => {
     if (storehouseId || brandId || itemId) {
-      console.log(props.location.params);
       tableRef.current.formActions.setFieldValue('storehouseId', storehouseId || '');
-      tableRef.current.formActions.setFieldValue('brandId', brandId  || '');
-      tableRef.current.formActions.setFieldValue('itemId', itemId  || '');
+      tableRef.current.formActions.setFieldValue('brandId', brandId || '');
+      tableRef.current.formActions.setFieldValue('itemId', itemId || '');
       tableRef.current.submit();
     }
   }, [storehouseId, brandId, itemId]);
@@ -43,10 +45,14 @@ const StockDetailsList = (props) => {
 
     return (
       <>
-        <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId} component={SysField.Storehouse} />
+
+        <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId}
+                  component={SysField.Storehouse} />
         <FormItem disabled placeholder="品牌名称" name="brandId" value={brandId} component={SysField.brandeId} />
         <FormItem disabled placeholder="产品名称" name="itemId" value={itemId} component={SysField.ItemId} />
         <FormItem placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
+        <FormItem hidden name="stage" value={value ? 2 : 1} component={SysField.outStockOrderId} />
+        {value && <FormItem hidden name="outStockOrderId" value={value} component={SysField.outStockOrderId} />}
       </>
     );
   };
@@ -99,9 +105,9 @@ const StockDetailsList = (props) => {
             </>
           );
         }} />
-        <Column title="条形码" dataIndex="barcode"/>
-        <Column title="产品价格" dataIndex="price" sorter/>
-        <Column title="入库时间" dataIndex="storageTime" sorter/>
+        <Column title="条形码" dataIndex="barcode" />
+        <Column title="产品价格" dataIndex="price" sorter />
+        <Column title="入库时间" dataIndex="storageTime" sorter />
       </Table>
     </>
   );

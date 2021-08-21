@@ -66,7 +66,7 @@ const OutstockList = (props) => {
       {value ? <>出库产品</> : <Button style={{width: '100%'}} onClick={() => {
         ref.current.open(false);
       }}>
-        添加库存
+        添加出库商品
       </Button>}
       <Table
         api={outstockList}

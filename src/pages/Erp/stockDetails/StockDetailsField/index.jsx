@@ -33,4 +33,8 @@ export const  brandeId= (props) =>{
   return (<Select api={apiUrl.brandListSelect}   {...props}/>);
 };
 
+export const  outStockOrderId= (props) =>{
+  return (<Input  {...props}/>);
+};
+
 
