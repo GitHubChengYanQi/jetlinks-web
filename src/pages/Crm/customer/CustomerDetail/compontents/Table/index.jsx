@@ -10,7 +10,7 @@ const { Column } = AntdTable;
 
 const formActions = createFormActions();
 
-const TableWarp = ({ children, columns ,actions,listHeader,  title ,api,showHeader=true ,searchForm, rowKey,showSearchButton=true,footer: parentFooter, disabled = true, ...props }, ref) => {
+const TableWarp = ({ children, columns ,actions,listHeader,  title ,selectionType,api,showHeader=true ,searchForm, rowKey,showSearchButton=true,footer: parentFooter, disabled = true, onChange,...props }, ref) => {
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -116,6 +116,12 @@ const TableWarp = ({ children, columns ,actions,listHeader,  title ,api,showHead
         showHeader={showHeader}
         columns={columns}
         sticky
+        rowSelection={{
+          type: selectionType || 'checkbox',
+          onChange: (selectedRowKeys, selectedRows) => {
+            typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
+          }
+        }}
         pagination={
           {
             ...pagination,

@@ -113,3 +113,6 @@ export const PhoneId = (props) =>{
 export const DeliveryId = (props) =>{
   return (<Input {...props}/>);
 };
+export const Ids = (props) =>{
+  return (<Input {...props}/>);
+};

@@ -8,31 +8,31 @@
 export const repairAdd = {
   url: '/repair/add',
   method: 'POST',
-  rowKey:'repairId'
+  rowKey: 'repairId'
 };
 
 export const repairEdit = {
   url: '/repair/edit',
   method: 'POST',
-  rowKey:'repairId'
+  rowKey: 'repairId'
 };
 
 export const repairDelete = {
   url: '/repair/delete',
   method: 'POST',
-  rowKey:'repairId'
+  rowKey: 'repairId'
 };
 
 export const repairDetail = {
   url: '/repair/detail',
   method: 'POST',
-  rowKey:'repairId'
+  rowKey: 'repairId'
 };
 
 export const repairList = {
   url: '/repair/list',
   method: 'POST',
-  rowKey:'repairId'
+  rowKey: 'repairId'
 };
 
 export const companyIdSelect = {
@@ -40,4 +40,6 @@ export const companyIdSelect = {
   method: 'POST'
 };
 export const itemIdSelect = {
-  url: '
+  url: '/items/listSelect',
+  method: 'POST'
+};
