@@ -20,6 +20,7 @@ import Modal2 from '@/components/Modal';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
 import DeliveryDetailsList from '@/pages/Erp/deliveryDetails/deliveryDetailsList';
 import {useHistory} from 'ice';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -49,32 +50,67 @@ const DeliveryList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={deliveryList}
         rowKey="deliveryId"
         searchForm={searchForm}
-        // actions={actions()}
         ref={tableRef}
       >
-        <Column title="出库单" dataIndex="outstockOrderId" render={(text, record) => {
+        <Column title="发货单" dataIndex="deliveryId" render={(text, record) => {
           return <Button type="link" onClick={() => {
-            history.push(`/Erp/delivery/${record.deliveryId}`);
+            history.push(`/ERP/delivery/${record.deliveryId}`);
           }}>{text}</Button>;
         }} />
-        <Column title="发货时间" dataIndex="outTime" />
-        <Column />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="客户" dataIndex="customerId" render={(value,record)=>{
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.deliveryId);
-              }} />
-              <DelButton api={deliveryDelete} value={record.deliveryId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
+              {
+                record.customerResult && record.customerResult.customerName
+              }
             </>
           );
-        }} width={300} />
+        }}/>
+        <Column title="地址" dataIndex="adressId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.adressResult && record.adressResult.location
+              }
+            </>
+          );
+        }}/>
+        <Column title="联系人" dataIndex="contactsId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.contactsResult && record.contactsResult.contactsName
+              }
+            </>
+          );
+        }}/>
+        <Column title="电话" dataIndex="phoneId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.phoneResult && record.phoneResult.phoneNumber
+              }
+            </>
+          );
+        }}/>
+        <Column title="发货时间" dataIndex="createTime" />
+        <Column />
+        {/*<Column title="操作" align="right" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      <EditButton onClick={() => {*/}
+        {/*        ref.current.open(record.deliveryId);*/}
+        {/*      }} />*/}
+        {/*      <DelButton api={deliveryDelete} value={record.deliveryId} onSuccess={() => {*/}
+        {/*        tableRef.current.refresh();*/}
+        {/*      }} />*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} width={300} />*/}
       </Table>
       <Drawer width={800} title="编辑" component={DeliveryEdit} onSuccess={() => {
         tableRef.current.refresh();

@@ -10,7 +10,14 @@ import React, {lazy} from 'react';
 export const RepairRouter = [
   {
     path: '/repair',
+    name: '售后管理',
     component: lazy(() => import('../repairList')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  }, {
+    path: '/repair/:cid',
+    name: '报修详情',
+    component: lazy(() => import('../RepairDetails/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }

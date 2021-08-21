@@ -34,4 +34,8 @@ export const companyAddressList = {
   method: 'POST',
   rowKey:'companyId'
 };
+export const CustomerIdListSelect = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
 

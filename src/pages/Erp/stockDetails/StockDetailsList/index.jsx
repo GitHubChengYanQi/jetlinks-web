@@ -88,8 +88,9 @@ const StockDetailsList = (props) => {
         searchForm={searchForm}
         footer={value ? footer : false}
         layout={search}
-        onChange={(keys) => {
-          setIds(keys);
+        onChange={(keys,all) => {
+          console.log(all);
+          setIds(all);
         }}
         ref={tableRef}
       >

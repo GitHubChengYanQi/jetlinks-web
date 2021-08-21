@@ -106,65 +106,29 @@ const DeliveryDetailsList = () => {
             </>
           );
         }} />
-        <Column title="客户" dataIndex="customerId" render={(value,record)=>{
-          return (
-            <>
-              {
-                record.customerResult && record.customerResult.customerName
-              }
-            </>
-          );
-        }}/>
-        <Column title="地址" dataIndex="adressId" render={(value,record)=>{
-          return (
-            <>
-              {
-                record.adressResult && record.adressResult.location
-              }
-            </>
-          );
-        }}/>
-        <Column title="联系人" dataIndex="contactsId" render={(value,record)=>{
-          return (
-            <>
-              {
-                record.contactsResult && record.contactsResult.contactsName
-              }
-            </>
-          );
-        }}/>
-        <Column title="电话" dataIndex="phoneId" render={(value,record)=>{
-          return (
-            <>
-              {
-                record.phoneResult && record.phoneResult.phoneNumber
-              }
-            </>
-          );
-        }}/>
         <Column />
-        <Column title="操作" fixed='right' align="right" render={(value, record) => {
-          return (
-            <>
-              {record.stage === 0 ?
-                <>
-                  <Button
-                    style={{margin: '0 10px'}}
-                    onClick={() => {
-                      confirmOk(record);
-                    }}>
-                    <Icon type="icon-chuhuo" />发货</Button>
-                  <EditButton
-                    onClick={() => {
-                      ref.current.open(record);
-                    }} />
-                </> : null}
+        {/*<Column title="操作" fixed='right' align="right" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      {record.stage === 0 ?*/}
+        {/*        <>*/}
+        {/*          <Button*/}
+        {/*            style={{margin: '0 10px'}}*/}
+        {/*            onClick={() => {*/}
+        {/*              confirmOk(record);*/}
+        {/*            }}>*/}
+        {/*            <Icon type="icon-chuhuo" />发货</Button>*/}
+        {/*          <EditButton*/}
+        {/*            onClick={() => {*/}
+        {/*              ref.current.open(record);*/}
+        {/*            }} />*/}
+        {/*        </> : null}*/}
               {/*<DelButton api={deliveryDetailsDelete} value={record.deliveryDetailsId} onSuccess={() => {*/}
               {/*  tableRef.current.refresh();*/}
               {/*}} />*/}
-            </>
-          );
-        }} width={300} />
+          {/*  </>*/}
+          {/*);*/}
+        {/*}} width={300} />*/}
       </Table>
       <Modal2 width={800} title="编辑" component={DeliveryDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();

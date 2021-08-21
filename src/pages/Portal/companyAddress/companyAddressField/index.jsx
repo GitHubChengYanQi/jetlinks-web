@@ -7,16 +7,23 @@
 
 import React from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
-import * as apiUrl from '../companyAddressUrl';
+import {CustomerIdListSelect} from '@/pages/Portal/companyAddress/companyAddressUrl';
+import UpLoadImg from '@/components/Upload';
 
 export const RepairId = (props) =>{
+  props.onChange(props.result);
   return (<Input {...props}/>);
 };
-export const AddressId = (props) =>{
+export const Identify = (props) =>{
+  props.onChange(props.result);
   return (<Input {...props}/>);
+};
+export const CustomerId = (props) =>{
+  return (<Select api={CustomerIdListSelect} {...props}/>);
+};
+export const ImgUrl = (props) =>{
+  return (<UpLoadImg {...props}/>);
 };
 export const Province = (props) =>{
   return (<Input {...props}/>);

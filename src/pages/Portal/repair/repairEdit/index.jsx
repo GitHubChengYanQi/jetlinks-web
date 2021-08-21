@@ -29,8 +29,6 @@ const RepairEdit = ({...props}) => {
   const {Step} = Steps;
   const [result, setResult] = useState(props.value);
   const [current, setCurrent] = React.useState(0);
-  const tableRef = useRef(null);
-  const ref = useRef(null);
   const formRef = useRef();
 
   const steps = [
@@ -46,7 +44,7 @@ const RepairEdit = ({...props}) => {
               api={ApiConfig}
               fieldKey="repairId"
               success={(result) => {
-                if(!props.value){
+                if (!props.value) {
                   setResult(result.data);
                 }
                 next();
@@ -54,37 +52,34 @@ const RepairEdit = ({...props}) => {
             >
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="保修部位图片" name="itemImgUrl" component={SysField.ItemImgUrl} required/>
-                </Col>
-                <Col span={12}>
-                  <FormItem label="描述" name="comment" component={SysField.Comment} required/>
+                  <FormItem label="描述" name="comment" component={SysField.Comment} required />
                 </Col>
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="设备id" name="itemId" component={SysField.ItemId} required/>
+                  <FormItem label="设备id" name="itemId" component={SysField.ItemId} required />
                 </Col>
                 <Col span={12}>
-                  <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} required/>
-                </Col>
-              </Row>
-              <Row gutter={24} style={{padding: '0 30px'}}>
-                <Col span={12}>
-                <FormItem label="期望到达日期" name="expectTime" component={SysField.ExpectTime} required/>
-              </Col>
-                <Col span={12}>
-                  <FormItem label="维修费用" name="money" component={SysField.Money} required/>
+                  <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} required />
                 </Col>
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="质保类型" name="qualityType" component={SysField.QualityType} required/>
+                  <FormItem label="期望到达日期" name="expectTime" component={SysField.ExpectTime} required />
                 </Col>
                 <Col span={12}>
-                  <FormItem label="合同类型" name="contractType" component={SysField.ContractType} required/>
+                  <FormItem label="维修费用" name="money" component={SysField.Money} required />
                 </Col>
               </Row>
-              <div style={{textAlign:'center'}}>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="质保类型" name="qualityType" component={SysField.QualityType} required />
+                </Col>
+                <Col span={12}>
+                  <FormItem label="合同类型" name="contractType" component={SysField.ContractType} required />
+                </Col>
+              </Row>
+              <div style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
                   下一步
                 </Button>
@@ -95,28 +90,28 @@ const RepairEdit = ({...props}) => {
         </>
     },
     {
-      title: '添加商机明细',
+      title: '添加报修单位',
       content:
         <>
           <div style={{margin: '5px 150px'}}>
             <CompanyAddressEdit result={result} onSuccess={() => {
-              tableRef.current.refresh();
+              next();
+            }} prev={() => {
+              prev();
             }} />
-            <Drawer width={800} title="编辑" component={Index} onSuccess={() => {
-              tableRef.current.refresh();
-              ref.current.close();
-            }} ref={ref} />
-            <div style={{textAlign:'center'}}>
-              <Button style={{marginRight:20}} type="primary" onClick={()=>{
-                props.onSuccess();
-              }
-              }>
-                保存
-              </Button>
-              <Button onClick={()=> prev()}>
-                返回
-              </Button>
-            </div>
+          </div>
+        </>
+    },
+    {
+      title: '添加使用单位',
+      content:
+        <>
+          <div style={{margin: '5px 150px'}}>
+            <CompanyAddressEdit result={result} done onSuccess={() => {
+              props.onSuccess();
+            }} prev={() => {
+              prev();
+            }} />
           </div>
         </>
     }
