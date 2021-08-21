@@ -96,7 +96,7 @@ const Links = (props) => {
               label: '申请售后1.1'
             },
             {
-              value: '/pages/rapidRepairOut/index',
+              value: '/pages/repair/index',
               label: '一键报修'
             }
           ]
