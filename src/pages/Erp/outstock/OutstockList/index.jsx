@@ -24,7 +24,7 @@ const {FormItem} = Form;
 
 const OutstockList = (props) => {
 
-  const {outstockOrderId, value} = props;
+  const {outstockOrderId, value,sourhouse} = props;
 
   const ref = useRef(null);
   const refDelivery = useRef(null);
@@ -79,13 +79,7 @@ const OutstockList = (props) => {
           setIds(value);
         }}
       >
-        <Column title="仓库名称" width={200} fixed dataIndex="storehouseId" render={(text, record) => {
-          return (
-            <>
-              {record.storehouseResult.name}
-            </>
-          );
-        }} />
+
         <Column title="产品名称" width={200} dataIndex="itemId" render={(text, record) => {
           return (
             <>
@@ -118,7 +112,7 @@ const OutstockList = (props) => {
       <Modal2 title="产品出库" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} outstockOrderId={outstockOrderId} />
+      }} ref={ref} outstockOrderId={outstockOrderId} sourhouse={sourhouse} />
     </>
   );
 };

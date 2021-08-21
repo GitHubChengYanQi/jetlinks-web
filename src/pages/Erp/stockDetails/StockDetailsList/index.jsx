@@ -14,6 +14,9 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {stockDetailsList} from '@/pages/Erp/stockDetails/StockDetailsUrl';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '../StockDetailsField';
+import Icon from '@/components/Icon';
+import Modal2 from '@/components/Modal';
+import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
 
 
 const {Column} = AntTable;
@@ -21,10 +24,12 @@ const {FormItem} = Form;
 
 const StockDetailsList = (props) => {
 
-  const ref = useRef(null);
+  const refDelivery = useRef(null);
   const tableRef = useRef(null);
 
   const {value} = props;
+
+
 
 
 
@@ -60,14 +65,18 @@ const StockDetailsList = (props) => {
   const [ids, setIds] = useState([]);
 
   const footer = () => {
-    /**
-     * 批量删除例子，根据实际情况修改接口地址
-     */
-    return (<DelButton api={{
-      ...customerBatchDelete
-    }} onSuccess={() => {
-      tableRef.current.refresh();
-    }} value={ids}>批量删除</DelButton>);
+    return (
+      <>
+        <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
+          refDelivery.current.open(false);
+        }} type="text" >批量发货</Button>
+        <Modal2 title="产品出库" component={DeliveryDetailsEdit} onSuccess={() => {
+          tableRef.current.refresh();
+          refDelivery.current.close();
+        }} ref={refDelivery} ids={ids} />
+      </>
+    );
+
   };
 
   return (
@@ -77,7 +86,7 @@ const StockDetailsList = (props) => {
         api={stockDetailsList}
         rowKey="stockItemId"
         searchForm={searchForm}
-        footer={footer}
+        footer={value ? footer : false}
         layout={search}
         onChange={(keys) => {
           setIds(keys);

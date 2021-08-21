@@ -77,12 +77,12 @@ export const BrandId = (props) => {
 export const ItemIdSelect = (props) => {
   const {storehouseid, itemid, state} = props;
 
-  if (state) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      props.onChange(null);
-    }, [storehouseid]);
-  }
+  // if (state) {
+  //   // eslint-disable-next-line react-hooks/rules-of-hooks
+  //   useEffect(() => {
+  //     props.onChange(null);
+  //   }, [storehouseid]);
+  // }
 
 
   const data = storehouseid ? storehouseid.map((value, index) => {

@@ -14,6 +14,7 @@ import FormIndex from '@/components/Form/FormIndex';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
+import CompanyAddressEdit from '@/pages/Portal/companyAddress/companyAddressEdit';
 
 const {FormItem} = Form;
 
@@ -53,10 +54,10 @@ const RepairEdit = ({...props}) => {
             >
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="报修单位" name="companyId" component={SysField.CompanyId} required/>
+                  <FormItem label="保修部位图片" name="itemImgUrl" component={SysField.ItemImgUrl} required/>
                 </Col>
                 <Col span={12}>
-                  <FormItem label="保修部位图片" name="itemImgUrl" component={SysField.ItemImgUrl} required/>
+                  <FormItem label="描述" name="comment" component={SysField.Comment} required/>
                 </Col>
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
@@ -83,11 +84,6 @@ const RepairEdit = ({...props}) => {
                   <FormItem label="合同类型" name="contractType" component={SysField.ContractType} required/>
                 </Col>
               </Row>
-              <Row gutter={24} style={{padding: '0 30px'}}>
-                <Col span={12}>
-                  <FormItem label="描述" name="comment" component={SysField.Comment} required/>
-                </Col>
-              </Row>
               <div style={{textAlign:'center'}}>
                 <Button type="primary" htmlType="submit">
                   下一步
@@ -103,7 +99,7 @@ const RepairEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '5px 150px'}}>
-            <TableDetail value={result} onSuccess={() => {
+            <CompanyAddressEdit result={result} onSuccess={() => {
               tableRef.current.refresh();
             }} />
             <Drawer width={800} title="编辑" component={Index} onSuccess={() => {

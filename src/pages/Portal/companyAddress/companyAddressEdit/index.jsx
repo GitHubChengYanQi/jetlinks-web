@@ -21,11 +21,14 @@ const ApiConfig = {
 
 const CompanyAddressEdit = ({...props}) => {
 
+  const {result,onSuccess} = props;
+
   const formRef = useRef();
 
   return (
     <Form
       {...props}
+      value={result}
       ref={formRef}
       api={ApiConfig}
       fieldKey="companyId"
