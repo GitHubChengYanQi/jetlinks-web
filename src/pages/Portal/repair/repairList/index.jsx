@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {repairDelete, repairList} from '../repairUrl';
 import RepairEdit from '../repairEdit';
 import * as SysField from '../repairField';
+import Modal from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -80,7 +81,7 @@ const RepairList = () => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={RepairEdit} onSuccess={() => {
+      <Modal width={1400} title="保修" component={RepairEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

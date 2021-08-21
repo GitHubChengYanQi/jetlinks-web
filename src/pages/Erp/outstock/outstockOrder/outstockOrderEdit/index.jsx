@@ -36,7 +36,6 @@ const OutstockOrderEdit = ({...props}) => {
           <div style={{margin: '50px 150px'}}>
             <FormIndex
               {...props}
-              value={result}
               ref={formRef}
               api={ApiConfig}
               fieldKey="outstockOrderId"
@@ -47,6 +46,7 @@ const OutstockOrderEdit = ({...props}) => {
                 next();
               }}
             >
+              <FormItem label="仓库" name="storehouseId" component={SysField.Storhouse} required />
               <FormItem label="计划出库时间" name="time" component={SysField.Time} required />
               <div style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
@@ -62,7 +62,7 @@ const OutstockOrderEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-            <OutstockList outstockOrderId={result}  />
+            <OutstockList outstockOrderId={result.outstockOrderId} sourhouse={result.storehouseId}  />
             <div style={{textAlign: 'center'}}>
               <Button style={{marginRight: 20}} type="primary" onClick={() => {
                 props.onSuccess();

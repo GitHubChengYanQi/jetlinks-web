@@ -51,5 +51,5 @@ export const Cost = (props) =>{
   return (<InputNumber style={{ width: w }} {...props}/>);
 };
 export const Vulnerability = (props) =>{
-  return (<AntdSelect showSearch  style={{ width: w }} filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:'0',label:'易损'},{value:'1',label:'不易损'}]} {...props}/>);
+  return (<AntdSelect   style={{ width: w }} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:'0',label:'易损'},{value:'1',label:'不易损'}]} {...props}/>);
 };

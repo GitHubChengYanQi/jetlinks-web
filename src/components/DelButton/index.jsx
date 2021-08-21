@@ -6,7 +6,7 @@ import {useRequest} from '@/util/Request';
 const DelButton = ({
   onSuccess = () => {
   }, onCancel = () => {
-  }, api, rowKey, value, children, ...props
+  }, api, rowKey, value, children, icon,...props
 }) => {
 
 
@@ -57,7 +57,7 @@ const DelButton = ({
 
   return (
     <Button
-      size="small" danger onClick={onClick}  icon={<DeleteOutlined />}
+      size="small" danger onClick={onClick}  icon={icon || <DeleteOutlined />}
       type="text" {...props} >{children}</Button>
   );
 };
