@@ -61,7 +61,6 @@ const CompanyAddressEdit = ({...props}) => {
       }}
     >
       <FormItem label="报修公司" name="customerId" component={SysField.CustomerId} required />
-      <FormItem label="图片" name="img" component={SysField.ImgUrl} />
       <FormItem label="省" name="province" component={SysField.Province} required />
       <FormItem label="市" name="city" component={SysField.City} required />
       <FormItem label="区" name="area" component={SysField.Area} required />

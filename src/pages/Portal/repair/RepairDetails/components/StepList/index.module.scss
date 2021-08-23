@@ -1,0 +1,8 @@
+.state {
+  display: block;
+  height: 30px;
+  font-size: 20px;
+  &:hover {
+    color: #dc1e1e;
+  }
+}

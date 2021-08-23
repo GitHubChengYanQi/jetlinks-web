@@ -28,10 +28,72 @@ const RepairEdit = ({...props}) => {
 
   const {Step} = Steps;
   const [result, setResult] = useState(props.value);
+  const [repair, setRepair] = useState();
   const [current, setCurrent] = React.useState(0);
   const formRef = useRef();
 
   const steps = [
+
+    {
+      title: '添加使用单位',
+      content:
+        <>
+          <div style={{margin: '5px 150px'}}>
+            <FormIndex
+              {...props}
+              value={result}
+              ref={formRef}
+              api={ApiConfig}
+              fieldKey="repairId"
+              success={(result) => {
+                setRepair(result.data);
+                setResult(result.data.repairId);
+                next();
+              }}
+            >
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="使用单位" name="customerId" component={SysField.CustomerId} required />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="省" name="province" component={SysField.Province} required />
+                </Col>
+                <Col span={12}>
+                  <FormItem label="市" name="city" component={SysField.City} required />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="区" name="area" component={SysField.Area} required />
+                </Col>
+                <Col span={12}>
+                  <FormItem label="详细地址" name="address" component={SysField.Address} required />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="姓名" name="people" component={SysField.People} required />
+                </Col>
+                <Col span={12}>
+                  <FormItem label="电话" name="telephone" component={SysField.Telephone} required />
+                </Col>
+              </Row>
+              <Row gutter={24} style={{padding: '0 30px'}}>
+                <Col span={12}>
+                  <FormItem label="职务" name="position" component={SysField.Position} required />
+                </Col>
+              </Row>
+              <div style={{textAlign: 'center'}}>
+                <Button type="primary" htmlType="submit">
+                  下一步
+                </Button>
+              </div>
+            </FormIndex>
+          </div>
+        </>
+    },
     {
       title: '添加报修信息',
       content:
@@ -44,10 +106,7 @@ const RepairEdit = ({...props}) => {
               api={ApiConfig}
               fieldKey="repairId"
               success={(result) => {
-                if (!props.value) {
-                  setResult(result.data);
-                }
-                next();
+                props.onSuccess();
               }}
             >
               <Row gutter={24} style={{padding: '0 30px'}}>
@@ -57,7 +116,7 @@ const RepairEdit = ({...props}) => {
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="设备id" name="itemId" component={SysField.ItemId} required />
+                  <FormItem label="设备" name="itemId" component={SysField.ItemId} repair={repair || null} required />
                 </Col>
                 <Col span={12}>
                   <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} required />
@@ -71,17 +130,9 @@ const RepairEdit = ({...props}) => {
                   <FormItem label="维修费用" name="money" component={SysField.Money} required />
                 </Col>
               </Row>
-              <Row gutter={24} style={{padding: '0 30px'}}>
-                <Col span={12}>
-                  <FormItem label="质保类型" name="qualityType" component={SysField.QualityType} required />
-                </Col>
-                <Col span={12}>
-                  <FormItem label="合同类型" name="contractType" component={SysField.ContractType} required />
-                </Col>
-              </Row>
               <div style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
-                  下一步
+                  完成
                 </Button>
               </div>
             </FormIndex>
@@ -89,32 +140,6 @@ const RepairEdit = ({...props}) => {
 
         </>
     },
-    {
-      title: '添加报修单位',
-      content:
-        <>
-          <div style={{margin: '5px 150px'}}>
-            <CompanyAddressEdit result={result} onSuccess={() => {
-              next();
-            }} prev={() => {
-              prev();
-            }} />
-          </div>
-        </>
-    },
-    {
-      title: '添加使用单位',
-      content:
-        <>
-          <div style={{margin: '5px 150px'}}>
-            <CompanyAddressEdit result={result} done onSuccess={() => {
-              props.onSuccess();
-            }} prev={() => {
-              prev();
-            }} />
-          </div>
-        </>
-    }
   ];
 
   const next = () => {

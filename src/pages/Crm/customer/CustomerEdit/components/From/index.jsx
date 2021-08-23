@@ -145,7 +145,7 @@ const FormWrapper = (
     >
       {children}
 
-      <FormButtonGroup offset={8}>
+      <FormButtonGroup offset={10}>
         <Submit showLoading>保存</Submit>
         <Reset>重置</Reset>
       </FormButtonGroup>

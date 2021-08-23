@@ -22,6 +22,7 @@ const FormWrapper = (
     fieldKey,
     value,
     effect,
+    labelAlign,
     formatResult,
     onSubmit = (values) => {
       return values;
@@ -128,6 +129,7 @@ const FormWrapper = (
   return findData && <FormilyForm
     style={{margin:'auto'}}
     actions={formActions}
+    labelAlign={labelAlign}
     className={style.formWarp}
     labelCol={labelCol || 6}
     wrapperCol={wrapperCol || 15}
@@ -154,7 +156,7 @@ const FormWrapper = (
   >
     {children}
 
-    <FormButtonGroup offset={6}>
+    <FormButtonGroup offset={10}>
       <Submit showLoading>保存</Submit>
       <Reset>重置</Reset>
     </FormButtonGroup>

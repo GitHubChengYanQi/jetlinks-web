@@ -44,7 +44,6 @@ const CustomerEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="customerId"
-        labelAlign="right"
       >
         <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
           <MegaLayout labelWidth={120}>

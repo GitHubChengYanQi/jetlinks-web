@@ -43,3 +43,18 @@ export const itemIdSelect = {
   url: '/items/listSelect',
   method: 'POST'
 };
+export const deliveryDetails = {
+  url: '/deliveryDetails/listAll',
+  method: 'POST'
+};
+
+export const CustomerIdListSelect = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
+export const delivery = {
+  url: '/delivery/listAll',
+  method: 'POST',
+};
+
+

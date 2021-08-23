@@ -5,7 +5,7 @@
  * @Date 2021-08-20 17:11:20
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,19 +13,27 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {repairDelete, repairList} from '../repairUrl';
+import {repairDelete, repairEdit, repairList} from '../repairUrl';
 import RepairEdit from '../repairEdit';
 import * as SysField from '../repairField';
 import Modal from '@/components/Modal';
 import {useHistory} from 'ice';
+import DispatchingEdit from '@/pages/Portal/dispatching/dispatchingEdit';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const RepairList = () => {
   const ref = useRef(null);
+  const refDispatching = useRef(null);
   const history = useHistory();
   const tableRef = useRef(null);
+
+  const [repairid,setRepairId] = useState();
+
+  const {run} = useRequest(repairEdit,{manual:true});
+
   const actions = () => {
     return (
       <>
@@ -59,25 +67,45 @@ const RepairList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="设备名称" dataIndex="itemId" render={(text,record)=>{
+        <Column title="出厂编号" dataIndex="number" render={(text, record) => {
+          return (
+            <>
+              {record.deliveryDetailsResult && record.deliveryDetailsResult.stockItemId}
+            </>
+          );
+        }} />
+        <Column title="设备名称" dataIndex="itemId" render={(text, record) => {
           return (
             <Button type="link" onClick={() => {
               history.push(`/protal/repair/${record.repairId}`);
-            }}>{text}</Button>
+            }}>{record.deliveryDetailsResult && record.deliveryDetailsResult.detailesItems && record.deliveryDetailsResult.detailesItems.name}</Button>
           );
         }} />
-        <Column title="报修单位" dataIndex="companyId" />
+        <Column title="使用单位" dataIndex="customerId" render={(text, record) => {
+          return (
+            <>
+              {record.deliveryDetailsResult && record.deliveryDetailsResult.stockItemId}
+            </>
+          );
+        }} />
         <Column title="服务类型" dataIndex="serviceType" />
         <Column title="期望到达日期" dataIndex="expectTime" />
         <Column title="描述" dataIndex="comment" />
         <Column title="工程进度" dataIndex="progress" />
         <Column title="维修费用" dataIndex="money" />
-        <Column title="质保类型" dataIndex="qualityType" />
-        <Column title="合同类型" dataIndex="contractType" />
+        <Column title="质保类型" dataIndex="qualityType"  render={(text, record) => {
+          return (
+            <>{record.deliveryDetailsResult && record.deliveryDetailsResult.qualityType}</>
+          );
+        }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              {record.progress === 0 ?  <Button type="link" onClick={() => {
+                setRepairId(record.repairId);
+                refDispatching.current.open(record);
+              }}>派工</Button> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.repairId);
               }} />
@@ -92,6 +120,19 @@ const RepairList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+
+      <Modal width={1400} title="派工信息" component={DispatchingEdit} onSuccess={async () => {
+        await run(
+          {
+            data:{
+              repairId: repairid,
+              progress: 1
+            }
+          }
+        );
+        tableRef.current.refresh();
+        refDispatching.current.close();
+      }} ref={refDispatching} />
     </>
   );
 };
