@@ -3,6 +3,7 @@ import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {Modal, notification, Popover, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
+import Message from '@/components/Message';
 
 const {Step} = Steps;
 
@@ -20,15 +21,17 @@ const StepList = (props) => {
 
 
 
-  const {run} = useRequest({
+  const {error,run} = useRequest({
     url: '/repair/editdy',
     method: 'POST',
-    onError(error) {
-      openNotificationWithIcon('error');
-    }
   }, {
-    manual: true
+    manual: true,
+    onError: (error) => {
+      console.log(error);
+      Message.error(error.message);
+    }
   });
+
 
 
   const edit = async (num) => {

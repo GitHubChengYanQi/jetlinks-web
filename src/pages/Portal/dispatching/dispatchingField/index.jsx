@@ -8,9 +8,11 @@
 import React from 'react';
 import {Input} from 'antd';
 import DatePicker from '@/components/DatePicker';
+import Select from '@/components/Select';
+import {UserIdSelect} from '@/pages/Portal/dispatching/dispatchingUrl';
 
 export const Name = (props) =>{
-  return (<Input placeholder='请输入工程师姓名' {...props}/>);
+  return (<Select width='100%' api={UserIdSelect} placeholder='请输入工程师姓名' {...props}/>);
 };
 export const Phone = (props) =>{
   return (<Input  placeholder='请输入工程师手机号' {...props}/>);

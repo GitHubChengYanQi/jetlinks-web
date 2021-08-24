@@ -34,4 +34,8 @@ export const dispatchingList = {
   method: 'POST',
   rowKey:'dispatchingId'
 };
+export const UserIdSelect = {
+  url: '/rest/mgr/Select',
+  method: 'POST',
+};
 

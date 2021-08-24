@@ -28,6 +28,7 @@ export const ItemImgUrl = (props) => {
   const [fileList, setFileList] = useState([]);
 
 
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -35,7 +36,9 @@ export const ItemImgUrl = (props) => {
     </div>
   );
 
-  const onChange = ({ fileList: newFileList }) => {
+  const onChange = ({ fileList: newFileList },imgurl) => {
+    // newFileList(`${oss.host}/${oss.key}`);
+    // setImageUrl(`${oss.host}/${oss.key}`);
     setFileList(newFileList);
   };
 
@@ -106,8 +109,7 @@ export const ItemImgUrl = (props) => {
         }
         }
         onChange={(event) => {
-          onChange(event);
-          setImageUrl(`${oss.host}/${oss.key}`);
+          onChange(event,`${oss.host}/${oss.key}`);
         }
         }
       >

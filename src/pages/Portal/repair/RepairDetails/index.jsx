@@ -56,9 +56,9 @@ const RepairDetails = () => {
         </div>
         <div className={styles.titleButton}>
           <Button type="primary" onClick={() => {
-            ref.current.open(data.repairId);
+            ref.current.open(data);
           }}>编辑</Button>
-          <Modal2 width={1400} title="客户" component={RepairEdit} onSuccess={() => {
+          <Modal2 width={1000} title="客户" component={RepairEdit} onSuccess={() => {
             ref.current.close();
           }} ref={ref} />
           <Button onClick={() => {

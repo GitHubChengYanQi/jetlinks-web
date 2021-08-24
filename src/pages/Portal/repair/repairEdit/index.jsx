@@ -93,7 +93,7 @@ const RepairEdit = ({...props}) => {
             <FormItem label="设备" name="itemId" component={SysField.ItemId} repair={data || null} state={state} required />
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
-            {/*<FormItem label="图片" name="itemImgUrlList" component={SysField.ItemImgUrl}  />*/}
+            <FormItem label="图片" name="itemImgUrlList" component={SysField.ItemImgUrl}  />
           </MegaLayout>
 
           <MegaLayout labelWidth={120} grid>
