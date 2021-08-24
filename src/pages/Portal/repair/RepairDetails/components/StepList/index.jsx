@@ -21,7 +21,7 @@ const StepList = (props) => {
 
 
   const {run} = useRequest({
-    url: '/repair/edit',
+    url: '/repair/editdy',
     method: 'POST',
     onError(error) {
       openNotificationWithIcon('error');
