@@ -37,6 +37,10 @@ export const RepairId = (props) =>{
   props.onChange(props.val || null);
   return (<Input {...props}/>);
 };
+export const Repair = (props) =>{
+  props.onChange(props.val || null);
+  return (<Input {...props}/>);
+};
 export const Repairid = (props) =>{
   return (<Input {...props}/>);
 };

@@ -20,6 +20,8 @@ import Modal from '@/components/Modal';
 import {useHistory} from 'ice';
 import DispatchingEdit from '@/pages/Portal/dispatching/dispatchingEdit';
 import {useRequest} from '@/util/Request';
+import Breadcrumb from '@/components/Breadcrumb';
+import {Items} from '../repairField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -48,9 +50,9 @@ const RepairList = () => {
     return (
       <>
         <FormItem label="报修单位" name="companyId" component={SysField.CompanyId} />
-        <FormItem label="设备id" name="itemId" component={SysField.ItemId} />
+        <FormItem label="设备" name="itemId" component={SysField.Items} />
         <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} />
-        <FormItem label="工程进度" name="progress" component={SysField.Progress} />
+        {/*<FormItem label="工程进度" name="progress" component={SysField.Progress} />*/}
         <FormItem label="质保类型" name="qualityType" component={SysField.QualityType} />
         <FormItem label="合同类型" name="contractType" component={SysField.ContractType} />
       </>
@@ -60,7 +62,7 @@ const RepairList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={repairList}
         rowKey="repairId"
         searchForm={searchForm}
@@ -84,7 +86,7 @@ const RepairList = () => {
         <Column title="使用单位" dataIndex="customerId" render={(text, record) => {
           return (
             <>
-              {record.deliveryDetailsResult && record.deliveryDetailsResult.stockItemId}
+              {record.customerResult && record.customerResult.customerName}
             </>
           );
         }} />
@@ -107,7 +109,7 @@ const RepairList = () => {
                 refDispatching.current.open(record);
               }}>派工</Button> : null}
               <EditButton onClick={() => {
-                ref.current.open(record.repairId);
+                ref.current.open(record);
               }} />
               <DelButton api={repairDelete} value={record.repairId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -116,7 +118,7 @@ const RepairList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal width={1400} title="保修" component={RepairEdit} onSuccess={() => {
+      <Modal width={1000} title="保修" component={RepairEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

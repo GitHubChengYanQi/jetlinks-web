@@ -5,13 +5,12 @@ import {useRequest} from '@/util/Request';
 
 
 const  UpLoadImg = (props)=>{
-  const {value,onChange,bannerSrc} = props;
+  const {value,onChange,bannerSrc,} = props;
   const [loading,setLoading] = useState(false); // loading 状态
   const [imageUrl ,setImageUrl ] = useState(''); // 图片地址
   const [oss,setOss] = useState({}); // OSS上传所需参数
 
   useEffect(()=>{
-    console.log('picId', value);
     if(value){
       // getImgDetail({data:{bannerId:value}});
       setImageUrl(value);
@@ -35,12 +34,6 @@ const  UpLoadImg = (props)=>{
     data:{}
   };
 
-  const getImg = {
-    url: '/banner/detail', // 根据ID获取图片
-    method:'POST',
-    data:{}
-  };
-
   // 获取OSS配置
   const {run:getOssObj} = useRequest(getSTSToken,{
     manual:true,
@@ -48,7 +41,6 @@ const  UpLoadImg = (props)=>{
       return e;
     },
     onSuccess: (res) => {
-      console.log(res);
       if (res.errCode === 0) {
         oss.key = res.data.key;
         oss.host = res.data.host;

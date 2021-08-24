@@ -13,6 +13,7 @@ import DescAddress from '@/pages/Portal/repair/RepairDetails/components/DescAddr
 import StepList from '@/pages/Portal/repair/RepairDetails/components/StepList';
 import DispatchingList from '@/pages/Portal/dispatching/dispatchingList';
 import RepairEdit from '@/pages/Portal/repair/repairEdit';
+import Dynamic from '@/pages/Portal/repair/RepairDetails/components/Dynamic';
 
 const {TabPane} = Tabs;
 
@@ -47,7 +48,7 @@ const RepairDetails = () => {
             <Col>
               <h3>出厂编号：<span
                 style={{color: 'red'}}>{data.deliveryDetailsResult && data.deliveryDetailsResult.stockItemId}
-                <em>({data.qualityType})</em></span></h3>
+                <em>({data.deliveryDetailsResult && data.deliveryDetailsResult.qualityType})</em></span></h3>
             </Col>
           </Row>
 
@@ -101,7 +102,7 @@ const RepairDetails = () => {
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="动态" key="1">
-                  {/*<Dynamic value={data} />*/}
+                  <Dynamic value={data} />
                 </TabPane>
               </Tabs>
             </Card>

@@ -6,13 +6,14 @@
  */
 
 import React, {useRef} from 'react';
-import {Card, Descriptions, Input} from 'antd';
+import {Button, Card, Descriptions, Input} from 'antd';
 import Form from '@/components/Form';
 import {dispatchingDetail, dispatchingAdd, dispatchingEdit} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import DescAddress from '@/pages/Portal/repair/RepairDetails/components/DescAddress';
 import RepairList from '@/pages/Portal/repair/repairList';
 import {MegaLayout} from '@formily/antd-components';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 
@@ -34,15 +35,16 @@ const DispatchingEdit = ({...props}) => {
     return (
       <>
         <Card title="使用单位信息" bordered={false}>
-         <DescAddress data={value} />
+          <DescAddress data={value} />
         </Card>
         <Card title="产品信息" bordered={false}>
           <Descriptions layout="vertical" bordered>
             <Descriptions.Item
               label="出厂编号">{value.deliveryDetailsResult && value.deliveryDetailsResult.stockItemId}</Descriptions.Item>
             <Descriptions.Item
-              label="产品名称">{value.deliveryDetailsResult && value.deliveryDetailsResult.detailesItems &&  value.deliveryDetailsResult.detailesItems.name}</Descriptions.Item>
-            <Descriptions.Item label="品牌">{value.deliveryDetailsResult && value.deliveryDetailsResult.detailsBrand &&  value.deliveryDetailsResult.detailsBrand.brandName}</Descriptions.Item>
+              label="产品名称">{value.deliveryDetailsResult && value.deliveryDetailsResult.detailesItems && value.deliveryDetailsResult.detailesItems.name}</Descriptions.Item>
+            <Descriptions.Item
+              label="品牌">{value.deliveryDetailsResult && value.deliveryDetailsResult.detailsBrand && value.deliveryDetailsResult.detailsBrand.brandName}</Descriptions.Item>
           </Descriptions>
         </Card>
         <Card title="需求类型" bordered={false}>
@@ -52,13 +54,16 @@ const DispatchingEdit = ({...props}) => {
           {value && value.comment}
         </Card>
         <Card title="派工信息" bordered={false}>
-          <Form
+          <FormIndex
             {...props}
             value={false}
             ref={formRef}
             api={ApiConfig}
             wrapperCol={24}
             fieldKey="dispatchingId"
+            success={() => {
+              props.onSuccess();
+            }}
           >
             <MegaLayout labelWidth={120} grid labelAlign="top">
               <FormItem
@@ -88,7 +93,13 @@ const DispatchingEdit = ({...props}) => {
                 rules={[{required: true, message: '请选择服务区域'}]} />
             </MegaLayout>
             <FormItem hidden name="repairId" component={SysField.RepairId} val={value.repairId || null} />
-          </Form>
+            <FormItem hidden name="repair" component={SysField.Repair} val={value || null} />
+            <div style={{textAlign: 'center'}}>
+              <Button type="primary" htmlType="submit">
+                生成派工单
+              </Button>
+            </div>
+          </FormIndex>
         </Card>
 
       </>
