@@ -6,13 +6,13 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Image, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import {dispatchingDelete, dispatchingList} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import Modal from '@/components/Modal';
 import DispatchingTable from '@/pages/Portal/dispatching/dispatchingList/components/DispatchingTable';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -20,6 +20,9 @@ const {FormItem} = Form;
 const DispatchingList = (props) => {
 
   const {data} = props;
+
+
+
 
 
   const ref = useRef(null);
@@ -51,7 +54,13 @@ const DispatchingList = (props) => {
         <Column title="负责区域" dataIndex="address" />
         <Column title="状态" dataIndex="state" />
         <Column title="备注" dataIndex="note" />
-        <Column title="完成照片" dataIndex="imgUrl" />
+        <Column title="完成照片" dataIndex="imgUrl" render={(value, record) => {
+          return (
+            <>
+              <Image width={100} height={50} src={value} />
+            </>
+          );
+        }} />
         <Column title="评价" dataIndex="evaluation" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
