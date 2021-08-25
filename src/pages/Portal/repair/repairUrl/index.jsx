@@ -56,5 +56,9 @@ export const delivery = {
   url: '/delivery/listAll',
   method: 'POST',
 };
+export const commonArea = {
+  url: '/commonArea/treeView',
+  method: 'POST',
+};
 
 

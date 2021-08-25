@@ -13,6 +13,8 @@ import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
 import * as apiUrl from '../repairUrl';
 import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import TreeSelect from '@/components/TreeSelect';
+import Cascader from '@/components/Cascader';
 
 export const CompanyId = (props) => {
   return (<Select api={apiUrl.companyIdSelect} {...props} />);
@@ -196,13 +198,13 @@ export const ImgUrl = (props) => {
   return (<UpLoadImg {...props} />);
 };
 export const Province = (props) => {
-  return (<Input {...props} />);
+  return ( <Cascader api={apiUrl.commonArea} {...props} placeholder="请选择地区" />);
 };
 export const City = (props) => {
-  return (<Input {...props} />);
+  return (<TreeSelect api={apiUrl.commonArea} {...props} />);
 };
 export const Area = (props) => {
-  return (<Input {...props} />);
+  return (<TreeSelect api={apiUrl.commonArea} {...props} />);
 };
 export const Address = (props) => {
   return (<Input {...props} />);

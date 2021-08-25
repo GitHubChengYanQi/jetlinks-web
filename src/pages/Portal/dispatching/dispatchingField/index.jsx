@@ -10,6 +10,8 @@ import {Input} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {UserIdSelect} from '@/pages/Portal/dispatching/dispatchingUrl';
+import Cascader from '@/components/Cascader';
+import {commonArea} from '@/pages/Portal/repair/repairUrl';
 
 export const Name = (props) =>{
   return (<Select width='100%' api={UserIdSelect} placeholder='请输入工程师姓名' {...props}/>);
@@ -21,7 +23,7 @@ export const Time = (props) =>{
   return (<DatePicker  width='100%' placeholder='请选择预计到达时间' {...props}/>);
 };
 export const Address = (props) =>{
-  return (<Input placeholder='请选择服务区域'  {...props}/>);
+  return (<Cascader api={commonArea} {...props} placeholder="请选择地区" />);
 };
 export const State = (props) =>{
   return (<Input {...props}/>);

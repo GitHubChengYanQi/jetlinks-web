@@ -12,7 +12,8 @@ import {dispatchingDelete, dispatchingList} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import Modal from '@/components/Modal';
 import DispatchingTable from '@/pages/Portal/dispatching/dispatchingList/components/DispatchingTable';
-import Table from '@/components/Table';
+import Table from '@/pages/Portal/repair/components/Table';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
