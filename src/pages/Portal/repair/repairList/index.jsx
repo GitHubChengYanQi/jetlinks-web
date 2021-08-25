@@ -22,6 +22,7 @@ import DispatchingEdit from '@/pages/Portal/dispatching/dispatchingEdit';
 import {useRequest} from '@/util/Request';
 import Breadcrumb from '@/components/Breadcrumb';
 import {Items} from '../repairField';
+import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -93,7 +94,14 @@ const RepairList = () => {
         <Column title="服务类型" dataIndex="serviceType" />
         <Column title="期望到达日期" dataIndex="expectTime" />
         <Column title="描述" dataIndex="comment" />
-        <Column title="工程进度" dataIndex="progress" />
+        <Column title="工程进度" dataIndex="progress" render={(value,record)=>{
+          return (
+            <BadgeState
+              state={record.progress}
+              text={['待派工','接单中' ,'实施中','完成','评价']}
+              color={['red','yellow' ,'green','blue','pink']} />
+          );
+        }} />
         <Column title="维修费用" dataIndex="money" />
         <Column title="质保类型" dataIndex="qualityType"  render={(text, record) => {
           return (

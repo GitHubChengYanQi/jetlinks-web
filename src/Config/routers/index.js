@@ -5,6 +5,7 @@ import ErpRouterConfig from '@/pages/Erp/router';
 import BasicLayout from '@/layouts/BasicLayout';
 import ProtalRouterConfig from '@/pages/Portal/router';
 import ShopRouterConfig from '@/pages/Shop/router';
+import UserInfoRouterConfig from '@/pages/UserInfo/router';
 
 const routerConfig = [
   {
@@ -26,6 +27,7 @@ const routerConfig = [
       ...baseSystem,
       ...ProtalRouterConfig,
       ...ShopRouterConfig,
+      ...UserInfoRouterConfig,
       {
         path: '/member',
         component: lazy(() => import((`@/pages/Member`))),

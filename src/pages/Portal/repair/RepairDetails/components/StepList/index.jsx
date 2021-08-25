@@ -20,18 +20,15 @@ const StepList = (props) => {
   };
 
 
-
-  const {error,run} = useRequest({
+  const {error, run} = useRequest({
     url: '/repair/editdy',
     method: 'POST',
   }, {
     manual: true,
     onError: (error) => {
-      console.log(error);
       Message.error(error.message);
     }
   });
-
 
 
   const edit = async (num) => {
@@ -39,7 +36,7 @@ const StepList = (props) => {
       {
         data: {
           repairId: value.repairId || null,
-          progress:num
+          progress: num
         }
       }
     );
@@ -81,7 +78,6 @@ const StepList = (props) => {
   }
 
 
-
   if (value) {
     return (
       <Steps
@@ -90,41 +86,19 @@ const StepList = (props) => {
       >
         <Step
           title="待派工"
-          onClick={async () => {
-            confirm('待派工', 0);
-          }}
         />
         <Step
-          title="询价中"
-          onClick={async () => {
-            confirm('询价中', 1);
-          }}
-        />
-        <Step
-          title="待支付"
-          onClick={async () => {
-            confirm('待支付', 2);
-          }}
+          title="接单中"
         />
         <Step
           title="实施中"
-          onClick={async () => {
-            confirm('实施中', 3);
-          }}
-        />
-        <Step
-          title="待回访"
-          onClick={async () => {
-            confirm('待回访', 4);
-          }}
         />
         <Step
           title="完成"
-          onClick={async () => {
-            confirm('完成', 5);
-          }}
         />
-
+        <Step
+          title="评价"
+        />
       </Steps>
     );
   } else {
