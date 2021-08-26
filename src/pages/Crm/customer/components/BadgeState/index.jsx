@@ -3,7 +3,7 @@ import {Badge} from 'antd';
 
 const BadgeState = (props) => {
 
-  const {state,text,color} = props;
+  const {state, text, color} = props;
 
   let colors;
   let texts;
@@ -16,6 +16,18 @@ const BadgeState = (props) => {
         texts = text[state];
         break;
       case 1:
+        colors = color[state];
+        texts = text[state];
+        break;
+      case 2:
+        colors = color[state];
+        texts = text[state];
+        break;
+      case 3:
+        colors = color[state];
+        texts = text[state];
+        break;
+      case 4:
         colors = color[state];
         texts = text[state];
         break;

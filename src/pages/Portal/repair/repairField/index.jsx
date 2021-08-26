@@ -24,6 +24,7 @@ export const ItemImgUrl = (props) => {
   const [loading, setLoading] = useState(false); // loading 状态
   const [oss, setOss] = useState({}); // OSS上传所需参数
   const [imageUrl ,setImageUrl ] = useState([]); // 图片地址
+  console.log(imageUrl);
 
 
 
@@ -38,9 +39,9 @@ export const ItemImgUrl = (props) => {
     </div>
   );
 
-  const onChange = ({ fileList: newFileList },imgurl) => {
-    // newFileList(`${oss.host}/${oss.key}`);
-    // setImageUrl(`${oss.host}/${oss.key}`);
+  const onChange = ({ fileList: newFileList }, imgurl) => {
+    console.log(imgurl);
+    setImageUrl(imgurl);
     setFileList(newFileList);
   };
 

@@ -30,7 +30,7 @@ const ApiConfig = {
 const RepairEdit = ({...props}) => {
 
 
-  const [state,setState] = useState(false);
+  const [state,setState] = useState();
 
   const formRef = useRef();
 
