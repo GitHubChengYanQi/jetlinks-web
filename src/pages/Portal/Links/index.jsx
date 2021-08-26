@@ -102,6 +102,10 @@ const Links = (props) => {
             {
               value: '/pages/engineerOrder/index',
               label: '工程师接单'
+            },
+            {
+              value: '/pages/repairList/index',
+              label: '工单列表'
             }
           ]
         }
