@@ -7,6 +7,7 @@ import Icon from '@/components/Icon';
 import styles from '@/pages/Crm/index.module.scss';
 import BannerDifferenceList from '@/pages/Portal/bannerDifference/bannerDifferenceList';
 import NavigationDifferenceList from '@/pages/Portal/navigationDifference/navigationDifferenceList';
+import RemindList from '@/pages/Portal/remind/remindList';
 
 const OemLayout = ({children}) => {
 
@@ -26,9 +27,11 @@ const OemLayout = ({children}) => {
   const RenderComponent = () => {
     switch (type) {
       case 'lbtfl':
-        return  <BannerDifferenceList />;
+        return <BannerDifferenceList />;
       case 'dhfl':
         return <NavigationDifferenceList />;
+      case 'shtx':
+        return <RemindList />;
       default:
         return null;
     }
@@ -70,6 +73,9 @@ const OemLayout = ({children}) => {
               </Menu.Item>
               <Menu.Item key="dhfl">
                 <span>导航分类管理</span>
+              </Menu.Item>
+              <Menu.Item key="shtx">
+                <span>售后提醒管理</span>
               </Menu.Item>
               <Menu.Divider />
             </Menu>

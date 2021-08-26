@@ -94,7 +94,7 @@ const DispatchingEdit = ({...props}) => {
             </MegaLayout>
             <FormItem hidden name="repairId" component={SysField.RepairId} val={value.repairId || null} />
             <FormItem hidden name="repair" component={SysField.Repair} val={value || null} />
-            <FormItem hidden name="page" component={SysField.Repair} val='' />
+            {/*<FormItem hidden name="page" component={SysField.Repair} val='' />*/}
             <div style={{textAlign: 'center'}}>
               <Button type="primary" htmlType="submit">
                 生成派工单
