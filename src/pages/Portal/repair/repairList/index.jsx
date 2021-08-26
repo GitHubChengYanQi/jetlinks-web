@@ -136,7 +136,7 @@ const RepairList = () => {
           {
             data:{
               repairId: repairid,
-              progress: 1
+              progress: 2
             }
           }
         );
