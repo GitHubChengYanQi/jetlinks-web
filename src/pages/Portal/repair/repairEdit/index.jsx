@@ -65,7 +65,7 @@ const RepairEdit = ({...props}) => {
 
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
-            <FormItem label="省/市/区" name="province" component={SysField.Province} required />
+            <FormItem label="省/市/区" name="area" component={SysField.Province} required />
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
             <FormItem label="详细地址" name="address" component={SysField.Address} required />
