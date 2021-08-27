@@ -18,6 +18,7 @@ import RemindEdit from '../remindEdit';
 import * as SysField from '../remindField';
 import {useRequest} from '@/util/Request';
 import Breadcrumb from '@/components/Breadcrumb';
+import {render} from 'react-dom';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,24 +48,39 @@ const RemindList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb title='消息提醒' />}
+        title={<Breadcrumb title="消息提醒" />}
         api={remindList}
         rowKey="remindId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="提醒类型" dataIndex="type" />
-        <Column title="提醒人" dataIndex="userId" render={(value,record)=>{
+        <Column title="提醒类型" dataIndex="type" render={(value, record) => {
+          switch (record.type) {
+            case '0':
+              return <>新的报修</>;
+            case '1':
+              return <>派工提醒</>;
+            case '2':
+              return <>到达提醒</>;
+            case '3':
+              return <>完成提醒</>;
+            case '4':
+              return <>评价提醒</>;
+            default:
+              return <></>;
+          }
+        }} />
+        <Column title="提醒人" dataIndex="userId" render={(value, record) => {
           return (
             <>
               {
-                record.users && record.users.map((value,index)=>{
+                record.users && record.users.map((value, index) => {
                   return (
                     <Tag
                       key={index}
-                      color='green'
-                      style={{ marginRight: 3 }}
+                      color="green"
+                      style={{marginRight: 3}}
                     >
                       {value.name}
                     </Tag>
@@ -73,7 +89,7 @@ const RemindList = () => {
               }
             </>
           );
-        }}/>
+        }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

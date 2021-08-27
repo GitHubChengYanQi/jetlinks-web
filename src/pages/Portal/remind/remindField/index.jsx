@@ -11,7 +11,7 @@ import {useRequest} from '@/util/Request';
 import {userIdSelect} from '../remindUrl';
 
 export const Type = (props) => {
-  return (<Input {...props} />);
+  return (<AntSelect style={{width:200}} options={[{label:'新的报修',value:'0'},{label:'派工提醒',value:'1'},{label:'到达提醒',value:'2'},{label:'完成提醒',value:'3'},{label:'评价提醒',value:'4'},]} {...props} />);
 };
 export const UserId = (props) => {
 

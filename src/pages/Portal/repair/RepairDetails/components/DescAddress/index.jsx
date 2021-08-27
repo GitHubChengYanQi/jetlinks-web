@@ -12,7 +12,7 @@ const DescAddress = (props) => {
       <>
         <Descriptions>
           <Descriptions.Item label="公司名称">{data.customerId ? data.customerId : '未填写'  }</Descriptions.Item>
-          <Descriptions.Item label="省市区">{data.regionResult ?  `${data.regionResult.province}/${data.regionResult.city}/${data.regionResult.area}` : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="省市区">{data.regionResult ?  `${data.regionResult[0].province}/${data.regionResult[0].city}/${data.regionResult[0].area}` : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="详细地址">{data.address ? data.address : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="报修人">{data.people ? data.people : '未填写'  }</Descriptions.Item>
           <Descriptions.Item label="报修人手机号">{data.telephone ? data.telephone : '未填写'}</Descriptions.Item>

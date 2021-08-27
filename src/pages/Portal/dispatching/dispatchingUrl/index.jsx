@@ -6,7 +6,7 @@
  */
 
 export const dispatchingAdd = {
-  url: '/dispatching/add',
+  url: '/dispatching/addwx',
   method: 'POST',
   rowKey:'dispatchingId'
 };
