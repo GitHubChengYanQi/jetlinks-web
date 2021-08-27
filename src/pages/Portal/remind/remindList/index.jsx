@@ -17,6 +17,7 @@ import {remindDelete, remindList} from '../remindUrl';
 import RemindEdit from '../remindEdit';
 import * as SysField from '../remindField';
 import {useRequest} from '@/util/Request';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -46,7 +47,7 @@ const RemindList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title='消息提醒' />}
         api={remindList}
         rowKey="remindId"
         searchForm={searchForm}
@@ -78,7 +79,7 @@ const RemindList = () => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.remindId);
+                ref.current.open(record);
               }} />
               <DelButton api={remindDelete} value={record.remindId} onSuccess={() => {
                 tableRef.current.refresh();

@@ -21,11 +21,14 @@ const ApiConfig = {
 
 const RemindEdit = ({...props}) => {
 
+  const {value} = props;
+
   const formRef = useRef();
 
   return (
     <Form
       {...props}
+      value={value ? value.remindId : false}
       ref={formRef}
       api={ApiConfig}
       fieldKey="remindId"
