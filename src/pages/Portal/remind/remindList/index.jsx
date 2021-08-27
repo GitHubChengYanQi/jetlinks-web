@@ -13,12 +13,10 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
 import {remindDelete, remindList} from '../remindUrl';
 import RemindEdit from '../remindEdit';
 import * as SysField from '../remindField';
-import {useRequest} from '@/util/Request';
-import Breadcrumb from '@/components/Breadcrumb';
-import {render} from 'react-dom';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -57,15 +55,15 @@ const RemindList = () => {
       >
         <Column title="提醒类型" dataIndex="type" render={(value, record) => {
           switch (record.type) {
-            case '0':
+            case 0:
               return <>新的报修</>;
-            case '1':
+            case 1:
               return <>派工提醒</>;
-            case '2':
+            case 2:
               return <>到达提醒</>;
-            case '3':
+            case 3:
               return <>完成提醒</>;
-            case '4':
+            case 4:
               return <>评价提醒</>;
             default:
               return <></>;
