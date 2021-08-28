@@ -34,7 +34,7 @@ const RemindEdit = ({...props}) => {
       fieldKey="remindId"
     >
       <FormItem label="提醒类型" name="type" component={SysField.Type} required/>
-      <FormItem label="提醒人" name="users" component={SysField.UserId} required/>
+      <FormItem label="提醒人" name="users" component={SysField.UserId}  required/>
     </Form>
   );
 };

@@ -11,11 +11,26 @@ import {useRequest} from '@/util/Request';
 import {userIdSelect} from '../remindUrl';
 
 export const Type = (props) => {
-  return (<AntSelect style={{width:200}} options={[{label:'新的报修',value:'0'},{label:'派工提醒',value:'1'},{label:'到达提醒',value:'2'},{label:'完成提醒',value:'3'},{label:'评价提醒',value:'4'},]} {...props} />);
+  return (<AntSelect style={{width:200}}  options={[{label:'新的报修',value:0},{label:'派工提醒',value:1},{label:'到达提醒',value:2},{label:'完成提醒',value:3},{label:'评价提醒',value:4},]} {...props} />);
 };
 export const UserId = (props) => {
 
+  const {value} = props;
+
   const userIds = [];
+
+
+
+
+  // eslint-disable-next-line no-nested-ternary
+  value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
+    userIds.push(items && `${items.userId}`);
+  }) : value.forEach((items)=>{
+    userIds.push(items);
+  }) : [];
+
+
+
 
   const {data} = useRequest(userIdSelect);
 
@@ -44,7 +59,7 @@ export const UserId = (props) => {
     <AntSelect
       mode="multiple"
       showArrow
-      // defaultValue={userIds}
+      value={userIds}
       tagRender={tagRender}
       style={{width: '100%'}}
       options={options}
