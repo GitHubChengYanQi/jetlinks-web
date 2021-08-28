@@ -54,21 +54,6 @@ const  UpLoadImg = (props)=>{
     }
   });
 
-  // // 获取图片
-  // const {run:getImgDetail} = useRequest(getImg,{
-  //   manual:true,
-  //   formatResult: (e) => {
-  //     return e;
-  //   },
-  //   onSuccess: (res) => {
-  //     console.log(res,'eee');
-  //     if (res.errCode === 0) {
-  //       setTimeout(()=>{
-  //         setImageUrl(res.data.picUrl);
-  //       },500);
-  //     }
-  //   }
-  // });
 
   // 按钮
   const uploadButton = (
@@ -77,6 +62,8 @@ const  UpLoadImg = (props)=>{
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+
+
 
   return(
     // name 为发送到后台的文件名
