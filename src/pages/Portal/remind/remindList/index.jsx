@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable, Tag} from 'antd';
+import {Button, Table as AntTable, Tag} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,12 +17,15 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {remindDelete, remindList} from '../remindUrl';
 import RemindEdit from '../remindEdit';
 import * as SysField from '../remindField';
+import Modal from '@/components/Modal';
+import TemplateTable from '@/pages/Portal/remind/components/TemplateTable';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const RemindList = () => {
   const ref = useRef(null);
+  const refTemplateTable = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -88,10 +91,15 @@ const RemindList = () => {
             </>
           );
         }} />
-        <Column />
+        <Column title='模板消息类型' width={200} dataIndex='subscriptionType' />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              <Button type='link' onClick={()=>{
+                refTemplateTable.current.open(record.remindId);
+              }}>
+                编辑模板消息
+              </Button>
               <EditButton onClick={() => {
                 ref.current.open(record);
               }} />
@@ -106,6 +114,10 @@ const RemindList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal width={800} component={TemplateTable} onSuccess={() => {
+        tableRef.current.refresh();
+        refTemplateTable.current.close();
+      }} ref={refTemplateTable} />
     </>
   );
 };

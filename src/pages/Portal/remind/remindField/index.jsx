@@ -6,28 +6,41 @@
  */
 
 import React, {useEffect} from 'react';
-import {Input, Tag, Select as AntSelect} from 'antd';
+import {Input, Tag, Select as AntSelect, Select} from 'antd';
 import {useRequest} from '@/util/Request';
 import {userIdSelect} from '../remindUrl';
 
 export const Type = (props) => {
   return (<AntSelect style={{width:200}}  options={[{label:'新的报修',value:0},{label:'派工提醒',value:1},{label:'到达提醒',value:2},{label:'完成提醒',value:3},{label:'评价提醒',value:4},]} {...props} />);
 };
+export const Tem = (props) => {
+  return <Select style={{width:200}} options={[{label:'选择用户',value:'user'},{label:'选择时间',value:'data'},{label:'输入文本',value:'text'}]} {...props} />;
+};
+export const RemindId = (props) => {
+  props.onChange(props.val);
+  return <Input {...props} />;
+};
 export const UserId = (props) => {
 
-  const {value} = props;
+  const {value,displays} = props;
+
 
   const userIds = [];
 
 
-
-
   // eslint-disable-next-line no-nested-ternary
-  value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
+  value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
     userIds.push(items && `${items.userId}`);
   }) : value.forEach((items)=>{
     userIds.push(items);
   }) : [];
+
+  useEffect(()=>{
+    if (value){
+      props.onChange(userIds);
+    }
+  },[]);
+
 
 
 
@@ -61,7 +74,7 @@ export const UserId = (props) => {
       showArrow
       value={userIds}
       tagRender={tagRender}
-      style={{width: '100%'}}
+      style={{width: '100%',display:displays || null}}
       options={options}
       onChange={(value) => {
         props.onChange(value);

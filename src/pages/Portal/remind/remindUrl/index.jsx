@@ -39,3 +39,7 @@ export const userIdSelect = {
   url: '/rest/mgr/Select',
   method: 'POST'
 };
+export const remindTemplate = {
+  url: '/remindTemplate/add',
+  method: 'POST'
+};
