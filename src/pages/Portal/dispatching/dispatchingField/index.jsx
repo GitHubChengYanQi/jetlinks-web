@@ -48,3 +48,7 @@ export const Repair = (props) =>{
 export const Repairid = (props) =>{
   return (<Input {...props}/>);
 };
+export const Type = (props) =>{
+  props.onChange(1);
+  return (<Input {...props}/>);
+};

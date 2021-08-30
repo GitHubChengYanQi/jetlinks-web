@@ -91,7 +91,7 @@ const RemindList = () => {
             </>
           );
         }} />
-        <Column title='模板消息类型' width={200} dataIndex='templateType' />
+        {/*<Column title='模板消息类型' width={200} dataIndex='templateType' />*/}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

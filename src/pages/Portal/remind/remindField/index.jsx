@@ -20,6 +20,19 @@ export const RemindId = (props) => {
   props.onChange(props.val);
   return <Input {...props} />;
 };
+export const templateId = (props) => {
+  console.log(props.value);
+  return <Input {...props} />;
+};
+export const url = (props) => {
+  return <Input {...props} />;
+};
+export const key = (props) => {
+  return <Input {...props} />;
+};
+export const value = (props) => {
+  return <Input {...props} />;
+};
 export const UserId = (props) => {
 
   const {value,displays} = props;

@@ -93,7 +93,8 @@ const DispatchingEdit = ({...props}) => {
                 rules={[{required: true, message: '请选择服务区域'}]} />
             </MegaLayout>
             <FormItem hidden name="repairId" component={SysField.RepairId} val={value.repairId || null} />
-            {/*<FormItem hidden name="page" component={SysField.Repair} val='' />*/}
+            <FormItem hidden name="repair" component={SysField.Repair} val={value || null} />
+            <FormItem hidden name="type" component={SysField.Type} />
             <div style={{textAlign: 'center'}}>
               <Button type="primary" htmlType="submit">
                 生成派工单

@@ -36,15 +36,20 @@ const TemplateTable = (props) => {
     <Card
       title="添加模板"
       bordered={false}
+      extra="报修人变量:{{user}}    时间变量：{{time}}   备注变量：{{note}} 详情变量{{details}}"
     >
       <Form
         {...props}
         api={ApiConfig}
       >
-        <FormItem labelAlign='left' label='模板id' name="template.templateId" component={Input} required />
+        <FormItem labelAlign="left" label="模板id" name="template.templateId" component={SysField.templateId} required />
+        <FormItem labelAlign="left" label="打开的URL" name="template.url" component={SysField.url} required />
         <FieldList
           name="template.dataList"
-          initialValue={[]}
+          // initialValue={[
+          // { username: 'morally', age: 21 },
+          // { username: 'bill', age: 22 }
+          // ]}
         >
           {({state, mutators}) => {
             const onAdd = () => mutators.push();
@@ -58,12 +63,12 @@ const TemplateTable = (props) => {
                     <RowStyleLayout key={index}>
                       <FormItem
                         name={`template.dataList.${index}.key`}
-                        component={Input}
+                        component={SysField.key}
                         required
                       />
                       <FormItem
                         name={`template.dataList.${index}.value`}
-                        component={Input}
+                        component={SysField.value}
                         required
                       />
                       {/* eslint-disable-next-line react/jsx-no-bind */}
@@ -80,9 +85,9 @@ const TemplateTable = (props) => {
             );
           }}
         </FieldList>
-        <div style={{height:0}}>
+        <div style={{height: 0}}>
           <FormItem hidden name="type" component={SysField.Type} required />
-          <FormItem hidden name="users" component={SysField.UserId} displays='none' required />
+          <FormItem hidden name="users" component={SysField.UserId} displays="none" required />
         </div>
       </Form>
     </Card>

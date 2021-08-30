@@ -98,8 +98,8 @@ const RepairList = () => {
           return (
             <BadgeState
               state={record.progress}
-              text={['待派工','接单中' ,'实施中','完成','评价']}
-              color={['red','yellow' ,'green','blue','pink']} />
+              text={['待派工','接单中' ,'实施中','完成','评价','完成报修']}
+              color={['red','yellow' ,'black','blue','#eee','green']} />
           );
         }} />
         <Column title="维修费用" dataIndex="money" />

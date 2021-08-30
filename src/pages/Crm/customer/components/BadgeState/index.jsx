@@ -31,6 +31,10 @@ const BadgeState = (props) => {
         colors = color[state];
         texts = text[state];
         break;
+      case 5:
+        colors = color[state];
+        texts = text[state];
+        break;
       default:
         break;
     }
