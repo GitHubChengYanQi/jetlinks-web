@@ -7,22 +7,104 @@
 
 import React, {useEffect, useState} from 'react';
 import UpLoadImg from '@/components/Upload';
-import {Input, InputNumber, Select as AntSelect, Upload} from 'antd';
+import {Input, InputNumber, Modal, Select as AntSelect, Upload} from 'antd';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
-import * as apiUrl from '../repairUrl';
-import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import {PlusOutlined} from '@ant-design/icons';
 import TreeSelect from '@/components/TreeSelect';
 import Cascader from '@/components/Cascader';
+import * as apiUrl from '../repairUrl';
 
 export const CompanyId = (props) => {
   return (<Select api={apiUrl.companyIdSelect} {...props} />);
 };
 export const ItemImgUrl = (props) => {
+
+  const {data,run} = useRequest({ url: '/media/getToken',method:'GET'},{manual:true});
+
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  const [state,setState] = useState({
+    previewVisible: false,
+    previewImage: '',
+    previewTitle: '',
+    fileList: [
+      // {
+      //   uid: '-1',
+      //   name: 'image.png',
+      //   status: 'done',
+      //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      // },
+    ],
+  });
+
+  const handleCancel = () => setState({ previewVisible: false });
+
+  const handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+      previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+    });
+  };
+
+  const handleChange = async ({ fileList }) => {
+
+    for (let i = 0; i < fileList.length; i++) {
+      console.log(fileList);
+    }
+
+    // const oss = await run(
+    //   {
+    //     params:{
+    //       type:fileList[0].type && fileList[0].type.split('/')[1]
+    //     }
+    //   }
+    // );
+    // console.log(oss);
+
+    setState({ fileList });
+  };
+
+  const { previewVisible, previewImage, fileList, previewTitle } = state;
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+
   return (
     <>
-      <UpLoadImg {...props} />
+      <Upload
+        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        listType="picture-card"
+        fileList={state.fileList}
+        onPreview={handlePreview}
+        onChange={handleChange}
+      >
+        {state.fileList && state.fileList.length >= 3 ? null : uploadButton}
+      </Upload>
+      <Modal
+        visible={previewVisible}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
     </>
   );
 };

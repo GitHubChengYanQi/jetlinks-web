@@ -30,24 +30,18 @@ const TemplateTable = (props) => {
     save: remindEdit
   };
 
-  const tabList = [
-    {
-      key: 'tab1',
-      tab: '模板id',
-    },
-  ];
 
   return (
 
     <Card
       title="添加模板"
-      tabList={tabList}
       bordered={false}
     >
       <Form
         {...props}
         api={ApiConfig}
       >
+        <FormItem labelAlign='left' label='模板id' name="templateId" component={Input} required />
         <FieldList
           name="dataList"
           initialValue={[]}
@@ -65,10 +59,12 @@ const TemplateTable = (props) => {
                       <FormItem
                         name={`dataList.${index}.key`}
                         component={Input}
+                        required
                       />
                       <FormItem
                         name={`dataList.${index}.value`}
                         component={Input}
+                        required
                       />
                       {/* eslint-disable-next-line react/jsx-no-bind */}
                       <Button onClick={onRemove.bind(null, index)}>remove</Button>
@@ -85,7 +81,6 @@ const TemplateTable = (props) => {
           }}
         </FieldList>
         <div style={{height:0}}>
-          <FormItem hidden name="templateId" component={Input} />
           <FormItem hidden name="type" component={SysField.Type} required />
           <FormItem hidden name="users" component={SysField.UserId} displays='none' required />
         </div>
