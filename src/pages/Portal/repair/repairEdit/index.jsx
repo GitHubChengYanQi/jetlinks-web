@@ -18,6 +18,7 @@ import CompanyAddressEdit from '@/pages/Portal/companyAddress/companyAddressEdit
 import {useRequest} from '@/util/Request';
 import ProCard from '@ant-design/pro-card';
 import {MegaLayout} from '@formily/antd-components';
+import {Img} from '../repairField';
 
 const {FormItem} = Form;
 
@@ -30,6 +31,8 @@ const ApiConfig = {
 const RepairEdit = ({...props}) => {
 
   const {value} = props;
+
+
 
 
   const [state,setState] = useState();
@@ -91,7 +94,7 @@ const RepairEdit = ({...props}) => {
             <FormItem label="设备" name="itemId" component={SysField.ItemId} repair={data || null} state={state} required />
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
-            <FormItem label="图片" name="itemImgUrlList" banner={value.bannerResult || null} component={SysField.ItemImgUrl}  />
+            <FormItem label="图片" name="itemImgUrlList" banner={value.repairId || null} component={SysField.Img}  />
           </MegaLayout>
 
           <MegaLayout labelWidth={120} grid>

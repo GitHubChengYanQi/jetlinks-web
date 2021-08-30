@@ -116,9 +116,6 @@ const RepairList = () => {
                 setRepairId(record.repairId);
                 refDispatching.current.open(record);
               }}>派工</Button> : null}
-              <EditButton onClick={() => {
-                ref.current.open(record);
-              }} />
               <DelButton api={repairDelete} value={record.repairId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />

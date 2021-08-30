@@ -41,9 +41,9 @@ const TemplateTable = (props) => {
         {...props}
         api={ApiConfig}
       >
-        <FormItem labelAlign='left' label='模板id' name="JsonDataList.templateId" component={Input} required />
+        <FormItem labelAlign='left' label='模板id' name="template.templateId" component={Input} required />
         <FieldList
-          name="JsonDataList.dataList"
+          name="template.dataList"
           initialValue={[]}
         >
           {({state, mutators}) => {
@@ -57,12 +57,12 @@ const TemplateTable = (props) => {
                   return (
                     <RowStyleLayout key={index}>
                       <FormItem
-                        name={`JsonDataList.dataList.${index}.key`}
+                        name={`template.dataList.${index}.key`}
                         component={Input}
                         required
                       />
                       <FormItem
-                        name={`JsonDataList.dataList.${index}.value`}
+                        name={`template.dataList.${index}.value`}
                         component={Input}
                         required
                       />

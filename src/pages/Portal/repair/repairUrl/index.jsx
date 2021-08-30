@@ -60,5 +60,9 @@ export const commonArea = {
   url: '/commonArea/treeView',
   method: 'POST',
 };
+export const bannerList = {
+  url: '/banner/repairList',
+  method: 'POST',
+};
 
 

@@ -1,10 +1,15 @@
 import React from 'react';
-import {Descriptions} from 'antd';
+import {Descriptions, Image} from 'antd';
 
 const Desc = (props) => {
 
   const {data} = props;
   if (data) {
+
+    const banners = data.bannerResult.map((items,index)=>{
+      return <div key={index} style={{marginRight:20}}><Image   src={items.imgUrl} /></div>;
+    });
+
     return (
       <>
         <Descriptions>
@@ -15,6 +20,10 @@ const Desc = (props) => {
           <Descriptions.Item label="报修时间">{data.createTime ? data.createTime : '未填写'  }</Descriptions.Item>
           <Descriptions.Item label="维保金额">{data.money ? `￥${data.money}` : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="问题描述">{data.comment ? data.comment : '未填写'}</Descriptions.Item>
+
+          <Descriptions.Item label="报修照片">
+            {banners || null}
+          </Descriptions.Item>
         </Descriptions>
       </>
     );

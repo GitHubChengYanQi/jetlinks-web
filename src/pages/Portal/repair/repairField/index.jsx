@@ -7,7 +7,7 @@
 
 import React, {useEffect, useState} from 'react';
 import UpLoadImg from '@/components/Upload';
-import {Input, InputNumber, Modal, Select as AntSelect, Upload} from 'antd';
+import {Image, Input, InputNumber, Modal, Select as AntSelect, Upload} from 'antd';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
@@ -15,28 +15,110 @@ import {PlusOutlined} from '@ant-design/icons';
 import TreeSelect from '@/components/TreeSelect';
 import Cascader from '@/components/Cascader';
 import * as apiUrl from '../repairUrl';
+import {bannerList} from '../repairUrl';
 
 export const CompanyId = (props) => {
   return (<Select api={apiUrl.companyIdSelect} {...props} />);
 };
+
+export const Img = (props) => {
+
+
+  const {banner} = props;
+
+  const [imgs, setImgs] = useState({});
+
+  const {data: bannerData, run: bannerRun} = useRequest({...bannerList}, {manual: true});
+
+  const banners = bannerData ? bannerData.map((items, index) => {
+    return {
+      url: items.imgUrl || null,
+    };
+  }) : [];
+
+  useEffect(() => {
+    if (banner) {
+      bannerRun(
+        {
+          data: {difference: banner}
+        }
+      );
+    }
+  }, []);
+
+
+
+  const img = [imgs.one || null, imgs.two || null, imgs.three || null];
+
+
+
+
+  props.onChange(img);
+
+
+  return (
+    <>
+      <UpLoadImg value={banners.length>0 && banners[0].url} onChange={(value) => {
+        setImgs({...imgs, one: {imgUrl: value, title: '报修设备图片'}});
+      }}
+      />
+      <UpLoadImg value={banners.length>1 && banners[1].url} onChange={(value) => {
+        setImgs({...imgs, two: {imgUrl: value, title: '报修设备图片'}});
+      }} />
+      <UpLoadImg value={banners.length>2 && banners[2].url} onChange={(value) => {
+        setImgs({...imgs, three: {imgUrl: value, title: '报修设备图片'}});
+      }} />
+    </>
+  );
+};
+
 export const ItemImgUrl = (props) => {
 
   const {banner} = props;
 
-  const banners = banner && banner.length > 0 && banner.map((items, index) => {
+  const {data: bannerData, run: bannerRun} = useRequest({...bannerList}, {manual: true});
+
+  const banners = bannerData ? bannerData.map((items, index) => {
     return {
-      uid: -index,
       name: items.title || null,
       url: items.imgUrl || null,
-      type:items.imgUrl && items.imgUrl.split('.')[items.imgUrl.split('.').length-1],
+      status: 'done',
+      type: items.imgUrl && items.imgUrl.split('.')[items.imgUrl.split('.').length - 1],
     };
-  });
+  }) : [];
 
-  console.log(banner);
+  console.log(banners);
 
-  const {data, run} = useRequest({url: '/media/getToken', method: 'GET'}, {manual: true});
+  useEffect(() => {
+    if (banner) {
+      bannerRun(
+        {
+          data: {difference: banner}
+        }
+      );
+    }
+  }, []);
 
   const [oss, setOss] = useState({});
+
+  const {data, run} = useRequest({url: '/media/getToken', method: 'GET'}, {
+    manual: true,
+    formatResult: (e) => {
+      return e;
+    },
+    onSuccess: (res) => {
+      if (res.errCode === 0) {
+        oss.key = res.data.key;
+        oss.host = res.data.host;
+        oss.policy = res.data.policy;
+        oss.Signature = res.data.Signature;
+        oss.mediaId = res.data.mediaId;
+        oss.OSSAccessKeyId = res.data.OSSAccessKeyId;
+        setOss({...oss});
+      }
+    }
+  });
+
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -51,11 +133,15 @@ export const ItemImgUrl = (props) => {
     previewVisible: false,
     previewImage: '',
     previewTitle: '',
-    fileList: [
-      // {
-
-      // },
-    ],
+    fileList: banners ||
+      [
+        {
+          name: '报修设备照片',
+          status: 'done',
+          type: 'png',
+          url: 'https://gpkx.oss-cn-beijing.aliyuncs.com/upload/png/20210818/20210818948181.png'
+        }
+      ],
   });
 
   const handleCancel = () => setState({previewVisible: false});
@@ -81,15 +167,26 @@ export const ItemImgUrl = (props) => {
     </div>
   );
 
+  const beforUpLoad = (imgType) => {
+    return new Promise((resolve) => {
+      run({params: {type: imgType}}).then(res => {
+        resolve();
+      });
+    });
+  };
+
 
   return (
     <>
       <Upload
         data={oss}
-        action={oss.host}
+        action="https://gpkx.oss-cn-beijing.aliyuncs.com"
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
+        beforeUpload={(file) => {
+          return beforUpLoad(file.type.split('/')[1]);
+        }}
         onChange={async ({fileList}) => {
           const imgs = [];
           for (let i = 0; i < fileList.length; i++) {
@@ -104,6 +201,7 @@ export const ItemImgUrl = (props) => {
             setOss({...ossToken});
             imgs.push({imgUrl: `${ossToken.host}/${ossToken.key}`, title: '报修设备照片'});
           }
+          console.log(imgs);
           props.onChange(imgs);
 
           setState({fileList});
