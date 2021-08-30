@@ -21,7 +21,22 @@ export const CompanyId = (props) => {
 };
 export const ItemImgUrl = (props) => {
 
-  const {data,run} = useRequest({ url: '/media/getToken',method:'GET'},{manual:true});
+  const {banner} = props;
+
+  const banners = banner && banner.length > 0 && banner.map((items, index) => {
+    return {
+      uid: -index,
+      name: items.title || null,
+      url: items.imgUrl || null,
+      type:items.imgUrl && items.imgUrl.split('.')[items.imgUrl.split('.').length-1],
+    };
+  });
+
+  console.log(banner);
+
+  const {data, run} = useRequest({url: '/media/getToken', method: 'GET'}, {manual: true});
+
+  const [oss, setOss] = useState({});
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -32,21 +47,18 @@ export const ItemImgUrl = (props) => {
     });
   }
 
-  const [state,setState] = useState({
+  const [state, setState] = useState({
     previewVisible: false,
     previewImage: '',
     previewTitle: '',
     fileList: [
       // {
-      //   uid: '-1',
-      //   name: 'image.png',
-      //   status: 'done',
-      //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+
       // },
     ],
   });
 
-  const handleCancel = () => setState({ previewVisible: false });
+  const handleCancel = () => setState({previewVisible: false});
 
   const handlePreview = async file => {
     if (!file.url && !file.preview) {
@@ -59,29 +71,13 @@ export const ItemImgUrl = (props) => {
     });
   };
 
-  const handleChange = async ({ fileList }) => {
 
-    for (let i = 0; i < fileList.length; i++) {
-      console.log(fileList);
-    }
+  const {previewVisible, previewImage, fileList, previewTitle} = state;
 
-    // const oss = await run(
-    //   {
-    //     params:{
-    //       type:fileList[0].type && fileList[0].type.split('/')[1]
-    //     }
-    //   }
-    // );
-    // console.log(oss);
-
-    setState({ fileList });
-  };
-
-  const { previewVisible, previewImage, fileList, previewTitle } = state;
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{marginTop: 8}}>Upload</div>
     </div>
   );
 
@@ -89,11 +85,29 @@ export const ItemImgUrl = (props) => {
   return (
     <>
       <Upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        data={oss}
+        action={oss.host}
         listType="picture-card"
-        fileList={state.fileList}
+        fileList={fileList}
         onPreview={handlePreview}
-        onChange={handleChange}
+        onChange={async ({fileList}) => {
+          const imgs = [];
+          for (let i = 0; i < fileList.length; i++) {
+            // eslint-disable-next-line no-await-in-loop
+            const ossToken = await run(
+              {
+                params: {
+                  type: fileList[0].type && fileList[0].type.split('/')[1]
+                }
+              }
+            );
+            setOss({...ossToken});
+            imgs.push({imgUrl: `${ossToken.host}/${ossToken.key}`, title: '报修设备照片'});
+          }
+          props.onChange(imgs);
+
+          setState({fileList});
+        }}
       >
         {state.fileList && state.fileList.length >= 3 ? null : uploadButton}
       </Upload>
@@ -103,7 +117,7 @@ export const ItemImgUrl = (props) => {
         footer={null}
         onCancel={handleCancel}
       >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        <img alt="example" style={{width: '100%'}} src={previewImage} />
       </Modal>
     </>
   );
@@ -186,7 +200,7 @@ export const ImgUrl = (props) => {
   return (<UpLoadImg {...props} />);
 };
 export const Province = (props) => {
-  return ( <Cascader api={apiUrl.commonArea} {...props} placeholder="请选择地区" />);
+  return (<Cascader api={apiUrl.commonArea} {...props} placeholder="请选择地区" />);
 };
 export const City = (props) => {
   return (<TreeSelect api={apiUrl.commonArea} {...props} />);
