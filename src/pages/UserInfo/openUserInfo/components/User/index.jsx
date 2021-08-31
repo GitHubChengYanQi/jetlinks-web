@@ -25,7 +25,7 @@ const User = () => {
             {
               data: {
                 userId: value,
-                page: ''
+                page: '/pages/bind/index'
               }
             }
           );
