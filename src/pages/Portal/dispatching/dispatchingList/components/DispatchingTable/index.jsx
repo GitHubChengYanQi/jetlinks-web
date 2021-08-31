@@ -14,7 +14,7 @@ const DispatchingTable = (props) => {
       <Descriptions.Item label="状态">{value.state || '未填写'}</Descriptions.Item>
       <Descriptions.Item label="备注">{value.note || '未填写'}</Descriptions.Item>
       <Descriptions.Item label="完成照片">
-        <Image src={value.imgUrl || '未填写'} />
+        {value.imgUrl ? <Image src={value.imgUrl} /> : null}
       </Descriptions.Item>
       <Descriptions.Item label="维保评价">{value.evaluation || '未填写'}</Descriptions.Item>
       <Descriptions.Item label="其他评价">{value.evaluations || '未填写'}</Descriptions.Item>
