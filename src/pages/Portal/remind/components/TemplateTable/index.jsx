@@ -36,7 +36,7 @@ const TemplateTable = (props) => {
     <Card
       title="添加模板"
       bordered={false}
-      extra="报修人变量:{{user}}    时间变量：{{time}}   备注变量：{{note}} 详情变量{{details}}"
+      extra="报修人变量:{{name}}    时间变量：{{time}}   备注变量：{{note}} 详情变量{{details}}"
     >
       <Form
         {...props}
