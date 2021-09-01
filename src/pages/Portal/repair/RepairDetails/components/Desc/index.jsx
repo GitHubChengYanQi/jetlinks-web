@@ -6,9 +6,9 @@ const Desc = (props) => {
   const {data} = props;
   if (data) {
 
-    const banners = data.bannerResult.map((items,index)=>{
-      return <div key={index} style={{marginRight:20}}><Image   src={items.imgUrl} /></div>;
-    });
+    const banners = data.bannerResult ? data.bannerResult.map((items,index)=>{
+      return <div key={index} style={{marginRight:20,maxWidth:200}}><Image   src={items.imgUrl} /></div>;
+    }) : undefined;
 
     return (
       <>

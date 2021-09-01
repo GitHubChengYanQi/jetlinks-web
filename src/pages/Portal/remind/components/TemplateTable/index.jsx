@@ -1,11 +1,13 @@
-import React, {useRef} from 'react';
-import {Button, Card, Table as AntTable} from 'antd';
+import React from 'react';
+import {Button, Card, Collapse} from 'antd';
 import styled from 'styled-components';
 import {FormItem, InternalFieldList as FieldList} from '@formily/antd';
-import {Input} from '@formily/antd-components';
 import Form from '@/components/Form';
-import {remindAdd, remindDetail, remindEdit, remindTemplate} from '@/pages/Portal/remind/remindUrl';
+import {remindAdd, remindDetail, remindEdit} from '@/pages/Portal/remind/remindUrl';
 import * as SysField from '@/pages/Portal/remind/remindField';
+import styles from './index.module.scss';
+
+const { Panel } = Collapse;
 
 const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
@@ -15,14 +17,13 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
-    margin-bottom: 16px;
+    width: 42%;
+    //margin-bottom: 16px;
   }
 `;
 
-const {Column} = AntTable;
 
 const TemplateTable = (props) => {
-
 
   const ApiConfig = {
     view: remindDetail,
@@ -36,20 +37,15 @@ const TemplateTable = (props) => {
     <Card
       title="添加模板"
       bordered={false}
-      extra="报修人变量:{{name}}    时间变量：{{time}}   备注变量：{{note}} 详情变量{{details}}"
     >
       <Form
         {...props}
         api={ApiConfig}
       >
-        <FormItem labelAlign="left" label="模板id" name="template.templateId" component={SysField.templateId} required />
+        <FormItem  labelAlign="left" label="模板id" name="template.templateId" component={SysField.templateId} required />
         <FormItem labelAlign="left" label="打开的URL" name="template.url" component={SysField.url} required />
         <FieldList
           name="template.dataList"
-          // initialValue={[
-          // { username: 'morally', age: 21 },
-          // { username: 'bill', age: 22 }
-          // ]}
         >
           {({state, mutators}) => {
             const onAdd = () => mutators.push();
@@ -57,8 +53,6 @@ const TemplateTable = (props) => {
               <div>
                 {state.value.map((item, index) => {
                   const onRemove = index => mutators.remove(index);
-                  const onMoveUp = index => mutators.moveUp(index);
-                  const onMoveDown = index => mutators.moveDown(index);
                   return (
                     <RowStyleLayout key={index}>
                       <FormItem
@@ -72,15 +66,11 @@ const TemplateTable = (props) => {
                         required
                       />
                       {/* eslint-disable-next-line react/jsx-no-bind */}
-                      <Button onClick={onRemove.bind(null, index)}>remove</Button>
-                      {/* eslint-disable-next-line react/jsx-no-bind */}
-                      <Button onClick={onMoveUp.bind(null, index)}>up</Button>
-                      {/* eslint-disable-next-line react/jsx-no-bind */}
-                      <Button onClick={onMoveDown.bind(null, index)}>down</Button>
+                      <Button onClick={onRemove.bind(null, index)}>删除</Button>
                     </RowStyleLayout>
                   );
                 })}
-                <Button onClick={onAdd}>add</Button>
+                <Button onClick={onAdd}>增加</Button>
               </div>
             );
           }}
@@ -90,6 +80,24 @@ const TemplateTable = (props) => {
           <FormItem hidden name="users" component={SysField.UserId} displays="none" required />
         </div>
       </Form>
+      <Collapse style={{marginTop:20}}>
+        <Panel header="所有变量" key="1">
+          <p>
+            <ul className={styles.var}>
+              <li> {'用户变量{{user}}'} </li>
+              <li> {'报修人变量:{{name}}'}</li>
+              <li> {'时间变量：{{time}}'}  </li>
+              <li> {'备注变量：{{note}}'} </li>
+              <li> {'详情变量{{details}}'}</li>
+              <li> {'设备名称变量{{item}}'} </li>
+              <li> {'服务类型变量:{{serviceType}}'}</li>
+              <li> {'维修费用变量：{{money}}'}  </li>
+              <li> {'质保类型变量：{{qualityType}}'} </li>
+              <li> {'使用单位变量{{customer}}'}</li>
+            </ul>
+          </p>
+        </Panel>
+      </Collapse>
     </Card>
 
   );

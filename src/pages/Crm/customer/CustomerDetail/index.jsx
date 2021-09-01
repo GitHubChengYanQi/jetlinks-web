@@ -14,11 +14,11 @@ import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList'
 import Contract from '@/pages/Crm/customer/CustomerDetail/compontents/Contract';
 import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
-import styles from './index.module.scss';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 import OrderList from '@/pages/Erp/order/OrderList';
 import ContractList from '@/pages/Crm/contract/ContractList';
 import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 

@@ -3,6 +3,7 @@ import Select from '@/components/Select';
 import {UserIdSelect} from '@/pages/UserInfo/openUserInfo/openUserInfoUrl';
 import {Card, Image, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
+import jrQrcode from 'jr-qrcode';
 
 const User = () => {
 
@@ -14,7 +15,8 @@ const User = () => {
   }, {manual: true});
 
 
-  const img = `data:image/jpeg;base64,${data}`;
+
+
 
 
   return (
@@ -37,7 +39,7 @@ const User = () => {
         }
 
         {
-          data && <Image style={{margin: 30}} src={img} preview={false} />
+          data && <Image style={{margin: 30}} src={jrQrcode.getQrBase64(`https://wx.zjzc.gf2025.com/#/pages/bind/index?key=${data}`)} preview={false} />
         }
       </Card>
     </>

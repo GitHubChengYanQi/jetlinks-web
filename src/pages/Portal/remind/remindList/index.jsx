@@ -13,12 +13,12 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import Modal from '@/components/Modal';
+import TemplateTable from '@/pages/Portal/remind/components/TemplateTable';
 import Breadcrumb from '@/components/Breadcrumb';
 import {remindDelete, remindList} from '../remindUrl';
 import RemindEdit from '../remindEdit';
 import * as SysField from '../remindField';
-import Modal from '@/components/Modal';
-import TemplateTable from '@/pages/Portal/remind/components/TemplateTable';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -91,7 +91,6 @@ const RemindList = () => {
             </>
           );
         }} />
-        {/*<Column title='模板消息类型' width={200} dataIndex='templateType' />*/}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

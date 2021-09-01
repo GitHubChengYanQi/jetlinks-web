@@ -21,7 +21,6 @@ export const RemindId = (props) => {
   return <Input {...props} />;
 };
 export const templateId = (props) => {
-  console.log(props.value);
   return <Input {...props} />;
 };
 export const url = (props) => {
