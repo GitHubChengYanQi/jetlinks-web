@@ -5,6 +5,7 @@ export const positionAdd = {
 export const positionDel = {
   url: '/position/delete',
   method: 'POST',
+  rowKey:'positionId'
 };
 export const positionSave = {
   url: '/position/editItem',

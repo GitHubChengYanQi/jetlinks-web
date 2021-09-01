@@ -21,7 +21,7 @@ const ApiConfig = {
   View: positionView,
   Add: positionAdd,
   Save: positionSave
-}
+};
 
 const PositionForm = ({id, ...other}) => {
 
