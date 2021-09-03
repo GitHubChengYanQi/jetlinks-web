@@ -85,10 +85,10 @@ const StepList = (props) => {
         current={value.progress}
       >
         <Step
-          title="待派工"
+          title="报修中"
         />
         <Step
-          title="接单中"
+          title="待派工"
         />
         <Step
           title="实施中"

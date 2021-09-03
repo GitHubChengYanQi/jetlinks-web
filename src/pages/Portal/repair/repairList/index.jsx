@@ -98,7 +98,7 @@ const RepairList = () => {
           return (
             <BadgeState
               state={record.progress}
-              text={['待派工','接单中' ,'实施中','完成','评价','完成报修']}
+              text={['报修中','待派单' ,'实施中','完成','评价','完成报修']}
               color={['red','yellow' ,'black','blue','#eee','green']} />
           );
         }} />

@@ -6,9 +6,6 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 const DescAddress = (props) => {
   const {data} = props;
 
-  console.log(data);
-
-
   if (data) {
     return (
       <>
