@@ -23,6 +23,7 @@ const FormWrapper = (
     fieldKey,
     value,
     formatResult,
+    res,
     onSubmit = (values) => {
       return values;
     },
@@ -86,6 +87,7 @@ const FormWrapper = (
     },
     onSuccess: (result) => {
       onSuccess(result);
+      res && res(result);
     },
     onError: (error) => {
       message.error(error.message);
