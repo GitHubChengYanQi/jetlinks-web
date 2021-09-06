@@ -23,6 +23,7 @@ import PhoneList from '@/pages/Crm/phone/phoneList';
 import {batchDelete, contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
+import {Tag} from '@alifd/next';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,7 +31,11 @@ const {FormItem} = Form;
 const ContactsTable = (props) => {
 
   const {choose} = props;
+  const [phone, setPhone] = useState(null);
 
+  // const {data, run:getPhone} = useRequest(phoneList, {
+  //   manual: true,
+  // });
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -125,13 +130,7 @@ const ContactsTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" render={(text, record) => {
-          return (
-            <Button size="small" type="link" onClick={() => {
-              refPhone.current.open(record);
-            }}>{text}</Button>
-          );
-        }} />
+        <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
         <Column title="职务" align="center" width={200} render={(value,record)=>{
           return (
             <>
@@ -139,11 +138,32 @@ const ContactsTable = (props) => {
             </>
           );
         }} />
-        <Column title="客户名称" dataIndex="clientId" render={(value, record) => {
+        <Column title="客户名称" width={300}  dataIndex="clientId" render={(value, record) => {
           return (
             record.customerResult ? record.customerResult.customerName : null
           );
         }} />
+
+        <Column title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
+          return (
+            <>
+              {
+                record.phoneResult.length > 0 ? record.phoneResult.map((value, index) => {
+                  return (
+                    <Tag
+                      key={index}
+                      color="blue"
+                      style={{marginRight: 3}}
+                    >
+                      {value.phoneNumber}
+                    </Tag>
+                  );
+                }) : null
+              }
+            </>
+          );
+
+        }}/>
         <Column />
         <Column title="操作" fixed='right' width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
