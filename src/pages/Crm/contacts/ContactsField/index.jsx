@@ -17,7 +17,7 @@ import {value} from '@/pages/Portal/remind/remindField';
 
 
 export const ContactsName = (props) =>{
-  return (<Input  {...props}/>);
+  return (<Input style={{width:200}} {...props}/>);
 };
 export const Job = (props) =>{
   return (<Input   {...props}/>);

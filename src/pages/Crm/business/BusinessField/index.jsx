@@ -6,12 +6,15 @@
  */
 
 import React, {useRef} from 'react';
+import {DatePicker2} from '@alifd/next';
 import {Input, InputNumber,Select as AntdSelect, Button} from 'antd';
 import Select from '@/components/Select';
-import {DatePicker2} from '@alifd/next';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
 import * as apiUrl from '../BusinessUrl';
+import Modal2 from '@/components/Modal';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import {useRequest} from '@/util/Request';
 
 const w = 200;
 // 商机Id
@@ -39,7 +42,24 @@ export const PersonListSelect = (props) =>{
 };
 // 客户名称
 export const CustomerNameListSelect = (props) =>{
-  return (<Select api={apiUrl.CustomerNameListSelect}  {...props}/>);
+  const ref = useRef(null);
+  const {loading,data,run:getData} = useRequest(apiUrl.CustomerNameListSelect);
+  return (
+    <>
+      <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
+      <Button type="primary" className='customerName' onClick={()=>{
+        ref.current.open(false);}}>
+        新增客户
+      </Button>
+      <Modal2 width={1000}  title="客户" component={CustomerEdit} onSuccess={() => {
+        ref.current.close();
+        getData();
+      }} ref={ref}  position={(res)=>{
+        console.log(res);
+        props.onChange(res && res.data && res.data.customerId);
+      }} />
+    </>
+  );
 };
 
 

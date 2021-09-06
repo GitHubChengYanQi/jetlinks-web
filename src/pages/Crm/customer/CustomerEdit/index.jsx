@@ -79,6 +79,9 @@ const CustomerEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="customerId"
+        res={(res)=>{
+          props.position(res);
+        }}
       >
         <div style={{height: 900}}>
 
