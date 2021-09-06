@@ -50,3 +50,7 @@ export const customerIdSelect = {
   url: '/customer/listSelect',
   method: 'POST'
 };
+export const companyRoleSelect = {
+  url: '/companyRole/listSelect',
+  method: 'POST'
+};

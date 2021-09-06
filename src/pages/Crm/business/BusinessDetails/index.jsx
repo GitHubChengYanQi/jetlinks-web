@@ -16,6 +16,7 @@ import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import AvatarList from '@/pages/Crm/business/BusinessDetails/compontents/Avatar';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
+import CompetitorList from '@/pages/Crm/competitor/competitorList';
 
 const {TabPane} = Tabs;
 
@@ -105,6 +106,9 @@ const CustomerDetail = () => {
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
                   <Description data={data} />
+                </TabPane>
+                <TabPane tab="竞争对手" key="2">
+                  <CompetitorList data={data} />
                 </TabPane>
               </Tabs>
             </Card>

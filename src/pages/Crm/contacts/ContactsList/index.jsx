@@ -128,11 +128,17 @@ const ContactsTable = (props) => {
         <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" render={(text, record) => {
           return (
             <Button size="small" type="link" onClick={() => {
-              refPhone.current.open(record.contactsId);
+              refPhone.current.open(record);
             }}>{text}</Button>
           );
         }} />
-        <Column title="职务" align="center" width={200} dataIndex="job" />
+        <Column title="职务" align="center" width={200} render={(value,record)=>{
+          return (
+            <>
+              {record.companyRoleResult && record.companyRoleResult.position}
+            </>
+          );
+        }} />
         <Column title="客户名称" dataIndex="clientId" render={(value, record) => {
           return (
             record.customerResult ? record.customerResult.customerName : null

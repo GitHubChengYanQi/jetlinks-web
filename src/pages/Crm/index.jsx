@@ -9,6 +9,8 @@ import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 import CrmBusinessSalesList from '@/pages/Crm/business/crmBusinessSales/crmBusinessSalesList';
 
 import styles from './index.module.scss';
+import CompanyRoleList from '@/pages/Crm/companyRole/companyRoleList';
+import CompetitorList from '@/pages/Crm/competitor/competitorList';
 
 const CrmLayout = ({children}) => {
 
@@ -30,6 +32,10 @@ const CrmLayout = ({children}) => {
         return <CrmCustomerLevelList />;
       case 'hygl':
         return <CrmIndustryList />;
+      case 'jsgl':
+        return <CompanyRoleList />;
+      case 'jzds':
+        return <CompetitorList />;
       default:
         return null;
     }
@@ -79,9 +85,15 @@ const CrmLayout = ({children}) => {
               <Menu.Item key="hygl">
                 <span>行业管理</span>
               </Menu.Item>
+              <Menu.Item key="jsgl">
+                <span>角色管理</span>
+              </Menu.Item>
+              <Menu.Item key="jzds">
+                <span>所有竞争对手管理</span>
+              </Menu.Item>
               <Menu.Divider />
             </Menu>
-            <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={()=>{
+            <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
               showModel(false);
             }} footer={null}>{RenderComponent()}</Modal>
           </div>

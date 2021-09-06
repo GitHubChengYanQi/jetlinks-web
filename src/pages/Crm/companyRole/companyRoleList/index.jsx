@@ -1,8 +1,8 @@
 /**
- * 列表页
+ * 公司角色表列表页
  *
- * @author cheng
- * @Date 2021-08-12 08:47:13
+ * @author
+ * @Date 2021-09-06 11:29:56
  */
 
 import React, {useRef} from 'react';
@@ -13,16 +13,15 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
+import {companyRoleDelete, companyRoleList} from '../companyRoleUrl';
+import CompanyRoleEdit from '../companyRoleEdit';
+import * as SysField from '../companyRoleField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {phoneDelete, phoneList} from '../phoneUrl';
-import PhoneEdit from '../phoneEdit';
-import * as SysField from '../phoneField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const PhoneList = (props) => {
-  const {value, choose} = props;
+const CompanyRoleList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -35,12 +34,10 @@ const PhoneList = (props) => {
     );
   };
 
-
   const searchForm = () => {
     return (
       <>
-        <FormItem hidden contactsid={value.contactsId || null} name="contactsId" component={SysField.ContactsId} />
-        <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} />
+        <FormItem label="职位" name="position" component={SysField.Position} />
       </>
     );
   };
@@ -48,34 +45,34 @@ const PhoneList = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb title={value.contactsName || null} />}
-        api={phoneList}
-        rowKey="phoneId"
+        title={<Breadcrumb title='角色管理'/>}
+        api={companyRoleList}
+        rowKey="companyRoleId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="电话号码" dataIndex="phoneNumber" />
+        <Column title="职位" dataIndex="position" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.phoneId);
+                ref.current.open(record.companyRoleId);
               }} />
-              <DelButton api={phoneDelete} value={record.phoneId} onSuccess={() => {
+              <DelButton api={companyRoleDelete} value={record.companyRoleId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={PhoneEdit} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={CompanyRoleEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} contactsId={value.contactsId || null} />
+      }} ref={ref} />
     </>
   );
 };
 
-export default PhoneList;
+export default CompanyRoleList;

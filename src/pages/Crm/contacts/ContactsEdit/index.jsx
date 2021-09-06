@@ -31,7 +31,7 @@ const ContactsEdit = ({...props}) => {
       fieldKey="contactsId"
     >
       <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}  required/>
-      <FormItem label="职务" name="job" component={SysField.Job} required/>
+      <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} required/>
       <FormItem label="客户" name="customerId" component={SysField.CustomerId} required/>
     </Form>
   );

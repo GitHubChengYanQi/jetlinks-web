@@ -23,7 +23,8 @@ export const Time = (props) =>{
   return (<DatePicker  width='100%' placeholder='请选择预计到达时间' {...props}/>);
 };
 export const Address = (props) =>{
-  return (<Cascader api={commonArea} {...props} placeholder="请选择地区" />);
+  // return (<Cascader api={commonArea} {...props} placeholder="请选择地区" />);
+  return (<Input />);
 };
 export const State = (props) =>{
   return (<Input {...props}/>);

@@ -6,13 +6,14 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input, InputNumber} from 'antd';
+import {Button, Input,Select as AntSelect, InputNumber} from 'antd';
 import Select from '@/components/Select';
-import * as apiUrl from '../contactsUrl';
 import Drawer from '@/components/Drawer';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
-import Search from 'antd/es/input/Search';
-
+import {PlusOutlined} from '@ant-design/icons';
+import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
+import * as apiUrl from '../contactsUrl';
+import {useRequest} from '@/util/Request';
+import {value} from '@/pages/Portal/remind/remindField';
 
 
 export const ContactsName = (props) =>{
@@ -34,6 +35,28 @@ export const Customer = (props) =>{
 export const CustomerAdd = (props) =>{
   props.onChange(props.customerId);
   return (<Input    {...props}/>);
+};
+
+export const CompanyRole = (props) => {
+  const ref = useRef(null);
+
+  const {loading,data,run} = useRequest(apiUrl.companyRoleSelect);
+
+  return (
+    <div style={{hieght:50}}>
+      <AntSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+      <Button type='link' icon={<PlusOutlined />} style={{margin:0}} onClick={()=>{
+        ref.current.open(false);
+      }} />
+      <Drawer title='职位' ref={ref} onSuccess={()=>{
+        ref.current.close();
+        run();
+      }} component={CompanyRoleEdit} position={(res)=>{
+        props.onChange(res && res.data && res.data.companyRoleId);
+      }} />
+    </div>
+
+  );
 };
 
 export const CustomerId = (props) =>{
