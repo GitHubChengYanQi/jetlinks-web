@@ -202,7 +202,7 @@ const CustomerTable = (props) => {
           );
         }} />
       </Table>
-      <Modal2 width={1000}  title="客户" component={CustomerEdit} onSuccess={() => {
+      <Modal2 width={1500}  title="客户" component={CustomerEdit} onSuccess={() => {
         ref.current.close();
         tableRef.current.refresh();
       }} ref={ref} />

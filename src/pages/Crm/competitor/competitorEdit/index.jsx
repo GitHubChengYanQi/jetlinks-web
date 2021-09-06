@@ -34,7 +34,7 @@ const CompetitorEdit = ({...props}) => {
     >
       <FormItem label="竞争对手企业名称" name="name" component={SysField.Name} required/>
       <FormItem label="竞争对手企业性质" name="nature" component={SysField.Nature} required/>
-      <FormItem label="商机" name="businessId" component={SysField.BusinessId} businessId={businessId || null} required/>
+      <FormItem label="商机" disabled={businessId} name="businessId" component={SysField.BusinessId} businessId={businessId || null} required/>
     </Form>
   );
 };

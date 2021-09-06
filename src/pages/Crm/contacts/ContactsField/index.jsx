@@ -32,6 +32,7 @@ export const DeptId = (props) =>{
 export const Customer = (props) =>{
   return (<Select api={apiUrl.customerIdSelect}   {...props}/>);
 };
+
 export const CustomerAdd = (props) =>{
   props.onChange(props.customerId);
   return (<Input    {...props}/>);

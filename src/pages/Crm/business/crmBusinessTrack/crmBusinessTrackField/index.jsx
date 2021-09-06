@@ -59,6 +59,14 @@ export const BusinessId = (props) => {
   props.onChange(props.val.businessId);
   return (<Input {...props} value={props.val.businessName} disabled />);
 };
+export const CompetitorsQuoteId = (props) => {
+  const {competitorsQuoteId} = props;
+  if (competitorsQuoteId){
+    console.log(competitorsQuoteId);
+    props.onChange(competitorsQuoteId.competitorsQuoteId);
+  }
+  return (<Input {...props} />);
+};
 export const UserId = (props) => {
   props.onChange(props.val.person);
   return (<Input {...props} value={props.val.user.name} disabled />);

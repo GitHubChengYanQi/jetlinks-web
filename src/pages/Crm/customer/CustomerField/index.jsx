@@ -17,6 +17,30 @@ const {Option} = Select;
 
 
 
+export const ContactsName = (props) =>{
+  return (<Input  {...props}/>);
+};
+
+export const Location = (props) =>{
+  return (<Input  {...props}/>);
+};
+export const Longitude = (props) =>{
+  return (<InputNumber   {...props}/>);
+};
+export const Latitude = (props) =>{
+  return (<InputNumber   {...props}/>);
+};
+export const PhoneNumber = (props) =>{
+  return (<InputNumber style={{width:300}}  {...props}/>);
+};
+
+export const key = (props) => {
+  return <Input {...props} />;
+};
+export const value = (props) => {
+  return <Input {...props} />;
+};
+
 export const Name = (props) => {
   return (<Input {...props} />);
 };
@@ -114,9 +138,6 @@ export const Introduction = (props) => {
   return (<Input.TextArea  {...props} />);
 };
 
-export const Latitude = (props) => {
-  return (<Input  {...props} />);
-};
 export const DeptId = (props) => {
   return (<Input   {...props} />);
 };

@@ -8,6 +8,7 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import Breadcrumb from '@/components/Breadcrumb';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,7 +17,6 @@ import Form from '@/components/Form';
 import {competitorDelete, competitorList} from '../competitorUrl';
 import CompetitorEdit from '../competitorEdit';
 import * as SysField from '../competitorField';
-import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -58,15 +58,15 @@ const CompetitorList = (props) => {
       >
         <Column title="竞争对手企业名称" dataIndex="name" />
         <Column title="竞争对手企业性质" dataIndex="nature" />
-        <Column title="商机名称" dataIndex="businessId"
-          // render={(text, record, index) => {
-          //   return (
-          //     <>
-          //       {/*{text || null}*/}
-          //     </>
-          //   );
-          // }}
-        />
+        {!data && <Column title="商机名称" dataIndex="businessId"
+          render={(text, record, index) => {
+            return (
+              <>
+                {record.businessResult && record.businessResult.businessName}
+              </>
+            );
+          }}
+        />}
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

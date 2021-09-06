@@ -21,5 +21,8 @@ export const Nature = (props) =>{
 };
 export const BusinessId = (props) =>{
   const {businessId} = props;
+  if (businessId){
+    props.onChange(businessId);
+  }
   return (<Select api={apiUrl.BusinessIdList} {...props}/>);
 };
