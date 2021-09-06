@@ -22,7 +22,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const PhoneList = (props) => {
-  const {value, choose} = props;
+  const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -39,7 +39,7 @@ const PhoneList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem hidden contactsid={value.contactsId || null} name="contactsId" component={SysField.ContactsId} />
+        <FormItem hidden  name="contactsId" component={SysField.ContactsId} value={value === false ? '111' : value} />
         <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} />
       </>
     );
@@ -48,7 +48,7 @@ const PhoneList = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb title={value.contactsName || null} />}
+        // title={<Breadcrumb title={value.contactsName || null} />}
         api={phoneList}
         rowKey="phoneId"
         searchForm={searchForm}
@@ -70,10 +70,10 @@ const PhoneList = (props) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={PhoneEdit} onSuccess={() => {
+      <Drawer width={800} title="电话" component={PhoneEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} contactsId={value.contactsId || null} />
+      }} ref={ref} contactsId={value || null} />
     </>
   );
 };
