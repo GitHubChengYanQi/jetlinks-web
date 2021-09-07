@@ -68,6 +68,8 @@ const ApiConfig = {
 
 const CustomerEdit = ({...props}, ref) => {
 
+  const {position} = props;
+
   const formRef = useRef();
 
   const history = useHistory();
@@ -93,6 +95,9 @@ const CustomerEdit = ({...props}, ref) => {
         api={ApiConfig}
         wrapperCol={24}
         fieldKey="customerId"
+        res={(res)=>{
+          position && typeof position === 'function' && position(res);
+        }}
       >
         <div>
 

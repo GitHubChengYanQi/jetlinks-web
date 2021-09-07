@@ -4,21 +4,21 @@ import {BannerRouter} from '@/pages/Portal/banner/bannerRouter';
 import {NavigationRouter} from '@/pages/Portal/navigation/navigationRouter';
 import {GoodsRouter} from "@/pages/Portal/goods/goodsRouter";
 import {RepairRouter} from '@/pages/Portal/repair/repairRouter';
-import UsrInfoLayout from '@/pages/UserInfo';
-import {OpenUserInfoRouter} from '@/pages/UserInfo/openUserInfo/openUserInfoRouter';
+import RepairLayout from '@/pages/Repair';
 
-const UserInfoRouterConfig = [
+const RepairRouterConfig = [
   {
-    path: '/userInfo',
-    name: '绑定微信用户',
-    component: UsrInfoLayout,
+    path: '/REPAIR',
+    name: '售后管理',
+    component: RepairLayout,
     children:[
-      ...OpenUserInfoRouter,
+      ...RepairRouter,
       {
-        redirect: '/userInfo/openUserInfo',
+        redirect: '/REPAIR/repair',
       }
     ]
   }
 ];
-export default UserInfoRouterConfig;
+export default RepairRouterConfig;
 
+console.log(RepairRouterConfig);
