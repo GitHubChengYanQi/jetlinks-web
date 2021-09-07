@@ -42,7 +42,7 @@ const Modal = (
     <AntdModal
       style={{minWidth:800}}
       visible={visible}
-      footer={footer}
+      footer={footer || []}
       centered
       maskClosable={false}
       onCancel={() => {

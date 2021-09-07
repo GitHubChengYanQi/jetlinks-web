@@ -30,7 +30,7 @@ const CompetitorList = () => {
           treeData={[
             {
               title: '所有竞争级别',
-              key: '',
+              key: ' ',
               children: [
                 {
                   title: '低',

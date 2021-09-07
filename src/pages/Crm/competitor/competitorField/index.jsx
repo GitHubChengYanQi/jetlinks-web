@@ -10,6 +10,7 @@ import {Input,InputNumber,TimePicker,Select as AntdSelect,Checkbox,Radio} from '
 import DatePicker from '@/components/DatePicker';
 import Cascader from '@/components/Cascader';
 import * as apiUrl from '../competitorUrl';
+import Select from '@/components/Select';
 
 export const CompetitorsQuoteId = (props) =>{
   return (<Input {...props}/>);
@@ -55,4 +56,11 @@ export const OpponentsWeaknesses = (props) =>{
 };
 export const TakeCountermeasures = (props) =>{
   return (<Input.TextArea {...props}/>);
+};
+export const BusinessId = (props) =>{
+  const {businessId} = props;
+  if (businessId){
+    props.onChange(businessId);
+  }
+  return (<Select api={apiUrl.BusinessId} {...props}/>);
 };

@@ -23,6 +23,7 @@ import Icon from '@/components/Icon';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,6 +31,8 @@ const {FormItem} = Form;
 const CompetitorTable = (props) => {
 
   const {competitionLevel} = props;
+
+  const history = useHistory();
 
 
   const ref = useRef(null);
@@ -45,7 +48,7 @@ const CompetitorTable = (props) => {
   };
 
   useEffect(() => {
-    if (competitionLevel && competitionLevel.length > 0) {
+    if (competitionLevel) {
       tableRef.current.formActions.setFieldValue('competitionLevel', competitionLevel[0]);
       tableRef.current.submit();
     }
@@ -63,12 +66,6 @@ const CompetitorTable = (props) => {
           <FormItem mega-props={{span: 1}} placeholder="员工规模" name="staffSize" component={SysField.StaffSize} />
           <FormItem mega-props={{span: 1}} placeholder="公司所有制" name="ownership" component={SysField.Ownership} />
           <FormItem mega-props={{span: 1}} placeholder="地区" name="region" component={SysField.Region} />
-          <FormItem
-            mega-props={{span: 1}}
-            placeholder="竞争级别"
-            name="competitionLevel"
-            component={SysField.CompetitionLevel} />
-          <FormItem mega-props={{span: 1}} placeholder="年销售" name="annualSales" component={SysField.AnnualSales} />
           <FormItem mega-props={{span: 1}} placeholder="年销售" name="annualSales" component={SysField.AnnualSales} />
         </>
       );
@@ -86,7 +83,6 @@ const CompetitorTable = (props) => {
           autoRow>
           <FormItem mega-props={{span: 1}} placeholder="竞争对手企业名称" name="name" component={SysField.Name} />
           {search ? formItem() : null}
-
         </MegaLayout>
 
       </div>
@@ -118,23 +114,11 @@ const CompetitorTable = (props) => {
     );
   };
 
-  const Level = (index) => {
-    switch (index){
-      case 0:
-        return '低';
-      case 1:
-        return '中';
-      case 2:
-        return '高';
-      default:
-        break;
-    }
-  };
 
   return (
     <>
       <Table
-
+        title={<Breadcrumb />}
         api={competitorList}
         rowKey="competitorId"
         searchForm={searchForm}
@@ -143,7 +127,13 @@ const CompetitorTable = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column width={150} fiexd title="竞争对手企业名称" dataIndex="name" />
+        <Column width={150} fiexd title="竞争对手企业名称" dataIndex="name" render={(value,record)=>{
+          return (
+            <Button type='link' onClick={()=>{
+              history.push(`/CRM/competitor/${record.competitorId}`);
+            }}>{value}</Button>
+          );
+        }} />
         <Column width={100} title="联系电话" dataIndex="phone" />
         <Column width={100} title="邮箱" dataIndex="email" />
         <Column width={100} title="地区" dataIndex="region" render={(value, record) => {
@@ -158,16 +148,25 @@ const CompetitorTable = (props) => {
             </div>
           );
         }} />
-        <Column width={100} title="竞争级别" dataIndex="competitionLevel" render={(record,index)=>{
+        <Column width={100} title="竞争级别" align='center' render={(value,record)=>{
           return (
             <CustomerLevel level={record.competitionLevel} >{record.level}</CustomerLevel>
+          );
+        }} />
+        <Column width={200} align='center' title='报价信息' render={(value,record)=>{
+          return (
+            <Button type='link' onClick={()=>{
+              // 点击查看报价。。。
+            }}>
+              {`查看 ${record.name} 报价信息`}
+            </Button>
           );
         }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.competitorId);
+                ref.current.open(record);
               }} />
               <DelButton api={competitorDelete} value={record.competitorId} onSuccess={() => {
                 tableRef.current.refresh();

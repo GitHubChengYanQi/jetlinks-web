@@ -39,4 +39,8 @@ export const commonArea = {
   url: '/commonArea/treeView',
   method: 'POST',
 };
+export const BusinessId = {
+  url: '/crmBusiness/listSelect',
+  method: 'POST',
+};
 

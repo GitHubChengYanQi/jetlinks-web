@@ -6,16 +6,17 @@
  */
 
 import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Select} from 'antd';
-import {useRequest} from '@/util/Request';
+import {Input, InputNumber, Select as AntdSelect} from 'antd';
 import * as apiUrl from '../competitorQuoteUrl';
+import Select from '@/components/Select';
+import {competitorListSelect} from '../competitorQuoteUrl';
 
 export const CompetitorsQuote = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber  {...props}/>);
 };
 
 export const CompetitorId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select  api={apiUrl.competitorListSelect}  {...props}/>);
   // const {val} = props;
   // const {loading,data} = useRequest({...apiUrl.competitorrQuoteList,data:{businessId:val.businessId}});
   // return (<Select options={data} loading={loading}  defaultValue={props.value && [`${props.value}`]} onChange={(value)=>{
@@ -23,17 +24,17 @@ export const CompetitorId = (props) =>{
   // }}  showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase())} allowClear />);
 };
 export const QuoteStatus = (props) =>{
-  return (<Input {...props}/>);
+  return (<AntdSelect options={[{label:'无需审批',value:0},{label:'待询价',value:1},{label:'询价中',value:2}]} {...props}/>);
 };
 export const CampType = (props) =>{
-  return (<Input {...props}/>);
+  return (<AntdSelect options={[{label:'我的报价',value:0},{label:'对手报价',value:1}]} {...props}/>);
 };
-export const RelatedCustomers = (props) =>{
-  return (<Input {...props}/>);
+export const BusinessId = (props) =>{
+  return (<Select  api={apiUrl.BusinessNameListSelect}  {...props}/>);
 };
 export const QuoteType = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input  {...props}/>);
 };
 export const QuoteDate = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input  {...props}/>);
 };
