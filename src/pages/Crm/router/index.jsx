@@ -10,6 +10,7 @@ import {CrmCustomerLevelRouter} from '@/pages/Crm/customer/crmCustomerLevel/crmC
 import {CrmIndustryRouter} from '@/pages/Crm/crmIndustry/crmIndustryRouter';
 import {ContactsRouter} from '@/pages/Crm/contacts/ContactsRouter';
 import {CompetitorRouter} from '@/pages/Crm/competitor/competitorRouter';
+import {CompetitorQuoteRouter} from '@/pages/Crm/competitorQuote/competitorQuoteRouter';
 
 
 const CrmRouterConfig = [
@@ -27,6 +28,7 @@ const CrmRouterConfig = [
       ...CrmIndustryRouter,
       ...ContactsRouter,
       ...CompetitorRouter,
+      ...CompetitorQuoteRouter,
       {
         redirect: '/CRM/customer',
       }
