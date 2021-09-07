@@ -40,11 +40,9 @@ const CustomerTable = (props) => {
 
   const history = useHistory();
 
-  const [footers, setFoooters] = useState();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const compoentRef = useRef(null);
 
 
   useEffect(() => {

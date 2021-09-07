@@ -21,4 +21,3 @@ const RepairRouterConfig = [
 ];
 export default RepairRouterConfig;
 
-console.log(RepairRouterConfig);
