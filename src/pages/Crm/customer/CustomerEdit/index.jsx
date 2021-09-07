@@ -154,9 +154,12 @@ const CustomerEdit = ({...props}) => {
 
           </div>
           <div style={{float: 'left', width: '50%', height: 900, overflow:'auto'}}>
-            <ProCard style={{marginTop: 8}} title="联系人信息" headerBordered>
+            <ProCard style={{marginTop: 8}} title="联系人信息" headerBordered bordered>
               <FieldList
                 name="contactsParams"
+                initialValue={[
+                  { contactsName: '', companyRole: '' },
+                ]}
               >
                 {({state, mutators}) => {
                   const onAdd = () => mutators.push();
@@ -179,7 +182,7 @@ const CustomerEdit = ({...props}) => {
                               required
                             />
                             {/* eslint-disable-next-line react/jsx-no-bind */}
-                            <Button onClick={onRemove.bind(null, index)}>删除</Button>
+                            <Button onClick={onRemove.bind(null, index)}>删除联系人</Button>
                             {/*<ProCard style={{marginTop: 8}} headerBordered>*/}
                             <div style={{marginBottom: 20}}>
                               <FieldList
@@ -200,12 +203,12 @@ const CustomerEdit = ({...props}) => {
                                               required
                                             />
                                             {/* eslint-disable-next-line react/jsx-no-bind */}
-                                            <Button onClick={onRemove.bind(null, indexs)}>删除</Button>
+                                            <Button type='link' onClick={onRemove.bind(null, indexs)}>删除电话</Button>
                                           </PhoneRowStyleLayout>
                                         );
                                       })}
 
-                                      <Button onClick={onAdd}>增加联系人电话</Button>
+                                      <Button type='link' onClick={onAdd}>增加联系人电话</Button>
                                     </div>
                                   );
                                 }}
@@ -224,9 +227,12 @@ const CustomerEdit = ({...props}) => {
               </FieldList>
             </ProCard>
 
-            <ProCard style={{marginTop: 8}} title="客户地址" headerBordered>
+            <ProCard style={{marginTop: 8}} title="客户地址" headerBordered bordered >
               <FieldList
                 name="adressParams"
+                initialValue={[
+                  { location: ''},
+                ]}
               >
                 {({state, mutators}) => {
                   const onAdd = () => mutators.push();
@@ -255,7 +261,7 @@ const CustomerEdit = ({...props}) => {
                               required
                             />
                             {/* eslint-disable-next-line react/jsx-no-bind */}
-                            <Button onClick={onRemove.bind(null, index)}>删除</Button>
+                            <Button onClick={onRemove.bind(null, index)}>删除地址</Button>
                           </AdressRowStyleLayout>
                         );
                       })}

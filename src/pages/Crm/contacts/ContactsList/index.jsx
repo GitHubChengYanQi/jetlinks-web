@@ -39,7 +39,6 @@ const ContactsTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const refPhone = useRef(null);
   const actions = () => {
     return (
       <>
