@@ -31,7 +31,7 @@ const PhoneEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="phoneId"
     >
-      <FormItem  name="contactsId" component={SysField.ContactsId} value={contactsId} required/>
+      <FormItem hidden name="contactsId" component={SysField.ContactsId} value={contactsId} required/>
       <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} required/>
     </Form>
   );
