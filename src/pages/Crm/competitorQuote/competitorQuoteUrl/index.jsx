@@ -8,33 +8,38 @@
 export const competitorQuoteAdd = {
   url: '/competitorQuote/add',
   method: 'POST',
-  rowKey:'competitorsQuoteId'
+  rowKey:'quoteId'
 };
 
 export const competitorQuoteEdit = {
   url: '/competitorQuote/edit',
   method: 'POST',
-  rowKey:'competitorsQuoteId'
+  rowKey:'quoteId'
 };
 
 export const competitorQuoteDelete = {
   url: '/competitorQuote/delete',
   method: 'POST',
-  rowKey:'competitorsQuoteId'
+  rowKey:'quoteId'
 };
 
 export const competitorQuoteDetail = {
   url: '/competitorQuote/detail',
   method: 'POST',
-  rowKey:'competitorsQuoteId'
+  rowKey:'quoteId'
 };
 
 export const competitorQuoteList = {
   url: '/competitorQuote/list',
   method: 'POST',
-  rowKey:'competitorsQuoteId'
+  rowKey:'quoteId'
 };
-export const competitorrQuoteList = {
+export const BusinessNameListSelect = {
+  url: '/crmBusiness/listSelect',
+  method: 'POST',
+};
+
+export const competitorListSelect = {
   url: '/competitor/listSelect',
   method: 'POST',
 };

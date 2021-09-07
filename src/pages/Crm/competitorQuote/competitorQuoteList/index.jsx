@@ -7,7 +7,6 @@
 
 import React, {useRef, useState} from 'react';
 import {Divider,Tree} from 'antd';
-import {useRequest} from '@/util/Request';
 import ListLayout from '@/layouts/ListLayout';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 

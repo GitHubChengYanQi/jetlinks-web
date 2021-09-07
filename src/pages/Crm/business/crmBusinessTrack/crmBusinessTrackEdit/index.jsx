@@ -77,7 +77,7 @@ const CrmBusinessTrackEdit = ({...props}) => {
         </Col>
         <Col span={8}>
           <Card title="竞争对手报价" bordered={false}>
-            <CompetitorQuoteList value={competitorsQuoteId ? competitorsQuoteId.competitorsQuoteId : false} />
+            <CompetitorQuoteList value={competitorsQuoteId ? competitorsQuoteId.quoteId : false} />
           </Card>
         </Col>
       </Row>

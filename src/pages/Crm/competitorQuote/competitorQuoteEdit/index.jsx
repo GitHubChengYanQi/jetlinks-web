@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {competitorQuoteDetail, competitorQuoteAdd, competitorQuoteEdit} from '../competitorQuoteUrl';
 import * as SysField from '../competitorQuoteField';
+import {createFormActions, FormEffectHooks} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -18,12 +19,8 @@ const ApiConfig = {
   add: competitorQuoteAdd,
   save: competitorQuoteEdit
 };
-
+const {onFieldValueChange$} = FormEffectHooks;
 const CompetitorQuoteEdit = ({...props}) => {
-
-  const {competitorsQuoteId} = props;
-
-  const {val} = props;
 
   const formRef = useRef();
 
@@ -32,19 +29,26 @@ const CompetitorQuoteEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      fieldKey="competitorsQuoteId"
-      res={(res)=>{
-        if (res){
-          competitorsQuoteId(res.data);
-        }
+      fieldKey="quoteId"
+      effects={() => {
+        const {setFieldState} = createFormActions();
+        onFieldValueChange$('campType').subscribe(({value}) => {
+          console.log(1111111111,value);
+          if(parseInt(value) === 1){
+            setFieldState('competitorId', state => {
+              state.visible = value;
+            });
+          }
+        });
       }}
     >
-      <FormItem label="竞争对手" name="competitorId" component={SysField.CompetitorId} val={val || null} required/>
-      <FormItem label="竞争对手报价" name="competitorsQuote" component={SysField.CompetitorsQuote} required/>
-      <FormItem label="报价状态" name="quoteStatus" component={SysField.QuoteStatus} required/>
-      <FormItem label="关联客户" name="relatedCustomers" component={SysField.RelatedCustomers} required/>
-      <FormItem label="报价分类" name="quoteType" component={SysField.QuoteType} required/>
-      <FormItem label="报价日期" name="quoteDate" component={SysField.QuoteDate} required/>
+      <FormItem label="关联商机"  name="businessId" component={SysField.BusinessId} required/>
+      <FormItem label="报价区分" name="campType" component={SysField.CampType} required/>
+      <FormItem label="竞争对手"  name="competitorId" component={SysField.CompetitorId} />
+      <FormItem label="报价"  name="competitorsQuote" component={SysField.CompetitorsQuote} />
+      <FormItem label="报价状态"  name="quoteStatus" component={SysField.QuoteStatus} />
+      {/*<FormItem label="报价分类" name="quoteType" component={SysField.QuoteType} />*/}
+
     </Form>
   );
 };
