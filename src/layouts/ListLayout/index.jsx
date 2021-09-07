@@ -14,7 +14,9 @@ const ListLayout = ({left, children}) => {
           {left}
         </div>
       </Sider>
-      <Content style={{marginLeft: 260}}>
+      <Content
+        // style={{marginLeft: 260}}
+      >
         {children}
       </Content>
     </Layout>

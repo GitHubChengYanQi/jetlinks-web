@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Layout, Menu} from 'antd';
 import store from '@/store';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
 import styles from './index.module.less';
 
-const {Header, Content} = Layout;
+const {Header, Sider, Content} = Layout;
 
 const TopLayout = ({children, rightMenu}) => {
 
   const match = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
+
+  const [mode, setMode] = useState('vertical');// horizontal
 
   const [userInfo] = store.useModel('user');
   const {menus} = userInfo;
@@ -20,7 +22,7 @@ const TopLayout = ({children, rightMenu}) => {
   });
 
   const loopMenu = (subMenus) => {
-    if(!Array.isArray(subMenus)) {
+    if (!Array.isArray(subMenus)) {
       return null;
     }
     return subMenus.map((item) => {
@@ -39,6 +41,7 @@ const TopLayout = ({children, rightMenu}) => {
   };
 
   const renderLeftMenu = () => {
+    console.log(subMenu);
     if (subMenu.subMenus) {
       const pathName = location.pathname;
       const pathArray = pathName.split('/');
@@ -50,21 +53,25 @@ const TopLayout = ({children, rightMenu}) => {
           onClick={(obj) => {
             history.push(obj.key);
           }}
-          mode="horizontal"
+          mode={mode}
           defaultSelectedKeys={[]}
           // style={{ borderRight: 'none' }}
+          theme={mode === 'vertical' ? 'dark' : 'light'}
         >{loopMenu(subMenu.subMenus)}</Menu>
       );
     }
     return null;
   };
 
+  console.log(mode);
+
   return (
     <Layout>
-      <Header theme="light" className={styles.header}>
+      {mode === 'horizontal' && <Header theme="light" className={styles.header}>
         <div className={styles.leftMenu}>{renderLeftMenu()}</div>
         <div className={styles.rightMenu}>{rightMenu}</div>
-      </Header>
+      </Header>}
+      {mode === 'vertical' && <Sider theme="dark" width={220}>{renderLeftMenu()}</Sider>}
       <Content style={{overflowY: 'auto', height: 'calc(100vh - 112px)'}}>{children}</Content>
     </Layout>
   );
