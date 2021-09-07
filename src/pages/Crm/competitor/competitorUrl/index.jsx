@@ -1,8 +1,8 @@
 /**
- * 竞争对手管理接口配置
+ * 接口配置
  *
  * @author
- * @Date 2021-09-06 13:44:14
+ * @Date 2021-09-07 09:50:09
  */
 
 export const competitorAdd = {
@@ -34,8 +34,9 @@ export const competitorList = {
   method: 'POST',
   rowKey:'competitorId'
 };
-export const BusinessIdList = {
-  url: '/crmBusiness/listSelect',
+
+export const commonArea = {
+  url: '/commonArea/treeView',
   method: 'POST',
 };
 

@@ -34,8 +34,6 @@ const CrmLayout = ({children}) => {
         return <CrmIndustryList />;
       case 'jsgl':
         return <CompanyRoleList />;
-      case 'jzds':
-        return <CompetitorList />;
       default:
         return null;
     }
@@ -87,9 +85,6 @@ const CrmLayout = ({children}) => {
               </Menu.Item>
               <Menu.Item key="jsgl">
                 <span>角色管理</span>
-              </Menu.Item>
-              <Menu.Item key="jzds">
-                <span>所有竞争对手管理</span>
               </Menu.Item>
               <Menu.Divider />
             </Menu>

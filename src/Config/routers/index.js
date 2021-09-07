@@ -6,6 +6,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 import ProtalRouterConfig from '@/pages/Portal/router';
 import ShopRouterConfig from '@/pages/Shop/router';
 import UserInfoRouterConfig from '@/pages/UserInfo/router';
+import RepairRouterConfig from '@/pages/Repair/router';
 
 const routerConfig = [
   {
@@ -28,6 +29,7 @@ const routerConfig = [
       ...ProtalRouterConfig,
       ...ShopRouterConfig,
       ...UserInfoRouterConfig,
+      ...RepairRouterConfig,
       {
         path: '/member',
         component: lazy(() => import((`@/pages/Member`))),

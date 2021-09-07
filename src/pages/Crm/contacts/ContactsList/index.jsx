@@ -39,7 +39,6 @@ const ContactsTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const refPhone = useRef(null);
   const actions = () => {
     return (
       <>
@@ -148,7 +147,7 @@ const ContactsTable = (props) => {
           return (
             <>
               {
-                record.phoneResult && record.phoneResult.length > 0 ? record.phoneResult.map((value, index) => {
+                record.phoneParams && record.phoneParams.length > 0 ? record.phoneParams.map((value, index) => {
                   return (
                     <Tag
                       key={index}

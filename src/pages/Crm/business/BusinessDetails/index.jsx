@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, Row, Tabs, Statistic} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
@@ -9,7 +9,7 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
 import styles from './index.module.scss';
 import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
@@ -17,6 +17,8 @@ import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import AvatarList from '@/pages/Crm/business/BusinessDetails/compontents/Avatar';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 import CompetitorList from '@/pages/Crm/competitor/competitorList';
+import {EditOutlined} from '@ant-design/icons';
+import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 
 const {TabPane} = Tabs;
 
@@ -24,6 +26,10 @@ const CustomerDetail = () => {
   const params = useParams();
 
   const ref = useRef(null);
+  const refTrack = useRef(null);
+
+
+
 
   const [responsive, setResponsive] = useState(false);
 
@@ -60,11 +66,23 @@ const CustomerDetail = () => {
 
         </div>
         <div className={styles.titleButton}>
+
+          <Button onClick={() => {
+            refTrack.current.open(false);
+          }} icon={<EditOutlined />}>添加跟踪</Button>
+
           <Button type="primary" onClick={() => {
             ref.current.open(data.businessId);
           }}>编辑</Button>
-          <Modal2 width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
+
+          <Modal width={1000} component={CrmBusinessTrackEdit} onSuccess={() => {
+            refTrack.current.close();
+            refresh();
+          }} ref={refTrack} val={data} />
+
+          <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
+            refresh();
           }} ref={ref} />
           <Button onClick={() => {
             history.back();
@@ -86,20 +104,7 @@ const CustomerDetail = () => {
               <Desc data={data} />
             </Card>
           </div>
-          <div className={styles.main}>
-
-            <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
-              <ProCard>
-                <Statistic title="今日UV" value={79.0} precision={2} />
-              </ProCard>
-              <ProCard>
-                <Statistic title="今日UV" value={79.0} precision={2} />
-              </ProCard>
-              <ProCard>
-                <Statistic title="今日UV" value={79.0} precision={2} />
-              </ProCard>
-            </ProCard.Group>
-          </div>
+       
           <div
             className={styles.main}>
             <Card>
@@ -117,14 +122,14 @@ const CustomerDetail = () => {
           </div>
         </Col>
         <Col span={8}>
-          <div className={styles.main} style={{height:'100%'}}>
+          <div className={styles.main} style={{height: '100%'}}>
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="动态" key="1">
                   <Dynamic value={data} />
                 </TabPane>
                 <TabPane tab="跟踪" key="2">
-                  <Track value={data} />
+                  <Track value={data}  />
                 </TabPane>
               </Tabs>
             </Card>

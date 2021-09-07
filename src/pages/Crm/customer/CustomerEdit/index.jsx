@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useRef} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
 import {Anchor, Button, Collapse} from 'antd';
 import {
   customerAdd,
@@ -16,8 +16,9 @@ import Form from '@/pages/Crm/customer/CustomerEdit/components/From';
 import ProCard from '@ant-design/pro-card';
 import {useHistory} from 'ice';
 import {MegaLayout} from '@formily/antd-components';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
+import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 
@@ -65,25 +66,42 @@ const ApiConfig = {
 };
 
 
-const CustomerEdit = ({...props}) => {
+const CustomerEdit = ({...props}, ref) => {
 
+  const {position} = props;
 
   const formRef = useRef();
 
   const history = useHistory();
 
+  useImperativeHandle(ref, () => ({
+    formRef,
+  }));
+
+
+  const height = () => {
+    if (window.document.body.clientHeight < 1088) {
+      return 'calc(100vh - 206px)';
+    }
+    return 930;
+  };
+
   return (
-    <div style={{height: 1000}}>
+    <div style={{height: height()}}>
       <Form
         {...props}
         ref={formRef}
+        NoButton={false}
         api={ApiConfig}
+        wrapperCol={24}
         fieldKey="customerId"
-
+        res={(res)=>{
+          position && typeof position === 'function' && position(res);
+        }}
       >
-        <div style={{height: 900}}>
+        <div>
 
-          <div style={{float: 'left', width: '50%'}}>
+          <div style={{float: 'left', paddingRight: 20, height: height(), width: '50%', overflow: 'auto'}}>
 
             <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
               <MegaLayout labelWidth={120}>
@@ -153,10 +171,13 @@ const CustomerEdit = ({...props}) => {
             </ProCard>
 
           </div>
-          <div style={{float: 'left', width: '50%', height: 900, overflow:'auto'}}>
+          <div style={{float: 'left', width: '50%', height: height(), overflow: 'auto'}}>
             <ProCard style={{marginTop: 8}} title="联系人信息" headerBordered>
               <FieldList
                 name="contactsParams"
+                initialValue={[
+                  {contactsName: '', companyRole: ''},
+                ]}
               >
                 {({state, mutators}) => {
                   const onAdd = () => mutators.push();
@@ -166,58 +187,67 @@ const CustomerEdit = ({...props}) => {
                         const onRemove = index => mutators.remove(index);
                         return (
                           <RowStyleLayout key={index}>
-                            <FormItem
-                              label="联系人姓名"
-                              name={`contactsParams.${index}.contactsName`}
-                              component={SysField.ContactsName}
-                              required
-                            />
-                            <FormItem
-                              label="职务"
-                              name={`contactsParams.${index}.companyRole`}
-                              component={SysField.CompanyRoleId}
-                              required
-                            />
-                            {/* eslint-disable-next-line react/jsx-no-bind */}
-                            <Button onClick={onRemove.bind(null, index)}>删除</Button>
-                            {/*<ProCard style={{marginTop: 8}} headerBordered>*/}
-                            <div style={{marginBottom: 20}}>
-                              <FieldList
-                                name={`contactsParams.${index}.phoneParams`}
-                              >
-                                {({state, mutators}) => {
-                                  const onAdd = () => mutators.push();
-                                  return (
-                                    <div>
-                                      {state.value.map((item, indexs) => {
-                                        const onRemove = index => mutators.remove(index);
-                                        return (
-                                          <PhoneRowStyleLayout key={indexs}>
-                                            <FormItem
-                                              label="电话号码"
-                                              name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
-                                              component={SysField.PhoneNumber}
-                                              required
-                                            />
-                                            {/* eslint-disable-next-line react/jsx-no-bind */}
-                                            <Button onClick={onRemove.bind(null, indexs)}>删除</Button>
-                                          </PhoneRowStyleLayout>
-                                        );
-                                      })}
-
-                                      <Button onClick={onAdd}>增加联系人电话</Button>
-                                    </div>
-                                  );
-                                }}
-                              </FieldList>
+                            <div style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
+                              <FormItem
+                                label="联系人姓名"
+                                name={`contactsParams.${index}.contactsName`}
+                                component={SysField.ContactsName}
+                                required
+                              />
+                              <FormItem
+                                label="职务"
+                                name={`contactsParams.${index}.companyRole`}
+                                component={SysField.CompanyRoleId}
+                                required
+                              />
+                              <div style={{float: 'right'}}>
+                                <Button type="link" onClick={() => onRemove(index)}>删除联系人</Button>
+                              </div>
+                              {/* <ProCard style={{marginTop: 8}} headerBordered> */}
+                              <div style={{width: '75%', display: 'inline-block'}}>
+                                <FieldList
+                                  name={`contactsParams.${index}.phoneParams`}
+                                  initialValue={[
+                                    {phoneNumber: ''},
+                                  ]}
+                                >
+                                  {({state, mutators}) => {
+                                    const onAdd = () => mutators.push();
+                                    return (
+                                      <div>
+                                        {state.value.map((item, indexs) => {
+                                          const onRemove = index => mutators.remove(index);
+                                          return (
+                                            <PhoneRowStyleLayout key={indexs}>
+                                              <FormItem
+                                                label="联系人电话"
+                                                name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
+                                                component={SysField.PhoneNumber}
+                                                required
+                                              />
+                                              <Button type="link" onClick={() => onRemove(indexs)}>删除电话</Button>
+                                            </PhoneRowStyleLayout>
+                                          );
+                                        })}
+                                        <div>
+                                          <div style={{height: 30}}>
+                                            <Button type="link" style={{float: 'right'}}
+                                                    onClick={onAdd}>增加联系人电话</Button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  }}
+                                </FieldList>
+                              </div>
+                              {/* </ProCard> */}
                             </div>
-                            {/*</ProCard>*/}
                           </RowStyleLayout>
                         );
                       })}
-
-
-                      <Button onClick={onAdd}>增加联系人</Button>
+                      <div style={{float: 'right'}}>
+                        <Button type="link" onClick={onAdd}>增加联系人</Button>
+                      </div>
                     </div>
                   );
                 }}
@@ -227,6 +257,9 @@ const CustomerEdit = ({...props}) => {
             <ProCard style={{marginTop: 8}} title="客户地址" headerBordered>
               <FieldList
                 name="adressParams"
+                initialValue={[
+                  {location: ''},
+                ]}
               >
                 {({state, mutators}) => {
                   const onAdd = () => mutators.push();
@@ -237,7 +270,7 @@ const CustomerEdit = ({...props}) => {
                         return (
                           <AdressRowStyleLayout key={index}>
                             <FormItem
-                              label="地址"
+                              label="  详细地址"
                               name={`adressParams.${index}.location`}
                               component={SysField.Location}
                               required
@@ -254,12 +287,15 @@ const CustomerEdit = ({...props}) => {
                               component={SysField.Latitude}
                               required
                             />
-                            {/* eslint-disable-next-line react/jsx-no-bind */}
-                            <Button onClick={onRemove.bind(null, index)}>删除</Button>
+                            <Button
+                              type="link" style={{float: 'right'}}
+                              onClick={() => {
+                                onRemove(index);
+                              }}>删除地址</Button>
                           </AdressRowStyleLayout>
                         );
                       })}
-                      <Button onClick={onAdd}>增加客户地址</Button>
+                      <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加客户地址</Button>
                     </div>
                   );
                 }}
@@ -268,12 +304,13 @@ const CustomerEdit = ({...props}) => {
 
 
           </div>
-
+          <br style={{clear: 'both'}} />
 
         </div>
+
       </Form>
     </div>
   );
 };
 
-export default CustomerEdit;
+export default forwardRef(CustomerEdit);

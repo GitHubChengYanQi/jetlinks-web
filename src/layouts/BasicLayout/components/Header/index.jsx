@@ -4,18 +4,30 @@ import {
   FullscreenOutlined
 } from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import {Menu, Drawer, Avatar, Image, Button, Dropdown, Modal, Card, Tabs} from 'antd';
+import {Menu, Drawer, Avatar, Button, Dropdown, Tabs} from 'antd';
 import store from '@/store';
 import {useHistory, config} from 'ice';
 import AppEntFUNC from '@/asseset/imgs/88.png';
+import Bind from '@/asseset/imgs/bind.png';
+import Men from '@/asseset/imgs/men.png';
+import Sys from '@/asseset/imgs/sys.png';
+import Repair from '@/asseset/imgs/repair.png';
+import Shop from '@/asseset/imgs/shop.png';
+import crm from '@/asseset/imgs/CRM.png';
+import erp from '@/asseset/imgs/ERP.png';
 import PassWord from '@/pages/Member/passWord';
 import styles from './index.module.less';
 
 const {TabPane} = Tabs;
 
 const AppIcon = {
-  ENT_FUNC: AppEntFUNC,
-  BASE_SYSTEM: AppEntFUNC
+  ENT_FUNC: Men,
+  BASE_SYSTEM: Sys,
+  userInfo: Bind,
+  CRM:crm,
+  ERP:erp,
+  REPAIR:Repair,
+  shop:Shop,
 };
 
 const Header = () => {
@@ -122,8 +134,11 @@ const Header = () => {
             <div className="css-1b5qfbo">
               <Icon type="icon-gongnengtubiao-134" />
             </div>
-            <div className="docker-top-text"><span aria-haspopup="true"
-                                                   aria-expanded="false">{config.projectName}</span></div>
+            <div className="docker-top-text">
+              <span
+                aria-haspopup="true"
+                aria-expanded="false"
+              >{config.projectName}</span></div>
           </div>
         </div>
         <div className="docker-middle">

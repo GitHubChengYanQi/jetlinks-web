@@ -1,8 +1,8 @@
 /**
- * 竞争对手管理路由文件
+ * 路由文件
  *
- * @author 
- * @Date 2021-09-06 13:44:14
+ * @author
+ * @Date 2021-09-07 09:50:09
  */
 
 import React, {lazy} from 'react';
@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const CompetitorRouter = [
   {
     path: '/competitor',
+    name: '竞争对手',
     component: lazy(() => import('../competitorList')),
     fallback: <div>loading...</div>,
     exact: true,

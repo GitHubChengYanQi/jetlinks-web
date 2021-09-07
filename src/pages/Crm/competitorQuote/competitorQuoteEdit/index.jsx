@@ -41,6 +41,10 @@ const CompetitorQuoteEdit = ({...props}) => {
     >
       <FormItem label="竞争对手" name="competitorId" component={SysField.CompetitorId} val={val || null} required/>
       <FormItem label="竞争对手报价" name="competitorsQuote" component={SysField.CompetitorsQuote} required/>
+      <FormItem label="报价状态" name="quoteStatus" component={SysField.QuoteStatus} required/>
+      <FormItem label="关联客户" name="relatedCustomers" component={SysField.RelatedCustomers} required/>
+      <FormItem label="报价分类" name="quoteType" component={SysField.QuoteType} required/>
+      <FormItem label="报价日期" name="quoteDate" component={SysField.QuoteDate} required/>
     </Form>
   );
 };

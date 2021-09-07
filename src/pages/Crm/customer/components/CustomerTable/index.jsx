@@ -12,7 +12,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import {MegaLayout} from '@formily/antd-components';
 import {
   customerBatchDelete, customerDelete, customerEdit,
@@ -29,6 +29,7 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import CheckButton from '@/components/CheckButton';
 import Icon from '@/components/Icon';
 import {useBoolean} from 'ahooks';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,6 +39,7 @@ const CustomerTable = (props) => {
   const {status, state, level, choose} = props;
 
   const history = useHistory();
+
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -64,7 +66,7 @@ const CustomerTable = (props) => {
   };
 
 
-  const [search,{toggle}]  = useBoolean(false);
+  const [search, {toggle}] = useBoolean(false);
 
   const searchForm = () => {
 
@@ -81,8 +83,9 @@ const CustomerTable = (props) => {
 
 
     return (
-      <div style={{maxWidth:800}} >
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
+      <div style={{maxWidth: 800}}>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerName" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -101,7 +104,7 @@ const CustomerTable = (props) => {
             <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
@@ -185,7 +188,7 @@ const CustomerTable = (props) => {
           );
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column title="操作" fixed="right" width={ choose ? 200 : 100 } align="right" render={(value, record) => {
+        <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={() => {
@@ -202,10 +205,10 @@ const CustomerTable = (props) => {
           );
         }} />
       </Table>
-      <Modal2 width={1500}  title="客户" component={CustomerEdit} onSuccess={() => {
-        ref.current.close();
+      <CreateNewCustomer onSuccess={()=>{
         tableRef.current.refresh();
-      }} ref={ref} />
+        ref.current.close();
+      }} refModal={ref} />
     </>
   );
 };

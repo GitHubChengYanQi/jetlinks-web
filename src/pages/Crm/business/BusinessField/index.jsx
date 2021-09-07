@@ -15,6 +15,7 @@ import * as apiUrl from '../BusinessUrl';
 import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import {useRequest} from '@/util/Request';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 
 const w = 200;
 // 商机Id
@@ -43,6 +44,7 @@ export const PersonListSelect = (props) =>{
 // 客户名称
 export const CustomerNameListSelect = (props) =>{
   const ref = useRef(null);
+
   const {loading,data,run:getData} = useRequest(apiUrl.CustomerNameListSelect);
   return (
     <>
@@ -51,13 +53,12 @@ export const CustomerNameListSelect = (props) =>{
         ref.current.open(false);}}>
         新增客户
       </Button>
-      <Modal2 width={1000}  title="客户" component={CustomerEdit} onSuccess={() => {
+      <CreateNewCustomer onSuccess={() => {
         ref.current.close();
         getData();
-      }} ref={ref}  position={(res)=>{
-        console.log(res);
+      }} refModal={ref} position={(res)=>{
         props.onChange(res && res.data && res.data.customerId);
-      }} />
+      }}/>
     </>
   );
 };

@@ -15,9 +15,25 @@ export const CompetitorsQuote = (props) =>{
 };
 
 export const CompetitorId = (props) =>{
-  const {val} = props;
-  const {loading,data} = useRequest({...apiUrl.competitorrQuoteList,data:{businessId:val.businessId}});
-  return (<Select options={data} loading={loading}  defaultValue={props.value && [`${props.value}`]} onChange={(value)=>{
-    props.onChange(value);
-  }}  showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase())} allowClear />);
+  return (<Input {...props}/>);
+  // const {val} = props;
+  // const {loading,data} = useRequest({...apiUrl.competitorrQuoteList,data:{businessId:val.businessId}});
+  // return (<Select options={data} loading={loading}  defaultValue={props.value && [`${props.value}`]} onChange={(value)=>{
+  //   props.onChange(value);
+  // }}  showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase())} allowClear />);
+};
+export const QuoteStatus = (props) =>{
+  return (<Input {...props}/>);
+};
+export const CampType = (props) =>{
+  return (<Input {...props}/>);
+};
+export const RelatedCustomers = (props) =>{
+  return (<Input {...props}/>);
+};
+export const QuoteType = (props) =>{
+  return (<Input {...props}/>);
+};
+export const QuoteDate = (props) =>{
+  return (<Input {...props}/>);
 };

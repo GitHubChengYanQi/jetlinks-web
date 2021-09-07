@@ -1,9 +1,5 @@
 import React, {useRef} from 'react';
-import {EditOutlined} from '@ant-design/icons';
-import Modal2 from '@/components/Modal';
-import {Button, Comment, List, Table as AntTable} from 'antd';
-import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
-import {useRequest} from '@/util/Request';
+import { Comment, Table as AntTable} from 'antd';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
@@ -16,15 +12,11 @@ const Track = (props) => {
 
   const {value} = props;
 
-  const ref = useRef(null);
   const tableRef = useRef(null);
 
 
   const datas = (value) => {
     return {
-      actions: [<span onClick={() => {
-        ref.current.open(value.trackId);
-      }}>编辑</span>],
       author: value.user.name ? value.user.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
@@ -61,9 +53,6 @@ const Track = (props) => {
 
   return (
     <div>
-      <Button style={{width: '100%'}} onClick={() => {
-        ref.current.open(false);
-      }} className="button-left-margin" icon={<EditOutlined />}>添加跟踪</Button>
       <Table
         searchForm={searchForm}
         selectionType
@@ -85,10 +74,6 @@ const Track = (props) => {
         }} />
 
       </Table>
-      <Modal2 width={800} component={CrmBusinessTrackEdit} onSuccess={() => {
-        ref.current.close();
-        tableRef.current.refresh();
-      }} ref={ref} val={value} />
     </div>
   );
 };

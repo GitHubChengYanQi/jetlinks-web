@@ -14,7 +14,6 @@ const ProtalRouterConfig = [
       ...BannerRouter,
       ...NavigationRouter,
       ...GoodsRouter,
-      ...RepairRouter,
       {
         redirect: '/protal/banner',
       }
