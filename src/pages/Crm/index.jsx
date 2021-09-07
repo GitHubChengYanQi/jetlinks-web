@@ -39,14 +39,17 @@ const CrmLayout = ({children}) => {
     }
   };
 
-  const rightMenu = () => {
+  const RightMenu = ({mode='horizontal',theme, width='50%'}) => {
     return (
       <>
         <Menu
           selectable={false}
-          mode="horizontal"
-        >
-          <Menu.Item key="setting" onClick={() => {
+          mode='horizontal'
+          theme={theme}
+        ><Menu.Item style={{width,textAlign: 'center'}} key="setting" onClick={() => {
+          showDrawer(true);
+        }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
+          <Menu.Item style={{width,textAlign: 'center'}} key="setting1" onClick={() => {
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
         </Menu>
@@ -56,6 +59,7 @@ const CrmLayout = ({children}) => {
           visible={drawerIsShow}
           getContainer={false}
           bodyStyle={{padding: 0}}
+          placement={mode === 'vertical' ?'left':'right'}
           onClose={() => {
             showDrawer(false);
           }}>
@@ -98,7 +102,7 @@ const CrmLayout = ({children}) => {
   };
 
   return (
-    <TopLayout rightMenu={rightMenu()}>
+    <TopLayout rightMenu={RightMenu}>
       {children}
     </TopLayout>
   );

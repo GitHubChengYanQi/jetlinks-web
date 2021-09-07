@@ -9,8 +9,8 @@ const ListLayout = ({left, children}) => {
 
   return (
     <Layout style={{height: '100%'}}>
-      <Sider className={styles.sider} width={260}>
-        <div style={{padding: 24}}>
+      <Sider className={styles.sider} width={210}>
+        <div style={{padding: 8}}>
           {left}
         </div>
       </Sider>

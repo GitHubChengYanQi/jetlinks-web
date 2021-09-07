@@ -6,7 +6,7 @@ import styles from './index.module.less';
 
 const {Header, Sider, Content} = Layout;
 
-const TopLayout = ({children, rightMenu}) => {
+const TopLayout = ({children, rightMenu:RightMenu}) => {
 
   const match = useRouteMatch();
   const history = useHistory();
@@ -69,12 +69,14 @@ const TopLayout = ({children, rightMenu}) => {
     <Layout>
       {mode === 'horizontal' && <Header theme="light" className={styles.header}>
         <div className={styles.leftMenu}>{renderLeftMenu()}</div>
-        <div className={styles.rightMenu}>{rightMenu}</div>
+        <div className={styles.rightMenu}>{RightMenu}</div>
       </Header>}
-      {mode === 'vertical' && <Sider theme="dark" width={220}>{renderLeftMenu()}</Sider>}
-      <Content style={{overflowY: 'auto', height: 'calc(100vh - 112px)'}}>{children}</Content>
+      {mode === 'vertical' && <Sider theme="dark" width={220}>
+        {renderLeftMenu()}
+        <div style={{position:'absolute',bottom: 0,width: '100%'}}><RightMenu mode={mode} theme={mode === 'vertical' ? 'dark' : 'light'} /></div>
+      </Sider>}
+      <Content style={{overflowY: 'auto', height: mode === 'vertical'?'calc(100vh - 63px)':'calc(100vh - 112px)'}}>{children}</Content>
     </Layout>
   );
 };
-
 export default TopLayout;
