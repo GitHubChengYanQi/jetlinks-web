@@ -39,7 +39,7 @@ export const Region = (props) =>{
   return (<Cascader api={apiUrl.commonArea} {...props}/>);
 };
 export const CompetitionLevel = (props) =>{
-  return (<AntdSelect options={[{label:'低',value:0},{label:'中',value:1},{label:'高',value:2}]} {...props}/>);
+  return (<AntdSelect options={[{label:'低',value:1},{label:'中',value:2},{label:'高',value:3}]} {...props}/>);
 };
 export const AnnualSales = (props) =>{
   return (<InputNumber {...props}/>);

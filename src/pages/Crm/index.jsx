@@ -10,7 +10,7 @@ import CrmBusinessSalesList from '@/pages/Crm/business/crmBusinessSales/crmBusin
 
 import styles from './index.module.scss';
 import CompanyRoleList from '@/pages/Crm/companyRole/companyRoleList';
-import CompetitorList from '@/pages/Crm/competitor/competitorList';
+import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 
 const CrmLayout = ({children}) => {
 

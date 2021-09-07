@@ -11,7 +11,7 @@ export const CompetitorRouter = [
   {
     path: '/competitor',
     name: '竞争对手',
-    component: lazy(() => import('../competitorList')),
+    component: lazy(() => import('../competitorList/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }

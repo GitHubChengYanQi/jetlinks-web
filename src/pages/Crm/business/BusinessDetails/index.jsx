@@ -16,7 +16,7 @@ import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import AvatarList from '@/pages/Crm/business/BusinessDetails/compontents/Avatar';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
-import CompetitorList from '@/pages/Crm/competitor/competitorList';
+import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 
@@ -104,7 +104,7 @@ const CustomerDetail = () => {
               <Desc data={data} />
             </Card>
           </div>
-       
+
           <div
             className={styles.main}>
             <Card>
