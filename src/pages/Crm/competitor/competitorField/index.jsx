@@ -6,10 +6,9 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
+import {Input,InputNumber,TimePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
+import DatePicker from '@/components/DatePicker';
 import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
 import * as apiUrl from '../competitorUrl';
 
 export const CompetitorsQuoteId = (props) =>{
@@ -19,31 +18,31 @@ export const Name = (props) =>{
   return (<Input {...props}/>);
 };
 export const Phone = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber style={{width:290}} {...props}/>);
 };
 export const Url = (props) =>{
   return (<Input {...props}/>);
 };
 export const CreationDate = (props) =>{
-  return (<Input {...props}/>);
+  return (<DatePicker {...props}/>);
 };
 export const Email = (props) =>{
   return (<Input {...props}/>);
 };
 export const StaffSize = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Ownership = (props) =>{
-  return (<Input {...props}/>);
+  return (<AntdSelect options={[{label:'有限责任公司',value:0},{label:'个人独资企业',value:1},{label:'合伙企业',value:2},{label:'全民所有制企业',value:3},{label:'农民专业合作社',value:4}]} {...props}/>);
 };
 export const Region = (props) =>{
-  return (<Input {...props}/>);
+  return (<Cascader api={apiUrl.commonArea} {...props}/>);
 };
 export const CompetitionLevel = (props) =>{
-  return (<Input {...props}/>);
+  return (<AntdSelect options={[{label:'低',value:0},{label:'中',value:1},{label:'高',value:2}]} {...props}/>);
 };
 export const AnnualSales = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const CompanyProfile = (props) =>{
   return (<Input.TextArea {...props}/>);

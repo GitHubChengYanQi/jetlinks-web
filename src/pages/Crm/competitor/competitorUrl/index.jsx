@@ -1,7 +1,7 @@
 /**
  * 接口配置
  *
- * @author 
+ * @author
  * @Date 2021-09-07 09:50:09
  */
 
@@ -33,5 +33,10 @@ export const competitorList = {
   url: '/competitor/list',
   method: 'POST',
   rowKey:'competitorId'
+};
+
+export const commonArea = {
+  url: '/commonArea/treeView',
+  method: 'POST',
 };
 

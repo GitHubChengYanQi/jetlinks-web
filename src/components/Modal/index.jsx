@@ -1,5 +1,6 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {message, Modal as AntdModal} from 'antd';
+import {Button, message, Modal as AntdModal} from 'antd';
+import {Reset, Submit} from '@formily/antd';
 
 const Modal = (
   {
@@ -7,12 +8,15 @@ const Modal = (
     modal,
     component: Component,
     width,
+    footer,
     onSuccess = () => {
     },
     onClose = () => {
     },
+    compoentRef,
     ...props
   }, ref) => {
+
 
   const [value, show] = useState(null);
   if (modal!==undefined){
@@ -37,8 +41,8 @@ const Modal = (
   return (
     <AntdModal
       style={{minWidth:800}}
-      footer={[]}
       visible={visible}
+      footer={footer}
       centered
       maskClosable={false}
       onCancel={() => {
@@ -46,11 +50,12 @@ const Modal = (
         onClose();
       }}
       width={width}
-      title={title ? (value ? `编辑${title}` : `添加${title}`) : null}
+      title={title &&  (value ? `编辑${title}` : `添加${title}`)}
       destroyOnClose
     >
       {Component && <Component
         {...props}
+        ref={compoentRef}
         value={value}
         onSuccess={(response) => {
           // message.success(response.message);

@@ -22,6 +22,7 @@ const FormWrapper = (
     api,
     fieldKey,
     value,
+    NoButton = true,
     formatResult,
     res,
     onSubmit = (values) => {
@@ -48,7 +49,6 @@ const FormWrapper = (
   if (!fieldKey && api.view) {
     fieldKey = api.view.rowKey;
   }
-
 
   if (value) {
     key[fieldKey] = value;
@@ -147,10 +147,10 @@ const FormWrapper = (
     >
       {children}
 
-      <FormButtonGroup offset={10}>
+      {NoButton && <FormButtonGroup offset={10}>
         <Submit showLoading>保存</Submit>
         <Reset>重置</Reset>
-      </FormButtonGroup>
+      </FormButtonGroup>}
     </FormilyForm>;
 };
 

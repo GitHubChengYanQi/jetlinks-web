@@ -17,7 +17,7 @@ import {competitorDelete, competitorList} from '../competitorUrl';
 import CompetitorEdit from '../competitorEdit';
 import * as SysField from '../competitorField';
 import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
+import {FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import Modal from '@/components/Modal';
@@ -144,7 +144,7 @@ const CompetitorList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal width={1200} title="编辑" component={CompetitorEdit} onSuccess={() => {
+      <Modal width={1000} title="编辑" component={CompetitorEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
