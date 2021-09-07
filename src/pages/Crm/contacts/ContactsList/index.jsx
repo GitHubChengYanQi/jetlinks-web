@@ -148,7 +148,7 @@ const ContactsTable = (props) => {
           return (
             <>
               {
-                record.phoneResult.length > 0 ? record.phoneResult.map((value, index) => {
+                record.phoneResult && record.phoneResult.length > 0 ? record.phoneResult.map((value, index) => {
                   return (
                     <Tag
                       key={index}

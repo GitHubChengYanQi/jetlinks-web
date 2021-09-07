@@ -12,6 +12,7 @@ import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import TreeSelect from '@/components/TreeSelect';
 import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
+import {CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Option} = Select;
 
@@ -43,6 +44,9 @@ export const value = (props) => {
 
 export const Name = (props) => {
   return (<Input {...props} />);
+};
+export const CompanyRoleId = (props) => {
+  return (<Select api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
 export const CustomerName = (props) => {
 

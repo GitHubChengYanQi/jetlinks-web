@@ -23,6 +23,8 @@ const ApiConfig = {
 
 const ContactsEdit = ({...props}) => {
 
+  const {customerId} = props;
+
   const {Step} = Steps;
   const formRef = useRef();
   const [result, setResult] = useState(props.value);
@@ -56,7 +58,7 @@ const ContactsEdit = ({...props}) => {
           >
             <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}  required/>
             <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} required/>
-            <FormItem label="客户" name="customerId" component={SysField.CustomerId} required/>
+            <FormItem label="客户" name="customerId" component={SysField.CustomerId} customerId={customerId || null} required />
             <div style={{textAlign:'center'}}>
               <Button type="primary" htmlType="submit">
                 下一步

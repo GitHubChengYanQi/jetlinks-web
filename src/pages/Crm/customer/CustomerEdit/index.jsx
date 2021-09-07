@@ -79,9 +79,7 @@ const CustomerEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="customerId"
-        res={(res)=>{
-          props.position(res);
-        }}
+
       >
         <div style={{height: 900}}>
 
@@ -155,7 +153,7 @@ const CustomerEdit = ({...props}) => {
             </ProCard>
 
           </div>
-          <div style={{float: 'left', width: '50%', height: 900, overflow: 'scroll'}}>
+          <div style={{float: 'left', width: '50%', height: 900, overflow:'auto'}}>
             <ProCard style={{marginTop: 8}} title="联系人信息" headerBordered>
               <FieldList
                 name="contactsParams"
@@ -176,8 +174,8 @@ const CustomerEdit = ({...props}) => {
                             />
                             <FormItem
                               label="职务"
-                              name={`contactsParams.${index}.companyRoleId`}
-                              component={SysField.ContactsName}
+                              name={`contactsParams.${index}.companyRole`}
+                              component={SysField.CompanyRoleId}
                               required
                             />
                             {/* eslint-disable-next-line react/jsx-no-bind */}

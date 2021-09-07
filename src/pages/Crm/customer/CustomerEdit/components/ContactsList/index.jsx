@@ -19,6 +19,8 @@ import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
 import PhoneList from '@/pages/Crm/phone/phoneList';
 import Modal2 from '@/components/Modal';
+import {Tag} from '@alifd/next';
+import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -56,14 +58,41 @@ const ContactsList = (props) => {
         showSearchButton={false}
         searchForm={searchForm}
       >
-        <Column title="联系人姓名" dataIndex="contactsName" render={(text, record) => {
+        <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
+        <Column title="职务" align="center" width={200} render={(value,record)=>{
           return (
-            <Button size="small" type="link" onClick={() => {
-              refPhone.current.open(record.contactsId);
-            }}>{text}</Button>
+            <>
+              {record.companyRoleResult && record.companyRoleResult.position}
+            </>
           );
         }} />
-        <Column title="职务" dataIndex="job" />
+        <Column title="客户名称" width={300}  dataIndex="clientId" render={(value, record) => {
+          return (
+            record.customerResult ? record.customerResult.customerName : null
+          );
+        }} />
+
+        <Column title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
+          return (
+            <>
+              {
+                record.phoneResult && record.phoneResult.length > 0 ? record.phoneResult.map((value, index) => {
+                  return (
+                    <Tag
+                      key={index}
+                      color="blue"
+                      style={{marginRight: 3}}
+                    >
+                      {value.phoneNumber}
+                    </Tag>
+                  );
+                }) : null
+              }
+            </>
+          );
+
+        }}/>
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -86,13 +115,10 @@ const ContactsList = (props) => {
           ref.current.open(false);
         }} />
       </div>
-      <Drawer width={800} title="编辑" component={Index} customerId={customerId} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={ContactsEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal2 width={800}  component={PhoneList} onSuccess={() => {
-        refPhone.current.close();
-      }} ref={refPhone} />
     </>
   );
 };

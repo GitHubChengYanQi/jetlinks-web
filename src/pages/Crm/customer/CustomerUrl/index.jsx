@@ -1,4 +1,4 @@
-import {OriginId} from '@/pages/Crm/customer/CustomerField';
+import {CompanyRoleId, OriginId} from '@/pages/Crm/customer/CustomerField';
 
 /**
  * 客户管理表接口配置
@@ -63,6 +63,10 @@ export const OriginIdSelect = {
 
 export const UserIdSelect = {
   url: '/rest/mgr/Select',
+  method: 'POST',
+};
+export const CompanyRoleIdSelect = {
+  url: '/companyRole/listSelect',
   method: 'POST',
 };
 
