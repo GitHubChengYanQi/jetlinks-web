@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import AddButton from '@/components/AddButton';
 import * as SysField from '@/pages/Crm/competitorQuote/competitorQuoteField';
 import Table from '@/components/Table';
@@ -10,14 +10,24 @@ import Drawer from '@/components/Drawer';
 import CompetitorQuoteEdit from '@/pages/Crm/competitorQuote/competitorQuoteEdit';
 import {Table as AntTable} from 'antd';
 import Form from '@/components/Form';
+import {CampType} from '@/pages/Crm/competitorQuote/competitorQuoteField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const competitorTable = (props) => {
-  const {state} = props;
+  const {status} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  useEffect(() => {
+    if (status) {
+      tableRef.current.formActions.setFieldValue('campType', status ? status[0] : null);
+      tableRef.current.submit();
+    }
+  }, [status]);
+
   const actions = () => {
     return (
       <>
@@ -31,7 +41,7 @@ const competitorTable = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="报价状态" name="quoteType" component={SysField.QuoteType}/>
+        <FormItem label="报价状态" name="campType" component={SysField.CampType}/>
         <FormItem label="竞争对手id" name="competitorId" component={SysField.CompetitorId}/>
       </>
     );

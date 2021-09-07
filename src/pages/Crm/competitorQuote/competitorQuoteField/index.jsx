@@ -22,8 +22,10 @@ export const CompetitorId = (props) =>{
   //   props.onChange(value);
   // }}  showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase())} allowClear />);
 };
-
 export const QuoteStatus = (props) =>{
+  return (<Input {...props}/>);
+};
+export const CampType = (props) =>{
   return (<Input {...props}/>);
 };
 export const RelatedCustomers = (props) =>{

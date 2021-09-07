@@ -21,6 +21,7 @@ import {FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import Modal from '@/components/Modal';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,22 +48,21 @@ const CompetitorList = () => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="联系电话" name="phone" component={SysField.Phone} />
-          <FormItem mega-props={{span: 1}} placeholder="网址 " name="url" component={SysField.Url} />
-          <FormItem  mega-props={{span: 1}}placeholder="创立日期" name="creationDate" component={SysField.CreationDate} />
+          {/*<FormItem mega-props={{span: 1}} placeholder="网址 " name="url" component={SysField.Url} />*/}
+          {/*<FormItem  mega-props={{span: 1}}placeholder="创立日期" name="creationDate" component={SysField.CreationDate} />*/}
           <FormItem  mega-props={{span: 1}}placeholder="邮箱" name="email" component={SysField.Email} />
           <FormItem  mega-props={{span: 1}} placeholder="员工规模" name="staffSize" component={SysField.StaffSize} />
-          <FormItem mega-props={{span: 1}} placeholder="公司所有制" name="ownership" component={SysField.Ownership} />
+          {/*<FormItem mega-props={{span: 1}} placeholder="公司所有制" name="ownership" component={SysField.Ownership} />*/}
           <FormItem mega-props={{span: 1}} placeholder="地区" name="region" component={SysField.Region} />
           <FormItem mega-props={{span: 1}} placeholder="竞争级别" name="competitionLevel" component={SysField.CompetitionLevel} />
           <FormItem mega-props={{span: 1}} placeholder="年销售" name="annualSales" component={SysField.AnnualSales} />
-          <FormItem mega-props={{span: 1}} placeholder="公司简介" name="companyProfile" component={SysField.CompanyProfile} />
-          <FormItem mega-props={{span: 1}} placeholder="对手优势" name="rivalAdvantage" component={SysField.RivalAdvantage} />
-          <FormItem  mega-props={{span: 1}} placeholder="对手劣势" name="opponentsWeaknesses" component={SysField.OpponentsWeaknesses} />
-          <FormItem mega-props={{span: 1}} placeholder="采取对策" name="takeCountermeasures" component={SysField.TakeCountermeasures} />
+          {/*<FormItem mega-props={{span: 1}} placeholder="公司简介" name="companyProfile" component={SysField.CompanyProfile} />*/}
+          {/*<FormItem mega-props={{span: 1}} placeholder="对手优势" name="rivalAdvantage" component={SysField.RivalAdvantage} />*/}
+          {/*<FormItem  mega-props={{span: 1}} placeholder="对手劣势" name="opponentsWeaknesses" component={SysField.OpponentsWeaknesses} />*/}
+          {/*<FormItem mega-props={{span: 1}} placeholder="采取对策" name="takeCountermeasures" component={SysField.TakeCountermeasures} />*/}
         </>
       );
     };
-
 
     return (
       <div style={{maxWidth: 800}}>
@@ -107,7 +107,7 @@ const CompetitorList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+
         api={competitorList}
         rowKey="competitorId"
         searchForm={searchForm}
@@ -116,21 +116,32 @@ const CompetitorList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="竞争对手企业名称" dataIndex="name" />
-        <Column title="联系电话" dataIndex="phone" />
-        <Column title="网址 " dataIndex="url" />
-        <Column title="创立日期" dataIndex="creationDate" />
-        <Column title="邮箱" dataIndex="email" />
-        <Column title="员工规模" dataIndex="staffSize" />
-        <Column title="公司所有制" dataIndex="ownership" />
-        <Column title="地区" dataIndex="region" />
-        <Column title="竞争级别" dataIndex="competitionLevel" />
-        <Column title="年销售" dataIndex="annualSales" />
-        <Column title="公司简介" dataIndex="companyProfile" />
-        <Column title="对手优势" dataIndex="rivalAdvantage" />
-        <Column title="对手劣势" dataIndex="opponentsWeaknesses" />
-        <Column title="采取对策" dataIndex="takeCountermeasures" />
-        <Column />
+        <Column width={150} fiexd title="竞争对手企业名称" dataIndex="name" />
+        <Column width={100} title="联系电话" dataIndex="phone" />
+        <Column width={100} title="网址 " dataIndex="url" />
+        <Column width={150} title="创立日期" dataIndex="creationDate" />
+        <Column width={100} title="邮箱" dataIndex="email" />
+        <Column width={100} title="员工规模" dataIndex="staffSize" />
+        <Column width={110} title="公司所有制" dataIndex="ownership" />
+        <Column width={100} title="地区" dataIndex="region"   render={(value, record) => {
+
+          return (
+            <div>
+              {
+                record.regionResult ? record.regionResult.countries
+                  + "-" + record.regionResult.province
+                  + "-" + record.regionResult.city
+                  + "-" + record.regionResult.area : null
+              }
+            </div>
+          );
+        }} />
+        <Column width={100} title="竞争级别" dataIndex="competitionLevel" />
+        <Column width={80} title="年销售" dataIndex="annualSales" />
+        <Column width={300} title="公司简介" dataIndex="companyProfile" />
+        <Column width={200} title="对手优势" dataIndex="rivalAdvantage" />
+        <Column width={200} title="对手劣势" dataIndex="opponentsWeaknesses" />
+        <Column width={200} title="采取对策" dataIndex="takeCountermeasures" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -142,7 +153,7 @@ const CompetitorList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={200} fiexd/>
       </Table>
       <Modal width={1000} title="编辑" component={CompetitorEdit} onSuccess={() => {
         tableRef.current.refresh();
