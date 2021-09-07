@@ -23,6 +23,8 @@ const ApiConfig = {
 
 const CompetitorEdit = ({...props}) => {
 
+  const {value} = props;
+
   const formRef = useRef();
 
   return (
@@ -30,6 +32,7 @@ const CompetitorEdit = ({...props}) => {
 
     <Form
       {...props}
+      value={value ? value.competitorId : false}
       ref={formRef}
       api={ApiConfig}
       wrapperCol={24}
@@ -43,6 +46,9 @@ const CompetitorEdit = ({...props}) => {
 
         <MegaLayout labelWidth={150} full>
           <FormItem label="竞争对手企业名称" name="name" component={SysField.Name} required />
+        </MegaLayout>
+        <MegaLayout labelWidth={150} full>
+          <FormItem label="竞争商机名称" name="businessId" component={SysField.BusinessId} businessId={value && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />
         </MegaLayout>
 
         <MegaLayout labelWidth={150}>
