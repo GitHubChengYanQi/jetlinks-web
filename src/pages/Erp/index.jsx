@@ -3,13 +3,13 @@ import {useRouteMatch, useHistory} from 'ice';
 import store from '@/store';
 import {Drawer, Menu, Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
-import Icon from "@/components/Icon";
-import styles from "@/pages/Crm/index.module.scss";
-import BrandList from "@/pages/Erp/brand/BrandList";
-import MaterialList from "@/pages/Erp/material/MaterialList";
-import StorehouseList from "@/pages/Erp/storehouse/StorehouseList";
-import UnitList from "@/pages/Erp/unit/unitList";
-import ItemClassList from "@/pages/Erp/itemClass/itemClassList";
+import Icon from '@/components/Icon';
+import styles from '@/pages/Crm/index.module.scss';
+import BrandList from '@/pages/Erp/brand/BrandList';
+import MaterialList from '@/pages/Erp/material/MaterialList';
+import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
+import UnitList from '@/pages/Erp/unit/unitList';
+import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 
 const ErpLayout = ({children}) => {
 
@@ -44,14 +44,17 @@ const ErpLayout = ({children}) => {
   };
 
 
-  const rightMenu = () => {
+  const RightMenu = ({mode = 'horizontal', theme, width = '50%'}) => {
     return (
       <>
         <Menu
           selectable={false}
           mode="horizontal"
-        >
-          <Menu.Item key="setting" onClick={() => {
+          theme={theme}
+        ><Menu.Item style={{width, textAlign: 'center'}} key="setting" onClick={() => {
+          showDrawer(true);
+        }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
+          <Menu.Item style={{width, textAlign: 'center'}} key="setting1" onClick={() => {
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
         </Menu>
@@ -61,6 +64,7 @@ const ErpLayout = ({children}) => {
           visible={drawerIsShow}
           getContainer={false}
           bodyStyle={{padding: 0}}
+          placement={mode === 'vertical' ? 'left' : 'right'}
           onClose={() => {
             showDrawer(false);
           }}>
@@ -90,7 +94,7 @@ const ErpLayout = ({children}) => {
               </Menu.Item>
               <Menu.Divider />
             </Menu>
-            <Modal centered destroyOnClose maskClosable={false} width={1100} visible={visible} onCancel={()=>{
+            <Modal centered destroyOnClose maskClosable={false} width={1100} visible={visible} onCancel={() => {
               showModel(false);
             }} footer={null}>{RenderComponent()}</Modal>
           </div>
@@ -103,7 +107,7 @@ const ErpLayout = ({children}) => {
     return <div>菜单不存在</div>;
   }
   return (
-    <TopLayout rightMenu={rightMenu()}>
+    <TopLayout rightMenu={RightMenu}>
       {children}
     </TopLayout>
   );

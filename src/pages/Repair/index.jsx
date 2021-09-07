@@ -26,10 +26,6 @@ const RepairLayout = ({children}) => {
 
   const RenderComponent = () => {
     switch (type) {
-      case 'lbtfl':
-        return <BannerDifferenceList />;
-      case 'dhfl':
-        return <NavigationDifferenceList />;
       case 'shtx':
         return <RemindList />;
       default:
@@ -38,14 +34,17 @@ const RepairLayout = ({children}) => {
   };
 
 
-  const rightMenu = () => {
+  const RightMenu = ({mode = 'horizontal', theme, width = '50%'}) => {
     return (
       <>
         <Menu
           selectable={false}
           mode="horizontal"
-        >
-          <Menu.Item key="setting" onClick={() => {
+          theme={theme}
+        ><Menu.Item style={{width, textAlign: 'center'}} key="setting" onClick={() => {
+          showDrawer(true);
+        }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
+          <Menu.Item style={{width, textAlign: 'center'}} key="setting1" onClick={() => {
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
         </Menu>
@@ -55,10 +54,10 @@ const RepairLayout = ({children}) => {
           visible={drawerIsShow}
           getContainer={false}
           bodyStyle={{padding: 0}}
+          placement={mode === 'vertical' ? 'left' : 'right'}
           onClose={() => {
             showDrawer(false);
           }}>
-
           <div className={styles.settingMenu}>
             <Menu
               selectable={false}
@@ -68,12 +67,6 @@ const RepairLayout = ({children}) => {
                 showModel(true);
               }}
             >
-              <Menu.Item key="lbtfl">
-                <span>轮播图分类管理</span>
-              </Menu.Item>
-              <Menu.Item key="dhfl">
-                <span>导航分类管理</span>
-              </Menu.Item>
               <Menu.Item key="shtx">
                 <span>售后提醒管理</span>
               </Menu.Item>
@@ -92,7 +85,7 @@ const RepairLayout = ({children}) => {
     return <div>菜单不存在</div>;
   }
   return (
-    <TopLayout rightMenu={rightMenu()}>
+    <TopLayout rightMenu={RightMenu}>
       {children}
     </TopLayout>
   );

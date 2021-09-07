@@ -41,7 +41,6 @@ const TopLayout = ({children, rightMenu:RightMenu}) => {
   };
 
   const renderLeftMenu = () => {
-    console.log(subMenu);
     if (subMenu.subMenus) {
       const pathName = location.pathname;
       const pathArray = pathName.split('/');
@@ -63,7 +62,6 @@ const TopLayout = ({children, rightMenu:RightMenu}) => {
     return null;
   };
 
-  console.log(mode);
 
   return (
     <Layout>

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Drawer, Menu, Modal} from 'antd';
+import {Drawer, Menu,Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import Icon from '@/components/Icon';
 import OriginList from '@/pages/Crm/origin/OriginList';
@@ -10,7 +10,6 @@ import CrmBusinessSalesList from '@/pages/Crm/business/crmBusinessSales/crmBusin
 
 import styles from './index.module.scss';
 import CompanyRoleList from '@/pages/Crm/companyRole/companyRoleList';
-import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 
 const CrmLayout = ({children}) => {
 
@@ -20,10 +19,11 @@ const CrmLayout = ({children}) => {
   const [visible, showModel] = useState(false);
   const [type, setType] = useState(null);
 
+
   const RenderComponent = () => {
     switch (type) {
       case 'sjly':
-        return <OriginList />;
+        return OriginList;
       case 'sslc':
         return <CrmBusinessSalesList />;
       case 'htmb':
@@ -39,17 +39,18 @@ const CrmLayout = ({children}) => {
     }
   };
 
-  const RightMenu = ({mode='horizontal',theme, width='50%'}) => {
+
+  const RightMenu = ({mode = 'horizontal', theme, width = '50%'}) => {
     return (
       <>
         <Menu
           selectable={false}
-          mode='horizontal'
+          mode="horizontal"
           theme={theme}
-        ><Menu.Item style={{width,textAlign: 'center'}} key="setting" onClick={() => {
+        ><Menu.Item style={{width, textAlign: 'center'}} key="setting" onClick={() => {
           showDrawer(true);
         }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
-          <Menu.Item style={{width,textAlign: 'center'}} key="setting1" onClick={() => {
+          <Menu.Item style={{width, textAlign: 'center'}} key="setting1" onClick={() => {
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
         </Menu>
@@ -59,7 +60,7 @@ const CrmLayout = ({children}) => {
           visible={drawerIsShow}
           getContainer={false}
           bodyStyle={{padding: 0}}
-          placement={mode === 'vertical' ?'left':'right'}
+          placement={mode === 'vertical' ? 'left' : 'right'}
           onClose={() => {
             showDrawer(false);
           }}>
