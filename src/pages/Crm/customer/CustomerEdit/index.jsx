@@ -27,7 +27,6 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
     margin-right: 16px;
   }
-
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
@@ -38,7 +37,6 @@ const PhoneRowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
     margin-right: 16px;
   }
-
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
@@ -89,9 +87,11 @@ const CustomerEdit = ({...props}, ref) => {
     <div style={{height: height()}}>
       <Form
         {...props}
+        labelAlign='left'
         ref={formRef}
         NoButton={false}
         api={ApiConfig}
+        labelCol={null}
         wrapperCol={24}
         fieldKey="customerId"
         res={(res) => {

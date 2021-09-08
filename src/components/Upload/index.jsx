@@ -71,6 +71,7 @@ const UpLoadImg = (props) => {
       className="avatar-uploader"
       showUploadList={false}
       data={oss}
+      maxCount={3}
       action={oss.host}
       beforeUpload={(file) => {
         return beforUpLoad(file.type.split('/')[1]);

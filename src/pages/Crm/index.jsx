@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Drawer, Menu,Modal} from 'antd';
+import {Drawer, Menu, Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import Icon from '@/components/Icon';
 import OriginList from '@/pages/Crm/origin/OriginList';
@@ -8,12 +8,12 @@ import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCusto
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 import CrmBusinessSalesList from '@/pages/Crm/business/crmBusinessSales/crmBusinessSalesList';
 
-import styles from './index.module.scss';
 import CompanyRoleList from '@/pages/Crm/companyRole/companyRoleList';
+import styles from './index.module.scss';
+
 
 const CrmLayout = ({children}) => {
 
-  const ref = useRef(null);
 
   const [drawerIsShow, showDrawer] = useState(false);
   const [visible, showModel] = useState(false);
@@ -47,19 +47,27 @@ const CrmLayout = ({children}) => {
           selectable={false}
           mode="horizontal"
           theme={theme}
-        ><Menu.Item style={{width, textAlign: 'center'}} key="setting" onClick={() => {
-          showDrawer(true);
-        }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
+        >
+          <Menu.Item
+            style={{width, textAlign: 'center'}}
+            key="setting"
+            onClick={() => {
+              showDrawer(true);
+            }}
+          >
+            <Icon type="icon-xitongpeizhi" />
+          </Menu.Item>
           <Menu.Item style={{width, textAlign: 'center'}} key="setting1" onClick={() => {
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
         </Menu>
         <Drawer
           title={<span>设置</span>}
-          style={{height: '100vh',top:62}}
+          style={{height: '100vh', top: 62}}
           visible={drawerIsShow}
           getContainer={false}
           bodyStyle={{padding: 0}}
+
           placement={mode === 'vertical' ? 'left' : 'right'}
           onClose={() => {
             showDrawer(false);

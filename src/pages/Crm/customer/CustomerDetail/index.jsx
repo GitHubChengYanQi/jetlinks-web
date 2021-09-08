@@ -17,6 +17,7 @@ import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 import OrderList from '@/pages/Erp/order/OrderList';
 import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
 import styles from './index.module.scss';
+import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 
 const {TabPane} = Tabs;
 
@@ -123,7 +124,7 @@ const CustomerDetail = () => {
                   Content of Tab Pane 3
                 </TabPane>
                 <TabPane tab="附件" key="7">
-                  Content of Tab Pane 3
+                  <Upload customerId={data && data.customerId} />
                 </TabPane>
               </Tabs>
             </Card>
