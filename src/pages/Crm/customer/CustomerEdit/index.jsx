@@ -12,13 +12,12 @@ import {
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
-import Form from '@/pages/Crm/customer/CustomerEdit/components/From';
 import ProCard from '@ant-design/pro-card';
 import {useHistory} from 'ice';
 import {MegaLayout} from '@formily/antd-components';
 import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
-import FormIndex from '@/components/Form/FormIndex';
+import Form from '@/components/Form';
 
 const {FormItem} = Form;
 

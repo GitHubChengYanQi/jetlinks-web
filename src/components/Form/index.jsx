@@ -24,6 +24,7 @@ const FormWrapper = (
     effect,
     labelAlign,
     formatResult,
+    NoButton = true,
     onSubmit = (values) => {
       return values;
     },
@@ -51,19 +52,12 @@ const FormWrapper = (
   }
 
 
-
   if (value) {
     key[fieldKey] = value;
   }
 
 
-
-
-
   const [findData, setFindData] = useState(undefined);
-
-
-
 
 
   // 获取数据
@@ -112,7 +106,7 @@ const FormWrapper = (
       if (!fieldKey) {
         throw new Error('Table component: fieldKey cannot be empty,But now it doesn\'t exist!');
       }
-      find({params: key,data:key});
+      find({params: key, data: key});
     } else if (value === false) {
       setFindData({});
     }
@@ -124,19 +118,19 @@ const FormWrapper = (
   // || value===null || typeof value==='undefined'
   if (findLoad) {
     return (
-      <SkeletonForm/>
+      <SkeletonForm />
     );
   }
 
   return findData && <FormilyForm
-    style={{margin:'auto'}}
+    style={{margin: 'auto'}}
     actions={formActions}
     labelAlign={labelAlign}
     className={style.formWarp}
     labelCol={labelCol || 6}
     wrapperCol={wrapperCol || 15}
-    effects={ () => {
-      effect ? effect() :  null;
+    effects={() => {
+      effect ? effect() : null;
     }
     }
     onSubmit={async (values) => {
@@ -158,10 +152,10 @@ const FormWrapper = (
   >
     {children}
 
-    <FormButtonGroup offset={10}>
+    {NoButton && <FormButtonGroup offset={10}>
       <Submit showLoading>保存</Submit>
       <Reset>重置</Reset>
-    </FormButtonGroup>
+    </FormButtonGroup>}
   </FormilyForm>;
 };
 

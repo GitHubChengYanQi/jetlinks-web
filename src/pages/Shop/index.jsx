@@ -47,7 +47,7 @@ const ShopLayout = ({children}) => {
         </Menu>
         <Drawer
           title={<span>设置</span>}
-          style={{height: 'calc(100% - 112px)', top: 112}}
+          style={{height: '100vh', top: 62}}
           visible={drawerIsShow}
           getContainer={false}
           bodyStyle={{padding: 0}}
