@@ -8,6 +8,8 @@
 import React from 'react';
 import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
 import DatePicker from '@/components/DatePicker';
+import Select from '@/components/Select';
+import * as apiUrl from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -70,4 +72,11 @@ export const CompetitorsQuoteId = (props) => {
 export const UserId = (props) => {
   props.onChange(props.val.person);
   return (<Input {...props} value={props.val.user.name} disabled />);
+};
+
+export const CompetitorId = (props) =>{
+  return (<Select  api={apiUrl.competitorListSelect}  {...props}/>);
+};
+export const CompetitorsQuote = (props) =>{
+  return (<InputNumber  {...props}/>);
 };

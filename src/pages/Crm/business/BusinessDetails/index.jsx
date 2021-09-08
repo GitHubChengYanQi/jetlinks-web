@@ -75,7 +75,7 @@ const CustomerDetail = () => {
             ref.current.open(data.businessId);
           }}>编辑</Button>
 
-          <Modal width={1000} component={CrmBusinessTrackEdit} onSuccess={() => {
+          <Modal width={1200} title='跟踪' component={CrmBusinessTrackEdit} onSuccess={() => {
             refTrack.current.close();
             refresh();
           }} ref={refTrack} val={data} />

@@ -23,6 +23,7 @@ const FormWrapper = (
     value,
     effect,
     labelAlign,
+    NoButton = true,
     formatResult,
     NoButton = true,
     onSubmit = (values) => {
