@@ -52,11 +52,13 @@ const AdressList = (props) => {
         title={<Breadcrumb />}
         api={adressList}
         rowKey="adressId"
+        isModal={false}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="地址" dataIndex="location"/>
+        <Column title="省市区地址" dataIndex="region"/>
+        <Column title="详细地址" dataIndex="location"/>
         <Column title="经度" dataIndex="longitude"/>
         <Column title="纬度" dataIndex="latitude"/>
         <Column title="客户" dataIndex="clientId"/>

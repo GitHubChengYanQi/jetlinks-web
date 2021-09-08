@@ -44,3 +44,8 @@ export const clientIdSelect = {
   url: '/client/listSelect',
   method: 'POST'
 };
+
+export const commonArea = {
+  url: '/commonArea/treeView',
+  method: 'POST',
+};

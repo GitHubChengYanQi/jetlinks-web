@@ -12,7 +12,7 @@ import {dispatchingDelete, dispatchingList} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import Modal from '@/components/Modal';
 import DispatchingTable from '@/pages/Portal/dispatching/dispatchingList/components/DispatchingTable';
-import Table from '@/pages/Portal/repair/components/Table';
+import Table from '@/pages/Repair/repair/components/Table';
 
 
 const {Column} = AntTable;
@@ -45,6 +45,7 @@ const DispatchingList = (props) => {
         rowKey="dispatchingId"
         showSearchButton={false}
         searchForm={searchForm}
+        isModal={false}
         ref={tableRef}
         foo
         footer={false}

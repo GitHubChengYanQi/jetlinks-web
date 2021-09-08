@@ -11,7 +11,7 @@ import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {UserIdSelect} from '@/pages/Portal/dispatching/dispatchingUrl';
 import Cascader from '@/components/Cascader';
-import {commonArea} from '@/pages/Portal/repair/repairUrl';
+import {commonArea} from '@/pages/Repair/repair/repairUrl';
 
 export const Name = (props) =>{
   return (<Select width='100%' api={UserIdSelect} placeholder='请输入工程师姓名' {...props}/>);

@@ -53,6 +53,7 @@ const DeliveryList = () => {
         title={<Breadcrumb />}
         api={deliveryList}
         rowKey="deliveryId"
+        isModal={false}
         searchForm={searchForm}
         ref={tableRef}
       >

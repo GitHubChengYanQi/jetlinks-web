@@ -10,8 +10,8 @@ import {Button, Card, Descriptions, Input} from 'antd';
 import Form from '@/components/Form';
 import {dispatchingDetail, dispatchingAdd, dispatchingEdit} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
-import DescAddress from '@/pages/Portal/repair/RepairDetails/components/DescAddress';
-import RepairList from '@/pages/Portal/repair/repairList';
+import DescAddress from '@/pages/Repair/repair/RepairDetails/components/DescAddress';
+import RepairList from '@/pages/Repair/repair/repairList';
 import {MegaLayout} from '@formily/antd-components';
 import FormIndex from '@/components/Form/FormIndex';
 

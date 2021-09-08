@@ -7,13 +7,13 @@ import {useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.scss';
 import Modal2 from '@/components/Modal';
-import {repairDetail} from '@/pages/Portal/repair/repairUrl';
-import Desc from '@/pages/Portal/repair/RepairDetails/components/Desc';
-import DescAddress from '@/pages/Portal/repair/RepairDetails/components/DescAddress';
-import StepList from '@/pages/Portal/repair/RepairDetails/components/StepList';
+import {repairDetail} from '@/pages/Repair/repair/repairUrl';
+import Desc from '@/pages/Repair/repair/RepairDetails/components/Desc';
+import DescAddress from '@/pages/Repair/repair/RepairDetails/components/DescAddress';
+import StepList from '@/pages/Repair/repair/RepairDetails/components/StepList';
 import DispatchingList from '@/pages/Portal/dispatching/dispatchingList';
-import RepairEdit from '@/pages/Portal/repair/repairEdit';
-import Dynamic from '@/pages/Portal/repair/RepairDetails/components/Dynamic';
+import RepairEdit from '@/pages/Repair/repair/repairEdit';
+import Dynamic from '@/pages/Repair/repair/RepairDetails/components/Dynamic';
 
 const {TabPane} = Tabs;
 

@@ -8,9 +8,9 @@ const Description = (props) => {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="客户名称">{data.customerLevelId ? data.customerName : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="客户名称">{data.customerName ? data.customerName : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户编号">{data.customerId ? data.customerId : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="客户级别">{data.crmCustomerLevelResult.level ? data.crmCustomerLevelResult.level : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="客户级别">{data.crmCustomerLevelResult && data.crmCustomerLevelResult.level ? data.crmCustomerLevelResult.level : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="法定代表人">{data.legal ? data.legal : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="负责人">{data.userResult.name ? data.userResult.name : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户状态">{data.status ? data.status : '未填写'}</Descriptions.Item>

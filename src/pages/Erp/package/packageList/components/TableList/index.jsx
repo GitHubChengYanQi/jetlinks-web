@@ -39,6 +39,7 @@ const TableList = (props) => {
         <Table
           api={erpPackageTableList}
           rowKey="id"
+          isModal={false}
           ref={tableRef}
           listHeader={false}
           searchForm={searchForm}

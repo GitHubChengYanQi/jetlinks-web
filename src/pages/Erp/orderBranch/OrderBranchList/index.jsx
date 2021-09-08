@@ -70,6 +70,7 @@ const OrderBranchList = () => {
         }
         api={orderBranchList}
         rowKey="id"
+        isModal={false}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

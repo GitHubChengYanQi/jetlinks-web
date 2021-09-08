@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Drawer, Menu, Modal} from 'antd';
+import {Drawer, Menu,Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import Icon from '@/components/Icon';
 import OriginList from '@/pages/Crm/origin/OriginList';
@@ -17,6 +17,7 @@ const CrmLayout = ({children}) => {
 
   const [type, setType] = useState(null);
   const [visible, showModel] = useState(false);
+
 
   const RenderComponent = () => {
     switch (type) {

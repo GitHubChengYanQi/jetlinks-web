@@ -26,6 +26,7 @@ const TableWarp = ({
   listHeader = true,
   labelAlign,
   footer: parentFooter,
+  isModal = true,
   ...props
 }, ref) => {
 
@@ -65,11 +66,13 @@ const TableWarp = ({
       field: sorter.field,
       order: sorter.order
     };
-    setState({
-      params:JSON.stringify({
-        ...page,...values
-      })
-    });
+    if(!isModal){
+      setState({
+        params:JSON.stringify({
+          ...page,...values
+        })
+      });
+    }
     let response;
     try {
       response = await ajaxService({

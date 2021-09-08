@@ -67,6 +67,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
       <Table
         api={erpPackageTableList}
         rowKey="id"
+        isModal={false}
         searchForm={searchForm}
         ref={tableRef1}
         showSearchButton={false}
@@ -106,10 +107,8 @@ const ErpPackageTableList = ({onChange,...props}) => {
       }} ref={ref}/>
       <Modal2 width={1900} title="选择" component={ItemsList}
         onSuccess={()=>{
-          console.log(tableRef1);
           tableRef1.current.refresh();
           refAddOne.current.close();
-          tableRef.current.refresh();
         }}
         ref={refAddOne}
         packageId={props.value}

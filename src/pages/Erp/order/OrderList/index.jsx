@@ -91,6 +91,7 @@ const OrderList = (props) => {
         title={<Breadcrumb />}
         api={orderList}
         rowKey="order_id"
+        isModal={false}
         SearchButton={Search()}
         layout={search}
         searchForm={searchForm}

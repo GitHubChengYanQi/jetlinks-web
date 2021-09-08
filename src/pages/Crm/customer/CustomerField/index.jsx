@@ -12,7 +12,8 @@ import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import TreeSelect from '@/components/TreeSelect';
 import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
-import {CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {commonArea, CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import Cascader from '@/components/Cascader';
 
 const {Option} = Select;
 
@@ -44,6 +45,9 @@ export const value = (props) => {
 
 export const Name = (props) => {
   return (<Input {...props} />);
+};
+export const Region = (props) => {
+  return (<Cascader api={apiUrl.commonArea} {...props} />);
 };
 export const CompanyRoleId = (props) => {
   return (<Select api={apiUrl.CompanyRoleIdSelect} {...props} />);

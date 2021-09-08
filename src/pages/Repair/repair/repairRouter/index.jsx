@@ -17,7 +17,7 @@ export const RepairRouter = [
   }, {
     path: '/repair/:cid',
     name: '报修详情',
-    component: lazy(() => import('../RepairDetails/index')),
+    component: lazy(() => import('../RepairDetails')),
     fallback: <div>loading...</div>,
     exact: true,
   }

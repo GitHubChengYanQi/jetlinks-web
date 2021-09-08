@@ -43,4 +43,9 @@ export const BusinessId = {
   url: '/crmBusiness/listSelect',
   method: 'POST',
 };
+export const businessCompetition = {
+  url: '/businessCompetition/listCompetition',
+  method: 'POST',
+};
+
 

@@ -6,9 +6,9 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Modal, notification, Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import OutstockEdit from '@/pages/Erp/outstock/OutstockEdit';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import {outstockDelete, outstockEdit, outstockList} from '../OutstockUrl';
@@ -42,7 +42,7 @@ const OutstockList = (props) => {
         <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
           refDelivery.current.open(false);
         }} type="text" >批量发货</Button>
-        <Modal2 title="产品出库" component={DeliveryDetailsEdit} onSuccess={() => {
+        <Modal title="产品出库" component={DeliveryDetailsEdit} onSuccess={() => {
           tableRef.current.refresh();
           refDelivery.current.close();
         }} ref={refDelivery} ids={ids} />
@@ -70,6 +70,7 @@ const OutstockList = (props) => {
       </Button>}
       <Table
         api={outstockList}
+        isModal={false}
         rowKey="outstockId"
         ref={tableRef}
         showSearchButton={false}
@@ -109,7 +110,7 @@ const OutstockList = (props) => {
           );
         }} width={100} />}
       </Table>
-      <Modal2 title="产品出库" component={OutstockEdit} onSuccess={() => {
+      <Modal title="产品出库" component={OutstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} outstockOrderId={outstockOrderId} sourhouse={sourhouse} />

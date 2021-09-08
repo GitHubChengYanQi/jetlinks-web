@@ -92,6 +92,7 @@ const DeliveryDetailsList = () => {
         title={<Breadcrumb />}
         api={deliveryDetailsList}
         rowKey="deliveryDetailsId"
+        isModal={false}
         searchForm={searchForm}
         // actions={actions()}
         ref={tableRef}

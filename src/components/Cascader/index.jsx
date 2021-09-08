@@ -22,7 +22,7 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value, api, onChange = () => {
+    value,width, api, onChange = () => {
     }, ...other
   } = props;
   if (!api) {
@@ -59,7 +59,7 @@ const Cascader = (props) => {
     onChange(result);
   };
 
-  return (<AntCascader changeOnSelect options={data} defaultValue={valueArray} onChange={change}  {...other} />);
+  return (<AntCascader style={{width}} changeOnSelect options={data} defaultValue={valueArray} onChange={change}  {...other} />);
 
 
 };

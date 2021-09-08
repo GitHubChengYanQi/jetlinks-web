@@ -30,7 +30,7 @@ const OriginEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="originId"
     >
-      <FormItem label="来源名称" name="name" component={SysField.Name} required/>
+      <FormItem label="来源名称" name="originName" component={SysField.Name} required/>
     </Form>
   );
 };

@@ -12,13 +12,12 @@ import {
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
-import Form from '@/pages/Crm/customer/CustomerEdit/components/From';
 import ProCard from '@ant-design/pro-card';
 import {useHistory} from 'ice';
 import {MegaLayout} from '@formily/antd-components';
 import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
-import FormIndex from '@/components/Form/FormIndex';
+import Form from '@/components/Form';
 
 const {FormItem} = Form;
 
@@ -95,7 +94,7 @@ const CustomerEdit = ({...props}, ref) => {
         api={ApiConfig}
         wrapperCol={24}
         fieldKey="customerId"
-        res={(res)=>{
+        res={(res) => {
           position && typeof position === 'function' && position(res);
         }}
       >
@@ -268,31 +267,41 @@ const CustomerEdit = ({...props}, ref) => {
                       {state.value.map((item, index) => {
                         const onRemove = index => mutators.remove(index);
                         return (
-                          <AdressRowStyleLayout key={index}>
-                            <FormItem
-                              label="  详细地址"
-                              name={`adressParams.${index}.location`}
-                              component={SysField.Location}
-                              required
-                            />
-                            <FormItem
-                              label="经度"
-                              name={`adressParams.${index}.longitude`}
-                              component={SysField.Longitude}
-                              required
-                            />
-                            <FormItem
-                              label="纬度"
-                              name={`adressParams.${index}.latitude`}
-                              component={SysField.Latitude}
-                              required
-                            />
-                            <Button
-                              type="link" style={{float: 'right'}}
-                              onClick={() => {
-                                onRemove(index);
-                              }}>删除地址</Button>
-                          </AdressRowStyleLayout>
+                          <>
+                            <div style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
+                              <FormItem
+                                label="省市区地址"
+                                name={`adressParams.${index}.region`}
+                                component={SysField.Region}
+                                required
+                              />
+                              <AdressRowStyleLayout key={index}>
+                                <FormItem
+                                  label="&nbsp;&nbsp;&nbsp;详细地址"
+                                  name={`adressParams.${index}.location`}
+                                  component={SysField.Location}
+                                  required
+                                />
+                                <FormItem
+                                  label="经度"
+                                  name={`adressParams.${index}.longitude`}
+                                  component={SysField.Longitude}
+                                  required
+                                />
+                                <FormItem
+                                  label="纬度"
+                                  name={`adressParams.${index}.latitude`}
+                                  component={SysField.Latitude}
+                                  required
+                                />
+                                <Button
+                                  type="link" style={{float: 'right'}}
+                                  onClick={() => {
+                                    onRemove(index);
+                                  }}>删除地址</Button>
+                              </AdressRowStyleLayout>
+                            </div>
+                          </>
                         );
                       })}
                       <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加客户地址</Button>

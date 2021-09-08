@@ -137,6 +137,7 @@ const CustomerTable = (props) => {
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
+        isModal={false}
         ref={tableRef}
         footer={footer}
         layout={search}
@@ -205,7 +206,7 @@ const CustomerTable = (props) => {
           );
         }} />
       </Table>
-      <CreateNewCustomer onSuccess={()=>{
+      <CreateNewCustomer model={CustomerEdit}  widths={1600}  onSuccess={()=>{
         tableRef.current.refresh();
         ref.current.close();
       }} refModal={ref} />

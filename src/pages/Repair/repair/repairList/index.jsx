@@ -65,6 +65,7 @@ const RepairList = () => {
       <Table
         title={<Breadcrumb />}
         api={repairList}
+        isModal={false}
         rowKey="repairId"
         searchForm={searchForm}
         actions={actions()}

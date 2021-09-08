@@ -50,6 +50,7 @@ const OrderDetailsList = (props) => {
         title={<Breadcrumb title='订单明细'/>}
         api={orderDetailsList}
         rowKey="id"
+        isModal={false}
         searchForm={searchForm}
         // actions={actions()}
         ref={tableRef}

@@ -120,6 +120,7 @@ const InstockList = () => {
         title={<Breadcrumb />}
         api={instockList}
         rowKey="instockId"
+        isModal={false}
         SearchButton={Search()}
         layout={search}
         searchForm={searchForm}

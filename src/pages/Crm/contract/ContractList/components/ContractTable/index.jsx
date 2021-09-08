@@ -158,6 +158,7 @@ const ContractTable = (props) => {
         api={contractList}
         actions={actions()}
         rowKey="contractId"
+        isModal={false}
         searchForm={searchForm}
         ref={tableRef}
         footer={footer}

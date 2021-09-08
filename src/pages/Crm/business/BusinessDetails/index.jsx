@@ -4,7 +4,6 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import {useParams} from 'ice';
-import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
 import styles from './index.module.scss';
@@ -14,11 +13,11 @@ import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
-import AvatarList from '@/pages/Crm/business/BusinessDetails/compontents/Avatar';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
+import ButtonGroup from 'antd/es/button/button-group';
 
 const {TabPane} = Tabs;
 
@@ -27,6 +26,10 @@ const CustomerDetail = () => {
 
   const ref = useRef(null);
   const refTrack = useRef(null);
+
+  const refA = useRef();
+
+
 
 
 
@@ -75,11 +78,19 @@ const CustomerDetail = () => {
             ref.current.open(data.businessId);
           }}>编辑</Button>
 
-          <Modal width={1000} component={CrmBusinessTrackEdit} onSuccess={() => {
+          <Modal width={1400} title='跟踪' compoentRef={refA} component={CrmBusinessTrackEdit} onSuccess={() => {
             refTrack.current.close();
             refresh();
-          }} ref={refTrack} val={data} />
-
+          }} ref={refTrack} val={data} footer={
+            <ButtonGroup>
+              <Button onClick={()=>{
+                refA.current.formRef.current.submit();
+              }}>保存</Button>
+              <Button onClick={()=>{
+                refTrack.current.close();
+              }}>返回</Button>
+            </ButtonGroup>
+          } />
           <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
             refresh();
@@ -113,7 +124,7 @@ const CustomerDetail = () => {
                   <Description data={data} />
                 </TabPane>
                 <TabPane tab="竞争对手" key="2">
-                  <CompetitorList data={data} />
+                  <CompetitorList businessId={data.businessId} />
                 </TabPane>
               </Tabs>
             </Card>
