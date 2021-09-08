@@ -8,8 +8,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
+import {useRequest} from '@/util/Request';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -24,6 +24,8 @@ import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import {useHistory} from 'ice';
+import competitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,10 +35,15 @@ const CompetitorTable = (props) => {
   const {competitionLevel,businessId} = props;
 
   const history = useHistory();
+  const {run: getList} = useRequest({
+    url: '/businessCompetition/listCompetition',
+    method: 'POST'
+  });
 
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const quoteRef = useRef(null);
   const actions = () => {
     return (
       <>
@@ -48,6 +55,7 @@ const CompetitorTable = (props) => {
   };
 
   useEffect(() => {
+
     if (competitionLevel) {
       tableRef.current.formActions.setFieldValue('competitionLevel', competitionLevel[0]);
       tableRef.current.submit();
@@ -159,6 +167,8 @@ const CompetitorTable = (props) => {
           return (
             <Button type='link' onClick={()=>{
               // 点击查看报价。。。
+              getList({data: {competitorId: record.competitorId}});
+              quoteRef.current.open(record.competitorId);
             }}>
               {`查看 ${record.name} 报价信息`}
             </Button>
@@ -181,6 +191,10 @@ const CompetitorTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal width={1200} title="报价" component={competitorTable} onSuccess={() => {
+        tableRef.current.refresh();
+        quoteRef.current.close();
+      }} ref={quoteRef} />
     </>
   );
 };
