@@ -27,7 +27,7 @@ export const QuoteStatus = (props) =>{
   return (<AntdSelect options={[{label:'无需审批',value:0},{label:'待询价',value:1},{label:'询价中',value:2}]} {...props}/>);
 };
 export const CampType = (props) =>{
-  return (<AntdSelect options={[{label:'我的报价',value:0},{label:'对手报价',value:1}]} {...props}/>);
+  return (<AntdSelect options={[{label:'我的报价',value:1},{label:'对手报价',value:0}]} {...props}/>);
 };
 export const BusinessId = (props) =>{
   return (<Select  api={apiUrl.BusinessNameListSelect}  {...props}/>);

@@ -65,7 +65,7 @@ const competitorTable = (props) => {
         ref={tableRef}
 
       >
-        <Column width={200} title="商机" dataIndex="relatedCustomers" render={(value, record) => {
+        <Column width={200} title="商机" dataIndex="businessId" render={(value, record) => {
           return (
             <div>
               {
@@ -74,8 +74,9 @@ const competitorTable = (props) => {
             </div>
           );
         }} />
-        <Column width={200} colSpan={status ? parseInt(status[0]) : 1} title="竞争对手" dataIndex="competitorId" render={(value, record) => {
+        <Column width={200}  title="竞争对手" dataIndex="competitorId" render={(value, record) => {
           return (
+
             <div>
               {
                 record.competitorResult ? record.competitorResult.name : '-'
@@ -84,19 +85,18 @@ const competitorTable = (props) => {
           );
         }}/>
         <Column width={100} title="报价金额" dataIndex="competitorsQuote"/>
-        <Column width={100} colSpan={status ? parseInt(status[0]) : 1} title="报价状态" dataIndex="quoteStatus" render={(value, record) => {
+        <Column width={100} title="报价状态" dataIndex="quoteStatus" render={(value, record) => {
           return (
             <div>
               {
-
-                record.campType === 0 && "无需审批"  ||
-                record.campType === 1 && "待询价" ||
-                record.campType === 2 && "询价中"
+                record.quoteStatus === '' && "-" ||
+                record.quoteStatus === 0 && "无需审批"  ||
+                record.quoteStatus === 1 && "待询价" ||
+                record.quoteStatus === 2 && "询价中"
               }
             </div>
           );
         }}/>
-        {/*<Column width={100} title="报价分类" dataIndex="quoteType"/>*/}
         <Column width={200} title="报价日期" dataIndex="createTime"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
