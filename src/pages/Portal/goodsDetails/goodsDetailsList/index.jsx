@@ -51,6 +51,7 @@ const GoodsDetailsList = (props) => {
         api={goodsDetailsList}
         rowKey="goodDetailsId"
         searchForm={searchForm}
+        isModal={false}
         actions={false}
         SearchButton
         ref={tableRef}

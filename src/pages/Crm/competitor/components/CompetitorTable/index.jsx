@@ -30,7 +30,7 @@ const {FormItem} = Form;
 
 const CompetitorTable = (props) => {
 
-  const {competitionLevel} = props;
+  const {competitionLevel,businessId} = props;
 
   const history = useHistory();
 
@@ -106,6 +106,7 @@ const CompetitorTable = (props) => {
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="competitionLevel" component={SysField.CompetitionLevel} />
+              <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -120,6 +121,7 @@ const CompetitorTable = (props) => {
       <Table
         title={<Breadcrumb />}
         api={competitorList}
+        isModal={false}
         rowKey="competitorId"
         searchForm={searchForm}
         SearchButton={Search()}

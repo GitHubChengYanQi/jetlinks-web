@@ -121,6 +121,7 @@ const ContactsTable = (props) => {
         rowKey="contactsId"
         searchForm={searchForm}
         SearchButton={Search()}
+        isModal={false}
         layout={search}
         footer={footer}
         actions={actions()}

@@ -52,6 +52,7 @@ const PhoneList = (props) => {
         api={phoneList}
         rowKey="phoneId"
         searchForm={searchForm}
+        isModal={false}
         actions={actions()}
         ref={tableRef}
       >

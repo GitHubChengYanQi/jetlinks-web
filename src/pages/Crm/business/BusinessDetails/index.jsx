@@ -113,7 +113,7 @@ const CustomerDetail = () => {
                   <Description data={data} />
                 </TabPane>
                 <TabPane tab="竞争对手" key="2">
-                  <CompetitorList data={data} />
+                  <CompetitorList businessId={data.businessId} />
                 </TabPane>
               </Tabs>
             </Card>

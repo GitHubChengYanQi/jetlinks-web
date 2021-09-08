@@ -84,6 +84,7 @@ const StockDetailsList = (props) => {
       <Table
         title={<Breadcrumb />}
         api={stockDetailsList}
+        isModal={false}
         rowKey="stockItemId"
         searchForm={searchForm}
         footer={value ? footer : false}

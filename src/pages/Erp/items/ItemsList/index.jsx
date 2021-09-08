@@ -150,6 +150,7 @@ const ItemsList = (props) => {
       <Table
         title={<Breadcrumb />}
         api={itemsList}
+        isModal={false}
         rowKey="itemId"
         searchForm={searchForm}
         actions={actions()}

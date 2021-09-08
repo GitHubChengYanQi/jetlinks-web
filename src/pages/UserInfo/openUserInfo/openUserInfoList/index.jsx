@@ -55,6 +55,7 @@ const OpenUserInfoList = () => {
       <Table
         title={<Breadcrumb />}
         api={openUserInfoList}
+        isModal={false}
         rowKey="primaryKey"
         searchForm={searchForm}
         actions={actions()}

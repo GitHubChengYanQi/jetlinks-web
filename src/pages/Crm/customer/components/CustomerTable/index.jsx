@@ -137,6 +137,7 @@ const CustomerTable = (props) => {
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
+        isModal={false}
         ref={tableRef}
         footer={footer}
         layout={search}

@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {bannerDifferenceDelete, bannerDifferenceList} from '../bannerDifferenceUrl';
 import BannerDifferenceEdit from '../bannerDifferenceEdit';
 import * as SysField from '../bannerDifferenceField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -28,48 +29,48 @@ const BannerDifferenceList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="轮播图分类名称" name="difference" component={SysField.Difference}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="轮播图分类名称" name="difference" component={SysField.Difference} />
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title='轮播图分类管理' />}
         api={bannerDifferenceList}
         rowKey="classificationId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="轮播图分类名称" dataIndex="difference"/>
-        <Column/>
+        <Column title="轮播图分类名称" dataIndex="difference" />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.classificationId);
-              }}/>
+              }} />
               {/*<DelButton api={bannerDifferenceDelete} value={record.classificationId} onSuccess={()=>{*/}
               {/*  tableRef.current.refresh();*/}
               {/*}}/>*/}
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={BannerDifferenceEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

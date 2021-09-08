@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {navigationDifferenceDelete, navigationDifferenceList} from '../navigationDifferenceUrl';
 import NavigationDifferenceEdit from '../navigationDifferenceEdit';
 import * as SysField from '../navigationDifferenceField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -36,7 +37,7 @@ const NavigationDifferenceList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="分类id" name="difference" component={SysField.Difference}/>
+       <FormItem label="分类" name="difference" component={SysField.Difference}/>
      </>
     );
   };
@@ -44,7 +45,7 @@ const NavigationDifferenceList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title='导航分类管理' />}
         api={navigationDifferenceList}
         rowKey="classificationId"
         searchForm={searchForm}

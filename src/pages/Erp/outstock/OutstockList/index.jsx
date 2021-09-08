@@ -70,6 +70,7 @@ const OutstockList = (props) => {
       </Button>}
       <Table
         api={outstockList}
+        isModal={false}
         rowKey="outstockId"
         ref={tableRef}
         showSearchButton={false}

@@ -45,6 +45,7 @@ const DispatchingList = (props) => {
         rowKey="dispatchingId"
         showSearchButton={false}
         searchForm={searchForm}
+        isModal={false}
         ref={tableRef}
         foo
         footer={false}

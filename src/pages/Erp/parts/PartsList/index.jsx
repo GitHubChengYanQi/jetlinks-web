@@ -68,6 +68,7 @@ const PartsList = (props) => {
       <Table
         title={<Breadcrumb title='清单管理'/>}
         api={partsList}
+        isModal={false}
         rowKey="partsId"
         searchForm={searchForm}
         SearchButton

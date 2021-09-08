@@ -53,6 +53,7 @@ const GoodsList = () => {
         api={goodsList}
         rowKey="goodId"
         searchForm={searchForm}
+        isModal={false}
         actions={actions()}
         ref={tableRef}
       >

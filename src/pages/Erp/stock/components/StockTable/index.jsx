@@ -97,6 +97,7 @@ const StockTable = (props) => {
       <Table
         title={<Breadcrumb />}
         api={stockList}
+        isModal={false}
         SearchButton={Search()}
         layout={search}
         rowKey="stockId"

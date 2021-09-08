@@ -70,6 +70,7 @@ const NavigationTable = (props) => {
       <Table
         title={<Breadcrumb />}
         api={navigationList}
+        isModal={false}
         rowKey="navigationId"
         searchForm={searchForm}
         actions={actions()}

@@ -76,6 +76,7 @@ const BannerTable = (props) => {
         api={bannerList}
         rowKey="bannerId"
         searchForm={searchForm}
+        isModal={false}
         actions={actions()}
         ref={tableRef}
         footer={footer}

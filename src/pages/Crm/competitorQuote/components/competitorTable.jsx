@@ -59,6 +59,7 @@ const competitorTable = (props) => {
         title={<Breadcrumb />}
         api={competitorQuoteList}
         rowKey="quoteId"
+        isModal={false}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

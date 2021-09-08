@@ -139,6 +139,7 @@ const BusinessTable = (props) => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
+        isModal={false}
         SearchButton={Search()}
         layout={search}
         onChange={(keys) => {

@@ -23,7 +23,7 @@ const CrmLayout = ({children}) => {
   const RenderComponent = () => {
     switch (type) {
       case 'sjly':
-        return OriginList;
+        return <OriginList />;
       case 'sslc':
         return <CrmBusinessSalesList />;
       case 'htmb':

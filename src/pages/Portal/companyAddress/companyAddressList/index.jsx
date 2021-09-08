@@ -47,6 +47,7 @@ const CompanyAddressList = () => {
         api={companyAddressList}
         rowKey="companyId"
         searchForm={searchForm}
+        isModal={false}
         actions={actions()}
         ref={tableRef}
       >

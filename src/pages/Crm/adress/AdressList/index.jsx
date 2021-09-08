@@ -52,6 +52,7 @@ const AdressList = (props) => {
         title={<Breadcrumb />}
         api={adressList}
         rowKey="adressId"
+        isModal={false}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
