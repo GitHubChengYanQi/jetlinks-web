@@ -36,7 +36,7 @@ export const CompetitorId = (props) =>{
       <CreateNewCustomer onSuccess={() => {
         ref.current.close();
         getData();
-      }} refModal={ref} model={CompetitorEdit} widths={1300} position={(res)=>{
+      }} refModal={ref} title='竞争对手' model={CompetitorEdit} widths={1300} position={(res)=>{
         props.onChange(res && res.data && res.data.competitorId);
       }}/>
     </>

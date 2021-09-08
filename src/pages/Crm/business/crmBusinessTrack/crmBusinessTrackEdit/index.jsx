@@ -10,17 +10,18 @@ import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import {Button} from 'antd';
+import {Switch} from '@alifd/next';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
-import {crmBusinessTrackDetail, crmBusinessTrackAdd, crmBusinessTrackEdit} from '../crmBusinessTrackUrl';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import {trackMessageAdd, trackMessageDetail, trackMessageEdit} from '@/pages/Crm/trackMessage/trackMessageUrl';
+
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: crmBusinessTrackDetail,
-  add: crmBusinessTrackAdd,
-  save: crmBusinessTrackEdit
+  view: trackMessageDetail,
+  add: trackMessageAdd,
+  save: trackMessageEdit
 };
 
 
@@ -31,7 +32,6 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
   .ant-form-item {
     display: inline-flex;
-
     width: 70%;
   }
 `;
@@ -47,7 +47,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
   }));
 
   const [hidden,setHidden] = useState(false);
-
+  const [txHidden,setTxHidden] = useState(false);
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
@@ -63,28 +63,48 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
           {...props}
           ref={formRef}
           api={ApiConfig}
-          fieldKey="trackId"
+          fieldKey="trackMessageId"
         >
           <div style={{float: 'left', paddingRight: 10, height: height(), width: '45%', overflow: 'auto'}}>
             <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
               <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
               <FormItem label="跟踪类型" name="type" component={SysField.Type}  />
-              <FormItem label="跟踪提醒时间" name="time" component={SysField.Time}  />
-              <FormItem label="是否报价" name="offer" component={SysField.Offer} visi={(visi)=>{
-                setHidden(visi);
-              }} />
-              { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} val={val}  /> : null}
-              { hidden ? <FormItem label="报价状态" name="quoteStatus" component={SysField.QuoteStatus} val={val}  /> : null}
-              <FormItem label="备注" name="note" component={SysField.Note}/>
+              <Switch
+                size='small'
+                style={{marginLeft: '6%', marginBottom: 20, width: 100}}
+                checkedChildren="关闭提醒"
+                unCheckedChildren="开启提醒"
+                checked={txHidden}
+                onChange={()=>{
+                  setTxHidden(!txHidden);
+                }}
+              > </Switch>
+              { txHidden ? <FormItem label="跟踪提醒时间" name="time" component={SysField.Time}  /> : null}
+              { txHidden ? <FormItem label="提醒内容" name="message" component={SysField.Message}/> : null}
+              <Switch
+                size='small'
+                style={{marginLeft: '6%', marginBottom: 20, width: 100}}
+                checkedChildren="暂不报价"
+                unCheckedChildren="马上报价"
+                checked={hidden}
+                onChange={()=>{
+                  setHidden(!hidden);
+                }}
+              > </Switch>
+              { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} /> : null}
+              <FormItem label="经度" name="longitude" component={SysField.Longitude}  />
+              <FormItem label="纬度" name="latitude" component={SysField.Latitude}  />
+              <FormItem label="图片" name="image" component={SysField.Image}  />
+              <FormItem label="备注" name="node" component={SysField.Note}/>
             </ProCard>
           </div>
           <div style={{float: 'left', width: '55%', height: height(), overflow: 'auto'}}>
 
             <ProCard style={{marginTop: 8}} title="竞争对手报价" headerBordered>
               <FieldList
-                name="adressParams"
+                name="competitorQuoteParam"
                 initialValue={[
-                  {location: ''},
+                  {competitorId: '', competitorsQuote: ''},
                 ]}
               >
                 {({state, mutators}) => {

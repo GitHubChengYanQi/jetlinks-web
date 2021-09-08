@@ -8,12 +8,11 @@
 import React, {useRef} from 'react';
 import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
 import DatePicker from '@/components/DatePicker';
-import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
 import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
+import UpLoadImg from '@/components/Upload';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -22,25 +21,23 @@ export const Note = (props) => {
   return (<Input.TextArea cols={5} rows={7} {...props} />);
 };
 
+export const Message = (props) => {
+  return (<Input.TextArea cols={5} rows={7} {...props} />);
+};
+
 export const Time = (props) => {
   return (<DatePicker {...props} />);
 };
 
+export const Image = (props) => {
+  return (<UpLoadImg {...props} />);
+};
 
-export const Offer = (props) => {
-  const {visi} = props;
-  return (<AntdSelect
-    options={[
-      {label: '否', value: '0'},
-      {label: '是', value: '1'},
-    ]}
-    {...props} onChange={(value) => {
-    if (value === '1') {
-      visi(true);
-    } else {
-      visi(false);
-    }
-  }} />);
+export const Longitude = (props) =>{
+  return (<InputNumber   {...props}/>);
+};
+export const Latitude = (props) =>{
+  return (<InputNumber   {...props}/>);
 };
 
 export const Money = (props) => {
@@ -96,7 +93,7 @@ export const CompetitorId = (props) =>{
       <CreateNewCustomer onSuccess={() => {
         ref.current.close();
         getData();
-      }} refModal={ref} model={CompetitorEdit} widths={1300}  position={(res)=>{
+      }} refModal={ref} title='竞争对手' model={CompetitorEdit} widths={1000}  position={(res)=>{
         props.onChange(res && res.data && res.data.competitorId);
       }}/>
     </>
