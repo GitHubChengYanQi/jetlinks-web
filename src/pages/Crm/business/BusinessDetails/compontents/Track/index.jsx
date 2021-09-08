@@ -22,17 +22,12 @@ const Track = (props) => {
       content: (
         <>
           <p>
-            <p style={{color: '#91959e'}}>记录内容</p>
+            <p style={{color: '#91959e'}}>跟踪内容</p>
             <p style={{padding: 10}}>{value.note}</p>
           </p>
           {value.message ? <p>
-            <span style={{color: '#91959e'}}>{value.message}</span>
-          </p> : null}
-          <p>
-            {/*<span style={{color: '#91959e'}}>是否报价：{value.offer === 0 ? '是' : '否'}</span>*/}
-          </p>
-          {value.money ? <p>
-            {/*<span style={{color: '#91959e'}}>报价金额：{value.money}</span>*/}
+            <span style={{color: '#91959e'}}>提醒内容</span>
+            <p style={{padding: 10}}>{value.message}</p>
           </p> : null}
         </>
       ),
