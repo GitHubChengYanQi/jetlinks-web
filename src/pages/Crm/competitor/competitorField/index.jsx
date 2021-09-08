@@ -5,7 +5,7 @@
  * @Date 2021-09-07 09:50:09
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Input,InputNumber,TimePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import Cascader from '@/components/Cascader';
@@ -59,8 +59,10 @@ export const TakeCountermeasures = (props) =>{
 };
 export const BusinessId = (props) =>{
   const {businessId} = props;
-  if (businessId){
-    props.onChange(businessId);
-  }
-  return (<Select api={apiUrl.BusinessId} {...props}/>);
+  useEffect(()=>{
+    if (businessId){
+      props.onChange(businessId);
+    }
+  },[]);
+  return (<Select api={apiUrl.BusinessId} {...props} />);
 };
