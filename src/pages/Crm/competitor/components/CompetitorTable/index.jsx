@@ -13,9 +13,6 @@ import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {competitorDelete, competitorList} from '../../competitorUrl';
-import CompetitorEdit from '../../competitorEdit';
-import * as SysField from '../../competitorField';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
@@ -25,7 +22,9 @@ import Breadcrumb from '@/components/Breadcrumb';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import {useHistory} from 'ice';
 import competitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
-
+import {competitorDelete, competitorList} from '../../competitorUrl';
+import CompetitorEdit from '../../competitorEdit';
+import * as SysField from '../../competitorField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -191,10 +190,10 @@ const CompetitorTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={1200} title="报价" component={competitorTable} onSuccess={() => {
+      <Modal width={1200} component={competitorTable} onSuccess={() => {
         tableRef.current.refresh();
         quoteRef.current.close();
-      }} ref={quoteRef} />
+      }} ref={quoteRef} businessId={businessId || null} />
     </>
   );
 };

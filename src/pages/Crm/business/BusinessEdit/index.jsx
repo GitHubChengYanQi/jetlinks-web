@@ -84,7 +84,7 @@ const BusinessEdit = ({...props}) => {
                     component={SysField.SalesIdListSelect} required/>
                 </Col>
                 <Col span={12}>
-                  <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+                  <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
                 </Col>
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
@@ -106,9 +106,6 @@ const BusinessEdit = ({...props}) => {
                 </Col>
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
-                <Col span={12}>
-                  <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
-                </Col>
                 <Col span={12}>
                   <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
                 </Col>

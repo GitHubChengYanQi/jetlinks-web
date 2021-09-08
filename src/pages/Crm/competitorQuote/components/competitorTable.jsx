@@ -8,45 +8,42 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
-import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {competitorQuoteDelete, competitorQuoteList} from '../competitorQuoteUrl';
-import CompetitorQuoteEdit from '../competitorQuoteEdit';
-import * as SysField from '../competitorQuoteField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
+import {competitorQuoteList} from '../competitorQuoteUrl';
+import CompetitorQuoteEdit from '../competitorQuoteEdit';
+import * as SysField from '../competitorQuoteField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const competitorTable = (props) => {
+const CompetitorTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const {status, value} = props;
+  const {status, value,businessId} = props;
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
   useEffect(() => {
-    if (status || value) {
-      tableRef.current.formActions.setFieldValue('campType', status ? status[0] : null );
-      tableRef.current.formActions.setFieldValue('competitorId', value);
+    if (status) {
+      tableRef.current.formActions.setFieldValue('campType', status ? status[0] : null);
       tableRef.current.submit();
     }
-  }, [status, value]);
+  }, [status]);
 
   const [search, setSearch] = useState(false);
 
@@ -55,9 +52,8 @@ const competitorTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}}  placeholder="竞争对手" name="competitorId" component={SysField.CompetitorId}/>
-          <FormItem mega-props={{span: 1}} placeholder="报价状态" name="quoteStatus" component={SysField.QuoteStatus} />
-
+          {value ? null : <FormItem mega-props={{span: 1}} placeholder="竞争对手"  name="competitorId"  component={SysField.CompetitorId} />}
+          {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="关联商机" name="businessId" component={SysField.BusinessId} />}
         </>
       );
     };
@@ -72,7 +68,7 @@ const competitorTable = (props) => {
           columns={4}
           full
           autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="关联商机" name="businessId" component={SysField.BusinessId} />
+          <FormItem mega-props={{span: 1}} placeholder="报价状态" name="quoteStatus" component={SysField.QuoteStatus} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -96,7 +92,9 @@ const competitorTable = (props) => {
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
-              <FormItem hidden name="campType" component={SysField.CampType}/>
+              <FormItem hidden name="campType" component={SysField.CampType} />
+              {value && <FormItem hidden name="competitorId" value={value || null} component={SysField.CompetitorId} />}
+              {businessId && <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />}
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -129,7 +127,7 @@ const competitorTable = (props) => {
             </div>
           );
         }} />
-        <Column width={200}  title="竞争对手" dataIndex="competitorId" render={(value, record) => {
+        <Column width={200} title="竞争对手" dataIndex="competitorId" render={(value, record) => {
           return (
 
             <div>
@@ -138,40 +136,29 @@ const competitorTable = (props) => {
               }
             </div>
           );
-        }}/>
-        <Column width={100} title="报价金额" dataIndex="competitorsQuote"/>
+        }} />
+        <Column width={100} title="报价金额" dataIndex="competitorsQuote" />
         <Column width={100} title="报价状态" dataIndex="quoteStatus" render={(value, record) => {
           return (
             <div>
               {
-                record.quoteStatus === '' && "-" ||
-                record.quoteStatus === 0 && "无需审批"  ||
-                record.quoteStatus === 1 && "待询价" ||
-                record.quoteStatus === 2 && "询价中"
+                record.quoteStatus === '' && '-' ||
+                record.quoteStatus === 0 && '无需审批' ||
+                record.quoteStatus === 1 && '待询价' ||
+                record.quoteStatus === 2 && '询价中'
               }
             </div>
           );
-        }}/>
-        <Column width={200} title="报价日期" dataIndex="createTime"/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.quoteId);
-              }}/>
-              <DelButton api={competitorQuoteDelete} value={record.quoteId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
-            </>
-          );
-        }} width={200}  />
+        }} />
+        <Column width={200} title="报价日期" dataIndex="createTime" />
+
       </Table>
       <Drawer width={600} title="编辑" component={CompetitorQuoteEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} status={status ? status[0] : null} />
+      }} ref={ref} businessId={businessId || null} competitorId={value || null} />
     </>
   );
 };
 
-export default competitorTable;
+export default CompetitorTable;

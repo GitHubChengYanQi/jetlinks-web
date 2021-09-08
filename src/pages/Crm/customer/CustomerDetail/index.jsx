@@ -11,12 +11,10 @@ import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Descrip
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
-import Contract from '@/pages/Crm/customer/CustomerDetail/compontents/Contract';
 import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 import OrderList from '@/pages/Erp/order/OrderList';
-import ContractList from '@/pages/Crm/contract/ContractList';
 import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
 import styles from './index.module.scss';
 
@@ -24,7 +22,6 @@ const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
   const params = useParams();
-
 
   const [responsive, setResponsive] = useState(false);
 
@@ -37,8 +34,6 @@ const CustomerDetail = () => {
       }
     }
   });
-
-
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
