@@ -6,15 +6,14 @@
  */
 
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Card, Col, Row, Input} from 'antd';
-import Form from '@/components/Form';
-import {crmBusinessTrackDetail, crmBusinessTrackAdd, crmBusinessTrackEdit} from '../crmBusinessTrackUrl';
-import * as SysField from '../crmBusinessTrackField';
 import styled from 'styled-components';
-import CompetitorQuoteTable from '@/pages/Crm/business/crmBusinessTrack/components/CompetitorQuoteTable';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
-import {CompetitorsQuote} from '../crmBusinessTrackField';
+import {Button} from 'antd';
+import Form from '@/components/Form';
+import * as SysField from '../crmBusinessTrackField';
+import {crmBusinessTrackDetail, crmBusinessTrackAdd, crmBusinessTrackEdit} from '../crmBusinessTrackUrl';
+
 const {FormItem} = Form;
 
 const ApiConfig = {
