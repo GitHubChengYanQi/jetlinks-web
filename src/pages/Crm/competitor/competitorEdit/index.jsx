@@ -24,7 +24,7 @@ const ApiConfig = {
 const CompetitorEdit = ({...props}) => {
 
   const {value} = props;
-
+  const {position} = props;
   const formRef = useRef();
 
   return (
@@ -35,6 +35,9 @@ const CompetitorEdit = ({...props}) => {
       value={value ? value.competitorId : false}
       ref={formRef}
       api={ApiConfig}
+      res={(res) => {
+        position && typeof position === 'function' && position(res);
+      }}
       wrapperCol={24}
       fieldKey="competitorId"
     >

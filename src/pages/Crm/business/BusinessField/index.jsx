@@ -12,10 +12,10 @@ import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
 import * as apiUrl from '../BusinessUrl';
-import Modal2 from '@/components/Modal';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 const w = 200;
 // 商机Id
@@ -53,7 +53,7 @@ export const CustomerNameListSelect = (props) =>{
         ref.current.open(false);}}>
         新增客户
       </Button>
-      <CreateNewCustomer onSuccess={() => {
+      <CreateNewCustomer model={CustomerEdit} widths={1600} onSuccess={() => {
         ref.current.close();
         getData();
       }} refModal={ref} position={(res)=>{

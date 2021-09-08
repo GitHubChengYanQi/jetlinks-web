@@ -6,6 +6,8 @@ import React, {useRef} from 'react';
 
 const CreateNewCustomer = ({
   onSuccess,
+  model,
+  widths,
   refModal,
   ...props
 }) => {
@@ -13,7 +15,7 @@ const CreateNewCustomer = ({
   const compoentRef = useRef();
 
   return (
-    <Modal compoentRef={compoentRef} width={1600} footer={
+    <Modal compoentRef={compoentRef} width={widths} footer={
       <>
         <Button type="primary" onClick={() => {
           compoentRef.current.formRef.current.submit();
@@ -22,7 +24,7 @@ const CreateNewCustomer = ({
           refModal.current.close();
         }}>取消</Button>
       </>
-    } title="客户" component={CustomerEdit} onSuccess={() => {
+    } title="客户" component={model} onSuccess={() => {
       typeof onSuccess === 'function' && onSuccess();
     }} ref={refModal} {...props} />
   );
