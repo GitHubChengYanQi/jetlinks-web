@@ -31,16 +31,14 @@ const Upload = (props) => {
     data: {customerId}
   }, {manual: true});
 
-  useEffect(()=>{
+  useEffect(() => {
     runListFile({
-      params:{
-        limit:20,
-        page:1
+      params: {
+        limit: 20,
+        page: 1
       }
     });
-  },[]);
-
-
+  }, []);
 
 
   const fileList = data && data.data ? data.data.map((items, index) => {
@@ -97,16 +95,25 @@ const Upload = (props) => {
         }}
         multiple
       >
-        <Button icon={<UploadOutlined />}>上传附件</Button>
+        <div>
+          <Button icon={<UploadOutlined />}>上传附件</Button>
+        </div>
       </AntUpload>
-      <Pagination style={{display:'inline-block',margin:'auto'}} current={data && data.current} total={data && data.count} pageSize={data && data.pageSize || 0} onChange={(value)=>{
-        runListFile({
-          params:{
-            page:value,
-            limit:20,
-          }
-        });
-      }}  />
+      <div style={{textAlign: 'center'}}>
+        <Pagination
+          style={{display: 'inline-block'}}
+          current={data && data.current}
+          total={data && data.count}
+          pageSize={data && data.pageSize || 0}
+          onChange={(value) => {
+            runListFile({
+              params: {
+                page: value,
+                limit: 20,
+              }
+            });
+          }} />
+      </div>
     </Space>
   );
 };

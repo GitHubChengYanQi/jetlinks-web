@@ -18,6 +18,7 @@ import OrderList from '@/pages/Erp/order/OrderList';
 import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
 import styles from './index.module.scss';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 
 const {TabPane} = Tabs;
 
@@ -64,10 +65,9 @@ const CustomerDetail = () => {
           <Button type="primary" onClick={() => {
             ref.current.open(data.customerId);
           }}>编辑</Button>
-          <Modal2 width={1000} title="客户" component={CustomerEdit} onSuccess={() => {
+          <CreateNewCustomer model={CustomerEdit}  widths={1600}  onSuccess={()=>{
             ref.current.close();
-            refresh();
-          }} ref={ref} />
+          }} refModal={ref} />
           <Button onClick={() => {
             history.back();
           }}><Icon type="icon-huifu" />返回</Button>

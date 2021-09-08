@@ -5,8 +5,8 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
-import {Anchor, Button, Collapse} from 'antd';
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import {Anchor, Button, Modal as AntModal ,Collapse} from 'antd';
 import {
   customerAdd,
   customerDetail, customerEdit
@@ -18,6 +18,9 @@ import {MegaLayout} from '@formily/antd-components';
 import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
 import Form from '@/components/Form';
+import {Map} from 'react-amap';
+import Modal from '@/components/Modal';
+import ReactMap from '@/components/Map';
 
 const {FormItem} = Form;
 
@@ -27,6 +30,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
     margin-right: 16px;
   }
+
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
@@ -37,6 +41,7 @@ const PhoneRowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
     margin-right: 16px;
   }
+
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
@@ -65,11 +70,17 @@ const ApiConfig = {
 
 const CustomerEdit = ({...props}, ref) => {
 
+  const refMap = useRef(null);
+
   const {position} = props;
+
+  const [location,setLocation] = useState();
 
   const formRef = useRef();
 
   const history = useHistory();
+
+  const [modal,setModal] = useState();
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -87,7 +98,7 @@ const CustomerEdit = ({...props}, ref) => {
     <div style={{height: height()}}>
       <Form
         {...props}
-        labelAlign='left'
+        labelAlign="left"
         ref={formRef}
         NoButton={false}
         api={ApiConfig}
@@ -267,41 +278,44 @@ const CustomerEdit = ({...props}, ref) => {
                       {state.value.map((item, index) => {
                         const onRemove = index => mutators.remove(index);
                         return (
-                          <>
-                            <div style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
+                          <div key={index} style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
+                            <FormItem
+                              label="省市区地址"
+                              name={`adressParams.${index}.region`}
+                              component={SysField.Region}
+                              required
+                            />
+                            <AdressRowStyleLayout key={index}>
                               <FormItem
-                                label="省市区地址"
-                                name={`adressParams.${index}.region`}
-                                component={SysField.Region}
+                                label="&nbsp;&nbsp;&nbsp;详细地址"
+                                name={`adressParams.${index}.location`}
+                                component={SysField.Location}
                                 required
                               />
-                              <AdressRowStyleLayout key={index}>
-                                <FormItem
-                                  label="&nbsp;&nbsp;&nbsp;详细地址"
-                                  name={`adressParams.${index}.location`}
-                                  component={SysField.Location}
-                                  required
-                                />
-                                <FormItem
-                                  label="经度"
-                                  name={`adressParams.${index}.longitude`}
-                                  component={SysField.Longitude}
-                                  required
-                                />
-                                <FormItem
-                                  label="纬度"
-                                  name={`adressParams.${index}.latitude`}
-                                  component={SysField.Latitude}
-                                  required
-                                />
-                                <Button
-                                  type="link" style={{float: 'right'}}
-                                  onClick={() => {
-                                    onRemove(index);
-                                  }}>删除地址</Button>
-                              </AdressRowStyleLayout>
-                            </div>
-                          </>
+                              <FormItem
+                                label="经度"
+                                name={`adressParams.${index}.longitude`}
+                                component={SysField.Longitude}
+                                location={location || null}
+                                required
+                              />
+                              <FormItem
+                                label="纬度"
+                                name={`adressParams.${index}.latitude`}
+                                component={SysField.Latitude}
+                                location={location || null}
+                                required
+                              />
+                              <Button onClick={()=>{
+                                setModal(true);
+                              }}>点击打开地图</Button>
+                              <Button
+                                type="link" style={{float: 'right'}}
+                                onClick={() => {
+                                  onRemove(index);
+                                }}>删除地址</Button>
+                            </AdressRowStyleLayout>
+                          </div>
                         );
                       })}
                       <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加客户地址</Button>
@@ -318,6 +332,13 @@ const CustomerEdit = ({...props}, ref) => {
         </div>
 
       </Form>
+      <AntModal width={1000} visible={modal} onCancel={()=>{setModal(false);setLocation(' ');}}  onOk={()=>{
+        setModal(false);
+      }} destroyOnClose>
+        <ReactMap location={(location)=>{
+          setLocation(location);
+        }} />
+      </AntModal>
     </div>
   );
 };

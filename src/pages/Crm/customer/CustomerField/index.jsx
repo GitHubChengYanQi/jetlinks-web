@@ -27,9 +27,17 @@ export const Location = (props) =>{
   return (<Input  {...props}/>);
 };
 export const Longitude = (props) =>{
+  const {location} = props;
+  if (location){
+    props.onChange(location && location.lng);
+  }
   return (<InputNumber   {...props}/>);
 };
 export const Latitude = (props) =>{
+  const {location} = props;
+  if (location){
+    props.onChange(location && location.lat);
+  }
   return (<InputNumber   {...props}/>);
 };
 export const PhoneNumber = (props) =>{

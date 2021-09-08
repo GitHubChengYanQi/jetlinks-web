@@ -55,6 +55,8 @@
     "qs": "^6.9.4",
     "rc-resize-observer": "^1.0.0",
     "react": "^16.4.1",
+    "react-amap": "^1.2.8",
+    "react-amap-plugin-geolocation": "0.0.2",
     "react-custom-scrollbars-2": "^4.2.3",
     "react-dom": "^16.4.1",
     "react-eva": "^1.1.12",
