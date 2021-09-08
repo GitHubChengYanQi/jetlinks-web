@@ -5,11 +5,15 @@
  * @Date 2021-08-05 10:31:44
  */
 
-import React from 'react';
-import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
+import React, {useRef} from 'react';
+import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
+import {useRequest} from '@/util/Request';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -41,6 +45,9 @@ export const Offer = (props) => {
 
 export const Money = (props) => {
   return (<InputNumber {...props} />);
+};
+export const QuoteStatus = (props) =>{
+  return (<AntdSelect options={[{label:'无需审批',value:0},{label:'待询价',value:1},{label:'询价中',value:2}]} {...props}/>);
 };
 
 export const Type = (props) => {
@@ -75,7 +82,25 @@ export const UserId = (props) => {
 };
 
 export const CompetitorId = (props) =>{
-  return (<Select  api={apiUrl.competitorListSelect}  {...props}/>);
+  const ref = useRef(null);
+
+  const {loading,data,run:getData} = useRequest(apiUrl.competitorListSelect);
+
+  return (
+    <>
+      <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
+      <Button type="primary"  onClick={()=>{
+        ref.current.open(false);}}>
+        新增对手
+      </Button>
+      <CreateNewCustomer onSuccess={() => {
+        ref.current.close();
+        getData();
+      }} refModal={ref} model={CompetitorEdit} widths={1300}  position={(res)=>{
+        props.onChange(res && res.data && res.data.competitorId);
+      }}/>
+    </>
+  );
 };
 export const CompetitorsQuote = (props) =>{
   return (<InputNumber  {...props}/>);
