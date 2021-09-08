@@ -1,9 +1,9 @@
-import {Drawer, Menu, Modal} from 'antd';
+import {Drawer, Menu} from 'antd';
 import Icon from '@/components/Icon';
-import styles from '@/pages/Crm/index.module.scss';
 import React, {useState} from 'react';
+import styles from './index.module.scss';
 
-const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMenu, children}) => {
+const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMenu}) => {
 
   const [drawerIsShow, showDrawer] = useState(false);
 
@@ -21,11 +21,11 @@ const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMe
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
         {buttons.map((Item) => {
-          // console.log(Item)
           return Item;
         })}
       </Menu>
       <Drawer
+        destroyOnClose
         title={<span>设置</span>}
         style={{
           height: mode === 'vertical' ? 'calc(100vh - 63px)' : 'calc(100vh - 112px)',
@@ -42,7 +42,6 @@ const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMe
           {SetMenu}
         </div>
       </Drawer>
-      {children}
     </>
   );
 };

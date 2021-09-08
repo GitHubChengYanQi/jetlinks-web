@@ -14,7 +14,7 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
   const history = useHistory();
   const location = useLocation();
 
-  const [mode, setMode] = useState('vertical');// horizontal
+  const [mode, setMode] = useState(localStorage.getItem('tianPeng-layout') === 'horizontal' ? 'horizontal' : 'vertical');// horizontal
 
   const [userInfo] = store.useModel('user');
   const {menus} = userInfo;
@@ -64,32 +64,41 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     return null;
   };
 
+  const renderRightMenu = () => {
+    return (
+      <RightMenu
+        mode={mode}
+        theme={mode === 'vertical' ? 'dark' : 'light'}
+        buttons={[
+          <MenuItem
+            style={{
+              width: '50%',
+              textAlign: 'center'
+            }}
+            key="layout"
+            onClick={() => {
+              localStorage.setItem('tianPeng-layout', mode === 'vertical' ? 'horizontal' : 'vertical');
+              setMode(mode === 'vertical' ? 'horizontal' : 'vertical');
+            }}>
+            <Icon type={mode === 'vertical' ? 'icon-layout-top-line' : 'icon-layout-left-line'} />
+          </MenuItem>
+        ]}
+      />
+    );
+  };
 
   return (
     <Layout>
       {mode === 'horizontal' && <Header theme="light" className={styles.header}>
         <div className={styles.leftMenu}>{renderLeftMenu()}</div>
-        <div className={styles.rightMenu}>{RightMenu}</div>
+        <div className={styles.rightMenu}>
+          {renderRightMenu()}
+        </div>
       </Header>}
       {mode === 'vertical' && <Sider theme="dark" width={220}>
         {renderLeftMenu()}
-        <div style={{position: 'absolute', bottom: 0, width: '100%'}}>
-          <RightMenu
-            mode={mode}
-            theme={mode === 'vertical' ? 'dark' : 'light'}
-            buttons={[
-              <MenuItem
-                style={{
-                  width: '50%',
-                  textAlign: 'center'
-                }}
-                key="setting1"
-                onClick={() => {
-                }}>
-                <Icon type="icon-layout-top-line" />
-              </MenuItem>
-            ]}
-          />
+        <div style={{position: 'absolute', bottom: 0, width: '100%', borderTop: '1px solid #666'}}>
+          {renderRightMenu()}
         </div>
       </Sider>}
       <Content style={{

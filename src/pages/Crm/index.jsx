@@ -1,7 +1,6 @@
-import React, {useRef, useState} from 'react';
-import {Drawer, Menu,Modal} from 'antd';
+import React, {useState} from 'react';
+import { Menu, Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
-import Icon from '@/components/Icon';
 import OriginList from '@/pages/Crm/origin/OriginList';
 import TemplateList from '@/pages/Crm/template/TemplateList';
 import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList';
@@ -9,15 +8,12 @@ import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 import CrmBusinessSalesList from '@/pages/Crm/business/crmBusinessSales/crmBusinessSalesList';
 import CompanyRoleList from '@/pages/Crm/companyRole/companyRoleList';
 import SetView from '@/layouts/SetView';
-import styles from './index.module.scss';
 
 
-const CrmLayout = ({children}) => {
-
+const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
 
   const [type, setType] = useState(null);
   const [visible, showModel] = useState(false);
-
 
   const RenderComponent = () => {
     switch (type) {
@@ -38,13 +34,14 @@ const CrmLayout = ({children}) => {
     }
   };
 
-  const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
-    return (
+  return (
+    <>
       <SetView
         mode={mode}
         theme={theme}
         width={width}
         RenderComponent={RenderComponent}
+        buttons={buttons}
         SetMenu={<Menu
           selectable={false}
           style={{width: '100%'}}
@@ -72,13 +69,15 @@ const CrmLayout = ({children}) => {
             <span>角色管理</span>
           </Menu.Item>
           <Menu.Divider />
-        </Menu>}>
-        <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
-          showModel(false);
-        }} footer={null}>{RenderComponent()}</Modal>
-      </SetView>
-    );
-  };
+        </Menu>}/>
+      <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
+        showModel(false);
+      }} footer={null}>{RenderComponent()}</Modal>
+    </>
+  );
+};
+
+const CrmLayout = ({children}) => {
 
   return (
     <TopLayout rightMenu={RightMenu}>
