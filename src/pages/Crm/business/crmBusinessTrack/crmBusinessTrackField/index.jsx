@@ -14,6 +14,7 @@ import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
+import UpLoadImg from '@/components/Upload';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -26,21 +27,15 @@ export const Time = (props) => {
   return (<DatePicker {...props} />);
 };
 
+export const Image = (props) => {
+  return (<UpLoadImg {...props} />);
+};
 
-export const Offer = (props) => {
-  const {visi} = props;
-  return (<AntdSelect
-    options={[
-      {label: '否', value: '0'},
-      {label: '是', value: '1'},
-    ]}
-    {...props} onChange={(value) => {
-    if (value === '1') {
-      visi(true);
-    } else {
-      visi(false);
-    }
-  }} />);
+export const Longitude = (props) =>{
+  return (<InputNumber   {...props}/>);
+};
+export const Latitude = (props) =>{
+  return (<InputNumber   {...props}/>);
 };
 
 export const Money = (props) => {

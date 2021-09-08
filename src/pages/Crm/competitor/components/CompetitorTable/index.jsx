@@ -25,6 +25,7 @@ import competitorTable from '@/pages/Crm/competitorQuote/components/competitorTa
 import {competitorDelete, competitorList} from '../../competitorUrl';
 import CompetitorEdit from '../../competitorEdit';
 import * as SysField from '../../competitorField';
+import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -122,6 +123,17 @@ const CompetitorTable = (props) => {
     );
   };
 
+  const [ids, setIds] = useState([]);
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (<DelButton api={{
+      ...customerBatchDelete
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>批量删除</DelButton>);
+  };
 
   return (
     <>
@@ -135,6 +147,10 @@ const CompetitorTable = (props) => {
         layout={search}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(keys) => {
+          setIds(keys);
+        }}
       >
         <Column width={150} fiexd title="竞争对手企业名称" dataIndex="name" render={(value,record)=>{
           return (

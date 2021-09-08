@@ -10,10 +10,12 @@ import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import {Button} from 'antd';
+import Checkbox from 'antd/es/checkbox/Checkbox';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
 import {crmBusinessTrackDetail, crmBusinessTrackAdd, crmBusinessTrackEdit} from '../crmBusinessTrackUrl';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import {Image, Longitude} from '../crmBusinessTrackField';
 
 const {FormItem} = Form;
 
@@ -47,7 +49,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
   }));
 
   const [hidden,setHidden] = useState(false);
-
+  const [txHidden,setTxHidden] = useState(false);
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
@@ -69,22 +71,40 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
             <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
               <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
               <FormItem label="跟踪类型" name="type" component={SysField.Type}  />
-              <FormItem label="跟踪提醒时间" name="time" component={SysField.Time}  />
-              <FormItem label="是否报价" name="offer" component={SysField.Offer} visi={(visi)=>{
-                setHidden(visi);
-              }} />
-              { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} val={val}  /> : null}
-              { hidden ? <FormItem label="报价状态" name="quoteStatus" component={SysField.QuoteStatus} val={val}  /> : null}
-              <FormItem label="备注" name="note" component={SysField.Note}/>
+              <Checkbox
+                style={{marginLeft: '20%', marginBottom: 20}}
+                checked={txHidden}
+                onChange={()=>{
+                  setTxHidden(!txHidden);
+                }}
+              >
+                是否设置提醒：
+              </Checkbox>
+              { txHidden ? <FormItem label="跟踪提醒时间" name="time" component={SysField.Time}  /> : null}
+              { txHidden ? <FormItem label="提醒内容" name="tixing" component={SysField.Note}/> : null}
+              <Checkbox
+                style={{marginLeft: '20%', marginBottom: 20}}
+                checked={hidden}
+                onChange={()=>{
+                  setHidden(!hidden);
+                }}
+              >
+                是否报价：
+              </Checkbox>
+              { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} /> : null}
+              <FormItem label="经度" name="longitude" component={SysField.Longitude}  />
+              <FormItem label="纬度" name="latitude" component={SysField.Latitude}  />
+              <FormItem label="图片" name="image" component={SysField.Image}  />
+              <FormItem label="备注" name="node" component={SysField.Note}/>
             </ProCard>
           </div>
           <div style={{float: 'left', width: '55%', height: height(), overflow: 'auto'}}>
 
             <ProCard style={{marginTop: 8}} title="竞争对手报价" headerBordered>
               <FieldList
-                name="adressParams"
+                name="competitorQuoteParam"
                 initialValue={[
-                  {location: ''},
+                  {competitorId: '', competitorsQuote: ''},
                 ]}
               >
                 {({state, mutators}) => {
