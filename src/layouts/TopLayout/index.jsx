@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import {Layout, Menu} from 'antd';
 import store from '@/store';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
+import Icon from '@/components/Icon';
 import styles from './index.module.less';
 
 const {Header, Sider, Content} = Layout;
+const {Item: MenuItem} = Menu;
 
-const TopLayout = ({children, rightMenu:RightMenu}) => {
+const TopLayout = ({children, rightMenu: RightMenu}) => {
 
   const match = useRouteMatch();
   const history = useHistory();
@@ -73,9 +75,29 @@ const TopLayout = ({children, rightMenu:RightMenu}) => {
       </Header>}
       {mode === 'vertical' && <Sider theme="dark" width={220}>
         {renderLeftMenu()}
-        <div style={{position:'absolute',bottom: 0,width: '100%'}}><RightMenu mode={mode} theme={mode === 'vertical' ? 'dark' : 'light'} /></div>
+        <div style={{position: 'absolute', bottom: 0, width: '100%'}}>
+          <RightMenu
+            mode={mode}
+            theme={mode === 'vertical' ? 'dark' : 'light'}
+            buttons={[
+              <MenuItem
+                style={{
+                  width: '50%',
+                  textAlign: 'center'
+                }}
+                key="setting1"
+                onClick={() => {
+                }}>
+                <Icon type="icon-layout-top-line" />
+              </MenuItem>
+            ]}
+          />
+        </div>
       </Sider>}
-      <Content style={{overflowY: 'auto', height: mode === 'vertical'?'calc(100vh - 63px)':'calc(100vh - 112px)'}}>{children}</Content>
+      <Content style={{
+        overflowY: 'auto',
+        height: mode === 'vertical' ? 'calc(100vh - 63px)' : 'calc(100vh - 112px)'
+      }}>{children}</Content>
     </Layout>
   );
 };
