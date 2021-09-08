@@ -10,19 +10,19 @@ import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import {Button} from 'antd';
-import Checkbox from 'antd/es/checkbox/Checkbox';
+import {Switch} from '@alifd/next';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
-import {crmBusinessTrackDetail, crmBusinessTrackAdd, crmBusinessTrackEdit} from '../crmBusinessTrackUrl';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import {Image, Longitude} from '../crmBusinessTrackField';
+import {trackMessageAdd, trackMessageDetail, trackMessageEdit} from '@/pages/Crm/trackMessage/trackMessageUrl';
+import {Message} from '../crmBusinessTrackField';
+
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: crmBusinessTrackDetail,
-  add: crmBusinessTrackAdd,
-  save: crmBusinessTrackEdit
+  view: trackMessageDetail,
+  add: trackMessageAdd,
+  save: trackMessageEdit
 };
 
 
@@ -65,32 +65,34 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
           {...props}
           ref={formRef}
           api={ApiConfig}
-          fieldKey="trackId"
+          fieldKey="trackMessageId"
         >
           <div style={{float: 'left', paddingRight: 10, height: height(), width: '45%', overflow: 'auto'}}>
             <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
               <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
               <FormItem label="跟踪类型" name="type" component={SysField.Type}  />
-              <Checkbox
-                style={{marginLeft: '20%', marginBottom: 20}}
+              <Switch
+                size='small'
+                style={{marginLeft: '6%', marginBottom: 20, width: 100}}
+                checkedChildren="关闭提醒"
+                unCheckedChildren="开启提醒"
                 checked={txHidden}
                 onChange={()=>{
                   setTxHidden(!txHidden);
                 }}
-              >
-                是否设置提醒：
-              </Checkbox>
+              > </Switch>
               { txHidden ? <FormItem label="跟踪提醒时间" name="time" component={SysField.Time}  /> : null}
-              { txHidden ? <FormItem label="提醒内容" name="tixing" component={SysField.Note}/> : null}
-              <Checkbox
-                style={{marginLeft: '20%', marginBottom: 20}}
+              { txHidden ? <FormItem label="提醒内容" name="message" component={SysField.Message}/> : null}
+              <Switch
+                size='small'
+                style={{marginLeft: '6%', marginBottom: 20, width: 100}}
+                checkedChildren="暂不报价"
+                unCheckedChildren="马上报价"
                 checked={hidden}
                 onChange={()=>{
                   setHidden(!hidden);
                 }}
-              >
-                是否报价：
-              </Checkbox>
+              > </Switch>
               { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} /> : null}
               <FormItem label="经度" name="longitude" component={SysField.Longitude}  />
               <FormItem label="纬度" name="latitude" component={SysField.Latitude}  />
