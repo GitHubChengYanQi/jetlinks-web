@@ -14,7 +14,6 @@ import {Switch} from '@alifd/next';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
 import {trackMessageAdd, trackMessageDetail, trackMessageEdit} from '@/pages/Crm/trackMessage/trackMessageUrl';
-import {Message} from '../crmBusinessTrackField';
 
 
 const {FormItem} = Form;
@@ -33,7 +32,6 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
   .ant-form-item {
     display: inline-flex;
-
     width: 70%;
   }
 `;
