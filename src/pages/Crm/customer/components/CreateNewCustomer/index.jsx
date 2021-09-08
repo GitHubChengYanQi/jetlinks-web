@@ -6,6 +6,7 @@ import React, {useRef} from 'react';
 
 const CreateNewCustomer = ({
   onSuccess,
+  title,
   model,
   widths,
   refModal,
@@ -24,7 +25,7 @@ const CreateNewCustomer = ({
           refModal.current.close();
         }}>取消</Button>
       </>
-    } title="客户" component={model} onSuccess={() => {
+    } title={title} component={model} onSuccess={() => {
       typeof onSuccess === 'function' && onSuccess();
     }} ref={refModal} {...props} />
   );

@@ -83,12 +83,12 @@ const CustomerDetail = () => {
             refresh();
           }} ref={refTrack} val={data} footer={
             <ButtonGroup>
-              <Button onClick={()=>{
+              <Button type="primary" onClick={()=>{
                 refA.current.formRef.current.submit();
               }}>保存</Button>
-              <Button onClick={()=>{
+              <Button  onClick={()=>{
                 refTrack.current.close();
-              }}>返回</Button>
+              }}><Icon type="icon-huifu" />返回</Button>
             </ButtonGroup>
           } />
           <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
