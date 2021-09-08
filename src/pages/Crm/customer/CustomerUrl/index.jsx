@@ -81,6 +81,11 @@ export const crmIndustryTreeView = {
   rowKey:'industryId'
 };
 
+export const commonArea = {
+  url: '/commonArea/treeView',
+  method: 'POST',
+};
+
 
 
 

@@ -17,6 +17,7 @@ import Index from '@/pages/Crm/customer/CustomerEdit/components/AdressEdit';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
+import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
@@ -43,6 +44,13 @@ const AdressList = (props) => {
         searchForm={searchForm}
         ref={tableRef}
       >
+        <Column title="省市区地址" dataIndex="region" render={(value,record)=>{
+          return (
+            <>
+              {record.regionResult && `${record.regionResult.countries }-${ record.regionResult.province }-${ record.regionResult.city }-${ record.regionResult.area}`}
+            </>
+          );
+        }}/>
         <Column title="地址" dataIndex="location"/>
         <Column title="经度" dataIndex="longitude"/>
         <Column title="纬度" dataIndex="latitude"/>
@@ -69,7 +77,7 @@ const AdressList = (props) => {
           ref.current.open(false);
         }} />
       </div>
-      <Drawer width={800} title="编辑" component={Index} customerId={customerId} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={AdressEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

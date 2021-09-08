@@ -6,9 +6,12 @@
  */
 
 import React from 'react';
+import Cascader from '@/components/Cascader';
 import {Input,InputNumber} from 'antd';
-import {} from '../AdressUrl';
-const w = 200;
+import * as apiUrl from '../AdressUrl';
+
+
+
 
 export const Location = (props) =>{
   return (<Input  {...props}/>);
@@ -19,7 +22,11 @@ export const Longitude = (props) =>{
 export const Latitude = (props) =>{
   return (<InputNumber   {...props}/>);
 };
+export const Region = (props) =>{
+  return (<Cascader api={apiUrl.commonArea}   {...props}/>);
+};
 export const CustomerId = (props) =>{
   props.onChange(props.customerId);
   return (<Input   {...props}/>);
 };
+
