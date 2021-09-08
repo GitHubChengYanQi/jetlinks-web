@@ -25,11 +25,11 @@ const AppIcon = {
   ENT_FUNC: Men,
   BASE_SYSTEM: Sys,
   userInfo: Bind,
-  CRM:crm,
-  ERP:erp,
-  REPAIR:Repair,
-  shop:Shop,
-  protal:Portal,
+  CRM: crm,
+  ERP: erp,
+  REPAIR: Repair,
+  shop: Shop,
+  protal: Portal,
 };
 
 const Header = () => {
@@ -56,7 +56,12 @@ const Header = () => {
                   <Icon type="icon-gongnengtubiao-134" />
                 </div>
               </div>
-              <div id="navigation-title">
+              <div
+                onClick={() => {
+                  history.push('/');
+                }}
+                id="navigation-title"
+                className={styles.navigationTitle}>
                 {config.projectName}
               </div>
             </div>

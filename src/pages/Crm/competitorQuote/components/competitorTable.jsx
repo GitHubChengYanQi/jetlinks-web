@@ -19,6 +19,8 @@ import Icon from '@/components/Icon';
 import {competitorQuoteList} from '../competitorQuoteUrl';
 import CompetitorQuoteEdit from '../competitorQuoteEdit';
 import * as SysField from '../competitorQuoteField';
+import DelButton from '@/components/DelButton';
+import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -102,7 +104,6 @@ const CompetitorTable = (props) => {
       </>
     );
   };
-
 
   return (
     <>

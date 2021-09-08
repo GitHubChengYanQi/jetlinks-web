@@ -1,36 +1,36 @@
 /**
  * 商机跟踪表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-08-05 10:31:44
  */
 
 export const crmBusinessTrackAdd = {
-  url: '/crmBusinessTrack/add',
+  url: '/trackMessage/add',
   method: 'POST',
   rowKey:'trackId'
 };
 
 export const crmBusinessTrackEdit = {
-  url: '/crmBusinessTrack/edit',
+  url: '/trackMessage/edit',
   method: 'POST',
   rowKey:'trackId'
 };
 
 export const crmBusinessTrackDelete = {
-  url: '/crmBusinessTrack/delete',
+  url: '/trackMessage/delete',
   method: 'POST',
   rowKey:'trackId'
 };
 
 export const crmBusinessTrackDetail = {
-  url: '/crmBusinessTrack/detail',
+  url: '/trackMessage/detail',
   method: 'POST',
   rowKey:'trackId'
 };
 
 export const crmBusinessTrackList = {
-  url: '/crmBusinessTrack/list',
+  url: '/trackMessage/list',
   method: 'POST',
   rowKey:'trackId'
 };

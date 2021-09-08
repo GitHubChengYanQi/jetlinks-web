@@ -53,7 +53,7 @@ export const CustomerNameListSelect = (props) =>{
         ref.current.open(false);}}>
         新增客户
       </Button>
-      <CreateNewCustomer model={CustomerEdit} widths={1600} onSuccess={() => {
+      <CreateNewCustomer title='客户' model={CustomerEdit} widths={1600} onSuccess={() => {
         ref.current.close();
         getData();
       }} refModal={ref} position={(res)=>{

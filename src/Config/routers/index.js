@@ -32,10 +32,14 @@ const routerConfig = [
       ...RepairRouterConfig,
       {
         path: '/member',
-        component: lazy(() => import((`@/pages/Member`))),
+        component: lazy(() => import(('@/pages/Member'))),
       },
       {
-        component: lazy(() => import((`@/pages/NotFound`))),
+        path: '/',
+        component: lazy(() => import(('@/pages/Overview'))),
+      },
+      {
+        component: lazy(() => import(('@/pages/NotFound'))),
       }
     ],
   },

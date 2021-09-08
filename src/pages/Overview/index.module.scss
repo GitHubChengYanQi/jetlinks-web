@@ -1,0 +1,29 @@
+.sayHi{
+  font-weight: 400;
+  font-size: 22px;
+}
+.overviewWrapper{
+  width: 1200px;
+  margin: 24px auto 0 auto;
+
+  .gridStyle{
+    width: 33.33%;
+    :global{
+      .ant-card-meta{
+        //height: 46px;
+      }
+      .ant-card-meta-detail>div:not(:last-child) {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+.statistic {
+  text-align: right;
+  :global{
+    .ant-divider-vertical{
+      height: 3em;
+    }
+  }
+}

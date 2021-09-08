@@ -17,7 +17,7 @@ const Track = (props) => {
 
   const datas = (value) => {
     return {
-      author: value.user.name ? value.user.name : '--',
+      // author: value.user.name ? value.user.name : '--'
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
@@ -25,14 +25,14 @@ const Track = (props) => {
             <p style={{color: '#91959e'}}>记录内容</p>
             <p style={{padding: 10}}>{value.note}</p>
           </p>
-          {value.type ? <p>
-            <span style={{color: '#91959e'}}>跟进类型：{value.type}</span>
+          {value.message ? <p>
+            <span style={{color: '#91959e'}}>{value.message}</span>
           </p> : null}
           <p>
-            <span style={{color: '#91959e'}}>是否报价：{value.offer === 0 ? '是' : '否'}</span>
+            {/*<span style={{color: '#91959e'}}>是否报价：{value.offer === 0 ? '是' : '否'}</span>*/}
           </p>
           {value.money ? <p>
-            <span style={{color: '#91959e'}}>报价金额：{value.money}</span>
+            {/*<span style={{color: '#91959e'}}>报价金额：{value.money}</span>*/}
           </p> : null}
         </>
       ),
@@ -61,9 +61,9 @@ const Track = (props) => {
         ref={tableRef}
         showSearchButton={false}
         api={{
-          url: '/crmBusinessTrack/list', method: 'POST'
+          url: '/trackMessage/list', method: 'POST'
         }}
-        rowKey="trackId"
+        rowKey="trackMessageId"
       >
         <Column render={(text, record) => {
           return (
