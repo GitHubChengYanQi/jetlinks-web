@@ -38,9 +38,16 @@ const UsrInfoLayout = ({children}) => {
           selectable={false}
           mode="horizontal"
           theme={theme}
-        ><Menu.Item style={{width, textAlign: 'center'}} key="setting" onClick={() => {
-          showDrawer(true);
-        }}><Icon type="icon-xitongpeizhi" /></Menu.Item>
+        >
+          <Menu.Item
+            style={{width, textAlign: 'center'}}
+            key="setting"
+            onClick={() => {
+              showDrawer(true);
+            }}
+          >
+            <Icon type="icon-xitongpeizhi" />
+          </Menu.Item>
           <Menu.Item style={{width, textAlign: 'center'}} key="setting1" onClick={() => {
             showDrawer(true);
           }}><Icon type="icon-xitongpeizhi" /></Menu.Item>

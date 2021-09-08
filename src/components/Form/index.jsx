@@ -126,8 +126,9 @@ const FormWrapper = (
     style={{margin: 'auto'}}
     actions={formActions}
     labelAlign={labelAlign}
+    layout='horizontal'
     className={style.formWarp}
-    labelCol={labelCol || 6}
+    labelCol={labelCol !== undefined ? labelCol : 6}
     wrapperCol={wrapperCol || 15}
     effects={() => {
       effect ? effect() : null;

@@ -19,9 +19,7 @@ const Dynamic = (props) => {
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
-          <p>
-            <p style={{padding: 10}}>{value.content}</p>
-          </p>
+          <p style={{padding: 10}}>{value.content}</p>
         </>
       ),
       datetime: (
@@ -34,7 +32,12 @@ const Dynamic = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <FormItem placeholder="customerId" hidden value={value.customerId} name="customerId" component={SysField.Name} />
+        <FormItem
+          placeholder="customerId"
+          hidden
+          value={value.customerId}
+          name="customerId"
+          component={SysField.Name} />
       </div>
     );
   };
@@ -54,7 +57,8 @@ const Dynamic = (props) => {
       >
         <Column render={(text, record) => {
           return (
-            <Comment style={{margin:-20}}
+            <Comment
+              style={{margin: -20}}
               {...datas(record)}
             />
           );

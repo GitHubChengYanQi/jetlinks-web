@@ -11,6 +11,7 @@ import AppEntFUNC from '@/asseset/imgs/88.png';
 import Bind from '@/asseset/imgs/bind.png';
 import Men from '@/asseset/imgs/men.png';
 import Sys from '@/asseset/imgs/sys.png';
+import Portal from '@/asseset/imgs/portal.png';
 import Repair from '@/asseset/imgs/repair.png';
 import Shop from '@/asseset/imgs/shop.png';
 import crm from '@/asseset/imgs/CRM.png';
@@ -28,6 +29,7 @@ const AppIcon = {
   ERP:erp,
   REPAIR:Repair,
   shop:Shop,
+  protal:Portal,
 };
 
 const Header = () => {
