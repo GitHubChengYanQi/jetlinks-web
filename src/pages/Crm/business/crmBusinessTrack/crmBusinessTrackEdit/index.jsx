@@ -14,6 +14,7 @@ import {Switch} from '@alifd/next';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
 import {trackMessageAdd, trackMessageDetail, trackMessageEdit} from '@/pages/Crm/trackMessage/trackMessageUrl';
+import {TiXing} from '../crmBusinessTrackField';
 
 
 const {FormItem} = Form;
@@ -69,6 +70,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
             <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
               <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
               <FormItem label="跟踪类型" name="type" component={SysField.Type}  />
+              <FormItem label="跟踪信息" name="note" component={SysField.Note}/>
               <Switch
                 size='small'
                 style={{marginLeft: '6%', marginBottom: 20, width: 100}}
@@ -95,7 +97,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
               <FormItem label="经度" name="longitude" component={SysField.Longitude}  />
               <FormItem label="纬度" name="latitude" component={SysField.Latitude}  />
               <FormItem label="图片" name="image" component={SysField.Image}  />
-              <FormItem label="备注" name="node" component={SysField.Note}/>
+
             </ProCard>
           </div>
           <div style={{float: 'left', width: '55%', height: height(), overflow: 'auto'}}>

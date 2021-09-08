@@ -18,6 +18,7 @@ import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import ButtonGroup from 'antd/es/button/button-group';
+import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 
 const {TabPane} = Tabs;
 
@@ -125,6 +126,9 @@ const CustomerDetail = () => {
                 </TabPane>
                 <TabPane tab="竞争对手" key="2">
                   <CompetitorList businessId={data.businessId} />
+                </TabPane>
+                <TabPane tab="报价" key="3">
+                  <CompetitorTable businessId={data.businessId} />
                 </TabPane>
               </Tabs>
             </Card>
