@@ -11,13 +11,14 @@ const {FormItem} = Form;
 const Track = (props) => {
 
   const {value} = props;
+  console.log(111111111111, value);
 
   const tableRef = useRef(null);
 
 
   const datas = (value) => {
     return {
-      // author: value.user.name ? value.user.name : '--'
+      author: value && value.user && value.user.name ? value.user.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
