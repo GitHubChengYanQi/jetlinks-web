@@ -31,11 +31,11 @@ const CompetitorQuoteList = () => {
               children: [
                 {
                   title: '我的报价',
-                  key: '1',
+                  key: '0',
                 },
                 {
                   title: '对手报价',
-                  key: '0',
+                  key: '1',
                 },
               ],
             },

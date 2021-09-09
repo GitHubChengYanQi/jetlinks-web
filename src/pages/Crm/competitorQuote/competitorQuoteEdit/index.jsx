@@ -36,7 +36,7 @@ const CompetitorQuoteEdit = ({...props}) => {
       effects={() => {
         const {setFieldState} = createFormActions();
         onFieldValueChange$('campType').subscribe(({value}) => {
-          setFieldState('quoteStatus', state => {
+          setFieldState('competitorId', state => {
             state.visible = value;
           });
         });
@@ -44,8 +44,8 @@ const CompetitorQuoteEdit = ({...props}) => {
     >
       <FormItem label="关联商机"  name="businessId" component={SysField.BusinessId} businessId={businessId || null} required/>
       <FormItem label="报价区分" name="campType" component={SysField.CampType} required/>
-      <FormItem label="竞争对手"  name="competitorId" component={SysField.CompetitorId} competitorId={competitorId || null} />
-      <FormItem label="报价状态"  name="quoteStatus" component={SysField.QuoteStatus} />
+      <FormItem label="对手名称"  name="competitorId" component={SysField.CompetitorId} competitorId={competitorId || null} />
+      {/*<FormItem label="报价状态"  name="quoteStatus" component={SysField.QuoteStatus} />*/}
       <FormItem label="报价"  name="competitorsQuote" component={SysField.CompetitorsQuote} />
 
     </Form>

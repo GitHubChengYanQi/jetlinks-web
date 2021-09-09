@@ -20,9 +20,9 @@ const Dynamic = (props) => {
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
-          <p>
+          <div>
             <p style={{padding: 10}}>{value.content}</p>
-          </p>
+          </div>
         </>
       ),
       datetime: (
