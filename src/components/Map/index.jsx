@@ -21,7 +21,7 @@ const ReactMap = (props) => {
   const [state, setState] = useState({
     what: '点击下方按钮开始绘制'
   });
-  const mapPlugins = ['Scale','OverView','ControlBar',];
+  const mapPlugins = ['Scale', 'OverView', 'ControlBar',];
 
 
   const [mapCenter, setMapCenter] = useState();
@@ -72,25 +72,41 @@ const ReactMap = (props) => {
     enableHighAccuracy: true,
     timeout: 10000,
     showButton: true,
-    convert:false,
-    buttonPosition:'RB'
+    convert: false,
+    buttonPosition: 'RB'
   };
 
 
-
-
-  const amapEvents = {
-    created: (mapInstance) => {
-      console.log('高德地图 Map 实例创建成功；如果你要亲自对实例进行操作，可以从这里开始。比如：');
-    }
+  const MyReactMap = ({__map__: AMap}) => {
+    // const AMap = props.__map__;
+    // console.log(AMap);
+    // AMap.plugin('AMap.CitySearch', function () {
+    //   const citySearch = new AMap.CitySearch();
+    //   citySearch.getLocalCity(function (status, result) {
+    //     if (status === 'complete' && result.info === 'OK') {
+    //       // 查询成功，result即为当前所在城市信息
+    //       console.log(result);
+    //     }
+    //   });
+    // });
+    // const citySearch = new props.__map__.CitySearch();
+    // console.log(citySearch);
+    // citySearch.getLocalCity(function (status, result) {
+    //   if (status === 'complete' && result.info === 'OK') {
+    //     console.log(result);
+    //     // 查询成功，result即为当前所在城市信息
+    //   }
+    // });
+    return null;
   };
 
 
   return <div>
     <div style={{width: '100%', height: 370}}>
       <Map
-        plugins={mapPlugins} center={mapCenter} events={amapEvents}
+        plugins={mapPlugins} center={mapCenter}
       >
+        <MyReactMap />
         <Geolocation {...pluginProps} />
         <MouseTool events={toolEvents} />
         <div style={layerStyle}>{state.what}</div>

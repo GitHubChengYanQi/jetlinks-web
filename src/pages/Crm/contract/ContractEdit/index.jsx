@@ -29,8 +29,6 @@ const ApiConfig = {
 
 const AddContractEdit = ({...props}) => {
 
-
-
   const {Step} = Steps;
 
   const {value, ...other} = props;

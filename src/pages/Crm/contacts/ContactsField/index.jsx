@@ -45,8 +45,13 @@ export const CompanyRole = (props) => {
 
   return (
     <div style={{hieght: 50}}>
-      <AntSelect allowClear showSearch style={{width: 200}} options={data || []} loading={loading} {...props}
-                 filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+      <AntSelect
+        allowClear
+        showSearch
+        style={{width: 200}}
+        options={data || []}
+        loading={loading} {...props}
+        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
       <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
         ref.current.open(false);
       }} />

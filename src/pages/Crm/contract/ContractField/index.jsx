@@ -6,8 +6,8 @@
  */
 
 
-import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntSelect} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Input, InputNumber, Select as AntSelect} from 'antd';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
@@ -17,14 +17,33 @@ import DatePicker from '@/components/DatePicker';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import ErpPackageList from '@/pages/Erp/package/packageList';
 import {DatePicker2} from '@alifd/next';
+import {PlusOutlined} from '@ant-design/icons';
+import Drawer from '@/components/Drawer';
+import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 export const Customer = (props) => {
+
+  const ref = useRef();
+
   const {customerid, onChange} = props;
   return (<>
     <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />
+    <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
+      ref.current.open(false);
+    }} />
+    <CreateNewCustomer onSuccess={()=>{
+      ref.current.clone();
+    }} title='客户' model={CustomerEdit} refModal={ref} widths={1600} />
+    {/*<Drawer title="客户" ref={ref} onSuccess={() => {*/}
+    {/*  ref.current.close();*/}
+    {/*}} component={CompanyRoleEdit} position={(res) => {*/}
+    {/*  props.onChange(res && res.data && res.data.companyRoleId);*/}
+    {/*}} />*/}
   </>);
 };
 

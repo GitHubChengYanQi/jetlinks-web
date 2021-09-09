@@ -14,6 +14,7 @@ import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
 import {commonArea, CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import Cascader from '@/components/Cascader';
+import Amap from '@/components/Amap';
 
 const {Option} = Select;
 
@@ -34,11 +35,7 @@ export const Longitude = (props) =>{
   return (<InputNumber   {...props}/>);
 };
 export const Latitude = (props) =>{
-  const {location} = props;
-  if (location){
-    props.onChange(location && location.lat);
-  }
-  return (<InputNumber   {...props}/>);
+  return ( <Amap title='客户地址定位' />);
 };
 export const PhoneNumber = (props) =>{
   return (<InputNumber style={{width:300}}  {...props}/>);

@@ -6,7 +6,7 @@
  */
 
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Anchor, Button, Modal as AntModal ,Collapse} from 'antd';
+import {Anchor, Button, Modal as AntModal, Collapse} from 'antd';
 import {
   customerAdd,
   customerDetail, customerEdit
@@ -21,6 +21,7 @@ import Form from '@/components/Form';
 import {Map} from 'react-amap';
 import Modal from '@/components/Modal';
 import ReactMap from '@/components/Map';
+import Amap from '@/components/Amap';
 
 const {FormItem} = Form;
 
@@ -74,13 +75,13 @@ const CustomerEdit = ({...props}, ref) => {
 
   const {position} = props;
 
-  const [location,setLocation] = useState();
+  const [location, setLocation] = useState();
 
   const formRef = useRef();
 
   const history = useHistory();
 
-  const [modal,setModal] = useState();
+  const [modal, setModal] = useState();
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -299,6 +300,13 @@ const CustomerEdit = ({...props}, ref) => {
                                 location={location || null}
                                 required
                               />
+                              {/*<FormItem*/}
+                              {/*  label="纬度"*/}
+                              {/*  name={`adressParams.${index}.latitude`}*/}
+                              {/*  component={SysField.Latitude}*/}
+                              {/*  location={location || null}*/}
+                              {/*  required*/}
+                              {/*/>*/}
                               <FormItem
                                 label="纬度"
                                 name={`adressParams.${index}.latitude`}
@@ -306,9 +314,7 @@ const CustomerEdit = ({...props}, ref) => {
                                 location={location || null}
                                 required
                               />
-                              <Button onClick={()=>{
-                                setModal(true);
-                              }}>点击打开地图</Button>
+
                               <Button
                                 type="link" style={{float: 'right'}}
                                 onClick={() => {
@@ -328,17 +334,9 @@ const CustomerEdit = ({...props}, ref) => {
 
           </div>
           <br style={{clear: 'both'}} />
-
         </div>
 
       </Form>
-      <AntModal width={1000} visible={modal} onCancel={()=>{setModal(false);setLocation(' ');}}  onOk={()=>{
-        setModal(false);
-      }} destroyOnClose>
-        <ReactMap location={(location)=>{
-          setLocation(location);
-        }} />
-      </AntModal>
     </div>
   );
 };
