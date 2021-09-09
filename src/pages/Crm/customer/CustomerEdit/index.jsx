@@ -310,7 +310,8 @@ const CustomerEdit = ({...props}, ref) => {
                                 required
                               />
                               <Amap title='客户地址定位' onChange={(value)=>{
-                                setLocation(value.location);
+                                console.log(value);
+                                setLocation([value.location]);
                               }}  />
                               <Button
                                 type="link" style={{float: 'right'}}

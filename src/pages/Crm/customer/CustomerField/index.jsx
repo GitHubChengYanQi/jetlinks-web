@@ -29,14 +29,14 @@ export const Location = (props) => {
 export const Longitude = (props) => {
   const {location} = props;
   if (location) {
-    props.onChange(location.length>0 && location[0]);
+    props.onChange(location.length>0 && location[0] && location[0][0]);
   }
   return (<InputNumber disabled  {...props} />);
 };
 export const Latitude = (props) => {
   const {location} = props;
   if (location) {
-    props.onChange(location.length>0 && location[1]);
+    props.onChange(location.length>0 && location[0] && location[0][1]);
   }
   return (
     <>

@@ -6,27 +6,15 @@ import {Select} from 'antd';
 
 let MSearch = null;
 let Geocoder = null;
-let city = null;
 
-const AmapSearch = ({__ele__, __map__, onChange}, ref) => {
+const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
+
 
   const [citys, setCitys] = useState();
 
 
   const {data, run} = useRequest({url: '/commonArea/listAll', method: 'POST', data: {grade: 2}}, {manual: true});
 
-
-
-  window.AMap.plugin('AMap.CitySearch', function () {
-    const citySearch = new window.AMap.CitySearch();
-    citySearch.getLocalCity(function (status, result) {
-      if (status === 'complete' && result.info === 'OK') {
-        // 查询成功，result即为当前所在城市信息
-        city = result.city;
-
-      }
-    });
-  });
 
   // console.log(window.AMap);
   window.AMap.plugin(['AMap.PlaceSearch'], function () {
@@ -39,7 +27,6 @@ const AmapSearch = ({__ele__, __map__, onChange}, ref) => {
     };
     MSearch = new window.AMap.PlaceSearch(PlaceSearchOptions); // 构造PlaceSearch类
     window.AMap.Event.addListener(MSearch, 'complete', (result) => {
-      console.log(result.poiList);
       setResult(result.poiList);
     }); // 返回结果
   });
@@ -54,6 +41,7 @@ const AmapSearch = ({__ele__, __map__, onChange}, ref) => {
   // console.log(MSearch);
   const [value, setValue] = useState('');
   const [adinfo, setadinfo] = useState({});
+  const [city,setCity] = useState();
   const [reslut, setResult] = useState(null);
   const [markerPosition, setMarkerPosition] = useState(null);
 
@@ -85,8 +73,42 @@ const AmapSearch = ({__ele__, __map__, onChange}, ref) => {
   }));
 
   useEffect(() => {
-    const value = __map__.getCenter();
-    setMarkerPosition(value);
+    window.AMap.plugin('AMap.CitySearch', function () {
+      const citySearch = new window.AMap.CitySearch();
+      citySearch.getLocalCity(function (status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+
+          Geocoder.getLocation(result.city, function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              setadinfo({
+                address: result.geocodes[0].formattedAddress,
+                location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+              });
+              center(
+                {
+                  lat: result.geocodes[0].location.lat,
+                  lgn: result.geocodes[0].location.lng
+                }
+              );
+              setMarkerPosition({
+                lat: result.geocodes[0].location.lat,
+                lng: result.geocodes[0].location.lng
+              });
+              // result中对应详细地理坐标信息
+            }
+          });
+          // 查询成功，result即为当前所在城市信息
+          setCity(result);
+          // center({lgn:result.rectangle.split(';')[0].split(',')[0],lat:result.rectangle.split(';')[0].split(',')[1]});
+          // setMarkerPosition({
+          //   lat: result.rectangle.split(';')[0].split(',')[1],
+          //   lng: result.rectangle.split(';')[0].split(',')[0]
+          // });
+        }
+      });
+    });
+    // const value = __map__.getCenter();
+    // setMarkerPosition(value);
     run({}).then((res) => {
       const data = res && res.map((items, index) => {
         return {
@@ -114,15 +136,34 @@ const AmapSearch = ({__ele__, __map__, onChange}, ref) => {
           }}
           style={{width: 360}}
           innerBefore={<span style={{paddingLeft: 10}}>
-            <Select defaultValue={[city]} options={citys || []} style={{minWidth: 100}}
-                      bordered={false} />
+           { city && <Select
+              defaultValue={[city.city]}
+              options={citys || []}
+              style={{minWidth: 100}}
+              onChange={(value)=>{
+                Geocoder.getLocation(value, function(status, result) {
+                  if (status === 'complete' && result.info === 'OK') {
+                    center(
+                      {
+                        lat: result.geocodes[0].location.lat,
+                        lgn: result.geocodes[0].location.lng
+                      }
+                    );
+                    setMarkerPosition({
+                      lat: result.geocodes[0].location.lat,
+                      lng: result.geocodes[0].location.lng
+                    });
+                    // result中对应详细地理坐标信息
+                  }
+                });
+              }}
+              bordered={false} /> }
             :</span>}
           innerAfter={<Icon type="search" size="xs" onClick={onClick} style={{margin: 4}} />} />
         <Button
           style={{float: 'right'}}
-          type='primary'
+          type="primary"
           onClick={() => {
-            console.log(adinfo);
             typeof onChange === 'function' && onChange(adinfo);
           }}>确定</Button>
       </div>

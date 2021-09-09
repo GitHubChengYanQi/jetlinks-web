@@ -9,6 +9,7 @@ const {AMAP_KEY, AMAP_VERSION} = config;
 
 const Amap = ({title, value, onClose, onChange}) => {
   const [visible, setVisible] = useState(false);
+  const [center,setCenter] = useState({});
 
   const mapRef = useRef(null);
 
@@ -40,8 +41,10 @@ const Amap = ({title, value, onClose, onChange}) => {
         width="50%"
         title={title}>
         <div style={{height: 'calc(100vh - 90px)'}}>
-          <Map events={events} amapkey={AMAP_KEY} version={AMAP_VERSION} zoom={16}>
-            <AmapSearch ref={mapRef} onChange={(value) => {
+          <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
+            <AmapSearch ref={mapRef} center={(value)=>{
+              setCenter({longitude: value.lgn, latitude: value.lat});
+            }} onChange={(value) => {
               setVisible(false);
               typeof onChange === 'function' && onChange(value);
             }} />
