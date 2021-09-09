@@ -15,7 +15,7 @@ import * as SysField from '@/pages/Crm/customer/CustomerField';
 import ProCard from '@ant-design/pro-card';
 import {useHistory} from 'ice';
 import {MegaLayout} from '@formily/antd-components';
-import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
+import {InternalFieldList, InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
 import Form from '@/components/Form';
 import {Map} from 'react-amap';
@@ -69,7 +69,7 @@ const ApiConfig = {
 };
 
 
-const CustomerEdit = ({...props}, ref) => {
+const CustomerEdit = ({onChange, ...props}, ref) => {
 
   const refMap = useRef(null);
 
@@ -107,7 +107,9 @@ const CustomerEdit = ({...props}, ref) => {
         wrapperCol={24}
         fieldKey="customerId"
         res={(res) => {
-          position && typeof position === 'function' && position(res);
+          if(res){
+            onChange(res);
+          }
         }}
       >
         <div>

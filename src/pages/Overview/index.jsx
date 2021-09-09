@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Button, Card, Col, Divider, Row, Space, Statistic} from 'antd';
+import {Avatar, Button, Card, Col, Divider, List, Row, Space, Statistic} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import styles from './index.module.scss';
 
@@ -45,7 +45,7 @@ const Overview = () => {
 
         <Row gutter={24}>
           <Col span={16}>
-            <Card title="进行中的项目" extra={<a href="#">全部项目</a>}>
+            <Card title="进行中的项目" extra={<a href="#">全部项目</a>} style={{marginBottom:24}}>
               {[1, 2, 3, 4, 5, 6].map(() => {
                 return (
                   <Card.Grid className={styles.gridStyle}>
@@ -57,14 +57,30 @@ const Overview = () => {
                   </Card.Grid>
                 );
               })}</Card>
+
+            <Card title="动态">
+              <List
+                itemLayout="horizontal"
+                dataSource={[1, 2, 3, 4, 5, 6]}
+                renderItem={item => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                      title={<div>朱彦祖 <a href="https://ant.design">新建了客户</a></div>}
+                      description="几秒前"
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
           </Col>
           <Col span={8}>
             <Card title="快速开始 / 便捷导航">
               <Space split={<Divider type="vertical" />}>
-                <Button type='text'>营销</Button>
-                <Button type='text'>智造</Button>
-                <Button type='text'>ERP</Button>
-                <Button type='text'>售后</Button>
+                <Button type="text">营销</Button>
+                <Button type="text">智造</Button>
+                <Button type="text">进销存</Button>
+                <Button type="text">售后</Button>
               </Space>
             </Card>
           </Col>

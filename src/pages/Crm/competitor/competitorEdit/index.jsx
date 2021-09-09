@@ -21,10 +21,10 @@ const ApiConfig = {
   save: competitorEdit
 };
 
-const CompetitorEdit = ({...props}) => {
+const CompetitorEdit = ({onChange,...props}) => {
 
   const {value} = props;
-  const {position} = props;
+  // const {position} = props;
   const formRef = useRef();
 
   return (
@@ -36,7 +36,7 @@ const CompetitorEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       res={(res) => {
-        position && typeof position === 'function' && position(res);
+        onChange(res);
       }}
       wrapperCol={24}
       fieldKey="competitorId"
@@ -51,7 +51,7 @@ const CompetitorEdit = ({...props}) => {
           <FormItem label="竞争对手企业名称" name="name" component={SysField.Name} required />
         </MegaLayout>
         <MegaLayout labelWidth={150} full>
-          <FormItem label="竞争商机名称" name="businessId" component={SysField.BusinessId} businessId={value && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />
+          <FormItem label="竞争商机名称" name="businessId" component={SysField.BusinessId} value={value && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />
         </MegaLayout>
 
         <MegaLayout labelWidth={150}>

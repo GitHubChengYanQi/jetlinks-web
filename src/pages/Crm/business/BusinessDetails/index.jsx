@@ -19,6 +19,8 @@ import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 import styles from './index.module.scss';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 
 const {TabPane} = Tabs;
 
@@ -77,12 +79,13 @@ const CustomerDetail = () => {
             refresh();
           }} ref={refTrack} val={data} footer={
             <ButtonGroup>
-              <Button type="primary" onClick={(res)=>{
-                refA.current.formRef.current.submit();
+              <Button type="primary" onClick={()=>{
+                console.log(11111111111111111, refA);
+                refA.current.formsRef.current.submit();
               }}>保存</Button>
               <Button  onClick={()=>{
                 refTrack.current.close();
-              }}><Icon type="icon-huifu" />返回</Button>
+              }}><Icon type="icon-huifu" />取消</Button>
             </ButtonGroup>
           } />
           <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
