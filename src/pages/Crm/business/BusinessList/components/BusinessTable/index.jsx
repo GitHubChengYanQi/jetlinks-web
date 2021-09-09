@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {lazy, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -18,16 +18,15 @@ import {
   businessBatchDelete,
   businessDelete,
   businessList,
-  CustomerNameListSelect
 } from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
-import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
+import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -43,6 +42,7 @@ const BusinessTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const addRef = useRef(null);
 
   const [search, setSearch] = useState(false);
 
@@ -58,6 +58,9 @@ const BusinessTable = (props) => {
   const actions = () => {
     return (
       <>
+        <AddButton onClick={() => {
+          addRef.current.open();
+        }} />
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
@@ -231,7 +234,7 @@ const BusinessTable = (props) => {
           sorter
           showSorterTooltip
           sortDirections={['ascend', 'descend']} />
-        <Column title="操作" fixed='right' align="right" render={(value, record) => {
+        <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
@@ -244,6 +247,15 @@ const BusinessTable = (props) => {
           );
         }} width={100} />
       </Table>
+      <BusinessAdd
+        ref={addRef}
+        onSuccess={() => {
+          addRef.current.close();
+        }}
+        onClose={() => {
+          addRef.current.close();
+        }}
+      />
       <Modal2 width={1500} title="商机" component={BusinessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
