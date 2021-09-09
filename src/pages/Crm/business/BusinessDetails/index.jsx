@@ -78,7 +78,6 @@ const CustomerDetail = () => {
           }} ref={refTrack} val={data} footer={
             <ButtonGroup>
               <Button type="primary" onClick={(res)=>{
-                console.log(11111111111, res);
                 refA.current.formRef.current.submit();
               }}>保存</Button>
               <Button  onClick={()=>{
