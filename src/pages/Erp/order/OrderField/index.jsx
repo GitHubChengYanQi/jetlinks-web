@@ -64,10 +64,10 @@ export const DeliveryId = (props) => {
 };
 // 产品名称
 export const ItemId = (props) => {
-  return (<Select api={apiUrl.ProductNameListSelect} Select {...props}/>);
+  return (<Select api={apiUrl.ProductNameListSelect} {...props}/>);
 };
 export const CustomerListSelect = (props) => {
-  return (<Select api={apiUrl.CustomerListSelect} Select {...props}/>);
+  return (<Select api={apiUrl.CustomerListSelect} {...props}/>);
 };
 //  产品金额
 export const StockItemId = (props) => {

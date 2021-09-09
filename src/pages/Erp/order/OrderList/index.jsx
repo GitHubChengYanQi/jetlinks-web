@@ -8,22 +8,19 @@
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import './index.scss';
+import OrderDetailsList from "@/pages/Erp/orderDetails/orderDetailsList";
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import OrderEdit from '../OrderEdit';
-import {orderDelete, orderList} from '../OrderUrl';
+import { orderList} from '../OrderUrl';
 import * as SysField from '../OrderField';
-import {CustomerListSelect} from '../OrderField';
-import OrderDetailsList from "@/pages/Erp/orderDetails/orderDetailsList";
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -75,7 +72,7 @@ const OrderList = (props) => {
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
             <MegaLayout inline>
               {
-                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || null} name="customerId" component={SysField.CustomerListSelect} /> : null
+                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || null} name="partyA" component={SysField.CustomerListSelect} /> : null
               }
             </MegaLayout>
           </FormButtonGroup>
@@ -90,7 +87,7 @@ const OrderList = (props) => {
       <Table
         title={<Breadcrumb />}
         api={orderList}
-        rowKey="order_id"
+        rowKey="orderId"
         isModal={false}
         SearchButton={Search()}
         layout={search}
@@ -179,11 +176,11 @@ const OrderList = (props) => {
         <Column title="订单状态" width={120} align='center' dataIndex="state"   sorter/>
         <Column title="订单时间" width={200} dataIndex="orderTime" sorter/>
       </Table>
-      <Modal2 width={1200} title="订单" component={OrderEdit} onSuccess={() => {
+      <Modal width={1200} title="订单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal2 width={1200} title="订单明细" component={OrderDetailsList} onSuccess={() => {
+      <Modal width={1200} title="订单明细" component={OrderDetailsList} onSuccess={() => {
         orderDetailRef.current.refresh();
         ref.current.close();
       }} ref={orderDetailRef} />

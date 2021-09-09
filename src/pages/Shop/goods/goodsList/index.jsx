@@ -18,7 +18,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import {goodsDelete, goodsList} from '../goodsUrl';
 import GoodsEdit from '../goodsEdit';
 import * as SysField from '../goodsField';
-import GoodsDetailsList from "@/pages/Portal/goodsDetails/goodsDetailsList";
+import GoodsDetailsList from "@/pages/Shop/goodsDetails/goodsDetailsList";
 
 
 const {Column} = AntTable;

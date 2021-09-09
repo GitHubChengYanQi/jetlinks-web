@@ -14,8 +14,6 @@ import {Switch} from '@alifd/next';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
 import {trackMessageAdd, trackMessageDetail, trackMessageEdit} from '@/pages/Crm/trackMessage/trackMessageUrl';
-import {TiXing} from '../crmBusinessTrackField';
-
 
 const {FormItem} = Form;
 
@@ -53,7 +51,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
     }
-    return 930;
+    return 750;
   };
 
   if (val){

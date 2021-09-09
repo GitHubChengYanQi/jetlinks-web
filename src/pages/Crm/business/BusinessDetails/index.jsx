@@ -1,13 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic} from 'antd';
-import Breadcrumb from '@/components/Breadcrumb';
-import Icon from '@/components/Icon';
-import {useRequest} from '@/util/Request';
+import React, {useRef} from 'react';
+import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
 import {useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
-import styles from './index.module.scss';
-import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
+import {EditOutlined} from '@ant-design/icons';
+import ButtonGroup from 'antd/es/button/button-group';
 import Modal from '@/components/Modal';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
@@ -15,10 +11,14 @@ import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
-import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
-import ButtonGroup from 'antd/es/button/button-group';
+import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
+import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
+import {useRequest} from '@/util/Request';
+import Icon from '@/components/Icon';
+import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
@@ -30,14 +30,7 @@ const CustomerDetail = () => {
 
   const refA = useRef();
 
-
-
-
-
-
-  const [responsive, setResponsive] = useState(false);
-
-  const {loading, data, run, refresh} = useRequest(businessDetail, {
+  const {loading, data, refresh} = useRequest(businessDetail, {
     defaultParams: {
       data: {
         businessId: params.cid
@@ -84,7 +77,7 @@ const CustomerDetail = () => {
             refresh();
           }} ref={refTrack} val={data} footer={
             <ButtonGroup>
-              <Button type="primary" onClick={()=>{
+              <Button type="primary" onClick={(res)=>{
                 refA.current.formRef.current.submit();
               }}>保存</Button>
               <Button  onClick={()=>{

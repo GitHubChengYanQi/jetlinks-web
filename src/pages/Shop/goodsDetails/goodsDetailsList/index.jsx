@@ -18,7 +18,7 @@ import {goodsDetailsDelete, goodsDetailsList} from '../goodsDetailsUrl';
 import GoodsDetailsEdit from '../goodsDetailsEdit';
 import * as SysField from '../goodsDetailsField';
 import Modal2 from "@/components/Modal";
-import GoodsDetailsBannerList from "@/pages/Portal/goodsDetailsBanner/goodsDetailsBannerList";
+import GoodsDetailsBannerList from "@/pages/Shop/goodsDetailsBanner/goodsDetailsBannerList";
 
 
 const {Column} = AntTable;

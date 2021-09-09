@@ -1,5 +1,6 @@
 import ShopLayout from '@/pages/Shop';
 import {DaoxinPortalClassRouter} from '@/pages/Shop/daoxinPortalClass/daoxinPortalClassRouter';
+import {GoodsRouter} from '@/pages/Shop/goods/goodsRouter';
 
 const ShopRouterConfig = [
   {
@@ -8,6 +9,7 @@ const ShopRouterConfig = [
     component: ShopLayout,
     children:[
       ...DaoxinPortalClassRouter,
+      ...GoodsRouter,
       {
         redirect: '/shop/daoxinPortalClass',
       }
