@@ -17,7 +17,7 @@ export default {
     logLevel: 'info',
     component: 'ant',
     baseURI: 'http://localhost',
-    projectName:'道昕云'
+    projectName:'道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'
   },
