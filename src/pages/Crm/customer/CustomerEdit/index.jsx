@@ -67,17 +67,10 @@ const ApiConfig = {
 
 const CustomerEdit = ({onChange, ...props}, ref) => {
 
-  const refMap = useRef(null);
-
-  const {position} = props;
-
-  const [location, setLocation] = useState();
 
   const formRef = useRef();
 
   const history = useHistory();
-
-  const [modal, setModal] = useState();
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -119,7 +112,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                     method={props.value}
                     onSuccess={(customerId) => {
                       props.onSuccess();
-                      history.push(`/CRM/customer/${customerId}`);
+                      history.push(`/CRM/customer/${customerId.customerId}`);
                     }} required />
 
                 </MegaLayout>

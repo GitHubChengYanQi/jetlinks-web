@@ -5,7 +5,7 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {DatePicker2} from '@alifd/next';
 import {Input, InputNumber,Select as AntdSelect, Button} from 'antd';
 import Select from '@/components/Select';
@@ -16,6 +16,7 @@ import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
 
 const w = 200;
 // 商机Id
@@ -45,10 +46,20 @@ export const PersonListSelect = (props) =>{
 export const CustomerNameListSelect = (props) =>{
   const ref = useRef(null);
 
+  const {onChange,value} = props;
+  const [val,setVal] = useState();
+
   const {loading,data,run:getData} = useRequest(apiUrl.CustomerNameListSelect);
+
   return (
     <>
-      <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
+      <CustomerSelect style={{width: 100}} value={val || null} method={false} onSuccess={(value) => {
+        setVal(value.customerName);
+        onChange(value.customerId);
+      }} onChange={(value) => {
+        onChange(value);
+      }} />
+      {/*<AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />*/}
       <Button type="primary" className='customerName' onClick={()=>{
         ref.current.open(false);}}>
         新增客户

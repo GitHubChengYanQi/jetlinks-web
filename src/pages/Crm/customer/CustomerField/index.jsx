@@ -15,6 +15,7 @@ import DatePicker from '@/components/DatePicker';
 import {commonArea, CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import Cascader from '@/components/Cascader';
 import Amap from '@/components/Amap';
+import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
 
 const {Option} = Select;
 
@@ -35,12 +36,12 @@ export const Longitude = (props) => {
 };
 export const Map = (props) => {
 
-  const [location, setLocation] = useState(props.value  && props.value);
+  const [location, setLocation] = useState(props.value && props.value);
 
   return (
     <>
-      <Input value={location && location.address} style={{width:'60%',marginRight:20,display:'inline-block'}} />
-      <div style={{textAlign: 'center',display:'inline-block'}}>
+      <Input value={location && location.address} style={{width: '60%', marginRight: 20, display: 'inline-block'}} />
+      <div style={{textAlign: 'center', display: 'inline-block'}}>
         <InputNumber
           style={{display: 'none'}}
           hidden
@@ -53,7 +54,7 @@ export const Map = (props) => {
         />
         <Amap title="客户地址定位" onChange={(value) => {
           setLocation(value);
-          props.onChange({address:value.address,map:value.location});
+          props.onChange({address: value.address, map: value.location});
         }} />
       </div>
     </>
@@ -81,61 +82,14 @@ export const CompanyRoleId = (props) => {
 };
 export const CustomerName = (props) => {
 
-
   const {value, onChange, method, onSuccess, ...other} = props;
-
-  const [val, setVal] = useState(value);
-
-  const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
-    debounceInterval: 300,
-    manual: true,
-  });
-
-
-  const handleChange = async value => {
-    if (value) {
-      setVal(value);
+  return (
+    <CustomerSelect value={value} method={method} onSuccess={(value) => {
+      onSuccess(value);
+    }} onChange={(value) => {
       onChange(value);
-      await run({
-        data: {
-          customerName: value
-        }
-      });
-    } else {
-      setVal(value);
-      await run({
-        data: {
-          customerName: ' '
-        }
-      });
-    }
-
-  };
-
-
-  const content = data ? data.map((value, index) => {
-    return (
-      <div key={index}>
-        <a onClick={() => {
-          onSuccess(value.customerId);
-        }}>{value.customerName}</a>
-      </div>
-    );
-  }) : null;
-
-
-  return ((
-    <>
-      <Popover placement="bottomLeft" visible={content && !method ? content.length : false} content={content}
-               trigger="focus">
-        <Input
-          onChange={(value) => {
-            handleChange(value.target.value);
-          }}
-          value={val}
-        />
-      </Popover>
-    </>));
+    }} />
+  );
 };
 
 export const ContactsId = (props) => {
