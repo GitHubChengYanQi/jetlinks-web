@@ -1,6 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Button, message, Modal as AntdModal} from 'antd';
 import {Reset, Submit} from '@formily/antd';
+import Title from '@/components/Title';
 
 const Modal = (
   {
@@ -9,6 +10,7 @@ const Modal = (
     component: Component,
     width,
     footer,
+    padding,
     onSuccess = () => {
     },
     onClose = () => {
@@ -49,8 +51,9 @@ const Modal = (
         show(null);
         onClose();
       }}
+      bodyStyle={{padding:padding || 24}}
       width={width}
-      title={title &&  (value ? `编辑${title}` : `添加${title}`)}
+      title={<Title title={title &&  (value ? `编辑${title}` : `添加${title}`)} level={3} />}
       destroyOnClose
     >
       {Component && <Component

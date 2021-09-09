@@ -1,7 +1,8 @@
 import Modal from '@/components/Modal';
-import {Button} from 'antd';
+import {Button, Space} from 'antd';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import React, {useRef} from 'react';
+import Title from '@/components/Title';
 
 
 const CreateNewCustomer = ({
@@ -13,18 +14,19 @@ const CreateNewCustomer = ({
   ...props
 }) => {
 
-
   const compoentRef = useRef();
 
   return (
-    <Modal compoentRef={compoentRef} width={widths} footer={
+    <Modal compoentRef={compoentRef} padding='0' width={widths} footer={
       <>
-        <Button type="primary" onClick={() => {
-          compoentRef.current.formRef.current.submit();
-        }}>保存</Button>
-        <Button onClick={() => {
-          refModal.current.close();
-        }}>取消</Button>
+        <Space>
+          <Button type="primary" onClick={() => {
+            compoentRef.current.formRef.current.submit();
+          }}>保存</Button>
+          <Button onClick={() => {
+            refModal.current.close();
+          }}>取消</Button>
+        </Space>
       </>
     } title={title} component={model} onSuccess={() => {
       typeof onSuccess === 'function' && onSuccess();

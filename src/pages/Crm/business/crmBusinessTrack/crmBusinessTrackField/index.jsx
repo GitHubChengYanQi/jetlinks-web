@@ -13,7 +13,7 @@ import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import UpLoadImg from '@/components/Upload';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -93,13 +93,13 @@ export const CompetitorId = (props) =>{
   const {loading,data,run:getData} = useRequest(apiUrl.competitorListSelect);
 
   return (
-    <>
+    <div style={{width:300}}>
       <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
-      <Button type="primary"  onClick={()=>{
+      <Button style={{width:100,margin:0}} type="primary"  onClick={()=>{
         ref.current.open(false);}}>
         新增对手
       </Button>
-      <Modal2 width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
+      <Modal width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
         ref.current.close();
         getData();
       }} ref={ref}
@@ -108,9 +108,9 @@ export const CompetitorId = (props) =>{
           props.onChange(res && res.data && res.data.competitorId);
         }
       }} />
-    </>
+    </div>
   );
 };
 export const CompetitorsQuote = (props) =>{
-  return (<InputNumber  {...props}/>);
+  return (<InputNumber style={{width:300}}  {...props}/>);
 };
