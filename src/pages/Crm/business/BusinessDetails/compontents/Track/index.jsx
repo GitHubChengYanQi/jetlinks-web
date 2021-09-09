@@ -11,10 +11,10 @@ const {FormItem} = Form;
 const Track = (props) => {
 
   const {value} = props;
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
   const tableRef = useRef(null);
 
-  const datas = () => {
+  const datas = (data) => {
     return {
       author: data && data.userResult ? data.userResult.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -23,12 +23,13 @@ const Track = (props) => {
           <div>
             <span style={{color: '#91959e'}}>跟踪类型:</span>
             <p style={{padding: 10}}>{data && data.type}</p>
-            <span style={{color: '#91959e'}}>图片:</span>
-            <p style={{padding: 10}}>
-              <Image width={100} height={50} src={data && data.image} />
-            </p>
+            {data && data.image ? <div>
+              <p style={{color: '#91959e'}}>图片:</p>
+              <Image style={{marginLeft: 10}} width={100} height={50} src={data && data.image} />
+            </div> : null}
+
           </div>
-          {data ? <div>
+          {data && data.note ? <div>
             <span style={{color: '#91959e'}}>跟踪内容:</span>
             <p style={{padding: 10}}>{data.note}</p>
           </div> : null}
@@ -64,8 +65,9 @@ const Track = (props) => {
         rowKey="trackMessageId"
       >
         <Column render={(text, record) => {
-          setData(record);
+          // setData(record);
           return (
+
             <Comment
               {...datas(record)}
             />
