@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import { Comment, Table as AntTable} from 'antd';
+import {Comment, Image, Table as AntTable} from 'antd';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
@@ -23,13 +23,15 @@ const Track = (props) => {
           <div>
             <span style={{color: '#91959e'}}>跟踪类型:</span>
             <p style={{padding: 10}}>{data && data.type}</p>
-            <span style={{color: '#91959e'}}>跟踪内容:</span>
-            <p style={{padding: 10}}>{data && data.note}</p>
+            <span style={{color: '#91959e'}}>图片:</span>
+            <p style={{padding: 10}}>
+              <Image width={100} height={50} src={data && data.image} />
+            </p>
           </div>
-          {/*{value.message ? <div>*/}
-          {/*  <span style={{color: '#91959e'}}>提醒内容:</span>*/}
-          {/*  <p style={{padding: 10}}>{data.message}</p>*/}
-          {/*</div> : null}*/}
+          {data ? <div>
+            <span style={{color: '#91959e'}}>跟踪内容:</span>
+            <p style={{padding: 10}}>{data.note}</p>
+          </div> : null}
         </>
       ),
       datetime: (
