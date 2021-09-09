@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import { Comment, Table as AntTable} from 'antd';
 import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
@@ -11,25 +11,25 @@ const {FormItem} = Form;
 const Track = (props) => {
 
   const {value} = props;
-  console.log(111111111111, value);
-
+  const [data, setData] = useState();
   const tableRef = useRef(null);
 
-
-  const datas = (value) => {
+  const datas = () => {
     return {
-      author: value && value.user && value.user.name ? value.user.name : '--',
+      author: data && data.userResult ? data.userResult.name : '--',
       avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       content: (
         <>
-          <p>
-            <p style={{color: '#91959e'}}>跟踪内容</p>
-            <p style={{padding: 10}}>{value.note}</p>
-          </p>
-          {value.message ? <p>
-            <span style={{color: '#91959e'}}>提醒内容</span>
-            <p style={{padding: 10}}>{value.message}</p>
-          </p> : null}
+          <div>
+            <span style={{color: '#91959e'}}>跟踪类型:</span>
+            <p style={{padding: 10}}>{data && data.type}</p>
+            <span style={{color: '#91959e'}}>跟踪内容:</span>
+            <p style={{padding: 10}}>{data && data.note}</p>
+          </div>
+          {/*{value.message ? <div>*/}
+          {/*  <span style={{color: '#91959e'}}>提醒内容:</span>*/}
+          {/*  <p style={{padding: 10}}>{data.message}</p>*/}
+          {/*</div> : null}*/}
         </>
       ),
       datetime: (
@@ -62,6 +62,7 @@ const Track = (props) => {
         rowKey="trackMessageId"
       >
         <Column render={(text, record) => {
+          setData(record);
           return (
             <Comment
               {...datas(record)}

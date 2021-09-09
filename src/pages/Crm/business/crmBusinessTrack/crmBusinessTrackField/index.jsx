@@ -13,6 +13,7 @@ import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import UpLoadImg from '@/components/Upload';
+import Modal2 from '@/components/Modal';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -90,12 +91,12 @@ export const CompetitorId = (props) =>{
         ref.current.open(false);}}>
         新增对手
       </Button>
-      <CreateNewCustomer onSuccess={() => {
+      <Modal2 width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
         ref.current.close();
         getData();
-      }} refModal={ref} title='竞争对手' model={CompetitorEdit} widths={1000}  position={(res)=>{
+      }} ref={ref}  position={(res)=>{
         props.onChange(res && res.data && res.data.competitorId);
-      }}/>
+      }} />
     </>
   );
 };

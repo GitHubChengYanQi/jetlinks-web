@@ -54,7 +54,7 @@ const CompetitorTable = (props) => {
     const formItem = () => {
       return (
         <>
-          {value ? null : <FormItem mega-props={{span: 1}} placeholder="竞争对手"  name="competitorId"  component={SysField.CompetitorId} />}
+          {value ? null : <FormItem mega-props={{span: 1}} placeholder="对手名称"  name="competitorId"  component={SysField.CompetitorId} />}
           {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="关联商机" name="businessId" component={SysField.BusinessId} />}
         </>
       );
@@ -128,7 +128,7 @@ const CompetitorTable = (props) => {
             </div>
           );
         }} />
-        <Column width={200} title="竞争对手" dataIndex="competitorId" render={(value, record) => {
+        <Column width={200} title="对手名称" dataIndex="competitorId" render={(value, record) => {
           return (
 
             <div>
@@ -139,18 +139,18 @@ const CompetitorTable = (props) => {
           );
         }} />
         <Column width={100} title="报价金额" dataIndex="competitorsQuote" />
-        <Column width={100} title="报价状态" dataIndex="quoteStatus" render={(value, record) => {
-          return (
-            <div>
-              {
-                record.quoteStatus === '' && '-' ||
-                record.quoteStatus === 0 && '无需审批' ||
-                record.quoteStatus === 1 && '待询价' ||
-                record.quoteStatus === 2 && '询价中'
-              }
-            </div>
-          );
-        }} />
+        {/*<Column width={100} title="报价状态" dataIndex="quoteStatus" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <div>*/}
+        {/*      {*/}
+        {/*        record.quoteStatus === '' && '-' ||*/}
+        {/*        record.quoteStatus === 0 && '无需审批' ||*/}
+        {/*        record.quoteStatus === 1 && '待询价' ||*/}
+        {/*        record.quoteStatus === 2 && '询价中'*/}
+        {/*      }*/}
+        {/*    </div>*/}
+        {/*  );*/}
+        {/*}} />*/}
         <Column width={200} title="报价日期" dataIndex="createTime" />
 
       </Table>

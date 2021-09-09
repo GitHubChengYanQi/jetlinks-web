@@ -16,8 +16,8 @@ export default {
   home: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.228',
-    projectName: '道昕云',
+    baseURI: 'http://localhost',
+    projectName:'道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'
   },
