@@ -69,6 +69,8 @@ const ApiConfig = {
 };
 
 
+
+
 const CustomerEdit = ({...props}, ref) => {
 
   const refMap = useRef(null);
@@ -300,13 +302,6 @@ const CustomerEdit = ({...props}, ref) => {
                                 location={location || null}
                                 required
                               />
-                              {/*<FormItem*/}
-                              {/*  label="纬度"*/}
-                              {/*  name={`adressParams.${index}.latitude`}*/}
-                              {/*  component={SysField.Latitude}*/}
-                              {/*  location={location || null}*/}
-                              {/*  required*/}
-                              {/*/>*/}
                               <FormItem
                                 label="纬度"
                                 name={`adressParams.${index}.latitude`}
@@ -314,7 +309,9 @@ const CustomerEdit = ({...props}, ref) => {
                                 location={location || null}
                                 required
                               />
-
+                              <Amap title='客户地址定位' onChange={(value)=>{
+                                setLocation(value.location);
+                              }}  />
                               <Button
                                 type="link" style={{float: 'right'}}
                                 onClick={() => {

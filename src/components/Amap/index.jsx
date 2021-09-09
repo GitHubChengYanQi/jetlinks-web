@@ -1,8 +1,9 @@
-import {Button, Drawer} from '@alifd/next';
+import {Drawer} from '@alifd/next';
 import React, {useRef, useState} from 'react';
 import {Map} from 'react-amap';
 import {config} from 'ice';
 import AmapSearch from '@/components/Amap/search';
+import {Button} from 'antd';
 
 const {AMAP_KEY, AMAP_VERSION} = config;
 
@@ -27,7 +28,7 @@ const Amap = ({title, value, onClose, onChange}) => {
         <div style={{fontSize: 14, fontWeight: 900}}>{value.name}</div>
         {value.address}
       </div>}
-      <Button type="primary" size="small" onClick={() => {
+      <Button type="primary" onClick={() => {
         setVisible(true);
       }}>{title || '定位'}</Button>
       <Drawer

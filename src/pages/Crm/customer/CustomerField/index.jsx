@@ -19,26 +19,33 @@ import Amap from '@/components/Amap';
 const {Option} = Select;
 
 
-
-export const ContactsName = (props) =>{
-  return (<Input  {...props}/>);
+export const ContactsName = (props) => {
+  return (<Input  {...props} />);
 };
 
-export const Location = (props) =>{
-  return (<Input  {...props}/>);
+export const Location = (props) => {
+  return (<Input  {...props} />);
 };
-export const Longitude = (props) =>{
+export const Longitude = (props) => {
   const {location} = props;
-  if (location){
-    props.onChange(location && location.lng);
+  if (location) {
+    props.onChange(location.length>0 && location[0]);
   }
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber disabled  {...props} />);
 };
-export const Latitude = (props) =>{
-  return ( <Amap title='客户地址定位' />);
+export const Latitude = (props) => {
+  const {location} = props;
+  if (location) {
+    props.onChange(location.length>0 && location[1]);
+  }
+  return (
+    <>
+      <InputNumber disabled {...props}/>
+    </>
+  );
 };
-export const PhoneNumber = (props) =>{
-  return (<InputNumber style={{width:300}}  {...props}/>);
+export const PhoneNumber = (props) => {
+  return (<InputNumber style={{width: 300}}  {...props} />);
 };
 
 export const key = (props) => {
@@ -71,7 +78,7 @@ export const CustomerName = (props) => {
 
 
   const handleChange = async value => {
-    if (value){
+    if (value) {
       setVal(value);
       onChange(value);
       await run({
@@ -79,7 +86,7 @@ export const CustomerName = (props) => {
           customerName: value
         }
       });
-    }else {
+    } else {
       setVal(value);
       await run({
         data: {
@@ -91,7 +98,7 @@ export const CustomerName = (props) => {
   };
 
 
-  const content = data ? data.map((value,index) => {
+  const content = data ? data.map((value, index) => {
     return (
       <div key={index}>
         <a onClick={() => {
@@ -104,7 +111,8 @@ export const CustomerName = (props) => {
 
   return ((
     <>
-      <Popover placement="bottomLeft" visible={content && !method ? content.length : false} content={content} trigger="focus">
+      <Popover placement="bottomLeft" visible={content && !method ? content.length : false} content={content}
+               trigger="focus">
         <Input
           onChange={(value) => {
             handleChange(value.target.value);
@@ -120,7 +128,7 @@ export const ContactsId = (props) => {
 };
 
 export const Setup = (props) => {
-  return (<DatePicker  showTime {...props} />);
+  return (<DatePicker showTime {...props} />);
 };
 export const Legal = (props) => {
   return (<Input  {...props} />);
@@ -155,7 +163,7 @@ export const DeptId = (props) => {
   return (<Input   {...props} />);
 };
 export const ClientId = (props) => {
-  return (<Select  api={apiUrl.customerIdSelect} {...props} />);
+  return (<Select api={apiUrl.customerIdSelect} {...props} />);
 };
 
 export const client = (props) => {
@@ -171,7 +179,7 @@ export const Dept = (props) => {
 };
 
 export const Client = (props) => {
-  return (<Select  api={apiUrl.customerIdSelect} {...props} />);
+  return (<Select api={apiUrl.customerIdSelect} {...props} />);
 };
 
 export const Status = (props) => {
@@ -197,15 +205,15 @@ export const Note = (props) => {
 };
 
 export const CustomerLevelId = (props) => {
-  return (<Select  api={apiUrl.CustomerLevelIdSelect}  {...props} />);
+  return (<Select api={apiUrl.CustomerLevelIdSelect}  {...props} />);
 };
 
 export const OriginId = (props) => {
-  return (<Select  api={apiUrl.OriginIdSelect}  {...props} />);
+  return (<Select api={apiUrl.OriginIdSelect}  {...props} />);
 };
 
 export const UserName = (props) => {
-  return (<Select  api={apiUrl.UserIdSelect}  {...props} />);
+  return (<Select api={apiUrl.UserIdSelect}  {...props} />);
 };
 
 export const Emall = (props) => {
