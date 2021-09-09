@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState, useEffect} from 'react';
-import {Button, Input, Steps, Row, Col, Table as AntTable} from 'antd';
+import {Button, Input, Steps, Row, Col, Table as AntTable, Modal} from 'antd';
 import Form from '@/components/Form';
 import FormIndex from '@/components/Form/FormIndex';
 import {
@@ -15,9 +15,12 @@ import {
   businessEdit,
 } from '../BusinessUrl';
 import * as SysField from '../BusinessField';
-import Drawer from "@/components/Drawer";
-import Index from "@/pages/Crm/customer/CustomerEdit/components/ContactsEdit";
-import TableDetail from "@/pages/Crm/business/BusinessEdit/components/TableDetail";
+import Drawer from '@/components/Drawer';
+import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
+import {useRequest} from '@/util/Request';
+import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 
 const {FormItem} = Form;
 
@@ -33,9 +36,16 @@ const BusinessEdit = ({...props}) => {
   const {Step} = Steps;
   const [result, setResult] = useState(props.value);
   const [current, setCurrent] = React.useState(0);
+  const [data, setData] = useState();
+  const [visi, setVisi] = useState();
   const tableRef = useRef(null);
   const ref = useRef(null);
   const formRef = useRef();
+
+  const {run} = useRequest(businessDetail, {
+    manual: true
+  });
+
 
   const steps = [
     {
@@ -50,7 +60,7 @@ const BusinessEdit = ({...props}) => {
               api={ApiConfig}
               fieldKey="businessId"
               success={(result) => {
-                if(!props.value){
+                if (!props.value) {
                   setResult(result.data);
                 }
                 next();
@@ -58,20 +68,29 @@ const BusinessEdit = ({...props}) => {
             >
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="商机名称" name="businessName"
-                    rules={[{ required: true, message: '请输入商机名称!' }]}
-                    component={SysField.BusinessNameListSelect} required/>
+                  <FormItem
+                    label="商机名称"
+                    name="businessName"
+                    rules={[{required: true, message: '请输入商机名称!'}]}
+                    component={SysField.BusinessNameListSelect}
+                    required />
                 </Col>
                 <Col span={12}>
-                  <FormItem label="负责人" name="person"
-                    rules={[{ required: true, message: '请输入负责人!' }]}
-                    component={SysField.PersonListSelect} required/>
+                  <FormItem
+                    label="负责人"
+                    name="person"
+                    rules={[{required: true, message: '请输入负责人!'}]}
+                    component={SysField.PersonListSelect}
+                    required />
                 </Col>
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="客户名称" name="customerId"
-                    component={SysField.CustomerNameListSelect}/>
+                  <FormItem
+                    label="客户名称"
+                    name="customerId"
+                    component={SysField.CustomerNameListSelect}
+                    required />
                 </Col>
                 <Col span={12}>
                   <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
@@ -79,9 +98,10 @@ const BusinessEdit = ({...props}) => {
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="销售流程" name="salesId"
-                    rules={[{ required: true, message: '请输入销售流程!' }]}
-                    component={SysField.SalesIdListSelect} required/>
+                  <FormItem
+                    label="销售流程" name="salesId"
+                    rules={[{required: true, message: '请输入销售流程!'}]}
+                    component={SysField.SalesIdListSelect} required />
                 </Col>
                 <Col span={12}>
                   <FormItem label="阶段变更时间" name="changeTime" component={SysField.ChangeTimeListSelect17} />
@@ -89,9 +109,10 @@ const BusinessEdit = ({...props}) => {
               </Row>
               <Row gutter={24} style={{padding: '0 30px'}}>
                 <Col span={12}>
-                  <FormItem label="商机阶段" name="stage"
-                    rules={[{ required: true, message: '请输入商机阶段!' }]}
-                    component={SysField.StageListSelect13} required/>
+                  <FormItem
+                    label="商机阶段" name="stage"
+                    rules={[{required: true, message: '请输入商机阶段!'}]}
+                    component={SysField.StageListSelect13} required />
                 </Col>
                 <Col span={12}>
                   <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
@@ -110,7 +131,7 @@ const BusinessEdit = ({...props}) => {
                   <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
                 </Col>
               </Row>
-              <div style={{textAlign:'center'}}>
+              <div style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
                   下一步
                 </Button>
@@ -132,18 +153,42 @@ const BusinessEdit = ({...props}) => {
               tableRef.current.refresh();
               ref.current.close();
             }} ref={ref} />
-            <div style={{textAlign:'center'}}>
-              <Button style={{marginRight:20}} type="primary" onClick={()=>{
-                props.onSuccess();
+            <div style={{textAlign: 'center'}}>
+              <Button style={{marginRight: 20}} type="primary" onClick={() => {
+                next();
               }
               }>
-                保存
+                下一步
               </Button>
-              <Button onClick={()=> prev()}>
+              <Button onClick={() => prev()}>
                 返回
               </Button>
             </div>
           </div>
+        </>
+    }, {
+      title: '完成',
+      content:
+        <>
+          <BusinessComplete add={() => {
+            setCurrent(0);
+            setResult(false);
+          }} detail={async () => {
+            if (result) {
+              const data = await run(
+                {
+                  data: {
+                    businessId: result
+                  }
+                }
+              );
+              setData(data);
+              setVisi(true);
+            } else {
+              console.log(result);
+            }
+
+          }} />
         </>
     }
   ];
@@ -157,14 +202,23 @@ const BusinessEdit = ({...props}) => {
   };
 
   return (
-    <>
-      <Steps current={current} style={{padding: '30px 150px '}}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[current].content}</div>
-    </>
+    <div style={{maxHeight: 510, height: 'calc(100vh - 200px)'}}>
+      <div style={{overflow: 'auto', height: 'calc(100vh - 200px)'}}>
+        <Steps current={current} style={{padding: '30px 150px '}}>
+          {steps.map(item => (
+            <Step key={item.title} title={item.title} />
+          ))}
+        </Steps>
+        <div className="steps-content">{steps[current].content}</div>
+        <Modal visible={visi} width={800} onCancel={() => {
+          setVisi(false);
+        }} onOk={() => {
+          setVisi(false);
+        }}>
+          <Description data={data || null} />
+        </Modal>
+      </div>
+    </div>
   );
 };
 

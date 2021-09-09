@@ -50,6 +50,7 @@ const Modal = (
       onCancel={() => {
         show(null);
         onClose();
+        onSuccess();
       }}
       bodyStyle={{padding:padding || 24}}
       width={width}

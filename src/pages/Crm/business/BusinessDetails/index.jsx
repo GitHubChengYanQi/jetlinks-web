@@ -19,7 +19,6 @@ import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 import styles from './index.module.scss';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 
 const {TabPane} = Tabs;
