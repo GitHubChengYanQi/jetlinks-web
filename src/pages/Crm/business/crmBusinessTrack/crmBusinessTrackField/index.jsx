@@ -35,10 +35,18 @@ export const Image = (props) => {
 };
 
 export const Longitude = (props) =>{
-  return (<InputNumber   {...props}/>);
+  const {location} = props;
+  if (location) {
+    props.onChange(location);
+  }
+  return (<Input   {...props} disabled/>);
 };
 export const Latitude = (props) =>{
-  return (<InputNumber   {...props}/>);
+  const {location} = props;
+  if (location) {
+    props.onChange(location);
+  }
+  return (<Input   {...props} disabled/>);
 };
 
 export const Money = (props) => {
@@ -94,8 +102,11 @@ export const CompetitorId = (props) =>{
       <Modal2 width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
         ref.current.close();
         getData();
-      }} ref={ref}  position={(res)=>{
-        props.onChange(res && res.data && res.data.competitorId);
+      }} ref={ref}
+      onChange={(res)=>{
+        if(res){
+          props.onChange(res && res.data && res.data.competitorId);
+        }
       }} />
     </>
   );

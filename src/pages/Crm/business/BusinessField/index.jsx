@@ -56,8 +56,11 @@ export const CustomerNameListSelect = (props) =>{
       <CreateNewCustomer title='客户' model={CustomerEdit} widths={1600} onSuccess={() => {
         ref.current.close();
         getData();
-      }} refModal={ref} position={(res)=>{
-        props.onChange(res && res.data && res.data.customerId);
+      }} refModal={ref}
+      onChange={(res)=>{
+        if(res){
+          props.onChange(res && res.data && res.data.competitorId);
+        }
       }}/>
     </>
   );

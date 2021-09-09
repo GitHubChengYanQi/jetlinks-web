@@ -62,12 +62,5 @@ export const TakeCountermeasures = (props) =>{
   return (<Input.TextArea {...props}/>);
 };
 export const BusinessId = (props) =>{
-  const {businessId} = props;
-  useEffect(()=>{
-    if (businessId){
-      props.onChange(businessId);
-    }
-
-  },[]);
   return (<Select api={apiUrl.BusinessId} {...props} />);
 };

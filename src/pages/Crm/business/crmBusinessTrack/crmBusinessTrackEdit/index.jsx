@@ -11,16 +11,15 @@ import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import {Button} from 'antd';
 import {Switch} from '@alifd/next';
-import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
-import {trackMessageAdd, trackMessageDetail, trackMessageEdit} from '@/pages/Crm/trackMessage/trackMessageUrl';
+import {trackMessageAdd} from '@/pages/Crm/trackMessage/trackMessageUrl';
+import Form from '@/components/Form';
+
 
 const {FormItem} = Form;
 
 const ApiConfig = {
-  view: trackMessageDetail,
-  add: trackMessageAdd,
-  save: trackMessageEdit
+  add: trackMessageAdd
 };
 
 
@@ -39,10 +38,9 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
 
   const {val} = props;
 
-  const formRef = useRef();
-
+  const formsRef = useRef();
   useImperativeHandle(ref, () => ({
-    formRef,
+    formsRef,
   }));
 
   const [hidden,setHidden] = useState(false);
@@ -58,17 +56,18 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     return (
       <div style={{height: height()}}>
         <Form
-          NoButton={false}
           {...props}
-          ref={formRef}
+          NoButton={false}
+          ref={formsRef}
           api={ApiConfig}
           fieldKey="trackMessageId"
         >
           <div style={{float: 'left', paddingRight: 10, height: height(), width: '45%', overflow: 'auto'}}>
             <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
               <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val}  />
-              <FormItem label="跟踪类型" name="type" component={SysField.Type}  />
+              <FormItem label="跟踪内容" name="type" component={SysField.Type}  />
               <FormItem label="跟踪信息" name="note" component={SysField.Note}/>
+              <FormItem label="图片" name="image" component={SysField.Image}  />
               <Switch
                 size='small'
                 style={{marginLeft: '6%', marginBottom: 20, width: 100}}
@@ -92,10 +91,6 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                 }}
               > </Switch>
               { hidden ? <FormItem label="报价金额" name="money" component={SysField.Money} /> : null}
-              <FormItem label="经度" name="longitude" component={SysField.Longitude}  />
-              <FormItem label="纬度" name="latitude" component={SysField.Latitude}  />
-              <FormItem label="图片" name="image" component={SysField.Image}  />
-
             </ProCard>
           </div>
           <div style={{float: 'left', width: '55%', height: height(), overflow: 'auto'}}>
@@ -110,33 +105,31 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                 {({state, mutators}) => {
                   const onAdd = () => mutators.push();
                   return (
-                    <div>
+                    <div >
                       {state.value.map((item, index) => {
                         const onRemove = index => mutators.remove(index);
                         return (
-                          <>
-                            <div style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
-                              <RowStyleLayout key={index}>
-                                <FormItem
-                                  label="竞争对手"
-                                  name={`competitorQuoteParam.${index}.competitorId`}
-                                  component={SysField.CompetitorId}
-                                  required
-                                />
-                                <FormItem
-                                  label="报价"
-                                  name={`competitorQuoteParam.${index}.competitorsQuote`}
-                                  component={SysField.CompetitorsQuote}
-                                  required
-                                />
-                                <Button
-                                  type="link" style={{float: 'right'}}
-                                  onClick={() => {
-                                    onRemove(index);
-                                  }}>删除报价</Button>
-                              </RowStyleLayout>
-                            </div>
-                          </>
+                          <div key={index} style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
+                            <RowStyleLayout key={index}>
+                              <FormItem
+                                label="竞争对手"
+                                name={`competitorQuoteParam.${index}.competitorId`}
+                                component={SysField.CompetitorId}
+
+                              />
+                              <FormItem
+                                label="报价"
+                                name={`competitorQuoteParam.${index}.competitorsQuote`}
+                                component={SysField.CompetitorsQuote}
+
+                              />
+                              <Button
+                                type="link" style={{float: 'right'}}
+                                onClick={() => {
+                                  onRemove(index);
+                                }}>删除报价</Button>
+                            </RowStyleLayout>
+                          </div>
                         );
                       })}
                       <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加对手报价</Button>
@@ -145,7 +138,6 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                 }}
               </FieldList>
             </ProCard>
-
           </div>
         </Form>
       </div>
