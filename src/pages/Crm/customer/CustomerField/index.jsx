@@ -29,18 +29,33 @@ export const Location = (props) => {
 export const Longitude = (props) => {
   const {location} = props;
   if (location) {
-    props.onChange(location.length>0 && location[0] && location[0][0]);
+    props.onChange(location.length > 0 && location[0] && location[0][0]);
   }
   return (<InputNumber disabled  {...props} />);
 };
-export const Latitude = (props) => {
-  const {location} = props;
-  if (location) {
-    props.onChange(location.length>0 && location[0] && location[0][1]);
-  }
+export const Map = (props) => {
+
+  const [location, setLocation] = useState(props.value  && props.value);
+
   return (
     <>
-      <InputNumber disabled {...props}/>
+      <Input value={location && location.address} style={{width:'60%',marginRight:20,display:'inline-block'}} />
+      <div style={{textAlign: 'center',display:'inline-block'}}>
+        <InputNumber
+          style={{display: 'none'}}
+          hidden
+          value={location && location.location && location.length > 0 && location[0]}
+        />
+        <InputNumber
+          style={{display: 'none'}}
+          hidden
+          value={location && location.location && location.length > 0 && location[1]}
+        />
+        <Amap title="客户地址定位" onChange={(value) => {
+          setLocation(value);
+          props.onChange({address:value.address,map:value.location});
+        }} />
+      </div>
     </>
   );
 };

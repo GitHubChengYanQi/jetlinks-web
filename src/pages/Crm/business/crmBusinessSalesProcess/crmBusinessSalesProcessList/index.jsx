@@ -60,6 +60,7 @@ const CrmBusinessSalesProcessList = (props) => {
       >
         <Column title="流程名称" dataIndex="name" />
         <Column title="百分比" dataIndex="percentage" />
+        <Column title="流程说明" dataIndex="note" />
         <Column title="排序" dataIndex="sort" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

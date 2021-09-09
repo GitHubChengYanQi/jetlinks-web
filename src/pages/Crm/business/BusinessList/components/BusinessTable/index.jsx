@@ -168,7 +168,6 @@ const BusinessTable = (props) => {
         <Column
           title="客户名称"
           dataIndex="customerName"
-          sorter
           showSorterTooltip={false}
           sortDirections={['ascend', 'descend']}
           render={(value, record) => {

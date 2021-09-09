@@ -36,9 +36,9 @@ export const Customer = (props) => {
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
-    <CreateNewCustomer onSuccess={()=>{
+    <CreateNewCustomer onSuccess={() => {
       ref.current.clone();
-    }} title='客户' model={CustomerEdit} refModal={ref} widths={1600} />
+    }} title="客户" model={CustomerEdit} refModal={ref} widths={1600} />
     {/*<Drawer title="客户" ref={ref} onSuccess={() => {*/}
     {/*  ref.current.close();*/}
     {/*}} component={CompanyRoleEdit} position={(res) => {*/}
@@ -73,7 +73,7 @@ export const Phone = (props) => {
   const {contactsid} = props;
   useEffect(() => {
     props.onChange(null);
-  }, [ contactsid || null]);
+  }, [contactsid || null]);
   const data = contactsid ? contactsid.map((value) => {
     return {
       label: value.phoneNumber,
@@ -115,8 +115,12 @@ export const Time = (props) => {
 };
 export const Audit = (props) => {
   props.onChange(props.value || 0);
-  return (<AntSelect disabled defaultValue={[0]} allowClear style={{width: 200}}
-                     options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
+  return (<AntSelect
+    disabled
+    defaultValue={[0]}
+    allowClear
+    style={{width: 200}}
+    options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
 };
 
 export const CustomerNameListSelect = (props) => {
@@ -213,7 +217,6 @@ export const Content = (props) => {
                 }} {...props} />
               </>);
             }
-
 
 
             if (domNode.name === 'strong' && domNode.attribs.class === 'insertAcontacts' && domNode.children[0].data === '选择甲方联系人') {

@@ -32,6 +32,7 @@ const CrmBusinessSalesProcessEdit = ({...props}) => {
     >
       <FormItem label="流程名称" name="name" component={SysField.Name} required/>
       <FormItem label="百分比" name="percentage" component={SysField.Percentage} required/>
+      <FormItem label="流程说明" name="note" component={SysField.Note} required/>
       <FormItem label="排序" name="sort" component={SysField.Sort} sort={0} required/>
     </Form>
   );

@@ -57,7 +57,7 @@ const AdressRowStyleLayout = styled(props => <div {...props} />)`
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
-    width: 25%;
+    width: 80%;
   }
 `;
 
@@ -67,8 +67,6 @@ const ApiConfig = {
   add: customerAdd,
   save: customerEdit
 };
-
-
 
 
 const CustomerEdit = ({...props}, ref) => {
@@ -205,13 +203,12 @@ const CustomerEdit = ({...props}, ref) => {
                                 label="联系人姓名"
                                 name={`contactsParams.${index}.contactsName`}
                                 component={SysField.ContactsName}
-                                required
                               />
                               <FormItem
                                 label="职务"
                                 name={`contactsParams.${index}.companyRole`}
                                 component={SysField.CompanyRoleId}
-                                required
+
                               />
                               <div style={{float: 'right'}}>
                                 <Button type="link" onClick={() => onRemove(index)}>删除联系人</Button>
@@ -236,7 +233,7 @@ const CustomerEdit = ({...props}, ref) => {
                                                 label="联系人电话"
                                                 name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
                                                 component={SysField.PhoneNumber}
-                                                required
+
                                               />
                                               <Button type="link" onClick={() => onRemove(indexs)}>删除电话</Button>
                                             </PhoneRowStyleLayout>
@@ -244,8 +241,10 @@ const CustomerEdit = ({...props}, ref) => {
                                         })}
                                         <div>
                                           <div style={{height: 30}}>
-                                            <Button type="link" style={{float: 'right'}}
-                                                    onClick={onAdd}>增加联系人电话</Button>
+                                            <Button
+                                              type="link"
+                                              style={{float: 'right'}}
+                                              onClick={onAdd}>增加联系人电话</Button>
                                           </div>
                                         </div>
                                       </div>
@@ -286,33 +285,13 @@ const CustomerEdit = ({...props}, ref) => {
                               label="省市区地址"
                               name={`adressParams.${index}.region`}
                               component={SysField.Region}
-                              required
                             />
                             <AdressRowStyleLayout key={index}>
                               <FormItem
-                                label="&nbsp;&nbsp;&nbsp;详细地址"
-                                name={`adressParams.${index}.location`}
-                                component={SysField.Location}
-                                required
+                                label="&nbsp;&nbsp;&nbsp;&nbsp;详细地址"
+                                name={`adressParams.${index}.map`}
+                                component={SysField.Map}
                               />
-                              <FormItem
-                                label="经度"
-                                name={`adressParams.${index}.longitude`}
-                                component={SysField.Longitude}
-                                location={location || null}
-                                required
-                              />
-                              <FormItem
-                                label="纬度"
-                                name={`adressParams.${index}.latitude`}
-                                component={SysField.Latitude}
-                                location={location || null}
-                                required
-                              />
-                              <Amap title='客户地址定位' onChange={(value)=>{
-                                console.log(value);
-                                setLocation([value.location]);
-                              }}  />
                               <Button
                                 type="link" style={{float: 'right'}}
                                 onClick={() => {

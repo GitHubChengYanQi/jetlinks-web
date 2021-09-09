@@ -18,6 +18,9 @@ export const Name = (props) =>{
 export const Percentage = (props) =>{
   return (<Input {...props}/>);
 };
+export const Note = (props) =>{
+  return (<Input.TextArea {...props}/>);
+};
 export const SalesId = (props) =>{
   return (<Input {...props}/>);
 };
