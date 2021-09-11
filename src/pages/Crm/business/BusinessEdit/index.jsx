@@ -123,14 +123,6 @@ const BusinessEdit = ({...props}) => {
                 <Col span={12}>
                   <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
                 </Col>
-                <Col span={12}>
-                  <FormItem label="结单日期" name="statementTime" component={SysField.StatementTimeListSelect14} />
-                </Col>
-              </Row>
-              <Row gutter={24} style={{padding: '0 30px'}}>
-                <Col span={12}>
-                  <FormItem label="产品合计" name="totalProducts" component={SysField.TotalProductsListSelect4} />
-                </Col>
               </Row>
               <div style={{textAlign: 'center'}}>
                 <Button type="primary" htmlType="submit">
