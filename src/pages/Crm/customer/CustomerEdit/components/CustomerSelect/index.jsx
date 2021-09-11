@@ -47,6 +47,7 @@ const CustomerSelect = (props) => {
       <div key={index}>
         <a onClick={() => {
           onSuccess(value);
+          setVis(false);
         }}>{value.customerName}</a>
       </div>
     );
@@ -57,13 +58,14 @@ const CustomerSelect = (props) => {
     <>
       <Popover
         placement="bottomLeft"
-        visible={content && !method ? content.length : false}
+        visible={vis && content && !method ? content.length : false}
         content={content}
         trigger="focus">
         <Input
           style={style}
           onChange={(value) => {
             handleChange(value.target.value);
+            setVis(true);
           }}
           value={val}
         />
