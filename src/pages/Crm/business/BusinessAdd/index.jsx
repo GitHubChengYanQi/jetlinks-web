@@ -1,15 +1,15 @@
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Col, Divider, Modal, Row, Statistic, Steps} from 'antd';
-
+import React, { useImperativeHandle, useRef, useState} from 'react';
+import { Modal} from 'antd';
 import {useRequest} from '@/util/Request';
 import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
-const {Step} = Steps;
+import BusinessTableIndex from '@/pages/Crm/business/BusinessAdd/components/businessTableIndex';
+
 const BusinessAdd = (props, ref) => {
 
   const {onClose} = props;
-  const stepsRef = useRef(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [useData, setData] = useState([]);
+  const [disable, setDisable] = useState(true);
 
   const {data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
@@ -18,6 +18,7 @@ const BusinessAdd = (props, ref) => {
   });
 
   const open = () => {
+    setDisable(true);
     crmBusinessSalesRun();
     setIsModalVisible(true);
   };
@@ -31,41 +32,32 @@ const BusinessAdd = (props, ref) => {
     close
   }));
 
+  const changeSteps = (rtData) =>{
+    return <BusinessSteps useData={rtData} />;
+  };
 
   return (
     <>
-      <Modal title="添加项目" visible={isModalVisible} onCancel={()=>{
-        typeof onClose==='function' && onClose();
-      }}>
-        <p >商机流程：</p>
-        <div style={{maxHeight:'100vh'}}>
-          {data && data.length > 0 ? data.map((item, index) => {
-            return (
-              <div key={index} style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
-                <Button key={index} onClick={()=>{
-                  setData(item);
-                  stepsRef.current.open(item);
-                }}>
-                  {item.name}
-                </Button>
-              </div>
-            );
+      <Modal title="添加项目" visible={isModalVisible}
+        footer={false}
+        width={disable ? 400 : 1800}
+        onCancel={()=>{
+          typeof onClose==='function' && onClose();
+        }}>
+        <div style={{}}>
+          <div style={disable ? null : {display: 'none', maxHeight:'100vh'}}>
+            {data && data.length > 0 ? <BusinessTableIndex
+              onChange={(rtData)=>{
+                setData(rtData);
+                setDisable(false);
+              }}
 
-          }) : null }
+              data={data}/> : null}
+          </div>
+          <div style={disable ? {display: 'none', maxHeight:'100vh', width: 2000} : null}>
+            {useData && changeSteps(useData.process)}
+          </div>
         </div>
-        <BusinessSteps
-          ref={stepsRef}
-          useData={useData ? useData.process : []}
-          onSuccess={() => {
-            stepsRef.current.close();
-          }}
-          onClose={() => {
-            stepsRef.current.close();
-          }}
-        />
-        {/*<Modal2 width={800} title="流程" component={BusinessSteps} onSuccess={() => {*/}
-        {/*  stepsRef.current.close();*/}
-        {/*}} ref={stepsRef} />*/}
       </Modal>
 
     </>
