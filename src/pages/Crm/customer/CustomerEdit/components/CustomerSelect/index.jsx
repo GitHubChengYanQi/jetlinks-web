@@ -1,24 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
-import {Input, Popover} from 'antd';
+import {AutoComplete, Input, Popover} from 'antd';
 
 const CustomerSelect = (props) => {
 
 
-  const {value, onChange,style ,method, onSuccess, ...other} = props;
+  const {value: values, onChange, style, method, onSuccess, ...other} = props;
 
-  const [val, setVal] = useState(value);
+  const [val, setVal] = useState();
 
-  const [vis,setVis] = useState();
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
     manual: true,
   });
 
-  useEffect(()=>{
-    setVal(value);
-  },[value]);
+  useEffect(() => {
+    setVal(values);
+  }, [values]);
 
 
   const handleChange = async value => {
@@ -43,33 +42,31 @@ const CustomerSelect = (props) => {
 
 
   const content = data ? data.map((value, index) => {
-    return (
-      <div key={index}>
-        <a onClick={() => {
-          onSuccess(value);
-          setVis(false);
-        }}>{value.customerName}</a>
-      </div>
-    );
-  }) : null;
+    return {
+      value:value.customerId,
+      label: value.customerName
+    };
+  }) : [];
 
 
   return ((
     <>
-      <Popover
-        placement="bottomLeft"
-        visible={vis && content && !method ? content.length : false}
-        content={content}
-        trigger="focus">
-        <Input
-          style={style}
+      <AutoComplete
+        dropdownMatchSelectWidth={100}
+        options={content}
+        style={style}
+        value={val}
+        onSelect={(value)=>{
+          onSuccess(value);
+          setVal(values);
+        }}
+      >
+        <Input.Search
           onChange={(value) => {
             handleChange(value.target.value);
-            setVis(true);
           }}
-          value={val}
         />
-      </Popover>
+      </AutoComplete>
     </>));
 };
 

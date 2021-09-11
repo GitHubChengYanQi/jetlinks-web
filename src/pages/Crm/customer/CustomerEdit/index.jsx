@@ -97,7 +97,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         fieldKey="customerId"
         res={(res) => {
           if (res) {
-            onChange(res);
+            typeof onChange === 'function' && onChange(res);
           }
         }}
       >
@@ -112,7 +112,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                     method={props.value}
                     onSuccess={(customerId) => {
                       props.onSuccess();
-                      history.push(`/CRM/customer/${customerId.customerId}`);
+                      history.push(`/CRM/customer/${customerId}`);
                     }} required />
 
                 </MegaLayout>

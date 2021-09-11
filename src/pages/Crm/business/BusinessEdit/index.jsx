@@ -90,7 +90,8 @@ const BusinessEdit = ({...props}) => {
                     label="客户名称"
                     name="customerId"
                     component={SysField.CustomerNameListSelect}
-                    required />
+                    rules={[{required: true, message: '请输入已存在的客户!'}]}
+                  />
                 </Col>
                 <Col span={12}>
                   <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
