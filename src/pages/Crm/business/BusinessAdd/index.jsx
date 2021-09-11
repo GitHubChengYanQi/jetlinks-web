@@ -1,21 +1,21 @@
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Modal} from 'antd';
+import {Button, Col, Divider, Modal, Row, Statistic, Steps} from 'antd';
+
 import {useRequest} from '@/util/Request';
 import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
-
+const {Step} = Steps;
 const BusinessAdd = (props, ref) => {
 
   const {onClose} = props;
   const stepsRef = useRef(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [datas, setData] = useState([]);
+  const [useData, setData] = useState([]);
 
   const {data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
     method: 'POST',
     rowKey: 'salesId',
   });
-
 
   const open = () => {
     crmBusinessSalesRun();
@@ -31,6 +31,7 @@ const BusinessAdd = (props, ref) => {
     close
   }));
 
+
   return (
     <>
       <Modal title="添加项目" visible={isModalVisible} onCancel={()=>{
@@ -42,31 +43,32 @@ const BusinessAdd = (props, ref) => {
             return (
               <div key={index} style={{borderBottom: 'solid #eee 1px', marginBottom: 20}}>
                 <Button key={index} onClick={()=>{
-                  console.log(11111111111111111, item);
                   setData(item);
-                  stepsRef.current.open(false);
+                  stepsRef.current.open(item);
                 }}>
                   {item.name}
                 </Button>
-
               </div>
             );
+
           }) : null }
         </div>
-
+        <BusinessSteps
+          ref={stepsRef}
+          useData={useData ? useData.process : []}
+          onSuccess={() => {
+            stepsRef.current.close();
+          }}
+          onClose={() => {
+            stepsRef.current.close();
+          }}
+        />
+        {/*<Modal2 width={800} title="流程" component={BusinessSteps} onSuccess={() => {*/}
+        {/*  stepsRef.current.close();*/}
+        {/*}} ref={stepsRef} />*/}
       </Modal>
-      <BusinessSteps
-        ref={stepsRef}
-        value={datas.length > 0 ? datas : null}
-        onSuccess={() => {
-          stepsRef.current.close();
-        }}
-        onClose={() => {
-          stepsRef.current.close();
-        }}
-      />
-    </>
 
+    </>
   );
 };
 
