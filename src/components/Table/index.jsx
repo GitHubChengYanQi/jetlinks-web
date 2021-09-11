@@ -1,5 +1,5 @@
 import React, {forwardRef, useImperativeHandle} from 'react';
-import {Table as AntdTable} from 'antd';
+import {Card, Pagination, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
 import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
@@ -29,10 +29,6 @@ const TableWarp = ({
   isModal = true,
   ...props
 }, ref) => {
-
-
-
-
 
 
   if (!api) {
@@ -66,10 +62,10 @@ const TableWarp = ({
       field: sorter.field,
       order: sorter.order
     };
-    if(!isModal){
+    if (!isModal) {
       setState({
-        params:JSON.stringify({
-          ...page,...values
+        params: JSON.stringify({
+          ...page, ...values
         })
       });
     }
@@ -109,16 +105,18 @@ const TableWarp = ({
   }));
 
   const {loading, dataSource, pagination, ...other} = tableProps;
-
+  
   const footer = () => {
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {pagination && <div className={style.right}>共{pagination.total}条</div>}
+        {/* {pagination && <div className={style.right}>共{pagination.total}条</div>} */}
+        {/* {pagination && <Pagination style={{float:'right'}} {...pagination} size="small" />} */}
         <br style={{clear: 'both'}} />
       </div>
     );
   };
+
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       {listHeader ? <div className={style.listHeader}>
@@ -143,37 +141,40 @@ const TableWarp = ({
         {...form}
         actions={formActions}
       />}
-      <AntdTable
-        showTotal
-        loading={loading}
-        dataSource={dataSource || []}
-        rowKey={rowKey}
-        columns={columns}
-        pagination={
-          {
-            ...pagination,
-            position: ['bottomCenter']
+
+      <Card>
+        <AntdTable
+          showTotal
+          loading={loading}
+          dataSource={dataSource || []}
+          rowKey={rowKey}
+          columns={columns}
+          pagination={
+            {
+              ...pagination,
+              position: ['bottomRight']
+            }
           }
-        }
-        rowSelection={{
-          type: selectionType || 'checkbox',
-          onChange: (selectedRowKeys, selectedRows) => {
-            typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
-          }
-        }}
-        footer={footer}
-        layout
-        scroll={{x: 'max-content'}}
-        sticky={{
-          getContainer: () => {
-            return document.getElementById('listLayout');
-          }
-        }}
-        {...other}
-        {...props}
-      >
-        {children}
-      </AntdTable>
+          rowSelection={{
+            type: selectionType || 'checkbox',
+            onChange: (selectedRowKeys, selectedRows) => {
+              typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
+            }
+          }}
+          footer={footer}
+          layout
+          scroll={{x: 'max-content'}}
+          sticky={{
+            getContainer: () => {
+              return document.getElementById('listLayout');
+            }
+          }}
+          {...other}
+          {...props}
+        >
+          {children}
+        </AntdTable>
+      </Card>
     </div>
   );
 };
