@@ -4,12 +4,14 @@ import {useRequest} from '@/util/Request';
 import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import {useHistory} from 'ice';
 
 const BusinessComplete = (props) => {
   const {result, disabled} = props;
   const [visi, setVisi] = useState(false);
   const [data, setData] = useState([]);
   const [detail, setDetail] = useState(false);
+  const history = useHistory();
 
   const {run} = useRequest(businessDetail, {
     manual: true,
@@ -38,14 +40,18 @@ const BusinessComplete = (props) => {
           }}>
             完善明细
           </Button>,
-          <Button key="1" onClick={() => {
-            run({data: {
-              businessId: result
-            }});
-
-          }}>
-            查看详情
-          </Button>,
+          <Button  key="1" type="link" onClick={() => {
+            history.push(`/CRM/business/${result}`);
+          }}>查看详情</Button>,
+          // <Button key="1" onClick={() => {
+          //
+          //   run({data: {
+          //     businessId: result
+          //   }});
+          //
+          // }}>
+          //   查看详情
+          // </Button>,
         ]}
 
       />

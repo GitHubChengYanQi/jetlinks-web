@@ -82,6 +82,7 @@ const BusinessEdit = (props) => {
         label="商机阶段" name="stage"
         rules={[{required: true, message: '请输入商机阶段!'}]}
         component={SysField.StageListSelect13}  required />
+      <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
       <div style={{textAlign: 'Right', marginRight: 90}}>
         <Button type="primary" htmlType="submit" onSubmit={()=>{}}  >
