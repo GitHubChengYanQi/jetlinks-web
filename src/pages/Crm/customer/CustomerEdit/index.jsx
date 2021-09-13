@@ -21,7 +21,6 @@ import Form from '@/components/Form';
 
 const {FormItem} = Form;
 
-const {Panel} = Collapse;
 
 const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
@@ -30,8 +29,8 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
   .ant-form-item {
     display: inline-flex;
-    margin-right: 16px;
-    //width: 42%;
+    margin-right: 10px;
+    width: 37%;
   }
 `;
 const PhoneRowStyleLayout = styled(props => <div {...props} />)`
@@ -42,7 +41,7 @@ const PhoneRowStyleLayout = styled(props => <div {...props} />)`
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
-    //width: 42%;
+    width: 71%;
   }
 `;
 const AdressRowStyleLayout = styled(props => <div {...props} />)`
@@ -53,7 +52,7 @@ const AdressRowStyleLayout = styled(props => <div {...props} />)`
   .ant-form-item {
     display: inline-flex;
     margin-right: 16px;
-    width: 80%;
+    width: 100%;
   }
 `;
 
@@ -103,8 +102,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
       >
         <Row gutter={24}>
           <Col span={12}>
-            <div style={{paddingRight: 20, height: height(), overflow: 'auto'}}>
-
+            <div style={{ height: height(), overflow: 'auto'}}>
               <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
                 <MegaLayout labelWidth={120}>
                   <FormItem
@@ -207,7 +205,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                   <Button type="link" onClick={() => onRemove(index)}>删除联系人</Button>
                                 </div>
                                 {/* <ProCard style={{marginTop: 8}} headerBordered> */}
-                                <div style={{width: '75%', display: 'inline-block'}}>
+                                <div style={{width: '80%', display: 'inline-block'}}>
                                   <FieldList
                                     name={`contactsParams.${index}.phoneParams`}
                                     initialValue={[

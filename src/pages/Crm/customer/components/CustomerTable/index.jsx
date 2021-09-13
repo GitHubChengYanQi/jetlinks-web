@@ -206,7 +206,7 @@ const CustomerTable = (props) => {
           );
         }} />
       </Table>
-      <CreateNewCustomer title='客户' model={CustomerEdit}  widths={1600}  onSuccess={()=>{
+      <CreateNewCustomer title='客户' model={CustomerEdit}  widths={1200}  onSuccess={()=>{
         tableRef.current.refresh();
         ref.current.close();
       }} refModal={ref} />
