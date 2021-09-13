@@ -1,17 +1,21 @@
 import React, { useImperativeHandle, useRef, useState} from 'react';
 import { Modal} from 'antd';
+import {LeftOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
 import BusinessTableIndex from '@/pages/Crm/business/BusinessAdd/components/businessTableIndex';
-import AppEntFUNC from '@/asseset/imgs/88.png';
-import {LeftOutlined} from '@ant-design/icons';
+import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
 
 const BusinessAdd = (props, ref) => {
 
   const {onClose} = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [useData, setData] = useState([]);
-  const [disable, setDisable] = useState(true);
+  const [disable, setDisable] = useState(1);
+  const [stage, setStage] = useState(null);
+  const [businessId, setBusinessId] = useState(null);
+  const [widths, setWidth] = useState(400);
+
 
   const {data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
@@ -20,7 +24,8 @@ const BusinessAdd = (props, ref) => {
   });
 
   const open = () => {
-    setDisable(true);
+    setDisable(1);
+    setWidth(400);
     crmBusinessSalesRun();
     setIsModalVisible(true);
   };
@@ -34,32 +39,54 @@ const BusinessAdd = (props, ref) => {
     close
   }));
 
-  const changeSteps = (rtData) =>{
-    return <BusinessSteps useData={rtData} />;
-  };
-
   return (
     <>
-      <Modal title={<div> <LeftOutlined onClick={()=>(setDisable(true))} /> 添加项目</div>} visible={isModalVisible}
+      <Modal title={<div style={disable === 2 ? null : {'display' : 'none'}}> <LeftOutlined onClick={()=>{setDisable(1); setWidth(400); setStage(null); setData(null);}} /> 添加项目</div>} visible={isModalVisible}
         footer={false}
-        width={disable ? 400 : 1800}
+        width={widths}
         onCancel={()=>{
+          setStage(null);
+          setData(null);
           typeof onClose==='function' && onClose();
-        }}>
-        <div style={{}}>
-          <div style={disable ? null : {display: 'none', maxHeight:'100vh'}}>
-            {data && data.length > 0 ? <BusinessTableIndex
-              onChange={(rtData)=>{
-                setData(rtData);
-                setDisable(false);
-              }}
-
-              data={data}/> : null}
-          </div>
-          <div style={disable ? {display: 'none', maxHeight:'100vh', width: 2000} : null}>
-            {useData && changeSteps(useData.process)}
-          </div>
+        }}
+      >
+        <div style={disable === 1 ? {marginRight: 10, maxHeight:'100vh'} : {display: 'none'}}>
+          {data && data.length > 0 ? <BusinessTableIndex
+            onChange={(rtData)=>{
+              setData(rtData.process);
+              setStage(rtData.salesId);
+              setDisable(2);
+              setWidth(1000);
+            }}
+            data={data}/> : null}
         </div>
+        <div style={disable === 2 ? null : {display: 'none', maxHeight:'100vh'}}>
+          {stage && <BusinessSteps useData={useData} stage={stage}
+            onChange={(result)=>{
+              if(result.success){
+                setDisable(3);
+                setWidth(500);
+                setBusinessId(result.data);
+              }
+            }}
+            onClose={()=>{
+              setStage(null); setData(null);
+              typeof onClose==='function' && onClose();
+            }}/>}
+        </div>
+        <div style={disable === 3 ? null : {display: 'none', maxHeight:'100vh'}}>
+          {businessId && <BusinessComplete result={businessId}
+            onChange={(disable)=>{
+              setStage(null); setData(null);
+              setDisable(disable);
+              setWidth(400);
+            }}
+            onClose={()=>{
+              setStage(null); setData(null);
+              typeof onClose==='function' && onClose();
+            }}/>}
+        </div>
+
       </Modal>
 
     </>

@@ -11,16 +11,17 @@ const BusinessTableIndex = ((props) => {
       <p >商机流程：</p>
       {data && data.length > 0 ? data.map((item, index) => {
         return (
-          <div key={index} style={{ marginLeft: 20, marginBottom: 20}}>
+          <div key={index} style={{width: 200, marginLeft: 50, marginBottom: 20}}>
             <Card
               hoverable
-              style={{ width: 200,backgroundColor: 'azure' }}
-              // cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+              bordered
+              style={{backgroundColor: 'beige' }}
+              // cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
               onClick={()=>{
                 onChange(item);
               }}
             >
-              <Meta title= {item.name}  />
+              <Meta title= {item.name} description="This is the description"  />
             </Card>
           </div>
         );
