@@ -57,7 +57,7 @@ const DataList = () => {
           return (
             <>
               {
-                record.itemsResults.length>0 && record.itemsResults.map((items,index)=>{
+                record.itemId && record.itemId.length>0 && record.itemId.map((items,index)=>{
                   return (
                     <Tag key={index}>
                       {items.name}

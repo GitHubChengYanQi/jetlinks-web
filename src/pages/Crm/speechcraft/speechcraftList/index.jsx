@@ -20,7 +20,9 @@ const SpeechcraftList = () => {
           }}
           showLine
           // switcherIcon={<DownOutlined />}
-          defaultExpandedKeys={['0']}
+          // defaultExpandedKeys={['1']}
+          defaultSelectedKeys={['0']}
+          // defaultCheckedKeys={['1']}
           // onSelect={this.onSelect}
           treeData={[
             {

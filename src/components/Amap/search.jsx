@@ -2,24 +2,27 @@ import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Input, Icon, List, Card, Button} from '@alifd/next';
 import {Marker} from 'react-amap';
 import {useRequest} from '@/util/Request';
-import {Select} from 'antd';
+import {Cascader as AntCascader, Select} from 'antd';
+import DeptTree from '@/components/DeptTree';
+import Cascader from '@/components/Cascader';
 
 let MSearch = null;
 let Geocoder = null;
 
-const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
+const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
 
   const [citys, setCitys] = useState();
 
 
-  const {data, run} = useRequest({url: '/commonArea/listAll', method: 'POST', data: {grade: 2}}, {manual: true});
+  const {run} = useRequest({url: '/commonArea/treeView', method: 'POST'}, {manual: true});
+  const {run: runCisy} = useRequest({url: '/commonArea/list', method: 'POST'}, {manual: true});
 
 
   // console.log(window.AMap);
   window.AMap.plugin(['AMap.PlaceSearch'], function () {
     const PlaceSearchOptions = { // 设置PlaceSearch属性
-      city: '北京', // 城市
+      city: '中国', // 城市
       type: '', // 数据类别
       pageSize: 10, // 每页结果数,默认10
       pageIndex: 1, // 请求页码，默认1
@@ -41,7 +44,7 @@ const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
   // console.log(MSearch);
   const [value, setValue] = useState('');
   const [adinfo, setadinfo] = useState({});
-  const [city,setCity] = useState();
+  const [city, setCity] = useState();
   const [reslut, setResult] = useState(null);
   const [markerPosition, setMarkerPosition] = useState(null);
 
@@ -78,7 +81,7 @@ const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
       citySearch.getLocalCity(function (status, result) {
         if (status === 'complete' && result.info === 'OK') {
 
-          Geocoder.getLocation(result.city, function(status, result) {
+          Geocoder.getLocation(result.city, function (status, result) {
             if (status === 'complete' && result.info === 'OK') {
               setadinfo({
                 address: result.geocodes[0].formattedAddress,
@@ -110,13 +113,7 @@ const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
     // const value = __map__.getCenter();
     // setMarkerPosition(value);
     run({}).then((res) => {
-      const data = res && res.map((items, index) => {
-        return {
-          label: items.title,
-          value: items.title,
-        };
-      });
-      setCitys(data);
+      setCitys(res);
     });
 
   }, []);
@@ -134,15 +131,35 @@ const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
               MSearch.search(value); // 关键字查询
             }
           }}
-          style={{width: 360}}
-          innerBefore={<span style={{paddingLeft: 10}}>
-           { city && <Select
+          style={{width: 500,float:'left',marginRight:20}}
+          innerBefore={
+            <span
+              style={{paddingLeft: 10}}
+            >{city &&
+            <AntCascader
+              changeOnSelect
+              style={{minWidth:250,marginRight:10}}
+              showSearch={(inputValue, path)=>{
+                path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+              }}
+              options={citys}
               defaultValue={[city.city]}
-              options={citys || []}
-              style={{minWidth: 100}}
-              onChange={(value)=>{
-                Geocoder.getLocation(value, function(status, result) {
+              onChange={async (value) => {
+                let cityId = null;
+                value.length > 0 && value.map((items, index) => {
+                  return cityId = items;
+                });
+                const city = await runCisy({
+                  data: {
+                    id: cityId
+                  }
+                });
+                Geocoder.getLocation(city.length > 0 && city[0].title, function (status, result) {
                   if (status === 'complete' && result.info === 'OK') {
+                    setadinfo({
+                      address: result.geocodes[0].formattedAddress,
+                      location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+                    });
                     center(
                       {
                         lat: result.geocodes[0].location.lat,
@@ -156,12 +173,12 @@ const AmapSearch = ({__ele__, __map__, onChange,center}, ref) => {
                     // result中对应详细地理坐标信息
                   }
                 });
-              }}
-              bordered={false} /> }
-            :</span>}
+              }} />}
+              :</span>
+          }
           innerAfter={<Icon type="search" size="xs" onClick={onClick} style={{margin: 4}} />} />
         <Button
-          style={{float: 'right'}}
+          style={{float: 'left'}}
           type="primary"
           onClick={() => {
             typeof onChange === 'function' && onChange(adinfo);

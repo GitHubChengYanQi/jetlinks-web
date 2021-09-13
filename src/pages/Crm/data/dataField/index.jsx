@@ -67,24 +67,24 @@ export const Attachment = (props) => {
 };
 export const ItemIds = (props) => {
 
-  // const {value,displays} = props;
-  //
-  //
-  // const userIds = [];
-  //
-  //
-  // // eslint-disable-next-line no-nested-ternary
-  // value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
-  //   userIds.push(items && `${items.userId}`);
-  // }) : value.forEach((items)=>{
-  //   userIds.push(items);
-  // }) : [];
-  //
-  // useEffect(()=>{
-  //   if (value){
-  //     props.onChange(userIds);
-  //   }
-  // },[]);
+  const {value} = props;
+
+
+  const itemIds = [];
+
+
+  // eslint-disable-next-line no-nested-ternary
+  value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
+    itemIds.push(items && `${items.itemId}`);
+  }) : value.forEach((items)=>{
+    itemIds.push(items);
+  }) : [];
+
+  useEffect(()=>{
+    if (value){
+      props.onChange(itemIds);
+    }
+  },[]);
 
 
   const {data} = useRequest(itemIdSelect);
@@ -98,6 +98,7 @@ export const ItemIds = (props) => {
       showArrow
       style={{width: '100%'}}
       options={options}
+      value={itemIds}
       onChange={(value) => {
         props.onChange(value);
       }}

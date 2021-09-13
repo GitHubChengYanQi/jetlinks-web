@@ -15,7 +15,7 @@ const SpeechcraftSelect = () => {
 
 
   return (
-    <div style={{padding:200}}>
+    <div style={{padding:200,backgroundColor:'#fff',height:'100%'}}>
       <Divider orientation="center">
         <Input.Search
           style={{width: 500}}
