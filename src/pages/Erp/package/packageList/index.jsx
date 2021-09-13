@@ -95,7 +95,7 @@ const ErpPackageList = (props) => {
                   }}>{record.productName}</Button>
                 );
               }} sorter/>
-              <Column/>
+              <Column title='总金额' dataIndex='money' />
               <Column title="操作" fixed='right' width={200} align="right" render={(value, record) => {
                 return (
                   <>

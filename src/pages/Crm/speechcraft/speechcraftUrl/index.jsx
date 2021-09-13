@@ -1,7 +1,7 @@
 /**
  * 话术基础资料接口配置
  *
- * @author 
+ * @author
  * @Date 2021-09-11 13:27:08
  */
 
@@ -33,5 +33,13 @@ export const speechcraftList = {
   url: '/speechcraft/list',
   method: 'POST',
   rowKey:'speechcraftId'
+};
+export const speechcraftTypeDetail = {
+  url: '/speechcraftTypeDetail/listSelect',
+  method: 'POST',
+};
+export const speechcraftType = {
+  url: '/speechcraftType/listSelect',
+  method: 'POST',
 };
 

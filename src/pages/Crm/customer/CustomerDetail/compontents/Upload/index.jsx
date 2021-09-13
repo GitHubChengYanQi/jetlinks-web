@@ -1,22 +1,38 @@
 import React, {useEffect, useState} from 'react';
-import {Upload as AntUpload, Button, Space, Comment, Table as AntTable, Table, Pagination} from 'antd';
+import {Upload as AntUpload, Button, Space, Pagination} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
+import UpLoadImg from '@/components/Upload';
 
-const {Column} = AntTable;
 
 const Upload = (props) => {
 
   const {customerId} = props;
 
 
-  const [oss, setOss] = useState();
+  const [oss, setOss] = useState({});
 
 
   const {run} = useRequest({
     url: '/media/getToken',
     method: 'GET'
-  }, {manual: true});
+  }, {
+    manual: true,
+    formatResult: (e) => {
+      return e;
+    },
+    onSuccess: (res) => {
+      if (res.errCode === 0) {
+        oss.key = res.data.key;
+        oss.host = res.data.host;
+        oss.policy = res.data.policy;
+        oss.Signature = res.data.Signature;
+        oss.mediaId = res.data.mediaId;
+        oss.OSSAccessKeyId = res.data.OSSAccessKeyId;
+        setOss({...oss});
+      }
+    }
+  });
   const {run: runFile} = useRequest({
     url: '/customerFile/add',
     method: 'POST'
@@ -53,47 +69,53 @@ const Upload = (props) => {
   return (
     <Space direction="vertical" style={{width: '100%'}} size="large">
       <AntUpload
-        action={oss && oss.host}
+        className="avatar-uploader"
         data={oss}
+        action={oss.host}
         listType="picture"
         fileList={fileList}
-        beforeUpload={async (file) => {
+        beforeUpload={(file) => {
           const type = file.type.split('/')[1];
           if (type) {
-            const data = await run(
-              {
-                params: {
-                  type
-                }
-              }
-            );
-            setOss({...data});
+            return new Promise((resolve) => {
+              run({params: {type}}).then(res => {
+                resolve();
+              });
+            });
           } else {
             alert('附件类型不正确！');
           }
         }}
         onChange={async ({file}) => {
-          if (file.percent === 0) {
-            await runFile({
-              data: {
-                url: `${oss && oss.host}/${oss && oss.key}`,
-                customerId,
-                uid: file.uid,
-                name: file.name
+          switch (file.status){
+            case 'done':
+            case 'uploading':
+
+              if (file.type.split('/')[1] && file.percent === 0) {
+                await runFile({
+                  data: {
+                    url: `${oss && oss.host}/${oss && oss.key}`,
+                    customerId,
+                    uid: file.uid,
+                    name: file.name
+                  }
+                });
+                await refresh();
               }
-            });
-            await refresh();
+              break;
+            case 'removed':
+              await runDeleteFile({
+                data: {
+                  uid: file.uid
+                }
+              });
+              await refresh();
+              break;
+            default:
+              break;
           }
+
         }}
-        onRemove={async (file) => {
-          await runDeleteFile({
-            data: {
-              uid: file.uid
-            }
-          });
-          await refresh();
-        }}
-        multiple
       >
         <div>
           <Button icon={<UploadOutlined />}>上传附件</Button>

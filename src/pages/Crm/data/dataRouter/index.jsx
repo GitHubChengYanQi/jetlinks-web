@@ -10,7 +10,8 @@ import React, {lazy} from 'react';
 export const DataRouter = [
   {
     path: '/data',
-    component: lazy(() => import('../dataList')),
+    name:'产品资料管理',
+    component: lazy(() => import('../dataList/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }

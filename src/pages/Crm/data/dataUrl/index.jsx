@@ -39,5 +39,9 @@ export const itemIdSelect = {
   method: 'POST',
   rowKey:'dataId'
 };
+export const dataClassificationSelect = {
+  url: '/dataClassification/listSelect',
+  method: 'POST',
+};
 
 

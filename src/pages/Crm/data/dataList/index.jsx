@@ -1,93 +1,67 @@
-/**
- * 资料列表页
- *
- * @author song
- * @Date 2021-09-11 13:35:54
- */
+import React, {useState} from 'react';
+import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
+import {Divider, Tree} from 'antd';
+import ListLayout from '@/layouts/ListLayout';
+import {useRequest} from '@/util/Request';
+import Select from '@/components/Select';
+import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import DataTable from '@/pages/Crm/data/components/DataTable';
+import {dataClassificationSelect} from '@/pages/Crm/data/dataUrl';
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
-import {Table as AntTable, Tag} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {dataDelete, dataList} from '../dataUrl';
-import DataEdit from '../dataEdit';
-import * as SysField from '../dataField';
-
-const {Column} = AntTable;
-const {FormItem} = Form;
 
 const DataList = () => {
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const actions = () => {
+
+  const {data,run} = useRequest({url: '/dataClassification/list', method: 'POST', rowKey: 'dataClassificationId'});
+
+  const dataClassification = data ? data.map((values) => {
+    return {
+      title: values.title,
+      key: values.dataClassificationId,
+    };
+  }) : [];
+
+
+  const [Class, setClass] = useState();
+
+  const [value,setValue] = useState();
+
+
+
+  const Left = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
-      </>
-    );
-  };
-
- const searchForm = () => {
-   return (
-     <>
-
-     </>
-    );
-  };
-
-  return (
-    <>
-      <Table
-        title={<h2>列表</h2>}
-        api={dataList}
-        rowKey="dataId"
-        searchForm={searchForm}
-        actions={actions()}
-        ref={tableRef}
-      >
-        <Column title="内容" dataIndex="content"/>
-        <Column title="附件" dataIndex="attachment"/>
-        <Column title="产品" render={(value,record)=>{
-          return (
-            <>
+        <div>
+          <Select api={dataClassificationSelect} placeholder='搜索分类' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
+            await run(
               {
-                record.itemId && record.itemId.length>0 && record.itemId.map((items,index)=>{
-                  return (
-                    <Tag key={index}>
-                      {items.name}
-                    </Tag>
-                  );
-                })
+                data:{
+                  dataClassificationId : value
+                }
               }
-            </>
-          );
-        }}/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.dataId);
-              }}/>
-              <DelButton api={dataDelete} value={record.dataId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
-            </>
-          );
-        }} width={300}/>
-      </Table>
-      <Drawer width={800} title="编辑" component={DataEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref}/>
-    </>
+            );
+            setValue(value);
+          }} />
+        </div>
+        <Tree
+          showLine
+          onSelect={(value) => {
+            setClass(value);
+          }}
+          defaultExpandedKeys={['']}
+          treeData={[
+            {
+              title: '所有分类',
+              key: '',
+              children: dataClassification
+            },
+          ]}
+        />
+      </>);
+  };
+  return (
+    <ListLayout left={Left()}>
+      <DataTable Class={Class} />
+    </ListLayout>
   );
 };
-
 export default DataList;

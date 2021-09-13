@@ -8,29 +8,49 @@
 import React, {useEffect, useState} from 'react';
 import {
   Input,
-  Select as AntSelect, Space, Upload, Button
+  Select as AntSelect, Space, Upload, Button, message
 } from 'antd';
 import {useRequest} from '@/util/Request';
 import {UploadOutlined} from '@ant-design/icons';
-import {itemIdSelect} from '../dataUrl';
+import {dataClassificationSelect, itemIdSelect} from '../dataUrl';
+import Select from '@/components/Select';
 
 export const Content = (props) => {
   return (<Input {...props} />);
 };
+
+export const Name = (props) => {
+  return (<Input {...props} />);
+};
+
 export const Attachment = (props) => {
 
-  const {value, onChange} = props;
+  const {onChange, fileName,value} = props;
 
-  // const fileList = value ? [{
-  //   url: value,
-  // }] : [];
+  const [fileList,setFileList] = useState(value ? [{
+    url: value,
+  }] : null);
 
-  const [oss, setOss] = useState();
+
+  const [oss, setOss] = useState({});
 
   const {run} = useRequest({
     url: '/media/getToken',
     method: 'GET'
-  }, {manual: true});
+  }, {
+    manual: true,
+    onSuccess:(res)=>{
+      if (res.errCode === 0) {
+        oss.key = res.data.key;
+        oss.host = res.data.host;
+        oss.policy = res.data.policy;
+        oss.Signature = res.data.Signature;
+        oss.mediaId = res.data.mediaId;
+        oss.OSSAccessKeyId = res.data.OSSAccessKeyId;
+        setOss({...oss});
+      }
+    }
+  });
 
 
   return (
@@ -38,9 +58,37 @@ export const Attachment = (props) => {
       <Upload
         action={oss && oss.host}
         data={oss}
-        // fileList={fileList}
+        fileList={fileList}
         maxCount={1}
         listType="picture"
+        onChange={(file) => {
+          switch (file.file.status) {
+            case 'removed':
+              message.warning("已删除！");
+              setFileList([]);
+              typeof fileName === 'function' && fileName('');
+              onChange(null);
+              break;
+            case 'uploading':
+              message.success("上传中！");
+              break;
+            case 'done':
+              message.success("上传成功！");
+              setFileList([{url:`${oss && oss.host}/${oss && oss.key}`,name:file.file.name}]);
+              typeof fileName === 'function' && fileName(file.file.name);
+              onChange(`${oss && oss.host}/${oss && oss.key}`);
+              break;
+            case 'error':
+              message.error("上传失败！");
+              setFileList([]);
+              typeof fileName === 'function' && fileName('');
+              onChange(null);
+              break;
+            default:
+              break;
+          }
+          setFileList(file.fileList);
+        }}
         beforeUpload={async (file) => {
           const type = file.type.split('/')[1];
           if (type) {
@@ -52,7 +100,6 @@ export const Attachment = (props) => {
               }
             );
             setOss({...data});
-            onChange(`${data && data.host}/${data && data.key}`);
           } else {
             alert('附件类型不正确！');
           }
@@ -69,22 +116,20 @@ export const ItemIds = (props) => {
 
   const {value} = props;
 
-
   const itemIds = [];
 
-
   // eslint-disable-next-line no-nested-ternary
-  value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
+  value && value.length > 0 ? typeof (value[0]) === 'object' ? value.forEach((items) => {
     itemIds.push(items && `${items.itemId}`);
-  }) : value.forEach((items)=>{
+  }) : value.forEach((items) => {
     itemIds.push(items);
   }) : [];
 
-  useEffect(()=>{
-    if (value){
+  useEffect(() => {
+    if (value) {
       props.onChange(itemIds);
     }
-  },[]);
+  }, []);
 
 
   const {data} = useRequest(itemIdSelect);
@@ -104,4 +149,8 @@ export const ItemIds = (props) => {
       }}
     />
   );
+};
+
+export const DataClassificationId = (props) => {
+  return (<Select api={dataClassificationSelect} {...props}/>);
 };

@@ -1,7 +1,7 @@
 /**
  * 话术基础资料编辑页
  *
- * @author 
+ * @author
  * @Date 2021-09-11 13:27:08
  */
 
@@ -32,7 +32,8 @@ const SpeechcraftEdit = ({...props}) => {
     >
       <FormItem label="标题" name="speechcraftTitle" component={SysField.SpeechcraftTitle} required/>
       <FormItem label="详情" name="speechcraftDetails" component={SysField.SpeechcraftDetails} required/>
-      <FormItem label="关键词" name="speechcraftKey" component={SysField.SpeechcraftKey} required/>
+      <FormItem label="事件" name="speechcraftKey" component={SysField.SpeechcraftKey} required/>
+      <FormItem label="话术分类" name="speechcraftType" component={SysField.SpeechcraftType} required/>
     </Form>
   );
 };

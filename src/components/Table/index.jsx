@@ -19,6 +19,7 @@ const TableWarp = ({
   api,
   searchForm,
   rowKey,
+  tab,
   SearchButton,
   selectionType,
   onChange,
@@ -29,10 +30,6 @@ const TableWarp = ({
   isModal = true,
   ...props
 }, ref) => {
-
-
-
-
 
 
   if (!api) {
@@ -66,10 +63,10 @@ const TableWarp = ({
       field: sorter.field,
       order: sorter.order
     };
-    if(!isModal){
+    if (!isModal) {
       setState({
-        params:JSON.stringify({
-          ...page,...values
+        params: JSON.stringify({
+          ...page, ...values
         })
       });
     }
@@ -143,6 +140,9 @@ const TableWarp = ({
         {...form}
         actions={formActions}
       />}
+      { tab && <div className="search">
+        {tab || null}
+      </div>}
       <AntdTable
         showTotal
         loading={loading}

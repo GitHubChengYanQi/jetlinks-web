@@ -1,16 +1,16 @@
 import React, {useRef, useState} from 'react';
 import {Button, Col, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
-import FormIndex from "@/components/Form/FormIndex";
-import ErpPackageTableList from "@/pages/Erp/packageTable/packageTableList";
+import FormIndex from '@/components/Form/FormIndex';
+import ErpPackageTableList from '@/pages/Erp/packageTable/packageTableList';
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../packageUrl';
 import * as SysField from '../packageField';
 
 const {FormItem} = Form;
 const ApiConfig = {
   save: erpPackageEdit,
-  add:erpPackageAdd,
-  view:erpPackageDetail
+  add: erpPackageAdd,
+  view: erpPackageDetail
 };
 
 const ErpPackageEdit = ({...props}) => {
@@ -39,16 +39,22 @@ const ErpPackageEdit = ({...props}) => {
             api={ApiConfig}
             fieldKey="packageId"
             success={(result) => {
-              if(result.data !== ''){
+              if (result.data !== '') {
                 setResult(result.data);
               }
               next();
             }}
           >
-            <FormItem label="套餐名称" name="productName"
+            <FormItem
+              label="套餐名称"
+              name="productName"
               component={SysField.productName}
-              rules= {[{ required: true, message: '请输入套餐名称!' }]} required/>
-            <div style={{textAlign:'center'}}>
+              rules={[{required: true, message: '请输入套餐名称!'}]} required />
+            <FormItem
+              label="总金额"
+              name="money"
+              component={SysField.Money} />
+            <div style={{textAlign: 'center'}}>
               <Button type="primary" htmlType="submit">
                 下一步
               </Button>
@@ -62,14 +68,14 @@ const ErpPackageEdit = ({...props}) => {
         <>
           <div style={{padding: '10px 50px'}}>
             <ErpPackageTableList value={result} />
-            <div style={{textAlign:'center'}}>
-              <Button type="primary" onClick={()=>{
+            <div style={{textAlign: 'center'}}>
+              <Button type="primary" onClick={() => {
                 props.onSuccess();
               }
               }>
                 保存
               </Button>
-              <Button onClick={()=> prev()}>
+              <Button onClick={() => prev()}>
                 返回
               </Button>
             </div>

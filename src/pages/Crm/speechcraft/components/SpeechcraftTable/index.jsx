@@ -5,24 +5,35 @@
  * @Date 2021-09-11 13:27:08
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Card, Table as AntTable, Tabs} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
+import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
-import {speechcraftDelete, speechcraftList} from '../../speechcraftUrl';
+import {speechcraftDelete, speechcraftList, speechcraftType, speechcraftTypeDetail} from '../../speechcraftUrl';
 import SpeechcraftEdit from '../../speechcraftEdit';
 import * as SysField from '../../speechcraftField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const SpeechcraftTable = () => {
+
+const SpeechcraftTable = (props) => {
+
+  const {type} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  useEffect(() => {
+    tableRef.current.formActions.setFieldValue('speechcraftType', type || '');
+    tableRef.current.submit();
+  }, [type]);
+
   const actions = () => {
     return (
       <>
@@ -37,15 +48,17 @@ const SpeechcraftTable = () => {
     return (
       <>
         <FormItem label="标题" name="speechcraftTitle" component={SysField.SpeechcraftTitle} />
-        <FormItem label="关键词" name="speechcraftKey" component={SysField.SpeechcraftKey} />
+        <FormItem label="事件" name="speechcraftKey" component={SysField.SpeechcraftKey} />
+        <FormItem hidden display name="speechcraftType" component={SysField.SpeechcraftType} />
       </>
     );
   };
 
+
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={speechcraftList}
         rowKey="speechcraftId"
         searchForm={searchForm}
@@ -54,7 +67,7 @@ const SpeechcraftTable = () => {
       >
         <Column title="标题" dataIndex="speechcraftTitle" />
         <Column title="详情" dataIndex="speechcraftDetails" />
-        <Column title="关键词" dataIndex="speechcraftKey" />
+        <Column title="事件" dataIndex="speechcraftKey" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

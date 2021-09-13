@@ -14,6 +14,8 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
   const [citys, setCitys] = useState();
 
+  const [city, setCity] = useState();
+
 
   const {run} = useRequest({url: '/commonArea/treeView', method: 'POST'}, {manual: true});
   const {run: runCisy} = useRequest({url: '/commonArea/list', method: 'POST'}, {manual: true});
@@ -22,7 +24,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
   // console.log(window.AMap);
   window.AMap.plugin(['AMap.PlaceSearch'], function () {
     const PlaceSearchOptions = { // 设置PlaceSearch属性
-      city: '中国', // 城市
+      city: city && city.city, // 城市
       type: '', // 数据类别
       pageSize: 10, // 每页结果数,默认10
       pageIndex: 1, // 请求页码，默认1
@@ -44,7 +46,6 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
   // console.log(MSearch);
   const [value, setValue] = useState('');
   const [adinfo, setadinfo] = useState({});
-  const [city, setCity] = useState();
   const [reslut, setResult] = useState(null);
   const [markerPosition, setMarkerPosition] = useState(null);
 
@@ -131,7 +132,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
               MSearch.search(value); // 关键字查询
             }
           }}
-          style={{width: 500,float:'left',marginRight:20}}
+          style={{width: 500,marginRight:20}}
           innerBefore={
             <span
               style={{paddingLeft: 10}}
@@ -178,13 +179,13 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
           }
           innerAfter={<Icon type="search" size="xs" onClick={onClick} style={{margin: 4}} />} />
         <Button
-          style={{float: 'left'}}
+          // style={{float: 'left'}}
           type="primary"
           onClick={() => {
             typeof onChange === 'function' && onChange(adinfo);
           }}>确定</Button>
       </div>
-      {reslut && reslut.count > 0 && <Card style={{maxHeight: 500, width: '30%', overflowY: 'auto', marginTop: 16}}>
+      {reslut && reslut.count > 0 && <Card style={{maxHeight: 500, width: '40%', overflowY: 'auto', marginTop: 16}}>
         <List>
           {reslut.pois.map((item, index) => {
             return (<List.Item key={index} title={item.name} onClick={() => {
