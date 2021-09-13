@@ -3,6 +3,8 @@ import { Modal} from 'antd';
 import {useRequest} from '@/util/Request';
 import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
 import BusinessTableIndex from '@/pages/Crm/business/BusinessAdd/components/businessTableIndex';
+import AppEntFUNC from '@/asseset/imgs/88.png';
+import {LeftOutlined} from '@ant-design/icons';
 
 const BusinessAdd = (props, ref) => {
 
@@ -38,7 +40,7 @@ const BusinessAdd = (props, ref) => {
 
   return (
     <>
-      <Modal title="添加项目" visible={isModalVisible}
+      <Modal title={<div> <LeftOutlined onClick={()=>(setDisable(true))} /> 添加项目</div>} visible={isModalVisible}
         footer={false}
         width={disable ? 400 : 1800}
         onCancel={()=>{
