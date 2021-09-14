@@ -1,7 +1,7 @@
 /**
  * 销售编辑页
  *
- * @author 
+ * @author
  * @Date 2021-08-02 15:47:16
  */
 
@@ -31,6 +31,7 @@ const CrmBusinessSalesEdit = ({...props}) => {
       fieldKey="salesId"
     >
       <FormItem label="名称" name="name" component={SysField.Name} required/>
+      <FormItem label="备注" name="note" component={SysField.Note} />
     </Form>
   );
 };

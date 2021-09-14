@@ -4,7 +4,6 @@ import Form from "@/components/Form";
 
 const TableList = (props) => {
   const {value} = props;
-  console.log(value);
   // const data = value.map((value, index) => {
   //   return {
   //     itemid: value.Itemid,

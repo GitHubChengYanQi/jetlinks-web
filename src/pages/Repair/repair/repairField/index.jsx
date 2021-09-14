@@ -87,8 +87,6 @@ export const ItemImgUrl = (props) => {
     };
   }) : [];
 
-  console.log(banners);
-
   useEffect(() => {
     if (banner) {
       bannerRun(
@@ -201,7 +199,6 @@ export const ItemImgUrl = (props) => {
             setOss({...ossToken});
             imgs.push({imgUrl: `${ossToken.host}/${ossToken.key}`, title: '报修设备照片'});
           }
-          console.log(imgs);
           props.onChange(imgs);
 
           setState({fileList});

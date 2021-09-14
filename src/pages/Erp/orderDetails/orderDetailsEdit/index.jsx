@@ -20,7 +20,7 @@ const ApiConfig = {
 };
 
 const OrderDetailsEdit = ({...props}) => {
-  console.log(props);
+
   const formRef = useRef();
   return (
     <Form

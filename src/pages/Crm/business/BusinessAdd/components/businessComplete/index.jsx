@@ -62,7 +62,7 @@ const BusinessComplete = (props) => {
       }}>
         <Description data={data || null} />
       </Modal>
-      <Modal title='商机明细' visible={detail} width={900} onCancel={() => {
+      <Modal title='创建结果' visible={detail} width={900} onCancel={() => {
         setDetail(false);
       }} onOk={() => {
         setDetail(false);
