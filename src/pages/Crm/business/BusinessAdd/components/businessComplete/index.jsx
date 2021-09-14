@@ -68,7 +68,7 @@ const BusinessComplete = (props) => {
       }} onOk={() => {
         setDetail(false);
       }}>
-        <TableDetail value={result} />
+        <TableDetail  title='商机明细' value={result} />
       </Modal>
     </>
   );

@@ -208,6 +208,15 @@ const BusinessTable = (props) => {
           showSorterTooltip={false}
           defaultSortOrder="descend"
           sortDirections={['ascend', 'descend']} />
+        <Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
+          return (
+            <div>
+              {
+                record.origin ? record.origin.originName : null
+              }
+            </div>
+          );
+        }} />
         {/*<Column*/}
         {/*  title="商机阶段"*/}
         {/*  width={120}*/}
@@ -248,14 +257,10 @@ const BusinessTable = (props) => {
         }}
       />
       <Modal2 width={800} title="项目" component={BusinessEdit} onSuccess={() => {
-
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} onChange={()=>{
         setDetail(true);
         tableRef.current.refresh();
         ref.current.close();
-      }}/>
+      }} ref={ref} />
       <Modal title='创建结果' visible={detail} width={500} onCancel={() => {
         setDetail(false);
       }} onOk={() => {

@@ -15,14 +15,6 @@ import {
   businessEdit, SalesIdListSelect,
 } from '../BusinessUrl';
 import * as SysField from '../BusinessField';
-import Drawer from '@/components/Drawer';
-import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
-import {useRequest} from '@/util/Request';
-import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
-import Modal2 from '@/components/Modal';
-import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 
 const {FormItem} = Form;
 
@@ -51,7 +43,7 @@ const BusinessEdit = (props) => {
           setResult(result.data);
           props.onChange(result);
         }else{
-          props.onChange(result);
+          props.onSuccess();
         }
       }}
 
@@ -82,6 +74,7 @@ const BusinessEdit = (props) => {
       {/*  label="商机阶段" name="stage"*/}
       {/*  rules={[{required: true, message: '请输入商机阶段!'}]}*/}
       {/*  component={SysField.StageListSelect13}  required />*/}
+      <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
       <div style={{textAlign: 'Right', marginRight: 90}}>

@@ -26,6 +26,7 @@ export const erpPackageDelete = {
 export const batchDelete = {
   url: '/erpPackage/batchDelete',
   method: 'POST',
+  rowKey:'packageId'
 };
 
 export const erpPackageDetail = {

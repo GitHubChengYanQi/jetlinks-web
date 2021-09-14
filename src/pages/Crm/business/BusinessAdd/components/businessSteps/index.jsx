@@ -42,7 +42,7 @@ const BusinessSteps = ((props) => {
                 </Steps> : '暂无流程'}
             </ProCard>
           </Col>
-          <Divider direction='ver' style={{height: 400
+          <Divider direction='ver' style={{height: 500
           }}/>
           <Col span={15}>
             <ProCard style={{marginTop:8}} >

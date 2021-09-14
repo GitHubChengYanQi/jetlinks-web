@@ -28,6 +28,19 @@ export const batchDelete = {
   rowKey:'itemId'
 };
 
+export const batchAdd = {
+  url: '/crmBusinessDetailed/batchAdd',
+  method: 'POST',
+  rowKey:'id'
+};
+
+export const addAllPackages = {
+  url: '/crmBusinessDetailed/addAllPackages',
+  method: 'POST',
+  rowKey:'id'
+};
+
+
 export const itemsDetail = {
   url: '/items/detail',
   method: 'POST',

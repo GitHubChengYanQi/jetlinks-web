@@ -25,7 +25,8 @@ import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
-import {batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
+import {batchAdd, batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
+import SelButton from '@/components/SelButton';
 
 
 const {Column} = AntTable;
@@ -63,28 +64,6 @@ const ItemsList = (props) => {
     }
   });
 
-  const footer = () => {
-    /**
-     * 批量删除例子，根据实际情况修改接口地址
-     */
-    return (<DelButton api={{
-      ...batchDelete
-    }} onSuccess={()=>{
-      tableRef.current.refresh();
-    }
-    } value={ids}>批量删除</DelButton>);
-  };
-
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
-
   let disabled = true;
   if(props.disabled === undefined){
     disabled = true;
@@ -98,6 +77,47 @@ const ItemsList = (props) => {
   }else{
     TcDisabled = false;
   }
+
+  const footer = () => {
+    /**
+     * 批量删除例子，根据实际情况修改接口地址
+     */
+    return (
+      <>
+        {!TcDisabled && <SelButton api={{
+          ...batchAdd
+        }}onSuccess={()=>{
+          tableRef.current.refresh();
+          props.onSuccess();
+        }
+        } data ={{
+          businessId: props.businessId,
+          itemIds: ids,
+          salePrice: 0,
+          totalPrice: 0,
+          quantity: 0
+        }} >批量选择</SelButton>}
+        <DelButton api={{
+          ...batchDelete
+        }} onSuccess={()=>{
+          tableRef.current.refresh();
+          props.onSuccess();
+        }
+        } value={ids}>批量删除</DelButton>
+      </>
+    );
+  };
+
+  const actions = () => {
+    return (
+      <>
+        <AddButton onClick={() => {
+          ref.current.open(false);
+        }} />
+      </>
+    );
+  };
+
 
   const [search,setSearch] = useState(false);
 
@@ -147,7 +167,6 @@ const ItemsList = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
         api={itemsList}
         isModal={false}
         rowKey="itemId"
