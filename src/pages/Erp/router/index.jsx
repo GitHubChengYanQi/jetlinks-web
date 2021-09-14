@@ -14,6 +14,7 @@ import {OrderBranchRouter} from '@/pages/Erp/orderBranch/OrderBranchRouter';
 import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
 import {PackageRouter} from '@/pages/Erp/package/packageRouter';
 import {DeliveryRouter} from '@/pages/Erp/delivery/deliveryRouter';
+import {OutstockApplyRouter} from '@/pages/Erp/outstock/outstockApply/outstockApplyRouter';
 
 const ErpRouterConfig = [
   {
@@ -33,6 +34,7 @@ const ErpRouterConfig = [
       ...OrderRouter,
       ...OrderBranchRouter,
       ...DeliveryRouter,
+      ...OutstockApplyRouter,
       {
         redirect: '/ERP/items',
       }

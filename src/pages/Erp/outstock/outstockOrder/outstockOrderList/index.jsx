@@ -24,6 +24,7 @@ import StockDetailsList from '@/pages/Erp/stockDetails/StockDetailsList';
 const {Column} = AntTable;
 
 const OutstockOrderList = () => {
+
   const ref = useRef(null);
   const refSee = useRef(null);
   const tableRef = useRef(null);

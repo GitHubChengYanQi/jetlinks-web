@@ -73,4 +73,4 @@ const BusinessComplete = (props) => {
     </>
   );
 };
-export default  React.forwardRef(BusinessComplete);
+export default  BusinessComplete;

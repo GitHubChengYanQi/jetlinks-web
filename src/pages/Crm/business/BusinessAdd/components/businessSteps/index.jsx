@@ -66,4 +66,4 @@ const BusinessSteps = ((props) => {
   );
 });
 
-export default React.forwardRef(BusinessSteps);
+export default BusinessSteps;

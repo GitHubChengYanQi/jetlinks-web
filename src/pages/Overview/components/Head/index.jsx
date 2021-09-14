@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Avatar, Col, Divider, Row, Space, Statistic} from 'antd';
 import styles from '@/pages/Overview/index.module.scss';
 import {useRequest} from '@/util/Request';
@@ -7,43 +7,43 @@ import moment from 'moment';
 
 const Head = () => {
 
+  const {data: busineSize} = useRequest({url: '/crmBusiness/listAll', method: 'POST'});
+
   const {loading, data} = useRequest({url: '/rest/system/currentUserInfo', method: 'POST'});
   const date = () => {
     const hours = moment().hours();
-    if (hours > 5 && hours < 8){
+    if (hours > 5 && hours < 8) {
       return {
-        hours:'早安',
-        title:'世界那么大,但你依然可以让自己闪闪发光,只要你相信自己可以!'
+        hours: '早安',
+        title: '世界那么大,但你依然可以让自己闪闪发光,只要你相信自己可以!'
       };
-    }else if (hours < 12){
+    } else if (hours < 12) {
       return {
-        hours:'上午好',
-        title:'每天进步一点点，每天创造一点点，每天做事多一点，愿你事事都领先，卓越成绩现眼前，美好生活一天又一天！'
+        hours: '上午好',
+        title: '每天进步一点点，每天创造一点点，每天做事多一点，愿你事事都领先，卓越成绩现眼前，美好生活一天又一天！'
       };
-    }else if (hours < 18){
+    } else if (hours < 18) {
       return {
-        hours:'下午好',
-        title:'不管忙不忙碌，有牵挂就好，不管联不联系，能想起就好，祝福总是相互的，不管身在何处，照顾好自我就是给对方最大的安慰，愿你的工资天天上升，情绪时时开心。'
+        hours: '下午好',
+        title: '不管忙不忙碌，有牵挂就好，不管联不联系，能想起就好，祝福总是相互的，不管身在何处，照顾好自我就是给对方最大的安慰，愿你的工资天天上升，情绪时时开心。'
       };
-    }else if (hours < 22){
+    } else if (hours < 22) {
       return {
-        hours:'晚上好',
-        title:'生活总会有酸有甜，能微笑面对便是强者；人生总会有得有失，能平淡看待便是智者；朋友总会有聚有散，能经常联系便是知己。'
+        hours: '晚上好',
+        title: '生活总会有酸有甜，能微笑面对便是强者；人生总会有得有失，能平淡看待便是智者；朋友总会有聚有散，能经常联系便是知己。'
       };
-    }else {
+    } else {
       return {
-        hours:'夜深了，早点休息，晚安~',
-        title:'一切问题，都是时间问题，一切烦恼，都是自寻烦恼。心中无尘，心自安。烦恼由心生。'
+        hours: '夜深了，早点休息，晚安~',
+        title: '一切问题，都是时间问题，一切烦恼，都是自寻烦恼。心中无尘，心自安。烦恼由心生。'
       };
     }
   };
 
 
-  if (loading){
+  if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
-
-
 
 
   return (
@@ -65,8 +65,8 @@ const Head = () => {
       </Col>
       <Col className={styles.statistic}>
         <Space split={<Divider type="vertical" />}>
-          <Statistic title="项目数" value={93} suffix="/132" />
-          <Statistic title="团队排名" value={3} suffix="/12" />
+          <Statistic title="项目数" value={busineSize && busineSize.length} />
+          <Statistic title="团队排名" value={1} suffix="/12" />
         </Space>
       </Col>
     </Row>

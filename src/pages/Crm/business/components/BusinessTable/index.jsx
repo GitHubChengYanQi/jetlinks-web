@@ -28,8 +28,6 @@ import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-import {CustomerListSelect} from '@/pages/Crm/business/BusinessField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

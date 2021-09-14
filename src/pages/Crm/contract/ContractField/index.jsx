@@ -156,7 +156,6 @@ export const Content = (props) => {
       {
         parse(props.value, {
           replace: domNode => {
-
             if (domNode.name === 'strong' && domNode.attribs.class === 'inp' && domNode.children[0].data === '文本框') {
               return <Input style={{width: '100px', margin: '0 10px'}} onChange={(value) => {
                 handelChange(value);

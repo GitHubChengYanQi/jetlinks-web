@@ -106,13 +106,13 @@ const TableWarp = ({
   }));
 
   const {loading, dataSource, pagination, ...other} = tableProps;
-  
+
   const footer = () => {
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {/* {pagination && <div className={style.right}>共{pagination.total}条</div>} */}
-        {/* {pagination && <Pagination style={{float:'right'}} {...pagination} size="small" />} */}
+        {pagination && <div className={style.right}>共{pagination.total}条</div>}
+        {/*{pagination && <Pagination style={{float: 'right'}} {...pagination} size="small" />}*/}
         <br style={{clear: 'both'}} />
       </div>
     );

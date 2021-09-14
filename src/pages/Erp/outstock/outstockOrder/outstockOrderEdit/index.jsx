@@ -12,14 +12,19 @@ import {outstockOrderDetail, outstockOrderAdd, outstockOrderEdit} from '../outst
 import * as SysField from '../outstockOrderField';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
 import FormIndex from '@/components/Form/FormIndex';
+import {
+  outstockApplyAdd,
+  outstockApplyDetail,
+  outstockApplyEdit
+} from '@/pages/Erp/outstock/outstockApply/outstockApplyUrl';
 
 const {FormItem} = Form;
 const {Step} = Steps;
 
 const ApiConfig = {
-  view: outstockOrderDetail,
-  add: outstockOrderAdd,
-  save: outstockOrderEdit
+  view: outstockApplyDetail,
+  add: outstockApplyAdd,
+  save: outstockApplyEdit
 };
 
 const OutstockOrderEdit = ({...props}) => {
