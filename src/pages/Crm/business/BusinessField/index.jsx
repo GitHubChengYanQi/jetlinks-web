@@ -73,7 +73,6 @@ export const OpportunityAmountListSelect3 = (props) => {
 };
 // 销售流程
 export const SalesIdListSelect = (props) => {
-  console.log(22222222222111111, props);
   const {value} = props;
   if (value !== undefined) {
 
