@@ -42,7 +42,7 @@ const CompetitorQuoteEdit = ({...props}) => {
         });
       }}
     >
-      <FormItem label="关联商机"  name="businessId" component={SysField.BusinessId} businessId={businessId || null} required/>
+      <FormItem label="关联项目"  name="businessId" component={SysField.BusinessId} businessId={businessId || null} required/>
       <FormItem label="报价区分" name="campType" component={SysField.CampType} required/>
       <FormItem label="对手名称"  name="competitorId" component={SysField.CompetitorId} competitorId={competitorId || null} />
       {/*<FormItem label="报价状态"  name="quoteStatus" component={SysField.QuoteStatus} />*/}

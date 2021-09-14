@@ -1,5 +1,5 @@
 /**
- * 商机跟踪表编辑页
+ * 项目跟踪表编辑页
  *
  * @author
  * @Date 2021-08-05 10:31:44
@@ -67,7 +67,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
             <Col span={14}>
               <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
                 <ProCard style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
-                  <FormItem label="商机" name="businessId" component={SysField.BusinessId} val={val} />
+                  <FormItem label="项目" name="businessId" component={SysField.BusinessId} val={val} />
                   <FormItem label="跟踪内容" name="type" component={SysField.Type} />
                   <FormItem label="跟踪信息" name="note" component={SysField.Note} />
                   <FormItem label="图片" name="image" component={SysField.Image} />

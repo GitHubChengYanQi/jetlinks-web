@@ -1,5 +1,5 @@
 /**
- * 商机管理列表页
+ * 项目管理列表页
  *
  * @author
  * @Date 2021-07-23 10:06:12
@@ -29,6 +29,7 @@ import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import {CustomerListSelect} from '@/pages/Crm/business/BusinessField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -89,8 +90,7 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
-                    component={SysField.CustomerNameListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="立项日期" name="time" component={SysField.TimeListSelect2} />
 
@@ -100,10 +100,8 @@ const BusinessTable = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="商机名称" name="businessName"
-                    component={SysField.BusinessNameListSelect} />
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"  component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -159,7 +157,7 @@ const BusinessTable = (props) => {
         }}
       >
         <Column
-          title="商机名称"
+          title="项目名称"
           dataIndex="businessName"
           sorter
           fixed
@@ -195,15 +193,6 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        {/*<Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <div>*/}
-        {/*      {*/}
-        {/*        record.origin ? record.origin.originName : null*/}
-        {/*      }*/}
-        {/*    </div>*/}
-        {/*  );*/}
-        {/*}} />*/}
         <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {
           return (
             <div>
@@ -230,7 +219,7 @@ const BusinessTable = (props) => {
         {/*  showSorterTooltip={false}*/}
         {/*  sortDirections={['ascend', 'descend']} />*/}
         <Column
-          title="商机金额"
+          title="项目金额"
           width={120}
           align="center"
           dataIndex="opportunityAmount"
@@ -260,7 +249,7 @@ const BusinessTable = (props) => {
           addRef.current.close();
         }}
       />
-      <Modal2 width={800} title="商机" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={800} title="项目" component={BusinessEdit} onSuccess={() => {
 
         tableRef.current.refresh();
         ref.current.close();

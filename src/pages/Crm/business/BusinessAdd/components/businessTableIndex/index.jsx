@@ -8,7 +8,7 @@ const BusinessTableIndex = ((props) => {
 
   return (
     <>
-      <p >商机流程：</p>
+      <p >项目流程：</p>
       {data && data.length > 0 ? data.map((item, index) => {
         return (
           <div key={index} style={{width: 200, marginLeft: 50, marginBottom: 20}}>

@@ -42,7 +42,7 @@ const BusinessComplete = (props) => {
           </Button>,
           <Button  key="1" type="link" onClick={() => {
             history.push(`/CRM/business/${result}`);
-          }}>查看详情</Button>,
+          }}>查看详情</Button>
           // <Button key="1" onClick={() => {
           //
           //   run({data: {
@@ -52,10 +52,11 @@ const BusinessComplete = (props) => {
           // }}>
           //   查看详情
           // </Button>,
+          //   }});
         ]}
 
       />
-      <Modal title='商机详情' visible={visi} width={800} onCancel={() => {
+      <Modal title='项目详情' visible={visi} width={800} onCancel={() => {
         setVisi(false);
       }} onOk={() => {
         setVisi(false);

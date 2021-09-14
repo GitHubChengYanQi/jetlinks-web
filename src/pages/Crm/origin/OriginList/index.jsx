@@ -63,7 +63,7 @@ const OriginList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title="商机来源" />}
+        title={<Breadcrumb title="项目来源" />}
         api={originList}
         rowKey="originId"
         searchForm={searchForm}

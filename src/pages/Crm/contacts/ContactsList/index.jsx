@@ -13,7 +13,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
@@ -182,7 +182,7 @@ const ContactsTable = (props) => {
           );
         }} />
       </Table>
-      <Modal2 width={500} title="联系人" component={ContactsEdit}  onSuccess={() => {
+      <Modal width={500} title="联系人" component={ContactsEdit}  onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

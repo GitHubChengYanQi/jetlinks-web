@@ -1,5 +1,5 @@
 /**
- * 商机表编辑页
+ * 项目表编辑页
  *
  * @author cheng
  * @Date 2021-07-19 15:13:58
@@ -57,9 +57,9 @@ const BusinessEdit = (props) => {
 
     >
       <FormItem
-        label="商机名称"
+        label="项目名称"
         name="businessName"
-        rules={[{required: true, message: '请输入商机名称!'}]}
+        rules={[{required: true, message: '请输入项目名称!'}]}
         component={SysField.BusinessNameListSelect}
         required />
       <FormItem

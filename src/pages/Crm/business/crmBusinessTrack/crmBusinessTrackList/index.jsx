@@ -1,7 +1,7 @@
 /**
- * 商机跟踪表列表页
+ * 项目跟踪表列表页
  *
- * @author 
+ * @author
  * @Date 2021-08-05 10:31:44
  */
 
@@ -53,7 +53,7 @@ const CrmBusinessTrackList = () => {
         <Column title="备注id" dataIndex="noteId"/>
         <Column title="备注" dataIndex="note"/>
         <Column title="跟踪类型" dataIndex="type"/>
-        <Column title="商机id" dataIndex="businessId"/>
+        <Column title="项目id" dataIndex="businessId"/>
         <Column title="负责人" dataIndex="userId"/>
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {

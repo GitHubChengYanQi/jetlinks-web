@@ -30,7 +30,7 @@ const BusinessSteps = ((props) => {
     <>
       <div style={{maxHeight:'100vh'}}>
         <Row gutter={24}>
-          <Col span={6}>
+          <Col span={8}>
             <ProCard style={{marginTop: 8}} >
               {step ?
                 <Steps
@@ -44,7 +44,7 @@ const BusinessSteps = ((props) => {
           </Col>
           <Divider direction='ver' style={{height: 400
           }}/>
-          <Col span={17}>
+          <Col span={15}>
             <ProCard style={{marginTop:8}} >
               <div style={{overflow: 'auto'}}>
                 <BusinessEdit

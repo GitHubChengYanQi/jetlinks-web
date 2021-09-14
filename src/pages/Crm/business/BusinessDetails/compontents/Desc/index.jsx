@@ -15,7 +15,6 @@ const Desc = (props) => {
             history.push(`/CRM/customer/${data.customerId}`);
           }}>{data.customer.customerName}</a> : '未填写'  }</Descriptions.Item>
           <Descriptions.Item label="负责人">{data.user ?  data.user.name: '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="商机阶段">{data.stage ? data.stage : '未填写'}</Descriptions.Item>
         </Descriptions>
       </>
     );

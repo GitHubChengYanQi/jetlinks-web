@@ -1,5 +1,5 @@
 /**
- * 商机表接口配置
+ * 项目表接口配置
  *
  * @author cheng
  * @Date 2021-07-19 15:13:58
@@ -42,7 +42,7 @@ export const businessList = {
   rowKey:'businessId'
 };
 
-// 商机名称
+// 项目名称
 
 export const BusinessNameListSelect = {
   url: '/crmBusiness/listSelect',
@@ -74,7 +74,7 @@ export const TimeListSelect2 = {
   url: '/crmBusiness/listSelect2',
   method: 'POST',
 };
-// 商机金额
+// 项目金额
 export const OpportunityAmountListSelect3 = {
   url: '/crmBusiness/listSelect3',
   method: 'POST',

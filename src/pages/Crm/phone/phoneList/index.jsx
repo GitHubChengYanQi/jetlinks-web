@@ -6,17 +6,16 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import Breadcrumb from '@/components/Breadcrumb';
 import {phoneDelete, phoneList} from '../phoneUrl';
 import PhoneEdit from '../phoneEdit';
 import * as SysField from '../phoneField';
+import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,35 +24,27 @@ const PhoneList = (props) => {
   const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
 
 
   const searchForm = () => {
     return (
       <>
         <FormItem hidden  name="contactsId" component={SysField.ContactsId} value={value === false ? '111' : value} />
-        <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} />
       </>
     );
   };
 
   return (
     <>
+      <AddButton type='dashed' name='联系人电话' style={{width:'100%'}} onClick={() => {
+        ref.current.open(false);
+      }} />
       <Table
-        // title={<Breadcrumb title={value.contactsName || null} />}
         api={phoneList}
         rowKey="phoneId"
         searchForm={searchForm}
+        showSearchButton={false}
         isModal={false}
-        actions={actions()}
         ref={tableRef}
       >
         <Column title="电话号码" dataIndex="phoneNumber" />

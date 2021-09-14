@@ -10,7 +10,7 @@ import React, {lazy} from 'react';
 export const OriginRouter = [
   {
     path: '/origin',
-    name: '商机来源',
+    name: '项目来源',
     component: lazy(() => import('../OriginList')),
     fallback: <div>loading...</div>,
     exact: true,

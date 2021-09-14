@@ -6,17 +6,16 @@
  */
 
 import React, {useRef, useState} from 'react';
-
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import Modal2 from '@/components/Modal';
-import Table from "@/components/Table";
+import Modal from '@/components/Modal';
+import Table from '@/components/Table';
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
-import style from "@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less";
-import Breadcrumb from "@/components/Breadcrumb";
+import style from '@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less';
+import Breadcrumb from '@/components/Breadcrumb';
 import {erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
 import CheckButton from '@/components/CheckButton';
 import ErpPackageEdit from '../packageEdit';
@@ -38,14 +37,14 @@ const ErpPackageList = (props) => {
   const [productName, setProductName] = useState();
   const [ids, setIds] = useState([]);
 
-  const {daGet,run} = useRequest(erpPackageTableList,{manual:true});
+  const {run} = useRequest(erpPackageTableList, {manual: true});
 
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
@@ -53,7 +52,7 @@ const ErpPackageList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="套餐名称" name="productName" component={SysField.productName}/>
+        <FormItem label="套餐名称" name="productName" component={SysField.productName} />
 
       </>
     );
@@ -63,14 +62,14 @@ const ErpPackageList = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-        ...batchDelete
+      ...batchDelete
     }} value={ids}>批量删除</DelButton>);
   };
 
 
   return (
     <>
-      <div  className={style.tableWarp}>
+      <div className={style.tableWarp}>
         <div className={style.listHeader}>
           <div className="title"><Breadcrumb /></div>
           <div className="actions">
@@ -94,34 +93,34 @@ const ErpPackageList = (props) => {
                     setProductName(record.productName);
                   }}>{record.productName}</Button>
                 );
-              }} sorter/>
-              <Column title='总金额' dataIndex='money' />
-              <Column title="操作" fixed='right' width={200} align="right" render={(value, record) => {
+              }} sorter />
+              <Column title="总金额" dataIndex="money" />
+              <Column title="操作" fixed="right" width={200} align="right" render={(value, record) => {
                 return (
                   <>
-                    {choose ? <CheckButton onClick={()=>{
+                    {choose ? <CheckButton onClick={() => {
                       choose(record);
                       props.onSuccess();
                     }} /> : null}
 
                     <EditButton onClick={() => {
                       ref.current.open(record.packageId);
-                    }}/>
-                    <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={()=>{
+                    }} />
+                    <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={() => {
                       run(record.packageId);
                       tableRef.current.refresh();
-                    }}/>
+                    }} />
                   </>
                 );
               }} />
             </Table>
-            <Modal2 width={900}  title="套餐" component={ErpPackageEdit}  onSuccess={() => {
+            <Modal width={900} title="套餐" component={ErpPackageEdit} onSuccess={() => {
               tableRef.current.refresh();
               ref.current.close();
             }} ref={ref} />
           </div>
           <div className={styles.col}>
-            <TableList packageId = {PackageId || 111} productName = {productName || null} />
+            <TableList packageId={PackageId || 111} productName={productName || null} />
           </div>
         </div>
       </div>

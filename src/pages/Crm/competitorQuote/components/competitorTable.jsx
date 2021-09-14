@@ -55,7 +55,7 @@ const CompetitorTable = (props) => {
       return (
         <>
           {value ? null : <FormItem mega-props={{span: 1}} placeholder="对手名称"  name="competitorId"  component={SysField.CompetitorId} />}
-          {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="关联商机" name="businessId" component={SysField.BusinessId} />}
+          {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="关联项目" name="businessId" component={SysField.BusinessId} />}
         </>
       );
     };
@@ -119,7 +119,7 @@ const CompetitorTable = (props) => {
         ref={tableRef}
 
       >
-        <Column width={200} title="关联商机" dataIndex="businessId" render={(value, record) => {
+        <Column width={200} title="关联项目" dataIndex="businessId" render={(value, record) => {
           return (
             <div>
               {

@@ -1,5 +1,5 @@
 /**
- * 商机表字段配置页
+ * 项目表字段配置页
  *
  * @author cheng
  * @Date 2021-07-19 15:13:58
@@ -21,7 +21,7 @@ import AddCustomer from '@/pages/Crm/customer/components/AddCustomer';
 import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 
 const w = 200;
-// 商机Id
+// 项目Id
 export const BusinessId = (props) => {
   return (<Input  {...props} />);
 };
@@ -35,7 +35,7 @@ export const itemId = (props) => {
   return (<Select api={apiUrl.ProductNameListSelect} {...props} />);
 };
 
-// 商机名称
+// 项目名称
 export const BusinessNameListSelect = (props) => {
   return (<Input  {...props} />);
 };
@@ -47,6 +47,9 @@ export const PersonListSelect = (props) => {
 // 客户名称
 export const CustomerNameListSelect = (props) => {
   return (<SelectAddCustomer {...props} />);
+};
+export const CustomerListSelect = (props) => {
+  return (<Select api={apiUrl.CustomerNameListSelect} {...props} />);
 };
 
 
@@ -64,7 +67,7 @@ export const OrgNameListSelect = (props) => {
 export const TimeListSelect2 = (props) => {
   return (<DatePicker2 showTime {...props} />);
 };
-// 商机金额
+// 项目金额
 export const OpportunityAmountListSelect3 = (props) => {
   return (<InputNumber  {...props} />);
 };
@@ -114,12 +117,12 @@ export const CustomerList = (props) => {
 };
 
 
-// 商机状态
+// 项目状态
 export const StateListSelect12 = (props) => {
   return (<AntdSelect
     options={[{value: 0, label: '预测评估'}, {value: 1, label: '初期沟通'}, {value: 2, label: '需求分析'}]} {...props} />);
 };
-// 商机阶段
+// 项目阶段
 export const StageListSelect13 = (props) => {
   return (<AntdSelect options={[{value: '预测评估', label: '预测评估'}, {value: '初期沟通', label: '初期沟通'}, {
     value: '需求分析',

@@ -1,15 +1,10 @@
 import React, {useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
-import {useRequest} from '@/util/Request';
 import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
 
 
 const ContractList = () => {
-
-
-
 
   const [state, setState] = useState();
 
@@ -28,11 +23,11 @@ const ContractList = () => {
               key: '',
               children: [
                 {
-                  title: '通过',
+                  title: '已审核',
                   key: '1',
                 },
                 {
-                  title: '未通过',
+                  title: '未审核',
                   key: '0',
                 },
               ],

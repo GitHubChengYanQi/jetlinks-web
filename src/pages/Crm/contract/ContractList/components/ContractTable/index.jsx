@@ -250,7 +250,7 @@ const ContractTable = (props) => {
         <Column title="创建时间" width={200} dataIndex="time" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
-            <BadgeState state={record.audit} text={['未通过', '通过']} color={['red', 'green']} />
+            <BadgeState state={record.audit} text={['未审核', '已审核']} color={['red', 'green']} />
           );
         }} />
         <Column title="操作" fixed='right' align="right" render={(value, record) => {

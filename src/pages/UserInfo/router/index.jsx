@@ -6,6 +6,7 @@ import {GoodsRouter} from "@/pages/Shop/goods/goodsRouter";
 import {RepairRouter} from '@/pages/Repair/repair/repairRouter';
 import UsrInfoLayout from '@/pages/UserInfo';
 import {OpenUserInfoRouter} from '@/pages/UserInfo/openUserInfo/openUserInfoRouter';
+import {WxuserInfoRouter} from '@/pages/UserInfo/wxuserInfo/wxuserInfoRouter';
 
 const UserInfoRouterConfig = [
   {
@@ -13,9 +14,9 @@ const UserInfoRouterConfig = [
     name: '绑定微信用户',
     component: UsrInfoLayout,
     children:[
-      ...OpenUserInfoRouter,
+      ...WxuserInfoRouter,
       {
-        redirect: '/userInfo/openUserInfo',
+        redirect: '/userInfo/wxuserInfo',
       }
     ]
   }
