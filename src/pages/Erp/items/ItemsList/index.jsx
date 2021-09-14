@@ -167,7 +167,6 @@ const ItemsList = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
         api={itemsList}
         isModal={false}
         rowKey="itemId"

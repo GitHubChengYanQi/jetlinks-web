@@ -14,6 +14,7 @@ import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackag
 import ItemsList from "@/pages/Erp/items/ItemsList";
 import ErpPackageList from "@/pages/Erp/package/packageList";
 import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -73,6 +74,7 @@ const TableDetail = (props) => {
         />
       </div>
       <Table
+        title={111111111111}
         api={crmBusinessDetailedList}
         rowKey="id"
         searchForm={searchForm}
