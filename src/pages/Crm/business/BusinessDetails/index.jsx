@@ -78,20 +78,6 @@ const CustomerDetail = () => {
             refresh();
           }} title='跟踪' val={data} />
 
-          {/*<Modal width={1400} title='跟踪' compoentRef={refA} component={CrmBusinessTrackEdit} onSuccess={() => {*/}
-          {/*  refTrack.current.close();*/}
-          {/*  refresh();*/}
-          {/*}} ref={refTrack} val={data} footer={*/}
-          {/*  <ButtonGroup>*/}
-          {/*    <Button type="primary" onClick={()=>{*/}
-          {/*      console.log(11111111111111111, refA);*/}
-          {/*      refA.current.formsRef.current.submit();*/}
-          {/*    }}>保存</Button>*/}
-          {/*    <Button  onClick={()=>{*/}
-          {/*      refTrack.current.close();*/}
-          {/*    }}><Icon type="icon-huifu" />取消</Button>*/}
-          {/*  </ButtonGroup>*/}
-          {/*} />*/}
           <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
             refresh();

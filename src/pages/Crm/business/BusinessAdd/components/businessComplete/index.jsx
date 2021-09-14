@@ -42,7 +42,7 @@ const BusinessComplete = (props) => {
           </Button>,
           <Button  key="1" type="link" onClick={() => {
             history.push(`/CRM/business/${result}`);
-          }}>查看详情</Button>,
+          }}>查看详情</Button>
           // <Button key="1" onClick={() => {
           //
           //   run({data: {
@@ -52,7 +52,7 @@ const BusinessComplete = (props) => {
           // }}>
           //   查看详情
           // </Button>,
-            }});
+          //   }});
         ]}
 
       />

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Divider, Layout, Tree} from 'antd';
-import BusinessTable from '@/pages/Crm/business/BusinessList/components/BusinessTable';
+import BusinessTable from '@/pages/Crm/business/components/BusinessTable';
 import styles from '@/pages/Crm/business/BusinessList/index.module.scss';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
