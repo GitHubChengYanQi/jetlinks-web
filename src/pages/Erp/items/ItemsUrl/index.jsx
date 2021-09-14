@@ -34,6 +34,12 @@ export const batchAdd = {
   rowKey:'id'
 };
 
+export const addAllPackages = {
+  url: '/crmBusinessDetailed/addAllPackages',
+  method: 'POST',
+  rowKey:'id'
+};
+
 
 export const itemsDetail = {
   url: '/items/detail',

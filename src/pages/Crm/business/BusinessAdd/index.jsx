@@ -54,7 +54,7 @@ const BusinessAdd = (props, ref) => {
           typeof onClose==='function' && onClose();
         }}
       >
-        <div style={disable === 1 ? {marginRight: 10, maxHeight:'400px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+        <div style={disable === 1 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
           {data && data.length > 0 ? <BusinessTableIndex
             onChange={(rtData)=>{
               setShow(false);
@@ -65,7 +65,7 @@ const BusinessAdd = (props, ref) => {
             }}
             data={data}/> : null}
         </div>
-        <div style={disable === 2 ? {animationDelay: '-5s',  maxHeight:'400px'} : {display: 'none', maxHeight:'400px', animationDelay: '-1s'}}>
+        <div style={disable === 2 ? {animationDelay: '-5s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
           <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
             {stage && <BusinessSteps useData={useData} stage={stage}
               onChange={(result)=>{
