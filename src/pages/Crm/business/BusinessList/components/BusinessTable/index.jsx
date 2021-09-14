@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Modal, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -27,6 +27,8 @@ import {SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
+import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -36,6 +38,7 @@ const BusinessTable = (props) => {
   const {status, state} = props;
 
   const [ids, setIds] = useState([]);
+  const [businessId, setBusinessId] = useState(null);
 
 
   const history = useHistory();
@@ -43,6 +46,7 @@ const BusinessTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const addRef = useRef(null);
+  const [detail, setDetail] = useState(false);
 
   const [search, setSearch] = useState(false);
 
@@ -61,9 +65,9 @@ const BusinessTable = (props) => {
         <AddButton onClick={() => {
           addRef.current.open();
         }} />
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
+        {/*<AddButton onClick={() => {*/}
+        {/*  ref.current.open(false);*/}
+        {/*}} />*/}
       </>
     );
   };
@@ -191,15 +195,15 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
-          return (
-            <div>
-              {
-                record.origin ? record.origin.originName : null
-              }
-            </div>
-          );
-        }} />
+        {/*<Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <div>*/}
+        {/*      {*/}
+        {/*        record.origin ? record.origin.originName : null*/}
+        {/*      }*/}
+        {/*    </div>*/}
+        {/*  );*/}
+        {/*}} />*/}
         <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {
           return (
             <div>
@@ -217,14 +221,14 @@ const BusinessTable = (props) => {
           showSorterTooltip={false}
           defaultSortOrder="descend"
           sortDirections={['ascend', 'descend']} />
-        <Column
-          title="商机阶段"
-          width={120}
-          align="center"
-          dataIndex="stage"
-          sorter
-          showSorterTooltip={false}
-          sortDirections={['ascend', 'descend']} />
+        {/*<Column*/}
+        {/*  title="商机阶段"*/}
+        {/*  width={120}*/}
+        {/*  align="center"*/}
+        {/*  dataIndex="stage"*/}
+        {/*  sorter*/}
+        {/*  showSorterTooltip={false}*/}
+        {/*  sortDirections={['ascend', 'descend']} />*/}
         <Column
           title="商机金额"
           width={120}
@@ -238,6 +242,7 @@ const BusinessTable = (props) => {
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.businessId);
+                setBusinessId(record.businessId);
               }} />
               <DelButton api={businessDelete} value={record.businessId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -255,10 +260,22 @@ const BusinessTable = (props) => {
           addRef.current.close();
         }}
       />
-      <Modal2 width={1500} title="商机" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={800} title="商机" component={BusinessEdit} onSuccess={() => {
+
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} />
+      }} ref={ref} onChange={()=>{
+        setDetail(true);
+        tableRef.current.refresh();
+        ref.current.close();
+      }}/>
+      <Modal title='创建结果' visible={detail} width={500} onCancel={() => {
+        setDetail(false);
+      }} onOk={() => {
+        setDetail(false);
+      }}>
+        {businessId && <BusinessComplete result={businessId} disabled={false} />}
+      </Modal>
     </>
   );
 };

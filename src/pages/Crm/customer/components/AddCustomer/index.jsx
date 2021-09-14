@@ -1,4 +1,4 @@
-import {AutoComplete, Button, Popover} from 'antd';
+import {AutoComplete, Button, Divider, Dropdown, Menu, Popover} from 'antd';
 import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
@@ -8,28 +8,25 @@ import React, {useEffect, useRef, useState} from 'react';
 const AddCustomer = (props) => {
 
 
-  const {value,onChange,visi,setVal} = props;
+  const {onChange, visi, setVal} = props;
 
   const ref = useRef(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     setVisible(false);
-  },[visi]);
-
+  }, [visi]);
 
 
   const [visible, setVisible] = useState(false);
 
+  const [drow, setDrow] = useState();
 
-  const options = [
-    {
-      label: '选择新增客户',
-      options: [{value: '0', label: '详细新增客户'}, {value: '1', label: '快速新增客户'}],
-    },
-  ];
-
-  return (
+  const content = (
     <>
+      <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
+        ref.current.open(false);
+      }}>创建客户</Button>
+      <Divider style={{margin: 5}} />
       <Popover placement="rightTop" visible={visible} content={<FastCreateCustomer close={() => {
         setVisible(false);
       }} add={(value) => {
@@ -37,23 +34,58 @@ const AddCustomer = (props) => {
         typeof setVal === 'function' && setVal(value && value.customerName);
         onChange(value && value.customerId);
       }} />} trigger="click">
-        <AutoComplete
-          dropdownMatchSelectWidth={120}
-          style={{width: 100}}
-          options={options}
-          value={null}
-          onChange={(value) => {
-            if (value === '0') {
-              ref.current.open(false);
-              setVisible(false);
-            } else if (value === '1') {
-              setVisible(true);
-            }
-          }}
-        >
-          <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}}>新增客户</Button>
-        </AutoComplete>
+        <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
+          setVisible(true);
+        }}>快速创建</Button>
       </Popover>
+    </>
+  );
+
+  const menu = (
+    <Menu style={{padding: 0}}>
+      <Menu.Item key="1" style={{padding: 0}}>
+        <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
+          setDrow(false);
+          ref.current.open(false);
+        }}>创建客户</Button>
+      </Menu.Item>
+      <Menu.Item key="2" style={{padding: 0}}>
+        <Popover placement="rightTop" visible={visible} onVisibleChange={(visible)=>{
+          setVisible(visible);
+        }} content={<FastCreateCustomer close={() => {
+          setDrow(false);
+          setVisible(false);
+        }} add={(value) => {
+          setDrow(false);
+          setVisible(false);
+          typeof setVal === 'function' && setVal(value && value.customerName);
+          onChange(value && value.customerId);
+        }} />} trigger="click">
+          <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
+            setVisible(true);
+          }}>快速创建</Button>
+        </Popover>
+      </Menu.Item>
+    </Menu>
+  );
+
+
+  return (
+    <>
+      <Dropdown overlay={menu} trigger="click" destroyPopupOnHide visible={drow} onVisibleChange={(visible)=>{
+        setDrow(visible);
+      } }>
+        <Button
+          type="primary"
+          style={{backgroundColor: '#1890ff', color: '#fff'}}
+          onClick={() => {
+            if (drow)
+              setDrow(false);
+            else
+              setDrow(true);
+          }}>新增客户</Button>
+      </Dropdown>
+
 
       <CreateNewCustomer
         title="客户"

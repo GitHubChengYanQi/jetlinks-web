@@ -65,7 +65,7 @@ const CustomerDetail = () => {
           <Button type="primary" onClick={() => {
             ref.current.open(data.customerId);
           }}>编辑</Button>
-          <CreateNewCustomer model={CustomerEdit}  widths={1600}  onSuccess={()=>{
+          <CreateNewCustomer model={CustomerEdit}  widths={1200}  onSuccess={()=>{
             ref.current.close();
           }} refModal={ref} />
           <Button onClick={() => {

@@ -21,6 +21,10 @@ export const packageId = (props) =>{
   return (<Input {...props}/>);
 };
 
+export const Money = (props) =>{
+  return (<InputNumber {...props}/>);
+};
+
 
 // 产品名称
 export const itemId = (props) =>{

@@ -16,6 +16,7 @@ import Form from '@/components/Form';
 import {crmBusinessSalesProcessDelete, crmBusinessSalesProcessList} from '../crmBusinessSalesProcessUrl';
 import CrmBusinessSalesProcessEdit from '../crmBusinessSalesProcessEdit';
 import * as SysField from '../crmBusinessSalesProcessField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,7 +52,7 @@ const CrmBusinessSalesProcessList = (props) => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb title="销售流程明细" />}
         api={crmBusinessSalesProcessList}
         rowKey="salesProcessId"
         searchForm={searchForm}
@@ -59,10 +60,9 @@ const CrmBusinessSalesProcessList = (props) => {
         ref={tableRef}
       >
         <Column title="流程名称" dataIndex="name" />
-        <Column title="百分比" dataIndex="percentage" />
-        <Column title="流程说明" dataIndex="note" />
-        <Column title="排序" dataIndex="sort" />
-        <Column />
+        <Column width={100} title="百分比" dataIndex="percentage" />
+        <Column width={200} title="流程说明" dataIndex="note" />
+        <Column width={100} title="排序" dataIndex="sort" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -74,9 +74,9 @@ const CrmBusinessSalesProcessList = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={200} />
       </Table>
-      <Drawer width={800} title="编辑" component={CrmBusinessSalesProcessEdit} onSuccess={() => {
+      <Drawer width={800} title="流程明细" component={CrmBusinessSalesProcessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

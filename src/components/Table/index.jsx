@@ -19,6 +19,7 @@ const TableWarp = ({
   api,
   searchForm,
   rowKey,
+  tab,
   SearchButton,
   selectionType,
   onChange,

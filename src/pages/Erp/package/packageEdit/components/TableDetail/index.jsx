@@ -19,7 +19,7 @@ const TableDetail = (props) => {
   const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const refAddOne = useRef();
+  const refAddOne = useRef(null);
 
   const [da,setDa] = useState();
   const {data,run} = useRequest({url: '/crmBusinessDetailed/add',method: 'POST',data:da},{manual:true});
@@ -74,4 +74,4 @@ const TableDetail = (props) => {
     </>
   );
 };
-export default TableDetail;
+export default React.forwardRef(TableDetail);

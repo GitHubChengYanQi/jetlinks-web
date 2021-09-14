@@ -80,7 +80,7 @@ const CrmBusinessSalesList = () => {
             }}>{text}</Button>
           );
         }} />
-        <Column />
+        <Column title="备注" dataIndex="note" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -94,12 +94,12 @@ const CrmBusinessSalesList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal2 width={800} title="编辑" component={CrmBusinessSalesEdit} onSuccess={() => {
+      <Modal2 width={800} title="流程" component={CrmBusinessSalesEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
 
-      <Modal2 width={800} title="编辑" component={CrmBusinessSalesProcessList} onSuccess={() => {
+      <Modal2 width={900} title="流程明细" component={CrmBusinessSalesProcessList} onSuccess={() => {
         refCrmBusinessSalesProcessList.current.close();
       }} ref={refCrmBusinessSalesProcessList} />
     </>

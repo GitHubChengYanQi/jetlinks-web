@@ -61,7 +61,7 @@ export const Map = (props) => {
   );
 };
 export const PhoneNumber = (props) => {
-  return (<InputNumber style={{width: 300}}  {...props} />);
+  return (<InputNumber style={{width: '100%'}}  {...props} />);
 };
 
 export const key = (props) => {
@@ -78,7 +78,7 @@ export const Region = (props) => {
   return (<Cascader api={apiUrl.commonArea} {...props} />);
 };
 export const CompanyRoleId = (props) => {
-  return (<Select api={apiUrl.CompanyRoleIdSelect} {...props} />);
+  return (<Select width='100%' api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
 export const CustomerName = (props) => {
 
@@ -109,6 +109,7 @@ export const Utscc = (props) => {
 export const CompanyType = (props) => {
   return (<AntdSelect
     showSearch
+    style={{maxWidth:120}}
     allowClear
     filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {
@@ -175,11 +176,11 @@ export const Note = (props) => {
 };
 
 export const CustomerLevelId = (props) => {
-  return (<Select api={apiUrl.CustomerLevelIdSelect}  {...props} />);
+  return (<Select width={120} api={apiUrl.CustomerLevelIdSelect}  {...props} />);
 };
 
 export const OriginId = (props) => {
-  return (<Select api={apiUrl.OriginIdSelect}  {...props} />);
+  return (<Select width={120} api={apiUrl.OriginIdSelect}  {...props} />);
 };
 
 export const UserName = (props) => {

@@ -70,7 +70,13 @@ export const OpportunityAmountListSelect3 = (props) => {
 };
 // 销售流程
 export const SalesIdListSelect = (props) => {
-  return (<Select api={apiUrl.SalesIdListSelect}  {...props} />);
+  console.log(22222222222111111, props);
+  const {value} = props;
+  if (value !== undefined) {
+
+    props.onChange(value);
+  }
+  return (<Select disabled api={apiUrl.SalesIdListSelect}  {...props} />);
 
 };
 // 产品合计

@@ -11,6 +11,8 @@ import {CrmIndustryRouter} from '@/pages/Crm/crmIndustry/crmIndustryRouter';
 import {ContactsRouter} from '@/pages/Crm/contacts/ContactsRouter';
 import {CompetitorRouter} from '@/pages/Crm/competitor/competitorRouter';
 import {CompetitorQuoteRouter} from '@/pages/Crm/competitorQuote/competitorQuoteRouter';
+import {DataRouter} from '@/pages/Crm/data/dataRouter';
+import {SpeechcraftRouter} from '@/pages/Crm/speechcraft/speechcraftRouter';
 
 
 const CrmRouterConfig = [
@@ -29,6 +31,8 @@ const CrmRouterConfig = [
       ...ContactsRouter,
       ...CompetitorRouter,
       ...CompetitorQuoteRouter,
+      ...DataRouter,
+      ...SpeechcraftRouter,
       {
         redirect: '/CRM/customer',
       }
