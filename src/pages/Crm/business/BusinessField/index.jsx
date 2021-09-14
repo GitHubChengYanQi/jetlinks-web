@@ -48,6 +48,9 @@ export const PersonListSelect = (props) => {
 export const CustomerNameListSelect = (props) => {
   return (<SelectAddCustomer {...props} />);
 };
+export const CustomerListSelect = (props) => {
+  return (<Select api={apiUrl.CustomerNameListSelect} {...props} />);
+};
 
 
 // 产品名称

@@ -22,6 +22,7 @@ import Drawer from '@/components/Drawer';
 import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 
 export const Customer = (props) => {
 
@@ -29,21 +30,10 @@ export const Customer = (props) => {
 
   const {customerid, onChange} = props;
   return (<>
-    <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value) => {
+    <SelectAddCustomer {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />
-    <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
-      ref.current.open(false);
-    }} />
-    <CreateNewCustomer onSuccess={() => {
-      ref.current.clone();
-    }} title="客户" model={CustomerEdit} refModal={ref} widths={1600} />
-    {/*<Drawer title="客户" ref={ref} onSuccess={() => {*/}
-    {/*  ref.current.close();*/}
-    {/*}} component={CompanyRoleEdit} position={(res) => {*/}
-    {/*  props.onChange(res && res.data && res.data.companyRoleId);*/}
-    {/*}} />*/}
   </>);
 };
 
