@@ -49,14 +49,14 @@ const BusinessComplete = (props) => {
         ]}
 
       />
-      <Modal title='商机详情' visible={visi} width={800} onCancel={() => {
+      <Modal title='项目详情' visible={visi} width={800} onCancel={() => {
         setVisi(false);
       }} onOk={() => {
         setVisi(false);
       }}>
         <Description data={data || null} />
       </Modal>
-      <Modal title='商机明细' visible={detail} width={900} onCancel={() => {
+      <Modal title='项目明细' visible={detail} width={900} onCancel={() => {
         setDetail(false);
       }} onOk={() => {
         setDetail(false);

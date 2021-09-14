@@ -1,5 +1,5 @@
 /**
- * 商机管理列表页
+ * 项目管理列表页
  *
  * @author
  * @Date 2021-07-23 10:06:12
@@ -102,7 +102,7 @@ const BusinessTable = (props) => {
       <div style={{maxWidth: 800}}>
         <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
                     columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="商机名称" name="businessName"
+          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"
                     component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -159,7 +159,7 @@ const BusinessTable = (props) => {
         }}
       >
         <Column
-          title="商机名称"
+          title="项目名称"
           dataIndex="businessName"
           sorter
           fixed
@@ -222,7 +222,7 @@ const BusinessTable = (props) => {
           defaultSortOrder="descend"
           sortDirections={['ascend', 'descend']} />
         <Column
-          title="商机阶段"
+          title="项目阶段"
           width={120}
           align="center"
           dataIndex="stage"
@@ -230,7 +230,7 @@ const BusinessTable = (props) => {
           showSorterTooltip={false}
           sortDirections={['ascend', 'descend']} />
         <Column
-          title="商机金额"
+          title="项目金额"
           width={120}
           align="center"
           dataIndex="opportunityAmount"
@@ -260,7 +260,7 @@ const BusinessTable = (props) => {
           addRef.current.close();
         }}
       />
-      <Modal2 width={800} title="商机" component={BusinessEdit} onSuccess={() => {
+      <Modal2 width={800} title="项目" component={BusinessEdit} onSuccess={() => {
 
         tableRef.current.refresh();
         ref.current.close();
@@ -269,7 +269,7 @@ const BusinessTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }}/>
-      <Modal title='商机明细' visible={detail} width={500} onCancel={() => {
+      <Modal title='项目明细' visible={detail} width={500} onCancel={() => {
         setDetail(false);
       }} onOk={() => {
         setDetail(false);

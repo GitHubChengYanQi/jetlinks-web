@@ -40,6 +40,7 @@ const Header = () => {
   const history = useHistory();
 
   const [userInfo] = store.useModel('user');
+
   const {menus} = userInfo;
 
   const [visible, setVisible] = useState(false);

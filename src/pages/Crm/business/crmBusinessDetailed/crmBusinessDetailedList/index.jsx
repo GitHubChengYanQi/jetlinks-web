@@ -1,5 +1,5 @@
 /**
- * 商机明细表列表页
+ * 项目明细表列表页
  *
  * @author qr
  * @Date 2021-08-04 13:17:57
@@ -36,7 +36,7 @@ const CrmBusinessDetailedList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="商机id" name="businessId" component={SysField.BusinessId}/>
+       <FormItem label="项目id" name="businessId" component={SysField.BusinessId}/>
        <FormItem label="物品id" name="itemId" component={SysField.ItemId}/>
      </>
     );
@@ -52,7 +52,7 @@ const CrmBusinessDetailedList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="商机id" dataIndex="businessId"/>
+        <Column title="项目id" dataIndex="businessId"/>
         <Column title="物品id" dataIndex="itemId"/>
         <Column title="物品数量" dataIndex="quantity"/>
         <Column/>

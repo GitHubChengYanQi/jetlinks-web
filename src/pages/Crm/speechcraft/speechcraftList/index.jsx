@@ -39,6 +39,7 @@ const SpeechcraftList = () => {
           defaultSelectedKeys={['0']}
           // defaultCheckedKeys={['1']}
           // onSelect={this.onSelect}
+          defaultExpandAll
           treeData={[
             {
               title: '快速查询话术',

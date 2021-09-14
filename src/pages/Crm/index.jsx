@@ -57,7 +57,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           }}
         >
           <Menu.Item key="sjly">
-            <span>商机来源管理</span>
+            <span>项目来源管理</span>
           </Menu.Item>
           <Menu.Item key="sslc">
             <span>销售流程管理</span>

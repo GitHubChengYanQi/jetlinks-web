@@ -105,7 +105,7 @@ const CustomerDetail = () => {
       <Row>
         <Col span={16}>
           <div className={styles.main}>
-            <Card title="商机销售流程" bodyStyle={{padding: 30}}>
+            <Card title="项目销售流程" bodyStyle={{padding: 30}}>
               <StepList onChange={() => {
                 refresh();
               }} value={data} />

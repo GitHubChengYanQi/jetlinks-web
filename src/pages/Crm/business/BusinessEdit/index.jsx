@@ -1,5 +1,5 @@
 /**
- * 商机表编辑页
+ * 项目表编辑页
  *
  * @author cheng
  * @Date 2021-07-19 15:13:58
@@ -57,9 +57,9 @@ const BusinessEdit = (props) => {
 
     >
       <FormItem
-        label="商机名称"
+        label="项目名称"
         name="businessName"
-        rules={[{required: true, message: '请输入商机名称!'}]}
+        rules={[{required: true, message: '请输入项目名称!'}]}
         component={SysField.BusinessNameListSelect}
         required />
       <FormItem
@@ -79,8 +79,8 @@ const BusinessEdit = (props) => {
         rules={[{required: true, message: '请输入销售流程!'}]}
         component={SysField.SalesIdListSelect} value={props.stage !== null ? props.stage : 1} />
       <FormItem
-        label="商机阶段" name="stage"
-        rules={[{required: true, message: '请输入商机阶段!'}]}
+        label="项目阶段" name="stage"
+        rules={[{required: true, message: '请输入项目阶段!'}]}
         component={SysField.StageListSelect13}  required />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
       <div style={{textAlign: 'Right', marginRight: 90}}>
