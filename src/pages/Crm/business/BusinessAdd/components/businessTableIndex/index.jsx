@@ -21,7 +21,7 @@ const BusinessTableIndex = ((props) => {
                 onChange(item);
               }}
             >
-              <Meta title= {item.name} description="This is the description"  />
+              <Meta title= {item.name} description={item.note}   />
             </Card>
           </div>
         );

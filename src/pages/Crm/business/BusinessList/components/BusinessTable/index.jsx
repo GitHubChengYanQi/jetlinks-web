@@ -195,15 +195,15 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        <Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
-          return (
-            <div>
-              {
-                record.origin ? record.origin.originName : null
-              }
-            </div>
-          );
-        }} />
+        {/*<Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <div>*/}
+        {/*      {*/}
+        {/*        record.origin ? record.origin.originName : null*/}
+        {/*      }*/}
+        {/*    </div>*/}
+        {/*  );*/}
+        {/*}} />*/}
         <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {
           return (
             <div>
@@ -221,14 +221,14 @@ const BusinessTable = (props) => {
           showSorterTooltip={false}
           defaultSortOrder="descend"
           sortDirections={['ascend', 'descend']} />
-        <Column
-          title="项目阶段"
-          width={120}
-          align="center"
-          dataIndex="stage"
-          sorter
-          showSorterTooltip={false}
-          sortDirections={['ascend', 'descend']} />
+        {/*<Column*/}
+        {/*  title="商机阶段"*/}
+        {/*  width={120}*/}
+        {/*  align="center"*/}
+        {/*  dataIndex="stage"*/}
+        {/*  sorter*/}
+        {/*  showSorterTooltip={false}*/}
+        {/*  sortDirections={['ascend', 'descend']} />*/}
         <Column
           title="项目金额"
           width={120}
@@ -269,7 +269,7 @@ const BusinessTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }}/>
-      <Modal title='项目明细' visible={detail} width={500} onCancel={() => {
+      <Modal title='创建结果' visible={detail} width={500} onCancel={() => {
         setDetail(false);
       }} onOk={() => {
         setDetail(false);

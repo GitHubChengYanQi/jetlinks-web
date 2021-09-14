@@ -16,7 +16,6 @@ const Member = () => {
 
   const { data, run: get } = useRequest(currentUserInfo, {
     formatResult: ({ data }) => {
-      console.log(data);
       const values = {
         ...data,
         birthday: moment(data.birthday, 'YYYY-MM-DD')

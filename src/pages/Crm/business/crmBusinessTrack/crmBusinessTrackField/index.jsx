@@ -77,7 +77,6 @@ export const BusinessId = (props) => {
 export const CompetitorsQuoteId = (props) => {
   const {competitorsQuoteId} = props;
   if (competitorsQuoteId){
-    console.log(competitorsQuoteId);
     props.onChange(competitorsQuoteId.competitorsQuoteId);
   }
   return (<Input {...props} />);
