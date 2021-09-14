@@ -15,14 +15,6 @@ import {
   businessEdit, SalesIdListSelect,
 } from '../BusinessUrl';
 import * as SysField from '../BusinessField';
-import Drawer from '@/components/Drawer';
-import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
-import {useRequest} from '@/util/Request';
-import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
-import Modal2 from '@/components/Modal';
-import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 
 const {FormItem} = Form;
 
@@ -51,7 +43,7 @@ const BusinessEdit = (props) => {
           setResult(result.data);
           props.onChange(result);
         }else{
-          props.onChange(result);
+          props.onSuccess();
         }
       }}
 

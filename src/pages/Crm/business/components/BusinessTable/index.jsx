@@ -259,14 +259,10 @@ const BusinessTable = (props) => {
         }}
       />
       <Modal2 width={800} title="项目" component={BusinessEdit} onSuccess={() => {
-
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} onChange={()=>{
         setDetail(true);
         tableRef.current.refresh();
         ref.current.close();
-      }}/>
+      }} ref={ref} />
       <Modal title='创建结果' visible={detail} width={500} onCancel={() => {
         setDetail(false);
       }} onOk={() => {
