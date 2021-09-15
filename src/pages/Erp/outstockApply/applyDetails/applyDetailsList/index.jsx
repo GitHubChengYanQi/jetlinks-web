@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Breadcrumb, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -20,7 +20,10 @@ import * as SysField from '../applyDetailsField';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ApplyDetailsList = () => {
+const ApplyDetailsList = (props) => {
+
+  const {value} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -28,52 +31,52 @@ const ApplyDetailsList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="产品id" name="itemId" component={SysField.ItemId}/>
-       <FormItem label="品牌id" name="brandId" component={SysField.BrandId}/>
-       <FormItem label="发货申请id" name="outstockApplyId" component={SysField.OutstockApplyId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="产品" name="itemId" component={SysField.ItemId} />
+        <FormItem label="品牌" name="brandId" component={SysField.BrandId} />
+        <FormItem hidden name="outstockApplyId" value={value || ' '} component={SysField.OutstockApplyId} />
+      </>
     );
   };
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title="发货申请明细"
         api={applyDetailsList}
         rowKey="outstockApplyDetailsId"
         searchForm={searchForm}
-        actions={actions()}
+        // actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品id" dataIndex="itemId"/>
-        <Column title="品牌id" dataIndex="brandId"/>
-        <Column title="发货申请id" dataIndex="outstockApplyId"/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="产品" dataIndex="itemId" />
+        <Column title="品牌" dataIndex="brandId" />
+        <Column title="数量" dataIndex="number" />
+        {/*<Column />*/}
+        {/*   <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.outstockApplyDetailsId);
-              }}/>
-              <DelButton api={applyDetailsDelete} value={record.outstockApplyDetailsId} onSuccess={()=>{
+              }} />
+              <DelButton api={applyDetailsDelete} value={record.outstockApplyDetailsId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />*/}
       </Table>
       <Drawer width={800} title="编辑" component={ApplyDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

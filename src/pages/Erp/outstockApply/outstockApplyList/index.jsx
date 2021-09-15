@@ -21,12 +21,14 @@ import {outstock, outstockOrderDelete} from '@/pages/Erp/outstock/outstockOrder/
 import Message from '@/components/Message';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
+import ApplyDetailsList from '@/pages/Erp/outstockApply/applyDetails/applyDetailsList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const OutstockApplyList = () => {
   const ref = useRef(null);
+  const refDetail = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -92,7 +94,13 @@ const OutstockApplyList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="发货申请单号" dataIndex="outstockApplyId" />
+        <Column title="发货申请单号" dataIndex="outstockApplyId" render={(value,record)=>{
+          return (
+            <Button type='link' onClick={()=>{
+              refDetail.current.open(record.outstockApplyId);
+            }}>{value}</Button>
+          );
+        }} />
         <Column title="申请时间" dataIndex="createTime" />
         <Column title="申请状态" dataIndex="applyState" />
         <Column />
@@ -117,6 +125,10 @@ const OutstockApplyList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal width={800}  component={ApplyDetailsList} onSuccess={() => {
+        tableRef.current.refresh();
+        refDetail.current.close();
+      }} ref={refDetail} />
     </>
   );
 };

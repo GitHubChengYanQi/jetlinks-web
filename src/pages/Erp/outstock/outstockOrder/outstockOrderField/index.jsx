@@ -11,6 +11,7 @@ import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {storeHouseSelect} from '@/pages/Erp/outstock/OutstockUrl';
 import * as apiUrl from '@/pages/Erp/outstockApply/outstockApplyUrl';
+import {UserIdSelect} from '@/pages/Erp/outstockApply/outstockApplyUrl';
 
 export const State = (props) =>{
   props.onChange(1);
@@ -30,6 +31,12 @@ export const BrandId = (props) =>{
 };
 export const ItemId = (props) =>{
   return (<Select width={150} api={apiUrl.Items} {...props}/>);
+};
+export const UserId = (props) =>{
+  return (<Select width={150} api={apiUrl.UserIdSelect} {...props}/>);
+};
+export const Note = (props) =>{
+  return (<Input.TextArea {...props}/>);
 };
 
 export const Number = (props) =>{

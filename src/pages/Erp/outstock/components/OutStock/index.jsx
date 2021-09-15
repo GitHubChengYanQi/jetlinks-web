@@ -5,11 +5,9 @@ import {
   outBound,
   outstockOrderAdd,
   outstockOrderDetail,
-  outstockOrderEdit
 } from '@/pages/Erp/outstock/outstockOrder/outstockOrderUrl';
 import * as SysField from '@/pages/Erp/outstock/outstockOrder/outstockOrderField';
-import {Storhouse} from '@/pages/Erp/outstock/outstockOrder/outstockOrderField';
-import {Card} from 'antd';
+import OutstockListingList from '@/pages/Erp/outstock/outstockListing/outstockListingList';
 
 const {FormItem} = Form;
 
@@ -26,26 +24,43 @@ const OutStock = (props) => {
 
 
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="outstockOrderId"
-    >
-      <FormItem
-        label="选择仓库"
-        name="storehouseId"
-        component={SysField.Storhouse}
-        required
-      />
-      <div style={{display: 'none'}}>
+    <div style={{paddingTop:20}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="outstockOrderId"
+      >
         <FormItem
-          hidden
-          name="state"
-          component={SysField.State}
+          label="选择仓库"
+          name="storehouseId"
+          component={SysField.Storhouse}
+          required
         />
-      </div>
-    </Form>
+        <FormItem
+          label="选择经手人"
+          name="userId"
+          component={SysField.UserId}
+          required
+        />
+        <FormItem
+          label="备注"
+          name="note"
+          component={SysField.Note}
+          required
+        />
+
+        {/*<OutstockListingList outStockId={props.value || null} />*/}
+        <div style={{display: 'none'}}>
+          <FormItem
+            hidden
+            name="state"
+            component={SysField.State}
+          />
+        </div>
+      </Form>
+    </div>
+
   );
 };
 export default OutStock;

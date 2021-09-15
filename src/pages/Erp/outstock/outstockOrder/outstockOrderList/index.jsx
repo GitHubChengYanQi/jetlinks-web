@@ -60,10 +60,13 @@ const OutstockOrderList = () => {
   function confirmOk(record) {
     AntModal.info({
       title: '出库',
-      closable:true,
+      width:800,
+      closable: true,
       centered: true,
       content: <OutStock value={record.outstockOrderId} />,
       style: {margin: 'auto'},
+      okText:'请确认库存是否足够！',
+      okType:'link'
     });
   }
 
@@ -94,14 +97,13 @@ const OutstockOrderList = () => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              {record.state === 0 &&<>
+              {record.state === 0 && <>
                 <Button style={{margin: '0 10px'}} onClick={() => {
                   confirmOk(record);
-                  // refOutStock.current.open(record.outstockOrderId);
                 }}><Icon type="icon-chuku" />出库</Button>
-                <EditButton onClick={() => {
-                  ref.current.open(record.outstockOrderId);
-                }} />
+                <Button style={{margin: '0 10px'}} onClick={() => {
+                  // confirmOk(record);
+                }}><Icon type="icon-chuku" />一键发货</Button>
                 <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
                   tableRef.current.refresh();
                 }} />

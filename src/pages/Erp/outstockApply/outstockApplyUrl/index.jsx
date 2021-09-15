@@ -44,4 +44,7 @@ export const Brands = {
   url: '/brand/listSelect',
   method: 'POST',
 };
-
+export const UserIdSelect = {
+  url: '/rest/mgr/Select',
+  method: 'POST',
+};
