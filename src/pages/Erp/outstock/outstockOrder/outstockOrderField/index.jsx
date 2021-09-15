@@ -5,13 +5,14 @@
  * @Date 2021-08-16 10:51:46
  */
 
-import React from 'react';
-import {Input, InputNumber} from 'antd';
+import React, {useEffect} from 'react';
+import {Input, InputNumber, Select as AntSelect} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {storeHouseSelect} from '@/pages/Erp/outstock/OutstockUrl';
 import * as apiUrl from '@/pages/Erp/outstockApply/outstockApplyUrl';
 import {UserIdSelect} from '@/pages/Erp/outstockApply/outstockApplyUrl';
+import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 
 export const State = (props) =>{
   props.onChange(1);
@@ -42,4 +43,80 @@ export const Note = (props) =>{
 export const Number = (props) =>{
   return (<InputNumber {...props}/>);
 };
+
+
+
+
+export const Customer = (props) => {
+  const {customerid, onChange} = props;
+  return (<>
+    <SelectAddCustomer {...props} onChange={(value) => {
+      onChange(value);
+      customerid(value);
+    }} />
+  </>);
+};
+
+export const Contacts = (props) => {
+  const {customerid, contactsid, onChange,state} = props;
+
+  if (state) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      props.onChange(null);
+    }, [customerid || null]);
+  }
+
+  const data = customerid ? customerid.map((value, index) => {
+    return {
+      label: value.contactsName,
+      value: value.contactsId,
+    };
+  }) : null;
+
+
+  return (<>
+    <AntSelect style={{width: 200}} options={data}  {...props} onChange={(value) => {
+      onChange(value);
+      contactsid ? contactsid(value) : null;
+    }} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+  </>);
+};
+export const Phone = (props) => {
+  const {contactsid,state} = props;
+  if (state) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      props.onChange(null);
+    }, [contactsid || null]);
+  }
+  const data = contactsid ? contactsid.map((value) => {
+    return {
+      label: value.phoneNumber,
+      value: value.phoneId,
+    };
+  }) : null;
+  return (<>
+    <AntSelect style={{width: 200}} options={data} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} {...props} />
+  </>);
+};
+export const Adress = (props) => {
+  const {customerid,state} = props;
+  if (state) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      props.onChange(null);
+    }, [customerid || null]);
+  }
+  const data = customerid ? customerid.map((value) => {
+    return {
+      label: value.location,
+      value: value.adressId,
+    };
+  }) : null;
+  return (<>
+    <AntSelect style={{width: 200}} options={data} {...props} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+  </>);
+};
+
 

@@ -67,6 +67,7 @@ const CustomerDetail = () => {
           }}>编辑</Button>
           <CreateNewCustomer model={CustomerEdit}  widths={1200}  onSuccess={()=>{
             ref.current.close();
+            refresh();
           }} refModal={ref} />
           <Button onClick={() => {
             history.back();

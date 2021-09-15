@@ -5,12 +5,11 @@
  * @Date 2021-08-16 10:51:46
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Modal as AntModal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Breadcrumb from '@/components/Breadcrumb';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
 import Modal from '@/components/Modal';
@@ -19,14 +18,14 @@ import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
 import {outstock, outstockOrderDelete, outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
-import StockDetailsList from '@/pages/Erp/stockDetails/StockDetailsList';
 import OutStock from '@/pages/Erp/outstock/components/OutStock';
-import OutstockListingList from '@/pages/Erp/outstock/outstockListing/outstockListingList';
 
 const {Column} = AntTable;
 
 const OutstockOrderList = () => {
 
+
+  const [all,setAll] = useState();
   const ref = useRef(null);
   const refOutStock = useRef(null);
   const refSee = useRef(null);
@@ -102,11 +101,11 @@ const OutstockOrderList = () => {
             <>
               {record.state === 0 && <>
                 <Button style={{margin: '0 10px'}} onClick={() => {
-                  // confirmOk(record);
                   refOutStock.current.open(record.outstockOrderId);
                 }}><Icon type="icon-chuku" />出库</Button>
                 <Button style={{margin: '0 10px'}} onClick={() => {
-                  // confirmOk(record);
+                  setAll(true);
+                  refOutStock.current.open(record.outstockOrderId);
                 }}><Icon type="icon-chuku" />一键发货</Button>
                 <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
                   tableRef.current.refresh();
@@ -121,14 +120,19 @@ const OutstockOrderList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={1200} component={StockDetailsList} onSuccess={() => {
+      {/*<Modal width={1200} component={StockDetailsList} onSuccess={() => {*/}
+      {/*  tableRef.current.refresh();*/}
+      {/*  refSee.current.close();*/}
+      {/*}} ref={refSee} />*/}
+      <Modal width={1200} component={OutstockList} onSuccess={() => {
         tableRef.current.refresh();
         refSee.current.close();
       }} ref={refSee} />
-      <Modal width={800} component={OutStock} onSuccess={() => {
+      <Modal padding={1}  width={800} component={OutStock} onSuccess={() => {
+        setAll(false);
         tableRef.current.refresh();
         refOutStock.current.close();
-      }} ref={refOutStock} />
+      }} ref={refOutStock} all={all} />
     </>
   );
 };

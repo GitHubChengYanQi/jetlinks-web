@@ -213,8 +213,6 @@ const BusinessTable = (props) => {
           width={200}
           dataIndex="time"
           sorter
-          showSorterTooltip={false}
-          defaultSortOrder="descend"
           sortDirections={['ascend', 'descend']} />
         <Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
           return (
@@ -225,14 +223,6 @@ const BusinessTable = (props) => {
             </div>
           );
         }} />
-        {/*<Column*/}
-        {/*  title="商机阶段"*/}
-        {/*  width={120}*/}
-        {/*  align="center"*/}
-        {/*  dataIndex="stage"*/}
-        {/*  sorter*/}
-        {/*  showSorterTooltip={false}*/}
-        {/*  sortDirections={['ascend', 'descend']} />*/}
         <Column
           title="项目金额"
           width={120}

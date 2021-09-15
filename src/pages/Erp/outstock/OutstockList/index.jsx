@@ -81,6 +81,7 @@ const OutstockList = (props) => {
         }}
       >
 
+        <Column title="产品编号" width={200} dataIndex="stockItemId"  />
         <Column title="产品名称" width={200} dataIndex="itemId" render={(text, record) => {
           return (
             <>
@@ -96,7 +97,6 @@ const OutstockList = (props) => {
             </>
           );
         }} />
-        <Column title="出库数量" width={120} align="center" dataIndex="number" sorter />
         {value ? null : <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>

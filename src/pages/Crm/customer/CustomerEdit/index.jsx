@@ -235,7 +235,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                               <Button
                                                 type="link"
                                                 style={{float: 'right'}}
-                                                onClick={onAdd}>增加联系人电话</Button>
+                                                onClick={onAdd}>增加电话</Button>
                                             </div>
                                           </div>
                                         </div>

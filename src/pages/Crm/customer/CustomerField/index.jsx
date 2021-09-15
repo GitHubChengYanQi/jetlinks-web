@@ -16,6 +16,8 @@ import {commonArea, CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl'
 import Cascader from '@/components/Cascader';
 import Amap from '@/components/Amap';
 import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
+import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
+import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
 
 const {Option} = Select;
 
@@ -75,7 +77,7 @@ export const Name = (props) => {
   return (<Input {...props} />);
 };
 export const Region = (props) => {
-  return (<Cascader api={apiUrl.commonArea} {...props} />);
+  return (<CascaderAdress {...props} />);
 };
 export const CompanyRoleId = (props) => {
   return (<Select width='100%' api={apiUrl.CompanyRoleIdSelect} {...props} />);
@@ -98,7 +100,7 @@ export const ContactsId = (props) => {
 };
 
 export const Setup = (props) => {
-  return (<DatePicker showTime {...props} />);
+  return (<DatePicker  {...props} />);
 };
 export const Legal = (props) => {
   return (<Input  {...props} />);
@@ -121,7 +123,7 @@ export const CompanyType = (props) => {
     }, {value: '其他类型', label: '其他类型'}]} {...props} />);
 };
 export const BusinessTerm = (props) => {
-  return (<DatePicker showTime  {...props} />);
+  return (<DatePicker   {...props} />);
 };
 export const SignIn = (props) => {
   return (<Input  {...props} />);
@@ -180,7 +182,7 @@ export const CustomerLevelId = (props) => {
 };
 
 export const OriginId = (props) => {
-  return (<Select width={120} api={apiUrl.OriginIdSelect}  {...props} />);
+  return (<OriginSelect width={120}  {...props} />);
 };
 
 export const UserName = (props) => {
@@ -197,7 +199,7 @@ export const Url = (props) => {
 
 
 export const IndustryOne = (props) => {
-  return (<TreeSelect api={apiUrl.crmIndustryTreeView}  {...props} />);
+  return (<Cascader api={apiUrl.crmIndustryTreeView}  {...props} />);
 };
 
 

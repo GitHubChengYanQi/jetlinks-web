@@ -20,12 +20,13 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../deliveryDetailsUrl';
+import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 
 
 export const Customer = (props) => {
   const {customerid, onChange} = props;
   return (<>
-    <Select api={apiUrl.CustomerNameListSelect} {...props} onChange={(value) => {
+    <SelectAddCustomer {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />
