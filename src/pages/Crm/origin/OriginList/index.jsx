@@ -14,14 +14,17 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
+import {createFormActions} from '@formily/antd';
 import {originDelete, originList} from '../OriginUrl';
 import * as SysField from '../OriginField';
 
 import OriginEdit from '../OriginEdit';
 
+
 const {Column} = AntTable;
 const {FormItem} = Form;
 
+const formActions = createFormActions();
 const OriginList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -69,7 +72,7 @@ const OriginList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
-
+        formActions={formActions}
       >
         <Column title="来源名称" dataIndex="originName" />
         <Column />

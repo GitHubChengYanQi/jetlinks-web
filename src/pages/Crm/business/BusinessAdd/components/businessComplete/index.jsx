@@ -34,9 +34,8 @@ const BusinessComplete = (props) => {
           }}>
             再加一条
           </Button>,
-
           <Button key="2" onClick={() => {
-            setDetail(true);
+            props.onChange(4);
           }}>
             完善明细
           </Button>,
@@ -54,7 +53,6 @@ const BusinessComplete = (props) => {
           // </Button>,
           //   }});
         ]}
-
       />
       <Modal title='项目详情' visible={visi} width={800} onCancel={() => {
         setVisi(false);
@@ -63,13 +61,13 @@ const BusinessComplete = (props) => {
       }}>
         <Description data={data || null} />
       </Modal>
-      <Modal title='创建结果' visible={detail} width={900} onCancel={() => {
-        setDetail(false);
-      }} onOk={() => {
-        setDetail(false);
-      }}>
-        <TableDetail  title='商机明细' value={result} />
-      </Modal>
+      {/*<Modal title='创建结果' visible={detail} width={900} onCancel={() => {*/}
+      {/*  setDetail(false);*/}
+      {/*}} onOk={() => {*/}
+      {/*  setDetail(false);*/}
+      {/*}}>*/}
+      {/*  */}
+      {/*</Modal>*/}
     </>
   );
 };

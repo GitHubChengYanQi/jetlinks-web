@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, Table as AntTable} from 'antd';
+import {Button, Modal, Spin, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -23,11 +23,13 @@ import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
+import {LeftOutlined, SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import styles from '@/pages/Crm/business/BusinessAdd/index.module.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,7 +40,11 @@ const BusinessTable = (props) => {
 
   const [ids, setIds] = useState([]);
   const [businessId, setBusinessId] = useState(null);
-
+  const [disable, setDisable] = useState(1);
+  const [widths, setWidth] = useState(800);
+  const [show, setShow] = useState(true);
+  const [show1, setShow1] = useState(true);
+  const [show2, setShow2] = useState(true);
 
   const history = useHistory();
 
@@ -50,6 +56,9 @@ const BusinessTable = (props) => {
   const [search, setSearch] = useState(false);
 
   useEffect(() => {
+    setShow(true);
+    setShow1(true);
+    setShow2(true);
     if (status || state) {
       tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
       tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
@@ -237,8 +246,13 @@ const BusinessTable = (props) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.businessId);
+                // ref.current.open(record.businessId);
                 setBusinessId(record.businessId);
+                setWidth(800);
+                setDisable(1);
+                // addRef.current.open(record.businessId);
+                setDetail(true);
+                setShow(false);
               }} />
               <DelButton api={businessDelete} value={record.businessId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -261,12 +275,56 @@ const BusinessTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal title='创建结果' visible={detail} width={500} onCancel={() => {
-        setDetail(false);
-      }} onOk={() => {
-        setDetail(false);
-      }}>
-        {businessId && <BusinessComplete result={businessId} disabled={false} />}
+      <Modal
+        title={<div style={disable === 3 ? null : {'display' : 'none'}}>
+          <LeftOutlined
+            onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
+              setWidth(400);
+              setShow2(true);
+              setShow(true);
+            }}
+          /> 添加项目</div>
+        }
+        visible={detail}
+        footer={false}
+        width={widths}
+        className={styles.myModal}
+        onCancel={() => {
+          setDetail(false);
+        }} onOk={() => {
+          setDetail(false);
+        }}>
+        <div style={disable === 1 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+          <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            <BusinessEdit
+              onSuccess={()=>{
+                setWidth(400);
+                setDisable(2);
+                setShow1(false);
+              }}
+              value={businessId}
+            />
+          </Spin>
+        </div>
+        <div style={disable === 2 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+          <Spin spinning={show1} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            {businessId && <BusinessComplete result={businessId} disabled={false}
+              onChange={(disable)=>{
+                setDisable(3);
+                setWidth(800);
+                setShow2(false);
+              }} onSuccess={()=>{}}/>}
+          </Spin>
+        </div>
+        <div style={disable === 3 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+          <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            {businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}
+              onChange={(disable)=>{
+                setDisable(disable);
+                setWidth(400);
+              }}/>}
+          </Spin>
+        </div>
       </Modal>
     </>
   );
