@@ -31,11 +31,6 @@ const OutstockList = (props) => {
   const tableRef = useRef(null);
   const [ids, setIds] = useState();
 
-  const api = {
-    url: '/outstock/bulkShipment',
-    method: 'POST'
-  };
-
   const footer = () => {
     return (
       <>

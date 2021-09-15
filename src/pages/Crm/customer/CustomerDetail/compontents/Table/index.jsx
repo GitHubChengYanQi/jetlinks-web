@@ -101,30 +101,33 @@ const TableWarp = ({
   // pagination
   return (
     <div className={style.tableWarp}>
-      {listHeader ? <div className={style.listHeader}>
-        {title && <div className="title">{title}</div>}
-        <div className="actions">
-          {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
-          <div className="button">{actions}</div>
-        </div>
-      </div> : null}
-      {searchForm ? <div style={showSearchButton ? null : {height: 0, margin: 0, padding: 0}} className="search">
-        <Form
+      <div style={showSearchButton ? null : {display: 'none'}}>
+        {listHeader ? <div className={style.listHeader}>
+          {title && <div className="title">{title}</div>}
+          <div className="actions">
+            {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
+            <div className="button">{actions}</div>
+          </div>
+        </div> : null}
+        {searchForm ? <div style={{height: 0, margin: 0, padding: 0}} className="search">
+          <Form
+            layout="inline"
+            {...form}
+            actions={formActions}
+          >
+            {typeof searchForm === 'function' && searchForm()}
+            {showSearchButton &&
+            <FormButtonGroup>
+              <Submit><SearchOutlined />查询</Submit>
+            </FormButtonGroup>}
+          </Form>
+        </div> : <Form
           layout="inline"
           {...form}
           actions={formActions}
-        >
-          {typeof searchForm === 'function' && searchForm()}
-          {showSearchButton &&
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-          </FormButtonGroup>}
-        </Form>
-      </div> : <Form
-        layout="inline"
-        {...form}
-        actions={formActions}
-      />}
+        />}
+      </div>
+
       <AntdTable
         showTotal
         loading={loading}

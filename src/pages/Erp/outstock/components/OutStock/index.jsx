@@ -8,6 +8,8 @@ import {
 } from '@/pages/Erp/outstock/outstockOrder/outstockOrderUrl';
 import * as SysField from '@/pages/Erp/outstock/outstockOrder/outstockOrderField';
 import OutstockListingList from '@/pages/Erp/outstock/outstockListing/outstockListingList';
+import {Button} from 'antd';
+import Modal from '@/components/Modal';
 
 const {FormItem} = Form;
 
@@ -22,9 +24,11 @@ const OutStock = (props) => {
 
   const formRef = useRef();
 
+  const modalRef = useRef(null);
+
 
   return (
-    <div style={{paddingTop:20}}>
+    <div style={{paddingTop: 20}}>
       <Form
         {...props}
         ref={formRef}
@@ -49,8 +53,6 @@ const OutStock = (props) => {
           component={SysField.Note}
           required
         />
-
-        {/*<OutstockListingList outStockId={props.value || null} />*/}
         <div style={{display: 'none'}}>
           <FormItem
             hidden
@@ -58,7 +60,16 @@ const OutStock = (props) => {
             component={SysField.State}
           />
         </div>
+        <Button style={{float:'right'}} type='link' onClick={()=>{
+          modalRef.current.open(props.value);
+        }}>
+          点击查看出库清单
+        </Button>
       </Form>
+
+      <Modal width={1000}  component={OutstockListingList} ref={modalRef} onSuccess={()=>{
+
+      }} />
     </div>
 
   );

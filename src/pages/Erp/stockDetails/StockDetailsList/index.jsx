@@ -29,10 +29,6 @@ const StockDetailsList = (props) => {
 
   const {value} = props;
 
-
-
-
-
   const {storehouseId, brandId, itemId} = value ? [] : props.location.params || [];
 
   const [search, setSearch] = useState(false);
@@ -51,8 +47,7 @@ const StockDetailsList = (props) => {
     return (
       <>
 
-        <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId}
-                  component={SysField.Storehouse} />
+        <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId} component={SysField.Storehouse} />
         <FormItem disabled placeholder="品牌名称" name="brandId" value={brandId} component={SysField.brandeId} />
         <FormItem disabled placeholder="产品名称" name="itemId" value={itemId} component={SysField.ItemId} />
         <FormItem placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />

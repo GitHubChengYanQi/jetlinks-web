@@ -19,6 +19,7 @@ const TableWarp = ({
   api,
   searchForm,
   rowKey,
+  headStyle,
   tab,
   SearchButton,
   selectionType,
@@ -49,13 +50,12 @@ const TableWarp = ({
   const {ajaxService} = Service();
 
   const [state, setState] = useUrlState(
-    {},
     {
       navigateMode: 'push',
     },
   );
 
-  if(!formActions){
+  if (!formActions) {
     formActions = formActionsPublic;
   }
   // const [formActions,setFormActions] = useState(formActionsPublic);
@@ -133,29 +133,30 @@ const TableWarp = ({
 
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: height(), overflowY: 'auto', overflowX: 'hidden'}}>
-      {listHeader ? <div className={style.listHeader}>
-        {title && <div className="title">{title}</div>}
-        <div className="actions">
-          {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
-          <div className="button">{actions}</div>
-        </div>
-      </div> : null}
-      {searchForm ? <div className="search">
-        <Form
-          layout={layout || 'inline'}
+      <div style={headStyle}>
+        {listHeader ? <div className={style.listHeader}>
+          {title && <div className="title">{title}</div>}
+          <div className="actions">
+            {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
+            <div className="button">{actions}</div>
+          </div>
+        </div> : null}
+        {searchForm ? <div className="search">
+          <Form
+            layout={layout || 'inline'}
+            {...form}
+            actions={formActions}
+          >
+            {typeof searchForm === 'function' && searchForm()}
+            {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+
+          </Form>
+        </div> : <Form
+          layout="inline"
           {...form}
           actions={formActions}
-        >
-          {typeof searchForm === 'function' && searchForm()}
-          {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
-
-        </Form>
-      </div> : <Form
-        layout="inline"
-        {...form}
-        actions={formActions}
-      />}
-
+        />}
+      </div>
       <Card>
         <AntdTable
           showTotal

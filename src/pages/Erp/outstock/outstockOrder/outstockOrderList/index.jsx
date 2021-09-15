@@ -21,6 +21,7 @@ import {outstock, outstockOrderDelete, outstockOrderList} from '../outstockOrder
 import OutstockOrderEdit from '../outstockOrderEdit';
 import StockDetailsList from '@/pages/Erp/stockDetails/StockDetailsList';
 import OutStock from '@/pages/Erp/outstock/components/OutStock';
+import OutstockListingList from '@/pages/Erp/outstock/outstockListing/outstockListingList';
 
 const {Column} = AntTable;
 
@@ -65,8 +66,8 @@ const OutstockOrderList = () => {
       centered: true,
       content: <OutStock value={record.outstockOrderId} />,
       style: {margin: 'auto'},
-      okText:'请确认库存是否足够！',
-      okType:'link'
+      okText:'查看出库清单',
+      okType:'link',
     });
   }
 
@@ -79,12 +80,14 @@ const OutstockOrderList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="出库单号" dataIndex="outstockOrderId" render={(text, record) => {
+        <Column title="出库单号" dataIndex="outstockOrderId" width={220} render={(text, record) => {
           return <Button type="link" onClick={() => {
             refSee.current.open(record.outstockOrderId);
           }}>{text}</Button>;
         }} />
-        <Column title="计划出库时间" dataIndex="time" />
+        <Column title="出库时间" dataIndex="updateTime" />
+        <Column title="仓库" dataIndex="storehouseId" />
+        <Column title="经手人" dataIndex="userId" />
         <Column title="出库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
             <>
@@ -99,7 +102,8 @@ const OutstockOrderList = () => {
             <>
               {record.state === 0 && <>
                 <Button style={{margin: '0 10px'}} onClick={() => {
-                  confirmOk(record);
+                  // confirmOk(record);
+                  refOutStock.current.open(record.outstockOrderId);
                 }}><Icon type="icon-chuku" />出库</Button>
                 <Button style={{margin: '0 10px'}} onClick={() => {
                   // confirmOk(record);
