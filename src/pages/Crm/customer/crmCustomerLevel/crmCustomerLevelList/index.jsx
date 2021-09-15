@@ -17,10 +17,11 @@ import {crmCustomerLevelDelete, crmCustomerLevelList} from '../crmCustomerLevelU
 import CrmCustomerLevelEdit from '../crmCustomerLevelEdit';
 import * as SysField from '../crmCustomerLevelField';
 import Breadcrumb from '@/components/Breadcrumb';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
-
+const formActions = createFormActions();
 const CrmCustomerLevelList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -67,6 +68,7 @@ const CrmCustomerLevelList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        formActions={formActions}
       >
         <Column title="级别" dataIndex="level" />
         <Column title="数字级别" dataIndex="rank" />

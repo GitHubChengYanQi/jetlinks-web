@@ -19,10 +19,12 @@ import * as SysField from '../speechcraftTypeField';
 import Modal from '@/components/Modal';
 import SpeechcraftTypeDetailList
   from '@/pages/Crm/speechcraft/speechcraftType/speechcraftTypeDetail/speechcraftTypeDetailList';
+import {createFormActions} from '@formily/antd';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
-
+const formActions = createFormActions();
 const SpeechcraftTypeList = () => {
   const ref = useRef(null);
   const refDetail = useRef(null);
@@ -49,12 +51,13 @@ const SpeechcraftTypeList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={speechcraftTypeList}
         rowKey="speechcraftTypeId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        formActions={formActions}
       >
         <Column
           title="分类名称"

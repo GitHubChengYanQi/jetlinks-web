@@ -6,7 +6,7 @@
  */
 
 import React, {lazy, useEffect, useRef, useState} from 'react';
-import {Button, PageHeader, Table as AntTable} from 'antd';
+import {Button, PageHeader, Table as AntTable, Tag, Tooltip} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -24,7 +24,7 @@ import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
-import {SearchOutlined} from '@ant-design/icons';
+import {InfoCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import CheckButton from '@/components/CheckButton';
 import Icon from '@/components/Icon';
@@ -147,18 +147,22 @@ const CustomerTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="客户名称" fixed dataIndex="customerName" render={(text, record) => {
+        <Column title="基础信息" fixed width={300} dataIndex="customerName" render={(text, record) => {
           return (
-            <Button size="small" type="link" onClick={() => {
-              history.push(`/CRM/customer/${record.customerId}`);
-            }}>{text}</Button>
-          );
-        }} />
-        <Column title="负责人" width={200} render={(text, record) => {
-          return (
-            <>
-              {record.userResult.name}
-            </>
+            <div>
+              <div><Tag>客户名称</Tag>{text}</div>
+              <br />
+              <div><Tag>负责人</Tag>{record.userResult.name}</div>
+              <br />
+              <div><Tag>客户分类</Tag>{record.classificationName}</div>
+              <br />
+              <div><Tag>公司类型</Tag>{record.companyType}</div>
+              <br />
+              <div><Tag>客户来源</Tag> {record.originResult.originName}</div>
+              <br />
+              <div><Tag>行业</Tag> {record.crmIndustryResult.industryName}</div>
+              <br />
+            </div>
           );
         }} />
         <Column title="客户状态" width={140} align="center" render={(text, record) => {
@@ -172,27 +176,13 @@ const CustomerTable = (props) => {
             <CustomerLevel
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
-        <Column title="客户分类" width={120} align="center" dataIndex="classificationName" />
-        <Column title="公司类型" width={200} dataIndex="companyType" ellipsis />
-        <Column title="客户来源" width={120} align="center" render={(text, record) => {
-          return (
-            <>
-              {record.originResult.originName}
-            </>
-          );
-        }} />
-
-        <Column title="行业" width={120} align="center" render={(text, record) => {
-          return (
-            <>
-              {record.crmIndustryResult.industryName}
-            </>
-          );
-        }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
         <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
             <>
+              <Button icon={<InfoCircleOutlined />} type="link" onClick={() => {
+                history.push(`/CRM/customer/${record.customerId}`);
+              }} />
               {choose ? <CheckButton onClick={() => {
                 choose(record);
                 props.onSuccess();
@@ -207,7 +197,7 @@ const CustomerTable = (props) => {
           );
         }} />
       </Table>
-      <CreateNewCustomer title='客户' model={CustomerEdit}  widths={1200}  onSuccess={()=>{
+      <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} refModal={ref} />

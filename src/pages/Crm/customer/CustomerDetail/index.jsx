@@ -55,7 +55,7 @@ const CustomerDetail = () => {
             <Col>
               <h3>{data.customerName}</h3>
               <div>
-                <em>{data.signIn}</em>
+                <em>注册地址：{data.signIn || '未填写'}&nbsp;&nbsp;/&nbsp;&nbsp;行业：{data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</em>
               </div>
             </Col>
           </Row>

@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, notification, Table as AntTable} from 'antd';
+import {Button, Modal, notification, Table as AntTable, Tag} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -31,7 +31,7 @@ const {FormItem} = Form;
 
 const ContractTable = (props) => {
 
-  const {state,customerId} = props;
+  const {state, customerId} = props;
 
 
   const ref = useRef(null);
@@ -65,14 +65,17 @@ const ContractTable = (props) => {
         <>
           <FormItem mega-props={{span: 1}} placeholder="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
           {
-            customerId ? null :  <FormItem mega-props={{span: 1}} placeholder="甲方"  value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} />
+            customerId ? null :
+              <FormItem mega-props={{span: 1}} placeholder="甲方" value={customerId || null} name="partyA"
+                        component={SysField.CustomerNameListSelect} />
           }
         </>
       );
     };
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="合同名称" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -93,7 +96,9 @@ const ContractTable = (props) => {
             <MegaLayout inline>
               <FormItem hidden name="audit" component={SysField.Name} />
               {
-                customerId ?  <FormItem mega-props={{span: 1}} placeholder="甲方"  hidden value={customerId || null} name="partyA" component={SysField.CustomerNameListSelect} /> : null
+                customerId ?
+                  <FormItem mega-props={{span: 1}} placeholder="甲方" hidden value={customerId || null} name="partyA"
+                            component={SysField.CustomerNameListSelect} /> : null
               }
             </MegaLayout>
           </FormButtonGroup>
@@ -175,75 +180,45 @@ const ContractTable = (props) => {
             }}>{text}</Button>
           );
         }} />
-        <Column title="甲方" dataIndex="partAName" render={(text,record)=>{
+        <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <>
-              {
+              <div><Tag>甲方名称</Tag> {
                 record.partA ? record.partA.customerName : null
-              }
-            </>
-          );
-        }} />
-        <Column title="甲方联系人" align="center" width={120} dataIndex="partyAContactsId" render={(text,record)=>{
-          return (
-            <>
-              {
+              }</div>
+              <br />
+              <div><Tag>甲方联系人</Tag> {
                 record.partyAContacts ? record.partyAContacts.contactsName : null
-              }
-            </>
-          );
-        }} />
-        <Column title="甲方联系人电话" width={200} dataIndex="partyAPhone" render={(text,record)=>{
-          return (
-            <>
-              {
+              }</div>
+              <br />
+              <div><Tag>甲方联系人电话</Tag> {
                 record.phoneA ? record.phoneA.phoneNumber : null
-              }
-            </>
-          );
-        }} />
-        <Column title="甲方地址"  dataIndex="partyAAdressId" render={(text,record)=>{
-          return (
-            <>
-              {
+              }</div>
+              <br />
+              <div><Tag>甲方地址</Tag>{
                 record.partyAAdress ? record.partyAAdress.location : null
-              }
+              }</div>
+              <br />
+
             </>
           );
         }} />
-        <Column title="乙方" dataIndex="partBName" render={(text,record)=>{
+        <Column title="乙方信息" dataIndex="partBName" render={(text, record) => {
           return (
             <>
-              {
+              <div><Tag>乙方名称</Tag> {
                 record.partB ? record.partB.customerName : null
-              }
-            </>
-          );
-        }} />
-        <Column title="乙方联系人" align="center" width={120} dataIndex="partyBContactsId" render={(text,record)=>{
-          return (
-            <>
-              {
+              }</div>
+              <div><Tag>乙方联系人</Tag> {
                 record.partyBContacts ? record.partyBContacts.contactsName : null
-              }
-            </>
-          );
-        }} />
-        <Column title="乙方联系人电话" width={200} dataIndex="partyBPhone" render={(text,record)=>{
-          return (
-            <>
-              {
+              }</div>
+              <div><Tag>乙方联系人电话</Tag>  {
                 record.phoneB ? record.phoneB.phoneNumber : null
-              }
-            </>
-          );
-        }} />
-        <Column title="乙方地址" dataIndex="partyBAdressId" render={(text,record)=>{
-          return (
-            <>
-              {
+              }</div>
+              <div><Tag>乙方地址</Tag> {
                 record.partyBAdress ? record.partyBAdress.location : null
-              }
+              }</div>
+
             </>
           );
         }} />
@@ -253,7 +228,7 @@ const ContractTable = (props) => {
             <BadgeState state={record.audit} text={['未审核', '已审核']} color={['red', 'green']} />
           );
         }} />
-        <Column title="操作" fixed='right' align="right" render={(value, record) => {
+        <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
               {record.audit === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {

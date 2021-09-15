@@ -20,9 +20,12 @@ import Modal2 from '@/components/Modal';
 import CrmBusinessSalesProcessList from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessList';
 import {Name} from '../crmBusinessSalesField';
 import Breadcrumb from '@/components/Breadcrumb';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActions = createFormActions();
 
 const CrmBusinessSalesList = () => {
   const ref = useRef(null);
@@ -72,6 +75,7 @@ const CrmBusinessSalesList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        formActions={formActions}
       >
         <Column title="流程名称" dataIndex="name" render={(text, record,) => {
           return (

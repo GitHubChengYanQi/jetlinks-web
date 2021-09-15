@@ -18,9 +18,10 @@ import TemplateEdit from '../TemplateEdit';
 import * as SysField from '../TemplateField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal2 from '@/components/Modal';
+import {createFormActions} from '@formily/antd';
 const {Column} = AntTable;
 const {FormItem} = Form;
-
+const formActions = createFormActions();
 const TemplateList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -72,6 +73,7 @@ const TemplateList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        formActions={formActions}
       >
         <Column title="合同模板" dataIndex="name"/>
         <Column title="操作" align="right" render={(value, record) => {

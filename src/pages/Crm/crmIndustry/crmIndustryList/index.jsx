@@ -17,10 +17,11 @@ import {crmIndustryDelete, crmIndustryList} from '../crmIndustryUrl';
 import CrmIndustryEdit from '../crmIndustryEdit';
 import * as SysField from '../crmIndustryField';
 import Breadcrumb from '@/components/Breadcrumb';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
-
+const formActions = createFormActions();
 const CrmIndustryList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -69,6 +70,7 @@ const CrmIndustryList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        formActions={formActions}
       >
         <Column title="行业名称" dataIndex="industryName" />
         <Column title="上级" dataIndex="parentName" />
