@@ -56,6 +56,9 @@ const BusinessTable = (props) => {
   const [search, setSearch] = useState(false);
 
   useEffect(() => {
+    setShow(true);
+    setShow1(true);
+    setShow2(true);
     if (status || state) {
       tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
       tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
@@ -277,6 +280,8 @@ const BusinessTable = (props) => {
           <LeftOutlined
             onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
               setWidth(400);
+              setShow2(true);
+              setShow(true);
             }}
           /> 添加项目</div>
         }
