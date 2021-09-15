@@ -32,12 +32,6 @@ const ItemPackage = (props) => {
       </>
     );
   };
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    return 930;
-  };
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -103,6 +97,9 @@ const ItemPackage = (props) => {
         }} >批量选择</SelButton>
         <DelButton api={{
           ...batchDelete
+        }} onSuccess={()=>{
+          // tableRef.current.refresh();
+          props.onSuccess();
         }} value={ids}>批量删除</DelButton>
       </>
     );

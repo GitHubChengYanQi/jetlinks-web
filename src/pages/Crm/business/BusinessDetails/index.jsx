@@ -100,7 +100,9 @@ const CustomerDetail = () => {
       </Card>
       <Card>
         <div style={params.state === 'false' ?  null :{'display': 'none' } }>
-          <TableDetail  title='商机明细' value={params.cid} />
+          <TableDetail  title='商机明细' value={data.businessId} businessId={data.businessId} onSuccess={()=>{
+            refresh();
+          }}/>
         </div>
       </Card>
       <div style={params.state === 'false' ? {'display': 'none' }: null }>

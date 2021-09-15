@@ -100,7 +100,7 @@ const ItemsList = (props) => {
         <DelButton api={{
           ...batchDelete
         }} onSuccess={()=>{
-          tableRef.current.refresh();
+          // tableRef.current.refresh();
           props.onSuccess();
         }
         } value={ids}>批量删除</DelButton>
