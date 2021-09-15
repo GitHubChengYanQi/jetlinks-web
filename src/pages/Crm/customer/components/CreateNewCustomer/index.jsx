@@ -1,8 +1,6 @@
 import Modal from '@/components/Modal';
 import {Button, Space} from 'antd';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import React, {useRef} from 'react';
-import Title from '@/components/Title';
 
 
 const CreateNewCustomer = ({

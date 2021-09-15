@@ -30,7 +30,7 @@ const FastCreateCustomer = ({close, add}) => {
         }} />
         <Divider style={{margin: '20px 0'}} />
         <div style={{textAlign: 'center'}}>
-          <Button type="link" onClick={async () => {
+          <Button type="primary" onClick={async () => {
             if (value) {
               const data = await run(
                 {
