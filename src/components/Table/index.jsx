@@ -133,7 +133,6 @@ const TableWarp = ({
 
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: height(), overflowY: 'auto', overflowX: 'hidden'}}>
-    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       {listHeader ? <div className={style.listHeader}>
         {title && <div className="title">{title}</div>}
         <div className="actions">
