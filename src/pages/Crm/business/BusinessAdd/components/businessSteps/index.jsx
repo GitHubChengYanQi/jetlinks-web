@@ -31,7 +31,7 @@ const BusinessSteps = ((props) => {
       <div style={{maxHeight:'100vh'}}>
         <Row gutter={24}>
           <Col span={8}>
-            <ProCard style={{marginTop: 8}} >
+            <ProCard  >
               {step ?
                 <Steps
                   direction="vertical"
@@ -42,10 +42,9 @@ const BusinessSteps = ((props) => {
                 </Steps> : '暂无流程'}
             </ProCard>
           </Col>
-          <Divider direction='ver' style={{height: 500
-          }}/>
+          <Divider direction='ver' />
           <Col span={15}>
-            <ProCard style={{marginTop:8}} >
+            <ProCard  >
               <div style={{overflow: 'auto'}}>
                 <BusinessEdit
                   onClose={()=>{

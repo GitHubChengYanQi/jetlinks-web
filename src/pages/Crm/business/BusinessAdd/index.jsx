@@ -56,8 +56,7 @@ const BusinessAdd = (props, ref) => {
           onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
             setWidth(400);
             setShow(true);
-            // setShow1(true);
-            // setShow2(true);
+            setShow1(true);
             setStage(null);
             setData(null);}} /> 添加项目</div>}
       visible={isModalVisible}
@@ -81,22 +80,24 @@ const BusinessAdd = (props, ref) => {
             }}
             data={data}/> : null}
         </div>
-        <div style={disable === 2 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
+        <div style={disable === 2 ? { animationDelay: '-1s',  maxHeight:'450px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
           <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
-            {stage && <BusinessSteps useData={useData} stage={stage}
-              onChange={(result)=>{
-                if(result.success){
-                  setShow(false);
-                  setShow1(false);
-                  setDisable(3);
-                  setWidth(500);
-                  setBusinessId(result.data);
-                }
-              }}
-              onClose={()=>{
-                setStage(null); setData(null);
-                typeof onClose==='function' && onClose();
-              }}/>}
+            <div style={disable === 2 ? {animationDelay: '-1s',  maxHeight:'450px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
+              {stage && <BusinessSteps useData={useData} stage={stage}
+                onChange={(result)=>{
+                  if(result.success){
+                    setShow(false);
+                    setShow1(false);
+                    setDisable(3);
+                    setWidth(500);
+                    setBusinessId(result.data);
+                  }
+                }}
+                onClose={()=>{
+                  setStage(null); setData(null);
+                  typeof onClose==='function' && onClose();
+                }}/>}
+            </div>
           </Spin>
         </div>
         <div style={disable === 3 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
@@ -118,22 +119,7 @@ const BusinessAdd = (props, ref) => {
               }}/>}
           </Spin>
         </div>
-        {/*<div style={disable === 4 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>*/}
-        {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>*/}
-        {/*    {businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*/}
-        {/*      onChange={(disable)=>{*/}
-        {/*        setStage(null);*/}
-        {/*        setData(null);*/}
-        {/*        setDisable(disable);*/}
-        {/*        setWidth(400);*/}
-        {/*      }}*/}
-        {/*      onClose={()=>{*/}
-        {/*        setStage(null); setData(null);*/}
-        {/*        typeof onClose==='function' && onClose();}}/>}*/}
-        {/*  </Spin>*/}
-        {/*</div>*/}
       </Modal>
-
     </>
   );
 };
