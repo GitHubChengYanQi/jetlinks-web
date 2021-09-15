@@ -105,54 +105,63 @@ const ItemPackage = (props) => {
     );
   };
 
+  const height = () => {
+    if (window.document.body.clientHeight < 1088) {
+      return 'calc(100vh - 206px)';
+    }
+    return 750;
+  };
+
   return (
     <>
-      <Table
-        api={erpPackageList}
-        rowKey="packageId"
-        searchForm={searchForm}
-        actions={actions()}
-        ref={tableRef}
-        listHeader={false}
-        footer={footer}
-        onChange={(keys)=>{
-          setIds(keys);
-        }}
+      <div style={{height: height()}}>
+        <Table
+          api={erpPackageList}
+          rowKey="packageId"
+          searchForm={searchForm}
+          actions={actions()}
+          ref={tableRef}
+          listHeader={false}
+          footer={footer}
+          onChange={(keys)=>{
+            setIds(keys);
+          }}
 
-      >
-        <Column title="套餐名称" dataIndex="productName" render={(value, record) => {
-          return (
-            <Button type="link" onClick={() => {
-              setPackageId(record.packageId);
-              MxRef.current.open(false);
-            }}>{record.productName}</Button>
-          );
-        }}/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <CheckButton onClick={() => {
-                select({data:{packageId:record.packageId}});
-              }}/>
-              <EditButton onClick={() => {
-                ref.current.open(record.packageId);
-              }} />
-              <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={() => {
-                // run(record.packageId);
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }}/>
-      </Table>
-      <Modal width={900} title="套餐" component={ErpPackageEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
-      <Modal2 width={900}  title="套餐明细" component={TableList} packageId={PackageId} onSuccess={() => {
-        // ref.current.refresh();
-        ref.current.close();
-      }} ref={MxRef} />
+        >
+          <Column title="套餐名称" dataIndex="productName" render={(value, record) => {
+            return (
+              <Button type="link" onClick={() => {
+                setPackageId(record.packageId);
+                MxRef.current.open(false);
+              }}>{record.productName}</Button>
+            );
+          }}/>
+          <Column title="操作" align="right" render={(value, record) => {
+            return (
+              <>
+                <CheckButton onClick={() => {
+                  select({data:{packageId:record.packageId}});
+                }}/>
+                <EditButton onClick={() => {
+                  ref.current.open(record.packageId);
+                }} />
+                <DelButton api={erpPackageDelete} value={record.packageId} onSuccess={() => {
+                  // run(record.packageId);
+                  tableRef.current.refresh();
+                }} />
+              </>
+            );
+          }}/>
+        </Table>
+        <Modal width={900} title="套餐" component={ErpPackageEdit} onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref} />
+        <Modal2 width={900}  title="套餐明细" component={TableList} packageId={PackageId} onSuccess={() => {
+          // ref.current.refresh();
+          ref.current.close();
+        }} ref={MxRef} />
+      </div>
     </>
   );
 };

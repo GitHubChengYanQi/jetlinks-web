@@ -202,7 +202,7 @@ const CompetitorTable = (props) => {
           );
         }} width={200} fiexd />
       </Table>
-      <Modal width={1000} title="编辑" component={CompetitorEdit} onSuccess={() => {
+      <Modal width={1000} title="竞争对手" component={CompetitorEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

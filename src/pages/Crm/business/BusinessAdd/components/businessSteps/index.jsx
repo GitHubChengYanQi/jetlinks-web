@@ -31,18 +31,20 @@ const BusinessSteps = ((props) => {
       <div style={{maxHeight:'100vh'}}>
         <Row gutter={24}>
           <Col span={8}>
-            <ProCard  >
-              {step ?
-                <Steps
-                  direction="vertical"
-                  onChange={onChange}
-                  current={current}
-                >
-                  {step}
-                </Steps> : '暂无流程'}
-            </ProCard>
+            <div style={{overflow: 'auto'}}>
+              <ProCard  >
+                {step ?
+                  <Steps
+                    direction="vertical"
+                    onChange={onChange}
+                    current={current}
+                  >
+                    {step}
+                  </Steps> : '暂无流程'}
+              </ProCard>
+            </div>
           </Col>
-          <Divider direction='ver' />
+          <Divider direction='ver' style={{height: '450px'}} />
           <Col span={15}>
             <ProCard  >
               <div style={{overflow: 'auto'}}>
