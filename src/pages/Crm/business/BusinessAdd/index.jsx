@@ -7,10 +7,12 @@ import BusinessTableIndex from '@/pages/Crm/business/BusinessAdd/components/busi
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
 import styles from './index.module.scss';
 import { Loading} from '@alifd/next';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 
 const BusinessAdd = (props, ref) => {
 
   const {onClose} = props;
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [useData, setData] = useState([]);
   const [disable, setDisable] = useState(1);
@@ -18,7 +20,8 @@ const BusinessAdd = (props, ref) => {
   const [businessId, setBusinessId] = useState(null);
   const [widths, setWidth] = useState(400);
   const [show, setShow] = useState(true);
-
+  const [show1, setShow1] = useState(true);
+  const [show2, setShow2] = useState(true);
 
   const { data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
@@ -27,6 +30,9 @@ const BusinessAdd = (props, ref) => {
   });
 
   const open = () => {
+    setShow(true);
+    setShow1(true);
+    setShow2(true);
     setDisable(1);
     setWidth(400);
     crmBusinessSalesRun();
@@ -44,18 +50,27 @@ const BusinessAdd = (props, ref) => {
 
   return (
     <>
-      <Modal title={<div style={disable === 2 ? null : {'display' : 'none'}}> <LeftOutlined onClick={()=>{setDisable(1); setWidth(400);  setShow(true); setStage(null); setData(null);}} /> 添加项目</div>} visible={isModalVisible}
-        footer={false}
-        width={widths}
-        className={disable === 3 ?  null : styles.myModal}
-        onCancel={()=>{
-          setStage(null);
-          setData(null);
-          typeof onClose==='function' && onClose();
-        }}
+      <Modal title={<div style={disable !== 3 ? null : {'display' : 'none'}}>
+        <LeftOutlined
+          onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
+            setWidth(400);
+            setShow(true);
+            // setShow1(true);
+            setShow2(true);
+            setStage(null);
+            setData(null);}} /> 添加项目</div>}
+      visible={isModalVisible}
+      footer={false}
+      width={widths}
+      className={styles.myModal}
+      onCancel={()=>{
+        setStage(null);
+        setData(null);
+        typeof onClose==='function' && onClose();
+      }}
       >
         <div style={disable === 1 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-          {data && data.length > 0 ? <BusinessTableIndex
+          {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor:'aliceblue',width: '100%'}}
             onChange={(rtData)=>{
               setShow(false);
               setData(rtData.process);
@@ -65,12 +80,13 @@ const BusinessAdd = (props, ref) => {
             }}
             data={data}/> : null}
         </div>
-        <div style={disable === 2 ? {animationDelay: '-5s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
+        <div style={disable === 2 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
           <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
             {stage && <BusinessSteps useData={useData} stage={stage}
               onChange={(result)=>{
                 if(result.success){
-                  setShow(true);
+                  setShow(false);
+                  setShow1(false);
                   setDisable(3);
                   setWidth(500);
                   setBusinessId(result.data);
@@ -82,18 +98,38 @@ const BusinessAdd = (props, ref) => {
               }}/>}
           </Spin>
         </div>
-        <div style={disable === 3 ? null : {display: 'none', maxHeight:'500px'}}>
-          {businessId && <BusinessComplete result={businessId}
-            onChange={(disable)=>{
-              setShow(false);
-              setStage(null); setData(null);
-              setDisable(disable);
-              setWidth(400);
-            }}
-            onClose={()=>{
-              setStage(null); setData(null);
-              typeof onClose==='function' && onClose();
-            }}/>}
+        <div style={disable === 3 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
+          <Spin spinning={show1} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            {businessId && <BusinessComplete result={businessId}
+              onChange={(disable)=>{
+                setStage(null); setData(null);
+                setDisable(disable);
+                if(disable === 1){
+                  setWidth(400);
+                }else{
+                  setWidth(800);
+                  setShow2(false);
+                }
+              }}
+              onClose={()=>{
+                setStage(null); setData(null);
+                typeof onClose==='function' && onClose();
+              }}/>}
+          </Spin>
+        </div>
+        <div style={disable === 4 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
+          <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            {businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}
+              onChange={(disable)=>{
+                setStage(null);
+                setData(null);
+                setDisable(disable);
+                setWidth(400);
+              }}
+              onClose={()=>{
+                setStage(null); setData(null);
+                typeof onClose==='function' && onClose();}}/>}
+          </Spin>
         </div>
       </Modal>
 

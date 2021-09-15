@@ -74,6 +74,7 @@ const TableDetail = (props) => {
         />
       </div>
       <Table
+        title='产品明细'
         api={crmBusinessDetailedList}
         rowKey="id"
         searchForm={searchForm}
