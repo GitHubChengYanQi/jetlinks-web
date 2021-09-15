@@ -14,7 +14,7 @@ import {OrderBranchRouter} from '@/pages/Erp/orderBranch/OrderBranchRouter';
 import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
 import {PackageRouter} from '@/pages/Erp/package/packageRouter';
 import {DeliveryRouter} from '@/pages/Erp/delivery/deliveryRouter';
-import {OutstockApplyRouter} from '@/pages/Erp/outstock/outstockApply/outstockApplyRouter';
+import {OutstockApplyRouter} from '@/pages/Erp/outstockApply/outstockApplyRouter';
 
 const ErpRouterConfig = [
   {

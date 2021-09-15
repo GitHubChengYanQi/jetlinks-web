@@ -16,6 +16,11 @@ export const outstockOrderEdit = {
   method: 'POST',
   rowKey:'outstockOrderId'
 };
+export const outBound = {
+  url: '/outBound/send',
+  method: 'POST',
+  rowKey:'outstockOrderId'
+};
 
 export const outstockOrderDelete = {
   url: '/outstockOrder/delete',

@@ -24,7 +24,7 @@ const {FormItem} = Form;
 
 const OutstockList = (props) => {
 
-  const {outstockOrderId, value,sourhouse} = props;
+  const {outstockOrderId, value, sourhouse} = props;
 
   const ref = useRef(null);
   const refDelivery = useRef(null);
@@ -41,7 +41,7 @@ const OutstockList = (props) => {
       <>
         <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
           refDelivery.current.open(false);
-        }} type="text" >批量发货</Button>
+        }} type="text">批量发货</Button>
         <Modal title="产品出库" component={DeliveryDetailsEdit} onSuccess={() => {
           tableRef.current.refresh();
           refDelivery.current.close();
@@ -56,8 +56,13 @@ const OutstockList = (props) => {
 
 
     return (
-      <FormItem mega-props={{span: 1}} placeholder="出库单" name="outstockOrderId" hidden value={outstockOrderId || value}
-                component={SysField.ItemIdSelect} />
+      <FormItem
+        mega-props={{span: 1}}
+        placeholder="出库单"
+        name="outstockOrderId"
+        hidden
+        value={outstockOrderId || value}
+        component={SysField.ItemIdSelect} />
     );
   };
 
@@ -89,7 +94,7 @@ const OutstockList = (props) => {
           );
         }} />
 
-        <Column title="品牌名称" width={200} dataIndex="brandName" render={(text, record) => {
+        <Column title="品牌名称" width={200} dataIndex="brandId" render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}

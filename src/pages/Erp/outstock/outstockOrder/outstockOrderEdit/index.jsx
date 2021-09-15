@@ -16,10 +16,11 @@ import {
   outstockApplyAdd,
   outstockApplyDetail,
   outstockApplyEdit
-} from '@/pages/Erp/outstock/outstockApply/outstockApplyUrl';
+} from '@/pages/Erp/outstockApply/outstockApplyUrl';
+import {InternalFieldList as FieldList} from '@formily/antd';
+import styled from 'styled-components';
 
 const {FormItem} = Form;
-const {Step} = Steps;
 
 const ApiConfig = {
   view: outstockOrderDetail,
@@ -29,78 +30,76 @@ const ApiConfig = {
 
 const OutstockOrderEdit = ({...props}) => {
 
-  const [current, setCurrent] = useState(0);
-  const [result, setResult] = useState(props.value);
+
   const formRef = useRef();
 
-  const steps = [
-    {
-      title: '出库单',
-      content:
-        <>
-          <div style={{margin: '50px 150px'}}>
-            <FormIndex
-              {...props}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="outstockOrderId"
-              success={(result) => {
-                setResult(result.data);
-                next();
-              }}
-            >
-              <FormItem label="仓库" name="storehouseId" component={SysField.Storhouse} required />
-              <FormItem label="计划出库时间" name="time" component={SysField.Time} required />
-              <div style={{textAlign: 'center'}}>
-                <Button type="primary" htmlType="submit">
-                  下一步
-                </Button>
-              </div>
-            </FormIndex>
-          </div>
-        </>
-    },
-    {
-      title: '出库单',
-      content:
-        <>
-          <div style={{margin: '50px 150px'}}>
-            <OutstockList outstockOrderId={result.outstockOrderId} sourhouse={result.storehouseId} />
-            <div style={{textAlign: 'center'}}>
-              <Button style={{marginRight: 20}} type="primary" onClick={() => {
-                props.onSuccess();
-              }
-              }>
-                保存
-              </Button>
-              <Button style={{marginRight: 20}} type="primary" onClick={() => {
-                prev();
-              }
-              }>
-                返回
-              </Button>
-            </div>
-          </div>
-        </>
-    },
-  ];
+  const RowStyleLayout = styled(props => <div {...props} />)`
+    .ant-btn {
+      margin-right: 16px;
+    }
 
-  const next = () => {
-    setCurrent(current + 1);
-  };
-  const prev = () => {
-    setCurrent(current - 1);
-  };
+    .ant-form-item {
+      display: inline-flex;
+      margin-right: 16px;
+      width: 25%;
+    }
+  `;
+
 
 
   return (
     <>
-      <Steps current={current} style={{padding: '30px 150px '}}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[current].content}</div>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="outstockOrderId"
+      >
+
+        <FieldList
+          name="applyDetails"
+          initialValue={[
+            {itemId: ''},
+          ]}
+        >
+          {({state, mutators}) => {
+            const onAdd = () => mutators.push();
+            return (
+              <div>
+                {state.value.map((item, index) => {
+                  const onRemove = index => mutators.remove(index);
+                  return (
+                    <RowStyleLayout key={index}>
+                      <FormItem
+                        label='产品'
+                        name={`applyDetails.${index}.itemId`}
+                        component={SysField.ItemId}
+                        required
+                      />
+                      <FormItem
+                        label='品牌'
+                        name={`applyDetails.${index}.brandId`}
+                        component={SysField.BrandId}
+                        required
+                      />
+                      <FormItem
+                        label='数量'
+                        name={`applyDetails.${index}.number`}
+                        component={SysField.Number}
+                        required
+                      />
+                      {/* eslint-disable-next-line react/jsx-no-bind */}
+                      <Button onClick={onRemove.bind(null, index)}>删除</Button>
+                    </RowStyleLayout>
+                  );
+                })}
+                <Button onClick={onAdd}>增加</Button>
+              </div>
+            );
+          }}
+        </FieldList>
+
+      </Form>
     </>
 
   );

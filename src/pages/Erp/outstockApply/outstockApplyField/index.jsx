@@ -16,10 +16,10 @@ export const ApplyState = (props) =>{
   return (<Input {...props}/>);
 };
 export const BrandId = (props) =>{
-  return (<Select api={apiUrl.Brands} {...props}/>);
+  return (<Select width={150} api={apiUrl.Brands} {...props}/>);
 };
 export const ItemId = (props) =>{
-  return (<Select api={apiUrl.Items} {...props}/>);
+  return (<Select width={150} api={apiUrl.Items} {...props}/>);
 };
 
 export const Number = (props) =>{

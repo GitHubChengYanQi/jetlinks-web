@@ -7,9 +7,9 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, notification, Table as AntTable} from 'antd';
+import {Button, Modal as AntModal, notification, Table as AntTable} from 'antd';
+import Modal from '@/components/Modal'
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -65,7 +65,7 @@ const OutstockApplyList = () => {
   };
 
   function confirmOk(record) {
-    Modal.confirm({
+    AntModal.confirm({
       title: '发货申请',
       centered: true,
       content: `请确认是否同意发货申请操作!注意：同意之后不可恢复。`,
@@ -92,9 +92,8 @@ const OutstockApplyList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品" dataIndex="itemId" />
-        <Column title="品牌" dataIndex="brandId" />
-        <Column title="数量" dataIndex="number" />
+        <Column title="发货申请单号" dataIndex="outstockApplyId" />
+        <Column title="申请时间" dataIndex="createTime" />
         <Column title="申请状态" dataIndex="applyState" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
@@ -104,17 +103,17 @@ const OutstockApplyList = () => {
                 confirmOk(record);
               }}><Icon type="icon-chuku" />同意</Button> : null}
               {record.applyState === 1 ? <EditButton onClick={() => {
-                ref.current.open(record.outstockOrderId);
+                ref.current.open(record.outstockApplyId);
               }} /> : null}
               {record.applyState === 1 ?
-                <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
+                <DelButton api={outstockOrderDelete} value={record.outstockApplyId} onSuccess={() => {
                   tableRef.current.refresh();
                 }} /> : null}
             </>
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={OutstockApplyEdit} onSuccess={() => {
+      <Modal width={800} title="发货单" component={OutstockApplyEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
