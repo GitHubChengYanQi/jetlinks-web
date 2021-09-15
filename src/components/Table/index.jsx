@@ -124,15 +124,8 @@ const TableWarp = ({
     );
   };
 
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    return 930;
-  };
-
   return (
-    <div className={style.tableWarp} id="listLayout" style={{height: height(), overflowY: 'auto', overflowX: 'hidden'}}>
+    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       <div style={headStyle}>
         {listHeader ? <div className={style.listHeader}>
           {title && <div className="title">{title}</div>}

@@ -45,7 +45,7 @@ const BusinessTable = (props) => {
   const [widths, setWidth] = useState(800);
   const [show, setShow] = useState(true);
   const [show1, setShow1] = useState(true);
-  const [title, setTitle] = useState('添加项目');
+  const [title, setTitle] = useState('编辑项目');
 
   const history = useHistory();
 
@@ -138,8 +138,12 @@ const BusinessTable = (props) => {
       </>
     );
   };
-
-
+  const height = () => {
+    if (window.document.body.clientHeight < 1088) {
+      return 'calc(100vh - 206px)';
+    }
+    return 650;
+  };
   return (
     <>
       <Table
@@ -264,55 +268,59 @@ const BusinessTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal
-        title={title}
-        visible={detail}
-        footer={false}
-        width={widths}
-        className={styles.myModal}
-        onCancel={() => {
-          setDetail(false);
-          setShow(true);
-        }} onOk={() => {
-          setDetail(false);
-        }}>
-        <div style={disable === 1 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-          <Spin spinning={show} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
-            <BusinessEdit
-              onSuccess={()=>{
-                setWidth(400);
-                setDisable(2);
-                setShow1(false);
-                setTitle('创建结果');
-              }}
-              value={businessId}
-            />
-          </Spin>
-        </div>
-        <div style={disable === 2 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-          <Spin spinning={show1} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
-            {businessId && <BusinessComplete result={businessId} disabled={false}/>}
-          </Spin>
-        </div>
-        {/*<div style={disable === 3 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>*/}
-        {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%', height: height()}}>*/}
-        {/*    /!*{businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*!/*/}
-        {/*    /!*  onChange={(disable)=>{*!/*/}
-        {/*    /!*    setDisable(disable);*!/*/}
-        {/*    /!*    setWidth(400);*!/*/}
-        {/*    /!*  }}/>}*!/*/}
-        {/*    <div style={{ height: height(), overflow: 'auto'}}>*/}
-        {/*      <CustomerDetail value={businessId}*/}
-        {/*        showFlag={false}*/}
-        {/*        onChange={(disable)=>{*/}
-        {/*          setDisable(disable);*/}
-        {/*          // setWidth(400);*/}
-        {/*        }}*/}
-        {/*      />*/}
-        {/*    </div>*/}
-        {/*  </Spin>*/}
-        {/*</div>*/}
-      </Modal>
+      <div style={{height: height()}}>
+        <Modal
+          title={title}
+          visible={detail}
+          footer={false}
+          width={widths}
+          className={styles.myModal}
+          onCancel={() => {
+            setDetail(false);
+            setShow(true);
+          }} onOk={() => {
+            setDetail(false);
+          }}>
+          <div style={{height: height(), overflow: 'auto', maxHeight:'450px'}}>
+            <div style={disable === 1 ? {marginRight: 10, maxHeight:'450px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+              <Spin spinning={show} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
+                <BusinessEdit
+                  onSuccess={()=>{
+                    setWidth(400);
+                    setDisable(2);
+                    setShow1(false);
+                    setTitle('创建结果');
+                  }}
+                  value={businessId}
+                />
+              </Spin>
+            </div>
+            <div style={disable === 2 ? {marginRight: 10, maxHeight:'450px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+              <Spin spinning={show1} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
+                {businessId && <BusinessComplete result={businessId} disabled={false}/>}
+              </Spin>
+            </div>
+            {/*<div style={disable === 3 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>*/}
+            {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%', height: height()}}>*/}
+            {/*    /!*{businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*!/*/}
+            {/*    /!*  onChange={(disable)=>{*!/*/}
+            {/*    /!*    setDisable(disable);*!/*/}
+            {/*    /!*    setWidth(400);*!/*/}
+            {/*    /!*  }}/>}*!/*/}
+            {/*    <div style={{ height: height(), overflow: 'auto'}}>*/}
+            {/*      <CustomerDetail value={businessId}*/}
+            {/*        showFlag={false}*/}
+            {/*        onChange={(disable)=>{*/}
+            {/*          setDisable(disable);*/}
+            {/*          // setWidth(400);*/}
+            {/*        }}*/}
+            {/*      />*/}
+            {/*    </div>*/}
+            {/*  </Spin>*/}
+            {/*</div>*/}
+          </div>
+        </Modal>
+      </div>
     </>
   );
 };

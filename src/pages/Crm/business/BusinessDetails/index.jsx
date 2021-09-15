@@ -79,7 +79,7 @@ const CustomerDetail = () => {
             refresh();
           }} title='跟踪' val={data}/>
 
-          <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
+          <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
             refresh();
           }} ref={ref}/>
@@ -135,7 +135,7 @@ const CustomerDetail = () => {
                     <CompetitorTable businessId={data.businessId}/>
                   </TabPane>
                   <TabPane tab="商机明细" key="4">
-                    <TableDetail value={data.businessId}/>
+                    <TableDetail value={data.businessId} onSuccess={()=>{}}/>
                   </TabPane>
                 </Tabs>
               </Card>

@@ -31,21 +31,22 @@ const BusinessSteps = ((props) => {
       <div style={{maxHeight:'100vh'}}>
         <Row gutter={24}>
           <Col span={8}>
-            <ProCard style={{marginTop: 8}} >
-              {step ?
-                <Steps
-                  direction="vertical"
-                  onChange={onChange}
-                  current={current}
-                >
-                  {step}
-                </Steps> : '暂无流程'}
-            </ProCard>
+            <div style={{overflow: 'auto'}}>
+              <ProCard  >
+                {step ?
+                  <Steps
+                    direction="vertical"
+                    onChange={onChange}
+                    current={current}
+                  >
+                    {step}
+                  </Steps> : '暂无流程'}
+              </ProCard>
+            </div>
           </Col>
-          <Divider direction='ver' style={{height: 500
-          }}/>
+          <Divider direction='ver' style={{height: '450px'}} />
           <Col span={15}>
-            <ProCard style={{marginTop:8}} >
+            <ProCard  >
               <div style={{overflow: 'auto'}}>
                 <BusinessEdit
                   onClose={()=>{

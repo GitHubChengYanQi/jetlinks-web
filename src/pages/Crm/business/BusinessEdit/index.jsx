@@ -32,6 +32,7 @@ const BusinessEdit = (props) => {
   const formRef = useRef(null);
 
   return (
+
     <FormIndex
       {...props}
       value={result}

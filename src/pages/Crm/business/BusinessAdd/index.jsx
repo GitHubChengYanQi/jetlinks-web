@@ -49,91 +49,88 @@ const BusinessAdd = (props, ref) => {
     close
   }));
 
+  const height = () => {
+    if (window.document.body.clientHeight < 1088) {
+      return 'calc(100vh - 206px)';
+    }
+    return 750;
+  };
+
   return (
     <>
-      <Modal title={<div style={disable !== 3 ? null : {'display' : 'none'}}>
-        <LeftOutlined
-          onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
-            setWidth(400);
-            setShow(true);
-            // setShow1(true);
-            // setShow2(true);
-            setStage(null);
-            setData(null);}} /> 添加项目</div>}
-      visible={isModalVisible}
-      footer={false}
-      width={widths}
-      className={styles.myModal}
-      onCancel={()=>{
-        setStage(null);
-        setData(null);
-        typeof onClose==='function' && onClose();
-      }}
-      >
-        <div style={disable === 1 ? {marginRight: 10, maxHeight:'500px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-          {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor:'aliceblue',width: '100%'}}
-            onChange={(rtData)=>{
-              setShow(false);
-              setData(rtData.process);
-              setStage(rtData.salesId);
-              setDisable(2);
-              setWidth(1000);
-            }}
-            data={data}/> : null}
-        </div>
-        <div style={disable === 2 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
-          <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
-            {stage && <BusinessSteps useData={useData} stage={stage}
-              onChange={(result)=>{
-                if(result.success){
+      <div style={{height: height()}}>
+        <Modal title={<div style={disable !== 3 ? null : {'display' : 'none'}}>
+          <LeftOutlined
+            onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
+              setWidth(400);
+              setShow(true);
+              setShow1(true);
+              setStage(null);
+              setData(null);}} /> 添加项目</div>}
+        visible={isModalVisible}
+        footer={false}
+        width={widths}
+        className={styles.myModal}
+        onCancel={()=>{
+          setStage(null);
+          setData(null);
+          typeof onClose==='function' && onClose();
+        }}
+        >
+          <div style={{height: height(), overflow: 'auto', maxHeight:'500px'}}>
+            <div style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+              {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor:'aliceblue',width: '100%'}}
+                onChange={(rtData)=>{
                   setShow(false);
-                  setShow1(false);
-                  setDisable(3);
-                  setWidth(500);
-                  setBusinessId(result.data);
-                }
-              }}
-              onClose={()=>{
-                setStage(null); setData(null);
-                typeof onClose==='function' && onClose();
-              }}/>}
-          </Spin>
-        </div>
-        <div style={disable === 3 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
-          <Spin spinning={show1} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
-            {businessId && <BusinessComplete result={businessId}
-              onChange={(disable)=>{
-                setStage(null); setData(null);
-                setDisable(disable);
-                if(disable === 1){
-                  setWidth(400);
-                }else{
-                  setWidth(800);
-                  // setShow2(false);
-                }
-              }}
-              onClose={()=>{
-                setStage(null); setData(null);
-                typeof onClose==='function' && onClose();
-              }}/>}
-          </Spin>
-        </div>
-        {/*<div style={disable === 4 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>*/}
-        {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>*/}
-        {/*    {businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*/}
-        {/*      onChange={(disable)=>{*/}
-        {/*        setStage(null);*/}
-        {/*        setData(null);*/}
-        {/*        setDisable(disable);*/}
-        {/*        setWidth(400);*/}
-        {/*      }}*/}
-        {/*      onClose={()=>{*/}
-        {/*        setStage(null); setData(null);*/}
-        {/*        typeof onClose==='function' && onClose();}}/>}*/}
-        {/*  </Spin>*/}
-        {/*</div>*/}
-      </Modal>
-
+                  setData(rtData.process);
+                  setStage(rtData.salesId);
+                  setDisable(2);
+                  setWidth(1000);
+                }}
+                data={data}/> : null}
+            </div>
+            <div style={disable === 2 ? { animationDelay: '-1s',  width: '900px'} : {display: 'none',  maxWidth: '1000px', animationDelay: '-1s'}}>
+              <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+                <div style={disable === 2 ? {animationDelay: '-1s',  width: '900px'} : {display: 'none', maxWidth: '1000px%', animationDelay: '-1s'}}>
+                  {stage && <BusinessSteps useData={useData} stage={stage}
+                    onChange={(result)=>{
+                      if(result.success){
+                        setShow(false);
+                        setShow1(false);
+                        setDisable(3);
+                        setWidth(500);
+                        setBusinessId(result.data);
+                      }
+                    }}
+                    onClose={()=>{
+                      setStage(null); setData(null);
+                      typeof onClose==='function' && onClose();
+                    }}/>}
+                </div>
+              </Spin>
+            </div>
+            <div style={disable === 3 ? {animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+              <Spin spinning={show1} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+                {businessId && <BusinessComplete result={businessId}
+                  onChange={(disable)=>{
+                    setStage(null); setData(null);
+                    setDisable(disable);
+                    if(disable === 1){
+                      setWidth(400);
+                    }else{
+                      setWidth(800);
+                      // setShow2(false);
+                    }
+                  }}
+                  onClose={()=>{
+                    setStage(null); setData(null);
+                    typeof onClose==='function' && onClose();
+                  }}/>}
+              </Spin>
+            </div>
+          </div>
+        </Modal>
+      </div>
     </>
   );
 };
