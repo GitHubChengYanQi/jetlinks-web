@@ -32,6 +32,12 @@ const ItemPackage = (props) => {
       </>
     );
   };
+  const height = () => {
+    if (window.document.body.clientHeight < 1088) {
+      return 'calc(100vh - 206px)';
+    }
+    return 930;
+  };
 
   const ref = useRef(null);
   const tableRef = useRef(null);

@@ -1,9 +1,8 @@
 import React, {useRef} from 'react';
 import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
-import {useParams} from 'ice';
+import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {EditOutlined} from '@ant-design/icons';
-import ButtonGroup from 'antd/es/button/button-group';
 import Modal from '@/components/Modal';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
@@ -20,17 +19,16 @@ import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 import styles from './index.module.scss';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 
 const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
   const params = useParams();
-
+  console.log(1111111111111, params.state === 'false');
   const ref = useRef(null);
   const refTrack = useRef(null);
-
-  const refA = useRef();
-
+  const historys = useHistory();
   const {loading, data, refresh} = useRequest(businessDetail, {
     defaultParams: {
       data: {
@@ -42,10 +40,11 @@ const CustomerDetail = () => {
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
+
   if (data) {
     return <div className={styles.detail}>
       <Card>
-        <Breadcrumb />
+        <Breadcrumb/>
       </Card>
       <Card>
         <div className={styles.title}>
@@ -60,86 +59,106 @@ const CustomerDetail = () => {
               </div>
             </Col>
           </Row>
-
-
         </div>
         <div className={styles.titleButton}>
 
-          <Button onClick={() => {
-            refTrack.current.open(false);
-          }} icon={<EditOutlined />}>添加跟踪</Button>
+          <Button
+            style={params.state === 'false' ? {'display': 'none' }: null }
+            onClick={() => {
+              refTrack.current.open(false);
+            }} icon={<EditOutlined/>}>添加跟踪</Button>
 
-          <Button type="primary" onClick={() => {
-            ref.current.open(data.businessId);
-          }}>编辑</Button>
+          <Button
+            style={params.state === 'false' ? {'display': 'none' }: null }
+            type="primary" onClick={() => {
+              ref.current.open(data.businessId);
+            }}>编辑</Button>
 
-          <CreateNewCustomer widths={1400} refModal={refTrack} model={CrmBusinessTrackEdit} onSuccess={()=>{
+          <CreateNewCustomer widths={1400} refModal={refTrack} model={CrmBusinessTrackEdit} onSuccess={() => {
             refTrack.current.close();
             refresh();
-          }} title='跟踪' val={data} />
+          }} title='跟踪' val={data}/>
 
           <Modal width={1500} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
             refresh();
-          }} ref={ref} />
-          <Button onClick={() => {
-            history.back();
-          }}><Icon type="icon-back" />返回</Button>
+          }} ref={ref}/>
+          <Button
+            style={params.state === 'false' ?  null : {'display': 'none' } }
+            type="primary" key="1"
+            onClick={() => {
+              historys.push(`/CRM/business/${data.businessId}`);
+            }}>查看详情</Button>
+          <Button
+            // style={params.state === 'false' ? {'display': 'none' }: null }
+            onClick={() => {
+              history.back();
+            }}><Icon type="icon-back"/>返回</Button>
+
+        </div>
+
+      </Card>
+      <Card>
+        <div style={params.state === 'false' ?  null :{'display': 'none' } }>
+          <TableDetail  title='商机明细' value={params.cid} />
         </div>
       </Card>
+      <div style={params.state === 'false' ? {'display': 'none' }: null }>
+        <Row>
+          <Col span={16}>
+            <div className={styles.main}>
+              <Card title="项目销售流程" bodyStyle={{padding: 30}}>
+                <StepList onChange={() => {
+                  refresh();
+                }} value={data}/>
+              </Card>
+            </div>
+            <div className={styles.main}>
+              <Card>
+                <Desc data={data}/>
+              </Card>
+            </div>
 
-      <Row>
-        <Col span={16}>
-          <div className={styles.main}>
-            <Card title="项目销售流程" bodyStyle={{padding: 30}}>
-              <StepList onChange={() => {
-                refresh();
-              }} value={data} />
-            </Card>
-          </div>
-          <div className={styles.main}>
-            <Card>
-              <Desc data={data} />
-            </Card>
-          </div>
-
-          <div
-            className={styles.main}>
-            <Card>
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="详细信息" key="1">
-                  <Description data={data} />
-                </TabPane>
-                <TabPane tab="竞争对手" key="2">
-                  <CompetitorList businessId={data.businessId} />
-                </TabPane>
-                <TabPane tab="报价" key="3">
-                  <CompetitorTable businessId={data.businessId} />
-                </TabPane>
-              </Tabs>
-            </Card>
-
-
-          </div>
-        </Col>
-        <Col span={8}>
-          <div className={styles.main} style={{height: '100%'}}>
-            <Card>
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="动态" key="1">
-                  <Dynamic value={data} />
-                </TabPane>
-                <TabPane tab="跟踪" key="2">
-                  <Track value={data}  />
-                </TabPane>
-              </Tabs>
-            </Card>
-          </div>
-        </Col>
-      </Row>
+            <div
+              className={styles.main}>
+              <Card>
+                <Tabs defaultActiveKey="1">
+                  <TabPane tab="详细信息" key="1">
+                    <Description data={data}/>
+                  </TabPane>
+                  <TabPane tab="竞争对手" key="2">
+                    <CompetitorList businessId={data.businessId}/>
+                  </TabPane>
+                  <TabPane tab="报价" key="3">
+                    <CompetitorTable businessId={data.businessId}/>
+                  </TabPane>
+                  <TabPane tab="商机明细" key="4">
+                    <TableDetail value={data.businessId}/>
+                  </TabPane>
+                </Tabs>
+              </Card>
+            </div>
+          </Col>
+          <Col span={8}>
+            <div className={styles.main} style={{height: '100%'}}>
+              <Card>
+                <Tabs defaultActiveKey="1">
+                  <TabPane tab="动态" key="1">
+                    <Dynamic value={data}/>
+                  </TabPane>
+                  <TabPane tab="跟踪" key="2">
+                    <Track value={data}/>
+                  </TabPane>
+                </Tabs>
+              </Card>
+            </div>
+          </Col>
+        </Row>
+      </div>
 
     </div>;
   }
+
   return null;
 
 
