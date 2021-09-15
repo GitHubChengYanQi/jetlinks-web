@@ -13,7 +13,7 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {outstockApplyDelete, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
+import {outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
 import OutstockApplyEdit from '../outstockApplyEdit';
 import * as SysField from '../outstockApplyField';
 import {useRequest} from '@/util/Request';
