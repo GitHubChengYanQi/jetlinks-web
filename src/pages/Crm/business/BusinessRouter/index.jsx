@@ -23,4 +23,11 @@ export const BusinessRouter = [
     fallback: <div>loading...</div>,
     exact: true,
   },
+  {
+    path: '/business/:cid/:state',
+    name: '项目详情',
+    component: lazy(() => import('../BusinessDetails')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
 ];

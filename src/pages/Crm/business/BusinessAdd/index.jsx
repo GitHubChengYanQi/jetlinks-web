@@ -8,6 +8,7 @@ import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/busine
 import styles from './index.module.scss';
 import { Loading} from '@alifd/next';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import CustomerDetail from '@/pages/Crm/business/BusinessDetails';
 
 const BusinessAdd = (props, ref) => {
 
@@ -32,7 +33,7 @@ const BusinessAdd = (props, ref) => {
   const open = () => {
     setShow(true);
     setShow1(true);
-    setShow2(true);
+    // setShow2(true);
     setDisable(1);
     setWidth(400);
     crmBusinessSalesRun();
@@ -56,7 +57,7 @@ const BusinessAdd = (props, ref) => {
             setWidth(400);
             setShow(true);
             // setShow1(true);
-            setShow2(true);
+            // setShow2(true);
             setStage(null);
             setData(null);}} /> 添加项目</div>}
       visible={isModalVisible}
@@ -108,7 +109,7 @@ const BusinessAdd = (props, ref) => {
                   setWidth(400);
                 }else{
                   setWidth(800);
-                  setShow2(false);
+                  // setShow2(false);
                 }
               }}
               onClose={()=>{
@@ -117,20 +118,20 @@ const BusinessAdd = (props, ref) => {
               }}/>}
           </Spin>
         </div>
-        <div style={disable === 4 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>
-          <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
-            {businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}
-              onChange={(disable)=>{
-                setStage(null);
-                setData(null);
-                setDisable(disable);
-                setWidth(400);
-              }}
-              onClose={()=>{
-                setStage(null); setData(null);
-                typeof onClose==='function' && onClose();}}/>}
-          </Spin>
-        </div>
+        {/*<div style={disable === 4 ? {animationDelay: '-1s',  maxHeight:'500px'} : {display: 'none', maxHeight:'500px', animationDelay: '-1s'}}>*/}
+        {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>*/}
+        {/*    {businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*/}
+        {/*      onChange={(disable)=>{*/}
+        {/*        setStage(null);*/}
+        {/*        setData(null);*/}
+        {/*        setDisable(disable);*/}
+        {/*        setWidth(400);*/}
+        {/*      }}*/}
+        {/*      onClose={()=>{*/}
+        {/*        setStage(null); setData(null);*/}
+        {/*        typeof onClose==='function' && onClose();}}/>}*/}
+        {/*  </Spin>*/}
+        {/*</div>*/}
       </Modal>
 
     </>

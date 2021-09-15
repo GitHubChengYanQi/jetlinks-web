@@ -47,11 +47,11 @@ const TableDetail = (props) => {
   return (
     <>
       <div style={{textAlign:'right'}}>
-        <Button key='1' type="primary" className='placeName' onClick={()=>{
+        <Button key='1' type="primary" style={{marginRight: 10}} onClick={()=>{
           refAddOne.current.open(false);}}>
           添加产品
         </Button>
-        <Modal2 width={1900} title="选择" component={ItemsList}
+        <Modal2 width={1600} title="选择" component={ItemsList}
           onSuccess={() => {
             refAddOne.current.close();
             tableRef.current.refresh();
@@ -59,12 +59,12 @@ const TableDetail = (props) => {
           businessId={value}
           TcDisabled={false}
         />
-        <Button key='2' type="primary" className='placeName' onClick={()=>{
+        <Button key='2' type="primary" onClick={()=>{
           refAddAll.current.open(false);
         }}>
           添加产品套餐
         </Button>
-        <Modal2 width={800} title="选择" component={ItemPackage}
+        <Modal2 width={700} title="选择" component={ItemPackage}
           onSuccess={() => {
             refAddAll.current.close();
             tableRef.current.refresh();
