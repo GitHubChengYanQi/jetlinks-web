@@ -48,13 +48,7 @@ const SpeechcraftList = () => {
             }, {
               title: '话术管理',
               key: '1',
-              children: [
-                {
-                  title: '话术分类',
-                  key: '1-1',
-                  children: speechcraftTypes
-                }
-              ],
+              children: speechcraftTypes,
             },
           ]}
         />

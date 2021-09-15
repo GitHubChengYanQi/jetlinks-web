@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Divider, Table as AntTable, Tag} from 'antd';
 import {useRequest} from '@/util/Request';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -15,7 +15,7 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Reset, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined,InfoCircleOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -32,7 +32,7 @@ const {FormItem} = Form;
 
 const CompetitorTable = (props) => {
 
-  const {competitionLevel,businessId} = props;
+  const {competitionLevel, businessId} = props;
 
   const history = useHistory();
   const {run: getList} = useRequest({
@@ -152,35 +152,29 @@ const CompetitorTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column width={150} fiexd title="竞争对手企业名称" dataIndex="name" render={(value,record)=>{
+        <Column width={150} fiexd  title="基础信息" dataIndex="name" render={(value, record) => {
           return (
-            <Button type='link' onClick={()=>{
-              history.push(`/CRM/competitor/${record.competitorId}`);
-            }}>{value}</Button>
-          );
-        }} />
-        <Column width={100} title="联系电话" dataIndex="phone" />
-        <Column width={100} title="邮箱" dataIndex="email" />
-        <Column width={100} title="地区" dataIndex="region" render={(value, record) => {
-          return (
-            <div>
-              {
+            <>
+              <div>
+                <Tag>竞争对手名称</Tag>{value}
+              </div>
+              <br />
+              <div><Tag>联系电话</Tag>{record.phone}</div>
+              <br />
+              <div><Tag>邮箱</Tag>{record.email}</div>
+              <br />
+              <div><Tag>地区</Tag>{
                 record.regionResult ? `${record.regionResult.countries
                 }-${record.regionResult.province
                 }-${record.regionResult.city
                 }-${record.regionResult.area}` : null
-              }
-            </div>
+              }</div>
+            </>
           );
         }} />
-        <Column width={100} title="竞争级别" align='center' render={(value,record)=>{
+        <Column width={200} align="center" title="报价信息" render={(value, record) => {
           return (
-            <CustomerLevel level={record.competitionLevel} >{record.level}</CustomerLevel>
-          );
-        }} />
-        <Column width={200} align='center' title='报价信息' render={(value,record)=>{
-          return (
-            <Button type='link' onClick={()=>{
+            <Button type="link" onClick={() => {
               // 点击查看报价。。。
               getList({data: {competitorId: record.competitorId}});
               quoteRef.current.open(record.competitorId);
@@ -192,6 +186,9 @@ const CompetitorTable = (props) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              <Button icon={<InfoCircleOutlined />} type='link' onClick={()=>{
+                history.push(`/CRM/competitor/${record.competitorId}`);
+              }} />
               <EditButton onClick={() => {
                 ref.current.open(record);
               }} />
