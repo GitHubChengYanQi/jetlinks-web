@@ -1,5 +1,5 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
-import {Card, Pagination, Table as AntdTable} from 'antd';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import {Card, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
 import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
@@ -9,7 +9,7 @@ import style from './index.module.less';
 
 const {Column} = AntdTable;
 
-const formActions = createFormActions();
+const formActionsPublic = createFormActions();
 
 const TableWarp = ({
   children,
@@ -28,6 +28,7 @@ const TableWarp = ({
   labelAlign,
   footer: parentFooter,
   isModal = true,
+  formActions = null,
   ...props
 }, ref) => {
 
@@ -53,6 +54,11 @@ const TableWarp = ({
       navigateMode: 'push',
     },
   );
+
+  if(!formActions){
+    formActions = formActionsPublic;
+  }
+  // const [formActions,setFormActions] = useState(formActionsPublic);
 
   const requestMethod = async (params) => {
     const {values, pagination, sorter, ...other} = params;
@@ -112,12 +118,11 @@ const TableWarp = ({
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
         {pagination && <div className={style.right}>共{pagination.total}条</div>}
-        {/*{pagination && <Pagination style={{float: 'right'}} {...pagination} size="small" />}*/}
+        {/* {pagination && <Pagination style={{float: 'right'}} {...pagination} size="small" />} */}
         <br style={{clear: 'both'}} />
       </div>
     );
   };
-
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       {listHeader ? <div className={style.listHeader}>

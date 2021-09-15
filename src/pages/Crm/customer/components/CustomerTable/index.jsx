@@ -46,6 +46,7 @@ const CustomerTable = (props) => {
 
 
   useEffect(() => {
+    console.log(status, state, level);
     if (status || state || level) {
       tableRef.current.formActions.setFieldValue('status', status ? status[0] : null);
       tableRef.current.formActions.setFieldValue('classification', state ? state[0] : null);
