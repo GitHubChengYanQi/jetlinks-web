@@ -77,7 +77,7 @@ const BusinessAdd = (props, ref) => {
           typeof onClose==='function' && onClose();
         }}
         >
-          <div style={{height: height(), overflow: 'auto', maxHeight:'500px'}}>
+          <div style={{height: height(), overflow: 'auto', maxHeight:'700px'}}>
             <div style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
               {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor:'aliceblue',width: '100%'}}
                 onChange={(rtData)=>{
