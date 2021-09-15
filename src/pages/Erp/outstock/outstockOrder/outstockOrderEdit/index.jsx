@@ -22,9 +22,9 @@ const {FormItem} = Form;
 const {Step} = Steps;
 
 const ApiConfig = {
-  view: outstockApplyDetail,
-  add: outstockApplyAdd,
-  save: outstockApplyEdit
+  view: outstockOrderDetail,
+  add: outstockOrderAdd,
+  save: outstockOrderEdit
 };
 
 const OutstockOrderEdit = ({...props}) => {
@@ -45,9 +45,7 @@ const OutstockOrderEdit = ({...props}) => {
               api={ApiConfig}
               fieldKey="outstockOrderId"
               success={(result) => {
-                if (!props.value) {
-                  setResult(result.data);
-                }
+                setResult(result.data);
                 next();
               }}
             >
@@ -67,7 +65,7 @@ const OutstockOrderEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-            <OutstockList outstockOrderId={result.outstockOrderId} sourhouse={result.storehouseId}  />
+            <OutstockList outstockOrderId={result.outstockOrderId} sourhouse={result.storehouseId} />
             <div style={{textAlign: 'center'}}>
               <Button style={{marginRight: 20}} type="primary" onClick={() => {
                 props.onSuccess();
@@ -93,7 +91,6 @@ const OutstockOrderEdit = ({...props}) => {
   const prev = () => {
     setCurrent(current - 1);
   };
-
 
 
   return (

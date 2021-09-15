@@ -1,10 +1,12 @@
 import React from 'react';
 import {Button, Card, Divider, Space} from 'antd';
 import store from '@/store';
+import {useHistory} from 'ice';
 
 const Nav = () => {
 
   const [userInfo] = store.useModel('user');
+  const history = useHistory();
 
   return (
     <Card title="快速开始 / 便捷导航">

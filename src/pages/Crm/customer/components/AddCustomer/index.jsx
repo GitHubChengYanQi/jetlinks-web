@@ -21,30 +21,10 @@ const AddCustomer = (props) => {
 
   const [drow, setDrow] = useState();
 
-  const content = (
-    <>
-      <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
-        ref.current.open(false);
-      }}>创建客户</Button>
-      <Divider style={{margin: 5}} />
-      <Popover placement="rightTop" visible={visible} content={<FastCreateCustomer close={() => {
-        setVisible(false);
-      }} add={(value) => {
-        setVisible(false);
-        typeof setVal === 'function' && setVal(value && value.customerName);
-        onChange(value && value.customerId);
-      }} />} trigger="click">
-        <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
-          setVisible(true);
-        }}>快速创建</Button>
-      </Popover>
-    </>
-  );
-
   const menu = (
     <Menu style={{padding: 0}}>
       <Menu.Item key="1" style={{padding: 0}}>
-        <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
+        <Button ghost type="primary" onClick={() => {
           setDrow(false);
           ref.current.open(false);
         }}>创建客户</Button>
@@ -61,7 +41,7 @@ const AddCustomer = (props) => {
           typeof setVal === 'function' && setVal(value && value.customerName);
           onChange(value && value.customerId);
         }} />} trigger="click">
-          <Button type="primary" style={{backgroundColor: '#1890ff', color: '#fff'}} onClick={() => {
+          <Button danger onClick={() => {
             setVisible(true);
           }}>快速创建</Button>
         </Popover>
