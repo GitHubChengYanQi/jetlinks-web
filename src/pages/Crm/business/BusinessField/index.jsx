@@ -41,16 +41,23 @@ export const BusinessNameListSelect = (props) => {
 };
 // 负责人
 export const PersonListSelect = (props) => {
-  const {userId} = props;
-  if (userId !== undefined) {
-
-    props.onChange(userId);
+  const {userid} = props;
+  if (userid !== null) {
+    props.onChange(userid);
   }
   return (<Select api={apiUrl.UserIdSelect}  {...props} />);
 };
 // 客户名称
 export const CustomerNameListSelect = (props) => {
-  return (<SelectAddCustomer  {...props} onChange={(value)=>{  props.ret(value);}}/>);
+
+  const {user} = props;
+
+  return (<SelectAddCustomer  {...props} onChange={(value) => {
+    user(value);
+  }} />);
+};
+export const CustomerNameSelect = (props) => {
+  return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
 };
 export const CustomerListSelect = (props) => {
   return (<Select api={apiUrl.CustomerNameListSelect} {...props} />);

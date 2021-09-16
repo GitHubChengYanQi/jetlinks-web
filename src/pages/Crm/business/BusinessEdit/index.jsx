@@ -29,7 +29,6 @@ const BusinessEdit = (props) => {
 
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
-  const [customerId, setCustomerId] = useState(null);
   const [userId, setUserId] = useState(null);
 
   const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
@@ -61,18 +60,25 @@ const BusinessEdit = (props) => {
         rules={[{required: true, message: '请输入项目名称!'}]}
         component={SysField.BusinessNameListSelect}
         required />
-      {!props.value && <FormItem
+      {props.value ? <FormItem
         label="客户名称"
         name="customerId"
+        show={props.value}
+        component={SysField.CustomerNameSelect}
+        rules={[{required: true, message: '请输入已存在的客户!'}]}
+      /> : <FormItem
+        label="客户名称"
+        name="customerId"
+        show={props.value}
         component={SysField.CustomerNameListSelect}
-        ret={(value)=>{
-          if(value){
-            run({data:{customerId: value}});
+        user={(value) => {
+          if (value) {
+            run({data: {customerId: value}});
           }
         }}
         // value={customerId}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
-      />}
+      /> }
       <FormItem
         label="负责人"
         name="person"

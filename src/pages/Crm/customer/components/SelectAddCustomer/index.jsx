@@ -45,7 +45,7 @@ const SelectAddCustomer = (props) => {
                 }
               });
               onChange(value);
-              // setVal(customer && customer.customerName);
+              setVal(customer && customer.customerName);
               setBlur(true);
             }}
             onChange={(value) => {

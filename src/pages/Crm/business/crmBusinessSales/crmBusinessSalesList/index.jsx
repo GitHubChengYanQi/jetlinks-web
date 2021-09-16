@@ -44,7 +44,7 @@ const CrmBusinessSalesList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label='流程名称' name="name" component={SysField.Name} />
+        <FormItem label='类别名称' name="name" component={SysField.Name} />
       </>
     );
   };

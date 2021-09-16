@@ -5,8 +5,7 @@ import {AutoComplete, Input, Popover} from 'antd';
 const CustomerSelect = (props) => {
 
 
-  const {value: values, onChange, style, method, onblur,onSuccess, ...other} = props;
-
+  const {value: values, onChange, style, method, onblur,disabled,onSuccess, ...other} = props;
   const [val, setVal] = useState();
 
 
@@ -58,7 +57,7 @@ const CustomerSelect = (props) => {
         value={val}
         onSelect={(value)=>{
           onSuccess(value);
-          setVal(values);
+          // setVal(values);
         }}
       >
         <Input.Search
