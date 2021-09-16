@@ -71,7 +71,6 @@ const TableDetail = (props) => {
       </div>
       <Table
         headStyle={{display:'none'}}
-        title='产品明细'
         api={crmBusinessDetailedList}
         rowKey="id"
         formActions={formActionsPublic}

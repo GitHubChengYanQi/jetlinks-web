@@ -56,8 +56,7 @@ const CompetitorTable = (props) => {
     const formItem = () => {
       return (
         <>
-          {value ? null : <FormItem mega-props={{span: 1}} placeholder="对手名称"  name="competitorId"  component={SysField.CompetitorId} />}
-          {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="关联项目" name="businessId" component={SysField.BusinessId} />}
+          {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="请选择关联项目" name="businessId" component={SysField.BusinessId} />}
         </>
       );
     };
@@ -72,7 +71,7 @@ const CompetitorTable = (props) => {
           columns={4}
           full
           autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="报价状态" name="quoteStatus" component={SysField.QuoteStatus} />
+          {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId"  component={SysField.CompetitorId} />}
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -131,12 +130,12 @@ const CompetitorTable = (props) => {
             </div>
           );
         }} />
-        <Column width={200} title="对手名称" dataIndex="competitorId" render={(value, record) => {
+        <Column width={200} title="报报价方名称" dataIndex="competitorId" render={(value, record) => {
           return (
 
             <div>
               {
-                record.competitorResult ? record.competitorResult.name : '-'
+                record.competitorResult ? record.competitorResult.name : '我方报价'
               }
             </div>
           );
