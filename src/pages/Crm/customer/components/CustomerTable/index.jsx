@@ -170,7 +170,7 @@ const CustomerTable = (props) => {
         <Column title="客户来源" fixed width={300} dataIndex="customerName" render={(text, record) => {
           return (
             <div>
-              {record.originResult.originName}
+              {record.originResult && record.originResult.originName}
             </div>
           );
         }} />
