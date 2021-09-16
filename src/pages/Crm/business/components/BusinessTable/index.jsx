@@ -101,8 +101,6 @@ const BusinessTable = (props) => {
         <>
           <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
-          <FormItem mega-props={{span: 1}} placeholder="立项日期" name="time" component={SysField.TimeListSelect2} />
-
         </>
       );
     };

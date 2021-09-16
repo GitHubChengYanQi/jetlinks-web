@@ -25,6 +25,7 @@ import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import Icon from '@/components/Icon';
 import {useBoolean} from 'ahooks';
 import {useRequest} from '@/util/Request';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,6 +34,7 @@ const ContractTable = (props) => {
 
   const {state, customerId} = props;
 
+  const history = useHistory();
 
   const ref = useRef(null);
   const content = useRef(null);
@@ -183,52 +185,26 @@ const ContractTable = (props) => {
         <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <>
-              <div><Tag>甲方名称</Tag> {
-                record.partA ? record.partA.customerName : null
-              }</div>
-              <br />
-              <div><Tag>甲方联系人</Tag> {
-                record.partyAContacts ? record.partyAContacts.contactsName : null
-              }</div>
+              <a onClick={()=>{
+                history.push(`/CRM/customer/${record.partyA}`);
+              }}><strong>{ record.partA ? record.partA.customerName : null}</strong></a>
+              <div><em>联系人：{ record.partyAContacts ? record.partyAContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;<em>电话：{record.phoneA ? record.phoneA.phoneNumber :  '--'}</em></div>
+              <div>
+                <em>{record.partyAAdress ? record.partyAAdress.location : '---'}</em>
+              </div>
             </>
           );
         }} />
-        <Column title="甲方联系人" dataIndex="partAName" render={(text, record) => {
+        <Column title="乙方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <>
-              <div><Tag>甲方联系人电话</Tag> {
-                record.phoneA ? record.phoneA.phoneNumber : null
-              }</div>
-              <br />
-              <div><Tag>甲方地址</Tag>{
-                record.partyAAdress ? record.partyAAdress.location : null
-              }</div>
-            </>
-          );
-        }} />
-        <Column title="乙方信息" dataIndex="partBName" render={(text, record) => {
-          return (
-            <>
-              <div><Tag>乙方名称</Tag> {
-                record.partB ? record.partB.customerName : null
-              }</div>
-              <br/>
-              <div><Tag>乙方联系人</Tag> {
-                record.partyBContacts ? record.partyBContacts.contactsName : null
-              }</div>
-            </>
-          );
-        }} />
-        <Column title="乙方联系人" dataIndex="partBName" render={(text, record) => {
-          return (
-            <>
-              <div><Tag>乙方联系人电话</Tag>  {
-                record.phoneB ? record.phoneB.phoneNumber : null
-              }</div>
-              <br/>
-              <div><Tag>乙方地址</Tag> {
-                record.partyBAdress ? record.partyBAdress.location : null
-              }</div>
+              <a onClick={()=>{
+                history.push(`/CRM/customer/${record.partyB}`);
+              }}><strong>{record.partB ? record.partB.customerName : null}</strong></a>
+              <div><em>联系人：{ record.partyBContacts ? record.partyBContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;<em>电话：{record.phoneB ? record.phoneB.phoneNumber :  '--'}</em></div>
+              <div>
+                <em>{record.partyAAdress ? record.partyAAdress.location : '---'}</em>
+              </div>
             </>
           );
         }} />

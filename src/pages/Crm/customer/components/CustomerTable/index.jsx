@@ -147,7 +147,7 @@ const CustomerTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="基础信息" fixed width={300} dataIndex="customerName" render={(value, record) => {
+        <Column title="基础信息" fixed  dataIndex="customerName" render={(value, record) => {
           return (
             <div>
               <Row gutter={24}>

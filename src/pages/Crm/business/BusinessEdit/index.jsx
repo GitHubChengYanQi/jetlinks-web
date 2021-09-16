@@ -58,7 +58,7 @@ const BusinessEdit = (props) => {
         rules={[{required: true, message: '请输入项目名称!'}]}
         component={SysField.BusinessNameListSelect}
         required />
-      <FormItem
+      {!props.value && <FormItem
         label="客户名称"
         name="customerId"
         component={SysField.CustomerNameListSelect}
@@ -69,7 +69,7 @@ const BusinessEdit = (props) => {
         // }}
         // value={customerId}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
-      />
+      />}
       <FormItem
         label="负责人"
         name="person"

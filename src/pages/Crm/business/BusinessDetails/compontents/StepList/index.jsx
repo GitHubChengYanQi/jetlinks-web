@@ -50,7 +50,7 @@ const StepList = (props) => {
   };
 
 
-  function confirm(name, values) {
+  const confirm = (name, values) => {
     Modal.confirm({
       title: 'Confirm',
       centered: true,
@@ -65,9 +65,9 @@ const StepList = (props) => {
         typeof pOnChange === 'function' && pOnChange();
       }
     });
-  }
+  };
 
-  function confirmOk(name, percent) {
+  const confirmOk = (name, percent) => {
     Modal.confirm({
       title: 'Confirm',
       centered: true,
@@ -82,7 +82,7 @@ const StepList = (props) => {
         openNotificationWithIcon('success', name);
       }
     });
-  }
+  };
 
 
   const step = data ? data.map((values, index) => {

@@ -69,7 +69,7 @@ const CrmBusinessSalesList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title="销售流程管理" />}
+        title={<Breadcrumb title="销售类别管理" />}
         api={crmBusinessSalesList}
         rowKey="salesId"
         searchForm={searchForm}
@@ -77,7 +77,7 @@ const CrmBusinessSalesList = () => {
         ref={tableRef}
         formActions={formActions}
       >
-        <Column title="流程名称" dataIndex="name" render={(text, record,) => {
+        <Column title="类别名称" dataIndex="name" render={(text, record,) => {
           return (
             <Button type="link" onClick={() => {
               refCrmBusinessSalesProcessList.current.open(record.salesId);
@@ -103,7 +103,7 @@ const CrmBusinessSalesList = () => {
         ref.current.close();
       }} ref={ref} />
 
-      <Modal2 width={900} title="流程明细" component={CrmBusinessSalesProcessList} onSuccess={() => {
+      <Modal2 width={900} title="流程" component={CrmBusinessSalesProcessList} onSuccess={() => {
         refCrmBusinessSalesProcessList.current.close();
       }} ref={refCrmBusinessSalesProcessList} />
     </>

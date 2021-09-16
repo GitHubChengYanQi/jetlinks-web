@@ -26,9 +26,12 @@ import Detail from '@/pages/Crm/business/crmBusinessSalesProcess/components/Deta
 import PlanEdit from '@/pages/Crm/business/crmBusinessSalesProcess/plan/planEdit';
 import {useRequest} from '@/util/Request';
 import {crmBusinessDetailedEdit} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActions = createFormActions();
 
 const CrmBusinessSalesProcessList = (props) => {
   const {value} = props;
@@ -85,9 +88,10 @@ const CrmBusinessSalesProcessList = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb title="销售流程明细" />}
+        title={<Breadcrumb title="销售流程" />}
         api={crmBusinessSalesProcessList}
         rowKey="salesProcessId"
+        formActions={formActions}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
@@ -99,7 +103,7 @@ const CrmBusinessSalesProcessList = (props) => {
             }}>{value}</Button>
           );
         }} />
-        <Column width={100} title="百分比" dataIndex="percentage" />
+        <Column width={100} title="盈率" dataIndex="percentage" />
         <Column width={100} title="跟单计划" dataIndex="plans" render={(value, record) => {
           return (
             <>

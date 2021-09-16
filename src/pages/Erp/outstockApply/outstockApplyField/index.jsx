@@ -35,6 +35,9 @@ export const ItemId = (props) =>{
 export const UserId = (props) =>{
   return (<Select api={apiUrl.UserIdSelect} {...props}/>);
 };
+export const StoreHouse = (props) =>{
+  return (<Select api={apiUrl.StoreHouse} {...props}/>);
+};
 
 export const Number = (props) =>{
   return (<InputNumber {...props}/>);

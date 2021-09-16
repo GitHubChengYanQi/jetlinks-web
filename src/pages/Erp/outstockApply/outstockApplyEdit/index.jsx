@@ -13,6 +13,7 @@ import {InternalFieldList as FieldList} from '@formily/antd';
 import * as SysField from '@/pages/Erp/outstockApply/outstockApplyField';
 import styled from 'styled-components';
 import {useRequest} from '@/util/Request';
+import {StoreHouse} from '@/pages/Erp/outstockApply/outstockApplyField';
 
 const {FormItem} = Form;
 
@@ -22,8 +23,7 @@ const ApiConfig = {
   save: outstockApplyEdit
 };
 
-const OutstockApplyEdit = ({...props},ref) => {
-
+const OutstockApplyEdit = ({...props}, ref) => {
 
 
   const RowStyleLayout = styled(props => <div {...props} />)`
@@ -60,20 +60,18 @@ const OutstockApplyEdit = ({...props},ref) => {
   });
 
 
-
-
   const formRef = useRef();
 
-  useImperativeHandle(ref,()=>({
+  useImperativeHandle(ref, () => ({
     formRef,
   }));
 
 
   const height = () => {
-    if (window.document.body.clientHeight < 385) {
+    if (window.document.body.clientHeight < 470) {
       return 'calc(100vh - 206px)';
     }
-    return 385;
+    return 470;
   };
 
   return (
@@ -92,6 +90,9 @@ const OutstockApplyEdit = ({...props},ref) => {
               <Card title="基本信息" bordered={false}>
                 <div style={{paddingRight: 20}}>
                   <FormItem label="负责人" component={SysField.UserId} name="userId" required />
+
+                  <FormItem label="仓库" component={SysField.StoreHouse} name="storehouse" required />
+
 
                   <FormItem
                     label="客户"
@@ -113,7 +114,7 @@ const OutstockApplyEdit = ({...props},ref) => {
                         });
                       }
                     }}
-                    required
+                    rules={[{required: true, message: '请输入已存在的客户!'}]}
                   />
                   <FormItem
                     label="联系人"
@@ -131,7 +132,7 @@ const OutstockApplyEdit = ({...props},ref) => {
                         });
                       }
                     }}
-                    required
+                    rules={[{required: true, message: '请输入联系人!'}]}
                   />
                   <FormItem
                     label="联系人电话"
@@ -140,7 +141,7 @@ const OutstockApplyEdit = ({...props},ref) => {
                     component={SysField.Phone}
                     placeholder="请选择联系人电话"
                     contactsid={APhone || null}
-                    required
+                    rules={[{required: true, message: '请输入电话!'}]}
                   />
                   <FormItem
                     label="地址"
@@ -149,7 +150,7 @@ const OutstockApplyEdit = ({...props},ref) => {
                     component={SysField.Adress}
                     placeholder="请选择地址"
                     customerid={Aadress || null}
-                    required
+                    rules={[{required: true, message: '请输入地址!'}]}
                   />
                 </div>
               </Card>
@@ -161,7 +162,7 @@ const OutstockApplyEdit = ({...props},ref) => {
                 <FieldList
                   name="applyDetails"
                   initialValue={[
-                    {itemId: ''},
+                    {itemId:'',brandId:'',number:''},
                   ]}
                 >
                   {({state, mutators}) => {
@@ -190,8 +191,10 @@ const OutstockApplyEdit = ({...props},ref) => {
                                 component={SysField.Number}
                                 required
                               />
-                              {/* eslint-disable-next-line react/jsx-no-bind */}
-                              <Button onClick={onRemove.bind(null, index)}>删除</Button>
+                              <Button
+                                style={{display: state.value.length === 1 && 'none'}}
+                                onClick={()=>onRemove( index)}
+                              >删除</Button>
                             </RowStyleLayout>
                           );
                         })}

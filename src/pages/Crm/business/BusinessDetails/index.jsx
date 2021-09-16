@@ -25,7 +25,6 @@ const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
   const params = useParams();
-  console.log(1111111111111, params.state === 'false');
   const ref = useRef(null);
   const refTrack = useRef(null);
   const historys = useHistory();
@@ -109,7 +108,7 @@ const CustomerDetail = () => {
         <Row>
           <Col span={16}>
             <div className={styles.main}>
-              <Card title="项目销售流程" bodyStyle={{padding: 30}}>
+              <Card title="项目销售流程" extra='（点击可变更流程，注意：完成之后不可修改！）' bodyStyle={{padding: 30}}>
                 <StepList onChange={() => {
                   refresh();
                 }} value={data}/>

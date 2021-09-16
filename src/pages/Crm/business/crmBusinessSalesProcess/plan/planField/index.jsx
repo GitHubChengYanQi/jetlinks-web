@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Descriptions, Input, InputNumber} from 'antd';
+import {Descriptions, Input, InputNumber, message} from 'antd';
 
 export const SalesProcessId = (props) => {
   const {salesProcessId} = props;
@@ -36,22 +36,16 @@ export const SalesProcessPlanId = (props) => {
         // size={this.state.size}
         // extra={<Button type="primary">Edit</Button>}
       >
-        <Descriptions.Item label="第一次计划时间">
+        <Descriptions.Item label="每次提醒间隔">
           <InputNumber value={json.oneTime} style={{marginRight: 20}} onChange={(value) => {
-            setJson({
-              ...json,
-              oneTime: value,
-            });
-          }}
-          />
-          天
-        </Descriptions.Item>
-        <Descriptions.Item label="第二次计划时间">
-          <InputNumber value={json.twoTime} style={{marginRight: 20}} onChange={(value) => {
-            setJson({
-              ...json,
-              twoTime: value,
-            });
+            if (value<0){
+              message.info('请输入正数！');
+            }else {
+              setJson({
+                ...json,
+                oneTime: value,
+              });
+            }
           }}
           />
           天

@@ -16,7 +16,6 @@ import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
 import DatePicker from '@/components/DatePicker';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import ErpPackageList from '@/pages/Erp/package/packageList';
-import {DatePicker2} from '@alifd/next';
 import {PlusOutlined} from '@ant-design/icons';
 import Drawer from '@/components/Drawer';
 import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
@@ -101,7 +100,7 @@ export const Note = (props) => {
 };
 
 export const Time = (props) => {
-  return (<DatePicker showtime {...props} />);
+  return (<DatePicker  {...props} />);
 };
 export const Audit = (props) => {
   props.onChange(props.value || 0);
@@ -175,7 +174,7 @@ export const Content = (props) => {
               }} />;
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'date' && domNode.children[0].data === '时间框') {
-              return <DatePicker2 style={{margin: '0 10px'}} onChange={(value) => {
+              return <DatePicker style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
               }} onBlur={() => {
                 const value = props.value.replace(domNode.children[0].data, state);

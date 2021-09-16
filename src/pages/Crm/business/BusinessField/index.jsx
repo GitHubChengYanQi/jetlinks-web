@@ -6,7 +6,6 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {DatePicker2} from '@alifd/next';
 import {Input, InputNumber, Select as AntdSelect, Button, Popover, AutoComplete, Row, Col} from 'antd';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
@@ -19,6 +18,7 @@ import * as apiUrl from '../BusinessUrl';
 import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
 import AddCustomer from '@/pages/Crm/customer/components/AddCustomer';
 import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
+import DatePicker from '@/components/DatePicker';
 
 const w = 200;
 // 项目Id
@@ -66,7 +66,7 @@ export const OrgNameListSelect = (props) => {
 
 // 立项日期
 export const TimeListSelect2 = (props) => {
-  return (<DatePicker2 showTime {...props} />);
+  return (<DatePicker {...props} />);
 };
 // 项目金额
 export const OpportunityAmountListSelect3 = (props) => {
@@ -132,11 +132,11 @@ export const StageListSelect13 = (props) => {
 
 //  结单日期
 export const StatementTimeListSelect14 = (props) => {
-  return (<DatePicker2 showTime {...props} />);
+  return (<DatePicker  {...props} />);
 };
 
 // 阶段变更时间
 export const ChangeTimeListSelect17 = (props) => {
-  return (<DatePicker2 api={apiUrl.ChangeTimeListSelect17} showTime {...props} />);
+  return (<DatePicker api={apiUrl.ChangeTimeListSelect17}  {...props} />);
 };
 

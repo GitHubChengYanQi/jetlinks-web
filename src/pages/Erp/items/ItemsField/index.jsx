@@ -25,7 +25,7 @@ export const Inventory = (props) =>{
   return (<InputNumber style={{ width: w }} {...props}/>);
 };
 export const ProductionTime = (props) =>{
-  return (<DatePicker  style={{ width: w }} showTime {...props} />);
+  return (<DatePicker  style={{ width: w }}  {...props} />);
 };
 export const Important = (props) =>{
   return (<InputNumber {...props}
