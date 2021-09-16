@@ -22,7 +22,7 @@ const BusinessAdd = (props, ref) => {
   const [widths, setWidth] = useState(400);
   const [show, setShow] = useState(true);
   const [show1, setShow1] = useState(true);
-  const [show2, setShow2] = useState(true);
+  const [back, setBack] = useState(true);
 
   const { data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
@@ -35,6 +35,7 @@ const BusinessAdd = (props, ref) => {
     setShow1(true);
     // setShow2(true);
     setDisable(1);
+    setBack(false);
     setWidth(400);
     crmBusinessSalesRun();
     setIsModalVisible(true);
@@ -53,20 +54,26 @@ const BusinessAdd = (props, ref) => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
     }
-    return 750;
+    if(disable === 1){
+      return 750;
+    }else if(disable === 2){
+      return 450;
+    }else if(disable === 3){
+      return 400;
+    }
   };
 
   return (
     <>
       <div style={showFlag === false ? {'display':'none'} : {height: height()}}>
-        <Modal title={<div style={disable !== 3 ? null : {'display' : 'none'}}>
+        <Modal title={<div ><div style={back ? {display:'inline'} : {'display' : 'none'}}>
           <LeftOutlined
             onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
               setWidth(400);
               setShow(true);
               setShow1(true);
               setStage(null);
-              setData(null);}} /> 添加项目</div>}
+              setData(null);}} /> </div><div style={{marginLeft: '40%', display:'inline'}}>添加项目</div> </div>    }
         visible={isModalVisible}
         footer={false}
         width={widths}
@@ -77,7 +84,7 @@ const BusinessAdd = (props, ref) => {
           typeof onClose==='function' && onClose();
         }}
         >
-          <div style={{height: height(), overflow: 'auto', maxHeight:'500px'}}>
+          <div style={{height: height(), overflow: 'auto'}}>
             <div style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
               {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor:'aliceblue',width: '100%'}}
                 onChange={(rtData)=>{
@@ -85,6 +92,7 @@ const BusinessAdd = (props, ref) => {
                   setData(rtData.process);
                   setStage(rtData.salesId);
                   setDisable(2);
+                  setBack(true);
                   setWidth(1000);
                 }}
                 data={data}/> : null}
@@ -98,6 +106,7 @@ const BusinessAdd = (props, ref) => {
                         setShow(false);
                         setShow1(false);
                         setDisable(3);
+                        setBack(false);
                         setWidth(500);
                         setBusinessId(result.data);
                       }
@@ -116,8 +125,10 @@ const BusinessAdd = (props, ref) => {
                     setStage(null); setData(null);
                     setDisable(disable);
                     if(disable === 1){
+                      setBack(false);
                       setWidth(400);
                     }else{
+                      setBack(true);
                       setWidth(800);
                       // setShow2(false);
                     }

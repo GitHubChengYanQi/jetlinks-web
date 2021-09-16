@@ -28,8 +28,11 @@ const BusinessEdit = (props) => {
 
   const {onClose} = props;
   const [result, setResult] = useState(props.value);
+  const [customerId, setCustomerId] = useState(null);
+  const [userId, setUserId] = useState(null);
   const ref = useRef(null);
   const formRef = useRef(null);
+
 
   return (
 
@@ -56,21 +59,28 @@ const BusinessEdit = (props) => {
         component={SysField.BusinessNameListSelect}
         required />
       <FormItem
+        label="客户名称"
+        name="customerId"
+        component={SysField.CustomerNameListSelect}
+        // onChange={(data)=>{
+        //   console.log(999999999999999,data);
+        //   setCustomerId(data && data.length > 0 && data[0].customerId);
+        //   setUserId(data && data.length > 0 && data[0].userId);
+        // }}
+        // value={customerId}
+        rules={[{required: true, message: '请输入已存在的客户!'}]}
+      />
+      <FormItem
         label="负责人"
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
+        // value={userId}
         required />
-      <FormItem
-        label="客户名称"
-        name="customerId"
-        component={SysField.CustomerNameListSelect}
-        rules={[{required: true, message: '请输入已存在的客户!'}]}
-      />
-      <FormItem
-        label="销售流程" name="salesId"
-        rules={[{required: true, message: '请输入销售流程!'}]}
-        component={SysField.SalesIdListSelect} value={props.stage !== null ? props.stage : 1} />
+      {/*<FormItem*/}
+      {/*  label="销售流程" name="salesId"*/}
+      {/*  rules={[{required: true, message: '请输入销售流程!'}]}*/}
+      {/*  component={SysField.SalesIdListSelect} value={props.stage !== null ? props.stage : 1} />*/}
       {/*<FormItem*/}
       {/*  label="商机阶段" name="stage"*/}
       {/*  rules={[{required: true, message: '请输入商机阶段!'}]}*/}

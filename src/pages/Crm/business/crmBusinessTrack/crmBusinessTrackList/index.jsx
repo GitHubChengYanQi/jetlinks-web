@@ -52,7 +52,7 @@ const CrmBusinessTrackList = () => {
       >
         <Column title="备注id" dataIndex="noteId"/>
         <Column title="备注" dataIndex="note"/>
-        <Column title="跟踪类型" dataIndex="type"/>
+        <Column title="跟单类型" dataIndex="type"/>
         <Column title="项目id" dataIndex="businessId"/>
         <Column title="负责人" dataIndex="userId"/>
         <Column/>
