@@ -78,7 +78,7 @@ const BusinessEdit = (props) => {
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
-        userId={userId}
+        userid={userId}
         required />
       {/*<FormItem*/}
       {/*  label="销售流程" name="salesId"*/}

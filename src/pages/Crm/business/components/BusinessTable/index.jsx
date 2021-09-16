@@ -100,7 +100,8 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
+                    component={SysField.CustomerListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
         </>
       );
@@ -108,8 +109,10 @@ const BusinessTable = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"  component={SysField.BusinessNameListSelect} />
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"
+                    component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -271,6 +274,7 @@ const BusinessTable = (props) => {
         title={title}
         visible={detail}
         footer={false}
+        destroyOnClose
         width={widths}
         className={styles.myModal}
         onCancel={() => {
@@ -278,19 +282,20 @@ const BusinessTable = (props) => {
           setShow(true);
           tableRef.current.submit();
 
-        }} onOk={() => {
+        }}
+        onOk={() => {
           setDetail(false);
           setShow(true);
           tableRef.current.submit();
 
         }}>
         <div style={{height: height(), overflow: 'auto'}}>
-          <div style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-            <Spin spinning={show} delay={500} style={{backgroundColor:'white',width: '100%'}}>
+          <div
+            style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+            <Spin spinning={show} delay={500} style={{backgroundColor: 'white', width: '100%'}}>
               <BusinessEdit
-                ref={emitRef}
                 value={businessId}
-                onSuccess={()=>{
+                onSuccess={() => {
                   setWidth(400);
                   setDisable(2);
                   setShow1(false);
@@ -299,12 +304,13 @@ const BusinessTable = (props) => {
               />
             </Spin>
           </div>
-          <div style={disable === 2 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-            <Spin spinning={show1} delay={500} style={{backgroundColor:'white',width: '100%'}}>
-              {businessId && <BusinessComplete result={businessId} disabled={false}/>}
+          <div
+            style={disable === 2 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+            <Spin spinning={show1} delay={500} style={{backgroundColor: 'white', width: '100%'}}>
+              {businessId && <BusinessComplete result={businessId} disabled={false} />}
             </Spin>
           </div>
-          </div>
+        </div>
       </Modal>
     </>
   );
