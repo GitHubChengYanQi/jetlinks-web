@@ -6,7 +6,7 @@
  */
 
 import React, {lazy, useEffect, useRef, useState} from 'react';
-import {Button, PageHeader, Table as AntTable, Tag, Tooltip} from 'antd';
+import {Avatar, Button, Col, PageHeader, Row, Table as AntTable, Tag, Tooltip} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -147,25 +147,30 @@ const CustomerTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="基础信息" fixed width={300} dataIndex="customerName" render={(text, record) => {
+        <Column title="基础信息" fixed width={300} dataIndex="customerName" render={(value, record) => {
           return (
             <div>
-              <div><Tag>客户名称</Tag>{text}</div>
-              <br />
-              <div><Tag>负责人</Tag>{record.userResult.name}</div>
-              <br />
-              <div><Tag>客户分类</Tag>{record.classificationName}</div>
+              <Row gutter={24}>
+                <Col>
+                  <Avatar size={64}>LOGO</Avatar>
+                </Col>
+                <Col>
+                  <a onClick={()=>{
+                    history.push(`/CRM/customer/${record.customerId}`);
+                  }}><strong>{value}</strong></a>
+                  <div><em style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</div>
+                  <div>
+                    <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
+                  </div>
+                </Col>
+              </Row>
             </div>
           );
         }} />
-        <Column title="客户类型" fixed width={300} dataIndex="customerName" render={(text, record) => {
+        <Column title="客户来源" fixed width={300} dataIndex="customerName" render={(text, record) => {
           return (
             <div>
-              <div><Tag>公司类型</Tag>{record.companyType}</div>
-              <br />
-              <div><Tag>客户来源</Tag> {record.originResult.originName}</div>
-              <br />
-              <div><Tag>行业</Tag> {record.crmIndustryResult.industryName}</div>
+              {record.originResult.originName}
             </div>
           );
         }} />
@@ -184,9 +189,6 @@ const CustomerTable = (props) => {
         <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
             <>
-              <Button icon={<InfoCircleOutlined />} type="link" onClick={() => {
-                history.push(`/CRM/customer/${record.customerId}`);
-              }} />
               {choose ? <CheckButton onClick={() => {
                 choose(record);
                 props.onSuccess();

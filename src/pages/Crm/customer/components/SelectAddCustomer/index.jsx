@@ -14,7 +14,9 @@ const SelectAddCustomer = (props) => {
 
   const [val, setVal] = useState();
 
-  const {run} = useRequest({url: '/customer/list', method: 'POST'}, {manual: true});
+  const [blur, setBlur] = useState();
+
+  const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true});
 
   useEffect(() => {
     if (value) {
@@ -23,7 +25,7 @@ const SelectAddCustomer = (props) => {
           customerId: value
         }
       }).then((res) => {
-        setVal(res && res.length > 0 && res[0].customerName);
+        setVal(res && res.customerName);
       });
     }
   }, []);
@@ -42,12 +44,18 @@ const SelectAddCustomer = (props) => {
                   customerId: value
                 }
               });
-              setVal(customer && customer.length > 0 && customer[0].customerName);
+              setVal(customer && customer.customerName);
               onChange(value);
+              setBlur(true);
             }}
             onChange={(value) => {
               setVisible(value);
-              onChange(null);
+              setBlur(false);
+            }}
+            onblur={()=>{
+              if (!blur){
+                onChange(null);
+              }
             }}
           />
         </Col>

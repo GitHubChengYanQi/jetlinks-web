@@ -5,7 +5,7 @@ import {AutoComplete, Input, Popover} from 'antd';
 const CustomerSelect = (props) => {
 
 
-  const {value: values, onChange, style, method, onSuccess, ...other} = props;
+  const {value: values, onChange, style, method, onblur,onSuccess, ...other} = props;
 
   const [val, setVal] = useState();
 
@@ -62,6 +62,9 @@ const CustomerSelect = (props) => {
         }}
       >
         <Input.Search
+          onBlur={()=>{
+            typeof onblur === 'function' && onblur();
+          }}
           onChange={(value) => {
             handleChange(value.target.value);
           }}

@@ -155,40 +155,30 @@ const CompetitorTable = (props) => {
         <Column width={150} fiexd  title="基础信息" dataIndex="name" render={(value, record) => {
           return (
             <>
+              <a onClick={()=>{
+                history.push(`/CRM/competitor/${record.competitorId}`);
+              }}><strong>{value}</strong></a>
+              <div><em style={{}}>{record.phone || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.email || '--'}</div>
               <div>
-                <Tag>竞争对手名称</Tag>{value}
+                <em>{
+                  record.regionResult ? `${record.regionResult.countries
+                  }-${record.regionResult.province
+                  }-${record.regionResult.city
+                  }-${record.regionResult.area}` : '---'}</em>
               </div>
-              <br />
-              <div><Tag>联系电话</Tag>{record.phone}</div>
-              <br />
-              <div><Tag>邮箱</Tag>{record.email}</div>
-              <br />
-              <div><Tag>地区</Tag>{
-                record.regionResult ? `${record.regionResult.countries
-                }-${record.regionResult.province
-                }-${record.regionResult.city
-                }-${record.regionResult.area}` : null
-              }</div>
+              <a onClick={() => {
+                // 点击查看报价。。。
+                getList({data: {competitorId: record.competitorId}});
+                quoteRef.current.open(record.competitorId);
+              }}>
+                报价信息
+              </a>
             </>
-          );
-        }} />
-        <Column width={200} align="center" title="报价信息" render={(value, record) => {
-          return (
-            <Button type="link" onClick={() => {
-              // 点击查看报价。。。
-              getList({data: {competitorId: record.competitorId}});
-              quoteRef.current.open(record.competitorId);
-            }}>
-              {`查看 ${record.name} 报价信息`}
-            </Button>
           );
         }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <Button icon={<InfoCircleOutlined />} type='link' onClick={()=>{
-                history.push(`/CRM/competitor/${record.competitorId}`);
-              }} />
               <EditButton onClick={() => {
                 ref.current.open(record);
               }} />
