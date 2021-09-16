@@ -164,105 +164,96 @@ const ItemsList = (props) => {
     );
   };
 
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    return 750;
-  };
-
   return (
     <>
-      <div style={{height: height()}}>
-        <Table
-          api={itemsList}
-          isModal={false}
-          rowKey="itemId"
-          searchForm={searchForm}
-          actions={actions()}
-          ref={tableRef}
-          SearchButton={Search()}
-          layout={search}
-          onChange={(keys)=>{
-            setIds(keys);
-          }}
-          footer={footer}
-        >
-          <Column title="产品名字" fixed dataIndex="name" sorter
-            render={(value, row) => {
-              return (
-                <Button type="link" onClick={() => {
-                  setItemsId(row.itemId);
-                  history.push(`/ERP/parts/${row.itemId}`);
-                }}>{row.name}</Button>
-              );
-            }}/>
-
-          <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
-          <Column title="产品库存" width={120} align='center' dataIndex="inventory" sorter/>
-          <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
-          <Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>
-          <Column title="产品重量" width={120} align='center' dataIndex="weight" sorter />
-          <Column title="材质" width={150} align='center' dataIndex="materialName" sorter render={(value,record)=>{
+      <Table
+        api={itemsList}
+        isModal={false}
+        rowKey="itemId"
+        searchForm={searchForm}
+        actions={actions()}
+        ref={tableRef}
+        SearchButton={Search()}
+        layout={search}
+        onChange={(keys)=>{
+          setIds(keys);
+        }}
+        footer={footer}
+      >
+        <Column title="产品名字" fixed dataIndex="name" sorter
+          render={(value, row) => {
             return (
-              <>
-                {
-                  record.materialResult ? record.materialResult.name : null
-                }
-              </>
+              <Button type="link" onClick={() => {
+                setItemsId(row.itemId);
+                history.push(`/ERP/parts/${row.itemId}`);
+              }}>{row.name}</Button>
             );
           }}/>
-          <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
-          <Column title="易损" width={120} align='center' dataIndex="vulnerability" sorter />
-          <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
-            return (
-              <>
-                {choose ? <CheckButton onClick={()=>{
-                  choose(record);
-                  props.onSuccess();
-                }} /> : null}
-                {!disabled&&
-                <CheckButton onClick={() => {
-                  add(
-                    {
-                      data: {
-                        packageId: props.packageId,
-                        itemId: record.itemId,
-                        salePrice: 0,
-                        totalPrice: 0,
-                        quantity: 0
-                      }
-                    }
-                  );
 
-                }}/>}
-                {!TcDisabled&&
-                <CheckButton onClick={() => {
-                  addTc(
-                    {
-                      data: {
-                        businessId: props.businessId,
-                        itemId: record.itemId,
-                        salePrice: 0,
-                        totalPrice: 0,
-                        quantity: 0
-                      }
+        <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
+        <Column title="产品库存" width={120} align='center' dataIndex="inventory" sorter/>
+        <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
+        <Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>
+        <Column title="产品重量" width={120} align='center' dataIndex="weight" sorter />
+        <Column title="材质" width={150} align='center' dataIndex="materialName" sorter render={(value,record)=>{
+          return (
+            <>
+              {
+                record.materialResult ? record.materialResult.name : null
+              }
+            </>
+          );
+        }}/>
+        <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
+        <Column title="易损" width={120} align='center' dataIndex="vulnerability" sorter />
+        <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
+          return (
+            <>
+              {choose ? <CheckButton onClick={()=>{
+                choose(record);
+                props.onSuccess();
+              }} /> : null}
+              {!disabled&&
+              <CheckButton onClick={() => {
+                add(
+                  {
+                    data: {
+                      packageId: props.packageId,
+                      itemId: record.itemId,
+                      salePrice: 0,
+                      totalPrice: 0,
+                      quantity: 0
                     }
-                  );
-                }}/>}
-                <EditButton onClick={() => {ref.current.open(record.itemId);}} />
-                <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
-                  tableRef.current.refresh();
-                }} />
-              </>
-            );
-          }} />
-        </Table>
-        <Modal2 width={800} component={ItemsEdit} onSuccess={() => {
-          tableRef.current.refresh();
-          ref.current.close();
-        }} ref={ref}/>
-      </div>
+                  }
+                );
+
+              }}/>}
+              {!TcDisabled&&
+              <CheckButton onClick={() => {
+                addTc(
+                  {
+                    data: {
+                      businessId: props.businessId,
+                      itemId: record.itemId,
+                      salePrice: 0,
+                      totalPrice: 0,
+                      quantity: 0
+                    }
+                  }
+                );
+              }}/>}
+              <EditButton onClick={() => {ref.current.open(record.itemId);}} />
+              <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
+                tableRef.current.refresh();
+              }} />
+            </>
+          );
+        }} />
+      </Table>
+      <Modal2 width={800} component={ItemsEdit} onSuccess={() => {
+        tableRef.current.refresh();
+        ref.current.close();
+      }} ref={ref}/>
     </>
   );
 };
