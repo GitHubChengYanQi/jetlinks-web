@@ -20,7 +20,9 @@ const Modal = (
   }, ref) => {
 
 
+
   const [value, show] = useState(null);
+
   if (modal!==undefined){
     show(false);
   }

@@ -17,9 +17,12 @@ import Modal from '@/components/Modal';
 import ErpPackageEdit from '@/pages/Erp/package/packageEdit';
 import {addAllPackages, batchAdd} from '@/pages/Erp/items/ItemsUrl';
 import SelButton from '@/components/SelButton';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ItemPackage = (props) => {
 
@@ -119,6 +122,7 @@ const ItemPackage = (props) => {
           api={erpPackageList}
           rowKey="packageId"
           searchForm={searchForm}
+          formActions={formActionsPublic}
           actions={actions()}
           ref={tableRef}
           listHeader={false}

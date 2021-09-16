@@ -53,6 +53,7 @@ export const CustomerNameListSelect = (props) => {
   const {user} = props;
 
   return (<SelectAddCustomer  {...props} onChange={(value) => {
+    props.onChange(value);
     user(value);
   }} />);
 };

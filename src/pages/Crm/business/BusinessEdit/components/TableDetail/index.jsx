@@ -15,10 +15,12 @@ import ErpPackageList from "@/pages/Erp/package/packageList";
 import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
 import Breadcrumb from '@/components/Breadcrumb';
 import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
 
+const formActionsPublic = createFormActions();
 
 const TableDetail = (props) => {
   const {value} = props;
@@ -68,9 +70,11 @@ const TableDetail = (props) => {
         />
       </div>
       <Table
+        headStyle={{display:'none'}}
         title='产品明细'
         api={crmBusinessDetailedList}
         rowKey="id"
+        formActions={formActionsPublic}
         searchForm={searchForm}
         ref={tableRef}
       >

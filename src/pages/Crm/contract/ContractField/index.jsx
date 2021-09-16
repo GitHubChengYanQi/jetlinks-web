@@ -23,9 +23,11 @@ import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 
-export const Customer = (props) => {
+export const CustomerId = (props) => {
+  return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
+};
 
-  const ref = useRef();
+export const Customer = (props) => {
 
   const {customerid, onChange} = props;
   return (<>
