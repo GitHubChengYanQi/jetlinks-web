@@ -190,7 +190,12 @@ const ContractTable = (props) => {
               <div><Tag>甲方联系人</Tag> {
                 record.partyAContacts ? record.partyAContacts.contactsName : null
               }</div>
-              <br />
+            </>
+          );
+        }} />
+        <Column title="甲方联系人" dataIndex="partAName" render={(text, record) => {
+          return (
+            <>
               <div><Tag>甲方联系人电话</Tag> {
                 record.phoneA ? record.phoneA.phoneNumber : null
               }</div>
@@ -198,8 +203,6 @@ const ContractTable = (props) => {
               <div><Tag>甲方地址</Tag>{
                 record.partyAAdress ? record.partyAAdress.location : null
               }</div>
-              <br />
-
             </>
           );
         }} />
@@ -209,16 +212,23 @@ const ContractTable = (props) => {
               <div><Tag>乙方名称</Tag> {
                 record.partB ? record.partB.customerName : null
               }</div>
+              <br/>
               <div><Tag>乙方联系人</Tag> {
                 record.partyBContacts ? record.partyBContacts.contactsName : null
               }</div>
+            </>
+          );
+        }} />
+        <Column title="乙方联系人" dataIndex="partBName" render={(text, record) => {
+          return (
+            <>
               <div><Tag>乙方联系人电话</Tag>  {
                 record.phoneB ? record.phoneB.phoneNumber : null
               }</div>
+              <br/>
               <div><Tag>乙方地址</Tag> {
                 record.partyBAdress ? record.partyBAdress.location : null
               }</div>
-
             </>
           );
         }} />

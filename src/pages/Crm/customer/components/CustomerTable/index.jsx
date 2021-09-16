@@ -155,13 +155,17 @@ const CustomerTable = (props) => {
               <div><Tag>负责人</Tag>{record.userResult.name}</div>
               <br />
               <div><Tag>客户分类</Tag>{record.classificationName}</div>
-              <br />
+            </div>
+          );
+        }} />
+        <Column title="客户类型" fixed width={300} dataIndex="customerName" render={(text, record) => {
+          return (
+            <div>
               <div><Tag>公司类型</Tag>{record.companyType}</div>
               <br />
               <div><Tag>客户来源</Tag> {record.originResult.originName}</div>
               <br />
               <div><Tag>行业</Tag> {record.crmIndustryResult.industryName}</div>
-              <br />
             </div>
           );
         }} />
