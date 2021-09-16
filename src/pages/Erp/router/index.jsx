@@ -34,7 +34,6 @@ const ErpRouterConfig = [
       ...OrderRouter,
       ...OrderBranchRouter,
       ...DeliveryRouter,
-      ...OutstockApplyRouter,
       {
         redirect: '/ERP/items',
       }

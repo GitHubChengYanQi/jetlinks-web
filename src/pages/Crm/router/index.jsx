@@ -13,6 +13,7 @@ import {CompetitorRouter} from '@/pages/Crm/competitor/competitorRouter';
 import {CompetitorQuoteRouter} from '@/pages/Crm/competitorQuote/competitorQuoteRouter';
 import {DataRouter} from '@/pages/Crm/data/dataRouter';
 import {SpeechcraftRouter} from '@/pages/Crm/speechcraft/speechcraftRouter';
+import {OutstockApplyRouter} from '@/pages/Erp/outstockApply/outstockApplyRouter';
 
 
 const CrmRouterConfig = [
@@ -33,6 +34,7 @@ const CrmRouterConfig = [
       ...CompetitorQuoteRouter,
       ...DataRouter,
       ...SpeechcraftRouter,
+      ...OutstockApplyRouter,
       {
         redirect: '/CRM/customer',
       }
