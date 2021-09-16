@@ -105,6 +105,8 @@ export const CompetitorId = (props) =>{
       onChange={(res)=>{
         if(res){
           props.onChange(res && res.data && res.data.competitorId);
+        }else{
+          props.onChange();
         }
       }} />
     </div>
