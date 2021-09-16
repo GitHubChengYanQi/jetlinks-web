@@ -56,22 +56,25 @@ const ApplyDetailsList = (props) => {
         // actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品" dataIndex="itemId" />
-        <Column title="品牌" dataIndex="brandId" />
-        <Column title="数量" dataIndex="number" />
-        {/*<Column />*/}
-        {/*   <Column title="操作" align="right" render={(value, record) => {
+        <Column title="产品" dataIndex="itemId" render={(value,record)=>{
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.outstockApplyDetailsId);
-              }} />
-              <DelButton api={applyDetailsDelete} value={record.outstockApplyDetailsId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
+              {
+                record.itemsResult &&  record.itemsResult.name
+              }
             </>
           );
-        }} width={300} />*/}
+        }} />
+        <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.brandResult && record.brandResult.brandName
+              }
+            </>
+          );
+        }} />
+        <Column title="数量" dataIndex="number" />
       </Table>
       <Drawer width={800} title="编辑" component={ApplyDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();

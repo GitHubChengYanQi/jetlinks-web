@@ -10,13 +10,13 @@ import {Button, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import Modal from '@/components/Modal';
 import OutstockEdit from '@/pages/Erp/outstock/OutstockEdit';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import {outstockDelete, outstockEdit, outstockList} from '../OutstockUrl';
 import * as SysField from '../OutstockField';
 import EditButton from '@/components/EditButton';
 import DelButton from '@/components/DelButton';
 import Icon from '@/components/Icon';
 import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
+import Table from '@/components/Table';
 
 
 const {Column} = AntTable;
@@ -48,17 +48,25 @@ const OutstockList = (props) => {
 
 
   const searchForm = () => {
-
-
     return (
-      <FormItem
-        mega-props={{span: 1}}
-        placeholder="出库单"
-        name="outstockOrderId"
-        hidden
-        value={outstockOrderId || value}
-        component={SysField.ItemIdSelect} />
-    );
+      <>
+        <FormItem
+          mega-props={{span: 1}}
+          placeholder="出库单"
+          name="outstockOrderId"
+          hidden
+          value={outstockOrderId || value}
+          component={SysField.ItemIdSelect} />
+        <FormItem
+          mega-props={{span: 1}}
+          placeholder="出库单"
+          name="state"
+          hidden
+          value={0}
+          component={SysField.ItemIdSelect} />;
+      </>
+    )
+      ;
   };
 
   return (
@@ -69,6 +77,7 @@ const OutstockList = (props) => {
         添加出库商品
       </Button>}
       <Table
+        headStyle={{display: 'none'}}
         api={outstockList}
         isModal={false}
         rowKey="outstockId"
@@ -76,12 +85,15 @@ const OutstockList = (props) => {
         showSearchButton={false}
         searchForm={searchForm}
         footer={value ? footer : false}
-        onChange={(value) => {
-          setIds(value);
+        onChange={(value, record) => {
+          const stockItemIds = record && record.map((items, index) => {
+            return `${items.stockItemId}`;
+          });
+          setIds(record);
         }}
       >
 
-        <Column title="产品编号" width={200} dataIndex="stockItemId"  />
+        <Column title="产品编号" width={200} dataIndex="stockItemId" />
         <Column title="产品名称" width={200} dataIndex="itemId" render={(text, record) => {
           return (
             <>

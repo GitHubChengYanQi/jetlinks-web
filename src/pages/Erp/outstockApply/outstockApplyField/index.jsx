@@ -46,12 +46,12 @@ export const Number = (props) =>{
 
 export const Customer = (props) => {
   const {customerid, onChange} = props;
-  return (<>
+  return (<div style={{width:340}}>
     <SelectAddCustomer {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />
-  </>);
+  </div>);
 };
 
 export const Contacts = (props) => {

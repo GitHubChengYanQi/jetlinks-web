@@ -23,29 +23,6 @@ const ApiConfig = {
 
 const OutStock = (props) => {
 
-  const {all} = props;
-
-
-  const [state, setState] = useState();
-
-  const {loading: contactsLogin, data: Acontacts, run: AcontactsRun} = useRequest({
-    url: '/contacts/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
-  const {loading: phoneLogin, data: APhone, run: runAPhone} = useRequest({
-    url: '/phone/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
-  const {loading: adressLogin, data: Aadress, run: AadressRun} = useRequest({
-    url: '/adress/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
 
 
   const formRef = useRef();
@@ -89,73 +66,6 @@ const OutStock = (props) => {
           </div>
 
         </Card>
-        {all && <Card title='发货设置' bordered={false}>
-          <FormItem
-            label="客户"
-            name="customerId"
-            component={SysField.Customer}
-            placeholder="请选择客户"
-            customerid={async (customer) => {
-              setState(true);
-              if (customer) {
-                await AcontactsRun({
-                  data: {
-                    customerId: customer
-                  }
-                });
-                await AadressRun({
-                  data: {
-                    customerId: customer
-                  }
-                });
-              }
-            }}
-            required
-          />
-          <FormItem
-            label="联系人"
-            name="contactsId"
-            state={state}
-            component={SysField.Contacts}
-            placeholder="联系人"
-            customerid={Acontacts || null}
-            contactsid={async (contacts) => {
-              if (contacts) {
-                await runAPhone({
-                  data: {
-                    contactsId: contacts
-                  }
-                });
-              }
-            }}
-            required
-          />
-          <FormItem
-            label="联系人电话"
-            name="phoneId"
-            state={state}
-            component={SysField.Phone}
-            placeholder="请选择联系人电话"
-            contactsid={APhone || null}
-            required
-          />
-          <FormItem
-            label="地址"
-            name="adressId"
-            state={state}
-            component={SysField.Adress}
-            placeholder="请选择地址"
-            customerid={Aadress || null}
-            required
-          />
-          {/*<FormItem*/}
-          {/*  hidden*/}
-          {/*  value={ids || null}*/}
-          {/*  name="ids"*/}
-          {/*  component={SysField.Ids}*/}
-          {/*  required*/}
-          {/*/>*/}
-        </Card>}
 
         <Button style={{float: 'right'}} type="link" onClick={() => {
           modalRef.current.open(props.value);

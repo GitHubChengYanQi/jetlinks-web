@@ -25,7 +25,6 @@ const {Column} = AntTable;
 const OutstockOrderList = () => {
 
 
-  const [all,setAll] = useState();
   const ref = useRef(null);
   const refOutStock = useRef(null);
   const refSee = useRef(null);
@@ -87,6 +86,7 @@ const OutstockOrderList = () => {
         <Column title="出库时间" dataIndex="updateTime" />
         <Column title="仓库" dataIndex="storehouseId" />
         <Column title="经手人" dataIndex="userId" />
+        <Column title="备注" dataIndex="note" />
         <Column title="出库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
             <>
@@ -103,10 +103,6 @@ const OutstockOrderList = () => {
                 <Button style={{margin: '0 10px'}} onClick={() => {
                   refOutStock.current.open(record.outstockOrderId);
                 }}><Icon type="icon-chuku" />出库</Button>
-                <Button style={{margin: '0 10px'}} onClick={() => {
-                  setAll(true);
-                  refOutStock.current.open(record.outstockOrderId);
-                }}><Icon type="icon-chuku" />一键发货</Button>
                 <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
                   tableRef.current.refresh();
                 }} />
@@ -120,19 +116,14 @@ const OutstockOrderList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      {/*<Modal width={1200} component={StockDetailsList} onSuccess={() => {*/}
-      {/*  tableRef.current.refresh();*/}
-      {/*  refSee.current.close();*/}
-      {/*}} ref={refSee} />*/}
       <Modal width={1200} component={OutstockList} onSuccess={() => {
         tableRef.current.refresh();
         refSee.current.close();
       }} ref={refSee} />
       <Modal padding={1}  width={800} component={OutStock} onSuccess={() => {
-        setAll(false);
         tableRef.current.refresh();
         refOutStock.current.close();
-      }} ref={refOutStock} all={all} />
+      }} ref={refOutStock} />
     </>
   );
 };
