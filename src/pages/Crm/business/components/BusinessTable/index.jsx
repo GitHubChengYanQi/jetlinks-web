@@ -37,7 +37,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state} = props;
+  const {status, state, onClose} = props;
 
   const [ids, setIds] = useState([]);
   const [businessId, setBusinessId] = useState(null);
@@ -52,6 +52,7 @@ const BusinessTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const addRef = useRef(null);
+  const emitRef = useRef(null);
   const [detail, setDetail] = useState(false);
   const [search, setSearch] = useState(false);
   const [showFlag, setShowFlag] = useState(false);
@@ -240,11 +241,9 @@ const BusinessTable = (props) => {
           return (
             <>
               <EditButton onClick={() => {
-                // ref.current.open(record.businessId);
                 setBusinessId(record.businessId);
                 setWidth(800);
                 setDisable(1);
-                // addRef.current.open(record.businessId);
                 setDetail(true);
                 setShow(false);
               }} />
@@ -277,13 +276,19 @@ const BusinessTable = (props) => {
         onCancel={() => {
           setDetail(false);
           setShow(true);
+          tableRef.current.submit();
+
         }} onOk={() => {
           setDetail(false);
+          setShow(true);
+          tableRef.current.submit();
+
         }}>
         <div style={{height: height(), overflow: 'auto'}}>
           <div style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-            <Spin spinning={show} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            <Spin spinning={show} delay={500} style={{backgroundColor:'white',width: '100%'}}>
               <BusinessEdit
+                ref={emitRef}
                 value={businessId}
                 onSuccess={()=>{
                   setWidth(400);
@@ -291,33 +296,14 @@ const BusinessTable = (props) => {
                   setShow1(false);
                   setTitle('创建结果');
                 }}
-
               />
             </Spin>
           </div>
           <div style={disable === 2 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-            <Spin spinning={show1} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            <Spin spinning={show1} delay={500} style={{backgroundColor:'white',width: '100%'}}>
               {businessId && <BusinessComplete result={businessId} disabled={false}/>}
             </Spin>
           </div>
-          {/*<div style={disable === 3 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>*/}
-          {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%', height: height()}}>*/}
-          {/*    /!*{businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*!/*/}
-          {/*    /!*  onChange={(disable)=>{*!/*/}
-          {/*    /!*    setDisable(disable);*!/*/}
-          {/*    /!*    setWidth(400);*!/*/}
-          {/*    /!*  }}/>}*!/*/}
-          {/*    <div style={{ height: height(), overflow: 'auto'}}>*/}
-          {/*      <CustomerDetail value={businessId}*/}
-          {/*        showFlag={false}*/}
-          {/*        onChange={(disable)=>{*/}
-          {/*          setDisable(disable);*/}
-          {/*          // setWidth(400);*/}
-          {/*        }}*/}
-          {/*      />*/}
-          {/*    </div>*/}
-          {/*  </Spin>*/}
-          {/*</div>*/}
           </div>
       </Modal>
     </>

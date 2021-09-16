@@ -9,8 +9,8 @@ const BusinessComplete = (props) => {
   return (
     <Result
       status="success"
-      title="Successfully Purchased Cloud Server ECS!"
-      subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+      title="已成功创建项目!"
+      subTitle="如需完善明细请点击左侧完善明细按钮，也可通过查看详情按钮查看详情。"
       extra={[
         <Button type="primary" style={disabled === false ? {'display' : 'none'} :  null } key="console" onClick={() => {
           props.onChange(1);

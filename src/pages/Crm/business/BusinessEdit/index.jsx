@@ -15,6 +15,7 @@ import {
   businessEdit, SalesIdListSelect,
 } from '../BusinessUrl';
 import * as SysField from '../BusinessField';
+import {useRequest} from '@/util/Request';
 
 const {FormItem} = Form;
 
@@ -26,20 +27,22 @@ const ApiConfig = {
 
 const BusinessEdit = (props) => {
 
-  const {onClose} = props;
+  const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
   const [customerId, setCustomerId] = useState(null);
   const [userId, setUserId] = useState(null);
-  const ref = useRef(null);
-  const formRef = useRef(null);
 
+  const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
+    onSuccess: (response) => {
+      setUserId(response ? response.userId : null);
+    }});
 
   return (
 
     <FormIndex
       {...props}
       value={result}
-      ref={formRef}
+      ref={tableRef}
       api={ApiConfig}
       fieldKey="businessId"
       success={(result) => {
@@ -62,11 +65,11 @@ const BusinessEdit = (props) => {
         label="客户名称"
         name="customerId"
         component={SysField.CustomerNameListSelect}
-        // onChange={(data)=>{
-        //   console.log(999999999999999,data);
-        //   setCustomerId(data && data.length > 0 && data[0].customerId);
-        //   setUserId(data && data.length > 0 && data[0].userId);
-        // }}
+        ret={(value)=>{
+          if(value){
+            run({data:{customerId: value}});
+          }
+        }}
         // value={customerId}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
       />}
@@ -75,7 +78,7 @@ const BusinessEdit = (props) => {
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
-        // value={userId}
+        userId={userId}
         required />
       {/*<FormItem*/}
       {/*  label="销售流程" name="salesId"*/}

@@ -86,7 +86,7 @@ const BusinessAdd = (props, ref) => {
         >
           <div style={{height: height(), overflow: 'auto'}}>
             <div style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-              {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor:'aliceblue',width: '100%'}}
+              {data && data.length > 0 ? <BusinessTableIndex style={{backgroundColor: 'white',width: '100%'}}
                 onChange={(rtData)=>{
                   setShow(false);
                   setData(rtData.process);
@@ -98,8 +98,8 @@ const BusinessAdd = (props, ref) => {
                 data={data}/> : null}
             </div>
             <div style={disable === 2 ? { animationDelay: '-1s',  width: '900px'} : {display: 'none',  maxWidth: '1000px', animationDelay: '-1s'}}>
-              <Spin spinning={show} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
-                <div style={disable === 2 ? {animationDelay: '-1s',  width: '900px'} : {display: 'none', maxWidth: '1000px%', animationDelay: '-1s'}}>
+              <Spin spinning={show} delay={500} style={{backgroundColor:'white',width: '100%'}}>
+                <div style={show === false && disable === 2 ? {animationDelay: '-1s',  width: '900px'} : {display: 'none', maxWidth: '1000px%', animationDelay: '-1s'}}>
                   {stage && <BusinessSteps useData={useData} stage={stage}
                     onChange={(result)=>{
                       if(result.success){
@@ -119,7 +119,7 @@ const BusinessAdd = (props, ref) => {
               </Spin>
             </div>
             <div style={disable === 3 ? {animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-              <Spin spinning={show1} delay={500} style={{backgroundColor:'aliceblue',width: '100%'}}>
+              <Spin spinning={show1} delay={500} style={{backgroundColor:'white',width: '100%'}}>
                 {businessId && <BusinessComplete result={businessId}
                   onChange={(disable)=>{
                     setStage(null); setData(null);
