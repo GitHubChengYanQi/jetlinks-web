@@ -54,6 +54,8 @@ const BusinessTable = (props) => {
   const addRef = useRef(null);
   const [detail, setDetail] = useState(false);
   const [search, setSearch] = useState(false);
+  const [showFlag, setShowFlag] = useState(false);
+
 
   useEffect(() => {
     setShow(true);
@@ -70,6 +72,7 @@ const BusinessTable = (props) => {
     return (
       <>
         <AddButton onClick={() => {
+          setShowFlag(true);
           addRef.current.open();
         }} />
         {/*<AddButton onClick={() => {*/}
@@ -138,12 +141,7 @@ const BusinessTable = (props) => {
       </>
     );
   };
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    return 650;
-  };
+
   return (
     <>
       <Table
@@ -253,74 +251,69 @@ const BusinessTable = (props) => {
             </>
           );
         }} width={100} />
+
       </Table>
       <BusinessAdd
+        showFlag={showFlag}
         ref={addRef}
         onSuccess={() => {
+          setShowFlag(false);
           addRef.current.close();
         }}
         onClose={() => {
+          setShowFlag(false);
           addRef.current.close();
         }}
       />
-      <Modal2 width={800} title="项目" component={BusinessEdit} onSuccess={() => {
-        setDetail(true);
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
-      <div style={{height: height()}}>
-        <Modal
-          title={title}
-          visible={detail}
-          footer={false}
-          width={widths}
-          className={styles.myModal}
-          onCancel={() => {
-            setDetail(false);
-            setShow(true);
-          }} onOk={() => {
-            setDetail(false);
-          }}>
-          <div style={{height: height(), overflow: 'auto', maxHeight:'450px'}}>
-            <div style={disable === 1 ? {marginRight: 10, maxHeight:'450px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-              <Spin spinning={show} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
-                <BusinessEdit
-                  onSuccess={()=>{
-                    setWidth(400);
-                    setDisable(2);
-                    setShow1(false);
-                    setTitle('创建结果');
-                  }}
-                  value={businessId}
-                />
-              </Spin>
-            </div>
-            <div style={disable === 2 ? {marginRight: 10, maxHeight:'450px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-              <Spin spinning={show1} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
-                {businessId && <BusinessComplete result={businessId} disabled={false}/>}
-              </Spin>
-            </div>
-            {/*<div style={disable === 3 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>*/}
-            {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%', height: height()}}>*/}
-            {/*    /!*{businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*!/*/}
-            {/*    /!*  onChange={(disable)=>{*!/*/}
-            {/*    /!*    setDisable(disable);*!/*/}
-            {/*    /!*    setWidth(400);*!/*/}
-            {/*    /!*  }}/>}*!/*/}
-            {/*    <div style={{ height: height(), overflow: 'auto'}}>*/}
-            {/*      <CustomerDetail value={businessId}*/}
-            {/*        showFlag={false}*/}
-            {/*        onChange={(disable)=>{*/}
-            {/*          setDisable(disable);*/}
-            {/*          // setWidth(400);*/}
-            {/*        }}*/}
-            {/*      />*/}
-            {/*    </div>*/}
-            {/*  </Spin>*/}
-            {/*</div>*/}
-          </div>
-        </Modal>
-      </div>
+      <Modal
+        title={title}
+        visible={detail}
+        footer={false}
+        width={widths}
+        className={styles.myModal}
+        onCancel={() => {
+          setDetail(false);
+          setShow(true);
+        }} onOk={() => {
+          setDetail(false);
+        }}>
+        <div style={disable === 1 ? {marginRight: 10, maxHeight:'450px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+          <Spin spinning={show} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            <BusinessEdit
+              onSuccess={()=>{
+                setWidth(400);
+                setDisable(2);
+                setShow1(false);
+                setTitle('创建结果');
+              }}
+              value={businessId}
+            />
+          </Spin>
+        </div>
+        <div style={disable === 2 ? {marginRight: 10, maxHeight:'450px', animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
+          <Spin spinning={show1} delay={400} style={{backgroundColor:'aliceblue',width: '100%'}}>
+            {businessId && <BusinessComplete result={businessId} disabled={false}/>}
+          </Spin>
+        </div>
+        {/*<div style={disable === 3 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>*/}
+        {/*  <Spin spinning={show2} delay={500} style={{backgroundColor:'aliceblue',width: '100%', height: height()}}>*/}
+        {/*    /!*{businessId && <TableDetail  title='商机明细' value={businessId} style={{backgroundColor:'aliceblue',width: '100%'}}*!/*/}
+        {/*    /!*  onChange={(disable)=>{*!/*/}
+        {/*    /!*    setDisable(disable);*!/*/}
+        {/*    /!*    setWidth(400);*!/*/}
+        {/*    /!*  }}/>}*!/*/}
+        {/*    <div style={{ height: height(), overflow: 'auto'}}>*/}
+        {/*      <CustomerDetail value={businessId}*/}
+        {/*        showFlag={false}*/}
+        {/*        onChange={(disable)=>{*/}
+        {/*          setDisable(disable);*/}
+        {/*          // setWidth(400);*/}
+        {/*        }}*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*  </Spin>*/}
+        {/*</div>*/}
+      </Modal>
     </>
   );
 };

@@ -12,7 +12,7 @@ import CustomerDetail from '@/pages/Crm/business/BusinessDetails';
 
 const BusinessAdd = (props, ref) => {
 
-  const {onClose} = props;
+  const {onClose, showFlag} = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [useData, setData] = useState([]);
@@ -58,7 +58,7 @@ const BusinessAdd = (props, ref) => {
 
   return (
     <>
-      <div style={{height: height()}}>
+      <div style={showFlag === false ? {'display':'none'} : {height: height()}}>
         <Modal title={<div style={disable !== 3 ? null : {'display' : 'none'}}>
           <LeftOutlined
             onClick={()=>{setDisable(disable > 1 ? disable -1 : 1);
