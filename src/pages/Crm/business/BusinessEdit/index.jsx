@@ -29,7 +29,7 @@ const BusinessEdit = (props) => {
 
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState();
 
   const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
     onSuccess: (response) => {
