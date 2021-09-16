@@ -4,15 +4,17 @@ import * as SysField from "@/pages/Erp/package/packageField";
 import Form from "@/components/Form";
 import {erpPackageTableDelete, erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
 import Breadcrumb from "@/components/Breadcrumb";
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+
 import EditButton from '@/components/EditButton';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import ErpPackageTableEdit from '@/pages/Erp/packageTable/packageTableEdit';
+import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
-
+const formActionsPublic = createFormActions();
 
 const TableList = (props) => {
   const {packageId,productName} = props;
@@ -43,6 +45,7 @@ const TableList = (props) => {
         <Table
           api={erpPackageTableList}
           rowKey="id"
+          formActions={formActionsPublic}
           isModal={false}
           ref={tableRef}
           listHeader={false}
