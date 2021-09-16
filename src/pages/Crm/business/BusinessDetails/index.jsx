@@ -66,7 +66,7 @@ const CustomerDetail = () => {
             style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
               refTrack.current.open(false);
-            }} icon={<EditOutlined/>}>添加跟踪</Button>
+            }} icon={<EditOutlined/>}>添加跟单</Button>
 
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }
@@ -77,7 +77,7 @@ const CustomerDetail = () => {
           <CreateNewCustomer widths={1400} refModal={refTrack} model={CrmBusinessTrackEdit} onSuccess={() => {
             refTrack.current.close();
             refresh();
-          }} title='跟踪' val={data}/>
+          }} title='跟单' val={data}/>
 
           <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
@@ -148,7 +148,7 @@ const CustomerDetail = () => {
                   <TabPane tab="动态" key="1">
                     <Dynamic value={data}/>
                   </TabPane>
-                  <TabPane tab="跟踪" key="2">
+                  <TabPane tab="跟单" key="2">
                     <Track value={data}/>
                   </TabPane>
                 </Tabs>
