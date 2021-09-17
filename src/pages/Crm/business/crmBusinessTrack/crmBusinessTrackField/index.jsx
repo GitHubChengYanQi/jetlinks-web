@@ -14,16 +14,17 @@ import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import UpLoadImg from '@/components/Upload';
 import Modal from '@/components/Modal';
+import Select from '@/components/Select';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
 };
 export const Note = (props) => {
-  return (<Input.TextArea cols={5} rows={7} {...props} />);
+  return (<Input.TextArea cols={5} rows={6} {...props} />);
 };
 
 export const Message = (props) => {
-  return (<Input.TextArea cols={5} rows={7} {...props} />);
+  return (<Input.TextArea cols={5} rows={6} {...props} />);
 };
 
 export const Time = (props) => {
@@ -70,6 +71,17 @@ export const Type = (props) => {
     ]}
     {...props} />);
 };
+
+export const CustomerId = (props) => {
+  return (<Select api={apiUrl.customerIdSelect} {...props} disabled />);
+};
+
+export const Classify = (props) => {
+  return (<AntdSelect options={[{label:'日常',value:0},{label:'商机',value:1},{label:'合同',value:2},{label:'订单',value:3},{label:'回款',value:4}]} {...props}  onChange={(value) => {
+    props.onChange(value);
+  }} disabled/>);
+};
+
 export const BusinessId = (props) => {
   props.onChange(props.val.businessId);
   return (<Input {...props} value={props.val.businessName} disabled />);

@@ -76,7 +76,7 @@ const CustomerDetail = () => {
           <CreateNewCustomer widths={1400} refModal={refTrack} model={CrmBusinessTrackEdit} onSuccess={() => {
             refTrack.current.close();
             refresh();
-          }} title='跟进' val={data}/>
+          }} title='跟进' val={data} number={1}/>
 
           <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();

@@ -74,7 +74,7 @@ const ContactsEdit = ({...props}) => {
             </Col>
             <Col span={12}>
               <div style={{height: height(), overflow: 'auto'}}>
-                <ProCard style={{marginTop: 8}} title={<Title title="联系人电话" level={2} />} headerBordered>
+                <ProCard style={{marginTop: 8}} title={<Title title="联系人电话" level={4} />} headerBordered>
                   <FieldList
                     name="phoneParams"
                     initialValue={[
