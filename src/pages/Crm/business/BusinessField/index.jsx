@@ -48,8 +48,8 @@ export const CustomerNameListSelect = (props) => {
 
   const {user} = props;
 
-  return (<SelectCustomer  {...props} onChange={(value) => {
-    props.onChange(value);
+  return (<SelectCustomer  {...props}  onChange={(value) => {
+    props.onChange(value.customerId);
     user(value);
   }} />);
 };

@@ -5,12 +5,14 @@ import {AutoComplete, Input, Popover} from 'antd';
 const CustomerSelect = (props) => {
 
 
-  const {value: values, onChange, style, method, onblur,disabled,onSuccess, ...other} = props;
+  const {value, onChange, style, method, onblur,disabled,onSuccess, ...other} = props;
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
     manual: true,
   });
+
+
 
   const handleChange = async value => {
     if (value) {
@@ -45,7 +47,7 @@ const CustomerSelect = (props) => {
         dropdownMatchSelectWidth={100}
         options={content}
         style={style}
-        value={values}
+        value={value && value.customerName}
         onSelect={(value)=>{
           onSuccess(value);
         }}

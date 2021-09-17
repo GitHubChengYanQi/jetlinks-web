@@ -31,9 +31,8 @@ const BusinessEdit = (props) => {
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
 
-  const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
-    onSuccess: (response) => {
-    }});
+  const [user,setUser] = useState();
+
 
   return (
 
@@ -72,11 +71,8 @@ const BusinessEdit = (props) => {
         show={props.value}
         component={SysField.CustomerNameListSelect}
         user={(value) => {
-          if (value) {
-            run({data: {customerId: value}});
-          }
+          setUser(value && value.userId);
         }}
-        // value={customerId}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
       /> }
       <FormItem
@@ -84,6 +80,7 @@ const BusinessEdit = (props) => {
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
+        userid={user || null}
         required />
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />

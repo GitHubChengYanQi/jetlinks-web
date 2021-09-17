@@ -16,17 +16,6 @@ const SelectCustomer = (props) => {
 
   const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true});
 
-  useEffect(() => {
-    if (value) {
-      run({
-        data: {
-          customerId: value
-        }
-      }).then((res) => {
-        onChange(res);
-      });
-    }
-  }, []);
 
 
   return (
@@ -34,7 +23,7 @@ const SelectCustomer = (props) => {
       <Row gutter={24}>
         <Col span={15}>
           <CustomerSelect
-            value={value && value.customerName}
+            value={value}
             method={false}
             onSuccess={async (value) => {
               const customer = await run({
