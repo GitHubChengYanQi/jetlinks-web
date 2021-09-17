@@ -20,7 +20,7 @@ export const ContactsName = (props) => {
   return (<Input style={{width: 200}} {...props} />);
 };
 export const Job = (props) => {
-  return (<Input   {...props} />);
+  return (<Select  api={apiUrl.companyRoleSelect} {...props} />);
 };
 export const Phone = (props) => {
   return (<InputNumber   {...props} />);
@@ -74,6 +74,11 @@ export const CustomerId = (props) => {
   }
   return (<Select disabled={customer} api={apiUrl.customerIdSelect} {...props} />);
 };
+
+export const CustomerIds = (props) => {
+  return (<Select api={apiUrl.customerIdSelect} {...props} />);
+};
+
 
 export const PhoneNumber = (props) =>{
   return (<InputNumber  style={{width: 150}}  {...props}/>);
