@@ -26,7 +26,7 @@ const BusinessSteps = ((props) => {
   };
 
   return (
-    <div>
+    <div style={{margin:'0 12px'}}>
       <Row gutter={24}>
         <Col span={8}>
           <div style={{overflow: 'auto'}}>

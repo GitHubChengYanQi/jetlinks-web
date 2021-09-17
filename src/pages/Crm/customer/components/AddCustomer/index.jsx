@@ -1,4 +1,4 @@
-import {AutoComplete, Button, Divider, Dropdown, Menu, Popover} from 'antd';
+import {Button, Dropdown, Menu, Popover} from 'antd';
 import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
@@ -8,7 +8,7 @@ import React, {useEffect, useRef, useState} from 'react';
 const AddCustomer = (props) => {
 
 
-  const {onChange, visi, setVal} = props;
+  const {onChange, visi} = props;
 
   const ref = useRef(null);
 
@@ -30,7 +30,7 @@ const AddCustomer = (props) => {
         }}>创建客户</Button>
       </Menu.Item>
       <Menu.Item key="2" style={{padding: 0}}>
-        <Popover placement="rightTop" visible={visible} onVisibleChange={(visible)=>{
+        <Popover placement="rightTop" visible={visible} onVisibleChange={(visible) => {
           setVisible(visible);
         }} content={<FastCreateCustomer close={() => {
           setDrow(false);
@@ -38,7 +38,6 @@ const AddCustomer = (props) => {
         }} add={(value) => {
           setDrow(false);
           setVisible(false);
-          typeof setVal === 'function' && setVal(value && value.customerName);
           onChange(value && value.customerId);
         }} />} trigger="click">
           <Button danger onClick={() => {
@@ -52,9 +51,9 @@ const AddCustomer = (props) => {
 
   return (
     <>
-      <Dropdown overlay={menu} trigger="click" destroyPopupOnHide visible={drow} onVisibleChange={(visible)=>{
+      <Dropdown overlay={menu} trigger="click" destroyPopupOnHide visible={drow} onVisibleChange={(visible) => {
         setDrow(visible);
-      } }>
+      }}>
         <Button
           type="primary"
           style={{backgroundColor: '#1890ff', color: '#fff'}}
@@ -69,17 +68,14 @@ const AddCustomer = (props) => {
 
       <CreateNewCustomer
         title="客户"
-        model={CustomerEdit}
         widths={1600}
         onSuccess={() => {
           ref.current.close();
         }}
-        refModal={ref}
+        ref={ref}
         onChange={(res) => {
-          if (res) {
-            typeof setVal === 'function' && setVal(res && res.data && res.data.customerName);
-            onChange(res && res.data && res.data.customerId);
-          }
+          onChange(res.data);
+
         }} />
     </>
   );

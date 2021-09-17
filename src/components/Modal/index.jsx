@@ -1,5 +1,6 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import {message, Modal as AntdModal} from 'antd';
+import {randomString} from '@/util/Tools';
 
 const Modal = (
   {
@@ -22,6 +23,8 @@ const Modal = (
 
   const [value, show] = useState(null);
   const [height, setHeight] = useState(null);
+  const [domId] = useState(randomString(6));
+
   if (modal !== undefined) {
     show(false);
   }
@@ -40,10 +43,12 @@ const Modal = (
   }));
 
   const setSize = () => {
-    const modalContent = document.getElementById('modalContent');
-    if (modalContent) {
+    console.log(domId);
+    const modalContent = document.getElementById(`modalContent-${domId}`);
+    console.log(modalContent);
+    // if (modalContent) {
       setHeight(document.body.offsetHeight - 110);
-    }
+    // }
   };
 
   useEffect(() => {
@@ -59,7 +64,7 @@ const Modal = (
 
   const visible = value !== null && value !== undefined;
 
-  console.log(width);
+  console.log(111,width);
 
   return (
     <AntdModal
@@ -78,7 +83,7 @@ const Modal = (
       destroyOnClose
     >
       <div style={{maxHeight: height, overflow: 'auto'}}>
-        <div id="modalContent">
+        <div id={`modalContent-${domId}`}>
           {Component ? <Component
             {...props}
             ref={compoentRef}

@@ -44,19 +44,6 @@ const BusinessAdd = (props, ref) => {
     close
   }));
 
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    if (disable === 1) {
-      return 750;
-    } else if (disable === 2) {
-      return 450;
-    } else if (disable === 3) {
-      return 400;
-    }
-  };
-
   const width = () => {
     switch (disable) {
       case 1:
@@ -69,8 +56,6 @@ const BusinessAdd = (props, ref) => {
         return 360;
     }
   };
-
-  console.log(width());
 
   return (
     <Modal
