@@ -38,8 +38,8 @@ const ContractList = () => {
       </>);
   };
   return (
-    <ListLayout left={Left()}>
-      <ContractTable state={state}  />
+    <ListLayout>
+      <ContractTable left={Left()} state={state}  />
     </ListLayout>
   );
 };

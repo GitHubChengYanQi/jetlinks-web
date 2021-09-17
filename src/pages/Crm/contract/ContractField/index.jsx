@@ -27,8 +27,8 @@ export const Customer = (props) => {
   const {customerid, onChange} = props;
   return (<>
     <SelectCustomer {...props} onChange={(value) => {
-      onChange(value.customerId);
-      customerid(value.customerId);
+      onChange(value && value.customerId);
+      customerid(value && value.customerId);
     }} />
   </>);
 };

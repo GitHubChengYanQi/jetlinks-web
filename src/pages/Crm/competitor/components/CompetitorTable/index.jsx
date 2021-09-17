@@ -34,7 +34,7 @@ const formActionsPublic = createFormActions();
 
 const CompetitorTable = (props) => {
 
-  const {competitionLevel, businessId} = props;
+  const {competitionLevel, businessId,...other} = props;
 
   const history = useHistory();
   const {run: getList} = useRequest({
@@ -154,6 +154,7 @@ const CompetitorTable = (props) => {
         onChange={(keys) => {
           setIds(keys);
         }}
+        {...other}
       >
         <Column width={150} fiexd  title="基础信息" dataIndex="name" render={(value, record) => {
           return (

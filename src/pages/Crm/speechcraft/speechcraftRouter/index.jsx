@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const SpeechcraftRouter = [
   {
     path: '/speechcraft',
+    name: '话术管理',
     component: lazy(() => import('../speechcraftList/index')),
     fallback: <div>loading...</div>,
     exact: true,

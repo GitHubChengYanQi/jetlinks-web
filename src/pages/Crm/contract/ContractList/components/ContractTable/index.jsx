@@ -32,7 +32,7 @@ const {FormItem} = Form;
 
 const ContractTable = (props) => {
 
-  const {state, customerId} = props;
+  const {state, customerId,...other} = props;
 
   const history = useHistory();
 
@@ -174,6 +174,7 @@ const ContractTable = (props) => {
         onChange={(value) => {
           setIds(value);
         }}
+        {...other}
       >
         <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
           return (

@@ -149,8 +149,8 @@ const BusinessList = () => {
 
 
   return (
-    <ListLayout left={Left()}>
-      <BusinessTable status={status} state={state} statement={statement}  />
+    <ListLayout>
+      <BusinessTable left={Left()} status={status} state={state} statement={statement}  />
     </ListLayout>
   );
 };

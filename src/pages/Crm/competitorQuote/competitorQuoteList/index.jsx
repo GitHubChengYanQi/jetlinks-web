@@ -46,8 +46,8 @@ const CompetitorQuoteList = () => {
   };
 
   return (
-    <ListLayout left={Left()}>
-      <CompetitorTable status={status} />
+    <ListLayout>
+      <CompetitorTable left={Left()} status={status} />
     </ListLayout>
   );
 };

@@ -149,7 +149,7 @@ const TableWarp = ({
         <Content
           // style={{marginLeft: 260}}
         >
-          {searchForm ? <div className="search">
+          {searchForm ? <div className="search" style={headStyle}>
             <Form
               layout={layout || 'inline'}
               {...form}

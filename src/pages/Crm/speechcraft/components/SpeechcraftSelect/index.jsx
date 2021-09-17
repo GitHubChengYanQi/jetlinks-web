@@ -3,7 +3,7 @@ import {Divider, Typography, List, Input} from 'antd';
 import {useRequest} from '@/util/Request';
 import {speechcraftList} from '@/pages/Crm/speechcraft/speechcraftUrl';
 
-const SpeechcraftSelect = () => {
+const SpeechcraftSelect = ({...props}) => {
 
   const {data: speechcraft, run} = useRequest(speechcraftList);
 

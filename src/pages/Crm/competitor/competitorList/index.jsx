@@ -52,8 +52,8 @@ const CompetitorList = () => {
       </>);
   };
   return (
-    <ListLayout left={Left()}>
-      <CompetitorTable competitionLevel={competitionLevel}  />
+    <ListLayout >
+      <CompetitorTable left={Left()} competitionLevel={competitionLevel}  />
     </ListLayout>
   );
 };

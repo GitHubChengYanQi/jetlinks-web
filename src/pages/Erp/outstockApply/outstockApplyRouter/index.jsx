@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const OutstockApplyRouter = [
   {
     path: '/outstockApply',
+    name: '发货申请',
     component: lazy(() => import('../outstockApplyList')),
     fallback: <div>loading...</div>,
     exact: true,

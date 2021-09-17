@@ -24,7 +24,7 @@ const {FormItem} = Form;
 
 const SpeechcraftTable = (props) => {
 
-  const {type} = props;
+  const {type,...other} = props;
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -64,6 +64,7 @@ const SpeechcraftTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        {...other}
       >
         <Column title="标题" dataIndex="speechcraftTitle" />
         <Column title="详情" dataIndex="speechcraftDetails" />

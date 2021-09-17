@@ -59,8 +59,8 @@ const DataList = () => {
       </>);
   };
   return (
-    <ListLayout left={Left()}>
-      <DataTable Class={Class} />
+    <ListLayout>
+      <DataTable left={Left()} Class={Class} />
     </ListLayout>
   );
 };

@@ -36,7 +36,7 @@ const SpeechcraftList = () => {
           showLine
           // switcherIcon={<DownOutlined />}
           // defaultExpandedKeys={['1']}
-          defaultSelectedKeys={['0']}
+          defaultSelectedKeys={[state]}
           // defaultCheckedKeys={['1']}
           // onSelect={this.onSelect}
           defaultExpandAll
@@ -56,8 +56,8 @@ const SpeechcraftList = () => {
       </>);
   };
   return (
-    <ListLayout left={Left()}>
-      {state === '0' ? <SpeechcraftSelect /> : <SpeechcraftTable type={type} />}
+    <ListLayout left={state === '0' && Left()}>
+      {state === '0' ? <SpeechcraftSelect /> : <SpeechcraftTable left={Left()} type={type} />}
     </ListLayout>
   );
 };

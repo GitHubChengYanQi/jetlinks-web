@@ -27,7 +27,7 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const CompetitorTable = (props) => {
+const CompetitorTable = ({...props}) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -119,7 +119,7 @@ const CompetitorTable = (props) => {
         layout={search}
         actions={actions()}
         ref={tableRef}
-
+        {...props}
       >
         <Column width={200} title="关联项目" dataIndex="businessId" render={(value, record) => {
           return (

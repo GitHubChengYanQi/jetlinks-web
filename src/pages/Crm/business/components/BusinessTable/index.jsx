@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, Progress, Spin, Table as AntTable} from 'antd';
+import {Button, Modal, Progress, Spin, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -23,7 +23,7 @@ import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {LeftOutlined, SearchOutlined} from '@ant-design/icons';
+import {ArrowDownOutlined, ArrowUpOutlined, LeftOutlined, SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
@@ -37,7 +37,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state, statement} = props;
+  const {status, state, statement,left} = props;
 
   const [ids, setIds] = useState([]);
   const [businessId, setBusinessId] = useState(null);
@@ -167,6 +167,7 @@ const BusinessTable = (props) => {
             return document.getElementById('listLayout');
           }
         }}
+        left={left}
       >
         <Column
           title="项目名称"
@@ -198,11 +199,18 @@ const BusinessTable = (props) => {
           }} />
         <Column title="盈率" width={150} align='center' dataIndex="salesId" render={(value, record) => {
           return (
-            <Progress
-              width={60}
-              type="circle"
-              percent={record.process && record.process.percentage || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
-              status={record.state && (record.state === '赢单' ? 'success' : 'exception')}
+            // <Progress
+            //   width={60}
+            //   type="circle"
+            //   percent={record.process && record.process.percentage || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
+            //   status={record.state && (record.state === '赢单' ? 'success' : 'exception')}
+            // />
+            <Statistic
+              title={record.process && record.process.name || record.sales && record.sales.process.length > 0 && record.sales.process[0].name}
+              value={record.process && `${record.process.percentage}` || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
+              valueStyle={{ color: record.state && (record.state === '赢单' ? '#3f8600' : '#cf1322') }}
+              prefix={record.state && (record.state === '赢单' ? <ArrowUpOutlined /> : <ArrowDownOutlined />)}
+              suffix="%"
             />
           );
         }} />

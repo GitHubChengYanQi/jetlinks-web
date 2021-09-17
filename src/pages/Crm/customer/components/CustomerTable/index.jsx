@@ -37,7 +37,6 @@ const {FormItem} = Form;
 const CustomerTable = (props) => {
 
   const {status, state, level, choose,...other} = props;
-console.log(other);
   const history = useHistory();
 
 

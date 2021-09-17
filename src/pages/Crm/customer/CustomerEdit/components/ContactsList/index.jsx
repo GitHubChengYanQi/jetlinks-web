@@ -22,6 +22,7 @@ import {Tag} from '@alifd/next';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
+import Modal from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -119,7 +120,7 @@ const ContactsList = (props) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={ContactsEdit} customerId={customerId} onSuccess={() => {
+      <Modal width={1400} title="编辑" component={ContactsEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

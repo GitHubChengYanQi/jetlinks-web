@@ -25,7 +25,7 @@ const {Column} = AntTable;
 
 const DataTable = (props) => {
 
-  const {Class} = props;
+  const {Class,...other} = props;
 
   const refConent = useRef();
 
@@ -66,6 +66,7 @@ const DataTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        {...other}
       >
         <Column title="资料名称" dataIndex="name" render={(value,record)=>{
           return (
