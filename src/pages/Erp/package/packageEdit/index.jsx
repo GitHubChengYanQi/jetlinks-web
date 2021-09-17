@@ -38,7 +38,7 @@ const ErpPackageEdit = ({...props}) => {
             ref={formRef}
             api={ApiConfig}
             fieldKey="packageId"
-            success={(result) => {
+            onSuccess={(result) => {
               if (result.data !== '') {
                 setResult(result.data);
               }

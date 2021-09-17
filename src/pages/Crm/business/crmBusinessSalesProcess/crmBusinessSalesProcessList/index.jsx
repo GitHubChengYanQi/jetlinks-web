@@ -47,8 +47,8 @@ const CrmBusinessSalesProcessList = (props) => {
   const Switchs = (value,record) => {
     return (
       <Switch
-        checkedChildren="开启跟单计划"
-        unCheckedChildren="关闭跟单计划"
+        checkedChildren="开启跟进计划"
+        unCheckedChildren="关闭跟进计划"
         defaultChecked={value}
         onClick={async (value) => {
           if (value) {
@@ -104,12 +104,12 @@ const CrmBusinessSalesProcessList = (props) => {
           );
         }} />
         <Column width={100} title="盈率" dataIndex="percentage" />
-        <Column width={100} title="跟单计划" dataIndex="plans" render={(value, record) => {
+        <Column width={100} title="跟进计划" dataIndex="plans" render={(value, record) => {
           return (
             <>
               { value ? <Popover placement="right" content={<Button type="link" style={{padding: 0}} onClick={() => {
                 refPlan.current.open(record.salesProcessId);
-              }}>查看跟单计划</Button>} trigger="hover">
+              }}>查看跟进计划</Button>} trigger="hover">
                 {Switchs(value,record)}
               </Popover> : Switchs(value,record)}
             </>

@@ -154,7 +154,7 @@ const AddContractEdit = ({...props}) => {
                   });
                 });
               }}
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }

@@ -16,7 +16,7 @@ export const outstockApplyEdit = {
   method: 'POST',
   rowKey:'outstockApplyId'
 };
-export const outBound = {
+export const OutBound = {
   url: '/outBound/AKeyDelivery',
   method: 'POST',
 };

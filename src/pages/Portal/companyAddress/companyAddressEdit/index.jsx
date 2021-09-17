@@ -55,9 +55,6 @@ const CompanyAddressEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="companyId"
-      success={() => {
-        onSuccess();
-      }}
     >
       <FormItem label="报修公司" name="customerId" component={SysField.CustomerId} required />
       <FormItem label="省" name="province" component={SysField.Province} required />

@@ -26,9 +26,6 @@ const RepairEdit = ({...props}) => {
 
   const {value} = props;
 
-
-
-
   const [state,setState] = useState();
 
   const formRef = useRef();

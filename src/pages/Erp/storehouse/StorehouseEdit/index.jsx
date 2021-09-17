@@ -40,7 +40,7 @@ const StorehouseEdit = ({...props}) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="storehouseId"
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }

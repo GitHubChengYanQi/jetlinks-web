@@ -81,7 +81,7 @@ const RepairList = () => {
         <Column title="设备名称" dataIndex="itemId" render={(text, record) => {
           return (
             <Button type="link" onClick={() => {
-              history.push(`/protal/repair/${record.repairId}`);
+              history.push(`/repair/repair/${record.repairId}`);
             }}>{record.deliveryDetailsResult && record.deliveryDetailsResult.detailesItems && record.deliveryDetailsResult.detailesItems.name}</Button>
           );
         }} />

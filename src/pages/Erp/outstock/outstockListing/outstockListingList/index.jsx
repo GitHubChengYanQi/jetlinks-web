@@ -13,7 +13,7 @@ import Form from '@/components/Form';
 import {outstockListingList} from '../outstockListingUrl';
 import OutstockListingEdit from '../outstockListingEdit';
 import * as SysField from '../outstockListingField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

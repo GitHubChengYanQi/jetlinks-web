@@ -2,7 +2,7 @@ import React from 'react';
 import {Comment, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 
@@ -45,8 +45,12 @@ const Dynamic = (props) => {
   return (
     <div>
       <Table
+        headStyle={{display:'none'}}
         searchForm={searchForm}
         selectionType
+        rowSelection
+        bodyStyle={{padding:0}}
+        bordered={false}
         showHeader={false}
         dynamic
         showSearchButton={false}
@@ -58,7 +62,7 @@ const Dynamic = (props) => {
         <Column render={(text, record) => {
           return (
             <Comment
-              style={{margin: -20}}
+              style={{padding:0}}
               {...datas(record)}
             />
           );

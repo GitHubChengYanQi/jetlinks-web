@@ -43,7 +43,7 @@ const ItemsEdit = ({...props}) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="itemId"
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }
@@ -69,6 +69,7 @@ const ItemsEdit = ({...props}) => {
         <>
           <div style={{margin: '50px 150px'}}>
             <Form
+              NoButton={false}
               {...props}
               value={result}
               ref={formRef}

@@ -25,7 +25,7 @@ import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
-import {batchAdd, batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
+import {addAllPackages, addAllPackagesTable, batchAdd, batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
 import SelButton from '@/components/SelButton';
 
 
@@ -92,6 +92,19 @@ const ItemsList = (props) => {
         }
         } data ={{
           businessId: props.businessId,
+          itemIds: ids,
+          salePrice: 0,
+          totalPrice: 0,
+          quantity: 0
+        }} >批量选择</SelButton>}
+        {!disabled && <SelButton api={{
+          ...addAllPackagesTable
+        }}onSuccess={()=>{
+          tableRef.current.refresh();
+          props.onSuccess();
+        }
+        } data ={{
+          packageId: props.packageId,
           itemIds: ids,
           salePrice: 0,
           totalPrice: 0,
@@ -205,7 +218,13 @@ const ItemsList = (props) => {
           );
         }}/>
         <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
-        <Column title="易损" width={120} align='center' dataIndex="vulnerability" sorter />
+        <Column title="易损" width={120} align='center' dataIndex="vulnerability" render={(value)=>{
+          return (
+            <>
+              {value === 0 ? '易损' : '不易损'}
+            </>
+          );
+        }} sorter />
         <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
           return (
             <>

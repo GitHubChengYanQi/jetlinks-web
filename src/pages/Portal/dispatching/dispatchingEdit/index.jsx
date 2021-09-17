@@ -60,9 +60,6 @@ const DispatchingEdit = ({...props}) => {
             api={ApiConfig}
             wrapperCol={24}
             fieldKey="dispatchingId"
-            success={() => {
-              props.onSuccess();
-            }}
           >
             <MegaLayout labelWidth={120} grid labelAlign="top">
               <FormItem

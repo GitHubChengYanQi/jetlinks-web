@@ -1,8 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {Comment, Image, Table as AntTable} from 'antd';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -21,7 +21,7 @@ const Track = (props) => {
       content: (
         <>
           <div>
-            <span style={{color: '#91959e'}}>跟单类型:</span>
+            <span style={{color: '#91959e'}}>跟进类型:</span>
             <p style={{padding: 10}}>{data && data.type}</p>
             {data && data.image ? <div>
               <p style={{color: '#91959e'}}>图片:</p>
@@ -30,7 +30,7 @@ const Track = (props) => {
 
           </div>
           {data && data.note ? <div>
-            <span style={{color: '#91959e'}}>跟单内容:</span>
+            <span style={{color: '#91959e'}}>跟进内容:</span>
             <p style={{padding: 10}}>{data.note}</p>
           </div> : null}
         </>
@@ -54,6 +54,10 @@ const Track = (props) => {
     <div>
       <Table
         searchForm={searchForm}
+        headStyle={{display:'none'}}
+        rowSelection
+        bordered={false}
+        bodyStyle={{padding:0}}
         selectionType
         showHeader={false}
         dynamic

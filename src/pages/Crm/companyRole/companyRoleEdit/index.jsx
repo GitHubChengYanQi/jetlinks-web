@@ -29,8 +29,11 @@ const CompanyRoleEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="companyRoleId"
-      res={(res)=>{
-        props.position(res);
+      onSuccess={(res)=>{
+        if (props.position){
+          props.position(res);
+        }
+        props.onSuccess();
       }}
     >
       <FormItem label="职位" name="position" component={SysField.Position} required/>

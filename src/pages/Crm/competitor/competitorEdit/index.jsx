@@ -44,8 +44,9 @@ const CompetitorEdit = ({onChange,...props}) => {
         ref={formRef}
         api={ApiConfig}
         formActions={formActionsPublic}
-        res={(res) => {
-          onChange(res);
+        onSuccess={(res) => {
+          onChange && typeof onChange === 'function' && onChange(res);
+          props.onSuccess();
         }}
         wrapperCol={24}
         fieldKey="competitorId"

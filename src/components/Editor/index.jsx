@@ -2,14 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import ReactWEditor from 'wangeditor-for-react';
 import {Button, Col, Row} from 'antd';
 
-const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
+const Editor = ({onChange, onBlur, value, template, imgUploadProps, ...props}, ref) => {
 
   const editorRef = useRef(null);
 
 
   useEffect(() => {
     if (editorRef.current) {
-      console.log(editorRef.current);
       editorRef.current.editor.txt.html(value);
 
     }
@@ -68,52 +67,55 @@ const Editor = ({onChange, onBlur, value, imgUploadProps, ...props}, ref) => {
 
   return (
     <>
-      <Row>
-        <Col span={4}>
-          <Button onClick={() => insertHtmlInput()}> 文本框</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertHtmlNumber()}> 数字框</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertHtmlDate()}> 时间框</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertCustomer()}> 选择客户</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertItems()}> 选择产品</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertPackage()}> 选择套餐</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={4}>
-          <Button onClick={() => insertAcontacts()}> 选择甲方联系人</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertBcontacts()}> 选择乙方联系人</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertAAdress()}> 选择甲方地址</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertBAdress()}> 选择乙方地址</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertAPhone()}> 选择甲方电话</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertBPhone()}> 选择乙方电话</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertACustomer()}> 选择甲方客户</Button>
-        </Col>
-        <Col span={4}>
-          <Button onClick={() => insertBCustomer()}> 选择乙方客户</Button>
-        </Col>
-      </Row>
+      {template &&
+      <>
+        <Row>
+          <Col span={4}>
+            <Button onClick={() => insertHtmlInput()}> 文本框</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertHtmlNumber()}> 数字框</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertHtmlDate()}> 时间框</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertCustomer()}> 选择客户</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertItems()}> 选择产品</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertPackage()}> 选择套餐</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={4}>
+            <Button onClick={() => insertAcontacts()}> 选择甲方联系人</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertBcontacts()}> 选择乙方联系人</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertAAdress()}> 选择甲方地址</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertBAdress()}> 选择乙方地址</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertAPhone()}> 选择甲方电话</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertBPhone()}> 选择乙方电话</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertACustomer()}> 选择甲方客户</Button>
+          </Col>
+          <Col span={4}>
+            <Button onClick={() => insertBCustomer()}> 选择乙方客户</Button>
+          </Col>
+        </Row>
+      </>}
       <ReactWEditor
         placeholder="自定义 placeholder"
         ref={editorRef}
