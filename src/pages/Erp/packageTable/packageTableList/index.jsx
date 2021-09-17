@@ -17,7 +17,7 @@ import ItemsList from "@/pages/Erp/items/ItemsList";
 import ErpPackageTableEdit from '../packageTableEdit';
 import {erpPackageTableDelete, erpPackageTableList} from '../packageTableUrl';
 import * as SysField from '../packageTableField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

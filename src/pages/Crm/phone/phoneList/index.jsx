@@ -15,7 +15,7 @@ import Form from '@/components/Form';
 import {phoneDelete, phoneList} from '../phoneUrl';
 import PhoneEdit from '../phoneEdit';
 import * as SysField from '../phoneField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

@@ -12,7 +12,7 @@ import {dispatchingDelete, dispatchingList} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import Modal from '@/components/Modal';
 import DispatchingTable from '@/pages/Portal/dispatching/dispatchingList/components/DispatchingTable';
-import Table from '@/pages/Repair/repair/components/Table';
+import Table from '@/components/Table';
 
 
 const {Column} = AntTable;
@@ -41,13 +41,15 @@ const DispatchingList = (props) => {
   return (
     <>
       <Table
+        headStyle={{display:'none'}}
+        bordered={false}
+        bodyStyle={{padding:0}}
         api={dispatchingList}
         rowKey="dispatchingId"
         showSearchButton={false}
         searchForm={searchForm}
         isModal={false}
         ref={tableRef}
-        foo
         footer={false}
       >
         <Column title="姓名" dataIndex="name" />

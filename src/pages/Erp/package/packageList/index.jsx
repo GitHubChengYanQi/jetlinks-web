@@ -14,7 +14,7 @@ import Form from '@/components/Form';
 import Modal from '@/components/Modal';
 import Table from '@/components/Table';
 import TableList from '@/pages/Erp/package/packageList/components/TableList';
-import style from '@/pages/Crm/customer/CustomerDetail/compontents/Table/index.module.less';
+import style from '@/components/Table/index.module.less';
 import Breadcrumb from '@/components/Breadcrumb';
 import {erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
 import CheckButton from '@/components/CheckButton';
