@@ -86,17 +86,18 @@ const BusinessEdit = (props) => {
         component={SysField.PersonListSelect}
         required />
       {/*<FormItem*/}
-      {/*  label="销售流程" name="salesId"*/}
-      {/*  rules={[{required: true, message: '请输入销售流程!'}]}*/}
-      {/*  component={SysField.SalesIdListSelect} value={props.stage !== null ? props.stage : 1} />*/}
-      {/*<FormItem*/}
       {/*  label="商机阶段" name="stage"*/}
       {/*  rules={[{required: true, message: '请输入商机阶段!'}]}*/}
       {/*  component={SysField.StageListSelect13}  required />*/}
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
-      <div style={{textAlign: 'Right', marginRight: 90}}>
+      <FormItem
+        style={{display : 'none'}}
+        name="salesId"
+        rules={[{required: true, message: '请输入销售流程!'}]}
+        component={SysField.SalesIdListSelect} value={props.stage !== null ? props.stage : 1} />
+      <div style={{textAlign: 'Right', marginRight: 50}}>
         <Button type="primary" htmlType="submit" onSubmit={()=>{}}  >
           完成创建
         </Button>

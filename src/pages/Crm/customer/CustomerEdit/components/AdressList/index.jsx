@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import {Table as AntTable} from 'antd';
+import {Divider, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -15,11 +15,14 @@ import Form from '@/components/Form';
 import {adressDelete, adressList} from '@/pages/Crm/adress/AdressUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/AdressEdit';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
 import AdressEdit from '@/pages/Crm/adress/AdressEdit';
+import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const AdressList = (props) => {
   const {customerId,choose} = props;
@@ -37,8 +40,17 @@ const AdressList = (props) => {
 
   return (
     <>
+      <Divider>
+        <AddButton ghost onClick={() => {
+          ref.current.open(false);
+        }} />
+      </Divider>
       <Table
+        bordered={false}
+        bodyStyle={{padding:0}}
+        headStyle={{display:'none'}}
         api={adressList}
+        formActions={formActionsPublic}
         rowKey="adressId"
         showSearchButton={false}
         searchForm={searchForm}
@@ -52,8 +64,8 @@ const AdressList = (props) => {
           );
         }}/>
         <Column title="地址" dataIndex="location"/>
-        <Column title="经度" dataIndex="longitude"/>
-        <Column title="纬度" dataIndex="latitude"/>
+        {/*<Column title="经度" dataIndex="longitude"/>*/}
+        {/*<Column title="纬度" dataIndex="latitude"/>*/}
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -72,11 +84,6 @@ const AdressList = (props) => {
           );
         }} width={300}/>
       </Table>
-      <div style={{textAlign:'center'}}>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </div>
       <Drawer width={800} title="编辑" component={AdressEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();

@@ -12,6 +12,7 @@ import {competitorDetail, competitorAdd, competitorEdit} from '../competitorUrl'
 import * as SysField from '../competitorField';
 import ProCard from '@ant-design/pro-card';
 import {MegaLayout} from '@formily/antd-components';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -20,6 +21,8 @@ const ApiConfig = {
   add: competitorAdd,
   save: competitorEdit
 };
+
+const formActionsPublic = createFormActions();
 
 const CompetitorEdit = ({onChange,...props}) => {
 
@@ -40,6 +43,7 @@ const CompetitorEdit = ({onChange,...props}) => {
         value={value ? value.competitorId : false}
         ref={formRef}
         api={ApiConfig}
+        formActions={formActionsPublic}
         res={(res) => {
           onChange(res);
         }}

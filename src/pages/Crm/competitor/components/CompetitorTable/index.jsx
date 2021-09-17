@@ -14,7 +14,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Reset, Submit} from '@formily/antd';
+import {createFormActions, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined,InfoCircleOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import Modal from '@/components/Modal';
@@ -29,6 +29,8 @@ import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const CompetitorTable = (props) => {
 
@@ -144,6 +146,7 @@ const CompetitorTable = (props) => {
         rowKey="competitorId"
         searchForm={searchForm}
         SearchButton={Search()}
+        formActions={formActionsPublic}
         layout={search}
         actions={actions()}
         ref={tableRef}

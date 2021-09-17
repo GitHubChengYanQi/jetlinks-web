@@ -31,7 +31,8 @@ const AddContractEdit = ({...props}) => {
 
   const {Step} = Steps;
 
-  const {value, ...other} = props;
+  const {value, customerId, ...other} = props;
+
 
   const [result, setResult] = useState(value);
 
@@ -54,58 +55,55 @@ const AddContractEdit = ({...props}) => {
   };
 
 
-
   const [current, setCurrent] = React.useState(0);
 
   const {data: Acontacts, run: AcontactsRun} = useRequest({
     url: '/contacts/list',
     method: 'POST',
-    data:{
-      customerId: result.partyA,
+    data: {
+      customerId: customerId || result.partyA,
     }
-  }, );
+  },);
   const {data: APhone, run: runAPhone} = useRequest({
     url: '/phone/list',
     method: 'POST',
-    data:{
+    data: {
       contactsId: result.partyAContactsId,
     }
   });
   const {data: Aadress, run: AadressRun} = useRequest({
     url: '/adress/list',
     method: 'POST',
-    data:{
-      customerId: result.partyA,
+    data: {
+      customerId: customerId || result.partyA,
     }
   });
 
   const {data: Bcontacts, run: BcontactsRun} = useRequest({
     url: '/contacts/list',
     method: 'POST',
-    data:{
-      customerId: result.partyB,
+    data: {
+      customerId: '1416605276529807486' || result.partyB,
     }
   });
   const {data: BPhone, run: runBPhone} = useRequest({
     url: '/phone/list',
     method: 'POST',
-    data:{
+    data: {
       contactsId: result.partyBContactsId,
     }
   });
   const {data: Badress, run: BadressRun} = useRequest({
     url: '/adress/list',
     method: 'POST',
-    data:{
-      customerId: result.partyB,
+    data: {
+      customerId: '1416605276529807486' || result.partyB,
     }
   });
   const formRef = useRef();
 
 
-
-
-  if (props.value){
+  if (props.value) {
     return content();
   }
 
@@ -165,29 +163,53 @@ const AddContractEdit = ({...props}) => {
             >
               <FormItem label="选择合同模板" name="templateId" component={SysField.Template} required />
               <FormItem label="合同名称" name="name" component={SysField.Name} required />
-              <FormItem
-                initialValue={false}
-                label="甲方"
-                name="partyA"
-                component={SysField.Customer}
-                placeholder="请选择甲方客户"
-                val={value ? value.partAName : null}
-                customerid={async (customer) => {
-                  if (customer) {
-                    await AcontactsRun({
-                      data: {
-                        customerId: customer
-                      }
-                    });
-                    await AadressRun({
-                      data: {
-                        customerId: customer
-                      }
-                    });
-                  }
-                }}
-                required
-              />
+              {customerId ?
+                <FormItem
+                  initialValue={false}
+                  label="甲方"
+                  name="partyA"
+                  value={customerId}
+                  component={SysField.CustomerId}
+                  placeholder="请选择甲方客户"
+                  val={value ? value.partAName : null}
+                  customerid={async (customer) => {
+                    if (customer) {
+                      await AcontactsRun({
+                        data: {
+                          customerId: customer
+                        }
+                      });
+                      await AadressRun({
+                        data: {
+                          customerId: customer
+                        }
+                      });
+                    }
+                  }}
+                  required
+                /> : <FormItem
+                  initialValue={false}
+                  label="甲方"
+                  name="partyA"
+                  component={SysField.Customer}
+                  placeholder="请选择甲方客户"
+                  val={value ? value.partAName : null}
+                  customerid={async (customer) => {
+                    if (customer) {
+                      await AcontactsRun({
+                        data: {
+                          customerId: customer
+                        }
+                      });
+                      await AadressRun({
+                        data: {
+                          customerId: customer
+                        }
+                      });
+                    }
+                  }}
+                  required
+                />}
               <FormItem
                 initialValue={false}
                 label="甲方联系人"
@@ -233,6 +255,7 @@ const AddContractEdit = ({...props}) => {
                 initialValue={false}
                 label="乙方"
                 name="partyB"
+                value='1416605276529807486'
                 component={SysField.Customer}
                 placeholder="请选择乙方客户"
                 val={value ? value.partBName : null}

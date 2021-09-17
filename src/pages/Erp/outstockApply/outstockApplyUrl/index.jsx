@@ -16,6 +16,10 @@ export const outstockApplyEdit = {
   method: 'POST',
   rowKey:'outstockApplyId'
 };
+export const outBound = {
+  url: '/outBound/AKeyDelivery',
+  method: 'POST',
+};
 
 export const outstockApplyDelete = {
   url: '/outstockApply/delete',

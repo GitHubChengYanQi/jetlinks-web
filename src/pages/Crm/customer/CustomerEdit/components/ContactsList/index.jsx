@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Divider, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -15,28 +15,31 @@ import Form from '@/components/Form';
 import {contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
 import CheckButton from '@/components/CheckButton';
 import PhoneList from '@/pages/Crm/phone/phoneList';
 import Modal2 from '@/components/Modal';
 import {Tag} from '@alifd/next';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
+import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
+const formActionsPublic = createFormActions();
+
 const ContactsList = (props) => {
-  const {customerId,choose} = props;
+  const {customerId, choose} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const refPhone = useRef(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (customerId) {
       tableRef.current.formActions.setFieldValue('customerId', customerId);
       tableRef.current.submit();
     }
-  },[customerId]);
+  }, [customerId]);
 
   const searchForm = () => {
     return (
@@ -47,11 +50,18 @@ const ContactsList = (props) => {
   };
 
 
-
-
   return (
     <>
+      <Divider>
+        <AddButton ghost onClick={() => {
+          ref.current.open(false);
+        }} />
+      </Divider>
       <Table
+        bordered={false}
+        formActions={formActionsPublic}
+        bodyStyle={{padding:0}}
+        headStyle={{display:'none'}}
         api={contactsList}
         rowKey="contactsId"
         ref={tableRef}
@@ -59,20 +69,20 @@ const ContactsList = (props) => {
         searchForm={searchForm}
       >
         <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
-        <Column title="职务" align="center" width={200} render={(value,record)=>{
+        <Column title="职务" align="center" width={200} render={(value, record) => {
           return (
             <>
               {record.companyRoleResult && record.companyRoleResult.position}
             </>
           );
         }} />
-        <Column title="客户名称" width={300}  dataIndex="clientId" render={(value, record) => {
+        <Column title="客户名称" dataIndex="clientId" render={(value, record) => {
           return (
             record.customerResult ? record.customerResult.customerName : null
           );
         }} />
 
-        <Column title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
+        <Column title="联系电话" dataIndex="phone" render={(value, record) => {
           return (
             <>
               {
@@ -91,8 +101,7 @@ const ContactsList = (props) => {
             </>
           );
 
-        }}/>
-        <Column />
+        }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -110,11 +119,6 @@ const ContactsList = (props) => {
           );
         }} width={300} />
       </Table>
-      <div style={{textAlign:'center'}}>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </div>
       <Drawer width={800} title="编辑" component={ContactsEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();

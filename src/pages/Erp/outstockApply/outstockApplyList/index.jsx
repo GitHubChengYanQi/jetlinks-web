@@ -13,7 +13,7 @@ import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
+import {outBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
 import OutstockApplyEdit from '../outstockApplyEdit';
 import * as SysField from '../outstockApplyField';
 import {useRequest} from '@/util/Request';
@@ -63,13 +63,28 @@ const OutstockApplyList = () => {
     }
   });
 
+  const {run:outBound} = useRequest(outBound, {
+    manual: true, onSuccess: () => {
+      openNotificationWithIconOutBound('success');
+      tableRef.current.refresh();
+    },
+    onError: (error) => {
+      Message.error(error.message);
+    }
+  });
+
   const openNotificationWithIcon = (type) => {
     notification[type]({
       message: type === 'success' ? '申请成功！' : '已申请！',
     });
   };
+  const openNotificationWithIconOutBound = (type) => {
+    notification[type]({
+      message: type === 'success' ? '发货成功！' : '已发货！',
+    });
+  };
 
-  function confirmOk(record) {
+  const confirmOk = (record) => {
     AntModal.confirm({
       title: '发货申请',
       centered: true,
@@ -85,7 +100,25 @@ const OutstockApplyList = () => {
         );
       }
     });
-  }
+  };
+
+  const confirmOutStock = (record) => {
+    AntModal.confirm({
+      title: '一键发货',
+      centered: true,
+      content: `请确认是否一键发货申请操作!注意：确认之后不可恢复。`,
+      style: {margin: 'auto'},
+      cancelText: '取消',
+      onOk: async () => {
+        record.applyState = 3;
+        await outBound(
+          {
+            data: record
+          }
+        );
+      }
+    });
+  };
 
   return (
     <>
@@ -114,7 +147,7 @@ const OutstockApplyList = () => {
           return (
             <>
               {record.applyState === 2 && <Button style={{margin: '0 10px'}} onClick={() => {
-                // confirmOk(record);
+                confirmOutStock(record);
               }}><Icon type="icon-chuku" />一键发货</Button> }
               {record.applyState === 1 ? <Button style={{margin: '0 10px'}} onClick={() => {
                 confirmOk(record);

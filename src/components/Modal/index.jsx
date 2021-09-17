@@ -19,6 +19,7 @@ const Modal = (
   }, ref) => {
 
 
+
   const [value, show] = useState(null);
   const [height, setHeight] = useState(null);
   if (modal !== undefined) {

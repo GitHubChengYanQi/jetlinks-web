@@ -21,6 +21,8 @@ const TableWarp = ({
   rowKey,
   headStyle,
   tab,
+  bodyStyle,
+  bordered,
   SearchButton,
   selectionType,
   onChange,
@@ -150,7 +152,7 @@ const TableWarp = ({
           actions={formActions}
         />}
       </div>
-      <Card>
+      <Card bordered={bordered} bodyStyle={bodyStyle}>
         <AntdTable
           showTotal
           loading={loading}

@@ -13,7 +13,7 @@ import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
+import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import {competitorQuoteList} from '../competitorQuoteUrl';
@@ -24,6 +24,8 @@ import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const CompetitorTable = (props) => {
 
@@ -110,6 +112,7 @@ const CompetitorTable = (props) => {
         title={<Breadcrumb />}
         api={competitorQuoteList}
         rowKey="quoteId"
+        formActions={formActionsPublic}
         isModal={false}
         searchForm={searchForm}
         SearchButton={Search()}

@@ -11,7 +11,7 @@ import {message} from 'antd';
 
 import style from './index.module.less';
 
-const formActions = createFormActions();
+const formActionsPublic = createFormActions();
 
 const FormWrapper = (
   {
@@ -25,6 +25,7 @@ const FormWrapper = (
     labelAlign,
     formatResult,
     NoButton = true,
+    formActions = null,
     onSubmit = (values) => {
       return values;
     },
@@ -97,9 +98,14 @@ const FormWrapper = (
   });
 
 
+  if (!formActions) {
+    formActions = formActionsPublic;
+  }
+
   useImperativeHandle(ref, () => ({
     ...formActions,
   }));
+
 
   useEffect(() => {
     if (value) {
