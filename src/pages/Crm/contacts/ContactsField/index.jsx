@@ -68,11 +68,11 @@ export const CompanyRole = (props) => {
 
 export const CustomerId = (props) => {
 
-  const {customerId} = props;
-  if (customerId) {
-    props.onChange(customerId);
+  const {customer} = props;
+  if (customer !== null) {
+    props.onChange(customer);
   }
-  return (<Select disabled={customerId} api={apiUrl.customerIdSelect} {...props} />);
+  return (<Select disabled={customer} api={apiUrl.customerIdSelect} {...props} />);
 };
 
 export const PhoneNumber = (props) =>{

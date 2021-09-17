@@ -56,7 +56,7 @@ const ContactsEdit = ({...props}) => {
           ref={formRef}
           api={ApiConfig}
           fieldKey="contactsId"
-          success={(data) => {
+          onSuccess={(data) => {
             if(data.data !== ''){
               setResult(data.data.contactsId);
             }
@@ -68,7 +68,7 @@ const ContactsEdit = ({...props}) => {
                 <ProCard style={{marginTop: 8}} title={<Title title="联系人信息" level={4} />} headerBordered>
                   <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}  required/>
                   <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} required/>
-                  <FormItem label="客户" name="customerId" component={SysField.CustomerId} customerId={customerId || null} required />
+                  <FormItem label="客户" name="customerId" component={SysField.CustomerId} customer={customerId || null} required />
                 </ProCard>
               </div>
             </Col>
