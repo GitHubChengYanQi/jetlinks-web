@@ -21,7 +21,7 @@ const Track = (props) => {
       content: (
         <>
           <div>
-            <span style={{color: '#91959e'}}>跟单类型:</span>
+            <span style={{color: '#91959e'}}>跟进类型:</span>
             <p style={{padding: 10}}>{data && data.type}</p>
             {data && data.image ? <div>
               <p style={{color: '#91959e'}}>图片:</p>
@@ -30,7 +30,7 @@ const Track = (props) => {
 
           </div>
           {data && data.note ? <div>
-            <span style={{color: '#91959e'}}>跟单内容:</span>
+            <span style={{color: '#91959e'}}>跟进内容:</span>
             <p style={{padding: 10}}>{data.note}</p>
           </div> : null}
         </>

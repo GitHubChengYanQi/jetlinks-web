@@ -13,7 +13,7 @@ import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {outBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
+import {OutBound, outBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
 import OutstockApplyEdit from '../outstockApplyEdit';
 import * as SysField from '../outstockApplyField';
 import {useRequest} from '@/util/Request';
@@ -63,7 +63,7 @@ const OutstockApplyList = () => {
     }
   });
 
-  const {run:outBound} = useRequest(outBound, {
+  const {run:outBound} = useRequest(OutBound, {
     manual: true, onSuccess: () => {
       openNotificationWithIconOutBound('success');
       tableRef.current.refresh();
@@ -138,6 +138,7 @@ const OutstockApplyList = () => {
           );
         }} />
         <Column title="负责人" dataIndex="userId" />
+        <Column title="仓库" dataIndex="stockId" />
         <Column title="客户" dataIndex="customerId" />
         <Column title="地址" dataIndex="adressId" />
         <Column title="联系人" dataIndex="contactsId" />

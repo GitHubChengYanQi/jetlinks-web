@@ -182,7 +182,7 @@ const ContactsTable = (props) => {
           );
         }} />
       </Table>
-      <Modal width={500} title="联系人" component={ContactsEdit}  onSuccess={() => {
+      <Modal width={1000} title="联系人" component={ContactsEdit}  onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

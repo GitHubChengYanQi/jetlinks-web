@@ -68,8 +68,8 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
               <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
                 <ProCard style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
                   <FormItem label="项目" name="businessId" component={SysField.BusinessId} val={val} />
-                  <FormItem label="跟单内容" name="type" component={SysField.Type} />
-                  <FormItem label="跟单信息" name="note" component={SysField.Note} />
+                  <FormItem label="跟进内容" name="type" component={SysField.Type} />
+                  <FormItem label="跟进信息" name="note" component={SysField.Note} />
                   <FormItem label="图片" name="image" component={SysField.Image} />
                   <Switch
                     size="small"
@@ -81,7 +81,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                       setTxHidden(!txHidden);
                     }}
                   > </Switch>
-                  {txHidden ? <FormItem label="跟单提醒时间" name="time" component={SysField.Time} /> : null}
+                  {txHidden ? <FormItem label="跟进提醒时间" name="time" component={SysField.Time} /> : null}
                   {txHidden ? <FormItem label="提醒内容" name="message" component={SysField.Message} /> : null}
                   <Switch
                     size="small"

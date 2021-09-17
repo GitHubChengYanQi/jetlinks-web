@@ -32,7 +32,7 @@ export const SalesProcessPlanId = (props) => {
     <>
       <Descriptions
         bordered
-        title="跟单计划"
+        title="跟进计划"
         // size={this.state.size}
         // extra={<Button type="primary">Edit</Button>}
       >

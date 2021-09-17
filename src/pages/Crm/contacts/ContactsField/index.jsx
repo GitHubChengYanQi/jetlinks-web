@@ -74,3 +74,7 @@ export const CustomerId = (props) => {
   }
   return (<Select disabled={customerId} api={apiUrl.customerIdSelect} {...props} />);
 };
+
+export const PhoneNumber = (props) =>{
+  return (<InputNumber  style={{width: 150}}  {...props}/>);
+};
