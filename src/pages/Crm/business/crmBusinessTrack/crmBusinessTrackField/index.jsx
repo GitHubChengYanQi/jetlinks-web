@@ -15,6 +15,7 @@ import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import UpLoadImg from '@/components/Upload';
 import Modal from '@/components/Modal';
 import Select from '@/components/Select';
+import {BusinessNameListSelect} from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackUrl';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -73,7 +74,7 @@ export const Type = (props) => {
 };
 
 export const CustomerId = (props) => {
-  return (<Select api={apiUrl.customerIdSelect} {...props} />);
+  return (<Select api={apiUrl.customerIdSelect} {...props} disabled />);
 };
 
 export const Classify = (props) => {
@@ -81,10 +82,19 @@ export const Classify = (props) => {
     props.onChange(value);
   }} />);
 };
+export const ContractId = (props) => {
+  return (<Input {...props}  />);
+};
+
+export const OrderId = (props) => {
+  return (<Input {...props}  />);
+};
+export const Name = (props) => {
+  return (<Input {...props}  />);
+};
 
 export const BusinessId = (props) => {
-  props.onChange(props.val.businessId);
-  return (<Input {...props} value={props.val.businessName} />);
+  return (<Select api={apiUrl.BusinessNameListSelect} {...props} />);
 };
 export const CompetitorsQuoteId = (props) => {
   const {competitorsQuoteId} = props;
