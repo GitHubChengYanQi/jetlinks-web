@@ -12,7 +12,7 @@ const {FormItem} = Form;
 const Track = (props) => {
 
 
-  const {value, number} = props;
+  const {value, number, trackMessageId} = props;
   const tableRef = useRef(null);
 
   const datas = (data) => {
@@ -47,6 +47,7 @@ const Track = (props) => {
       <>
         <FormItem placeholder="classifyId" hidden value={value.businessId} name="classifyId" component={SysField.Name}/>
         <FormItem placeholder="classify" hidden value={number} name="classify" component={SysField.Name} />
+        <FormItem placeholder="trackMessageId" hidden value={trackMessageId} name="trackMessageId" component={SysField.Name} />
       </>);
   };
 

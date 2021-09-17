@@ -38,7 +38,6 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 const CrmBusinessTrackEdit = ({...props}, ref) => {
 
   const {val, number} = props;
-  console.log(222222222222, val);
   const formRef = useRef();
   useImperativeHandle(ref, () => ({
     formRef,
@@ -59,7 +58,6 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
       <div style={{height: height()}}>
         <Form
           {...props}
-          NoButton={false}
           ref={formRef}
           api={ApiConfig}
           fieldKey="trackMessageId"

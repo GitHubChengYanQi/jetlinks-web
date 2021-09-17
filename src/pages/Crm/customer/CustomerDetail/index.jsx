@@ -20,6 +20,9 @@ import styles from './index.module.scss';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
+import {EditOutlined} from '@ant-design/icons';
+import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
+import Modal from '@/components/Modal';
 
 const {TabPane} = Tabs;
 
@@ -29,7 +32,7 @@ const CustomerDetail = () => {
   const [responsive, setResponsive] = useState(false);
 
   const ref = useRef(null);
-
+  const refTrack = useRef(null);
   const {loading, data, run,refresh} = useRequest(customerDetail, {
     defaultParams: {
       data: {
@@ -63,6 +66,17 @@ const CustomerDetail = () => {
 
         </div>
         <div className={styles.titleButton}>
+
+          <Button
+            style={params.state === 'false' ? {'display': 'none' }: null }
+            onClick={() => {
+              refTrack.current.open(false);
+            }} icon={<EditOutlined/>}>添加跟进</Button>
+          <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
+            refTrack.current.close();
+            refresh();
+          }} val={data} number={0}/>
+
           <Button type="primary" onClick={() => {
             ref.current.open(data.customerId);
           }}>编辑</Button>
@@ -138,7 +152,7 @@ const CustomerDetail = () => {
                   <Dynamic value={data} />
                 </TabPane>
                 <TabPane tab="跟进" key="2">
-                  <Track value={data} number={2}/>
+                  <Track value={data} number={0} trackMessageId={data.trackMessageId}/>
                 </TabPane>
               </Tabs>
             </Card>
