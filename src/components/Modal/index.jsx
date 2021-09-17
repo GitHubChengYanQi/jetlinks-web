@@ -1,7 +1,5 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Button, message, Modal as AntdModal} from 'antd';
-import {Reset, Submit} from '@formily/antd';
-import Title from '@/components/Title';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import {message, Modal as AntdModal} from 'antd';
 
 const Modal = (
   {
@@ -16,14 +14,15 @@ const Modal = (
     onClose = () => {
     },
     compoentRef,
+    children,
     ...props
   }, ref) => {
 
 
 
   const [value, show] = useState(null);
-
-  if (modal!==undefined){
+  const [height, setHeight] = useState(null);
+  if (modal !== undefined) {
     show(false);
   }
 
@@ -40,13 +39,32 @@ const Modal = (
     close
   }));
 
+  const setSize = () => {
+    const modalContent = document.getElementById('modalContent');
+    if (modalContent) {
+      setHeight(document.body.offsetHeight - 110);
+    }
+  };
+
+  useEffect(() => {
+    window.onresize = () => {
+      setSize();
+    };
+  }, []);
+
+  useEffect(() => {
+    setSize();
+
+  }, [Component, children]);
+
   const visible = value !== null && value !== undefined;
+
+  console.log(width);
 
   return (
     <AntdModal
-      style={{minWidth:800}}
       visible={visible}
-      footer={footer || []}
+      footer={footer || null}
       centered
       maskClosable={false}
       onCancel={() => {
@@ -54,25 +72,28 @@ const Modal = (
         onClose();
         onSuccess();
       }}
-      bodyStyle={{padding:padding || 24}}
+      bodyStyle={{padding: 0}}
       width={width}
-      title={<Title title={title &&  (value ? `编辑${title}` : `添加${title}`)} level={3} />}
+      title={title}
       destroyOnClose
     >
-      {Component && <Component
-        {...props}
-        ref={compoentRef}
-        value={value}
-        onSuccess={(response) => {
-          // message.success(response.message);
-          onSuccess();
-        }}
-        onError={(error) => {
-          message.error(error.message);
-          show(null);
-          onClose();
-        }}
-      />}
+      <div style={{maxHeight: height, overflow: 'auto'}}>
+        <div id="modalContent">
+          {Component ? <Component
+            {...props}
+            ref={compoentRef}
+            value={value}
+            onSuccess={(response) => {
+              onSuccess();
+            }}
+            onError={(error) => {
+              message.error(error.message);
+              show(null);
+              onClose();
+            }}
+          /> : children}
+        </div>
+      </div>
     </AntdModal>
   );
 };
