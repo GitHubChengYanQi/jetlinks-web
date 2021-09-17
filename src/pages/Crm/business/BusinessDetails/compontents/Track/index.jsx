@@ -1,8 +1,9 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Comment, Image, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -10,8 +11,8 @@ const {FormItem} = Form;
 
 const Track = (props) => {
 
-  const {value} = props;
-  // const [data, setData] = useState();
+
+  const {value, number} = props;
   const tableRef = useRef(null);
 
   const datas = (data) => {
@@ -36,42 +37,40 @@ const Track = (props) => {
         </>
       ),
       datetime: (
-        <span>{value.createTime}</span>
+        <span>{data.createTime}</span>
       ),
     };
   };
 
   const searchForm = () => {
-
     return (
-      <div style={{maxWidth: 800}}>
-        <FormItem placeholder="businessId" hidden value={value.businessId} name="businessId" component={SysField.Name} />
-      </div>
-    );
+      <>
+        <FormItem placeholder="classifyId" hidden value={value.businessId} name="classifyId" component={SysField.Name}/>
+        <FormItem placeholder="classify" hidden value={number} name="classify" component={SysField.Name} />
+      </>);
   };
 
   return (
     <div>
       <Table
         searchForm={searchForm}
-        headStyle={{display:'none'}}
+        headStyle={{display: 'none'}}
         rowSelection
         bordered={false}
-        bodyStyle={{padding:0}}
+        bodyStyle={{padding: 0}}
         selectionType
         showHeader={false}
         dynamic
         ref={tableRef}
         showSearchButton={false}
         api={{
-          url: '/trackMessage/list', method: 'POST'
+          url: '/businessTrack/list', method: 'POST'
         }}
-        rowKey="trackMessageId"
+        rowKey="trackId"
       >
         <Column render={(text, record) => {
           // setData(record);
           return (
-
             <Comment
               {...datas(record)}
             />

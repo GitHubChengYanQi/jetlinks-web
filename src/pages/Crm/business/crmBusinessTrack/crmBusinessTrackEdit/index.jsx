@@ -72,7 +72,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                 </ProCard>
                 <ProCard style={{marginTop: 2}} title={<Title title="事项" level={4} />} headerBordered>
                   <FieldList
-                    name="trackParam"
+                    name="businessTrackParams"
                     initialValue={[
                       {classify: '', classifyId: '', type: '', note: '', image : '', time: '', message: '', money: ''},
                     ]}
@@ -86,15 +86,15 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                             return (
                               <div key={index}>
                                 <RowStyleLayout key={index}>
-                                  <FormItem label="分类" name={`trackParam.${index}.classify`} component={SysField.Classify}  value={classNmb} onChange={(value)=>{ setClassNmb(value);}}/>
-                                  {classNmb === 0 ? <FormItem label="日常" name={`trackParam.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
-                                  {classNmb === 1 ? <FormItem label="商机" name={`trackParam.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
-                                  {classNmb === 2 ? <FormItem label="合同" name={`trackParam.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
-                                  {classNmb === 3 ? <FormItem label="订单" name={`trackParam.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
-                                  {classNmb === 4 ? <FormItem label="回款" name={`trackParam.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
-                                  <FormItem label="跟踪类型" name={`trackParam.${index}.type`} component={SysField.Type}/>
-                                  <FormItem label="跟踪内容" name={`trackParam.${index}.note`} component={SysField.Note}/>
-                                  <FormItem label="图片" name={`trackParam.${index}.image`} component={SysField.Image}/>
+                                  <FormItem label="分类" name={`businessTrackParams.${index}.classify`} component={SysField.Classify}  value={classNmb} onChange={(value)=>{ setClassNmb(value);}}/>
+                                  {classNmb === 0 ? <FormItem label="日常" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
+                                  {classNmb === 1 ? <FormItem label="商机" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
+                                  {classNmb === 2 ? <FormItem label="合同" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
+                                  {classNmb === 3 ? <FormItem label="订单" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
+                                  {classNmb === 4 ? <FormItem label="回款" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} val={val} /> : null}
+                                  <FormItem label="跟踪类型" name={`businessTrackParams.${index}.type`} component={SysField.Type}/>
+                                  <FormItem label="跟踪内容" name={`businessTrackParams.${index}.note`} component={SysField.Note}/>
+                                  <FormItem label="图片" name={`businessTrackParams.${index}.image`} component={SysField.Image}/>
                                   <Switch
                                     size="small"
                                     style={{marginLeft: '18%', marginBottom: 20, width: 100}}
@@ -105,8 +105,8 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                       setTxHidden(!txHidden);
                                     }}
                                   > </Switch>
-                                  {txHidden ? <FormItem label="跟进提醒时间" name={`trackParam.${index}.time`} component={SysField.Time} /> : null}
-                                  {txHidden ? <FormItem label="提醒内容" name={`trackParam.${index}.message`} component={SysField.Message} /> : null}
+                                  {txHidden ? <FormItem label="跟进提醒时间" name={`businessTrackParams.${index}.time`} component={SysField.Time} /> : null}
+                                  {txHidden ? <FormItem label="提醒内容" name={`businessTrackParams.${index}.message`} component={SysField.Message} /> : null}
                                   <Switch
                                     size="small"
                                     style={{marginLeft: '18%', marginBottom: 20, width: 100}}
@@ -117,7 +117,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                       setHidden(!hidden);
                                     }}
                                   > </Switch>
-                                  {hidden ? <FormItem label="报价金额" name={`trackParam.${index}.money`} component={SysField.Money} /> : null}
+                                  {hidden ? <FormItem label="报价金额" name={`businessTrackParams.${index}.money`} component={SysField.Money} /> : null}
                                   <Button
                                     type="link" style={{float: 'right'}}
                                     onClick={() => {

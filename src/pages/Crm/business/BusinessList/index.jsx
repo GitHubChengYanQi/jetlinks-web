@@ -41,10 +41,36 @@ const BusinessList = () => {
 
   const [status, setStatus] = useState();
   const [state, setState] = useState();
+  const [statement, setStatement] = useState();
 
   const Left = () => {
     return (
       <div>
+        <Tree
+          showLine
+          onSelect={(value) => {
+            setStatement(value);
+          }}
+          // switcherIcon={<DownOutlined />}
+          defaultExpandedKeys={['']}
+          // onSelect={this.onSelect}
+          treeData={[
+            {
+              title: '所有完单',
+              key: '',
+              children: [
+                {
+                  title:'赢单',
+                  key:'赢单'
+                },{
+                  title:'输单',
+                  key:'输单'
+                },
+              ],
+            },
+          ]}
+        />
+        <Divider />
         <div>
           <Select
             api={crmBusinessSalesListSelect}
@@ -124,7 +150,7 @@ const BusinessList = () => {
 
   return (
     <ListLayout left={Left()}>
-      <BusinessTable status={status} state={state} />
+      <BusinessTable status={status} state={state} statement={statement}  />
     </ListLayout>
   );
 };
