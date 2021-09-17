@@ -8,7 +8,6 @@
 import React, { useRef, useState} from 'react';
 import {Button,} from 'antd';
 import Form from '@/components/Form';
-import FormIndex from '@/components/Form/FormIndex';
 import {useRequest} from '@/util/Request';
 import {
   businessDetail,
@@ -38,7 +37,7 @@ const BusinessEdit = (props) => {
 
   return (
 
-    <FormIndex
+    <Form
       {...props}
       value={result}
       ref={tableRef}
@@ -85,10 +84,6 @@ const BusinessEdit = (props) => {
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
         required />
-      {/*<FormItem*/}
-      {/*  label="商机阶段" name="stage"*/}
-      {/*  rules={[{required: true, message: '请输入商机阶段!'}]}*/}
-      {/*  component={SysField.StageListSelect13}  required />*/}
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
@@ -102,7 +97,7 @@ const BusinessEdit = (props) => {
           完成创建
         </Button>
       </div>
-    </FormIndex>
+    </Form>
   );
 };
 

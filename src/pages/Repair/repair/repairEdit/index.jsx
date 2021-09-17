@@ -10,15 +10,9 @@ import {Button, Col, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
 import {repairDetail, repairAdd, repairEdit} from '../repairUrl';
 import * as SysField from '../repairField';
-import FormIndex from '@/components/Form/FormIndex';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-import Drawer from '@/components/Drawer';
-import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
-import CompanyAddressEdit from '@/pages/Portal/companyAddress/companyAddressEdit';
 import {useRequest} from '@/util/Request';
 import ProCard from '@ant-design/pro-card';
 import {MegaLayout} from '@formily/antd-components';
-import {Img} from '../repairField';
 
 const {FormItem} = Form;
 

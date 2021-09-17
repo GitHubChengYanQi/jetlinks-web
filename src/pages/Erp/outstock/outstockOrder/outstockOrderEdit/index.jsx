@@ -10,13 +10,6 @@ import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
 import {outstockOrderDetail, outstockOrderAdd, outstockOrderEdit} from '../outstockOrderUrl';
 import * as SysField from '../outstockOrderField';
-import OutstockList from '@/pages/Erp/outstock/OutstockList';
-import FormIndex from '@/components/Form/FormIndex';
-import {
-  outstockApplyAdd,
-  outstockApplyDetail,
-  outstockApplyEdit
-} from '@/pages/Erp/outstockApply/outstockApplyUrl';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import styled from 'styled-components';
 
