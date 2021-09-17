@@ -9,11 +9,11 @@ const ListLayout = ({left, children}) => {
 
   return (
     <Layout style={{height: '100%'}}>
-      <Sider className={styles.sider} width={210}>
+      {left && <Sider className={styles.sider} width={210}>
         <div style={{padding: 8}}>
           {left}
         </div>
-      </Sider>
+      </Sider>}
       <Content
         // style={{marginLeft: 260}}
       >

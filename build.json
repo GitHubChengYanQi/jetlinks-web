@@ -4,11 +4,6 @@
   "plugins": [
     "build-plugin-fast-refresh",
     [
-      "build-plugin-fusion",
-      {
-      }
-    ],
-    [
       "build-plugin-moment-locales",
       {
         "locales": [
@@ -27,6 +22,7 @@
       "build-plugin-antd",
       {
         "themeConfig": {
+          "primary-color": "#416e91"
         }
       }
     ]

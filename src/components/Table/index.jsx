@@ -1,5 +1,5 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
-import {Card, Table as AntdTable} from 'antd';
+import {Card, Layout, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
 import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
@@ -8,6 +8,7 @@ import useUrlState from '@ahooksjs/use-url-state';
 import style from './index.module.less';
 
 const {Column} = AntdTable;
+const {Sider, Content} = Layout;
 
 const formActionsPublic = createFormActions();
 
@@ -33,9 +34,11 @@ const TableWarp = ({
   footer: parentFooter,
   isModal = true,
   formActions = null,
+  left,
   ...props
 }, ref) => {
 
+  console.log(left);
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
@@ -137,55 +140,66 @@ const TableWarp = ({
             <div className="button">{actions}</div>
           </div>
         </div> : null}
-        {searchForm ? <div className="search">
-          <Form
-            layout={layout || 'inline'}
+
+      </div>
+      <Layout>
+        {left &&<Sider className={style.sider} width={210}>
+          {left}
+        </Sider>}
+        <Content
+          // style={{marginLeft: 260}}
+        >
+          {searchForm ? <div className="search">
+            <Form
+              layout={layout || 'inline'}
+              {...form}
+              actions={formActions}
+            >
+              {typeof searchForm === 'function' && searchForm()}
+              {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+
+            </Form>
+          </div> : <Form
+            layout="inline"
             {...form}
             actions={formActions}
-          >
-            {typeof searchForm === 'function' && searchForm()}
-            {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+          />}
+          <Card bordered={bordered} bodyStyle={bodyStyle}>
+            <AntdTable
+              showTotal
+              loading={loading}
+              dataSource={dataSource || []}
+              rowKey={rowKey}
+              columns={columns}
+              pagination={
+                {
+                  ...pagination,
+                  position: ['bottomRight']
+                }
+              }
+              rowSelection={!rowSelection && {
+                type: selectionType || 'checkbox',
+                onChange: (selectedRowKeys, selectedRows) => {
+                  typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
+                }
+              }}
+              footer={footer}
+              layout
+              scroll={{x: 'max-content'}}
+              sticky={{
+                getContainer: () => {
+                  return document.getElementById('listLayout');
+                }
+              }}
+              {...other}
+              {...props}
+            >
+              {children}
+            </AntdTable>
+          </Card>
+        </Content>
+      </Layout>
 
-          </Form>
-        </div> : <Form
-          layout="inline"
-          {...form}
-          actions={formActions}
-        />}
-      </div>
-      <Card bordered={bordered} bodyStyle={bodyStyle}>
-        <AntdTable
-          showTotal
-          loading={loading}
-          dataSource={dataSource || []}
-          rowKey={rowKey}
-          columns={columns}
-          pagination={
-            {
-              ...pagination,
-              position: ['bottomRight']
-            }
-          }
-          rowSelection={!rowSelection && {
-            type: selectionType || 'checkbox',
-            onChange: (selectedRowKeys, selectedRows) => {
-              typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
-            }
-          }}
-          footer={footer}
-          layout
-          scroll={{x: 'max-content'}}
-          sticky={{
-            getContainer: () => {
-              return document.getElementById('listLayout');
-            }
-          }}
-          {...other}
-          {...props}
-        >
-          {children}
-        </AntdTable>
-      </Card>
     </div>
   );
 };

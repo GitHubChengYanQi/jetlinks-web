@@ -111,8 +111,8 @@ const CustomerList = () => {
       </>);
   };
   return (
-    <ListLayout left={Left()}>
-      <CustomerTable status={status} state={state} level={level} />
+    <ListLayout>
+      <CustomerTable left={Left()} status={status} state={state} level={level} />
     </ListLayout>
   );
 };
