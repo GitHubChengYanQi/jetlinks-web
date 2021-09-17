@@ -10,15 +10,9 @@ import {Input, InputNumber, Select as AntdSelect, Button, Popover, AutoComplete,
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
-import {useRequest} from '@/util/Request';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
-import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
 import * as apiUrl from '../BusinessUrl';
-import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
-import AddCustomer from '@/pages/Crm/customer/components/AddCustomer';
-import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 import DatePicker from '@/components/DatePicker';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 const w = 200;
 // 项目Id
@@ -42,7 +36,6 @@ export const BusinessNameListSelect = (props) => {
 // 负责人
 export const PersonListSelect = (props) => {
   const {userid, value} = props;
-  console.log(111111, props);
   if (userid === '' && value !== null) {
     //
   }else if (userid !== undefined) {
@@ -55,7 +48,7 @@ export const CustomerNameListSelect = (props) => {
 
   const {user} = props;
 
-  return (<SelectAddCustomer  {...props} onChange={(value) => {
+  return (<SelectCustomer  {...props} onChange={(value) => {
     props.onChange(value);
     user(value);
   }} />);

@@ -8,25 +8,17 @@
 import React, {useEffect} from 'react';
 import {
   Input,
-  InputNumber,
-  TimePicker,
-  DatePicker,
-  Select as AntdSelect,
-  Checkbox,
-  Radio,
   Select as AntSelect
 } from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 import * as apiUrl from '../deliveryDetailsUrl';
-import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 
 
 export const Customer = (props) => {
   const {customerid, onChange} = props;
   return (<>
-    <SelectAddCustomer {...props} onChange={(value) => {
+    <SelectCustomer {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />

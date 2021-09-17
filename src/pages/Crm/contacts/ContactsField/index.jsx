@@ -14,6 +14,7 @@ import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
 import * as apiUrl from '../contactsUrl';
 import {useRequest} from '@/util/Request';
 import {value} from '@/pages/Portal/remind/remindField';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 
 export const ContactsName = (props) => {
@@ -63,6 +64,15 @@ export const CompanyRole = (props) => {
       }} />
     </div>
 
+  );
+};
+
+export const SelectCustomers = (props) => {
+
+  return (
+    <SelectCustomer {...props} onChange={(value)=>{
+      props.onChange(value);
+    }} />
   );
 };
 

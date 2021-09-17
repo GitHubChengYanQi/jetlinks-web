@@ -43,9 +43,7 @@ const Modal = (
   }));
 
   const setSize = () => {
-    console.log(domId);
     const modalContent = document.getElementById(`modalContent-${domId}`);
-    console.log(modalContent);
     // if (modalContent) {
       setHeight(document.body.offsetHeight - 110);
     // }
@@ -64,7 +62,6 @@ const Modal = (
 
   const visible = value !== null && value !== undefined;
 
-  console.log(111,width);
 
   return (
     <AntdModal

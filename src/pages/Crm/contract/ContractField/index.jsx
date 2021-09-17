@@ -6,8 +6,8 @@
  */
 
 
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, InputNumber, Select as AntSelect} from 'antd';
+import React, {useEffect,  useState} from 'react';
+import { Input, InputNumber, Select as AntSelect} from 'antd';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
@@ -16,12 +16,7 @@ import ChooseCustomer from '@/pages/Crm/contract/components/Choose';
 import DatePicker from '@/components/DatePicker';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import ErpPackageList from '@/pages/Erp/package/packageList';
-import {PlusOutlined} from '@ant-design/icons';
-import Drawer from '@/components/Drawer';
-import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
-import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 export const CustomerId = (props) => {
   return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
@@ -31,9 +26,9 @@ export const Customer = (props) => {
 
   const {customerid, onChange} = props;
   return (<>
-    <SelectAddCustomer {...props} onChange={(value) => {
-      onChange(value);
-      customerid(value);
+    <SelectCustomer {...props} onChange={(value) => {
+      onChange(value.customerId);
+      customerid(value.customerId);
     }} />
   </>);
 };

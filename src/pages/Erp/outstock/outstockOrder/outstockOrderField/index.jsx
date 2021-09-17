@@ -11,8 +11,7 @@ import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {storeHouseSelect} from '@/pages/Erp/outstock/OutstockUrl';
 import * as apiUrl from '@/pages/Erp/outstockApply/outstockApplyUrl';
-import {UserIdSelect} from '@/pages/Erp/outstockApply/outstockApplyUrl';
-import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 export const State = (props) =>{
   props.onChange(1);
@@ -50,7 +49,7 @@ export const Number = (props) =>{
 export const Customer = (props) => {
   const {customerid, onChange} = props;
   return (<>
-    <SelectAddCustomer {...props} onChange={(value) => {
+    <SelectCustomer {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />

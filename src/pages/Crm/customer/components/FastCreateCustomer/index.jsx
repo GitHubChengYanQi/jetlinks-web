@@ -7,7 +7,12 @@ import style from './index.module.less';
 
 const FastCreateCustomer = ({close, add}) => {
 
-  const {run} = useRequest(customerAdd, {manual: true});
+  const {run} = useRequest(customerAdd, {
+    manual: true,
+    onError:(error)=>{
+      message.error(error.message);
+    }
+  });
 
   const [value, setValue] = useState();
 
@@ -15,7 +20,7 @@ const FastCreateCustomer = ({close, add}) => {
     <>
       <Card
         bodyStyle={{padding: '20px 0'}}
-        extra={  <Button type="link" style={{padding: 0, float: 'right', lineHeight: '100%'}} onClick={() => {
+        extra={<Button type="link" style={{padding: 0, float: 'right', lineHeight: '100%'}} onClick={() => {
           typeof close === 'function' && close();
         }}>
           <CloseOutlined />
@@ -39,6 +44,7 @@ const FastCreateCustomer = ({close, add}) => {
                   }
                 }
               );
+              console.log(data);
               typeof add === 'function' && add(data);
             } else {
               message.info('请输入客户名称！');

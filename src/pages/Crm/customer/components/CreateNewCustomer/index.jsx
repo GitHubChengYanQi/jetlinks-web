@@ -1,6 +1,6 @@
 import Modal from '@/components/Modal';
 import {Button, Space} from 'antd';
-import React, {useImperativeHandle, useRef} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 
@@ -8,19 +8,25 @@ const CreateNewCustomer = ({
   onSuccess,
   title,
   widths,
+  onChange,
   ...props
 }, ref) => {
+
 
   const compoentRef = useRef();
   const modalRef = useRef();
 
-  const open = () => {
-    // crmBusinessSalesRun();
-    modalRef.current.open(false);
+  const [value,setValue] = useState();
+
+
+
+  const open = (value) => {
+    setValue(value);
+    modalRef.current.open(value);
   };
 
   const close = () => {
-    // setIsModalVisible(false);
+    modalRef.current.close();
   };
 
   useImperativeHandle(ref, () => ({
@@ -40,10 +46,12 @@ const CreateNewCustomer = ({
           }}>取消</Button>
         </Space>
       </>
-    } title={title} onSuccess={() => {
-      typeof onSuccess === 'function' && onSuccess();
-    }} {...props} >
-      <CustomerEdit value={false} />
+    } title={title}  >
+      <CustomerEdit value={value} ref={compoentRef} onSuccess={()=>{
+        onSuccess();
+      }} onChange={(res)=>{
+        typeof onChange === 'function' && onChange(res);
+      }}  />
     </Modal>
   );
 };

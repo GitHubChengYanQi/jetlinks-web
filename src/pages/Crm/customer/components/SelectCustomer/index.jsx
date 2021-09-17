@@ -2,17 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {Col, Row} from 'antd';
 import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
-import AddCustomer from '@/pages/Crm/customer/components/AddCustomer';
+import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton';
 
 
-const SelectAddCustomer = (props) => {
+const SelectCustomer = (props) => {
 
   const {value,onChange} = props;
 
 
   const [visible, setVisible] = useState(false);
-
-  const [val, setVal] = useState();
 
   const [blur, setBlur] = useState();
 
@@ -25,7 +23,7 @@ const SelectAddCustomer = (props) => {
           customerId: value
         }
       }).then((res) => {
-        setVal(res && res.customerName);
+        onChange(res);
       });
     }
   }, []);
@@ -36,7 +34,7 @@ const SelectAddCustomer = (props) => {
       <Row gutter={24}>
         <Col span={15}>
           <CustomerSelect
-            value={val || null}
+            value={value && value.customerName}
             method={false}
             onSuccess={async (value) => {
               const customer = await run({
@@ -44,11 +42,11 @@ const SelectAddCustomer = (props) => {
                   customerId: value
                 }
               });
-              onChange(value);
-              setVal(customer && customer.customerName);
+              onChange(customer);
               setBlur(true);
             }}
             onChange={(value) => {
+              onChange(value);
               setVisible(value);
               setBlur(false);
             }}
@@ -60,8 +58,8 @@ const SelectAddCustomer = (props) => {
           />
         </Col>
         <Col span={9}>
-          <AddCustomer {...props} visi={visible} setVal={(value) => {
-            setVal(value);
+          <AddCustomerButton {...props} visi={visible} onChange={(value) => {
+            onChange(value);
           }} />
         </Col>
       </Row>
@@ -70,4 +68,4 @@ const SelectAddCustomer = (props) => {
     </>
   );
 };
-export default SelectAddCustomer;
+export default SelectCustomer;
