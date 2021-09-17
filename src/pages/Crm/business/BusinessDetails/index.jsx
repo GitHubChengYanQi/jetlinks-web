@@ -67,16 +67,17 @@ const CustomerDetail = () => {
               refTrack.current.open(false);
             }} icon={<EditOutlined/>}>添加跟进</Button>
 
+          <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
+            refTrack.current.close();
+            refresh();
+          }} val={data} number={1}/>
+
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }
             type="primary" onClick={() => {
               ref.current.open(data.businessId);
             }}>编辑</Button>
 
-          <CreateNewCustomer widths={1400} refModal={refTrack} model={CrmBusinessTrackEdit} onSuccess={() => {
-            refTrack.current.close();
-            refresh();
-          }} title='跟进' val={data} number={1}/>
 
           <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
@@ -148,7 +149,7 @@ const CustomerDetail = () => {
                     <Dynamic value={data}/>
                   </TabPane>
                   <TabPane tab="跟进" key="2">
-                    <Track classify={1} classifyId={data.businessId || null} customerId={data.customerId || null} />
+                    <Track value={data} number={1} />
                   </TabPane>
                 </Tabs>
               </Card>
