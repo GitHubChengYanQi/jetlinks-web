@@ -5,17 +5,19 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Steps, Modal} from 'antd';
+import React, { useRef, useState} from 'react';
+import {Button,} from 'antd';
 import Form from '@/components/Form';
 import FormIndex from '@/components/Form/FormIndex';
+import {useRequest} from '@/util/Request';
 import {
   businessDetail,
   businessAdd,
-  businessEdit, SalesIdListSelect,
+  businessEdit,
 } from '../BusinessUrl';
+
 import * as SysField from '../BusinessField';
-import {useRequest} from '@/util/Request';
+
 
 const {FormItem} = Form;
 
@@ -29,11 +31,9 @@ const BusinessEdit = (props) => {
 
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
-  const [userId, setUserId] = useState(null);
 
   const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
     onSuccess: (response) => {
-      setUserId(response ? response.userId : null);
     }});
 
   return (
@@ -84,7 +84,6 @@ const BusinessEdit = (props) => {
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
-        userid={userId}
         required />
       {/*<FormItem*/}
       {/*  label="销售流程" name="salesId"*/}
