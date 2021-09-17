@@ -110,7 +110,6 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                     label="客户名称" name="customerName" component={SysField.CustomerName}
                     method={props.value}
                     onSuccess={(customerId) => {
-                      props.onSuccess();
                       history.push(`/CRM/customer/${customerId}`);
                     }} required />
 

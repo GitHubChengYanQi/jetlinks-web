@@ -1,11 +1,10 @@
 import {Button, Dropdown, Menu, Popover} from 'antd';
 import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import React, {useEffect, useRef, useState} from 'react';
 
 
-const AddCustomer = (props) => {
+const AddCustomerButton = (props) => {
 
 
   const {onChange, visi} = props;
@@ -38,7 +37,7 @@ const AddCustomer = (props) => {
         }} add={(value) => {
           setDrow(false);
           setVisible(false);
-          onChange(value && value.customerId);
+          onChange(value);
         }} />} trigger="click">
           <Button danger onClick={() => {
             setVisible(true);
@@ -75,10 +74,9 @@ const AddCustomer = (props) => {
         ref={ref}
         onChange={(res) => {
           onChange(res.data);
-
         }} />
     </>
   );
 };
 
-export default AddCustomer;
+export default AddCustomerButton;

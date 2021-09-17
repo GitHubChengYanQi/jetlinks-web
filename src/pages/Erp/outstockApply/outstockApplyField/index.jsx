@@ -9,19 +9,11 @@ import React, {useEffect} from 'react';
 import {
   Input,
   InputNumber,
-  TimePicker,
-  DatePicker,
-  Select as AntdSelect,
-  Checkbox,
-  Radio,
   Select as AntSelect
 } from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../outstockApplyUrl';
-import {UserIdSelect} from '../outstockApplyUrl';
-import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 export const ApplyState = (props) =>{
   return (<Input {...props}/>);
@@ -50,7 +42,7 @@ export const Number = (props) =>{
 export const Customer = (props) => {
   const {customerid, onChange} = props;
   return (<div style={{width:340}}>
-    <SelectAddCustomer {...props} onChange={(value) => {
+    <SelectCustomer {...props} onChange={(value) => {
       onChange(value);
       customerid(value);
     }} />

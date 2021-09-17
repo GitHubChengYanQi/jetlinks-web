@@ -6,22 +6,14 @@ const CustomerSelect = (props) => {
 
 
   const {value: values, onChange, style, method, onblur,disabled,onSuccess, ...other} = props;
-  const [val, setVal] = useState();
-
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
     manual: true,
   });
 
-  useEffect(() => {
-    setVal(values);
-  }, [values]);
-
-
   const handleChange = async value => {
     if (value) {
-      setVal(value);
       onChange(value);
       await run({
         data: {
@@ -29,7 +21,6 @@ const CustomerSelect = (props) => {
         }
       });
     } else {
-      setVal(value);
       await run({
         data: {
           customerName: ' '
@@ -54,10 +45,9 @@ const CustomerSelect = (props) => {
         dropdownMatchSelectWidth={100}
         options={content}
         style={style}
-        value={val}
+        value={values}
         onSelect={(value)=>{
           onSuccess(value);
-          // setVal(values);
         }}
       >
         <Input.Search
