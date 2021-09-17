@@ -91,7 +91,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
                 <div style={{paddingRight: 20}}>
                   <FormItem label="负责人" component={SysField.UserId} name="userId" required />
 
-                  <FormItem label="仓库" component={SysField.StoreHouse} name="storehouse" required />
+                  <FormItem label="仓库" component={SysField.StoreHouse} name="stockId" required />
 
 
                   <FormItem
