@@ -51,7 +51,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
     }
-    return 750;
+    return 930;
   };
 
   if (val) {

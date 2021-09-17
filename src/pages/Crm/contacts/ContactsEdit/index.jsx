@@ -7,13 +7,14 @@
 
 import React, {useRef, useState} from 'react';
 import {Button, Col, Divider, Input, Row, Steps} from 'antd';
-import Form from '@/components/Form';
-import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
-import Title from '@/components/Title';
-import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import styled from 'styled-components';
+import ProCard from '@ant-design/pro-card';
+import Title from '@/components/Title';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
+import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
+import Form from '@/components/Form';
 
 const {FormItem} = Form;
 
@@ -35,11 +36,10 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-
 const ContactsEdit = ({...props}) => {
 
   const {customerId} = props;
-  const formRef = useRef();
+  const formRef = useRef(null);
   const [result, setResult] = useState(props.value);
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
@@ -60,6 +60,7 @@ const ContactsEdit = ({...props}) => {
             if(data.data !== ''){
               setResult(data.data.contactsId);
             }
+            props.onSuccess();
           }}
         >
           <Row gutter={24}>
