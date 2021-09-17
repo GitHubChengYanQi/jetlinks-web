@@ -9,13 +9,11 @@ import React, {useRef, useState} from 'react';
 import {Button, Col, Divider, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
 import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
-import PhoneList from '@/pages/Crm/phone/phoneList';
-import FormIndex from '@/components/Form/FormIndex';
 import Title from '@/components/Title';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import styled from 'styled-components';
-import {PhoneNumber} from '../ContactsField';
+import * as SysField from '@/pages/Crm/contacts/ContactsField';
 
 const {FormItem} = Form;
 
@@ -47,7 +45,7 @@ const ContactsEdit = ({...props}) => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
     }
-    return 450;
+    return 500;
   };
   return (
     <>
