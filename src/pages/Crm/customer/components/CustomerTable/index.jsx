@@ -36,8 +36,8 @@ const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level, choose} = props;
-
+  const {status, state, level, choose,...other} = props;
+console.log(other);
   const history = useHistory();
 
 
@@ -84,8 +84,9 @@ const CustomerTable = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+          columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerName" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -101,7 +102,7 @@ const CustomerTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
@@ -145,8 +146,9 @@ const CustomerTable = (props) => {
         onChange={(keys) => {
           setIds(keys);
         }}
+        {...other}
       >
-        <Column title="基础信息" fixed  dataIndex="customerName" render={(value, record) => {
+        <Column title="基础信息" fixed dataIndex="customerName" render={(value, record) => {
           return (
             <div>
               <Row gutter={24}>
@@ -154,10 +156,12 @@ const CustomerTable = (props) => {
                   <Avatar size={64}>LOGO</Avatar>
                 </Col>
                 <Col>
-                  <a onClick={()=>{
+                  <a onClick={() => {
                     history.push(`/CRM/customer/${record.customerId}`);
                   }}><strong>{value}</strong></a>
-                  <div><em style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</div>
+                  <div><em
+                    style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}
+                  </div>
                   <div>
                     <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
                   </div>

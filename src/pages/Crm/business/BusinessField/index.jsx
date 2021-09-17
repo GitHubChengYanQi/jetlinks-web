@@ -5,16 +5,15 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Button, Popover, AutoComplete, Row, Col} from 'antd';
+import React, {useRef} from 'react';
+import {Input, InputNumber, Select as AntdSelect, Button} from 'antd';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
-import * as apiUrl from '../BusinessUrl';
 import DatePicker from '@/components/DatePicker';
+import * as apiUrl from '../BusinessUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
-const w = 200;
 // 项目Id
 export const BusinessId = (props) => {
   return (<Input  {...props} />);
@@ -46,11 +45,9 @@ export const PersonListSelect = (props) => {
 // 客户名称
 export const CustomerNameListSelect = (props) => {
 
-  const {user} = props;
 
   return (<SelectCustomer  {...props}  onChange={(value) => {
     props.onChange(value.customerId);
-    user(value);
   }} />);
 };
 export const CustomerNameSelect = (props) => {

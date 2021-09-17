@@ -26,8 +26,8 @@ const BusinessSteps = ((props) => {
   };
 
   return (
-    <div style={{margin:'0 12px'}}>
-      <Row gutter={24}>
+    <div style={{margin:'0 12px',height:'100%'}}>
+      <Row gutter={24} style={{height:'100%'}}>
         <Col span={8}>
           <div style={{overflow: 'auto'}}>
             <ProCard>
@@ -41,8 +41,8 @@ const BusinessSteps = ((props) => {
             </ProCard>
           </div>
         </Col>
-        <Divider direction="ver" style={{height: '450px'}} />
-        <Col span={15}>
+
+        <Col span={16}>
           <ProCard>
             <div style={{overflow: 'auto'}}>
               <BusinessEdit

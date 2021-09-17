@@ -19,9 +19,12 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
   const [userInfo] = store.useModel('user');
   const {menus} = userInfo;
 
+
   const subMenu = Array.isArray(menus) && menus.find((item) => {
     return `/${item.id}` === match.path;
   });
+
+  // console.log(subMenu);
 
   const loopMenu = (subMenus) => {
     if (!Array.isArray(subMenus)) {
@@ -96,7 +99,13 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
         </div>
       </Header>}
       {mode === 'vertical' && <Sider theme="dark" width={220}>
-        {renderLeftMenu()}
+        <div>
+          <div className={styles.leftLogo}>
+            {subMenu.name}
+          </div>
+          {renderLeftMenu()}
+        </div>
+
         <div style={{position: 'absolute', bottom: 0, width: '100%', borderTop: '1px solid #666'}}>
           {renderRightMenu()}
         </div>

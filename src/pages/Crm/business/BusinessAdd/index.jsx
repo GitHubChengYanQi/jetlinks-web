@@ -1,5 +1,5 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Spin} from 'antd';
+import {Button, Spin} from 'antd';
 import {LeftOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
@@ -72,7 +72,9 @@ const BusinessAdd = (props, ref) => {
           {disable===3&&'完成'}
         </div>
       </div>}
-      footer={false}
+      footer={disable===2?<Button type="primary" htmlType="submit" onSubmit={()=>{}}  >
+        完成创建
+      </Button>:false}
       width={width()}
       className={styles.myModal}
     >

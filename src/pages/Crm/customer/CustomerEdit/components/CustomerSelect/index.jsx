@@ -6,6 +6,7 @@ const CustomerSelect = (props) => {
 
 
   const {value, onChange, style, method, onblur,disabled,onSuccess, ...other} = props;
+  console.log(value);
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
