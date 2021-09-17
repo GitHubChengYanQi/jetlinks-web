@@ -64,8 +64,8 @@ const AdressList = (props) => {
           );
         }}/>
         <Column title="地址" dataIndex="location"/>
-        <Column title="经度" dataIndex="longitude"/>
-        <Column title="纬度" dataIndex="latitude"/>
+        {/*<Column title="经度" dataIndex="longitude"/>*/}
+        {/*<Column title="纬度" dataIndex="latitude"/>*/}
         <Column/>
         <Column title="操作" align="right" render={(value, record) => {
           return (

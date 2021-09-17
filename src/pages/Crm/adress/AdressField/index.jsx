@@ -35,7 +35,9 @@ export const Map = (props) => {
 
   return (
     <>
-      <Input value={location && location.address} style={{width:'60%',marginRight:20,display:'inline-block'}} />
+      <Input value={location && location.address} style={{width:'60%',marginRight:20,display:'inline-block'}} onChange={(value)=>{
+        props.onChange({address:value.target.value});
+      }} />
       <div style={{textAlign: 'center',display:'inline-block'}}>
         <InputNumber
           style={{display: 'none'}}

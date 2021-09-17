@@ -83,7 +83,7 @@ const AddContractEdit = ({...props}) => {
     url: '/contacts/list',
     method: 'POST',
     data: {
-      customerId: result.partyB,
+      customerId: '1416605276529807486' || result.partyB,
     }
   });
   const {data: BPhone, run: runBPhone} = useRequest({
@@ -97,7 +97,7 @@ const AddContractEdit = ({...props}) => {
     url: '/adress/list',
     method: 'POST',
     data: {
-      customerId: result.partyB,
+      customerId: '1416605276529807486' || result.partyB,
     }
   });
   const formRef = useRef();
@@ -255,6 +255,7 @@ const AddContractEdit = ({...props}) => {
                 initialValue={false}
                 label="乙方"
                 name="partyB"
+                value='1416605276529807486'
                 component={SysField.Customer}
                 placeholder="请选择乙方客户"
                 val={value ? value.partBName : null}
