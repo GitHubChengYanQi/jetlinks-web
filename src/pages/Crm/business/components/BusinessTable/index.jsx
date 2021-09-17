@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, Spin, Table as AntTable} from 'antd';
+import {Button, Modal, Progress, Spin, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -37,7 +37,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state, onClose} = props;
+  const {status, state, statement} = props;
 
   const [ids, setIds] = useState([]);
   const [businessId, setBusinessId] = useState(null);
@@ -49,10 +49,8 @@ const BusinessTable = (props) => {
 
   const history = useHistory();
 
-  const ref = useRef(null);
   const tableRef = useRef(null);
   const addRef = useRef(null);
-  const emitRef = useRef(null);
   const [detail, setDetail] = useState(false);
   const [search, setSearch] = useState(false);
   const [showFlag, setShowFlag] = useState(false);
@@ -61,12 +59,13 @@ const BusinessTable = (props) => {
   useEffect(() => {
     setShow(true);
     setShow1(true);
-    if (status || state) {
+    if (status || state || statement) {
       tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
       tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
+      tableRef.current.formActions.setFieldValue('state', statement ? statement[0] : '');
       tableRef.current.submit();
     }
-  }, [status, state]);
+  }, [status, state,statement]);
 
 
   const actions = () => {
@@ -100,8 +99,7 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
-                    component={SysField.CustomerListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
         </>
       );
@@ -109,10 +107,8 @@ const BusinessTable = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"
-                    component={SysField.BusinessNameListSelect} />
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"  component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -136,6 +132,7 @@ const BusinessTable = (props) => {
             <MegaLayout inline>
               <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
               <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />
+              <FormItem hidden name="state" component={SysField.BusinessNameListSelect} />
             </MegaLayout>
           </FormButtonGroup>
 
@@ -199,13 +196,14 @@ const BusinessTable = (props) => {
               </div>
             );
           }} />
-        <Column title="销售流程" width={150} dataIndex="salesId" render={(value, record) => {
+        <Column title="盈率" width={150} align='center' dataIndex="salesId" render={(value, record) => {
           return (
-            <div>
-              {
-                record.sales ? record.sales.name : null
-              }
-            </div>
+            <Progress
+              width={60}
+              type="circle"
+              percent={record.process && record.process.percentage || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
+              status={record.state && (record.state === '赢单' ? 'success' : 'exception')}
+            />
           );
         }} />
         <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {

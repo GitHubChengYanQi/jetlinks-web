@@ -43,6 +43,8 @@ const StepList = (props) => {
 
     if (content === '赢单'){
       contract();
+    }else {
+      typeof pOnChange === 'function' && pOnChange();
     }
   };
 
@@ -90,7 +92,6 @@ const StepList = (props) => {
       onOk: async () => {
         await edit(values.salesProcessId);
         await openNotificationWithIcon('success', values.name);
-        typeof pOnChange === 'function' && pOnChange();
       }
     });
   };

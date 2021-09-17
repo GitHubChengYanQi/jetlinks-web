@@ -1,18 +1,42 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Comment, Image, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 
-const Track = (props) => {
+const Track = ({classify, classifyId, customerId}) => {
 
-  const {value} = props;
-  // const [data, setData] = useState();
+
   const tableRef = useRef(null);
+
+  const {data} = useRequest({url: '/trackMessage/listAll', method: 'POST', data: {customerId}});
+
+  const trackMessageIds = data ? data.map((items, index) => {
+    return items.trackMessageId;
+  }) : [];
+
+
+  useEffect(()=>{
+    console.log(trackMessageIds);
+    if (trackMessageIds.length > 0){
+      tableRef.current.formActions.setFieldValue('trackMessageIds', trackMessageIds);
+      tableRef.current.submit();
+    }
+  },[trackMessageIds]);
+
+  if (!customerId) {
+    return '暂无客户';
+  }
+
+
+
+
+
 
   const datas = (data) => {
     return {
@@ -36,16 +60,34 @@ const Track = (props) => {
         </>
       ),
       datetime: (
-        <span>{value.createTime}</span>
+        <span>{data.createTime}</span>
       ),
     };
   };
 
   const searchForm = () => {
-
     return (
-      <div style={{maxWidth: 800}}>
-        <FormItem placeholder="businessId" hidden value={value.businessId} name="businessId" component={SysField.Name} />
+      <div>
+        <FormItem
+          placeholder="trackMessageId"
+          hidden
+          value={trackMessageIds}
+          name="trackMessageIds"
+          component={SysField.Name}
+        />
+        {/*<FormItem*/}
+        {/*  placeholder="classify"*/}
+        {/*  hidden*/}
+        {/*  value={classify || ' '}*/}
+        {/*  name="classify"*/}
+        {/*  component={SysField.Name} />*/}
+        {/*<FormItem*/}
+        {/*  placeholder="classifyId"*/}
+        {/*  hidden*/}
+        {/*  value={classifyId || ' '}*/}
+        {/*  name="classifyId"*/}
+        {/*  component={SysField.Name}*/}
+        {/*/>*/}
       </div>
     );
   };
@@ -54,24 +96,23 @@ const Track = (props) => {
     <div>
       <Table
         searchForm={searchForm}
-        headStyle={{display:'none'}}
+        headStyle={{display: 'none'}}
         rowSelection
         bordered={false}
-        bodyStyle={{padding:0}}
+        bodyStyle={{padding: 0}}
         selectionType
         showHeader={false}
         dynamic
         ref={tableRef}
         showSearchButton={false}
         api={{
-          url: '/trackMessage/list', method: 'POST'
+          url: '/businessTrack/list', method: 'POST'
         }}
-        rowKey="trackMessageId"
+        rowKey="trackId"
       >
         <Column render={(text, record) => {
           // setData(record);
           return (
-
             <Comment
               {...datas(record)}
             />

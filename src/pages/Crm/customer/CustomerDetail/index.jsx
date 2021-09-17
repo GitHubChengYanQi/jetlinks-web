@@ -136,6 +136,9 @@ const CustomerDetail = () => {
                 <TabPane tab="动态" key="1">
                   <Dynamic value={data} />
                 </TabPane>
+                <TabPane tab="跟进" key="2">
+                  <Dynamic value={data} />
+                </TabPane>
               </Tabs>
             </Card>
           </Col>
