@@ -45,7 +45,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
 
   const [hidden, setHidden] = useState(false);
   const [txHidden, setTxHidden] = useState(false);
-  const [classNmb, setClassNmb] = useState(0);
+  const [classNmb, setClassNmb] = useState(number);
 
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
@@ -53,6 +53,23 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     }
     return 930;
   };
+
+  const returnFormItem = (classNmb, index) => {
+    if (classNmb === 1) {
+
+      return (<FormItem label="商机" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} />);
+    }
+    if (classNmb === 2) {
+      return (<FormItem label="合同" name={`businessTrackParams.${index}.classifyId`} component={SysField.ContractId} />);
+    }
+    if (classNmb === 3) {
+      return (<FormItem label="订单" name={`businessTrackParams.${index}.classifyId`} component={SysField.OrderId} />);
+    }
+    if (classNmb === 4) {
+      return (<FormItem label="回款" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} />);
+    }
+  };
+
 
   if (val) {
     return (
@@ -87,12 +104,8 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                 <RowStyleLayout key={index}>
                                   <FormItem label="分类" name={`businessTrackParams.${index}.classify`} component={SysField.Classify}  value={number} onChange={(value)=>{
                                     setClassNmb(value);
-                                    console.log(111111111111, classNmb);}}/>
-                                  { classNmb === 0 ? <FormItem  label="日常" name={`businessTrackParams.${index}.classifyId`} component={SysField.Name} />: null}
-                                  { classNmb === 1 ? <FormItem  label="商机" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} value={val.businessId}/>: null}
-                                  { classNmb === 2 ? <FormItem  label="合同" name={`businessTrackParams.${index}.classifyId`} component={SysField.ContractId} /> : null}
-                                  { classNmb === 3 ? <FormItem  label="订单" name={`businessTrackParams.${index}.classifyId`} component={SysField.OrderId} />: null}
-                                  { classNmb === 4 ? <FormItem  label="回款" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} />: null}
+                                  }}/>
+                                  {returnFormItem(classNmb, index)}
                                   <FormItem label="跟踪类型" name={`businessTrackParams.${index}.type`} component={SysField.Type}/>
                                   <FormItem label="跟踪内容" name={`businessTrackParams.${index}.note`} component={SysField.Note}/>
                                   <FormItem label="图片" name={`businessTrackParams.${index}.image`} component={SysField.Image}/>

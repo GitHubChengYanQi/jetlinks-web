@@ -8,6 +8,7 @@ const BusinessSteps = ((props) => {
 
   const {Step} = Steps;
   const {onClose, useData, stage} = props;
+  console.log(111111111111, useData);
   const [current, setCurrent] = useState(0);
   const step = useData ? useData.process.map((values, index) => {
     return (
@@ -52,7 +53,7 @@ const BusinessSteps = ((props) => {
                 onChange={(result) => {
                   props.onChange(result);
                 }}
-                stage={stage}
+                stage={useData ? useData.salesId : null}
                 value={false}
               />
             </div>

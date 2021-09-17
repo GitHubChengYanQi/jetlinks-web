@@ -19,11 +19,6 @@ const BusinessAdd = (props, ref) => {
   const [disable, setDisable] = useState(1);
   const [stage, setStage] = useState(null);
   const [businessId, setBusinessId] = useState(null);
-  const [, setWidth] = useState(400);
-  const [, setShow] = useState(true);
-  const [, setShow1] = useState(true);
-  const [, setBack] = useState(true);
-
   const {data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
     method: 'POST',
@@ -72,7 +67,7 @@ const BusinessAdd = (props, ref) => {
           {disable===3&&'完成'}
         </div>
       </div>}
-      footer={disable===2?<Button type="primary" htmlType="submit" onSubmit={()=>{}}  >
+      footer={disable===2?<Button type="primary" htmlType="submit" onSubmit={()=>{modalRef.current.submit();}}  >
         完成创建
       </Button>:false}
       width={width()}
@@ -99,20 +94,12 @@ const BusinessAdd = (props, ref) => {
           setData(null);
           typeof onClose === 'function' && onClose();
         }} />}
-      {businessId && <BusinessComplete
+      {disable === 3 && <BusinessComplete
         result={businessId}
         onChange={(disable) => {
           setStage(null);
           setData(null);
           setDisable(disable);
-          if (disable === 1) {
-            setBack(false);
-            setWidth(400);
-          } else {
-            setBack(true);
-            setWidth(800);
-            // setShow2(false);
-          }
         }}
         onClose={() => {
           setStage(null);
