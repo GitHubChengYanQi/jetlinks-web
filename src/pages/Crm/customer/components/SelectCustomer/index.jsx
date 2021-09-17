@@ -7,15 +7,14 @@ import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton
 
 const SelectCustomer = (props) => {
 
-  const {value,onChange} = props;
+  const {onChange} = props;
 
 
   const [visible, setVisible] = useState(false);
 
+  const [value,setValue] = useState();
+
   const [blur, setBlur] = useState();
-
-  const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true});
-
 
 
   return (
@@ -23,20 +22,17 @@ const SelectCustomer = (props) => {
       <Row gutter={24}>
         <Col span={15}>
           <CustomerSelect
-            value={value}
             method={false}
+            value={value}
             onSuccess={async (value) => {
-              const customer = await run({
-                data: {
-                  customerId: value
-                }
-              });
-              onChange(customer);
+              setValue(value && value.customerName);
+              onChange(value);
               setBlur(true);
             }}
             onChange={(value) => {
               onChange(value);
-              setVisible(value);
+              setValue(value);
+              setVisible(true);
               setBlur(false);
             }}
             onblur={()=>{
@@ -48,7 +44,9 @@ const SelectCustomer = (props) => {
         </Col>
         <Col span={9}>
           <AddCustomerButton {...props} visi={visible} onChange={(value) => {
+            setValue(value && value.customerName);
             onChange(value);
+            setBlur(true);
           }} />
         </Col>
       </Row>

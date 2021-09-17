@@ -5,7 +5,7 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Input, InputNumber, Select as AntdSelect, Button} from 'antd';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
@@ -34,20 +34,21 @@ export const BusinessNameListSelect = (props) => {
 };
 // 负责人
 export const PersonListSelect = (props) => {
-  const {userid, value} = props;
-  if (userid === '' && value !== null) {
-    //
-  }else if (userid !== undefined) {
-    props.onChange(userid);
-  }
-  return (<Select api={apiUrl.UserIdSelect}  {...props} />);
+
+  useEffect(()=>{
+    if (props.user){
+      props.onChange(props.user);
+    }
+  },[props.user]);
+
+  return (<Select api={apiUrl.UserIdSelect}  {...props}  />);
 };
 // 客户名称
 export const CustomerNameListSelect = (props) => {
 
-
-  return (<SelectCustomer  {...props}  onChange={(value) => {
-    props.onChange(value.customerId);
+  return (<SelectCustomer  {...props} onChange={(value) => {
+    props.onChange(value && value.customerId);
+    props.user(value && value.userId);
   }} />);
 };
 export const CustomerNameSelect = (props) => {

@@ -5,8 +5,7 @@ import {AutoComplete, Input, Popover} from 'antd';
 const CustomerSelect = (props) => {
 
 
-  const {value, onChange, style, method, onblur,disabled,onSuccess, ...other} = props;
-  console.log(value);
+  const {value, onChange, style, method, onblur, disabled, onSuccess, ...other} = props;
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
@@ -14,10 +13,9 @@ const CustomerSelect = (props) => {
   });
 
 
-
   const handleChange = async value => {
+    onChange(value);
     if (value) {
-      onChange(value);
       await run({
         data: {
           customerName: value
@@ -34,35 +32,36 @@ const CustomerSelect = (props) => {
   };
 
 
-  const content = data ? data.map((value, index) => {
+  const content = data ? data.map((value) => {
     return {
-      value:value.customerId,
-      label: value.customerName
+      value: value.customerName,
+      label: <span>{value.customerName}</span>
     };
   }) : [];
 
 
-  return ((
-    <>
-      <AutoComplete
-        dropdownMatchSelectWidth={100}
-        options={content}
-        style={style}
-        value={value && value.customerName}
-        onSelect={(value)=>{
-          onSuccess(value);
+  return (
+    <AutoComplete
+      dropdownMatchSelectWidth={100}
+      options={content}
+      style={style}
+      value={value}
+      onSelect={(value) => {
+        onSuccess(data.find((item)=>{
+          return item.customerName === value;
+        }));
+      }}
+    >
+      <Input.Search
+        onBlur={() => {
+          typeof onblur === 'function' && onblur();
         }}
-      >
-        <Input.Search
-          onBlur={()=>{
-            typeof onblur === 'function' && onblur();
-          }}
-          onChange={(value) => {
-            handleChange(value.target.value);
-          }}
-        />
-      </AutoComplete>
-    </>));
+        onChange={(value) => {
+          handleChange(value.target.value);
+        }}
+      />
+    </AutoComplete>
+  );
 };
 
 export default CustomerSelect;

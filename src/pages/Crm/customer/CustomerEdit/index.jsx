@@ -109,8 +109,8 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                   <FormItem
                     label="客户名称" name="customerName" component={SysField.CustomerName}
                     method={props.value}
-                    onSuccess={(customerId) => {
-                      history.push(`/CRM/customer/${customerId}`);
+                    onSuccess={(customer) => {
+                      history.push(`/CRM/customer/${customer && customer.customerId}`);
                     }} required />
 
                 </MegaLayout>

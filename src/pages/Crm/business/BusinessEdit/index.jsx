@@ -29,6 +29,8 @@ const BusinessEdit = (props,ref) => {
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
 
+  const [user,setUser] = useState();
+
   useImperativeHandle(ref, () => ({
   }));
 
@@ -68,6 +70,9 @@ const BusinessEdit = (props,ref) => {
         name="customerId"
         show={props.value}
         component={SysField.CustomerNameListSelect}
+        user={(value)=>{
+          setUser(value);
+        }}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
       /> }
       <FormItem
@@ -75,6 +80,7 @@ const BusinessEdit = (props,ref) => {
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
+        user={user || null}
         required />
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
