@@ -5,17 +5,18 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Steps, Modal} from 'antd';
+import React, { useRef, useState} from 'react';
+import {Button,} from 'antd';
 import Form from '@/components/Form';
-import FormIndex from '@/components/Form/FormIndex';
+import {useRequest} from '@/util/Request';
 import {
   businessDetail,
   businessAdd,
-  businessEdit, SalesIdListSelect,
+  businessEdit,
 } from '../BusinessUrl';
+
 import * as SysField from '../BusinessField';
-import {useRequest} from '@/util/Request';
+
 
 const {FormItem} = Form;
 
@@ -29,22 +30,21 @@ const BusinessEdit = (props) => {
 
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
-  const [userId, setUserId] = useState();
 
   const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
     onSuccess: (response) => {
-      setUserId(response ? response.userId : null);
     }});
 
   return (
 
-    <FormIndex
+    <Form
+      NoButton={false}
       {...props}
       value={result}
       ref={tableRef}
       api={ApiConfig}
       fieldKey="businessId"
-      success={(result) => {
+      onSuccess={(result) => {
         if (!props.value) {
           setResult(result.data);
           props.onChange(result);
@@ -84,12 +84,7 @@ const BusinessEdit = (props) => {
         name="person"
         rules={[{required: true, message: '请输入负责人!'}]}
         component={SysField.PersonListSelect}
-        userid={userId}
         required />
-      {/*<FormItem*/}
-      {/*  label="商机阶段" name="stage"*/}
-      {/*  rules={[{required: true, message: '请输入商机阶段!'}]}*/}
-      {/*  component={SysField.StageListSelect13}  required />*/}
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
@@ -103,7 +98,7 @@ const BusinessEdit = (props) => {
           完成创建
         </Button>
       </div>
-    </FormIndex>
+    </Form>
   );
 };
 

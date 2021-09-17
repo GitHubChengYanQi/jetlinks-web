@@ -9,9 +9,8 @@ import React, {useRef, useState} from 'react';
 import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
 import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
-import * as SysField from '../ContactsField';
 import PhoneList from '@/pages/Crm/phone/phoneList';
-import FormIndex from '@/components/Form/FormIndex';
+import * as SysField from '../ContactsField';
 
 const {FormItem} = Form;
 
@@ -42,14 +41,14 @@ const ContactsEdit = ({...props}) => {
       title: '联系人信息',
       content:
         <>
-          <FormIndex
+          <Form
             {...props}
             value={result}
             ref={formRef}
+            NoButton={false}
             api={ApiConfig}
             fieldKey="contactsId"
-
-            success={(data) => {
+            onSuccess={(data) => {
               if(data.data !== ''){
                 setResult(data.data.contactsId);
               }
@@ -64,7 +63,7 @@ const ContactsEdit = ({...props}) => {
                 下一步
               </Button>
             </div>
-          </FormIndex>
+          </Form>
         </>
     },
     {

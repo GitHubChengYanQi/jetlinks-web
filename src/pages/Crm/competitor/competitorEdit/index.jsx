@@ -44,8 +44,9 @@ const CompetitorEdit = ({onChange,...props}) => {
         ref={formRef}
         api={ApiConfig}
         formActions={formActionsPublic}
-        res={(res) => {
-          onChange(res);
+        onSuccess={(res) => {
+          onChange && typeof onChange === 'function' && onChange(res);
+          props.onSuccess();
         }}
         wrapperCol={24}
         fieldKey="competitorId"
@@ -59,7 +60,7 @@ const CompetitorEdit = ({onChange,...props}) => {
               <FormItem label="竞争对手企业名称" name="name" component={SysField.Name} required />
             </MegaLayout>
             <MegaLayout labelWidth={150} full>
-              <FormItem label="竞争项目名称" name="businessId" component={SysField.BusinessId} value={value && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />
+              <FormItem label="竞争项目名称" name="businessId" component={SysField.BusinessId} value={value && value.crmBusinessList && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />
             </MegaLayout>
             <MegaLayout labelWidth={150}>
               <FormItem label="地区" name="region" component={SysField.Region} required />

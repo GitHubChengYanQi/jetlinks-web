@@ -9,7 +9,6 @@ import React, {useRef, useState} from 'react';
 import {Button, Input, InputNumber, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
-import FormIndex from '@/components/Form/FormIndex';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 import {useRequest} from '@/util/Request';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
@@ -37,7 +36,7 @@ const AddContractEdit = ({...props}) => {
   const [result, setResult] = useState(value);
 
   const content = () => {
-    return <FormIndex
+    return <Form
       {...props}
       value={result ? result.contractId : false}
       ref={formRef}
@@ -51,7 +50,7 @@ const AddContractEdit = ({...props}) => {
       <Button type="primary" htmlType="submit">
         Done
       </Button>
-    </FormIndex>;
+    </Form>;
   };
 
 
@@ -114,7 +113,8 @@ const AddContractEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-            <FormIndex
+            <Form
+              NoButton={false}
               value={result ? result.contractId : false}
               {...other}
               ref={formRef}
@@ -154,7 +154,7 @@ const AddContractEdit = ({...props}) => {
                   });
                 });
               }}
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }
@@ -319,7 +319,7 @@ const AddContractEdit = ({...props}) => {
               <Button type="primary" htmlType="submit">
                 Next
               </Button>
-            </FormIndex>
+            </Form>
           </div>
         </>
     },

@@ -10,7 +10,6 @@ import {Button, Divider, Input, message, Select, Steps} from 'antd';
 import Form from '@/components/Form';
 import {itemsDetail, itemsAdd, itemsEdit} from '../ItemsUrl';
 import * as SysField from '../ItemsField';
-import FormIndex from '@/components/Form/FormIndex';
 
 
 
@@ -38,12 +37,13 @@ const ItemsEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-            <FormIndex
+            <Form
+              NoButton={false}
               {...props}
               ref={formRef}
               api={ApiConfig}
               fieldKey="itemId"
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }
@@ -59,7 +59,7 @@ const ItemsEdit = ({...props}) => {
                   下一步
                 </Button>
               </div>
-            </FormIndex>
+            </Form>
           </div>
         </>
     },
@@ -67,9 +67,8 @@ const ItemsEdit = ({...props}) => {
       title: '产品选填项',
       content:
         <>
-
           <div style={{margin: '50px 150px'}}>
-            <FormIndex
+            <Form
               {...props}
               value={result}
               ref={formRef}
@@ -92,7 +91,7 @@ const ItemsEdit = ({...props}) => {
                   返回
                 </Button>
               </div>
-            </FormIndex>
+            </Form>
           </div>
 
         </>

@@ -8,7 +8,6 @@
 import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {Button, Steps} from 'antd';
-import FormIndex from '@/components/Form/FormIndex';
 import {partsDetail, partsAdd, partsEdit} from '../PartsUrl';
 import * as SysField from '../PartsField';
 

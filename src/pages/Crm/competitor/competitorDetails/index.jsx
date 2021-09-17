@@ -58,9 +58,9 @@ const CompetitorDetails = () => {
           </div>
           <div className={styles.titleButton}>
             <Button type="primary" onClick={() => {
-              ref.current.open(data.competitorId);
+              ref.current.open(data);
             }}>编辑</Button>
-            <Modal width={1000} title="客户" component={CompetitorEdit} onSuccess={() => {
+            <Modal width={1000} title="竞争对手" component={CompetitorEdit} onSuccess={() => {
               ref.current.close();
               refresh();
             }} ref={ref} />

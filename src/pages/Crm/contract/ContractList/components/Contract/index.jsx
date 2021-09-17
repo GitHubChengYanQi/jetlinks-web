@@ -1,7 +1,6 @@
 import React from 'react';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {Button} from 'antd';
-import FormIndex from '@/components/Form/FormIndex';
 import Form from '@/components/Form';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 
@@ -18,7 +17,8 @@ const Contract = (props) => {
 
   return (
     <>
-      <FormIndex
+      <Form
+        NoButton={false}
         {...props}
         api={ApiConfig}
         fieldKey="contractId"
@@ -32,7 +32,7 @@ const Contract = (props) => {
         }}>
           关闭
         </Button>
-      </FormIndex>
+      </Form>
     </>
   );
 };

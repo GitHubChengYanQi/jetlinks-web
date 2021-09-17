@@ -11,9 +11,7 @@ import Form from '@/components/Form';
 import {dispatchingDetail, dispatchingAdd, dispatchingEdit} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import DescAddress from '@/pages/Repair/repair/RepairDetails/components/DescAddress';
-import RepairList from '@/pages/Repair/repair/repairList';
 import {MegaLayout} from '@formily/antd-components';
-import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 
@@ -54,16 +52,14 @@ const DispatchingEdit = ({...props}) => {
           {value && value.comment}
         </Card>
         <Card title="派工信息" bordered={false}>
-          <FormIndex
+          <Form
+            NoButton={false}
             {...props}
             value={false}
             ref={formRef}
             api={ApiConfig}
             wrapperCol={24}
             fieldKey="dispatchingId"
-            success={() => {
-              props.onSuccess();
-            }}
           >
             <MegaLayout labelWidth={120} grid labelAlign="top">
               <FormItem
@@ -99,7 +95,7 @@ const DispatchingEdit = ({...props}) => {
                 生成派工单
               </Button>
             </div>
-          </FormIndex>
+          </Form>
         </Card>
 
       </>

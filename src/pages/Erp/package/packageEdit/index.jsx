@@ -1,7 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Button, Col, Input, Row, Steps} from 'antd';
 import Form from '@/components/Form';
-import FormIndex from '@/components/Form/FormIndex';
 import ErpPackageTableList from '@/pages/Erp/packageTable/packageTableList';
 import {erpPackageDetail, erpPackageAdd, erpPackageEdit} from '../packageUrl';
 import * as SysField from '../packageField';
@@ -32,13 +31,14 @@ const ErpPackageEdit = ({...props}) => {
       title: '套餐名称',
       content:
         <>
-          <FormIndex
+          <Form
+            NoButton={false}
             {...props}
             value={result}
             ref={formRef}
             api={ApiConfig}
             fieldKey="packageId"
-            success={(result) => {
+            onSuccess={(result) => {
               if (result.data !== '') {
                 setResult(result.data);
               }
@@ -59,7 +59,7 @@ const ErpPackageEdit = ({...props}) => {
                 下一步
               </Button>
             </div>
-          </FormIndex>
+          </Form>
         </>
     },
     {

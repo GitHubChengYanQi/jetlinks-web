@@ -10,8 +10,6 @@ import {Button, Input} from 'antd';
 import Form from '@/components/Form';
 import {companyAddressDetail, companyAddressAdd, companyAddressEdit, companyAddressList} from '../companyAddressUrl';
 import * as SysField from '../companyAddressField';
-import {CustomerId} from '../companyAddressField';
-import FormIndex from '@/components/Form/FormIndex';
 import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
 
@@ -50,15 +48,13 @@ const CompanyAddressEdit = ({...props}) => {
 
 
   return (
-    <FormIndex
+    <Form
       {...props}
+      NoButton={false}
       value={data.length === 0 ? false : data[0].companyId}
       ref={formRef}
       api={ApiConfig}
       fieldKey="companyId"
-      success={() => {
-        onSuccess();
-      }}
     >
       <FormItem label="报修公司" name="customerId" component={SysField.CustomerId} required />
       <FormItem label="省" name="province" component={SysField.Province} required />
@@ -79,7 +75,7 @@ const CompanyAddressEdit = ({...props}) => {
         </Button>
       </div>
 
-    </FormIndex>
+    </Form>
   );
 };
 

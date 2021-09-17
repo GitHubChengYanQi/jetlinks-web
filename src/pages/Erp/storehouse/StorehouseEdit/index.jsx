@@ -10,8 +10,6 @@ import {Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
 import {placeDetail, placeAdd, placeEdit, storehouseDetail, storehouseAdd, storehouseEdit} from '../StorehouseUrl';
 import * as SysField from '../StorehouseField';
-import {Capacity, Palce} from '../StorehouseField';
-import FormIndex from '@/components/Form/FormIndex';
 
 const {FormItem} = Form;
 
@@ -36,12 +34,13 @@ const StorehouseEdit = ({...props}) => {
       content:
         <>
           <div style={{margin: '50px 150px'}}>
-            <FormIndex
+            <Form
+              NoButton={false}
               {...props}
               ref={formRef}
               api={ApiConfig}
               fieldKey="storehouseId"
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }
@@ -57,7 +56,7 @@ const StorehouseEdit = ({...props}) => {
                   下一步
                 </Button>
               </div>
-            </FormIndex>
+            </Form>
           </div>
         </>
     },
@@ -67,7 +66,8 @@ const StorehouseEdit = ({...props}) => {
         <>
 
           <div style={{margin: '50px 150px'}}>
-            <FormIndex
+            <Form
+              NoButton={false}
               {...props}
               value={result}
               ref={formRef}
@@ -87,7 +87,7 @@ const StorehouseEdit = ({...props}) => {
                   返回
                 </Button>
               </div>
-            </FormIndex>
+            </Form>
           </div>
 
         </>
