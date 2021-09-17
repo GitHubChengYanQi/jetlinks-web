@@ -20,10 +20,7 @@ const Modal = (
   }, ref) => {
 
 
-
   const [value, show] = useState(null);
-  const [height, setHeight] = useState(null);
-  const [domId] = useState(randomString(6));
 
   if (modal !== undefined) {
     show(false);
@@ -42,29 +39,8 @@ const Modal = (
     close
   }));
 
-  const setSize = () => {
-    console.log(domId);
-    const modalContent = document.getElementById(`modalContent-${domId}`);
-    console.log(modalContent);
-    // if (modalContent) {
-      setHeight(document.body.offsetHeight - 110);
-    // }
-  };
-
-  useEffect(() => {
-    window.onresize = () => {
-      setSize();
-    };
-  }, []);
-
-  useEffect(() => {
-    setSize();
-
-  }, [Component, children]);
 
   const visible = value !== null && value !== undefined;
-
-  console.log(111,width);
 
   return (
     <AntdModal
@@ -82,22 +58,20 @@ const Modal = (
       title={title}
       destroyOnClose
     >
-      <div style={{maxHeight: height, overflow: 'auto'}}>
-        <div id={`modalContent-${domId}`}>
-          {Component ? <Component
-            {...props}
-            ref={compoentRef}
-            value={value}
-            onSuccess={(response) => {
-              onSuccess();
-            }}
-            onError={(error) => {
-              message.error(error.message);
-              show(null);
-              onClose();
-            }}
-          /> : children}
-        </div>
+      <div style={{maxHeight: footer?'calc(100vh - 110px)':'calc(100vh - 55px)', overflow: 'auto'}}>
+        {Component ? <Component
+          {...props}
+          ref={compoentRef}
+          value={value}
+          onSuccess={(response) => {
+            onSuccess(response);
+          }}
+          onError={(error) => {
+            message.error(error.message);
+            show(null);
+            onClose();
+          }}
+        /> : children}
       </div>
     </AntdModal>
   );

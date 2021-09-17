@@ -5,22 +5,15 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Button, Popover, AutoComplete, Row, Col} from 'antd';
+import React, {useRef} from 'react';
+import {Input, InputNumber, Select as AntdSelect, Button} from 'antd';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
-import {useRequest} from '@/util/Request';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
-import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
-import * as apiUrl from '../BusinessUrl';
-import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
-import AddCustomer from '@/pages/Crm/customer/components/AddCustomer';
 import SelectAddCustomer from '@/pages/Crm/customer/components/SelectAddCustomer';
 import DatePicker from '@/components/DatePicker';
+import * as apiUrl from '../BusinessUrl';
 
-const w = 200;
 // 项目Id
 export const BusinessId = (props) => {
   return (<Input  {...props} />);
@@ -53,11 +46,8 @@ export const PersonListSelect = (props) => {
 // 客户名称
 export const CustomerNameListSelect = (props) => {
 
-  const {user} = props;
-
   return (<SelectAddCustomer  {...props} onChange={(value) => {
     props.onChange(value);
-    user(value);
   }} />);
 };
 export const CustomerNameSelect = (props) => {

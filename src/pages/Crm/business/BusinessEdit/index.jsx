@@ -5,10 +5,8 @@
  * @Date 2021-07-19 15:13:58
  */
 
-import React, { useRef, useState} from 'react';
-import {Button,} from 'antd';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import Form from '@/components/Form';
-import {useRequest} from '@/util/Request';
 import {
   businessDetail,
   businessAdd,
@@ -26,14 +24,13 @@ const ApiConfig = {
   save: businessEdit
 };
 
-const BusinessEdit = (props) => {
+const BusinessEdit = (props,ref) => {
 
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
 
-  const {run} = useRequest({url: '/customer/detail', method: 'POST'}, {manual: true,
-    onSuccess: (response) => {
-    }});
+  useImperativeHandle(ref, () => ({
+  }));
 
   return (
 
@@ -71,11 +68,6 @@ const BusinessEdit = (props) => {
         name="customerId"
         show={props.value}
         component={SysField.CustomerNameListSelect}
-        user={(value) => {
-          if (value) {
-            run({data: {customerId: value}});
-          }
-        }}
         // value={customerId}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
       /> }
@@ -89,17 +81,12 @@ const BusinessEdit = (props) => {
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
       <FormItem
-        style={{display : 'none'}}
+        display={false}
         name="salesId"
         rules={[{required: true, message: '请输入销售流程!'}]}
         component={SysField.SalesIdListSelect} value={props.stage !== null ? props.stage : 1} />
-      <div style={{textAlign: 'Right', marginRight: 50}}>
-        <Button type="primary" htmlType="submit" onSubmit={()=>{}}  >
-          完成创建
-        </Button>
-      </div>
     </Form>
   );
 };
 
-export default BusinessEdit;
+export default React.forwardRef(BusinessEdit);
