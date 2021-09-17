@@ -43,7 +43,7 @@ const ItemsEdit = ({...props}) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="itemId"
-              success={(result) => {
+              onSuccess={(result) => {
                 if (result.data !== '') {
                   setResult(result.data);
                 }

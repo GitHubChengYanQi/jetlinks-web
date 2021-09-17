@@ -48,8 +48,7 @@ const ContactsEdit = ({...props}) => {
             NoButton={false}
             api={ApiConfig}
             fieldKey="contactsId"
-
-            success={(data) => {
+            onSuccess={(data) => {
               if(data.data !== ''){
                 setResult(data.data.contactsId);
               }

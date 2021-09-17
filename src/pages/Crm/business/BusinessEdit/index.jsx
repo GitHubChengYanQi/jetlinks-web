@@ -44,7 +44,7 @@ const BusinessEdit = (props) => {
       ref={tableRef}
       api={ApiConfig}
       fieldKey="businessId"
-      success={(result) => {
+      onSuccess={(result) => {
         if (!props.value) {
           setResult(result.data);
           props.onChange(result);

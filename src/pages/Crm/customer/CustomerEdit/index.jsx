@@ -94,10 +94,11 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         labelCol={null}
         wrapperCol={24}
         fieldKey="customerId"
-        res={(res) => {
+        onSuccess={(res) => {
           if (res) {
             typeof onChange === 'function' && onChange(res);
           }
+          props.onSuccess();
         }}
       >
         <Row gutter={24}>
