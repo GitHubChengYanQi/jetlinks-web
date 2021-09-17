@@ -73,18 +73,18 @@ export const Type = (props) => {
 };
 
 export const CustomerId = (props) => {
-  return (<Select api={apiUrl.customerIdSelect} {...props} disabled />);
+  return (<Select api={apiUrl.customerIdSelect} {...props} />);
 };
 
 export const Classify = (props) => {
   return (<AntdSelect options={[{label:'日常',value:0},{label:'商机',value:1},{label:'合同',value:2},{label:'订单',value:3},{label:'回款',value:4}]} {...props}  onChange={(value) => {
     props.onChange(value);
-  }} disabled/>);
+  }} />);
 };
 
 export const BusinessId = (props) => {
   props.onChange(props.val.businessId);
-  return (<Input {...props} value={props.val.businessName} disabled />);
+  return (<Input {...props} value={props.val.businessName} />);
 };
 export const CompetitorsQuoteId = (props) => {
   const {competitorsQuoteId} = props;

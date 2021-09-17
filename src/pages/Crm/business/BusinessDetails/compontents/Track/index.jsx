@@ -9,34 +9,11 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 
-const Track = ({classify, classifyId, customerId}) => {
+const Track = (props) => {
 
 
+  const {value, number} = props;
   const tableRef = useRef(null);
-
-  const {data} = useRequest({url: '/trackMessage/listAll', method: 'POST', data: {customerId}});
-
-  const trackMessageIds = data ? data.map((items, index) => {
-    return items.trackMessageId;
-  }) : [];
-
-
-  useEffect(()=>{
-    console.log(trackMessageIds);
-    if (trackMessageIds.length > 0){
-      tableRef.current.formActions.setFieldValue('trackMessageIds', trackMessageIds);
-      tableRef.current.submit();
-    }
-  },[trackMessageIds]);
-
-  if (!customerId) {
-    return '暂无客户';
-  }
-
-
-
-
-
 
   const datas = (data) => {
     return {
@@ -67,29 +44,10 @@ const Track = ({classify, classifyId, customerId}) => {
 
   const searchForm = () => {
     return (
-      <div>
-        <FormItem
-          placeholder="trackMessageId"
-          hidden
-          value={trackMessageIds}
-          name="trackMessageIds"
-          component={SysField.Name}
-        />
-        {/*<FormItem*/}
-        {/*  placeholder="classify"*/}
-        {/*  hidden*/}
-        {/*  value={classify || ' '}*/}
-        {/*  name="classify"*/}
-        {/*  component={SysField.Name} />*/}
-        {/*<FormItem*/}
-        {/*  placeholder="classifyId"*/}
-        {/*  hidden*/}
-        {/*  value={classifyId || ' '}*/}
-        {/*  name="classifyId"*/}
-        {/*  component={SysField.Name}*/}
-        {/*/>*/}
-      </div>
-    );
+      <>
+        <FormItem placeholder="classifyId" hidden value={value.businessId} name="classifyId" component={SysField.Name}/>
+        <FormItem placeholder="classify" hidden value={number} name="classify" component={SysField.Name} />
+      </>);
   };
 
   return (

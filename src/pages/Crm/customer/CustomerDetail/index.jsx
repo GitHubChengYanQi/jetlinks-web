@@ -19,6 +19,7 @@ import ContractTable from '@/pages/Crm/contract/ContractList/components/Contract
 import styles from './index.module.scss';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 
 const {TabPane} = Tabs;
 
@@ -137,7 +138,7 @@ const CustomerDetail = () => {
                   <Dynamic value={data} />
                 </TabPane>
                 <TabPane tab="跟进" key="2">
-                  <Dynamic value={data} />
+                  <Track value={data} number={2}/>
                 </TabPane>
               </Tabs>
             </Card>
