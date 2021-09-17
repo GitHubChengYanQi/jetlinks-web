@@ -40,6 +40,12 @@ export const addAllPackages = {
   rowKey:'id'
 };
 
+export const addAllPackagesTable = {
+  url: '/erpPackageTable/batchAdd',
+  method: 'POST',
+  rowKey:'id'
+};
+
 
 export const itemsDetail = {
   url: '/items/detail',
