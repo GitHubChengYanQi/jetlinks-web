@@ -35,3 +35,7 @@ export const crmBusinessTrackList = {
   rowKey:'trackId'
 };
 
+export const BusinessNameListSelect = {
+  url: '/crmBusiness/listSelect',
+  method: 'POST',
+};
