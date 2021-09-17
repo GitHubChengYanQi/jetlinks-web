@@ -41,8 +41,11 @@ export const BusinessNameListSelect = (props) => {
 };
 // 负责人
 export const PersonListSelect = (props) => {
-  const {userid} = props;
-  if (userid !== null) {
+  const {userid, value} = props;
+  console.log(111111, props);
+  if (userid === '' && value !== null) {
+    //
+  }else if (userid !== undefined) {
     props.onChange(userid);
   }
   return (<Select api={apiUrl.UserIdSelect}  {...props} />);

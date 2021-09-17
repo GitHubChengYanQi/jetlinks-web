@@ -112,7 +112,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
         }}
         ref={refAddOne}
         packageId={props.value}
-        disabled={false}
+        TcDisabled={false}
       />
     </>
   );
