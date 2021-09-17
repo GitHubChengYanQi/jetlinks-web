@@ -7,13 +7,14 @@
 
 import React, {useRef, useState} from 'react';
 import {Button, Col, Divider, Input, Row, Steps} from 'antd';
-import Form from '@/components/Form';
-import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
-import Title from '@/components/Title';
-import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import styled from 'styled-components';
+import ProCard from '@ant-design/pro-card';
+import Title from '@/components/Title';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
+import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
+import Form from '@/components/Form';
 
 const {FormItem} = Form;
 
@@ -35,11 +36,10 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-
 const ContactsEdit = ({...props}) => {
 
   const {customerId} = props;
-  const formRef = useRef();
+  const formRef = useRef(null);
   const [result, setResult] = useState(props.value);
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
@@ -56,10 +56,11 @@ const ContactsEdit = ({...props}) => {
           ref={formRef}
           api={ApiConfig}
           fieldKey="contactsId"
-          success={(data) => {
+          onSuccess={(data) => {
             if(data.data !== ''){
               setResult(data.data.contactsId);
             }
+            props.onSuccess();
           }}
         >
           <Row gutter={24}>
@@ -68,13 +69,13 @@ const ContactsEdit = ({...props}) => {
                 <ProCard style={{marginTop: 8}} title={<Title title="联系人信息" level={4} />} headerBordered>
                   <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName}  required/>
                   <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} required/>
-                  <FormItem label="客户" name="customerId" component={SysField.CustomerId} customerId={customerId || null} required />
+                  <FormItem label="客户" name="customerId" component={SysField.CustomerId} customer={customerId || null} required />
                 </ProCard>
               </div>
             </Col>
             <Col span={12}>
               <div style={{height: height(), overflow: 'auto'}}>
-                <ProCard style={{marginTop: 8}} title={<Title title="联系人电话" level={2} />} headerBordered>
+                <ProCard style={{marginTop: 8}} title={<Title title="联系人电话" level={4} />} headerBordered>
                   <FieldList
                     name="phoneParams"
                     initialValue={[

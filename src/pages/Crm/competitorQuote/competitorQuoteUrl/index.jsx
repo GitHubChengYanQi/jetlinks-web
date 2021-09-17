@@ -43,4 +43,8 @@ export const competitorListSelect = {
   url: '/competitor/listSelect',
   method: 'POST',
 };
+export const customerIdSelect = {
+  url: '/customer/listSelect',
+  method: 'POST'
+};
 

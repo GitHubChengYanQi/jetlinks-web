@@ -24,6 +24,7 @@ import {batchDelete, contactsDelete, contactsList} from '@/pages/Crm/contacts/co
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
 import {Tag} from '@alifd/next';
+import {CustomerIds} from '@/pages/Crm/contacts/ContactsField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -57,8 +58,8 @@ const ContactsTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="职务" name="job" component={SysField.Job} />
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerId} />
+          <FormItem mega-props={{span: 1}} placeholder="职务" name="companyRole" component={SysField.Job} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerIds} />
         </>
       );
     };
