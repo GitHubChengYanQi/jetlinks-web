@@ -38,6 +38,7 @@ const BusinessEdit = (props) => {
   return (
 
     <Form
+      NoButton={false}
       {...props}
       value={result}
       ref={tableRef}
