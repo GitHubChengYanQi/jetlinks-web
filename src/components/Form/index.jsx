@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import {
   Form as FormilyForm, FormItem as AntFormItem, Submit,
   Reset,
@@ -29,7 +29,6 @@ const FormWrapper = (
     onSubmit = (values) => {
       return values;
     },
-    res,
     onSuccess = () => {
     },
     onError = () => {
@@ -90,7 +89,6 @@ const FormWrapper = (
     },
     onSuccess: (result) => {
       onSuccess(result);
-      res && res(result);
     },
     onError: (error) => {
       message.error(error.message);
