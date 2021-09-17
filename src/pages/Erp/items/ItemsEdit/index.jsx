@@ -69,6 +69,7 @@ const ItemsEdit = ({...props}) => {
         <>
           <div style={{margin: '50px 150px'}}>
             <Form
+              NoButton={false}
               {...props}
               value={result}
               ref={formRef}

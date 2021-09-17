@@ -51,6 +51,7 @@ const DataTable = (props) => {
   const searchForm = () => {
     return (
       <>
+        <FormItem label='资料名称' name="name" component={SysField.Name} />
         <FormItem hidden name="dataClassificationId" component={SysField.DataClassificationId} />
       </>
     );
@@ -73,7 +74,6 @@ const DataTable = (props) => {
             }}>{value}</Button>
           );
         }} />
-        <Column title="内容" dataIndex="content" />
         <Column title="产品" render={(value, record) => {
           return (
             <>

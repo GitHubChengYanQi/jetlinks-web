@@ -14,9 +14,10 @@ import {useRequest} from '@/util/Request';
 import {UploadOutlined} from '@ant-design/icons';
 import {dataClassificationSelect, itemIdSelect} from '../dataUrl';
 import Select from '@/components/Select';
+import Editor from '@/components/Editor';
 
 export const Content = (props) => {
-  return (<Input {...props} />);
+  return (<Editor {...props} />);
 };
 
 export const Name = (props) => {

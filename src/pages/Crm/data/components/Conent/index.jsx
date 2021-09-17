@@ -1,5 +1,6 @@
 import React from 'react';
 import {Card} from 'antd';
+import parse from 'html-react-parser';
 
 const Conent = (props) => {
 
@@ -7,7 +8,7 @@ const Conent = (props) => {
 
   return (
     <Card title={titles || null}>
-      {value || null}
+      {parse(value)}
     </Card>
   );
 };

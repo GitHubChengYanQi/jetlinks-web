@@ -98,6 +98,7 @@ const StockTable = (props) => {
         title={<Breadcrumb />}
         api={stockList}
         isModal={false}
+        rowSelection
         SearchButton={Search()}
         layout={search}
         rowKey="stockId"
@@ -107,16 +108,6 @@ const StockTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {
-          return (
-            <>
-              <Button type="link" onClick={() => {
-                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,
-                  params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});
-              }}>{record.storehouseResult.name}</Button>
-            </>
-          );
-        }} sorter />
         <Column title="产品名称"  render={(text, record) => {
           return (
             <>
@@ -128,6 +119,16 @@ const StockTable = (props) => {
           return (
             <>
               {record.brandResult.brandName}
+            </>
+          );
+        }} sorter />
+        <Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {
+          return (
+            <>
+              <Button type="link" onClick={() => {
+                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,
+                  params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});
+              }}>{record.storehouseResult.name}</Button>
             </>
           );
         }} sorter />

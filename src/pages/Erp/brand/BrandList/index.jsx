@@ -18,9 +18,12 @@ import {brandDelete, brandList} from '../BrandUrl';
 import BrandEdit from '../BrandEdit';
 import * as SysField from '../BrandField';
 import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const BrandList = () => {
   const ref = useRef(null);
@@ -61,6 +64,7 @@ const BrandList = () => {
       <Table
         title={<Breadcrumb title='品牌管理'/>}
         api={brandList}
+        formActions={formActionsPublic}
         rowKey="brandId"
         searchForm={searchForm}
         actions={actions()}

@@ -205,7 +205,13 @@ const ItemsList = (props) => {
           );
         }}/>
         <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
-        <Column title="易损" width={120} align='center' dataIndex="vulnerability" sorter />
+        <Column title="易损" width={120} align='center' dataIndex="vulnerability" render={(value)=>{
+          return (
+            <>
+              {value === 0 ? '易损' : '不易损'}
+            </>
+          );
+        }} sorter />
         <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
           return (
             <>
