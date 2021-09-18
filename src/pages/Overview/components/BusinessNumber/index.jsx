@@ -13,7 +13,7 @@ const BusinessNumber = () => {
 
   return (
     <Space split={<Divider type="vertical" />}>
-      <Statistic title="项目数" value={data && data.length} />
+      <Statistic title="项目数" value={data} />
       <Statistic title="团队排名" value={1} suffix="/12" />
     </Space>
   );

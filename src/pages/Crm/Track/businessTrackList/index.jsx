@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Image, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,94 +16,145 @@ import Form from '@/components/Form';
 import {businessTrackDelete, businessTrackList} from '../businessTrackUrl';
 import BusinessTrackEdit from '../businessTrackEdit';
 import * as SysField from '../businessTrackField';
+import Modal from '@/components/Modal';
+import Conent from '@/pages/Crm/Track/components/Conent';
+import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
+import {EditOutlined, SearchOutlined} from '@ant-design/icons';
+import {useBoolean} from 'ahooks';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import Icon from '@/components/Icon';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const BusinessTrackList = () => {
   const ref = useRef(null);
+
+  const refTrack = useRef(null);
+
+  const refContent = useRef(null);
+
   const tableRef = useRef(null);
   const actions = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
+        <AddButton name="添加跟进" onClick={() => {
+          refTrack.current.open(false);
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="跟踪内容" name="message" component={SysField.Message}/>
-       <FormItem label="创建者" name="createUser" component={SysField.CreateUser}/>
-       <FormItem label="修改者" name="updateUser" component={SysField.UpdateUser}/>
-       <FormItem label="创建时间" name="createTime" component={SysField.CreateTime}/>
-       <FormItem label="修改时间" name="updateTime" component={SysField.UpdateTime}/>
-       <FormItem label="消息提醒内容" name="tixing" component={SysField.Tixing}/>
-       <FormItem label="跟踪类型" name="type" component={SysField.Type}/>
-       <FormItem label="状态" name="display" component={SysField.Display}/>
-       <FormItem label="提醒时间" name="time" component={SysField.Time}/>
-       <FormItem label="提醒内容" name="note" component={SysField.Note}/>
-       <FormItem label="图片" name="image" component={SysField.Image}/>
-       <FormItem label="经度" name="longitude" component={SysField.Longitude}/>
-       <FormItem label="纬度" name="latitude" component={SysField.Latitude}/>
-       <FormItem label="负责人" name="userId" component={SysField.UserId}/>
-       <FormItem label="部门id" name="deptId" component={SysField.DeptId}/>
-       <FormItem label="分类" name="classify" component={SysField.Classify}/>
-       <FormItem label="分类id" name="classifyId" component={SysField.ClassifyId}/>
-       <FormItem label="跟进总表id" name="trackMessageId" component={SysField.TrackMessageId}/>
-     </>
+  const [search, {toggle}] = useBoolean(false);
+
+  const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} placeholder="消息提醒内容" name="tixing" component={SysField.Tixing} />
+          <FormItem mega-props={{span: 1}} placeholder="跟踪类型" name="type" component={SysField.Type} />
+          <FormItem mega-props={{span: 1}} placeholder="提醒内容" name="note" component={SysField.Note} />
+        </>
+      );
+    };
+
+
+    return (
+      <div style={{maxWidth: 800}}>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+          columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="跟踪内容" name="message" component={SysField.Message} />
+          {search ? formItem() : null}
+        </MegaLayout>
+
+      </div>
     );
   };
+
+
+  const Search = () => {
+    return (
+      <>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+              toggle();
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          </FormButtonGroup>
+        </MegaLayout>
+      </>
+    );
+  };
+
 
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={businessTrackList}
         rowKey="trackId"
+        layout={search}
+        SearchButton={Search()}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="跟踪内容" dataIndex="message"/>
-        <Column title="创建者" dataIndex="createUser"/>
-        <Column title="修改者" dataIndex="updateUser"/>
-        <Column title="创建时间" dataIndex="createTime"/>
-        <Column title="修改时间" dataIndex="updateTime"/>
-        <Column title="消息提醒内容" dataIndex="tixing"/>
-        <Column title="跟踪类型" dataIndex="type"/>
-        <Column title="状态" dataIndex="display"/>
-        <Column title="提醒时间" dataIndex="time"/>
-        <Column title="提醒内容" dataIndex="note"/>
-        <Column title="图片" dataIndex="image"/>
-        <Column title="经度" dataIndex="longitude"/>
-        <Column title="纬度" dataIndex="latitude"/>
-        <Column title="负责人" dataIndex="userId"/>
-        <Column title="部门id" dataIndex="deptId"/>
-        <Column title="分类" dataIndex="classify"/>
-        <Column title="分类id" dataIndex="classifyId"/>
-        <Column title="跟进总表id" dataIndex="trackMessageId"/>
-        <Column/>
+        <Column title="客户" render={(value, record) => {
+          return (
+            <>
+              <a onClick={() => {
+                refContent.current.open(record);
+              }}>
+                跟进内容
+              </a>
+            </>
+          );
+        }} />
+        <Column title="跟踪类型" dataIndex="type" />
+        <Column title="提醒时间" dataIndex="time" />
+        <Column title="图片" dataIndex="image" render={(value) => {
+          return (
+            <>
+              {value && <Image width={100} src={value} />}
+            </>
+          );
+        }} />
+        <Column title="负责人" dataIndex="userId" />
+        <Column title="分类" dataIndex="classify" />
+        <Column title="名称" dataIndex="classifyId" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.trackId);
-              }}/>
-              <DelButton api={businessTrackDelete} value={record.trackId} onSuccess={()=>{
+              }} />
+              <DelButton api={businessTrackDelete} value={record.trackId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={BusinessTrackEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
+
+      <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
+        refTrack.current.close();
+        tableRef.current.submit();
+      }} track={null} />
+
+      <Modal component={Conent} ref={refContent} onSuccess={() => {
+        tableRef.current.submit();
+        refContent.current.close();
+      }} />
     </>
   );
 };

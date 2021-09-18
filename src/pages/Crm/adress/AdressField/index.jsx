@@ -10,6 +10,7 @@ import Cascader from '@/components/Cascader';
 import {Input, InputNumber} from 'antd';
 import * as apiUrl from '../AdressUrl';
 import Amap from '@/components/Amap';
+import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
 
 
 export const Location = (props) => {
@@ -22,7 +23,7 @@ export const Latitude = (props) => {
   return (<InputNumber   {...props} />);
 };
 export const Region = (props) => {
-  return (<Cascader api={apiUrl.commonArea}   {...props} />);
+  return (<CascaderAdress   {...props} />);
 };
 export const CustomerId = (props) => {
   props.onChange(props.customerId);

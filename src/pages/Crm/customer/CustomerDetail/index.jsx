@@ -63,10 +63,8 @@ const CustomerDetail = () => {
               </div>
             </Col>
           </Row>
-
         </div>
         <div className={styles.titleButton}>
-
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
@@ -80,10 +78,9 @@ const CustomerDetail = () => {
           <Button type="primary" onClick={() => {
             ref.current.open(data.customerId);
           }}>编辑</Button>
-          <CreateNewCustomer model={CustomerEdit}  widths={1200}  onSuccess={()=>{
+          <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
             ref.current.close();
-            refresh();
-          }} refModal={ref} />
+          }} ref={ref} />
           <Button onClick={() => {
             history.back();
           }}><Icon type="icon-huifu" />返回</Button>

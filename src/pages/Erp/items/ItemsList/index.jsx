@@ -164,7 +164,7 @@ const ItemsList = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
@@ -180,6 +180,7 @@ const ItemsList = (props) => {
   return (
     <>
       <Table
+        title={<Breadcrumb />}
         api={itemsList}
         isModal={false}
         rowKey="itemId"

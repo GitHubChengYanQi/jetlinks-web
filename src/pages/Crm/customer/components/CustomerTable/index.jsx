@@ -169,16 +169,16 @@ const CustomerTable = (props) => {
             </div>
           );
         }} />
-        <Column title="客户来源" fixed width={300} dataIndex="customerName" render={(text, record) => {
-          return (
-            <div>
-              {record.originResult && record.originResult.originName}
-            </div>
-          );
-        }} />
         <Column title="客户状态" width={140} align="center" render={(text, record) => {
           return (
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
+          );
+        }} />
+        <Column title="客户来源" width={300} align='center' dataIndex="customerName" render={(text, record) => {
+          return (
+            <div>
+              {record.originResult ? record.originResult.originName : '未填写'}
+            </div>
           );
         }} />
         <Column title="客户级别" width={120} align="center" render={(text, record) => {

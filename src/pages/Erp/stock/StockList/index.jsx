@@ -77,8 +77,8 @@ const StockList = () => {
       </>);
   };
   return (
-    <ListLayout left={Left()}>
-      <StockTable state={state}/>
+    <ListLayout>
+      <StockTable left={Left()} state={state}/>
     </ListLayout>
   );
 };

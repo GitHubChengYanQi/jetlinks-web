@@ -37,7 +37,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state, statement,left} = props;
+  const {status, state, statement, left} = props;
 
   const [ids, setIds] = useState([]);
   const [businessId, setBusinessId] = useState(null);
@@ -65,7 +65,7 @@ const BusinessTable = (props) => {
       tableRef.current.formActions.setFieldValue('state', statement ? statement[0] : '');
       tableRef.current.submit();
     }
-  }, [status, state,statement]);
+  }, [status, state, statement]);
 
 
   const actions = () => {
@@ -99,7 +99,8 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
+                    component={SysField.CustomerListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
         </>
       );
@@ -107,8 +108,10 @@ const BusinessTable = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"  component={SysField.BusinessNameListSelect} />
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"
+                    component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -121,7 +124,7 @@ const BusinessTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
@@ -172,55 +175,36 @@ const BusinessTable = (props) => {
         <Column
           title="项目名称"
           dataIndex="businessName"
-          sorter
           fixed
-          showSorterTooltip={false}
+          style={{maxWidth:200}}
           sortDirections={['ascend', 'descend']}
           render={(text, record, index) => {
             return (
-              <Button type="link" onClick={() => {
-                history.push(`/CRM/business/${record.businessId}`);
-              }}>{text}</Button>
+              <>
+                <a type="link" onClick={() => {
+                  history.push(`/CRM/business/${record.businessId}`);
+                }}><strong>{text}</strong></a>
+                <div><em>
+                  <a onClick={() => {
+                    history.push(`/CRM/customer/${record.customerId}`);
+                  }}>{record.customer ? record.customer.customerName : null}</a>
+                </em>
+                </div>
+                <div>
+                  <em>负责人：{record.user ? record.user.name : '未填写'}</em>
+                </div>
+              </>
             );
           }} />
-        <Column
-          title="客户名称"
-          dataIndex="customerName"
-          showSorterTooltip={false}
-          sortDirections={['ascend', 'descend']}
-          render={(value, record) => {
-            return (
-              <div>
-                {
-                  record.customer ? record.customer.customerName : null
-                }
-              </div>
-            );
-          }} />
-        <Column title="盈率" width={150} align='center' dataIndex="salesId" render={(value, record) => {
+        <Column title="盈率" width={150} align="center" dataIndex="salesId" render={(value, record) => {
           return (
-            // <Progress
-            //   width={60}
-            //   type="circle"
-            //   percent={record.process && record.process.percentage || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
-            //   status={record.state && (record.state === '赢单' ? 'success' : 'exception')}
-            // />
             <Statistic
               title={record.process && record.process.name || record.sales && record.sales.process.length > 0 && record.sales.process[0].name}
               value={record.process && `${record.process.percentage}` || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
-              valueStyle={{ color: record.state && (record.state === '赢单' ? '#3f8600' : '#cf1322') }}
+              valueStyle={{color: record.state && (record.state === '赢单' ? '#3f8600' : '#cf1322')}}
               prefix={record.state && (record.state === '赢单' ? <ArrowUpOutlined /> : <ArrowDownOutlined />)}
               suffix="%"
             />
-          );
-        }} />
-        <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {
-          return (
-            <div>
-              {
-                record.user ? record.user.name : null
-              }
-            </div>
           );
         }} />
         <Column
