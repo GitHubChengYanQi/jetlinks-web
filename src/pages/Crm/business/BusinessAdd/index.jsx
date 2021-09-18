@@ -25,6 +25,7 @@ const BusinessAdd = (props, ref) => {
   });
 
   const open = () => {
+    setDisable(1);
     crmBusinessSalesRun();
     modalRef.current.open(false);
   };
@@ -75,7 +76,6 @@ const BusinessAdd = (props, ref) => {
       width={width()}
       className={styles.myModal}
       onClose={()=>{
-        setDisable(1);
         onClose();
       }}
     >

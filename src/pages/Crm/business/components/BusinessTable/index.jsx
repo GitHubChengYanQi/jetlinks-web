@@ -20,7 +20,6 @@ import {
 } from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
-import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {ArrowDownOutlined, ArrowUpOutlined, LeftOutlined, SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
@@ -141,6 +140,7 @@ const BusinessTable = (props) => {
         return 360;
     }
   };
+
   return (
     <>
       <Table
