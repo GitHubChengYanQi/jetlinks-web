@@ -24,7 +24,19 @@ const Desc = (props) => {
               </div>
             </div>
           </Descriptions.Item>
-          <Descriptions.Item label="乙方信息">{data.user ? data.user.name : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="乙方信息">
+            <div style={{cursor: 'pointer'}} onClick={() => {
+              history.push(`/CRM/customer/${data.partyB}`);
+            }}>
+              <strong>{data.partB ? data.partB.customerName : null}</strong>
+              <div>
+                <em>联系人：{data.partyBContacts ? data.partyBContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;
+                <em>电话：{data.phoneB ? data.phoneB.phoneNumber : '--'}</em></div>
+              <div>
+                <em>{data.partyAAdress ? data.partyAAdress.location : '---'}</em>
+              </div>
+            </div>
+          </Descriptions.Item>
         </Descriptions>
       </>
     );

@@ -122,22 +122,7 @@ const Detail = () => {
 
             <div
               className={styles.main}>
-              <Card>
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab="详细信息" key="1">
-                    <Description data={data}/>
-                  </TabPane>
-                  <TabPane tab="竞争对手" key="2">
-                    <CompetitorList businessId={data.businessId}/>
-                  </TabPane>
-                  <TabPane tab="报价" key="3">
-                    <CompetitorTable businessId={data.businessId}/>
-                  </TabPane>
-                  <TabPane tab="商机明细" key="4">
-                    <TableDetail value={data.businessId} onSuccess={()=>{}}/>
-                  </TabPane>
-                </Tabs>
-              </Card>
+
             </div>
           </Col>
           <Col span={8}>
