@@ -10,14 +10,13 @@ import styles from './index.module.scss';
 
 const BusinessAdd = (props, ref) => {
 
-  const {onClose, showFlag} = props;
-
+  const {onClose} = props;
+  const submitRef = useRef(null);
   const modalRef = useRef(null);
 
   const [ ,setIsModalVisible] = useState(false);
   const [useData, setData] = useState([]);
   const [disable, setDisable] = useState(1);
-  const [stage, setStage] = useState(null);
   const [businessId, setBusinessId] = useState(null);
   const {data, run: crmBusinessSalesRun} = useRequest({
     url: '/crmBusinessSales/list',
@@ -26,6 +25,7 @@ const BusinessAdd = (props, ref) => {
   });
 
   const open = () => {
+    setDisable(1);
     crmBusinessSalesRun();
     modalRef.current.open(false);
   };
@@ -54,6 +54,7 @@ const BusinessAdd = (props, ref) => {
 
   return (
     <Modal
+      compoentRef={submitRef}
       ref={modalRef}
       title={<div>
         <div style={disable === 2 ? {display: 'inline'} : {'display': 'none'}}>
@@ -67,11 +68,16 @@ const BusinessAdd = (props, ref) => {
           {disable===3&&'完成'}
         </div>
       </div>}
-      footer={disable===2?<Button type="primary" htmlType="submit" onSubmit={()=>{modalRef.current.submit();}}  >
+      footer={disable===2?<Button type="primary" onClick={()=>{
+        submitRef.current.formRef.current.tableRef.current.submit();
+      }}  >
         完成创建
       </Button>:false}
       width={width()}
       className={styles.myModal}
+      onClose={()=>{
+        onClose();
+      }}
     >
       {disable === 1 && data && data.length > 0 ? <BusinessTableIndex
         style={{backgroundColor: 'white', width: '100%'}}
@@ -83,6 +89,7 @@ const BusinessAdd = (props, ref) => {
 
       {disable === 2 && <BusinessSteps
         useData={useData}
+        ref={submitRef}
         onChange={(result) => {
           if (result.success) {
             setDisable(3);
@@ -90,19 +97,16 @@ const BusinessAdd = (props, ref) => {
           }
         }}
         onClose={() => {
-          setStage(null);
           setData(null);
           typeof onClose === 'function' && onClose();
         }} />}
       {disable === 3 && <BusinessComplete
         result={businessId}
         onChange={(disable) => {
-          setStage(null);
           setData(null);
           setDisable(disable);
         }}
         onClose={() => {
-          setStage(null);
           setData(null);
           typeof onClose === 'function' && onClose();
         }} />}

@@ -87,6 +87,9 @@ export const ContractId = (props) => {
   return (<Input {...props}  />);
 };
 
+export const BackMoney = (props) => {
+  return (<Input {...props}  />);
+};
 export const OrderId = (props) => {
   return (<Input {...props}  />);
 };
