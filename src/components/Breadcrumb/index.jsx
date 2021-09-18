@@ -9,7 +9,7 @@ const itemRender = (route, params, routes, paths) => {
 
   const last = routes.indexOf(route) === routes.length - 1;
   const name = route.name ? route.name : 'name';
-  console.log(route, paths);
+  // console.log(route, paths);
   return last ? (
     <span>{name}</span>
   ) : (
