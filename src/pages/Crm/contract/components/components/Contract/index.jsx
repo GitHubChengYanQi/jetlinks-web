@@ -16,7 +16,7 @@ const Contract = (props) => {
 
 
   return (
-    <>
+    <div style={{padding:20}}>
       <Form
         NoButton={false}
         {...props}
@@ -33,7 +33,7 @@ const Contract = (props) => {
           关闭
         </Button>
       </Form>
-    </>
+    </div>
   );
 };
 

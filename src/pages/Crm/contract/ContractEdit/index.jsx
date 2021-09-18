@@ -41,8 +41,9 @@ const AddContractEdit = ({...props}) => {
       value={result ? result.contractId : false}
       ref={formRef}
       api={ApiConfig}
+      NoButton={false}
       fieldKey="contractId"
-      success={(result) => {
+      onSuccess={(result) => {
         props.onSuccess();
       }}
     >
@@ -256,7 +257,7 @@ const AddContractEdit = ({...props}) => {
                 label="乙方"
                 name="partyB"
                 value='1416605276529807486'
-                component={SysField.Customer}
+                component={SysField.CustomerId}
                 placeholder="请选择乙方客户"
                 val={value ? value.partBName : null}
                 customerid={async (customer) => {

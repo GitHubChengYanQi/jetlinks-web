@@ -19,23 +19,23 @@ const FastCreateCustomer = ({close, add}) => {
   return (
     <>
       <Card
-        bodyStyle={{padding: '20px 0'}}
-        extra={<Button type="link" style={{padding: 0, float: 'right', lineHeight: '100%'}} onClick={() => {
+        className={style.card}
+        bodyStyle={{padding: '10px 0'}}
+        extra={<Button type="link" style={{padding: 0, float: 'right'}} onClick={() => {
           typeof close === 'function' && close();
         }}>
           <CloseOutlined />
         </Button>}
         title={
-          <div>快速创建客户
-          </div>
+          <div>快速创建客户</div>
         }
-        headStyle={{textAlign: 'center'}} bordered={false}>
+        headStyle={{textAlign: 'center',padding:0,minHeight:40}} bordered={false}>
         <Input placeholder="输入客户名称" onChange={(value) => {
           setValue(value.target.value);
         }} />
-        <Divider style={{margin: '20px 0'}} />
+        <Divider style={{margin: '10px 0'}} />
         <div style={{textAlign: 'center'}}>
-          <Button type="primary" onClick={async () => {
+          <Button type="primary" style={{width:'100%'}} onClick={async () => {
             if (value) {
               const data = await run(
                 {
@@ -44,7 +44,6 @@ const FastCreateCustomer = ({close, add}) => {
                   }
                 }
               );
-              console.log(data);
               typeof add === 'function' && add(data);
             } else {
               message.info('请输入客户名称！');

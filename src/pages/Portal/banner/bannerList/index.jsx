@@ -3,7 +3,7 @@ import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
-import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
+import ContractTable from '@/pages/Crm/contract/components/components/ContractTable';
 import BannerTable from '@/pages/Portal/banner/components/BannerTable';
 import Select from '@/components/Select';
 import {storehouse} from '@/pages/Erp/stock/StockUrl';

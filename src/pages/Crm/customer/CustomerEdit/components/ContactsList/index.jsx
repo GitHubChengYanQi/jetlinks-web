@@ -33,19 +33,12 @@ const ContactsList = (props) => {
   const {customerId, choose} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const refPhone = useRef(null);
 
-  useEffect(() => {
-    if (customerId) {
-      tableRef.current.formActions.setFieldValue('customerId', customerId);
-      tableRef.current.submit();
-    }
-  }, [customerId]);
 
   const searchForm = () => {
     return (
       <>
-        <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} value={customerId || ' '} name="customerId" component={SysField.SalesId} />
       </>
     );
   };

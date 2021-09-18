@@ -14,6 +14,13 @@ import {
 } from '../BusinessUrl';
 
 import * as SysField from '../BusinessField';
+import {Button, Col, Divider, Row} from 'antd';
+import ProCard from '@ant-design/pro-card';
+import Title from '@/components/Title';
+import {InternalFieldList as FieldList} from '@formily/antd';
+import {Switch} from '@alifd/next';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import styled from 'styled-components';
 
 
 const {FormItem} = Form;
@@ -32,6 +39,7 @@ const BusinessEdit = (props,ref) => {
   const [user,setUser] = useState();
 
   useImperativeHandle(ref, () => ({
+    tableRef,
   }));
 
   return (
@@ -48,7 +56,7 @@ const BusinessEdit = (props,ref) => {
           setResult(result.data);
           props.onChange(result);
         }else{
-          props.onSuccess();
+          props.onChange(result);
         }
       }}
 

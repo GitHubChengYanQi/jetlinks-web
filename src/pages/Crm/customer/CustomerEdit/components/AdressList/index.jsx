@@ -33,7 +33,7 @@ const AdressList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem style={{display: 'none'}} value={customerId} name="customerId" component={SysField.SalesId} />
+        <FormItem style={{display: 'none'}} value={customerId || ' '} name="customerId" component={SysField.SalesId} />
       </>
     );
   };

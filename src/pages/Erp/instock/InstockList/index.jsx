@@ -103,7 +103,7 @@ const InstockList = () => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>

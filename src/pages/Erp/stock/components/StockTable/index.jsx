@@ -27,7 +27,7 @@ const {FormItem} = Form;
 
 const StockTable = (props) => {
 
-  const {choose, state} = props;
+  const {choose, state,...other} = props;
   const tableRef = useRef(null);
   const history = useHistory();
 
@@ -66,7 +66,7 @@ const StockTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}> <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
@@ -107,6 +107,7 @@ const StockTable = (props) => {
         onChange={(keys) => {
           setIds(keys);
         }}
+        {...other}
       >
         <Column title="产品名称"  render={(text, record) => {
           return (

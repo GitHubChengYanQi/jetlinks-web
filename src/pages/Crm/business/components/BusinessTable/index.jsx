@@ -7,13 +7,12 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, Progress, Spin, Statistic, Table as AntTable} from 'antd';
+import {Button, Card, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+
 import {
   businessBatchDelete,
   businessDelete,
@@ -21,63 +20,53 @@ import {
 } from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import {useHistory} from 'ice';
-import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {ArrowDownOutlined, ArrowUpOutlined, LeftOutlined, SearchOutlined} from '@ant-design/icons';
+import {ArrowDownOutlined, ArrowUpOutlined, SearchOutlined} from '@ant-design/icons';
 import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import Modal from '@/components/Modal';
+import Form from '@/components/Form';
+import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
 import styles from '@/pages/Crm/business/BusinessAdd/index.module.scss';
-import CustomerDetail from '@/pages/Crm/business/BusinessDetails';
+import style from '@/pages/Crm/customer/components/CustomerTable/index.module.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state, statement,left} = props;
+  const {status, state, statement, left} = props;
 
   const [ids, setIds] = useState([]);
   const [businessId, setBusinessId] = useState(null);
   const [disable, setDisable] = useState(1);
-  const [widths, setWidth] = useState(800);
-  const [show, setShow] = useState(true);
-  const [show1, setShow1] = useState(true);
-  const [title, setTitle] = useState('编辑项目');
-
   const history = useHistory();
 
   const tableRef = useRef(null);
   const addRef = useRef(null);
-  const [detail, setDetail] = useState(false);
   const [search, setSearch] = useState(false);
-  const [showFlag, setShowFlag] = useState(false);
-
+  const submitRef = useRef(null);
+  const modelRef = useRef(null);
+  const [useData, setData] = useState([]);
 
   useEffect(() => {
-    setShow(true);
-    setShow1(true);
     if (status || state || statement) {
       tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
       tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
       tableRef.current.formActions.setFieldValue('state', statement ? statement[0] : '');
       tableRef.current.submit();
     }
-  }, [status, state,statement]);
+  }, [status, state, statement]);
 
 
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          setShowFlag(true);
-          addRef.current.open();
+          addRef.current.open(false);
         }} />
-        {/*<AddButton onClick={() => {*/}
-        {/*  ref.current.open(false);*/}
-        {/*}} />*/}
       </>
     );
   };
@@ -99,7 +88,8 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId" component={SysField.CustomerListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
+                    component={SysField.CustomerListSelect} />
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="person" component={SysField.PersonListSelect} />
         </>
       );
@@ -107,8 +97,10 @@ const BusinessTable = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"  component={SysField.BusinessNameListSelect} />
+        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+                    columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"
+                    component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -121,7 +113,7 @@ const BusinessTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
@@ -140,12 +132,17 @@ const BusinessTable = (props) => {
       </>
     );
   };
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
+  const width = () => {
+    switch (disable) {
+      case 1:
+        return 650;
+      case 2:
+        return 360;
+      default:
+        return 360;
     }
-    return 400;
   };
+
   return (
     <>
       <Table
@@ -170,57 +167,36 @@ const BusinessTable = (props) => {
         left={left}
       >
         <Column
-          title="项目名称"
+          title="项目信息"
           dataIndex="businessName"
-          sorter
           fixed
-          showSorterTooltip={false}
           sortDirections={['ascend', 'descend']}
-          render={(text, record, index) => {
+          render={(text, record) => {
             return (
-              <Button type="link" onClick={() => {
+              <div style={{cursor:'pointer'}} onClick={()=>{
                 history.push(`/CRM/business/${record.businessId}`);
-              }}>{text}</Button>
-            );
-          }} />
-        <Column
-          title="客户名称"
-          dataIndex="customerName"
-          showSorterTooltip={false}
-          sortDirections={['ascend', 'descend']}
-          render={(value, record) => {
-            return (
-              <div>
-                {
-                  record.customer ? record.customer.customerName : null
-                }
+              }}>
+                <strong>{text}</strong>
+                <div><em>
+                  {record.customer ? record.customer.customerName : null}
+                </em>
+                </div>
+                <div>
+                  <em>负责人：{record.user ? record.user.name : '未填写'}</em>
+                </div>
               </div>
+
             );
           }} />
-        <Column title="盈率" width={150} align='center' dataIndex="salesId" render={(value, record) => {
+        <Column title="盈率" width={150} align="center" dataIndex="salesId" render={(value, record) => {
           return (
-            // <Progress
-            //   width={60}
-            //   type="circle"
-            //   percent={record.process && record.process.percentage || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
-            //   status={record.state && (record.state === '赢单' ? 'success' : 'exception')}
-            // />
             <Statistic
               title={record.process && record.process.name || record.sales && record.sales.process.length > 0 && record.sales.process[0].name}
               value={record.process && `${record.process.percentage}` || record.sales && record.sales.process.length > 0 && record.sales.process[0].percentage}
-              valueStyle={{ color: record.state && (record.state === '赢单' ? '#3f8600' : '#cf1322') }}
+              valueStyle={{color: record.state && (record.state === '赢单' ? '#3f8600' : '#cf1322')}}
               prefix={record.state && (record.state === '赢单' ? <ArrowUpOutlined /> : <ArrowDownOutlined />)}
               suffix="%"
             />
-          );
-        }} />
-        <Column title="负责人" width={120} align="center" dataIndex="person" render={(value, record) => {
-          return (
-            <div>
-              {
-                record.user ? record.user.name : null
-              }
-            </div>
           );
         }} />
         <Column
@@ -251,10 +227,9 @@ const BusinessTable = (props) => {
             <>
               <EditButton onClick={() => {
                 setBusinessId(record.businessId);
-                setWidth(800);
+                setData(record.sales);
                 setDisable(1);
-                setDetail(true);
-                setShow(false);
+                modelRef.current.open(false);
               }} />
               <DelButton api={businessDelete} value={record.businessId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -262,61 +237,46 @@ const BusinessTable = (props) => {
             </>
           );
         }} width={100} />
-
       </Table>
       <BusinessAdd
-        showFlag={showFlag}
         ref={addRef}
-        onSuccess={() => {
-          setShowFlag(false);
-          addRef.current.close();
-        }}
         onClose={() => {
-          setShowFlag(false);
           addRef.current.close();
+          tableRef.current.refresh();
         }}
       />
       <Modal
-        title={title}
-        visible={detail}
-        footer={false}
-        destroyOnClose
-        width={widths}
-        className={styles.myModal}
-        onCancel={() => {
-          setDetail(false);
-          setShow(true);
-          tableRef.current.submit();
-
+        compoentRef={submitRef}
+        ref={modelRef}
+        title={<div style={{marginLeft: '45%', display: 'inline'}}>
+          {disable === 1 && '添加项目'}
+          {disable === 2 && '完成'}
+        </div>}
+        footer={disable === 1 ? <Button type="primary" onClick={() => {
+          submitRef.current.formRef.current.tableRef.current.submit();
         }}
-        onOk={() => {
-          setDetail(false);
-          setShow(true);
-          tableRef.current.submit();
-
-        }}>
-        <div style={{height: height(), overflow: 'auto'}}>
-          <div
-            style={disable === 1 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-            <Spin spinning={show} delay={500} style={{backgroundColor: 'white', width: '100%'}}>
-              <BusinessEdit
-                value={businessId}
-                onSuccess={() => {
-                  setWidth(400);
-                  setDisable(2);
-                  setShow1(false);
-                  setTitle('创建结果');
-                }}
-              />
-            </Spin>
-          </div>
-          <div
-            style={disable === 2 ? {marginRight: 10, animationDelay: '-1s'} : {display: 'none', animationDelay: '-1s'}}>
-            <Spin spinning={show1} delay={500} style={{backgroundColor: 'white', width: '100%'}}>
-              {businessId && <BusinessComplete result={businessId} disabled={false} />}
-            </Spin>
-          </div>
-        </div>
+        >
+          完成创建
+        </Button> : false}
+        width={width()}
+        className={styles.myModal}
+        onClose={() => {
+          modelRef.current.close();
+          tableRef.current.refresh();
+        }}
+      >
+        {disable === 1 && <BusinessSteps
+          useData={useData}
+          businessId={businessId}
+          ref={submitRef}
+          onChange={(result) => {
+            if (result.success) {
+              setData(null);
+              setDisable(2);
+            }
+          }}
+        />}
+        {disable === 2 && <BusinessComplete result={businessId} disabled={false} />}
       </Modal>
     </>
   );

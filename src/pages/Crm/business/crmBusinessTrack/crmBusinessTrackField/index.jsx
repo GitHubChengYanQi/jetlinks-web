@@ -74,7 +74,7 @@ export const Type = (props) => {
 };
 
 export const CustomerId = (props) => {
-  return (<Select api={apiUrl.customerIdSelect} {...props} disabled />);
+  return (<Select api={apiUrl.customerIdSelect} {...props} disabled={props.track} />);
 };
 
 export const Classify = (props) => {
@@ -87,6 +87,9 @@ export const ContractId = (props) => {
   return (<Input {...props}  />);
 };
 
+export const BackMoney = (props) => {
+  return (<Input {...props}  />);
+};
 export const OrderId = (props) => {
   return (<Input {...props}  />);
 };

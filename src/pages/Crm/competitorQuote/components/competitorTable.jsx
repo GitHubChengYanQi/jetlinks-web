@@ -21,11 +21,11 @@ import CompetitorQuoteEdit from '../competitorQuoteEdit';
 import * as SysField from '../competitorQuoteField';
 import DelButton from '@/components/DelButton';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
+import {Competitor} from '../competitorQuoteField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const formActionsPublic = createFormActions();
 
 const CompetitorTable = ({...props}) => {
 
@@ -71,7 +71,7 @@ const CompetitorTable = ({...props}) => {
           columns={4}
           full
           autoRow>
-          {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId"  component={SysField.CompetitorId} />}
+          {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId"  component={SysField.Competitor} />}
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -86,7 +86,7 @@ const CompetitorTable = ({...props}) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
@@ -112,7 +112,6 @@ const CompetitorTable = ({...props}) => {
         title={<Breadcrumb />}
         api={competitorQuoteList}
         rowKey="quoteId"
-        formActions={formActionsPublic}
         isModal={false}
         searchForm={searchForm}
         SearchButton={Search()}
@@ -121,21 +120,20 @@ const CompetitorTable = ({...props}) => {
         ref={tableRef}
         {...props}
       >
+        <Column width={200} title="报价方名称" dataIndex="competitorId" render={(value, record) => {
+          return (
+            <div>
+              {
+                record.competitorResult ? record.competitorResult.name : record.campType === 0 && '我方报价'
+              }
+            </div>
+          );
+        }} />
         <Column width={200} title="关联项目" dataIndex="businessId" render={(value, record) => {
           return (
             <div>
               {
                 record.crmBusinessResult ? record.crmBusinessResult.businessName : null
-              }
-            </div>
-          );
-        }} />
-        <Column width={200} title="报报价方名称" dataIndex="competitorId" render={(value, record) => {
-          return (
-
-            <div>
-              {
-                record.competitorResult ? record.competitorResult.name : '我方报价'
               }
             </div>
           );

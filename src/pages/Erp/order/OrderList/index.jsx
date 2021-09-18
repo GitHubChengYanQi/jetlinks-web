@@ -34,7 +34,6 @@ const OrderList = (props) => {
   const orderDetailRef = useRef(null);
 
   const [search,{toggle}]  = useBoolean(false);
-  const [value, setValue] = useState(null);
 
   const searchForm = () => {
 
@@ -66,13 +65,13 @@ const OrderList = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
             <MegaLayout inline>
               {
-                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || null} name="partyA" component={SysField.CustomerListSelect} /> : null
+                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || ' '} name="partyA" component={SysField.CustomerListSelect} /> : null
               }
             </MegaLayout>
           </FormButtonGroup>

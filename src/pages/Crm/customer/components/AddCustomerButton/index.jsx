@@ -1,7 +1,10 @@
-import {Button, Dropdown, Menu, Popover} from 'antd';
+import {Button, Collapse, Dropdown, Menu, Popover} from 'antd';
 import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import React, {useEffect, useRef, useState} from 'react';
+import {DownOutlined} from '@ant-design/icons';
+
+const {Panel} = Collapse;
 
 
 const AddCustomerButton = (props) => {
@@ -23,7 +26,7 @@ const AddCustomerButton = (props) => {
   const menu = (
     <Menu style={{padding: 0}}>
       <Menu.Item key="1" style={{padding: 0}}>
-        <Button ghost type="primary" onClick={() => {
+        <Button ghost type="primary" style={{borderBottom: 'none', width: '100%'}} onClick={() => {
           setDrow(false);
           ref.current.open(false);
         }}>创建客户</Button>
@@ -39,7 +42,7 @@ const AddCustomerButton = (props) => {
           setVisible(false);
           onChange(value);
         }} />} trigger="click">
-          <Button danger onClick={() => {
+          <Button ghost type="primary" style={{width: '100%'}} onClick={() => {
             setVisible(true);
           }}>快速创建</Button>
         </Popover>
@@ -50,18 +53,13 @@ const AddCustomerButton = (props) => {
 
   return (
     <>
-      <Dropdown overlay={menu} trigger="click" destroyPopupOnHide visible={drow} onVisibleChange={(visible) => {
+      <Dropdown trigger="click" overlay={menu} destroyPopupOnHide visible={drow} onVisibleChange={(visible) => {
         setDrow(visible);
-      }}>
-        <Button
-          type="primary"
-          style={{backgroundColor: '#1890ff', color: '#fff'}}
-          onClick={() => {
-            if (drow)
-              setDrow(false);
-            else
-              setDrow(true);
-          }}>新增客户</Button>
+      }
+      }>
+        <Button type="primary">
+          新建客户 <DownOutlined />
+        </Button>
       </Dropdown>
 
 

@@ -13,10 +13,16 @@ import {competitorListSelect} from '../competitorQuoteUrl';
 import {useRequest} from '@/util/Request';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
+import Modal from '@/components/Modal';
 
 export const CompetitorsQuote = (props) =>{
   return (<InputNumber  {...props}/>);
 };
+
+export const Competitor = (props) => {
+  return (<Select api={apiUrl.competitorListSelect} {...props} />);
+};
+
 export const CompetitorId = (props) =>{
   const {competitorId} = props;
   if (competitorId){
@@ -33,10 +39,10 @@ export const CompetitorId = (props) =>{
         ref.current.open(false);}}>
         新增对手
       </Button>
-      <CreateNewCustomer onSuccess={() => {
+      <Modal onSuccess={() => {
         ref.current.close();
         getData();
-      }} refModal={ref} title='竞争对手' model={CompetitorEdit} widths={1300} position={(res)=>{
+      }} ref={ref} title='竞争对手' component={CompetitorEdit} width={1300} position={(res)=>{
         props.onChange(res && res.data && res.data.competitorId);
       }}/>
     </>

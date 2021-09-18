@@ -4,7 +4,6 @@ import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {EditOutlined} from '@ant-design/icons';
 import Modal from '@/components/Modal';
-import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
@@ -18,8 +17,10 @@ import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 import styles from './index.module.scss';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+
+import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
+import TableDetailEdit from '@/pages/Crm/business/BusinessEdit/components/TableDetailEdit';
 
 const {TabPane} = Tabs;
 
@@ -27,6 +28,8 @@ const CustomerDetail = () => {
   const params = useParams();
   const ref = useRef(null);
   const refTrack = useRef(null);
+  const submitRef = useRef(null);
+
   const historys = useHistory();
   const {loading, data, refresh} = useRequest(businessDetail, {
     defaultParams: {
@@ -67,10 +70,26 @@ const CustomerDetail = () => {
               refTrack.current.open(false);
             }} icon={<EditOutlined/>}>添加跟进</Button>
 
-          <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
-            refTrack.current.close();
-            refresh();
-          }} val={data} number={1}/>
+          <Modal width={1400} title="跟进"
+            ref={refTrack}
+            compoentRef={submitRef}
+            footer={
+              <>
+                <Button type="primary" onClick={()=>{
+                  submitRef.current.formRef.current.submit();
+                }}  >
+                  保存
+                </Button>
+                <Button onClick={()=>{
+                  refTrack.current.close();
+                }}  >
+                  取消
+                </Button>
+              </>}
+            component={CrmBusinessTrackEdit} onSuccess={() => {
+              refTrack.current.close();
+              refresh();
+            }} val={data} number={1}/>
 
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }
@@ -79,10 +98,26 @@ const CustomerDetail = () => {
             }}>编辑</Button>
 
 
-          <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
-            ref.current.close();
-            refresh();
-          }} ref={ref}/>
+          <Modal width={1400} title="项目"
+            component={TableDetailEdit}
+            compoentRef={submitRef}
+            footer={
+              <>
+                <Button type="primary" onClick={()=>{
+                  submitRef.current.formRef.current.submit();
+                }}  >
+                保存
+                </Button>
+                <Button onClick={()=>{
+                  ref.current.close();
+                }}  >
+                取消
+                </Button>
+              </>}
+            onSuccess={() => {
+              ref.current.close();
+              refresh();
+            }} ref={ref}/>
           <Button
             style={params.state === 'false' ?  null : {'display': 'none' } }
             type="primary" key="1"
@@ -161,7 +196,7 @@ const CustomerDetail = () => {
     </div>;
   }
 
-  return null;
+  return '暂无项目';
 
 
 };

@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, notification, Table as AntTable, Tag} from 'antd';
+import {Button, notification, Table as AntTable, Tag} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -15,9 +15,9 @@ import Form from '@/components/Form';
 import {contractBatchDelete, contractDelete, contractEdit, contractList,} from '../../../ContractUrl';
 import * as SysField from '../../../ContractField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
-import Contract from '@/pages/Crm/contract/ContractList/components/Contract';
+import Contract from '@/pages/Crm/contract/components/components/Contract';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
@@ -32,7 +32,7 @@ const {FormItem} = Form;
 
 const ContractTable = (props) => {
 
-  const {state, customerId,...other} = props;
+  const {state, customerId, ...other} = props;
 
   const history = useHistory();
 
@@ -91,7 +91,7 @@ const ContractTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
@@ -99,7 +99,7 @@ const ContractTable = (props) => {
               <FormItem hidden name="audit" component={SysField.Name} />
               {
                 customerId ?
-                  <FormItem mega-props={{span: 1}} placeholder="甲方" hidden value={customerId || null} name="partyA"
+                  <FormItem mega-props={{span: 1}} placeholder="甲方" hidden value={customerId || ' '} name="partyA"
                             component={SysField.CustomerNameListSelect} /> : null
               }
             </MegaLayout>
@@ -178,35 +178,40 @@ const ContractTable = (props) => {
       >
         <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
           return (
-            <Button size="small" type="link" onClick={() => {
-              content.current.open(record.contractId);
+            <Button type="link" onClick={() => {
+              // content.current.open(record.contractId);
+              history.push(`/CRM/contract/${record.contractId}`);
             }}>{text}</Button>
           );
         }} />
         <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
-            <>
-              <a onClick={()=>{
-                history.push(`/CRM/customer/${record.partyA}`);
-              }}><strong>{ record.partA ? record.partA.customerName : null}</strong></a>
-              <div><em>联系人：{ record.partyAContacts ? record.partyAContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;<em>电话：{record.phoneA ? record.phoneA.phoneNumber :  '--'}</em></div>
+            <div style={{cursor: 'pointer'}} onClick={() => {
+              history.push(`/CRM/customer/${record.partyA}`);
+            }}>
+              <strong>{record.partA ? record.partA.customerName : null}</strong>
+              <div>
+                <em>联系人：{record.partyAContacts ? record.partyAContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;
+                <em>电话：{record.phoneA ? record.phoneA.phoneNumber : '--'}</em></div>
               <div>
                 <em>{record.partyAAdress ? record.partyAAdress.location : '---'}</em>
               </div>
-            </>
+            </div>
           );
         }} />
         <Column title="乙方信息" dataIndex="partAName" render={(text, record) => {
           return (
-            <>
-              <a onClick={()=>{
-                history.push(`/CRM/customer/${record.partyB}`);
-              }}><strong>{record.partB ? record.partB.customerName : null}</strong></a>
-              <div><em>联系人：{ record.partyBContacts ? record.partyBContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;<em>电话：{record.phoneB ? record.phoneB.phoneNumber :  '--'}</em></div>
+            <div style={{cursor: 'pointer'}} onClick={() => {
+              history.push(`/CRM/customer/${record.partyB}`);
+            }}>
+              <strong>{record.partB ? record.partB.customerName : null}</strong>
+              <div>
+                <em>联系人：{record.partyBContacts ? record.partyBContacts.contactsName : '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;
+                <em>电话：{record.phoneB ? record.phoneB.phoneNumber : '--'}</em></div>
               <div>
                 <em>{record.partyAAdress ? record.partyAAdress.location : '---'}</em>
               </div>
-            </>
+            </div>
           );
         }} />
         <Column title="创建时间" width={200} dataIndex="time" sorter />
@@ -231,11 +236,11 @@ const ContractTable = (props) => {
           );
         }} width={200} />
       </Table>
-      <Modal2 title="合同" component={AddContractEdit} onSuccess={() => {
+      <Modal width={800} title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />
-      <Modal2 component={Contract} onSuccess={() => {
+      <Modal width={1200} component={Contract} onSuccess={() => {
         tableRef.current.submit();
         content.current.close();
       }} ref={content} />

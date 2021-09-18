@@ -41,7 +41,7 @@ const TableDetail = (props) => {
   return (
     <>
       <div style={{textAlign:'right'}}>
-        <Button key='1' type="primary" style={{marginRight: 10}} onClick={()=>{
+        <Button key='1' style={{marginRight: 10}} onClick={()=>{
           refAddOne.current.open(false);}}>
           添加产品
         </Button>
@@ -54,7 +54,7 @@ const TableDetail = (props) => {
           businessId={value}
           TcDisabled={false}
         />
-        <Button key='2' type="primary" onClick={()=>{
+        <Button key='2'  onClick={()=>{
           refAddAll.current.open(false);
         }}>
           添加产品套餐

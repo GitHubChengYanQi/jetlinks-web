@@ -27,7 +27,7 @@ const formActionsPublic = createFormActions();
 const CompetitorEdit = ({onChange,...props}) => {
 
   const {value} = props;
-  // const {position} = props;
+  const {position} = props;
   const formRef = useRef();
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
@@ -45,6 +45,7 @@ const CompetitorEdit = ({onChange,...props}) => {
         api={ApiConfig}
         formActions={formActionsPublic}
         onSuccess={(res) => {
+          position && typeof position === 'function' && position(res);
           onChange && typeof onChange === 'function' && onChange(res);
           props.onSuccess();
         }}
