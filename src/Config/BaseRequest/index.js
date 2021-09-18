@@ -14,7 +14,7 @@ const ajax = axios.create({
 ajax.interceptors.request.use((config) => {
   const token = cookie.get('header-key');
   config.headers.common.Authorization = token || '';
-  console.log(config);
+  // console.log(config);
   return config;
 }, (error) => {
   return error;

@@ -91,7 +91,7 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
   };
 
   return (
-    <Layout>
+    <Layout style={{height:'100%'}}>
       {mode === 'horizontal' && <Header theme="light" className={styles.header}>
         <div className={styles.leftMenu}>{renderLeftMenu()}</div>
         <div className={styles.rightMenu}>
@@ -99,11 +99,14 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
         </div>
       </Header>}
       {mode === 'vertical' && <Sider theme="dark" width={220}>
-        <div>
+        <div style={{height:'100%'}}>
           <div className={styles.leftLogo}>
             {subMenu.name}
           </div>
-          {renderLeftMenu()}
+          <div style={{maxHeight:'calc(100% - 98px)',overflowY:'auto'}}>
+            {renderLeftMenu()}
+          </div>
+
         </div>
 
         <div style={{position: 'absolute', bottom: 0, width: '100%', borderTop: '1px solid #666'}}>
