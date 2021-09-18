@@ -13,6 +13,9 @@ import Index from '@/pages/Crm/business/BusinessEdit/index';
 import DatePicker from '@/components/DatePicker';
 import * as apiUrl from '../BusinessUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
+import {useRequest} from '@/util/Request';
+import Modal from '@/components/Modal';
+import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 
 // 项目Id
 export const BusinessId = (props) => {
@@ -145,3 +148,33 @@ export const ChangeTimeListSelect17 = (props) => {
   return (<DatePicker api={apiUrl.ChangeTimeListSelect17}  {...props} />);
 };
 
+
+export const CompetitorId = (props) =>{
+  const ref = useRef(null);
+
+  const {loading,data,run:getData} = useRequest(apiUrl.competitorListSelect);
+
+  return (
+    <div style={{width:300}}>
+      <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
+      <Button style={{width:100,margin:0}} type="primary"  onClick={()=>{
+        ref.current.open(false);}}>
+        新增对手
+      </Button>
+      <Modal width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
+        ref.current.close();
+        getData();
+      }} ref={ref}
+       onChange={(res)=>{
+         if(res){
+           props.onChange(res && res.data && res.data.competitorId);
+         }else{
+           props.onChange();
+         }
+       }} />
+    </div>
+  );
+};
+export const CompetitorsQuote = (props) =>{
+  return (<InputNumber style={{width:300}}  {...props}/>);
+};
