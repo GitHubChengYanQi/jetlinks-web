@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal,  Spin, Statistic, Table as AntTable} from 'antd';
+import {Button, Card, Modal, Spin, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -29,6 +29,7 @@ import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
 import styles from '@/pages/Crm/business/BusinessAdd/index.module.scss';
+import style from '@/pages/Crm/customer/components/CustomerTable/index.module.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -177,20 +178,20 @@ const BusinessTable = (props) => {
           sortDirections={['ascend', 'descend']}
           render={(text, record, index) => {
             return (
-              <>
-                <a type="link" title='项目详情' onClick={() => {
-                  history.push(`/CRM/business/${record.businessId}`);
-                }}><strong>{text}</strong></a>
-                <div><em>
-                  <a title='客户详情' onClick={() => {
-                    history.push(`/CRM/customer/${record.customerId}`);
-                  }}>{record.customer ? record.customer.customerName : null}</a>
-                </em>
-                </div>
-                <div>
-                  <em>负责人：{record.user ? record.user.name : '未填写'}</em>
-                </div>
-              </>
+              <Card bordered={false} style={{border: 'none'}} onClick={() => {
+                history.push(`/CRM/business/${record.businessId}`);
+              }}>
+                <Card.Grid className={style.cardGrid}>
+                  <strong>{text}</strong>
+                  <div><em>
+                    {record.customer ? record.customer.customerName : null}
+                  </em>
+                  </div>
+                  <div>
+                    <em>负责人：{record.user ? record.user.name : '未填写'}</em>
+                  </div>
+                </Card.Grid>
+              </Card>
             );
           }} />
         <Column title="盈率" width={150} align="center" dataIndex="salesId" render={(value, record) => {
