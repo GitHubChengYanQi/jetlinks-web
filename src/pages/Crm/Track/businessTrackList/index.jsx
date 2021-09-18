@@ -128,23 +128,23 @@ const BusinessTrackList = () => {
         <Column title="负责人" dataIndex="userId" />
         <Column title="分类" dataIndex="classify" />
         <Column title="名称" dataIndex="classifyId" />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.trackId);
-              }} />
-              <DelButton api={businessTrackDelete} value={record.trackId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={300} />
+        {/* <Column title="操作" align="right" render={(value, record) => { */}
+        {/*  return ( */}
+        {/*    <> */}
+        {/*      <EditButton onClick={() => { */}
+        {/*        ref.current.open(record.trackId); */}
+        {/*      }} /> */}
+        {/*      <DelButton api={businessTrackDelete} value={record.trackId} onSuccess={() => { */}
+        {/*        tableRef.current.refresh(); */}
+        {/*      }} /> */}
+        {/*    </> */}
+        {/*  ); */}
+        {/* }} width={300} /> */}
       </Table>
-      <Drawer width={800} title="编辑" component={BusinessTrackEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      { /* <Drawer width={800} title="编辑" component={BusinessTrackEdit} onSuccess={() => { */}
+      { /*  tableRef.current.refresh(); */}
+      { /*  ref.current.close(); */}
+      { /* }} ref={ref} /> */}
 
       <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
         refTrack.current.close();

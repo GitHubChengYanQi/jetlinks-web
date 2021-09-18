@@ -56,6 +56,22 @@ const CustomerSelect = (props) => {
         onBlur={() => {
           typeof onblur === 'function' && onblur();
         }}
+        onFocus={async (value)=>{
+          if (value.target.value) {
+            await run({
+              data: {
+                customerName: value
+              }
+            });
+          } else {
+            await run({
+              params: {
+                limit: 5,
+                page:1
+              }
+            });
+          }
+        }}
         onChange={(value) => {
           handleChange(value.target.value);
         }}
