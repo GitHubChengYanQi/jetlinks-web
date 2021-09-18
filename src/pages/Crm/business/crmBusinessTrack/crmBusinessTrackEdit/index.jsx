@@ -8,13 +8,15 @@
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {Button, Col, Divider, Row} from 'antd';
 import {Switch} from '@alifd/next';
 import {trackMessageAdd} from '@/pages/Crm/trackMessage/trackMessageUrl';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
 import Title from '@/components/Title';
+import {BackMoney} from '../crmBusinessTrackField';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 
 
 const {FormItem} = Form;
@@ -22,7 +24,6 @@ const {FormItem} = Form;
 const ApiConfig = {
   add: trackMessageAdd
 };
-
 
 const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
@@ -55,18 +56,25 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
   };
 
   const returnFormItem = (classNmb, index) => {
+    let businessId = null;
+    let contractId = null;
+    let orderId = null;
+    let backMoney = null;
     if (classNmb === 1) {
-
-      return (<FormItem label="商机" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} />);
+      businessId = val.businessId;
+      return (<FormItem label="商机" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} value={businessId} />);
     }
     if (classNmb === 2) {
-      return (<FormItem label="合同" name={`businessTrackParams.${index}.classifyId`} component={SysField.ContractId} />);
+      contractId = val.contractId;
+      return (<FormItem label="合同" name={`businessTrackParams.${index}.classifyId`} component={SysField.ContractId} value={contractId} />);
     }
     if (classNmb === 3) {
-      return (<FormItem label="订单" name={`businessTrackParams.${index}.classifyId`} component={SysField.OrderId} />);
+      orderId = val.orderId;
+      return (<FormItem label="订单" name={`businessTrackParams.${index}.classifyId`} component={SysField.OrderId} value={orderId} />);
     }
     if (classNmb === 4) {
-      return (<FormItem label="回款" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} />);
+      backMoney = val.backMoney;
+      return (<FormItem label="回款" name={`businessTrackParams.${index}.classifyId`} component={SysField.BackMoney} value={backMoney} />);
     }
   };
 
@@ -78,6 +86,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="trackMessageId"
+        NoButton={false}
       >
         <Row gutter={24}>
           <Col span={14}>
@@ -140,15 +149,16 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                                     component={SysField.Money} /> : null}
                                 <Button
                                   type="link" style={{float: 'right'}}
+                                  icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
-                                  }}>删除事项</Button>
+                                  }}>删除</Button>
                               </RowStyleLayout>
                               <Divider dashed />
                             </div>
                           );
                         })}
-                        <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加事项</Button>
+                        <Button type="link" icon={ <PlusOutlined />} style={{float: 'right'}} onClick={onAdd}>增加事项</Button>
                       </div>
                     );
                   }}
@@ -188,15 +198,16 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                 />
                                 <Button
                                   type="link" style={{float: 'right'}}
+                                  icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
-                                  }}>删除报价</Button>
+                                  }}>删除</Button>
                               </RowStyleLayout>
                               <Divider dashed />
                             </div>
                           );
                         })}
-                        <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加对手报价</Button>
+                        <Button type="link" style={{float: 'right'}} icon={ <PlusOutlined />} onClick={onAdd}>增加报价</Button>
                       </div>
                     );
                   }}

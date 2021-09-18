@@ -67,10 +67,25 @@ const CustomerDetail = () => {
               refTrack.current.open(false);
             }} icon={<EditOutlined/>}>添加跟进</Button>
 
-          <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
-            refTrack.current.close();
-            refresh();
-          }} val={data} number={1}/>
+          <Modal width={1400} title="跟进"
+            ref={refTrack}
+            footer={
+              <>
+                <Button type="primary" onClick={()=>{
+                  refTrack.current.formRef.current.tableRef.current.submit();
+                }}  >
+                  保存
+                </Button>
+                <Button onClick={()=>{
+                  refTrack.current.formRef.current.tableRef.current.submit();
+                }}  >
+                  取消
+                </Button>
+              </>}
+            component={CrmBusinessTrackEdit} onSuccess={() => {
+              refTrack.current.close();
+              refresh();
+            }} val={data} number={1}/>
 
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }

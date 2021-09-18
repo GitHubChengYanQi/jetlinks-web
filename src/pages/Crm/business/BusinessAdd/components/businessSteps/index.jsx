@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Divider} from '@alifd/next';
 import {Col, Row, Steps} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 
-const BusinessSteps = ((props) => {
+const BusinessSteps = ((props, ref) => {
 
   const {Step} = Steps;
-  const {onClose, useData, stage} = props;
-  console.log(111111111111, useData);
+  const {onClose, useData, businessId} = props;
   const [current, setCurrent] = useState(0);
+  const formRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    formRef,
+  }));
+
   const step = useData ? useData.process.map((values, index) => {
     return (
       <Step
@@ -47,6 +52,7 @@ const BusinessSteps = ((props) => {
           <ProCard>
             <div style={{overflow: 'auto'}}>
               <BusinessEdit
+                ref={formRef}
                 onClose={() => {
                   typeof onClose === 'function' && onClose();
                 }}
@@ -54,7 +60,7 @@ const BusinessSteps = ((props) => {
                   props.onChange(result);
                 }}
                 stage={useData ? useData.salesId : null}
-                value={false}
+                value={businessId || false}
               />
             </div>
           </ProCard>
@@ -64,4 +70,4 @@ const BusinessSteps = ((props) => {
   );
 });
 
-export default BusinessSteps;
+export default React.forwardRef(BusinessSteps);

@@ -32,6 +32,7 @@ const BusinessEdit = (props,ref) => {
   const [user,setUser] = useState();
 
   useImperativeHandle(ref, () => ({
+    tableRef,
   }));
 
   return (
@@ -48,7 +49,7 @@ const BusinessEdit = (props,ref) => {
           setResult(result.data);
           props.onChange(result);
         }else{
-          props.onSuccess();
+          props.onChange(result);
         }
       }}
 
