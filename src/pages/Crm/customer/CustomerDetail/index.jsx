@@ -15,7 +15,7 @@ import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 import OrderList from '@/pages/Erp/order/OrderList';
-import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
+import ContractTable from '@/pages/Crm/contract/components/components/ContractTable';
 import styles from './index.module.scss';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
@@ -45,6 +45,10 @@ const CustomerDetail = () => {
     return (<ProSkeleton type="descriptions" />);
   }
 
+  if (!data){
+    return '暂无客户';
+  }
+
   return (
     <div className={styles.detail}>
       <Card>
@@ -57,9 +61,9 @@ const CustomerDetail = () => {
               <Avatar size={64}>LOGO</Avatar>
             </Col>
             <Col>
-              <h3>{data.customerName}</h3>
+              <h3>{data && data.customerName || '未填写'}</h3>
               <div>
-                <em>注册地址：{data.signIn || '未填写'}&nbsp;&nbsp;/&nbsp;&nbsp;行业：{data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</em>
+                <em>注册地址：{data && data.signIn || '未填写'}&nbsp;&nbsp;/&nbsp;&nbsp;行业：{data && data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</em>
               </div>
             </Col>
           </Row>
@@ -76,7 +80,7 @@ const CustomerDetail = () => {
           }} val={data} number={0}/>
 
           <Button type="primary" onClick={() => {
-            ref.current.open(data.customerId);
+            ref.current.open(data && data.customerId);
           }}>编辑</Button>
           <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
             ref.current.close();
@@ -122,16 +126,16 @@ const CustomerDetail = () => {
                   <Description data={data} />
                 </TabPane>
                 <TabPane tab="联系人" key="2">
-                  <ContactsList customerId={data.customerId} />
+                  <ContactsList customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="地址" key="3">
-                  <AdressList customerId={data.customerId} />
+                  <AdressList customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="合同" key="4">
-                  <ContractTable customerId={data.customerId} />
+                  <ContractTable customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="订单" key="5">
-                  <OrderList customerId={data.customerId} />
+                  <OrderList customerId={data &&data.customerId} />
                 </TabPane>
                 <TabPane tab="回款" key="6">
                   Content of Tab Pane 3
@@ -149,7 +153,7 @@ const CustomerDetail = () => {
                   <Dynamic value={data} />
                 </TabPane>
                 <TabPane tab="跟进" key="2">
-                  <Track value={data} number={0} trackMessageId={data.trackMessageId}/>
+                  <Track value={data} number={0} trackMessageId={data && data.trackMessageId}/>
                 </TabPane>
               </Tabs>
             </Card>

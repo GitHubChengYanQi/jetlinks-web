@@ -12,6 +12,9 @@ const Dynamic = (props) => {
   const {value} = props;
   const {FormItem} = Form;
 
+  if (!value){
+    return null;
+  }
 
   const datas = (value) => {
     return {
@@ -41,6 +44,7 @@ const Dynamic = (props) => {
       </div>
     );
   };
+
 
   return (
     <div>

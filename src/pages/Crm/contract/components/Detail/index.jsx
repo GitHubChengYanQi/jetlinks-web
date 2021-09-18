@@ -6,32 +6,29 @@ import {EditOutlined} from '@ant-design/icons';
 import Modal from '@/components/Modal';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
-import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
-import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
-import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
-import styles from './index.module.scss';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import styles from './index.module.scss';
+import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
+import Desc from '@/pages/Crm/contract/components/Desc';
 
 const {TabPane} = Tabs;
 
-const CustomerDetail = () => {
+const Detail = () => {
   const params = useParams();
   const ref = useRef(null);
   const refTrack = useRef(null);
-  const historys = useHistory();
-  const {loading, data, refresh} = useRequest(businessDetail, {
+  const {loading, data, refresh} = useRequest(contractDetail, {
     defaultParams: {
       data: {
-        businessId: params.cid
+        contractId: params.cid
       }
     }
   });
@@ -52,9 +49,9 @@ const CustomerDetail = () => {
               <Avatar size={64}>LOGO</Avatar>
             </Col>
             <Col>
-              <h3>{data.businessName}</h3>
+              <h3>{data.name}</h3>
               <div>
-                <em>立项日期：{data.time}</em>
+                <em>创建时间：{data.time}</em>
               </div>
             </Col>
           </Row>
@@ -90,7 +87,7 @@ const CustomerDetail = () => {
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }
             type="primary" onClick={() => {
-              ref.current.open(data.businessId);
+              ref.current.open(data.contractId);
             }}>编辑</Button>
 
 
@@ -98,12 +95,6 @@ const CustomerDetail = () => {
             ref.current.close();
             refresh();
           }} ref={ref}/>
-          <Button
-            style={params.state === 'false' ?  null : {'display': 'none' } }
-            type="primary" key="1"
-            onClick={() => {
-              historys.push(`/CRM/business/${data.businessId}`);
-            }}>查看详情</Button>
           <Button
             // style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
@@ -123,13 +114,6 @@ const CustomerDetail = () => {
       <div style={params.state === 'false' ? {'display': 'none' }: null }>
         <Row>
           <Col span={16}>
-            <div className={styles.main}>
-              <Card title="项目销售流程" extra='（点击可变更流程，注意：完成之后不可修改！）' bodyStyle={{padding: 30}}>
-                <StepList onChange={() => {
-                  refresh();
-                }} value={data}/>
-              </Card>
-            </div>
             <div className={styles.main}>
               <Card>
                 <Desc data={data}/>
@@ -176,9 +160,9 @@ const CustomerDetail = () => {
     </div>;
   }
 
-  return '暂无项目';
+  return '暂无合同';
 
 
 };
 
-export default CustomerDetail;
+export default Detail;

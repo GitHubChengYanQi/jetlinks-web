@@ -40,7 +40,6 @@ const CustomerTable = (props) => {
   const history = useHistory();
 
 
-
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -148,28 +147,24 @@ const CustomerTable = (props) => {
         }}
         {...other}
       >
-        <Column title="基础信息" fixed dataIndex="customerName" render={(value, record) => {
+        <Column title="客户信息" fixed dataIndex="customerName" render={(value, record) => {
           return (
-            <Card bordered={false} style={{border:'none'}} onClick={()=>{
+            <Row gutter={24} wrap={false} style={{cursor:'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
-            }} >
-              <Card.Grid className={style.cardGrid}>
-                <Row gutter={24}>
-                  <Col>
-                    <Avatar size={64}>LOGO</Avatar>
-                  </Col>
-                  <Col>
-                    <strong>{value}</strong>
-                    <div><em
-                      style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}
-                    </div>
-                    <div>
-                      <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
-                    </div>
-                  </Col>
-                </Row>
-              </Card.Grid>
-            </Card>
+            }}>
+              <Col>
+                <Avatar size={64}>LOGO</Avatar>
+              </Col>
+              <Col>
+                <strong>{value}</strong>
+                <div><em
+                  style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}
+                </div>
+                <div>
+                  <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
+                </div>
+              </Col>
+            </Row>
           );
         }} />
         <Column title="客户状态" width={140} align="center" render={(text, record) => {

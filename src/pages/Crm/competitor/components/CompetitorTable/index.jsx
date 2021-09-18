@@ -158,10 +158,9 @@ const CompetitorTable = (props) => {
       >
         <Column width={150} fiexd  title="基础信息" dataIndex="name" render={(value, record) => {
           return (
-            <>
-              <a onClick={()=>{
-                history.push(`/CRM/competitor/${record.competitorId}`);
-              }}><strong>{value}</strong></a>
+            <div style={{cursor:'pointer'}} onClick={()=>{
+              history.push(`/CRM/competitor/${record.competitorId}`);
+            }}><strong>{value}</strong>
               <div><em style={{}}>{record.phone || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.email || '--'}</div>
               <div>
                 <em>{
@@ -177,7 +176,7 @@ const CompetitorTable = (props) => {
               }}>
                 报价信息
               </a>
-            </>
+            </div>
           );
         }} />
         <Column title="操作" align="right" render={(value, record) => {

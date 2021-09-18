@@ -34,7 +34,6 @@ const OrderList = (props) => {
   const orderDetailRef = useRef(null);
 
   const [search,{toggle}]  = useBoolean(false);
-  const [value, setValue] = useState(null);
 
   const searchForm = () => {
 
@@ -72,7 +71,7 @@ const OrderList = (props) => {
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
             <MegaLayout inline>
               {
-                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || null} name="partyA" component={SysField.CustomerListSelect} /> : null
+                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || ' '} name="partyA" component={SysField.CustomerListSelect} /> : null
               }
             </MegaLayout>
           </FormButtonGroup>

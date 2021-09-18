@@ -25,6 +25,7 @@ export const CustomerId = (props) => {
 export const Customer = (props) => {
 
   const {customerid, onChange} = props;
+
   return (<>
     <SelectCustomer {...props} onChange={(value) => {
       onChange(value && value.customerId);
@@ -142,9 +143,7 @@ export const Content = (props) => {
   const [state, setState] = useState('文本框');
 
 
-  const handelChange = (e) => {
-    setState(e.target.value);
-  };
+
 
 
   return (
@@ -152,40 +151,45 @@ export const Content = (props) => {
       {
         parse(props.value, {
           replace: domNode => {
-            if (domNode.name === 'strong' && domNode.attribs.class === 'inp' && domNode.children[0].data === '文本框') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'inp' ) {
               return <Input style={{width: '100px', margin: '0 10px'}} onChange={(value) => {
-                handelChange(value);
+                setState(value.target.value);
               }} onBlur={() => {
                 // domNode.children[0].data=state;
-                const value = props.value.replace(domNode.children[0].data, state);
+                const value = props.value.replaceAll(domNode.children[0].data, state);
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'number' && domNode.children[0].data === '数字框') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'number') {
               return <InputNumber style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
+                console.log(value);
               }} onBlur={() => {
                 // domNode.children[0].data=state;
-                const value = props.value.replace(domNode.children[0].data, state);
+                console.log(domNode.children[0]);
+                console.log(state);
+                const value = props.value.replaceAll(domNode.children[0].data, state);
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'date' && domNode.children[0].data === '时间框') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'date') {
               return <DatePicker style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
               }} onBlur={() => {
-                const value = props.value.replace(domNode.children[0].data, state);
+                const value = props.value.replaceAll(domNode.children[0].data, state);
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'but' && domNode.children[0].data === '选择客户') {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'but' ) {
               return (<>
                 <ChooseCustomer Table={CustomerTable} domNode={domNode} record={(record) => {
-                  const value = props.value.replace(domNode.children[0].data, record.customerName);
+                  const value = props.value.replaceAll(domNode.children[0].data, record.customerName);
                   props.onChange(value);
                 }} {...props} />
               </>);
             }
+
+
             if (domNode.name === 'strong' && domNode.attribs.class === 'items' && domNode.children[0].data === '选择产品') {
               return (<>
                 <ChooseCustomer Table={ItemsList} domNode={domNode} record={(record) => {

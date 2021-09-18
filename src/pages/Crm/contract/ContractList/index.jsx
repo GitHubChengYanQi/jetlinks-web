@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Divider, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
-import ContractTable from '@/pages/Crm/contract/ContractList/components/ContractTable';
+import ContractTable from '@/pages/Crm/contract/components/components/ContractTable';
 
 
 const ContractList = () => {

@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Card,  Statistic, Table as AntTable} from 'antd';
+import {Button, Card, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -171,22 +171,21 @@ const BusinessTable = (props) => {
           dataIndex="businessName"
           fixed
           sortDirections={['ascend', 'descend']}
-          render={(text, record, index) => {
+          render={(text, record) => {
             return (
-              <Card bordered={false} style={{border: 'none'}} onClick={() => {
+              <div style={{cursor:'pointer'}} onClick={()=>{
                 history.push(`/CRM/business/${record.businessId}`);
               }}>
-                <Card.Grid className={style.cardGrid}>
-                  <strong>{text}</strong>
-                  <div><em>
-                    {record.customer ? record.customer.customerName : null}
-                  </em>
-                  </div>
-                  <div>
-                    <em>负责人：{record.user ? record.user.name : '未填写'}</em>
-                  </div>
-                </Card.Grid>
-              </Card>
+                <strong>{text}</strong>
+                <div><em>
+                  {record.customer ? record.customer.customerName : null}
+                </em>
+                </div>
+                <div>
+                  <em>负责人：{record.user ? record.user.name : '未填写'}</em>
+                </div>
+              </div>
+
             );
           }} />
         <Column title="盈率" width={150} align="center" dataIndex="salesId" render={(value, record) => {
@@ -250,15 +249,15 @@ const BusinessTable = (props) => {
         compoentRef={submitRef}
         ref={modelRef}
         title={<div style={{marginLeft: '45%', display: 'inline'}}>
-          {disable===1&&'添加项目'}
-          {disable===2&&'完成'}
+          {disable === 1 && '添加项目'}
+          {disable === 2 && '完成'}
         </div>}
-        footer={disable===1?<Button type="primary" onClick={()=>{
+        footer={disable === 1 ? <Button type="primary" onClick={() => {
           submitRef.current.formRef.current.tableRef.current.submit();
         }}
         >
           完成创建
-        </Button>:false}
+        </Button> : false}
         width={width()}
         className={styles.myModal}
         onClose={() => {
@@ -277,7 +276,7 @@ const BusinessTable = (props) => {
             }
           }}
         />}
-        {disable === 2 && <BusinessComplete result={businessId} disabled={false}/>}
+        {disable === 2 && <BusinessComplete result={businessId} disabled={false} />}
       </Modal>
     </>
   );
