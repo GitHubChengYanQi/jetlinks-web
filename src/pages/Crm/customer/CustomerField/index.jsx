@@ -18,6 +18,7 @@ import Amap from '@/components/Amap';
 import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
 import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
 import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
+import AdressMap from '@/pages/Crm/customer/components/AdressMap';
 
 const {Option} = Select;
 
@@ -37,30 +38,7 @@ export const Longitude = (props) => {
   return (<InputNumber disabled  {...props} />);
 };
 export const Map = (props) => {
-
-  const [location, setLocation] = useState(props.value && props.value);
-
-  return (
-    <>
-      <Input value={location && location.address} style={{width: '60%', marginRight: 20, display: 'inline-block'}} />
-      <div style={{textAlign: 'center', display: 'inline-block'}}>
-        <InputNumber
-          style={{display: 'none'}}
-          hidden
-          value={location && location.location && location.length > 0 && location[0]}
-        />
-        <InputNumber
-          style={{display: 'none'}}
-          hidden
-          value={location && location.location && location.length > 0 && location[1]}
-        />
-        <Amap title="客户地址定位" onChange={(value) => {
-          setLocation(value);
-          props.onChange({address: value.address, map: value.location});
-        }} />
-      </div>
-    </>
-  );
+  return (<AdressMap {...props} />);
 };
 export const PhoneNumber = (props) => {
   return (<InputNumber style={{width: '100%'}}  {...props} />);

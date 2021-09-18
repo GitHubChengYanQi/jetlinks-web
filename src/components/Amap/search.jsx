@@ -1,10 +1,8 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
-import {Input, Icon, List, Card, Button} from '@alifd/next';
 import {Marker} from 'react-amap';
 import {useRequest} from '@/util/Request';
-import {Cascader as AntCascader, Select} from 'antd';
-import DeptTree from '@/components/DeptTree';
-import Cascader from '@/components/Cascader';
+import {Button, Card, Cascader as AntCascader, Input, List, Select} from 'antd';
+import Icon from '@/components/Icon';
 
 let MSearch = null;
 let Geocoder = null;

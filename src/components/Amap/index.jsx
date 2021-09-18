@@ -1,9 +1,8 @@
-import {Drawer} from '@alifd/next';
 import React, {useRef, useState} from 'react';
 import {Map} from 'react-amap';
 import {config} from 'ice';
 import AmapSearch from '@/components/Amap/search';
-import {Button} from 'antd';
+import {Button, Drawer} from 'antd';
 
 const {AMAP_KEY, AMAP_VERSION} = config;
 
