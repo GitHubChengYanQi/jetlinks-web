@@ -33,6 +33,8 @@ const CustomerDetail = () => {
 
   const ref = useRef(null);
   const refTrack = useRef(null);
+  const submitRef = useRef(null);
+
   const {loading, data, run,refresh} = useRequest(customerDetail, {
     defaultParams: {
       data: {
@@ -70,11 +72,27 @@ const CustomerDetail = () => {
             onClick={() => {
               refTrack.current.open(false);
             }} icon={<EditOutlined/>}>添加跟进</Button>
-          <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
-            refTrack.current.close();
-            refresh();
-          }} val={data} number={0}/>
-
+          <Modal width={1400} title="跟进"
+            ref={refTrack}
+            compoentRef={submitRef}
+            footer={
+              <>
+                <Button type="primary" onClick={() => {
+                  submitRef.current.formRef.current.submit();
+                }}>
+                  保存
+                </Button>
+                <Button onClick={() => {
+                  refTrack.current.close();
+                }}>
+                  取消
+                </Button>
+              </>}
+            component={CrmBusinessTrackEdit}
+            onSuccess={() => {
+              refTrack.current.close();
+              refresh();
+            }} val={data} number={0}/>
           <Button type="primary" onClick={() => {
             ref.current.open(data.customerId);
           }}>编辑</Button>

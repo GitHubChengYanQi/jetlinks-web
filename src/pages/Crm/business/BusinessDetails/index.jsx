@@ -27,6 +27,8 @@ const CustomerDetail = () => {
   const params = useParams();
   const ref = useRef(null);
   const refTrack = useRef(null);
+  const submitRef = useRef(null);
+
   const historys = useHistory();
   const {loading, data, refresh} = useRequest(businessDetail, {
     defaultParams: {
@@ -69,15 +71,16 @@ const CustomerDetail = () => {
 
           <Modal width={1400} title="跟进"
             ref={refTrack}
+            compoentRef={submitRef}
             footer={
               <>
                 <Button type="primary" onClick={()=>{
-                  refTrack.current.formRef.current.tableRef.current.submit();
+                  submitRef.current.formRef.current.submit();
                 }}  >
                   保存
                 </Button>
                 <Button onClick={()=>{
-                  refTrack.current.formRef.current.tableRef.current.submit();
+                  refTrack.current.close();
                 }}  >
                   取消
                 </Button>
