@@ -6,13 +6,12 @@
  */
 
 import React, {lazy, useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Col, PageHeader, Row, Table as AntTable, Tag, Tooltip} from 'antd';
+import {Avatar, Button, Card, Col, PageHeader, Row, Table as AntTable, Tag, Tooltip} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal from '@/components/Modal';
 import {MegaLayout} from '@formily/antd-components';
 import {
   customerBatchDelete, customerDelete, customerEdit,
@@ -30,14 +29,16 @@ import CheckButton from '@/components/CheckButton';
 import Icon from '@/components/Icon';
 import {useBoolean} from 'ahooks';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import style from './index.module.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level, choose,...other} = props;
+  const {status, state, level, choose, ...other} = props;
   const history = useHistory();
+
 
 
   const ref = useRef(null);
@@ -149,24 +150,26 @@ const CustomerTable = (props) => {
       >
         <Column title="基础信息" fixed dataIndex="customerName" render={(value, record) => {
           return (
-            <div>
-              <Row gutter={24}>
-                <Col>
-                  <Avatar size={64}>LOGO</Avatar>
-                </Col>
-                <Col>
-                  <a onClick={() => {
-                    history.push(`/CRM/customer/${record.customerId}`);
-                  }}><strong>{value}</strong></a>
-                  <div><em
-                    style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}
-                  </div>
-                  <div>
-                    <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
-                  </div>
-                </Col>
-              </Row>
-            </div>
+            <Card bordered={false} style={{border:'none'}} onClick={()=>{
+              history.push(`/CRM/customer/${record.customerId}`);
+            }} >
+              <Card.Grid className={style.cardGrid}>
+                <Row gutter={24}>
+                  <Col>
+                    <Avatar size={64}>LOGO</Avatar>
+                  </Col>
+                  <Col>
+                    <strong>{value}</strong>
+                    <div><em
+                      style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}
+                    </div>
+                    <div>
+                      <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Grid>
+            </Card>
           );
         }} />
         <Column title="客户状态" width={140} align="center" render={(text, record) => {
@@ -174,7 +177,7 @@ const CustomerTable = (props) => {
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
-        <Column title="客户来源" width={300} align='center' dataIndex="customerName" render={(text, record) => {
+        <Column title="客户来源" width={300} align="center" dataIndex="customerName" render={(text, record) => {
           return (
             <div>
               {record.originResult ? record.originResult.originName : '未填写'}

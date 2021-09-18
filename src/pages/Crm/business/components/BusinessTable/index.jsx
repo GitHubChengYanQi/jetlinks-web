@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, Progress, Spin, Statistic, Table as AntTable} from 'antd';
+import {Button, Modal,  Spin, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -28,9 +28,7 @@ import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 import styles from '@/pages/Crm/business/BusinessAdd/index.module.scss';
-import CustomerDetail from '@/pages/Crm/business/BusinessDetails';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -173,19 +171,18 @@ const BusinessTable = (props) => {
         left={left}
       >
         <Column
-          title="项目名称"
+          title="项目信息"
           dataIndex="businessName"
           fixed
-          style={{maxWidth:200}}
           sortDirections={['ascend', 'descend']}
           render={(text, record, index) => {
             return (
               <>
-                <a type="link" onClick={() => {
+                <a type="link" title='项目详情' onClick={() => {
                   history.push(`/CRM/business/${record.businessId}`);
                 }}><strong>{text}</strong></a>
                 <div><em>
-                  <a onClick={() => {
+                  <a title='客户详情' onClick={() => {
                     history.push(`/CRM/customer/${record.customerId}`);
                   }}>{record.customer ? record.customer.customerName : null}</a>
                 </em>
