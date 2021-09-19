@@ -120,69 +120,62 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
   return (
     <div style={{position: 'absolute', top: 0, padding: 10, width: '100%'}}>
-      <div>
-        <Input
-          onChange={(value) => {
-            setValue(value);
-          }}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              MSearch.search(value); // 关键字查询
-            }
-          }}
-          style={{width: 500,marginRight:20}}
-          innerBefore={
-            <span
-              style={{paddingLeft: 10}}
-            >{city &&
-            <AntCascader
-              changeOnSelect
-              style={{minWidth:250,marginRight:10}}
-              showSearch={(inputValue, path)=>{
-                path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-              }}
-              options={citys}
-              defaultValue={[city.city]}
-              onChange={async (value) => {
-                let cityId = null;
-                value.length > 0 && value.map((items, index) => {
-                  return cityId = items;
-                });
-                const city = await runCisy({
-                  data: {
-                    id: cityId
-                  }
-                });
-                Geocoder.getLocation(city.length > 0 && city[0].title, function (status, result) {
-                  if (status === 'complete' && result.info === 'OK') {
-                    setadinfo({
-                      address: result.geocodes[0].formattedAddress,
-                      location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
-                    });
-                    center(
-                      {
-                        lat: result.geocodes[0].location.lat,
-                        lgn: result.geocodes[0].location.lng
-                      }
-                    );
-                    setMarkerPosition({
-                      lat: result.geocodes[0].location.lat,
-                      lng: result.geocodes[0].location.lng
-                    });
-                    // result中对应详细地理坐标信息
-                  }
-                });
-              }} />}
-              :</span>
-          }
-          innerAfter={<Icon type="search" size="xs" onClick={onClick} style={{margin: 4}} />} />
-        <Button
-          // style={{float: 'left'}}
-          type="primary"
-          onClick={() => {
-            typeof onChange === 'function' && onChange(adinfo);
-          }}>确定</Button>
-      </div>
+         <span
+           style={{paddingLeft: 10}}
+         >{city &&
+         <AntCascader
+           changeOnSelect
+           style={{minWidth: 250, marginRight: 10}}
+           showSearch={(inputValue, path) => {
+             path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+           }}
+           options={citys}
+           defaultValue={[city.city]}
+           onChange={async (value) => {
+             let cityId = null;
+             value.length > 0 && value.map((items, index) => {
+               return cityId = items;
+             });
+             const city = await runCisy({
+               data: {
+                 id: cityId
+               }
+             });
+             Geocoder.getLocation(city.length > 0 && city[0].title, function (status, result) {
+               if (status === 'complete' && result.info === 'OK') {
+                 setadinfo({
+                   address: result.geocodes[0].formattedAddress,
+                   location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+                 });
+                 center(
+                   {
+                     lat: result.geocodes[0].location.lat,
+                     lgn: result.geocodes[0].location.lng
+                   }
+                 );
+                 setMarkerPosition({
+                   lat: result.geocodes[0].location.lat,
+                   lng: result.geocodes[0].location.lng
+                 });
+                 // result中对应详细地理坐标信息
+               }
+             });
+           }} />}</span>
+      <Input.Search
+        onChange={(value) => {
+          setValue(value.target.value);
+        }}
+        onSearch={(e) => {
+          MSearch.search(e); // 关键字查询
+        }}
+        style={{width: 500, marginRight: 20}}
+      />
+      <Button
+        // style={{float: 'left'}}
+        type="primary"
+        onClick={() => {
+          typeof onChange === 'function' && onChange(adinfo);
+        }}>确定</Button>
       {reslut && reslut.count > 0 && <Card style={{maxHeight: 500, width: '40%', overflowY: 'auto', marginTop: 16}}>
         <List>
           {reslut.pois.map((item, index) => {
