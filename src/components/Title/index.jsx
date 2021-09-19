@@ -13,9 +13,9 @@ const Title = ({level, title}) => {
         case 3:
           return <h3 className={style.titleH}>{title}</h3>;
         case 4:
-          return <h4 className={style.titleH}>{title}</h4>;
+          return <div className={style.titleH4}>{title}</div>;
         case 5:
-          return <h5 className={style.titleH}>{title}</h5>;
+          return <div className={style.titleH5}>{title}</div>;
         case 6:
           return <h6 className={style.titleH}>{title}</h6>;
         default:
