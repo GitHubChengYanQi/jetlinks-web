@@ -22,7 +22,7 @@ export const packageId = (props) =>{
 };
 
 export const Money = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 
 

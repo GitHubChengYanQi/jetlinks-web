@@ -40,7 +40,7 @@ export const Note = (props) =>{
 };
 
 export const Number = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 
 

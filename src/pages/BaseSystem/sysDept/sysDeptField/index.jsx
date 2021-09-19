@@ -1,7 +1,7 @@
 /**
  * 部门表字段配置页
  *
- * @author 
+ * @author
  * @Date 2020-12-21 17:16:04
  */
 
@@ -24,5 +24,5 @@ export const Description = (props) =>{
   return (<Input.TextArea {...props}/>);
 };
 export const Sort = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };

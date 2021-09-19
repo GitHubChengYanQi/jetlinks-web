@@ -78,7 +78,7 @@ export const TimeListSelect2 = (props) => {
 };
 // 项目金额
 export const OpportunityAmountListSelect3 = (props) => {
-  return (<InputNumber  {...props} />);
+  return (<InputNumber min={0}  {...props} />);
 };
 // 销售流程
 export const SalesIdListSelect = (props) => {
@@ -92,7 +92,7 @@ export const SalesIdListSelect = (props) => {
 };
 // 产品合计
 export const TotalProductsListSelect4 = (props) => {
-  return (<InputNumber  {...props} />);
+  return (<InputNumber min={0}  {...props} />);
 };
 // 整单折扣
 export const OrderDiscountListSelect5 = (props) => {
@@ -176,5 +176,5 @@ export const CompetitorId = (props) =>{
   );
 };
 export const CompetitorsQuote = (props) =>{
-  return (<InputNumber style={{width:300}}  {...props}/>);
+  return (<InputNumber min={0} style={{width:300}}  {...props}/>);
 };

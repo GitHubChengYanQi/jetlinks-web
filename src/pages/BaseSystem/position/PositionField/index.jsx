@@ -11,5 +11,5 @@ export const Remark = (props) => {
   return (<Input {...props} />);
 };
 export const Sort = (props) => {
-  return (<InputNumber {...props} />);
+  return (<InputNumber min={0} {...props} />);
 };

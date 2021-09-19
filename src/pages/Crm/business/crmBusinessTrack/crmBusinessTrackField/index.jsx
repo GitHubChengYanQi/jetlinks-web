@@ -16,6 +16,7 @@ import UpLoadImg from '@/components/Upload';
 import Modal from '@/components/Modal';
 import Select from '@/components/Select';
 import {BusinessNameListSelect} from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackUrl';
+import {contractIdSelect} from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -52,7 +53,7 @@ export const Latitude = (props) =>{
 };
 
 export const Money = (props) => {
-  return (<InputNumber {...props} />);
+  return (<InputNumber min={0} {...props} />);
 };
 export const QuoteStatus = (props) =>{
   return (<AntdSelect options={[{label:'无需审批',value:0},{label:'待询价',value:1},{label:'询价中',value:2}]} {...props}/>);
@@ -84,7 +85,7 @@ export const Classify = (props) => {
   }} {...props}  />);
 };
 export const ContractId = (props) => {
-  return (<Input {...props}  />);
+  return (<Select api={apiUrl.contractIdSelect} {...props}  />);
 };
 
 export const BackMoney = (props) => {
@@ -139,5 +140,5 @@ export const CompetitorId = (props) =>{
   );
 };
 export const CompetitorsQuote = (props) =>{
-  return (<InputNumber style={{width:300}}  {...props}/>);
+  return (<InputNumber min={0} style={{width:300}}  {...props}/>);
 };

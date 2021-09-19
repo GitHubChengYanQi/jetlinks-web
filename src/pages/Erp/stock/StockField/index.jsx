@@ -46,5 +46,5 @@ export const BrandId = (props) =>{
   return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
 };
 export const Inventory = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };

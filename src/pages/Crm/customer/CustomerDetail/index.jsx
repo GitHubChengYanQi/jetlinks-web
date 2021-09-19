@@ -11,18 +11,17 @@ import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Descrip
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
-import Modal2 from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 import OrderList from '@/pages/Erp/order/OrderList';
 import ContractTable from '@/pages/Crm/contract/components/components/ContractTable';
-import styles from './index.module.scss';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import Modal from '@/components/Modal';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
@@ -96,7 +95,7 @@ const CustomerDetail = () => {
             onSuccess={() => {
               refTrack.current.close();
               refresh();
-            }} val={data} number={0}/>
+            }} val={data.customerId} number={0}/>
           <Button type="primary" onClick={() => {
             ref.current.open(data && data.customerId);
           }}>编辑</Button>

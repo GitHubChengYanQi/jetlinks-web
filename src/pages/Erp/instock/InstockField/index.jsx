@@ -61,10 +61,10 @@ export const StorehouseId = (props) =>{
   </>);
 };
 export const Number = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };
 export const Price = (props) =>{
-  return (<InputNumber   {...props}  />);
+  return (<InputNumber min={0}   {...props}  />);
 };
 export const BrandId = (props) =>{
   return (<Select   api={apiUrl.brandIdSelect} {...props}/>);

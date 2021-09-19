@@ -47,4 +47,8 @@ export const customerIdSelect = {
   url: '/customer/listSelect',
   method: 'POST'
 };
+export const contractIdSelect = {
+  url: '/contract/listSelect',
+  method: 'POST'
+};
 

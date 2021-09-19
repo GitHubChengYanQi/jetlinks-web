@@ -23,7 +23,7 @@ export const  Storehouse= (props) =>{
   return (<Select api={apiUrl.storehouseIdSelect}   {...props}/>);
 };
 export const Price = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };
 export const StorageTime = (props) =>{
   return (<DatePicker   {...props}/>);

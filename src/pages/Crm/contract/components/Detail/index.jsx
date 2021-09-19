@@ -7,8 +7,6 @@ import Modal from '@/components/Modal';
 import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
-import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
-import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
@@ -19,6 +17,7 @@ import styles from './index.module.scss';
 import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
 import Desc from '@/pages/Crm/contract/components/Desc';
 import parse from 'html-react-parser';
+import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 
 const {TabPane} = Tabs;
 
@@ -26,6 +25,9 @@ const Detail = () => {
   const params = useParams();
   const ref = useRef(null);
   const refTrack = useRef(null);
+
+  const submitRef = useRef(null);
+
   const {loading, data, refresh} = useRequest(contractDetail, {
     defaultParams: {
       data: {
@@ -66,34 +68,41 @@ const Detail = () => {
               refTrack.current.open(false);
             }} icon={<EditOutlined />}>添加跟进</Button>
 
-          <Modal width={1400} title="跟进"
-                 ref={refTrack}
-                 footer={
-                   <>
-                     <Button type="primary" onClick={() => {
-                       refTrack.current.formRef.current.tableRef.current.submit();
-                     }}>
-                       保存
-                     </Button>
-                     <Button onClick={() => {
-                       refTrack.current.formRef.current.tableRef.current.submit();
-                     }}>
-                       取消
-                     </Button>
-                   </>}
-                 component={CrmBusinessTrackEdit} onSuccess={() => {
-            refTrack.current.close();
-            refresh();
-          }} val={data} number={1} />
+          <Modal
+            width={1400}
+            title="跟进"
+            compoentRef={submitRef}
+            ref={refTrack}
+            footer={
+              <>
+                <Button type="primary" onClick={() => {
+                  submitRef.current.formRef.current.submit();
+                }}>
+                  保存
+                </Button>
+                <Button onClick={() => {
+                  submitRef.current.formRef.current.submit();
+                }}>
+                  取消
+                </Button>
+              </>}
+            component={CrmBusinessTrackEdit}
+            onSuccess={() => {
+              refTrack.current.close();
+              refresh();
+            }}
+            val={data.partyA}
+            number={2} />
 
           <Button
             style={params.state === 'false' ? {'display': 'none'} : null}
-            type="primary" onClick={() => {
-            ref.current.open(data.contractId);
-          }}>编辑</Button>
+            type="primary"
+            onClick={() => {
+              ref.current.open(data);
+            }}>编辑</Button>
 
 
-          <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
+          <Modal width={800} title="客户" component={AddContractEdit} onSuccess={() => {
             ref.current.close();
             refresh();
           }} ref={ref} />
@@ -124,7 +133,7 @@ const Detail = () => {
 
             <div
               className={styles.main}>
-              <Card title='合同内容'>
+              <Card title="合同内容">
                 {parse(data.content)}
               </Card>
             </div>

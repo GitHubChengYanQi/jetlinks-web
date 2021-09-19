@@ -42,7 +42,7 @@ export const StockId = (props) => {
 export const Number = (props) => {
   const {number} = props;
   const inventory = number ? number[0].inventory : null;
-  return (<InputNumber   {...props} onChange={(value) => {
+  return (<InputNumber min={0}   {...props} onChange={(value) => {
     if (value > inventory) {
       props.onChange(null);
     } else {

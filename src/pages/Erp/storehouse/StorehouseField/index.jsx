@@ -23,14 +23,14 @@ export const Palce = (props) =>{
   return (<Input   {...props}/>);
 };
 export const Longitude = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };
 export const Latitude = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };
 export const Measure = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };
 export const Capacity = (props) =>{
-  return (<InputNumber   {...props}/>);
+  return (<InputNumber min={0}   {...props}/>);
 };

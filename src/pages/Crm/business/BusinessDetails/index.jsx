@@ -89,7 +89,7 @@ const CustomerDetail = () => {
             component={CrmBusinessTrackEdit} onSuccess={() => {
               refTrack.current.close();
               refresh();
-            }} val={data} number={1}/>
+            }} val={data.customerId} number={1}/>
 
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }

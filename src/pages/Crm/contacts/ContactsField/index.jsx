@@ -24,7 +24,7 @@ export const Job = (props) => {
   return (<Select  api={apiUrl.companyRoleSelect} {...props} />);
 };
 export const Phone = (props) => {
-  return (<InputNumber   {...props} />);
+  return (<InputNumber min={0}   {...props} />);
 };
 export const DeptId = (props) => {
   return (<Input   {...props} />);
@@ -91,5 +91,5 @@ export const CustomerIds = (props) => {
 
 
 export const PhoneNumber = (props) =>{
-  return (<InputNumber  style={{width: 150}}  {...props}/>);
+  return (<InputNumber min={0}  style={{width: 150}}  {...props}/>);
 };

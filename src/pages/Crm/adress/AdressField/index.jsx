@@ -15,10 +15,10 @@ export const Location = (props) => {
   return (<Input  {...props} />);
 };
 export const Longitude = (props) => {
-  return (<InputNumber   {...props} />);
+  return (<InputNumber min={0}   {...props} />);
 };
 export const Latitude = (props) => {
-  return (<InputNumber   {...props} />);
+  return (<InputNumber min={0}   {...props} />);
 };
 export const Region = (props) => {
   return (<CascaderAdress   {...props} />);

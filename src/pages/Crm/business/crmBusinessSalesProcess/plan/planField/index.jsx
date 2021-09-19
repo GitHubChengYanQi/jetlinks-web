@@ -37,7 +37,7 @@ export const SalesProcessPlanId = (props) => {
         // extra={<Button type="primary">Edit</Button>}
       >
         <Descriptions.Item label="每次提醒间隔">
-          <InputNumber value={json.oneTime} style={{marginRight: 20}} onChange={(value) => {
+          <InputNumber min={0} value={json.oneTime} style={{marginRight: 20}} onChange={(value) => {
             if (value<0){
               message.info('请输入正数！');
             }else {

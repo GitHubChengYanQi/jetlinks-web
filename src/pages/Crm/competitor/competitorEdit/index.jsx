@@ -58,7 +58,7 @@ const CompetitorEdit = ({onChange,...props}) => {
             headerBordered
           >
             <MegaLayout labelWidth={150} full>
-              <FormItem label="竞争对手企业名称" name="name" component={SysField.Name} required />
+              <FormItem label="竞争对手企业名称" name="name" dis={props.value} component={SysField.Name} required />
             </MegaLayout>
             <MegaLayout labelWidth={150} full>
               <FormItem label="竞争项目名称" name="businessId" component={SysField.BusinessId} value={value && value.crmBusinessList && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />

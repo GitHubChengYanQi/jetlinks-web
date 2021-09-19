@@ -12,12 +12,12 @@ const AdressMap = (props) => {
         props.onChange({address:value.target.value});
       }} />
       <div style={{textAlign: 'center',display:'inline-block'}}>
-        <InputNumber
+        <InputNumber min={0}
           style={{display: 'none'}}
           hidden
           value={location && location.location && location.length > 0 && location[0]}
         />
-        <InputNumber
+        <InputNumber min={0}
           style={{display: 'none'}}
           hidden
           value={location && location.location && location.length > 0 && location[1]}

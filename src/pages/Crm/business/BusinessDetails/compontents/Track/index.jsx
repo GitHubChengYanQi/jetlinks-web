@@ -22,7 +22,7 @@ const Track = (props) => {
   });
 
   useEffect(() => {
-    if (trackMessageIds) {
+    if (trackMessageIds && trackMessageId) {
       tableRef.current.formActions.setFieldValue('trackMessageIds', trackMessageIds);
       tableRef.current.refresh();
     }

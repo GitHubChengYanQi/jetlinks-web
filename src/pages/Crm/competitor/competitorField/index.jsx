@@ -20,10 +20,10 @@ export const CompetitorsQuoteId = (props) =>{
   return (<Input {...props}/>);
 };
 export const Name = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input disabled={props.dis} {...props}/>);
 };
 export const Phone = (props) =>{
-  return (<InputNumber style={{width:290}} {...props}/>);
+  return (<InputNumber min={0} style={{width:290}} {...props}/>);
 };
 export const Url = (props) =>{
   return (<Input {...props}/>);
@@ -35,7 +35,7 @@ export const Email = (props) =>{
   return (<Input {...props}/>);
 };
 export const StaffSize = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 export const Ownership = (props) =>{
   return (<AntdSelect options={[{label:'有限责任公司',value:0},{label:'个人独资企业',value:1},{label:'合伙企业',value:2},{label:'全民所有制企业',value:3},{label:'农民专业合作社',value:4}]} {...props}/>);
@@ -47,7 +47,7 @@ export const CompetitionLevel = (props) =>{
   return (<AntdSelect options={[{label:'低',value:1},{label:'中',value:2},{label:'高',value:3}]} {...props}/>);
 };
 export const AnnualSales = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 export const CompanyProfile = (props) =>{
   return (<Input.TextArea {...props}/>);

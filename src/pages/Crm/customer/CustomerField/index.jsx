@@ -35,13 +35,13 @@ export const Longitude = (props) => {
   if (location) {
     props.onChange(location.length > 0 && location[0] && location[0][0]);
   }
-  return (<InputNumber disabled  {...props} />);
+  return (<InputNumber min={0} disabled  {...props} />);
 };
 export const Map = (props) => {
   return (<AdressMap {...props} />);
 };
 export const PhoneNumber = (props) => {
-  return (<InputNumber style={{width: '100%'}}  {...props} />);
+  return (<InputNumber min={0} style={{width: '100%'}}  {...props} />);
 };
 
 export const key = (props) => {
@@ -74,7 +74,7 @@ export const CustomerName = (props) => {
 };
 
 export const ContactsId = (props) => {
-  return (<InputNumber  {...props} />);
+  return (<InputNumber min={0}  {...props} />);
 };
 
 export const Setup = (props) => {

@@ -38,7 +38,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
 const CrmBusinessTrackEdit = ({...props}, ref) => {
 
-  const {val, number,track = true} = props;
+  const {val, number,track = 1} = props;
   const formRef = useRef();
   useImperativeHandle(ref, () => ({
     formRef,
@@ -92,7 +92,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
           <Col span={14}>
             <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
               <ProCard style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
-                <FormItem  label="客户" name="customerId" component={SysField.CustomerId} track={track} value={val && val.customerId} required />
+                <FormItem  label="客户" name="customerId" component={SysField.CustomerId} track={track} value={val} required />
               </ProCard>
               <ProCard style={{marginTop: 2}} title={<Title title="事项" level={4} />} headerBordered>
                 <FieldList

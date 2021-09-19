@@ -19,7 +19,7 @@ export const Icon = (props) =>{
   return (<UpLoadImg {...props}/>);
 };
 export const Sort = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 export const Link = (props) =>{
   return (<Links {...props}/>);

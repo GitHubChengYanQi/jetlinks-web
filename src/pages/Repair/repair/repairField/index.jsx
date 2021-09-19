@@ -253,7 +253,7 @@ export const Comment = (props) => {
 };
 
 export const Money = (props) => {
-  return (<InputNumber {...props} />);
+  return (<InputNumber min={0} {...props} />);
 };
 export const QualityType = (props) => {
   return (<AntSelect

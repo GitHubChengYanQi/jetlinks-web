@@ -161,7 +161,7 @@ export const Content = (props) => {
               }} />;
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'number') {
-              return <InputNumber style={{margin: '0 10px'}} onChange={(value) => {
+              return <InputNumber min={0} style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
                 console.log(value);
               }} onBlur={() => {
