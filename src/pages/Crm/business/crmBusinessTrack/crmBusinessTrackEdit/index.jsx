@@ -105,7 +105,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
         <Row gutter={24}>
           <Col span={14}>
             <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
-              <ProCard style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
+              <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
                 <FormItem
                   label="客户"
                   name="customerId"
