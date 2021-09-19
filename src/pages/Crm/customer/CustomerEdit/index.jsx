@@ -207,6 +207,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                 <div style={{float: 'right'}}>
                                   <Button
                                     type="link"
+                                    style={{display: state.value.length === 1 && 'none'}}
                                     title="删除联系人"
                                     danger
                                     icon={<DeleteOutlined />}
@@ -236,6 +237,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                 <Button
                                                   type="link"
                                                   title="删除电话"
+                                                  style={{display: state.value.length === 1 && 'none'}}
                                                   icon={<DeleteOutlined />}
                                                   danger
                                                   onClick={() => onRemove(indexs)} />
@@ -299,7 +301,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                 <Button
                                   type="link" danger
                                   title="删除地址"
-                                  style={{float: 'right'}}
+                                  style={{display: state.value.length === 1 && 'none'}}
                                   icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
