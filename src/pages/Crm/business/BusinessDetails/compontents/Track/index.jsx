@@ -15,6 +15,19 @@ const Track = (props) => {
   const {value, number, trackMessageId} = props;
   const tableRef = useRef(null);
 
+  const {data} = useRequest({url: '/trackMessage/list', method: 'POST', data: {customerId: trackMessageId}});
+
+  const trackMessageIds = data && data.map((items, index) => {
+    return items.trackMessageId;
+  });
+
+  useEffect(() => {
+    if (trackMessageIds) {
+      tableRef.current.formActions.setFieldValue('trackMessageIds', trackMessageIds);
+      tableRef.current.refresh();
+    }
+  }, [trackMessageIds]);
+
   const datas = (data) => {
     return {
       author: data && data.userResult ? data.userResult.name : '--',
@@ -45,9 +58,10 @@ const Track = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem placeholder="classifyId" hidden value={value.businessId} name="classifyId" component={SysField.Name}/>
+        <FormItem placeholder="classifyId" hidden value={value} name="classifyId" component={SysField.Name} />
         <FormItem placeholder="classify" hidden value={number} name="classify" component={SysField.Name} />
-        <FormItem placeholder="trackMessageId" hidden value={trackMessageId} name="trackMessageId" component={SysField.Name} />
+        <FormItem placeholder="trackMessageIds" hidden name="trackMessageIds"
+                  component={SysField.Name} />
       </>);
   };
 

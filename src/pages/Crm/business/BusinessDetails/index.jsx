@@ -184,7 +184,7 @@ const CustomerDetail = () => {
                     <Dynamic value={data}/>
                   </TabPane>
                   <TabPane tab="跟进" key="2">
-                    <Track value={data} number={1} />
+                    <Track value={data.businessId} number={1} />
                   </TabPane>
                 </Tabs>
               </Card>

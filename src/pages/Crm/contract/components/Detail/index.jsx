@@ -18,6 +18,7 @@ import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetai
 import styles from './index.module.scss';
 import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
 import Desc from '@/pages/Crm/contract/components/Desc';
+import parse from 'html-react-parser';
 
 const {TabPane} = Tabs;
 
@@ -33,6 +34,7 @@ const Detail = () => {
     }
   });
 
+
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
@@ -40,7 +42,7 @@ const Detail = () => {
   if (data) {
     return <div className={styles.detail}>
       <Card>
-        <Breadcrumb/>
+        <Breadcrumb />
       </Card>
       <Card>
         <div className={styles.title}>
@@ -59,81 +61,80 @@ const Detail = () => {
         <div className={styles.titleButton}>
 
           <Button
-            style={params.state === 'false' ? {'display': 'none' }: null }
+            style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {
               refTrack.current.open(false);
-            }} icon={<EditOutlined/>}>添加跟进</Button>
+            }} icon={<EditOutlined />}>添加跟进</Button>
 
           <Modal width={1400} title="跟进"
-            ref={refTrack}
-            footer={
-              <>
-                <Button type="primary" onClick={()=>{
-                  refTrack.current.formRef.current.tableRef.current.submit();
-                }}  >
-                  保存
-                </Button>
-                <Button onClick={()=>{
-                  refTrack.current.formRef.current.tableRef.current.submit();
-                }}  >
-                  取消
-                </Button>
-              </>}
-            component={CrmBusinessTrackEdit} onSuccess={() => {
-              refTrack.current.close();
-              refresh();
-            }} val={data} number={1}/>
+                 ref={refTrack}
+                 footer={
+                   <>
+                     <Button type="primary" onClick={() => {
+                       refTrack.current.formRef.current.tableRef.current.submit();
+                     }}>
+                       保存
+                     </Button>
+                     <Button onClick={() => {
+                       refTrack.current.formRef.current.tableRef.current.submit();
+                     }}>
+                       取消
+                     </Button>
+                   </>}
+                 component={CrmBusinessTrackEdit} onSuccess={() => {
+            refTrack.current.close();
+            refresh();
+          }} val={data} number={1} />
 
           <Button
-            style={params.state === 'false' ? {'display': 'none' }: null }
+            style={params.state === 'false' ? {'display': 'none'} : null}
             type="primary" onClick={() => {
-              ref.current.open(data.contractId);
-            }}>编辑</Button>
+            ref.current.open(data.contractId);
+          }}>编辑</Button>
 
 
           <Modal width={800} title="客户" component={BusinessEdit} onSuccess={() => {
             ref.current.close();
             refresh();
-          }} ref={ref}/>
+          }} ref={ref} />
           <Button
             // style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
               history.back();
-            }}><Icon type="icon-back"/>返回</Button>
+            }}><Icon type="icon-back" />返回</Button>
 
         </div>
 
       </Card>
       <Card>
-        <div style={params.state === 'false' ?  null :{'display': 'none' } }>
-          <TableDetail  title='商机明细' value={data.businessId} businessId={data.businessId} onSuccess={()=>{
+        <div style={params.state === 'false' ? null : {'display': 'none'}}>
+          <TableDetail title="商机明细" value={data.businessId} businessId={data.businessId} onSuccess={() => {
             refresh();
-          }}/>
+          }} />
         </div>
       </Card>
-      <div style={params.state === 'false' ? {'display': 'none' }: null }>
+      <div style={params.state === 'false' ? {'display': 'none'} : null}>
         <Row>
           <Col span={16}>
             <div className={styles.main}>
               <Card>
-                <Desc data={data}/>
+                <Desc data={data} />
               </Card>
             </div>
 
             <div
               className={styles.main}>
-
+              <Card title='合同内容'>
+                {parse(data.content)}
+              </Card>
             </div>
           </Col>
           <Col span={8}>
             <div className={styles.main} style={{height: '100%'}}>
               <Card>
                 <Tabs defaultActiveKey="1">
-                  <TabPane tab="动态" key="1">
-                    <Dynamic value={data}/>
-                  </TabPane>
-                  <TabPane tab="跟进" key="2">
-                    <Track value={data} number={1} />
+                  <TabPane tab="跟进" key="1">
+                    <Track value={data.contractId} number={2} />
                   </TabPane>
                 </Tabs>
               </Card>

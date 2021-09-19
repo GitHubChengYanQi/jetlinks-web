@@ -22,7 +22,7 @@ const Contract = (props) => {
         {...props}
         api={ApiConfig}
         fieldKey="contractId"
-        success={(result) => {
+        onSuccess={() => {
           props.onSuccess();
         }}
       >
