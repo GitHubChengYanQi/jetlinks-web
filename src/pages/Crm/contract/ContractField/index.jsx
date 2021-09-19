@@ -172,12 +172,10 @@ export const Content = (props) => {
               }} />;
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'date') {
-              return <DatePicker style={{margin: '0 10px'}} onChange={(value) => {
-                setState(value);
-              }} onBlur={() => {
-                const value = props.value.replace(domNode.children[0].data, state);
-                props.onChange(value);
-              }} />;
+              return <DatePicker style={{margin: '0 10px'}} onChange={(value,date) => {
+                const values = props.value.replace(domNode.children[0].data, date);
+                props.onChange(values);
+              }}  />;
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
               return (<>

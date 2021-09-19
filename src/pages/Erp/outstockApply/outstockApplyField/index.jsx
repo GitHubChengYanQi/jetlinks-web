@@ -43,8 +43,8 @@ export const Customer = (props) => {
   const {customerid, onChange} = props;
   return (<div style={{width:340}}>
     <SelectCustomer {...props} onChange={(value) => {
-      onChange(value);
-      customerid(value);
+      onChange(value && value.customerId);
+      customerid(value && value.customerId);
     }} />
   </div>);
 };

@@ -8,9 +8,9 @@ const DatePicker = ({value, onChange, showTime,width}) => {
     const val = moment(value);
     return <AntDatePicker style={{width: width || null}} value={val} showTime={showTime} onChange={(date, dateString) => {
       onChange(date, dateString);
-    }} />;
+    }}  />;
   }else {
-    return <AntDatePicker style={{width: width || null}} showTime={showTime} onChange={(date, dateString) => {
+    return <AntDatePicker style={{width: width || null}}  showTime={showTime} onChange={(date, dateString) => {
       onChange(date, dateString);
     }} />;
   }

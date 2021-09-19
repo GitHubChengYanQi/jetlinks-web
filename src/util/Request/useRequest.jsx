@@ -24,6 +24,7 @@ const useRequest = (config, options) => {
       });
     },
     onError: (result) => {
+      console.log(result);
       // if (parseInt(result.errCode, 0) === 1502) {
       //   history.push("/login");
       // }
