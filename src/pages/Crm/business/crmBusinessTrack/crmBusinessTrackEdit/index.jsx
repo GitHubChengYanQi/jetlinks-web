@@ -12,10 +12,11 @@ import {createFormActions, FormEffectHooks, InternalFieldList as FieldList} from
 import {Button, Card, Col, Divider, Row, Switch} from 'antd';
 import {trackMessageAdd} from '@/pages/Crm/trackMessage/trackMessageUrl';
 import Form from '@/components/Form';
-import * as SysField from '../crmBusinessTrackField';
 import Title from '@/components/Title';
-import {BackMoney} from '../crmBusinessTrackField';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import * as SysField from '../crmBusinessTrackField';
+import style from './index.module.scss';
+
 
 
 const {FormItem} = Form;
@@ -114,7 +115,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                   value={val}
                   required />
               </ProCard>
-              <ProCard style={{marginTop: 2}} title={<Title title="事项" level={4} />} headerBordered>
+              <ProCard className='h2Card' style={{marginTop: 2}} title={<Title title="事项" level={4} />} headerBordered>
                 <FieldList
                   name="businessTrackParams"
                   initialValue={[
@@ -128,7 +129,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <Card title={<Title title="事项明细" level={5} />} bordered={false} extra={<Button
+                            <ProCard headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="事项明细" level={6} />} headerBordered extra={<Button
                               type="link" style={{float: 'right'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
@@ -189,7 +190,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                   component={SysField.Money} /> : null}
                               </RowStyleLayout>
                               <Divider dashed />
-                            </Card>
+                            </ProCard>
                           );
                         })}
                         <Button
@@ -206,7 +207,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
           </Col>
           <Col span={10}>
             <div style={{height: height(), overflow: 'auto'}}>
-              <ProCard style={{marginTop: 8}} title={<Title title="竞争对手报价" level={4} />} headerBordered>
+              <ProCard className='h2Card' style={{marginTop: 8}} title={<Title title="竞争对手报价" level={4} />} headerBordered>
                 <FieldList
                   name="competitorQuoteParam"
                   initialValue={[

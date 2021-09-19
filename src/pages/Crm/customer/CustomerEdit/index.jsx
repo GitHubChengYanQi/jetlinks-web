@@ -19,7 +19,7 @@ import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
 import Form from '@/components/Form';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import style from './index.module.scss'
+import style from './index.module.scss';
 
 const {FormItem} = Form;
 
@@ -36,12 +36,14 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 const PhoneRowStyleLayout = styled(props => <div {...props} />)`
+  width: 61%;
+  display: inline-block;
   .ant-btn {
   }
 
   .ant-form-item {
     display: inline-flex;
-    width: 90%;
+    width: 80%
   }
 `;
 const AdressRowStyleLayout = styled(props => <div {...props} />)`
@@ -101,10 +103,10 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
           props.onSuccess();
         }}
       >
-        <Row gutter={24} style={{height:'100%'}}>
-          <Col span={12} style={{height:'100%'}}>
+        <Row gutter={24} style={{height: '100%'}}>
+          <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
+              <ProCard style={{marginTop: 8}} className="h2Card" title="基本信息" headerBordered>
                 <MegaLayout labelWidth={120}>
                   <FormItem
                     label="客户名称" name="customerName" component={SysField.CustomerName}
@@ -127,6 +129,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
               <ProCard
                 title="详细信息"
+                className="h2Card"
                 headerBordered
               >
 
@@ -172,9 +175,9 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
             </div>
           </Col>
-          <Col span={12} style={{height:'100%'}}>
+          <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 8}} title="联系人信息" headerBordered>
+              <ProCard style={{marginTop: 8}} title="联系人信息" className="h2Card" headerBordered>
                 <FieldList
                   name="contactsParams"
                   initialValue={[
@@ -229,7 +232,6 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                   label="联系人电话"
                                                   name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
                                                   component={SysField.PhoneNumber}
-
                                                 />
                                                 <Button
                                                   type="link"
@@ -240,14 +242,12 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                               </PhoneRowStyleLayout>
                                             );
                                           })}
-                                          <div>
-                                            <div style={{height: 30}}>
-                                              <Button
-                                                type="dashed"
-                                                icon={<PlusOutlined />}
-                                                style={{width: '100%'}}
-                                                onClick={onAdd}>增加电话</Button>
-                                            </div>
+                                          <div style={{display: 'inline-block', height: 30}}>
+                                            <Button
+                                              type="dashed"
+                                              title='增加电话'
+                                              icon={<PlusOutlined />}
+                                              onClick={onAdd} />
                                           </div>
                                         </div>
                                       );
@@ -270,7 +270,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </FieldList>
               </ProCard>
 
-              <ProCard style={{marginTop: 8}} title="客户地址" headerBordered>
+              <ProCard style={{marginTop: 8}} title="客户地址" className="h2Card" headerBordered>
                 <FieldList
                   name="adressParams"
                   initialValue={[
@@ -298,7 +298,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                 />
                                 <Button
                                   type="link" danger
-                                  title='删除地址'
+                                  title="删除地址"
                                   style={{float: 'right'}}
                                   icon={<DeleteOutlined />}
                                   onClick={() => {
