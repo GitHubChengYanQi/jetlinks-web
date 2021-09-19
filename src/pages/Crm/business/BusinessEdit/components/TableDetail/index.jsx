@@ -6,7 +6,7 @@ import DelButton from "@/components/DelButton";
 import Drawer from "@/components/Drawer";
 import * as SysField from "@/pages/Crm/business/BusinessField";
 import Form from "@/components/Form";
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import {useRequest} from "@/util/Request";
 import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit";
 import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
@@ -45,7 +45,7 @@ const TableDetail = (props) => {
           refAddOne.current.open(false);}}>
           添加产品
         </Button>
-        <Modal2 width={1600} title="选择" component={ItemsList}
+        <Modal width={1600} title="选择" component={ItemsList}
           onSuccess={() => {
             refAddOne.current.close();
             tableRef.current.refresh();
@@ -59,7 +59,7 @@ const TableDetail = (props) => {
         }}>
           添加产品套餐
         </Button>
-        <Modal2 width={700} title="选择" component={ItemPackage}
+        <Modal width={700} title="选择" component={ItemPackage}
           onSuccess={() => {
             refAddAll.current.close();
             tableRef.current.refresh();

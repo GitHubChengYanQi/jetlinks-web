@@ -127,7 +127,7 @@ const FormWrapper = (
   }
 
   return findData && <FormilyForm
-    style={{margin: 'auto'}}
+    style={{margin: 'auto',height:'100%'}}
     actions={formActions}
     labelAlign={labelAlign}
     layout='horizontal'
@@ -136,8 +136,7 @@ const FormWrapper = (
     wrapperCol={wrapperCol || 15}
     effects={() => {
       effect ? effect() : null;
-    }
-    }
+    }}
     onSubmit={async (values) => {
       const submitValues = onSubmit(values);
       if (submitValues === false) {

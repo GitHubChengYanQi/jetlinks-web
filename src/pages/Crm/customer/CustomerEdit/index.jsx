@@ -5,8 +5,8 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {forwardRef,  useImperativeHandle, useRef, useState} from 'react';
-import {Button,  Collapse, Divider, Row, Col} from 'antd';
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import {Button, Collapse, Divider, Row, Col} from 'antd';
 import {
   customerAdd,
   customerDetail, customerEdit
@@ -18,41 +18,41 @@ import {MegaLayout} from '@formily/antd-components';
 import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
 import Form from '@/components/Form';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import style from './index.module.scss'
 
 const {FormItem} = Form;
 
 
 const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
-    margin-right: 16px;
+    //margin-right: 16px;
   }
 
   .ant-form-item {
     display: inline-flex;
     margin-right: 10px;
-    width: 37%;
+    width: 43%;
   }
 `;
 const PhoneRowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
-    margin-right: 16px;
   }
 
   .ant-form-item {
     display: inline-flex;
-    margin-right: 16px;
-    width: 71%;
+    width: 90%;
   }
 `;
 const AdressRowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
-    margin-right: 16px;
+    //margin-right: 16px;
   }
 
   .ant-form-item {
     display: inline-flex;
-    margin-right: 16px;
-    width: 100%;
+    //margin-right: 16px;
+    width: 93%;
   }
 `;
 
@@ -84,7 +84,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
   };
 
   return (
-    <div style={{height: height()}}>
+    <div className={style.from} style={{height: height(), padding: '0 20px'}}>
       <Form
         {...props}
         labelAlign="left"
@@ -101,9 +101,9 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
           props.onSuccess();
         }}
       >
-        <Row gutter={24}>
-          <Col span={12}>
-            <div style={{ height: height(), overflow: 'auto'}}>
+        <Row gutter={24} style={{height:'100%'}}>
+          <Col span={12} style={{height:'100%'}}>
+            <div style={{height: '100%', overflow: 'auto'}}>
               <ProCard style={{marginTop: 8}} title="基本信息" headerBordered>
                 <MegaLayout labelWidth={120}>
                   <FormItem
@@ -172,8 +172,8 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
             </div>
           </Col>
-          <Col span={12}>
-            <div style={{height: height(), overflow: 'auto'}}>
+          <Col span={12} style={{height:'100%'}}>
+            <div style={{height: '100%', overflow: 'auto'}}>
               <ProCard style={{marginTop: 8}} title="联系人信息" headerBordered>
                 <FieldList
                   name="contactsParams"
@@ -202,10 +202,15 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
                                 />
                                 <div style={{float: 'right'}}>
-                                  <Button type="link" onClick={() => onRemove(index)}>删除联系人</Button>
+                                  <Button
+                                    type="link"
+                                    title="删除联系人"
+                                    danger
+                                    icon={<DeleteOutlined />}
+                                    onClick={() => onRemove(index)} />
                                 </div>
                                 {/* <ProCard style={{marginTop: 8}} headerBordered> */}
-                                <div style={{width: '80%', display: 'inline-block'}}>
+                                <div style={{width: '88%', display: 'inline-block'}}>
                                   <FieldList
                                     name={`contactsParams.${index}.phoneParams`}
                                     initialValue={[
@@ -226,15 +231,21 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                   component={SysField.PhoneNumber}
 
                                                 />
-                                                <Button type="link" onClick={() => onRemove(indexs)}>删除电话</Button>
+                                                <Button
+                                                  type="link"
+                                                  title="删除电话"
+                                                  icon={<DeleteOutlined />}
+                                                  danger
+                                                  onClick={() => onRemove(indexs)} />
                                               </PhoneRowStyleLayout>
                                             );
                                           })}
                                           <div>
                                             <div style={{height: 30}}>
                                               <Button
-                                                type="link"
-                                                style={{float: 'right'}}
+                                                type="dashed"
+                                                icon={<PlusOutlined />}
+                                                style={{width: '100%'}}
                                                 onClick={onAdd}>增加电话</Button>
                                             </div>
                                           </div>
@@ -244,13 +255,15 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                   </FieldList>
                                 </div>
                               </div>
-                              <Divider dashed />
+                              <Divider />
                             </RowStyleLayout>
                           );
                         })}
-                        <div style={{float: 'right'}}>
-                          <Button type="link" onClick={onAdd}>增加联系人</Button>
-                        </div>
+                        <Button
+                          type="dashed"
+                          icon={<PlusOutlined />}
+                          style={{width: '100%'}}
+                          onClick={onAdd}>增加联系人</Button>
                       </div>
                     );
                   }}
@@ -284,16 +297,23 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                   component={SysField.Map}
                                 />
                                 <Button
-                                  type="link" style={{float: 'right'}}
+                                  type="link" danger
+                                  title='删除地址'
+                                  style={{float: 'right'}}
+                                  icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
-                                  }}>删除地址</Button>
+                                  }} />
                               </AdressRowStyleLayout>
-                              <Divider dashed />
+                              <Divider />
                             </div>
                           );
                         })}
-                        <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加客户地址</Button>
+                        <Button
+                          type="dashed"
+                          style={{width: '100%'}}
+                          icon={<PlusOutlined />}
+                          onClick={onAdd}>增加客户地址</Button>
                       </div>
                     );
                   }}

@@ -42,7 +42,7 @@ const CreateNewCustomer = ({
             compoentRef.current.formRef.current.submit();
           }}>保存</Button>
           <Button onClick={() => {
-            // refModal.current.close();
+            close();
           }}>取消</Button>
         </Space>
       </>

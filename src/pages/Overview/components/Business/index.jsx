@@ -27,7 +27,7 @@ const Business = () => {
   return (
     <Card title="进行中的项目" extra={<a onClick={() => {
       history.push('/CRM/business');
-    }}>全部项目</a>} style={{marginBottom: 24}}>
+    }}>全部项目</a>} style={{marginBottom: 24,cursor:'pointer'}}>
       {data && data.map((items, index) => {
         if (index < 6) {
           return (

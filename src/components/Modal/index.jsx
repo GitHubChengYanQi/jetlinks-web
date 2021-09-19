@@ -58,7 +58,7 @@ const Modal = (
       title={title}
       destroyOnClose
     >
-      <div style={{maxHeight: footer?'calc(100vh - 110px)':'calc(100vh - 55px)', overflow: 'auto'}}>
+      <div style={{maxHeight: footer ? 'calc(100vh - 110px)':'calc(100vh - 55px)', overflow: 'auto'}}>
         {Component ? <Component
           {...props}
           ref={compoentRef}

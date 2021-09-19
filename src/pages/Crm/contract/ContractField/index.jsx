@@ -6,8 +6,8 @@
  */
 
 
-import React, {useEffect,  useState} from 'react';
-import { Input, InputNumber, Select as AntSelect} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Input, InputNumber, Select as AntSelect} from 'antd';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
@@ -17,79 +17,85 @@ import DatePicker from '@/components/DatePicker';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import ErpPackageList from '@/pages/Erp/package/packageList';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
+import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
 
 export const CustomerId = (props) => {
-  return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
+  return (<Select width="100%" disabled api={apiUrl.CustomerNameListSelect} {...props} />);
 };
 
 export const Customer = (props) => {
 
-  const {customerid, onChange} = props;
+  const {customers, onChange} = props;
 
   return (<>
     <SelectCustomer {...props} onChange={(value) => {
       onChange(value && value.customerId);
-      customerid(value && value.customerId);
+      customers(value && value.customerId);
     }} />
   </>);
 };
 
 export const Contacts = (props) => {
-  const {customerid, contactsid, onChange} = props;
+  const {customers, contact, onChange} = props;
 
-  useEffect(() => {
-    props.onChange(null);
-  }, [customerid || null]);
-
-  const data = customerid ? customerid.map((value, index) => {
+  const data = customers ? customers.map((value, index) => {
     return {
       label: value.contactsName,
       value: value.contactsId,
     };
-  }) : null;
+  }) : [];
+
+  useEffect(() => {
+    props.onChange(data.length > 0 && data[0].value);
+    contact ? contact(data.length > 0 && data[0].value) : null;
+  }, [customers || null]);
 
 
   return (<>
-    <AntSelect style={{width: 200}} options={data}  {...props} onChange={(value) => {
+    <AntSelect options={data}  {...props} onChange={(value) => {
       onChange(value);
-      contactsid ? contactsid(value) : null;
+      contact ? contact(value) : null;
     }} />
   </>);
 };
 export const Phone = (props) => {
-  const {contactsid} = props;
-  useEffect(() => {
-    props.onChange(null);
-  }, [contactsid || null]);
-  const data = contactsid ? contactsid.map((value) => {
+  const {contacts} = props;
+
+  const data = contacts ? contacts.map((value) => {
     return {
       label: value.phoneNumber,
       value: value.phoneId,
     };
-  }) : null;
+  }) : [];
+
+  useEffect(() => {
+    props.onChange(data.length > 0 && data[0].value);
+  }, [contacts || null]);
+
   return (<>
-    <AntSelect style={{width: 200}} options={data} {...props} />
+    <AntSelect options={data} {...props} />
   </>);
 };
 export const Adress = (props) => {
-  const {customerid} = props;
-  useEffect(() => {
-    props.onChange(null);
-  }, [customerid || null]);
-  const data = customerid ? customerid.map((value) => {
+  const {customers} = props;
+
+  const data = customers ? customers.map((value) => {
     return {
       label: value.location,
       value: value.adressId,
     };
-  }) : null;
+  }) : [];
+  useEffect(() => {
+    props.onChange(data.length > 0 && data[0].value);
+  }, [customers || null]);
   return (<>
-    <AntSelect style={{width: 200}} options={data} {...props} />
+    <AntSelect options={data} {...props} />
   </>);
 };
 
 
 export const Name = (props) => {
-  return (<Input style={{width: 200}}  {...props} />);
+  return (<Input  {...props} />);
 };
 
 
@@ -106,7 +112,6 @@ export const Audit = (props) => {
     disabled
     defaultValue={[0]}
     allowClear
-    style={{width: 200}}
     options={[{label: '不合格', value: 0}, {label: '合格', value: 1}]}    {...props} />);
 };
 
@@ -117,7 +122,7 @@ export const CustomerNameListSelect = (props) => {
 export const Template = (props) => {
 
   return (<>
-    <Select api={apiUrl.templateSelect} {...props} />
+    <Select width="100%" api={apiUrl.templateSelect} {...props} />
   </>);
 };
 
@@ -143,32 +148,26 @@ export const Content = (props) => {
   const [state, setState] = useState('文本框');
 
 
-
-
-
   return (
     <>
       {
         parse(props.value, {
           replace: domNode => {
-            if (domNode.name === 'strong' && domNode.attribs.class === 'inp' ) {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'inp') {
               return <Input style={{width: '100px', margin: '0 10px'}} onChange={(value) => {
                 setState(value.target.value);
               }} onBlur={() => {
                 // domNode.children[0].data=state;
-                const value = props.value.replaceAll(domNode.children[0].data, state);
+                const value = props.value.replace(domNode.children[0].data, state);
                 props.onChange(value);
               }} />;
             }
             if (domNode.name === 'strong' && domNode.attribs.class === 'number') {
               return <InputNumber min={0} style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
-                console.log(value);
               }} onBlur={() => {
                 // domNode.children[0].data=state;
-                console.log(domNode.children[0]);
-                console.log(state);
-                const value = props.value.replaceAll(domNode.children[0].data, state);
+                const value = props.value.replace(domNode.children[0].data, state);
                 props.onChange(value);
               }} />;
             }
@@ -176,14 +175,14 @@ export const Content = (props) => {
               return <DatePicker style={{margin: '0 10px'}} onChange={(value) => {
                 setState(value);
               }} onBlur={() => {
-                const value = props.value.replaceAll(domNode.children[0].data, state);
+                const value = props.value.replace(domNode.children[0].data, state);
                 props.onChange(value);
               }} />;
             }
-            if (domNode.name === 'strong' && domNode.attribs.class === 'but' ) {
+            if (domNode.name === 'strong' && domNode.attribs.class === 'but') {
               return (<>
                 <ChooseCustomer Table={CustomerTable} domNode={domNode} record={(record) => {
-                  const value = props.value.replaceAll(domNode.children[0].data, record.customerName);
+                  const value = props.value.replace(domNode.children[0].data, record.customerName);
                   props.onChange(value);
                 }} {...props} />
               </>);

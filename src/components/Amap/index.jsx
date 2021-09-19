@@ -28,7 +28,7 @@ const Amap = ({title, value, onClose, onChange}) => {
         <div style={{fontSize: 14, fontWeight: 900}}>{value.name}</div>
         {value.address}
       </div>}
-      <Button type="primary" onClick={() => {
+      <Button type="default" onClick={() => {
         setVisible(true);
       }}>{title || '定位'}</Button>
       <Drawer

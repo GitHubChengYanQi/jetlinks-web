@@ -12,7 +12,7 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../contractDetailUrl';
 
-export const ContractId = (props) =>{
+export const BusinessId = (props) =>{
   return (<Input {...props}/>);
 };
 export const ItemId = (props) =>{
@@ -21,27 +21,9 @@ export const ItemId = (props) =>{
 export const Quantity = (props) =>{
   return (<Input {...props}/>);
 };
-export const CreateUser = (props) =>{
+export const salePrice = (props) =>{
   return (<Input {...props}/>);
 };
-export const UpdateUser = (props) =>{
-  return (<Input {...props}/>);
-};
-export const CreateTime = (props) =>{
-  return (<Input {...props}/>);
-};
-export const UpdateTime = (props) =>{
-  return (<Input {...props}/>);
-};
-export const Display = (props) =>{
-  return (<Input {...props}/>);
-};
-export const SalePrice = (props) =>{
-  return (<Input {...props}/>);
-};
-export const TotalPrice = (props) =>{
-  return (<Input {...props}/>);
-};
-export const DeptId = (props) =>{
+export const totalPrice = (props) =>{
   return (<Input {...props}/>);
 };

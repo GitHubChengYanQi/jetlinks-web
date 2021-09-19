@@ -30,17 +30,10 @@ const ContractDetailEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="id"
     >
-      <FormItem label="合同id" name="contractId" component={SysField.ContractId} required/>
-      <FormItem label="物品id" name="itemId" component={SysField.ItemId} required/>
-      <FormItem label="物品数量" name="quantity" component={SysField.Quantity} required/>
-      <FormItem label="创建者" name="createUser" component={SysField.CreateUser} required/>
-      <FormItem label="修改者" name="updateUser" component={SysField.UpdateUser} required/>
-      <FormItem label="创建时间" name="createTime" component={SysField.CreateTime} required/>
-      <FormItem label="修改时间" name="updateTime" component={SysField.UpdateTime} required/>
-      <FormItem label="状态" name="display" component={SysField.Display} required/>
-      <FormItem label="销售单价" name="salePrice" component={SysField.SalePrice} required/>
-      <FormItem label="总计" name="totalPrice" component={SysField.TotalPrice} required/>
-      <FormItem label="部门id" name="deptId" component={SysField.DeptId} required/>
+      <FormItem style={{'display': 'none'}} name="contractId" component={SysField.BusinessId} required />
+      <FormItem style={{'display': 'none'}} name="itemId" component={SysField.ItemId} required />
+      <FormItem label="销售单价" name="salePrice" component={SysField.salePrice} required />
+      <FormItem label="数量" name="quantity" component={SysField.Quantity} required />
     </Form>
   );
 };

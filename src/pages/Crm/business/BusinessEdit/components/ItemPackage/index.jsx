@@ -4,11 +4,10 @@ import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
 import CheckButton from '@/components/CheckButton';
 import {batchDelete, erpPackageDelete, erpPackageList} from '@/pages/Erp/package/packageUrl';
-import {useRequest} from "@/util/Request";
-import TableList from "@/pages/Erp/package/packageList/components/TableList";
-import {erpPackageTableList} from "@/pages/Erp/packageTable/packageTableUrl";
-import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
-import Modal2 from "@/components/Modal";
+import {useRequest} from '@/util/Request';
+import TableList from '@/pages/Erp/package/packageList/components/TableList';
+import {erpPackageTableList} from '@/pages/Erp/packageTable/packageTableUrl';
+import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import DelButton from '@/components/DelButton';
@@ -18,6 +17,7 @@ import ErpPackageEdit from '@/pages/Erp/package/packageEdit';
 import {addAllPackages, batchAdd} from '@/pages/Erp/items/ItemsUrl';
 import SelButton from '@/components/SelButton';
 import {createFormActions} from '@formily/antd';
+import {contractDetailAdd} from '@/pages/Crm/contract/contractDetail/contractDetailUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,7 +39,8 @@ const ItemPackage = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const MxRef = useRef(null);
-  const {run:add} = useRequest(crmBusinessDetailedAdd,{manual:true,
+  const {run: add} = useRequest(crmBusinessDetailedAdd, {
+    manual: true,
     onError: (error) => {
       message.error(error.message);
     },
@@ -47,17 +48,38 @@ const ItemPackage = (props) => {
       MxRef.current.close();
       // props.onChange(props.businessId);
       props.onSuccess();
-    }});
+    }
+  });
+  const {run: addContract} = useRequest(contractDetailAdd, {
+    manual: true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      MxRef.current.close();
+      // props.onChange(props.businessId);
+      props.onSuccess();
+    }
+  });
 
-  const {run:select} = useRequest(erpPackageTableList,
-    {manual: true,
+  const {run: select} = useRequest(erpPackageTableList,
+    {
+      manual: true,
       onError: (error) => {
         message.error(error.message);
       },
       onSuccess: (response) => {
-        response.forEach((value) => {
-          add({
-            data:{
+        response.forEach(async (value) => {
+          props.contractId ? await addContract({
+            data: {
+              contractId: props.contractId,
+              itemId: value.itemId,
+              salePrice: 0,
+              totalPrice: 0,
+              quantity: 0
+            }
+          }) : await add({
+            data: {
               businessId: props.businessId,
               itemId: value.itemId,
               salePrice: 0,
@@ -68,6 +90,7 @@ const ItemPackage = (props) => {
         });
       }
     });
+
 
   const actions = () => {
     return (
@@ -87,20 +110,26 @@ const ItemPackage = (props) => {
       <>
         <SelButton api={{
           ...addAllPackages
-        }}onSuccess={()=>{
+        }} onSuccess={() => {
           tableRef.current.refresh();
           props.onSuccess();
         }
-        } data ={{
+        } data={props.contractId ? {
+          contractId: props.contractId,
+          packagesIds: ids,
+          salePrice: 0,
+          totalPrice: 0,
+          quantity: 0
+        } : {
           businessId: props.businessId,
           packagesIds: ids,
           salePrice: 0,
           totalPrice: 0,
           quantity: 0
-        }} >批量选择</SelButton>
+        }}>批量选择</SelButton>
         <DelButton api={{
           ...batchDelete
-        }} onSuccess={()=>{
+        }} onSuccess={() => {
           // tableRef.current.refresh();
           props.onSuccess();
         }} value={ids}>批量删除</DelButton>
@@ -127,7 +156,7 @@ const ItemPackage = (props) => {
           ref={tableRef}
           listHeader={false}
           footer={footer}
-          onChange={(keys)=>{
+          onChange={(keys) => {
             setIds(keys);
           }}
 
@@ -139,13 +168,13 @@ const ItemPackage = (props) => {
                 MxRef.current.open(false);
               }}>{record.productName}</Button>
             );
-          }}/>
+          }} />
           <Column title="操作" align="right" render={(value, record) => {
             return (
               <>
                 <CheckButton onClick={() => {
-                  select({data:{packageId:record.packageId}});
-                }}/>
+                  select({data: {packageId: record.packageId}});
+                }} />
                 <EditButton onClick={() => {
                   ref.current.open(record.packageId);
                 }} />
@@ -155,13 +184,13 @@ const ItemPackage = (props) => {
                 }} />
               </>
             );
-          }}/>
+          }} />
         </Table>
         <Modal width={900} title="套餐" component={ErpPackageEdit} onSuccess={() => {
           tableRef.current.refresh();
           ref.current.close();
         }} ref={ref} />
-        <Modal2 width={900}  title="套餐明细" component={TableList} packageId={PackageId} onSuccess={() => {
+        <Modal width={900} title="套餐明细" component={TableList} packageId={PackageId} onSuccess={() => {
           // ref.current.refresh();
           ref.current.close();
         }} ref={MxRef} />

@@ -20,17 +20,20 @@ import CheckButton from '@/components/CheckButton';
 import {erpPackageTableAdd} from '@/pages/Erp/packageTable/packageTableUrl';
 import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup,Submit} from '@formily/antd';
+import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
 import {addAllPackages, addAllPackagesTable, batchAdd, batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
 import SelButton from '@/components/SelButton';
+import {contractDetailAdd} from '@/pages/Crm/contract/contractDetail/contractDetailUrl';
 
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ItemsList = (props) => {
 
@@ -54,6 +57,17 @@ const ItemsList = (props) => {
   });
 
   const { run: addTc} = useRequest(crmBusinessDetailedAdd, {
+    manual: true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      ref.current.close();
+      props.onSuccess();
+    }
+  });
+
+  const { run: addHt} = useRequest(contractDetailAdd, {
     manual: true,
     onError: (error) => {
       message.error(error.message);
@@ -97,6 +111,22 @@ const ItemsList = (props) => {
           totalPrice: 0,
           quantity: 0
         }} >批量选择</SelButton>}
+
+        {props.contractId && <SelButton api={{
+          ...batchAdd
+        }}onSuccess={()=>{
+          tableRef.current.refresh();
+          props.onSuccess();
+        }
+        } data ={{
+          contractId: props.contractId,
+          itemIds: ids,
+          salePrice: 0,
+          totalPrice: 0,
+          quantity: 0
+        }} >批量选择</SelButton>}
+
+
         {!disabled && <SelButton api={{
           ...addAllPackagesTable
         }}onSuccess={()=>{
@@ -189,6 +219,7 @@ const ItemsList = (props) => {
         ref={tableRef}
         SearchButton={Search()}
         layout={search}
+        formActions={formActionsPublic}
         onChange={(keys)=>{
           setIds(keys);
         }}
@@ -254,6 +285,20 @@ const ItemsList = (props) => {
                   {
                     data: {
                       businessId: props.businessId,
+                      itemId: record.itemId,
+                      salePrice: 0,
+                      totalPrice: 0,
+                      quantity: 0
+                    }
+                  }
+                );
+              }}/>}
+              {props.contractId &&
+              <CheckButton onClick={() => {
+                addHt(
+                  {
+                    data: {
+                      contractId: props.contractId,
                       itemId: record.itemId,
                       salePrice: 0,
                       totalPrice: 0,

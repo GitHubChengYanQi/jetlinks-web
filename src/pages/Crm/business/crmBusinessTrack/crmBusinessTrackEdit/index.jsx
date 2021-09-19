@@ -9,8 +9,7 @@ import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {createFormActions, FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
-import {Button, Col, Divider, Row} from 'antd';
-import {Switch} from '@alifd/next';
+import {Button, Card, Col, Divider, Row, Switch} from 'antd';
 import {trackMessageAdd} from '@/pages/Crm/trackMessage/trackMessageUrl';
 import Form from '@/components/Form';
 import * as SysField from '../crmBusinessTrackField';
@@ -27,7 +26,7 @@ const ApiConfig = {
 
 const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
-    margin-right: 16px;
+    //margin-right: 16px;
   }
 
   .ant-form-item {
@@ -38,7 +37,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
 const CrmBusinessTrackEdit = ({...props}, ref) => {
 
-  const {val, number,track = 1} = props;
+  const {val, number, track = 1} = props;
   const formRef = useRef();
   useImperativeHandle(ref, () => ({
     formRef,
@@ -62,25 +61,40 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     let backMoney = null;
     if (classNmb === 1) {
       businessId = val.businessId;
-      return (<FormItem label="商机" name={`businessTrackParams.${index}.classifyId`} component={SysField.BusinessId} value={businessId} />);
+      return (<FormItem
+        label="商机"
+        name={`businessTrackParams.${index}.classifyId`}
+        component={SysField.BusinessId}
+        value={businessId} />);
     }
     if (classNmb === 2) {
       contractId = val.contractId;
-      return (<FormItem label="合同" name={`businessTrackParams.${index}.classifyId`} component={SysField.ContractId} value={contractId} />);
+      return (<FormItem
+        label="合同"
+        name={`businessTrackParams.${index}.classifyId`}
+        component={SysField.ContractId}
+        value={contractId} />);
     }
     if (classNmb === 3) {
       orderId = val.orderId;
-      return (<FormItem label="订单" name={`businessTrackParams.${index}.classifyId`} component={SysField.OrderId} value={orderId} />);
+      return (<FormItem
+        label="订单"
+        name={`businessTrackParams.${index}.classifyId`}
+        component={SysField.OrderId}
+        value={orderId} />);
     }
     if (classNmb === 4) {
       backMoney = val.backMoney;
-      return (<FormItem label="回款" name={`businessTrackParams.${index}.classifyId`} component={SysField.BackMoney} value={backMoney} />);
+      return (<FormItem
+        label="回款"
+        name={`businessTrackParams.${index}.classifyId`}
+        component={SysField.BackMoney}
+        value={backMoney} />);
     }
   };
 
-
   return (
-    <div style={{height: height()}}>
+    <div style={{height: height(),padding:'0 20px'}}>
       <Form
         {...props}
         ref={formRef}
@@ -92,7 +106,13 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
           <Col span={14}>
             <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
               <ProCard style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
-                <FormItem  label="客户" name="customerId" component={SysField.CustomerId} track={track} value={val} required />
+                <FormItem
+                  label="客户"
+                  name="customerId"
+                  component={SysField.CustomerId}
+                  track={track}
+                  value={val}
+                  required />
               </ProCard>
               <ProCard style={{marginTop: 2}} title={<Title title="事项" level={4} />} headerBordered>
                 <FieldList
@@ -108,21 +128,36 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <div key={index}>
+                            <Card title={<Title title="事项明细" level={5} />} bordered={false} extra={<Button
+                              type="link" style={{float: 'right'}}
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                onRemove(index);
+                              }}
+                              danger />} key={index}>
                               <RowStyleLayout key={index}>
-                                <FormItem label="分类" name={`businessTrackParams.${index}.classify`}
-                                  component={SysField.Classify} value={number} onChange={(value) => {
+                                <FormItem
+                                  label="分类"
+                                  name={`businessTrackParams.${index}.classify`}
+                                  component={SysField.Classify}
+                                  value={number}
+                                  onChange={(value) => {
                                     setClassNmb(value);
                                   }} />
                                 {returnFormItem(classNmb, index)}
-                                <FormItem label="跟踪类型" name={`businessTrackParams.${index}.type`}
+                                <FormItem
+                                  label="跟踪类型"
+                                  name={`businessTrackParams.${index}.type`}
                                   component={SysField.Type} />
-                                <FormItem label="跟踪内容" name={`businessTrackParams.${index}.note`}
+                                <FormItem
+                                  label="跟踪内容"
+                                  name={`businessTrackParams.${index}.note`}
                                   component={SysField.Note} />
-                                <FormItem label="图片" name={`businessTrackParams.${index}.image`}
+                                <FormItem
+                                  label="图片"
+                                  name={`businessTrackParams.${index}.image`}
                                   component={SysField.Image} />
                                 <Switch
-                                  size="small"
                                   style={{marginLeft: '18%', marginBottom: 20, width: 100}}
                                   checkedChildren="关闭提醒"
                                   unCheckedChildren="开启提醒"
@@ -131,12 +166,15 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                     setTxHidden(!txHidden);
                                   }}
                                 > </Switch>
-                                {txHidden ? <FormItem label="跟进提醒时间" name={`businessTrackParams.${index}.time`}
+                                {txHidden ? <FormItem
+                                  label="跟进提醒时间"
+                                  name={`businessTrackParams.${index}.time`}
                                   component={SysField.Time} /> : null}
-                                {txHidden ? <FormItem label="提醒内容" name={`businessTrackParams.${index}.message`}
+                                {txHidden ? <FormItem
+                                  label="提醒内容"
+                                  name={`businessTrackParams.${index}.message`}
                                   component={SysField.Message} /> : null}
                                 <Switch
-                                  size="small"
                                   style={{marginLeft: '18%', marginBottom: 20, width: 100}}
                                   checkedChildren="暂不报价"
                                   unCheckedChildren="马上报价"
@@ -145,20 +183,20 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                     setHidden(!hidden);
                                   }}
                                 > </Switch>
-                                {hidden ? <FormItem label="报价金额" name={`businessTrackParams.${index}.money`}
+                                {hidden ? <FormItem
+                                  label="报价金额"
+                                  name={`businessTrackParams.${index}.money`}
                                   component={SysField.Money} /> : null}
-                                <Button
-                                  type="link" style={{float: 'right'}}
-                                  icon={<DeleteOutlined />}
-                                  onClick={() => {
-                                    onRemove(index);
-                                  }}>删除</Button>
                               </RowStyleLayout>
                               <Divider dashed />
-                            </div>
+                            </Card>
                           );
                         })}
-                        <Button type="link" icon={ <PlusOutlined />} style={{float: 'right'}} onClick={onAdd}>增加事项</Button>
+                        <Button
+                          type="dashed"
+                          icon={<PlusOutlined />}
+                          style={{width: '100%'}}
+                          onClick={onAdd}>增加明细</Button>
                       </div>
                     );
                   }}
@@ -172,7 +210,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                 <FieldList
                   name="competitorQuoteParam"
                   initialValue={[
-                    {competitorId: '', competitorsQuote: ''},
+                    {},
                   ]}
                 >
                   {({state, mutators}) => {
@@ -197,17 +235,21 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
 
                                 />
                                 <Button
-                                  type="link" style={{float: 'right'}}
+                                  type="link" danger style={{float: 'right'}}
                                   icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
-                                  }}>删除</Button>
+                                  }} />
                               </RowStyleLayout>
                               <Divider dashed />
                             </div>
                           );
                         })}
-                        <Button type="link" style={{float: 'right'}} icon={ <PlusOutlined />} onClick={onAdd}>增加报价</Button>
+                        <Button
+                          type="dashed"
+                          style={{width: '100%'}}
+                          icon={<PlusOutlined />}
+                          onClick={onAdd}>增加报价</Button>
                       </div>
                     );
                   }}

@@ -6,12 +6,13 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Input, InputNumber, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
+import {Button, Card, Input, InputNumber, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 import {useRequest} from '@/util/Request';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
+import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
 
 
 const {onFieldValueChange$} = FormEffectHooks;
@@ -36,22 +37,31 @@ const AddContractEdit = ({...props}) => {
   const [result, setResult] = useState(value);
 
   const content = () => {
-    return <Form
-      {...props}
-      value={result ? result.contractId : false}
-      ref={formRef}
-      api={ApiConfig}
-      NoButton={false}
-      fieldKey="contractId"
-      onSuccess={(result) => {
-        props.onSuccess();
-      }}
-    >
-      <FormItem name="content" component={SysField.Content} result={result} required />
-      <Button type="primary" htmlType="submit">
-        Done
-      </Button>
-    </Form>;
+    return (
+      <div style={{padding:20}}>
+        <Form
+          {...props}
+          value={result ? result.contractId : false}
+          ref={formRef}
+          api={ApiConfig}
+          NoButton={false}
+          fieldKey="contractId"
+          onSuccess={(result) => {
+            props.onSuccess();
+          }}
+        >
+          <FormItem name="content" component={SysField.Content} result={result} required />
+        </Form>
+        <Card title='添加产品明细' bordered={false}>
+          <TableDetail value={result ? result.contractId : false} />
+        </Card>
+        <Button type="primary" style={{width:'100%'}} onClick={() => {
+          formRef.current.submit();
+        }}>
+          完成
+        </Button>
+      </div>
+    );
   };
 
 
@@ -173,7 +183,7 @@ const AddContractEdit = ({...props}) => {
                   component={SysField.CustomerId}
                   placeholder="请选择甲方客户"
                   val={value ? value.partAName : null}
-                  customerid={async (customer) => {
+                  customers={async (customer) => {
                     if (customer) {
                       await AcontactsRun({
                         data: {
@@ -195,7 +205,7 @@ const AddContractEdit = ({...props}) => {
                   component={SysField.Customer}
                   placeholder="请选择甲方客户"
                   val={value ? value.partAName : null}
-                  customerid={async (customer) => {
+                  customers={async (customer) => {
                     if (customer) {
                       await AcontactsRun({
                         data: {
@@ -218,8 +228,8 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Contacts}
                 placeholder="甲方联系人"
                 val={value ? value.partyAContactsId : null}
-                customerid={Acontacts || null}
-                contactsid={async (contacts) => {
+                customers={Acontacts || null}
+                contact={async (contacts) => {
                   if (contacts) {
                     await runAPhone({
                       data: {
@@ -237,7 +247,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Phone}
                 placeholder="请选择甲方联系人电话"
                 val={value ? value.partyAPhone : null}
-                contactsid={APhone || null}
+                contacts={APhone || null}
                 required
               />
               <FormItem
@@ -247,7 +257,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Adress}
                 placeholder="请选择甲方地址"
                 val={value ? value.partyAAdressId : null}
-                customerid={Aadress || null}
+                customers={Aadress || null}
                 required
               />
 
@@ -256,11 +266,11 @@ const AddContractEdit = ({...props}) => {
                 initialValue={false}
                 label="乙方"
                 name="partyB"
-                value='1416605276529807486'
+                value="1416605276529807486"
                 component={SysField.CustomerId}
                 placeholder="请选择乙方客户"
                 val={value ? value.partBName : null}
-                customerid={async (customer) => {
+                customers={async (customer) => {
                   if (customer) {
                     await BcontactsRun({
                       data: {
@@ -283,8 +293,8 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Contacts}
                 placeholder="请选择乙方联系人"
                 val={value ? value.partyBContactsId : null}
-                customerid={Bcontacts || null}
-                contactsid={async (contacts) => {
+                customers={Bcontacts || null}
+                contact={async (contacts) => {
                   if (contacts) {
                     await runBPhone({
                       data: {
@@ -301,7 +311,7 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Phone}
                 placeholder="请选择乙方联系人电话"
                 val={value ? value.partyAPhone : null}
-                contactsid={BPhone || null}
+                contacts={BPhone || null}
                 required
               />
 
@@ -312,13 +322,13 @@ const AddContractEdit = ({...props}) => {
                 component={SysField.Adress}
                 placeholder="请选择乙方地址"
                 val={value ? value.partyBAdressId : null}
-                customerid={Badress || null}
+                customers={Badress || null}
                 required
               />
               <FormItem label="创建时间" name="time" component={SysField.Time} required />
               <FormItem label="审核" name="audit" component={SysField.Audit} required />
               <Button type="primary" htmlType="submit">
-                Next
+                下一步
               </Button>
             </Form>
           </div>

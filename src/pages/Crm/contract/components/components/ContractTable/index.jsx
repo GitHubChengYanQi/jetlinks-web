@@ -19,7 +19,7 @@ import Modal from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import Contract from '@/pages/Crm/contract/components/components/Contract';
 import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
+import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import Icon from '@/components/Icon';
@@ -29,6 +29,8 @@ import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ContractTable = (props) => {
 
@@ -169,6 +171,7 @@ const ContractTable = (props) => {
         searchForm={searchForm}
         ref={tableRef}
         footer={footer}
+        formActions={formActionsPublic}
         SearchButton={Search()}
         layout={search}
         onChange={(value) => {
@@ -178,7 +181,7 @@ const ContractTable = (props) => {
       >
         <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
           return (
-            <Button type="link" onClick={() => {
+            <Button style={{width:'100%',textAlign:'left',cursor:'pointer',height:'100%'}} title='点击进入合同详情'  type="link" onClick={() => {
               // content.current.open(record.contractId);
               history.push(`/CRM/contract/${record.contractId}`);
             }}>{text}</Button>
@@ -186,7 +189,7 @@ const ContractTable = (props) => {
         }} />
         <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
-            <div style={{cursor: 'pointer'}} onClick={() => {
+            <div title='点击进入甲方详情' style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.partyA}`);
             }}>
               <strong>{record.partA ? record.partA.customerName : null}</strong>
@@ -201,7 +204,7 @@ const ContractTable = (props) => {
         }} />
         <Column title="乙方信息" dataIndex="partAName" render={(text, record) => {
           return (
-            <div style={{cursor: 'pointer'}} onClick={() => {
+            <div title='点击进入乙方详情' style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.partyB}`);
             }}>
               <strong>{record.partB ? record.partB.customerName : null}</strong>
@@ -236,7 +239,7 @@ const ContractTable = (props) => {
           );
         }} width={200} />
       </Table>
-      <Modal width={800} title="合同" component={AddContractEdit} onSuccess={() => {
+      <Modal width={1200} title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />
