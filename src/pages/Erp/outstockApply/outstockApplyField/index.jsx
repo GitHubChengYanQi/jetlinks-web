@@ -89,7 +89,7 @@ export const Phone = (props) => {
     };
   }) : null;
   return (<>
-    <AntSelect style={{width: 200}} options={data} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} {...props} />
+    <AntSelect style={{width: 200}} options={data} showSearch filterOption={(input, option) =>option.label && typeof option.label.toLowerCase() === 'function' && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} {...props} />
   </>);
 };
 export const Adress = (props) => {

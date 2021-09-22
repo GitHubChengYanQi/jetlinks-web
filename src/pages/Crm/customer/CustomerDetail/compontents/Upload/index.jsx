@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Upload as AntUpload, Button, Space, Pagination} from 'antd';
+import {Upload as AntUpload, Button, Space, Pagination, Divider} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import UpLoadImg from '@/components/Upload';
@@ -69,6 +69,7 @@ const Upload = (props) => {
   return (
     <Space direction="vertical" style={{width: '100%'}} size="large">
       <AntUpload
+        style={{width: '100%'}}
         className="avatar-uploader"
         data={oss}
         action={oss.host}
@@ -87,10 +88,11 @@ const Upload = (props) => {
           }
         }}
         onChange={async ({file}) => {
-          switch (file.status){
+          switch (file.status) {
             case 'done':
+              refresh();
+              break;
             case 'uploading':
-
               if (file.type.split('/')[1] && file.percent === 0) {
                 await runFile({
                   data: {
@@ -100,8 +102,8 @@ const Upload = (props) => {
                     name: file.name
                   }
                 });
-                await refresh();
               }
+              refresh();
               break;
             case 'removed':
               await runDeleteFile({
@@ -114,12 +116,9 @@ const Upload = (props) => {
             default:
               break;
           }
-
         }}
       >
-        <div>
-          <Button icon={<UploadOutlined />}>上传附件</Button>
-        </div>
+        <Button icon={<UploadOutlined />}>上传附件</Button>
       </AntUpload>
       <div style={{textAlign: 'center'}}>
         <Pagination

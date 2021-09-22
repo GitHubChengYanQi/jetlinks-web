@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, notification,Modal as AntModal, Table as AntTable, Tag} from 'antd';
+import {Button, notification, Modal as AntModal, Table as AntTable, Tag, Divider} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -162,7 +162,13 @@ const ContractTable = (props) => {
 
   return (
     <>
+      {customerId && <Divider orientation="right">
+        <AddButton ghost onClick={() => {
+          ref.current.open(false);
+        }} />
+      </Divider>}
       <Table
+        headStyle={{display:customerId && 'none'}}
         title={<Breadcrumb />}
         api={contractList}
         actions={actions()}
@@ -239,7 +245,7 @@ const ContractTable = (props) => {
           );
         }} width={200} />
       </Table>
-      <Modal width='auto' title="合同" component={AddContractEdit} onSuccess={() => {
+      <Modal width='auto' title="合同" component={AddContractEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />

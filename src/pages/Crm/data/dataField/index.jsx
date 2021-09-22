@@ -71,7 +71,7 @@ export const Attachment = (props) => {
               onChange(null);
               break;
             case 'uploading':
-              message.success("上传中！");
+              // message.success("上传中！");
               break;
             case 'done':
               message.success("上传成功！");

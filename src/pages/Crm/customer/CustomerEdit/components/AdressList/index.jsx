@@ -40,7 +40,7 @@ const AdressList = (props) => {
 
   return (
     <>
-      <Divider>
+      <Divider orientation='right'>
         <AddButton ghost onClick={() => {
           ref.current.open(false);
         }} />

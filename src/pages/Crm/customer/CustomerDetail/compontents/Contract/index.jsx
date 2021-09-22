@@ -16,7 +16,7 @@ import Modal2 from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/customer/CustomerDetail/compontents/AddContract';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import {contactsList} from '@/pages/Crm/contacts/contactsUrl';
-import Table from '@/pages/Crm/customer/CustomerDetail/compontents/Table';
+import Table from '@/components/Table';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -43,6 +43,7 @@ const Contract = (props) => {
   return (
     <>
       <Table
+        headStyle={{display:'none'}}
         api={contractList}
         searchForm={searchForm}
         rowKey="contactsId"

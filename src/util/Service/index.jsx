@@ -2,7 +2,7 @@ import React from 'react';
 import { config, useHistory } from 'ice';
 import cookie from 'js-cookie';
 import axios from 'axios';
-import { Modal } from 'antd';
+import {message, Modal} from 'antd';
 
 const baseURI = config.baseURI || window.sing.sysURI;
 
@@ -51,8 +51,7 @@ ajaxService.interceptors.response.use((response) => {
       });
       throw new Error(response.message);
     }
-
-    throw new Error();
+    throw new Error(response.message);
   }
   return response;
 }, (error) => {

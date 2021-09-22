@@ -5,19 +5,14 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Button, Divider, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsBind, contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
-import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
+import {contactsBind, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import CheckButton from '@/components/CheckButton';
-import PhoneList from '@/pages/Crm/phone/phoneList';
-import Modal2 from '@/components/Modal';
 import {Tag} from '@alifd/next';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import Table from '@/components/Table';
@@ -36,7 +31,11 @@ const ContactsList = (props) => {
   const tableRef = useRef(null);
   const submitRef = useRef(null);
 
-  const {run} = useRequest(contactsBind, {manual: true});
+  const {run} = useRequest(contactsBind, {
+    manual: true, onSuccess: () => {
+      tableRef.current.submit();
+    }
+  });
 
 
   const searchForm = () => {
@@ -50,7 +49,7 @@ const ContactsList = (props) => {
 
   return (
     <>
-      <Divider>
+      <Divider orientation='right'>
         <AddButton ghost onClick={() => {
           ref.current.open(false);
         }} />
