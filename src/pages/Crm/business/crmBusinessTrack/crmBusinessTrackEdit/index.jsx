@@ -50,7 +50,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
 
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
+      return 'calc(100vh - 300px)';
     }
     return 930;
   };
@@ -95,7 +95,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
   };
 
   return (
-    <div style={{height: height(),padding:'0 20px'}}>
+    <div className={style.from} style={{padding:'0 20px'}}>
       <Form
         {...props}
         ref={formRef}
@@ -103,9 +103,9 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
         fieldKey="trackMessageId"
         NoButton={false}
       >
-        <Row gutter={24}>
-          <Col span={14}>
-            <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
+        <Row gutter={24} style={{height:'100%'}}>
+          <Col span={13} style={{height:'100%'}}>
+            <div style={{paddingRight: 10, height:'100%', overflow: 'auto',display:'inline-block'}}>
               <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
                 <FormItem
                   label="客户"
@@ -115,11 +115,11 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                   value={val}
                   required />
               </ProCard>
-              <ProCard className='h2Card' style={{marginTop: 2}} title={<Title title="事项" level={4} />} headerBordered>
+              <ProCard className='h2Card' style={{marginTop: 2,height:'100%'}} title={<Title title="事项" level={4} />} headerBordered>
                 <FieldList
                   name="businessTrackParams"
                   initialValue={[
-                    {classify: '', classifyId: '', type: '', note: '', image: '', time: '', message: '', money: ''},
+                    {},
                   ]}
                 >
                   {({state, mutators}) => {
@@ -129,8 +129,8 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <ProCard headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="事项明细" level={6} />} headerBordered extra={<Button
-                              type="link" style={{float: 'right'}}
+                            <ProCard style={{width:'auto'}} headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="事项明细" level={6} />} headerBordered extra={<Button
+                              type="link" style={{float: 'right',display: state.value.length === 1 && 'none'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
@@ -205,9 +205,9 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
               </ProCard>
             </div>
           </Col>
-          <Col span={10}>
-            <div style={{height: height(), overflow: 'auto'}}>
-              <ProCard className='h2Card' style={{marginTop: 8}} title={<Title title="竞争对手报价" level={4} />} headerBordered>
+          <Col span={11} style={{height:'100%'}}>
+            <div style={{height: '100%', overflow: 'auto'}}>
+              <ProCard className='h2Card' style={{marginTop: 8,height:'100%'}} title={<Title title="竞争对手报价" level={4} />} headerBordered>
                 <FieldList
                   name="competitorQuoteParam"
                   initialValue={[
@@ -221,7 +221,13 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <div key={index}>
+                            <ProCard headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="竞争对手明细" level={6} />} headerBordered extra={<Button
+                              type="link" style={{float: 'right',display: state.value.length === 1 && 'none'}}
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                onRemove(index);
+                              }}
+                              danger />} key={index}>
                               <RowStyleLayout key={index}>
                                 <FormItem
                                   label="竞争对手"
@@ -235,15 +241,9 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                   component={SysField.CompetitorsQuote}
 
                                 />
-                                <Button
-                                  type="link" danger style={{float: 'right'}}
-                                  icon={<DeleteOutlined />}
-                                  onClick={() => {
-                                    onRemove(index);
-                                  }} />
                               </RowStyleLayout>
                               <Divider dashed />
-                            </div>
+                            </ProCard>
                           );
                         })}
                         <Button

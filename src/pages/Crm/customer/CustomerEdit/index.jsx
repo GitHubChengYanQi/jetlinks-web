@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import Form from '@/components/Form';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import style from './index.module.scss';
+import Title from '@/components/Title';
 
 const {FormItem} = Form;
 
@@ -38,6 +39,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 const PhoneRowStyleLayout = styled(props => <div {...props} />)`
   width: 61%;
   display: inline-block;
+
   .ant-btn {
   }
 
@@ -54,7 +56,7 @@ const AdressRowStyleLayout = styled(props => <div {...props} />)`
   .ant-form-item {
     display: inline-flex;
     //margin-right: 16px;
-    width: 93%;
+    width: 100%;
   }
 `;
 
@@ -191,74 +193,81 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <RowStyleLayout key={index}>
-                              <div>
-                                <FormItem
-                                  label="联系人姓名"
-                                  name={`contactsParams.${index}.contactsName`}
-                                  component={SysField.ContactsName}
-                                />
-                                <FormItem
-                                  label="职务"
-                                  name={`contactsParams.${index}.companyRole`}
-                                  component={SysField.CompanyRoleId}
+                            <ProCard
+                              headStyle={{borderLeft: 'none', padding: '8px 16px'}}
+                              title={<Title title="联系人明细" level={6} />}
+                              headerBordered
+                              extra={
+                                <Button
+                                  type="link"
+                                  style={{float: 'right',display: state.value.length === 1 && 'none'}}
+                                  icon={<DeleteOutlined />}
+                                  onClick={() => {
+                                    onRemove(index);
+                                  }}
+                                  danger
+                                />}
+                              key={index}>
+                              <RowStyleLayout key={index}>
+                                <div>
+                                  <FormItem
+                                    label="联系人姓名"
+                                    name={`contactsParams.${index}.contactsName`}
+                                    component={SysField.ContactsName}
+                                  />
+                                  <FormItem
+                                    label="职务"
+                                    name={`contactsParams.${index}.companyRole`}
+                                    component={SysField.CompanyRoleId}
 
-                                />
-                                <div style={{float: 'right'}}>
-                                  <Button
-                                    type="link"
-                                    style={{display: state.value.length === 1 && 'none'}}
-                                    title="删除联系人"
-                                    danger
-                                    icon={<DeleteOutlined />}
-                                    onClick={() => onRemove(index)} />
-                                </div>
-                                {/* <ProCard style={{marginTop: 8}} headerBordered> */}
-                                <div style={{width: '88%', display: 'inline-block'}}>
-                                  <FieldList
-                                    name={`contactsParams.${index}.phoneParams`}
-                                    initialValue={[
-                                      {phoneNumber: ''},
-                                    ]}
-                                  >
-                                    {({state, mutators}) => {
-                                      const onAdd = () => mutators.push();
-                                      return (
-                                        <div>
-                                          {state.value.map((item, indexs) => {
-                                            const onRemove = index => mutators.remove(index);
-                                            return (
-                                              <PhoneRowStyleLayout key={indexs}>
-                                                <FormItem
-                                                  label="联系人电话"
-                                                  name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
-                                                  component={SysField.PhoneNumber}
-                                                />
-                                                <Button
-                                                  type="link"
-                                                  title="删除电话"
-                                                  style={{display: state.value.length === 1 && 'none'}}
-                                                  icon={<DeleteOutlined />}
-                                                  danger
-                                                  onClick={() => onRemove(indexs)} />
-                                              </PhoneRowStyleLayout>
-                                            );
-                                          })}
-                                          <div style={{display: 'inline-block', height: 30}}>
-                                            <Button
-                                              type="dashed"
-                                              title='增加电话'
-                                              icon={<PlusOutlined />}
-                                              onClick={onAdd} />
+                                  />
+                                  {/* <ProCard style={{marginTop: 8}} headerBordered> */}
+                                  <div style={{width: '88%', display: 'inline-block'}}>
+                                    <FieldList
+                                      name={`contactsParams.${index}.phoneParams`}
+                                      initialValue={[
+                                        {phoneNumber: ''},
+                                      ]}
+                                    >
+                                      {({state, mutators}) => {
+                                        const onAdd = () => mutators.push();
+                                        return (
+                                          <div>
+                                            {state.value.map((item, indexs) => {
+                                              const onRemove = index => mutators.remove(index);
+                                              return (
+                                                <PhoneRowStyleLayout key={indexs}>
+                                                  <FormItem
+                                                    label="联系人电话"
+                                                    name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
+                                                    component={SysField.PhoneNumber}
+                                                  />
+                                                  <Button
+                                                    type="link"
+                                                    title="删除电话"
+                                                    style={{display: state.value.length === 1 && 'none'}}
+                                                    icon={<DeleteOutlined />}
+                                                    danger
+                                                    onClick={() => onRemove(indexs)} />
+                                                </PhoneRowStyleLayout>
+                                              );
+                                            })}
+                                            <div style={{display: 'inline-block', height: 30}}>
+                                              <Button
+                                                type="dashed"
+                                                title="增加电话"
+                                                icon={<PlusOutlined />}
+                                                onClick={onAdd} />
+                                            </div>
                                           </div>
-                                        </div>
-                                      );
-                                    }}
-                                  </FieldList>
+                                        );
+                                      }}
+                                    </FieldList>
+                                  </div>
                                 </div>
-                              </div>
-                              <Divider />
-                            </RowStyleLayout>
+                                <Divider />
+                              </RowStyleLayout>
+                            </ProCard>
                           );
                         })}
                         <Button
@@ -286,7 +295,21 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <div key={index}>
+                            <ProCard
+                              headStyle={{borderLeft: 'none', padding: '8px 16px'}}
+                              title={<Title title="地址明细" level={6} />}
+                              headerBordered
+                              extra={
+                                <Button
+                                  type="link"
+                                  style={{float: 'right',display: state.value.length === 1 && 'none'}}
+                                  icon={<DeleteOutlined />}
+                                  onClick={() => {
+                                    onRemove(index);
+                                  }}
+                                  danger
+                                />}
+                              key={index}>
                               <FormItem
                                 label="省市区地址"
                                 name={`adressParams.${index}.region`}
@@ -298,17 +321,9 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                   name={`adressParams.${index}.map`}
                                   component={SysField.Map}
                                 />
-                                <Button
-                                  type="link" danger
-                                  title="删除地址"
-                                  style={{display: state.value.length === 1 && 'none'}}
-                                  icon={<DeleteOutlined />}
-                                  onClick={() => {
-                                    onRemove(index);
-                                  }} />
                               </AdressRowStyleLayout>
                               <Divider />
-                            </div>
+                            </ProCard>
                           );
                         })}
                         <Button
