@@ -14,7 +14,7 @@ import {CompetitorQuoteRouter} from '@/pages/Crm/competitorQuote/competitorQuote
 import {DataRouter} from '@/pages/Crm/data/dataRouter';
 import {SpeechcraftRouter} from '@/pages/Crm/speechcraft/speechcraftRouter';
 import {OutstockApplyRouter} from '@/pages/Erp/outstockApply/outstockApplyRouter';
-import {BusinessTrackRouter} from '@/pages/Crm/track/businessTrackRouter';
+import {BusinessTrackRouter} from '@/pages/Crm/Track/businessTrackRouter';
 
 
 const CrmRouterConfig = [

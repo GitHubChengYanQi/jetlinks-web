@@ -20,7 +20,7 @@ import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
-import Conent from '@/pages/Crm/track/components/Conent';
+import Conent from '@/pages/Crm/Track/components/Conent';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
