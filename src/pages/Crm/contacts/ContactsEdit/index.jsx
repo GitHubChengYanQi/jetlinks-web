@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useRef, useState} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import {Button, Col, Divider, Input, Row, Steps} from 'antd';
 
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
@@ -16,6 +16,7 @@ import * as SysField from '@/pages/Crm/contacts/ContactsField';
 import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
 import Form from '@/components/Form';
 import {CustomerId, SelectCustomers} from '@/pages/Crm/contacts/ContactsField';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 
 const {FormItem} = Form;
 
@@ -37,7 +38,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-const ContactsEdit = ({...props}) => {
+const ContactsEdit = ({...props}, ref) => {
 
   const {customerId} = props;
   const formRef = useRef(null);
@@ -48,11 +49,15 @@ const ContactsEdit = ({...props}) => {
     }
     return 500;
   };
+  useImperativeHandle(ref, () => ({
+    formRef,
+  }));
   return (
     <>
-      <div style={{height: height()}}>
+      <div style={{height: height(), padding: '0px 20px'}}>
         <Form
           {...props}
+          NoButton={false}
           value={result}
           ref={formRef}
           api={ApiConfig}
@@ -67,7 +72,7 @@ const ContactsEdit = ({...props}) => {
           <Row gutter={24}>
             <Col span={12}>
               <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
-                <ProCard style={{marginTop: 8}} title={<Title title="联系人信息" level={4} />} headerBordered>
+                <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="联系人信息" level={4} />} headerBordered>
                   <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName} required />
                   <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} required />
                   {customerId ?
@@ -87,7 +92,7 @@ const ContactsEdit = ({...props}) => {
             </Col>
             <Col span={12}>
               <div style={{height: height(), overflow: 'auto'}}>
-                <ProCard style={{marginTop: 8}} title={<Title title="联系人电话" level={4} />} headerBordered>
+                <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="联系人电话" level={4} />} headerBordered>
                   <FieldList
                     name="phoneParams"
                     initialValue={[
@@ -110,15 +115,22 @@ const ContactsEdit = ({...props}) => {
                                   />
                                   <Button
                                     type="link" style={{float: 'right'}}
+                                    icon={<DeleteOutlined />}
+                                    danger
                                     onClick={() => {
                                       onRemove(index);
-                                    }}>删除电话</Button>
+                                    }} />
                                 </RowStyleLayout>
                                 <Divider dashed style={{margin: 0}} />
                               </div>
                             );
                           })}
-                          <Button type="link" style={{float: 'right'}} onClick={onAdd}>增加电话号码</Button>
+                          {/*<Button type="link" style={{float: 'right'}} onClick={onAdd}>增加电话号码</Button>*/}
+                          <Button
+                            type="dashed"
+                            icon={<PlusOutlined />}
+                            style={{width: '100%'}}
+                            onClick={onAdd}>增加电话</Button>
                         </div>
                       );
                     }}
@@ -133,4 +145,4 @@ const ContactsEdit = ({...props}) => {
   );
 };
 
-export default ContactsEdit;
+export default forwardRef(ContactsEdit);
