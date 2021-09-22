@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Divider, Typography, List, Input} from 'antd';
+import {Divider, Typography, List, Input, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import {speechcraftList} from '@/pages/Crm/speechcraft/speechcraftUrl';
 
 const SpeechcraftSelect = ({...props}) => {
 
-  const {data: speechcraft, run} = useRequest(speechcraftList);
+  const {loading,data: speechcraft, run} = useRequest(speechcraftList);
 
   const [value, setValue] = useState();
 
@@ -21,6 +21,14 @@ const SpeechcraftSelect = ({...props}) => {
           style={{width: 500}}
           enterButton
           placeholder="输入关键字搜索"
+          onChange={async (value)=>{
+            setValue(value.target.value);
+            await run({
+              data: {
+                speechcraftKey: value.target.value
+              }
+            });
+          }}
           onSearch={async (value) => {
             setValue(value);
             await run({
@@ -36,6 +44,9 @@ const SpeechcraftSelect = ({...props}) => {
         bordered
         dataSource={data}
         renderItem={item => {
+          if (loading){
+            return  <div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>;
+          }
           return (
             <List.Item>
               <Typography.Text mark>[标题:{item.items.speechcraftTitle}]</Typography.Text> {item.items.speechcraftDetails}

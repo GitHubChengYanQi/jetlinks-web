@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Divider, Layout, Tree} from 'antd';
+import {Divider, Layout, Spin, Tree} from 'antd';
 import BusinessTable from '@/pages/Crm/business/components/BusinessTable';
 import styles from '@/pages/Crm/business/BusinessList/index.module.scss';
 import {useRequest} from '@/util/Request';
@@ -44,6 +44,9 @@ const BusinessList = () => {
   const [statement, setStatement] = useState();
 
   const Left = () => {
+    if (loading && log){
+      return (<div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>);
+    }
     return (
       <div>
         <Tree

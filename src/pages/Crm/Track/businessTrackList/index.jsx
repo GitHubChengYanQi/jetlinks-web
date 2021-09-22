@@ -33,9 +33,8 @@ const BusinessTrackList = () => {
   const ref = useRef(null);
 
   const refTrack = useRef(null);
-
+  const submitRef = useRef(null);
   const refContent = useRef(null);
-
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -149,7 +148,24 @@ const BusinessTrackList = () => {
       <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
         refTrack.current.close();
         tableRef.current.submit();
-      }} track={null} />
+      }} track={null}
+      compoentRef={submitRef}
+      footer={
+        <>
+          <Button type="primary" onClick={() => {
+            submitRef.current.formRef.current.submit();
+          }}>
+             保存
+          </Button>
+          <Button onClick={() => {
+            ref.current.close();
+          }}>
+             取消
+          </Button>
+        </>}
+
+
+      />
 
       <Modal component={Conent} ref={refContent} onSuccess={() => {
         tableRef.current.submit();

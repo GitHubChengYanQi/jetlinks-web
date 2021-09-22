@@ -70,7 +70,7 @@ const CustomerDetail = () => {
               refTrack.current.open(false);
             }} icon={<EditOutlined/>}>添加跟进</Button>
 
-          <Modal width={1400} title="跟进"
+          <Modal width={1200} title="跟进"
             ref={refTrack}
             compoentRef={submitRef}
             footer={

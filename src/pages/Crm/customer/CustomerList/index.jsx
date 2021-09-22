@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
-import {Divider, Tree} from 'antd';
+import {Divider, Spin, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
 import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 
 const CustomerList = () => {
@@ -28,6 +29,9 @@ const CustomerList = () => {
 
 
   const Left = () => {
+    if (loading){
+      return (<div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>);
+    }
     return (
       <>
         <Tree

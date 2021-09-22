@@ -29,14 +29,16 @@ const PlanEdit = ({...props}) => {
   const formRef = useRef();
 
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="salesProcessId"
-    >
-      <FormItem name="plans" component={SysField.SalesProcessPlanId} />
-    </Form>
+    <div style={{padding:20}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="salesProcessId"
+      >
+        <FormItem name="plans" component={SysField.SalesProcessPlanId} />
+      </Form>
+    </div>
   );
 };
 

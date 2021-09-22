@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
-import {Divider, Tree} from 'antd';
+import {Divider, Spin, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
@@ -11,7 +11,7 @@ import {dataClassificationSelect} from '@/pages/Crm/data/dataUrl';
 
 const DataList = () => {
 
-  const {data,run} = useRequest({url: '/dataClassification/list', method: 'POST', rowKey: 'dataClassificationId'});
+  const {loading,data,run} = useRequest({url: '/dataClassification/list', method: 'POST', rowKey: 'dataClassificationId'});
 
   const dataClassification = data ? data.map((values) => {
     return {
@@ -28,6 +28,9 @@ const DataList = () => {
 
 
   const Left = () => {
+    if (loading){
+      return (<div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>);
+    }
     return (
       <>
         <div>

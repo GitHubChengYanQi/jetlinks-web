@@ -33,12 +33,14 @@ const AddContractEdit = ({...props}) => {
 
   const {value, customerId, ...other} = props;
 
+  const [customerIds,setCustomerIds] = useState();
+
 
   const [result, setResult] = useState(value);
 
   const content = () => {
     return (
-      <div style={{padding:20}}>
+      <div style={{padding:20,maxWidth:1200}}>
         <Form
           {...props}
           value={result ? result.contractId : false}
@@ -206,6 +208,7 @@ const AddContractEdit = ({...props}) => {
                   placeholder="请选择甲方客户"
                   val={value ? value.partAName : null}
                   customers={async (customer) => {
+                    setCustomerIds(customer);
                     if (customer) {
                       await AcontactsRun({
                         data: {
@@ -227,6 +230,7 @@ const AddContractEdit = ({...props}) => {
                 name="partyAContactsId"
                 component={SysField.Contacts}
                 placeholder="甲方联系人"
+                customerId={customerIds}
                 val={value ? value.partyAContactsId : null}
                 customers={Acontacts || null}
                 contact={async (contacts) => {

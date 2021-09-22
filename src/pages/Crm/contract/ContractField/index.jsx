@@ -6,8 +6,8 @@
  */
 
 
-import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntSelect} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Input, InputNumber, Select as AntSelect} from 'antd';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
@@ -18,9 +18,12 @@ import ItemsList from '@/pages/Erp/items/ItemsList';
 import ErpPackageList from '@/pages/Erp/package/packageList';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
+import {PlusOutlined} from '@ant-design/icons';
+import Modal from '@/components/Modal';
+import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 
 export const CustomerId = (props) => {
-  return (<Select width="100%" disabled api={apiUrl.CustomerNameListSelect} {...props} />);
+  return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
 };
 
 export const Customer = (props) => {
@@ -36,14 +39,18 @@ export const Customer = (props) => {
 };
 
 export const Contacts = (props) => {
-  const {customers, contact, onChange} = props;
 
+  const ref = useRef(null);
+
+  const {customers,customerIds, contact, onChange} = props;
+  
   const data = customers ? customers.map((value, index) => {
     return {
       label: value.contactsName,
       value: value.contactsId,
     };
   }) : [];
+
 
   useEffect(() => {
     props.onChange(data.length > 0 && data[0].value);
@@ -52,14 +59,20 @@ export const Contacts = (props) => {
 
 
   return (<>
-    <AntSelect options={data}  {...props} onChange={(value) => {
+    <AntSelect style={{display:'inline-block',width:200}} options={data}  {...props} onChange={(value) => {
       onChange(value);
       contact ? contact(value) : null;
     }} />
+    <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
+      ref.current.open(false);
+    }} />
+    <Modal component={ContactsEdit} customerId={customerIds || null} ref={ref} />
   </>);
 };
 export const Phone = (props) => {
   const {contacts} = props;
+
+  const ref = useRef(null);
 
   const data = contacts ? contacts.map((value) => {
     return {
@@ -73,11 +86,16 @@ export const Phone = (props) => {
   }, [contacts || null]);
 
   return (<>
-    <AntSelect options={data} {...props} />
+    <AntSelect style={{display:'inline-block',width:200}} options={data} {...props} />
+    <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
+      ref.current.open(false);
+    }} />
   </>);
 };
 export const Adress = (props) => {
   const {customers} = props;
+
+  const ref = useRef(null);
 
   const data = customers ? customers.map((value) => {
     return {
@@ -89,7 +107,10 @@ export const Adress = (props) => {
     props.onChange(data.length > 0 && data[0].value);
   }, [customers || null]);
   return (<>
-    <AntSelect options={data} {...props} />
+    <AntSelect style={{display:'inline-block',width:200}} options={data} {...props} />
+    <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
+      ref.current.open(false);
+    }} />
   </>);
 };
 
@@ -122,7 +143,7 @@ export const CustomerNameListSelect = (props) => {
 export const Template = (props) => {
 
   return (<>
-    <Select width="100%" api={apiUrl.templateSelect} {...props} />
+    <Select api={apiUrl.templateSelect} {...props} />
   </>);
 };
 
