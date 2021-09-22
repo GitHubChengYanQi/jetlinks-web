@@ -168,7 +168,7 @@ const ContactsTable = (props) => {
 
         }}/>
         <Column />
-        <Column title="操作" fixed='right' width={choose ? 200 : 100} align="right" render={(value, record) => {
+        <Column title="操作" fixed='right' width={choose ? 200 : 200} align="right" render={(value, record) => {
           return (
             <>
               {choose ? <CheckButton onClick={() => {
@@ -178,7 +178,7 @@ const ContactsTable = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
-              <Button danger>离职</Button>
+              <Button type='link' danger >离职</Button>
             </>
           );
         }} />
@@ -202,7 +202,6 @@ const ContactsTable = (props) => {
              取消
             </Button>
           </>}
-
       />
     </>
   );

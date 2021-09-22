@@ -33,6 +33,7 @@ const ContactsList = (props) => {
   const {customerId, choose} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const submitRef = useRef(null);
 
 
   const searchForm = () => {
@@ -54,8 +55,8 @@ const ContactsList = (props) => {
       <Table
         bordered={false}
         formActions={formActionsPublic}
-        bodyStyle={{padding:0}}
-        headStyle={{display:'none'}}
+        bodyStyle={{padding: 0}}
+        headStyle={{display: 'none'}}
         api={contactsList}
         rowKey="contactsId"
         ref={tableRef}
@@ -106,14 +107,35 @@ const ContactsList = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
+              <Button type='link' danger >离职</Button>
             </>
           );
         }} width={300} />
       </Table>
-      <Modal width={1400} title="编辑" component={ContactsEdit} customerId={customerId} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Modal
+        width={1000}
+        title="联系人"
+        component={ContactsEdit}
+        customerId={customerId}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref}
+        compoentRef={submitRef}
+        footer={
+          <>
+            <Button type="primary" onClick={() => {
+              submitRef.current.formRef.current.submit();
+            }}>
+              保存
+            </Button>
+            <Button onClick={() => {
+              ref.current.close();
+            }}>
+              取消
+            </Button>
+          </>}
+      />
     </>
   );
 };

@@ -11,9 +11,10 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../phoneUrl';
+import {contacts} from '../phoneUrl';
 
 export const ContactsId = (props) =>{
-  return (<Input  {...props}/>);
+  return (<Select api={apiUrl.contacts} disabled {...props}/>);
 };
 export const PhoneNumber = (props) =>{
   return (<Input {...props}/>);

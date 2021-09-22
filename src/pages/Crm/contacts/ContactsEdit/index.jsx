@@ -66,7 +66,7 @@ const ContactsEdit = ({...props}, ref) => {
             if (data.data !== '') {
               setResult(data.data.contactsId);
             }
-            props.onSuccess();
+            props.onSuccess(data && data.data && data.data.contactsId);
           }}
         >
           <Row gutter={24}>

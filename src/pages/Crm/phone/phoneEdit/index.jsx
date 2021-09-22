@@ -25,15 +25,17 @@ const PhoneEdit = ({...props}) => {
   const formRef = useRef();
 
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="phoneId"
-    >
-      <FormItem hidden name="contactsId" component={SysField.ContactsId} value={contactsId} required/>
-      <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} required/>
-    </Form>
+    <div style={{padding: 24}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="phoneId"
+      >
+        <FormItem label="联系人" name="contactsId" component={SysField.ContactsId} value={contactsId} required />
+        <FormItem label="电话号码" name="phoneNumber" component={SysField.PhoneNumber} required />
+      </Form>
+    </div>
   );
 };
 

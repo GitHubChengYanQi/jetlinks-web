@@ -34,4 +34,8 @@ export const phoneList = {
   method: 'POST',
   rowKey:'phoneId'
 };
+export const contacts = {
+  url: '/contacts/listSelect',
+  method: 'POST',
+};
 
