@@ -40,6 +40,8 @@ const ContactsTable = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const submitRef = useRef(null);
+
   const actions = () => {
     return (
       <>
@@ -183,10 +185,27 @@ const ContactsTable = (props) => {
           );
         }} />
       </Table>
-      <Modal width={1000} title="联系人" component={ContactsEdit}  onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref}/>
+      <Modal width={1000} title="联系人" component={ContactsEdit}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref}
+        compoentRef={submitRef}
+        footer={
+          <>
+            <Button type="primary" onClick={() => {
+              submitRef.current.formRef.current.submit();
+            }}>
+             保存
+            </Button>
+            <Button onClick={() => {
+              ref.current.close();
+            }}>
+             取消
+            </Button>
+          </>}
+
+      />
     </>
   );
 };
