@@ -81,7 +81,7 @@ export const TimeListSelect2 = (props) => {
 };
 // 项目金额
 export const OpportunityAmountListSelect3 = (props) => {
-  return (<InputNumber min={0} defaultValue={10000} step={10000}  {...props} />);
+  return (<InputNumber min={0} defaultValue={10000} style={{width:200}} step={10000}  {...props} />);
 };
 // 销售流程
 export const SalesIdListSelect = (props) => {
