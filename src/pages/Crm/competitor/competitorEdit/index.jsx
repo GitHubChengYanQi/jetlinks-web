@@ -5,7 +5,7 @@
  * @Date 2021-09-07 09:50:09
  */
 
-import React, {useRef} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
 import {competitorDetail, competitorAdd, competitorEdit} from '../competitorUrl';
@@ -24,7 +24,7 @@ const ApiConfig = {
 
 const formActionsPublic = createFormActions();
 
-const CompetitorEdit = ({onChange,...props}) => {
+const CompetitorEdit = ({onChange,...props}, ref) => {
 
   const {value} = props;
   const {position} = props;
@@ -36,12 +36,17 @@ const CompetitorEdit = ({onChange,...props}) => {
     return 850;
   };
 
+  useImperativeHandle(ref, () => ({
+    formRef,
+  }));
+
   return (
     <div style={{height: height()}}>
       <Form
         {...props}
         value={value ? value.competitorId : false}
         ref={formRef}
+        NoButton={false}
         api={ApiConfig}
         formActions={formActionsPublic}
         onSuccess={(res) => {
@@ -101,4 +106,4 @@ const CompetitorEdit = ({onChange,...props}) => {
   );
 };
 
-export default CompetitorEdit;
+export default forwardRef(CompetitorEdit);

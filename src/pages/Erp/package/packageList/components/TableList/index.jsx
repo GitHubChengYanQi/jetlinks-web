@@ -41,7 +41,7 @@ const TableList = (props) => {
   return (
     <>
       <div>
-        <div style={{margin:16,backgroundColor:'white',padding:16}}>{productName || '套餐'}明细<Button style={{visibility:'hidden'}}>123</Button></div>
+        <div style={{margin:16,backgroundColor:'white',padding:16}}>{productName || '套餐'}的产品明细<Button style={{visibility:'hidden'}}>123</Button></div>
         <Table
           api={erpPackageTableList}
           rowKey="id"
