@@ -114,7 +114,8 @@ const ContactsEdit = ({...props}, ref) => {
                                     component={SysField.PhoneNumber}
                                   />
                                   <Button
-                                    type="link" style={{float: 'right'}}
+                                    type="link"
+                                    style={{float: 'right',display: state.value.length === 1 && 'none'}}
                                     icon={<DeleteOutlined />}
                                     danger
                                     onClick={() => {
