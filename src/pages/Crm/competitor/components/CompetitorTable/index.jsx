@@ -46,6 +46,8 @@ const CompetitorTable = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const quoteRef = useRef(null);
+  const submitRef = useRef(null);
+
   const actions = () => {
     return (
       <>
@@ -195,7 +197,22 @@ const CompetitorTable = (props) => {
       <Modal width={1000} title="竞争对手" component={CompetitorEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} />
+      }} ref={ref}
+      compoentRef={submitRef}
+      footer={
+        <>
+          <Button type="primary" onClick={() => {
+            submitRef.current.formRef.current.submit();
+          }}>
+           保存
+          </Button>
+          <Button onClick={() => {
+            ref.current.close();
+          }}>
+           取消
+          </Button>
+        </>}
+      />
       <Modal width={1200} component={competitorTable} onSuccess={() => {
         tableRef.current.refresh();
         quoteRef.current.close();
