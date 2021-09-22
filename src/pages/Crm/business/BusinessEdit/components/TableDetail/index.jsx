@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {Button, message, Table as AntTable} from 'antd';
+import React, {useRef} from 'react';
+import {Button, Table as AntTable} from 'antd';
 import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/business/BusinessUrl";
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
@@ -7,15 +7,12 @@ import Drawer from "@/components/Drawer";
 import * as SysField from "@/pages/Crm/business/BusinessField";
 import Form from "@/components/Form";
 import Modal from '@/components/Modal';
-import {useRequest} from "@/util/Request";
 import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit";
 import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
 import ItemsList from "@/pages/Erp/items/ItemsList";
-import ErpPackageList from "@/pages/Erp/package/packageList";
-import {crmBusinessDetailedAdd} from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl";
-import Breadcrumb from '@/components/Breadcrumb';
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
+import {PlusOutlined} from '@ant-design/icons';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -41,9 +38,11 @@ const TableDetail = (props) => {
   return (
     <>
       <div style={{textAlign:'right'}}>
-        <Button key='1' style={{marginRight: 10}} onClick={()=>{
-          refAddOne.current.open(false);}}>
-          添加产品
+        <Button key='1' style={{marginRight: 10}}
+          icon={<PlusOutlined />}
+          onClick={()=>{
+            refAddOne.current.open(false);}}>
+            添加产品
         </Button>
         <Modal width={1600} title="选择" component={ItemsList}
           onSuccess={() => {
@@ -54,9 +53,12 @@ const TableDetail = (props) => {
           businessId={value}
           TcDisabled={false}
         />
-        <Button key='2'  onClick={()=>{
-          refAddAll.current.open(false);
-        }}>
+        <Button key='2'
+          style={{marginRight: 16}}
+          icon={<PlusOutlined />}
+          onClick={()=>{
+            refAddAll.current.open(false);
+          }}>
           添加产品套餐
         </Button>
         <Modal width={700} title="选择" component={ItemPackage}
