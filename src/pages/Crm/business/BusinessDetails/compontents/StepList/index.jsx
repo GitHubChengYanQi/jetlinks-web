@@ -82,7 +82,7 @@ const StepList = (props) => {
 
   const confirm = (name, values) => {
     AntModal.confirm({
-      title: 'Confirm',
+      title: '销售进度',
       centered: true,
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
@@ -98,7 +98,7 @@ const StepList = (props) => {
 
   const confirmOk = (name, percent) => {
     AntModal.confirm({
-      title: 'Confirm',
+      title: '销售进度',
       centered: true,
       icon: <ExclamationCircleOutlined />,
       content: `是否变更到${name}`,
