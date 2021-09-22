@@ -106,9 +106,6 @@ const ContactsList = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
-              <DelButton api={contactsDelete} value={record.contactsId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
             </>
           );
         }} width={300} />

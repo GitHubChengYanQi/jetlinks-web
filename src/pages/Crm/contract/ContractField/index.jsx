@@ -43,13 +43,14 @@ export const Contacts = (props) => {
   const ref = useRef(null);
 
   const {customers,customerIds, contact, onChange} = props;
-  
+
   const data = customers ? customers.map((value, index) => {
     return {
       label: value.contactsName,
       value: value.contactsId,
     };
   }) : [];
+
 
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export const Contacts = (props) => {
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
-    <Modal component={ContactsEdit} customerId={customerIds || null} ref={ref} />
+    <Modal component={ContactsEdit} customerId={customers && customers.length > 0 && customers[0].customerId} ref={ref} width={1000} />
   </>);
 };
 export const Phone = (props) => {
@@ -87,9 +88,6 @@ export const Phone = (props) => {
 
   return (<>
     <AntSelect style={{display:'inline-block',width:200}} options={data} {...props} />
-    <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
-      ref.current.open(false);
-    }} />
   </>);
 };
 export const Adress = (props) => {

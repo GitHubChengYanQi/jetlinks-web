@@ -205,6 +205,7 @@ const AddContractEdit = ({...props}) => {
                   label="甲方"
                   name="partyA"
                   component={SysField.Customer}
+                  customerId={customerIds || null}
                   placeholder="请选择甲方客户"
                   val={value ? value.partAName : null}
                   customers={async (customer) => {
@@ -230,7 +231,6 @@ const AddContractEdit = ({...props}) => {
                 name="partyAContactsId"
                 component={SysField.Contacts}
                 placeholder="甲方联系人"
-                customerId={customerIds}
                 val={value ? value.partyAContactsId : null}
                 customers={Acontacts || null}
                 contact={async (contacts) => {

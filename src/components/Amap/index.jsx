@@ -3,6 +3,7 @@ import {Map} from 'react-amap';
 import {config} from 'ice';
 import AmapSearch from '@/components/Amap/search';
 import {Button, Drawer} from 'antd';
+import Icon from '@/components/Icon';
 
 const {AMAP_KEY, AMAP_VERSION} = config;
 
@@ -30,7 +31,7 @@ const Amap = ({title, value, onClose, onChange}) => {
       </div>}
       <Button type="default" onClick={() => {
         setVisible(true);
-      }}>{title || '定位'}</Button>
+      }}><Icon type='dingwei' />{title || '定位'}</Button>
       <Drawer
         visible={visible}
         onClose={() => {

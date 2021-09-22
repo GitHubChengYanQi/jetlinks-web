@@ -164,7 +164,7 @@ export const OriginId = (props) => {
 };
 
 export const UserName = (props) => {
-  return (<Select api={apiUrl.UserIdSelect}  {...props} />);
+  return (<Select width={120} api={apiUrl.UserIdSelect}  {...props} />);
 };
 
 export const Emall = (props) => {

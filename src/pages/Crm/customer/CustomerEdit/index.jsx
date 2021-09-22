@@ -88,7 +88,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
   };
 
   return (
-    <div className={style.from} style={{height: height(), padding: '0 20px'}}>
+    <div className={style.from} style={{height: height(), padding: '0 24px'}}>
       <Form
         {...props}
         labelAlign="left"
@@ -108,22 +108,22 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         <Row gutter={24} style={{height: '100%'}}>
           <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 8}} className="h2Card" title="基本信息" headerBordered>
-                <MegaLayout labelWidth={120}>
+              <ProCard style={{marginTop: 24}} className="h2Card" title="基本信息" headerBordered>
+                <MegaLayout labelWidth={100}>
                   <FormItem
                     label="客户名称" name="customerName" component={SysField.CustomerName}
                     method={props.value}
                     onSuccess={(customer) => {
                       history.push(`/CRM/customer/${customer && customer.customerId}`);
                     }} required />
-
                 </MegaLayout>
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="客户状态" name="status" component={SysField.Status} />
                   <FormItem label="客户分类" name="classification" component={SysField.Classification} />
                 </MegaLayout>
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="负责人" name="userId" component={SysField.UserName} />
+                  <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
                 </MegaLayout>
 
 
@@ -136,41 +136,39 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
               >
 
 
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
                   <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="成立时间" name="setup" component={SysField.Setup} />
-                  <FormItem label="统一社会信用代码" name="utscc" component={SysField.Utscc} />
+                  <FormItem label='社会信用代码'  name="utscc" component={SysField.Utscc} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="营业期限" name="businessTerm" component={SysField.BusinessTerm} />
                   <FormItem label="注册地址" name="signIn" component={SysField.SignIn} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={120} grid>
-                  <FormItem label="网址" name="url" component={SysField.Url} />
-                  <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
-                </MegaLayout>
-
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
                   <FormItem label="邮箱" name="emall" component={SysField.Emall} />
                 </MegaLayout>
 
+                <MegaLayout labelWidth={100} grid>
+                  <FormItem label="网址" name="url" component={SysField.Url} />
+                </MegaLayout>
 
-                <MegaLayout labelWidth={120} grid>
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={120}>
+                <MegaLayout labelWidth={100}>
                   <FormItem label="简介" name="introduction" component={SysField.Introduction} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={120}>
+                <MegaLayout labelWidth={100}>
                   <FormItem label="备注" name="note" component={SysField.Note} />
                 </MegaLayout>
               </ProCard>
@@ -179,7 +177,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
           </Col>
           <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 8}} title="联系人信息" className="h2Card" headerBordered>
+              <ProCard style={{marginTop: 24}} title="联系人信息" className="h2Card" headerBordered>
                 <FieldList
                   name="contactsParams"
                   initialValue={[
@@ -245,7 +243,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                   <Button
                                                     type="link"
                                                     title="删除电话"
-                                                    style={{display: state.value.length === 1 && 'none'}}
+                                                    style={{visibility: state.value.length === 1 && 'hidden'}}
                                                     icon={<DeleteOutlined />}
                                                     danger
                                                     onClick={() => onRemove(indexs)} />
@@ -265,7 +263,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     </FieldList>
                                   </div>
                                 </div>
-                                <Divider />
+                                <Divider style={{margin:'8px 0'}} />
                               </RowStyleLayout>
                             </ProCard>
                           );
@@ -322,7 +320,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                   component={SysField.Map}
                                 />
                               </AdressRowStyleLayout>
-                              <Divider />
+                              <Divider style={{margin: '8px 0'}} />
                             </ProCard>
                           );
                         })}

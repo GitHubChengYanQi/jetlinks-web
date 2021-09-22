@@ -15,14 +15,14 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Reset, Submit} from '@formily/antd';
-import {SearchOutlined,InfoCircleOutlined} from '@ant-design/icons';
+import {SearchOutlined, InfoCircleOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import {useHistory} from 'ice';
 import competitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
-import {competitorDelete, competitorList} from '../../competitorUrl';
+import {competitorDelete, competitorList, deleteByIds} from '../../competitorUrl';
 import CompetitorEdit from '../../competitorEdit';
 import * as SysField from '../../competitorField';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
@@ -34,7 +34,7 @@ const formActionsPublic = createFormActions();
 
 const CompetitorTable = (props) => {
 
-  const {competitionLevel, businessId,...other} = props;
+  const {competitionLevel, businessId, ...other} = props;
 
   const history = useHistory();
   const {run: getList} = useRequest({
@@ -106,7 +106,7 @@ const CompetitorTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
@@ -131,7 +131,7 @@ const CompetitorTable = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<DelButton api={{
-      ...customerBatchDelete
+      ...deleteByIds
     }} onSuccess={() => {
       tableRef.current.refresh();
     }} value={ids}>批量删除</DelButton>);
@@ -156,9 +156,9 @@ const CompetitorTable = (props) => {
         }}
         {...other}
       >
-        <Column width={150} fiexd  title="基础信息" dataIndex="name" render={(value, record) => {
+        <Column width={150} fiexd title="基础信息" dataIndex="name" render={(value, record) => {
           return (
-            <div style={{cursor:'pointer'}} onClick={()=>{
+            <div style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/competitor/${record.competitorId}`);
             }}><strong>{value}</strong>
               <div><em style={{}}>{record.phone || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.email || '--'}</div>

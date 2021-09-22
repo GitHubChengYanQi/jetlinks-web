@@ -22,13 +22,13 @@ const AdressMap = (props) => {
           hidden
           value={location && location.location && location.length > 0 && location[1]}
         />
-        <Amap title="客户地址定位" onChange={(value) => {
+        <Amap onChange={(value) => {
           setLocation(value);
           props.onChange({address:value.address,map:value.location});
         }} />
       </div>
     </>
   );
-}
+};
 
 export default AdressMap;

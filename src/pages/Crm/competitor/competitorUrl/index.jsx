@@ -34,6 +34,11 @@ export const competitorList = {
   method: 'POST',
   rowKey:'competitorId'
 };
+export const deleteByIds = {
+  url: '/competitor/deleteByIds',
+  method: 'POST',
+  rowKey:'competitorId'
+};
 
 export const commonArea = {
   url: '/commonArea/treeView',
