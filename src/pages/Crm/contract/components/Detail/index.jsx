@@ -4,20 +4,17 @@ import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {EditOutlined} from '@ant-design/icons';
 import Modal from '@/components/Modal';
-import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
-import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
-import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 import styles from './index.module.scss';
 import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
 import Desc from '@/pages/Crm/contract/components/Desc';
 import parse from 'html-react-parser';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
+import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
 
 const {TabPane} = Tabs;
 
@@ -133,8 +130,15 @@ const Detail = () => {
 
             <div
               className={styles.main}>
-              <Card title="合同内容">
-                {parse(data.content)}
+              <Card>
+                <Tabs defaultActiveKey="1">
+                  <TabPane tab="合同内容" key="1">
+                    {parse(data.content)}
+                  </TabPane>
+                  <TabPane tab="产品明细" key="2">
+                    <TableDetail value={data.contractId} />
+                  </TabPane>
+                </Tabs>
               </Card>
             </div>
           </Col>

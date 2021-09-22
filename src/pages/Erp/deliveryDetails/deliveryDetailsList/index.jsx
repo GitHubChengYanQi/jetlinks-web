@@ -19,6 +19,7 @@ import {useParams} from 'ice';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import Modal2 from '@/components/Modal';
+import {BrandId} from '../deliveryDetailsField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -77,10 +78,7 @@ const DeliveryDetailsList = () => {
     return (
       <>
         <FormItem label="产品" name="itemId" component={SysField.ItemId} />
-        <FormItem label="客户" name="customerId" component={SysField.CustomerId} />
-        <FormItem label="地址" name="adressId" component={SysField.AdressId} />
-        <FormItem label="联系人" name="contactsId" component={SysField.ContactsId} />
-        <FormItem label="电话" name="phoneId" component={SysField.PhoneId} />
+        <FormItem label="品牌" name="brandId" component={SysField.BrandId} />
         <FormItem hidden value={params ? params.cid : null} name="deliveryId" component={SysField.DeliveryId} />
       </>
     );
@@ -107,29 +105,16 @@ const DeliveryDetailsList = () => {
             </>
           );
         }} />
+        <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.brandResult ? record.brandResult.name : value
+              }
+            </>
+          );
+        }} />
         <Column />
-        {/*<Column title="操作" fixed='right' align="right" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      {record.stage === 0 ?*/}
-        {/*        <>*/}
-        {/*          <Button*/}
-        {/*            style={{margin: '0 10px'}}*/}
-        {/*            onClick={() => {*/}
-        {/*              confirmOk(record);*/}
-        {/*            }}>*/}
-        {/*            <Icon type="icon-chuhuo" />发货</Button>*/}
-        {/*          <EditButton*/}
-        {/*            onClick={() => {*/}
-        {/*              ref.current.open(record);*/}
-        {/*            }} />*/}
-        {/*        </> : null}*/}
-              {/*<DelButton api={deliveryDetailsDelete} value={record.deliveryDetailsId} onSuccess={() => {*/}
-              {/*  tableRef.current.refresh();*/}
-              {/*}} />*/}
-          {/*  </>*/}
-          {/*);*/}
-        {/*}} width={300} />*/}
       </Table>
       <Modal2 width={800} title="编辑" component={DeliveryDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();

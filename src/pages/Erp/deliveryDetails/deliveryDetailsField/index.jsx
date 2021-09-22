@@ -91,6 +91,9 @@ export const Adress = (props) => {
 export const ItemId = (props) =>{
   return (<Select api={apiUrl.items} {...props}/>);
 };
+export const BrandId = (props) =>{
+  return (<Select api={apiUrl.brands} {...props}/>);
+};
 export const CustomerId = (props) =>{
   return (<Select api={apiUrl.customer} {...props}/>);
 };

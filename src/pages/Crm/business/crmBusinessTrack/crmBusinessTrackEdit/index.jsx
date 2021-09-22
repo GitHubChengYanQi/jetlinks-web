@@ -49,10 +49,10 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
   const [classNmb, setClassNmb] = useState(number);
 
   const height = () => {
-    if (window.document.body.clientHeight < 1088) {
+    if (window.document.body.clientHeight < 910) {
       return 'calc(100vh - 300px)';
     }
-    return 930;
+    return 810;
   };
 
   const returnFormItem = (classNmb, index) => {
@@ -95,7 +95,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
   };
 
   return (
-    <div className={style.from} style={{padding:'0 20px'}}>
+    <div className={style.from} style={{height:height(),padding:'0 20px'}}>
       <Form
         {...props}
         ref={formRef}

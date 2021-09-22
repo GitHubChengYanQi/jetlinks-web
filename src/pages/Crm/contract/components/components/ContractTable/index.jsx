@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, notification, Table as AntTable, Tag} from 'antd';
+import {Button, notification,Modal as AntModal, Table as AntTable, Tag} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -139,7 +139,7 @@ const ContractTable = (props) => {
   };
 
   function confirmOk(record) {
-    Modal.confirm({
+    AntModal.confirm({
       title: '审核',
       centered: true,
       icon: <ExclamationCircleOutlined />,
@@ -239,7 +239,7 @@ const ContractTable = (props) => {
           );
         }} width={200} />
       </Table>
-      <Modal width={1200} title="合同" component={AddContractEdit} onSuccess={() => {
+      <Modal width='auto' title="合同" component={AddContractEdit} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />

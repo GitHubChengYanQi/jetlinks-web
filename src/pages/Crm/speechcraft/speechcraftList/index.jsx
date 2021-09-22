@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Divider, Tree} from 'antd';
+import {Divider, Spin, Tree} from 'antd';
 import SpeechcraftTable from '@/pages/Crm/speechcraft/components/SpeechcraftTable';
 import SpeechcraftSelect from '@/pages/Crm/speechcraft/components/SpeechcraftSelect';
 import ListLayout from '@/layouts/ListLayout';
@@ -14,7 +14,7 @@ const SpeechcraftList = () => {
   const [type, setType] = useState();
 
 
-  const {data} = useRequest(speechcraftType);
+  const {loading,data} = useRequest(speechcraftType);
 
   const speechcraftTypes = data ? data.length > 0 && data.map((items, index) => {
     return {
@@ -25,6 +25,9 @@ const SpeechcraftList = () => {
 
 
   const Left = () => {
+    if (loading){
+      return (<div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>);
+    }
     return (
       <>
         <Tree
