@@ -30,8 +30,8 @@ const CrmBusinessDetailedEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="id"
     >
-      <FormItem style={{'display': 'none'}} name="contractId" component={SysField.BusinessId} required/>
-      <FormItem style={{'display': 'none'}} name="itemId" component={SysField.ItemId} required/>
+      <FormItem label="商机" disabled name="businessId" component={SysField.BusinessId} required/>
+      <FormItem label="产品" disabled name="itemId" component={SysField.ItemId} required/>
       <FormItem label="销售单价" name="salePrice" component={SysField.salePrice} required/>
       <FormItem label="数量" name="quantity" component={SysField.Quantity} required/>
     </Form>

@@ -6,22 +6,17 @@
  */
 
 import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button, Select} from 'antd';
+import {Input, Select} from 'antd';
 import * as apiUrl from '../packageTableUrl';
 
-// 套餐Id
-export const PackageId = (props) =>{
-  return (<Input {...props}/>);
+// 套餐
+export const PackageId = (props) => {
+  return (<Select api={apiUrl.erpPackageNameList} {...props} />);
 };
 
-// 套餐名称
-export const Package = (props) =>{
-  return (<Input {...props}/>);
-};
-
-// 产品id
-export const itemId = (props) =>{
-  return (<Input {...props}/>);
+// 产品名称
+export const ItemId = (props) => {
+  return (<Select api={apiUrl.ProductNameListSelect} {...props} />);
 };
 
 // 产品名称

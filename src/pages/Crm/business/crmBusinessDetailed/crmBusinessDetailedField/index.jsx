@@ -13,10 +13,11 @@ import Select from '@/components/Select';
 import * as apiUrl from '../crmBusinessDetailedUrl';
 
 export const BusinessId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select api={apiUrl.BusinessId} {...props} />);
 };
-export const ItemId = (props) =>{
-  return (<Input {...props}/>);
+// 产品名称
+export const ItemId = (props) => {
+  return (<Select api={apiUrl.ProductNameListSelect} {...props} />);
 };
 export const Quantity = (props) =>{
   return (<Input {...props}/>);

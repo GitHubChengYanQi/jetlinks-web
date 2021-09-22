@@ -35,3 +35,12 @@ export const crmBusinessDetailedList = {
   rowKey:'id'
 };
 
+export const BusinessId = {
+  url: '/crmBusiness/listSelect',
+  method: 'POST',
+};
+// 产品名称
+export const ProductNameListSelect = {
+  url: '/items/listSelect',
+  method: 'POST',
+};

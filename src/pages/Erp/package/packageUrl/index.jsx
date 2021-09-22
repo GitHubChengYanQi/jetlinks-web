@@ -41,6 +41,12 @@ export const erpPackageList = {
   rowKey:'packageId'
 };
 
+export const erpPackageNameList = {
+  url: '/erpPackage/listSelect',
+  method: 'POST',
+  rowKey:'packageId'
+};
+
 // 产品名称
 export const ProductNameListSelect = {
   url: '/items/listSelect',
