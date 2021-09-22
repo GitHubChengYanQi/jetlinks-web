@@ -76,15 +76,15 @@ const ItemPackage = (props) => {
               itemId: value.itemId,
               salePrice: 0,
               totalPrice: 0,
-              quantity: 0
+              quantity: 1
             }
           }) : await add({
             data: {
               businessId: props.businessId,
               itemId: value.itemId,
-              salePrice: 0,
-              totalPrice: 0,
-              quantity: 0
+              salePrice: value.salePrice,
+              totalPrice: value.totalPrice,
+              quantity: value.quantity
             }
           });
         });

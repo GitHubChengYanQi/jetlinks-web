@@ -109,7 +109,7 @@ const ItemsList = (props) => {
           itemIds: ids,
           salePrice: 0,
           totalPrice: 0,
-          quantity: 0
+          quantity: 1
         }} >批量选择</SelButton>}
 
         {props.contractId && <SelButton api={{
@@ -123,7 +123,7 @@ const ItemsList = (props) => {
           itemIds: ids,
           salePrice: 0,
           totalPrice: 0,
-          quantity: 0
+          quantity: 1
         }} >批量选择</SelButton>}
 
 
@@ -138,7 +138,7 @@ const ItemsList = (props) => {
           itemIds: ids,
           salePrice: 0,
           totalPrice: 0,
-          quantity: 0
+          quantity: 1
         }} >批量选择</SelButton>}
         <DelButton api={{
           ...batchDelete
@@ -273,7 +273,7 @@ const ItemsList = (props) => {
                       itemId: record.itemId,
                       salePrice: 0,
                       totalPrice: 0,
-                      quantity: 0
+                      quantity: 1
                     }
                   }
                 );
@@ -288,7 +288,7 @@ const ItemsList = (props) => {
                       itemId: record.itemId,
                       salePrice: 0,
                       totalPrice: 0,
-                      quantity: 0
+                      quantity: 1
                     }
                   }
                 );
@@ -302,7 +302,7 @@ const ItemsList = (props) => {
                       itemId: record.itemId,
                       salePrice: 0,
                       totalPrice: 0,
-                      quantity: 0
+                      quantity: 1
                     }
                   }
                 );

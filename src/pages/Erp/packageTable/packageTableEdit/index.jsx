@@ -6,11 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {erpPackageTableDetail, erpPackageTableAdd, erpPackageTableEdit} from '../packageTableUrl';
-import * as SysField from '../packageTableField';
-import {itemId, quantity} from "../packageTableField";
+import * as SysField from '@/pages/Erp/packageTable/packageTableField';
 
 const {FormItem} = Form;
 
@@ -31,10 +29,10 @@ const ErpPackageTableEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="id"
     >
-      <FormItem style={{'display': 'none'}} name="packageId" component={SysField.PackageId} required/>
-      <FormItem style={{'display': 'none'}} name="itemId" component={SysField.itemId} required/>
       <FormItem label="销售单价" name="salePrice" component={SysField.salePrice} required/>
       <FormItem label="数量" name="quantity" component={SysField.Quantity} required/>
+      <FormItem style={{'display': 'none'}} name="packageId" component={SysField.PackageId} required/>
+      <FormItem style={{'display': 'none'}} name="itemId" component={SysField.ItemId} required/>
     </Form>
   );
 };

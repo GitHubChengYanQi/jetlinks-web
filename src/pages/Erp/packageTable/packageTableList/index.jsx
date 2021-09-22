@@ -27,17 +27,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
   const ref = useRef();
   const tableRef1 = useRef(null);
   const refAddOne = useRef(null);
-  const [da,setDa] = useState(null);
   const [ids, setIds] = useState([]);
-
-  const refesh = (data, params) => {
-    console.log('data');
-    tableRef1.current.refresh();
-  };
-
-  const {data,run} = useRequest({url: '/erpPackageTable/list',method: 'POST'},{manual:true});
-
-
   const searchForm = () => {
     return (
       <>
@@ -101,7 +91,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
           );
         }} />
       </Table>
-      <Drawer width={800} title="编辑" component={ErpPackageTableEdit} onSuccess={() => {
+      <Drawer width={800} title="产品" component={ErpPackageTableEdit} onSuccess={() => {
         tableRef1.current.refresh();
         ref.current.close();
       }} ref={ref}/>

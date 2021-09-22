@@ -32,7 +32,6 @@ export const erpPackageTableDetail = {
 export const erpPackageTableList = {
   url: '/erpPackageTable/list',
   method: 'POST',
-  rowKey:'id'
 };
 
 // 产品名称
@@ -41,4 +40,8 @@ export const ProductNameListSelect = {
   method: 'POST',
 };
 
+export const erpPackageNameList = {
+  url: '/erpPackage/listSelect',
+  method: 'POST',
+};
 

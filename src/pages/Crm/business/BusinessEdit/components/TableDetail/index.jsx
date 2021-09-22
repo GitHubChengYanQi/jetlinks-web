@@ -107,7 +107,7 @@ const TableDetail = (props) => {
       <Drawer width={800} title="产品" component={CrmBusinessDetailedEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };
