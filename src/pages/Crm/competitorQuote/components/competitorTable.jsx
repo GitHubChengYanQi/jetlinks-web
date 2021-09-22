@@ -109,11 +109,11 @@ const CompetitorTable = ({...props}) => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={businessId ? false : <Breadcrumb />}
         api={competitorQuoteList}
         rowKey="quoteId"
         isModal={false}
-        searchForm={searchForm}
+        searchForm={businessId ? false : searchForm}
         SearchButton={Search()}
         layout={search}
         actions={actions()}

@@ -8,16 +8,11 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Button, Image, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {businessTrackDelete, businessTrackList} from '../businessTrackUrl';
-import BusinessTrackEdit from '../businessTrackEdit';
 import * as SysField from '../businessTrackField';
 import Modal from '@/components/Modal';
-import Conent from '@/pages/Crm/Track/components/Conent';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {EditOutlined, SearchOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
@@ -25,6 +20,7 @@ import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
+import Conent from '@/pages/Crm/Track/components/Conent';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
