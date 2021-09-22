@@ -11,6 +11,7 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../businessTrackUrl';
+import {CustomerId} from '../businessTrackUrl';
 
 export const Message = (props) =>{
   return (<Input {...props}/>);
@@ -65,4 +66,7 @@ export const ClassifyId = (props) =>{
 };
 export const TrackMessageId = (props) =>{
   return (<Input {...props}/>);
+};
+export const Customer = (props) =>{
+  return (<Select width={200} api={apiUrl.CustomerId} {...props}/>);
 };

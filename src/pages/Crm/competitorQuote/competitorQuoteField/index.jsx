@@ -16,7 +16,7 @@ import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import Modal from '@/components/Modal';
 
 export const CompetitorsQuote = (props) =>{
-  return (<InputNumber min={0} step={10000}  {...props}/>);
+  return (<InputNumber min={0} step={10000} max={1000000000}  {...props}/>);
 };
 
 export const Competitor = (props) => {

@@ -7,21 +7,25 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal as AntModal, notification, Space, Table as AntTable} from 'antd';
+import {Button, message, Modal as AntModal, notification, Space, Table as AntTable} from 'antd';
 import Modal from '@/components/Modal'
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {OutBound, outBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
-import OutstockApplyEdit from '../outstockApplyEdit';
-import * as SysField from '../outstockApplyField';
 import {useRequest} from '@/util/Request';
-import {outstock, outstockOrderDelete} from '@/pages/Erp/outstock/outstockOrder/outstockOrderUrl';
+import {outstockOrderDelete} from '@/pages/Erp/outstock/outstockOrder/outstockOrderUrl';
 import Message from '@/components/Message';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import ApplyDetailsList from '@/pages/Erp/outstockApply/applyDetails/applyDetailsList';
+import {useBoolean} from 'ahooks';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
+import OutstockApplyEdit from '../outstockApplyEdit';
+import * as SysField from '../outstockApplyField';
+import {OutBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -43,15 +47,58 @@ const OutstockApplyList = () => {
     );
   };
 
+  const [search, {toggle}] = useBoolean(false);
+
   const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserId} />
+          <FormItem mega-props={{span: 1}} placeholder="仓库" name="stockId" component={SysField.StoreHouse} />
+          <FormItem mega-props={{span: 1}} placeholder="客户" name="customerId" component={SysField.CustomerId} />
+        </>
+      );
+    };
+
+
+    return (
+      <div style={{maxWidth: 800}}>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+          columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="发货申请单号" name="outstockApplyId" component={SysField.ApplyState} />
+          {search ? formItem() : null}
+        </MegaLayout>
+
+      </div>
+    );
+  };
+
+
+  const Search = () => {
     return (
       <>
-        <FormItem label="申请状态" name="applyState" component={SysField.ApplyState} />
-        <FormItem label="品牌id" name="brandId" component={SysField.BrandId} />
-        <FormItem label="产品id" name="itemId" component={SysField.ItemId} />
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+              toggle();
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+            <MegaLayout inline>
+              {/*<FormItem hidden name="status" component={SysField.Name} />*/}
+              {/*<FormItem hidden name="classification" component={SysField.Name} />*/}
+              {/*<FormItem hidden name="customerLevelId" component={SysField.Name} />*/}
+            </MegaLayout>
+          </FormButtonGroup>
+        </MegaLayout>
       </>
     );
   };
+
+
+
 
   const {run} = useRequest(outstockApplyEdit, {
     manual: true, onSuccess: () => {
@@ -69,7 +116,7 @@ const OutstockApplyList = () => {
       tableRef.current.refresh();
     },
     onError: (error) => {
-      Message.error(error.message);
+      message.error(error.message);
     }
   });
 
@@ -116,6 +163,9 @@ const OutstockApplyList = () => {
             data: record
           }
         );
+      },
+      onCancel:()=>{
+        tableRef.current.submit();
       }
     });
   };
@@ -129,6 +179,8 @@ const OutstockApplyList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        SearchButton={Search()}
+        layout={search}
       >
         <Column title="发货申请单号" width={120} dataIndex="outstockApplyId" render={(value,record)=>{
           return (

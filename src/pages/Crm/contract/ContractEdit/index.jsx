@@ -14,6 +14,7 @@ import {useRequest} from '@/util/Request';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
 import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
 import ProCard from '@ant-design/pro-card';
+import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
 
 const {onFieldValueChange$} = FormEffectHooks;
@@ -166,110 +167,7 @@ const AddContractEdit = ({...props}) => {
               <Row gutter={24}>
                 <Col span={12}>
                   <ProCard headerBordered className="h2Card" title="甲方信息">
-                    {customerId ?
-                      <FormItem
-                        initialValue={false}
-                        label="客户"
-                        name="partyA"
-                        value={customerId}
-                        component={SysField.CustomerId}
-                        placeholder="请选择甲方客户"
-                        val={value ? value.partAName : null}
-                        customers={async (customer) => {
-                          setCustomerIds(customer);
-                          if (customer) {
-                            await AcontactsRun({
-                              data: {
-                                customerId: customer
-                              }
-                            });
-                            await AadressRun({
-                              data: {
-                                customerId: customer
-                              }
-                            });
-                          }
-                        }}
-                        required
-                      /> : <FormItem
-                        initialValue={false}
-                        label="客户"
-                        name="partyA"
-                        component={SysField.Customer}
-                        placeholder="客户"
-                        refresh={() => {
-                          refresh();
-                        }}
-                        val={value ? value.partAName : null}
-                        customers={async (customer) => {
-                          setCustomerIds(customer);
-                          if (customer) {
-                            await AcontactsRun({
-                              data: {
-                                customerId: customer
-                              }
-                            });
-                            await AadressRun({
-                              data: {
-                                customerId: customer
-                              }
-                            });
-                          }
-                        }}
-                        required
-                      />}
-                    <FormItem
-                      initialValue={false}
-                      label="联系人"
-                      name="partyAContactsId"
-                      component={SysField.Contacts}
-                      placeholder="甲方联系人"
-                      refresh={() => {
-                        refresh();
-                      }}
-                      customerId={customerId || customerIds}
-                      val={value ? value.partyAContactsId : null}
-                      customers={Acontacts || null}
-                      contact={async (contacts) => {
-                        setContactIdsA(contacts);
-                        if (contacts) {
-                          await runAPhone({
-                            data: {
-                              contactsId: contacts
-                            }
-                          });
-                        }
-                      }}
-                      required
-                    />
-                    <FormItem
-                      initialValue={false}
-                      label="电话"
-                      name="partyAPhone"
-                      refresh={() => {
-                        refresh();
-                      }}
-                      component={SysField.Phone}
-                      contactsId={contactsIdA}
-                      placeholder="请选择甲方联系人电话"
-                      val={value ? value.partyAPhone : null}
-                      contacts={APhone || null}
-                      required
-                    />
-                    <FormItem
-                      initialValue={false}
-                      label="地址"
-                      refresh={() => {
-                        refresh();
-                      }}
-                      name="partyAAdressId"
-                      customerId={customerId || customerIds}
-                      component={SysField.Adress}
-                      placeholder="请选择甲方地址"
-                      val={value ? value.partyAAdressId : null}
-                      customers={Aadress || null}
-                      required
-                    />
+                    <CustomerAll customer='partyA' adress='partyAAdressId' contacts='partyAContactsId' phone='partyAPhone' customerId={customerId} />
                   </ProCard>
                 </Col>
                 <Col span={12}>
@@ -281,7 +179,6 @@ const AddContractEdit = ({...props}) => {
                       value={company}
                       component={SysField.CustomerId}
                       placeholder="客户"
-                      val={value ? value.partBName : null}
                       refresh={() => {
                         refresh();
                       }}
@@ -311,7 +208,6 @@ const AddContractEdit = ({...props}) => {
                         refresh();
                       }}
                       customerId={company}
-                      val={value ? value.partyBContactsId : null}
                       customers={Bcontacts || null}
                       contact={async (contacts) => {
                         setContactIdsB(contacts);
@@ -334,7 +230,6 @@ const AddContractEdit = ({...props}) => {
                       contactsId={contactsIdB}
                       component={SysField.Phone}
                       placeholder="请选择乙方联系人电话"
-                      val={value ? value.partyAPhone : null}
                       contacts={BPhone || null}
                       required
                     />
@@ -349,7 +244,6 @@ const AddContractEdit = ({...props}) => {
                       customerId={company}
                       component={SysField.Adress}
                       placeholder="请选择乙方地址"
-                      val={value ? value.partyBAdressId : null}
                       customers={Badress || null}
                       required
                     />

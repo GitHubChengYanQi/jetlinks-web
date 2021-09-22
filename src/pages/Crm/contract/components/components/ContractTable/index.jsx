@@ -168,7 +168,7 @@ const ContractTable = (props) => {
         }} />
       </Divider>}
       <Table
-        headStyle={{display:customerId && 'none'}}
+        headStyle={{display: customerId && 'none'}}
         title={<Breadcrumb />}
         api={contractList}
         actions={actions()}
@@ -187,7 +187,8 @@ const ContractTable = (props) => {
       >
         <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
           return (
-            <Button style={{width:'100%',textAlign:'left',cursor:'pointer',height:'100%'}} title='点击进入合同详情'  type="link" onClick={() => {
+            <Button style={{width: '100%', textAlign: 'left', cursor: 'pointer', height: '100%'}} title="点击进入合同详情"
+                    type="link" onClick={() => {
               // content.current.open(record.contractId);
               history.push(`/CRM/contract/${record.contractId}`);
             }}>{text}</Button>
@@ -195,7 +196,7 @@ const ContractTable = (props) => {
         }} />
         <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
-            <div title='点击进入甲方详情' style={{cursor: 'pointer'}} onClick={() => {
+            <div title="点击进入甲方详情" style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.partyA}`);
             }}>
               <strong>{record.partA ? record.partA.customerName : null}</strong>
@@ -210,7 +211,7 @@ const ContractTable = (props) => {
         }} />
         <Column title="乙方信息" dataIndex="partAName" render={(text, record) => {
           return (
-            <div title='点击进入乙方详情' style={{cursor: 'pointer'}} onClick={() => {
+            <div title="点击进入乙方详情" style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.partyB}`);
             }}>
               <strong>{record.partB ? record.partB.customerName : null}</strong>
@@ -232,20 +233,27 @@ const ContractTable = (props) => {
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
-              {record.audit === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
-                confirmOk(record);
-              }}><Icon type="icon-shenhe" />审核</Button> : null}
-              <EditButton onClick={() => {
-                ref.current.open(record);
-              }} />
-              <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
-                tableRef.current.submit();
-              }} />
+              {record.audit === 0 ?
+                <>
+                  <Button style={{margin: '0 10px'}} onClick={() => {
+                    confirmOk(record);
+                  }}>
+                    <Icon type="icon-shenhe" />
+                    审核
+                  </Button>
+                  <EditButton
+                    onClick={() => {
+                      ref.current.open(record);
+                    }} />
+                  <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
+                    tableRef.current.submit();
+                  }} />
+                </> : null}
             </>
           );
         }} width={200} />
       </Table>
-      <Modal width='auto' title="合同" component={AddContractEdit} customerId={customerId} onSuccess={() => {
+      <Modal width="auto" title="合同" component={AddContractEdit} customerId={customerId} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />

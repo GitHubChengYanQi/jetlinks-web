@@ -51,6 +51,7 @@ const ApplyDetailsList = (props) => {
       <Table
         title="发货申请明细"
         api={applyDetailsList}
+        rowSelection
         rowKey="outstockApplyDetailsId"
         searchForm={searchForm}
         // actions={actions()}

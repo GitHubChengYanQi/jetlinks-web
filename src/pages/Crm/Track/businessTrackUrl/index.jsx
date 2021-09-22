@@ -34,4 +34,8 @@ export const businessTrackList = {
   method: 'POST',
   rowKey:'trackId'
 };
+export const CustomerId = {
+  url: '/customer/listSelect',
+  method: 'POST',
+};
 

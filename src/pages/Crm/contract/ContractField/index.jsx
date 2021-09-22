@@ -26,12 +26,16 @@ import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import PhoneEdit from '@/pages/Crm/phone/phoneEdit';
 
 export const CustomerId = (props) => {
+  const {customers,value} = props;
+  useEffect(()=>{
+    customers(value);
+  },[]);
   return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
 };
 
 export const Customer = (props) => {
 
-  const {customers,refresh, onChange} = props;
+  const {customers, refresh, onChange} = props;
 
   return (<>
     <SelectCustomer {...props} onChange={(value) => {
@@ -47,7 +51,8 @@ export const Contacts = (props) => {
   const ref = useRef(null);
   const submitRef = useRef(null);
 
-  const {customers, customerId,refresh, contact, onChange} = props;
+  const {customers, customerId, refresh, contact, onChange} = props;
+
 
   const data = customers ? customers.map((value, index) => {
     return {
@@ -64,10 +69,18 @@ export const Contacts = (props) => {
 
 
   return (<>
-    <AntSelect style={{display: 'inline-block', width: 200}} options={data}  {...props} onChange={(value) => {
-      onChange(value);
-      contact ? contact(value) : null;
-    }} />
+    <AntSelect
+      showSearch
+      filterOption={(input, option) => {
+        option.label + ''.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      }}
+      style={{display: 'inline-block', width: 200}}
+      options={data}
+      {...props}
+      onChange={(value) => {
+        onChange(value);
+        contact ? contact(value) : null;
+      }} />
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
@@ -98,7 +111,7 @@ export const Contacts = (props) => {
   </>);
 };
 export const Phone = (props) => {
-  const {contacts,refresh,contactsId} = props;
+  const {contacts, refresh, contactsId} = props;
 
   const ref = useRef(null);
 
@@ -114,18 +127,25 @@ export const Phone = (props) => {
   }, [contacts || null]);
 
   return (<>
-    <AntSelect style={{display: 'inline-block', width: 200}} options={data} {...props} />
+    <AntSelect
+      style={{display: 'inline-block', width: 200}}
+      options={data}
+      showSearch
+      filterOption={(input, option) => {
+        option.label + ''.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      }}
+      {...props} />
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
-    <Modal title='电话' component={PhoneEdit} contactsId={contactsId} ref={ref} onSuccess={()=>{
+    <Modal title="电话" component={PhoneEdit} contactsId={contactsId} ref={ref} onSuccess={() => {
       ref.current.close();
       refresh();
     }} />
   </>);
 };
 export const Adress = (props) => {
-  const {customers,refresh,customerId} = props;
+  const {customers, refresh, customerId} = props;
 
   const ref = useRef(null);
 
@@ -141,14 +161,18 @@ export const Adress = (props) => {
   }, [customers || null]);
 
   return (<>
-    <AntSelect style={{display: 'inline-block', width: 200}} options={data} {...props} />
+    <AntSelect
+      showSearch
+      filterOption={(input, option) => {
+        option.label + ''.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      }} style={{display: 'inline-block', width: 200}} options={data} {...props} />
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
     <Drawer width={800} title="编辑" component={AdressEdit} customerId={customerId} onSuccess={() => {
       refresh();
       ref.current.close();
-    }} ref={ref}/>
+    }} ref={ref} />
   </>);
 };
 
@@ -181,7 +205,7 @@ export const CustomerNameListSelect = (props) => {
 export const Template = (props) => {
 
   return (<>
-    <Select width='100%' api={apiUrl.templateSelect} {...props} />
+    <Select width="100%" api={apiUrl.templateSelect} {...props} />
   </>);
 };
 

@@ -14,6 +14,7 @@ import * as SysField from '@/pages/Erp/outstockApply/outstockApplyField';
 import styled from 'styled-components';
 import {useRequest} from '@/util/Request';
 import {StoreHouse} from '@/pages/Erp/outstockApply/outstockApplyField';
+import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
 const {FormItem} = Form;
 
@@ -93,65 +94,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
 
                   <FormItem label="仓库" component={SysField.StoreHouse} name="stockId" required />
 
-
-                  <FormItem
-                    label="客户"
-                    name="customerId"
-                    component={SysField.Customer}
-                    placeholder="请选择客户"
-                    customerid={async (customer) => {
-                      setState(true);
-                      if (customer) {
-                        await AcontactsRun({
-                          data: {
-                            customerId: customer
-                          }
-                        });
-                        await AadressRun({
-                          data: {
-                            customerId: customer
-                          }
-                        });
-                      }
-                    }}
-                    rules={[{required: true, message: '请输入已存在的客户!'}]}
-                  />
-                  <FormItem
-                    label="联系人"
-                    name="contactsId"
-                    state={state}
-                    component={SysField.Contacts}
-                    placeholder="联系人"
-                    customerid={Acontacts || null}
-                    contactsid={async (contacts) => {
-                      if (contacts) {
-                        await runAPhone({
-                          data: {
-                            contactsId: contacts
-                          }
-                        });
-                      }
-                    }}
-                    rules={[{required: true, message: '请输入联系人!'}]}
-                  />
-                  <FormItem
-                    label="联系人电话"
-                    name="phoneId"
-                    state={state}
-                    component={SysField.Phone}
-                    placeholder="请选择联系人电话"
-                    contactsid={APhone || null}
-                    rules={[{required: true, message: '请输入电话!'}]}
-                  />
-                  <FormItem
-                    label="地址"
-                    name="adressId"
-                    state={state}
-                    component={SysField.Adress}
-                    placeholder="请选择地址"
-                    customerid={Aadress || null}
-                    rules={[{required: true, message: '请输入地址!'}]}
-                  />
+                  <CustomerAll />
                 </div>
               </Card>
             </div>

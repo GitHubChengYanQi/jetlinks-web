@@ -16,7 +16,7 @@ import * as apiUrl from '../outstockApplyUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 export const ApplyState = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber style={{width:200}} {...props}/>);
 };
 export const BrandId = (props) =>{
   return (<Select width={150} api={apiUrl.Brands} {...props}/>);
@@ -26,6 +26,9 @@ export const ItemId = (props) =>{
 };
 export const UserId = (props) =>{
   return (<Select api={apiUrl.UserIdSelect} {...props}/>);
+};
+export const CustomerId = (props) =>{
+  return (<Select api={apiUrl.CustomerNameListSelect} {...props}/>);
 };
 export const StoreHouse = (props) =>{
   return (<Select api={apiUrl.StoreHouse} {...props}/>);
@@ -71,7 +74,7 @@ export const Contacts = (props) => {
     <AntSelect style={{width: 200}} options={data}  {...props} onChange={(value) => {
       onChange(value);
       contactsid ? contactsid(value) : null;
-    }} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+    }} showSearch filterOption={(input, option) =>option.label+''.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
   </>);
 };
 export const Phone = (props) => {
@@ -89,7 +92,7 @@ export const Phone = (props) => {
     };
   }) : null;
   return (<>
-    <AntSelect style={{width: 200}} options={data} showSearch filterOption={(input, option) =>option.label && typeof option.label.toLowerCase() === 'function' && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} {...props} />
+    <AntSelect style={{width: 200}} options={data} showSearch filterOption={(input, option) =>option.label+''.toLowerCase().indexOf(input.toLowerCase()) >= 0} {...props} />
   </>);
 };
 export const Adress = (props) => {

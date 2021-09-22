@@ -109,6 +109,7 @@ const CompetitorTable = ({...props}) => {
   return (
     <>
       <Table
+        rowSelection
         title={businessId ? false : <Breadcrumb />}
         api={competitorQuoteList}
         rowKey="quoteId"

@@ -21,6 +21,7 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import Conent from '@/pages/Crm/Track/components/Conent';
+import {Customer} from '../businessTrackField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -62,7 +63,7 @@ const BusinessTrackList = () => {
         <MegaLayout
           responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="跟踪内容" name="message" component={SysField.Message} />
+          <FormItem mega-props={{span: 1}} style={{width:'100%'}} placeholder="客户" name="customerId" component={SysField.Customer} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -123,23 +124,7 @@ const BusinessTrackList = () => {
         <Column title="负责人" dataIndex="userId" />
         <Column title="分类" dataIndex="classify" />
         <Column title="名称" dataIndex="classifyId" />
-        {/* <Column title="操作" align="right" render={(value, record) => { */}
-        {/*  return ( */}
-        {/*    <> */}
-        {/*      <EditButton onClick={() => { */}
-        {/*        ref.current.open(record.trackId); */}
-        {/*      }} /> */}
-        {/*      <DelButton api={businessTrackDelete} value={record.trackId} onSuccess={() => { */}
-        {/*        tableRef.current.refresh(); */}
-        {/*      }} /> */}
-        {/*    </> */}
-        {/*  ); */}
-        {/* }} width={300} /> */}
       </Table>
-      { /* <Drawer width={800} title="编辑" component={BusinessTrackEdit} onSuccess={() => { */}
-      { /*  tableRef.current.refresh(); */}
-      { /*  ref.current.close(); */}
-      { /* }} ref={ref} /> */}
 
       <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
         refTrack.current.close();
