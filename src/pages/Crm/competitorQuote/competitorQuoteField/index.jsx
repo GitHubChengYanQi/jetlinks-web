@@ -20,7 +20,7 @@ export const CompetitorsQuote = (props) =>{
 };
 
 export const Competitor = (props) => {
-  return (<Select api={apiUrl.competitorListSelect} {...props} />);
+  return (<Select width={200} api={apiUrl.competitorListSelect} {...props} />);
 };
 
 export const CompetitorId = (props) =>{

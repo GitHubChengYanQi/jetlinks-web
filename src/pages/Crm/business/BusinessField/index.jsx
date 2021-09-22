@@ -16,6 +16,7 @@ import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
+import moment from 'moment';
 
 // 项目Id
 export const BusinessId = (props) => {
@@ -74,11 +75,13 @@ export const OrgNameListSelect = (props) => {
 
 // 立项日期
 export const TimeListSelect2 = (props) => {
-  return (<DatePicker {...props} />);
+  return (<DatePicker disabled={props.visi} disabledDate={(current)=>{
+    return current && current > moment().endOf('day');
+  }} {...props} />);
 };
 // 项目金额
 export const OpportunityAmountListSelect3 = (props) => {
-  return (<InputNumber min={0}  {...props} />);
+  return (<InputNumber min={0} defaultValue={10000} step={10000}  {...props} />);
 };
 // 销售流程
 export const SalesIdListSelect = (props) => {

@@ -92,7 +92,7 @@ const BusinessEdit = (props,ref) => {
         required />
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
-      <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} />
+      <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} visi={props.value} />
       <FormItem
         display={false}
         name="salesId"

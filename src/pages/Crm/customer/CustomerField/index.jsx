@@ -58,7 +58,7 @@ export const Region = (props) => {
   return (<CascaderAdress {...props} />);
 };
 export const CompanyRoleId = (props) => {
-  return (<Select width='100%' api={apiUrl.CompanyRoleIdSelect} {...props} />);
+  return (<Select width="100%" api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
 export const CustomerName = (props) => {
 
@@ -81,20 +81,25 @@ export const Setup = (props) => {
   return (<DatePicker  {...props} />);
 };
 export const Legal = (props) => {
+  const [visi, setVist] = useState();
+  useEffect(() => {
+    setVist(props.value);
+  }, []);
 
-  useEffect(()=>{
-
-  },[]);
-
-  return (<Input disabled={props.value} {...props} />);
+  return (<Input disabled={visi} {...props} />);
 };
 export const Utscc = (props) => {
-  return (<Input  {...props} />);
+  const [visi, setVist] = useState();
+  useEffect(() => {
+    setVist(props.value);
+  }, []);
+
+  return (<Input disabled={visi}  {...props} />);
 };
 export const CompanyType = (props) => {
   return (<AntdSelect
     showSearch
-    style={{maxWidth:120}}
+    style={{maxWidth: 120}}
     allowClear
     filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {
@@ -112,7 +117,7 @@ export const SignIn = (props) => {
   return (<Input  {...props} />);
 };
 export const Introduction = (props) => {
-  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100} {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} {...props} />);
 };
 
 export const DeptId = (props) => {
@@ -157,7 +162,7 @@ export const Classification = (props) => {
 };
 
 export const Note = (props) => {
-  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100}  {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100}  {...props} />);
 };
 
 export const CustomerLevelId = (props) => {

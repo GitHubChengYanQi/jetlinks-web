@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Menu, Modal} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import OriginList from '@/pages/Crm/origin/OriginList';
 import TemplateList from '@/pages/Crm/template/TemplateList';
@@ -10,11 +10,15 @@ import CompanyRoleList from '@/pages/Crm/companyRole/companyRoleList';
 import SetView from '@/layouts/SetView';
 import DataClassificationList from '@/pages/Crm/data/dataClassification/dataClassificationList';
 import SpeechcraftTypeList from '@/pages/Crm/speechcraft/speechcraftType/speechcraftTypeList';
+import Modal from '@/components/Modal';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
 
   const [type, setType] = useState(null);
+
+  const ref = useRef(null);
+
   const [visible, showModel] = useState(false);
 
   const RenderComponent = () => {
@@ -53,7 +57,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           style={{width: '100%'}}
           onClick={(item) => {
             setType(item.key);
-            showModel(true);
+            ref.current.open(false);
           }}
         >
           <Menu.Item key="sjly">
@@ -82,9 +86,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
-        showModel(false);
-      }} footer={null}>{RenderComponent()}</Modal>
+      <Modal width={860} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };

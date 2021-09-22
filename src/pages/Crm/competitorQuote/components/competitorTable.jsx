@@ -71,7 +71,7 @@ const CompetitorTable = ({...props}) => {
           columns={4}
           full
           autoRow>
-          {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId"  component={SysField.Competitor} />}
+          {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId" style={{width:200}}  component={SysField.Competitor} />}
           {search ? formItem() : null}
         </MegaLayout>
 
