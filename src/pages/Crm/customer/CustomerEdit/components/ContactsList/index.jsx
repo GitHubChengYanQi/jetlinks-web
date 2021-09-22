@@ -107,7 +107,7 @@ const ContactsList = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
-              <Button type='link' danger >离职</Button>
+              <Button type='link' size='small' danger >离职</Button>
             </>
           );
         }} width={300} />

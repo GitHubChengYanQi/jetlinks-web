@@ -37,7 +37,8 @@ const AddContractEdit = ({...props}) => {
   const {value, customerId, ...other} = props;
 
   const [customerIds, setCustomerIds] = useState();
-  const [contactsId, setContactIds] = useState();
+  const [contactsIdA, setContactIdsA] = useState();
+  const [contactsIdB, setContactIdsB] = useState();
 
 
   const [result, setResult] = useState(value);
@@ -139,7 +140,7 @@ const AddContractEdit = ({...props}) => {
       title: '必填项',
       content:
         <>
-          <div style={{margin: '50px 150px'}}>
+          <div style={{margin: '0 150px'}}>
             <Form
               NoButton={false}
               value={result ? result.contractId : false}
@@ -154,15 +155,17 @@ const AddContractEdit = ({...props}) => {
                 next();
               }}
             >
-              <FormItem label="选择合同模板" name="templateId" component={SysField.Template} required />
-              <FormItem label="合同名称" name="name" component={SysField.Name} required />
-              <div style={{height:0}}>
-                <FormItem hidden name="audit" component={SysField.Audit} required />
-              </div>
+              <ProCard headerBordered className="h2Card" title="基础信息">
+                <FormItem labelCol={5} label="选择合同模板" name="templateId" component={SysField.Template} required />
+                <FormItem labelCol={5} label="合同名称" name="name" component={SysField.Name} required />
+                <div style={{height: 0}}>
+                  <FormItem hidden name="audit" component={SysField.Audit} required />
+                </div>
+              </ProCard>
 
               <Row gutter={24}>
                 <Col span={12}>
-                  <ProCard headerBordered className='h2Card' title='甲方信息'>
+                  <ProCard headerBordered className="h2Card" title="甲方信息">
                     {customerId ?
                       <FormItem
                         initialValue={false}
@@ -190,7 +193,7 @@ const AddContractEdit = ({...props}) => {
                         required
                       /> : <FormItem
                         initialValue={false}
-                        label="甲方"
+                        label="客户"
                         name="partyA"
                         component={SysField.Customer}
                         placeholder="客户"
@@ -228,7 +231,7 @@ const AddContractEdit = ({...props}) => {
                       val={value ? value.partyAContactsId : null}
                       customers={Acontacts || null}
                       contact={async (contacts) => {
-                        setContactIds(contacts);
+                        setContactIdsA(contacts);
                         if (contacts) {
                           await runAPhone({
                             data: {
@@ -247,7 +250,7 @@ const AddContractEdit = ({...props}) => {
                         refresh();
                       }}
                       component={SysField.Phone}
-                      contactsId={contactsId}
+                      contactsId={contactsIdA}
                       placeholder="请选择甲方联系人电话"
                       val={value ? value.partyAPhone : null}
                       contacts={APhone || null}
@@ -270,10 +273,10 @@ const AddContractEdit = ({...props}) => {
                   </ProCard>
                 </Col>
                 <Col span={12}>
-                  <ProCard className='h2Card' headerBordered title='乙方信息'>
+                  <ProCard className="h2Card" headerBordered title="乙方信息">
                     <FormItem
                       initialValue={false}
-                      label="乙方"
+                      label="客户"
                       name="partyB"
                       value={company}
                       component={SysField.CustomerId}
@@ -311,7 +314,7 @@ const AddContractEdit = ({...props}) => {
                       val={value ? value.partyBContactsId : null}
                       customers={Bcontacts || null}
                       contact={async (contacts) => {
-                        setContactIds(contacts);
+                        setContactIdsB(contacts);
                         if (contacts) {
                           await runBPhone({
                             data: {
@@ -328,7 +331,7 @@ const AddContractEdit = ({...props}) => {
                         refresh();
                       }}
                       name="partyBPhone"
-                      contactsId={contactsId}
+                      contactsId={contactsIdB}
                       component={SysField.Phone}
                       placeholder="请选择乙方联系人电话"
                       val={value ? value.partyAPhone : null}
@@ -354,7 +357,7 @@ const AddContractEdit = ({...props}) => {
                 </Col>
               </Row>
 
-              <Button style={{float:'right',margin:24}} type="primary" htmlType="submit">
+              <Button style={{float: 'right', margin: 24}} type="primary" htmlType="submit">
                 下一步
               </Button>
             </Form>

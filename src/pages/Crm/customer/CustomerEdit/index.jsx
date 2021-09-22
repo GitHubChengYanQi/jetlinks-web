@@ -239,6 +239,10 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                     label="联系人电话"
                                                     name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
                                                     component={SysField.PhoneNumber}
+                                                    rules={[{
+                                                      message: '请输入正确的手机号码!',
+                                                      pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+                                                    }]}
                                                   />
                                                   <Button
                                                     type="link"

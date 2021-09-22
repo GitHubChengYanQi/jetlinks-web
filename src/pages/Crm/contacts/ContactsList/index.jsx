@@ -178,7 +178,7 @@ const ContactsTable = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
-              <Button size="small" danger>离职</Button>
+              <Button size="small" type='link' danger>离职</Button>
             </>
           );
         }} />

@@ -41,7 +41,7 @@ export const Map = (props) => {
   return (<AdressMap {...props} />);
 };
 export const PhoneNumber = (props) => {
-  return (<InputNumber min={0} style={{width: '100%'}}  {...props} />);
+  return (<Input style={{width: '100%'}}  {...props} />);
 };
 
 export const key = (props) => {

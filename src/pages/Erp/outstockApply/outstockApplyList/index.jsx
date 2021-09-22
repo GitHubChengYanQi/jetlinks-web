@@ -137,12 +137,48 @@ const OutstockApplyList = () => {
             }}>{value}</Button>
           );
         }} />
-        <Column title="负责人" dataIndex="userId" />
-        <Column title="仓库" dataIndex="stockId" />
-        <Column title="客户" dataIndex="customerId" />
-        <Column title="地址" dataIndex="adressId" />
-        <Column title="联系人" dataIndex="contactsId" />
-        <Column title="电话" dataIndex="phoneId" />
+        <Column title="负责人" dataIndex="userId" render={(value,record)=>{
+          return (
+            <>
+              {record.userResult && record.userResult.name}
+            </>
+          );
+        }} />
+        <Column title="仓库" dataIndex="stockId" render={(value,record)=>{
+          return (
+            <>
+              {record.stockResult && record.stockResult.name}
+            </>
+          );
+        }}/>
+        <Column title="客户" dataIndex="customerId" render={(value,record)=>{
+          return (
+            <>
+              {record.customerResult && record.customerResult.customerName}
+            </>
+          );
+        }}/>
+        <Column title="地址" dataIndex="adressId" render={(value,record)=>{
+          return (
+            <>
+              {record.adressResult && record.adressResult.location}
+            </>
+          );
+        }}/>
+        <Column title="联系人" dataIndex="contactsId" render={(value,record)=>{
+          return (
+            <>
+              {record.contactsResult && record.contactsResult.contactsName}
+            </>
+          );
+        }}/>
+        <Column title="电话" dataIndex="phoneId" render={(value,record)=>{
+          return (
+            <>
+              {record.phoneResult && record.phoneResult.phoneNumber}
+            </>
+          );
+        }}/>
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

@@ -91,5 +91,5 @@ export const CustomerIds = (props) => {
 
 
 export const PhoneNumber = (props) =>{
-  return (<InputNumber min={0}  style={{width: 150}}  {...props}/>);
+  return (<Input  {...props}/>);
 };
