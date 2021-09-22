@@ -54,7 +54,7 @@ const ErpPackageEdit = ({...props}) => {
               label="总金额"
               name="money"
               component={SysField.Money} />
-            <div style={{textAlign: 'center'}}>
+            <div style={{textAlign: 'center', marginBottom: 20}}>
               <Button type="primary" htmlType="submit">
                 下一步
               </Button>
