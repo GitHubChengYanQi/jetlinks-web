@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -18,8 +18,6 @@ import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 import styles from './index.module.scss';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-
-import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 import TableDetailEdit from '@/pages/Crm/business/BusinessEdit/components/TableDetailEdit';
 
 const {TabPane} = Tabs;
@@ -29,8 +27,7 @@ const CustomerDetail = () => {
   const ref = useRef(null);
   const refTrack = useRef(null);
   const submitRef = useRef(null);
-
-  const historys = useHistory();
+  const history = useHistory();
   const {loading, data, refresh} = useRequest(businessDetail, {
     defaultParams: {
       data: {
@@ -122,14 +119,19 @@ const CustomerDetail = () => {
             style={params.state === 'false' ?  null : {'display': 'none' } }
             type="primary" key="1"
             onClick={() => {
-              historys.push(`/CRM/business/${data.businessId}`);
+              history.push(`/CRM/business/${data.businessId}`);
             }}>查看详情</Button>
           <Button
-            // style={params.state === 'false' ? {'display': 'none' }: null }
+            style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
-              history.back();
+              history.push(`/CRM/business`);
             }}><Icon type="icon-back"/>返回</Button>
-
+          <Button
+            style={params.state === 'false' ? null : {'display': 'none' }}
+            onClick={() => {
+              history.push(`/CRM/business/${data.businessId}/${true}`);
+              refresh();
+            }}><Icon type="icon-back"/>返回</Button>
         </div>
 
       </Card>
@@ -159,7 +161,7 @@ const CustomerDetail = () => {
             <div
               className={styles.main}>
               <Card>
-                <Tabs defaultActiveKey="1">
+                { params.state === 'true' ? <Tabs defaultActiveKey="4" >
                   <TabPane tab="详细信息" key="1">
                     <Description data={data}/>
                   </TabPane>
@@ -172,7 +174,20 @@ const CustomerDetail = () => {
                   <TabPane tab="商机明细" key="4">
                     <TableDetail value={data.businessId} onSuccess={()=>{}}/>
                   </TabPane>
-                </Tabs>
+                </Tabs> : <Tabs defaultActiveKey="1" >
+                  <TabPane tab="详细信息" key="1">
+                    <Description data={data}/>
+                  </TabPane>
+                  <TabPane tab="竞争对手" key="2">
+                    <CompetitorList businessId={data.businessId}/>
+                  </TabPane>
+                  <TabPane tab="报价" key="3">
+                    <CompetitorTable businessId={data.businessId}/>
+                  </TabPane>
+                  <TabPane tab="商机明细" key="4">
+                    <TableDetail value={data.businessId} onSuccess={()=>{}}/>
+                  </TabPane>
+                </Tabs>}
               </Card>
             </div>
           </Col>
