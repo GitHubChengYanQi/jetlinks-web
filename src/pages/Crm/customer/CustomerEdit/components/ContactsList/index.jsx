@@ -12,7 +12,7 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
+import {contactsBind, contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import Index from '@/pages/Crm/customer/CustomerEdit/components/ContactsEdit';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
 import CheckButton from '@/components/CheckButton';
@@ -23,6 +23,7 @@ import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
 import Modal from '@/components/Modal';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -34,6 +35,8 @@ const ContactsList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const submitRef = useRef(null);
+
+  const {run} = useRequest(contactsBind, {manual: true});
 
 
   const searchForm = () => {
@@ -107,7 +110,14 @@ const ContactsList = (props) => {
               <EditButton onClick={() => {
                 ref.current.open(record.contactsId);
               }} />
-              <Button type='link' size='small' danger >离职</Button>
+              <Button type="link" size="small" danger onClick={async () => {
+                await run({
+                  data: {
+                    customerId: record.customerId,
+                    contactsId: record.contactsId
+                  }
+                });
+              }}>离职</Button>
             </>
           );
         }} width={300} />

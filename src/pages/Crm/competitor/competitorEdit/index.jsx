@@ -57,7 +57,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
         wrapperCol={24}
         fieldKey="competitorId"
       >
-        <div style={{height: height(), overflow: 'auto'}}>
+        <div style={{height: '100%', overflow: 'auto'}}>
           <ProCard
             title="详细信息"
             headerBordered
@@ -73,11 +73,14 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
             </MegaLayout>
             <MegaLayout labelWidth={150} grid>
               <FormItem label="创立日期" name="creationDate" component={SysField.CreationDate} required />
-              <FormItem label="联系电话" name="phone" component={SysField.Phone} required />
+              <FormItem label="联系电话" name="phone" component={SysField.Phone} rules={[{
+                message: '请输入正确的手机号码!',
+                pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+              }]} />
             </MegaLayout>
             <MegaLayout labelWidth={150} grid>
-              <FormItem label="网址 " name="url" component={SysField.Url} required />
-              <FormItem label="邮箱" name="email" component={SysField.Email} required />
+              <FormItem label="网址 " name="url" component={SysField.Url} rules={[{required:true,message:'请输入正确的网址',pattern:'^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'}]} />
+              <FormItem label="邮箱" name="email" component={SysField.Email} rules={[{required:true,message:'请输入正确的邮箱',pattern:'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'}]} />
             </MegaLayout>
             <MegaLayout labelWidth={150} grid>
               <FormItem label="员工规模" name="staffSize" component={SysField.StaffSize} required />

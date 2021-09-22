@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Input, InputNumber, Select as AntdSelect, Radio, Popover} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
@@ -81,7 +81,12 @@ export const Setup = (props) => {
   return (<DatePicker  {...props} />);
 };
 export const Legal = (props) => {
-  return (<Input  {...props} />);
+
+  useEffect(()=>{
+
+  },[]);
+
+  return (<Input disabled={props.value} {...props} />);
 };
 export const Utscc = (props) => {
   return (<Input  {...props} />);
@@ -107,7 +112,7 @@ export const SignIn = (props) => {
   return (<Input  {...props} />);
 };
 export const Introduction = (props) => {
-  return (<Input.TextArea  {...props} />);
+  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100} {...props} />);
 };
 
 export const DeptId = (props) => {
@@ -152,7 +157,7 @@ export const Classification = (props) => {
 };
 
 export const Note = (props) => {
-  return (<Input.TextArea   {...props} />);
+  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100}  {...props} />);
 };
 
 export const CustomerLevelId = (props) => {

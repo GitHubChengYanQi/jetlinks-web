@@ -140,5 +140,5 @@ export const CompetitorId = (props) =>{
   );
 };
 export const CompetitorsQuote = (props) =>{
-  return (<InputNumber min={0} style={{width:300}}  {...props}/>);
+  return (<InputNumber min={0} step={10000} max={100000000} style={{width:300}}  {...props}/>);
 };

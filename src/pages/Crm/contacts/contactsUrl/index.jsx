@@ -54,3 +54,7 @@ export const companyRoleSelect = {
   url: '/companyRole/listSelect',
   method: 'POST'
 };
+export const contactsBind = {
+  url: '/contactsBind/delete',
+  method: 'POST'
+};

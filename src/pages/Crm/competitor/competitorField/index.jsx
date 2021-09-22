@@ -23,7 +23,7 @@ export const Name = (props) =>{
   return (<Input disabled={props.dis} {...props}/>);
 };
 export const Phone = (props) =>{
-  return (<InputNumber min={0} style={{width:290}} {...props}/>);
+  return (<Input style={{width:290}} {...props}/>);
 };
 export const Url = (props) =>{
   return (<Input {...props}/>);
@@ -47,19 +47,19 @@ export const CompetitionLevel = (props) =>{
   return (<AntdSelect options={[{label:'低',value:1},{label:'中',value:2},{label:'高',value:3}]} {...props}/>);
 };
 export const AnnualSales = (props) =>{
-  return (<InputNumber min={0} {...props}/>);
+  return (<InputNumber step={10000} min={0} {...props}/>);
 };
 export const CompanyProfile = (props) =>{
-  return (<Input.TextArea {...props}/>);
+  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100} {...props}/>);
 };
 export const RivalAdvantage = (props) =>{
-  return (<Input.TextArea {...props}/>);
+  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100} {...props}/>);
 };
 export const OpponentsWeaknesses = (props) =>{
-  return (<Input.TextArea {...props}/>);
+  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100} {...props}/>);
 };
 export const TakeCountermeasures = (props) =>{
-  return (<Input.TextArea {...props}/>);
+  return (<Input.TextArea style={{width:'100%'}} showCount maxLength={100} {...props}/>);
 };
 export const BusinessId = (props) =>{
   return (<Select api={apiUrl.BusinessId} {...props} />);
