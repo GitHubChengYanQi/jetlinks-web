@@ -9,10 +9,10 @@ import Form from "@/components/Form";
 import Modal from '@/components/Modal';
 import CrmBusinessDetailedEdit from "@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit";
 import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackage";
-import ItemsList from "@/pages/Erp/items/ItemsList";
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
 import {PlusOutlined} from '@ant-design/icons';
+import StockTable from '@/pages/Erp/stock/components/StockTable';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -44,7 +44,7 @@ const TableDetail = (props) => {
             refAddOne.current.open(false);}}>
             添加产品
         </Button>
-        <Modal width={1600} title="选择" component={ItemsList}
+        <Modal width={1600} title="选择" component={StockTable}
           onSuccess={() => {
             refAddOne.current.close();
             tableRef.current.refresh();
@@ -75,6 +75,7 @@ const TableDetail = (props) => {
         headStyle={{display:'none'}}
         api={crmBusinessDetailedList}
         rowKey="id"
+        rowSelection
         formActions={formActionsPublic}
         searchForm={searchForm}
         ref={tableRef}
@@ -86,6 +87,13 @@ const TableDetail = (props) => {
                 record.itemsResult ? record.itemsResult.name : null
               }
             </div>
+          );
+        }} />
+        <Column title="品牌"  width={200} render={(text, record) => {
+          return (
+            <>
+              {record.brandResult.brandName}
+            </>
           );
         }} />
         <Column title="销售单价" dataIndex="salePrice"/>
