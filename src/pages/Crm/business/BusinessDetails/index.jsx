@@ -95,7 +95,7 @@ const CustomerDetail = () => {
             }}>编辑</Button>
 
 
-          <Modal width={1400} title="项目"
+          <Modal width={700} title="项目"
             component={TableDetailEdit}
             compoentRef={submitRef}
             footer={

@@ -16,11 +16,8 @@ import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import {
   crmBusinessDetailedDetail,
-  crmBusinessDetailedEdit,
-  crmBusinessDetailedAdd
 } from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import {batchAdd} from '@/pages/Erp/items/ItemsUrl';
-import {BusinessId} from '../../../crmBusinessDetailed/crmBusinessDetailedField';
 
 
 const {FormItem} = Form;
@@ -28,7 +25,6 @@ const {FormItem} = Form;
 const ApiConfig = {
   view: crmBusinessDetailedDetail,
   add: batchAdd,
-  // save: batchAdd
 };
 
 
@@ -46,11 +42,6 @@ const AddItem = (props, ref) => {
     width: 100%;
   }
 `;
-  // let submitData = {[]};
-  // if(data){
-  //
-  // }
-
 
   useImperativeHandle(ref, () => ({
     formRef
