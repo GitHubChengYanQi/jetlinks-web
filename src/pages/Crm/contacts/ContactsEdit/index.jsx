@@ -89,7 +89,7 @@ const ContactsEdit = ({...props}, ref) => {
                     <FormItem
                       label="客户"
                       name="customerId"
-                      value={props.value && props.value.customerResults.length > 0 && props.value.customerResults[0].customerName}
+                      customer={props.value && props.value.customerResults.length > 0 && props.value.customerResults[0]}
                       component={SysField.SelectCustomers}
                       required />}
                 </ProCard>

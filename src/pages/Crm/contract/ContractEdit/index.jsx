@@ -37,9 +37,6 @@ const AddContractEdit = ({...props}) => {
 
   const {value, customerId, ...other} = props;
 
-  const [customerIds, setCustomerIds] = useState();
-  const [contactsIdA, setContactIdsA] = useState();
-  const [contactsIdB, setContactIdsB] = useState();
 
 
   const [result, setResult] = useState(value);
@@ -74,59 +71,6 @@ const AddContractEdit = ({...props}) => {
 
 
   const [current, setCurrent] = React.useState(0);
-
-  const {refresh: refreshAcontactsn, data: Acontacts, run: AcontactsRun} = useRequest({
-    url: '/contacts/list',
-    method: 'POST',
-    data: {
-      customerId: customerId || result.partyA,
-    }
-  }, {manual: true});
-  const {refresh: refreshAPhone, data: APhone, run: runAPhone} = useRequest({
-    url: '/phone/list',
-    method: 'POST',
-    data: {
-      contactsId: result.partyAContactsId,
-    }
-  }, {manual: true});
-  const {refresh: refreshAadress, data: Aadress, run: AadressRun} = useRequest({
-    url: '/adress/list',
-    method: 'POST',
-    data: {
-      customerId: customerId || result.partyA,
-    }
-  }, {manual: true});
-
-  const {refresh: refreshBContacts, data: Bcontacts, run: BcontactsRun} = useRequest({
-    url: '/contacts/list',
-    method: 'POST',
-    data: {
-      customerId: company || result.partyB,
-    }
-  }, {manual: false});
-  const {refresh: refreshBphone, data: BPhone, run: runBPhone} = useRequest({
-    url: '/phone/list',
-    method: 'POST',
-    data: {
-      contactsId: result.partyBContactsId,
-    }
-  }, {manual: false});
-  const {refresh: refreshBadress, data: Badress, run: BadressRun} = useRequest({
-    url: '/adress/list',
-    method: 'POST',
-    data: {
-      customerId: company || result.partyB,
-    }
-  }, {manual: false});
-
-  const refresh = () => {
-    refreshAcontactsn();
-    refreshAadress();
-    refreshAPhone();
-    refreshBadress();
-    refreshBphone();
-    refreshBContacts();
-  };
 
   const formRef = useRef();
 

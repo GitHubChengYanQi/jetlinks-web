@@ -68,6 +68,9 @@ export const CompanyRole = (props) => {
 };
 
 export const SelectCustomers = (props) => {
+  useEffect(()=>{
+    props.onChange();
+  },[]);
   return (
     <SelectCustomer {...props} onChange={(value)=>{
       props.onChange(value && value.customerId);
