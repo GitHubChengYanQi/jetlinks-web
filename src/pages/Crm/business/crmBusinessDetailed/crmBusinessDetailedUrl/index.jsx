@@ -48,3 +48,7 @@ export const brands = {
   url: '/brand/listSelect',
   method: 'POST',
 };
+export const erpPackageNameList = {
+  url: '/erpPackage/listSelect',
+  method: 'POST',
+};

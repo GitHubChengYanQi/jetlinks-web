@@ -5,7 +5,7 @@
  * @Date 2021-08-04 11:01:43
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -18,6 +18,8 @@ import ErpPackageTableEdit from '../packageTableEdit';
 import {erpPackageTableDelete, erpPackageTableList} from '../packageTableUrl';
 import * as SysField from '../packageTableField';
 import Table from '@/components/Table';
+import Modal from '@/components/Modal';
+import StockTable from '@/pages/Erp/stock/components/StockTable';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,16 +27,16 @@ const {FormItem} = Form;
 const ErpPackageTableList = ({onChange,...props}) => {
 
   const ref = useRef();
-  const tableRef1 = useRef(null);
+  const tableRef = useRef(null);
   const refAddOne = useRef(null);
   const [ids, setIds] = useState([]);
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem style={{'display': 'none'}} name="packageId" value={props.value} component={SysField.PackageId}/>
-      </>
-    );
-  };
+
+  useEffect(()=>{
+      tableRef.current.formActions.setFieldValue('packageId', props.value );
+      tableRef.current.submit();
+    }
+    ,[props.value]);
+
 
   const footer = () => {
     /**
@@ -58,8 +60,8 @@ const ErpPackageTableList = ({onChange,...props}) => {
         api={erpPackageTableList}
         rowKey="id"
         isModal={false}
-        searchForm={searchForm}
-        ref={tableRef1}
+        searchForm={false}
+        ref={tableRef}
         showSearchButton={false}
         // footer={footer}
         onChange={(keys) => {
@@ -92,17 +94,25 @@ const ErpPackageTableList = ({onChange,...props}) => {
         }} />
       </Table>
       <Drawer width={800} title="产品" component={ErpPackageTableEdit} onSuccess={() => {
-        tableRef1.current.refresh();
+        tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-      <Modal2 width={1900} title="选择" component={ItemsList}
-        onSuccess={()=>{
-          tableRef1.current.refresh();
+      {/*<Modal2 width={1900} title="选择" component={ItemsList}*/}
+      {/*  onSuccess={()=>{*/}
+      {/*    tableRef.current.refresh();*/}
+      {/*    refAddOne.current.close();*/}
+      {/*  }}*/}
+      {/*  ref={refAddOne}*/}
+      {/*  packageId={props.value}*/}
+      {/*  disabled={false}*/}
+      {/*/>*/}
+      <Modal width={1600} title="选择" component={StockTable}
+        onSuccess={() => {
           refAddOne.current.close();
-        }}
-        ref={refAddOne}
+          tableRef.current.refresh();
+        }} ref={refAddOne}
         packageId={props.value}
-        disabled={false}
+        TcDisabled={false}
       />
     </>
   );

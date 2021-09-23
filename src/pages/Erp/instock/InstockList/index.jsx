@@ -149,7 +149,8 @@ const InstockList = () => {
           );
         }} sorter/>
         <Column title="入库数量" width={120} align='center' dataIndex="number" sorter/>
-        <Column title="价格" width={120} align='center' dataIndex="price" sorter/>
+        <Column title="原价" width={120} align='center' dataIndex="costPrice" sorter/>
+        <Column title="售价" width={120} align='center' dataIndex="sellingPrice" sorter/>
         <Column title="登记时间" width={200} dataIndex="registerTime" sorter/>
         <Column title="条形码" width={200} dataIndex="barcode" sorter/>
         <Column title="入库状态" width={200} dataIndex="state" render={(text, record) => {
