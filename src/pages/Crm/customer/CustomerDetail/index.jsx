@@ -9,7 +9,6 @@ import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
-import ContactsList from '@/pages/Crm/customer/CustomerEdit/components/ContactsList';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
@@ -22,6 +21,7 @@ import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import Modal from '@/components/Modal';
 import styles from './index.module.scss';
+import ContactsTable from '@/pages/Crm/contacts/ContactsList';
 
 const {TabPane} = Tabs;
 
@@ -143,7 +143,7 @@ const CustomerDetail = () => {
                   <Description data={data} />
                 </TabPane>
                 <TabPane tab="联系人" key="2">
-                  <ContactsList customerId={data && data.customerId} />
+                  <ContactsTable customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="地址" key="3">
                   <AdressList customerId={data && data.customerId} />

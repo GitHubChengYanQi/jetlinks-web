@@ -7,12 +7,12 @@ import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton
 
 const SelectCustomer = (props) => {
 
-  const {onChange} = props;
+  const {value:values,onChange} = props;
 
 
   const [visible, setVisible] = useState(false);
 
-  const [value,setValue] = useState();
+  const [value,setValue] = useState(values);
 
   const [blur, setBlur] = useState();
 

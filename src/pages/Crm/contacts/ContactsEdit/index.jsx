@@ -42,7 +42,7 @@ const ContactsEdit = ({...props}, ref) => {
 
   const {customerId} = props;
   const formRef = useRef(null);
-  const [result, setResult] = useState(props.value);
+  const [result, setResult] = useState(props.value.contactsId || false);
   const height = () => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
@@ -72,7 +72,11 @@ const ContactsEdit = ({...props}, ref) => {
           <Row gutter={24}>
             <Col span={12}>
               <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
-                <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="联系人信息" level={4} />} headerBordered>
+                <ProCard
+                  className="h2Card"
+                  style={{marginTop: 8}}
+                  title={<Title title="联系人信息" level={4} />}
+                  headerBordered>
                   <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName} required />
                   <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} required />
                   {customerId ?
@@ -85,14 +89,19 @@ const ContactsEdit = ({...props}, ref) => {
                     <FormItem
                       label="客户"
                       name="customerId"
+                      value={props.value && props.value.customerResults.length > 0 && props.value.customerResults[0].customerName}
                       component={SysField.SelectCustomers}
-                      customer={customerId || null} required />}
+                      required />}
                 </ProCard>
               </div>
             </Col>
             <Col span={12}>
               <div style={{height: height(), overflow: 'auto'}}>
-                <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="联系人电话" level={4} />} headerBordered>
+                <ProCard
+                  className="h2Card"
+                  style={{marginTop: 8}}
+                  title={<Title title="联系人电话" level={4} />}
+                  headerBordered>
                   <FieldList
                     name="phoneParams"
                     initialValue={[
@@ -112,11 +121,15 @@ const ContactsEdit = ({...props}, ref) => {
                                     label="电话号码"
                                     name={`phoneParams.${index}.phoneNumber`}
                                     component={SysField.PhoneNumber}
-                                    rules={[{required: true, message: '请输入正确的手机号码!',pattern:/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/}]}
+                                    rules={[{
+                                      required: true,
+                                      message: '请输入正确的手机号码!',
+                                      pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+                                    }]}
                                   />
                                   <Button
                                     type="link"
-                                    style={{float: 'right',display: state.value.length === 1 && 'none'}}
+                                    style={{float: 'right', display: state.value.length === 1 && 'none'}}
                                     icon={<DeleteOutlined />}
                                     danger
                                     onClick={() => {

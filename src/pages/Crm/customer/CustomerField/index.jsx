@@ -19,6 +19,7 @@ import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/Custome
 import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
 import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
 import AdressMap from '@/pages/Crm/customer/components/AdressMap';
+import moment from 'moment';
 
 const {Option} = Select;
 
@@ -78,7 +79,9 @@ export const ContactsId = (props) => {
 };
 
 export const Setup = (props) => {
-  return (<DatePicker  {...props} />);
+  return (<DatePicker disabledDate={(current)=>{
+    return current && current > moment().endOf('day');
+  }}  {...props} />);
 };
 export const Legal = (props) => {
   const [visi, setVist] = useState();
@@ -111,7 +114,9 @@ export const CompanyType = (props) => {
     }, {value: '其他类型', label: '其他类型'}]} {...props} />);
 };
 export const BusinessTerm = (props) => {
-  return (<DatePicker   {...props} />);
+  return (<DatePicker disabledDate={(current)=>{
+    return current && current < moment().endOf('day');
+  }} {...props} />);
 };
 export const SignIn = (props) => {
   return (<Input  {...props} />);

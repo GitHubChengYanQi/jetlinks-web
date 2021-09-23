@@ -5,7 +5,7 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Select as AntSelect, InputNumber} from 'antd';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
@@ -68,7 +68,6 @@ export const CompanyRole = (props) => {
 };
 
 export const SelectCustomers = (props) => {
-
   return (
     <SelectCustomer {...props} onChange={(value)=>{
       props.onChange(value && value.customerId);
