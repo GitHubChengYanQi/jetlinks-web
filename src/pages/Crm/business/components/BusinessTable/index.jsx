@@ -225,12 +225,12 @@ const BusinessTable = (props) => {
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
-              <EditButton onClick={() => {
-                setBusinessId(record.businessId);
-                setData(record.sales);
-                setDisable(1);
-                modelRef.current.open(false);
-              }} />
+              {/*<EditButton onClick={() => {*/}
+              {/*  setBusinessId(record.businessId);*/}
+              {/*  setData(record.sales);*/}
+              {/*  setDisable(1);*/}
+              {/*  modelRef.current.open(false);*/}
+              {/*}} />*/}
               <DelButton api={businessDelete} value={record.businessId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />

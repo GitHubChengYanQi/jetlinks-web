@@ -15,10 +15,19 @@ import * as apiUrl from '../crmBusinessDetailedUrl';
 export const BusinessId = (props) =>{
   return (<Select api={apiUrl.BusinessId} {...props} />);
 };
+// 套餐
+export const PackageId = (props) => {
+  return (<Select api={apiUrl.erpPackageNameList} {...props} />);
+};
+
 // 产品名称
 export const ItemId = (props) => {
   return (<Select api={apiUrl.ProductNameListSelect} {...props} />);
 };
+export const brandId = (props) => {
+  return (<Select api={apiUrl.brands} {...props}/>);
+};
+
 export const Quantity = (props) =>{
   return (<Input {...props}/>);
 };
