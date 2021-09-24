@@ -12,6 +12,7 @@ import {deliveryDetailsDetail, deliveryDetailsAdd, deliveryDetailsEdit} from '..
 import * as SysField from '../deliveryDetailsField';
 import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
 const {FormItem} = Form;
 
@@ -63,84 +64,24 @@ const DeliveryDetailsEdit = ({...props}) => {
   });
 
   return (
-    <Form
-      {...props}
-      value={value ? value.deliveryDetailsId : false}
-      ref={formRef}
-      api={ApiConfig}
-      // fieldKey="deliveryDetailsId"
-    >
-
-      <FormItem
-        label="客户"
-        name="customerId"
-        value={value.customerId || null}
-        component={SysField.Customer}
-        placeholder="请选择客户"
-        customerid={async (customer) => {
-          setState(true);
-          if (customer) {
-            await AcontactsRun({
-              data: {
-                customerId: customer
-              }
-            });
-            await AadressRun({
-              data: {
-                customerId: customer
-              }
-            });
-          }
-        }}
-        required
-      />
-      <FormItem
-        label="联系人"
-        value={value.contactsId || null}
-        name="contactsId"
-        state={state}
-        component={SysField.Contacts}
-        placeholder="联系人"
-        customerid={Acontacts || null}
-        contactsid={async (contacts) => {
-          if (contacts) {
-            await runAPhone({
-              data: {
-                contactsId: contacts
-              }
-            });
-          }
-        }}
-        required
-      />
-      <FormItem
-        label="联系人电话"
-        name="phoneId"
-        value={value.phoneId || null}
-        state={state}
-        component={SysField.Phone}
-        placeholder="请选择联系人电话"
-        contactsid={APhone || null}
-        required
-      />
-      <FormItem
-        label="地址"
-        value={value.adressId || null}
-        name="adressId"
-        state={state}
-        component={SysField.Adress}
-        placeholder="请选择地址"
-        customerid={Aadress || null}
-        required
-      />
-      <FormItem
-        hidden
-        value={ids || null}
-        name="ids"
-        component={SysField.Ids}
-        required
-      />
-    </Form>
+    <div style={{padding:24}}>
+      <Form
+        {...props}
+        value={value ? value.deliveryDetailsId : false}
+        ref={formRef}
+        api={ApiConfig}
+        // fieldKey="deliveryDetailsId"
+      >
+        <CustomerAll />
+        <FormItem
+          hidden
+          value={ids || null}
+          name="ids"
+          component={SysField.Ids}
+          required
+        />
+      </Form>
+    </div>
   );
 };
 

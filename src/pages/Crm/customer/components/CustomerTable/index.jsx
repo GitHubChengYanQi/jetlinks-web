@@ -186,19 +186,7 @@ const CustomerTable = (props) => {
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
-          return (
-            <>
-              {choose ? <CheckButton onClick={() => {
-                choose(record);
-                props.onSuccess();
-              }} /> : null}
-              <DelButton api={customerDelete} value={record.customerId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} />
+        <Column />
       </Table>
       <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
         tableRef.current.refresh();

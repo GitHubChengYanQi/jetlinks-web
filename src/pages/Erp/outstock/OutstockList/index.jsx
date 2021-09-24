@@ -65,13 +65,12 @@ const OutstockList = (props) => {
           value={0}
           component={SysField.ItemIdSelect} />;
       </>
-    )
-      ;
+    );
   };
 
   return (
-    <>
-      {value ? <>出库产品</> : <Button style={{width: '100%'}} onClick={() => {
+    <div style={{padding:24}}>
+      {value ? <h2>出库产品</h2> : <Button style={{width: '100%'}} onClick={() => {
         ref.current.open(false);
       }}>
         添加出库商品
@@ -126,7 +125,7 @@ const OutstockList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} outstockOrderId={outstockOrderId} sourhouse={sourhouse} />
-    </>
+    </div>
   );
 };
 

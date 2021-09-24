@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import {useRequest} from '@/util/Request';
 import {StoreHouse} from '@/pages/Erp/outstockApply/outstockApplyField';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
+import ProCard from '@ant-design/pro-card';
 
 const {FormItem} = Form;
 
@@ -76,7 +77,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
   };
 
   return (
-    <div style={{height: height()}}>
+    <div style={{height: height(),padding:24}}>
       <Form
         {...props}
         NoButton={false}
@@ -88,7 +89,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
         <Row gutter={24}>
           <Col span={10}>
             <div style={{height: height(), overflow: 'auto'}}>
-              <Card title="基本信息" bordered={false}>
+              <ProCard className='h2Card' headerBordered title="基本信息" bordered={false}>
                 <div style={{paddingRight: 20}}>
                   <FormItem label="负责人" component={SysField.UserId} name="userId" required />
 
@@ -96,12 +97,12 @@ const OutstockApplyEdit = ({...props}, ref) => {
 
                   <CustomerAll />
                 </div>
-              </Card>
+              </ProCard>
             </div>
           </Col>
           <Col span={14}>
             <div style={{height: height(), overflow: 'auto'}}>
-              <Card title="发货申请明细" bordered={false}>
+              <ProCard className='h2Card' headerBordered title="发货申请明细" bordered={false}>
                 <FieldList
                   name="applyDetails"
                   initialValue={[
@@ -146,7 +147,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
                     );
                   }}
                 </FieldList>
-              </Card>
+              </ProCard>
             </div>
           </Col>
         </Row>

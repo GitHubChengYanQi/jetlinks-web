@@ -41,7 +41,7 @@ const OutstockOrderEdit = ({...props}) => {
 
 
   return (
-    <>
+    <div style={{padding:24}}>
       <Form
         {...props}
         ref={formRef}
@@ -93,7 +93,7 @@ const OutstockOrderEdit = ({...props}) => {
         </FieldList>
 
       </Form>
-    </>
+    </div>
 
   );
 };

@@ -31,7 +31,7 @@ const OutStock = (props) => {
 
 
   return (
-    <div>
+    <div style={{padding:24}}>
       <Form
         {...props}
         ref={formRef}
