@@ -153,7 +153,7 @@ const CustomerTable = (props) => {
               history.push(`/CRM/customer/${record.customerId}`);
             }}>
               <Col>
-                <Avatar size={64}>LOGO</Avatar>
+                <Avatar size={64}>{value.substring(0, 1)}</Avatar>
               </Col>
               <Col>
                 <strong>{value}</strong>

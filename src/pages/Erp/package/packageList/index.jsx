@@ -120,7 +120,7 @@ const ErpPackageList = (props) => {
             }} ref={ref} />
           </div>
           <div className={styles.col}>
-            <TableList packageId={PackageId || 111} productName={productName || null} />
+            <TableList packageId={PackageId || 111} productName={productName || null} disable/>
           </div>
         </div>
       </div>

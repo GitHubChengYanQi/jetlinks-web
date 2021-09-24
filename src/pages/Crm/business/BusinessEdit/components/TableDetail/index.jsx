@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Divider, Table as AntTable} from 'antd';
 import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/business/BusinessUrl";
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
@@ -12,7 +12,8 @@ import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackag
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
 import {PlusOutlined} from '@ant-design/icons';
-import StockTable from '@/pages/Erp/stock/components/StockTable';
+import StockTableList from '@/pages/Crm/business/BusinessEdit/components/StockTableList';
+
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -38,13 +39,13 @@ const TableDetail = (props) => {
   return (
     <>
       <div style={{textAlign:'right'}}>
-        <Button key='1' style={{marginRight: 10}}
+        <Button key='1' style={{marginTop: 15,marginRight: 10}}
           icon={<PlusOutlined />}
           onClick={()=>{
             refAddOne.current.open(false);}}>
             添加产品
         </Button>
-        <Modal width={1600} title="选择" component={StockTable}
+        <Modal width={800} title="选择产品" component={StockTableList}
           onSuccess={() => {
             refAddOne.current.close();
             tableRef.current.refresh();
@@ -61,7 +62,7 @@ const TableDetail = (props) => {
           }}>
           添加产品套餐
         </Button>
-        <Modal width={700} title="选择" component={ItemPackage}
+        <Modal width={700} title="选择套餐" component={ItemPackage}
           onSuccess={() => {
             refAddAll.current.close();
             tableRef.current.refresh();
@@ -70,6 +71,7 @@ const TableDetail = (props) => {
           disabled={false}
           businessId={value}
         />
+        <Divider  style={{margin: '17px 5px 1px 5px'}}/>
       </div>
       <Table
         headStyle={{display:'none'}}
@@ -89,14 +91,14 @@ const TableDetail = (props) => {
             </div>
           );
         }} />
-        <Column title="品牌"  width={200} render={(text, record) => {
+        <Column title="品牌" dataIndex="brandResult" render={(text, record) => {
           return (
             <>
-              {record.brandResult && record.brandResult.brandName}
+              {record.brandResult ? record.brandResult.brandName : null}
             </>
           );
         }} />
-        <Column title="销售单价" dataIndex="salePrice"/>
+        <Column width={100} title="销售单价" dataIndex="salePrice"/>
         <Column title="数量" dataIndex="quantity"/>
         <Column title="小计" dataIndex="totalPrice"/>
         <Column title="操作" align="right" render={(value, record) => {

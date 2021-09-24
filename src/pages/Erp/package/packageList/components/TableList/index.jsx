@@ -17,7 +17,7 @@ const {Column} = AntTable;
 const formActionsPublic = createFormActions();
 
 const TableList = (props) => {
-  const {packageId,productName} = props;
+  const {packageId,productName, disable} = props;
 
 
   const ref = useRef(null);
@@ -41,7 +41,7 @@ const TableList = (props) => {
   return (
     <>
       <div>
-        <div style={{margin:16,backgroundColor:'white',padding:16}}>{productName || '套餐'}的产品明细<Button style={{visibility:'hidden'}}>123</Button></div>
+        { disable && <div style={{margin:16,backgroundColor:'white',padding:16}}>{productName || '套餐'}的产品明细<Button style={{visibility:'hidden'}}>123</Button></div>}
         <Table
           api={erpPackageTableList}
           rowKey="id"
@@ -58,6 +58,13 @@ const TableList = (props) => {
                   record.itemsResult ? record.itemsResult.name : null
                 }
               </div>
+            );
+          }} />
+          <Column title="品牌" dataIndex="brandResult" render={(text, record) => {
+            return (
+              <>
+                {record.brandResult ? record.brandResult.brandName : null}
+              </>
             );
           }} />
           <Column title="销售单价" align='center' dataIndex="salePrice"/>

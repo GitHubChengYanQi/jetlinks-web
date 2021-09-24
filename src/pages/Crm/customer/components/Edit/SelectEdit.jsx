@@ -1,30 +1,31 @@
 import React, {useState} from 'react';
-import {AutoComplete} from 'antd';
-import {useRequest} from '@/util/Request';
-import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {Popover, Select} from 'antd';
 
 
-const SelectEdit = ({value:values,val, onChange}) => {
+const SelectEdit = ({value: values, val, onChange,data}) => {
 
-  const [value,setValue] = useState(values);
-  const [change,setChange] = useState(val);
-
-  const {data} = useRequest(CustomerLevelIdSelect);
+  const [value, setValue] = useState(values);
+  const [change, setChange] = useState(val);
+  const [visiable, setVisiable] = useState();
 
   return (
     <div style={{display: 'inline-block', cursor: 'pointer'}}>
-      <AutoComplete
-        value={value}
-        options={data}
-        style={{width: 200}}
-        onChange={(value, option)=>{
-          setValue(option.label);
-          setChange(option.label);
-          typeof onChange === 'function' && onChange(option.value);
-        }}
-      >
-        <div>{change || '未填写'}</div>
-      </AutoComplete>
+      <Popover placement="bottom" visible={visiable} onVisibleChange={(valuhe) => {
+        setVisiable(valuhe);
+      }} trigger="click" content={
+        <Select
+          value={value}
+          style={{width:200}}
+          options={data}
+          onSelect={(value, option) => {
+            setVisiable(false);
+            setValue(value);
+            setChange(option.label);
+            typeof onChange === 'function' && onChange(value);
+          }}
+        />}>
+        {change || '未填写'}
+      </Popover>
     </div>
   );
 };

@@ -7,22 +7,21 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import useRequest from '@/util/Request/useRequest';
-import Modal2 from '@/components/Modal';
-import ItemsList from "@/pages/Erp/items/ItemsList";
 import ErpPackageTableEdit from '../packageTableEdit';
 import {erpPackageTableDelete, erpPackageTableList} from '../packageTableUrl';
-import * as SysField from '../packageTableField';
 import Table from '@/components/Table';
 import Modal from '@/components/Modal';
-import StockTable from '@/pages/Erp/stock/components/StockTable';
+import StockTableList from '@/pages/Crm/business/BusinessEdit/components/StockTableList';
+
+
 
 const {Column} = AntTable;
-const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ErpPackageTableList = ({onChange,...props}) => {
 
@@ -62,6 +61,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
         isModal={false}
         searchForm={false}
         ref={tableRef}
+        formActions={formActionsPublic}
         showSearchButton={false}
         // footer={footer}
         onChange={(keys) => {
@@ -77,9 +77,16 @@ const ErpPackageTableList = ({onChange,...props}) => {
             </div>
           );
         }} />
-        <Column title="销售单价" dataIndex="salePrice"/>
-        <Column title="数量" dataIndex="quantity"/>
-        <Column title="小计" dataIndex="totalPrice"/>
+        <Column title="品牌" dataIndex="brandResult" render={(text, record) => {
+          return (
+            <>
+              {record.brandResult ? record.brandResult.brandName : null}
+            </>
+          );
+        }} />
+        <Column width={100} title="销售单价" dataIndex="salePrice"/>
+        <Column width={100} title="数量" dataIndex="quantity"/>
+        <Column width={100} title="小计" dataIndex="totalPrice"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -87,7 +94,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
                 ref.current.open(record.id);
               }}/>
               <DelButton api={erpPackageTableDelete} value={record.id} onSuccess={()=>{
-                tableRef1.current.refresh();
+                tableRef.current.refresh();
               }}/>
             </>
           );
@@ -97,16 +104,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-      {/*<Modal2 width={1900} title="选择" component={ItemsList}*/}
-      {/*  onSuccess={()=>{*/}
-      {/*    tableRef.current.refresh();*/}
-      {/*    refAddOne.current.close();*/}
-      {/*  }}*/}
-      {/*  ref={refAddOne}*/}
-      {/*  packageId={props.value}*/}
-      {/*  disabled={false}*/}
-      {/*/>*/}
-      <Modal width={1600} title="选择" component={StockTable}
+      <Modal width={800} title="选择产品" component={StockTableList}
         onSuccess={() => {
           refAddOne.current.close();
           tableRef.current.refresh();

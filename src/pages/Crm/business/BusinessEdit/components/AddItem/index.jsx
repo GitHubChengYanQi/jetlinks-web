@@ -18,18 +18,25 @@ import {
   crmBusinessDetailedDetail,
 } from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import {batchAdd} from '@/pages/Erp/items/ItemsUrl';
+import {erpPackageTableBatchAdd} from '@/pages/Erp/packageTable/packageTableUrl';
+
 
 
 const {FormItem} = Form;
 
 const ApiConfig = {
   view: crmBusinessDetailedDetail,
-  add: batchAdd,
+  add: '',
 };
 
 
 
 const AddItem = (props, ref) => {
+  if(props.businessId !== undefined){
+    ApiConfig.add = batchAdd;
+  }else{
+    ApiConfig.add = erpPackageTableBatchAdd;
+  }
   const formRef = useRef(null);
   const {data} = props;
   const RowStyleLayout = styled(props => <div {...props} />)`
@@ -108,6 +115,7 @@ const AddItem = (props, ref) => {
                                   name={`businessDetailedParam.${index}.itemId`}
                                   component={SysField.ItemId}
                                   required
+                                  disabled
                                 />
                               </Col>
                               <Col span={6}>
@@ -121,6 +129,7 @@ const AddItem = (props, ref) => {
                               <Col span={6}>
                                 <FormItem
                                   label="销售单价"
+                                  disabled
                                   name={`businessDetailedParam.${index}.salePrice`}
                                   component={SysField.salePrice}
                                   required

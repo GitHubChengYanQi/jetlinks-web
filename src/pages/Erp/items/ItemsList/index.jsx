@@ -8,7 +8,7 @@
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {useHistory} from "ice";
-import {Button, message, Table as AntTable} from 'antd';
+import {Button, message, Table as AntTable, Tag} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -234,7 +234,26 @@ const ItemsList = (props) => {
               }}>{row.name}</Button>
             );
           }}/>
-        <Column title="品牌" width={300} align='center' dataIndex="brandId" sorter />
+        {/*<Column title="品牌" width={300} align='center' dataIndex="brandId" sorter />*/}
+        <Column title="品牌" width={300} align='center' dataIndex="brandBindResults" render={(value, record) => {
+          return (
+            <>
+              {
+                record.brandBindResults && record.brandBindResults.map((value, index) => {
+                  return (
+                    <Tag
+                      key={index}
+                      color="green"
+                      style={{marginRight: 3}}
+                    >
+                      {value.brandName}
+                    </Tag>
+                  );
+                })
+              }
+            </>
+          );
+        }} />
         <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
         <Column title="产品库存" width={120} align='center' dataIndex="inventory" sorter/>
         <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
@@ -257,6 +276,7 @@ const ItemsList = (props) => {
             </>
           );
         }} sorter />
+
         <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
           return (
             <>

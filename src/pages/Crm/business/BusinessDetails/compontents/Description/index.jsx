@@ -1,25 +1,57 @@
 import React from 'react';
 import {Descriptions} from 'antd';
+import {useRequest} from '@/util/Request';
+import {businessEdit, OrgNameListSelect} from '@/pages/Crm/business/BusinessUrl';
+import SelectEdit from '@/pages/Crm/customer/components/Edit/SelectEdit';
+import DateEdit from '@/pages/Crm/customer/components/Edit/DateEdit';
+import moment from 'moment';
 
 const Description = (props) => {
 
   const {data} = props;
 
+  const {run} = useRequest(businessEdit, {manual: true});
+
+  const {data: OriginData} = useRequest(OrgNameListSelect);
 
 
   if (data) {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="项目编号">{data.businessId ?  data.businessId : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="销售流程">{data.sales ? data.sales.name: '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="客户">{data.customer ? data.customer.customerName: '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="项目名称">{data.businessName ?  data.businessName: '未填写'}</Descriptions.Item>
-          {/*<Descriptions.Item label="负责人">{data.user ?  data.user.name: '未填写'}</Descriptions.Item>*/}
+          <Descriptions.Item label="项目编号">{data.businessId ? data.businessId : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="销售流程">{data.sales ? data.sales.name : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="客户">{data.customer ? data.customer.customerName : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="项目名称">{data.businessName ? data.businessName : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="赢率">{data.process ? `${data.process.percentage}%` : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="立项日期">{data.time  ? data.time: '未填写'}</Descriptions.Item>
-          {/*<Descriptions.Item label="项目阶段">{data.stage  ?  data.stage: '未填写'}</Descriptions.Item>*/}
-          <Descriptions.Item label="商机来源">{data.origin  ? data.origin.originName: '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="立项日期">
+            <DateEdit
+              value={data.time}
+              onChange={async (value) => {
+                await run({
+                  data: {
+                    ...data,
+                    time: value
+                  }
+                });
+              }}
+              disabledDate={(current) => {
+                return current && current > moment().endOf('day');
+              }} />
+          </Descriptions.Item>
+          <Descriptions.Item label="商机来源">
+            <SelectEdit
+              value={data.originId}
+              data={OriginData}
+              val={data.origin && data.origin.originName}
+              onChange={async (value) => {
+                await run({
+                  data: {
+                    ...data,
+                    originId: value
+                  }
+                });
+              }} /></Descriptions.Item>
         </Descriptions>
       </>
     );

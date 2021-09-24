@@ -1,34 +1,145 @@
 import React from 'react';
 import {Descriptions,} from 'antd';
+import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
+import {useRequest} from '@/util/Request';
+import {customerEdit, CustomerLevelIdSelect, OriginIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import SelectEdit from '@/pages/Crm/customer/components/Edit/SelectEdit';
+import DateEdit from '@/pages/Crm/customer/components/Edit/DateEdit';
+import moment from 'moment';
+import TextEdit from '@/pages/Crm/customer/components/Edit/TextEdit';
 
 
 const Description = (props) => {
   const {data} = props;
 
+  const {data: OriginData} = useRequest(OriginIdSelect);
 
+  const {run} = useRequest(customerEdit, {manual: true});
 
   if (data) {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
           <Descriptions.Item label="客户编号">{data.customerId ? data.customerId : '未填写'}</Descriptions.Item>
-          <Descriptions.Item
-            label="客户级别">{data.crmCustomerLevelResult && data.crmCustomerLevelResult.level ? data.crmCustomerLevelResult.level : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="法定代表人">{data.legal ? data.legal : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="负责人">{data.userResult.name ? data.userResult.name : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="客户状态">{data.status ? data.status : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="统一社会信用代码">{data.utscc ? data.utscc : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="公司类型">{data.companyType ? data.companyType : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="成立时间">{data.setup ? data.setup : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="营业期限">{data.businessTerm ? data.businessTerm : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="注册地址">{data.signIn ? data.signIn : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="简介">{data.introduction ? data.introduction : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="备注">{data.note ? data.note : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="客户来源">{data.originResult ? data.originResult.originName : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="邮箱">{data.emall ? data.emall : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="网址">{data.url ? data.url : '未填写'}</Descriptions.Item>
-          <Descriptions.Item
-            label="行业">{data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</Descriptions.Item>
+          <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
+            await run({
+              data: {
+                ...data,
+                legal: value
+              }
+            });
+          }} /></Descriptions.Item>
+          <Descriptions.Item label="统一社会信用代码">{data.utscc || <InputEdit value={data.utscc} onChange={async (value) => {
+            await run({
+              data: {
+                ...data,
+                utscc: value
+              }
+            });
+          }} />}</Descriptions.Item>
+          <Descriptions.Item label="公司类型">{data.companyType ||
+          <SelectEdit value={data.companyType} onChange={async (value) => {
+            await run({
+              data: {
+                ...data,
+                companyType: value
+              }
+            });
+          }} data={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {
+            value: '有限合伙企业',
+            label: '有限合伙企业'
+          }, {value: '外商独资企业', label: '外商独资企业'}, {value: '个人独资企业', label: '个人独资企业'}, {
+            value: '国有独资公司',
+            label: '国有独资公司'
+          }, {value: '其他类型', label: '其他类型'}]} />}</Descriptions.Item>
+          <Descriptions.Item label="成立时间">{data.setup ||
+          <DateEdit
+            value={data.setup}
+            onChange={async (value) => {
+              await run({
+                data: {
+                  ...data,
+                  setup: value
+                }
+              });
+            }}
+            disabledDate={(current) => {
+              return current && current > moment().endOf('day');
+            }} />}</Descriptions.Item>
+          <Descriptions.Item label="营业期限">{data.businessTerm ||
+          <DateEdit
+            value={data.businessTerm}
+            onChange={async (value) => {
+              await run({
+                data: {
+                  ...data,
+                  businessTerm: value
+                }
+              });
+            }}
+            disabledDate={(current) => {
+              return current && current < moment().endOf('day');
+            }} />}</Descriptions.Item>
+          <Descriptions.Item label="客户来源">
+            <SelectEdit
+              data={OriginData}
+              value={data.originId}
+              val={data.originResult && data.originResult.originName}
+              onChange={async (value) => {
+                await run({
+                  data: {
+                    ...data,
+                    originId: value
+                  }
+                });
+              }} /></Descriptions.Item>
+          <Descriptions.Item label="邮箱">
+            <InputEdit
+              value={data.emall}
+              patter={/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/}
+              message="邮箱格式不正确!"
+              onChange={async (value) => {
+                await run({
+                  data: {
+                    ...data,
+                    emall: value
+                  }
+                });
+              }} />
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label="网址">
+            <InputEdit
+              value={data.url}
+              patter={/^(http(s)?:\/\/)?(www\.)?[\w-]+\.(com|net|cn)$/}
+              message="网址格式不正确!"
+              onChange={async (value) => {
+                await run({
+                  data: {
+                    ...data,
+                    url: value
+                  }
+                });
+              }} />
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label="简介"><TextEdit value={data.introduction} onChange={async (value) => {
+            await run({
+              data: {
+                ...data,
+                introduction: value
+              }
+            });
+          }} /></Descriptions.Item>
+          <Descriptions.Item span={2} label="备注">
+            <TextEdit
+              value={data.note}
+              onChange={async (value) => {
+                await run({
+                  data: {
+                    ...data,
+                    note: value
+                  }
+                });
+              }} /></Descriptions.Item>
         </Descriptions>
       </>
     );
