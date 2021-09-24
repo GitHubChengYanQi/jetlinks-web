@@ -38,7 +38,7 @@ const CrmCustomerLevelList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
+        <FormItem label="客户级别" name="level" component={SysField.Level} />
       </>
     );
   };

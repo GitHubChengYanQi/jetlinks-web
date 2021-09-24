@@ -3,7 +3,7 @@ import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
+import {customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
 import {useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -22,6 +22,9 @@ import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusin
 import Modal from '@/components/Modal';
 import styles from './index.module.scss';
 import ContactsTable from '@/pages/Crm/contacts/ContactsList';
+import {EditName} from '@/pages/Crm/customer/components/Edit/indexName';
+import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
+import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 
 const {TabPane} = Tabs;
 
@@ -34,7 +37,7 @@ const CustomerDetail = () => {
   const refTrack = useRef(null);
   const submitRef = useRef(null);
 
-  const {loading, data, run,refresh} = useRequest(customerDetail, {
+  const {loading, data, run, refresh} = useRequest(customerDetail, {
     defaultParams: {
       data: {
         customerId: params.cid
@@ -42,11 +45,13 @@ const CustomerDetail = () => {
     }
   });
 
+  const {run: runCustomer} = useRequest(customerEdit, {manual: true});
+
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
-  if (!data){
+  if (!data) {
     return '暂无客户';
   }
 
@@ -62,20 +67,45 @@ const CustomerDetail = () => {
               <Avatar size={64}>LOGO</Avatar>
             </Col>
             <Col>
-              <h3>{data && data.customerName || '未填写'}</h3>
+              <EditName value={data && data.customerName || '未填写'} onChange={async (value) => {
+                await runCustomer({
+                  data: {
+                    ...data,
+                    customerName: value
+                  }
+                });
+              }} />
               <div>
-                <em>注册地址：{data && data.signIn || '未填写'}&nbsp;&nbsp;/&nbsp;&nbsp;行业：{data && data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</em>
+                <em>注册地址：<InputEdit value={data && data.signIn} onChange={async (value) => {
+                  await runCustomer({
+                    data:{
+                      ...data,
+                      signIn:value
+                    }
+                  });
+                }} />&nbsp;&nbsp;/&nbsp;&nbsp;行业：<TreeEdit values={data && data.industryId} val={data.crmIndustryResult && data.crmIndustryResult.industryName} onChange={async (value) => {
+                  await runCustomer({
+                    data:{
+                      ...data,
+                      industryId:value
+                    }
+                  });
+                }} />
+                </em>
               </div>
             </Col>
           </Row>
         </div>
         <div className={styles.titleButton}>
           <Button
-            style={params.state === 'false' ? {'display': 'none' }: null }
+            type='primary'
+            style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {
               refTrack.current.open(false);
-            }} icon={<EditOutlined/>}>添加跟进</Button>
-          <Modal width={1400} title="跟进"
+            }} icon={<EditOutlined />}>添加跟进</Button>
+          <Modal
+            width={1400}
+            title="跟进"
             ref={refTrack}
             compoentRef={submitRef}
             footer={
@@ -95,13 +125,13 @@ const CustomerDetail = () => {
             onSuccess={() => {
               refTrack.current.close();
               refresh();
-            }} val={data.customerId} number={0}/>
-          <Button type="primary" onClick={() => {
-            ref.current.open(data && data.customerId);
-          }}>编辑</Button>
-          <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
-            ref.current.close();
-          }} ref={ref} />
+            }} val={data.customerId} number={0} />
+          {/*<Button type="primary" onClick={() => {*/}
+          {/*  ref.current.open(data && data.customerId);*/}
+          {/*}}>编辑</Button>*/}
+          {/*<CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {*/}
+          {/*  ref.current.close();*/}
+          {/*}} ref={ref} />*/}
           <Button onClick={() => {
             history.back();
           }}><Icon type="icon-huifu" />返回</Button>
@@ -152,7 +182,7 @@ const CustomerDetail = () => {
                   <ContractTable customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="订单" key="5">
-                  <OrderList customerId={data &&data.customerId} />
+                  <OrderList customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="回款" key="6">
                   Content of Tab Pane 3
@@ -170,7 +200,7 @@ const CustomerDetail = () => {
                   <Dynamic value={data} />
                 </TabPane>
                 <TabPane tab="跟进" key="2">
-                  <Track value={null} number={null} trackMessageId={data.customerId}/>
+                  <Track value={null} number={null} trackMessageId={data.customerId} />
                 </TabPane>
               </Tabs>
             </Card>
