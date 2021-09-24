@@ -54,6 +54,7 @@ const ItemsEdit = ({...props}) => {
               <FormItem label="生产日期" name="productionTime" component={SysField.ProductionTime} required />
               <FormItem label="材质名称" name="materialId" component={SysField.MaterialId} required />
               <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} required />
+              <FormItem label="品牌" name="brandId" component={SysField.BrandId} required />
               <div style={{textAlign:'center'}}>
                 <Button type="primary" htmlType="submit">
                   下一步

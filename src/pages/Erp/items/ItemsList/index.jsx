@@ -45,38 +45,38 @@ const ItemsList = (props) => {
   const [itemsId, setItemsId] = useState([]);
   const history = useHistory();
 
-  const { run: add} = useRequest(erpPackageTableAdd, {
-    manual: true,
-    onError: (error) => {
-      message.error(error.message);
-    },
-    onSuccess: () => {
-      ref.current.close();
-      props.onSuccess();
-    }
-  });
+  // const { run: add} = useRequest(erpPackageTableAdd, {
+  //   manual: true,
+  //   onError: (error) => {
+  //     message.error(error.message);
+  //   },
+  //   onSuccess: () => {
+  //     ref.current.close();
+  //     props.onSuccess();
+  //   }
+  // });
 
-  const { run: addTc} = useRequest(crmBusinessDetailedAdd, {
-    manual: true,
-    onError: (error) => {
-      message.error(error.message);
-    },
-    onSuccess: () => {
-      ref.current.close();
-      props.onSuccess();
-    }
-  });
-
-  const { run: addHt} = useRequest(contractDetailAdd, {
-    manual: true,
-    onError: (error) => {
-      message.error(error.message);
-    },
-    onSuccess: () => {
-      ref.current.close();
-      props.onSuccess();
-    }
-  });
+  // const { run: addTc} = useRequest(crmBusinessDetailedAdd, {
+  //   manual: true,
+  //   onError: (error) => {
+  //     message.error(error.message);
+  //   },
+  //   onSuccess: () => {
+  //     ref.current.close();
+  //     props.onSuccess();
+  //   }
+  // });
+  //
+  // const { run: addHt} = useRequest(contractDetailAdd, {
+  //   manual: true,
+  //   onError: (error) => {
+  //     message.error(error.message);
+  //   },
+  //   onSuccess: () => {
+  //     ref.current.close();
+  //     props.onSuccess();
+  //   }
+  // });
 
   let disabled = true;
   if(props.disabled === undefined){
@@ -234,7 +234,7 @@ const ItemsList = (props) => {
               }}>{row.name}</Button>
             );
           }}/>
-
+        <Column title="品牌" width={300} align='center' dataIndex="brandId" sorter />
         <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
         <Column title="产品库存" width={120} align='center' dataIndex="inventory" sorter/>
         <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
@@ -260,53 +260,53 @@ const ItemsList = (props) => {
         <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
           return (
             <>
-              {choose ? <CheckButton onClick={()=>{
-                choose(record);
-                props.onSuccess();
-              }} /> : null}
-              {!disabled&&
-              <CheckButton onClick={() => {
-                add(
-                  {
-                    data: {
-                      packageId: props.packageId,
-                      itemId: record.itemId,
-                      salePrice: 0,
-                      totalPrice: 0,
-                      quantity: 1
-                    }
-                  }
-                );
+              {/*{choose ? <CheckButton onClick={()=>{*/}
+              {/*  choose(record);*/}
+              {/*  props.onSuccess();*/}
+              {/*}} /> : null}*/}
+              {/*{!disabled&&*/}
+              {/*<CheckButton onClick={() => {*/}
+              {/*  add(*/}
+              {/*    {*/}
+              {/*      data: {*/}
+              {/*        packageId: props.packageId,*/}
+              {/*        itemId: record.itemId,*/}
+              {/*        salePrice: 0,*/}
+              {/*        totalPrice: 0,*/}
+              {/*        quantity: 1*/}
+              {/*      }*/}
+              {/*    }*/}
+              {/*  );*/}
 
-              }}/>}
-              {!TcDisabled&&
-              <CheckButton onClick={() => {
-                addTc(
-                  {
-                    data: {
-                      businessId: props.businessId,
-                      itemId: record.itemId,
-                      salePrice: 0,
-                      totalPrice: 0,
-                      quantity: 1
-                    }
-                  }
-                );
-              }}/>}
-              {props.contractId &&
-              <CheckButton onClick={() => {
-                addHt(
-                  {
-                    data: {
-                      contractId: props.contractId,
-                      itemId: record.itemId,
-                      salePrice: 0,
-                      totalPrice: 0,
-                      quantity: 1
-                    }
-                  }
-                );
-              }}/>}
+              {/*}}/>}*/}
+              {/*{!TcDisabled&&*/}
+              {/*<CheckButton onClick={() => {*/}
+              {/*  addTc(*/}
+              {/*    {*/}
+              {/*      data: {*/}
+              {/*        businessId: props.businessId,*/}
+              {/*        itemId: record.itemId,*/}
+              {/*        salePrice: 0,*/}
+              {/*        totalPrice: 0,*/}
+              {/*        quantity: 1*/}
+              {/*      }*/}
+              {/*    }*/}
+              {/*  );*/}
+              {/*}}/>}*/}
+              {/*{props.contractId &&*/}
+              {/*<CheckButton onClick={() => {*/}
+              {/*  addHt(*/}
+              {/*    {*/}
+              {/*      data: {*/}
+              {/*        contractId: props.contractId,*/}
+              {/*        itemId: record.itemId,*/}
+              {/*        salePrice: 0,*/}
+              {/*        totalPrice: 0,*/}
+              {/*        quantity: 1*/}
+              {/*      }*/}
+              {/*    }*/}
+              {/*  );*/}
+              {/*}}/>}*/}
               <EditButton onClick={() => {ref.current.open(record.itemId);}} />
               <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
                 tableRef.current.refresh();

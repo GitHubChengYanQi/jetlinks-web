@@ -199,10 +199,8 @@ const StockTable = (props) => {
         onClose={()=>{
         }}
         component={AddItem}
+        packageId={props.packageId}
         businessId={props.businessId}
-        onSuccess={() => {
-          props.onSuccess();
-        }}
       />
     </>
   );

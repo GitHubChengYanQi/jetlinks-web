@@ -72,13 +72,20 @@ const AddItem = (props, ref) => {
           <ProCard style={{marginTop: 8}} title={<Title title="产品明细" level={4} />} headerBordered>
             <Row gutter={1}>
               <Col span={6}>
-                <FormItem
+                {props.businessId !== undefined ? <FormItem
                   label="商机名称"
                   name="businessId"
                   disabled
                   component={SysField.BusinessId}
                   value={props.businessId}
-                />
+                />: null}
+                {props.packageId !== undefined ? <FormItem
+                  label="套餐名称"
+                  name="packageId"
+                  disabled
+                  component={SysField.PackageId}
+                  value={props.packageId}
+                />: null}
               </Col>
             </Row>
             <FieldList

@@ -19,8 +19,6 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const ref = useRef(null);
 
-  const [visible, showModel] = useState(false);
-
   const RenderComponent = () => {
     switch (type) {
       case 'sjly':

@@ -2,9 +2,10 @@ import React from 'react';
 import { Form, Input, Button, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory, getSearchParams } from 'ice';
+import cookie from 'js-cookie';
 import { useRequest } from '@/util/Request';
 import { login as loginUrl } from '@/Config/ApiUrl';
-import cookie from 'js-cookie';
+
 
 const FormItem = Form.Item;
 
@@ -19,6 +20,7 @@ export default function Login({ submitText }) {
 
   return (
     <Form
+      size="large"
       initialValues={{ remember: true }}
       onFinish={async (values) => {
         const response = await run({
@@ -44,6 +46,7 @@ export default function Login({ submitText }) {
           prefix={<UserOutlined/>}
           name="account"
           placeholder="手机号/邮箱/账号"
+          autoComplete="off"
         />
       </FormItem>
       <FormItem
@@ -67,7 +70,7 @@ export default function Login({ submitText }) {
         />
       </FormItem>
       <FormItem>
-        <Button type="primary" htmlType="submit" block loading={loading}>
+        <Button size="large" type="primary" htmlType="submit" block loading={loading}>
           {submitText || `登 录`}
         </Button>
       </FormItem>

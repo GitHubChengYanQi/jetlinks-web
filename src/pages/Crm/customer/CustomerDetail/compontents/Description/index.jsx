@@ -1,16 +1,19 @@
 import React from 'react';
-import {Descriptions} from 'antd';
+import {Descriptions,} from 'antd';
+
 
 const Description = (props) => {
-
   const {data} = props;
-  if (data){
+
+
+
+  if (data) {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="客户名称">{data.customerName ? data.customerName : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户编号">{data.customerId ? data.customerId : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="客户级别">{data.crmCustomerLevelResult && data.crmCustomerLevelResult.level ? data.crmCustomerLevelResult.level : '未填写'}</Descriptions.Item>
+          <Descriptions.Item
+            label="客户级别">{data.crmCustomerLevelResult && data.crmCustomerLevelResult.level ? data.crmCustomerLevelResult.level : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="法定代表人">{data.legal ? data.legal : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="负责人">{data.userResult.name ? data.userResult.name : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="客户状态">{data.status ? data.status : '未填写'}</Descriptions.Item>
@@ -24,11 +27,12 @@ const Description = (props) => {
           <Descriptions.Item label="客户来源">{data.originResult ? data.originResult.originName : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="邮箱">{data.emall ? data.emall : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="网址">{data.url ? data.url : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="行业">{data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</Descriptions.Item>
+          <Descriptions.Item
+            label="行业">{data.crmIndustryResult ? data.crmIndustryResult.industryName : '未填写'}</Descriptions.Item>
         </Descriptions>
       </>
     );
-  }else {
+  } else {
     return null;
   }
 
