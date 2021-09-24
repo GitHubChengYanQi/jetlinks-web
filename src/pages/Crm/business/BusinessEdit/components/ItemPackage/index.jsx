@@ -62,34 +62,34 @@ const ItemPackage = (props) => {
     }
   });
 
-  const {run: select} = useRequest(erpPackageTableList,
-    {
-      manual: true,
-      onError: (error) => {
-        message.error(error.message);
-      },
-      onSuccess: (response) => {
-        response.forEach(async (value) => {
-          props.contractId ? await addContract({
-            data: {
-              contractId: props.contractId,
-              itemId: value.itemId,
-              salePrice: 0,
-              totalPrice: 0,
-              quantity: 1
-            }
-          }) : await add({
-            data: {
-              businessId: props.businessId,
-              itemId: value.itemId,
-              salePrice: value.salePrice,
-              totalPrice: value.totalPrice,
-              quantity: value.quantity
-            }
-          });
-        });
-      }
-    });
+  // const {run: select} = useRequest(erpPackageTableList,
+  //   {
+  //     manual: true,
+  //     onError: (error) => {
+  //       message.error(error.message);
+  //     },
+  //     onSuccess: (response) => {
+  //       response.forEach(async (value) => {
+  //         props.contractId ? await addContract({
+  //           data: {
+  //             contractId: props.contractId,
+  //             itemId: value.itemId,
+  //             salePrice: 0,
+  //             totalPrice: 0,
+  //             quantity: 1
+  //           }
+  //         }) : await add({
+  //           data: {
+  //             businessId: props.businessId,
+  //             itemId: value.itemId,
+  //             salePrice: value.salePrice,
+  //             totalPrice: value.totalPrice,
+  //             quantity: value.quantity
+  //           }
+  //         });
+  //       });
+  //     }
+  //   });
 
 
   const actions = () => {
@@ -114,13 +114,7 @@ const ItemPackage = (props) => {
           tableRef.current.refresh();
           props.onSuccess();
         }
-        } data={props.contractId ? {
-          contractId: props.contractId,
-          packagesIds: ids,
-          salePrice: 0,
-          totalPrice: 0,
-          quantity: 0
-        } : {
+        } data={{
           businessId: props.businessId,
           packagesIds: ids,
           salePrice: 0,
@@ -130,8 +124,8 @@ const ItemPackage = (props) => {
         <DelButton api={{
           ...batchDelete
         }} onSuccess={() => {
-          // tableRef.current.refresh();
-          props.onSuccess();
+          tableRef.current.refresh();
+          // props.onSuccess();
         }} value={ids}>批量删除</DelButton>
       </>
     );
@@ -141,7 +135,7 @@ const ItemPackage = (props) => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
     }
-    return 750;
+    return 800;
   };
 
   return (
@@ -172,9 +166,9 @@ const ItemPackage = (props) => {
           <Column title="操作" align="right" render={(value, record) => {
             return (
               <>
-                <CheckButton onClick={() => {
-                  select({data: {packageId: record.packageId}});
-                }} />
+                {/*<CheckButton onClick={() => {*/}
+                {/*  select({data: {packageId: record.packageId}});*/}
+                {/*}} />*/}
                 <EditButton onClick={() => {
                   ref.current.open(record.packageId);
                 }} />
