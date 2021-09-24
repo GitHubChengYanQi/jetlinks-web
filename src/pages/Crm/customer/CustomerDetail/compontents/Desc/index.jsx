@@ -23,7 +23,7 @@ const Desc = (props) => {
           <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
             await run({
               data: {
-                ...data,
+                customerId:data.customerId,
                 legal: value
               }
             });
@@ -36,7 +36,7 @@ const Desc = (props) => {
               onChange={async (value) => {
                 await run({
                   data: {
-                    ...data,
+                    customerId:data.customerId,
                     customerLevelId: value
                   }
                 });
@@ -45,7 +45,7 @@ const Desc = (props) => {
             <Radio.Group defaultValue={data.status} onChange={async (value) => {
               await run({
                 data: {
-                  ...data,
+                  customerId:data.customerId,
                   status: value.target.value
                 }
               });
@@ -58,7 +58,7 @@ const Desc = (props) => {
             <UserEdit userId={data.userId} value={data.userResult && data.userResult.name} onChange={async (value) => {
               await run({
                 data: {
-                  ...data,
+                  customerId:data.customerId,
                   userId: value
                 }
               });

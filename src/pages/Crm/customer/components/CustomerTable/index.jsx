@@ -149,11 +149,11 @@ const CustomerTable = (props) => {
       >
         <Column title="客户信息" fixed dataIndex="customerName" render={(value, record) => {
           return (
-            <Row gutter={24} wrap={false} style={{cursor:'pointer'}} onClick={() => {
+            <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
             }}>
               <Col>
-                <Avatar size={64}>{value.substring(0, 1)}</Avatar>
+                  <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>
               </Col>
               <Col>
                 <strong>{value}</strong>
@@ -186,22 +186,7 @@ const CustomerTable = (props) => {
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
-          return (
-            <>
-              {choose ? <CheckButton onClick={() => {
-                choose(record);
-                props.onSuccess();
-              }} /> : null}
-              <EditButton onClick={() => {
-                ref.current.open(record.customerId);
-              }} />
-              <DelButton api={customerDelete} value={record.customerId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} />
+        <Column />
       </Table>
       <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
         tableRef.current.refresh();

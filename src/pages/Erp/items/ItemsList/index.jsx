@@ -239,7 +239,7 @@ const ItemsList = (props) => {
           return (
             <>
               {
-                record.brandBindResults && record.brandBindResults.map((value, index) => {
+                record.brandResults && record.brandResults.map((value, index) => {
                   return (
                     <Tag
                       key={index}

@@ -57,16 +57,12 @@ export const BrandId = (props) => {
 
   // eslint-disable-next-line no-nested-ternary
   value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
-    brandBindResults.push(items && `${items.label}`);
+    brandBindResults.push(items && `${items.brandId}`);
   }) : value.forEach((items)=>{
     brandBindResults.push(items);
   }) : [];
 
-  useEffect(()=>{
-    if (value){
-      props.onChange(brandBindResults);
-    }
-  },[]);
+
 
 
   const {data} = useRequest(brandListSelect);
@@ -91,6 +87,7 @@ export const BrandId = (props) => {
       </Tag>
     );
   }
+
 
   return (
     <AntSelect

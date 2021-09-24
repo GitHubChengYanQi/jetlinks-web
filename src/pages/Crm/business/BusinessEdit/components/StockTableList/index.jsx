@@ -138,7 +138,7 @@ const StockTableList = (props) => {
         {/*<Column title="数量" width={120} align='center' sorter dataIndex="inventory" />*/}
         <Column />
       </Table>
-      <Modal width={1200}
+      <Modal width={1300}
         title="编辑选择"
         data={selectData}
         compoentRef={submitRef}

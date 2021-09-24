@@ -19,7 +19,7 @@ import {
 } from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import {batchAdd} from '@/pages/Erp/items/ItemsUrl';
 import {erpPackageTableBatchAdd} from '@/pages/Erp/packageTable/packageTableUrl';
-
+import {BrandId} from '../../../crmBusinessDetailed/crmBusinessDetailedField';
 
 
 const {FormItem} = Form;
@@ -30,25 +30,26 @@ const ApiConfig = {
 };
 
 
-
 const AddItem = (props, ref) => {
-  if(props.businessId !== undefined){
+  if (props.businessId !== undefined) {
     ApiConfig.add = batchAdd;
-  }else{
+  } else {
     ApiConfig.add = erpPackageTableBatchAdd;
   }
   const formRef = useRef(null);
   const {data} = props;
-  const RowStyleLayout = styled(props => <div {...props} />)`
-  .ant-btn {
-    margin-right: 5px;
-  }
 
-  .ant-form-item {
-    display: inline-flex;
-    width: 100%;
-  }
-`;
+
+  const RowStyleLayout = styled(props => <div {...props} />)`
+    .ant-btn {
+      margin-right: 5px;
+    }
+
+    .ant-form-item {
+      display: inline-flex;
+      width: 100%;
+    }
+  `;
 
   useImperativeHandle(ref, () => ({
     formRef
@@ -69,7 +70,7 @@ const AddItem = (props, ref) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="id"
-        onSuccess={()=>{
+        onSuccess={() => {
           props.onSuccess();
         }}
       >
@@ -85,14 +86,14 @@ const AddItem = (props, ref) => {
                   disabled
                   component={SysField.BusinessId}
                   value={props.businessId}
-                />: null}
+                /> : null}
                 {props.packageId !== undefined ? <FormItem
                   label="套餐名称"
                   name="packageId"
                   disabled
                   component={SysField.PackageId}
                   value={props.packageId}
-                />: null}
+                /> : null}
               </Col>
             </Row>
             <FieldList
@@ -121,9 +122,13 @@ const AddItem = (props, ref) => {
                               <Col span={6}>
                                 <FormItem
                                   label="品牌"
+                                  item={data.length > 0 && data[index].itemId}
                                   name={`businessDetailedParam.${index}.brandId`}
-                                  component={SysField.brandId}
-                                  required
+                                  component={SysField.BrandId}
+                                  rules={[{
+                                    required:true,
+                                    message:'暂无品牌'
+                                  }]}
                                 />
                               </Col>
                               <Col span={6}>
@@ -155,7 +160,7 @@ const AddItem = (props, ref) => {
                             </Row>
 
                           </RowStyleLayout>
-                          <Divider dashed style={{margin : 0}} />
+                          <Divider dashed style={{margin: 0}} />
                         </div>
                       );
                     })}

@@ -32,7 +32,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
   .ant-form-item {
     display: inline-flex;
-    width: 70%;
+    width: 100%;
   }
 `;
 
@@ -102,6 +102,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
         api={ApiConfig}
         fieldKey="trackMessageId"
         NoButton={false}
+        wrapperCol={24}
       >
         <Row gutter={24} style={{height:'100%'}}>
           <Col span={13} style={{height:'100%'}}>

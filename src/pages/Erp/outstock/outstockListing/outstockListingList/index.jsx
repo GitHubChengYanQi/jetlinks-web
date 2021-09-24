@@ -60,8 +60,20 @@ const OutstockListingList = (props) => {
         showSearchButton={false}
         ref={tableRef}
       >
-        <Column title="品牌" dataIndex="brandId" />
-        <Column title="产品" dataIndex="itemId" />
+        <Column title="产品" dataIndex="itemId" render={(value,record)=>{
+          return (
+            <>
+              {record.itemsResult && record.itemsResult.name}
+            </>
+          );
+        }} />
+        <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
+          return (
+            <>
+              {record.brandResult && record.brandResult.brandName}
+            </>
+          );
+        }} />
         <Column title="出库数量" dataIndex="number" />
       </Table>
       <Drawer width={800} title="编辑" component={OutstockListingEdit} onSuccess={() => {

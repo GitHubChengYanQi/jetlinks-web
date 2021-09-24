@@ -5,7 +5,7 @@ import {useRequest} from '@/util/Request';
 
 
 const UpLoadImg = (props) => {
-  const {value, onChange, bannerSrc,} = props;
+  const {value, onChange, button,type} = props;
   const [loading, setLoading] = useState(false); // loading 状态
   const [imageUrl, setImageUrl] = useState(''); // 图片地址
   const [oss, setOss] = useState({}); // OSS上传所需参数
@@ -67,7 +67,7 @@ const UpLoadImg = (props) => {
   return (
     // name 为发送到后台的文件名
     <Upload
-      listType="picture-card"
+      listType={type || 'picture-card'}
       className="avatar-uploader"
       showUploadList={false}
       data={oss}
@@ -83,7 +83,7 @@ const UpLoadImg = (props) => {
       }
       }
     >
-      {imageUrl ? <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton}
+      {button || (imageUrl ? <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
     </Upload>
   );
 };

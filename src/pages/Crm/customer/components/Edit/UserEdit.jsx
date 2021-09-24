@@ -53,7 +53,7 @@ const UserEdit = ({value, onChange,userId}) => {
           }}
         />
       }>
-        <div>{<><UserOutlined style={{marginRight: 8}} />{change}</> || <><UserOutlined style={{marginRight: 8}} />待认领</>}</div>
+        <div>{change ? <><UserOutlined style={{marginRight: 8}} />{change}</> : <><UserOutlined style={{marginRight: 8}} />待认领</>}</div>
       </Popover>
     </div>
   );
