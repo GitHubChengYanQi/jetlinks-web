@@ -41,7 +41,7 @@ export const Cost = (props) =>{
   return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;元</>);
 };
 export const Vulnerability = (props) =>{
-  return (<AntdSelect   style={{ width: w }} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:'0',label:'易损'},{value:'1',label:'不易损'}]} {...props}/>);
+  return (<AntdSelect   style={{ width: w }} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
 };
 // export const BrandId = (props) =>{
 //   return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
@@ -53,18 +53,18 @@ export const BrandId = (props) => {
   const {value,displays} = props;
 
 
-  const brandResults = [];
+  const brandBindResults = [];
 
   // eslint-disable-next-line no-nested-ternary
   value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
-    brandResults.push(items && `${items.label}`);
+    brandBindResults.push(items && `${items.label}`);
   }) : value.forEach((items)=>{
-    brandResults.push(items);
+    brandBindResults.push(items);
   }) : [];
 
   useEffect(()=>{
     if (value){
-      props.onChange(brandResults);
+      props.onChange(brandBindResults);
     }
   },[]);
 
@@ -96,7 +96,7 @@ export const BrandId = (props) => {
     <AntSelect
       mode="multiple"
       showArrow
-      value={brandResults}
+      value={brandBindResults}
       tagRender={tagRender}
       style={{width: '100%',display:displays || null}}
       options={options}

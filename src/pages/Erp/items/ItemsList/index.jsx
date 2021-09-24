@@ -235,6 +235,25 @@ const ItemsList = (props) => {
             );
           }}/>
         {/*<Column title="品牌" width={300} align='center' dataIndex="brandId" sorter />*/}
+        <Column title="品牌" width={300} align='center' dataIndex="brandBindResults" render={(value, record) => {
+          return (
+            <>
+              {
+                record.brandBindResults && record.brandBindResults.map((value, index) => {
+                  return (
+                    <Tag
+                      key={index}
+                      color="green"
+                      style={{marginRight: 3}}
+                    >
+                      {value.brandName}
+                    </Tag>
+                  );
+                })
+              }
+            </>
+          );
+        }} />
         <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
         <Column title="产品库存" width={120} align='center' dataIndex="inventory" sorter/>
         <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
@@ -257,25 +276,7 @@ const ItemsList = (props) => {
             </>
           );
         }} sorter />
-        <Column title="品牌" dataIndex="brandId" render={(value, record) => {
-          return (
-            <>
-              {
-                record.brandResult && record.brandResult.map((value, index) => {
-                  return (
-                    <Tag
-                      key={index}
-                      color="green"
-                      style={{marginRight: 3}}
-                    >
-                      {value.name}
-                    </Tag>
-                  );
-                })
-              }
-            </>
-          );
-        }} />
+
         <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
           return (
             <>

@@ -184,10 +184,12 @@ const ItemPackage = (props) => {
           tableRef.current.refresh();
           ref.current.close();
         }} ref={ref} />
-        <Modal width={900} title="套餐明细" component={TableList} packageId={PackageId} onSuccess={() => {
+        <Modal width={900} title="套餐明细" component={TableList} packageId={PackageId}
+          disable={false}
+          onSuccess={() => {
           // ref.current.refresh();
-          ref.current.close();
-        }} ref={MxRef} />
+            ref.current.close();
+          }} ref={MxRef} />
       </div>
     </>
   );
