@@ -92,7 +92,7 @@ const TableDetail = (props) => {
         <Column title="品牌"  width={200} render={(text, record) => {
           return (
             <>
-              {record.brandResult.brandName}
+              {record.brandResult && record.brandResult.brandName}
             </>
           );
         }} />
