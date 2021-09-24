@@ -1,4 +1,4 @@
-import {Button, Input, message, Table as AntTable} from 'antd';
+import {Button, Input, message, Modal as AntModal, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/items/ItemsField';
@@ -18,6 +18,7 @@ import {addAllPackages, batchAdd} from '@/pages/Erp/items/ItemsUrl';
 import SelButton from '@/components/SelButton';
 import {createFormActions} from '@formily/antd';
 import {contractDetailAdd} from '@/pages/Crm/contract/contractDetail/contractDetailUrl';
+import {SelectOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -50,17 +51,17 @@ const ItemPackage = (props) => {
       props.onSuccess();
     }
   });
-  const {run: addContract} = useRequest(contractDetailAdd, {
-    manual: true,
-    onError: (error) => {
-      message.error(error.message);
-    },
-    onSuccess: () => {
-      MxRef.current.close();
-      // props.onChange(props.businessId);
-      props.onSuccess();
-    }
-  });
+  // const {run: addContract} = useRequest(contractDetailAdd, {
+  //   manual: true,
+  //   onError: (error) => {
+  //     message.error(error.message);
+  //   },
+  //   onSuccess: () => {
+  //     MxRef.current.close();
+  //     // props.onChange(props.businessId);
+  //     props.onSuccess();
+  //   }
+  // });
 
   // const {run: select} = useRequest(erpPackageTableList,
   //   {
@@ -90,7 +91,17 @@ const ItemPackage = (props) => {
   //       });
   //     }
   //   });
-
+  const {run: addPackage} = useRequest(addAllPackages, {
+    manual: true,
+    onError: (error) => {
+      message.error(error.message);
+    },
+    onSuccess: () => {
+      MxRef.current.close();
+      // props.onChange(props.businessId);
+      props.onSuccess();
+    }
+  });
 
   const actions = () => {
     return (
@@ -108,19 +119,35 @@ const ItemPackage = (props) => {
      */
     return (
       <>
-        <SelButton api={{
-          ...addAllPackages
-        }} onSuccess={() => {
-          tableRef.current.refresh();
-          props.onSuccess();
-        }
-        } data={{
-          businessId: props.businessId,
-          packagesIds: ids,
-          salePrice: 0,
-          totalPrice: 0,
-          quantity: 0
-        }}>批量选择</SelButton>
+        <SelButton
+          onClick={()=>{
+
+            if(ids !== null && ids.length > 0){
+              addPackage({data:{
+                businessId: props.businessId,
+                packagesIds: ids,
+              }});
+            }
+            else{
+              AntModal.confirm({
+                title: '提示',
+                content: '请至少选择一条数据!',
+                confirmLoading: true,
+                style: {marginTop: '15%'},
+                onOk: async () => {
+                },
+                onCancel: () => {
+                }
+              });
+            }
+          }}
+          onSuccess={() => {
+            tableRef.current.refresh();
+            props.onSuccess();
+          }}
+          icon={<SelectOutlined />}
+          type="primary" >批量选择
+        </SelButton>
         <DelButton api={{
           ...batchDelete
         }} onSuccess={() => {
