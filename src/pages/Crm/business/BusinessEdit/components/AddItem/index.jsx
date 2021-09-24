@@ -115,6 +115,7 @@ const AddItem = (props, ref) => {
                                   name={`businessDetailedParam.${index}.itemId`}
                                   component={SysField.ItemId}
                                   required
+                                  disabled
                                 />
                               </Col>
                               <Col span={6}>
@@ -128,6 +129,7 @@ const AddItem = (props, ref) => {
                               <Col span={6}>
                                 <FormItem
                                   label="销售单价"
+                                  disabled
                                   name={`businessDetailedParam.${index}.salePrice`}
                                   component={SysField.salePrice}
                                   required

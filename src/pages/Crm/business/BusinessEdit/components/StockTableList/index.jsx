@@ -17,20 +17,23 @@ import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
 import {useBoolean} from "ahooks";
 import {useHistory} from "ice";
-import {stockList} from '../../StockUrl';
-import * as SysField from '../../StockField';
+
+import Modal from '@/components/Modal';
+import AddItem from '@/pages/Crm/business/BusinessEdit/components/AddItem';
 import SelButton from '@/components/SelButton';
+import * as SysField from '@/pages/Erp/stock/StockField';
+import {stockList} from '@/pages/Erp/stock/StockUrl';
 
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 const formActionsPublic = createFormActions();
-const StockTable = (props) => {
+const StockTableList = (props) => {
 
   const {choose, state,...other} = props;
   const tableRef = useRef(null);
   const modalRef = useRef(null);
-  const history = useHistory();
+  const submitRef = useRef(null);
 
   const [search,{toggle}]  = useBoolean(false);
   const [selectData, setSelectData] = useState(null);
@@ -42,51 +45,26 @@ const StockTable = (props) => {
   }, [state]);
 
   const searchForm = () => {
-    const formItem = () => {
-      return (
-        <>
-          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandId" component={SysField.BrandId} />
-        </>
-      );
-    };
-
-    return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-          columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />
-
-          {search ? formItem() : null}
-        </MegaLayout>
-      </div>
-    );
-  };
-
-  const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}> <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden  name="storehouseId" value={state} component={SysField.Storehouse} />
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />
       </>
     );
   };
 
   const [ids, setIds] = useState([]);
+  let TcDisabled = true;
+  if(props.TcDisabled === undefined){
+    TcDisabled = true;
+  }else{
+    TcDisabled = false;
+  }
   const footer = () => {
     /**
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (
-      <SelButton
+      !TcDisabled && <SelButton
         size="small"
         onClick={()=>{
 
@@ -114,10 +92,12 @@ const StockTable = (props) => {
     <>
       <Table
         title={<Breadcrumb />}
+        listHeader={TcDisabled}
         api={stockList}
         isModal={false}
+        rowSelection={TcDisabled}
         formActions={formActionsPublic}
-        SearchButton={Search()}
+        // SearchButton={Search()}
         layout={search}
         rowKey="stockId"
         searchForm={searchForm}
@@ -126,7 +106,7 @@ const StockTable = (props) => {
           setIds(keys);
           setSelectData(row);
         }}
-        footer={footer}
+        footer={TcDisabled ? null : footer}
         {...other}
       >
         <Column title="产品名称"  render={(text, record) => {
@@ -136,39 +116,56 @@ const StockTable = (props) => {
             </>
           );
         }} sorter />
-        <Column title="品牌"  width={200} render={(text, record) => {
-          return (
-            <>
-              {record.brandResult.brandName}
-            </>
-          );
-        }} sorter />
-        <Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {
-          return (
-            <>
-              <Button type="link" onClick={() => {
-                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,
-                  params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});
-              }}>{record.storehouseResult.name}</Button>
-            </>
-          );
-        }} sorter />
-        <Column title="数量" width={120} align='center' sorter dataIndex="inventory" />
+        salePrice
+        <Column title="销售单价" width={120} align='center' sorter dataIndex="salePrice" />
+        {/*<Column title="品牌"  width={200} render={(text, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      {record.brandResult.brandName}*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} sorter />*/}
+        {/*<Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      <Button type="link" onClick={() => {*/}
+        {/*        history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,*/}
+        {/*          params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});*/}
+        {/*      }}>{record.storehouseResult.name}</Button>*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} sorter />*/}
+        {/*<Column title="数量" width={120} align='center' sorter dataIndex="inventory" />*/}
         <Column />
-        {choose ? <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <CheckButton onClick={() => {
-                choose(record);
-                props.onSuccess();
-              }} />
-            </>
-          );
-        }} width={300} /> : null}
-
       </Table>
+      <Modal width={1200}
+        title="编辑选择"
+        data={selectData}
+        compoentRef={submitRef}
+        ref={modalRef}
+        footer={
+          <>
+            <Button type="primary" onClick={() => {
+              submitRef.current.formRef.current.submit();
+            }}>
+              保存
+            </Button>
+            <Button onClick={() => {
+              modalRef.current.close();
+            }}>
+               取消
+            </Button>
+          </>
+        }
+        onSuccess={()=>{
+          props.onSuccess();
+        }}
+        component={AddItem}
+        packageId={props.packageId}
+        businessId={props.businessId}
+      />
     </>
   );
 };
 
-export default StockTable;
+export default StockTableList;

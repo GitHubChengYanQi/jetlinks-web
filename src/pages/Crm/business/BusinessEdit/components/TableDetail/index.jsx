@@ -12,7 +12,7 @@ import ItemPackage from "@/pages/Crm/business/BusinessEdit/components/ItemPackag
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
 import {PlusOutlined} from '@ant-design/icons';
-import StockTable from '@/pages/Erp/stock/components/StockTable';
+import StockTableList from '@/pages/Crm/business/BusinessEdit/components/StockTableList';
 
 
 const {FormItem} = Form;
@@ -45,7 +45,7 @@ const TableDetail = (props) => {
             refAddOne.current.open(false);}}>
             添加产品
         </Button>
-        <Modal width={1600} title="选择" component={StockTable}
+        <Modal width={800} title="选择产品" component={StockTableList}
           onSuccess={() => {
             refAddOne.current.close();
             tableRef.current.refresh();
@@ -62,7 +62,7 @@ const TableDetail = (props) => {
           }}>
           添加产品套餐
         </Button>
-        <Modal width={700} title="选择" component={ItemPackage}
+        <Modal width={700} title="选择套餐" component={ItemPackage}
           onSuccess={() => {
             refAddAll.current.close();
             tableRef.current.refresh();
