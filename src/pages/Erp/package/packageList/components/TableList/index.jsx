@@ -60,6 +60,7 @@ const TableList = (props) => {
               </div>
             );
           }} />
+          <Column title="品牌" align='center' dataIndex="brandId"/>
           <Column title="销售单价" align='center' dataIndex="salePrice"/>
           <Column title="数量" align='center' dataIndex="quantity"/>
           <Column title="小计" align='center' dataIndex="totalPrice"/>

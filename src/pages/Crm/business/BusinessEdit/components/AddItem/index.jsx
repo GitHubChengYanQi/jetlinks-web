@@ -18,18 +18,25 @@ import {
   crmBusinessDetailedDetail,
 } from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 import {batchAdd} from '@/pages/Erp/items/ItemsUrl';
+import {erpPackageTableBatchAdd} from '@/pages/Erp/packageTable/packageTableUrl';
+
 
 
 const {FormItem} = Form;
 
 const ApiConfig = {
   view: crmBusinessDetailedDetail,
-  add: batchAdd,
+  add: '',
 };
 
 
 
 const AddItem = (props, ref) => {
+  if(props.businessId !== undefined){
+    ApiConfig.add = batchAdd;
+  }else{
+    ApiConfig.add = erpPackageTableBatchAdd;
+  }
   const formRef = useRef(null);
   const {data} = props;
   const RowStyleLayout = styled(props => <div {...props} />)`

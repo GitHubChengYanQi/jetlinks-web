@@ -77,9 +77,10 @@ const ErpPackageTableList = ({onChange,...props}) => {
             </div>
           );
         }} />
-        <Column title="销售单价" dataIndex="salePrice"/>
-        <Column title="数量" dataIndex="quantity"/>
-        <Column title="小计" dataIndex="totalPrice"/>
+        <Column width={100} title="品牌" align='center' dataIndex="brandId"/>
+        <Column width={100} title="销售单价" dataIndex="salePrice"/>
+        <Column width={100} title="数量" dataIndex="quantity"/>
+        <Column width={100} title="小计" dataIndex="totalPrice"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -87,7 +88,7 @@ const ErpPackageTableList = ({onChange,...props}) => {
                 ref.current.open(record.id);
               }}/>
               <DelButton api={erpPackageTableDelete} value={record.id} onSuccess={()=>{
-                tableRef1.current.refresh();
+                tableRef.current.refresh();
               }}/>
             </>
           );

@@ -45,3 +45,7 @@ export const erpPackageNameList = {
   method: 'POST',
 };
 
+export const erpPackageTableBatchAdd = {
+  url: '/erpPackageTable/batchAdd',
+  method: 'POST',
+};

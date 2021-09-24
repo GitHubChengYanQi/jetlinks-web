@@ -196,7 +196,8 @@ const StockTable = (props) => {
             </Button>
           </>
         }
-        onClose={()=>{
+        onSuccess={()=>{
+          props.onSuccess();
         }}
         component={AddItem}
         packageId={props.packageId}

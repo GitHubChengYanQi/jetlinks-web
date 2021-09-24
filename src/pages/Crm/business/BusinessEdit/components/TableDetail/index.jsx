@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Divider, Table as AntTable} from 'antd';
 import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/business/BusinessUrl";
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
@@ -13,6 +13,7 @@ import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
 import {PlusOutlined} from '@ant-design/icons';
 import StockTable from '@/pages/Erp/stock/components/StockTable';
+
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -38,7 +39,7 @@ const TableDetail = (props) => {
   return (
     <>
       <div style={{textAlign:'right'}}>
-        <Button key='1' style={{marginRight: 10}}
+        <Button key='1' style={{marginTop: 15,marginRight: 10}}
           icon={<PlusOutlined />}
           onClick={()=>{
             refAddOne.current.open(false);}}>
@@ -70,6 +71,7 @@ const TableDetail = (props) => {
           disabled={false}
           businessId={value}
         />
+        <Divider  style={{margin: '17px 5px 1px 5px'}}/>
       </div>
       <Table
         headStyle={{display:'none'}}
@@ -89,14 +91,14 @@ const TableDetail = (props) => {
             </div>
           );
         }} />
-        <Column title="品牌"  width={200} render={(text, record) => {
+        <Column title="品牌" dataIndex="brandResult" render={(text, record) => {
           return (
             <>
-              {record.brandResult.brandName}
+              {record.brandResult ? record.brandResult.brandName : null}
             </>
           );
         }} />
-        <Column title="销售单价" dataIndex="salePrice"/>
+        <Column width={100} title="销售单价" dataIndex="salePrice"/>
         <Column title="数量" dataIndex="quantity"/>
         <Column title="小计" dataIndex="totalPrice"/>
         <Column title="操作" align="right" render={(value, record) => {
