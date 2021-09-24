@@ -1,10 +1,10 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Tooltip, Popover} from 'antd';
+import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Tooltip, Popover, Dropdown} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import {customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
-import {useParams} from 'ice';
+import {customerDelete, customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
+import {useHistory, useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
@@ -26,6 +26,7 @@ import {EditName} from '@/pages/Crm/customer/components/Edit/indexName';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
 import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
+import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
 
 const {TabPane} = Tabs;
 
@@ -37,6 +38,7 @@ const CustomerDetail = () => {
   const ref = useRef(null);
   const refTrack = useRef(null);
   const submitRef = useRef(null);
+  const history = useHistory();
 
   const {loading, data, run, refresh} = useRequest(customerDetail, {
     defaultParams: {
@@ -65,14 +67,17 @@ const CustomerDetail = () => {
         <div className={styles.title}>
           <Row gutter={24}>
             <Col>
-              <AvatarEdit data={data} name={data.customerName && data.customerName.substring(0, 1)} onChange={async (value)=>{
-                await runCustomer({
-                  data: {
-                    customerId: data.customerId,
-                    avatar: value
-                  }
-                });
-              }} value={data.avatar}  />
+              <AvatarEdit
+                data={data}
+                name={data.customerName && data.customerName.substring(0, 1)}
+                onChange={async (value) => {
+                  await runCustomer({
+                    data: {
+                      customerId: data.customerId,
+                      avatar: value
+                    }
+                  });
+                }} value={data.avatar} />
             </Col>
             <Col>
               <EditName value={data && data.customerName || '未填写'} onChange={async (value) => {
@@ -114,6 +119,7 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
+          <CustomerMenu data={data} />
           <Button
             type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}

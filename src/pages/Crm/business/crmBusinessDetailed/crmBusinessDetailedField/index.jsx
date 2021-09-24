@@ -29,7 +29,6 @@ export const BrandId = (props) => {
   const {item} = props;
   const {data} = useRequest({url: '/itemBrandBind/list', method: 'POST', data: {itemId: item}});
 
-
   const datas = data && data.length > 0 ? data.map((items, index) => {
     return {
       label: items.brandResult && items.brandResult.brandName,
@@ -43,7 +42,7 @@ export const BrandId = (props) => {
     }else {
       props.onChange(null);
     }
-  }, [datas]);
+  }, [data]);
 
 
   return (<AntdSelect options={datas} {...props} />);
