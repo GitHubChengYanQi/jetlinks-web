@@ -24,7 +24,7 @@ const Description = (props) => {
           <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
             await run({
               data: {
-                ...data,
+                customerId:data.customerId,
                 legal: value
               }
             });
@@ -32,7 +32,7 @@ const Description = (props) => {
           <Descriptions.Item label="统一社会信用代码">{data.utscc || <InputEdit value={data.utscc} onChange={async (value) => {
             await run({
               data: {
-                ...data,
+                customerId:data.customerId,
                 utscc: value
               }
             });
@@ -41,7 +41,7 @@ const Description = (props) => {
           <SelectEdit value={data.companyType} onChange={async (value) => {
             await run({
               data: {
-                ...data,
+                customerId:data.customerId,
                 companyType: value
               }
             });
@@ -58,7 +58,7 @@ const Description = (props) => {
             onChange={async (value) => {
               await run({
                 data: {
-                  ...data,
+                  customerId:data.customerId,
                   setup: value
                 }
               });
@@ -72,7 +72,7 @@ const Description = (props) => {
             onChange={async (value) => {
               await run({
                 data: {
-                  ...data,
+                  customerId:data.customerId,
                   businessTerm: value
                 }
               });
@@ -88,7 +88,7 @@ const Description = (props) => {
               onChange={async (value) => {
                 await run({
                   data: {
-                    ...data,
+                    customerId:data.customerId,
                     originId: value
                   }
                 });
@@ -101,7 +101,7 @@ const Description = (props) => {
               onChange={async (value) => {
                 await run({
                   data: {
-                    ...data,
+                    customerId:data.customerId,
                     emall: value
                   }
                 });
@@ -115,7 +115,7 @@ const Description = (props) => {
               onChange={async (value) => {
                 await run({
                   data: {
-                    ...data,
+                    customerId:data.customerId,
                     url: value
                   }
                 });
@@ -124,7 +124,7 @@ const Description = (props) => {
           <Descriptions.Item span={2} label="简介"><TextEdit value={data.introduction} onChange={async (value) => {
             await run({
               data: {
-                ...data,
+                customerId:data.customerId,
                 introduction: value
               }
             });
@@ -135,8 +135,8 @@ const Description = (props) => {
               onChange={async (value) => {
                 await run({
                   data: {
-                    ...data,
-                    note: value
+                    customerId:data.customerId,
+                    note: `${value}`
                   }
                 });
               }} /></Descriptions.Item>

@@ -149,11 +149,11 @@ const CustomerTable = (props) => {
       >
         <Column title="客户信息" fixed dataIndex="customerName" render={(value, record) => {
           return (
-            <Row gutter={24} wrap={false} style={{cursor:'pointer'}} onClick={() => {
+            <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
             }}>
               <Col>
-                <Avatar size={64}>{value.substring(0, 1)}</Avatar>
+                  <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>
               </Col>
               <Col>
                 <strong>{value}</strong>
@@ -193,9 +193,6 @@ const CustomerTable = (props) => {
                 choose(record);
                 props.onSuccess();
               }} /> : null}
-              <EditButton onClick={() => {
-                ref.current.open(record.customerId);
-              }} />
               <DelButton api={customerDelete} value={record.customerId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />

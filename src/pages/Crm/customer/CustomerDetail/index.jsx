@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
+import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Tooltip, Popover} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
@@ -17,7 +17,7 @@ import ContractTable from '@/pages/Crm/contract/components/components/ContractTa
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, FormOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import Modal from '@/components/Modal';
 import styles from './index.module.scss';
@@ -25,6 +25,7 @@ import ContactsTable from '@/pages/Crm/contacts/ContactsList';
 import {EditName} from '@/pages/Crm/customer/components/Edit/indexName';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
 import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
+import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
 
 const {TabPane} = Tabs;
 
@@ -64,33 +65,49 @@ const CustomerDetail = () => {
         <div className={styles.title}>
           <Row gutter={24}>
             <Col>
-              <Avatar size={64}>{data.customerName.substring(0,1)}</Avatar>
+              <AvatarEdit data={data} name={data.customerName && data.customerName.substring(0, 1)} onChange={async (value)=>{
+                await runCustomer({
+                  data: {
+                    customerId: data.customerId,
+                    avatar: value
+                  }
+                });
+              }} value={data.avatar}  />
             </Col>
             <Col>
               <EditName value={data && data.customerName || '未填写'} onChange={async (value) => {
                 await runCustomer({
                   data: {
-                    ...data,
+                    customerId: data.customerId,
                     customerName: value
                   }
                 });
               }} />
               <div>
-                <em>注册地址：<InputEdit value={data && data.signIn} onChange={async (value) => {
-                  await runCustomer({
-                    data:{
-                      ...data,
-                      signIn:value
-                    }
-                  });
-                }} />&nbsp;&nbsp;/&nbsp;&nbsp;行业：<TreeEdit values={data && data.industryId} val={data.crmIndustryResult && data.crmIndustryResult.industryName} onChange={async (value) => {
-                  await runCustomer({
-                    data:{
-                      ...data,
-                      industryId:value
-                    }
-                  });
-                }} />
+                <em>注册地址：
+                  <InputEdit value={data && data.signIn} onChange={async (value) => {
+                    await runCustomer({
+                      data: {
+                        customerId: data.customerId,
+                        signIn: value
+                      }
+                    });
+                  }}
+                  />
+                  &nbsp;&nbsp;/&nbsp;&nbsp;
+                  行业：
+                  <TreeEdit
+                    values={data && data.industryId}
+                    val={data.crmIndustryResult && data.crmIndustryResult.industryName}
+                    onChange={async (value) => {
+                      await runCustomer({
+                        data: {
+                          customerId: data.customerId,
+                          industryId: value
+                        }
+                      });
+                    }}
+                  />
                 </em>
               </div>
             </Col>
@@ -98,7 +115,7 @@ const CustomerDetail = () => {
         </div>
         <div className={styles.titleButton}>
           <Button
-            type='primary'
+            type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {
               refTrack.current.open(false);
@@ -126,12 +143,6 @@ const CustomerDetail = () => {
               refTrack.current.close();
               refresh();
             }} val={data.customerId} number={0} />
-          {/*<Button type="primary" onClick={() => {*/}
-          {/*  ref.current.open(data && data.customerId);*/}
-          {/*}}>编辑</Button>*/}
-          {/*<CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {*/}
-          {/*  ref.current.close();*/}
-          {/*}} ref={ref} />*/}
           <Button onClick={() => {
             history.back();
           }}><Icon type="icon-huifu" />返回</Button>
