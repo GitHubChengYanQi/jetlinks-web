@@ -107,7 +107,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
         <Row gutter={24} style={{height:'100%'}}>
           <Col span={13} style={{height:'100%'}}>
             <div style={{paddingRight: 10, height:'100%', overflow: 'auto',display:'inline-block'}}>
-              <ProCard className="h2Card" style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
+              <ProCard className="h2Card" bodyStyle={{padding:16}} style={{marginTop: 8}} title={<Title title="基本信息" level={4} />} headerBordered>
                 <FormItem
                   label="客户"
                   name="customerId"
@@ -116,7 +116,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                   value={val}
                   required />
               </ProCard>
-              <ProCard className='h2Card' style={{marginTop: 2,height:'100%'}} title={<Title title="事项" level={4} />} headerBordered>
+              <ProCard className='h2Card' style={{marginTop: 2,height:'100%'}} bodyStyle={{padding:16}} title={<Title title="事项" level={4} />} headerBordered>
                 <FieldList
                   name="businessTrackParams"
                   initialValue={[
@@ -208,7 +208,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
           </Col>
           <Col span={11} style={{height:'100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard className='h2Card' style={{marginTop: 8,height:'100%'}} title={<Title title="竞争对手报价" level={4} />} headerBordered>
+              <ProCard className='h2Card' bodyStyle={{padding:16}} style={{marginTop: 8,height:'100%'}} title={<Title title="竞争对手报价" level={4} />} headerBordered>
                 <FieldList
                   name="competitorQuoteParam"
                   initialValue={[
@@ -222,7 +222,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <ProCard headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="竞争对手明细" level={6} />} headerBordered extra={<Button
+                            <ProCard bodyStyle={{padding:16}} headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="竞争对手明细" level={6} />} headerBordered extra={<Button
                               type="link" style={{float: 'right',display: state.value.length === 1 && 'none'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {

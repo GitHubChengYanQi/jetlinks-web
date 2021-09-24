@@ -29,7 +29,7 @@ const Amap = ({title, value, onClose, onChange}) => {
         <div style={{fontSize: 14, fontWeight: 900}}>{value.name}</div>
         {value.address}
       </div>}
-      <Button type="default" onClick={() => {
+      <Button type="text" onClick={() => {
         setVisible(true);
       }}><Icon type='icon-dingwei' />{title || '定位'}</Button>
       <Drawer

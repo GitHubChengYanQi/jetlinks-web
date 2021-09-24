@@ -108,7 +108,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         <Row gutter={24} style={{height: '100%'}}>
           <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 24}} className="h2Card" title="基本信息" headerBordered>
+              <ProCard style={{marginTop: 24}} bodyStyle={{padding:16}} className="h2Card" title="基本信息" headerBordered>
                 <MegaLayout labelWidth={100}>
                   <FormItem
                     label="客户名称" name="customerName" component={SysField.CustomerName}
@@ -133,6 +133,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 title="详细信息"
                 className="h2Card"
                 headerBordered
+                bodyStyle={{padding:16}}
               >
                 <MegaLayout labelWidth={100} grid>
                   <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
@@ -175,7 +176,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
           </Col>
           <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 24}} title="联系人信息" className="h2Card" headerBordered>
+              <ProCard style={{marginTop: 24}} bodyStyle={{padding:16}} title="联系人信息" className="h2Card" headerBordered>
                 <FieldList
                   name="contactsParams"
                   initialValue={[
@@ -191,6 +192,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                           return (
                             <ProCard
                               headStyle={{borderLeft: 'none', padding: '8px 16px'}}
+                              bodyStyle={{padding:16}}
                               title={<Title title={`联系人明细 ${index+1}`} level={6} />}
                               headerBordered
                               extra={
@@ -282,7 +284,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </FieldList>
               </ProCard>
 
-              <ProCard style={{marginTop: 8}} title="客户地址" className="h2Card" headerBordered>
+              <ProCard style={{marginTop: 8}} bodyStyle={{padding:16}} title="客户地址" className="h2Card" headerBordered>
                 <FieldList
                   name="adressParams"
                   initialValue={[
