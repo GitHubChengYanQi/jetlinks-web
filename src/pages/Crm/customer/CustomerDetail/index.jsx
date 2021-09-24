@@ -64,7 +64,7 @@ const CustomerDetail = () => {
         <div className={styles.title}>
           <Row gutter={24}>
             <Col>
-              <Avatar size={64}>LOGO</Avatar>
+              <Avatar size={64}>{data.customerName.substring(0,1)}</Avatar>
             </Col>
             <Col>
               <EditName value={data && data.customerName || '未填写'} onChange={async (value) => {
