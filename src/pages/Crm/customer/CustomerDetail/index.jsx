@@ -119,7 +119,7 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-          <CustomerMenu data={data} />
+          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' />
           <Button
             type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}
@@ -150,7 +150,7 @@ const CustomerDetail = () => {
               refresh();
             }} val={data.customerId} number={0} />
           <Button onClick={() => {
-            history.back();
+            history.goBack();
           }}><Icon type="icon-huifu" />返回</Button>
         </div>
       </Card>
@@ -160,26 +160,26 @@ const CustomerDetail = () => {
           <Desc data={data} />
         </Card>
       </div>
-      <div
-        className={styles.main}>
-        <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
-          <ProCard>
-            <Statistic title="今日UV" value={79.0} precision={2} />
-          </ProCard>
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <ProCard>
-            <Statistic title="冻结金额" value={112893.0} precision={2} />
-          </ProCard>
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <ProCard>
-            <Statistic title="信息完整度" value={93} suffix="/ 100" />
-          </ProCard>
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <ProCard>
-            <Statistic title="冻结金额" value={112893.0} />
-          </ProCard>
-        </ProCard.Group>
-      </div>
+      {/*<div*/}
+      {/*  className={styles.main}>*/}
+      {/*  <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="今日UV" value={79.0} precision={2} />*/}
+      {/*    </ProCard>*/}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="冻结金额" value={112893.0} precision={2} />*/}
+      {/*    </ProCard>*/}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="信息完整度" value={93} suffix="/ 100" />*/}
+      {/*    </ProCard>*/}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="冻结金额" value={112893.0} />*/}
+      {/*    </ProCard>*/}
+      {/*  </ProCard.Group>*/}
+      {/*</div>*/}
       <div
         className={styles.main}>
         <Row gutter={12}>

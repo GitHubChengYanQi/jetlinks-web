@@ -222,21 +222,7 @@ const BusinessTable = (props) => {
           sorter
           showSorterTooltip
           sortDirections={['ascend', 'descend']} />
-        <Column title="操作" fixed="right" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                setBusinessId(record.businessId);
-                setData(record.sales);
-                setDisable(1);
-                modelRef.current.open(false);
-              }} />
-              <DelButton api={businessDelete} value={record.businessId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={100} />
+        <Column />
       </Table>
       <BusinessAdd
         ref={addRef}
