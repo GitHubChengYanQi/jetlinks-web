@@ -98,7 +98,7 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
           {renderRightMenu()}
         </div>
       </Header>}
-      {mode === 'vertical' && <Sider theme="dark" width={220}>
+      {mode === 'vertical' && <Sider theme="dark" width={200}>
         <div style={{height:'100%'}}>
           <div className={styles.leftLogo}>
             {subMenu.name}

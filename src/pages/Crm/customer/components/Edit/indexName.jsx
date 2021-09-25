@@ -7,35 +7,42 @@ export const EditName = ({value: values, onChange}) => {
 
   const [value, setValue] = useState(values);
   const [visiable, setVisiable] = useState(false);
-  const [show,setShow] = useState();
+  const [show, setShow] = useState();
 
   return (
-    <Popover placement='topLeft' visible={show} onVisibleChange={(visible)=>{
+    <Popover placement="rightBottom" visible={show} onVisibleChange={(visible) => {
       setShow(visible);
     }} trigger="hover" content={<>
       <Button type="link" title="编辑名称" icon={<EditOutlined />} onClick={() => {
-        setValue(values);
+        setValue(value);
         setVisiable(true);
       }} />
       <Button type="link" title="复制" icon={<CopyOutlined />} onClick={() => {
 
       }} /></>}>
-      <Input
-        value={value}
-        onMouseOver={() => {
-          setShow(true);
-        }}
-        disabled={!visiable}
-        bordered={visiable}
-        style={{fontSize: 24, fontWeight: 500, display: 'inline-block', width: 'auto', color: '#000'}}
-        onChange={(value) => {
-          setValue(value.target.value);
-        }}
-        onBlur={() => {
-          setVisiable(false);
-          typeof onChange === 'function' && onChange(value);
-          setVisiable(false);
-        }} />
+
+      {!visiable ?
+        <div style={{fontSize: 24, fontWeight: 500, display: 'initial'}}>
+          {value}
+        </div>
+        :
+        <Input
+          value={value}
+          onMouseOver={() => {
+            setShow(true);
+          }}
+          disabled={!visiable}
+          bordered={visiable}
+          style={{fontSize: 24, fontWeight: 500, display: 'inline', color: '#000'}}
+          onChange={(value) => {
+            setValue(value.target.value);
+          }}
+          onBlur={() => {
+            setVisiable(false);
+            typeof onChange === 'function' && onChange(value);
+            setVisiable(false);
+          }} />
+      }
     </Popover>
   );
 };

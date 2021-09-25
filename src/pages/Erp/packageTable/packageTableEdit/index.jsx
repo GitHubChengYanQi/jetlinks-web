@@ -7,8 +7,9 @@
 
 import React, {useRef} from 'react';
 import Form from '@/components/Form';
-import {erpPackageTableDetail, erpPackageTableAdd, erpPackageTableEdit} from '../packageTableUrl';
 import * as SysField from '@/pages/Erp/packageTable/packageTableField';
+import {erpPackageTableDetail, erpPackageTableAdd, erpPackageTableEdit} from '../packageTableUrl';
+
 
 const {FormItem} = Form;
 

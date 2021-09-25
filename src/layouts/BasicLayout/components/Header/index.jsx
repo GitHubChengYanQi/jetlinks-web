@@ -54,7 +54,7 @@ const Header = () => {
                 <div id="mainMenu" onClick={() => {
                   setVisible(true);
                 }}>
-                  <Icon type="icon-gongnengtubiao-134" />
+                  <Icon type="icon-fenlei1" />
                 </div>
               </div>
               <div
@@ -140,7 +140,7 @@ const Header = () => {
         <div className="docker-top-container">
           <div className="docker-top-title">
             <div className="css-1b5qfbo">
-              <Icon type="icon-gongnengtubiao-134" />
+              <Icon type="icon-fenlei1" />
             </div>
             <div className="docker-top-text">
               <span

@@ -23,13 +23,11 @@ import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
-import {InfoCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import CheckButton from '@/components/CheckButton';
 import Icon from '@/components/Icon';
 import {useBoolean} from 'ahooks';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import style from './index.module.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -126,7 +124,7 @@ const CustomerTable = (props) => {
       ...customerBatchDelete
     }} onSuccess={() => {
       tableRef.current.refresh();
-    }} value={ids}>批量删除</DelButton>);
+    }} value={ids}>删除</DelButton>);
   };
 
   return (
@@ -186,7 +184,6 @@ const CustomerTable = (props) => {
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
         <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
-        <Column />
       </Table>
       <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
         tableRef.current.refresh();

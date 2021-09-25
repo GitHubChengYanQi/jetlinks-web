@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
-import {createFormActions} from '@formily/antd';
+import {createFormActions, FormItem} from '@formily/antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import EditButton from '@/components/EditButton';
@@ -16,25 +16,24 @@ import {erpPackageTableDelete, erpPackageTableList} from '../packageTableUrl';
 import Table from '@/components/Table';
 import Modal from '@/components/Modal';
 import StockTableList from '@/pages/Crm/business/BusinessEdit/components/StockTableList';
-
+import * as SysField from '@/pages/Erp/packageTable/packageTableField';
 
 
 const {Column} = AntTable;
 
 const formActionsPublic = createFormActions();
 
-const ErpPackageTableList = ({onChange,...props}) => {
+const ErpPackageTableList = ({onChange, ...props}) => {
 
   const ref = useRef();
   const tableRef = useRef(null);
   const refAddOne = useRef(null);
   const [ids, setIds] = useState([]);
 
-  useEffect(()=>{
-      tableRef.current.formActions.setFieldValue('packageId', props.value );
-      tableRef.current.submit();
-    }
-    ,[props.value]);
+  useEffect(() => {
+    tableRef.current.formActions.setFieldValue('packageId', props.value);
+    tableRef.current.submit();
+  }, [props.value]);
 
 
   const footer = () => {
@@ -47,28 +46,36 @@ const ErpPackageTableList = ({onChange,...props}) => {
     }} value={ids}>批量删除</DelButton>);
   };
 
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="1111" name="packageId" component={SysField.PackageId} />
+      </>
+    );
+  };
+
   return (
     <>
-      <div style={{textAlign:'right'}}>
-        <Button type="primary" className='placeName' onClick={()=>{
-          refAddOne.current.open(false);}}>
+      <div style={{textAlign: 'right'}}>
+        <Button type="primary" className="placeName" onClick={() => {
+          refAddOne.current.open(false);
+        }}>
           添加产品
         </Button>
       </div>
       <Table
         api={erpPackageTableList}
         rowKey="id"
+        headStyle={{display: 'none'}}
         isModal={false}
-        searchForm={false}
+        searchForm={searchForm}
         ref={tableRef}
         formActions={formActionsPublic}
-        showSearchButton={false}
-        // footer={footer}
         onChange={(keys) => {
           setIds(keys);
         }}
       >
-        <Column title="产品名称" dataIndex="items" render={(value, record)=>{
+        <Column title="产品名称" dataIndex="items" render={(value, record) => {
           return (
             <div>
               {
@@ -84,18 +91,18 @@ const ErpPackageTableList = ({onChange,...props}) => {
             </>
           );
         }} />
-        <Column width={100} title="销售单价" dataIndex="salePrice"/>
-        <Column width={100} title="数量" dataIndex="quantity"/>
-        <Column width={100} title="小计" dataIndex="totalPrice"/>
+        <Column width={100} title="销售单价" dataIndex="salePrice" />
+        <Column width={100} title="数量" dataIndex="quantity" />
+        <Column width={100} title="小计" dataIndex="totalPrice" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.id);
-              }}/>
-              <DelButton api={erpPackageTableDelete} value={record.id} onSuccess={()=>{
+              }} />
+              <DelButton api={erpPackageTableDelete} value={record.id} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
         }} />
@@ -103,8 +110,11 @@ const ErpPackageTableList = ({onChange,...props}) => {
       <Drawer width={800} title="产品" component={ErpPackageTableEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
-      <Modal width={800} title="选择产品" component={StockTableList}
+      }} ref={ref} />
+      <Modal
+        width={800}
+        title="选择产品"
+        component={StockTableList}
         onSuccess={() => {
           refAddOne.current.close();
           tableRef.current.refresh();

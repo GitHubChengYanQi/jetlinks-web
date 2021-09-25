@@ -141,11 +141,13 @@ const TableWarp = ({
 
       </div>
       <Layout>
-        {left &&<Sider className={style.sider} width={210}>
+        {left &&<Sider className={style.sider} width={180}>
           {left}
         </Sider>}
         <Content
           // style={{marginLeft: 260}}
+          style={{height:'calc(100vh - 128px)',overflow:'auto'}}
+          id="tableContent"
         >
           {searchForm ? <div className="search" style={headStyle}>
             <Form
@@ -186,7 +188,7 @@ const TableWarp = ({
               scroll={{x: 'max-content'}}
               sticky={{
                 getContainer: () => {
-                  return document.getElementById('listLayout');
+                  return document.getElementById('tableContent');
                 }
               }}
               {...other}

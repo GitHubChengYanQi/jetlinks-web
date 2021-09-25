@@ -5,7 +5,6 @@ import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
 import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
-import ProSkeleton from '@ant-design/pro-skeleton';
 
 
 const CustomerList = () => {
