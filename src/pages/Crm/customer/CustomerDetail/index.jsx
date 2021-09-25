@@ -1,32 +1,30 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs, Statistic, Divider, Tooltip, Popover, Dropdown} from 'antd';
+import { Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import {customerDelete, customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
+import { customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
 import {useHistory, useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 import OrderList from '@/pages/Erp/order/OrderList';
 import ContractTable from '@/pages/Crm/contract/components/components/ContractTable';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
-import {EditOutlined, FormOutlined} from '@ant-design/icons';
+import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import Modal from '@/components/Modal';
-import styles from './index.module.scss';
 import ContactsTable from '@/pages/Crm/contacts/ContactsList';
 import {EditName} from '@/pages/Crm/customer/components/Edit/indexName';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
 import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
 import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 
@@ -150,7 +148,7 @@ const CustomerDetail = () => {
               refresh();
             }} val={data.customerId} number={0} />
           <Button onClick={() => {
-            history.back();
+            history.push("/CRM/customer");
           }}><Icon type="icon-huifu" />返回</Button>
         </div>
       </Card>
@@ -160,26 +158,26 @@ const CustomerDetail = () => {
           <Desc data={data} />
         </Card>
       </div>
-      <div
-        className={styles.main}>
-        <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>
-          <ProCard>
-            <Statistic title="今日UV" value={79.0} precision={2} />
-          </ProCard>
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <ProCard>
-            <Statistic title="冻结金额" value={112893.0} precision={2} />
-          </ProCard>
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <ProCard>
-            <Statistic title="信息完整度" value={93} suffix="/ 100" />
-          </ProCard>
-          <Divider type={responsive ? 'horizontal' : 'vertical'} />
-          <ProCard>
-            <Statistic title="冻结金额" value={112893.0} />
-          </ProCard>
-        </ProCard.Group>
-      </div>
+      {/*<div*/}
+      {/*  className={styles.main}>*/}
+      {/*  <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="今日UV" value={79.0} precision={2} />*/}
+      {/*    </ProCard>*/}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="冻结金额" value={112893.0} precision={2} />*/}
+      {/*    </ProCard>*/}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="信息完整度" value={93} suffix="/ 100" />*/}
+      {/*    </ProCard>*/}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
+      {/*    <ProCard>*/}
+      {/*      <Statistic title="冻结金额" value={112893.0} />*/}
+      {/*    </ProCard>*/}
+      {/*  </ProCard.Group>*/}
+      {/*</div>*/}
       <div
         className={styles.main}>
         <Row gutter={12}>

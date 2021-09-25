@@ -7,15 +7,13 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Card, Statistic, Table as AntTable} from 'antd';
+import {Button, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Breadcrumb from '@/components/Breadcrumb';
 
 import {
   businessBatchDelete,
-  businessDelete,
   businessList,
 } from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
@@ -25,12 +23,7 @@ import {ArrowDownOutlined, ArrowUpOutlined, SearchOutlined} from '@ant-design/ic
 import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
-import BusinessComplete from '@/pages/Crm/business/BusinessAdd/components/businessComplete';
-import Modal from '@/components/Modal';
 import Form from '@/components/Form';
-import BusinessSteps from '@/pages/Crm/business/BusinessAdd/components/businessSteps';
-import styles from '@/pages/Crm/business/BusinessAdd/index.module.scss';
-import style from '@/pages/Crm/customer/components/CustomerTable/index.module.scss';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -40,16 +33,11 @@ const BusinessTable = (props) => {
   const {status, state, statement, left} = props;
 
   const [ids, setIds] = useState([]);
-  const [businessId, setBusinessId] = useState(null);
-  const [disable, setDisable] = useState(1);
   const history = useHistory();
 
   const tableRef = useRef(null);
   const addRef = useRef(null);
   const [search, setSearch] = useState(false);
-  const submitRef = useRef(null);
-  const modelRef = useRef(null);
-  const [useData, setData] = useState([]);
 
   useEffect(() => {
     if (status || state || statement) {
@@ -79,7 +67,7 @@ const BusinessTable = (props) => {
       ...businessBatchDelete
     }} onSuccess={() => {
       tableRef.current.refresh();
-    }} value={ids}>批量删除</DelButton>);
+    }} value={ids}>删除</DelButton>);
   };
 
 
@@ -131,16 +119,6 @@ const BusinessTable = (props) => {
         </MegaLayout>
       </>
     );
-  };
-  const width = () => {
-    switch (disable) {
-      case 1:
-        return 650;
-      case 2:
-        return 360;
-      default:
-        return 360;
-    }
   };
 
   return (
@@ -222,21 +200,6 @@ const BusinessTable = (props) => {
           sorter
           showSorterTooltip
           sortDirections={['ascend', 'descend']} />
-        <Column title="操作" fixed="right" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                setBusinessId(record.businessId);
-                setData(record.sales);
-                setDisable(1);
-                modelRef.current.open(false);
-              }} />
-              <DelButton api={businessDelete} value={record.businessId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={100} />
       </Table>
       <BusinessAdd
         ref={addRef}
@@ -245,39 +208,6 @@ const BusinessTable = (props) => {
           tableRef.current.refresh();
         }}
       />
-      <Modal
-        compoentRef={submitRef}
-        ref={modelRef}
-        title={<div style={{marginLeft: '45%', display: 'inline'}}>
-          {disable === 1 && '添加项目'}
-          {disable === 2 && '完成'}
-        </div>}
-        footer={disable === 1 ? <Button type="primary" onClick={() => {
-          submitRef.current.formRef.current.tableRef.current.submit();
-        }}
-        >
-          完成创建
-        </Button> : false}
-        width={width()}
-        className={styles.myModal}
-        onClose={() => {
-          modelRef.current.close();
-          tableRef.current.refresh();
-        }}
-      >
-        {disable === 1 && <BusinessSteps
-          useData={useData}
-          businessId={businessId}
-          ref={submitRef}
-          onChange={(result) => {
-            if (result.success) {
-              setData(null);
-              setDisable(2);
-            }
-          }}
-        />}
-        {disable === 2 && <BusinessComplete result={businessId} disabled={false} />}
-      </Modal>
     </>
   );
 };

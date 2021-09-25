@@ -79,16 +79,8 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
     formRef,
   }));
 
-
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    return 930;
-  };
-
   return (
-    <div className={style.from} style={{height: height(), padding: '0 24px'}}>
+    <div className={style.from} style={{maxHeight:930,height: 'calc(100vh - 110px)', padding: '0 24px'}}>
       <Form
         {...props}
         labelAlign="left"
