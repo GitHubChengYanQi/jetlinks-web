@@ -117,7 +117,7 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-          <CustomerMenu data={data} />
+          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' />
           <Button
             type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}

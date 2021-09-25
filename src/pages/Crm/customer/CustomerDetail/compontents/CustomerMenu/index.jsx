@@ -4,20 +4,20 @@ import {useRequest} from '@/util/Request';
 import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
 import {useHistory} from 'ice';
 
-const CustomerMenu = ({data}) => {
+const CustomerMenu = ({data,title,api,url}) => {
 
   const history = useHistory();
 
   const openNotificationWithIcon = (type) => {
     notification[type]({
-      message: type === 'success' ? '已删除客户！' : '删除客户失败！',
+      message: type === 'success' ? '已删除！' : '删除失败！',
     });
     if (type === 'success'){
-      history.push('/CRM/customer');
+      history.push(url);
     }
   };
 
-  const {run} = useRequest(customerDelete, {
+  const {run} = useRequest(api, {
     manual: true, onSuccess: () => {
       openNotificationWithIcon('success');
     },
@@ -37,7 +37,7 @@ const CustomerMenu = ({data}) => {
       onOk: async () => {
         await run({
           data: {
-            customerId: data.customerId
+            ...data
           }
         });
       }
@@ -49,7 +49,7 @@ const CustomerMenu = ({data}) => {
       <Menu>
         <Menu.Item danger key="delete" onClick={() => {
           deleteCustomer();
-        }}>删除客户</Menu.Item>
+        }}>{title || '删除客户'}</Menu.Item>
       </Menu>
     }>
       <Button type="text">

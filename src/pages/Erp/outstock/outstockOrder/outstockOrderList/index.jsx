@@ -59,13 +59,13 @@ const OutstockOrderList = () => {
   function confirmOk(record) {
     AntModal.info({
       title: '出库',
-      width:800,
+      width: 800,
       closable: true,
       centered: true,
       content: <OutStock value={record.outstockOrderId} />,
       style: {margin: 'auto'},
-      okText:'查看出库清单',
-      okType:'link',
+      okText: '查看出库清单',
+      okType: 'link',
     });
   }
 
@@ -84,8 +84,20 @@ const OutstockOrderList = () => {
           }}>{text}</Button>;
         }} />
         <Column title="出库时间" dataIndex="updateTime" />
-        <Column title="仓库" dataIndex="storehouseId" />
-        <Column title="经手人" dataIndex="userId" />
+        <Column title="仓库" dataIndex="storehouseId" render={(text, record) => {
+          return (
+            <>
+              {record.storehouseResult && record.storehouseResult.name}
+            </>
+          );
+        }} />
+        <Column title="经手人" dataIndex="userId" render={(text, record) => {
+          return (
+            <>
+              {record.userResult && record.userResult.name}
+            </>
+          );
+        }} />
         <Column title="备注" dataIndex="note" />
         <Column title="出库状态" width={200} dataIndex="state" render={(text, record) => {
           return (
@@ -120,7 +132,7 @@ const OutstockOrderList = () => {
         tableRef.current.refresh();
         refSee.current.close();
       }} ref={refSee} />
-      <Modal padding={1}  width={800} component={OutStock} onSuccess={() => {
+      <Modal padding={1} width={800} component={OutStock} onSuccess={() => {
         tableRef.current.refresh();
         refOutStock.current.close();
       }} ref={refOutStock} />

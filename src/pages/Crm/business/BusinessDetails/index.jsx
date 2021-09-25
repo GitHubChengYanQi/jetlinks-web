@@ -10,7 +10,7 @@ import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
-import {businessDetail} from '@/pages/Crm/business/BusinessUrl';
+import {businessDelete, businessDetail} from '@/pages/Crm/business/BusinessUrl';
 import StepList from '@/pages/Crm/business/BusinessDetails/compontents/StepList';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
@@ -19,6 +19,7 @@ import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTa
 import styles from './index.module.scss';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 import TableDetailEdit from '@/pages/Crm/business/BusinessEdit/components/TableDetailEdit';
+import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
 
 const {TabPane} = Tabs;
 const {Link} = Anchor;
@@ -62,7 +63,7 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-
+          <CustomerMenu data={data} api={businessDelete} title='删除项目' url='/CRM/business' />
           <Button
             style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
