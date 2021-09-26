@@ -21,6 +21,8 @@ const RoleEdit = ({...props}) => {
       onSubmit={(values) => {
         if (Array.isArray(values.pids) && values.pids.length > 0) {
           values.pid = values.pids[values.pids.length - 1];
+        }else {
+          values.pid = values.pids;
         }
         return values;
       }}

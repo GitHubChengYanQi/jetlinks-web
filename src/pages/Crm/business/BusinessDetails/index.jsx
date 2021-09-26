@@ -65,6 +65,7 @@ const CustomerDetail = () => {
         <div className={styles.titleButton}>
           <CustomerMenu data={data} api={businessDelete} title='删除项目' url='/CRM/business' />
           <Button
+            type='primary'
             style={params.state === 'false' ? {'display': 'none' }: null }
             onClick={() => {
               refTrack.current.open(false);

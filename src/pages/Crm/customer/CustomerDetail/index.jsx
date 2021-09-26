@@ -3,7 +3,7 @@ import { Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
-import { customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
+import {customerDelete, customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
 import {useHistory, useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';

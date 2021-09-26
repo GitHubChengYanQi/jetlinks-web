@@ -95,7 +95,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
 
                   <FormItem label="仓库" component={SysField.StoreHouse} name="stockId" required />
 
-                  <CustomerAll />
+                  <CustomerAll  />
                 </div>
               </ProCard>
             </div>
