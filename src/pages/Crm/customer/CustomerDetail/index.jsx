@@ -87,7 +87,7 @@ const CustomerDetail = () => {
                 });
               }} />
               <div>
-                <em>注册地址：
+                <em>公司地址：
                   <InputEdit value={data && data.signIn} onChange={async (value) => {
                     await runCustomer({
                       data: {
@@ -211,11 +211,11 @@ const CustomerDetail = () => {
           <Col span={8}>
             <Card>
               <Tabs defaultActiveKey="1">
-                <TabPane tab="动态" key="1">
-                  <Dynamic value={data} />
-                </TabPane>
-                <TabPane tab="跟进" key="2">
+                <TabPane tab="跟进" key="1">
                   <Track value={null} number={null} trackMessageId={data.customerId} />
+                </TabPane>
+                <TabPane tab="动态" key="2">
+                  <Dynamic value={data} />
                 </TabPane>
               </Tabs>
             </Card>
