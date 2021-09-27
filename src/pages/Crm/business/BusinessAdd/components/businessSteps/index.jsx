@@ -7,7 +7,7 @@ import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
 const BusinessSteps = ((props, ref) => {
 
   const {Step} = Steps;
-  const {onClose, useData, businessId} = props;
+  const {onClose, useData, businessId, customerId, userId} = props;
   const [current, setCurrent] = useState(0);
   const formRef = useRef(null);
 
@@ -53,6 +53,8 @@ const BusinessSteps = ((props, ref) => {
             <div style={{overflow: 'auto'}}>
               <BusinessEdit
                 ref={formRef}
+                customerId={customerId}
+                userId={userId}
                 onClose={() => {
                   typeof onClose === 'function' && onClose();
                 }}

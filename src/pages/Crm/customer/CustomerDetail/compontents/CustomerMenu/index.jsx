@@ -47,6 +47,9 @@ const CustomerMenu = ({data,title,api,url}) => {
   return (
     <Dropdown trigger="click" placement="bottomCenter" overlay={
       <Menu>
+        <Menu.Item key="delete" onClick={() => {
+          deleteCustomer();
+        }}>{title || '编辑'}</Menu.Item>
         <Menu.Item danger key="delete" onClick={() => {
           deleteCustomer();
         }}>{title || '删除客户'}</Menu.Item>
