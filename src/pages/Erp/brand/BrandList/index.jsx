@@ -62,6 +62,7 @@ const BrandList = () => {
   return (
     <>
       <Table
+        contentHeight
         title={<Breadcrumb title='品牌管理'/>}
         api={brandList}
         formActions={formActionsPublic}

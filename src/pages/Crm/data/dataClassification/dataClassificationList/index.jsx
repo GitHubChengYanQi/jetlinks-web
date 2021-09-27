@@ -46,6 +46,7 @@ const DataClassificationList = () => {
   return (
     <>
       <Table
+        contentHeight
         title={<h2>列表</h2>}
         api={dataClassificationList}
         rowKey="dataClassificationId"

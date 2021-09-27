@@ -67,6 +67,7 @@ const OriginList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
+        contentHeight
         title={<Breadcrumb title="项目来源" />}
         api={originList}
         rowKey="originId"

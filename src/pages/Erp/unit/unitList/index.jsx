@@ -59,6 +59,7 @@ const UnitList = () => {
   return (
     <>
       <Table
+        contentHeight
         title={<Breadcrumb title='单位管理'/>}
         api={unitList}
         rowKey="unitId"

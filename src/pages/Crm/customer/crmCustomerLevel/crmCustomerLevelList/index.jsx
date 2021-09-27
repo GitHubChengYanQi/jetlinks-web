@@ -58,6 +58,7 @@ const CrmCustomerLevelList = () => {
   return (
     <>
       <Table
+        contentHeight
         footer={footer}
         onChange={(keys) => {
           setIds(keys);
