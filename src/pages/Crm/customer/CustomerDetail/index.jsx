@@ -119,6 +119,12 @@ const CustomerDetail = () => {
         <div className={styles.titleButton}>
           <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' />
           <Button
+            style={params.state === 'false' ? {'display': 'none'} : null}
+            onClick={() => {
+              refTrack.current.open(false);
+            }} icon={<EditOutlined />}>创建商机</Button>
+
+          <Button
             type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {
@@ -196,7 +202,7 @@ const CustomerDetail = () => {
                 <TabPane tab="合同" key="4">
                   <ContractTable customerId={data && data.customerId} />
                 </TabPane>
-                <TabPane tab="订单" key="5">
+                <TabPane tab="货单" key="5">
                   <OrderList customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="回款" key="6">
