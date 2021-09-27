@@ -10,7 +10,7 @@ import styles from './index.module.scss';
 
 const BusinessAdd = (props, ref) => {
 
-  const {onClose} = props;
+  const {onClose, userId, customerId} = props;
   const submitRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -89,6 +89,8 @@ const BusinessAdd = (props, ref) => {
 
       {disable === 2 && <BusinessSteps
         useData={useData}
+        customerId={customerId}
+        userId={userId}
         ref={submitRef}
         onChange={(result) => {
           if (result.success) {

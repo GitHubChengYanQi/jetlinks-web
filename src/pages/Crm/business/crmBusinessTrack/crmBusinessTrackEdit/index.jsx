@@ -54,7 +54,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     return 810;
   };
 
-  const Label = ['商机', '合同', '订单', '回款'];
+  const Label = ['商机', '合同', '货单', '回款'];
 
   const returnFormItem = (index) => {
     // let businessId = null;
@@ -86,7 +86,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     // if (classNmb === 3) {
     //   orderId = val.orderId;
     //   return (<FormItem
-    //     label="订单"
+    //     label="货单"
     //     required
     //     name={`businessTrackParams.${index}.classifyId`}
     //     component={SysField.OrderId}

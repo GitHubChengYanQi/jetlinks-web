@@ -45,15 +45,15 @@ const Links = (props) => {
             },
             {
               value: '/pages/myOrder/index',
-              label: '我的订单'
+              label: '我的货单'
             },
             {
               value: '/pages/confirmOrder/index',
-              label: '确认订单'
+              label: '确认货单'
             },
             {
               value: '/pages/orderDetailed/index',
-              label: '订单详情'
+              label: '货单详情'
             },
             {
               value: '/pages/logistics/index',

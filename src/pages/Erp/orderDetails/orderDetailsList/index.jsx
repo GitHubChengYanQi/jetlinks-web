@@ -1,5 +1,5 @@
 /**
- * 订单明细表列表页
+ * 货单明细表列表页
  *
  * @author siqiang
  * @Date 2021-08-18 13:26:29
@@ -47,7 +47,7 @@ const OrderDetailsList = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb title='订单明细'/>}
+        title={<Breadcrumb title='货单明细'/>}
         api={orderDetailsList}
         rowKey="id"
         isModal={false}
@@ -55,7 +55,7 @@ const OrderDetailsList = (props) => {
         // actions={actions()}
         ref={tableRef}
       >
-        <Column title="订单id" dataIndex="orderId"/>
+        <Column title="货单id" dataIndex="orderId"/>
         <Column title="产品名称" width={120} dataIndex="itemId" render={(value,record)=>{
           return (
             <div>
@@ -80,7 +80,7 @@ const OrderDetailsList = (props) => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="订单明细" component={OrderDetailsEdit} onSuccess={() => {
+      <Drawer width={800} title="货单明细" component={OrderDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

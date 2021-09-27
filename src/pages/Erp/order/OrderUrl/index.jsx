@@ -2,7 +2,7 @@ import Select from "@/components/Select";
 import React from "react";
 
 /**
- * 订单表接口配置
+ * 货单表接口配置
  *
  * @author ta
  * @Date 2021-07-20 16:22:28

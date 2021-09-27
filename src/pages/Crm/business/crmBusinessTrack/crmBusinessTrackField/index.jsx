@@ -82,7 +82,7 @@ export const CustomerId = (props) => {
 export const Classify = (props) => {
   const {onChange} = props;
   return (<AntdSelect options={[{label: '日常', value: 0}, {label: '商机', value: 1}, {label: '合同', value: 2}, {
-    label: '订单',
+    label: '货单',
     value: 3
   }, {label: '回款', value: 4}]} onChange={(value) => {
     onChange(value);

@@ -1,11 +1,13 @@
 import {Button, Dropdown, Menu, Modal as AntModal, notification} from 'antd';
-import React from 'react';
+import React, {useRef} from 'react';
 import {useRequest} from '@/util/Request';
 import {customerDelete} from '@/pages/Crm/customer/CustomerUrl';
 import {useHistory} from 'ice';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 const CustomerMenu = ({data,title,api,url}) => {
-
+  const ref = useRef(null);
   const history = useHistory();
 
   const openNotificationWithIcon = (type) => {
@@ -47,6 +49,12 @@ const CustomerMenu = ({data,title,api,url}) => {
   return (
     <Dropdown trigger="click" placement="bottomCenter" overlay={
       <Menu>
+        <Menu.Item key="1" onClick={() => {
+          ref.current.open(data.customerId);
+        }}>{title || '编辑'}</Menu.Item>
+        <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
+          ref.current.close();
+        }} ref={ref} />
         <Menu.Item danger key="delete" onClick={() => {
           deleteCustomer();
         }}>{title || '删除客户'}</Menu.Item>
@@ -55,7 +63,9 @@ const CustomerMenu = ({data,title,api,url}) => {
       <Button type="text">
         管理
       </Button>
+
     </Dropdown>
+
   );
 };
 export default CustomerMenu;
