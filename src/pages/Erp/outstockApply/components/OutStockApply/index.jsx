@@ -1,7 +1,7 @@
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Erp/outstockApply/outstockApplyField';
 import {Button, Card} from 'antd';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {itemsAdd, itemsDetail, itemsEdit} from '@/pages/Erp/items/ItemsUrl';
 import {
   OutBound,
@@ -9,7 +9,7 @@ import {
   outstockApplyDetail,
   outstockApplyEdit
 } from '@/pages/Erp/outstockApply/outstockApplyUrl';
-import {Type} from '@/pages/Erp/outstockApply/outstockApplyField';
+import {Dh, Gs, Type, Types} from '@/pages/Erp/outstockApply/outstockApplyField';
 
 const ApiConfig = {
   view: outstockApplyDetail,
@@ -21,6 +21,31 @@ const ApiConfig = {
 const OutStockApply = (props) => {
 
   const formRef = useRef();
+
+
+  const [type,setType] = useState();
+
+  const Type = () => {
+    switch (type){
+      case '0':
+        return (
+          <>
+            <Form.FormItem label="物流公司" component={SysField.Gs} name="111" required />
+            <Form.FormItem label="物流单号" component={SysField.Dh} name="222" required />
+          </>
+        );
+      case '1':
+        return (
+          <>
+            <Form.FormItem label="司机姓名" component={SysField.Dh} name="333" required />
+            <Form.FormItem label="电话" component={SysField.Dh} name="444" required />
+            <Form.FormItem label="车牌号" component={SysField.Dh} name="555" required />
+          </>
+        );
+      default:
+        break;
+    }
+  };
 
   return (
     <Card title="一键发货">
@@ -37,7 +62,10 @@ const OutStockApply = (props) => {
         }}
       >
         <Form.FormItem label="仓库" component={SysField.StoreHouse} name="stockId" required />
-        <Form.FormItem label="物流方式" component={SysField.Type} name="type" required />
+        <Form.FormItem label="物流方式" component={SysField.Types} name="type" required onChange={(value)=>{
+          setType(value);
+        }} />
+        {Type()}
         <div style={{display:'none'}}>
           <Form.FormItem label="负责人" component={SysField.Type} name="userId" required />
           <Form.FormItem label="客户" component={SysField.Type} name="customerId" required />

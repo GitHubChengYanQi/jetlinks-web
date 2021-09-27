@@ -81,7 +81,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
   }));
 
   return (
-    <div className={style.from} style={{maxHeight:930,height: 'calc(100vh - 110px)', padding: '0 24px'}}>
+    <div className={style.from} style={{maxHeight:880,height: 'calc(100vh - 110px)', padding: '0 24px'}}>
       <Form
         {...props}
         labelAlign="left"
@@ -206,12 +206,13 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     label="联系人姓名"
                                     name={`contactsParams.${index}.contactsName`}
                                     component={SysField.ContactsName}
+                                    required
                                   />
                                   <FormItem
                                     label="职务"
                                     name={`contactsParams.${index}.companyRole`}
                                     component={SysField.CompanyRoleId}
-
+                                    required
                                   />
                                   {/* <ProCard style={{marginTop: 8}} headerBordered> */}
                                   <div style={{width: '88%', display: 'inline-block'}}>
@@ -233,6 +234,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                     label={`联系电话 ${indexs+1}`}
                                                     name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
                                                     component={SysField.PhoneNumber}
+                                                    required
                                                     rules={[{
                                                       message: '请输入正确的手机号码!',
                                                       pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/

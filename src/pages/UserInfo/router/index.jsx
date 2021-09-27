@@ -14,7 +14,6 @@ const UserInfoRouterConfig = [
     name: '绑定微信用户',
     component: UsrInfoLayout,
     children:[
-      ...WxuserInfoRouter,
       {
         redirect: '/userInfo/wxuserInfo',
       }

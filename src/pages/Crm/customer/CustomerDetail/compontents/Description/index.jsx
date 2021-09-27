@@ -19,7 +19,6 @@ const Description = (props) => {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          {/*<Descriptions.Item label="客户编号">{data.customerId ? data.customerId : '未填写'}</Descriptions.Item>*/}
           <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
             await run({
               data: {

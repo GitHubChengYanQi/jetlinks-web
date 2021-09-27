@@ -28,7 +28,6 @@ const AppIcon = {
   CRM: crm,
   ERP: erp,
   REPAIR: Repair,
-  shop: Shop,
   protal: Portal,
 };
 
