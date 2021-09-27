@@ -15,15 +15,16 @@ import * as SysField from '@/pages/Crm/customer/CustomerField';
 import ProCard from '@ant-design/pro-card';
 import {useHistory} from 'ice';
 import {MegaLayout} from '@formily/antd-components';
-import {InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
+import {createFormActions, InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
 import styled from 'styled-components';
 import Form from '@/components/Form';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import style from './index.module.scss';
 import Title from '@/components/Title';
 
-const {FormItem} = Form;
+import style from './index.module.scss';
 
+const {FormItem} = Form;
+const formActions = createFormActions();
 
 const RowStyleLayout = styled(props => <div {...props} />)`
   .ant-btn {
@@ -96,6 +97,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
           }
           props.onSuccess();
         }}
+        formActions={formActions}
       >
         <Row gutter={24} style={{height: '100%'}}>
           <Col span={12} style={{height: '100%'}}>

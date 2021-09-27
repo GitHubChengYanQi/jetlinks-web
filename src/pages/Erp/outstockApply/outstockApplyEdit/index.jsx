@@ -5,17 +5,15 @@
  * @Date 2021-09-14 16:49:41
  */
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Card, Col, Divider, Input, Row} from 'antd';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
+import {Button, Col, Row} from 'antd';
 import Form from '@/components/Form';
-import {outstockApplyDetail, outstockApplyAdd, outstockApplyEdit} from '../outstockApplyUrl';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import * as SysField from '@/pages/Erp/outstockApply/outstockApplyField';
 import styled from 'styled-components';
-import {useRequest} from '@/util/Request';
-import {StoreHouse} from '@/pages/Erp/outstockApply/outstockApplyField';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 import ProCard from '@ant-design/pro-card';
+import {outstockApplyDetail, outstockApplyAdd, outstockApplyEdit} from '../outstockApplyUrl';
 
 const {FormItem} = Form;
 
@@ -24,6 +22,8 @@ const ApiConfig = {
   add: outstockApplyAdd,
   save: outstockApplyEdit
 };
+
+const formActions = createFormActions();
 
 const OutstockApplyEdit = ({...props}, ref) => {
 
@@ -46,6 +46,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
 
   useImperativeHandle(ref, () => ({
     formRef,
+    ...formRef.current
   }));
 
 
@@ -53,10 +54,11 @@ const OutstockApplyEdit = ({...props}, ref) => {
     <div style={{height: '100%',padding:24}}>
       <Form
         {...props}
-        NoButton={false}
+        // NoButton={false}
         ref={formRef}
         api={ApiConfig}
         fieldKey="outstockApplyId"
+        formActions={formActions}
       >
 
         <Row gutter={24}>
