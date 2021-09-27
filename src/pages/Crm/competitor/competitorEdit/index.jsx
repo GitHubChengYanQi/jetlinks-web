@@ -30,7 +30,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
   const {position} = props;
   const formRef = useRef();
   const height = () => {
-    if (window.document.body.clientHeight < 1088) {
+    if (window.document.body.clientHeight < 600) {
       return 'calc(100vh - 206px)';
     }
     return 600;
@@ -41,7 +41,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
   }));
 
   return (
-    <div style={{height: height()}}>
+    <div style={{height: '100%'}}>
       <Form
         {...props}
         value={value ? value.competitorId : false}
@@ -82,10 +82,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
               <FormItem label="网址 " name="url" component={SysField.Url} rules={[{message:'请输入正确的网址',pattern:'^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'}]} />
               <FormItem label="邮箱" name="email" component={SysField.Email} rules={[{message:'请输入正确的邮箱',pattern:'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'}]} />
             </MegaLayout>
-            <MegaLayout labelWidth={150} grid>
-              <FormItem label="员工规模" name="staffSize" component={SysField.StaffSize}  />
-              <FormItem label="公司所有制" name="ownership" component={SysField.Ownership}  />
-            </MegaLayout>
+           
             <MegaLayout labelWidth={150} grid>
               <FormItem label="竞争级别" name="competitionLevel" component={SysField.CompetitionLevel} required  />
               <FormItem label="年销售" name="annualSales" component={SysField.AnnualSales}  />
