@@ -89,6 +89,7 @@ const Detail = () => {
               refresh();
             }}
             val={data.partyA}
+            id={data.contractId}
             number={2} />
 
           <Button

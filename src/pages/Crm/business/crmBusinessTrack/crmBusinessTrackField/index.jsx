@@ -5,7 +5,7 @@
  * @Date 2021-08-05 10:31:44
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import * as apiUrl from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
@@ -16,7 +16,7 @@ import UpLoadImg from '@/components/Upload';
 import Modal from '@/components/Modal';
 import Select from '@/components/Select';
 import {BusinessNameListSelect} from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackUrl';
-import {contractIdSelect} from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
+import {contractIdSelect, erpOrderSelect} from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
 
 export const NoteId = (props) => {
   return (<Input {...props} />);
@@ -37,26 +37,27 @@ export const Image = (props) => {
   return (<UpLoadImg {...props} />);
 };
 
-export const Longitude = (props) =>{
+export const Longitude = (props) => {
   const {location} = props;
   if (location) {
     props.onChange(location);
   }
-  return (<Input   {...props} disabled/>);
+  return (<Input   {...props} disabled />);
 };
-export const Latitude = (props) =>{
+export const Latitude = (props) => {
   const {location} = props;
   if (location) {
     props.onChange(location);
   }
-  return (<Input   {...props} disabled/>);
+  return (<Input   {...props} disabled />);
 };
 
 export const Money = (props) => {
   return (<InputNumber min={0} {...props} />);
 };
-export const QuoteStatus = (props) =>{
-  return (<AntdSelect options={[{label:'无需审批',value:0},{label:'待询价',value:1},{label:'询价中',value:2}]} {...props}/>);
+export const QuoteStatus = (props) => {
+  return (<AntdSelect
+    options={[{label: '无需审批', value: 0}, {label: '待询价', value: 1}, {label: '询价中', value: 2}]} {...props} />);
 };
 
 export const Type = (props) => {
@@ -80,30 +81,104 @@ export const CustomerId = (props) => {
 
 export const Classify = (props) => {
   const {onChange} = props;
-  return (<AntdSelect options={[{label:'日常',value:0},{label:'商机',value:1},{label:'合同',value:2},{label:'订单',value:3},{label:'回款',value:4}]} onChange={(value) => {
+  return (<AntdSelect options={[{label: '日常', value: 0}, {label: '商机', value: 1}, {label: '合同', value: 2}, {
+    label: '订单',
+    value: 3
+  }, {label: '回款', value: 4}]} onChange={(value) => {
     onChange(value);
-  }} {...props}  />);
+  }} {...props} />);
 };
 export const ContractId = (props) => {
-  return (<Select api={apiUrl.contractIdSelect} {...props}  />);
+  return (<Select api={apiUrl.contractIdSelect} {...props} />);
 };
 
 export const BackMoney = (props) => {
-  return (<Input {...props}  />);
+  return (<Input {...props} />);
 };
 export const OrderId = (props) => {
-  return (<Input {...props}  />);
+  return (<Input {...props} />);
 };
 export const Name = (props) => {
-  return (<Input {...props}  />);
+  return (<Input {...props} />);
 };
 
 export const BusinessId = (props) => {
-  return (<Select api={apiUrl.BusinessNameListSelect} {...props} />);
+  const {classNmb, val} = props;
+
+  const [datas, setDatas] = useState();
+
+  const api = [
+    apiUrl.BusinessNameListSelect,
+    apiUrl.contractIdSelect,
+  ];
+
+  const {data, run} = useRequest(api[classNmb - 1], {
+    manual: true, onSuccess: (res) => {
+      if (res.length <= 0) {
+        props.onChange(null);
+      } else {
+        props.onChange(res[0].value);
+      }
+    }
+  }, {manual: true});
+
+  const {data: All, run: runAll} = useRequest(api[classNmb - 1], {
+    manual: true, onSuccess: (res) => {
+      setDatas(res);
+    }
+  }, {manual: true});
+
+
+  useEffect(() => {
+
+    switch (classNmb) {
+      case 1:
+        if (!val) {
+          props.onChange(null);
+        } else {
+          run({
+            data: {
+              businessId: val
+            }
+          });
+        }
+        runAll();
+        break;
+      case 2:
+        if (!val) {
+          props.onChange(null);
+        } else {
+          run({
+            data: {
+              contractId: val
+            }
+          });
+        }
+        runAll();
+        break;
+      case 3:
+        // run();
+        setDatas([]);
+        props.onChange(null);
+        break;
+      case 4:
+        // run();
+        setDatas([]);
+        props.onChange(null);
+        break;
+      default:
+        break;
+    }
+
+  }, [classNmb]);
+
+  return (<AntdSelect options={datas} {...props} />);
+
+
 };
 export const CompetitorsQuoteId = (props) => {
   const {competitorsQuoteId} = props;
-  if (competitorsQuoteId){
+  if (competitorsQuoteId) {
     props.onChange(competitorsQuoteId.competitorsQuoteId);
   }
   return (<Input {...props} />);
@@ -113,32 +188,48 @@ export const UserId = (props) => {
   return (<Input {...props} value={props.val.user.name} disabled />);
 };
 
-export const CompetitorId = (props) =>{
+export const CompetitorId = (props) => {
   const ref = useRef(null);
 
-  const {loading,data,run:getData} = useRequest(apiUrl.competitorListSelect);
+  const {loading, data, run: getData} = useRequest({
+    ...apiUrl.competitorListSelect, data: {
+      ids: props.businessId,
+    }
+  });
 
   return (
-    <div style={{width:300}}>
-      <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
-      <Button style={{width:100,margin:0}} type="primary"  onClick={()=>{
-        ref.current.open(false);}}>
+    <div style={{width: 300}}>
+      <AntdSelect
+        allowClear
+        howSearch
+        style={{width: 200}}
+        options={data || []}
+        loading={loading}
+        {...props}
+        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+      <Button style={{width: 100, margin: 0}} type="primary" onClick={() => {
+        ref.current.open(false);
+      }}>
         新增对手
       </Button>
-      <Modal width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
-        ref.current.close();
-        getData();
-      }} ref={ref}
-      onChange={(res)=>{
-        if(res){
-          props.onChange(res && res.data && res.data.competitorId);
-        }else{
-          props.onChange();
-        }
-      }} />
+      <Modal
+        width={1000}
+        title="竞争对手"
+        component={CompetitorEdit}
+        onSuccess={() => {
+          ref.current.close();
+          getData();
+        }} ref={ref}
+        onChange={(res) => {
+          if (res) {
+            props.onChange(res && res.data && res.data.competitorId);
+          } else {
+            props.onChange();
+          }
+        }} />
     </div>
   );
 };
-export const CompetitorsQuote = (props) =>{
-  return (<InputNumber min={0} step={10000} max={100000000} style={{width:300}}  {...props}/>);
+export const CompetitorsQuote = (props) => {
+  return (<InputNumber min={0} step={10000} max={100000000} style={{width: 300}}  {...props} />);
 };

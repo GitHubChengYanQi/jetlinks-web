@@ -2,12 +2,13 @@ import Modal from '@/components/Modal';
 import {Button, Space} from 'antd';
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import OutstockApplyEdit from '@/pages/Erp/outstockApply/outstockApplyEdit';
 
 
-const CreateNewCustomer = ({
+const CreateOutStockApply = ({
   onSuccess,
   title,
-  widths,
+  width,
   onChange,
   ...props
 }, ref) => {
@@ -35,7 +36,7 @@ const CreateNewCustomer = ({
   }));
 
   return (
-    <Modal ref={modalRef} padding="0" width={widths} footer={
+    <Modal ref={modalRef} padding="0" width={width} footer={
       <>
         <Space>
           <Button type="primary" onClick={() => {
@@ -47,7 +48,7 @@ const CreateNewCustomer = ({
         </Space>
       </>
     } title={title}  >
-      <CustomerEdit value={value} ref={compoentRef} onSuccess={()=>{
+      <OutstockApplyEdit value={value} ref={compoentRef} onSuccess={()=>{
         onSuccess();
       }} onChange={(res)=>{
         typeof onChange === 'function' && onChange(res);
@@ -56,4 +57,4 @@ const CreateNewCustomer = ({
   );
 };
 
-export default React.forwardRef(CreateNewCustomer);
+export default React.forwardRef(CreateOutStockApply);

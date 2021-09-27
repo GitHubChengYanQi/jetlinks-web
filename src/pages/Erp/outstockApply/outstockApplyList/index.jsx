@@ -26,6 +26,8 @@ import {SearchOutlined} from '@ant-design/icons';
 import OutstockApplyEdit from '../outstockApplyEdit';
 import * as SysField from '../outstockApplyField';
 import {OutBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
+import OutStockApply from '@/pages/Erp/outstockApply/components/OutStockApply';
+import CreateOutStockApply from '@/pages/Erp/outstockApply/outstockApplyEdit/components/CreateOutStockApply';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,6 +35,7 @@ const {FormItem} = Form;
 const OutstockApplyList = () => {
   const ref = useRef(null);
   const refDetail = useRef(null);
+  const refApply = useRef(null);
   const tableRef = useRef(null);
 
   const compoentRef = useRef(null);
@@ -110,15 +113,6 @@ const OutstockApplyList = () => {
     }
   });
 
-  const {run:outBound} = useRequest(OutBound, {
-    manual: true, onSuccess: () => {
-      openNotificationWithIconOutBound('success');
-      tableRef.current.refresh();
-    },
-    onError: (error) => {
-      message.error(error.message);
-    }
-  });
 
   const openNotificationWithIcon = (type) => {
     notification[type]({
@@ -149,26 +143,6 @@ const OutstockApplyList = () => {
     });
   };
 
-  const confirmOutStock = (record) => {
-    AntModal.confirm({
-      title: '一键发货',
-      centered: true,
-      content: `请确认是否一键发货申请操作!注意：确认之后不可恢复。`,
-      style: {margin: 'auto'},
-      cancelText: '取消',
-      onOk: async () => {
-        record.applyState = 3;
-        await outBound(
-          {
-            data: record
-          }
-        );
-      },
-      onCancel:()=>{
-        tableRef.current.submit();
-      }
-    });
-  };
 
   return (
     <>
@@ -196,13 +170,6 @@ const OutstockApplyList = () => {
             </>
           );
         }} />
-        <Column title="仓库" dataIndex="stockId" render={(value,record)=>{
-          return (
-            <>
-              {record.stockResult && record.stockResult.name}
-            </>
-          );
-        }}/>
         <Column title="客户" dataIndex="customerId" render={(value,record)=>{
           return (
             <>
@@ -236,7 +203,7 @@ const OutstockApplyList = () => {
           return (
             <>
               {record.applyState === 2 && <Button style={{margin: '0 10px'}} onClick={() => {
-                confirmOutStock(record);
+                refApply.current.open(record.outstockApplyId);
               }}><Icon type="icon-chuku" />一键发货</Button> }
               {record.applyState === 1 ? <Button style={{margin: '0 10px'}} onClick={() => {
                 confirmOk(record);
@@ -252,25 +219,21 @@ const OutstockApplyList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal compoentRef={compoentRef} width={1400} padding={1} title="发货单" component={OutstockApplyEdit} onSuccess={() => {
+
+      <CreateOutStockApply width={1400} ref={ref} onSuccess={()=>{
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref} footer={
-        <>
-          <Space>
-            <Button type="primary" onClick={() => {
-              compoentRef.current.formRef.current.submit();
-            }}>保存</Button>
-            <Button onClick={() => {
-              ref.current.close();
-            }}>取消</Button>
-          </Space>
-        </>
-      } />
+      }} />
+
       <Modal width={800}  component={ApplyDetailsList} onSuccess={() => {
         tableRef.current.refresh();
         refDetail.current.close();
       }} ref={refDetail} />
+
+      <Modal width={800}  component={OutStockApply} onSuccess={() => {
+        tableRef.current.refresh();
+        refApply.current.close();
+      }} ref={refApply} />
     </>
   );
 };

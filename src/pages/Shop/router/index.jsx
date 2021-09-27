@@ -8,8 +8,6 @@ const ShopRouterConfig = [
     name: '商城管理',
     component: ShopLayout,
     children:[
-      ...DaoxinPortalClassRouter,
-      ...GoodsRouter,
       {
         redirect: '/shop/daoxinPortalClass',
       }

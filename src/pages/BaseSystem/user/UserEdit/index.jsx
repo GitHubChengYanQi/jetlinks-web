@@ -54,7 +54,7 @@ const UserEdit = (props) => {
       onSubmit={(values) => {
         const result = {
           ...values,
-          position: values.positionIds ? values.positionIds.join(',') : ''
+          position: values.positionIds && typeof values.positionIds === 'object' ? values.positionIds.join(',') : ''
         };
         return result;
       }}

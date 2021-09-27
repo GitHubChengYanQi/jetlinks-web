@@ -9,8 +9,6 @@ import BusinessNumber from '@/pages/Overview/components/BusinessNumber';
 
 const Head = () => {
 
-
-
   if (!window.sessionStorage.getItem('num')){
     window.sessionStorage.setItem('num',0);
   }

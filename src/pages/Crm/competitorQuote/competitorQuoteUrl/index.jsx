@@ -51,4 +51,8 @@ export const contractIdSelect = {
   url: '/contract/listSelect',
   method: 'POST'
 };
+export const erpOrderSelect = {
+  url: '/erpOrder/listSelect',
+  method: 'POST'
+};
 
