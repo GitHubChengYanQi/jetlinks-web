@@ -18,6 +18,7 @@ const TableWarp = ({
   actions,
   title,
   api,
+  contentHeight,
   searchForm,
   rowKey,
   headStyle,
@@ -146,7 +147,7 @@ const TableWarp = ({
         </Sider>}
         <Content
           // style={{marginLeft: 260}}
-          style={{height:'calc(100vh - 128px)',overflow:'auto'}}
+          style={{height:contentHeight || 'calc(100vh - 128px)',overflow:'auto'}}
           id="tableContent"
         >
           {searchForm ? <div className="search" style={headStyle}>

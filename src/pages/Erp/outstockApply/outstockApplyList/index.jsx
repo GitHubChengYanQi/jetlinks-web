@@ -230,7 +230,7 @@ const OutstockApplyList = () => {
         refDetail.current.close();
       }} ref={refDetail} />
 
-      <Modal width={800}  component={OutStockApply} onSuccess={() => {
+      <Modal width={1400}  component={OutStockApply} onSuccess={() => {
         tableRef.current.refresh();
         refApply.current.close();
       }} ref={refApply} />

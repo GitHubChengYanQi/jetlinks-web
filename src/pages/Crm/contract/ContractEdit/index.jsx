@@ -12,9 +12,9 @@ import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 import {useRequest} from '@/util/Request';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
-import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
 import ProCard from '@ant-design/pro-card';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 
 
 const {onFieldValueChange$} = FormEffectHooks;
@@ -58,7 +58,7 @@ const AddContractEdit = ({...props}) => {
           <FormItem name="content" component={SysField.Content} result={result} required />
         </Form>
         <Card title="添加产品明细" bordered={false}>
-          <TableDetail value={result ? result.contractId : false} />
+          <TableDetail contractId={result.contractId} onSuccess={()=>{}}/>
         </Card>
         <Button type="primary" style={{width: '100%'}} onClick={() => {
           formRef.current.submit();

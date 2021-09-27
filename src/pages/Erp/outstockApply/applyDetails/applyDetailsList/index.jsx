@@ -16,9 +16,13 @@ import Form from '@/components/Form';
 import {applyDetailsDelete, applyDetailsList} from '../applyDetailsUrl';
 import ApplyDetailsEdit from '../applyDetailsEdit';
 import * as SysField from '../applyDetailsField';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+
+const formActionsPublic = createFormActions();
 
 const ApplyDetailsList = (props) => {
 
@@ -47,8 +51,11 @@ const ApplyDetailsList = (props) => {
   };
 
   return (
-    <>
+    <div>
       <Table
+        formActions={formActionsPublic}
+        contentHeight
+        headStyle={{display:'none'}}
         title="发货申请明细"
         api={applyDetailsList}
         rowSelection
@@ -81,7 +88,7 @@ const ApplyDetailsList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </>
+    </div>
   );
 };
 

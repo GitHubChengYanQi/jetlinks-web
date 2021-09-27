@@ -52,3 +52,8 @@ export const erpPackageNameList = {
   url: '/erpPackage/listSelect',
   method: 'POST',
 };
+
+export const contractId = {
+  url: '/contract/listSelect',
+  method: 'POST',
+};

@@ -12,6 +12,7 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../crmBusinessDetailedUrl';
 import {useRequest} from '@/util/Request';
+import {contractId} from '../crmBusinessDetailedUrl';
 
 export const BusinessId = (props) => {
   return (<Select api={apiUrl.BusinessId} {...props} />);
@@ -19,6 +20,9 @@ export const BusinessId = (props) => {
 // 套餐
 export const PackageId = (props) => {
   return (<Select api={apiUrl.erpPackageNameList} {...props} />);
+};
+export const ContractId = (props) => {
+  return (<Select api={apiUrl.contractId} {...props} />);
 };
 
 // 产品名称

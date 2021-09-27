@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {Button, Divider, Table as AntTable} from 'antd';
-import {crmBusinessDetailedDelete, crmBusinessDetailedList} from "@/pages/Crm/business/BusinessUrl";
+import {contractList, crmBusinessDetailedDelete, crmBusinessDetailedList} from '@/pages/Crm/business/BusinessUrl';
 import EditButton from "@/components/EditButton";
 import DelButton from "@/components/DelButton";
 import Drawer from "@/components/Drawer";
@@ -13,6 +13,7 @@ import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
 import {PlusOutlined} from '@ant-design/icons';
 import StockTableList from '@/pages/Crm/business/BusinessEdit/components/StockTableList';
+import {contractId} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 
 
 const {FormItem} = Form;
@@ -21,7 +22,7 @@ const {Column} = AntTable;
 const formActionsPublic = createFormActions();
 
 const TableDetail = (props) => {
-  const {value} = props;
+  const {value,contractId} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
   const refAddOne = useRef(null);
@@ -31,6 +32,7 @@ const TableDetail = (props) => {
     return (
       <>
         <FormItem style={{'display': 'none'}} name="businessId" value={value} component={SysField.BusinessId}/>
+        <FormItem style={{'display': 'none'}} name="contractId" value={contractId} component={SysField.BusinessId}/>
         <FormItem label='产品名称' name="itemId" component={SysField.itemId}/>
       </>
     );
@@ -53,6 +55,7 @@ const TableDetail = (props) => {
           }} ref={refAddOne}
           businessId={value}
           TcDisabled={false}
+         contractId={contractId}
         />
         <Button key='2'
           style={{marginRight: 16}}
@@ -70,13 +73,15 @@ const TableDetail = (props) => {
           }} ref={refAddAll}
           disabled={false}
           businessId={value}
+               contractId={contractId}
         />
         <Divider  style={{margin: '17px 5px 1px 5px'}}/>
       </div>
       <Table
         headStyle={{display:'none'}}
-        api={crmBusinessDetailedList}
+        api={contractId ? contractList : crmBusinessDetailedList}
         rowKey="id"
+        contentHeight
         rowSelection
         formActions={formActionsPublic}
         searchForm={searchForm}
@@ -101,18 +106,18 @@ const TableDetail = (props) => {
         <Column width={100} title="销售单价" dataIndex="salePrice"/>
         <Column title="数量" dataIndex="quantity"/>
         <Column title="小计" dataIndex="totalPrice"/>
-        <Column title="操作" align="right" render={(value, record) => {
+        {!contractId && <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.id);
-              }}/>
+              }} />
               <DelButton api={crmBusinessDetailedDelete} value={record.id} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />}
       </Table>
       <Drawer width={800} title="产品" component={CrmBusinessDetailedEdit} onSuccess={() => {
         tableRef.current.refresh();
