@@ -165,7 +165,7 @@ const StepList = (props) => {
                 </Popover>}
           />
         </Steps>
-        <Modal title="合同" component={AddContractEdit} customerId={value.customerId} ref={ref} onSuccess={()=>{
+        <Modal title="合同" width={1200} component={AddContractEdit} customerId={value.customerId} ref={ref} onSuccess={()=>{
           typeof pOnChange === 'function' && pOnChange();
         }} />
       </>

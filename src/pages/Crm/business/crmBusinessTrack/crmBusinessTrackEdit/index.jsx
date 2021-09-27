@@ -74,7 +74,7 @@ const CrmBusinessTrackEdit = (props, ref) => {
 
 
   return (
-    <div className={style.from} style={{height: height(), padding: '0 20px'}}>
+    <div className={style.from} style={{maxHeight:890,height: 'calc(100vh - 110px)', padding: '0 20px'}}>
       <Form
         {...other}
         ref={formRef}
@@ -84,15 +84,14 @@ const CrmBusinessTrackEdit = (props, ref) => {
         wrapperCol={24}
         effect={()=>{
           onFieldChange$('businessTrackParams.*.classify').subscribe(({ value }) => {
-            console.log( typeof onWidthChange === 'function');
             typeof onWidthChange === 'function' && onWidthChange(value);
             setClassNmb(value);
           });
         }}
       >
         <Row gutter={24} style={{height: '100%'}}>
-          <Col span={classNmb === 1 ? 13 : 24} style={{height: '100%'}}>
-            <div style={{paddingRight: 10, height: '100%', overflow: 'auto', display: 'inline-block'}}>
+          <Col span={classNmb === 1 ? 13 : 24} style={{height: '100%',overflow: 'auto',}}>
+            <div style={{paddingRight: 10,  display: 'inline-block'}}>
               <ProCard
                 className="h2Card"
                 bodyStyle={{padding: 16}}
@@ -208,8 +207,8 @@ const CrmBusinessTrackEdit = (props, ref) => {
               </ProCard>
             </div>
           </Col>
-          {classNmb === 1 && <Col span={11} style={{height: '100%'}}>
-            <div style={{height: '100%', overflow: 'auto'}}>
+          {classNmb === 1 && <Col span={11} style={{height: '100%', overflow: 'auto'}}>
+            <div>
               <ProCard className="h2Card" bodyStyle={{padding: 16}} style={{marginTop: 8, height: '100%'}}
                        title={<Title title="竞争对手报价" level={4} />} headerBordered>
                 <FieldList
