@@ -23,10 +23,10 @@ const Desc = (props) => {
             await run({
               data: {
                 ...data,
-                person:value
+                userId:value
               }
             });
-          }} userId={data.person} /></Descriptions.Item>
+          }} userId={data.userId} /></Descriptions.Item>
         </Descriptions>
       </>
     );
