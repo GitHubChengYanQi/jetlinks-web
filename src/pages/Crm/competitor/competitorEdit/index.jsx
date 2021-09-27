@@ -82,7 +82,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
               <FormItem label="网址 " name="url" component={SysField.Url} rules={[{message:'请输入正确的网址',pattern:'^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'}]} />
               <FormItem label="邮箱" name="email" component={SysField.Email} rules={[{message:'请输入正确的邮箱',pattern:'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'}]} />
             </MegaLayout>
-           
+
             <MegaLayout labelWidth={150} grid>
               <FormItem label="竞争级别" name="competitionLevel" component={SysField.CompetitionLevel} required  />
               <FormItem label="年销售" name="annualSales" component={SysField.AnnualSales}  />
