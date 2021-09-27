@@ -33,7 +33,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
     if (window.document.body.clientHeight < 1088) {
       return 'calc(100vh - 206px)';
     }
-    return 850;
+    return 750;
   };
 
   useImperativeHandle(ref, () => ({
