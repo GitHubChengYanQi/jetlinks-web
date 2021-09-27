@@ -19,6 +19,9 @@ const w = 200;
 export const Name = (props) =>{
   return (<Input style={{ width: w }} {...props}/>);
 };
+export const Type = (props) =>{
+  return (<Input style={{ width: w }} {...props}/>);
+};
 export const ShelfLife = (props) =>{
   return (<><InputNumber min={0}  {...props}/>&nbsp;&nbsp;天</>);
 };

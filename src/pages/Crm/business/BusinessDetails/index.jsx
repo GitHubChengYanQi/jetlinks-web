@@ -90,7 +90,7 @@ const CustomerDetail = () => {
             component={CrmBusinessTrackEdit} onSuccess={() => {
               refTrack.current.close();
               refresh();
-            }} val={data.customerId} number={1}/>
+            }} val={data.customerId} id={data.businessId} number={1}/>
           {/* <Button */}
           {/*  style={params.state === 'false' ? {'display': 'none' }: null } */}
           {/*  type="primary" onClick={() => {* /}

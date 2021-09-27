@@ -40,26 +40,6 @@ const OutstockApplyEdit = ({...props}, ref) => {
     }
   `;
 
-  const [state, setState] = useState();
-
-  const {data: Acontacts, run: AcontactsRun} = useRequest({
-    url: '/contacts/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
-  const {data: APhone, run: runAPhone} = useRequest({
-    url: '/phone/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
-  const {data: Aadress, run: AadressRun} = useRequest({
-    url: '/adress/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
 
 
   const formRef = useRef();
@@ -92,8 +72,6 @@ const OutstockApplyEdit = ({...props}, ref) => {
               <ProCard className='h2Card' headerBordered title="基本信息" bordered={false}>
                 <div style={{paddingRight: 20}}>
                   <FormItem label="负责人" component={SysField.UserId} name="userId" required />
-
-                  <FormItem label="仓库" component={SysField.StoreHouse} name="stockId" required />
 
                   <CustomerAll  />
                 </div>
