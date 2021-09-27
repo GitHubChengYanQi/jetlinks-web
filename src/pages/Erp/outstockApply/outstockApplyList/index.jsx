@@ -27,7 +27,7 @@ import OutstockApplyEdit from '../outstockApplyEdit';
 import * as SysField from '../outstockApplyField';
 import {OutBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
 import OutStockApply from '@/pages/Erp/outstockApply/components/OutStockApply';
-import FormModal from '@/components/FormModal';
+import CreateOutStockApply from '@/pages/Erp/outstockApply/outstockApplyEdit/components/CreateOutStockApply';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -220,7 +220,7 @@ const OutstockApplyList = () => {
         }} width={300} />
       </Table>
 
-      <FormModal width={1400} component={OutstockApplyEdit} ref={ref} onSuccess={()=>{
+      <CreateOutStockApply width={1400} ref={ref} onSuccess={()=>{
         tableRef.current.refresh();
         ref.current.close();
       }} />

@@ -62,7 +62,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             <span>项目来源管理</span>
           </Menu.Item>
           <Menu.Item key="sslc">
-            <span>销售流程管理</span>
+            <span>销售分类管理</span>
           </Menu.Item>
           <Menu.Item key="htmb">
             <span>合同模板管理</span>
@@ -74,7 +74,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             <span>行业管理</span>
           </Menu.Item>
           <Menu.Item key="jsgl">
-            <span>角色管理</span>
+            <span>职位管理</span>
           </Menu.Item>
           <Menu.Item key="cpzl">
             <span>产品资料分类管理</span>

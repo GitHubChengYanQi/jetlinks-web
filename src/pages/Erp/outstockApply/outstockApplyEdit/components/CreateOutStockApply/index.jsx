@@ -1,19 +1,28 @@
 import Modal from '@/components/Modal';
-import OutstockApplyEdit from '@/pages/Erp/outstockApply/outstockApplyEdit';
 import {Button, Space} from 'antd';
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
+import OutstockApplyEdit from '@/pages/Erp/outstockApply/outstockApplyEdit';
 
 
-const FormModal = ({title,width,component,onSuccess},ref) => {
+const CreateOutStockApply = ({
+  onSuccess,
+  title,
+  width,
+  onChange,
+  ...props
+}, ref) => {
 
-  const modalRef = useRef();
 
   const compoentRef = useRef(null);
+  const modalRef = useRef(null);
+
+  const [value,setValue] = useState();
 
 
 
   const open = (value) => {
+    setValue(value);
     modalRef.current.open(value);
   };
 
@@ -38,10 +47,14 @@ const FormModal = ({title,width,component,onSuccess},ref) => {
           }}>取消</Button>
         </Space>
       </>
-    } title={title} component={component} compoentRef={compoentRef} onSuccess={()=>{
-      onSuccess();
-    }}  />
+    } title={title}  >
+      <OutstockApplyEdit value={value} ref={compoentRef} onSuccess={()=>{
+        onSuccess();
+      }} onChange={(res)=>{
+        typeof onChange === 'function' && onChange(res);
+      }}  />
+    </Modal>
   );
 };
 
-export default React.forwardRef(FormModal);
+export default React.forwardRef(CreateOutStockApply);

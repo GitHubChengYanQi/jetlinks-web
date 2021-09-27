@@ -44,7 +44,7 @@ const CrmBusinessSalesList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label='类别名称' name="name" component={SysField.Name} />
+        <FormItem label='分类名称' name="name" component={SysField.Name} />
       </>
     );
   };
@@ -69,7 +69,7 @@ const CrmBusinessSalesList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title="销售类别管理" />}
+        title={<Breadcrumb title="销售分类管理" />}
         api={crmBusinessSalesList}
         rowKey="salesId"
         searchForm={searchForm}
@@ -77,7 +77,7 @@ const CrmBusinessSalesList = () => {
         ref={tableRef}
         formActions={formActions}
       >
-        <Column title="类别名称" dataIndex="name" render={(text, record,) => {
+        <Column title="分类名称" dataIndex="name" render={(text, record,) => {
           return (
             <Button type="link" onClick={() => {
               refCrmBusinessSalesProcessList.current.open(record.salesId);

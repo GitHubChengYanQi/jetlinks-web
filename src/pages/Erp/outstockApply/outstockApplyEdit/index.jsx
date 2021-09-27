@@ -49,15 +49,8 @@ const OutstockApplyEdit = ({...props}, ref) => {
   }));
 
 
-  const height = () => {
-    if (window.document.body.clientHeight < 470) {
-      return 'calc(100vh - 206px)';
-    }
-    return 470;
-  };
-
   return (
-    <div style={{height: height(),padding:24}}>
+    <div style={{height: '100%',padding:24}}>
       <Form
         {...props}
         NoButton={false}
@@ -68,7 +61,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
 
         <Row gutter={24}>
           <Col span={10}>
-            <div style={{height: height(), overflow: 'auto'}}>
+            <div style={{height: '100%', overflow: 'auto'}}>
               <ProCard className='h2Card' headerBordered title="基本信息" bordered={false}>
                 <div style={{paddingRight: 20}}>
                   <FormItem label="负责人" component={SysField.UserId} name="userId" required />
@@ -79,7 +72,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
             </div>
           </Col>
           <Col span={14}>
-            <div style={{height: height(), overflow: 'auto'}}>
+            <div style={{height: '100%', overflow: 'auto'}}>
               <ProCard className='h2Card' headerBordered title="发货申请明细" bordered={false}>
                 <FieldList
                   name="applyDetails"

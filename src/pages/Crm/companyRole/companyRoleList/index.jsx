@@ -46,7 +46,7 @@ const CompanyRoleList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb title='角色管理'/>}
+        title={<Breadcrumb title='职位管理'/>}
         api={companyRoleList}
         rowKey="companyRoleId"
         searchForm={searchForm}
