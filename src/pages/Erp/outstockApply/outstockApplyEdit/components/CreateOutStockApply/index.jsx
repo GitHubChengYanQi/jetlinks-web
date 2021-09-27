@@ -40,7 +40,7 @@ const CreateOutStockApply = ({
       <>
         <Space>
           <Button type="primary" onClick={() => {
-            compoentRef.current.formRef.current.submit();
+            compoentRef.current.submit();
           }}>保存</Button>
           <Button onClick={() => {
             close();
