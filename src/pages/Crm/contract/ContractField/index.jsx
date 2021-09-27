@@ -63,7 +63,9 @@ export const Contacts = (props) => {
 
 
   useEffect(() => {
-    props.onChange(data.length > 0 && data[0].value);
+    if (data.length > 0){
+      props.onChange(data[0].value);
+    }
     contact ? contact(data.length > 0 && data[0].value) : null;
   }, [customers || null]);
 

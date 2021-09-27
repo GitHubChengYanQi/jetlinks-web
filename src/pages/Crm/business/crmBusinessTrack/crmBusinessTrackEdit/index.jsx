@@ -64,6 +64,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
       businessId = val.businessId;
       return (<FormItem
         label="商机"
+        required
         name={`businessTrackParams.${index}.classifyId`}
         component={SysField.BusinessId}
         value={businessId} />);
@@ -72,6 +73,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
       contractId = val.contractId;
       return (<FormItem
         label="合同"
+        required
         name={`businessTrackParams.${index}.classifyId`}
         component={SysField.ContractId}
         value={contractId} />);
@@ -80,6 +82,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
       orderId = val.orderId;
       return (<FormItem
         label="订单"
+        required
         name={`businessTrackParams.${index}.classifyId`}
         component={SysField.OrderId}
         value={orderId} />);
@@ -88,6 +91,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
       backMoney = val.backMoney;
       return (<FormItem
         label="回款"
+        required
         name={`businessTrackParams.${index}.classifyId`}
         component={SysField.BackMoney}
         value={backMoney} />);
@@ -130,7 +134,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <ProCard style={{width:'auto'}} headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="事项明细" level={6} />} headerBordered extra={<Button
+                            <ProCard style={{width:'auto'}} headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title={`事项明细 ${index + 1}`} level={6} />} headerBordered extra={<Button
                               type="link" style={{float: 'right',display: state.value.length === 1 && 'none'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
@@ -143,16 +147,19 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                   name={`businessTrackParams.${index}.classify`}
                                   component={SysField.Classify}
                                   value={number}
+                                  required
                                   onChange={(value) => {
                                     setClassNmb(value);
                                   }} />
                                 {returnFormItem(classNmb, index)}
                                 <FormItem
                                   label="跟踪类型"
+                                  required
                                   name={`businessTrackParams.${index}.type`}
                                   component={SysField.Type} />
                                 <FormItem
                                   label="跟踪内容"
+                                  required
                                   name={`businessTrackParams.${index}.note`}
                                   component={SysField.Note} />
                                 <FormItem
@@ -170,10 +177,12 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                 > </Switch>
                                 {txHidden ? <FormItem
                                   label="跟进提醒时间"
+                                  required
                                   name={`businessTrackParams.${index}.time`}
                                   component={SysField.Time} /> : null}
                                 {txHidden ? <FormItem
                                   label="提醒内容"
+                                  required
                                   name={`businessTrackParams.${index}.message`}
                                   component={SysField.Message} /> : null}
                                 <Switch
@@ -187,6 +196,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                 > </Switch>
                                 {hidden ? <FormItem
                                   label="报价金额"
+                                  required
                                   name={`businessTrackParams.${index}.money`}
                                   component={SysField.Money} /> : null}
                               </RowStyleLayout>
@@ -222,7 +232,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <ProCard bodyStyle={{padding:16}} headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title="竞争对手明细" level={6} />} headerBordered extra={<Button
+                            <ProCard bodyStyle={{padding:16}} headStyle={{borderLeft:'none',padding:'8px 16px'}} title={<Title title={`竞争对手明细 ${index+1}`}level={6} />} headerBordered extra={<Button
                               type="link" style={{float: 'right',display: state.value.length === 1 && 'none'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
