@@ -33,9 +33,14 @@ const ApiConfig = {
 
 const AddContractEdit = ({...props}) => {
 
+
+
+
   const {Step} = Steps;
 
   const {value, customerId, ...other} = props;
+
+  const formRef = useRef();
 
 
 
@@ -58,7 +63,7 @@ const AddContractEdit = ({...props}) => {
           <FormItem name="content" component={SysField.Content} result={result} required />
         </Form>
         <Card title="添加产品明细" bordered={false}>
-          <TableDetail contractId={result.contractId} onSuccess={()=>{}}/>
+          <TableDetail contractId={result && result.contractId} onSuccess={()=>{}}/>
         </Card>
         <Button type="primary" style={{width: '100%'}} onClick={() => {
           formRef.current.submit();
@@ -72,12 +77,14 @@ const AddContractEdit = ({...props}) => {
 
   const [current, setCurrent] = React.useState(0);
 
-  const formRef = useRef();
+
 
 
   if (props.value) {
     return content();
   }
+
+
 
 
   const steps = [
@@ -111,6 +118,7 @@ const AddContractEdit = ({...props}) => {
               <Row gutter={24}>
                 <Col span={12}>
                   <ProCard headerBordered className="h2Card" title="甲方信息">
+                    {/*{CustomerAll( 'partyA' ,'partyAAdressId' ,'partyAContactsId' ,'partyAPhone' ,{customerId})}*/}
                     <CustomerAll customer='partyA' adress='partyAAdressId' contacts='partyAContactsId' phone='partyAPhone' customerId={customerId} />
                   </ProCard>
                 </Col>

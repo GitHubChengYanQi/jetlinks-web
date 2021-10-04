@@ -56,7 +56,7 @@ const RemindList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="提醒类型" dataIndex="type" render={(value, record) => {
+        <Column title="提醒类型" fixed dataIndex="type" render={(value, record) => {
           switch (record.type) {
             case 0:
               return <>新的报修</>;
@@ -91,7 +91,7 @@ const RemindList = () => {
             </>
           );
         }} />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="操作" fixed='right' align="right" render={(value, record) => {
           return (
             <>
               <Button type='link' onClick={()=>{
@@ -107,7 +107,7 @@ const RemindList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={210} />
       </Table>
       <Drawer width={800} title="编辑" component={RemindEdit} onSuccess={() => {
         tableRef.current.refresh();

@@ -29,6 +29,7 @@ const TableWarp = ({
   SearchButton,
   selectionType,
   onChange,
+  getCheckboxProps,
   layout,
   listHeader = true,
   labelAlign,
@@ -182,7 +183,8 @@ const TableWarp = ({
                 type: selectionType || 'checkbox',
                 onChange: (selectedRowKeys, selectedRows) => {
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
-                }
+                },
+                getCheckboxProps
               }}
               footer={footer}
               layout

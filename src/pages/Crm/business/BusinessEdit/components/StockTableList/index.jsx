@@ -118,24 +118,7 @@ const StockTableList = (props) => {
         }} sorter />
         salePrice
         <Column title="销售单价" width={120} align="center" sorter dataIndex="salePrice" />
-        {/*<Column title="品牌"  width={200} render={(text, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      {record.brandResult.brandName}*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} sorter />*/}
-        {/*<Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      <Button type="link" onClick={() => {*/}
-        {/*        history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,*/}
-        {/*          params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});*/}
-        {/*      }}>{record.storehouseResult.name}</Button>*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} sorter />*/}
-        {/*<Column title="数量" width={120} align='center' sorter dataIndex="inventory" />*/}
+        <Column title="数量" width={120} align='center' sorter dataIndex="inventory" />
         <Column />
       </Table>
       <Modal

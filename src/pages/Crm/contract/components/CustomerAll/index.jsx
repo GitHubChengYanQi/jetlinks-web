@@ -38,12 +38,11 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
     <>
       {customerId ?
         <FormItem
-          initialValue={false}
           label="客户"
           name={customer || 'customerId'}
           value={customerId}
           component={SysField.CustomerId}
-          placeholder="请选择甲方客户"
+          placeholder="请选择客户"
           customers={async (customer) => {
             setCustomerIds(customer);
             if (customer) {
@@ -61,11 +60,10 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
           }}
           required
         /> : <FormItem
-          initialValue={false}
           label="客户"
           name={customer || 'customerId'}
           component={SysField.Customer}
-          placeholder="客户"
+          placeholder="请选择客户"
           refresh={() => {
             refresh();
           }}
@@ -87,11 +85,10 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
           required
         />}
       <FormItem
-        initialValue={false}
         label="联系人"
         name={contacts || 'contactsId'}
         component={SysField.Contacts}
-        placeholder="甲方联系人"
+        placeholder="请选择联系人"
         refresh={() => {
           refresh();
         }}
@@ -110,7 +107,6 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
         required
       />
       <FormItem
-        initialValue={false}
         label="电话"
         name={phone || 'phoneId'}
         refresh={() => {
@@ -118,12 +114,11 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
         }}
         component={SysField.Phone}
         contactsId={contactsIdA}
-        placeholder="请选择甲方联系人电话"
+        placeholder="请选择电话"
         contacts={Phone || null}
         required
       />
       <FormItem
-        initialValue={false}
         label="地址"
         refresh={() => {
           refresh();
@@ -131,7 +126,7 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
         name={adress || 'adressId'}
         customerId={customerId || customerIds}
         component={SysField.Adress}
-        placeholder="请选择甲方地址"
+        placeholder="请选择地址"
         customers={Adress || null}
         required
       />

@@ -14,7 +14,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
-import Modal2 from '@/components/Modal';
+import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import CheckButton from '@/components/CheckButton';
 import {erpPackageTableAdd} from '@/pages/Erp/packageTable/packageTableUrl';
@@ -25,9 +25,8 @@ import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import * as SysField from '../ItemsField';
 import ItemsEdit from '../ItemsEdit';
-import {addAllPackages, addAllPackagesTable, batchAdd, batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
 import SelButton from '@/components/SelButton';
-import {contractDetailAdd} from '@/pages/Crm/contract/contractDetail/contractDetailUrl';
+import {addAllPackages, addAllPackagesTable, batchAdd, batchDelete, itemsDelete, itemsList} from '../ItemsUrl';
 
 
 const {Column} = AntTable;
@@ -45,38 +44,6 @@ const ItemsList = (props) => {
   const [itemsId, setItemsId] = useState([]);
   const history = useHistory();
 
-  // const { run: add} = useRequest(erpPackageTableAdd, {
-  //   manual: true,
-  //   onError: (error) => {
-  //     message.error(error.message);
-  //   },
-  //   onSuccess: () => {
-  //     ref.current.close();
-  //     props.onSuccess();
-  //   }
-  // });
-
-  // const { run: addTc} = useRequest(crmBusinessDetailedAdd, {
-  //   manual: true,
-  //   onError: (error) => {
-  //     message.error(error.message);
-  //   },
-  //   onSuccess: () => {
-  //     ref.current.close();
-  //     props.onSuccess();
-  //   }
-  // });
-  //
-  // const { run: addHt} = useRequest(contractDetailAdd, {
-  //   manual: true,
-  //   onError: (error) => {
-  //     message.error(error.message);
-  //   },
-  //   onSuccess: () => {
-  //     ref.current.close();
-  //     props.onSuccess();
-  //   }
-  // });
 
   let disabled = true;
   if(props.disabled === undefined){
@@ -234,7 +201,6 @@ const ItemsList = (props) => {
               }}>{row.name}</Button>
             );
           }}/>
-        {/*<Column title="品牌" width={300} align='center' dataIndex="brandId" sorter />*/}
         <Column title="品牌" width={300} align='center' dataIndex="brandBindResults" render={(value, record) => {
           return (
             <>
@@ -280,53 +246,6 @@ const ItemsList = (props) => {
         <Column title="操作" fixed="right" width={ 200 }  align="right" render={(value, record) => {
           return (
             <>
-              {/*{choose ? <CheckButton onClick={()=>{*/}
-              {/*  choose(record);*/}
-              {/*  props.onSuccess();*/}
-              {/*}} /> : null}*/}
-              {/*{!disabled&&*/}
-              {/*<CheckButton onClick={() => {*/}
-              {/*  add(*/}
-              {/*    {*/}
-              {/*      data: {*/}
-              {/*        packageId: props.packageId,*/}
-              {/*        itemId: record.itemId,*/}
-              {/*        salePrice: 0,*/}
-              {/*        totalPrice: 0,*/}
-              {/*        quantity: 1*/}
-              {/*      }*/}
-              {/*    }*/}
-              {/*  );*/}
-
-              {/*}}/>}*/}
-              {/*{!TcDisabled&&*/}
-              {/*<CheckButton onClick={() => {*/}
-              {/*  addTc(*/}
-              {/*    {*/}
-              {/*      data: {*/}
-              {/*        businessId: props.businessId,*/}
-              {/*        itemId: record.itemId,*/}
-              {/*        salePrice: 0,*/}
-              {/*        totalPrice: 0,*/}
-              {/*        quantity: 1*/}
-              {/*      }*/}
-              {/*    }*/}
-              {/*  );*/}
-              {/*}}/>}*/}
-              {/*{props.contractId &&*/}
-              {/*<CheckButton onClick={() => {*/}
-              {/*  addHt(*/}
-              {/*    {*/}
-              {/*      data: {*/}
-              {/*        contractId: props.contractId,*/}
-              {/*        itemId: record.itemId,*/}
-              {/*        salePrice: 0,*/}
-              {/*        totalPrice: 0,*/}
-              {/*        quantity: 1*/}
-              {/*      }*/}
-              {/*    }*/}
-              {/*  );*/}
-              {/*}}/>}*/}
               <EditButton onClick={() => {ref.current.open(record.itemId);}} />
               <DelButton api={itemsDelete} value={record.itemId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -335,7 +254,7 @@ const ItemsList = (props) => {
           );
         }} />
       </Table>
-      <Modal2 width={800} component={ItemsEdit} onSuccess={() => {
+      <Modal width={800} title='产品' component={ItemsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

@@ -40,12 +40,17 @@ export const UserId = (props) => {
   const userIds = [];
 
 
-  // eslint-disable-next-line no-nested-ternary
-  value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
-    userIds.push(items && `${items.userId}`);
-  }) : value.forEach((items)=>{
-    userIds.push(items);
-  }) : [];
+  if (value && value.length > 0){
+    if (typeof value[0] ==='object'){
+      value.forEach((items)=>{
+        userIds.push(items && `${items.userId}`);
+      });
+    }else {
+      value.forEach((items)=>{
+        userIds.push(items);
+      });
+    }
+  }
 
   useEffect(()=>{
     if (value){

@@ -44,6 +44,7 @@ const CustomerSelect = (props) => {
     <AutoComplete
       dropdownMatchSelectWidth={100}
       options={content}
+      placeholder='选择客户'
       style={style}
       value={value}
       onSelect={(value) => {

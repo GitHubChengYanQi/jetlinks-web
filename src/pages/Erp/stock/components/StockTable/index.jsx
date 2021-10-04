@@ -17,9 +17,9 @@ import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
 import {useBoolean} from "ahooks";
 import {useHistory} from "ice";
+import SelButton from '@/components/SelButton';
 import {stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
-import SelButton from '@/components/SelButton';
 
 
 const {Column} = AntTable;
@@ -34,6 +34,7 @@ const StockTable = (props) => {
 
   const [search,{toggle}]  = useBoolean(false);
   const [selectData, setSelectData] = useState(null);
+
   useEffect(() => {
     if (state) {
       tableRef.current.formActions.setFieldValue('storehouseId', state ? state[0] : null);
@@ -89,11 +90,9 @@ const StockTable = (props) => {
       <SelButton
         size="small"
         onClick={()=>{
-
           if(selectData !== null && selectData.length > 0){
             modalRef.current.open(false);
-          }
-          else{
+          } else{
             AntModal.confirm({
               title: '提示',
               content: '请至少选择一条数据!',
@@ -126,7 +125,8 @@ const StockTable = (props) => {
           setIds(keys);
           setSelectData(row);
         }}
-        footer={footer}
+        rowSelection
+        // footer={footer}
         {...other}
       >
         <Column title="产品名称"  render={(text, record) => {
@@ -143,7 +143,7 @@ const StockTable = (props) => {
             </>
           );
         }} sorter />
-        <Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {
+        <Column title="仓库名称" render={(text, record) => {
           return (
             <>
               <Button type="link" onClick={() => {

@@ -99,31 +99,6 @@ const CustomerDetail = () => {
             onWidthChange={(value) => {
               setWidth(value);
             }} id={data.businessId} number={1} />
-          {/* <Button */}
-          {/*  style={params.state === 'false' ? {'display': 'none' }: null } */}
-          {/*  type="primary" onClick={() => {* /}
-          {/*    ref.current.open(data.businessId); */}
-          {/*  }}>编辑</Button> */}
-          {/* <Modal width={700} title="项目" */}
-          {/*  component={TableDetailEdit} */}
-          {/*  compoentRef={submitRef} */}
-          {/*  footer={* /}
-          {/*    <> */}
-          {/*      <Button type="primary" onClick={()=>{ */}
-          {/*        submitRef.current.formRef.current.submit(); */}
-          {/*      }}  > */}
-          {/*      保存 */}
-          {/*      </Button> */}
-          {/*      <Button onClick={()=>{ */}
-          {/*        ref.current.close(); */}
-          {/*      }}  > */}
-          {/*      取消 */}
-          {/*      </Button> */}
-          {/*    </>} */}
-          {/*  onSuccess={() => { */}
-          {/*    ref.current.close(); */}
-          {/*    refresh(); */}
-          {/*  }} ref={ref}/> */}
           <Button
             style={params.state === 'false' ? null : {'display': 'none'}}
             type="primary" key="1"
@@ -135,9 +110,6 @@ const CustomerDetail = () => {
             onClick={() => {
               history.push(`/CRM/business`);
             }}><Icon type="icon-back" />返回</Button>
-          {/*<Anchor affix={false}>*/}
-          {/*  <Link href={`${`${window.location.href.substring(0, window.location.href.lastIndexOf('/'))}/#page`}`}  title='返回'/>*/}
-          {/*</Anchor>*/}
           <Button
             style={params.state === 'false' ? null : {'display': 'none'}}
             onClick={() => {

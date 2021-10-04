@@ -58,21 +58,30 @@ export const BrandId = (props) => {
 
   const brandBindResults = [];
 
-  // eslint-disable-next-line no-nested-ternary
-  value && value.length > 0 ? typeof(value[0])==='object' ? value.forEach((items)=>{
-    brandBindResults.push(items && `${items.brandId}`);
-  }) : value.forEach((items)=>{
-    brandBindResults.push(items);
-  }) : [];
+  if (value && value.length > 0){
+    if (typeof value[0] === 'object'){
+      value.forEach((items)=>{
+        brandBindResults.push(items && `${items.brandId}`);
+      });
+    }else {
+      value.forEach((items)=>{
+        brandBindResults.push(items);
+      });
+    }
+  }
 
-
+  useEffect(()=>{
+    if (brandBindResults.length > 0){
+      props.onChange(brandBindResults);
+    }
+  },[]);
 
 
   const {data} = useRequest(brandListSelect);
 
   const options = data || [];
 
-  function tagRender(props) {
+  const tagRender = (props) => {
     const {label, value, closable, onClose} = props;
     const onPreventMouseDown = event => {
       event.preventDefault();
@@ -89,7 +98,7 @@ export const BrandId = (props) => {
         {label}
       </Tag>
     );
-  }
+  };
 
 
   return (

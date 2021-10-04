@@ -26,19 +26,27 @@ import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import PhoneEdit from '@/pages/Crm/phone/phoneEdit';
 
 export const CustomerId = (props) => {
-  const {customers,value} = props;
-  useEffect(()=>{
-    customers(value);
-  },[]);
-  return (<Select disabled api={apiUrl.CustomerNameListSelect} {...props} />);
+  const {customers, ...other} = props;
+
+  useEffect(() => {
+    customers(other.value);
+  }, []);
+
+  return (<Select disabled api={apiUrl.CustomerNameListSelect} {...other} />);
 };
 
 export const Customer = (props) => {
 
-  const {customers, refresh, onChange} = props;
+  const {customers, refresh, onChange, ...other} = props;
+
+  useEffect(() => {
+    if (!other.value) {
+      onChange(undefined);
+    }
+  }, []);
 
   return (<>
-    <SelectCustomer {...props} onChange={(value) => {
+    <SelectCustomer {...other} onChange={(value) => {
       onChange(value && value.customerId);
       customers(value && value.customerId);
       refresh();
@@ -51,7 +59,7 @@ export const Contacts = (props) => {
   const ref = useRef(null);
   const submitRef = useRef(null);
 
-  const {customers, customerId, refresh, contact, onChange} = props;
+  const {customers, customerId, refresh, contact, onChange, ...other} = props;
 
 
   const data = customers ? customers.map((value, index) => {
@@ -63,8 +71,10 @@ export const Contacts = (props) => {
 
 
   useEffect(() => {
-    if (data.length > 0){
-      props.onChange(data[0].value);
+    if (data.length > 0) {
+      onChange(data[0].value);
+    } else {
+      onChange(undefined);
     }
     contact ? contact(data.length > 0 && data[0].value) : null;
   }, [customers || null]);
@@ -78,7 +88,7 @@ export const Contacts = (props) => {
       }}
       style={{display: 'inline-block', width: 200}}
       options={data}
-      {...props}
+      {...other}
       onChange={(value) => {
         onChange(value);
         contact ? contact(value) : null;
@@ -113,7 +123,7 @@ export const Contacts = (props) => {
   </>);
 };
 export const Phone = (props) => {
-  const {contacts, refresh, contactsId} = props;
+  const {contacts, refresh, contactsId, onChange, ...other} = props;
 
   const ref = useRef(null);
 
@@ -125,7 +135,7 @@ export const Phone = (props) => {
   }) : [];
 
   useEffect(() => {
-    props.onChange(data.length > 0 && data[0].value);
+    onChange(data.length > 0 ? data[0].value : undefined);
   }, [contacts || null]);
 
   return (<>
@@ -136,7 +146,10 @@ export const Phone = (props) => {
       filterOption={(input, option) => {
         option.label + ''.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       }}
-      {...props} />
+      {...other}
+      onChange={(value) => {
+        onChange(value);
+      }} />
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
@@ -147,7 +160,7 @@ export const Phone = (props) => {
   </>);
 };
 export const Adress = (props) => {
-  const {customers, refresh, customerId} = props;
+  const {customers, refresh, customerId, ...other} = props;
 
   const ref = useRef(null);
 
@@ -158,8 +171,13 @@ export const Adress = (props) => {
     };
   }) : [];
 
+
   useEffect(() => {
-    props.onChange(data.length > 0 && data[0].value);
+    if (data.length > 0) {
+      props.onChange(data[0].value);
+    } else {
+      props.onChange();
+    }
   }, [customers || null]);
 
   return (<>
@@ -167,7 +185,8 @@ export const Adress = (props) => {
       showSearch
       filterOption={(input, option) => {
         option.label + ''.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-      }} style={{display: 'inline-block', width: 200}} options={data} {...props} />
+      }} style={{display: 'inline-block', width: 200}} options={data} {...other} />
+
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />

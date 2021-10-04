@@ -5,7 +5,7 @@
  * @Date 2021-08-20 13:14:51
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
 import {deliveryDetailsDetail, deliveryDetailsAdd, deliveryDetailsEdit} from '../deliveryDetailsUrl';
@@ -33,35 +33,6 @@ const DeliveryDetailsEdit = ({...props}) => {
     save: deliveryDetailsEdit
   };
 
-  const [state, setState] = useState();
-
-  const {loading: contactsLogin, data: Acontacts, run: AcontactsRun} = useRequest({
-    url: '/contacts/list',
-    method: 'POST',
-    data: {
-      customerId: value.customerId === '' ? ' ' : value.customerId,
-    }
-  }, {
-    manual: !value
-  });
-  const {loading: phoneLogin, data: APhone, run: runAPhone} = useRequest({
-    url: '/phone/list',
-    method: 'POST',
-    data: {
-      contactsId: value.contactsId === '' ? ' ' : value.contactsId,
-    }
-  }, {
-    manual: !value
-  });
-  const {loading: adressLogin, data: Aadress, run: AadressRun} = useRequest({
-    url: '/adress/list',
-    method: 'POST',
-    data: {
-      customerId: value.customerId === '' ? ' ' : value.customerId,
-    }
-  }, {
-    manual: !value
-  });
 
   return (
     <div style={{padding:24}}>
@@ -78,7 +49,6 @@ const DeliveryDetailsEdit = ({...props}) => {
           value={ids || null}
           name="ids"
           component={SysField.Ids}
-          required
         />
       </Form>
     </div>

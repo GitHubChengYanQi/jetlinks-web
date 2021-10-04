@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Badge, Button, message, Table as AntTable, Tag} from 'antd';
 import Form from '@/components/Form';
 import Modal from '@/components/Modal';
 import OutstockEdit from '@/pages/Erp/outstock/OutstockEdit';
@@ -35,11 +35,16 @@ const OutstockList = (props) => {
     return (
       <>
         <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
-          refDelivery.current.open(false);
+          if (!ids || ids.length <= 0){
+            message.error("请选择发货产品！！！");
+          }else {
+            refDelivery.current.open(false);
+          }
         }} type="text">批量发货</Button>
         <Modal title="产品出库" component={DeliveryDetailsEdit} onSuccess={() => {
           tableRef.current.refresh();
           refDelivery.current.close();
+          setIds();
         }} ref={refDelivery} ids={ids} />
       </>
     );
@@ -57,13 +62,6 @@ const OutstockList = (props) => {
           hidden
           value={outstockOrderId || value}
           component={SysField.ItemIdSelect} />
-        <FormItem
-          mega-props={{span: 1}}
-          placeholder="出库单"
-          name="state"
-          hidden
-          value={0}
-          component={SysField.ItemIdSelect} />;
       </>
     );
   };
@@ -78,11 +76,15 @@ const OutstockList = (props) => {
       <Table
         headStyle={{display: 'none'}}
         api={outstockList}
+        contentHeight
         isModal={false}
         rowKey="outstockId"
         ref={tableRef}
         showSearchButton={false}
         searchForm={searchForm}
+        getCheckboxProps={(record) => ({
+          disabled: record.state === 1, // Column configuration not to be checked
+        })}
         footer={value ? footer : false}
         onChange={(value, record) => {
           const stockItemIds = record && record.map((items, index) => {
@@ -105,6 +107,13 @@ const OutstockList = (props) => {
           return (
             <>
               {record.brandResult.brandName}
+            </>
+          );
+        }} />
+        <Column title="状态" width={200} dataIndex="state" render={(text, record) => {
+          return (
+            <>
+              {text === 0 ? <Badge text='已出库' color='blue' /> : <Badge text='已发货' color='green' />}
             </>
           );
         }} />

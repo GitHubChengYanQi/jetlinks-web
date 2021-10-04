@@ -86,7 +86,7 @@ const UnitList = () => {
           );
         }} width={100}/>
       </Table>
-      <Drawer width={800} title="编辑" component={UnitEdit} onSuccess={() => {
+      <Drawer width={800} title="单位" component={UnitEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

@@ -33,9 +33,9 @@ const ApiConfig = {
 const AddItem = (props, ref) => {
   if (props.businessId !== undefined) {
     ApiConfig.add = batchAdd;
-  } if (props.contractId !== undefined){
+  } else if (props.contractId !== undefined){
     ApiConfig.add = contractDetail;
-  } else {
+  } else if (props.packageId !== undefined) {
     ApiConfig.add = erpPackageTableBatchAdd;
   }
   const formRef = useRef(null);
