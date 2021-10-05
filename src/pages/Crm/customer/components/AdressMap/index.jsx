@@ -24,7 +24,7 @@ const AdressMap = (props) => {
         />
         <Amap onChange={(value) => {
           setLocation(value);
-          props.onChange({address:value.address,map:value.location});
+          props.onChange({address:value.address,map:value.location,city:value.city});
         }} />
       </div>
     </>

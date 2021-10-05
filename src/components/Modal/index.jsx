@@ -8,6 +8,7 @@ const Modal = (
     modal,
     component: Component,
     width,
+    headTitle,
     footer,
     padding,
     onSuccess = () => {
@@ -54,7 +55,7 @@ const Modal = (
       }}
       bodyStyle={{padding: 0}}
       width={width}
-      title={title && (value ? `编辑${title}` : `添加${title}`)}
+      title={headTitle || (title && (value ? `编辑${title}` : `添加${title}`))}
       destroyOnClose
     >
       <div style={{maxHeight: footer ? 'calc(100vh - 110px)':'calc(100vh - 55px)', overflow: 'auto'}}>

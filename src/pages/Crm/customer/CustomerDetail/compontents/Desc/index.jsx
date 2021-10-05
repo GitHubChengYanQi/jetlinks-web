@@ -11,7 +11,7 @@ const Desc = (props) => {
   const {data} = props;
 
   const {run} = useRequest(customerEdit, {manual: true});
-  const {run:runUser} = useRequest({url:'/customer/updateChargePerson'}, {manual: true});
+  const {run:runUser} = useRequest({url:'/customer/updateChargePerson',method:'POST'}, {manual: true});
 
   const {data:CustomerLevelData} = useRequest(CustomerLevelIdSelect);
 

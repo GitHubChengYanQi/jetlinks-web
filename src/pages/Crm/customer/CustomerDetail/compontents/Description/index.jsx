@@ -105,7 +105,7 @@ const Description = (props) => {
                 });
               }} />
           </Descriptions.Item>
-          <Descriptions.Item span={2} label="网址">
+          <Descriptions.Item label="网址">
             <InputEdit
               value={data.url}
               patter={/^(http(s)?:\/\/)?(www\.)?[\w-]+\.(com|net|cn)$/}

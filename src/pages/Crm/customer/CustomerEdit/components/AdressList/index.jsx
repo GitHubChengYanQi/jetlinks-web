@@ -25,7 +25,7 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const AdressList = (props) => {
-  const {customerId,choose} = props;
+  const {customerId,choose,...other} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -84,7 +84,7 @@ const AdressList = (props) => {
           );
         }} width={300}/>
       </Table>
-      <Drawer width={800} title="编辑" component={AdressEdit} customerId={customerId} onSuccess={() => {
+      <Drawer width={800} title="编辑" component={AdressEdit} customer={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

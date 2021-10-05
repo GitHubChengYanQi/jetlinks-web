@@ -1,16 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
-import {Modal as AntModal, notification, Popover, Steps} from 'antd';
+import {Button, Card, message, Modal as AntModal, notification, Popover, Steps} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from './index.module.scss';
 import Modal from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
+import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
 
 const {Step} = Steps;
 
 const StepList = (props) => {
 
   const {value, onChange: pOnChange} = props;
+
+  const [visiable, setVisiable] = useState();
 
 
   const ref = useRef(null);
@@ -27,7 +30,7 @@ const StepList = (props) => {
       onOk: async () => {
         ref.current.open(false);
       },
-      onCancel:()=>{
+      onCancel: () => {
         typeof pOnChange === 'function' && pOnChange();
       }
     });
@@ -41,13 +44,12 @@ const StepList = (props) => {
       description: `变更流程为${content !== undefined ? content : ''}`,
     });
 
-    if (content === '赢单'){
+    if (content === '赢单') {
       contract();
-    }else {
+    } else {
       typeof pOnChange === 'function' && pOnChange();
     }
   };
-
 
 
   const {data} = useRequest({
@@ -107,7 +109,6 @@ const StepList = (props) => {
       cancelText: '取消',
       onOk: async () => {
         await edit(null, name);
-        // typeof pOnChange === 'function' && pOnChange();
         openNotificationWithIcon('success', name);
       }
     });
@@ -137,7 +138,9 @@ const StepList = (props) => {
 
   if (step) {
     return (
-      <>
+      <Card title="项目销售流程" extra={(!value.contractId && value.state === '赢单') ? <Button type="primary" onClick={() => {
+        contract();
+      }}>创建合同</Button> : '（点击可变更流程，注意：完成之后不可修改！）'} bodyStyle={{padding: 30}}>
         <Steps
           style={{cursor: 'pointer'}}
           type="navigation"
@@ -150,6 +153,10 @@ const StepList = (props) => {
                 value.state :
                 <Popover
                   placement="bottom"
+                  visible={visiable}
+                  onVisibleChange={(visible) => {
+                    setVisiable(visible);
+                  }}
                   content={
                     <div>
                       <a className={styles.state} onClick={async () => {
@@ -165,10 +172,17 @@ const StepList = (props) => {
                 </Popover>}
           />
         </Steps>
-        <Modal title="合同" width={1200} component={AddContractEdit} customerId={value.customerId} ref={ref} onSuccess={()=>{
-          typeof pOnChange === 'function' && pOnChange();
-        }} />
-      </>
+        <Modal
+          title="合同"
+          width={1200}
+          component={AddContractEdit}
+          customerId={value.customerId}
+          ref={ref}
+          onSuccess={() => {
+            typeof pOnChange === 'function' && pOnChange();
+          }}
+          businessId={value.businessId} />
+      </Card>
     );
   } else {
     return null;

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Button, Divider, Table as AntTable} from 'antd';
 import {contractList, crmBusinessDetailedDelete, crmBusinessDetailedList} from '@/pages/Crm/business/BusinessUrl';
 import EditButton from '@/components/EditButton';
@@ -27,6 +27,11 @@ const TableDetail = (props) => {
   const tableRef = useRef(null);
   const refAddOne = useRef(null);
   const refAddAll = useRef(null);
+
+
+  useEffect(()=>{
+    tableRef.current.submit();
+  },[]);
 
   const searchForm = () => {
     return (

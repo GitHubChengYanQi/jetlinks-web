@@ -49,3 +49,7 @@ export const commonArea = {
   url: '/commonArea/treeView',
   method: 'POST',
 };
+export const commonAreaList = {
+  url: '/commonArea/list',
+  method: 'POST',
+};

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Comment, Image, Table as AntTable} from 'antd';
+import {Comment, Image, Spin, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
@@ -15,18 +15,12 @@ const Track = (props) => {
   const {value, number, trackMessageId} = props;
   const tableRef = useRef(null);
 
-  const {data} = useRequest({url: '/trackMessage/list', method: 'POST', data: {customerId: trackMessageId}});
+  const {loading,data} = useRequest({url: '/trackMessage/list', method: 'POST', data: {customerId: trackMessageId}});
 
   const trackMessageIds = data && data.map((items, index) => {
     return items.trackMessageId;
   });
 
-  useEffect(() => {
-    if (trackMessageIds && trackMessageId) {
-      tableRef.current.formActions.setFieldValue('trackMessageIds', trackMessageIds);
-      tableRef.current.refresh();
-    }
-  }, [trackMessageIds]);
 
   const datas = (data) => {
     return {
@@ -55,13 +49,16 @@ const Track = (props) => {
     };
   };
 
+  if (loading){
+    return <div style={{textAlign:'center',margin:64}}><Spin size="large" /></div>;
+  }
+
   const searchForm = () => {
     return (
       <>
         <FormItem placeholder="classifyId" hidden value={value} name="classifyId" component={SysField.Name} />
         <FormItem placeholder="classify" hidden value={number} name="classify" component={SysField.Name} />
-        <FormItem placeholder="trackMessageIds" hidden name="trackMessageIds"
-                  component={SysField.Name} />
+        <FormItem placeholder="trackMessageIds" hidden value={trackMessageIds} name="trackMessageIds" component={SysField.Name} />
       </>);
   };
 

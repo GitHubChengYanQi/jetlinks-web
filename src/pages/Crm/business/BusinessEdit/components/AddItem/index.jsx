@@ -11,7 +11,7 @@ import * as SysField from '../../../crmBusinessDetailed/crmBusinessDetailedField
 import {Button, Col, Divider, Row} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import Title from '@/components/Title';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import {
@@ -28,6 +28,8 @@ const ApiConfig = {
   view: crmBusinessDetailedDetail,
   add: '',
 };
+
+const formActionsPublic = createFormActions();
 
 
 const AddItem = (props, ref) => {
@@ -67,6 +69,7 @@ const AddItem = (props, ref) => {
   return (
     <>
       <Form
+        formActions={formActionsPublic}
         NoButton={false}
         {...props}
         ref={formRef}

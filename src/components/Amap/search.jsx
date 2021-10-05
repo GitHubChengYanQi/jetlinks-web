@@ -1,7 +1,7 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Marker} from 'react-amap';
 import {useRequest} from '@/util/Request';
-import {Button, Card, Cascader as AntCascader, Input, List, Select} from 'antd';
+import {Button, Card, Cascader as AntCascader, Input, List, Popover, Select} from 'antd';
 import Icon from '@/components/Icon';
 
 let MSearch = null;
@@ -13,6 +13,8 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
   const [citys, setCitys] = useState();
 
   const [city, setCity] = useState();
+
+  const [visiable,setVisiable] = useState();
 
 
   const {run} = useRequest({url: '/commonArea/treeView', method: 'POST'}, {manual: true});
@@ -66,7 +68,12 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
         Geocoder.getAddress(lnglat, function (status, result) {
           if (status === 'complete' && result.info === 'OK') {
             // result为对应的地理位置详细信息
-            const m = {address: result.regeocode.formattedAddress, name: '', location: [value.lng, value.lat]};
+            const m = {
+              address: result.regeocode.formattedAddress,
+              name: '',
+              location: [value.lng, value.lat],
+              city: result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+            };
             setadinfo(m);
           }
         });
@@ -74,17 +81,18 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
     }
   }));
 
+
   useEffect(() => {
     window.AMap.plugin('AMap.CitySearch', function () {
       const citySearch = new window.AMap.CitySearch();
       citySearch.getLocalCity(function (status, result) {
         if (status === 'complete' && result.info === 'OK') {
-
           Geocoder.getLocation(result.city, function (status, result) {
             if (status === 'complete' && result.info === 'OK') {
               setadinfo({
                 address: result.geocodes[0].formattedAddress,
                 location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+                city: result.geocodes[0].addressComponent.city || result.geocodes[0].addressComponent.province
               });
               center(
                 {
@@ -101,16 +109,10 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
           });
           // 查询成功，result即为当前所在城市信息
           setCity(result);
-          // center({lgn:result.rectangle.split(';')[0].split(',')[0],lat:result.rectangle.split(';')[0].split(',')[1]});
-          // setMarkerPosition({
-          //   lat: result.rectangle.split(';')[0].split(',')[1],
-          //   lng: result.rectangle.split(';')[0].split(',')[0]
-          // });
         }
       });
     });
     // const value = __map__.getCenter();
-    // setMarkerPosition(value);
     run({}).then((res) => {
       setCitys(res);
     });
@@ -119,78 +121,85 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
 
   return (
-    <div style={{position: 'absolute', top: 0, padding: 10, width: '100%'}}>
-         <span
-           style={{paddingLeft: 10}}
-         >{city &&
-         <AntCascader
-           changeOnSelect
-           style={{minWidth: 250, marginRight: 10}}
-           showSearch={(inputValue, path) => {
-             path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-           }}
-           options={citys}
-           defaultValue={[city.city]}
-           onChange={async (value) => {
-             let cityId = null;
-             value.length > 0 && value.map((items, index) => {
-               return cityId = items;
-             });
-             const city = await runCisy({
-               data: {
-                 id: cityId
-               }
-             });
-             Geocoder.getLocation(city.length > 0 && city[0].title, function (status, result) {
-               if (status === 'complete' && result.info === 'OK') {
-                 setadinfo({
-                   address: result.geocodes[0].formattedAddress,
-                   location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
-                 });
-                 center(
-                   {
-                     lat: result.geocodes[0].location.lat,
-                     lgn: result.geocodes[0].location.lng
-                   }
-                 );
-                 setMarkerPosition({
-                   lat: result.geocodes[0].location.lat,
-                   lng: result.geocodes[0].location.lng
-                 });
-                 // result中对应详细地理坐标信息
-               }
-             });
-           }} />}</span>
-      <Input.Search
-        onChange={(value) => {
-          setValue(value.target.value);
+    <div
+      style={{position: 'absolute', top: 0, padding: 10, width: '100%'}}
+    >
+      <span style={{paddingLeft: 10}}>{city &&
+      <AntCascader
+        changeOnSelect
+        style={{minWidth: 250, marginRight: 10}}
+        showSearch={(inputValue, path) => {
+          path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
         }}
-        onSearch={(e) => {
-          MSearch.search(e); // 关键字查询
-        }}
-        style={{width: 500, marginRight: 20}}
-      />
-      <Button
-        // style={{float: 'left'}}
-        type="primary"
-        onClick={() => {
-          typeof onChange === 'function' && onChange(adinfo);
-        }}>确定</Button>
-      {reslut && reslut.count > 0 && <Card style={{maxHeight: 500, width: '40%', overflowY: 'auto', marginTop: 16}}>
+        options={citys}
+        defaultValue={[city.city]}
+        onChange={async (value) => {
+          let cityId = null;
+          value.length > 0 && value.map((items, index) => {
+            return cityId = items;
+          });
+          const city = await runCisy({
+            data: {
+              id: cityId
+            }
+          });
+          Geocoder.getLocation(city.length > 0 && city[0].title, function (status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              setadinfo({
+                address: result.geocodes[0].formattedAddress,
+                location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+                city: result.geocodes[0].addressComponent.city || result.geocodes[0].addressComponent.province
+              });
+              center(
+                {
+                  lat: result.geocodes[0].location.lat,
+                  lgn: result.geocodes[0].location.lng
+                }
+              );
+              setMarkerPosition({
+                lat: result.geocodes[0].location.lat,
+                lng: result.geocodes[0].location.lng
+              });
+              // result中对应详细地理坐标信息
+            }
+          });
+        }} />}</span>
+      <Popover onVisibleChange={(visible)=>{
+        setVisiable(visible);
+      }} placement="bottom" content={reslut && reslut.count > 0 && <Card style={{maxHeight: 500,minWidth:500, overflowY: 'auto', marginTop: 16}}>
         <List>
           {reslut.pois.map((item, index) => {
+            console.log(item);
             return (<List.Item key={index} title={item.name} onClick={() => {
               setData(item);
             }} extra={<Button type="primary" onClick={() => {
               const location = {
                 address: item.pname + item.cityname + item.address + name,
                 location: [item.location.lng, item.location.lat],
+                city: item.cityname || pname
               };
               typeof onChange === 'function' && onChange(location);
             }}>使用该地址</Button>}>{item.address}</List.Item>);
           })}
         </List>
-      </Card>}
+      </Card>} visible={visiable}>
+        <Input.Search
+          onChange={(value) => {
+            MSearch.search(value.target.value);
+            setValue(value.target.value);
+            setVisiable(true);
+          }}
+          onSearch={(e) => {
+            MSearch.search(e); // 关键字查询
+          }}
+          style={{width: 500, marginRight: 20}}
+        />
+      </Popover>
+      <Button
+        type="primary"
+        onClick={() => {
+          typeof onChange === 'function' && onChange(adinfo);
+        }}>确定</Button>
       {markerPosition && <Marker position={markerPosition} __map__={__map__} />}
     </div>
   );

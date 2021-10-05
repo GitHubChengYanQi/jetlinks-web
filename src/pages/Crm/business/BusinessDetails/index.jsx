@@ -31,7 +31,7 @@ const CustomerDetail = () => {
   const submitRef = useRef(null);
   const history = useHistory();
 
-  const [width,setWidth] = useState();
+  const [width, setWidth] = useState();
 
   const {loading, data, refresh} = useRequest(businessDetail, {
     defaultParams: {
@@ -54,7 +54,7 @@ const CustomerDetail = () => {
         <div className={styles.title}>
           <Row gutter={24}>
             <Col>
-              <Avatar size={64}>{data.businessName.substring(0,1)}</Avatar>
+              <Avatar size={64}>{data.businessName.substring(0, 1)}</Avatar>
             </Col>
             <Col>
               <h3>{data.businessName}</h3>
@@ -130,11 +130,9 @@ const CustomerDetail = () => {
         <Row>
           <Col span={16}>
             <div className={styles.main}>
-              <Card title="项目销售流程" extra="（点击可变更流程，注意：完成之后不可修改！）" bodyStyle={{padding: 30}}>
-                <StepList onChange={() => {
-                  refresh();
-                }} value={data} />
-              </Card>
+              <StepList onChange={() => {
+                refresh();
+              }} value={data} />
             </div>
             <div className={styles.main}>
               <Card>

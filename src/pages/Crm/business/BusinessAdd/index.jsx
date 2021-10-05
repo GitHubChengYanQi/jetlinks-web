@@ -56,7 +56,7 @@ const BusinessAdd = (props, ref) => {
     <Modal
       compoentRef={submitRef}
       ref={modalRef}
-      title={<div>
+      headTitle={<div>
         <div style={disable === 2 ? {display: 'inline'} : {'display': 'none'}}>
           <LeftOutlined
             onClick={() => {

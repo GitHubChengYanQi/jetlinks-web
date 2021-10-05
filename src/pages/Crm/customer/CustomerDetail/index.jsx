@@ -121,7 +121,7 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' />
+          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' edit />
           <Button
             style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {

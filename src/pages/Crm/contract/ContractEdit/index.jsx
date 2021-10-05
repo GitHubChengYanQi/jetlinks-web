@@ -6,7 +6,18 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Card, Col, Input, InputNumber, Row, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  InputNumber,
+  message,
+  Row,
+  Select as AntdSelect,
+  Steps,
+  Table as AntTable
+} from 'antd';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
@@ -15,6 +26,7 @@ import {createFormActions, FormEffectHooks} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
 
 
 const {onFieldValueChange$} = FormEffectHooks;
@@ -31,7 +43,7 @@ const ApiConfig = {
 };
 
 
-const AddContractEdit = ({...props}) => {
+const AddContractEdit = ({businessId,loading,...props}) => {
 
 
 
@@ -77,6 +89,9 @@ const AddContractEdit = ({...props}) => {
 
   const [current, setCurrent] = React.useState(0);
 
+  const {run: business} = useRequest({
+    ...businessEdit, data: {...value,salesId: value.salesId}
+  });
 
 
 
@@ -100,8 +115,21 @@ const AddContractEdit = ({...props}) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="contractId"
-              onSuccess={(result) => {
+              onSuccess={async (result) => {
                 if (result.data !== '') {
+                  if (businessId){
+                    if (result.data.contractId) {
+                      await business({
+                        data: {
+                          businessId,
+                          contractId: result.data.contractId
+                        }
+                      });
+                    }else {
+                      message.error('创建合同失败！');
+                    }
+                  }
+
                   setResult(result.data);
                 }
                 next();

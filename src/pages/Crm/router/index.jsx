@@ -20,7 +20,7 @@ import {BusinessTrackRouter} from '@/pages/Crm/Track/businessTrackRouter';
 const CrmRouterConfig = [
   {
     path: '/CRM',
-    name: 'CRM',
+    name: '营销中心',
     component: CrmLayout,
     children:[
       ...CustomerRouter,

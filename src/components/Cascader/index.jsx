@@ -59,7 +59,7 @@ const Cascader = (props) => {
     onChange(result);
   };
 
-  return (<AntCascader style={{width}} changeOnSelect options={data} defaultValue={valueArray} onChange={change}  {...other} />);
+  return (<AntCascader style={{width}} changeOnSelect options={data} value={valueArray} onChange={change}  {...other} />);
 
 
 };
