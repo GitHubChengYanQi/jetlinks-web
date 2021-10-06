@@ -17,7 +17,9 @@ const {FormItem} = Form;
 const Instock = (props) => {
 
 
-  const {run} = useRequest(instockEdit,{manual:true});
+  const {run} = useRequest(instockEdit,{manual:true,onSuccess:()=>{
+    tableRef.current.submit();
+    }});
 
   const tableRef = useRef(null);
 
@@ -33,11 +35,11 @@ const Instock = (props) => {
   const footer = () => {
     return (
       <>
-        <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
+        <Button icon={<Icon type="icon-chuhuo" />} onClick={async () => {
           if (!instocks || instocks.length <= 0){
             message.error('请选择入库产品！！！');
           }else {
-            run(
+            await run(
               {
                 data: {
                   instocks
