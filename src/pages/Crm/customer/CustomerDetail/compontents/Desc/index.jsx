@@ -11,6 +11,7 @@ const Desc = (props) => {
   const {data} = props;
 
   const {run} = useRequest(customerEdit, {manual: true});
+  const {run:runUser} = useRequest({url:'/customer/updateChargePerson',method:'POST'}, {manual: true});
 
   const {data:CustomerLevelData} = useRequest(CustomerLevelIdSelect);
 
@@ -56,7 +57,7 @@ const Desc = (props) => {
           </Descriptions.Item>
           <Descriptions.Item label="负责人">
             <UserEdit userId={data.userId} value={data.userResult && data.userResult.name} onChange={async (value) => {
-              await run({
+              await runUser({
                 data: {
                   customerId:data.customerId,
                   userId: value

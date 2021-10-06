@@ -6,15 +6,27 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Card, Col, Input, InputNumber, Row, Select as AntdSelect, Steps, Table as AntTable} from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  InputNumber,
+  message,
+  Row,
+  Select as AntdSelect,
+  Steps,
+  Table as AntTable
+} from 'antd';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 import {useRequest} from '@/util/Request';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
-import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
 import ProCard from '@ant-design/pro-card';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
+import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
+import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
 
 
 const {onFieldValueChange$} = FormEffectHooks;
@@ -31,11 +43,16 @@ const ApiConfig = {
 };
 
 
-const AddContractEdit = ({...props}) => {
+const AddContractEdit = ({businessId,loading,...props}) => {
+
+
+
 
   const {Step} = Steps;
 
   const {value, customerId, ...other} = props;
+
+  const formRef = useRef();
 
 
 
@@ -58,7 +75,7 @@ const AddContractEdit = ({...props}) => {
           <FormItem name="content" component={SysField.Content} result={result} required />
         </Form>
         <Card title="添加产品明细" bordered={false}>
-          <TableDetail value={result ? result.contractId : false} />
+          <TableDetail contractId={result && result.contractId} onSuccess={()=>{}}/>
         </Card>
         <Button type="primary" style={{width: '100%'}} onClick={() => {
           formRef.current.submit();
@@ -72,12 +89,17 @@ const AddContractEdit = ({...props}) => {
 
   const [current, setCurrent] = React.useState(0);
 
-  const formRef = useRef();
+  const {run: business} = useRequest({
+    ...businessEdit, data: {...value,salesId: value.salesId}
+  });
+
 
 
   if (props.value) {
     return content();
   }
+
+
 
 
   const steps = [
@@ -93,8 +115,21 @@ const AddContractEdit = ({...props}) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="contractId"
-              onSuccess={(result) => {
+              onSuccess={async (result) => {
                 if (result.data !== '') {
+                  if (businessId){
+                    if (result.data.contractId) {
+                      await business({
+                        data: {
+                          businessId,
+                          contractId: result.data.contractId
+                        }
+                      });
+                    }else {
+                      message.error('创建合同失败！');
+                    }
+                  }
+
                   setResult(result.data);
                 }
                 next();
@@ -111,6 +146,7 @@ const AddContractEdit = ({...props}) => {
               <Row gutter={24}>
                 <Col span={12}>
                   <ProCard headerBordered className="h2Card" title="甲方信息">
+                    {/*{CustomerAll( 'partyA' ,'partyAAdressId' ,'partyAContactsId' ,'partyAPhone' ,{customerId})}*/}
                     <CustomerAll customer='partyA' adress='partyAAdressId' contacts='partyAContactsId' phone='partyAPhone' customerId={customerId} />
                   </ProCard>
                 </Col>

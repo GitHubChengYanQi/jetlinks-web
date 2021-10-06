@@ -81,7 +81,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
   }));
 
   return (
-    <div className={style.from} style={{maxHeight:930,height: 'calc(100vh - 110px)', padding: '0 24px'}}>
+    <div className={style.from} style={{maxHeight: 880, height: 'calc(100vh - 110px)', padding: '0 24px'}}>
       <Form
         {...props}
         labelAlign="left"
@@ -100,9 +100,9 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         formActions={formActions}
       >
         <Row gutter={24} style={{height: '100%'}}>
-          <Col span={12} style={{height: '100%'}}>
+          <Col span={props.value ? 24 : 12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 24}} bodyStyle={{padding:16}} className="h2Card" title="基本信息" headerBordered>
+              <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="基本信息" headerBordered>
                 <MegaLayout labelWidth={100}>
                   <FormItem
                     label="客户名称" name="customerName" component={SysField.CustomerName}
@@ -127,7 +127,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 title="详细信息"
                 className="h2Card"
                 headerBordered
-                bodyStyle={{padding:16}}
+                bodyStyle={{padding: 16}}
               >
                 <MegaLayout labelWidth={100} grid>
                   <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
@@ -136,7 +136,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
                 <MegaLayout labelWidth={100} grid>
                   <FormItem label="成立时间" name="setup" component={SysField.Setup} />
-                  <FormItem label='社会信用代码'  name="utscc" component={SysField.Utscc} />
+                  <FormItem label="社会信用代码" name="utscc" component={SysField.Utscc} />
                 </MegaLayout>
 
                 <MegaLayout labelWidth={100} grid>
@@ -146,11 +146,17 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
                 <MegaLayout labelWidth={100} grid>
                   <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
-                  <FormItem label="邮箱" name="emall" component={SysField.Emall} rules={[{message:'请输入正确的邮箱',pattern:'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'}]} />
+                  <FormItem label="邮箱" name="emall" component={SysField.Emall} rules={[{
+                    message: '请输入正确的邮箱',
+                    pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'
+                  }]} />
                 </MegaLayout>
 
                 <MegaLayout labelWidth={100} grid>
-                  <FormItem label="网址" name="url" component={SysField.Url} rules={[{message:'请输入正确的网址',pattern:'^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'}]} />
+                  <FormItem label="网址" name="url" component={SysField.Url} rules={[{
+                    message: '请输入正确的网址',
+                    pattern: '^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'
+                  }]} />
                 </MegaLayout>
 
                 <MegaLayout labelWidth={100} grid>
@@ -168,9 +174,14 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
 
             </div>
           </Col>
-          <Col span={12} style={{height: '100%'}}>
+          {!props.value && <Col span={12} style={{height: '100%'}}>
             <div style={{height: '100%', overflow: 'auto'}}>
-              <ProCard style={{marginTop: 24}} bodyStyle={{padding:16}} title="联系人信息" className="h2Card" headerBordered>
+              <ProCard
+                style={{marginTop: 24}}
+                bodyStyle={{padding: 16}}
+                title="联系人信息"
+                className="h2Card"
+                headerBordered>
                 <FieldList
                   name="contactsParams"
                   initialValue={[
@@ -186,13 +197,13 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                           return (
                             <ProCard
                               headStyle={{borderLeft: 'none', padding: '8px 16px'}}
-                              bodyStyle={{padding:16}}
-                              title={<Title title={`联系人明细 ${index+1}`} level={6} />}
+                              bodyStyle={{padding: 16}}
+                              title={<Title title={`联系人明细 ${index + 1}`} level={6} />}
                               headerBordered
                               extra={
                                 <Button
                                   type="link"
-                                  style={{float: 'right',display: state.value.length === 1 && 'none'}}
+                                  style={{float: 'right', display: state.value.length === 1 && 'none'}}
                                   icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
@@ -206,12 +217,13 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     label="联系人姓名"
                                     name={`contactsParams.${index}.contactsName`}
                                     component={SysField.ContactsName}
+                                    required
                                   />
                                   <FormItem
                                     label="职务"
                                     name={`contactsParams.${index}.companyRole`}
                                     component={SysField.CompanyRoleId}
-
+                                    required
                                   />
                                   {/* <ProCard style={{marginTop: 8}} headerBordered> */}
                                   <div style={{width: '88%', display: 'inline-block'}}>
@@ -230,9 +242,10 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                               return (
                                                 <PhoneRowStyleLayout key={indexs}>
                                                   <FormItem
-                                                    label={`联系电话 ${indexs+1}`}
+                                                    label={`联系电话 ${indexs + 1}`}
                                                     name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
                                                     component={SysField.PhoneNumber}
+                                                    required
                                                     rules={[{
                                                       message: '请输入正确的手机号码!',
                                                       pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
@@ -250,7 +263,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                             })}
                                             <div style={{display: 'inline-block', height: 30,}}>
                                               <Button
-                                                style={{display:state.value.length >=5 && 'none'}}
+                                                style={{display: state.value.length >= 5 && 'none'}}
                                                 type="dashed"
                                                 title="增加电话"
                                                 icon={<PlusOutlined />}
@@ -262,7 +275,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     </FieldList>
                                   </div>
                                 </div>
-                                <Divider style={{margin:'8px 0'}} />
+                                <Divider style={{margin: '8px 0'}} />
                               </RowStyleLayout>
                             </ProCard>
                           );
@@ -270,7 +283,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                         <Button
                           type="dashed"
                           icon={<PlusOutlined />}
-                          style={{width: '100%',display:state.value.length >=5 && 'none'}}
+                          style={{width: '100%', display: state.value.length >= 5 && 'none'}}
                           onClick={onAdd}>增加联系人</Button>
                       </div>
                     );
@@ -278,7 +291,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </FieldList>
               </ProCard>
 
-              <ProCard style={{marginTop: 8}} bodyStyle={{padding:16}} title="客户地址" className="h2Card" headerBordered>
+              <ProCard style={{marginTop: 8}} bodyStyle={{padding: 16}} title="客户地址" className="h2Card" headerBordered>
                 <FieldList
                   name="adressParams"
                   initialValue={[
@@ -299,7 +312,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                               extra={
                                 <Button
                                   type="link"
-                                  style={{float: 'right',display: state.value.length === 1 && 'none'}}
+                                  style={{float: 'right', display: state.value.length === 1 && 'none'}}
                                   icon={<DeleteOutlined />}
                                   onClick={() => {
                                     onRemove(index);
@@ -334,7 +347,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </FieldList>
               </ProCard>
             </div>
-          </Col>
+          </Col>}
         </Row>
       </Form>
     </div>

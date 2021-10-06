@@ -8,7 +8,7 @@
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {Button, Card, Col, Divider, Row, Switch} from 'antd';
 import {trackMessageAdd} from '@/pages/Crm/trackMessage/trackMessageUrl';
 import Form from '@/components/Form';
@@ -35,9 +35,9 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-const CrmBusinessTrackEdit = ({...props}, ref) => {
+const CrmBusinessTrackEdit = (props, ref) => {
 
-  const {val, number, id, track = 1} = props;
+  const {val, number, id,onWidthChange, track = 1,...other} = props;
   const formRef = useRef();
   useImperativeHandle(ref, () => ({
     formRef,
@@ -54,15 +54,9 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
     return 810;
   };
 
-  const Label = ['商机', '合同', '订单', '回款'];
+  const Label = ['商机', '合同', '货单', '回款'];
 
   const returnFormItem = (index) => {
-    // let businessId = null;
-    // let contractId = null;
-    // let orderId = null;
-    // let backMoney = null;
-    // businessId = val.businessId;
-
     if (!classNmb) {
       return null;
     }
@@ -74,48 +68,30 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
       name={`businessTrackParams.${index}.classifyId`}
       component={SysField.BusinessId}
       val={id || null} />);
-    // if (classNmb === 2) {
-    //   contractId = val.contractId;
-    //   return (<FormItem
-    //     label="合同"
-    //     required
-    //     name={`businessTrackParams.${index}.classifyId`}
-    //     component={SysField.ContractId}
-    //     val={(data && data.contractId) || '111'} />);
-    // }
-    // if (classNmb === 3) {
-    //   orderId = val.orderId;
-    //   return (<FormItem
-    //     label="订单"
-    //     required
-    //     name={`businessTrackParams.${index}.classifyId`}
-    //     component={SysField.OrderId}
-    //     value={data && data.businessId || null} />);
-    // }
-    // if (classNmb === 4) {
-    //   backMoney = val.backMoney;
-    //   return (<FormItem
-    //     label="回款"
-    //     required
-    //     name={`businessTrackParams.${index}.classifyId`}
-    //     component={SysField.BackMoney}
-    //     value={data && data.businessId || null} />);
-    // }
   };
 
+  const { onFieldChange$ } = FormEffectHooks;
+
+
   return (
-    <div className={style.from} style={{height: height(), padding: '0 20px'}}>
+    <div className={style.from} style={{maxHeight:890,height: 'calc(100vh - 110px)', padding: '0 20px'}}>
       <Form
-        {...props}
+        {...other}
         ref={formRef}
         api={ApiConfig}
         fieldKey="trackMessageId"
         NoButton={false}
         wrapperCol={24}
+        effect={()=>{
+          onFieldChange$('businessTrackParams.*.classify').subscribe(({ value }) => {
+            typeof onWidthChange === 'function' && onWidthChange(value);
+            setClassNmb(value);
+          });
+        }}
       >
         <Row gutter={24} style={{height: '100%'}}>
-          <Col span={13} style={{height: '100%'}}>
-            <div style={{paddingRight: 10, height: '100%', overflow: 'auto', display: 'inline-block'}}>
+          <Col span={classNmb === 1 ? 13 : 24} style={{height: '100%',overflow: 'auto',}}>
+            <div style={{paddingRight: 10,  display: 'inline-block'}}>
               <ProCard
                 className="h2Card"
                 bodyStyle={{padding: 16}}
@@ -165,9 +141,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                                   component={SysField.Classify}
                                   value={number}
                                   required
-                                  onChange={(value) => {
-                                    setClassNmb(value);
-                                  }} />
+                                />
                                 {returnFormItem(index)}
                                 <FormItem
                                   label="跟踪类型"
@@ -233,8 +207,8 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
               </ProCard>
             </div>
           </Col>
-          <Col span={11} style={{height: '100%'}}>
-            <div style={{height: '100%', overflow: 'auto'}}>
+          {classNmb === 1 && <Col span={11} style={{height: '100%', overflow: 'auto'}}>
+            <div>
               <ProCard className="h2Card" bodyStyle={{padding: 16}} style={{marginTop: 8, height: '100%'}}
                        title={<Title title="竞争对手报价" level={4} />} headerBordered>
                 <FieldList
@@ -250,15 +224,17 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <ProCard bodyStyle={{padding: 16}} headStyle={{borderLeft: 'none', padding: '8px 16px'}}
-                                     title={<Title title={`竞争对手明细 ${index + 1}`} level={6} />} headerBordered
-                                     extra={<Button
-                                       type="link" style={{float: 'right', display: state.value.length === 1 && 'none'}}
-                                       icon={<DeleteOutlined />}
-                                       onClick={() => {
-                                         onRemove(index);
-                                       }}
-                                       danger />} key={index}>
+                            <ProCard
+                              bodyStyle={{padding: 16}}
+                              headStyle={{borderLeft: 'none', padding: '8px 16px'}}
+                              title={<Title title={`竞争对手明细 ${index + 1}`} level={6} />} headerBordered
+                              extra={<Button
+                                type="link" style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                                icon={<DeleteOutlined />}
+                                onClick={() => {
+                                  onRemove(index);
+                                }}
+                                danger />} key={index}>
                               <RowStyleLayout key={index}>
                                 <FormItem
                                   label="竞争对手"
@@ -288,7 +264,7 @@ const CrmBusinessTrackEdit = ({...props}, ref) => {
                 </FieldList>
               </ProCard>
             </div>
-          </Col>
+          </Col>}
         </Row>
       </Form>
     </div>

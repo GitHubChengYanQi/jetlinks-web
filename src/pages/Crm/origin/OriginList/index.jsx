@@ -67,6 +67,7 @@ const OriginList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
+        contentHeight
         title={<Breadcrumb title="项目来源" />}
         api={originList}
         rowKey="originId"
@@ -90,7 +91,7 @@ const OriginList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={OriginEdit} onSuccess={() => {
+      <Drawer width={800} title="项目来源" component={OriginEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

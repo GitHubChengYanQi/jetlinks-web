@@ -60,6 +60,7 @@ const CrmIndustryList = () => {
   return (
     <>
       <Table
+        contentHeight
         footer={footer}
         onChange={(keys) => {
           setIds(keys);

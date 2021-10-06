@@ -57,13 +57,13 @@ const MenuConfig = [
     ],
   },
   {
-    // label: '订单',
-    label: <span style={styles.span}> 订单</span>,
+    // label: '货单',
+    label: <span style={styles.span}> 货单</span>,
     icon: <CustomIcon type="dingdanguanli" size="s" />,// 'dingdanguanli',
     path: '/order',
     child: [
       {
-        label: '订单查询',
+        label: '货单查询',
         path: '/list',
       },
       {

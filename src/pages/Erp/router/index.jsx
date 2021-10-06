@@ -19,7 +19,7 @@ import {OutstockApplyRouter} from '@/pages/Erp/outstockApply/outstockApplyRouter
 const ErpRouterConfig = [
   {
     path: '/ERP',
-    name: '产品库存管理',
+    name: '仓储管理',
     component: ErpLayout,
     children:[
       ...OutstockRouter,

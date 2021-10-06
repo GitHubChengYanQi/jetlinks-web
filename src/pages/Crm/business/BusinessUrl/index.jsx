@@ -130,6 +130,11 @@ export const crmBusinessDetailedList = {
   method: 'POST',
   rowKey:'id'
 };
+export const contractList = {
+  url: '/contractDetail/list',
+  method: 'POST',
+  rowKey:'id'
+};
 
 // 产品明细删除
 export const crmBusinessDetailedDelete = {

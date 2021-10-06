@@ -126,6 +126,7 @@ const InstockList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        rowSelection
       >
         <Column title="仓库名称" fixed dataIndex="storehouseId" render={(text, record) => {
           return (

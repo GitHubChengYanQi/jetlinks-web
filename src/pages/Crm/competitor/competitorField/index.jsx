@@ -29,7 +29,7 @@ export const Url = (props) =>{
   return (<Input {...props}/>);
 };
 export const CreationDate = (props) =>{
-  return (<DatePicker {...props}/>);
+  return (<DatePicker showTime {...props}/>);
 };
 export const Email = (props) =>{
   return (<Input {...props}/>);

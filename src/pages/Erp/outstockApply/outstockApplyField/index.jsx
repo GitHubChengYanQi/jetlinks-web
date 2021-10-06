@@ -42,6 +42,21 @@ export const Type = (props) => {
   return (<Input {...props}/>);
 };
 
+export const Types = (props) => {
+  return (<AntSelect options={[{label:'物流',value:0},{label:'配送',value:1}]} {...props}/>);
+};
+
+export const Gs = (props) => {
+  return (<AntSelect options={[{label:'京东',value:'0'},{label:'顺丰',value:'1'}]} {...props}/>);
+};
+export const Dh = (props) => {
+  return (<Input {...props}/>);
+};
+
+
+
+
+
 
 
 export const Customer = (props) => {

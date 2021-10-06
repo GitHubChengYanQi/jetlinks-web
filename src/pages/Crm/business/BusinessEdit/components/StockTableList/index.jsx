@@ -15,14 +15,15 @@ import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined, SelectOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
-import {useBoolean} from "ahooks";
-import {useHistory} from "ice";
+import {useBoolean} from 'ahooks';
+import {useHistory} from 'ice';
 
 import Modal from '@/components/Modal';
 import AddItem from '@/pages/Crm/business/BusinessEdit/components/AddItem';
 import SelButton from '@/components/SelButton';
 import * as SysField from '@/pages/Erp/stock/StockField';
 import {stockList} from '@/pages/Erp/stock/StockUrl';
+import {contractId} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
 
 
 const {Column} = AntTable;
@@ -30,12 +31,12 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 const StockTableList = (props) => {
 
-  const {choose, state,...other} = props;
+  const {choose, state,contractId, ...other} = props;
   const tableRef = useRef(null);
   const modalRef = useRef(null);
   const submitRef = useRef(null);
 
-  const [search,{toggle}]  = useBoolean(false);
+  const [search, {toggle}] = useBoolean(false);
   const [selectData, setSelectData] = useState(null);
   useEffect(() => {
     if (state) {
@@ -54,9 +55,9 @@ const StockTableList = (props) => {
 
   const [ids, setIds] = useState([]);
   let TcDisabled = true;
-  if(props.TcDisabled === undefined){
+  if (props.TcDisabled === undefined) {
     TcDisabled = true;
-  }else{
+  } else {
     TcDisabled = false;
   }
   const footer = () => {
@@ -66,12 +67,11 @@ const StockTableList = (props) => {
     return (
       !TcDisabled && <SelButton
         size="small"
-        onClick={()=>{
+        onClick={() => {
 
-          if(selectData !== null && selectData.length > 0){
+          if (selectData !== null && selectData.length > 0) {
             modalRef.current.open(false);
-          }
-          else{
+          } else {
             AntModal.confirm({
               title: '提示',
               content: '请至少选择一条数据!',
@@ -85,7 +85,7 @@ const StockTableList = (props) => {
           }
         }}
         icon={<SelectOutlined />}
-        type="primary" >批量选择</SelButton>);
+        type="primary">批量选择</SelButton>);
   };
 
   return (
@@ -109,7 +109,7 @@ const StockTableList = (props) => {
         footer={TcDisabled ? null : footer}
         {...other}
       >
-        <Column title="产品名称"  render={(text, record) => {
+        <Column title="产品名称" render={(text, record) => {
           return (
             <>
               {record.itemsResult.name}
@@ -117,28 +117,12 @@ const StockTableList = (props) => {
           );
         }} sorter />
         salePrice
-        <Column title="销售单价" width={120} align='center' sorter dataIndex="salePrice" />
-        {/*<Column title="品牌"  width={200} render={(text, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      {record.brandResult.brandName}*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} sorter />*/}
-        {/*<Column title="仓库名称" style={{maxWidth:200}} fixed  render={(text, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      <Button type="link" onClick={() => {*/}
-        {/*        history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,*/}
-        {/*          params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});*/}
-        {/*      }}>{record.storehouseResult.name}</Button>*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} sorter />*/}
-        {/*<Column title="数量" width={120} align='center' sorter dataIndex="inventory" />*/}
+        <Column title="销售单价" width={120} align="center" sorter dataIndex="salePrice" />
+        <Column title="数量" width={120} align='center' sorter dataIndex="inventory" />
         <Column />
       </Table>
-      <Modal width={1300}
+      <Modal
+        width={1300}
         title="编辑选择"
         data={selectData}
         compoentRef={submitRef}
@@ -153,14 +137,15 @@ const StockTableList = (props) => {
             <Button onClick={() => {
               modalRef.current.close();
             }}>
-               取消
+              取消
             </Button>
           </>
         }
-        onSuccess={()=>{
+        onSuccess={() => {
           props.onSuccess();
         }}
         component={AddItem}
+        contractId={contractId}
         packageId={props.packageId}
         businessId={props.businessId}
       />

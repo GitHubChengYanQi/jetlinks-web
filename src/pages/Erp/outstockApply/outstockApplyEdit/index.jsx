@@ -54,11 +54,14 @@ const OutstockApplyEdit = ({...props}, ref) => {
     <div style={{height: '100%',padding:24}}>
       <Form
         {...props}
-        // NoButton={false}
+        NoButton={false}
         ref={formRef}
         api={ApiConfig}
         fieldKey="outstockApplyId"
         formActions={formActions}
+        onSuccess={()=>{
+          props.onSuccess();
+        }}
       >
 
         <Row gutter={24}>

@@ -60,6 +60,7 @@ const ItemClassList = () => {
   return (
     <>
       <Table
+        contentHeight
         title={<Breadcrumb title='产品分类'/>}
         api={itemClassList}
         rowKey="classId"

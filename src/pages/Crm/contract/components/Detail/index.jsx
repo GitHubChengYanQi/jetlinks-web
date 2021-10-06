@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -22,6 +22,8 @@ const Detail = () => {
   const params = useParams();
   const ref = useRef(null);
   const refTrack = useRef(null);
+
+  const [width,setWidth] = useState();
 
   const submitRef = useRef(null);
 
@@ -47,7 +49,7 @@ const Detail = () => {
         <div className={styles.title}>
           <Row gutter={24}>
             <Col>
-              <Avatar size={64}>LOGO</Avatar>
+              <Avatar size={64}>{data.name.substring(0,1)}</Avatar>
             </Col>
             <Col>
               <h3>{data.name}</h3>
@@ -66,7 +68,7 @@ const Detail = () => {
             }} icon={<EditOutlined />}>添加跟进</Button>
 
           <Modal
-            width={1400}
+            width={width === 1 ? 1400 : 800}
             title="跟进"
             compoentRef={submitRef}
             ref={refTrack}
@@ -84,6 +86,9 @@ const Detail = () => {
                 </Button>
               </>}
             component={CrmBusinessTrackEdit}
+            onWidthChange={(value)=>{
+              setWidth(value);
+            }}
             onSuccess={() => {
               refTrack.current.close();
               refresh();

@@ -44,7 +44,7 @@ const CrmBusinessSalesList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label='分类名称' name="name" component={SysField.Name} />
+        <FormItem label="分类名称" name="name" component={SysField.Name} />
       </>
     );
   };
@@ -65,6 +65,7 @@ const CrmBusinessSalesList = () => {
   return (
     <>
       <Table
+        contentHeight
         footer={footer}
         onChange={(keys) => {
           setIds(keys);

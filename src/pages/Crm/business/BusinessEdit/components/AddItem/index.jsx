@@ -11,13 +11,13 @@ import * as SysField from '../../../crmBusinessDetailed/crmBusinessDetailedField
 import {Button, Col, Divider, Row} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import Title from '@/components/Title';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import {
   crmBusinessDetailedDetail,
 } from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
-import {batchAdd} from '@/pages/Erp/items/ItemsUrl';
+import {batchAdd, contractDetail} from '@/pages/Erp/items/ItemsUrl';
 import {erpPackageTableBatchAdd} from '@/pages/Erp/packageTable/packageTableUrl';
 import {BrandId} from '../../../crmBusinessDetailed/crmBusinessDetailedField';
 
@@ -29,11 +29,15 @@ const ApiConfig = {
   add: '',
 };
 
+const formActionsPublic = createFormActions();
+
 
 const AddItem = (props, ref) => {
   if (props.businessId !== undefined) {
     ApiConfig.add = batchAdd;
-  } else {
+  } else if (props.contractId !== undefined){
+    ApiConfig.add = contractDetail;
+  } else if (props.packageId !== undefined) {
     ApiConfig.add = erpPackageTableBatchAdd;
   }
   const formRef = useRef(null);
@@ -65,6 +69,7 @@ const AddItem = (props, ref) => {
   return (
     <>
       <Form
+        formActions={formActionsPublic}
         NoButton={false}
         {...props}
         ref={formRef}
@@ -94,10 +99,17 @@ const AddItem = (props, ref) => {
                   component={SysField.PackageId}
                   value={props.packageId}
                 /> : null}
+                {props.contractId !== undefined ? <FormItem
+                  label="合同名称"
+                  name="contractId"
+                  disabled
+                  component={SysField.ContractId}
+                  value={props.contractId}
+                /> : null}
               </Col>
             </Row>
             <FieldList
-              name="businessDetailedParam"
+              name={props.contractId ? 'contractDetailParams' : 'businessDetailedParam'}
               initialValue={data}
             >
               {({state, mutators}) => {
@@ -113,7 +125,7 @@ const AddItem = (props, ref) => {
                               <Col span={6}>
                                 <FormItem
                                   label="产品名称"
-                                  name={`businessDetailedParam.${index}.itemId`}
+                                  name={`${props.contractId ? 'contractDetailParams' : 'businessDetailedParam'}.${index}.itemId`}
                                   component={SysField.ItemId}
                                   required
                                   disabled
@@ -123,7 +135,7 @@ const AddItem = (props, ref) => {
                                 <FormItem
                                   label="品牌"
                                   item={data.length > 0 && data[index].itemId}
-                                  name={`businessDetailedParam.${index}.brandId`}
+                                  name={`${props.contractId ? 'contractDetailParams' : 'businessDetailedParam'}.${index}.brandId`}
                                   component={SysField.BrandId}
                                   rules={[{
                                     required:true,
@@ -135,7 +147,7 @@ const AddItem = (props, ref) => {
                                 <FormItem
                                   label="销售单价"
                                   disabled
-                                  name={`businessDetailedParam.${index}.salePrice`}
+                                  name={`${props.contractId ? 'contractDetailParams' : 'businessDetailedParam'}.${index}.salePrice`}
                                   component={SysField.salePrice}
                                   required
                                 />
@@ -143,7 +155,7 @@ const AddItem = (props, ref) => {
                               <Col span={4}>
                                 <FormItem
                                   label="数量"
-                                  name={`businessDetailedParam.${index}.quantity`}
+                                  name={`${props.contractId ? 'contractDetailParams' : 'businessDetailedParam'}.${index}.quantity`}
                                   component={SysField.Quantity}
                                   required
                                 />

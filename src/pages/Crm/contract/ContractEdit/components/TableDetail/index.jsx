@@ -76,6 +76,7 @@ const TableDetail = (props) => {
         />
       </div>
       <Table
+        contentHeight
         headStyle={{display: 'none'}}
         api={contractDetailList}
         rowKey="id"

@@ -1,5 +1,5 @@
 /**
- * 订单表编辑页
+ * 货单表编辑页
  *
  * @author ta
  * @Date 2021-07-20 16:22:28
@@ -74,12 +74,12 @@ const OrderEdit = ({...props}) => {
             <FormItem label="产品名称" name="itemId" component={SysField.ItemId} disabled required/>
           </Col>
           <Col span={11}>
-            <FormItem label="订单状态" name="state" component={SysField.State} disabled required/>
+            <FormItem label="货单状态" name="state" component={SysField.State} disabled required/>
           </Col>
         </Row>
         <Row gutter={24} style={{padding: '0 30px'}}>
           <Col span={13}>
-            <FormItem label="订单数量" name="number" component={SysField.Number} required/>
+            <FormItem label="货单数量" name="number" component={SysField.Number} required/>
           </Col>
           <Col span={11}>
             <FormItem label="金额" name="price" component={SysField.StockItemId} required/>

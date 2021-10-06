@@ -106,6 +106,7 @@ const StorehouseList = (props) => {
   return (
     <>
       <Table
+        contentHeight
         title={<Breadcrumb title='仓库管理'/>}
         api={storehouseList}
         rowKey="storehouseId"

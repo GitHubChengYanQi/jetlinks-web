@@ -1,5 +1,5 @@
 /**
- * 订单分表列表页
+ * 货单分表列表页
  *
  * @author ta
  * @Date 2021-07-20 16:22:28
@@ -37,7 +37,7 @@ const OrderBranchList = () => {
  const searchForm = () => {
    return (
      <>
-       <FormItem label="订单编号" name="orderId" component={SysField.OrderId}/>
+       <FormItem label="货单编号" name="orderId" component={SysField.OrderId}/>
        <FormItem label="产品id" name="itemId" component={SysField.ItemId}/>
        <FormItem label="产品名称" name="name" component={SysField.Name}/>
      </>
@@ -55,7 +55,7 @@ const OrderBranchList = () => {
     },
     {
       path: '/CRM/orderBranch',
-      breadcrumbName: '订单管理',
+      breadcrumbName: '货单管理',
     },
   ];
 
@@ -75,7 +75,7 @@ const OrderBranchList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="订单编号" dataIndex="orderId"/>
+        <Column title="货单编号" dataIndex="orderId"/>
         <Column title="产品id" dataIndex="itemId"/>
         <Column title="产品名称" dataIndex="name"/>
         <Column title="产品单价" dataIndex="price"/>

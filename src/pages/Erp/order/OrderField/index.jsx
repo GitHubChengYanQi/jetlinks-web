@@ -1,5 +1,5 @@
 /**
- * 订单表字段配置页
+ * 货单表字段配置页
  *
  * @author ta
  * @Date 2021-07-20 16:22:28
@@ -38,11 +38,11 @@ export const Phone = (props) => {
 export const AdressId = (props) => {
   return (<Select  api={apiUrl.locationListSelect}{...props} />);
 };
-// 订单数量
+// 货单数量
 export const Number = (props) => {
   return (<Input  {...props} />);
 };
-//  订单状态
+//  货单状态
 export const State = (props) => {
   return (<AntdSelect  options={[{label: '未审核', value: '未审核'}, {value: '已审核', label: '已审核'}]} {...props} />);
 };

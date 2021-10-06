@@ -80,13 +80,11 @@ export const CustomerId = (props) => {
 };
 
 export const Classify = (props) => {
-  const {onChange} = props;
+  const {...other} = props;
   return (<AntdSelect options={[{label: '日常', value: 0}, {label: '商机', value: 1}, {label: '合同', value: 2}, {
-    label: '订单',
+    label: '货单',
     value: 3
-  }, {label: '回款', value: 4}]} onChange={(value) => {
-    onChange(value);
-  }} {...props} />);
+  }, {label: '回款', value: 4}]}  {...other} />);
 };
 export const ContractId = (props) => {
   return (<Select api={apiUrl.contractIdSelect} {...props} />);
@@ -103,7 +101,7 @@ export const Name = (props) => {
 };
 
 export const BusinessId = (props) => {
-  const {classNmb, val} = props;
+  const {classNmb, val,...other} = props;
 
   const [datas, setDatas] = useState();
 
@@ -172,7 +170,7 @@ export const BusinessId = (props) => {
 
   }, [classNmb]);
 
-  return (<AntdSelect options={datas} {...props} />);
+  return (<AntdSelect options={datas} {...other} />);
 
 
 };
@@ -215,7 +213,7 @@ export const CompetitorId = (props) => {
       <Modal
         width={1000}
         title="竞争对手"
-        component={CompetitorEdit}
+        component={CompetitorEdit}howSearch
         onSuccess={() => {
           ref.current.close();
           getData();

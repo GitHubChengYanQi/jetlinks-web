@@ -1,5 +1,5 @@
 import React from 'react';
-import {Descriptions} from 'antd';
+import {Button, Descriptions} from 'antd';
 import {useHistory} from 'ice';
 import UserEdit from '@/pages/Crm/customer/components/Edit/UserEdit';
 import {useRequest} from '@/util/Request';
@@ -27,6 +27,11 @@ const Desc = (props) => {
               }
             });
           }} userId={data.userId} /></Descriptions.Item>
+          <Descriptions.Item label="合同名称">
+            {data.contractId ? <a onClick={()=>{
+              history.push(`/CRM/contract/${data.contractId}`);
+            }}>{data.contractResult && data.contractResult.name}</a> : '暂无合同'}
+          </Descriptions.Item>
         </Descriptions>
       </>
     );

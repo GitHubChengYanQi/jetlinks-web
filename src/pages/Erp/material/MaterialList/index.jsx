@@ -58,6 +58,7 @@ const MaterialList = () => {
   return (
     <>
       <Table
+        contentHeight
         title={<Breadcrumb title='材质管理'/>}
         api={materialList}
         rowKey="materialId"

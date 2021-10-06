@@ -30,10 +30,10 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
   const {position} = props;
   const formRef = useRef();
   const height = () => {
-    if (window.document.body.clientHeight < 1088) {
+    if (window.document.body.clientHeight < 600) {
       return 'calc(100vh - 206px)';
     }
-    return 850;
+    return 600;
   };
 
   useImperativeHandle(ref, () => ({
@@ -41,7 +41,7 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
   }));
 
   return (
-    <div style={{height: height()}}>
+    <div style={{height: '100%'}}>
       <Form
         {...props}
         value={value ? value.competitorId : false}
@@ -66,42 +66,39 @@ const CompetitorEdit = ({onChange,...props}, ref) => {
               <FormItem label="竞争对手企业名称" name="name" dis={props.value || null} component={SysField.Name} required />
             </MegaLayout>
             <MegaLayout labelWidth={150} full>
-              <FormItem label="竞争项目名称" name="businessId" component={SysField.BusinessId} value={value && value.crmBusinessList && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId} required />
+              <FormItem label="竞争项目名称" name="businessId" component={SysField.BusinessId} required value={value && value.crmBusinessList && value.crmBusinessList.length>0 && value.crmBusinessList[0].businessId}  />
             </MegaLayout>
             <MegaLayout labelWidth={150}>
-              <FormItem label="地区" name="region" component={SysField.Region} required />
+              <FormItem label="地区" name="region" component={SysField.Region} />
             </MegaLayout>
             <MegaLayout labelWidth={150} grid>
-              <FormItem label="创立日期" name="creationDate" component={SysField.CreationDate} required />
+              <FormItem label="创立日期" name="creationDate" component={SysField.CreationDate} />
               <FormItem label="联系电话" name="phone" component={SysField.Phone} rules={[{
                 message: '请输入正确的手机号码!',
                 pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
               }]} />
             </MegaLayout>
             <MegaLayout labelWidth={150} grid>
-              <FormItem label="网址 " name="url" component={SysField.Url} rules={[{required:true,message:'请输入正确的网址',pattern:'^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'}]} />
-              <FormItem label="邮箱" name="email" component={SysField.Email} rules={[{required:true,message:'请输入正确的邮箱',pattern:'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'}]} />
+              <FormItem label="网址 " name="url" component={SysField.Url} rules={[{message:'请输入正确的网址',pattern:'^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'}]} />
+              <FormItem label="邮箱" name="email" component={SysField.Email} rules={[{message:'请输入正确的邮箱',pattern:'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'}]} />
             </MegaLayout>
+
             <MegaLayout labelWidth={150} grid>
-              <FormItem label="员工规模" name="staffSize" component={SysField.StaffSize} required />
-              <FormItem label="公司所有制" name="ownership" component={SysField.Ownership} required />
-            </MegaLayout>
-            <MegaLayout labelWidth={150} grid>
-              <FormItem label="竞争级别" name="competitionLevel" component={SysField.CompetitionLevel} required />
-              <FormItem label="年销售" name="annualSales" component={SysField.AnnualSales} required />
+              <FormItem label="竞争级别" name="competitionLevel" component={SysField.CompetitionLevel} required  />
+              <FormItem label="年销售" name="annualSales" component={SysField.AnnualSales}  />
             </MegaLayout>
             <MegaLayout labelWidth={150}>
-              <FormItem label="公司简介" name="companyProfile" component={SysField.CompanyProfile} required />
+              <FormItem label="备注" name="companyProfile" component={SysField.CompanyProfile}  />
             </MegaLayout>
-            <MegaLayout labelWidth={150}>
-              <FormItem label="对手优势" name="rivalAdvantage" component={SysField.RivalAdvantage} required />
-            </MegaLayout>
-            <MegaLayout labelWidth={150}>
-              <FormItem label="对手劣势" name="opponentsWeaknesses" component={SysField.OpponentsWeaknesses} required />
-            </MegaLayout>
-            <MegaLayout labelWidth={150}>
-              <FormItem label="采取对策" name="takeCountermeasures" component={SysField.TakeCountermeasures} required />
-            </MegaLayout>
+            {/*<MegaLayout labelWidth={150}>*/}
+            {/*  <FormItem label="对手优势" name="rivalAdvantage" component={SysField.RivalAdvantage}  />*/}
+            {/*</MegaLayout>*/}
+            {/*<MegaLayout labelWidth={150}>*/}
+            {/*  <FormItem label="对手劣势" name="opponentsWeaknesses" component={SysField.OpponentsWeaknesses}  />*/}
+            {/*</MegaLayout>*/}
+            {/*<MegaLayout labelWidth={150}>*/}
+            {/*  <FormItem label="采取对策" name="takeCountermeasures" component={SysField.TakeCountermeasures}  />*/}
+            {/*</MegaLayout>*/}
           </ProCard>
         </div>
       </Form>

@@ -21,6 +21,7 @@ import {InternalFieldList as FieldList} from '@formily/antd';
 import {Switch} from '@alifd/next';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
+import {customer} from '@/pages/Erp/deliveryDetails/deliveryDetailsUrl';
 
 
 const {FormItem} = Form;
@@ -67,7 +68,15 @@ const BusinessEdit = (props,ref) => {
         rules={[{required: true, message: '请输入项目名称!'}]}
         component={SysField.BusinessNameListSelect}
         required />
-      {props.value ? <FormItem
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {props.customerId ? <FormItem
+        label="客户名称"
+        name="customerId"
+        value={props.customerId}
+        show={props.value}
+        component={SysField.CustomerNameSelect}
+        rules={[{required: true, message: '请输入已存在的客户!'}]}
+      /> : props.value ? <FormItem
         label="客户名称"
         name="customerId"
         show={props.value}
@@ -82,14 +91,25 @@ const BusinessEdit = (props,ref) => {
           setUser(value);
         }}
         rules={[{required: true, message: '请输入已存在的客户!'}]}
-      /> }
-      <FormItem
-        label="负责人"
-        name="person"
-        rules={[{required: true, message: '请输入负责人!'}]}
-        component={SysField.PersonListSelect}
-        user={user || null}
-        required />
+      />}
+
+      {props.userId ?
+        <FormItem
+          label="负责人"
+          name="userId"
+          value={props.userId}
+          rules={[{required: true, message: '请输入负责人!'}]}
+          component={SysField.PersonListSelect}
+          disabled
+          required /> :
+        <FormItem
+          label="负责人"
+          name="userId"
+          value={props.userId}
+          rules={[{required: true, message: '请输入负责人!'}]}
+          component={SysField.PersonListSelect}
+          user={user || null}
+          required />}
       <FormItem label="机会来源" name="originId" component={SysField.OrgNameListSelect} />
       <FormItem label="商机金额" name="opportunityAmount" component={SysField.OpportunityAmountListSelect3} />
       <FormItem label="立项日期" name="time" component={SysField.TimeListSelect2} visi={props.value} />

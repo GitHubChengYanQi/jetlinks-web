@@ -19,7 +19,6 @@ const Description = (props) => {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          {/*<Descriptions.Item label="客户编号">{data.customerId ? data.customerId : '未填写'}</Descriptions.Item>*/}
           <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
             await run({
               data: {
@@ -106,7 +105,7 @@ const Description = (props) => {
                 });
               }} />
           </Descriptions.Item>
-          <Descriptions.Item span={2} label="网址">
+          <Descriptions.Item label="网址">
             <InputEdit
               value={data.url}
               patter={/^(http(s)?:\/\/)?(www\.)?[\w-]+\.(com|net|cn)$/}

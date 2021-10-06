@@ -18,6 +18,7 @@ const TableWarp = ({
   actions,
   title,
   api,
+  contentHeight,
   searchForm,
   rowKey,
   headStyle,
@@ -28,6 +29,7 @@ const TableWarp = ({
   SearchButton,
   selectionType,
   onChange,
+  getCheckboxProps,
   layout,
   listHeader = true,
   labelAlign,
@@ -146,7 +148,7 @@ const TableWarp = ({
         </Sider>}
         <Content
           // style={{marginLeft: 260}}
-          style={{height:'calc(100vh - 128px)',overflow:'auto'}}
+          style={{height:contentHeight || 'calc(100vh - 128px)',overflow:'auto'}}
           id="tableContent"
         >
           {searchForm ? <div className="search" style={headStyle}>
@@ -181,7 +183,8 @@ const TableWarp = ({
                 type: selectionType || 'checkbox',
                 onChange: (selectedRowKeys, selectedRows) => {
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
-                }
+                },
+                getCheckboxProps
               }}
               footer={footer}
               layout

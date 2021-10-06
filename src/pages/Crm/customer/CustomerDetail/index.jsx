@@ -25,6 +25,7 @@ import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
 import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
 import styles from './index.module.scss';
+import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 
 const {TabPane} = Tabs;
 
@@ -34,6 +35,7 @@ const CustomerDetail = () => {
   const [responsive, setResponsive] = useState(false);
 
   const ref = useRef(null);
+  const addRef = useRef(null);
   const refTrack = useRef(null);
   const submitRef = useRef(null);
   const history = useHistory();
@@ -47,6 +49,8 @@ const CustomerDetail = () => {
   });
 
   const {run: runCustomer} = useRequest(customerEdit, {manual: true});
+
+  const [width,setWidth] = useState();
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -117,7 +121,22 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' />
+          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' edit />
+          <Button
+            style={params.state === 'false' ? {'display': 'none'} : null}
+            onClick={() => {
+              addRef.current.open(false);
+            }} icon={<EditOutlined />}>创建商机</Button>
+          <BusinessAdd
+            ref={addRef}
+            customerId={data.customerId}
+            userId={data.userId}
+            onClose={() => {
+              addRef.current.close();
+              refTrack.current.close();
+              refresh();
+            }}
+          />
           <Button
             type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}
@@ -125,9 +144,12 @@ const CustomerDetail = () => {
               refTrack.current.open(false);
             }} icon={<EditOutlined />}>添加跟进</Button>
           <Modal
-            width={1400}
+            width={width === 1 ? 1400 : 800}
             title="跟进"
             ref={refTrack}
+            onWidthChange={(value) => {
+              setWidth(value);
+            }}
             compoentRef={submitRef}
             footer={
               <>
@@ -158,26 +180,26 @@ const CustomerDetail = () => {
           <Desc data={data} />
         </Card>
       </div>
-      {/*<div*/}
-      {/*  className={styles.main}>*/}
-      {/*  <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}>*/}
-      {/*    <ProCard>*/}
-      {/*      <Statistic title="今日UV" value={79.0} precision={2} />*/}
-      {/*    </ProCard>*/}
-      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
-      {/*    <ProCard>*/}
-      {/*      <Statistic title="冻结金额" value={112893.0} precision={2} />*/}
-      {/*    </ProCard>*/}
-      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
-      {/*    <ProCard>*/}
-      {/*      <Statistic title="信息完整度" value={93} suffix="/ 100" />*/}
-      {/*    </ProCard>*/}
-      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} />*/}
-      {/*    <ProCard>*/}
-      {/*      <Statistic title="冻结金额" value={112893.0} />*/}
-      {/*    </ProCard>*/}
-      {/*  </ProCard.Group>*/}
-      {/*</div>*/}
+      {/* <div */}
+      {/*  className={styles.main}> */}
+      {/*  <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}> */}
+      {/*    <ProCard> */}
+      {/*      <Statistic title="今日UV" value={79.0} precision={2} /> */}
+      {/*    </ProCard> */}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} /> */}
+      {/*    <ProCard> */}
+      {/*      <Statistic title="冻结金额" value={112893.0} precision={2} /> */}
+      {/*    </ProCard> */}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} /> */}
+      {/*    <ProCard> */}
+      {/*      <Statistic title="信息完整度" value={93} suffix="/ 100" /> */}
+      {/*    </ProCard> */}
+      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} /> */}
+      {/*    <ProCard> */}
+      {/*      <Statistic title="冻结金额" value={112893.0} /> */}
+      {/*    </ProCard> */}
+      {/*  </ProCard.Group> */}
+      {/* </div> */}
       <div
         className={styles.main}>
         <Row gutter={12}>
@@ -196,7 +218,7 @@ const CustomerDetail = () => {
                 <TabPane tab="合同" key="4">
                   <ContractTable customerId={data && data.customerId} />
                 </TabPane>
-                <TabPane tab="订单" key="5">
+                <TabPane tab="货单" key="5">
                   <OrderList customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="回款" key="6">

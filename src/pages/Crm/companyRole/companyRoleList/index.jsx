@@ -46,6 +46,7 @@ const CompanyRoleList = () => {
   return (
     <>
       <Table
+        contentHeight
         title={<Breadcrumb title='职位管理'/>}
         api={companyRoleList}
         rowKey="companyRoleId"

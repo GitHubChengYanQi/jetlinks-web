@@ -1,5 +1,5 @@
 /**
- * 订单表列表页
+ * 货单表列表页
  *
  * @author ta
  * @Date 2021-07-20 16:22:28
@@ -40,7 +40,7 @@ const OrderList = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="订单状态" name="state" component={SysField.State} />
+          <FormItem mega-props={{span: 1}} placeholder="货单状态" name="state" component={SysField.State} />
           {
             customerId ? null :  <FormItem mega-props={{span: 1}} placeholder="客户名称"  value={customerId || null} name="customerId" component={SysField.CustomerListSelect} />
           }
@@ -172,14 +172,14 @@ const OrderList = (props) => {
             </div>
           );
         }} sorter/>
-        <Column title="订单状态" width={120} align='center' dataIndex="state"   sorter/>
-        <Column title="订单时间" width={200} dataIndex="orderTime" sorter/>
+        <Column title="货单状态" width={120} align='center' dataIndex="state"   sorter/>
+        <Column title="货单时间" width={200} dataIndex="orderTime" sorter/>
       </Table>
-      <Modal width={1200} title="订单" component={OrderEdit} onSuccess={() => {
+      <Modal width={1200} title="货单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={1200} title="订单明细" component={OrderDetailsList} onSuccess={() => {
+      <Modal width={1200} title="货单明细" component={OrderDetailsList} onSuccess={() => {
         orderDetailRef.current.refresh();
         ref.current.close();
       }} ref={orderDetailRef} />

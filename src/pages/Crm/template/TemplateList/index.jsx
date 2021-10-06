@@ -64,6 +64,7 @@ const TemplateList = () => {
     <>
       <Table
         footer={footer}
+        contentHeight
         onChange={(keys) => {
           setIds(keys);
         }}
