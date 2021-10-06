@@ -9,9 +9,6 @@ import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
 import {instockList, instockOrderList} from '@/pages/Erp/instock/InstockUrl';
 import Form from '@/components/Form';
-import {barcode} from '@/pages/Erp/instock/InstockField';
-import Modal from '@/components/Modal';
-import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -24,7 +21,6 @@ const Instock = (props) => {
 
   const searchForm = () => {
 
-
     return (
       <FormItem name="instockOrderId" value={props.value} component={SysField.barcode} />
     );
@@ -35,10 +31,11 @@ const Instock = (props) => {
       <>
         <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
           if (!instocks || instocks.length <= 0){
-            message.error("请选择发货产品！！！");
+            message.error('请选择入库产品！！！');
           }else {
             message.error('宋正飞wcnm!');
           }
+          console.log(instocks);
         }} type="text">入库</Button>
       </>
     );
@@ -56,6 +53,9 @@ const Instock = (props) => {
         rowKey="instockId"
         isModal={false}
         footer={footer}
+        getCheckboxProps={(record) => ({
+          disabled: record.state === 1, // Column configuration not to be checked
+        })}
         searchForm={searchForm}
         ref={tableRef}
         onChange={(value,values)=>{
