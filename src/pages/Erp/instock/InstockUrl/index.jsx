@@ -11,6 +11,12 @@ export const instockAdd = {
   rowKey:'instockId'
 };
 
+export const instockOrderAdd = {
+  url: '/instockOrder/add',
+  method: 'POST',
+  rowKey:'instockOrderId'
+};
+
 export const instockEdit = {
   url: '/instock/edit',
   method: 'POST',
@@ -35,6 +41,12 @@ export const instockList = {
   rowKey:'instockId'
 };
 
+export const instockOrderList = {
+  url: '/instockOrder/list',
+  method: 'POST',
+  rowKey:'instockOrderId'
+};
+
 export const itemIdSelect = {
   url: '/items/listSelect',
   method: 'POST'
@@ -50,5 +62,10 @@ export const storeHouseSelect = {
 // 产品名称
 export const ProductNameListSelect = {
   url: '/items/listSelect',
+  method: 'POST',
+};
+
+export const UserIdSelect = {
+  url: '/rest/mgr/Select',
   method: 'POST',
 };

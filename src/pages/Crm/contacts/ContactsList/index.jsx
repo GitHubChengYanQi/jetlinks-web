@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Divider, Modal as AntModal, Table as AntTable} from 'antd';
+import {Button, Divider, Modal as AntModal, Table as AntTable, Tag} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -23,7 +23,6 @@ import PhoneList from '@/pages/Crm/phone/phoneList';
 import {batchDelete, contactsBind, contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
-import {Tag} from '@alifd/next';
 import {CustomerIds} from '@/pages/Crm/contacts/ContactsField';
 import {useRequest} from '@/util/Request';
 

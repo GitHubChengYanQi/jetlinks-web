@@ -55,6 +55,19 @@ const Desc = (props) => {
               <Radio value={1}>正式客户</Radio>
             </Radio.Group>
           </Descriptions.Item>
+          <Descriptions.Item label="客户分类">
+            <Radio.Group defaultValue={data.classification} onChange={async (value) => {
+              await run({
+                data: {
+                  customerId:data.customerId,
+                  classification: value.target.value
+                }
+              });
+            }}>
+              <Radio value={0}>代理商</Radio>
+              <Radio value={1}>终端用户</Radio>
+            </Radio.Group>
+          </Descriptions.Item>
           <Descriptions.Item label="负责人">
             <UserEdit userId={data.userId} value={data.userResult && data.userResult.name} onChange={async (value) => {
               await runUser({

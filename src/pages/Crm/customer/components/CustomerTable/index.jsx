@@ -155,8 +155,7 @@ const CustomerTable = (props) => {
               </Col>
               <Col>
                 <strong>{value}</strong>
-                <div><em
-                  style={{}}>{record.classificationName || '--'}</em>&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}
+                <div><em>{record.classificationName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</em>
                 </div>
                 <div>
                   <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>

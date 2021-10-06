@@ -13,7 +13,7 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
+import MyModal from '@/components/Modal';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
@@ -21,8 +21,9 @@ import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import InstockEdit from '../InstockEdit';
 import {useRequest} from "@/util/Request";
-import {instockDelete, instockEdit, instockList, itemIdSelect} from '../InstockUrl';
+import {instockDelete, instockEdit, instockList, instockOrderList, itemIdSelect} from '../InstockUrl';
 import * as SysField from '../InstockField';
+import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -31,6 +32,8 @@ const InstockList = () => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const instockRef = useRef(null);
+
   const actions = () => {
     return (
       <>
@@ -118,8 +121,8 @@ const InstockList = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={instockList}
-        rowKey="instockId"
+        api={instockOrderList}
+        rowKey="instockOrderId"
         isModal={false}
         SearchButton={Search()}
         layout={search}
@@ -128,59 +131,39 @@ const InstockList = () => {
         ref={tableRef}
         rowSelection
       >
-        <Column title="仓库名称" fixed dataIndex="storehouseId" render={(text, record) => {
+        <Column title='入库单' fixed dataIndex='instockOrderId' render={(text)=>{
+          return (
+            <a onClick={()=>{
+              instockRef.current.open(text);
+            }}>
+              {text}
+            </a>
+          );
+        }}/>
+        <Column title="仓库名称" dataIndex="storeHouseId" render={(text, record) => {
           return (
             <>
-              {record.storehouseResult.name}
+              {record.storehouseResult && record.storehouseResult.name}
             </>
           );
         }} sorter/>
-        <Column title="产品名称" dataIndex="itemId" render={(text, record) => {
+        <Column title="负责人" width={200} dataIndex="userId" sorter render={(text, record) => {
           return (
             <>
-              {record.itemsResult.name}
-            </>
-          );
-        }} sorter/>
-        <Column title="品牌" width={200} dataIndex="brandId" render={(text, record) => {
-          return (
-            <>
-              {record.brandResult.brandName}
-            </>
-          );
-        }} sorter/>
-        <Column title="入库数量" width={120} align='center' dataIndex="number" sorter/>
-        <Column title="原价" width={120} align='center' dataIndex="costPrice" sorter/>
-        <Column title="售价" width={120} align='center' dataIndex="sellingPrice" sorter/>
-        <Column title="登记时间" width={200} dataIndex="registerTime" sorter/>
-        <Column title="条形码" width={200} dataIndex="barcode" sorter/>
-        <Column title="入库状态" width={200} dataIndex="state" render={(text, record) => {
-          return (
-            <>
-              {record.state ? '已入库':'未入库'}
-            </>
-          );
-        }} />
-        <Column title="操作" fixed='right' align="right" width={200} render={(value, record) => {
-          return (
-            <>
-              {record.state === 0 ? <Button style={{margin: '0 10px'}} onClick={() => {
-                confirmOk(record);
-              }}><Icon type="icon-ruku" />入库</Button>: null}
-              {record.state === 0 ? <EditButton onClick={() => {
-                ref.current.open(record.instockId);
-              }}/>: null}
-              {record.state === 0 ? <DelButton api={instockDelete} value={record.instockId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>: null}
+              {record.userResult && record.userResult.name}
             </>
           );
         }}/>
+        <Column title="登记时间" width={200} dataIndex="time" sorter/>
       </Table>
-      <Modal2 width={800} title="产品入库" component={InstockEdit} onSuccess={() => {
+      <MyModal width={1100} title="入库单" component={InstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
+
+      <MyModal width={1300} title="入库清单" component={Instock} onSuccess={() => {
+        instockRef.current.close();
+      }} ref={instockRef}/>
     </>
   );
 };
