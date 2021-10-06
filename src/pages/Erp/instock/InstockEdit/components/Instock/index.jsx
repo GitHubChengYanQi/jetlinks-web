@@ -7,13 +7,17 @@ import {Badge, Button, message, Table as AntTable} from 'antd';
 import Icon from '@/components/Icon';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
-import {instockList, instockOrderList} from '@/pages/Erp/instock/InstockUrl';
+import {instockEdit, instockList, instockOrderList} from '@/pages/Erp/instock/InstockUrl';
 import Form from '@/components/Form';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const Instock = (props) => {
+
+
+  const {run} = useRequest(instockEdit,{manual:true});
 
   const tableRef = useRef(null);
 
@@ -33,7 +37,13 @@ const Instock = (props) => {
           if (!instocks || instocks.length <= 0){
             message.error('请选择入库产品！！！');
           }else {
-            message.error('宋正飞wcnm!');
+            run(
+              {
+                data: {
+                  instocks
+                }
+              }
+            );
           }
           console.log(instocks);
         }} type="text">入库</Button>
