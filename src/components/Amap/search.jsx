@@ -176,7 +176,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
               const location = {
                 address: item.pname + item.cityname + item.address + name,
                 location: [item.location.lng, item.location.lat],
-                city: item.cityname || pname
+                city: item.cityname || item.pname
               };
               typeof onChange === 'function' && onChange(location);
             }}>使用该地址</Button>}>{item.address}</List.Item>);

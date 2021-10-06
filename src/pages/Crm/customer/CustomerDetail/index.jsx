@@ -23,9 +23,9 @@ import {EditName} from '@/pages/Crm/customer/components/Edit/indexName';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
 import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
+import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
 import styles from './index.module.scss';
-import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 
 const {TabPane} = Tabs;
 

@@ -19,14 +19,6 @@ const Description = (props) => {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
-            await run({
-              data: {
-                customerId:data.customerId,
-                legal: value
-              }
-            });
-          }} /></Descriptions.Item>
           <Descriptions.Item label="统一社会信用代码">{data.utscc || <InputEdit value={data.utscc} onChange={async (value) => {
             await run({
               data: {
@@ -105,7 +97,7 @@ const Description = (props) => {
                 });
               }} />
           </Descriptions.Item>
-          <Descriptions.Item label="网址">
+          <Descriptions.Item span={2} label="网址">
             <InputEdit
               value={data.url}
               patter={/^(http(s)?:\/\/)?(www\.)?[\w-]+\.(com|net|cn)$/}
@@ -119,7 +111,7 @@ const Description = (props) => {
                 });
               }} />
           </Descriptions.Item>
-          <Descriptions.Item span={2} label="简介"><TextEdit value={data.introduction} onChange={async (value) => {
+          <Descriptions.Item span={2} label="公司简介"><TextEdit value={data.introduction} onChange={async (value) => {
             await run({
               data: {
                 customerId:data.customerId,

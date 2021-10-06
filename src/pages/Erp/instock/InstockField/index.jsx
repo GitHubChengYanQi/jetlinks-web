@@ -13,6 +13,7 @@ import DatePicker from '@/components/DatePicker';
 import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import * as apiUrl from '../InstockUrl';
+import {UserIdSelect} from '../InstockUrl';
 
 const {Search} = Input;
 
@@ -82,7 +83,10 @@ export const  StoreHouseSelect = (props) =>{
 };
 // 产品名称
 export const itemId = (props) =>{
-  return (<Select api={apiUrl.ProductNameListSelect} Select {...props}/>);
+  return (<Select api={apiUrl.ProductNameListSelect}  {...props}/>);
+};
+export const UserId = (props) =>{
+  return (<Select api={apiUrl.UserIdSelect}  {...props}/>);
 };
 
 export const barcode = (props) =>{
