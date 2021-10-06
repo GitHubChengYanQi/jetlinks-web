@@ -50,6 +50,8 @@ ajaxService.interceptors.response.use((response) => {
         }
       });
       throw new Error(response.message);
+    }else if (errCode !== 200){
+      message.error(response.message);
     }
     throw new Error(response.message);
   }

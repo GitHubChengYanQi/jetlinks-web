@@ -161,7 +161,7 @@ const InstockList = () => {
         ref.current.close();
       }} ref={ref}/>
 
-      <MyModal width={1300} title="入库清单" component={Instock} onSuccess={() => {
+      <MyModal width={1300} component={Instock} onSuccess={() => {
         instockRef.current.close();
       }} ref={instockRef}/>
     </>

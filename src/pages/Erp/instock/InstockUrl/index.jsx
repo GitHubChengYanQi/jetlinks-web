@@ -18,9 +18,8 @@ export const instockOrderAdd = {
 };
 
 export const instockEdit = {
-  url: '/instock/edit',
+  url: '/instockList/edit',
   method: 'POST',
-  rowKey:'instockId'
 };
 
 export const instockDelete = {
@@ -39,6 +38,11 @@ export const instockList = {
   url: '/instock/list',
   method: 'POST',
   rowKey:'instockId'
+};
+export const instock = {
+  url: '/instockList/list',
+  method: 'POST',
+  rowKey:'instockListId'
 };
 
 export const instockOrderList = {
