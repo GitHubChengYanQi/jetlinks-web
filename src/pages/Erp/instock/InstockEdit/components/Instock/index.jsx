@@ -99,7 +99,7 @@ const Instock = (props) => {
       </ProCard>
 
       <ProCard className="h2Card" headerBordered title="入库明细">
-        <InstockListTable ref={instockRef} />
+        <InstockListTable ref={instockRef} value={props.value} />
       </ProCard>
     </div>
   );

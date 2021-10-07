@@ -112,7 +112,7 @@ const StockDetailsList = (props) => {
         }} />
         <Column title="条形码" dataIndex="barcode" />
         <Column title="产品价格" dataIndex="price" sorter />
-        <Column title="入库时间" dataIndex="storageTime" sorter />
+        <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>
     </>
   );
