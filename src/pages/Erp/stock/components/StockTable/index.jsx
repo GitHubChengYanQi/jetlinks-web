@@ -135,14 +135,14 @@ const StockTable = (props) => {
               {record.itemsResult.name}
             </>
           );
-        }} sorter />
+        }}  />
         <Column title="品牌"  width={200} render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}
             </>
           );
-        }} sorter />
+        }}  />
         <Column title="仓库名称" render={(text, record) => {
           return (
             <>
@@ -152,7 +152,7 @@ const StockTable = (props) => {
               }}>{record.storehouseResult.name}</Button>
             </>
           );
-        }} sorter />
+        }}  />
         <Column title="数量" width={120} align='center' sorter dataIndex="inventory" />
         <Column />
         {choose ? <Column title="操作" align="right" render={(value, record) => {
