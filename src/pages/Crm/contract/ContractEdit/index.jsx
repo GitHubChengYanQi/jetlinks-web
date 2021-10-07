@@ -90,8 +90,8 @@ const AddContractEdit = ({businessId,loading,...props}) => {
   const [current, setCurrent] = React.useState(0);
 
   const {run: business} = useRequest({
-    ...businessEdit, data: {...value,salesId: value.salesId}
-  });
+    ...businessEdit,
+  },{manual:true});
 
 
 
@@ -146,7 +146,6 @@ const AddContractEdit = ({businessId,loading,...props}) => {
               <Row gutter={24}>
                 <Col span={12}>
                   <ProCard headerBordered className="h2Card" title="甲方信息">
-                    {/*{CustomerAll( 'partyA' ,'partyAAdressId' ,'partyAContactsId' ,'partyAPhone' ,{customerId})}*/}
                     <CustomerAll customer='partyA' adress='partyAAdressId' contacts='partyAContactsId' phone='partyAPhone' customerId={customerId} />
                   </ProCard>
                 </Col>

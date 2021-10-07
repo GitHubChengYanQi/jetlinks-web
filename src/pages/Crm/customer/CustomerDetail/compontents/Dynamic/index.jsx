@@ -1,5 +1,5 @@
 import React from 'react';
-import {Comment, Table as AntTable} from 'antd';
+import {Avatar, Comment, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
@@ -19,7 +19,7 @@ const Dynamic = (props) => {
   const datas = (value) => {
     return {
       author: value.userResult ? value.userResult.name : '--',
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      avatar: <Avatar>{value.userResult && value.userResult.name && value.userResult.name.substring(0,1)}</Avatar>,
       content: (
         <>
           <p style={{padding: 10}}>{value.content}</p>
