@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Layout, Menu} from 'antd';
+import {Avatar, Button, Layout, Menu} from 'antd';
 import store from '@/store';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
 import Icon from '@/components/Icon';
@@ -39,9 +39,8 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     if (item.children) {
       return (<Menu.SubMenu key={item.id} title={item.name}>{loopMenu(item.children)}</Menu.SubMenu>);
     }
-    const IconNode = null;// item.icon?Icon[item.icon]:null;
     return (
-      <Menu.Item key={item.url} icon={IconNode ? <IconNode /> : null}>{item.name}</Menu.Item>
+      <Menu.Item key={item.url} icon={item.icon && <Icon style={{fontSize:30,marginTop:5,float:'left'}} type={item.icon} />} >{item.name}</Menu.Item>
     );
   };
 

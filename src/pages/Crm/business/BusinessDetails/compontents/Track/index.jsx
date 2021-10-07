@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Comment, Image, Spin, Table as AntTable} from 'antd';
+import {Avatar, Comment, Image, Spin, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
@@ -25,7 +25,7 @@ const Track = (props) => {
   const datas = (data) => {
     return {
       author: data && data.userResult ? data.userResult.name : '--',
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      avatar: <Avatar>{data.userResult && data.userResult.name && data.userResult.name.substring(0,1)}</Avatar>,
       content: (
         <>
           <div>

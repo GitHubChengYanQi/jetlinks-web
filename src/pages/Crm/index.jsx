@@ -11,6 +11,7 @@ import SetView from '@/layouts/SetView';
 import DataClassificationList from '@/pages/Crm/data/dataClassification/dataClassificationList';
 import SpeechcraftTypeList from '@/pages/Crm/speechcraft/speechcraftType/speechcraftTypeList';
 import Modal from '@/components/Modal';
+import Icon from '@/components/Icon';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -59,28 +60,28 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           }}
         >
           <Menu.Item key="sjly">
-            <span>项目来源管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />项目来源管理</span>
           </Menu.Item>
           <Menu.Item key="sslc">
-            <span>销售分类管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />销售分类管理</span>
           </Menu.Item>
           <Menu.Item key="htmb">
-            <span>合同模板管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />合同模板管理</span>
           </Menu.Item>
           <Menu.Item key="khjb">
-            <span>客户级别管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />客户级别管理</span>
           </Menu.Item>
           <Menu.Item key="hygl">
-            <span>行业管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />行业管理</span>
           </Menu.Item>
           <Menu.Item key="jsgl">
-            <span>职位管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />职位管理</span>
           </Menu.Item>
           <Menu.Item key="cpzl">
-            <span>产品资料分类管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />产品资料分类管理</span>
           </Menu.Item>
           <Menu.Item key="hsfl">
-            <span>话术分类管理</span>
+            <span><Icon type='icon' style={{margin:'0 8px'}} />话术分类管理</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />

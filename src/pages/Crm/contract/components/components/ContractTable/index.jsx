@@ -69,17 +69,27 @@ const ContractTable = (props) => {
         <>
           <FormItem mega-props={{span: 1}} placeholder="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
           {
-            customerId ? null :
-              <FormItem mega-props={{span: 1}} placeholder="甲方" value={customerId || null} name="partyA"
-                        component={SysField.CustomerNameListSelect} />
+            customerId ?
+              null
+              :
+              <FormItem
+                mega-props={{span: 1}}
+                placeholder="甲方"
+                value={customerId || null}
+                name="partyA"
+                component={SysField.CustomerNameListSelect} />
           }
         </>
       );
     };
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}}
+          labelAlign="left"
+          layoutProps={{wrapperWidth: 200}}
+          grid={search}
+          columns={4} full autoRow>
           <FormItem mega-props={{span: 1}} placeholder="合同名称" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -101,8 +111,13 @@ const ContractTable = (props) => {
               <FormItem hidden name="audit" component={SysField.Name} />
               {
                 customerId ?
-                  <FormItem mega-props={{span: 1}} placeholder="甲方" hidden value={customerId || ' '} name="partyA"
-                            component={SysField.CustomerNameListSelect} /> : null
+                  <FormItem
+                    mega-props={{span: 1}}
+                    placeholder="甲方"
+                    hidden
+                    value={customerId || ' '}
+                    name="partyA"
+                    component={SysField.CustomerNameListSelect} /> : null
               }
             </MegaLayout>
           </FormButtonGroup>
@@ -125,6 +140,12 @@ const ContractTable = (props) => {
     }} value={ids}>批量删除</DelButton>);
   };
 
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: type === 'success' ? '审核成功！' : '已审核！',
+    });
+  };
+
   const {run} = useRequest(contractEdit, {
     manual: true, onSuccess: () => {
       openNotificationWithIcon('success');
@@ -132,11 +153,6 @@ const ContractTable = (props) => {
     }
   });
 
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: type === 'success' ? '审核成功！' : '已审核！',
-    });
-  };
 
   function confirmOk(record) {
     AntModal.confirm({
@@ -187,11 +203,13 @@ const ContractTable = (props) => {
       >
         <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
           return (
-            <Button style={{width: '100%', textAlign: 'left', cursor: 'pointer', height: '100%'}} title="点击进入合同详情"
-                    type="link" onClick={() => {
-              // content.current.open(record.contractId);
-              history.push(`/CRM/contract/${record.contractId}`);
-            }}>{text}</Button>
+            <Button
+              style={{width: '100%', textAlign: 'left', cursor: 'pointer', height: '100%'}}
+              title="点击进入合同详情"
+              type="link"
+              onClick={() => {
+                history.push(`/CRM/contract/${record.contractId}`);
+              }}>{text}</Button>
           );
         }} />
         <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {

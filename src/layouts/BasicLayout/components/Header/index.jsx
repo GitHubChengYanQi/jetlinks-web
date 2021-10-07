@@ -8,27 +8,26 @@ import {Menu, Drawer, Avatar, Button, Dropdown, Tabs} from 'antd';
 import store from '@/store';
 import {useHistory, config} from 'ice';
 import AppEntFUNC from '@/asseset/imgs/88.png';
-import Bind from '@/asseset/imgs/bind.png';
-import Men from '@/asseset/imgs/men.png';
-import Sys from '@/asseset/imgs/sys.png';
-import Portal from '@/asseset/imgs/portal.png';
-import Repair from '@/asseset/imgs/repair.png';
-import Shop from '@/asseset/imgs/shop.png';
-import crm from '@/asseset/imgs/CRM.png';
-import erp from '@/asseset/imgs/ERP.png';
 import PassWord from '@/pages/Member/passWord';
+
+import crm from '@/asseset/imgs/crm.png';
+import erp from '@/asseset/imgs/erp.png';
+import repair from '@/asseset/imgs/repair.png';
+import protal from '@/asseset/imgs/protal.png';
+import sys from '@/asseset/imgs/sys.png';
+import menu from '@/asseset/imgs/menu.png';
+
 import styles from './index.module.less';
 
 const {TabPane} = Tabs;
 
 const AppIcon = {
-  ENT_FUNC: Men,
-  BASE_SYSTEM: Sys,
-  userInfo: Bind,
+  ENT_FUNC: menu,
+  BASE_SYSTEM: sys,
   CRM: crm,
   ERP: erp,
-  REPAIR: Repair,
-  protal: Portal,
+  REPAIR: repair,
+  protal,
 };
 
 const Header = () => {
@@ -159,7 +158,7 @@ const Header = () => {
                   <div className="app-item">
                     <div className="item-logo-wrap">
                       <span className="navigation-badge">
-                        <img className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo" />
+                        <img style={{backgroundColor:'rgba(0,0,0,0)'}} className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo" />
                       </span>
                     </div>
                     <div className="app-item-name">

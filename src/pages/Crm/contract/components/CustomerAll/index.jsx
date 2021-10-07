@@ -6,6 +6,7 @@ import {FormItem} from '@formily/antd';
 
 const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
 
+
   const {refresh: refreshContactsn, data: Contacts, run: ContactsRun} = useRequest({
     url: '/contacts/list',
     method: 'POST',

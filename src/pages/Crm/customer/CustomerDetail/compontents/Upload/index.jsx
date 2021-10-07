@@ -12,6 +12,8 @@ const Upload = (props) => {
 
   const [oss, setOss] = useState({});
 
+  const [file, setFile] = useState();
+
 
   const {run} = useRequest({
     url: '/media/getToken',
@@ -45,7 +47,20 @@ const Upload = (props) => {
     url: '/customerFile/list?',
     method: 'POST',
     data: {customerId}
-  }, {manual: true});
+  }, {
+    manual: true, onSuccess: async (res) => {
+      const fileList = await res && res.data ? res.data.map((items, index) => {
+        return {
+          uid: items.uid,
+          name: items.name,
+          url: items.url,
+        };
+      }) : [];
+      setFile(fileList);
+    }
+  });
+
+  console.log(data);
 
   useEffect(() => {
     runListFile({
@@ -57,15 +72,6 @@ const Upload = (props) => {
   }, []);
 
 
-  const fileList = data && data.data ? data.data.map((items, index) => {
-    return {
-      uid: items.uid,
-      name: items.name,
-      url: items.url,
-    };
-  }) : [];
-
-
   return (
     <Space direction="vertical" style={{width: '100%'}} size="large">
       <AntUpload
@@ -74,7 +80,7 @@ const Upload = (props) => {
         data={oss}
         action={oss.host}
         listType="picture"
-        fileList={fileList}
+        fileList={file}
         beforeUpload={(file) => {
           const type = file.type.split('/')[1];
           if (type) {
@@ -87,22 +93,23 @@ const Upload = (props) => {
             alert('附件类型不正确！');
           }
         }}
-        onChange={async ({file}) => {
+        onChange={async ({file, fileList}) => {
+          console.log(file.status);
           switch (file.status) {
             case 'done':
+              await runFile({
+                data: {
+                  url: `${oss && oss.host}/${oss && oss.key}`,
+                  customerId,
+                  uid: file.uid,
+                  name: file.name
+                }
+              });
               refresh();
               break;
             case 'uploading':
-              if (file.type.split('/')[1] && file.percent === 0) {
-                await runFile({
-                  data: {
-                    url: `${oss && oss.host}/${oss && oss.key}`,
-                    customerId,
-                    uid: file.uid,
-                    name: file.name
-                  }
-                });
-              }
+              break;
+            case 'error':
               refresh();
               break;
             case 'removed':
@@ -116,6 +123,7 @@ const Upload = (props) => {
             default:
               break;
           }
+          setFile(fileList);
         }}
       >
         <Button icon={<UploadOutlined />}>上传附件</Button>
