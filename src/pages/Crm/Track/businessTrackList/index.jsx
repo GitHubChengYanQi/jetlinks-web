@@ -22,6 +22,7 @@ import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import Conent from '@/pages/Crm/Track/components/Conent';
 import {Customer} from '../businessTrackField';
+import {userRemove} from '@/Config/ApiUrl/system/user';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -121,9 +122,30 @@ const BusinessTrackList = () => {
             </>
           );
         }} />
-        <Column title="负责人" dataIndex="userId" />
-        <Column title="分类" dataIndex="classify" />
-        <Column title="名称" dataIndex="classifyId" />
+        <Column title="负责人" dataIndex="userId" render={(value, record) => {
+          return(
+            <a>
+              {record.userResult.name}
+            </a>
+          );
+        }
+
+        } />
+        <Column title="分类" dataIndex="classify" render={(value, record) => {
+          return(
+            <a>
+              {record.categoryName}
+            </a>
+          );
+        }} />
+        <Column title="名称" dataIndex="classifyId" render={(value, record) => {
+          console.log(record);
+          return(
+            <a>
+              {record.name}
+            </a>
+          );
+        }} />
       </Table>
 
       <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
