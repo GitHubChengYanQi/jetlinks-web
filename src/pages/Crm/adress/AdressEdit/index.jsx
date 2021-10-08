@@ -22,7 +22,7 @@ const ApiConfig = {
 
 const AdressEdit = ({...props}) => {
 
-  const {customerId} = props;
+  const {customer} = props;
 
   const formRef = useRef();
 
@@ -44,7 +44,7 @@ const AdressEdit = ({...props}) => {
     >
       <FormItem label="省市区地址" name="region" component={SysField.Region} city={city} required/>
       <FormItem label='详细地址' name="map" component={SysField.Map}/>
-      <FormItem hidden customer={customerId} name="customerId" component={SysField.CustomerId} required/>
+      <FormItem hidden customer={customer} name="customerId" component={SysField.CustomerId} required/>
     </Form>
   );
 };
