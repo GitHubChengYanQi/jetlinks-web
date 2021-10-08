@@ -6,7 +6,7 @@
  */
 
 import React, {lazy, useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, PageHeader, Row, Table as AntTable, Tag, Tooltip} from 'antd';
+import {Avatar, Button, Card, Col, Input, PageHeader, Row, Table as AntTable, Tag, Tooltip, Upload} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -23,11 +23,13 @@ import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
-import {SearchOutlined} from '@ant-design/icons';
+import {ImportOutlined, SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import {useBoolean} from 'ahooks';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import {useRequest} from '@/util/Request';
+import cookie from 'js-cookie';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,10 +53,23 @@ const CustomerTable = (props) => {
     }
   }, [status, state, level]);
 
+  const {run} = useRequest({url: '/crm/excel/importCustomer', method: 'POST'}, {manual: true});
 
   const actions = () => {
     return (
       <>
+        <div style={{display: 'inline-block'}}>
+          <Upload
+            action='http://192.168.1.228/crm/excel/importAdress'
+            headers={
+              {Authorization: cookie.get('tianpeng-token')}
+            }
+            name='file'
+            fileList={null}
+          >
+            <Button icon={<Icon type='icon-daoru' />}>导入客户</Button>
+          </Upload>
+        </div>
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
@@ -155,7 +170,8 @@ const CustomerTable = (props) => {
               </Col>
               <Col>
                 <strong>{value}</strong>
-                <div><em>{record.classificationName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</em>
+                <div>
+                  <em>{record.classificationName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</em>
                 </div>
                 <div>
                   <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>

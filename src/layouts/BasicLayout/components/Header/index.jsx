@@ -158,7 +158,9 @@ const Header = () => {
                   <div className="app-item">
                     <div className="item-logo-wrap">
                       <span className="navigation-badge">
-                        <img style={{backgroundColor:'rgba(0,0,0,0)'}} className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo" />
+                        <img style={{
+                          boxShadow: 'none',
+                        }} className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo" />
                       </span>
                     </div>
                     <div className="app-item-name">

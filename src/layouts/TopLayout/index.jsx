@@ -40,7 +40,7 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
       return (<Menu.SubMenu key={item.id} title={item.name}>{loopMenu(item.children)}</Menu.SubMenu>);
     }
     return (
-      <Menu.Item key={item.url} icon={item.icon && <Icon style={{fontSize:30,marginTop:5,float:'left'}} type={item.icon} />} >{item.name}</Menu.Item>
+      <Menu.Item key={item.url} icon={item.icon && <Icon style={{fontSize:16}} type={item.icon} />} >{item.name}</Menu.Item>
     );
   };
 
