@@ -37,7 +37,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
 const CrmBusinessTrackEdit = (props, ref) => {
 
-  const {val, number, id,onWidthChange, track = 1,...other} = props;
+  const {val, number, id, onWidthChange, track = 1, ...other} = props;
   const formRef = useRef();
   useImperativeHandle(ref, () => ({
     formRef,
@@ -70,11 +70,11 @@ const CrmBusinessTrackEdit = (props, ref) => {
       val={id || null} />);
   };
 
-  const { onFieldChange$ } = FormEffectHooks;
+  const {onFieldChange$} = FormEffectHooks;
 
 
   return (
-    <div className={style.from} style={{maxHeight:890,height: 'calc(100vh - 110px)', padding: '0 20px'}}>
+    <div className={style.from} style={{maxHeight: 890, height: 'calc(100vh - 110px)', padding: '0 20px'}}>
       <Form
         {...other}
         ref={formRef}
@@ -82,16 +82,16 @@ const CrmBusinessTrackEdit = (props, ref) => {
         fieldKey="trackMessageId"
         NoButton={false}
         wrapperCol={24}
-        effect={()=>{
-          onFieldChange$('businessTrackParams.*.classify').subscribe(({ value }) => {
+        effect={() => {
+          onFieldChange$('businessTrackParams.*.classify').subscribe(({value}) => {
             typeof onWidthChange === 'function' && onWidthChange(value);
             setClassNmb(value);
           });
         }}
       >
         <Row gutter={24} style={{height: '100%'}}>
-          <Col span={classNmb === 1 ? 13 : 24} style={{height: '100%',overflow: 'auto',}}>
-            <div style={{paddingRight: 10,  display: 'inline-block'}}>
+          <Col span={classNmb === 1 ? 13 : 24} style={{height: '100%', overflow: 'auto',}}>
+            <div style={{paddingRight: 10, display: 'inline-block'}}>
               <ProCard
                 className="h2Card"
                 bodyStyle={{padding: 16}}
@@ -209,8 +209,11 @@ const CrmBusinessTrackEdit = (props, ref) => {
           </Col>
           {classNmb === 1 && <Col span={11} style={{height: '100%', overflow: 'auto'}}>
             <div>
-              <ProCard className="h2Card" bodyStyle={{padding: 16}} style={{marginTop: 8, height: '100%'}}
-                       title={<Title title="竞争对手报价" level={4} />} headerBordered>
+              <ProCard
+                className="h2Card"
+                bodyStyle={{padding: 16}}
+                style={{marginTop: 8, height: '100%'}}
+                title={<Title title="竞争对手报价" level={4} />} headerBordered>
                 <FieldList
                   name="competitorQuoteParam"
                   initialValue={[

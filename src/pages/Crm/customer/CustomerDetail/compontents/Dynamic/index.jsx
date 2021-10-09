@@ -9,17 +9,17 @@ const {Column} = AntTable;
 const Dynamic = (props) => {
 
 
-  const {value} = props;
+  const {value, api} = props;
   const {FormItem} = Form;
 
-  if (!value){
+  if (!value) {
     return null;
   }
 
   const datas = (value) => {
     return {
       author: value.userResult ? value.userResult.name : '--',
-      avatar: <Avatar>{value.userResult && value.userResult.name && value.userResult.name.substring(0,1)}</Avatar>,
+      avatar: <Avatar>{value.userResult && value.userResult.name && value.userResult.name.substring(0, 1)}</Avatar>,
       content: (
         <>
           <p style={{padding: 10}}>{value.content}</p>
@@ -35,12 +35,22 @@ const Dynamic = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <FormItem
-          placeholder="customerId"
-          hidden
-          value={value.customerId}
-          name="customerId"
-          component={SysField.Name} />
+
+        {!value.businessId ?
+          <FormItem
+            placeholder="customerId"
+            hidden
+            value={value.customerId}
+            name="customerId"
+            component={SysField.Name} />
+          :
+          <FormItem
+            placeholder="businessId"
+            hidden
+            value={value.businessId}
+            name="businessId"
+            component={SysField.Name} />}
+
       </div>
     );
   };
@@ -49,24 +59,22 @@ const Dynamic = (props) => {
   return (
     <div>
       <Table
-        headStyle={{display:'none'}}
+        headStyle={{display: 'none'}}
         searchForm={searchForm}
         selectionType
         rowSelection
-        bodyStyle={{padding:0}}
+        bodyStyle={{padding: 0}}
         bordered={false}
         showHeader={false}
         dynamic
         showSearchButton={false}
-        api={{
-          url: '/customerDynamic/list', method: 'POST'
-        }}
+        api={api}
         rowKey="dynamicId"
       >
         <Column render={(text, record) => {
           return (
             <Comment
-              style={{padding:0}}
+              style={{padding: 0}}
               {...datas(record)}
             />
           );

@@ -41,9 +41,9 @@ const BusinessTable = (props) => {
 
   useEffect(() => {
     if (status || state || statement) {
-      tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : '');
-      tableRef.current.formActions.setFieldValue('originId', state ? state[0] : '');
-      tableRef.current.formActions.setFieldValue('state', statement ? statement[0] : '');
+      tableRef.current.formActions.setFieldValue('salesId', status ? status[0] : null);
+      tableRef.current.formActions.setFieldValue('originId', state ? state[0] : null);
+      tableRef.current.formActions.setFieldValue('state', statement ? statement[0] : null);
       tableRef.current.submit();
     }
   }, [status, state, statement]);

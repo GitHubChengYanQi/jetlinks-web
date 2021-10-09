@@ -189,6 +189,8 @@ export const UserId = (props) => {
 export const CompetitorId = (props) => {
   const ref = useRef(null);
 
+  const compoentRef = useRef();
+
   const {loading, data, run: getData} = useRequest({
     ...apiUrl.competitorListSelect, data: {
       ids: props.businessId,
@@ -213,7 +215,14 @@ export const CompetitorId = (props) => {
       <Modal
         width={1000}
         title="竞争对手"
-        component={CompetitorEdit}howSearch
+        compoentRef={compoentRef}
+        footer={<>
+          <Button type='primary' onClick={()=>{
+            compoentRef.current.formRef.current.submit();
+          }}>保存</Button>
+          <Button>取消</Button>
+        </>}
+        component={CompetitorEdit}
         onSuccess={() => {
           ref.current.close();
           getData();

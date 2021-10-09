@@ -7,7 +7,6 @@ import Modal from '@/components/Modal';
 import Description from '@/pages/Crm/business/BusinessDetails/compontents/Description';
 import Desc from '@/pages/Crm/business/BusinessDetails/compontents/Desc';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
-import Dynamic from '@/pages/Crm/business/BusinessDetails/compontents/Dynamic';
 import CompetitorList from '@/pages/Crm/competitor/components/CompetitorTable';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import {businessDelete, businessDetail} from '@/pages/Crm/business/BusinessUrl';
@@ -16,10 +15,10 @@ import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
-import styles from './index.module.scss';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-import TableDetailEdit from '@/pages/Crm/business/BusinessEdit/components/TableDetailEdit';
 import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
+import styles from './index.module.scss';
+import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 
 const {TabPane} = Tabs;
 const {Link} = Anchor;
@@ -181,7 +180,9 @@ const CustomerDetail = () => {
               <Card>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="动态" key="1">
-                    <Dynamic value={data} />
+                    <Dynamic value={data} api={{
+                      url: '/businessDynamic/list', method: 'POST'
+                    }} />
                   </TabPane>
                   <TabPane tab="跟进" key="2">
                     <Track value={data.businessId} number={1} />

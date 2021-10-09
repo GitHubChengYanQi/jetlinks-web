@@ -237,7 +237,9 @@ const CustomerDetail = () => {
                   <Track value={null} number={null} trackMessageId={data.customerId} />
                 </TabPane>
                 <TabPane tab="动态" key="2">
-                  <Dynamic value={data} />
+                  <Dynamic value={data} api={{
+                    url: '/customerDynamic/list', method: 'POST'
+                  }} />
                 </TabPane>
               </Tabs>
             </Card>
