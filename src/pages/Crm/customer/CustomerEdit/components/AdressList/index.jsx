@@ -19,13 +19,14 @@ import CheckButton from '@/components/CheckButton';
 import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
+
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
 const AdressList = (props) => {
-  const {customerId,choose,...other} = props;
+  const {customerId, choose, ...other} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -40,15 +41,15 @@ const AdressList = (props) => {
 
   return (
     <>
-      <Divider orientation='right'>
+      <Divider orientation="right">
         <AddButton ghost onClick={() => {
           ref.current.open(false);
         }} />
       </Divider>
       <Table
         bordered={false}
-        bodyStyle={{padding:0}}
-        headStyle={{display:'none'}}
+        bodyStyle={{padding: 0}}
+        headStyle={{display: 'none'}}
         api={adressList}
         formActions={formActionsPublic}
         rowKey="adressId"
@@ -56,17 +57,17 @@ const AdressList = (props) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="省市区地址" dataIndex="region" render={(value,record)=>{
+        <Column title="省市区地址" dataIndex="region" render={(value, record) => {
           return (
             <>
-              {record.regionResult && `${record.regionResult.countries }-${ record.regionResult.province }-${ record.regionResult.city }-${ record.regionResult.area}`}
+              {record.regionResult && `${record.regionResult.countries}-${record.regionResult.province}-${record.regionResult.city}-${record.regionResult.area}`}
             </>
           );
-        }}/>
-        <Column title="地址" dataIndex="location"/>
-        {/*<Column title="经度" dataIndex="longitude"/>*/}
-        {/*<Column title="纬度" dataIndex="latitude"/>*/}
-        <Column/>
+        }} />
+        <Column title="地址" dataIndex="location" />
+        {/*  <Column title="经度" dataIndex="longitude"/>  */}
+        {/*  <Column title="纬度" dataIndex="latitude"/>  */}
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -76,18 +77,18 @@ const AdressList = (props) => {
               }} /> : null}
               <EditButton onClick={() => {
                 ref.current.open(record.adressId);
-              }}/>
-              <DelButton api={adressDelete} value={record.adressId} onSuccess={()=>{
+              }} />
+              <DelButton api={adressDelete} value={record.adressId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={AdressEdit} customer={customerId} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

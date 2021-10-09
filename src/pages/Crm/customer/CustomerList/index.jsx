@@ -10,7 +10,6 @@ import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 const CustomerList = () => {
 
 
-
   const {loading, data, run} = useRequest({url: '/crmCustomerLevel/list', method: 'POST', rowKey: 'customerLevelId'});
 
   const crmCustomerLevel = data ? data.map((values) => {
@@ -30,10 +29,9 @@ const CustomerList = () => {
   const [value, setValue] = useState();
 
 
-
   const Left = () => {
     if (loading) {
-      return (<div style={{textAlign: 'center', marginTop: 50}}><Spin size="large"/></div>);
+      return (<div style={{textAlign: 'center', marginTop: 50}}><Spin size="large" /></div>);
     }
     return (
       <>
@@ -62,7 +60,7 @@ const CustomerList = () => {
             },
           ]}
         />
-        <Divider/>
+        <Divider />
         <Tree
           showLine
           onSelect={(value) => {
@@ -88,19 +86,25 @@ const CustomerList = () => {
             },
           ]}
         />
-        <Divider/>
+        <Divider />
         <div>
-          <Select api={CustomerLevelIdSelect} placeholder="搜索级别" value={value} bordered={false} notFoundContent={null}
-                  defaultActiveFirstOption={false} onChange={async (value) => {
-            await run(
-              {
-                data: {
-                  customerLevelId: value
+          <Select
+            api={CustomerLevelIdSelect}
+            placeholder="搜索级别"
+            value={value}
+            bordered={false}
+            notFoundContent={null}
+            defaultActiveFirstOption={false}
+            onChange={async (value) => {
+              await run(
+                {
+                  data: {
+                    customerLevelId: value
+                  }
                 }
-              }
-            );
-            setValue(value);
-          }}/>
+              );
+              setValue(value);
+            }} />
         </div>
         <Tree
           showLine
@@ -120,7 +124,7 @@ const CustomerList = () => {
   };
   return (
     <ListLayout>
-      <CustomerTable left={Left()} status={status} state={state} level={level}/>
+      <CustomerTable left={Left()} status={status} state={state} level={level} />
     </ListLayout>
   );
 };

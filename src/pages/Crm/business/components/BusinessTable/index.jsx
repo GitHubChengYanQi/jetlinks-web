@@ -76,19 +76,35 @@ const BusinessTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerId"
-                    component={SysField.CustomerListSelect} />
-          <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.PersonListSelect} />
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder="客户名称"
+            name="customerId"
+            component={SysField.CustomerListSelect} />
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder="负责人"
+            name="userId"
+            component={SysField.PersonListSelect} />
         </>
       );
     };
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="项目名称" name="businessName"
-                    component={SysField.BusinessNameListSelect} />
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}}
+          labelAlign="left"
+          layoutProps={{wrapperWidth: 200}}
+          grid={search}
+          columns={4}
+          full
+          autoRow>
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder="项目名称"
+            name="businessName"
+            component={SysField.BusinessNameListSelect} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -151,7 +167,7 @@ const BusinessTable = (props) => {
           sortDirections={['ascend', 'descend']}
           render={(text, record) => {
             return (
-              <div style={{cursor:'pointer'}} onClick={()=>{
+              <div style={{cursor: 'pointer'}} onClick={() => {
                 history.push(`/CRM/business/${record.businessId}`);
               }}>
                 <strong>{text}</strong>

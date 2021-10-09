@@ -18,7 +18,7 @@ const Desc = (props) => {
         <Descriptions title="基础数据">
           <Descriptions.Item label="客户名称">{data.customer ? <a onClick={() => {
             history.push(`/CRM/customer/${data.customerId}`);
-          }}>{data.customer.customerName}</a> : '未填写'}</Descriptions.Item>
+          }}>{data.customer && data.customer.customerName}</a> : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="负责人"><UserEdit value={data.user && data.user.name} onChange={async (value) => {
             await run({
               data: {

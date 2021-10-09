@@ -19,10 +19,7 @@ const Description = (props) => {
     return (
       <>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="项目编号">{data.businessId ? data.businessId : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="销售流程">{data.sales ? data.sales.name : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="客户">{data.customer ? data.customer.customerName : '未填写'}</Descriptions.Item>
-          <Descriptions.Item label="项目名称">{data.businessName ? data.businessName : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="赢率">{data.process ? `${data.process.percentage}%` : '未填写'}</Descriptions.Item>
           <Descriptions.Item label="立项日期">
             <DateEdit

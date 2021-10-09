@@ -59,7 +59,7 @@ const CustomerDetail = () => {
             <Col>
               <h3>{data.businessName}</h3>
               <div>
-                <em>立项日期：{data.time}</em>
+                <em>创建日期：{data.createTime}</em>
               </div>
             </Col>
           </Row>
