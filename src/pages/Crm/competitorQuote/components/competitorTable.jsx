@@ -114,7 +114,8 @@ const CompetitorTable = ({...props}) => {
         api={competitorQuoteList}
         rowKey="quoteId"
         isModal={false}
-        searchForm={businessId ? false : searchForm}
+        headStyle={{display:businessId && 'none'}}
+        searchForm={searchForm}
         SearchButton={Search()}
         layout={search}
         actions={actions()}

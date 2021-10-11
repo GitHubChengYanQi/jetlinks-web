@@ -146,7 +146,8 @@ const CompetitorTable = (props) => {
         api={competitorList}
         isModal={false}
         rowKey="competitorId"
-        searchForm={businessId ? false : searchForm }
+        searchForm={searchForm}
+        headStyle={{display:businessId && 'none'}}
         SearchButton={Search()}
         formActions={formActionsPublic}
         layout={search}
