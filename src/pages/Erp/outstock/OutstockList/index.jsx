@@ -36,7 +36,7 @@ const OutstockList = (props) => {
       <>
         <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
           if (!ids || ids.length <= 0){
-            message.error("请选择发货产品！！！");
+            message.error('请选择发货产品！！！');
           }else {
             refDelivery.current.open(false);
           }

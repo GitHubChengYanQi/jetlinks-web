@@ -27,7 +27,7 @@ const OutStockApply = (props) => {
 
   const [type, setType] = useState();
 
-  const Type = () => {
+  const types = () => {
     switch (type) {
       case 0:
         return (
@@ -45,7 +45,7 @@ const OutStockApply = (props) => {
           </>
         );
       default:
-        break;
+        return null;
     }
   };
 
@@ -72,7 +72,7 @@ const OutStockApply = (props) => {
               <Form.FormItem label="物流方式" component={SysField.Types} name="deliveryWay" required onChange={(value) => {
                 setType(value);
               }} />
-              {Type()}
+              {types()}
               <div style={{display: 'none'}}>
                 <Form.FormItem label="负责人" component={SysField.Type} name="userId" required />
                 <Form.FormItem label="客户" component={SysField.Type} name="customerId" required />

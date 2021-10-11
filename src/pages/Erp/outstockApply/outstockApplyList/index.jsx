@@ -7,8 +7,8 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, message, Modal as AntModal, notification, Space, Table as AntTable} from 'antd';
-import Modal from '@/components/Modal'
+import {Button, Modal as AntModal, notification, Space, Table as AntTable} from 'antd';
+import Modal from '@/components/Modal';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -23,11 +23,11 @@ import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
+import OutStockApply from '@/pages/Erp/outstockApply/components/OutStockApply';
+import CreateOutStockApply from '@/pages/Erp/outstockApply/outstockApplyEdit/components/CreateOutStockApply';
 import OutstockApplyEdit from '../outstockApplyEdit';
 import * as SysField from '../outstockApplyField';
 import {OutBound, outstockApplyEdit, outstockApplyList} from '../outstockApplyUrl';
-import OutStockApply from '@/pages/Erp/outstockApply/components/OutStockApply';
-import CreateOutStockApply from '@/pages/Erp/outstockApply/outstockApplyEdit/components/CreateOutStockApply';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,7 +38,6 @@ const OutstockApplyList = () => {
   const refApply = useRef(null);
   const tableRef = useRef(null);
 
-  const compoentRef = useRef(null);
 
   const actions = () => {
     return (
@@ -90,9 +89,9 @@ const OutstockApplyList = () => {
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
-              {/*<FormItem hidden name="status" component={SysField.Name} />*/}
-              {/*<FormItem hidden name="classification" component={SysField.Name} />*/}
-              {/*<FormItem hidden name="customerLevelId" component={SysField.Name} />*/}
+              {/* <FormItem hidden name="status" component={SysField.Name} /> */}
+              {/* <FormItem hidden name="classification" component={SysField.Name} /> */}
+              {/* <FormItem hidden name="customerLevelId" component={SysField.Name} /> */}
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -103,6 +102,14 @@ const OutstockApplyList = () => {
 
 
 
+
+
+
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: type === 'success' ? '申请成功！' : '已申请！',
+    });
+  };
   const {run} = useRequest(outstockApplyEdit, {
     manual: true, onSuccess: () => {
       openNotificationWithIcon('success');
@@ -114,29 +121,17 @@ const OutstockApplyList = () => {
   });
 
 
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: type === 'success' ? '申请成功！' : '已申请！',
-    });
-  };
-  const openNotificationWithIconOutBound = (type) => {
-    notification[type]({
-      message: type === 'success' ? '发货成功！' : '已发货！',
-    });
-  };
-
   const confirmOk = (record) => {
     AntModal.confirm({
       title: '发货申请',
       centered: true,
-      content: `请确认是否同意发货申请操作!注意：同意之后不可恢复。`,
+      content: '请确认是否同意发货申请操作!注意：同意之后不可恢复。',
       style: {margin: 'auto'},
       cancelText: '取消',
       onOk: async () => {
-        record.applyState = 2;
         await run(
           {
-            data: record
+            data: {...record,applyState: 2}
           }
         );
       }

@@ -16,7 +16,7 @@ import * as apiUrl from '../outstockApplyUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 export const ApplyState = (props) =>{
-  return (<InputNumber style={{width:200}} {...props}/>);
+  return (<Input style={{width:200}} {...props}/>);
 };
 export const BrandId = (props) =>{
   return (<Select width={150} api={apiUrl.Brands} {...props}/>);

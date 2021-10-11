@@ -44,12 +44,13 @@ ajaxService.interceptors.response.use((response) => {
           try {
             GotoLogin();
           } catch (e) {
-            console.log('不能使用hook跳转');
             window.location.href = `/#/login?backUrl=${encodeURIComponent(window.location.href)}`;
           }
         }
       });
       throw new Error(response.message);
+    }else if (response.message.indexOf('JSON') !== -1){
+      message.error('输入格式错误！！！');
     }else if (errCode !== 200){
       message.error(response.message);
     }

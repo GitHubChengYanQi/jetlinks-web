@@ -13,15 +13,12 @@ import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import {MegaLayout} from '@formily/antd-components';
-import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
+import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import {competitorQuoteList} from '../competitorQuoteUrl';
 import CompetitorQuoteEdit from '../competitorQuoteEdit';
 import * as SysField from '../competitorQuoteField';
-import DelButton from '@/components/DelButton';
-import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
-import {Competitor} from '../competitorQuoteField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -74,7 +71,6 @@ const CompetitorTable = ({...props}) => {
           {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId" style={{width:200}}  component={SysField.Competitor} />}
           {search ? formItem() : null}
         </MegaLayout>
-
       </div>
     );
   };
@@ -141,18 +137,6 @@ const CompetitorTable = ({...props}) => {
           );
         }} />
         <Column width={100} title="报价金额" dataIndex="competitorsQuote" />
-        {/*<Column width={100} title="报价状态" dataIndex="quoteStatus" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <div>*/}
-        {/*      {*/}
-        {/*        record.quoteStatus === '' && '-' ||*/}
-        {/*        record.quoteStatus === 0 && '无需审批' ||*/}
-        {/*        record.quoteStatus === 1 && '待询价' ||*/}
-        {/*        record.quoteStatus === 2 && '询价中'*/}
-        {/*      }*/}
-        {/*    </div>*/}
-        {/*  );*/}
-        {/*}} />*/}
         <Column width={200} title="报价日期" dataIndex="createTime" />
 
       </Table>
