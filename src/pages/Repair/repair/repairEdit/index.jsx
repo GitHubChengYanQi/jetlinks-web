@@ -30,10 +30,10 @@ const RepairEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {loading, data, run} = useRequest({
+  const {data, run} = useRequest({
     url: '/api/getDeliveryList',
     method: 'POST',
-    data: {customerId: props.value ? props.value.customerId : ' ' }
+    data: {customerId: value ? props.value.customerId : '111' }
   });
 
 

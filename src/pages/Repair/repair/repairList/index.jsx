@@ -53,7 +53,6 @@ const RepairList = () => {
         <FormItem label="报修单位" name="companyId" component={SysField.CompanyId} />
         <FormItem label="设备" name="itemId" component={SysField.Items} />
         <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} />
-        {/*<FormItem label="工程进度" name="progress" component={SysField.Progress} />*/}
         <FormItem label="质保类型" name="qualityType" component={SysField.QualityType} />
         <FormItem label="合同类型" name="contractType" component={SysField.ContractType} />
       </>
@@ -99,7 +98,7 @@ const RepairList = () => {
           return (
             <BadgeState
               state={record.progress}
-              text={['报修中','待派单' ,'实施中','完成','评价','完成报修']}
+              text={['新报修','已派单' ,'实施中','完成','评价','完成报修']}
               color={['red','yellow' ,'black','blue','#eee','green']} />
           );
         }} />

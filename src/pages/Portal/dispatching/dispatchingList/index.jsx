@@ -13,22 +13,21 @@ import * as SysField from '../dispatchingField';
 import Modal from '@/components/Modal';
 import DispatchingTable from '@/pages/Portal/dispatching/dispatchingList/components/DispatchingTable';
 import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const DispatchingList = (props) => {
 
   const {data} = props;
 
 
-
-
-
   const ref = useRef(null);
   const tableRef = useRef(null);
-
 
   const searchForm = () => {
     return (
@@ -45,8 +44,10 @@ const DispatchingList = (props) => {
         bordered={false}
         bodyStyle={{padding:0}}
         api={dispatchingList}
+        formActions={formActionsPublic}
         rowKey="dispatchingId"
         showSearchButton={false}
+        rowSelection
         searchForm={searchForm}
         isModal={false}
         ref={tableRef}
@@ -61,7 +62,7 @@ const DispatchingList = (props) => {
         <Column title="完成照片" dataIndex="imgUrl" render={(value, record) => {
           return (
             <>
-              <Image width={100} height={50} src={value} />
+              {value && <Image width={100} height={50} src={value} />}
             </>
           );
         }} />

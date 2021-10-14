@@ -1,9 +1,7 @@
 import React, { useRef, useState} from 'react';
-import {Dialog} from '@alifd/next';
 import {userFreeze, userList, userReset, userUnfreeze} from '@/Config/ApiUrl/system/user';
-import Message from '@/components/Message';
 import Table from '@/components/Table';
-import {Form, Input, Button, Switch} from 'antd';
+import {Form, Input, Button, Switch, Modal, message} from 'antd';
 import {useRequest} from '@/util/Request';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -47,7 +45,7 @@ const UserList = () => {
     {
       manual: true,
       onError: (error) => {
-        Message.error(error.message);
+        message.error(error.message);
       },
       onSuccess: () => ref.current.refresh()
     });
@@ -60,7 +58,7 @@ const UserList = () => {
     {
       manual: true,
       onError: (error) => {
-        Message.error(error.message);
+        message.error(error.message);
       },
       onSuccess: () => ref.current.refresh()
     });
@@ -73,13 +71,13 @@ const UserList = () => {
     {
       manual: true,
       onError: (error) => {
-        Message.error(error.message);
+        message.error(error.message);
       }
     });
 
   const reset = async (userId) => {
     resetRun({
-      data: {userId},
+      params: {userId},
     });
   };
 
@@ -138,7 +136,7 @@ const UserList = () => {
               roRef.current.open(record.userId);
             }}>分配角色</Button>
             <Button type='ghost' className="button-left-margin" onClick={() => {
-              Dialog.confirm({
+              Modal.confirm({
                 title: '提示',
                 content: '系统初始化为111111，实际请参考系统设置。',
                 onOk: () => {

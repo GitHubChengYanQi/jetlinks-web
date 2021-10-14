@@ -23,9 +23,7 @@ const ApiConfig = {
 
 const DispatchingEdit = ({...props}) => {
 
-
   const {value} = props;
-
 
   const formRef = useRef();
 
