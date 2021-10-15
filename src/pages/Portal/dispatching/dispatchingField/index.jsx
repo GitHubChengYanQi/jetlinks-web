@@ -24,7 +24,7 @@ export const Time = (props) =>{
 };
 export const Address = (props) =>{
   // return (<Cascader api={commonArea} {...props} placeholder="请选择地区" />);
-  return (<Input />);
+  return (<Input {...props} />);
 };
 export const State = (props) =>{
   return (<Input {...props}/>);

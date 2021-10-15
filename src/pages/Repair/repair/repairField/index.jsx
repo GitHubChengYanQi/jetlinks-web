@@ -15,7 +15,7 @@ import {PlusOutlined} from '@ant-design/icons';
 import TreeSelect from '@/components/TreeSelect';
 import Cascader from '@/components/Cascader';
 import * as apiUrl from '../repairUrl';
-import {bannerList} from '../repairUrl';
+import {bannerList, companyIdSelect} from '../repairUrl';
 
 export const CompanyId = (props) => {
   return (<Select api={apiUrl.companyIdSelect} {...props} />);
@@ -272,20 +272,13 @@ export const CustomerId = (props) => {
 
 
   const {loading, data, run} = useRequest({
-    ...apiUrl.delivery,
+    ...apiUrl.companyIdSelect,
     data: {}
   });
 
 
-  const delivery = data ? data.map((value, index) => {
-    return {
-      label: value.customerResult.customerName,
-      value: value.customerId
-    };
-  }) : null;
 
-
-  return (<AntSelect options={delivery} loading={loading} {...props} onChange={(value) => {
+  return (<AntSelect options={data} loading={loading} {...props} onChange={(value) => {
     onChange(value);
     customerId(value);
   }} />);
