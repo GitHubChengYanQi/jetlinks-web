@@ -222,7 +222,7 @@ export const Items = (props) => {
 };
 export const ItemId = (props) => {
 
-  const {repair, state} = props;
+  const {repair, state,...other} = props;
 
 
   const delivery = repair ? repair.map((value, index) => {
@@ -240,7 +240,7 @@ export const ItemId = (props) => {
   }
 
 
-  return (<AntSelect options={delivery}  {...props} />);
+  return (<AntSelect options={delivery}  {...other} />);
 };
 export const ServiceType = (props) => {
   return (<AntSelect style={{width: 200}} options={[{label: '设备项修', value: '设备项修'}]} {...props} />);
@@ -268,7 +268,7 @@ export const ContractType = (props) => {
 
 export const CustomerId = (props) => {
 
-  const {customerId, onChange} = props;
+  const {customerId, onChange,...other} = props;
 
 
   const {loading, data, run} = useRequest({

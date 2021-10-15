@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Card, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -75,11 +75,12 @@ const StockDetailsList = (props) => {
   };
 
   return (
-    <>
+    <Card title='库存明细'>
       <Table
         title={<Breadcrumb />}
         api={stockDetailsList}
         isModal={false}
+        headStyle={{display:'none'}}
         rowKey="stockItemId"
         searchForm={searchForm}
         footer={value ? footer : false}
@@ -114,7 +115,7 @@ const StockDetailsList = (props) => {
         <Column title="产品价格" dataIndex="price" sorter />
         <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>
-    </>
+    </Card>
   );
 };
 

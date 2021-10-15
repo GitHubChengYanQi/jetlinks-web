@@ -64,7 +64,7 @@ const OutStockApply = (props) => {
               ref={formRef}
               api={ApiConfig}
               fieldKey="outstockApplyId"
-              onSuccess={(result) => {
+              onSuccess={() => {
                 props.onSuccess();
               }}
             >
