@@ -52,9 +52,20 @@ const UserEdit = (props) => {
         return result;
       }}
       onSubmit={(values) => {
+        let position = '';
+        switch (typeof values.positionIds){
+          case 'object':
+            position = values.positionIds.join(',');
+            break;
+          case 'string':
+            position = values.positionIds;
+            break;
+          default:
+            break;
+        }
         const result = {
           ...values,
-          position: values.positionIds && typeof values.positionIds === 'object' ? values.positionIds.join(',') : ''
+          position
         };
         return result;
       }}
