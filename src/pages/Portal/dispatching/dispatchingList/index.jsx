@@ -53,7 +53,7 @@ const DispatchingList = (props) => {
         ref={tableRef}
         footer={false}
       >
-        <Column title="姓名" dataIndex="name" />
+        <Column title="姓名" dataIndex="userName" />
         <Column title="手机号" dataIndex="phone" />
         <Column title="预计到达时间" dataIndex="time" />
         <Column title="负责区域" dataIndex="address" />
