@@ -190,7 +190,7 @@ export const Adress = (props) => {
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
       ref.current.open(false);
     }} />
-    <Drawer width={800} title="编辑" component={AdressEdit} customerId={customerId} onSuccess={() => {
+    <Drawer width={800} title="编辑" component={AdressEdit} customer={customerId} onSuccess={() => {
       refresh();
       ref.current.close();
     }} ref={ref} />

@@ -35,7 +35,7 @@ export const dispatchingList = {
   rowKey:'dispatchingId'
 };
 export const UserIdSelect = {
-  url: '/rest/mgr/Select',
+  url: '/wxuserInfo/listSelect',
   method: 'POST',
 };
 
