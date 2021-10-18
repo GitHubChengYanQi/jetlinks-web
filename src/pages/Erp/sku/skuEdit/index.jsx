@@ -28,7 +28,6 @@ const ApiConfig = {
 const SkuEdit = ({...props}) => {
 
   const {spuId, attributes, ...other} = props;
-  console.log(attributes);
   const formRef = useRef();
 
   return (

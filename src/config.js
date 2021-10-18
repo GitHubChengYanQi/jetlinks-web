@@ -2,7 +2,15 @@ export default {
   default: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'https://api.zjzc.gf2025.com',
+    baseURI: 'https://api.daoxin.gf2025.com/',
+    projectName: '道昕云',
+    AMAP_KEY: '',
+    AMAP_VERSION: '2.0'
+  },
+  buildZjzc: {
+    logLevel: 'info',
+    component: 'ant',
+    baseURI: 'https://api.zjzc.gf2025.com/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'

@@ -29,6 +29,9 @@
     "devOnline": "icejs build --mode devOnline",
     "song": "icejs start --port 5555 --mode song",
     "build": "icejs build",
+
+    "buildZjzc": "icejs build --mode buildZjzc",
+
     "screenshot": "screenshot -l",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint --cache --ext .js,.jsx ./",

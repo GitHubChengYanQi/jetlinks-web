@@ -54,7 +54,7 @@ const SkuList = () => {
     return (
       <>
         <FormItem label="sku名字" name="skuName" component={SysField.SkuName} />
-        <FormItem label="spu id" name="spuId" component={SysField.SpuId} />
+        <FormItem label="spuId" name="spuId" value={data.spuId} component={SysField.SpuId} />
       </>
     );
   };
@@ -78,8 +78,6 @@ const SkuList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="sku名字" dataIndex="skuName" />
-        <Column title="spu id" dataIndex="spuId" />
         <Column title="属性" dataIndex="spuId" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
@@ -95,7 +93,7 @@ const SkuList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal width={800} title="产品属性" component={SkuEdit} onSuccess={() => {
+      <Modal width={800} title={`${data.name}属性`} component={SkuEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} spuId={data.spuId} attributes={data.skuRequests} />
