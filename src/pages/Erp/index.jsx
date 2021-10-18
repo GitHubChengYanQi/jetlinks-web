@@ -7,6 +7,9 @@ import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
 import UnitList from '@/pages/Erp/unit/unitList';
 import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 import SetView from '@/layouts/SetView';
+import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
+import AttributeValuesList from '@/pages/Erp/attributeValues/attributeValuesList';
+import CategoryList from '@/pages/Erp/category/categoryList';
 
 
 
@@ -21,6 +24,12 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const RenderComponent = () => {
     switch (type) {
+      case 'lmgl':
+        return <CategoryList />;
+      case 'shgl':
+        return <ItemAttributeList />;
+      case 'shzgl':
+        return <AttributeValuesList />;
       case 'ppgl':
         return <BrandList />;
       case 'czgl':
@@ -52,6 +61,15 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             showModel(true);
           }}
         >
+          <Menu.Item key="lmgl">
+            <span>类目管理</span>
+          </Menu.Item>
+          <Menu.Item key="shgl">
+            <span>属性管理</span>
+          </Menu.Item>
+          <Menu.Item key="shzgl">
+            <span>属性值管理</span>
+          </Menu.Item>
           <Menu.Item key="ppgl">
             <span>品牌管理</span>
           </Menu.Item>
