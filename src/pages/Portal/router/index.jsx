@@ -6,6 +6,7 @@ import {GoodsRouter} from "@/pages/Shop/goods/goodsRouter";
 import {RepairRouter} from '@/pages/Repair/repair/repairRouter';
 import {DaoxinPortalClassRouter} from '@/pages/Shop/daoxinPortalClass/daoxinPortalClassRouter';
 import {WxuserInfoRouter} from '@/pages/UserInfo/wxuserInfo/wxuserInfoRouter';
+import {CreateUserRouter} from '@/pages/Portal/CreateUser/CreateUserRouter';
 
 const ProtalRouterConfig = [
   {
@@ -18,6 +19,7 @@ const ProtalRouterConfig = [
       ...DaoxinPortalClassRouter,
       ...GoodsRouter,
       ...WxuserInfoRouter,
+      ...CreateUserRouter,
       {
         redirect: '/protal/banner',
       }

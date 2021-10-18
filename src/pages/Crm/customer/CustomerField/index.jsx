@@ -56,6 +56,7 @@ export const Name = (props) => {
   return (<Input {...props} />);
 };
 export const Region = (props) => {
+  console.log(props.value);
   return (<CascaderAdress {...props} />);
 };
 export const CompanyRoleId = (props) => {

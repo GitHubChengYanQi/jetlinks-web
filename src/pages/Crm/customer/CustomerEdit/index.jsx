@@ -22,6 +22,7 @@ import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import Title from '@/components/Title';
 
 import style from './index.module.scss';
+import {useRequest} from '@/util/Request';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -61,15 +62,18 @@ const AdressRowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-
 const ApiConfig = {
   view: customerDetail,
   add: customerAdd,
   save: customerEdit
 };
 
-
 const CustomerEdit = ({onChange, ...props}, ref) => {
+
+  const city = props.wxUser && props.wxUser.openUserInfo && props.wxUser.openUserInfo.rawUserInfo && (JSON.parse(props.wxUser.openUserInfo.rawUserInfo).city || JSON.parse(props.wxUser.openUserInfo.rawUserInfo).province || JSON.parse(props.wxUser.openUserInfo.rawUserInfo).country);
+
+  const {loading,data} = useRequest({url: '/commonArea/list', method: 'POST',data:{title:city}}, {manual: !props.wxUser});
+
 
 
   const formRef = useRef();
@@ -79,6 +83,10 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
   useImperativeHandle(ref, () => ({
     formRef,
   }));
+
+  if (props.wxUser && loading){
+    return null;
+  }
 
   return (
     <div className={style.from} style={{maxHeight: 880, height: 'calc(100vh - 110px)', padding: '0 24px'}}>
@@ -185,7 +193,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 <FieldList
                   name="contactsParams"
                   initialValue={[
-                    {contactsName: '', companyRole: ''},
+                    {contactsName: props.wxUser && props.wxUser.openUserInfo && props.wxUser.openUserInfo.username, companyRole: ''},
                   ]}
                 >
                   {({state, mutators}) => {
@@ -230,7 +238,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     <FieldList
                                       name={`contactsParams.${index}.phoneParams`}
                                       initialValue={[
-                                        {phoneNumber: ''},
+                                        {phoneNumber: props.wxUser && props.wxUser.phone},
                                       ]}
                                     >
                                       {({state, mutators}) => {
@@ -295,7 +303,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 <FieldList
                   name="adressParams"
                   initialValue={[
-                    {location: ''},
+                    {region:data && data.length > 0 && data[0].id,location: ''},
                   ]}
                 >
                   {({state, mutators}) => {

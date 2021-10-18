@@ -9,6 +9,7 @@ const CreateNewCustomer = ({
   title,
   widths,
   onChange,
+  wxUser,
   ...props
 }, ref) => {
 
@@ -18,7 +19,12 @@ const CreateNewCustomer = ({
 
   const [value,setValue] = useState();
 
+  const [user,setUser] = useState();
 
+
+  const User = (value) =>{
+    setUser(value);
+  };
 
   const open = (value) => {
     setValue(value);
@@ -31,7 +37,8 @@ const CreateNewCustomer = ({
 
   useImperativeHandle(ref, () => ({
     open,
-    close
+    close,
+    User
   }));
 
   return (
@@ -47,7 +54,7 @@ const CreateNewCustomer = ({
         </Space>
       </>
     } title={title}  >
-      <CustomerEdit value={value} ref={compoentRef} onSuccess={()=>{
+      <CustomerEdit value={value} wxUser={user} ref={compoentRef} onSuccess={()=>{
         onSuccess();
       }} onChange={(res)=>{
         typeof onChange === 'function' && onChange(res);

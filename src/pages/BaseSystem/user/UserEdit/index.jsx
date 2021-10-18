@@ -4,7 +4,6 @@ import { DatePicker, Input, Radio } from 'antd';
 import { getUserInfo, userAdd, userSave } from "@/Config/ApiUrl/system/user";
 import moment from "moment";
 import { deptTree } from "@/Config/ApiUrl/system/dept";
-import { roleList, roleTree } from "@/Config/ApiUrl/system/role";
 import Select from "@/components/Select";
 import TreeSelect from "@/components/TreeSelect";
 import { positionAllList } from "@/Config/ApiUrl/system/position";
@@ -12,6 +11,7 @@ import { positionAllList } from "@/Config/ApiUrl/system/position";
 const { FormItem } = Form;
 
 const UserEdit = (props) => {
+
   let password = '';
 
   const { value } = props;
