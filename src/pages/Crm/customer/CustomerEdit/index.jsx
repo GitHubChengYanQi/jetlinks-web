@@ -70,10 +70,15 @@ const ApiConfig = {
 
 const CustomerEdit = ({onChange, ...props}, ref) => {
 
-  const city = props.wxUser && props.wxUser.openUserInfo && props.wxUser.openUserInfo.rawUserInfo && (JSON.parse(props.wxUser.openUserInfo.rawUserInfo).city || JSON.parse(props.wxUser.openUserInfo.rawUserInfo).province || JSON.parse(props.wxUser.openUserInfo.rawUserInfo).country);
+  const {wxUser, ...other} = props;
 
-  const {loading,data} = useRequest({url: '/commonArea/list', method: 'POST',data:{title:city}}, {manual: !props.wxUser});
+  const city = wxUser && wxUser.openUserInfo && wxUser.openUserInfo.rawUserInfo && (JSON.parse(wxUser.openUserInfo.rawUserInfo).city || JSON.parse(wxUser.openUserInfo.rawUserInfo).province || JSON.parse(wxUser.openUserInfo.rawUserInfo).country);
 
+  const {loading, data} = useRequest({
+    url: '/commonArea/list',
+    method: 'POST',
+    data: {title: city}
+  }, {manual: !props.wxUser});
 
 
   const formRef = useRef();
@@ -84,14 +89,14 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
     formRef,
   }));
 
-  if (props.wxUser && loading){
+  if (wxUser && loading) {
     return null;
   }
 
   return (
     <div className={style.from} style={{maxHeight: 880, height: 'calc(100vh - 110px)', padding: '0 24px'}}>
       <Form
-        {...props}
+        {...other}
         labelAlign="left"
         ref={formRef}
         NoButton={false}
@@ -193,7 +198,10 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 <FieldList
                   name="contactsParams"
                   initialValue={[
-                    {contactsName: props.wxUser && props.wxUser.openUserInfo && props.wxUser.openUserInfo.username, companyRole: ''},
+                    {
+                      contactsName: wxUser && wxUser.openUserInfo && wxUser.openUserInfo.username,
+                      companyRole: ''
+                    },
                   ]}
                 >
                   {({state, mutators}) => {
@@ -238,7 +246,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     <FieldList
                                       name={`contactsParams.${index}.phoneParams`}
                                       initialValue={[
-                                        {phoneNumber: props.wxUser && props.wxUser.phone},
+                                        {phoneNumber: wxUser && wxUser.phone},
                                       ]}
                                     >
                                       {({state, mutators}) => {
@@ -303,7 +311,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 <FieldList
                   name="adressParams"
                   initialValue={[
-                    {region:data && data.length > 0 && data[0].id,location: ''},
+                    {region: data && data.length > 0 && data[0].id, location: ''},
                   ]}
                 >
                   {({state, mutators}) => {
