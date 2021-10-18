@@ -27,6 +27,9 @@
     "ren": "icejs start --port 5555 --mode ren",
     "zhu": "icejs start --port 5555 --mode zhu",
     "devOnline": "icejs build --mode devOnline",
+
+    "buildZjzc": "icejs build --mode buildZjzc",
+
     "song": "icejs start --port 5555 --mode song",
     "build": "icejs build",
     "screenshot": "screenshot -l",
