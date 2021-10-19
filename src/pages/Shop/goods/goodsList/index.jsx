@@ -74,9 +74,7 @@ const GoodsList = () => {
             </>
           );
         }} />
-        {/*<Column title="评论" dataIndex="comment"/>*/}
-        {/*<Column title="排序" dataIndex="sort"/>*/}
-        <Column title="操作" fixed align="right" render={(value, record) => {
+        <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

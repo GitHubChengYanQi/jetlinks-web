@@ -9,6 +9,7 @@ import React, {useRef} from 'react';
 import Form from '@/components/Form';
 import {goodsDetail, goodsAdd, goodsEdit} from '../goodsUrl';
 import * as SysField from '../goodsField';
+import {Attachment, ImgUrl} from '../goodsField';
 
 const {FormItem} = Form;
 
@@ -34,8 +35,7 @@ const GoodsEdit = ({...props}) => {
       <FormItem title="商品封面图片" name="imgUrl" component={SysField.ImgUrl} required/>
       <FormItem label="商品售价" name="price" component={SysField.Price} required/>
       <FormItem label="商品原价" name="lastPrice" component={SysField.LastPrice} required/>
-      {/*<FormItem label="评论" name="comment" component={SysField.Comment} required/>*/}
-      {/*<FormItem label="排序" name="sort" component={SysField.Sort} required/>*/}
+      <FormItem label="详情" name="text" component={SysField.Attachment} required/>
     </Form>
   );
 };

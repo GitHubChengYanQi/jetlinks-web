@@ -106,7 +106,10 @@ const Links = (props) => {
             {
               value: '/pages/repairList/index',
               label: '工单列表'
-            }
+            },{
+              value: '/pages/Data/index',
+              label: '产品资料'
+            },
           ]
         }
         onChange={(value) => {
