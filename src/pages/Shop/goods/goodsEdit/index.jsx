@@ -35,7 +35,7 @@ const GoodsEdit = ({...props}) => {
       <FormItem title="商品封面图片" name="imgUrl" component={SysField.ImgUrl} required/>
       <FormItem label="商品售价" name="price" component={SysField.Price} required/>
       <FormItem label="商品原价" name="lastPrice" component={SysField.LastPrice} required/>
-      <FormItem label="详情" name="text" component={SysField.Attachment} required/>
+      <FormItem label="详情" name="details" component={SysField.Attachment} required/>
     </Form>
   );
 };
