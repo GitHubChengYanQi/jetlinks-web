@@ -17,6 +17,8 @@ import {spuDelete, spuList} from '../spuUrl';
 import SpuEdit from '../spuEdit';
 import * as SysField from '../spuField';
 import {useHistory} from 'ice';
+import Modal from '@/components/Modal';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,7 +32,7 @@ const SpuList = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ref.current.open(false);
+          history.push('/ERP/spu/add');
         }} />
       </>
     );
@@ -48,13 +50,20 @@ const SpuList = () => {
   return (
     <>
       <Table
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={spuList}
         rowKey="spuId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
+        <Column title="类目" dataIndex="categoryId" render={(value,record)=>{
+          return (
+            <>
+              {record.category && record.category.categoryName}
+            </>
+          );
+        }} />
         <Column title="物品名字" dataIndex="name" render={(value,record)=>{
           return (
             <Button type='link' onClick={()=>{
@@ -65,8 +74,28 @@ const SpuList = () => {
           );
         }} />
 
-        <Column title="类目id" dataIndex="categoryId" />
-        <Column />
+        <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
+        <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
+        <Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>
+        <Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>
+        <Column title="产品重量" width={120} align='center' dataIndex="weight" sorter />
+        <Column title="材质" width={150} align='center' dataIndex="materialName" sorter render={(value,record)=>{
+          return (
+            <>
+              {
+                record.materialResult ? record.materialResult.name : null
+              }
+            </>
+          );
+        }}/>
+        <Column title="成本" width={120} align='center' dataIndex="cost" sorter />
+        <Column title="易损" width={120} align='center' dataIndex="vulnerability" render={(value)=>{
+          return (
+            <>
+              {value === 0 ? '易损' : '不易损'}
+            </>
+          );
+        }} sorter />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -80,7 +109,7 @@ const SpuList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={SpuEdit} onSuccess={() => {
+      <Modal width={800} title="编辑" component={SpuEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

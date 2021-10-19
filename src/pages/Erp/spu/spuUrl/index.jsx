@@ -43,3 +43,8 @@ export const categoryTree = {
   method: 'POST',
 };
 
+export const materialIdSelect = {
+  url: '/material/listSelect',
+  method: 'POST'
+};
+

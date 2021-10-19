@@ -21,16 +21,18 @@ const ApiConfig = {
 
 const ItemAttributeEdit = ({...props}) => {
 
+  const {categoryId,...other} = props;
+
   const formRef = useRef();
 
   return (
     <Form
-      {...props}
+      {...other}
       ref={formRef}
       api={ApiConfig}
       fieldKey="attributeId"
     >
-      <FormItem label="产品名称" name="itemId" component={SysField.Version} required/>
+      <FormItem hidden name="categoryId" component={SysField.Version} value={categoryId} required/>
       <FormItem label="属性名称" name="attribute" component={SysField.attribute} required/>
     </Form>
   );

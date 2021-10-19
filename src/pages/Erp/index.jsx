@@ -26,10 +26,6 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
     switch (type) {
       case 'lmgl':
         return <CategoryList />;
-      case 'shgl':
-        return <ItemAttributeList />;
-      case 'shzgl':
-        return <AttributeValuesList />;
       case 'ppgl':
         return <BrandList />;
       case 'czgl':
@@ -63,12 +59,6 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         >
           <Menu.Item key="lmgl">
             <span>类目管理</span>
-          </Menu.Item>
-          <Menu.Item key="shgl">
-            <span>属性管理</span>
-          </Menu.Item>
-          <Menu.Item key="shzgl">
-            <span>属性值管理</span>
           </Menu.Item>
           <Menu.Item key="ppgl">
             <span>品牌管理</span>

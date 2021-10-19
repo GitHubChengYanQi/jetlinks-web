@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,12 +16,15 @@ import Form from '@/components/Form';
 import {categoryDelete, categoryList} from '../categoryUrl';
 import CategoryEdit from '../categoryEdit';
 import * as SysField from '../categoryField';
+import Modal from '@/components/Modal';
+import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const CategoryList = () => {
   const ref = useRef(null);
+  const refAttribute = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -52,9 +55,20 @@ const CategoryList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="上级类目" dataIndex="pid" />
-        <Column title="物品类目名称" dataIndex="categoryName" />
-        <Column />
+        <Column title="上级类目" dataIndex="pid" render={(value,record)=>{
+          return (
+            <>{record.pidCategoryResult ? record.pidCategoryResult.categoryName : '顶级'}</>
+          );
+        }} />
+        <Column title="物品类目名称" dataIndex="categoryName" render={(value,record)=>{
+          return (
+            <Button type='link' onClick={()=>{
+              refAttribute.current.open(record.categoryId);
+            }}>
+              {value}
+            </Button>
+          );
+        }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -68,10 +82,14 @@ const CategoryList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={CategoryEdit} onSuccess={() => {
+      <Drawer width={800} title="类目" component={CategoryEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal width={800} title="属性" component={ItemAttributeList} onSuccess={() => {
+        tableRef.current.refresh();
+        refAttribute.current.close();
+      }} ref={refAttribute} />
     </>
   );
 };

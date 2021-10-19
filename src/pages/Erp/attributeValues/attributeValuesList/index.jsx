@@ -16,11 +16,16 @@ import Form from '@/components/Form';
 import {attributeValuesDelete, attributeValuesList} from '../attributeValuesUrl';
 import AttributeValuesEdit from '../attributeValuesEdit';
 import * as SysField from '../attributeValuesField';
+import Breadcrumb from '@/components/Breadcrumb';
+import {Number} from '../attributeValuesField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const AttributeValuesList = () => {
+const AttributeValuesList = (props) => {
+
+  const {value} = props;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -36,7 +41,8 @@ const AttributeValuesList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="属性名称" name="attributeId" component={SysField.Difference} />
+        <FormItem hidden name="attributeId" value={value} component={SysField.Difference} />
+        <FormItem label="值" name="attributeValues" component={SysField.Number} />
       </>
     );
   };
@@ -45,14 +51,13 @@ const AttributeValuesList = () => {
     <>
       <Table
         contentHeight
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={attributeValuesList}
         rowKey="attributeValuesId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="属性名称" dataIndex="attributeId" />
         <Column title="值" dataIndex="attributeValues" />
 
         <Column />
@@ -69,7 +74,7 @@ const AttributeValuesList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={AttributeValuesEdit} onSuccess={() => {
+      <Drawer width={800} title="值" component={AttributeValuesEdit} attributeId={value} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

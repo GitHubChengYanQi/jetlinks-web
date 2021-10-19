@@ -21,16 +21,18 @@ const ApiConfig = {
 
 const AttributeValuesEdit = ({...props}) => {
 
+  const {attributeId,...other} = props;
+
   const formRef = useRef();
 
   return (
     <Form
-      {...props}
+      {...other}
       ref={formRef}
       api={ApiConfig}
       fieldKey="attributeValuesId"
     >
-      <FormItem label="选择属性" name="attributeId" component={SysField.Difference} required/>
+      <FormItem hidden name="attributeId" value={attributeId} component={SysField.Difference} required/>
       <FormItem label="值" name="attributeValues" component={SysField.Number} required/>
     </Form>
   );
