@@ -50,7 +50,7 @@ export const ImgUrl = (props) =>{
 export const Attachment = (props) => {
 
   const {onChange, fileName,value} = props;
-  
+
 
   const values = value && value.split(',').map((items,index)=>{
     return {

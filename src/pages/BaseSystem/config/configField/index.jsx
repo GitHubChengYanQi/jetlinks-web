@@ -20,7 +20,7 @@ export const Code = (props) =>{
   return (<Input {...props}/>);
 };
 export const DictFlag = (props) =>{
-  return (<Input {...props}/>);
+  return (<AntdSelect options={[{label:'是',value:'Y'},{label:'否',value:'N'},]} {...props}/>);
 };
 export const DictTypeId = (props) =>{
   return (<Select api={dictTypeListSelect} {...props}/>);
