@@ -113,7 +113,7 @@ const SpuEdit = ({...props}) => {
           {loading ?
             <div style={{textAlign: 'center'}}><Spin size="large" /></div>
             :
-            <FormItem name="spuRequests" component={SysField.Atts} attribute={attribute} />}
+            <FormItem name="spuAttributes" component={SysField.Atts} attribute={attribute} />}
         </ProCard>
         <div>
           <Submit showLoading>保存</Submit>

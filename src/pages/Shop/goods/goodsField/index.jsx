@@ -22,10 +22,10 @@ export const Subtitle = (props) =>{
   return (<TextArea rows={4} {...props}/>);
 };
 export const Price = (props) =>{
-  return (<InputNumber min={0} {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const LastPrice = (props) =>{
-  return (<InputNumber min={0} {...props}/>);
+  return (<InputNumber {...props}/>);
 };
 export const Comment = (props) =>{
   return (<Input {...props}/>);

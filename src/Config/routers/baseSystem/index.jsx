@@ -3,6 +3,7 @@ import BaseSystem from '@/pages/BaseSystem';
 import { GenRouter } from '@/pages/BaseSystem/gen/GenRouter';
 import { LoginLogRouter } from '@/pages/BaseSystem/loginLog/loginLogRouter';
 import { SysDeptRouter } from '@/pages/BaseSystem/sysDept/sysDeptRouter';
+import {ConfigRouter} from '@/pages/BaseSystem/config/configRouter';
 
 const systemConfig = [
   {
@@ -13,6 +14,7 @@ const systemConfig = [
       ...SysDeptRouter,
       ...LoginLogRouter,
       ...GenRouter,
+      ...ConfigRouter,
 
       {
         path: '/mgr',

@@ -42,6 +42,7 @@ const Attribute = ({attribute, ...props}) => {
 
 
     if (arrays.length < 2) {
+      onChange({spuRequests: Attriute, values: arrays[0]});
       return arrays[0] || [];
     }
 
