@@ -107,8 +107,11 @@ const Links = (props) => {
               value: '/pages/repairList/index',
               label: '工单列表'
             },{
-              value: '/pages/Data/index',
-              label: '产品资料'
+              value: '/pages/Data/Detail/index?id=',
+              label: '信息管理详情'
+            },{
+              value: '/pages/Data/index?class=',
+              label: '信息管理分类'
             },
           ]
         }

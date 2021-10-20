@@ -6,7 +6,20 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Affix, Button, Card, Checkbox, Col, Divider, Input, Row, Spin, Table as AntTable, Table} from 'antd';
+import {
+  Affix,
+  Button,
+  Card,
+  Checkbox,
+  Col,
+  Divider,
+  Input,
+  notification,
+  Row,
+  Spin,
+  Table as AntTable,
+  Table
+} from 'antd';
 import Form from '@/components/Form';
 import {spuDetail, spuAdd, spuEdit} from '../spuUrl';
 import * as SysField from '../spuField';
@@ -37,6 +50,12 @@ const SpuEdit = ({...props}) => {
 
   const [attribute, setAttribute] = useState();
 
+  const openNotificationWithIcon = type => {
+    notification[type]({
+      message: '创建成功！',
+    });
+  };
+
   const {loading, run} = useRequest(categoryDetail, {
     manual: true, onSuccess: (res) => {
       setAttribute(res.categoryRequests);
@@ -61,8 +80,11 @@ const SpuEdit = ({...props}) => {
                 }
               });
             }
-
           });
+        }}
+        onSuccess={()=>{
+          openNotificationWithIcon('success');
+          history.push('/ERP/spu');
         }}
       >
         <Row gutter={24}>
@@ -91,7 +113,7 @@ const SpuEdit = ({...props}) => {
           {loading ?
             <div style={{textAlign: 'center'}}><Spin size="large" /></div>
             :
-            <FormItem name="Atts" component={SysField.Atts} attribute={attribute} />}
+            <FormItem name="spuRequests" component={SysField.Atts} attribute={attribute} />}
         </ProCard>
         <div>
           <Submit showLoading>保存</Submit>

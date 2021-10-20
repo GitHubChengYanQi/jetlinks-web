@@ -5,7 +5,7 @@ const {Column} = Table;
 
 const array = [];
 
-const Attribute = ({attribute,...props}) => {
+const Attribute = ({attribute, ...props}) => {
 
   const {onChange} = props;
 
@@ -18,11 +18,13 @@ const Attribute = ({attribute,...props}) => {
     }
   });
 
+
   const [value, setValue] = useState();
 
   const attributes = (array) => {
 
     const arrays = [];
+
     array.map((items, index) => {
       if (items) {
         return arrays.push(items);
@@ -31,10 +33,19 @@ const Attribute = ({attribute,...props}) => {
       }
     });
 
+    const Attriute = arrays && arrays.map((items, index) => {
+      return {
+        attributeId: atts[index] && atts[index].attribute && atts[index].attribute.attributeId,
+        attributeValuesParams: items,
+      };
+    });
+
+
     if (arrays.length < 2) {
       return arrays[0] || [];
     }
-    return arrays.reduce((total, currentValue) => {
+
+    const res = arrays.reduce((total, currentValue) => {
       const res = [];
       if (total instanceof Array) {
         total.forEach((t) => {
@@ -49,13 +60,15 @@ const Attribute = ({attribute,...props}) => {
           }
         });
       }
+
       return res;
     });
+
+    onChange({spuRequests: Attriute, values: res});
+    return res;
   };
 
-  console.log(array);
-
-  onChange({attribute:atts,attributeValues:attributes(value || [])});
+  const dataSource = attributes(value || []);
 
   return (
     <>
@@ -72,7 +85,7 @@ const Attribute = ({attribute,...props}) => {
             <Button type="text" value={items.attribute.attribute}>
               {items.attribute.attribute}
             </Button>
-            <Checkbox.Group options={values} onChange={(checkedValue,) => {
+            <Checkbox.Group options={values} onChange={(checkedValue) => {
               array[index] = checkedValue.length > 0 ? checkedValue : null;
               array.map((items, index) => {
                 if (items) {
@@ -91,7 +104,7 @@ const Attribute = ({attribute,...props}) => {
       <div style={{overflow: 'auto'}}>
         <Table
           pagination={false}
-          dataSource={attributes(value || [])}
+          dataSource={dataSource || []}
         >
           {atts && atts.map((items, index) => {
             return (

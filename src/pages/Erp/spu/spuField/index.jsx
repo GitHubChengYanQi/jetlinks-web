@@ -34,13 +34,13 @@ export const Weight = (props) =>{
   return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;kg</>);
 };
 export const MaterialId = (props) =>{
-  return (<Select api={apiUrl.materialIdSelect} {...props}/>);
+  return (<Select width={200} api={apiUrl.materialIdSelect} {...props}/>);
 };
 export const Cost = (props) =>{
   return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;元</>);
 };
 export const Vulnerability = (props) =>{
-  return (<AntdSelect showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
+  return (<AntdSelect style={{width:200}} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
 };
 export const DeptId = (props) =>{
   return (<Input {...props}/>);

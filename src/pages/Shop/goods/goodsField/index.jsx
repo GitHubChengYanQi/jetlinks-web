@@ -6,7 +6,7 @@
  */
 
 import React, {useState} from 'react';
-import {Button, Input, message, Space, Upload} from 'antd';
+import {Button, Input, InputNumber, message, Space, Upload} from 'antd';
 import UpLoadImg from "@/components/Upload";
 import TextArea from "antd/es/input/TextArea";
 import {useRequest} from '@/util/Request';
@@ -18,11 +18,14 @@ export const GoodName = (props) =>{
 export const Title = (props) =>{
   return (<TextArea rows={4} {...props}/>);
 };
+export const Subtitle = (props) =>{
+  return (<TextArea rows={4} {...props}/>);
+};
 export const Price = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 export const LastPrice = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 export const Comment = (props) =>{
   return (<Input {...props}/>);
@@ -46,10 +49,7 @@ export const ImgUrl = (props) =>{
 };
 export const Attachment = (props) => {
 
-
   const {onChange, fileName,value} = props;
-
-  console.log(value);
 
   const [fileList,setFileList] = useState(value ? [{
     url: value,

@@ -34,6 +34,7 @@ const ErpRouterConfig = [
       ...OrderRouter,
       ...OrderBranchRouter,
       ...DeliveryRouter,
+      ...ItemsRouter,
       ...SpuRouter,
       {
         redirect: '/ERP/spu',

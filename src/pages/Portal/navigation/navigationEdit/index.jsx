@@ -29,6 +29,7 @@ const NavigationEdit = ({...props}) => {
   const formRef = useRef();
 
   const [visiable, setVisable] = useState();
+  console.log(visiable);
 
   // const {run:add} = useRequest
 
@@ -40,8 +41,10 @@ const NavigationEdit = ({...props}) => {
       fieldKey="navigationId"
       effect={() => {
         onFieldValueChange$('link').subscribe(({value}) => {
-          if (value === '/pages/Data/index') {
-            setVisable(true);
+          if (value === '/pages/Data/Detail/index?id=') {
+            setVisable('detail');
+          }else if (value === '/pages/Data/index?class=') {
+            setVisable('class');
           }else {
             setVisable(false);
           }
@@ -51,7 +54,7 @@ const NavigationEdit = ({...props}) => {
         if (value.content){
           value = {
             ...value,
-            link:`/pages/Data/Detail/index?id=${value.content}`
+            link:`${value.link}${value.content}`
           };
         }
         return value;
@@ -63,9 +66,14 @@ const NavigationEdit = ({...props}) => {
       <FormItem label="链接" initialValue={false} name="link" component={SysField.Link} required />
 
 
-      {visiable && <>
-        <FormItem label="选择产品" name="content" component={SysField.Content}  />
+      {visiable === 'detail' && <>
+        <FormItem label="选择信息" name="content" component={SysField.Content}  />
       </>}
+
+      {visiable === 'class' && <>
+        <FormItem label="选择信息" name="content" component={SysField.Class}  />
+      </>}
+
       <FormItem label="分类" name="difference" component={SysField.Difference} required />
     </Form>
   );
