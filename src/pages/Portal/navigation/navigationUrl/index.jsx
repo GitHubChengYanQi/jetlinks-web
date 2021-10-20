@@ -43,3 +43,8 @@ export const Difference = {
   url: '/navigationDifference/listSelect',
   method: 'POST'
 };
+
+export const dataClassificationSelect = {
+  url: '/dataClassification/listSelect',
+  method: 'POST',
+};

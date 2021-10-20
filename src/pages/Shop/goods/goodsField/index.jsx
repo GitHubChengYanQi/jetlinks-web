@@ -30,6 +30,17 @@ export const Comment = (props) =>{
 export const Sort = (props) =>{
   return (<Input {...props}/>);
 };
+
+export const Pin = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Ku = (props) =>{
+  return (<Input {...props}/>);
+};
+
+export const Xiao = (props) =>{
+  return (<Input {...props}/>);
+};
 export const ImgUrl = (props) =>{
   return (<UpLoadImg {...props}/>);
 };
