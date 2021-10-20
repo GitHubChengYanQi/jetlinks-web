@@ -35,3 +35,9 @@ export const configList = {
   rowKey:'id'
 };
 
+export const dictTypeListSelect = {
+  url: '/sysDept/dictTypeListSelect',
+  method: 'POST',
+};
+
+

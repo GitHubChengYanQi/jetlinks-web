@@ -50,10 +50,15 @@ export const ImgUrl = (props) =>{
 export const Attachment = (props) => {
 
   const {onChange, fileName,value} = props;
+  
 
-  const [fileList,setFileList] = useState(value ? [{
-    url: value,
-  }] : null);
+  const values = value && value.split(',').map((items,index)=>{
+    return {
+      url:items,
+    };
+  });
+
+  const [fileList,setFileList] = useState(values);
 
 
   const [oss, setOss] = useState({});
