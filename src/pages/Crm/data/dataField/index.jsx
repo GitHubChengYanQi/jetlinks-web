@@ -17,7 +17,9 @@ import Select from '@/components/Select';
 import Editor from '@/components/Editor';
 
 export const Content = (props) => {
-  return (<Editor {...props} />);
+  return (<Editor {...props} onChange={(value)=>{
+    props.onChange(value && value.replace('img','img mode=\'widthFix\''));
+  }}  />);
 };
 
 export const Name = (props) => {
