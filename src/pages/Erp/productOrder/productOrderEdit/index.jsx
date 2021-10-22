@@ -1,0 +1,95 @@
+/**
+ * 产品订单编辑页
+ *
+ * @author song
+ * @Date 2021-10-20 16:18:02
+ */
+
+import React, {useRef} from 'react';
+import {Button, Col, Input, Row} from 'antd';
+import Form from '@/components/Form';
+import {productOrderDetail, productOrderAdd, productOrderEdit} from '../productOrderUrl';
+import * as SysField from '../productOrderField';
+import ProCard from '@ant-design/pro-card';
+import {InternalFieldList as FieldList} from '@formily/antd';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import styled from 'styled-components';
+import OrderSpus from '@/pages/Erp/productOrder/components/OrderSpus';
+
+const {FormItem} = Form;
+
+const RowStyleLayout = styled(props => <div {...props} />)`
+  //.ant-btn {
+  //  margin-right: 8px;
+  //}
+
+  .ant-form-item {
+    display: inline-flex;
+    width: 23%;
+  }
+`;
+
+const ApiConfig = {
+  view: productOrderDetail,
+  add: productOrderAdd,
+  save: productOrderEdit
+};
+
+const ProductOrderEdit = ({...props}) => {
+
+  const formRef = useRef();
+
+  return (
+    <div style={{padding: 16}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="productOrderId"
+      >
+        <ProCard className="h2Card" headerBordered title="订单信息">
+          <FormItem label="订购客户" name="customerId" component={SysField.CustomerId} required />
+        </ProCard>
+        <ProCard className="h2Card" headerBordered title="产品信息">
+          <FieldList
+            name="parts"
+            initialValue={[{}]}
+          >
+            {({state, mutators}) => {
+              const onAdd = () => mutators.push();
+              return (
+                <div>
+                  {state.value.map((item, index) => {
+                    const onRemove = index => mutators.remove(index);
+                    return (
+                      <div key={index}>
+
+                        <OrderSpus index={index} />
+
+                        <Button
+                          type="link"
+                          style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
+                        />
+                      </div>
+                    );
+                  })}
+                  <Button
+                    type="dashed"
+                    icon={<PlusOutlined />}
+                    onClick={onAdd}>增加物料</Button>
+                </div>
+              );
+            }}
+          </FieldList>
+        </ProCard>
+      </Form>
+    </div>
+  );
+};
+
+export default ProductOrderEdit;

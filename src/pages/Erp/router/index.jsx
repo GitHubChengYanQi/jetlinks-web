@@ -15,6 +15,7 @@ import {OrderRouter} from '@/pages/Erp/order/OrderRouter';
 import {PackageRouter} from '@/pages/Erp/package/packageRouter';
 import {DeliveryRouter} from '@/pages/Erp/delivery/deliveryRouter';
 import {SpuRouter} from '@/pages/Erp/spu/spuRouter';
+import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 
 const ErpRouterConfig = [
   {
@@ -36,6 +37,7 @@ const ErpRouterConfig = [
       ...DeliveryRouter,
       ...ItemsRouter,
       ...SpuRouter,
+      ...ProductOrderRouter,
       {
         redirect: '/ERP/spu',
       }

@@ -63,7 +63,7 @@ const Attribute = ({attribute, ...props}) => {
     <>
       <Divider orientation="center">配置属性</Divider>
       {attribute && attribute.map((items, index) => {
-        const values = items.value && items.value.map((items, index) => {
+        const values = items.value && items.value.map((items) => {
           return {
             label: items.attributeValues,
             value: items.attributeValuesId,
