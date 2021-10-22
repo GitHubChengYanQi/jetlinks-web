@@ -47,4 +47,9 @@ export const materialIdSelect = {
   url: '/material/listSelect',
   method: 'POST'
 };
+export const unitListSelect = {
+  url: '/unit/listSelect',
+  method: 'POST',
+  rowKey:'unitId'
+};
 

@@ -28,7 +28,8 @@ import {FormEffectHooks, InternalFieldList as FieldList, Reset, Submit} from '@f
 import styled from 'styled-components';
 import {useRequest} from '@/util/Request';
 import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
-import {useHistory} from 'ice';
+import {useHistory, useParams} from 'ice';
+import {AttributeId} from '../spuField';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -40,13 +41,15 @@ const ApiConfig = {
 };
 
 
-const SpuEdit = ({...props}) => {
+const SpuEdit = (props) => {
 
   const formRef = useRef();
 
   const history = useHistory();
 
-  const {onFieldChange$} = FormEffectHooks;
+  const params = props.searchParams.id;
+
+  const {onFieldValueChange$} = FormEffectHooks;
 
   const [attribute, setAttribute] = useState();
 
@@ -62,17 +65,17 @@ const SpuEdit = ({...props}) => {
     }
   });
 
+
   return (
     <div style={{padding: 16}}>
       <Form
-        {...props}
         NoButton={false}
-        value={false}
+        value={params || false}
         ref={formRef}
         api={ApiConfig}
         fieldKey="spuId"
         effect={() => {
-          onFieldChange$('categoryId').subscribe(({value}) => {
+          onFieldValueChange$('categoryId').subscribe(({value}) => {
             if (value !== undefined && value !== '0') {
               run({
                 data: {
@@ -92,9 +95,11 @@ const SpuEdit = ({...props}) => {
             <ProCard title="基础信息" className="h2Card" headerBordered>
               <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />
               <FormItem label="产品名字" name="name" component={SysField.Name} required />
-              <FormItem label="制件方式" name="type" component={SysField.Type} required />
+              <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
+              <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
               <FormItem label="生产日期" name="productionTime" component={SysField.ProductionTime} required />
               <FormItem label="质保期" name="shelfLife" component={SysField.ShelfLife} required />
+              <FormItem label="养护周期" name="curingCycle" component={SysField.CuringCycle} required />
             </ProCard>
           </Col>
           <Col span={12}>

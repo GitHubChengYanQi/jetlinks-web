@@ -19,8 +19,8 @@ export const SpuRouter = [
     fallback: <div>loading...</div>,
     exact: true,
   },{
-    path: '/spu/:cid',
-    component: lazy(() => import('../../sku/skuList')),
+    path: '/spu/parts/:cid',
+    component: lazy(() => import('../../parts/PartsList')),
     fallback: <div>loading...</div>,
     exact: true,
   }

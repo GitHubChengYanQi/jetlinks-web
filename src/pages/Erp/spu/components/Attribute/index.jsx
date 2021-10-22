@@ -1,52 +1,42 @@
 import React, {useState} from 'react';
-import {Button, Checkbox, Divider, Spin, Table} from 'antd';
+import {Button, Checkbox, Divider, Table} from 'antd';
 
 const {Column} = Table;
 
-const array = [];
 
 const Attribute = ({attribute, ...props}) => {
 
   const {onChange} = props;
 
-  const atts = [];
-  attribute && attribute.map((items, index) => {
-    if (array[index] && array[index].length > 0) {
-      return atts.push(items);
+  const [array, setArray] = useState([]);
+
+  const dataSource = [];
+  const title = [];
+  array.map((items) => {
+    if (items.attributeValuesParams.length > 0) {
+      dataSource.push(items.attributeValuesParams);
+      title.push(items.attribute);
+      return null;
     } else {
       return null;
     }
   });
 
+  const attributes = (arr) => {
 
-  const [value, setValue] = useState();
-
-  const attributes = (array) => {
-
-    const arrays = [];
-
-    array.map((items, index) => {
-      if (items) {
-        return arrays.push(items);
-      } else {
-        return null;
-      }
-    });
-
-    const Attriute = arrays && arrays.map((items, index) => {
+    const spuRequest = array.map((items) => {
       return {
-        attributeId: atts[index] && atts[index].attribute && atts[index].attribute.attributeId,
-        attributeValuesParams: items,
+        attributeId: items.attribute.attributeId,
+        attributeValuesParams: items.attributeValuesParams
       };
     });
 
-
-    if (arrays.length < 2) {
-      onChange({spuRequests: Attriute, values: arrays[0]});
-      return arrays[0] || [];
+    if (arr.length < 2) {
+      onChange({spuRequests: spuRequest, values: arr[0]});
+      return arr[0] || [];
     }
 
-    const res = arrays.reduce((total, currentValue) => {
+    const res = arr.reduce((total, currentValue) => {
       const res = [];
       if (total instanceof Array) {
         total.forEach((t) => {
@@ -64,12 +54,10 @@ const Attribute = ({attribute, ...props}) => {
 
       return res;
     });
-
-    onChange({spuRequests: Attriute, values: res});
+    onChange({spuRequests: spuRequest, values: res});
     return res;
   };
 
-  const dataSource = attributes(value || []);
 
   return (
     <>
@@ -78,7 +66,7 @@ const Attribute = ({attribute, ...props}) => {
         const values = items.value && items.value.map((items, index) => {
           return {
             label: items.attributeValues,
-            value: items,
+            value: items.attributeValuesId,
           };
         });
         return (
@@ -86,16 +74,19 @@ const Attribute = ({attribute, ...props}) => {
             <Button type="text" value={items.attribute.attribute}>
               {items.attribute.attribute}
             </Button>
-            <Checkbox.Group options={values} onChange={(checkedValue) => {
-              array[index] = checkedValue.length > 0 ? checkedValue : null;
-              array.map((items, index) => {
-                if (items) {
-                  return array[index] = items;
-                } else {
-                  return null;
-                }
+            <Checkbox.Group options={values} defaultValue={[]} onChange={(checkedValue) => {
+              const arr = array.filter((value) => {
+                return value.attribute.attributeId !== items.attribute.attributeId;
               });
-              setValue([...array]);
+
+              const attributeValues = checkedValue.map((item, index) => {
+                const values = items.value.filter((value) => {
+                  return value.attributeValuesId === item;
+                });
+                return values[0];
+              });
+
+              setArray([...arr, {attribute: items.attribute, attributeValuesParams: attributeValues}]);
             }} />
           </div>
         );
@@ -105,13 +96,13 @@ const Attribute = ({attribute, ...props}) => {
       <div style={{overflow: 'auto'}}>
         <Table
           pagination={false}
-          dataSource={dataSource || []}
+          dataSource={attributes(dataSource)}
         >
-          {atts && atts.map((items, index) => {
+          {title && title.map((items, index) => {
             return (
               <Column
                 key={index}
-                title={items.attribute && items.attribute.attribute}
+                title={items && items.attribute}
                 render={(value, record) => {
                   return record instanceof Array ? record[index].attributeValues : record.attributeValues;
                 }}
