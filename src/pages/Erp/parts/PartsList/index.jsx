@@ -39,7 +39,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
   .ant-form-item {
     display: inline-flex;
-    width: 23%;
+    min-width: 300px;
   }
 `;
 
@@ -101,12 +101,12 @@ const PartsList = (props) => {
 
   return (
     <Card title="物料清单">
-      <Descriptions column={1} bordered labelStyle={{width: '20%', textAlign: 'right', backgroundColor: '#fff'}}>
+      <Descriptions column={1} bordered labelStyle={{minWidth: 170, textAlign: 'right', backgroundColor: '#fff'}}>
         <Descriptions.Item label="成品物料编号/名称">{data.name}</Descriptions.Item>
         <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
         <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>
         <Descriptions.Item label="生产类型">{Type()}</Descriptions.Item>
-        <Descriptions.Item label="物料列表">
+        <Descriptions.Item label="物料清单">
           <Form
             ref={ref}
             value={false}
@@ -138,7 +138,6 @@ const PartsList = (props) => {
                         <RowStyleLayout key={index}>
 
                           <SpuList index={index} />
-
 
                           <Button
                             type="link"

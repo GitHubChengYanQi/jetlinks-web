@@ -16,17 +16,13 @@ import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 import Modal from '@/components/Modal';
 import SkuList from '@/pages/Erp/productOrder/components/SkuList';
 import SpuAttribute from '@/pages/Erp/parts/components/SpuAttribute';
+import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
 export const Number = (props) => {
   return (<InputNumber min={0} {...props} />);
 };
 export const Money = (props) => {
   return (<InputNumber min={0} {...props} />);
-};
-export const CustomerId = (props) => {
-  return (<SelectCustomer  {...props} onChange={(value) => {
-    props.onChange(value && value.customerId);
-  }} />);
 };
 
 export const Customer = (props) => {

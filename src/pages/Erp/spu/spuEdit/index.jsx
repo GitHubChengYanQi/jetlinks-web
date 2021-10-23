@@ -120,7 +120,7 @@ const SpuEdit = (props) => {
               :
               <FormItem name="spuAttributes" component={SysField.Atts} spuId={params} attribute={attribute} />}
           </ProCard>
-          <div>
+          <div style={{textAlign:'center'}}>
             <Submit showLoading>保存</Submit>
             <Button style={{marginLeft: 16}} onClick={() => {
               history.push('/ERP/spu');

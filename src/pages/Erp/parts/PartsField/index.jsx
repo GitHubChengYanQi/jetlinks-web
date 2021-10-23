@@ -32,7 +32,7 @@ export const Item = (props) => {
 };
 
 export const Name = (props) => {
-  return (<Input   {...props} />);
+  return (<Input.TextArea   {...props} />);
 };
 
 export const SpuId = (props) => {

@@ -4,7 +4,7 @@ import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/parts/components/Attribute';
 
 
-const SpuAttribute = ({onChange,select,value,attribute,...props}) => {
+const SpuAttribute = ({onChange, select, value, attribute, ...props}) => {
 
 
   useEffect(() => {
@@ -18,16 +18,16 @@ const SpuAttribute = ({onChange,select,value,attribute,...props}) => {
   const ref = useRef();
 
   return (<>
-    {value && typeof value === 'object' && value.map((items, index) => {
-      if (index === value.length - 1) {
-        return `${items.values.attributeValues}`;
-      } else {
-        return `${items.values.attributeValues}，`;
-      }
-    })}
     <Button type="link" onClick={() => {
       ref.current.open(false);
-    }}>{value ? '重新选择规格' : '选择规格'}</Button>
+    }}>{value ? (value && typeof value === 'object' &&
+      value.map((items, index) => {
+        if (index === value.length - 1) {
+          return `${items.values.attributeValues}`;
+        } else {
+          return `${items.values.attributeValues}，`;
+        }
+      })) : '选择规格'}</Button>
     <Modal
       ref={ref}
       component={Attribute}

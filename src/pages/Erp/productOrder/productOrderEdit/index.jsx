@@ -15,6 +15,7 @@ import {InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import OrderSpus from '@/pages/Erp/productOrder/components/OrderSpus';
+import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
 const {FormItem} = Form;
 
@@ -37,7 +38,7 @@ const ProductOrderEdit = ({...props}) => {
         fieldKey="productOrderId"
       >
         <ProCard className="h2Card" headerBordered title="订单信息">
-          <FormItem label="订购客户" name="customerId" component={props.value ? SysField.Customer :SysField.CustomerId} required />
+          <CustomerAll style={{width: 200}} />
         </ProCard>
         <ProCard className="h2Card" headerBordered title="产品信息">
           <FieldList

@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {FormItem} from '@formily/antd';
 
 
-const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
+const CustomerAll = ({customerId,customer,contacts,style,adress,phone}) => {
 
 
   const {refresh: refreshContactsn, data: Contacts, run: ContactsRun} = useRequest({
@@ -64,6 +64,7 @@ const CustomerAll = ({customerId,customer,contacts,adress,phone}) => {
           label="客户"
           name={customer || 'customerId'}
           component={SysField.Customer}
+          style={style}
           placeholder="请选择客户"
           refresh={() => {
             refresh();
