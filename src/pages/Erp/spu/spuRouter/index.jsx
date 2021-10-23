@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const SpuRouter = [
   {
     path: '/spu',
+    name:'物料管理',
     component: lazy(() => import('../spuList')),
     fallback: <div>loading...</div>,
     exact: true,

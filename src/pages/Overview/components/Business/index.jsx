@@ -4,6 +4,7 @@ import styles from '@/pages/Overview/index.module.scss';
 import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {useHistory} from 'ice';
+import {FundProjectionScreenOutlined, ProfileOutlined} from '@ant-design/icons';
 
 const Business = () => {
 
@@ -18,7 +19,7 @@ const Business = () => {
   const renderTitle = (title) => {
     return (
       <div>
-        <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{title || '项目标题'}
+        <Avatar icon={<ProfileOutlined />} style={{marginRight:8}} />{title || '项目标题'}
       </div>
     );
   };

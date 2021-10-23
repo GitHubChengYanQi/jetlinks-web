@@ -18,17 +18,6 @@ import OrderSpus from '@/pages/Erp/productOrder/components/OrderSpus';
 
 const {FormItem} = Form;
 
-const RowStyleLayout = styled(props => <div {...props} />)`
-  //.ant-btn {
-  //  margin-right: 8px;
-  //}
-
-  .ant-form-item {
-    display: inline-flex;
-    width: 23%;
-  }
-`;
-
 const ApiConfig = {
   view: productOrderDetail,
   add: productOrderAdd,
@@ -48,11 +37,11 @@ const ProductOrderEdit = ({...props}) => {
         fieldKey="productOrderId"
       >
         <ProCard className="h2Card" headerBordered title="订单信息">
-          <FormItem label="订购客户" name="customerId" component={SysField.CustomerId} required />
+          <FormItem label="订购客户" name="customerId" component={props.value ? SysField.Customer :SysField.CustomerId} required />
         </ProCard>
         <ProCard className="h2Card" headerBordered title="产品信息">
           <FieldList
-            name="parts"
+            name="orderDetail"
             initialValue={[{}]}
           >
             {({state, mutators}) => {

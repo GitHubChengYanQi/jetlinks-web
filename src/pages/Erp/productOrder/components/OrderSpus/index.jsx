@@ -10,10 +10,16 @@ const {FormItem} = Form;
 const OrderSpus = ({index}) => {
 
   const [attribute, setAttribute] = useState([]);
+  const [select, setSelect] = useState();
 
-  const {run} = useRequest(skuList, {
+  const {run} = useRequest(spuDetail, {
     manual: true, onSuccess: (res) => {
-      setAttribute(res);
+      if (res.attribute) {
+        const attribute = JSON.parse(res.attribute);
+        if (attribute){
+          setAttribute(attribute);
+        }
+      }
     }
   });
 
@@ -22,8 +28,11 @@ const OrderSpus = ({index}) => {
       <div style={{display:'inline-block',width:'30%'}}>
         <FormItem
           label="商品名称"
-          name={`parts.${index}.spuId`}
+          name={`orderDetail.${index}.spuId`}
           component={SysField.SpuId}
+          select={(value)=>{
+            setSelect(value);
+          }}
           spuId={(value)=>{
             run({
               data:{
@@ -38,14 +47,16 @@ const OrderSpus = ({index}) => {
         <FormItem
           label="规格描述"
           attribute={attribute}
-          name={`parts.${index}.skuId`}
+          name={`orderDetail.${index}.sku`}
+          select={select}
           component={SysField.SkuId}
+          required
         />
       </div>
       <div style={{display:'inline-block',width:'18%'}}>
         <FormItem
           label="数量"
-          name={`parts.${index}.number`}
+          name={`orderDetail.${index}.number`}
           component={SysField.Number}
           required
         />
@@ -53,7 +64,7 @@ const OrderSpus = ({index}) => {
       <div style={{display:'inline-block',width:'18%'}}>
         <FormItem
           label="金额"
-          name={`parts.${index}.money`}
+          name={`orderDetail.${index}.money`}
           component={SysField.Money}
           required
         />

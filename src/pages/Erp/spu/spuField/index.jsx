@@ -86,11 +86,11 @@ export const Values = (props) => {
 
 export const Atts = (props) => {
 
-  const {attribute,...other} = props;
+  const {attribute,spuId,...other} = props;
 
   return (
     <>
-      <Attribute attribute={attribute} {...other} />
+      <Attribute attribute={attribute} spuId={spuId} {...other} />
     </>
   );
 };

@@ -139,6 +139,7 @@ const PartsList = (props) => {
 
                           <SpuList index={index} />
 
+
                           <Button
                             type="link"
                             style={{float: 'right', display: state.value.length === 1 && 'none'}}

@@ -7,7 +7,7 @@ const SkuList = (props) => {
   const {value,onChange} = props;
 
   return (
-    <>
+    <div style={{padding:16}}>
       <Radio.Group onChange={(value)=>{
         onChange(value);
       }}>
@@ -19,7 +19,7 @@ const SkuList = (props) => {
           })
         }
       </Radio.Group>
-    </>
+    </div>
   );
 };
 

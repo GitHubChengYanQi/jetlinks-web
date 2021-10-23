@@ -42,7 +42,7 @@ const SpuList = () => {
     return (
       <>
         <FormItem label="物品名字" name="name" component={SysField.Name} />
-        <FormItem label="类目id" name="categoryId" component={SysField.CategoryId} />
+        <FormItem label="类目" name="categoryId" component={SysField.CategoryId} />
       </>
     );
   };
@@ -102,7 +102,6 @@ const SpuList = () => {
             </>
           );
         }} sorter/>
-        <Column title="生产日期" width={200} dataIndex="productionTime" sorter/>
         <Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>
         <Column title="产品重量" width={120} align='center' dataIndex="weight" sorter />
         <Column title="材质" width={150} align='center' dataIndex="materialName" sorter render={(value,record)=>{

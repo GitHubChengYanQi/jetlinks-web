@@ -20,7 +20,7 @@ import * as SysField from '../productOrderDetailsField';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ProductOrderDetailsList = () => {
+const ProductOrderDetailsList = ({value}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -28,26 +28,18 @@ const ProductOrderDetailsList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="产品订单id" name="productOrderId" component={SysField.ProductOrderId}/>
-       <FormItem label="spuId" name="spuId" component={SysField.SpuId}/>
-       <FormItem label="skuId" name="skuId" component={SysField.SkuId}/>
-       <FormItem label="数量" name="number" component={SysField.Number}/>
-       <FormItem label="金额" name="money" component={SysField.Money}/>
-       <FormItem label="创建时间" name="createTime" component={SysField.CreateTime}/>
-       <FormItem label="创建者" name="createUser" component={SysField.CreateUser}/>
-       <FormItem label="修改时间" name="updateTime" component={SysField.UpdateTime}/>
-       <FormItem label="修改者" name="updateUser" component={SysField.UpdateUser}/>
-       <FormItem label="状态" name="display" component={SysField.Display}/>
-       <FormItem label="部门编号" name="deptId" component={SysField.DeptId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="产品订单" name="productOrderId" value={value || '111'} component={SysField.ProductOrderId} />
+        <FormItem label="spuId" name="spuId" component={SysField.SpuId} />
+        <FormItem label="skuId" name="skuId" component={SysField.SkuId} />
+      </>
     );
   };
 
@@ -55,41 +47,52 @@ const ProductOrderDetailsList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
+        headStyle={{display:'none'}}
         api={productOrderDetailsList}
+        contentHeight
+        rowSelection
         rowKey="productOrderDetailsId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="产品订单id" dataIndex="productOrderId"/>
-        <Column title="spuId" dataIndex="spuId"/>
-        <Column title="skuId" dataIndex="skuId"/>
-        <Column title="数量" dataIndex="number"/>
-        <Column title="金额" dataIndex="money"/>
-        <Column title="创建时间" dataIndex="createTime"/>
-        <Column title="创建者" dataIndex="createUser"/>
-        <Column title="修改时间" dataIndex="updateTime"/>
-        <Column title="修改者" dataIndex="updateUser"/>
-        <Column title="状态" dataIndex="display"/>
-        <Column title="部门编号" dataIndex="deptId"/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="商品名称" dataIndex="spuId" render={(value,record)=>{
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.productOrderDetailsId);
-              }}/>
-              <DelButton api={productOrderDetailsDelete} value={record.productOrderDetailsId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
+              {record.spuResult && record.spuResult.name}
             </>
           );
-        }} width={300}/>
+        }} />
+        <Column title="规格" dataIndex="sku" render={(value)=>{
+
+          const spuAttribute = JSON.parse(value);
+
+          const attribute = spuAttribute && spuAttribute.map((items,index)=>{
+            return items.values && items.values.attributeValues;
+          });
+
+
+          return (
+            <>
+              {
+                attribute && attribute.map((items,index)=>{
+                  if (index === attribute.length-1){
+                    return `${items}`;
+                  }else {
+                    return `${items} , `;
+                  }
+                })
+              }
+            </>
+          );
+        }} />
+        <Column title="数量" dataIndex="number" />
+        <Column title="金额" dataIndex="money" />
       </Table>
       <Drawer width={800} title="编辑" component={ProductOrderDetailsEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

@@ -14,7 +14,12 @@ const SpuList = ({index}) => {
 
   const {run} = useRequest(spuDetail, {
     manual: true, onSuccess: (res) => {
-      setAttribute(res.categoryRequests);
+      if (res.attribute) {
+        const attribute = JSON.parse(res.attribute);
+        if (attribute){
+          setAttribute(attribute);
+        }
+      }
     }
   });
 
@@ -39,7 +44,7 @@ const SpuList = ({index}) => {
       <FormItem
         label="规格描述"
         name={`parts.${index}.partsAttributes`}
-        categoryRequests={attribute || []}
+        attribute={attribute || []}
         select={select}
         component={SysField.Remake}
       />

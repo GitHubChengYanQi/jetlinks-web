@@ -15,6 +15,7 @@ import * as apiUrl from '../PartsUrl';
 import {spuListSelect} from '../PartsUrl';
 import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/parts/components/Attribute';
+import SpuAttribute from '@/pages/Erp/parts/components/SpuAttribute';
 
 
 const w = 200;
@@ -53,46 +54,10 @@ export const SpuId = (props) => {
 
 
 export const Remake = (props) => {
-  const {categoryRequests, select, onChange, value} = props;
 
-  useEffect(() => {
-    onChange(null);
-  }, [select]);
+  const {attribute, select,...other} = props;
 
-  useEffect(() => {
-    onChange((value && typeof value === 'string') ? JSON.parse(value) : value);
-  }, []);
-
-  const ref = useRef();
-
-  return (<>
-    {value && typeof value === 'object' && value.map((items, index) => {
-      if (index === value.length - 1) {
-        return `${items.values.attributeValues}`;
-      } else {
-        return `${items.values.attributeValues}，`;
-      }
-    })}
-    <Button type="link" onClick={() => {
-      ref.current.open(false);
-    }}>{value ? '重新选择规格' : '选择规格'}</Button>
-    <Modal
-      ref={ref}
-      component={Attribute}
-      categoryRequests={categoryRequests}
-      headTitle="选择规格"
-      onChange={(value) => {
-        onChange(value);
-      }}
-      attributes={(value && typeof value === 'string') ? JSON.parse(value) : value}
-      footer={
-        <>
-          <Button type="primary" onClick={() => {
-            ref.current.close();
-          }}>保存</Button>
-        </>
-      } />
-  </>);
+  return (<SpuAttribute attribute={attribute} select={select} {...other} />);
 };
 
 export const Number = (props) => {
