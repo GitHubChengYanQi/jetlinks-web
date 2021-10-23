@@ -74,7 +74,7 @@ const ProductOrderList = () => {
         }} />
         <Column title="数量" dataIndex="number" />
         <Column title="总金额" dataIndex="money" />
-        <Column title="创建人" dataIndex="createUser" />
+        {/*<Column title="创建人" dataIndex="createUser" />*/}
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

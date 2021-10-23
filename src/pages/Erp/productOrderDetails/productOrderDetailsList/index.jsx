@@ -16,9 +16,12 @@ import Form from '@/components/Form';
 import {productOrderDetailsDelete, productOrderDetailsList} from '../productOrderDetailsUrl';
 import ProductOrderDetailsEdit from '../productOrderDetailsEdit';
 import * as SysField from '../productOrderDetailsField';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ProductOrderDetailsList = ({value}) => {
   const ref = useRef(null);
@@ -49,6 +52,7 @@ const ProductOrderDetailsList = ({value}) => {
         title={<h2>列表</h2>}
         headStyle={{display:'none'}}
         api={productOrderDetailsList}
+        formActions={formActionsPublic}
         contentHeight
         rowSelection
         rowKey="productOrderDetailsId"

@@ -50,7 +50,6 @@ const OrderSpus = ({index}) => {
           name={`orderDetail.${index}.sku`}
           select={select}
           component={SysField.SkuId}
-          required
         />
       </div>
       <div style={{display:'inline-block',width:'18%'}}>
