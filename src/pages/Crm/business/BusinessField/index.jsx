@@ -39,13 +39,13 @@ export const BusinessNameListSelect = (props) => {
 // 负责人
 export const PersonListSelect = (props) => {
 
-  useEffect(()=>{
-    if (props.user){
+  useEffect(() => {
+    if (props.user) {
       props.onChange(props.user);
     }
-  },[props.user]);
+  }, [props.user]);
 
-  return (<Select api={apiUrl.UserIdSelect}  {...props}  />);
+  return (<Select api={apiUrl.UserIdSelect}  {...props} />);
 };
 // 客户名称
 export const CustomerNameListSelect = (props) => {
@@ -75,13 +75,13 @@ export const OrgNameListSelect = (props) => {
 
 // 立项日期
 export const TimeListSelect2 = (props) => {
-  return (<DatePicker disabled={props.visi} disabledDate={(current)=>{
+  return (<DatePicker disabled={props.visi} disabledDate={(current) => {
     return current && current > moment().endOf('day');
   }} {...props} />);
 };
 // 项目金额
 export const OpportunityAmountListSelect3 = (props) => {
-  return (<InputNumber min={0} defaultValue={10000} style={{width:200}} step={10000}  {...props} />);
+  return (<InputNumber min={0} defaultValue={10000} style={{width: 200}} step={10000}  {...props} />);
 };
 // 销售流程
 export const SalesIdListSelect = (props) => {
@@ -152,32 +152,45 @@ export const ChangeTimeListSelect17 = (props) => {
 };
 
 
-export const CompetitorId = (props) =>{
+export const CompetitorId = (props) => {
   const ref = useRef(null);
 
-  const {loading,data,run:getData} = useRequest(apiUrl.competitorListSelect);
+  const {loading, data, run: getData} = useRequest(apiUrl.competitorListSelect);
 
   return (
-    <div style={{width:300}}>
-      <AntdSelect allowClear showSearch style={{width:200}} options={data || []} loading={loading} {...props}   filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}  />
-      <Button style={{width:100,margin:0}} type="primary"  onClick={()=>{
-        ref.current.open(false);}}>
+    <div style={{width: 300}}>
+      <AntdSelect
+        allowClear
+        showSearch
+        style={{width: 200}}
+        options={data || []}
+        loading={loading}
+        {...props}
+        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} />
+      <Button style={{width: 100, margin: 0}} type="primary" onClick={() => {
+        ref.current.open(false);
+      }}>
         新增对手
       </Button>
-      <Modal width={1000}  title="竞争对手" component={CompetitorEdit} onSuccess={() => {
-        ref.current.close();
-        getData();
-      }} ref={ref}
-       onChange={(res)=>{
-         if(res){
-           props.onChange(res && res.data && res.data.competitorId);
-         }else{
-           props.onChange();
-         }
-       }} />
+      <Modal
+        width={1000}
+        title="竞争对手"
+        component={CompetitorEdit}
+        onSuccess={() => {
+          ref.current.close();
+          getData();
+        }}
+        ref={ref}
+        onChange={(res) => {
+          if (res) {
+            props.onChange(res && res.data && res.data.competitorId);
+          } else {
+            props.onChange();
+          }
+        }} />
     </div>
   );
 };
-export const CompetitorsQuote = (props) =>{
-  return (<InputNumber min={0} style={{width:300}}  {...props}/>);
+export const CompetitorsQuote = (props) => {
+  return (<InputNumber min={0} style={{width: 300}}  {...props} />);
 };

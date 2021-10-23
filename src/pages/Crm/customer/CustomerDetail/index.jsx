@@ -30,6 +30,7 @@ import styles from './index.module.scss';
 const {TabPane} = Tabs;
 
 const CustomerDetail = () => {
+
   const params = useParams();
 
   const [responsive, setResponsive] = useState(false);

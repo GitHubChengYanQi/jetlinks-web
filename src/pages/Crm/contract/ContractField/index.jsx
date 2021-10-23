@@ -37,7 +37,7 @@ export const CustomerId = (props) => {
 
 export const Customer = (props) => {
 
-  const {customers, refresh, onChange, ...other} = props;
+  const {customers, refresh,style, onChange, ...other} = props;
 
   useEffect(() => {
     if (!other.value) {
@@ -46,7 +46,7 @@ export const Customer = (props) => {
   }, []);
 
   return (<>
-    <SelectCustomer {...other} onChange={(value) => {
+    <SelectCustomer style={style} {...other} onChange={(value) => {
       onChange(value && value.customerId);
       customers(value && value.customerId);
       refresh();
@@ -61,8 +61,7 @@ export const Contacts = (props) => {
 
   const {customers, customerId, refresh, contact, onChange, ...other} = props;
 
-
-  const data = customers ? customers.map((value, index) => {
+  const data = customers ? customers.map((value) => {
     return {
       label: value.contactsName,
       value: value.contactsId,

@@ -7,14 +7,8 @@ import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
 import UnitList from '@/pages/Erp/unit/unitList';
 import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 import SetView from '@/layouts/SetView';
-import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
-import AttributeValuesList from '@/pages/Erp/attributeValues/attributeValuesList';
 import CategoryList from '@/pages/Erp/category/categoryList';
-
-
-
-
-
+import CodingRulesList from '@/pages/Erp/codingRules/codingRulesList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -36,6 +30,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <ItemClassList />;
       case 'dwgl':
         return <UnitList />;
+      case 'bmgl':
+        return <CodingRulesList />;
       default:
         return null;
     }
@@ -75,15 +71,17 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="dwgl">
             <span>单位管理</span>
           </Menu.Item>
+          <Menu.Item key="bmgl">
+            <span>编码规则管理</span>
+          </Menu.Item>
           <Menu.Divider />
-        </Menu>}/>
+        </Menu>} />
       <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
         showModel(false);
       }} footer={null}>{RenderComponent()}</Modal>
     </>
   );
 };
-
 
 
 const ErpLayout = ({children}) => {

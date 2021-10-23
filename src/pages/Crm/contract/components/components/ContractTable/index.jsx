@@ -154,12 +154,12 @@ const ContractTable = (props) => {
   });
 
 
-  function confirmOk(record) {
+  const confirmOk = (record) => {
     AntModal.confirm({
       title: '审核',
       centered: true,
       icon: <ExclamationCircleOutlined />,
-      content: `确认审核`,
+      content: '确认审核',
       okText: '确认',
       style: {margin: 'auto'},
       cancelText: '取消',

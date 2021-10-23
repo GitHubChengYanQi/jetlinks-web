@@ -12,13 +12,17 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../spuUrl';
 import DatePicker from '@/components/DatePicker';
-import {categoryList, categoryTree} from '../spuUrl';
+import {categoryList, categoryTree, unitListSelect} from '../spuUrl';
 import Attribute from '@/pages/Erp/spu/components/Attribute';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
 };
 export const ShelfLife = (props) =>{
+  return (<><InputNumber min={0}  {...props}/>&nbsp;&nbsp;天</>);
+};
+
+export const CuringCycle = (props) =>{
   return (<><InputNumber min={0}  {...props}/>&nbsp;&nbsp;天</>);
 };
 export const Inventory = (props) =>{
@@ -49,7 +53,7 @@ export const ClassId = (props) =>{
   return (<Input {...props}/>);
 };
 export const UnitId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select api={apiUrl.unitListSelect} {...props}/>);
 };
 export const CategoryId = (props) =>{
   return (<Cascader api={categoryTree} {...props}/>);
@@ -82,11 +86,11 @@ export const Values = (props) => {
 
 export const Atts = (props) => {
 
-  const {attribute,...other} = props;
+  const {attribute,spuId,...other} = props;
 
   return (
     <>
-      <Attribute attribute={attribute} {...other} />
+      <Attribute attribute={attribute} spuId={spuId} {...other} />
     </>
   );
 };

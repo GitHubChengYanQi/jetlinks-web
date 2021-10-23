@@ -130,6 +130,7 @@ const Editor = ({onChange, onBlur, value, template, imgUploadProps, ...props}, r
           // 插入网络视频的回调事件
         }}
         onChange={(html) => {
+          console.log(html);
         }}
         onBlur={(html) => {
           onChange(html);

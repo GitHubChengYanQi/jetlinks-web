@@ -54,6 +54,11 @@ export const materialListSelect = {
   rowKey:'materialId'
 };
 
+export const spuListSelect = {
+  url: '/spu/listSelect',
+  method: 'POST',
+};
+
 // 产品名称
 export const ProductNameListSelect = {
   url: '/items/listSelect',

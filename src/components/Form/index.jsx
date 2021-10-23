@@ -91,7 +91,7 @@ const FormWrapper = (
       onSuccess(result);
     },
     onError: (error) => {
-      message.error(error.message);
+      // message.error(error.message);
     }
   });
 

@@ -6,102 +6,180 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
+import {Button, Card, Descriptions, Divider, notification, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
-import {useHistory, useParams} from "ice";
-import {partsDelete, partsDetail, partsList} from '../PartsUrl';
-import PartsEdit from '../PartsEdit';
-import {useRequest} from "@/util/Request";
-import * as SysField from '../PartsField';
-
+import {useHistory, useParams} from 'ice';
+import {partsAdd, partsDelete, partsDetail, partsEdit, partsList} from '../PartsUrl';
+import {useRequest} from '@/util/Request';
+import {InternalFieldList as FieldList} from '@formily/antd';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import styled from 'styled-components';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import SpuList from '@/pages/Erp/parts/components/SpuList';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {useBoolean} from 'ahooks';
 
 
 const {Column} = AntTable;
-const {FormItem} = Form;
+
+
+const RowStyleLayout = styled(props => <div {...props} />)`
+  .ant-btn {
+    margin-right: 16px;
+  }
+
+  .ant-form-item {
+    display: inline-flex;
+    min-width: 300px;
+  }
+`;
+
+const ApiConfig = {
+  view: partsDetail,
+  add: partsAdd,
+  save: partsEdit
+};
 
 const PartsList = (props) => {
 
   const params = useParams();
-  const itemId = params.id;
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const history = useHistory();
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }}/>
-      </>
-    );
+
+  const ref = useRef();
+
+  const [add, {setTrue, setFalse}] = useBoolean();
+
+  const openNotificationWithIcon = type => {
+    notification[type]({
+      message: '保存成功！',
+    });
   };
 
-  const {loading, data, run,refresh} = useRequest(partsDetail, {
+
+  const {loading, data} = useRequest(spuDetail, {
     defaultParams: {
       data: {
-        itemId: params.id
+        spuId: params.cid
       }
     }
   });
 
-  useEffect(()=>{
-    tableRef.current.formActions.setFieldValue('ItemId', itemId);
-    tableRef.current.refresh();
-  },[itemId]);
+  const {loading: partsLoading, data: parts} = useRequest(partsList, {
+    defaultParams: {
+      data: {
+        pid: params.cid
+      }
+    }
+  });
 
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="产品名称" disabled name="ItemId" value={itemId} component={SysField.ItemId}/>
-      </>
-    );
+  if (loading || partsLoading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  const Type = () => {
+    switch (data.productionType) {
+      case 0:
+        return '自制件';
+      case 1:
+        return '委派件';
+      case 2:
+        return '外购件';
+      default:
+        break;
+    }
   };
 
   return (
-    <>
-      <Table
-        title={<Breadcrumb title='清单管理'/>}
-        api={partsList}
-        isModal={false}
-        rowKey="partsId"
-        searchForm={searchForm}
-        SearchButton
-        actions={actions()}
-        ref={tableRef}
-      >
-        <Column title="零件名称" render={(value,record)=>{
-          return (
-            <Button type="link" onClick={() => {
-              history.push(`/ERP/parts/${record.itemsResult.itemId}`);
-            }}>{record.itemsResult ? record.itemsResult.name : ''}  </Button>
-          );
-        }}/>
-        <Column title="零件数量" width={120} align='center' dataIndex="number"/>
-        <Column/>
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record);
-              }}/>
-              <DelButton api={partsDelete} value={record.partsId} onSuccess={()=>{
-                tableRef.current.refresh();
-              }}/>
-            </>
-          );
-        }} width={300}/>
-      </Table>
-      <Modal2 width={900} title="清单" component={PartsEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} itemsId={itemId}/>
-    </>
+    <Card title="物料清单">
+      <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
+        <Descriptions.Item label="成品物料编号/名称">{data.name}</Descriptions.Item>
+        <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
+        <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>
+        <Descriptions.Item label="生产类型">{Type()}</Descriptions.Item>
+        <Descriptions.Item label="物料清单">
+          <Form
+            ref={ref}
+            value={false}
+            api={ApiConfig}
+            fieldKey="partsId"
+            NoButton={false}
+            onSubmit={(value) => {
+              value = {
+                ...value,
+                pid: params.cid
+              };
+              return value;
+            }}
+            onSuccess={() => {
+              setFalse();
+              openNotificationWithIcon('success');
+            }}
+          >
+            <FieldList
+              name="parts"
+              initialValue={parts.length > 0 ? parts : [{}]}
+            >
+              {({state, mutators}) => {
+                const onAdd = () => {
+                  setTrue();
+                  mutators.push();
+                };
+                return (
+                  <div>
+                    {state.value.map((item, index) => {
+                      const onRemove = index => mutators.remove(index);
+                      return (
+                        <RowStyleLayout key={index}>
+
+                          <SpuList index={index} />
+
+                          <Button
+                            type="link"
+                            style={{float: 'right'}}
+                            icon={<DeleteOutlined />}
+                            onClick={() => {
+                              onRemove(index);
+                            }}
+                            danger
+                          />
+                        </RowStyleLayout>
+                      );
+                    })}
+                    <Button
+                      type="dashed"
+                      icon={<PlusOutlined />}
+                      onClick={onAdd}>增加物料</Button>
+                    <Button
+                      hidden={!add}
+                      type="primary"
+                      style={{marginLeft: 8}}
+                      onClick={() => {
+                        ref.current.submit();
+                      }}
+                    >保存</Button>
+                  </div>
+                );
+              }}
+            </FieldList>
+          </Form>
+        </Descriptions.Item>
+
+        <Descriptions.Item label="重要程度" width={120}>{data.important || '--'}</Descriptions.Item>
+        <Descriptions.Item label="产品重量" width={120}>{data.weight || '--'}</Descriptions.Item>
+        <Descriptions.Item label="材质" width={150}>{ data.material ? data.material.name : '--'}</Descriptions.Item>
+        <Descriptions.Item label="成本">{data.cost || '--'}</Descriptions.Item>
+        <Descriptions.Item label="易损">{data.vulnerability === 0 ? '易损' : '不易损'}</Descriptions.Item>
+
+        <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
+        <Descriptions.Item label="更新时间">{parts && parts[0] ? parts[0].createTime : '--'}</Descriptions.Item>
+
+        <Descriptions.Item
+          label="更新用户">{parts && parts[0] ? (parts[0].userResult && parts[0].userResult.name) : '--'}</Descriptions.Item>
+      </Descriptions>
+    </Card>
   );
 };
 

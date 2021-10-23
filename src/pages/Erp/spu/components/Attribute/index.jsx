@@ -1,52 +1,64 @@
-import React, {useState} from 'react';
-import {Button, Checkbox, Divider, Spin, Table} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, Checkbox, Divider, Table} from 'antd';
+import {useRequest} from '@/util/Request';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {Column} = Table;
 
-const array = [];
 
-const Attribute = ({attribute, ...props}) => {
-
+const Attribute = ({attribute, spuId, ...props}) => {
   const {onChange} = props;
 
-  const atts = [];
-  attribute && attribute.map((items, index) => {
-    if (array[index] && array[index].length > 0) {
-      return atts.push(items);
+  const [array, setArray] = useState([]);
+
+  const {run} = useRequest(spuDetail, {
+    manual: true,
+    onSuccess: (res) => {
+      if (res.attribute) {
+        const attribute = JSON.parse(res.attribute);
+        if (attribute) {
+
+          const defaultValue = attribute.map((items) => {
+            return items.attributeValues;
+          });
+          setArray(attribute);
+        }
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (spuId) {
+      run({
+        data: {
+          spuId
+        }
+      });
+    }
+  }, []);
+
+  const dataSource = [];
+  const title = [];
+  const values = [];
+  array.map((items) => {
+    if (items.attributeValues.length > 0) {
+      values.push(items);
+      dataSource.push(items.attributeValues);
+      title.push(items);
+      return null;
     } else {
       return null;
     }
   });
 
+  const attributes = (arr) => {
 
-  const [value, setValue] = useState();
-
-  const attributes = (array) => {
-
-    const arrays = [];
-
-    array.map((items, index) => {
-      if (items) {
-        return arrays.push(items);
-      } else {
-        return null;
-      }
-    });
-
-    const Attriute = arrays && arrays.map((items, index) => {
-      return {
-        attributeId: atts[index] && atts[index].attribute && atts[index].attribute.attributeId,
-        attributeValuesParams: items,
-      };
-    });
-
-
-    if (arrays.length < 2) {
-      onChange({spuRequests: Attriute, values: arrays[0]});
-      return arrays[0] || [];
+    if (arr.length < 2) {
+      onChange({spuRequests: values, values: arr[0]});
+      return arr[0] || [];
     }
 
-    const res = arrays.reduce((total, currentValue) => {
+    const res = arr.reduce((total, currentValue) => {
       const res = [];
       if (total instanceof Array) {
         total.forEach((t) => {
@@ -64,38 +76,58 @@ const Attribute = ({attribute, ...props}) => {
 
       return res;
     });
-
-    onChange({spuRequests: Attriute, values: res});
+    onChange({spuRequests: values, values: res});
     return res;
   };
 
-  const dataSource = attributes(value || []);
 
   return (
     <>
       <Divider orientation="center">配置属性</Divider>
       {attribute && attribute.map((items, index) => {
-        const values = items.value && items.value.map((items, index) => {
+
+        const values = items.value && items.value.map((items) => {
           return {
             label: items.attributeValues,
-            value: items,
+            value: items.attributeValuesId,
           };
         });
+
+        const defaultValues = array.filter((value)=>{
+          return value.attributeId === items.attribute.attributeId;
+        });
+
+        const defaultValue = defaultValues && defaultValues[0] && defaultValues[0].attributeValues.map((items,index)=>{
+          return items.attributeValuesId;
+        });
+
         return (
           <div key={index}>
             <Button type="text" value={items.attribute.attribute}>
               {items.attribute.attribute}
             </Button>
-            <Checkbox.Group options={values} onChange={(checkedValue) => {
-              array[index] = checkedValue.length > 0 ? checkedValue : null;
-              array.map((items, index) => {
-                if (items) {
-                  return array[index] = items;
-                } else {
-                  return null;
-                }
+            <Checkbox.Group options={values} value={defaultValue} onChange={(checkedValue) => {
+              const arr = array.filter((value) => {
+                return value.attributeId !== items.attribute.attributeId;
               });
-              setValue([...array]);
+
+              const attributeValue = checkedValue.map((item, index) => {
+                const values = items.value.filter((value) => {
+                  return value.attributeValuesId === item;
+                });
+                return {
+                  attributeValues: values[0].attributeValues,
+                  attributeValuesId: `${values[0].attributeValuesId}`,
+                };
+              });
+
+
+              setArray([...arr, {
+                attribute: items.attribute.attribute,
+                id:items.attribute.attributeId,
+                attributeId: `${items.attribute.attributeId}`,
+                attributeValues: attributeValue
+              }]);
             }} />
           </div>
         );
@@ -105,13 +137,13 @@ const Attribute = ({attribute, ...props}) => {
       <div style={{overflow: 'auto'}}>
         <Table
           pagination={false}
-          dataSource={dataSource || []}
+          dataSource={attributes(dataSource)}
         >
-          {atts && atts.map((items, index) => {
+          {title && title.map((items, index) => {
             return (
               <Column
                 key={index}
-                title={items.attribute && items.attribute.attribute}
+                title={items && items.attribute}
                 render={(value, record) => {
                   return record instanceof Array ? record[index].attributeValues : record.attributeValues;
                 }}

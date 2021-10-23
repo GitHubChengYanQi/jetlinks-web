@@ -39,4 +39,9 @@ export const unitList = {
   method: 'POST',
   rowKey:'unitId'
 };
+export const unitListSelect = {
+  url: '/unit/listSelect',
+  method: 'POST',
+  rowKey:'unitId'
+};
 

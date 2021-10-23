@@ -121,12 +121,18 @@ export const ItemIds = (props) => {
 
   const itemIds = [];
 
-  // eslint-disable-next-line no-nested-ternary
-  value && value.length > 0 ? typeof (value[0]) === 'object' ? value.forEach((items) => {
-    itemIds.push(items && `${items.itemId}`);
-  }) : value.forEach((items) => {
-    itemIds.push(items);
-  }) : [];
+  if (value &&  value.length > 0){
+    if (typeof value[0] === 'object'){
+      value.forEach((items) => {
+        itemIds.push(items && `${items.itemId}`);
+      });
+    }else{
+      value.forEach((items) => {
+        itemIds.push(items);
+      });
+    }
+  }
+
 
   useEffect(() => {
     if (value) {
@@ -138,7 +144,6 @@ export const ItemIds = (props) => {
   const {data} = useRequest(itemIdSelect);
 
   const options = data || [];
-
 
   return (
     <AntSelect
