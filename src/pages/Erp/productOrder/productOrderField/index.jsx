@@ -21,6 +21,9 @@ import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 export const Number = (props) => {
   return (<InputNumber min={0} {...props} />);
 };
+export const State = (props) => {
+  return (<Input min={0} {...props} />);
+};
 export const Money = (props) => {
   return (<InputNumber min={0} {...props} />);
 };

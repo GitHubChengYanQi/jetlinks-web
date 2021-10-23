@@ -102,25 +102,6 @@ const SpuList = () => {
             </>
           );
         }} sorter/>
-        {/*<Column title="重要程度" width={120} align='center' dataIndex="important" sorter/>*/}
-        {/*<Column title="产品重量" width={120} align='center' dataIndex="weight" sorter />*/}
-        {/*<Column title="材质" width={150} align='center' dataIndex="materialName" sorter render={(value,record)=>{*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      {*/}
-        {/*        record.materialResult ? record.materialResult.name : null*/}
-        {/*      }*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}}/>*/}
-        {/*<Column title="成本" width={120} align='center' dataIndex="cost" sorter />*/}
-        {/*<Column title="易损" width={120} align='center' dataIndex="vulnerability" render={(value)=>{*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      {value === 0 ? '易损' : '不易损'}*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} sorter />*/}
         <Column title="操作" fixed='right' align="right" render={(value, record) => {
           return (
             <>
@@ -132,7 +113,7 @@ const SpuList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} />
       </Table>
       <Modal width={800} title="编辑" component={SpuEdit} onSuccess={() => {
         tableRef.current.refresh();

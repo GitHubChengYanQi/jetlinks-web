@@ -6,27 +6,18 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import Table from '@/components/Table';
 import {Button, Card, Descriptions, Divider, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
 import {useHistory, useParams} from 'ice';
 import {partsAdd, partsDelete, partsDetail, partsEdit, partsList} from '../PartsUrl';
-import PartsEdit from '../PartsEdit';
 import {useRequest} from '@/util/Request';
-import * as SysField from '../PartsField';
-import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
-import Title from '@/components/Title';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {useBoolean} from 'ahooks';
 
 
 const {Column} = AntTable;
@@ -54,6 +45,8 @@ const PartsList = (props) => {
   const params = useParams();
 
   const ref = useRef();
+
+  const [add, {setTrue, setFalse}] = useBoolean();
 
   const openNotificationWithIcon = type => {
     notification[type]({
@@ -101,7 +94,7 @@ const PartsList = (props) => {
 
   return (
     <Card title="物料清单">
-      <Descriptions column={1} bordered labelStyle={{minWidth: 170, textAlign: 'right', backgroundColor: '#fff'}}>
+      <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
         <Descriptions.Item label="成品物料编号/名称">{data.name}</Descriptions.Item>
         <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
         <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>
@@ -121,6 +114,7 @@ const PartsList = (props) => {
               return value;
             }}
             onSuccess={() => {
+              setFalse();
               openNotificationWithIcon('success');
             }}
           >
@@ -129,7 +123,10 @@ const PartsList = (props) => {
               initialValue={parts.length > 0 ? parts : [{}]}
             >
               {({state, mutators}) => {
-                const onAdd = () => mutators.push();
+                const onAdd = () => {
+                  setTrue();
+                  mutators.push();
+                };
                 return (
                   <div>
                     {state.value.map((item, index) => {
@@ -141,7 +138,7 @@ const PartsList = (props) => {
 
                           <Button
                             type="link"
-                            style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                            style={{float: 'right'}}
                             icon={<DeleteOutlined />}
                             onClick={() => {
                               onRemove(index);
@@ -156,6 +153,7 @@ const PartsList = (props) => {
                       icon={<PlusOutlined />}
                       onClick={onAdd}>增加物料</Button>
                     <Button
+                      hidden={!add}
                       type="primary"
                       style={{marginLeft: 8}}
                       onClick={() => {
@@ -168,8 +166,16 @@ const PartsList = (props) => {
             </FieldList>
           </Form>
         </Descriptions.Item>
+
+        <Descriptions.Item label="重要程度" width={120}>{data.important || '--'}</Descriptions.Item>
+        <Descriptions.Item label="产品重量" width={120}>{data.weight || '--'}</Descriptions.Item>
+        <Descriptions.Item label="材质" width={150}>{ data.material ? data.material.name : '--'}</Descriptions.Item>
+        <Descriptions.Item label="成本">{data.cost || '--'}</Descriptions.Item>
+        <Descriptions.Item label="易损">{data.vulnerability === 0 ? '易损' : '不易损'}</Descriptions.Item>
+
         <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
         <Descriptions.Item label="更新时间">{parts && parts[0] ? parts[0].createTime : '--'}</Descriptions.Item>
+
         <Descriptions.Item
           label="更新用户">{parts && parts[0] ? (parts[0].userResult && parts[0].userResult.name) : '--'}</Descriptions.Item>
       </Descriptions>

@@ -11,6 +11,7 @@ const SpuList = ({index}) => {
   const [attribute, setAttribute] = useState();
 
   const [select, setSelect] = useState();
+  console.log(select);
 
   const {run} = useRequest(spuDetail, {
     manual: true, onSuccess: (res) => {

@@ -61,8 +61,7 @@ export const Contacts = (props) => {
 
   const {customers, customerId, refresh, contact, onChange, ...other} = props;
 
-
-  const data = customers ? customers.map((value, index) => {
+  const data = customers ? customers.map((value) => {
     return {
       label: value.contactsName,
       value: value.contactsId,

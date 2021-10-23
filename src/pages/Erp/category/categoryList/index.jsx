@@ -18,9 +18,12 @@ import CategoryEdit from '../categoryEdit';
 import * as SysField from '../categoryField';
 import Modal from '@/components/Modal';
 import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
+import {createFormActions} from '@formily/antd';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+const formActionsPublic = createFormActions();
 
 const CategoryList = () => {
   const ref = useRef(null);
@@ -48,8 +51,9 @@ const CategoryList = () => {
     <>
       <Table
         contentHeight
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={categoryList}
+        formActions={formActionsPublic}
         rowKey="categoryId"
         searchForm={searchForm}
         actions={actions()}
