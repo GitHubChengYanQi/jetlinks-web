@@ -124,6 +124,7 @@ const Attribute = ({attribute, spuId, ...props}) => {
 
               setArray([...arr, {
                 attribute: items.attribute.attribute,
+                id:items.attribute.attributeId,
                 attributeId: `${items.attribute.attributeId}`,
                 attributeValues: attributeValue
               }]);
