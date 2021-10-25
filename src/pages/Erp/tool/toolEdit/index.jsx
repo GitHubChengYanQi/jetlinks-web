@@ -8,8 +8,11 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {toolDetail, toolAdd, toolEdit} from '../toolUrl';
+import {toolDetail, toolAdd, toolEdit, codingRulesList} from '../toolUrl';
 import * as SysField from '../toolField';
+import {useRequest} from '@/util/Request';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {rulesRelationList} from '@/pages/Erp/codingRules/components/rulesRelation/rulesRelationUrl';
 
 const {FormItem} = Form;
 
@@ -23,26 +26,42 @@ const ToolEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const {loading, data} = useRequest(rulesRelationList, {
+    defaultParams: {
+      data: {
+        moduleId: 1
+      }
+    }
+  });
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
+
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="toolId"
-    >
-      <FormItem label="工具名称" name="name" component={SysField.Name} required/>
-      <FormItem label="工具状态" name="state" component={SysField.State} required/>
-      <FormItem label="备注" name="note" component={SysField.Note} required/>
-      <FormItem label="附件" name="attachment" component={SysField.Attachment} required/>
-      <FormItem label="单位id" name="unitId" component={SysField.UnitId} required/>
-      <FormItem label="工具分类id" name="toolClassificationId" component={SysField.ToolClassificationId} required/>
-      <FormItem label="创建者" name="createUser" component={SysField.CreateUser} required/>
-      <FormItem label="修改者" name="updateUser" component={SysField.UpdateUser} required/>
-      <FormItem label="创建时间" name="createTime" component={SysField.CreateTime} required/>
-      <FormItem label="修改时间" name="updateTime" component={SysField.UpdateTime} required/>
-      <FormItem label="状态" name="display" component={SysField.Display} required/>
-      <FormItem label="部门id" name="deptId" component={SysField.DeptId} required/>
-    </Form>
+    <div style={{padding: 16}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="toolId"
+      >
+        <FormItem
+          label="工具编号"
+          name="coding"
+          component={SysField.Coding}
+          codingId={data && data[0] ? data[0].codingRulesId : null}
+          required
+        />
+        <FormItem label="工具名称" name="name" component={SysField.Name} required />
+        <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
+        <FormItem label="工具分类" name="toolClassificationId" component={SysField.ToolClassificationId} required />
+        <FormItem label="工具状态" name="state" value={0} component={SysField.State} required />
+        <FormItem label="备注说明" name="note" component={SysField.Note}  />
+        <FormItem label="工具说明书" name="attachment" component={SysField.Attachment}  />
+        <FormItem label="工具操作规范" name="norm" component={SysField.Tool} />
+      </Form>
+    </div>
   );
 };
 

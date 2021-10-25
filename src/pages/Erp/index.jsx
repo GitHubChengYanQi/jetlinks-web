@@ -9,6 +9,7 @@ import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 import SetView from '@/layouts/SetView';
 import CategoryList from '@/pages/Erp/category/categoryList';
 import CodingRulesList from '@/pages/Erp/codingRules/codingRulesList';
+import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -32,6 +33,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <UnitList />;
       case 'bmgl':
         return <CodingRulesList />;
+      case 'gjflgl':
+        return <ToolClassificationList />;
       default:
         return null;
     }
@@ -73,6 +76,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           </Menu.Item>
           <Menu.Item key="bmgl">
             <span>编码规则管理</span>
+          </Menu.Item>
+          <Menu.Item key="gjflgl">
+            <span>工具分类管理</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />

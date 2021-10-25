@@ -18,9 +18,12 @@ import AttributeValuesEdit from '../attributeValuesEdit';
 import * as SysField from '../attributeValuesField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {Number} from '../attributeValuesField';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const AttributeValuesList = (props) => {
 
@@ -51,8 +54,9 @@ const AttributeValuesList = (props) => {
     <>
       <Table
         contentHeight
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='属性值管理' />}
         api={attributeValuesList}
+        formActions={formActionsPublic}
         rowKey="attributeValuesId"
         searchForm={searchForm}
         actions={actions()}

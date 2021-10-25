@@ -29,20 +29,11 @@ const DeliveryList = () => {
   const ref = useRef(null);
   const history = useHistory();
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
 
   const searchForm = () => {
     return (
       <>
-        <FormItem label="出库单id" name="outstockOrderId" component={SysField.OutstockOrderId} />
+        <FormItem style={{width:200}} label="客户" name="customerId" component={SysField.Customer} />
       </>
     );
   };
@@ -99,19 +90,6 @@ const DeliveryList = () => {
           );
         }}/>
         <Column title="发货时间" dataIndex="createTime" />
-        <Column />
-        {/*<Column title="操作" align="right" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      <EditButton onClick={() => {*/}
-        {/*        ref.current.open(record.deliveryId);*/}
-        {/*      }} />*/}
-        {/*      <DelButton api={deliveryDelete} value={record.deliveryId} onSuccess={() => {*/}
-        {/*        tableRef.current.refresh();*/}
-        {/*      }} />*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}} width={300} />*/}
       </Table>
       <Drawer width={800} title="编辑" component={DeliveryEdit} onSuccess={() => {
         tableRef.current.refresh();

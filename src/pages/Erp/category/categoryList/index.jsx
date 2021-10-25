@@ -51,7 +51,7 @@ const CategoryList = () => {
     <>
       <Table
         contentHeight
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='类目管理' />}
         api={categoryList}
         formActions={formActionsPublic}
         rowKey="categoryId"

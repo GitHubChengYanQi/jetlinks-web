@@ -35,3 +35,26 @@ export const toolList = {
   rowKey:'toolId'
 };
 
+
+export const toolClassificationListSelect = {
+  url: '/toolClassification/listSelect',
+  method: 'POST',
+};
+
+
+export const unitListSelect = {
+  url: '/unit/listSelect',
+  method: 'POST',
+  rowKey:'unitId'
+};
+
+
+export const codingRulesListSelect = {
+  url: '/codingRules/listSelect',
+  method: 'POST',
+};
+
+export const codingRulesList = {
+  url: '/codingRules/list',
+  method: 'POST',
+};

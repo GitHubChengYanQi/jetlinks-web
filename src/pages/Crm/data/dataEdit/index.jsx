@@ -24,8 +24,6 @@ const DataEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const [fileName, setFileName] = useState();
-
   return (
     <Form
       {...props}
@@ -35,9 +33,7 @@ const DataEdit = ({...props}) => {
     >
       <FormItem label="资料名称" name="name" component={SysField.Name} required  />
       <FormItem label="内容" name="content" component={SysField.Content} required />
-      <FormItem label="上传附件" name="attachment" component={SysField.Attachment} fileName={(value) => {
-        setFileName(value);
-      }} />
+      <FormItem label="上传附件" name="attachment" component={SysField.Attachment} />
       <FormItem label="产品" name="itemId" component={SysField.ItemIds} required />
       <FormItem label="产品资料分类" name="dataClassificationId" component={SysField.DataClassificationId} required />
     </Form>
