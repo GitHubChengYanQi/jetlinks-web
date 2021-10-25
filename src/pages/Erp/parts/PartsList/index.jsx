@@ -50,7 +50,7 @@ const PartsList = (props) => {
 
   const openNotificationWithIcon = type => {
     notification[type]({
-      message: '保存成功！',
+      message: type === 'success' ? '保存成功！' : '删除成功！',
     });
   };
 
@@ -141,6 +141,7 @@ const PartsList = (props) => {
                             style={{float: 'right'}}
                             icon={<DeleteOutlined />}
                             onClick={() => {
+                              setTrue();
                               onRemove(index);
                             }}
                             danger
