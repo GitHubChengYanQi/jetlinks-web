@@ -107,7 +107,7 @@ const CustomerDetail = () => {
           <Button
             style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {
-              history.push(`/CRM/business`);
+              history.push('/CRM/business');
             }}><Icon type="icon-back" />返回</Button>
           <Button
             style={params.state === 'false' ? null : {'display': 'none'}}

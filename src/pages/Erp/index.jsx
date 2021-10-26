@@ -10,6 +10,7 @@ import SetView from '@/layouts/SetView';
 import CategoryList from '@/pages/Erp/category/categoryList';
 import CodingRulesList from '@/pages/Erp/codingRules/codingRulesList';
 import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
+import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -35,6 +36,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <CodingRulesList />;
       case 'gjflgl':
         return <ToolClassificationList />;
+      case 'wlfl':
+        return <SpuClassificationList />;
       default:
         return null;
     }
@@ -79,6 +82,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           </Menu.Item>
           <Menu.Item key="gjflgl">
             <span>工具分类管理</span>
+          </Menu.Item>
+          <Menu.Item key="wlfl">
+            <span>物料分类管理</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />

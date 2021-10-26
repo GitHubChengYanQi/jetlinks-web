@@ -96,14 +96,16 @@ const SpuEdit = (props) => {
                 <ProCard title="基础信息" className="h2Card" headerBordered>
                   <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />
                   <FormItem label="产品名字" name="name" component={SysField.Name} required />
+                  <FormItem label="型号" name="model" component={SysField.Class} required />
                   <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
+                  <FormItem label="分类" name="spuClassificationId" component={SysField.SpuClass} required />
                   <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
-                  <FormItem label="质保期" name="shelfLife" component={SysField.ShelfLife} required />
                   <FormItem label="养护周期" name="curingCycle" component={SysField.CuringCycle} required />
                 </ProCard>
               </Col>
               <Col span={12}>
                 <ProCard title="详细信息" className="h2Card" headerBordered>
+                  <FormItem label="质保期" name="shelfLife" component={SysField.ShelfLife} />
                   <FormItem label="材质名称" name="materialId" component={SysField.MaterialId} />
                   <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} />
                   <FormItem label="重要程度" name="important" component={SysField.Important} />

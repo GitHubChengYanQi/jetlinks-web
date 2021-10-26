@@ -81,7 +81,7 @@ const SpuList = () => {
             </>
           );
         }} sorter/>
-        <Column title="质保期" width={120} align='center' dataIndex="shelfLife" sorter/>
+        <Column title="型号" width={120} dataIndex="model" sorter/>
         <Column title="生产类型" width={120} align='center' dataIndex="productionType" render={(value)=>{
           switch (value){
             case 0:

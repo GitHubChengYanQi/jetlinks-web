@@ -1,33 +1,20 @@
 import * as SysField from '@/pages/Erp/parts/PartsField';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {FormItem} = Form;
 
+
 const SpuList = ({index}) => {
 
-  const [attribute, setAttribute] = useState();
+  const [select,setSelect] = useState();
 
-  const [select, setSelect] = useState();
-
-  useEffect(()=>{
-    return ()=>{
-
-    };
-  },[]);
-
-  const {run} = useRequest(spuDetail, {
-    manual: true, onSuccess: (res) => {
-      if (res.attribute) {
-        const attribute = JSON.parse(res.attribute);
-        if (attribute){
-          setAttribute(attribute);
-        }
-      }
-    }
+  const {data,run} = useRequest(spuDetail, {
+    manual: true
   });
+
 
   return (
     <>
@@ -40,11 +27,13 @@ const SpuList = ({index}) => {
           setSelect(value);
         }}
         spuId={(value) => {
-          run({
-            data: {
-              spuId: value
-            }
-          });
+          if (value){
+            run({
+              data: {
+                spuId: value
+              }
+            });
+          }
         }}
         required
       />
@@ -52,7 +41,7 @@ const SpuList = ({index}) => {
         labelCol={7}
         label="规格描述"
         name={`parts.${index}.partsAttributes`}
-        attribute={attribute || []}
+        attribute={data && data.attribute || []}
         select={select}
         component={SysField.Remake}
       />

@@ -57,13 +57,23 @@ export const Remake = (props) => {
 
   const {attribute, select,...other} = props;
 
-  return (<SpuAttribute attribute={attribute} select={select} {...other} />);
+  const attributes = typeof attribute === 'string' && JSON.parse(attribute);
+
+  return (<SpuAttribute attribute={attributes} select={select} {...other} />);
 };
 
 export const Number = (props) => {
   return (<InputNumber min={0}   {...props} />);
 };
 
+export const PartName = (props) => {
+  return (<Input {...props} />);
+};
+
 export const brandName = (props) => {
+  return (<Input   {...props} />);
+};
+
+export const Spu = (props) => {
   return (<Input   {...props} />);
 };

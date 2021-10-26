@@ -75,7 +75,7 @@ const ItemAttributeList = (props) => {
           );
         }} />
 
-        <Column />
+        <Column dataIndex='sort' title='排序' />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

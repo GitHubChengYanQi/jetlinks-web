@@ -73,6 +73,7 @@ const CategoryList = () => {
             </Button>
           );
         }} />
+        <Column title="排序" dataIndex="sort" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

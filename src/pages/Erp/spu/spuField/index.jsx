@@ -12,7 +12,7 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../spuUrl';
 import DatePicker from '@/components/DatePicker';
-import {categoryList, categoryTree, unitListSelect} from '../spuUrl';
+import {categoryList, categoryTree, spuClassificationListSelect, unitListSelect} from '../spuUrl';
 import Attribute from '@/pages/Erp/spu/components/Attribute';
 
 export const Name = (props) =>{
@@ -43,10 +43,17 @@ export const MaterialId = (props) =>{
 export const Cost = (props) =>{
   return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;元</>);
 };
+
+export const SpuClass = (props) =>{
+  return (<Select api={apiUrl.spuClassificationListSelect} {...props} />);
+};
 export const Vulnerability = (props) =>{
   return (<AntdSelect style={{width:200}} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
 };
 export const DeptId = (props) =>{
+  return (<Input {...props}/>);
+};
+export const Class = (props) =>{
   return (<Input {...props}/>);
 };
 export const ClassId = (props) =>{

@@ -9,18 +9,8 @@ const {FormItem} = Form;
 
 const OrderSpus = ({index}) => {
 
-  const [attribute, setAttribute] = useState([]);
-  const [select, setSelect] = useState();
-
-  const {run} = useRequest(spuDetail, {
-    manual: true, onSuccess: (res) => {
-      if (res.attribute) {
-        const attribute = JSON.parse(res.attribute);
-        if (attribute){
-          setAttribute(attribute);
-        }
-      }
-    }
+  const {data,run} = useRequest(spuDetail, {
+    manual: true
   });
 
   return (
@@ -31,7 +21,7 @@ const OrderSpus = ({index}) => {
           name={`orderDetail.${index}.spuId`}
           component={SysField.SpuId}
           select={(value)=>{
-            setSelect(value);
+
           }}
           spuId={(value)=>{
             run({
@@ -46,9 +36,9 @@ const OrderSpus = ({index}) => {
       <div style={{display:'inline-block',width:'30%'}}>
         <FormItem
           label="规格描述"
-          attribute={attribute}
           name={`orderDetail.${index}.sku`}
-          select={select}
+          attribute={data && data.attribute || []}
+          select
           component={SysField.SkuId}
         />
       </div>

@@ -29,7 +29,7 @@ export const Money = (props) => {
 };
 
 export const Customer = (props) => {
-  return (<Select api={apiUrl.customerListSelect} {...props}/>);
+  return (<Select api={apiUrl.customerListSelect} {...props} />);
 };
 export const CreateTime = (props) => {
   return (<Input {...props} />);
@@ -52,22 +52,22 @@ export const DeptId = (props) => {
 
 export const SkuId = (props) => {
 
-  const {attribute,select,...other} = props;
-
- return (<SpuAttribute attribute={attribute} select={select} {...other} />);
+  const {attribute, select, ...other} = props;
+  const attributes = typeof attribute === 'string' && JSON.parse(attribute);
+  return (<SpuAttribute attribute={attributes} select={select} {...other} />);
 };
 
 export const SpuId = (props) => {
 
-  const {onChange,spuId,select,...other} = props;
+  const {onChange, spuId, select, ...other} = props;
 
-  useEffect(()=>{
-    if (props.value){
+  useEffect(() => {
+    if (props.value) {
       typeof spuId === 'function' && spuId(props.value);
     }
-  },[]);
+  }, []);
 
-  return (<Select api={apiUrl.spuListSelect} {...other} onChange={(value)=>{
+  return (<Select api={apiUrl.spuListSelect} {...other} onChange={(value) => {
     typeof onChange === 'function' && onChange(value);
     typeof spuId === 'function' && spuId(value);
     typeof select === 'function' && select(value);
