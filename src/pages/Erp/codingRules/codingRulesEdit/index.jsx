@@ -60,6 +60,7 @@ const CodingRulesEdit = ({...props}) => {
             {/* eslint-disable-next-line no-template-curly-in-string */}
             <li> {'当前季度：${quarter}'}</li>
           </ul>
+          <p style={{"color":"red"}}>请严谨设置编码规则，避免生成编码重复！！！</p>
         </Collapse.Panel>
       </Collapse>
     </Form>
