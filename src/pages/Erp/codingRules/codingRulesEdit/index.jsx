@@ -42,15 +42,19 @@ const CodingRulesEdit = ({...props}) => {
         <Collapse.Panel header="规则变量" key="1">
           <ul className={styles.var}>
             {/* eslint-disable-next-line no-template-curly-in-string */}
-            <li> {'年：${year}'} </li>
+            <li> {'年（四位数）：${YYYY}'} </li>
             {/* eslint-disable-next-line no-template-curly-in-string */}
-            <li> {'月：${month}'}</li>
+            <li> {'年（两位数）：${YY}'} </li>
+            {/* eslint-disable-next-line no-template-curly-in-string */}
+            <li> {'月：${MM}'}</li>
+            {/* eslint-disable-next-line no-template-curly-in-string */}
+            <li> {'日：${dd}'}</li>
             {/* eslint-disable-next-line no-template-curly-in-string */}
             <li> {'随机数：${randomInt}'}  </li>
             {/* eslint-disable-next-line no-template-curly-in-string */}
             <li> {'随机字符串：${randomString}'} </li>
             {/* eslint-disable-next-line no-template-curly-in-string */}
-            <li> {'当前日期所属年份的第几周：${weekOfYear}'}</li>
+            <li> {'当前日期所属年份的第几周：${week}'}</li>
             {/* eslint-disable-next-line no-template-curly-in-string */}
             <li> {'随机字符串：${randomString}'} </li>
             {/* eslint-disable-next-line no-template-curly-in-string */}
