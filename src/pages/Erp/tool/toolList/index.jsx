@@ -61,8 +61,20 @@ const ToolList = () => {
             <BadgeState state={value} text={['启用', '停用']} color={['green', 'red']} />
           );
         }} />
-        <Column title="单位" dataIndex="unitId" />
-        <Column title="工具分类" dataIndex="toolClassificationId" />
+        <Column title="单位" dataIndex="unitId" render={(text, value) => {
+          return (
+            <>
+              {value.unitResult && value.unitResult.unitName}
+            </>
+          );
+        }} />
+        <Column title="工具分类" dataIndex="toolClassificationId" render={(text, value) => {
+          return (
+            <>
+              {value.toolClassificationResult && value.toolClassificationResult.name}
+            </>
+          );
+        }}/>
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
