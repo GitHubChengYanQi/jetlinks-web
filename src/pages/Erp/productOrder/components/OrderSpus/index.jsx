@@ -10,9 +10,6 @@ const {FormItem} = Form;
 
 const OrderSpus = ({index}) => {
 
-  const [select,setSelect] = useSafeState();
-  const [data,setData] = useSafeState();
-
   return (
     <>
       <div style={{display:'inline-block',width:'30%'}}>
@@ -20,12 +17,6 @@ const OrderSpus = ({index}) => {
           label="商品名称"
           name={`orderDetail.${index}.spuId`}
           component={SysField.SpuId}
-          select={(value)=>{
-            setSelect(value);
-          }}
-          spuId={(value)=>{
-            setData(value);
-          }}
           required
         />
       </div>
@@ -33,8 +24,6 @@ const OrderSpus = ({index}) => {
         <FormItem
           label="规格描述"
           name={`orderDetail.${index}.sku`}
-          attribute={data || []}
-          select={select}
           component={SysField.SkuId}
         />
       </div>

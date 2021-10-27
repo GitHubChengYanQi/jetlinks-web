@@ -67,37 +67,15 @@ export const DeptId = (props) => {
 export const SkuId = (props) => {
 
   const {attribute, select, ...other} = props;
-  const attributes = typeof attribute === 'string' && JSON.parse(attribute);
-  return (<SpuAttribute attribute={attributes} select={select} {...other} />);
+  return (<SpuAttribute attribute={attribute} select={select} {...other} />);
 };
 
 export const SpuId = (props) => {
-
-
-  const {data, onChange, select, ...other} = props;
-
-  const {run} = useRequest(spuDetail, {
-    manual: true,
-    onSuccess:(res)=>{
-      if (res.attribute) {
-        const attribute = JSON.parse(res.attribute);
-        if (attribute){
-          typeof data === 'function' && data(attribute);
-        }
-      }
-    }
-  });
+  const { onChange,select, ...other} = props;
 
   return (<SelectSpu
-    select={(value) => {
-      typeof select === 'function' && select(value);
-    }}
     onChange={async (value) => {
-      await run({
-        data: {
-          spuId: value
-        }
-      });
+      select(value);
       onChange(value);
     }}
     {...other} />);

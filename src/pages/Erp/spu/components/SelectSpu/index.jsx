@@ -6,7 +6,7 @@ import Select from '@/components/Select';
 import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
-const SelectSpu = ({onChange,select,...props}) => {
+const SelectSpu = ({onChange,...props}) => {
 
   const {data, run} = useRequest(spuListSelect);
 
@@ -52,18 +52,11 @@ const SelectSpu = ({onChange,select,...props}) => {
             filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             onChange={(value) => {
               onChange(value);
-              typeof select === 'function' && select(value);
             }} />
         </div>
       </Space>
     </Space>
   );
-
-  useEffect(() => {
-    if (props.value) {
-      onChange(props.value);
-    }
-  }, []);
 
   return (<Popover placement="bottomLeft" content={content} trigger="click">
     <AntdSelect

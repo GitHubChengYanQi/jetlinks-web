@@ -1,17 +1,10 @@
 import * as SysField from '@/pages/Erp/parts/PartsField';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Form from '@/components/Form';
-import {useReactive, useSafeState} from 'ahooks';
 
 const {FormItem} = Form;
 
-
 const SpuList = ({index}) => {
-
-  const [select,setSelect] = useSafeState();
-  const [data,setData] = useSafeState();
-  console.log(select,data);
-
 
   return (
     <>
@@ -20,20 +13,12 @@ const SpuList = ({index}) => {
         label="物料名称"
         name={`parts.${index}.spuId`}
         component={SysField.SpuId}
-        select={(value)=>{
-          setSelect(value);
-        }}
-        data={(value) => {
-          setData(value);
-        }}
         required
       />
       <FormItem
         labelCol={7}
         label="规格描述"
         name={`parts.${index}.partsAttributes`}
-        attribute={data || []}
-        select={select}
         component={SysField.Remake}
       />
       <FormItem

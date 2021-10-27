@@ -11,11 +11,12 @@ import {Button, notification, Steps} from 'antd';
 import {partsDetail, partsAdd, partsEdit, partsList} from '../PartsUrl';
 import * as SysField from '../PartsField';
 import {useBoolean} from 'ahooks';
-import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
+import {createFormActions, FieldList, FormEffectHooks, FormPath} from '@formily/antd';
 import styled from 'styled-components';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
 import {useRequest} from '@/util/Request';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {FormItem} = Form;
 
@@ -38,6 +39,8 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
+const { onFieldValueChange$ } = FormEffectHooks;
+
 const PartsEdit = ({...props}) => {
 
   const [add, {setTrue, setFalse}] = useBoolean();
@@ -48,11 +51,13 @@ const PartsEdit = ({...props}) => {
     });
   };
 
-
-  const {onFieldValueChange$} = FormEffectHooks;
-
-
   const formRef = useRef(null);
+
+  const {run} = useRequest(spuDetail, {
+    manual: true
+  });
+
+
 
   return (
     <div style={{padding: 16}}>
@@ -67,10 +72,32 @@ const PartsEdit = ({...props}) => {
           openNotificationWithIcon('success');
           props.onSuccess();
         }}
-        effect={() => {
-          // onFieldValueChange$('parts.*.spuId').subscribe((observer) => {
-          //   console.log(observer);
-          // });
+        effects={({ setFieldState }) => {
+          onFieldValueChange$('parts.*.spuId').subscribe(async (value) => {
+            if (value.value){
+              const data = await run({
+                data: {
+                  spuId: value.value
+                }
+              });
+
+              if (data.attribute) {
+                const attribute = JSON.parse(data.attribute);
+                setFieldState(
+                  FormPath.transform(value.name, /\d/, $1 => {
+                    return `parts.${$1}.partsAttributes`;
+                  }),
+                  state =>{
+                    if (value.active){
+                      state.props.select = value;
+                    }
+                    state.props.attribute = attribute;
+                  }
+                );
+              }
+            }
+
+          });
         }}
       >
         <FieldList
