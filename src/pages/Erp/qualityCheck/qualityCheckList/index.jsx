@@ -56,7 +56,13 @@ const QualityCheckList = () => {
       >
         <Column title="名称" dataIndex="name" />
         <Column title="简称" dataIndex="simpleName" />
-        <Column title="质检分类" dataIndex="qualityCheckClassificationId" />
+        <Column title="质检分类" dataIndex="qualityCheckClassificationId" render={(value,record)=>{
+          return (
+            <>
+            {record.qualityCheckClassificationResult && record.qualityCheckClassificationResult.name}
+            </>
+          );
+        }}/>
         <Column title="工具" dataIndex="tool" render={(value,record)=>{
           return (
             <>
