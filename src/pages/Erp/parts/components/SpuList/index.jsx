@@ -8,14 +8,9 @@ const {FormItem} = Form;
 
 const SpuList = ({index}) => {
 
-  // const [select,setSelect] = useSafeState();
-  // const [data,setData] = useSafeState();
-  // console.log(select,data);
-
-  const state = useReactive({
-    select: {},
-    data: {},
-  });
+  const [select,setSelect] = useSafeState();
+  const [data,setData] = useSafeState();
+  console.log(select,data);
 
 
   return (
@@ -26,10 +21,10 @@ const SpuList = ({index}) => {
         name={`parts.${index}.spuId`}
         component={SysField.SpuId}
         select={(value)=>{
-          state.select = value;
+          setSelect(value);
         }}
         data={(value) => {
-          state.data = value;
+          setData(value);
         }}
         required
       />

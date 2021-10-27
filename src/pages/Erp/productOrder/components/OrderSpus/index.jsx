@@ -4,16 +4,14 @@ import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import * as SysField from '../../productOrderField';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
+import {useSafeState} from 'ahooks';
 
 const {FormItem} = Form;
 
 const OrderSpus = ({index}) => {
 
-  const [select,setSelect] = useState();
-
-  const {data,run} = useRequest(spuDetail, {
-    manual: true
-  });
+  const [select,setSelect] = useSafeState();
+  const [data,setData] = useSafeState();
 
   return (
     <>
@@ -26,11 +24,7 @@ const OrderSpus = ({index}) => {
             setSelect(value);
           }}
           spuId={(value)=>{
-            run({
-              data:{
-                spuId:value
-              }
-            });
+            setData(value);
           }}
           required
         />
@@ -39,7 +33,7 @@ const OrderSpus = ({index}) => {
         <FormItem
           label="规格描述"
           name={`orderDetail.${index}.sku`}
-          attribute={data && data.attribute || []}
+          attribute={data || []}
           select={select}
           component={SysField.SkuId}
         />

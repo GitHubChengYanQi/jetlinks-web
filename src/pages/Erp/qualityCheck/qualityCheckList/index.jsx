@@ -57,7 +57,21 @@ const QualityCheckList = () => {
         <Column title="名称" dataIndex="name" />
         <Column title="简称" dataIndex="simpleName" />
         <Column title="质检分类" dataIndex="qualityCheckClassificationId" />
-        <Column title="工具" dataIndex="tool" />
+        <Column title="工具" dataIndex="tool" render={(value,record)=>{
+          return (
+            <>
+              {
+                record.tools && record.tools.map((items,index)=>{
+                  if (index === record.tools.length - 1 ){
+                    return <span key={index}>{items.name}</span>;
+                  }else {
+                    return <span key={index}>{items.name}&nbsp;，&nbsp;</span>;
+                  }
+                })
+              }
+            </>
+          );
+        }} />
         <Column title="备注" dataIndex="note" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

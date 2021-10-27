@@ -38,7 +38,7 @@ const QualityCheckEdit = ({...props}) => {
           name="qualityCheckClassificationId"
           component={SysField.QualityCheckClassificationId}
           required />
-        <FormItem label="工具" name="tool" component={SysField.Tool}  />
+        <FormItem label="工具" name="tools" component={SysField.Tool}  />
         <FormItem label="备注" name="note" component={SysField.Note}  />
         <FormItem label="规范" name="norm" component={SysField.Norm}  />
         <FormItem label="附件" name="attachment" component={SysField.Attachment}  />

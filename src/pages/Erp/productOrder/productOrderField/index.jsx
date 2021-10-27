@@ -29,7 +29,7 @@ import SkuList from '@/pages/Erp/productOrder/components/SkuList';
 import SpuAttribute from '@/pages/Erp/parts/components/SpuAttribute';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 import {useRequest} from '@/util/Request';
-import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
+import {spuClassificationListSelect, spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 
 export const Number = (props) => {
@@ -73,16 +73,32 @@ export const SkuId = (props) => {
 
 export const SpuId = (props) => {
 
-  const {onChange, spuId, select, ...other} = props;
+
+  const {data, onChange, select, ...other} = props;
+
+  const {run} = useRequest(spuDetail, {
+    manual: true,
+    onSuccess:(res)=>{
+      if (res.attribute) {
+        const attribute = JSON.parse(res.attribute);
+        if (attribute){
+          typeof data === 'function' && data(attribute);
+        }
+      }
+    }
+  });
 
   return (<SelectSpu
     select={(value) => {
       typeof select === 'function' && select(value);
     }}
-    onChange={(value) => {
+    onChange={async (value) => {
+      await run({
+        data: {
+          spuId: value
+        }
+      });
       onChange(value);
     }}
-    spuId={(value) => {
-      typeof spuId === 'function' && spuId(value);
-    }} {...other} />);
+    {...other} />);
 };
