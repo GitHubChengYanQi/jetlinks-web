@@ -4,36 +4,27 @@ import Form from '@/components/Form';
 
 const {FormItem} = Form;
 
-const SpuList = ({index}) => {
+const SpuList = ({spuLabel,style, skuLabel, spuName, skusName}) => {
 
   return (
     <>
-      <FormItem
-        labelCol={7}
-        label="物料名称"
-        name={`parts.${index}.spuId`}
-        component={SysField.SpuId}
-        required
-      />
-      <FormItem
-        labelCol={7}
-        label="规格描述"
-        name={`parts.${index}.partsAttributes`}
-        component={SysField.Remake}
-      />
-      <FormItem
-        labelCol={7}
-        label="数量"
-        name={`parts.${index}.number`}
-        component={SysField.Number}
-        required
-      />
-      <FormItem
-        labelCol={7}
-        label="备注"
-        name={`parts.${index}.note`}
-        component={SysField.Name}
-      />
+      <div style={style || {display:'inline-block'}}>
+        <FormItem
+          labelCol={7}
+          label={spuLabel}
+          name={spuName}
+          component={SysField.SpuId}
+          required
+        />
+      </div>
+      <div style={style || {display:'inline-block'}}>
+        <FormItem
+          labelCol={7}
+          label={skuLabel}
+          name={skusName}
+          component={SysField.Remake}
+        />
+      </div>
     </>
   );
 };

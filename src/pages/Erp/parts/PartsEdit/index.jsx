@@ -39,7 +39,7 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-const { onFieldValueChange$ } = FormEffectHooks;
+const {onFieldValueChange$} = FormEffectHooks;
 
 const PartsEdit = ({...props}) => {
 
@@ -58,7 +58,6 @@ const PartsEdit = ({...props}) => {
   });
 
 
-
   return (
     <div style={{padding: 16}}>
       <Form
@@ -72,9 +71,9 @@ const PartsEdit = ({...props}) => {
           openNotificationWithIcon('success');
           props.onSuccess();
         }}
-        effects={({ setFieldState }) => {
+        effects={({setFieldState}) => {
           onFieldValueChange$('parts.*.spuId').subscribe(async (value) => {
-            if (value.value){
+            if (value.value) {
               const data = await run({
                 data: {
                   spuId: value.value
@@ -87,8 +86,8 @@ const PartsEdit = ({...props}) => {
                   FormPath.transform(value.name, /\d/, $1 => {
                     return `parts.${$1}.partsAttributes`;
                   }),
-                  state =>{
-                    if (value.active){
+                  state => {
+                    if (value.active) {
                       state.props.select = value;
                     }
                     state.props.attribute = attribute;
@@ -116,7 +115,26 @@ const PartsEdit = ({...props}) => {
                   return (
                     <RowStyleLayout key={index}>
 
-                      <SpuList index={index} />
+                      <SpuList
+                        spuLabel="物料名称"
+                        skuLabel="规格描述"
+                        spuName={`parts.${index}.spuId`}
+                        index={index}
+                        skusName={`parts.${index}.partsAttributes`} />
+
+                      <FormItem
+                        labelCol={7}
+                        label="数量"
+                        name={`parts.${index}.number`}
+                        component={SysField.Number}
+                        required
+                      />
+                      <FormItem
+                        labelCol={7}
+                        label="备注"
+                        name={`parts.${index}.note`}
+                        component={SysField.Name}
+                      />
 
                       <Button
                         type="link"
