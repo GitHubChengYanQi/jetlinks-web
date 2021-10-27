@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const DeliveryRouter = [
   {
     path: '/delivery',
+    name: '发货管理',
     component: lazy(() => import('../deliveryList')),
     fallback: <div>loading...</div>,
     exact: true,

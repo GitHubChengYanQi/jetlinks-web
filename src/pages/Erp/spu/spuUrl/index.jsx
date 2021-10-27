@@ -52,4 +52,8 @@ export const unitListSelect = {
   method: 'POST',
   rowKey:'unitId'
 };
+export const spuClassificationListSelect = {
+  url: '/spuClassification/listSelect',
+  method: 'POST',
+};
 

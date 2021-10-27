@@ -32,6 +32,7 @@ const CategoryEdit = ({...props}) => {
     >
       <FormItem label="上级类目" name="pid" component={SysField.Pid} required/>
       <FormItem label="物品类目名称" name="categoryName" component={SysField.CategoryName} required/>
+      <FormItem label="排序" name="sort" component={SysField.Scort} required/>
     </Form>
   );
 };

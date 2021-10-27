@@ -16,9 +16,9 @@ import {spuListSelect} from '../PartsUrl';
 import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/parts/components/Attribute';
 import SpuAttribute from '@/pages/Erp/parts/components/SpuAttribute';
-
-
-const w = 200;
+import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
+import {useRequest} from '@/util/Request';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 export const ItemId = (props) => {
   return (<Select api={apiUrl.itemIdSelect} {...props} />);
@@ -37,21 +37,14 @@ export const Name = (props) => {
 
 export const SpuId = (props) => {
 
-  const {spuId, onChange, select, ...other} = props;
+  const { onChange, ...other} = props;
 
-  useEffect(() => {
-    if (props.value) {
-      typeof spuId === 'function' && spuId(props.value);
-    }
-  }, []);
-
-  return (<Select api={apiUrl.spuListSelect} onChange={(value) => {
-    typeof spuId === 'function' && spuId(value);
-    onChange(value);
-    typeof select === 'function' && select(value);
-  }} {...other} />);
+  return (<SelectSpu
+    onChange={async (value) => {
+      onChange(value);
+    }}
+    {...other} />);
 };
-
 
 export const Remake = (props) => {
 
@@ -64,6 +57,14 @@ export const Number = (props) => {
   return (<InputNumber min={0}   {...props} />);
 };
 
+export const PartName = (props) => {
+  return (<Input {...props} />);
+};
+
 export const brandName = (props) => {
+  return (<Input   {...props} />);
+};
+
+export const Spu = (props) => {
   return (<Input   {...props} />);
 };

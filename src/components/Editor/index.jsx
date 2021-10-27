@@ -10,7 +10,6 @@ const Editor = ({onChange, onBlur, value, template, imgUploadProps, ...props}, r
   useEffect(() => {
     if (editorRef.current) {
       editorRef.current.editor.txt.html(value);
-
     }
 
   }, [value]);
@@ -117,7 +116,7 @@ const Editor = ({onChange, onBlur, value, template, imgUploadProps, ...props}, r
         </Row>
       </>}
       <ReactWEditor
-        placeholder="自定义 placeholder"
+        placeholder=""
         ref={editorRef}
         defaultValue={value}
         linkImgCallback={(src, alt, href) => {
@@ -130,10 +129,10 @@ const Editor = ({onChange, onBlur, value, template, imgUploadProps, ...props}, r
           // 插入网络视频的回调事件
         }}
         onChange={(html) => {
-          console.log(html);
+          onChange(html);
         }}
         onBlur={(html) => {
-          onChange(html);
+          // onChange(html);
         }}
         onFocus={(html) => {
         }}

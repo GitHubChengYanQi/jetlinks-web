@@ -32,7 +32,6 @@ import {useHistory, useParams} from 'ice';
 import {AttributeId} from '../spuField';
 
 const {FormItem} = Form;
-const {Column} = AntTable;
 
 const ApiConfig = {
   view: spuDetail,
@@ -67,66 +66,70 @@ const SpuEdit = (props) => {
 
 
   return (
-    <div style={{padding: 16}}>
+    <div style={{padding: 16, paddingLeft: 0, paddingTop: 0}}>
       <Card title={params ? '编辑物料信息' : '添加物料信息'} bordered={false}>
-        <Form
-          NoButton={false}
-          value={params || false}
-          ref={formRef}
-          api={ApiConfig}
-          fieldKey="spuId"
-          effect={() => {
-            onFieldValueChange$('categoryId').subscribe(({value}) => {
-              if (value !== undefined && value !== '0') {
-                run({
-                  data: {
-                    categoryId: value
-                  }
-                });
-              }
-            });
-          }}
-          onSuccess={() => {
-            openNotificationWithIcon('success');
-            history.push('/ERP/spu');
-          }}
-        >
-          <Row gutter={24}>
-            <Col span={12}>
-              <ProCard title="基础信息" className="h2Card" headerBordered>
-                <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />
-                <FormItem label="产品名字" name="name" component={SysField.Name} required />
-                <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
-                <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
-                <FormItem label="质保期" name="shelfLife" component={SysField.ShelfLife} required />
-                <FormItem label="养护周期" name="curingCycle" component={SysField.CuringCycle} required />
-              </ProCard>
-            </Col>
-            <Col span={12}>
-              <ProCard title="详细信息" className="h2Card" headerBordered>
-                <FormItem label="材质名称" name="materialId" component={SysField.MaterialId} />
-                <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} />
-                <FormItem label="重要程度" name="important" component={SysField.Important} />
-                <FormItem label="产品重量" name="weight" component={SysField.Weight} />
-                <FormItem label="成本" name="cost" component={SysField.Cost} />
-              </ProCard>
-            </Col>
-          </Row>
-
-
-          <ProCard title="属性信息" className="h2Card" headerBordered>
-            {loading ?
-              <div style={{textAlign: 'center'}}><Spin size="large" /></div>
-              :
-              <FormItem name="spuAttributes" component={SysField.Atts} spuId={params} attribute={attribute} />}
-          </ProCard>
-          <div style={{textAlign:'center'}}>
-            <Submit showLoading>保存</Submit>
-            <Button style={{marginLeft: 16}} onClick={() => {
+        <div style={{maxWidth: 1200,margin:'auto'}}>
+          <Form
+            NoButton={false}
+            value={params || false}
+            ref={formRef}
+            api={ApiConfig}
+            fieldKey="spuId"
+            effect={() => {
+              onFieldValueChange$('categoryId').subscribe(({value}) => {
+                if (value !== undefined && value !== '0') {
+                  run({
+                    data: {
+                      categoryId: value
+                    }
+                  });
+                }
+              });
+            }}
+            onSuccess={() => {
+              openNotificationWithIcon('success');
               history.push('/ERP/spu');
-            }}>返回</Button>
-          </div>
-        </Form>
+            }}
+          >
+            <Row gutter={24}>
+              <Col span={12}>
+                <ProCard title="基础信息" className="h2Card" headerBordered>
+                  <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />
+                  <FormItem label="产品名字" name="name" component={SysField.Name} required />
+                  <FormItem label="型号" name="model" component={SysField.Class} required />
+                  <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
+                  <FormItem label="分类" name="spuClassificationId" component={SysField.SpuClass} required />
+                  <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
+                  <FormItem label="养护周期" name="curingCycle" component={SysField.CuringCycle} required />
+                </ProCard>
+              </Col>
+              <Col span={12}>
+                <ProCard title="详细信息" className="h2Card" headerBordered>
+                  <FormItem label="质保期" name="shelfLife" component={SysField.ShelfLife} />
+                  <FormItem label="材质名称" name="materialId" component={SysField.MaterialId} />
+                  <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} />
+                  <FormItem label="重要程度" name="important" component={SysField.Important} />
+                  <FormItem label="产品重量" name="weight" component={SysField.Weight} />
+                  <FormItem label="成本" name="cost" component={SysField.Cost} />
+                </ProCard>
+              </Col>
+            </Row>
+
+
+            <ProCard title="属性信息" className="h2Card" headerBordered>
+              {loading ?
+                <div style={{textAlign: 'center'}}><Spin size="large" /></div>
+                :
+                <FormItem name="spuAttributes" component={SysField.Atts} spuId={params} attribute={attribute} />}
+            </ProCard>
+            <div style={{textAlign: 'center'}}>
+              <Submit showLoading>保存</Submit>
+              <Button style={{marginLeft: 16}} onClick={() => {
+                history.push('/ERP/spu');
+              }}>返回</Button>
+            </div>
+          </Form>
+        </div>
       </Card>
     </div>
   );

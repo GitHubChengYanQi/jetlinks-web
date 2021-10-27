@@ -16,6 +16,8 @@ import {PackageRouter} from '@/pages/Erp/package/packageRouter';
 import {DeliveryRouter} from '@/pages/Erp/delivery/deliveryRouter';
 import {SpuRouter} from '@/pages/Erp/spu/spuRouter';
 import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
+import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
+import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 
 const ErpRouterConfig = [
   {
@@ -38,6 +40,8 @@ const ErpRouterConfig = [
       ...ItemsRouter,
       ...SpuRouter,
       ...ProductOrderRouter,
+      ...ToolRouter,
+      ...QualityCheckRouter,
       {
         redirect: '/ERP/spu',
       }

@@ -6,7 +6,6 @@ import Attribute from '@/pages/Erp/parts/components/Attribute';
 
 const SpuAttribute = ({onChange, select, value, attribute, ...props}) => {
 
-
   useEffect(() => {
     onChange(null);
   }, [select]);

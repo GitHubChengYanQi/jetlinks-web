@@ -50,9 +50,9 @@ const CategoryList = () => {
   return (
     <>
       <Table
-        contentHeight
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='类目管理' />}
         api={categoryList}
+        contentHeight
         formActions={formActionsPublic}
         rowKey="categoryId"
         searchForm={searchForm}
@@ -73,6 +73,7 @@ const CategoryList = () => {
             </Button>
           );
         }} />
+        <Column title="排序" dataIndex="sort" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

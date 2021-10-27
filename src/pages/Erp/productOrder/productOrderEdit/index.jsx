@@ -6,16 +6,17 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, Col, Input, Row} from 'antd';
+import {Button} from 'antd';
 import Form from '@/components/Form';
 import {productOrderDetail, productOrderAdd, productOrderEdit} from '../productOrderUrl';
 import * as SysField from '../productOrderField';
 import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import styled from 'styled-components';
-import OrderSpus from '@/pages/Erp/productOrder/components/OrderSpus';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
+import {useRequest} from '@/util/Request';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import SpuList from '@/pages/Erp/parts/components/SpuList';
 
 const {FormItem} = Form;
 
@@ -25,7 +26,13 @@ const ApiConfig = {
   save: productOrderEdit
 };
 
+const {onFieldValueChange$} = FormEffectHooks;
+
 const ProductOrderEdit = ({...props}) => {
+
+  const {run} = useRequest(spuDetail, {
+    manual: true
+  });
 
   const formRef = useRef();
 
@@ -36,6 +43,33 @@ const ProductOrderEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="productOrderId"
+        effects={({setFieldState}) => {
+          onFieldValueChange$('orderDetail.*.spuId').subscribe(async (value) => {
+            if (value.value) {
+              const data = await run({
+                data: {
+                  spuId: value.value
+                }
+              });
+
+              if (data.attribute) {
+                const attribute = JSON.parse(data.attribute);
+                setFieldState(
+                  FormPath.transform(value.name, /\d/, $1 => {
+                    return `orderDetail.${$1}.sku`;
+                  }),
+                  state => {
+                    if (value.active) {
+                      state.props.select = value;
+                    }
+                    state.props.attribute = attribute;
+                  }
+                );
+              }
+            }
+
+          });
+        }}
       >
         <ProCard className="h2Card" headerBordered title="订单信息">
           <CustomerAll style={{width: 200}} />
@@ -54,7 +88,30 @@ const ProductOrderEdit = ({...props}) => {
                     return (
                       <div key={index}>
 
-                        <OrderSpus index={index} />
+                        <SpuList
+                          style={{display: 'inline-block', width: '30%'}}
+                          spuName={`orderDetail.${index}.spuId`}
+                          spuLabel="商品名称"
+                          skuLabel="规格描述"
+                          index={index}
+                          skusName={`orderDetail.${index}.sku`} />
+
+                        <div style={{display: 'inline-block', width: '18%'}}>
+                          <FormItem
+                            label="数量"
+                            name={`orderDetail.${index}.number`}
+                            component={SysField.Number}
+                            required
+                          />
+                        </div>
+                        <div style={{display: 'inline-block', width: '18%'}}>
+                          <FormItem
+                            label="金额"
+                            name={`orderDetail.${index}.money`}
+                            component={SysField.Money}
+                            required
+                          />
+                        </div>
 
                         <Button
                           type="link"

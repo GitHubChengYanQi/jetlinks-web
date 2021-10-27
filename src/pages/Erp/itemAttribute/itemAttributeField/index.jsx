@@ -33,3 +33,6 @@ export const UpdateTime = (props) =>{
 export const Display = (props) =>{
   return (<Input {...props}/>);
 };
+export const Scort = (props) =>{
+  return (<InputNumber {...props}/>);
+};

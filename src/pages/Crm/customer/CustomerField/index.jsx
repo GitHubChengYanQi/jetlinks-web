@@ -151,7 +151,7 @@ export const Client = (props) => {
 
 export const Status = (props) => {
   return (
-    <Radio.Group {...props} >
+    <Radio.Group {...props} defaultValue={0} >
       <Radio value={0}>潜在客户</Radio>
       <Radio value={1}>正式客户</Radio>
     </Radio.Group>
@@ -160,7 +160,7 @@ export const Status = (props) => {
 
 export const Classification = (props) => {
   return (
-    <Radio.Group {...props}>
+    <Radio.Group {...props} defaultValue={0}>
       <Radio value={0}>代理商</Radio>
       <Radio value={1}>终端用户</Radio>
     </Radio.Group>

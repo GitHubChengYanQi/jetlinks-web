@@ -20,9 +20,12 @@ import {attribute} from '../itemAttributeField';
 import Breadcrumb from '@/components/Breadcrumb';
 import AttributeValuesList from '@/pages/Erp/attributeValues/attributeValuesList';
 import Modal from '@/components/Modal';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ItemAttributeList = (props) => {
 
@@ -54,8 +57,9 @@ const ItemAttributeList = (props) => {
     <>
       <Table
         contentHeight
-        title={<Breadcrumb />}
+        title={<Breadcrumb title='属性管理' />}
         api={itemAttributeList}
+        formActions={formActionsPublic}
         rowKey="attributeId"
         searchForm={searchForm}
         actions={actions()}
@@ -71,7 +75,7 @@ const ItemAttributeList = (props) => {
           );
         }} />
 
-        <Column />
+        <Column dataIndex='sort' title='排序' />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -89,7 +93,7 @@ const ItemAttributeList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={800} title="值" component={AttributeValuesList} onSuccess={() => {
+      <Modal width={800} title="属性值" component={AttributeValuesList} onSuccess={() => {
         tableRef.current.refresh();
         refValues.current.close();
       }} ref={refValues} />

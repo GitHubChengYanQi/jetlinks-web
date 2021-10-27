@@ -31,12 +31,6 @@ const ToolClassificationEdit = ({...props}) => {
       fieldKey="toolClassificationId"
     >
       <FormItem label="分类名称" name="name" component={SysField.Name} required/>
-      <FormItem label="创建者" name="createUser" component={SysField.CreateUser} required/>
-      <FormItem label="修改者" name="updateUser" component={SysField.UpdateUser} required/>
-      <FormItem label="创建时间" name="createTime" component={SysField.CreateTime} required/>
-      <FormItem label="修改时间" name="updateTime" component={SysField.UpdateTime} required/>
-      <FormItem label="状态" name="display" component={SysField.Display} required/>
-      <FormItem label="部门id" name="deptId" component={SysField.DeptId} required/>
     </Form>
   );
 };

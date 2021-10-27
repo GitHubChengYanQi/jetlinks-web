@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Divider, Table} from 'antd';
+import {Button, Checkbox, Divider, Radio, Table} from 'antd';
 import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
@@ -93,11 +93,11 @@ const Attribute = ({attribute, spuId, ...props}) => {
           };
         });
 
-        const defaultValues = array.filter((value)=>{
+        const defaultValues = array.filter((value) => {
           return value.attributeId === items.attribute.attributeId;
         });
 
-        const defaultValue = defaultValues && defaultValues[0] && defaultValues[0].attributeValues.map((items,index)=>{
+        const defaultValue = defaultValues && defaultValues[0] && defaultValues[0].attributeValues.map((items, index) => {
           return items.attributeValuesId;
         });
 
@@ -107,9 +107,9 @@ const Attribute = ({attribute, spuId, ...props}) => {
               {items.attribute.attribute}
             </Button>
             <Checkbox.Group options={values} value={defaultValue} onChange={(checkedValue) => {
-              const arr = array.filter((value) => {
-                return value.attributeId !== items.attribute.attributeId;
-              });
+              // const arr = array.filter((value,index,array) => {
+              //   return value.attributeId !== items.attribute.attributeId;
+              // });
 
               const attributeValue = checkedValue.map((item, index) => {
                 const values = items.value.filter((value) => {
@@ -121,13 +121,20 @@ const Attribute = ({attribute, spuId, ...props}) => {
                 };
               });
 
+              const arrs = [];
 
-              setArray([...arr, {
+              array.map((items, index) => {
+                return arrs[index] = items;
+              });
+
+              arrs[index] = {
                 attribute: items.attribute.attribute,
-                id:items.attribute.attributeId,
+                id: items.attribute.attributeId,
                 attributeId: `${items.attribute.attributeId}`,
                 attributeValues: attributeValue
-              }]);
+              };
+
+              setArray(arrs);
             }} />
           </div>
         );
@@ -150,6 +157,14 @@ const Attribute = ({attribute, spuId, ...props}) => {
               />
             );
           })}
+          <Column title='操作' render={(value,record)=>{
+            return (
+              <Radio.Group defaultValue={1}>
+                <Radio value={0}>禁用</Radio>
+                <Radio value={1}>启用</Radio>
+              </Radio.Group>
+            );
+          }}/>
         </Table>
       </div>
     </>

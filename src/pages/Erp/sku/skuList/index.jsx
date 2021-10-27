@@ -5,9 +5,9 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -18,25 +18,41 @@ import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import {useRequest} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
-import {useParams} from 'ice';
+import {logger, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import Modal from '@/components/Modal';
+import CheckButton from '@/components/CheckButton';
+import {partsDetail, partsEdit} from '@/pages/Erp/parts/PartsUrl';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const SkuList = () => {
+const formActionsPublic = createFormActions();
 
-  const params = useParams();
+const SkuList = ({spuId, ...props}) => {
 
-  const {loading, data, refresh} = useRequest(spuDetail, {
-    defaultParams: {
-      data: {
-        spuId: params.cid
-      }
+  const {value,onSuccess} = props;
+
+  const {run} = useRequest(partsEdit, {
+    manual: true,
+    onSuccess: () => {
+      onSuccess();
     }
   });
+
+  const {loading, data} = useRequest(partsDetail, {
+    defaultParams: {
+      data: {
+        partsId: value
+      }
+    },
+  });
+
+  const defaults = data && data.skus.split(',');
+
+  const [ids, setIds] = useState();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -50,11 +66,22 @@ const SkuList = () => {
     );
   };
 
+  const footer = () => {
+    return <CheckButton style={{padding: 0}} onClick={() => {
+      run({
+        data: {
+          partsId: value,
+          skuIds: ids,
+        }
+      });
+    }}>选择</CheckButton>;
+  };
+
   const searchForm = () => {
     return (
       <>
         <FormItem label="sku名字" name="skuName" component={SysField.SkuName} />
-        <FormItem label="spuId" name="spuId" value={data.spuId} component={SysField.SpuId} />
+        <FormItem label="spuId" name="spuId" value={spuId} component={SysField.SpuId} />
       </>
     );
   };
@@ -63,40 +90,47 @@ const SkuList = () => {
     return (<ProSkeleton type="descriptions" />);
   }
 
-
-  if (!data) {
-    return null;
-  }
-
   return (
     <>
       <Table
-        title={<h2>{data.name}</h2>}
+        headStyle={{display: 'none'}}
         api={skuList}
         rowKey="skuId"
+        defaultSelectedRowKeys={defaults}
         searchForm={searchForm}
+        formActions={formActionsPublic}
         actions={actions()}
+        contentHeight
+        bordered={false}
         ref={tableRef}
+        footer={footer}
+        onChange={(value) => {
+          setIds(value);
+        }}
       >
-        <Column title="属性" dataIndex="spuId" />
-        <Column />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column title="属性" render={(value, record) => {
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.skuId);
-              }} />
-              <DelButton api={skuDelete} value={record.skuId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
+              {
+                record.skuJsons
+                &&
+                record.skuJsons.map((items, index) => {
+                  if (index === record.skuJsons.length - 1) {
+                    return (
+                      <span key={index}>{items.values && items.values.attributeValues}</span>
+                    );
+                  } else {
+                    return (
+                      <span key={index}>{items.values && items.values.attributeValues}&nbsp;,&nbsp;</span>
+                    );
+                  }
+                })
+              }
             </>
           );
-        }} width={300} />
+        }
+        } />
       </Table>
-      <Modal width={800} title={`${data.name}属性`} component={SkuEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} spuId={data.spuId} attributes={data.skuRequests} />
     </>
   );
 };

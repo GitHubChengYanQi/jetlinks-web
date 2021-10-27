@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Menu, Modal} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
 import BrandList from '@/pages/Erp/brand/BrandList';
 import MaterialList from '@/pages/Erp/material/MaterialList';
@@ -9,12 +9,15 @@ import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 import SetView from '@/layouts/SetView';
 import CategoryList from '@/pages/Erp/category/categoryList';
 import CodingRulesList from '@/pages/Erp/codingRules/codingRulesList';
+import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
+import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
+import Modal from '@/components/Modal';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
 
   const [type, setType] = useState(null);
-  const [visible, showModel] = useState(false);
+  const ref = useRef(null);
 
   const RenderComponent = () => {
     switch (type) {
@@ -32,6 +35,10 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <UnitList />;
       case 'bmgl':
         return <CodingRulesList />;
+      case 'gjflgl':
+        return <ToolClassificationList />;
+      case 'wlfl':
+        return <SpuClassificationList />;
       default:
         return null;
     }
@@ -49,8 +56,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           selectable={false}
           style={{width: '100%'}}
           onClick={(item) => {
+            ref.current.open(false);
             setType(item.key);
-            showModel(true);
           }}
         >
           <Menu.Item key="lmgl">
@@ -74,11 +81,15 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="bmgl">
             <span>编码规则管理</span>
           </Menu.Item>
+          <Menu.Item key="gjflgl">
+            <span>工具分类管理</span>
+          </Menu.Item>
+          <Menu.Item key="wlfl">
+            <span>物料分类管理</span>
+          </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
-        showModel(false);
-      }} footer={null}>{RenderComponent()}</Modal>
+      <Modal width={860} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };
