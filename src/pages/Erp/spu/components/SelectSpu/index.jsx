@@ -6,7 +6,7 @@ import Select from '@/components/Select';
 import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
-const SelectSpu = ({onChange,spuId,select,...props}) => {
+const SelectSpu = ({onChange,select,...props}) => {
 
   const {data, run} = useRequest(spuListSelect);
 
@@ -52,7 +52,6 @@ const SelectSpu = ({onChange,spuId,select,...props}) => {
             filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             onChange={(value) => {
               onChange(value);
-              typeof spuId === 'function' && spuId(value);
               typeof select === 'function' && select(value);
             }} />
         </div>
@@ -62,7 +61,7 @@ const SelectSpu = ({onChange,spuId,select,...props}) => {
 
   useEffect(() => {
     if (props.value) {
-      typeof spuId === 'function' && spuId(props.value);
+      onChange(props.value);
     }
   }, []);
 

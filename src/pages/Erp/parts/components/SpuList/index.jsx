@@ -1,19 +1,22 @@
 import * as SysField from '@/pages/Erp/parts/PartsField';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Form from '@/components/Form';
-import {useRequest} from '@/util/Request';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {useReactive, useSafeState} from 'ahooks';
 
 const {FormItem} = Form;
 
 
 const SpuList = ({index}) => {
 
-  const [select,setSelect] = useState();
+  // const [select,setSelect] = useSafeState();
+  // const [data,setData] = useSafeState();
+  // console.log(select,data);
 
-  const {data,run} = useRequest(spuDetail, {
-    manual: true
+  const state = useReactive({
+    select: {},
+    data: {},
   });
+
 
   return (
     <>
@@ -23,16 +26,10 @@ const SpuList = ({index}) => {
         name={`parts.${index}.spuId`}
         component={SysField.SpuId}
         select={(value)=>{
-          setSelect(value);
+          state.select = value;
         }}
-        spuId={(value) => {
-          if (value){
-            run({
-              data: {
-                spuId: value
-              }
-            });
-          }
+        data={(value) => {
+          state.data = value;
         }}
         required
       />
@@ -40,7 +37,7 @@ const SpuList = ({index}) => {
         labelCol={7}
         label="规格描述"
         name={`parts.${index}.partsAttributes`}
-        attribute={data && data.attribute || []}
+        attribute={data || []}
         select={select}
         component={SysField.Remake}
       />

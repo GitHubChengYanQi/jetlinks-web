@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Divider, Table} from 'antd';
+import {Button, Checkbox, Divider, Radio, Table} from 'antd';
 import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
@@ -157,6 +157,14 @@ const Attribute = ({attribute, spuId, ...props}) => {
               />
             );
           })}
+          <Column title='操作' render={(value,record)=>{
+            return (
+              <Radio.Group defaultValue={1}>
+                <Radio value={0}>禁用</Radio>
+                <Radio value={1}>启用</Radio>
+              </Radio.Group>
+            );
+          }}/>
         </Table>
       </div>
     </>

@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
-  const {value, api,border,placeholder,disabled,defaultValue, width:wid ,...other} = props;
+  const {value, api,border,resh,placeholder,disabled,defaultValue, width:wid ,...other} = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {loading, data, run} = useRequest(api);
+  const {loading, data, run,refresh} = useRequest(api);
+
+  useEffect(()=>{
+    refresh();
+  },[resh]);
 
   let valueArray = [];
   const {mode} = other;
