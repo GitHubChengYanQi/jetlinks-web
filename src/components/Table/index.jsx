@@ -26,6 +26,7 @@ const TableWarp = ({
   rowSelection,
   bodyStyle,
   bordered,
+  defaultSelectedRowKeys,
   SearchButton,
   selectionType,
   onChange,
@@ -181,6 +182,7 @@ const TableWarp = ({
               }
               rowSelection={!rowSelection && {
                 type: selectionType || 'checkbox',
+                defaultSelectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => {
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
                 },

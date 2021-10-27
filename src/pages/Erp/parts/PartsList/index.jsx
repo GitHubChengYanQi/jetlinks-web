@@ -28,6 +28,7 @@ import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import Drawer from '@/components/Drawer';
 import Parts from '@/pages/Erp/parts/PartsEdit/components/Parts';
 import SkuList from '@/pages/Erp/sku/skuList';
+import EditButton from '@/components/EditButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -82,9 +83,9 @@ const PartsList = () => {
   };
 
   return (
-    <div style={{padding: 16}}>
-      <ProCard className="h2Card" title="物料详情" headerBordered>
-        <div style={{maxWidth: 1220, margin: 'auto'}}>
+    <Card title="物料详情">
+      <div style={{maxWidth: 1220, margin: 'auto'}}>
+        <ProCard className="h2Card" title="详细信息" headerBordered>
           <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
             <Descriptions.Item label="成品物料编号/名称">{data.name}</Descriptions.Item>
             <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
@@ -97,12 +98,12 @@ const PartsList = () => {
             <Descriptions.Item label="易损">{data.vulnerability === 0 ? '易损' : '不易损'}</Descriptions.Item>
             <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
           </Descriptions>
-        </div>
-      </ProCard>
-      <ProCard className="h2Card" title="清单列表" headerBordered extra={<Button type="primary" onClick={() => {
-        refAdd.current.open(false);
-      }}>添加清单</Button>}>
-        <div style={{maxWidth: 1220, margin: 'auto'}}>
+        </ProCard>
+      </div>
+      <div style={{maxWidth: 1220, margin: 'auto'}}>
+        <ProCard className="h2Card" title="清单列表" headerBordered extra={<Button type="primary" onClick={() => {
+          refAdd.current.open(false);
+        }}>添加清单</Button>}>
           <Table
             title={<Breadcrumb />}
             api={partsList}
@@ -115,7 +116,7 @@ const PartsList = () => {
             ref={tableRef}
           >
             <Column title="清单名称" dataIndex="partName" />
-            <Column title="操作" fixed="right" align="center" width={230} render={(value, record) => {
+            <Column title="操作" fixed="right" align="center" width={270} render={(value, record) => {
               return (
                 <>
                   <Button type="link" onClick={() => {
@@ -128,6 +129,9 @@ const PartsList = () => {
                   }}>
                     关联sku
                   </Button>
+                  <EditButton onClick={() => {
+                    refAdd.current.open(record.partsId);
+                  }} />
                   <DelButton api={partsDelete} value={record.partsId} onSuccess={() => {
                     tableRef.current.refresh();
                   }} />
@@ -147,9 +151,9 @@ const PartsList = () => {
             tableRef.current.refresh();
             refSku.current.close();
           }} ref={refSku} spuId={params.cid} />
-        </div>
-      </ProCard>
-    </div>
+        </ProCard>
+      </div>
+    </Card>
   );
 };
 

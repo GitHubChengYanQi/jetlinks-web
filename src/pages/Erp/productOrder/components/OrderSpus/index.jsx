@@ -9,6 +9,8 @@ const {FormItem} = Form;
 
 const OrderSpus = ({index}) => {
 
+  const [select,setSelect] = useState();
+
   const {data,run} = useRequest(spuDetail, {
     manual: true
   });
@@ -21,7 +23,7 @@ const OrderSpus = ({index}) => {
           name={`orderDetail.${index}.spuId`}
           component={SysField.SpuId}
           select={(value)=>{
-
+            setSelect(value);
           }}
           spuId={(value)=>{
             run({
@@ -38,7 +40,7 @@ const OrderSpus = ({index}) => {
           label="规格描述"
           name={`orderDetail.${index}.sku`}
           attribute={data && data.attribute || []}
-          select
+          select={select}
           component={SysField.SkuId}
         />
       </div>

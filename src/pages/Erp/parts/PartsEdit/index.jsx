@@ -11,7 +11,7 @@ import {Button, notification, Steps} from 'antd';
 import {partsDetail, partsAdd, partsEdit, partsList} from '../PartsUrl';
 import * as SysField from '../PartsField';
 import {useBoolean} from 'ahooks';
-import {FieldList, FormEffectHooks} from '@formily/antd';
+import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
 import styled from 'styled-components';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
@@ -48,16 +48,6 @@ const PartsEdit = ({...props}) => {
     });
   };
 
-  const {loading, data} = useRequest(
-    {
-      url: '/erpPartsDetail/list',
-      method:'POST',
-      data:{
-        partsId:props.value || 111,
-      }
-    },{
-      manual:true
-    });
 
   const {onFieldValueChange$} = FormEffectHooks;
 
@@ -78,10 +68,9 @@ const PartsEdit = ({...props}) => {
           props.onSuccess();
         }}
         effect={() => {
-          onFieldValueChange$('parts.*').subscribe(({value}) => {
-            // console.log(value);
-            // setTrue();
-          });
+          // onFieldValueChange$('parts.*.spuId').subscribe((observer) => {
+          //   console.log(observer);
+          // });
         }}
       >
         <FieldList

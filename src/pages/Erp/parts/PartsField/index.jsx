@@ -16,9 +16,7 @@ import {spuListSelect} from '../PartsUrl';
 import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/parts/components/Attribute';
 import SpuAttribute from '@/pages/Erp/parts/components/SpuAttribute';
-
-
-const w = 200;
+import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 
 export const ItemId = (props) => {
   return (<Select api={apiUrl.itemIdSelect} {...props} />);
@@ -39,17 +37,16 @@ export const SpuId = (props) => {
 
   const {spuId, onChange, select, ...other} = props;
 
-  useEffect(() => {
-    if (props.value) {
-      typeof spuId === 'function' && spuId(props.value);
-    }
-  }, []);
-
-  return (<Select api={apiUrl.spuListSelect} onChange={(value) => {
-    typeof spuId === 'function' && spuId(value);
-    onChange(value);
-    typeof select === 'function' && select(value);
-  }} {...other} />);
+  return (<SelectSpu
+    select={(value) => {
+      typeof select === 'function' && select(value);
+    }}
+    onChange={(value) => {
+      onChange(value);
+    }}
+    spuId={(value) => {
+      typeof spuId === 'function' && spuId(value);
+    }} {...other} />);
 };
 
 

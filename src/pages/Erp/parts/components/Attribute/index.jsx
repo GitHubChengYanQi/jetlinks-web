@@ -6,7 +6,6 @@ const Attribute = ({attribute, onChange, attributes}) => {
 
   const [array, setArray] = useState(attributes || []);
 
-
   return (
     <div style={{padding: 16}}>
       {

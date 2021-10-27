@@ -1,5 +1,5 @@
 import * as SysField from '@/pages/Erp/parts/PartsField';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
@@ -14,7 +14,6 @@ const SpuList = ({index}) => {
   const {data,run} = useRequest(spuDetail, {
     manual: true
   });
-
 
   return (
     <>

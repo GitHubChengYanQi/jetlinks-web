@@ -5,9 +5,8 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import Form from '@/components/Form';
-import {Button, Steps} from 'antd';
 import {partsDetail, partsAdd, partsEdit} from '../../../PartsUrl';
 import * as SysField from '../../../PartsField';
 
@@ -31,6 +30,13 @@ const Parts = ({spuId,...props}) => {
           ref={formRef}
           api={ApiConfig}
           fieldKey="partsId"
+          onSubmit={(value)=>{
+            value = {
+              partName:value.partName,
+              spuId:value.spuId
+            };
+            return value;
+          }}
         >
           <FormItem label="清单名称" name="partName" component={SysField.PartName} />
           <FormItem hidden  name="spuId" value={spuId} component={SysField.Spu} required/>

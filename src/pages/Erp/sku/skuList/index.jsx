@@ -23,26 +23,36 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import Modal from '@/components/Modal';
 import CheckButton from '@/components/CheckButton';
-import {partsEdit} from '@/pages/Erp/parts/PartsUrl';
+import {partsDetail, partsEdit} from '@/pages/Erp/parts/PartsUrl';
 import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const formActionsPublic = createFormActions()
+const formActionsPublic = createFormActions();
 
-const SkuList = ({spuId,...props}) => {
+const SkuList = ({spuId, ...props}) => {
 
-  const {value} = props;
+  const {value,onSuccess} = props;
 
   const {run} = useRequest(partsEdit, {
     manual: true,
-    onSuccess:()=>{
-
+    onSuccess: () => {
+      onSuccess();
     }
   });
 
-  const [ids,setIds] = useState();
+  const {loading, data} = useRequest(partsDetail, {
+    defaultParams: {
+      data: {
+        partsId: value
+      }
+    },
+  });
+
+  const defaults = data && data.skus.split(',');
+
+  const [ids, setIds] = useState();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -57,11 +67,11 @@ const SkuList = ({spuId,...props}) => {
   };
 
   const footer = () => {
-    return <CheckButton style={{padding:0}} onClick={()=>{
+    return <CheckButton style={{padding: 0}} onClick={() => {
       run({
-        data:{
-          partsId:value,
-          skuIds:ids,
+        data: {
+          partsId: value,
+          skuIds: ids,
         }
       });
     }}>选择</CheckButton>;
@@ -75,23 +85,26 @@ const SkuList = ({spuId,...props}) => {
       </>
     );
   };
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
+
   return (
     <>
       <Table
         headStyle={{display: 'none'}}
         api={skuList}
         rowKey="skuId"
+        defaultSelectedRowKeys={defaults}
         searchForm={searchForm}
         formActions={formActionsPublic}
         actions={actions()}
         contentHeight
-        getCheckboxProps={(record) => ({
-          disabled: true, // Column configuration not to be checked
-        })}
         bordered={false}
         ref={tableRef}
         footer={footer}
-        onChange={(value)=>{
+        onChange={(value) => {
           setIds(value);
         }}
       >
