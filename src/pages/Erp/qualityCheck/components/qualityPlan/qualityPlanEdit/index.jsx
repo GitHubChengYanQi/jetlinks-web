@@ -83,7 +83,7 @@ const QualityPlanEdit = ({...props}) => {
               });
 
               setFieldState(
-                FormPath.transform(value.name, /\d/, ($1,$2) => {
+                FormPath.transform(value.name, /\d/, ($1, $2) => {
                   return `qualityClassParams.${$1}.qualityPlanDetailParams.${$2}.qualityCheckId`;
                 }),
                 state => {
@@ -92,7 +92,7 @@ const QualityPlanEdit = ({...props}) => {
               );
 
               setFieldState(
-                FormPath.transform(value.name, /\d/, ($1,$2) => {
+                FormPath.transform(value.name, /\d/, ($1, $2) => {
                   return `qualityClassParams.${$1}.qualityPlanDetailParams.${$2}.standardValue`;
                 }),
                 state => {
@@ -101,7 +101,7 @@ const QualityPlanEdit = ({...props}) => {
               );
 
               setFieldState(
-                FormPath.transform(value.name, /\d/, ($1,$2) => {
+                FormPath.transform(value.name, /\d/, ($1, $2) => {
                   return `qualityClassParams.${$1}.qualityPlanDetailParams.${$2}.operator`;
                 }),
                 state => {
@@ -145,8 +145,8 @@ const QualityPlanEdit = ({...props}) => {
               component={SysField.TestingType}
               required
             />
-            <FormItem label="特别提醒" name="attentionPlease" component={SysField.AttentionPlease}  />
-            <FormItem label="附件" name="planAdjunct" component={SysField.PlanAdjunct}  />
+            <FormItem label="特别提醒" name="attentionPlease" component={SysField.AttentionPlease} />
+            <FormItem label="附件" name="planAdjunct" component={SysField.PlanAdjunct} />
           </ProCard>
           <ProCard className="h2Card" title="质检项" headerBordered>
 
@@ -166,8 +166,8 @@ const QualityPlanEdit = ({...props}) => {
                       const onMoveDown = indexs => mutators.moveDown(indexs);
                       return (
                         <Card
-                          title={`质检分类${indexs+1}`}
-                          headStyle={{border:'none',borderBottom:'solid 1px #eee'}}
+                          title={`质检分类${indexs + 1}`}
+                          headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
                           key={indexs}
                           extra={
                             <div style={{display: state.value.length === 1 ? 'none' : 'inline-block',}}>
@@ -203,7 +203,7 @@ const QualityPlanEdit = ({...props}) => {
                             </div>
                           }
                         >
-                          <div style={{display:'inline-block',width:'30%'}}>
+                          <div style={{display: 'inline-block', width: '30%'}}>
                             <FormItem
                               labelCol={7}
                               label="分类"
@@ -213,97 +213,103 @@ const QualityPlanEdit = ({...props}) => {
                             />
                           </div>
 
-                          <FieldList
-                            name={`qualityClassParams.${indexs}.qualityPlanDetailParams`}
-                            initialValue={[{}]}
-                          >
-                            {({state, mutators}) => {
-                              const onAdd = () => {
-                                mutators.push();
-                              };
-                              return (
-                                <div>
-                                  {state.value.map((item, index) => {
-                                    const onRemove = index => mutators.remove(index);
-                                    const onMoveUp = index => mutators.moveUp(index);
-                                    const onMoveDown = index => mutators.moveDown(index);
-                                    return (
-                                      <div key={index}>
-                                        <div style={{display: 'inline-block'}}>
-                                          <FormItem
-                                            labelCol={7}
-                                            label={`质检项${index+1}`}
-                                            name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.qualityCheckId`}
-                                            component={SysField.QualityCheckId}
-                                            required
-                                          />
+                          <div style={{border:'solid #eee 1px',padding:16}}>
+                            <FieldList
+                              name={`qualityClassParams.${indexs}.qualityPlanDetailParams`}
+                              initialValue={[{}]}
+                            >
+                              {({state, mutators}) => {
+                                const onAdd = () => {
+                                  mutators.push();
+                                };
+                                return (
+                                  <div>
+                                    {state.value.map((item, index) => {
+                                      const onRemove = index => mutators.remove(index);
+                                      const onMoveUp = index => mutators.moveUp(index);
+                                      const onMoveDown = index => mutators.moveDown(index);
+                                      return (
+                                        <div key={index}>
+                                          <div style={{display: 'inline-block'}}>
+                                            <FormItem
+                                              labelCol={7}
+                                              label={`质检项${index + 1}`}
+                                              name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.qualityCheckId`}
+                                              component={SysField.QualityCheckId}
+                                              required
+                                            />
+                                          </div>
+                                          <div style={{display: 'inline-block'}}>
+                                            <FormItem
+                                              name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.operator`}
+                                              component={SysField.Operator}
+                                            />
+                                          </div>
+                                          <div style={{display: 'inline-block'}}>
+                                            <FormItem
+                                              name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.standardValue`}
+                                              component={SysField.StandardValue}
+                                            />
+                                          </div>
+                                          <div style={{display: 'inline-block', width: '10%'}}>
+                                            <FormItem
+                                              name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.isNull`}
+                                              component={SysField.Yes}
+                                            />
+                                          </div>
+                                          <div style={{
+                                            display: state.value.length === 1 ? 'none' : 'inline-block',
+                                            float: 'right'
+                                          }}>
+                                            <Button
+                                              type="link"
+                                              disabled={index === 0}
+                                              style={{marginRight: 8}}
+                                              onClick={() => {
+                                                onMoveUp(index);
+                                              }}
+                                              // icon={<UpOutlined />}
+                                            >
+                                              上
+                                            </Button>
+                                            <Button
+                                              type="link"
+                                              disabled={index === state.value.length - 1}
+                                              style={{marginRight: 8}}
+                                              // icon={<DownOutlined />}
+                                              onClick={() => {
+                                                onMoveDown(index);
+                                              }}
+                                            >
+                                              下
+                                            </Button>
+                                            <Button
+                                              type="link"
+                                              style={{marginRight: 8}}
+                                              icon={<DeleteOutlined />}
+                                              onClick={() => {
+                                                onRemove(index);
+                                              }}
+                                              danger
+                                            />
+                                          </div>
                                         </div>
-                                        <div style={{display: 'inline-block'}}>
-                                          <FormItem
-                                            name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.operator`}
-                                            component={SysField.Operator}
-                                          />
-                                        </div>
-                                        <div style={{display: 'inline-block'}}>
-                                          <FormItem
-                                            name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.standardValue`}
-                                            component={SysField.StandardValue}
-                                          />
-                                        </div>
-                                        <div style={{display: 'inline-block', width: '10%'}}>
-                                          <FormItem
-                                            name={`qualityClassParams.${indexs}.qualityPlanDetailParams.${index}.isNull`}
-                                            component={SysField.Yes}
-                                          />
-                                        </div>
-                                        <div style={{display: state.value.length === 1 ? 'none' : 'inline-block',}}>
-                                          <Button
-                                            type="link"
-                                            style={{marginRight: 8,display:index === 0 && 'none'}}
-                                            onClick={() => {
-                                              onMoveUp(index);
-                                            }}
-                                            // icon={<UpOutlined />}
-                                          >
-                                            上
-                                          </Button>
-                                          <Button
-                                            type="link"
-                                            style={{marginRight: 8,display:index === state.value.length-1 && 'none'}}
-                                            // icon={<DownOutlined />}
-                                            onClick={() => {
-                                              onMoveDown(index);
-                                            }}
-                                          >
-                                            下
-                                          </Button>
-                                          <Button
-                                            type="link"
-                                            style={{marginRight: 8}}
-                                            icon={<DeleteOutlined />}
-                                            onClick={() => {
-                                              onRemove(index);
-                                            }}
-                                            danger
-                                          />
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                  <Button
-                                    type="dashed"
-                                    icon={<PlusOutlined />}
-                                    onClick={onAdd}>增加质检项</Button>
-                                </div>
-                              );
-                            }}
-                          </FieldList>
-
+                                      );
+                                    })}
+                                    <Button
+                                      type="dashed"
+                                      icon={<PlusOutlined />}
+                                      onClick={onAdd}>增加质检项</Button>
+                                  </div>
+                                );
+                              }}
+                            </FieldList>
+                          </div>
                         </Card>
                       );
                     })}
                     <Button
-                      style={{marginTop:8}}
+                      style={{marginTop: 8}}
                       type="dashed"
                       icon={<PlusOutlined />}
                       onClick={onAdd}>增加分类</Button>
