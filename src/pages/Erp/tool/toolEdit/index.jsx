@@ -13,6 +13,7 @@ import * as SysField from '../toolField';
 import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {rulesRelationList} from '@/pages/Erp/codingRules/components/rulesRelation/rulesRelationUrl';
+import {Codings} from '../toolField';
 
 const {FormItem} = Form;
 
@@ -49,7 +50,7 @@ const ToolEdit = ({...props}) => {
         <FormItem
           label="工具编号"
           name="coding"
-          component={SysField.Coding}
+          component={SysField.Codings}
           codingId={data && data[0] ? data[0].codingRulesId : null}
           required
         />

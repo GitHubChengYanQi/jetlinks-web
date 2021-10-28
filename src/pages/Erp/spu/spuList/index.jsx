@@ -82,6 +82,15 @@ const SpuList = () => {
           );
         }} sorter/>
         <Column title="型号" width={120} dataIndex="model" sorter/>
+        <Column title="分类" width={120} render={(value,record)=>{
+          return (
+            <>
+              {
+                record.spuClassificationResult && record.spuClassificationResult.name
+              }
+            </>
+          );
+        }} sorter/>
         <Column title="生产类型" width={120} align='center' dataIndex="productionType" render={(value)=>{
           switch (value){
             case 0:

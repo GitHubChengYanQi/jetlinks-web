@@ -30,7 +30,7 @@ const RulesRelationList = () => {
 
   const options = [
     {label: '工具编码', value: 1},
-    // {label: '品牌编码', value: 2},
+    {label: '质检方案编码', value: 2},
   ];
 
   if (loading || addLoading) {
@@ -54,7 +54,6 @@ const RulesRelationList = () => {
 
         return (
           <Checkbox key={index} values={item.value} checked={checked} onChange={(checkedValue) => {
-            console.log(checkedValue.target.checked);
             run({
               data: {
                 codingRulesId: items.codingRulesId,

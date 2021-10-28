@@ -89,7 +89,9 @@ const PartsList = () => {
           <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
             <Descriptions.Item label="成品物料编号/名称">{data.name}</Descriptions.Item>
             <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
+            <Descriptions.Item label="型号">{data.model ? data.model : '--'}</Descriptions.Item>
             <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>
+            <Descriptions.Item label="养护周期"> {data.curingCycle ? `${data.curingCycle}天` : '--'}</Descriptions.Item>
             <Descriptions.Item label="生产类型">{Type()}</Descriptions.Item>
             <Descriptions.Item label="重要程度" width={120}>{data.important || '--'}</Descriptions.Item>
             <Descriptions.Item label="产品重量" width={120}>{data.weight || '--'}</Descriptions.Item>

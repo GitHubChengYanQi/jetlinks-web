@@ -1,0 +1,176 @@
+/**
+ * 质检方案字段配置页
+ *
+ * @author Captain_Jazz
+ * @Date 2021-10-28 10:29:56
+ */
+
+import React, {useEffect} from 'react';
+import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Space} from 'antd';
+import Tree from '@/components/Tree';
+import Cascader from '@/components/Cascader';
+import Select from '@/components/Select';
+import * as apiUrl from '../qualityPlanUrl';
+import Coding from '@/pages/Erp/tool/components/Coding';
+import FileUpload from '@/pages/Crm/data/components/FileUpload';
+import CheckButton from '@/components/CheckButton';
+import UpLoadImg from '@/components/Upload';
+import {qualityCheckClassificationListSelect} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
+import {useRequest} from '@/util/Request';
+import {qualityCheckListSelect} from '../qualityPlanUrl';
+
+
+export const Codings = (props) => {
+
+  const {codingId, ...other} = props;
+
+  return (<Coding codingId={codingId} width={400} {...other} />);
+};
+
+export const PlanName = (props) => {
+  return (<Input style={{width:200}} {...props} />);
+};
+export const PlanStatus = (props) => {
+  return (<Input {...props} />);
+};
+export const PlanType = (props) => {
+  return (<Radio.Group {...props}><Radio value={1}>生产检</Radio><Radio value={2}>巡检</Radio></Radio.Group>);
+};
+export const AttentionPlease = (props) => {
+  return (<Input.TextArea style={{width:400}} {...props} />);
+};
+export const PlanAdjunct = (props) => {
+  return (<FileUpload {...props} />);
+};
+export const CreateTime = (props) => {
+  return (<Input {...props} />);
+};
+export const UpdateTime = (props) => {
+  return (<Input {...props} />);
+};
+export const CreateUser = (props) => {
+  return (<Input {...props} />);
+};
+export const UpdateUser = (props) => {
+  return (<Input {...props} />);
+};
+export const Display = (props) => {
+  return (<Input {...props} />);
+};
+export const DeptId = (props) => {
+  return (<Input {...props} />);
+};
+
+export const QualityCheckClass = (props) => {
+  return (<Select api={qualityCheckClassificationListSelect} {...props} />);
+};
+
+
+export const QualityAmount = (props) => {
+  return (<InputNumber {...props} />);
+};
+
+export const TestingType = (props) => {
+  return (<Radio.Group {...props}>
+    <Radio value={1}>抽检检查</Radio>
+    <Radio value={2}>固定检查</Radio>
+  </Radio.Group>);
+};
+
+
+export const StandardValue = (props) => {
+  const {type, ...other} = props;
+
+  useEffect(()=>{
+    other.onChange(null);
+  },[type]);
+
+  const placeholder = '标准值';
+
+  switch (type) {
+    case 1:
+      return <InputNumber style={{width:200}} placeholder={placeholder} {...other} />;
+    case 2:
+      return <Input style={{width:200}} placeholder={placeholder} {...other} />;
+    case 3:
+      return null;
+    case 4:
+      return <FileUpload title='上传图片' {...other} />;
+    case 5:
+      return <><InputNumber style={{width:181}} placeholder={placeholder} min={0}  man={100} {...other}/>&nbsp;&nbsp;%</>;
+    case 6:
+      return <FileUpload title='上传视频' {...other} />;
+    case 7:
+      return <FileUpload {...other} />;
+    default:
+      return <Input style={{width:200}} placeholder={placeholder} {...other} />;
+  }
+};
+
+export const Yes = (props) => {
+  const {value,onChange} = props;
+  return (<Checkbox.Group options={[{label: '必填', value: '1'}]} style={{marginLeft:8}} value={[value]} onChange={(checkedValue)=>{
+    onChange(checkedValue[0] || 0);
+  }} />);
+};
+
+
+export const QualityCheckId = (props) => {
+  const {type,qualityCheckClass, ...other} = props;
+
+  const {data,run} = useRequest(qualityCheckListSelect);
+
+  useEffect(()=>{
+    run({
+      data:{
+        qualityCheckClassificationId:qualityCheckClass
+      }
+    });
+  },[qualityCheckClass]);
+
+
+  const types = () => {
+    switch (type) {
+      case 1:
+        return <Input disabled value="数值" />;
+      case 2:
+        return <Input disabled value="文本" />;
+      case 3:
+        return <Input disabled value="是否" />;
+      case 4:
+        return <Input disabled value="图片" />;
+      case 5:
+        return <Input disabled value="百分比" />;
+      case 6:
+        return <Input disabled value="视频" />;
+      case 7:
+        return <Input disabled value="附件" />;
+      default:
+        return <Input disabled value="" />;
+    }
+  };
+
+  return (
+    <Space>
+      <AntdSelect
+        style={{width:130}}
+        options={data}
+        allowClear showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        {...other} />
+      {types()}
+    </Space>);
+};
+
+export const Operator = (props) => {
+
+  const options = [
+    {label: '=', value: 1},
+    {label: '>=', value: 2},
+    {label: '<=', value: 3},
+    {label: '>', value: 4},
+    {label: '<', value: 5},
+    {label: '<>', value: 6},
+  ];
+
+  return (<AntdSelect placeholder='运算符' style={{width: 100, marginRight: 8}} bordered={false} options={options} {...props} />);
+};
