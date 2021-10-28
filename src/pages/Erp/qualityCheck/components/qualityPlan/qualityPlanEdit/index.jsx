@@ -14,12 +14,13 @@ import ProCard from '@ant-design/pro-card';
 import {useRequest} from '@/util/Request';
 import {rulesRelationList} from '@/pages/Erp/codingRules/components/rulesRelation/rulesRelationUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {FieldList, FormEffectHooks, FormPath} from '@formily/antd';
+import {createFormActions, FieldList, FormEffectHooks, FormPath} from '@formily/antd';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
 import {DeleteOutlined, DownOutlined, PlusOutlined, UpOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {qualityCheckDetail} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
+import request from '../../../../../../util/Request/request';
 
 const {FormItem} = Form;
 
@@ -28,6 +29,8 @@ const ApiConfig = {
   add: qualityPlanAdd,
   save: qualityPlanEdit
 };
+
+const formActionsPublic = createFormActions();
 
 
 const QualityPlanEdit = ({...props}) => {
@@ -52,6 +55,7 @@ const QualityPlanEdit = ({...props}) => {
 
   const {onFieldValueChange$} = FormEffectHooks;
 
+
   return (
     <Card title="质检方案">
       <Form
@@ -60,23 +64,34 @@ const QualityPlanEdit = ({...props}) => {
         value={false}
         api={ApiConfig}
         fieldKey="qualityPlanId"
+        formActions={formActionsPublic}
         effects={({setFieldState}) => {
+
+          onFieldValueChange$('qualitys.*.operator').subscribe(async (value) => {
+            setFieldState(
+              FormPath.transform(value.name, /\d/, ($1) => {
+                return `qualitys.${$1}.standardValue`;
+              }),
+              state => {
+                state.props.typeClass = value.value;
+              }
+            );
+
+          });
 
           onFieldValueChange$('qualitys.*.qualityCheckId').subscribe(async (value) => {
 
             if (value.value) {
-              const data = await run({
+              const result = await request({
+                ...qualityCheckDetail,
                 data: {
                   qualityCheckId: value.value
                 }
               });
-
               setFieldState(
-                FormPath.transform(value.name, /\d/, ($1) => {
-                  return `qualitys.${$1}.qualityCheckId`;
-                }),
+                value.path,
                 state => {
-                  state.props.type = data.type;
+                  state.props.type = result.type;
                 }
               );
 
@@ -85,7 +100,7 @@ const QualityPlanEdit = ({...props}) => {
                   return `qualitys.${$1}.standardValue`;
                 }),
                 state => {
-                  state.props.type = data.type;
+                  state.props.type = result.type;
                 }
               );
 
@@ -94,7 +109,7 @@ const QualityPlanEdit = ({...props}) => {
                   return `qualitys.${$1}.operator`;
                 }),
                 state => {
-                  switch (data.type) {
+                  switch (result.type) {
                     case 1:
                     case 5:
                       state.visible = true;
@@ -140,7 +155,7 @@ const QualityPlanEdit = ({...props}) => {
           <ProCard className="h2Card" title="质检项" headerBordered>
 
             <FieldList
-              name='qualitys'
+              name="qualitys"
               initialValue={[{}]}
             >
               {({state, mutators}) => {
@@ -151,8 +166,12 @@ const QualityPlanEdit = ({...props}) => {
                   <div>
                     {state.value.map((item, index) => {
                       const onRemove = index => mutators.remove(index);
-                      const onMoveUp = index => mutators.moveUp(index);
-                      const onMoveDown = index => mutators.moveDown(index);
+                      const onMoveUp = async (index) => {
+                        mutators.moveUp(index);
+                      };
+                      const onMoveDown = index => {
+                        mutators.moveDown(index);
+                      };
                       return (
                         <div key={index}>
                           <div style={{display: 'inline-block'}}>
@@ -182,7 +201,7 @@ const QualityPlanEdit = ({...props}) => {
                               component={SysField.Yes}
                             />
                           </div>
-                          <div style={{display: state.value.length === 1 ? 'none' : 'inline-block',float:'right'}}>
+                          <div style={{display: state.value.length === 1 ? 'none' : 'inline-block', float: 'right'}}>
                             <Button
                               type="link"
                               disabled={index === 0}

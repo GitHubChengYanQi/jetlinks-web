@@ -81,13 +81,24 @@ export const TestingType = (props) => {
 
 
 export const StandardValue = (props) => {
-  const {type, ...other} = props;
+  const {type, typeClass, ...other} = props;
 
   useEffect(() => {
     other.onChange(null);
   }, [type]);
 
   const placeholder = '标准值';
+
+  // const types = () => {
+  //   if (typeClass === 6){
+  //     return <>
+  //       <InputNumber style={{width: 100}} placeholder={placeholder} {...other} />
+  //       <InputNumber style={{width: 100}} placeholder={placeholder} {...other} />
+  //     </>;
+  //   }else {
+  //     return <InputNumber style={{width: 200}} placeholder={placeholder} {...other} />;
+  //   }
+  // };
 
   switch (type) {
     case 1:
@@ -99,8 +110,11 @@ export const StandardValue = (props) => {
     case 4:
       return <FileUpload title="上传图片" {...other} />;
     case 5:
-      return <><InputNumber style={{width: 181}} placeholder={placeholder} min={0}
-                            man={100} {...other} />&nbsp;&nbsp;%</>;
+      return <><InputNumber
+        style={{width: 181}}
+        placeholder={placeholder}
+        min={0}
+        man={100} {...other} />&nbsp;&nbsp;%</>;
     case 6:
       return <FileUpload title="上传视频" {...other} />;
     case 7:
@@ -112,10 +126,12 @@ export const StandardValue = (props) => {
 
 export const Yes = (props) => {
   const {value, onChange} = props;
-  return (<Checkbox.Group options={[{label: '必填', value: '1'}]} style={{marginLeft: 8}} value={[value]}
-                          onChange={(checkedValue) => {
-                            onChange(checkedValue[0] || 0);
-                          }} />);
+  return (<Checkbox.Group
+    options={[{label: '必填', value: '1'}]}
+    style={{marginLeft: 8}} value={[value]}
+    onChange={(checkedValue) => {
+      onChange(checkedValue[0] || 0);
+    }} />);
 };
 
 
@@ -211,6 +227,9 @@ export const Operator = (props) => {
     {label: '<>', value: 6},
   ];
 
-  return (<AntdSelect placeholder="运算符" style={{width: 100, marginRight: 8}} bordered={false}
-                      options={options} {...props} />);
+  return (<AntdSelect
+    placeholder="运算符"
+    style={{width: 100, marginRight: 8}}
+    bordered={false}
+    options={options} {...props} />);
 };
