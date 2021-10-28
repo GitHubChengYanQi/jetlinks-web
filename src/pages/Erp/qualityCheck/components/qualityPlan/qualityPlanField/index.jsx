@@ -86,7 +86,7 @@ export const StandardValue = (props) => {
   const [value, setValue] = useState({lt:typeClass === 6 && other.value &&  other.value.split(',')[0],gt:typeClass === 6 && other.value &&  other.value.split(',')[1]});
 
   useEffect(()=>{
-    if (value.lt && value.gt){
+    if (typeClass === 6 && value.lt && value.gt){
       other.onChange(`${value.lt},${value.gt}`);
     }
   },[value]);
@@ -111,7 +111,7 @@ export const StandardValue = (props) => {
         }} />{bai && '  %'}
       </>;
     } else {
-      return <InputNumber style={{width: 200}} placeholder={placeholder} {...other} />;
+      return <><InputNumber style={{width: bai ? 186 : 200}} min={0} max={bai && 100} placeholder={placeholder} {...other} />{bai && '  %'}</> ;
     }
   };
 
