@@ -83,14 +83,6 @@ export const TestingType = (props) => {
 export const StandardValue = (props) => {
   const {type, typeClass, active, ...other} = props;
 
-  const [value, setValue] = useState({lt:typeClass === 6 && other.value &&  other.value.split(',')[0],gt:typeClass === 6 && other.value &&  other.value.split(',')[1]});
-
-  useEffect(()=>{
-    if (typeClass === 6 && value.lt && value.gt){
-      other.onChange(`${value.lt},${value.gt}`);
-    }
-  },[value]);
-
   useEffect(() => {
     if (active) {
       other.onChange(null);
@@ -102,12 +94,12 @@ export const StandardValue = (props) => {
   const types = (bai) => {
     if (typeClass === 6) {
       return <>
-        <InputNumber style={{width: bai ? 71 : 85}} value={value.lt} min={0} max={bai && 100} onChange={(val) => {
-          setValue({lt: val,gt:value.gt});
+        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && other.value.split(',')[0]} min={0} max={bai && 100} onChange={(val) => {
+          other.onChange(`${val},${other.value ? other.value[1] : ''}`);
         }} />{bai && '  %'}
         &nbsp;&lt;&gt;&nbsp;
-        <InputNumber style={{width: bai ? 71 : 85}} value={value.gt} max={bai && 100} onChange={(val) => {
-          setValue({lt: value.lt,gt:val});
+        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && other.value.split(',')[1]} max={bai && 100} onChange={(val) => {
+          other.onChange(`${other.value ? other.value[0] : ''},${val}`);
         }} />{bai && '  %'}
       </>;
     } else {
