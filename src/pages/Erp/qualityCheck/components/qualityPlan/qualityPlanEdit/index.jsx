@@ -44,11 +44,7 @@ const QualityPlanEdit = ({...props}) => {
       }
     }
   });
-
-  const {run} = useRequest(qualityCheckDetail, {
-    manual: true
-  });
-
+  
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
@@ -67,10 +63,10 @@ const QualityPlanEdit = ({...props}) => {
         formActions={formActionsPublic}
         effects={({setFieldState}) => {
 
-          onFieldValueChange$('qualitys.*.operator').subscribe(async (value) => {
+          onFieldValueChange$('qualityPlanDetailParams.*.operator').subscribe(async (value) => {
             setFieldState(
               FormPath.transform(value.name, /\d/, ($1) => {
-                return `qualitys.${$1}.standardValue`;
+                return `qualityPlanDetailParams.${$1}.standardValue`;
               }),
               state => {
                 state.props.typeClass = value.value;
@@ -79,7 +75,7 @@ const QualityPlanEdit = ({...props}) => {
 
           });
 
-          onFieldValueChange$('qualitys.*.qualityCheckId').subscribe(async (value) => {
+          onFieldValueChange$('qualityPlanDetailParams.*.qualityCheckId').subscribe(async (value) => {
 
             if (value.value) {
               const result = await request({
@@ -97,7 +93,7 @@ const QualityPlanEdit = ({...props}) => {
 
               setFieldState(
                 FormPath.transform(value.name, /\d/, ($1) => {
-                  return `qualitys.${$1}.standardValue`;
+                  return `qualityPlanDetailParams.${$1}.standardValue`;
                 }),
                 state => {
                   state.props.type = result.type;
@@ -106,7 +102,7 @@ const QualityPlanEdit = ({...props}) => {
 
               setFieldState(
                 FormPath.transform(value.name, /\d/, ($1) => {
-                  return `qualitys.${$1}.operator`;
+                  return `qualityPlanDetailParams.${$1}.operator`;
                 }),
                 state => {
                   switch (result.type) {
@@ -149,13 +145,13 @@ const QualityPlanEdit = ({...props}) => {
               component={SysField.TestingType}
               required
             />
-            <FormItem label="特别提醒" name="attentionPlease" component={SysField.AttentionPlease} required />
-            <FormItem label="附件" name="planAdjunct" component={SysField.PlanAdjunct} required />
+            <FormItem label="特别提醒" name="attentionPlease" component={SysField.AttentionPlease}  />
+            <FormItem label="附件" name="planAdjunct" component={SysField.PlanAdjunct}  />
           </ProCard>
           <ProCard className="h2Card" title="质检项" headerBordered>
 
             <FieldList
-              name="qualitys"
+              name='qualityPlanDetailParams'
               initialValue={[{}]}
             >
               {({state, mutators}) => {
@@ -178,26 +174,26 @@ const QualityPlanEdit = ({...props}) => {
                             <FormItem
                               labelCol={7}
                               label={`质检项${index + 1}`}
-                              name={`qualitys.${index}.qualityCheckId`}
+                              name={`qualityPlanDetailParams.${index}.qualityCheckId`}
                               component={SysField.QualityCheckId}
                               required
                             />
                           </div>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
-                              name={`.qualitys.${index}.operator`}
+                              name={`.qualityPlanDetailParams.${index}.operator`}
                               component={SysField.Operator}
                             />
                           </div>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
-                              name={`qualitys.${index}.standardValue`}
+                              name={`qualityPlanDetailParams.${index}.standardValue`}
                               component={SysField.StandardValue}
                             />
                           </div>
                           <div style={{display: 'inline-block', width: '10%'}}>
                             <FormItem
-                              name={`qualitys.${index}.isNull`}
+                              name={`qualityPlanDetailParams.${index}.isNull`}
                               component={SysField.Yes}
                             />
                           </div>
