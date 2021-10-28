@@ -36,7 +36,7 @@ export const PlanStatus = (props) => {
   return (<Input {...props} />);
 };
 export const PlanType = (props) => {
-  return (<Radio.Group {...props}><Radio value={1}>生产检</Radio><Radio value={2}>巡检</Radio></Radio.Group>);
+  return (<Radio.Group {...props}><Radio value="1">生产检</Radio><Radio value="2">巡检</Radio></Radio.Group>);
 };
 export const AttentionPlease = (props) => {
   return (<Input.TextArea style={{width: 400}} {...props} />);
@@ -74,35 +74,50 @@ export const QualityAmount = (props) => {
 
 export const TestingType = (props) => {
   return (<Radio.Group {...props}>
-    <Radio value={1}>抽检检查</Radio>
-    <Radio value={2}>固定检查</Radio>
+    <Radio value="1">抽检检查</Radio>
+    <Radio value="2">固定检查</Radio>
   </Radio.Group>);
 };
 
 
 export const StandardValue = (props) => {
-  const {type, typeClass, ...other} = props;
+  const {type, typeClass, active, ...other} = props;
+
+  const [value, setValue] = useState({lt:typeClass === 6 && other.value &&  other.value.split(',')[0],gt:typeClass === 6 && other.value &&  other.value.split(',')[1]});
+
+  useEffect(()=>{
+    if (value.lt && value.gt){
+      other.onChange(`${value.lt},${value.gt}`);
+    }
+  },[value]);
 
   useEffect(() => {
-    other.onChange(null);
+    if (active) {
+      other.onChange(null);
+    }
   }, [type]);
 
   const placeholder = '标准值';
 
-  // const types = () => {
-  //   if (typeClass === 6){
-  //     return <>
-  //       <InputNumber style={{width: 100}} placeholder={placeholder} {...other} />
-  //       <InputNumber style={{width: 100}} placeholder={placeholder} {...other} />
-  //     </>;
-  //   }else {
-  //     return <InputNumber style={{width: 200}} placeholder={placeholder} {...other} />;
-  //   }
-  // };
+  const types = (bai) => {
+    if (typeClass === 6) {
+      return <>
+        <InputNumber style={{width: bai ? 71 : 85}} value={value.lt} min={0} max={bai && 100} onChange={(val) => {
+          setValue({lt: val,gt:value.gt});
+        }} />{bai && '  %'}
+        &nbsp;&lt;&gt;&nbsp;
+        <InputNumber style={{width: bai ? 71 : 85}} value={value.gt} max={bai && 100} onChange={(val) => {
+          setValue({lt: value.lt,gt:val});
+        }} />{bai && '  %'}
+      </>;
+    } else {
+      return <InputNumber style={{width: 200}} placeholder={placeholder} {...other} />;
+    }
+  };
 
   switch (type) {
     case 1:
-      return <InputNumber style={{width: 200}} placeholder={placeholder} {...other} />;
+      return types();
     case 2:
       return <Input style={{width: 200}} placeholder={placeholder} {...other} />;
     case 3:
@@ -110,11 +125,7 @@ export const StandardValue = (props) => {
     case 4:
       return <FileUpload title="上传图片" {...other} />;
     case 5:
-      return <><InputNumber
-        style={{width: 181}}
-        placeholder={placeholder}
-        min={0}
-        man={100} {...other} />&nbsp;&nbsp;%</>;
+      return types(true);
     case 6:
       return <FileUpload title="上传视频" {...other} />;
     case 7:
@@ -128,7 +139,7 @@ export const Yes = (props) => {
   const {value, onChange} = props;
   return (<Checkbox.Group
     options={[{label: '必填', value: '1'}]}
-    style={{marginLeft: 8}} value={[value]}
+    style={{marginLeft: 8}} value={[`${value}`]}
     onChange={(checkedValue) => {
       onChange(checkedValue[0] || 0);
     }} />);
@@ -232,4 +243,9 @@ export const Operator = (props) => {
     style={{width: 100, marginRight: 8}}
     bordered={false}
     options={options} {...props} />);
+};
+
+
+export const Sort = (props) => {
+  return <Input {...props} />;
 };

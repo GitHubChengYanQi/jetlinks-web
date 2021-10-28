@@ -23,7 +23,6 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const QualityPlanList = (props) => {
-  const ref = useRef(null);
   const history = useHistory();
   const tableRef = useRef(null);
   const actions = () => {
@@ -58,16 +57,32 @@ const QualityPlanList = (props) => {
         {...props}
       >
         <Column title="方案名称" dataIndex="planName" />
-        <Column title="状态" dataIndex="planStatus" />
-        <Column title="质检类型" dataIndex="planType" />
-        <Column title="特别提醒" dataIndex="attentionPlease" />
-        <Column title="附件" dataIndex="planAdjunct" />
+        <Column title="质检类型" dataIndex="planType" render={(value)=>{
+          switch (value){
+            case '1':
+              return <>生产检</>;
+            case '2':
+              return <>巡检</>;
+            default:
+              break;
+          }
+        }} />
+        <Column title="检查类型" dataIndex="testingType" render={(value)=>{
+          switch (value){
+            case '1':
+              return <>抽检检查</>;
+            case '2':
+              return <>固定检查</>;
+            default:
+              break;
+          }
+        }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.qualityPlanId);
+                history.push(`/ERP/qualityCheck/add?id=${record.qualityPlanId}`);
               }} />
               <DelButton api={qualityPlanDelete} value={record.qualityPlanId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -76,10 +91,6 @@ const QualityPlanList = (props) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="编辑" component={QualityPlanEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
     </>
   );
 };

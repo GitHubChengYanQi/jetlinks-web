@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {qualityCheckDetail} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
 import request from '../../../../../../util/Request/request';
+import {useHistory} from 'ice';
 
 const {FormItem} = Form;
 
@@ -33,9 +34,13 @@ const ApiConfig = {
 const formActionsPublic = createFormActions();
 
 
-const QualityPlanEdit = ({...props}) => {
+const QualityPlanEdit = (props) => {
+
+  const params = props.searchParams.id;
 
   const formRef = useRef();
+
+  const history = useHistory();
 
   const {loading, data} = useRequest(rulesRelationList, {
     defaultParams: {
@@ -44,7 +49,7 @@ const QualityPlanEdit = ({...props}) => {
       }
     }
   });
-  
+
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
@@ -55,12 +60,27 @@ const QualityPlanEdit = ({...props}) => {
   return (
     <Card title="质检方案">
       <Form
-        {...props}
         ref={formRef}
-        value={false}
+        value={params || false}
         api={ApiConfig}
         fieldKey="qualityPlanId"
         formActions={formActionsPublic}
+        onSuccess={() => {
+          history.goBack();
+        }}
+        onSubmit={(value)=>{
+          value = {
+            ...value,
+            qualityPlanDetailParams:value.qualityPlanDetailParams.map((items,index)=>{
+              return {
+                ...items,
+                sort:index,
+              };
+            })
+          };
+
+          return value;
+        }}
         effects={({setFieldState}) => {
 
           onFieldValueChange$('qualityPlanDetailParams.*.operator').subscribe(async (value) => {
@@ -97,6 +117,7 @@ const QualityPlanEdit = ({...props}) => {
                 }),
                 state => {
                   state.props.type = result.type;
+                  state.props.active = value.active;
                 }
               );
 
@@ -145,13 +166,13 @@ const QualityPlanEdit = ({...props}) => {
               component={SysField.TestingType}
               required
             />
-            <FormItem label="特别提醒" name="attentionPlease" component={SysField.AttentionPlease}  />
-            <FormItem label="附件" name="planAdjunct" component={SysField.PlanAdjunct}  />
+            <FormItem label="特别提醒" name="attentionPlease" component={SysField.AttentionPlease} />
+            <FormItem label="附件" name="planAdjunct" component={SysField.PlanAdjunct} />
           </ProCard>
           <ProCard className="h2Card" title="质检项" headerBordered>
 
             <FieldList
-              name='qualityPlanDetailParams'
+              name="qualityPlanDetailParams"
               initialValue={[{}]}
             >
               {({state, mutators}) => {
@@ -170,10 +191,11 @@ const QualityPlanEdit = ({...props}) => {
                       };
                       return (
                         <div key={index}>
+                          <>{index}</>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
                               labelCol={7}
-                              label={`质检项${index + 1}`}
+                              label="质检项"
                               name={`qualityPlanDetailParams.${index}.qualityCheckId`}
                               component={SysField.QualityCheckId}
                               required
