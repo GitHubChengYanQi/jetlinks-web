@@ -51,19 +51,23 @@ const OutstockListingList = (props) => {
   };
 
   return (
-    <Card title='出库清单'>
+    <div>
       <Table
         api={outstockListingList}
         rowKey="outstockListingId"
         searchForm={searchForm}
+        rowSelection
+        bodyStyle={{padding:0}}
+        bordered={false}
+        contentHeight
         headStyle={{display:'none'}}
         showSearchButton={false}
         ref={tableRef}
       >
-        <Column title="产品" dataIndex="itemId" render={(value,record)=>{
+        <Column title="产品" dataIndex="skuId" render={(value,record)=>{
           return (
             <>
-              {record.itemsResult && record.itemsResult.name}
+              {value}
             </>
           );
         }} />
@@ -80,7 +84,7 @@ const OutstockListingList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </Card>
+    </div>
   );
 };
 

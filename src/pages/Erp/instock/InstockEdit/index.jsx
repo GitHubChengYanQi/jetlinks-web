@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {itemId} from '../InstockField';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuList from '@/pages/Erp/instock/components/SpuList';
 
@@ -33,9 +33,6 @@ const InstockEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {run} = useRequest(spuDetail, {
-    manual: true
-  });
 
   return (
     <div style={{padding: 16}}>
@@ -47,7 +44,8 @@ const InstockEdit = ({...props}) => {
         effects={({setFieldState}) => {
           onFieldValueChange$('instockRequest.*.spuId').subscribe(async (value) => {
             if (value.value) {
-              const data = await run({
+              const data = await request({
+                ...spuDetail,
                 data: {
                   spuId: value.value
                 }
