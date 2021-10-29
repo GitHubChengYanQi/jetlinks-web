@@ -4,7 +4,7 @@ import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/parts/components/Attribute';
 
 
-const SpuAttribute = ({onChange,skuId, select, value, sku, ...props}) => {
+const SpuAttribute = ({onChange, select, value, sku, ...props}) => {
 
   useEffect(() => {
     onChange(null);
@@ -31,11 +31,6 @@ const SpuAttribute = ({onChange,skuId, select, value, sku, ...props}) => {
       ref={ref}
       component={Attribute}
       sku={sku}
-      skuId={(value)=>{
-        if (value){
-          typeof skuId === 'function' && skuId(value);
-        }
-      }}
       headTitle="选择规格"
       onChange={(value) => {
         onChange(value);

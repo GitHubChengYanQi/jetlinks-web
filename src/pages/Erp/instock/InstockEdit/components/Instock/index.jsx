@@ -12,6 +12,10 @@ import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
 import ProCard from '@ant-design/pro-card';
 import InstockListTable from '@/pages/Erp/instock/InstockList/components/InstockListTable';
+import Cascader from '@/components/Cascader';
+import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
+import Modal from '@/components/Modal';
+import CascaderPosition from '@/pages/Erp/instock/components/CascaderPosition';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -20,13 +24,8 @@ const formActionsPublic = createFormActions();
 
 const Instock = (props) => {
 
+  const refPositions = useRef();
 
-  const {run} = useRequest(instockEdit, {
-    manual: true, onSuccess: () => {
-      tableRef.current.submit();
-      instockRef.current.tableRef.current.submit();
-    }
-  });
 
   const tableRef = useRef(null);
   const instockRef = useRef(null);
@@ -52,9 +51,6 @@ const Instock = (props) => {
           contentHeight
           rowSelection
           isModal={false}
-          getCheckboxProps={(record) => ({
-            disabled: record.state === 1, // Column configuration not to be checked
-          })}
           searchForm={searchForm}
           ref={tableRef}
         >
@@ -85,18 +81,18 @@ const Instock = (props) => {
           <Column title="操作" width={120} render={(text, record) => {
             return (
               <Button style={{margin: '0 10px'}} onClick={async () => {
-                await run(
-                  {
-                    data: {
-                      ...record
-                    }
-                  }
-                );
+                refPositions.current.open(record);
               }}><Icon type="icon-ruku" />入库</Button>
             );
           }} />
         </Table>
       </ProCard>
+
+      <Modal component={CascaderPosition} ref={refPositions} onSuccess={()=>{
+        refPositions.current.close();
+        tableRef.current.submit();
+        instockRef.current.tableRef.current.submit();
+      }} />
 
       <ProCard className="h2Card" headerBordered title="入库明细">
         <InstockListTable ref={instockRef} value={props.value} />

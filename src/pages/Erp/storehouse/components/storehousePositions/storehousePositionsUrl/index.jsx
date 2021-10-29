@@ -41,7 +41,7 @@ export const storehousePositionsListSelect = {
 };
 export const storehousePositionsTreeView = {
   url: '/storehousePositions/treeView',
-  method: 'POST',
+  method: 'GET',
   rowKey:'storehousePositionsId'
 };
 

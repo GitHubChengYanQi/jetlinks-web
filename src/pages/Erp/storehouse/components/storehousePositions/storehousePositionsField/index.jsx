@@ -31,5 +31,7 @@ export const Note = (props) =>{
   return (<Input.TextArea {...props}/>);
 };
 export const Pid = (props) =>{
-  return (<Cascader api={apiUrl.storehousePositionsTreeView} {...props}/>);
+  const {stroehouseId,...other} = props;
+
+  return (<Cascader api={apiUrl.storehousePositionsTreeView} defaultParams={{params:{ids:stroehouseId}}} {...other}/>);
 };

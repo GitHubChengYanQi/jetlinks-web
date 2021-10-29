@@ -43,7 +43,6 @@ const StorehousePositionsList = (props) => {
       <>
         <FormItem hidden label="仓库" name="storehouseId" value={value} component={SysField.StorehouseId} />
         <FormItem label="库位名称" name="name" component={SysField.Name} />
-        <FormItem label="上级" name="pidValue" component={SysField.Pid} />
       </>
     );
   };

@@ -5,13 +5,13 @@ import Attribute from '@/pages/Erp/instock/components/Attribute';
 
 
 const SpuAttribute = ({onChange, skuId, select, value, sku, ...props}) => {
-  console.log(value);
 
   const [val, setVal] = useState();
 
   useEffect(() => {
     if (select) {
       onChange(null);
+      setVal(null);
     }
   }, [select]);
 

@@ -16,7 +16,7 @@ export const StockRouter = [
     exact: true,
   },
   {
-    path: '/stockDetails/:id',
+    path: '/stock/detail',
     name: '库存明细',
     component: lazy(() => import('../../stockDetails/StockDetailsList')),
     fallback: <div>loading...</div>,

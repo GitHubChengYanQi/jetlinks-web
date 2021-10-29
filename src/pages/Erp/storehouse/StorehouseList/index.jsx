@@ -66,8 +66,12 @@ const StorehouseList = (props) => {
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}}
+          labelAlign="left"
+          layoutProps={{wrapperWidth: 200}}
+          grid={search}
+          columns={4} full autoRow>
           <FormItem placeholder="仓库名称" mega-props={{span: 1}} name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -128,7 +132,7 @@ const StorehouseList = (props) => {
         <Column title="仓库名称" fixed dataIndex="name" sorter render={(value, record) => {
           return (
             <>
-              <Code id={record.storehouseId} type='storehouse' />
+              <Code id={record.storehouseId} type="storehouse" />
               <Button type="link" onClick={() => {
                 refPosition.current.open(record.storehouseId);
               }}>{value}</Button>

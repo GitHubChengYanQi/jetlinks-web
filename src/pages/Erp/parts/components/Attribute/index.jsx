@@ -2,34 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Radio} from 'antd';
 
 
-const Attribute = ({sku, onChange,skuId, attributes}) => {
+const Attribute = ({sku, onChange, attributes}) => {
 
   const [array, setArray] = useState(attributes || []);
-
-  const attValue = array.map((items) => {
-    return items.values.id;
-  });
-
-  const atts = sku && sku.tree && sku.tree.map((items) => {
-    return `s${items.k_s}`;
-  });
-
-
-  const skuIds = sku.list && sku.list.filter((values) => {
-    let skuId = false;
-    for (let i = 0; i < atts.length; i++) {
-      if (values[atts[i]] === attValue[i]) {
-        skuId = true;
-      } else {
-        skuId = false;
-        break;
-      }
-    }
-    return skuId;
-  });
-
-  typeof skuId === 'function' && skuId(skuIds);
-
 
   return (
     <div style={{padding: 16}}>

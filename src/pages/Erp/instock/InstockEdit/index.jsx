@@ -14,10 +14,10 @@ import {Button, Card} from 'antd';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {itemId} from '../InstockField';
-import SpuList from '@/pages/Erp/parts/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {request, useRequest} from '@/util/Request';
+import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import SpuList from '@/pages/Erp/instock/components/SpuList';
 
 const {FormItem} = Form;
 
@@ -33,6 +33,10 @@ const InstockEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const {run} = useRequest(spuDetail, {
+    manual: true
+  });
+
   return (
     <div style={{padding: 16}}>
       <Form
@@ -43,8 +47,7 @@ const InstockEdit = ({...props}) => {
         effects={({setFieldState}) => {
           onFieldValueChange$('instockRequest.*.spuId').subscribe(async (value) => {
             if (value.value) {
-              const data = await request({
-                ...spuDetail,
+              const data = await run({
                 data: {
                   spuId: value.value
                 }
@@ -91,24 +94,12 @@ const InstockEdit = ({...props}) => {
                         title={`产品${index + 1}`}
                         key={index}>
                         <div>
-                          <div style={{width: '28%', display: 'inline-block'}}>
-                            <FormItem
-                              labelCol={7}
-                              label='产品'
-                              name={`instockRequest.${index}.spuId`}
-                              component={SysField.SpuId}
-                              required
-                            />
-                          </div>
-                          <div style={{width: '28%', display: 'inline-block'}}>
-                            <FormItem
-                              labelCol={7}
-                              label='规格'
-                              name={`instockRequest.${index}.skuId`}
-                              component={SysField.Remake}
-                              required
-                            />
-                          </div>
+                          <SpuList
+                            style={{width: '28%', display: 'inline-block'}}
+                            spuName={`instockRequest.${index}.spuId`}
+                            skusName={`instockRequest.${index}.skuId`}
+                            spuLabel="产品"
+                            skuLabel="规格" />
                           <div style={{width: '28%', display: 'inline-block'}}>
                             <FormItem
                               labelCol={7}
