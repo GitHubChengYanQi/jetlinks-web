@@ -132,14 +132,14 @@ const StockTable = (props) => {
         <Column title="产品名称"  render={(text, record) => {
           return (
             <>
-              {record.itemsResult.name}
+              {record.itemsResult && record.itemsResult.name}
             </>
           );
         }}  />
         <Column title="品牌"  width={200} render={(text, record) => {
           return (
             <>
-              {record.brandResult.brandName}
+              {record.brandResult && record.brandResult.brandName}
             </>
           );
         }}  />
@@ -147,8 +147,7 @@ const StockTable = (props) => {
           return (
             <>
               <Button type="link" onClick={() => {
-                history.push({pathname:`/ERP/stockDetails/${record.itemsResult.itemId}`,
-                  params:{storehouseId: record.storehouseId,brandId:record.brandId,itemId:record.itemId}});
+                history.push(`/ERP/stock/detail?storehouseId=${record.storehouseId}&brandId=${record.brandId}`);
               }}>{record.storehouseResult.name}</Button>
             </>
           );

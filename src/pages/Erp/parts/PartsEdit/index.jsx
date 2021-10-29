@@ -5,17 +5,17 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import Form from '@/components/Form';
 import {Button, notification, Steps} from 'antd';
-import {partsDetail, partsAdd, partsEdit, partsList} from '../PartsUrl';
+import {partsDetail, partsAdd, partsEdit} from '../PartsUrl';
 import * as SysField from '../PartsField';
 import {useBoolean} from 'ahooks';
-import {createFormActions, FieldList, FormEffectHooks, FormPath} from '@formily/antd';
+import {FieldList, FormEffectHooks, FormPath} from '@formily/antd';
 import styled from 'styled-components';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {FormItem} = Form;
@@ -53,11 +53,6 @@ const PartsEdit = ({...props}) => {
 
   const formRef = useRef(null);
 
-  const {run} = useRequest(spuDetail, {
-    manual: true
-  });
-
-
   return (
     <div style={{padding: 16}}>
       <Form
@@ -74,26 +69,24 @@ const PartsEdit = ({...props}) => {
         effects={({setFieldState}) => {
           onFieldValueChange$('parts.*.spuId').subscribe(async (value) => {
             if (value.value) {
-              const data = await run({
+              const data = await request({
+                ...spuDetail,
                 data: {
                   spuId: value.value
                 }
               });
 
-              if (data.attribute) {
-                const attribute = JSON.parse(data.attribute);
-                setFieldState(
-                  FormPath.transform(value.name, /\d/, $1 => {
-                    return `parts.${$1}.partsAttributes`;
-                  }),
-                  state => {
-                    if (value.active) {
-                      state.props.select = value;
-                    }
-                    state.props.attribute = attribute;
+              setFieldState(
+                FormPath.transform(value.name, /\d/, $1 => {
+                  return `parts.${$1}.partsAttributes`;
+                }),
+                state => {
+                  if (value.active) {
+                    state.props.select = value;
                   }
-                );
-              }
+                  state.props.sku = data.sku;
+                }
+              );
             }
 
           });

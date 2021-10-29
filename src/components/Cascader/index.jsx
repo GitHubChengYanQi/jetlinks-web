@@ -22,13 +22,13 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width, api, onChange = () => {
+    value,width,defaultParams, api, onChange = () => {
     }, ...other
   } = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {data} = useRequest(api);
+  const {data} = useRequest(api,{defaultParams});
 
   if (!data) {
     return null;

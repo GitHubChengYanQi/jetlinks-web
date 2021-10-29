@@ -1,104 +1,41 @@
-/**
- * 质检表列表页
- *
- * @author song
- * @Date 2021-10-27 13:08:57
- */
+import React, {useState} from 'react';
+import {Divider, Tree} from 'antd';
+import ListLayout from '@/layouts/ListLayout';
+import QualityTable from '@/pages/Erp/qualityCheck/components/QualityTable';
+import QualityPlanList from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanList';
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {qualityCheckDelete, qualityCheckList} from '../qualityCheckUrl';
-import QualityCheckEdit from '../qualityCheckEdit';
-import * as SysField from '../qualityCheckField';
-import Breadcrumb from '@/components/Breadcrumb';
-import Modal from '@/components/Modal';
-
-const {Column} = AntTable;
-const {FormItem} = Form;
 
 const QualityCheckList = () => {
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const actions = () => {
+
+  const [state, setState] = useState(['1']);
+
+  const Left = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
+        <Tree
+          onSelect={(value) => {
+            setState(value);
+          }}
+          showLine
+          defaultSelectedKeys={['1']}
+          treeData={[
+            {
+              title: '质检项',
+              key: '1',
+            },
+            {
+              title: '质检方案',
+              key: '2',
+            },
+          ]}
+        />
+        <Divider />
+      </>);
   };
-
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="名称" name="name" component={SysField.Name} />
-        <FormItem label="简称" name="simpleName" component={SysField.SimpleName} />
-      </>
-    );
-  };
-
   return (
-    <>
-      <Table
-        title={<Breadcrumb />}
-        api={qualityCheckList}
-        rowKey="qualityCheckId"
-        searchForm={searchForm}
-        actions={actions()}
-        ref={tableRef}
-      >
-        <Column title="名称" dataIndex="name" />
-        <Column title="简称" dataIndex="simpleName" />
-        <Column title="质检分类" dataIndex="qualityCheckClassificationId" render={(value,record)=>{
-          return (
-            <>
-            {record.qualityCheckClassificationResult && record.qualityCheckClassificationResult.name}
-            </>
-          );
-        }}/>
-        <Column title="工具" dataIndex="tool" render={(value,record)=>{
-          return (
-            <>
-              {
-                record.tools && record.tools.map((items,index)=>{
-                  if (index === record.tools.length - 1 ){
-                    return <span key={index}>{items.name}</span>;
-                  }else {
-                    return <span key={index}>{items.name}&nbsp;，&nbsp;</span>;
-                  }
-                })
-              }
-            </>
-          );
-        }} />
-        <Column title="备注" dataIndex="note" />
-        <Column />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.qualityCheckId);
-              }} />
-              <DelButton api={qualityCheckDelete} value={record.qualityCheckId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={300} />
-      </Table>
-      <Modal width={800} title="质检项" component={QualityCheckEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
-    </>
+    <ListLayout left={Left()}>
+      {state[0] === '2' ? <QualityPlanList /> : <QualityTable />}
+    </ListLayout>
   );
 };
-
 export default QualityCheckList;

@@ -4,7 +4,7 @@ import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/parts/components/Attribute';
 
 
-const SpuAttribute = ({onChange, select, value, attribute, ...props}) => {
+const SpuAttribute = ({onChange, select, value, sku, ...props}) => {
 
   useEffect(() => {
     onChange(null);
@@ -22,15 +22,15 @@ const SpuAttribute = ({onChange, select, value, attribute, ...props}) => {
     }}>{value ? (value && typeof value === 'object' &&
       value.map((items, index) => {
         if (index === value.length - 1) {
-          return `${items.values.attributeValues}`;
+          return `${items.values.name}`;
         } else {
-          return `${items.values.attributeValues}，`;
+          return `${items.values.name}，`;
         }
       })) : '选择规格'}</Button>
     <Modal
       ref={ref}
       component={Attribute}
-      attribute={attribute}
+      sku={sku}
       headTitle="选择规格"
       onChange={(value) => {
         onChange(value);

@@ -39,36 +39,6 @@ const OutstockOrderList = () => {
     );
   };
 
-
-  const {run} = useRequest(outstock, {
-    manual: true, onSuccess: () => {
-      openNotificationWithIcon('success');
-      tableRef.current.refresh();
-    },
-    onError: (error) => {
-      Message.error(error.message);
-    }
-  });
-
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: type === 'success' ? '出库成功！' : '已出库！',
-    });
-  };
-
-  function confirmOk(record) {
-    AntModal.info({
-      title: '出库',
-      width: 800,
-      closable: true,
-      centered: true,
-      content: <OutStock value={record.outstockOrderId} />,
-      style: {margin: 'auto'},
-      okText: '查看出库清单',
-      okType: 'link',
-    });
-  }
-
   return (
     <>
       <Table
@@ -124,7 +94,7 @@ const OutstockOrderList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal width={800} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
+      <Modal width={1200} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
@@ -132,7 +102,7 @@ const OutstockOrderList = () => {
         tableRef.current.refresh();
         refSee.current.close();
       }} ref={refSee} />
-      <Modal padding={1} width={800} component={OutStock} onSuccess={() => {
+      <Modal padding={1} width={1300} component={OutStock} onSuccess={() => {
         tableRef.current.refresh();
         refOutStock.current.close();
       }} ref={refOutStock} />

@@ -2,25 +2,25 @@ import React, {useEffect, useState} from 'react';
 import {Radio} from 'antd';
 
 
-const Attribute = ({attribute, onChange, attributes}) => {
+const Attribute = ({sku, onChange, attributes}) => {
 
   const [array, setArray] = useState(attributes || []);
 
   return (
     <div style={{padding: 16}}>
       {
-        attribute && attribute.map((items, index) => {
+        sku && sku.tree && sku.tree.map((items, index) => {
           const arr = array.filter((value) => {
-            return value.attribute.attributeId === items.attributeId;
+            return value.attribute.k_s === items.k_s;
           });
 
           return (
             <div key={index}>
-              {items.attribute}
+              {items.k}
               &nbsp;&nbsp;
               <Radio.Group
                 key={index}
-                defaultValue={arr && arr[0] && arr[0].values && arr[0].values.attributeValuesId}
+                defaultValue={arr && arr[0] && arr[0].values && arr[0].values.id}
                 onChange={(value) => {
 
                   const arrs = [];
@@ -29,31 +29,25 @@ const Attribute = ({attribute, onChange, attributes}) => {
                     return arrs[index] = items;
                   });
 
-                  const arrValues = items.attributeValues.filter((values) => {
-                    return values.attributeValuesId === value.target.value;
+                  const arrValues = items.v.filter((values) => {
+                    return values.id === value.target.value;
                   });
 
                   const attributes = {
-                    attribute: items.attribute,
-                    attributeId: items.attributeId
+                    k: items.k,
+                    k_s: items.k_s,
                   };
 
-                  // if (arrs[index]) {
-                  //   if (arrs[index].attributeId === items.attribute.attributeId) {
-                  //     arrs[index] = {attribute:attributes,values:arrValues[0]};
-                  //   }
-                  // } else {
                   arrs[index] = {attribute: attributes, values: arrValues[0]};
-                  // }
 
 
                   onChange(arrs);
                   setArray(arrs);
                 }}>
                 {
-                  items.attributeValues.map((items, index) => {
+                  items.v.map((items, index) => {
                     return (
-                      <Radio value={items.attributeValuesId} key={index}>{items.attributeValues}</Radio>
+                      <Radio value={items.id} key={index}>{items.name}</Radio>
                     );
                   })
                 }
