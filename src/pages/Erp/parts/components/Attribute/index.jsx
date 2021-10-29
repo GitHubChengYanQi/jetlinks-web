@@ -38,13 +38,7 @@ const Attribute = ({attribute, onChange, attributes}) => {
                     attributeId: items.attributeId
                   };
 
-                  // if (arrs[index]) {
-                  //   if (arrs[index].attributeId === items.attribute.attributeId) {
-                  //     arrs[index] = {attribute:attributes,values:arrValues[0]};
-                  //   }
-                  // } else {
                   arrs[index] = {attribute: attributes, values: arrValues[0]};
-                  // }
 
 
                   onChange(arrs);

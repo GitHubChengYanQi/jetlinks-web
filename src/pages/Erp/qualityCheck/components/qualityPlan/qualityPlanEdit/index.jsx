@@ -191,7 +191,7 @@ const QualityPlanEdit = (props) => {
                       };
                       return (
                         <div key={index}>
-                          <>{index}</>
+                          <>{index+1}</>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
                               labelCol={7}
