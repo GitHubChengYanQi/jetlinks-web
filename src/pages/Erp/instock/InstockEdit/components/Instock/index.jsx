@@ -61,19 +61,24 @@ const Instock = (props) => {
               </>
             );
           }} sorter />
-          <Column title="产品" dataIndex="itemId" render={(text, record) => {
+          <Column title="产品" render={(text, record) => {
             return (
               <>
+                {record.spuResult && record.spuResult.name}
+                &nbsp;&nbsp;
+                &lt;
                 {
-                  record.backSkus && record.backSkus.map((items,index) => {
-                    if (index === record.backSkus.length - 1){
+                  record.backSkus && record.backSkus.map((items, index) => {
+                    if (index === record.backSkus.length - 1) {
                       return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                    }else {
-                      return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                    } else {
+                      return <span
+                        key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
                     }
 
                   })
                 }
+                &gt;
               </>
             );
 

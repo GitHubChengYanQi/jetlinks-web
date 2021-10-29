@@ -64,13 +64,28 @@ const OutstockListingList = (props) => {
         showSearchButton={false}
         ref={tableRef}
       >
-        <Column title="产品" dataIndex="skuId" render={(value,record)=>{
+        <Column title="产品" render={(text, record) => {
           return (
             <>
-              {value}
+              {record.spuResult && record.spuResult.name}
+              &nbsp;&nbsp;
+              &lt;
+              {
+                record.backSkus && record.backSkus.map((items, index) => {
+                  if (index === record.backSkus.length - 1) {
+                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
+                  } else {
+                    return <span
+                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                  }
+
+                })
+              }
+              &gt;
             </>
           );
-        }} />
+
+        }} sorter />
         <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
           return (
             <>
