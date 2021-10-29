@@ -16,7 +16,7 @@ import ProCard from '@ant-design/pro-card';
 import {itemId} from '../InstockField';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {FormItem} = Form;
@@ -33,10 +33,6 @@ const InstockEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {run} = useRequest(spuDetail, {
-    manual: true
-  });
-
   return (
     <div style={{padding: 16}}>
       <Form
@@ -47,26 +43,24 @@ const InstockEdit = ({...props}) => {
         effects={({setFieldState}) => {
           onFieldValueChange$('instockRequest.*.spuId').subscribe(async (value) => {
             if (value.value) {
-              const data = await run({
+              const data = await request({
+                ...spuDetail,
                 data: {
                   spuId: value.value
                 }
               });
 
-              if (data.attribute) {
-                const attribute = JSON.parse(data.attribute);
-                setFieldState(
-                  FormPath.transform(value.name, /\d/, $1 => {
-                    return `instockRequest.${$1}.skus`;
-                  }),
-                  state => {
-                    if (value.active) {
-                      state.props.select = value;
-                    }
-                    state.props.attribute = attribute;
+              setFieldState(
+                FormPath.transform(value.name, /\d/, $1 => {
+                  return `instockRequest.${$1}.skuId`;
+                }),
+                state => {
+                  if (value.active) {
+                    state.props.select = value;
                   }
-                );
-              }
+                  state.props.sku = data.sku;
+                }
+              );
             }
 
           });
@@ -92,14 +86,29 @@ const InstockEdit = ({...props}) => {
                   {state.value.map((item, index) => {
                     const onRemove = index => mutators.remove(index);
                     return (
-                      <Card headStyle={{border:'none',borderBottom:'solid 1px #eee'}} title={`产品${index + 1}`} key={index}>
+                      <Card
+                        headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
+                        title={`产品${index + 1}`}
+                        key={index}>
                         <div>
-                          <SpuList
-                            style={{width: '28%', display: 'inline-block'}}
-                            spuName={`instockRequest.${index}.spuId`}
-                            skusName={`instockRequest.${index}.skus`}
-                            spuLabel="产品"
-                            skuLabel="规格" />
+                          <div style={{width: '28%', display: 'inline-block'}}>
+                            <FormItem
+                              labelCol={7}
+                              label='产品'
+                              name={`instockRequest.${index}.spuId`}
+                              component={SysField.SpuId}
+                              required
+                            />
+                          </div>
+                          <div style={{width: '28%', display: 'inline-block'}}>
+                            <FormItem
+                              labelCol={7}
+                              label='规格'
+                              name={`instockRequest.${index}.skuId`}
+                              component={SysField.Remake}
+                              required
+                            />
+                          </div>
                           <div style={{width: '28%', display: 'inline-block'}}>
                             <FormItem
                               labelCol={7}
@@ -153,7 +162,7 @@ const InstockEdit = ({...props}) => {
                   })}
                   <Button
                     type="dashed"
-                    style={{marginTop:8}}
+                    style={{marginTop: 8}}
                     icon={<PlusOutlined />}
                     onClick={onAdd}>增加产品</Button>
                 </div>

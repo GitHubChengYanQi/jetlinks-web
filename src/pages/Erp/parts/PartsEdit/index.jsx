@@ -76,20 +76,17 @@ const PartsEdit = ({...props}) => {
                 }
               });
 
-              if (data.attribute) {
-                const attribute = JSON.parse(data.attribute);
-                setFieldState(
-                  FormPath.transform(value.name, /\d/, $1 => {
-                    return `parts.${$1}.partsAttributes`;
-                  }),
-                  state => {
-                    if (value.active) {
-                      state.props.select = value;
-                    }
-                    state.props.attribute = attribute;
+              setFieldState(
+                FormPath.transform(value.name, /\d/, $1 => {
+                  return `parts.${$1}.partsAttributes`;
+                }),
+                state => {
+                  if (value.active) {
+                    state.props.select = value;
                   }
-                );
-              }
+                  state.props.sku = data.sku;
+                }
+              );
             }
 
           });

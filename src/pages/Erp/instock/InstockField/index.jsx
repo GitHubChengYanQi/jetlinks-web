@@ -14,6 +14,8 @@ import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
 import ItemsList from '@/pages/Erp/items/ItemsList';
 import * as apiUrl from '../InstockUrl';
 import {UserIdSelect} from '../InstockUrl';
+import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
+import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
 
 const {Search} = Input;
 
@@ -91,4 +93,22 @@ export const UserId = (props) =>{
 
 export const barcode = (props) =>{
   return (<Input   {...props}/>);
+};
+
+export const SpuId = (props) => {
+
+  const { onChange, ...other} = props;
+
+  return (<SelectSpu
+    onChange={async (value) => {
+      onChange(value);
+    }}
+    {...other} />);
+};
+
+export const Remake = (props) => {
+
+  const {sku, select,...other} = props;
+
+  return (<SpuAttribute sku={sku} select={select} {...other} />);
 };

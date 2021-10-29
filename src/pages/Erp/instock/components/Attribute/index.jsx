@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Radio} from 'antd';
 
 
-const Attribute = ({sku, onChange,skuId, attributes}) => {
+const Attribute = ({sku, onChange,skus, attributes}) => {
 
   const [array, setArray] = useState(attributes || []);
 
@@ -15,7 +15,7 @@ const Attribute = ({sku, onChange,skuId, attributes}) => {
   });
 
 
-  const skuIds = sku.list && sku.list.filter((values) => {
+  const skuIds = sku && sku.list && sku.list.filter((values) => {
     let skuId = false;
     for (let i = 0; i < atts.length; i++) {
       if (values[atts[i]] === attValue[i]) {
@@ -28,7 +28,9 @@ const Attribute = ({sku, onChange,skuId, attributes}) => {
     return skuId;
   });
 
-  typeof skuId === 'function' && skuId(skuIds);
+  if (skuIds && skuIds.length>0){
+    typeof onChange === 'function' && onChange(skuIds);
+  }
 
 
   return (
@@ -64,9 +66,7 @@ const Attribute = ({sku, onChange,skuId, attributes}) => {
                   };
 
                   arrs[index] = {attribute: attributes, values: arrValues[0]};
-
-
-                  onChange(arrs);
+                  skus(arrs);
                   setArray(arrs);
                 }}>
                 {

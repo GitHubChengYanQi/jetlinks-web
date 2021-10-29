@@ -48,9 +48,9 @@ export const SpuId = (props) => {
 
 export const Remake = (props) => {
 
-  const {attribute, select,...other} = props;
+  const {sku, select,...other} = props;
 
-  return (<SpuAttribute attribute={attribute} select={select} {...other} />);
+  return (<SpuAttribute sku={sku} select={select} {...other} />);
 };
 
 export const Number = (props) => {

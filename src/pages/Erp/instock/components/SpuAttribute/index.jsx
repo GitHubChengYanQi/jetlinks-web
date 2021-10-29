@@ -1,17 +1,22 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button} from 'antd';
 import Modal from '@/components/Modal';
-import Attribute from '@/pages/Erp/parts/components/Attribute';
+import Attribute from '@/pages/Erp/instock/components/Attribute';
 
 
-const SpuAttribute = ({onChange,skuId, select, value, sku, ...props}) => {
+const SpuAttribute = ({onChange, skuId, select, value, sku, ...props}) => {
+  console.log(value);
+
+  const [val, setVal] = useState();
 
   useEffect(() => {
-    onChange(null);
+    if (select) {
+      onChange(null);
+    }
   }, [select]);
 
   useEffect(() => {
-    onChange((value && typeof value === 'string') ? JSON.parse(value) : value);
+    setVal((val && typeof val === 'string') ? JSON.parse(val) : val);
   }, []);
 
   const ref = useRef();
@@ -19,9 +24,9 @@ const SpuAttribute = ({onChange,skuId, select, value, sku, ...props}) => {
   return (<>
     <Button type="link" onClick={() => {
       ref.current.open(false);
-    }}>{value ? (value && typeof value === 'object' &&
-      value.map((items, index) => {
-        if (index === value.length - 1) {
+    }}>{val ? (val && typeof val === 'object' &&
+      val.map((items, index) => {
+        if (index === val.length - 1) {
           return `${items.values.name}`;
         } else {
           return `${items.values.name}，`;
@@ -31,16 +36,21 @@ const SpuAttribute = ({onChange,skuId, select, value, sku, ...props}) => {
       ref={ref}
       component={Attribute}
       sku={sku}
-      skuId={(value)=>{
-        if (value){
+      skuId={(value) => {
+        if (value) {
           typeof skuId === 'function' && skuId(value);
         }
       }}
       headTitle="选择规格"
       onChange={(value) => {
-        onChange(value);
+        if (value && value.length > 0) {
+          onChange(value[0].id);
+        }
       }}
-      attributes={(value && typeof value === 'string') ? JSON.parse(value) : value}
+      skus={(value) => {
+        setVal(value);
+      }}
+      attributes={(val && typeof val === 'string') ? JSON.parse(val) : val}
       footer={
         <>
           <Button type="primary" onClick={() => {
