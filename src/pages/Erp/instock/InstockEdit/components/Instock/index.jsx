@@ -64,9 +64,19 @@ const Instock = (props) => {
           <Column title="产品" dataIndex="itemId" render={(text, record) => {
             return (
               <>
-                {record.itemsResult && record.itemsResult.name}
+                {
+                  record.backSkus && record.backSkus.map((items,index) => {
+                    if (index === record.backSkus.length - 1){
+                      return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
+                    }else {
+                      return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                    }
+
+                  })
+                }
               </>
             );
+
           }} sorter />
           <Column title="品牌" dataIndex="brandId" render={(text, record) => {
             return (
@@ -88,7 +98,7 @@ const Instock = (props) => {
         </Table>
       </ProCard>
 
-      <Modal component={CascaderPosition} ref={refPositions} onSuccess={()=>{
+      <Modal component={CascaderPosition} ref={refPositions} onSuccess={() => {
         refPositions.current.close();
         tableRef.current.submit();
         instockRef.current.tableRef.current.submit();
