@@ -92,7 +92,7 @@ const ProductOrderDetailsList = ({value}) => {
             const spuAttribute = JSON.parse(value);
 
             const attribute = spuAttribute && spuAttribute.map((items, index) => {
-              return items.values && items.values.attributeValues;
+              return items.values && items.values.name;
             });
 
 

@@ -4,7 +4,7 @@ import {Button, message, Space, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 
 
-const FileUpload = ({value,onChange,fileName}) => {
+const FileUpload = ({value,onChange,fileName,title}) => {
 
 
   const [fileList,setFileList] = useState(value ? [{
@@ -86,7 +86,7 @@ const FileUpload = ({value,onChange,fileName}) => {
         }}
       >
         <div>
-          <Button icon={<UploadOutlined />}>上传附件</Button>
+          <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>
         </div>
       </Upload>
     </Space>

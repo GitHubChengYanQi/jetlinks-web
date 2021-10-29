@@ -51,22 +51,41 @@ const OutstockListingList = (props) => {
   };
 
   return (
-    <Card title='出库清单'>
+    <div>
       <Table
         api={outstockListingList}
         rowKey="outstockListingId"
         searchForm={searchForm}
+        rowSelection
+        bodyStyle={{padding:0}}
+        bordered={false}
+        contentHeight
         headStyle={{display:'none'}}
         showSearchButton={false}
         ref={tableRef}
       >
-        <Column title="产品" dataIndex="itemId" render={(value,record)=>{
+        <Column title="产品" render={(text, record) => {
           return (
             <>
-              {record.itemsResult && record.itemsResult.name}
+              {record.spuResult && record.spuResult.name}
+              &nbsp;&nbsp;
+              &lt;
+              {
+                record.backSkus && record.backSkus.map((items, index) => {
+                  if (index === record.backSkus.length - 1) {
+                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
+                  } else {
+                    return <span
+                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                  }
+
+                })
+              }
+              &gt;
             </>
           );
-        }} />
+
+        }} sorter />
         <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
           return (
             <>
@@ -80,7 +99,7 @@ const OutstockListingList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </Card>
+    </div>
   );
 };
 

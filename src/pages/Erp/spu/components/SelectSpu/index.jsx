@@ -10,6 +10,13 @@ const SelectSpu = ({onChange,...props}) => {
 
   const {data, run} = useRequest(spuListSelect);
 
+  const options = data && data.map((items,index)=>{
+    return {
+      label:`${items.label}/${  items.model}`,
+      value:items.value,
+    };
+  });
+
   const [spuClass, setSpuClass] = useState();
   const [spuType, setSpuType] = useState();
 
@@ -44,7 +51,7 @@ const SelectSpu = ({onChange,...props}) => {
         <div>
           选择商品：
           <AntdSelect
-            options={data || []}
+            options={options || []}
             style={{width: 200}}
             {...props}
             allowClear
@@ -60,7 +67,7 @@ const SelectSpu = ({onChange,...props}) => {
 
   return (<Popover placement="bottomLeft" content={content} trigger="click">
     <AntdSelect
-      options={data || []}
+      options={options || []}
       open={false}
       style={{width: 200}}
       {...props} />

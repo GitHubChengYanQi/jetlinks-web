@@ -29,9 +29,9 @@ const StockDetailsList = (props) => {
 
   const {value} = props;
 
-  const {storehouseId, brandId, itemId} = value ? [] : props.location.params || [];
+  console.log(props);
+  const {storehouseId, brandId, itemId} = props.searchParams;
 
-  const [search, setSearch] = useState(false);
 
   useEffect(() => {
     if (storehouseId || brandId || itemId) {
@@ -84,7 +84,6 @@ const StockDetailsList = (props) => {
         rowKey="stockItemId"
         searchForm={searchForm}
         footer={value ? footer : false}
-        layout={search}
         onChange={(keys,all) => {
           setIds(all);
         }}

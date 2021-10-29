@@ -14,7 +14,7 @@ import ProCard from '@ant-design/pro-card';
 import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
 
@@ -30,10 +30,6 @@ const {onFieldValueChange$} = FormEffectHooks;
 
 const ProductOrderEdit = ({...props}) => {
 
-  const {run} = useRequest(spuDetail, {
-    manual: true
-  });
-
   const formRef = useRef();
 
   return (
@@ -46,26 +42,24 @@ const ProductOrderEdit = ({...props}) => {
         effects={({setFieldState}) => {
           onFieldValueChange$('orderDetail.*.spuId').subscribe(async (value) => {
             if (value.value) {
-              const data = await run({
+              const data = await request({
+                ...spuDetail,
                 data: {
                   spuId: value.value
                 }
               });
 
-              if (data.attribute) {
-                const attribute = JSON.parse(data.attribute);
-                setFieldState(
-                  FormPath.transform(value.name, /\d/, $1 => {
-                    return `orderDetail.${$1}.sku`;
-                  }),
-                  state => {
-                    if (value.active) {
-                      state.props.select = value;
-                    }
-                    state.props.attribute = attribute;
+              setFieldState(
+                FormPath.transform(value.name, /\d/, $1 => {
+                  return `orderDetail.${$1}.sku`;
+                }),
+                state => {
+                  if (value.active) {
+                    state.props.select = value;
                   }
-                );
-              }
+                  state.props.sku = data.sku;
+                }
+              );
             }
 
           });
