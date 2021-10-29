@@ -1,5 +1,4 @@
 import React, {lazy} from 'react';
-import baseSystem from './baseSystem';
 import CrmRouterConfig from '@/pages/Crm/router';
 import ErpRouterConfig from '@/pages/Erp/router';
 import BasicLayout from '@/layouts/BasicLayout';
@@ -7,6 +6,7 @@ import ProtalRouterConfig from '@/pages/Portal/router';
 import ShopRouterConfig from '@/pages/Shop/router';
 import UserInfoRouterConfig from '@/pages/UserInfo/router';
 import RepairRouterConfig from '@/pages/Repair/router';
+import baseSystem from './baseSystem';
 
 const routerConfig = [
   {

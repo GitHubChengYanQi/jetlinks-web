@@ -4,8 +4,10 @@ import { GenRouter } from '@/pages/BaseSystem/gen/GenRouter';
 import { LoginLogRouter } from '@/pages/BaseSystem/loginLog/loginLogRouter';
 import { SysDeptRouter } from '@/pages/BaseSystem/sysDept/sysDeptRouter';
 import {ConfigRouter} from '@/pages/BaseSystem/config/configRouter';
+import WorkflowConfig from '@/pages/Workflow/router';
 
 const systemConfig = [
+  ...WorkflowConfig,
   {
     path: '/BASE_SYSTEM',
     name: '设置',

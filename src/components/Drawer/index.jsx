@@ -4,6 +4,7 @@ import {Drawer as AntDrawer, message} from 'antd';
 const Drawer = (
   {
     title,
+    children,
     component: Component,
     width = 600,
     onSuccess = () => {
@@ -14,7 +15,7 @@ const Drawer = (
   }, ref) => {
 
   const [value, show] = useState(null);
-  const [s, setShow] = useState(false);
+  // const [s, setShow] = useState(false);
   const open = (value) => {
     show(value);
   };
@@ -40,12 +41,12 @@ const Drawer = (
       }}
       destroyOnClose
       width={width}
-      title={value ? `编辑${title}` : `添加${title}`}
+      title={value ? `${title}` : `${title}`}
       afterVisibleChange={(v) => {
-        setShow(v);
+        // setShow(v);
       }}
     >
-      {Component && <Component
+      {Component ? <Component
         {...props}
         value={value}
         onSuccess={(response) => {
@@ -57,7 +58,7 @@ const Drawer = (
           show(null);
           onClose();
         }}
-      />}
+      /> : children}
     </AntDrawer>
   );
 };
