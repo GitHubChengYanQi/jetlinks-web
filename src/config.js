@@ -5,7 +5,9 @@ export default {
     baseURI: 'https://api.daoxin.gf2025.com/',
     projectName: '道昕云',
     AMAP_KEY: '',
-    AMAP_VERSION: '2.0'
+    AMAP_VERSION: '2.0',
+    wxBind:'https://wx.daoxin.gf2025.com',
+    code:'https://wx.daoxin.gf2025.com/cp/',
   },
   buildZjzc: {
     logLevel: 'info',
@@ -13,7 +15,9 @@ export default {
     baseURI: 'https://api.zjzc.gf2025.com/',
     projectName: '道昕云',
     AMAP_KEY: '',
-    AMAP_VERSION: '2.0'
+    AMAP_VERSION: '2.0',
+    wxBind:'https://wx.zjzc.gf2025.com',
+    code:'https://wx.zjzc.gf2025.com/cp/',
   },
   cheng: {
     logLevel: 'info',
@@ -21,7 +25,8 @@ export default {
     baseURI: 'http://192.168.1.119',
     projectName: '道昕云',
     AMAP_KEY: '',
-    AMAP_VERSION: '2.0'
+    AMAP_VERSION: '2.0',
+    wxBind:'https://wx.daoxin.gf2025.com'
   },
   ren: {
     logLevel: 'info',

@@ -18,6 +18,7 @@ import StorehousePositionsEdit from '../storehousePositionsEdit';
 import * as SysField from '../storehousePositionsField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {createFormActions} from '@formily/antd';
+import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -60,7 +61,14 @@ const StorehousePositionsList = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="库位名称" width={200} dataIndex="name" />
+        <Column title="库位名称" width={200} dataIndex="name" render={(value,record)=>{
+          return (
+            <>
+              <Code id={record.storehousePositionsId} type='storehousePositions' />
+              {value}
+            </>
+          );
+        }} />
         <Column title="上级" dataIndex="pid" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

@@ -4,8 +4,11 @@ import {UserIdSelect} from '@/pages/UserInfo/openUserInfo/openUserInfoUrl';
 import {Card, Image, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import jrQrcode from 'jr-qrcode';
+import {config} from 'ice';
 
 const User = () => {
+
+  const {wxBind} = config;
 
   const [value, setValue] = useState();
 
@@ -39,7 +42,7 @@ const User = () => {
         }
 
         {
-          data && <Image style={{margin: 30}} src={jrQrcode.getQrBase64(`https://wx.zjzc.gf2025.com/#/pages/bind/index?key=${data}`)} preview={false} />
+          data && <Image style={{margin: 30}} src={jrQrcode.getQrBase64(`${wxBind}/#/pages/bind/index?key=${data}`)} preview={false} />
         }
       </Card>
     </>
