@@ -3,6 +3,7 @@ import {Form, FormItem, FormEffectHooks, createFormActions, VirtualField, FieldL
 import {Radio, Select, Input} from '@formily/antd-components';
 import {Button} from 'antd';
 import styled from 'styled-components';
+import SpuList from '@/pages/Erp/parts/components/SpuList';
 
 const actions = createFormActions();
 
@@ -81,13 +82,9 @@ const Setps = () => {
                   const onRemove = index => mutators.remove(index);
                   return (
                     <RowStyleLayout key={index}>
+                      <SpuList spuName="supId" spuLabel="产品" />
                       <FormItem
-                        name={`goodsList.${index}.username`}
-                        component={Input}
-                        title="物料"
-                      />
-                      <FormItem
-                        name={`goodsList.${index}.age`}
+                        name={`goodsList.${index}.num`}
                         component={Input}
                         title="数量"
                       />
@@ -114,13 +111,9 @@ const Setps = () => {
                   const onRemove = index => mutators.remove(index);
                   return (
                     <RowStyleLayout key={index}>
+                      <SpuList spuName="supId" spuLabel="产品" />
                       <FormItem
-                        name={`goodsList.${index}.username`}
-                        component={Input}
-                        title="物料"
-                      />
-                      <FormItem
-                        name={`goodsList.${index}.age`}
+                        name={`goodsList.${index}.num`}
                         component={Input}
                         title="数量"
                       />
