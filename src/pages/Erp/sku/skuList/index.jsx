@@ -130,6 +130,25 @@ const SkuList = ({...props}) => {
           );
         }
         } />
+
+        {/*<Column title="属性" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      {*/}
+        {/*        record.backSkus && record.backSkus.map((items, index) => {*/}
+        {/*          if (index === record.backSkus.length - 1) {*/}
+        {/*            return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;*/}
+        {/*          } else {*/}
+        {/*            return <span*/}
+        {/*              key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;*/}
+        {/*          }*/}
+
+        {/*        })*/}
+        {/*      }*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}*/}
+        } />
       </Table>
     </>
   );
