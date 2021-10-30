@@ -29,7 +29,7 @@ const QualityPlanList = (props) => {
     return (
       <>
         <AddButton onClick={() => {
-          history.push('/ERP/qualityCheck/add');
+          history.push('/PRODUCTTION/qualityCheck/add');
         }} />
       </>
     );
@@ -82,7 +82,7 @@ const QualityPlanList = (props) => {
           return (
             <>
               <EditButton onClick={() => {
-                history.push(`/ERP/qualityCheck/add?id=${record.qualityPlanId}`);
+                history.push(`/PRODUCTTION/qualityCheck/add?id=${record.qualityPlanId}`);
               }} />
               <DelButton api={qualityPlanDelete} value={record.qualityPlanId} onSuccess={() => {
                 tableRef.current.refresh();

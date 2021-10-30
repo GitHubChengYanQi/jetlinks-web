@@ -33,7 +33,7 @@ const SpuList = () => {
     return (
       <>
         <AddButton onClick={() => {
-          history.push('/ERP/spu/add');
+          history.push('/SPU/spu/add');
         }} />
       </>
     );
@@ -63,7 +63,7 @@ const SpuList = () => {
             <>
               <Code type='spu' id={record.spuId} />
               <Button type="link" onClick={() => {
-                history.push(`/ERP/spu/parts/${record.spuId}`);
+                history.push(`/SPU/spu/parts/${record.spuId}`);
               }}>
                 {value}
               </Button>
@@ -119,7 +119,7 @@ const SpuList = () => {
           return (
             <>
               <EditButton onClick={() => {
-                history.push(`/ERP/spu/add?id=${record.spuId}`);
+                history.push(`/SPU/spu/add?id=${record.spuId}`);
               }} />
               <DelButton api={spuDelete} value={record.spuId} onSuccess={() => {
                 tableRef.current.refresh();
