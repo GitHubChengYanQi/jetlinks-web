@@ -147,7 +147,6 @@ const PartsEdit = ({...props}) => {
                   icon={<PlusOutlined />}
                   onClick={onAdd}>增加物料</Button>
                 <Button
-                  hidden={!add}
                   type="primary"
                   style={{marginLeft: 8}}
                   onClick={() => {

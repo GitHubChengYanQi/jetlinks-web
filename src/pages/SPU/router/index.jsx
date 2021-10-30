@@ -28,6 +28,7 @@ const SpuRouterConfig = [
     children:[
       ...SpuRouter,
       ...PackageRouter,
+      ...PartsRouter,
       {
         redirect: '/SPU/spu',
       }

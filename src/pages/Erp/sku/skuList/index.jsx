@@ -31,7 +31,7 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const SkuList = ({spuId, ...props}) => {
+const SkuList = ({...props}) => {
 
   const {value,onSuccess} = props;
 
@@ -45,7 +45,7 @@ const SkuList = ({spuId, ...props}) => {
   const {loading, data} = useRequest(partsDetail, {
     defaultParams: {
       data: {
-        partsId: value
+        partsId: value.partsId
       }
     },
   });
@@ -70,7 +70,7 @@ const SkuList = ({spuId, ...props}) => {
     return <CheckButton style={{padding: 0}} onClick={() => {
       run({
         data: {
-          partsId: value,
+          partsId: value.partsId,
           skuIds: ids,
         }
       });
@@ -81,7 +81,7 @@ const SkuList = ({spuId, ...props}) => {
     return (
       <>
         <FormItem label="sku名字" name="skuName" component={SysField.SkuName} />
-        <FormItem label="spuId" name="spuId" value={spuId} component={SysField.SpuId} />
+        <FormItem label="spuId" name="spuId" value={value.spuId} component={SysField.SpuId} />
       </>
     );
   };

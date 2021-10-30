@@ -26,7 +26,8 @@ export default {
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
-    wxBind:'https://wx.daoxin.gf2025.com'
+    wxBind:'https://wx.daoxin.gf2025.com',
+    code:'https://wx.daoxin.gf2025.com/cp/',
   },
   ren: {
     logLevel: 'info',

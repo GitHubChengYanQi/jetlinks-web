@@ -66,5 +66,5 @@ export const brandName = (props) => {
 };
 
 export const Spu = (props) => {
-  return (<Input   {...props} />);
+  return (<Select api={spuListSelect}   {...props} />);
 };

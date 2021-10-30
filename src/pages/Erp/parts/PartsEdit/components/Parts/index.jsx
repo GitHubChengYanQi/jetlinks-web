@@ -18,7 +18,7 @@ const ApiConfig = {
   save: partsEdit
 };
 
-const Parts = ({spuId,...props}) => {
+const Parts = ({spuId, ...props}) => {
 
   const formRef = useRef(null);
 
@@ -30,16 +30,18 @@ const Parts = ({spuId,...props}) => {
           ref={formRef}
           api={ApiConfig}
           fieldKey="partsId"
-          onSubmit={(value)=>{
+          onSubmit={(value) => {
             value = {
-              partName:value.partName,
-              spuId:value.spuId
+              partName: value.partName,
+              spuId: value.spuId
             };
             return value;
           }}
         >
-          <FormItem label="清单名称" name="partName" component={SysField.PartName} />
-          <FormItem hidden  name="spuId" value={spuId} component={SysField.Spu} required/>
+          <FormItem label="清单名称" name="partName" component={SysField.PartName} required />
+          <div style={{display:spuId && 'none'}}>
+            <FormItem label="物料名称" name="spuId" value={spuId} component={SysField.Spu} required />
+          </div>
         </Form>
       </div>
     </>
