@@ -80,7 +80,7 @@ const DeliveryDetailsList = () => {
           return (
             <>
               {
-                record.brandResult ? record.brandResult.name : value
+                record.brandResult ? record.brandResult.brandName : value
               }
             </>
           );
