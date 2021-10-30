@@ -129,13 +129,28 @@ const StockTable = (props) => {
         // footer={footer}
         {...other}
       >
-        <Column title="产品名称"  render={(text, record) => {
+        <Column title="产品" render={(text, record) => {
           return (
             <>
-              {record.itemsResult && record.itemsResult.name}
+              {record.spuResult && record.spuResult.name}
+              &nbsp;&nbsp;
+              &lt;
+              {
+                record.backSkus && record.backSkus.map((items, index) => {
+                  if (index === record.backSkus.length - 1) {
+                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
+                  } else {
+                    return <span
+                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                  }
+
+                })
+              }
+              &gt;
             </>
           );
-        }}  />
+
+        }} sorter />
         <Column title="品牌"  width={200} render={(text, record) => {
           return (
             <>

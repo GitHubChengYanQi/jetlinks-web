@@ -96,15 +96,28 @@ const DeliveryDetailsList = () => {
         ref={tableRef}
       >
         <Column title="产品编号" dataIndex="stockItemId" />
-        <Column title="产品" dataIndex="itemId" render={(value,record)=>{
+        <Column title="产品" render={(text, record) => {
           return (
             <>
+              {record.spuResult && record.spuResult.name}
+              &nbsp;&nbsp;
+              &lt;
               {
-                record.itemsResult && record.itemsResult.name
+                record.backSkus && record.backSkus.map((items, index) => {
+                  if (index === record.backSkus.length - 1) {
+                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
+                  } else {
+                    return <span
+                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                  }
+
+                })
               }
+              &gt;
             </>
           );
-        }} />
+
+        }} sorter />
         <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
           return (
             <>
