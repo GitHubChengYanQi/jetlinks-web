@@ -10,7 +10,7 @@ const SpuList = ({spuLabel,style, skuLabel, spuName, skusName}) => {
     <>
       <div style={style || {display:'inline-block'}}>
         <FormItem
-          labelCol={7}
+          labelCol={4}
           label={spuLabel}
           name={spuName}
           component={SysField.SpuId}
@@ -19,7 +19,7 @@ const SpuList = ({spuLabel,style, skuLabel, spuName, skusName}) => {
       </div>
       <div style={style || {display:'inline-block'}}>
         <FormItem
-          labelCol={7}
+          labelCol={4}
           label={skuLabel}
           name={skusName}
           component={SysField.Remake}

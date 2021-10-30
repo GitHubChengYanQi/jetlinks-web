@@ -1,9 +1,22 @@
 import React from 'react';
-import {Form, FormItem, FormEffectHooks, createFormActions, VirtualField, FieldList, Submit,FormButtonGroup,Reset} from '@formily/antd';
+import {
+  Form,
+  FormItem,
+  FormEffectHooks,
+  createFormActions,
+  VirtualField,
+  FieldList,
+  Submit,
+  FormButtonGroup,
+  Reset, FormPath
+} from '@formily/antd';
 import {Radio, Select, Input} from '@formily/antd-components';
-import {Button} from 'antd';
+import {Button, Divider, InputNumber} from 'antd';
 import styled from 'styled-components';
-import SpuList from '@/pages/Erp/parts/components/SpuList';
+import SpuList from '@/pages/Erp/instock/components/SpuList';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {request} from '@/util/Request';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const actions = createFormActions();
 
@@ -35,6 +48,57 @@ const Setps = () => {
             });
           }
         });
+
+        // 控制投入物料的产品规格联动
+        FormEffectHooks.onFieldValueChange$('inGoodsList.*.spuId').subscribe(async (value) => {
+          if (value.value) {
+            const data = await request({
+              ...spuDetail,
+              data: {
+                spuId: value.value
+              }
+            });
+
+            setFieldState(
+              FormPath.transform(value.name, /\d/, $1 => {
+                return `inGoodsList.${$1}.skuId`;
+              }),
+              state => {
+                if (value.active) {
+                  state.props.select = value;
+                }
+                state.props.sku = data.sku;
+              }
+            );
+          }
+
+        });
+
+        // 控制投入物料的产品规格联动
+        FormEffectHooks.onFieldValueChange$('outGoodsList.*.spuId').subscribe(async (value) => {
+          if (value.value) {
+            const data = await request({
+              ...spuDetail,
+              data: {
+                spuId: value.value
+              }
+            });
+
+            setFieldState(
+              FormPath.transform(value.name, /\d/, $1 => {
+                return `outGoodsList.${$1}.skuId`;
+              }),
+              state => {
+                if (value.active) {
+                  state.props.select = value;
+                }
+                state.props.sku = data.sku;
+              }
+            );
+          }
+
+        });
+
       }}
       defaultValue={{
         type: 'setp'
@@ -53,6 +117,7 @@ const Setps = () => {
         ]} />
       <VirtualField name="setp">
         <FormItem
+          wrapperCol={10}
           required
           label="工序"
           name="setpId"
@@ -65,12 +130,13 @@ const Setps = () => {
           ]}
         />
         <FormItem
+          wrapperCol={10}
           required
           label="工时"
           name="length"
           component={Input}
         />
-        投入物料：
+        <Divider orientation="left">投入物料：</Divider>
         <FieldList
           name="inGoodsList"
         >
@@ -81,25 +147,42 @@ const Setps = () => {
                 {state.value.map((item, index) => {
                   const onRemove = index => mutators.remove(index);
                   return (
-                    <RowStyleLayout key={index}>
-                      <SpuList spuName="supId" spuLabel="产品" />
-                      <FormItem
-                        name={`goodsList.${index}.num`}
-                        component={Input}
-                        title="数量"
+                    <div key={index}>
+
+                      <SpuList
+                        style={{display: 'inline-block', width: '30%'}}
+                        spuName={`inGoodsList.${index}.spuId`}
+                        spuLabel="产品"
+                        skusName={`inGoodsList.${index}.skuId`}
+                        skuLabel="规格" />
+                      <div style={{display: 'inline-block', width: '15%'}}>
+                        <FormItem
+                          name={`inGoodsList.${index}.num`}
+                          component={InputNumber}
+                          title="数量"
+                        />
+                      </div>
+                      <Button
+                        type="link"
+                        style={{float: 'right'}}
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          onRemove(index);
+                        }}
+                        danger
                       />
-                      <Button onClick={() => {
-                        onRemove(index);
-                      }}>remove</Button>
-                    </RowStyleLayout>
+                    </div>
                   );
                 })}
-                <Button onClick={onAdd}>增加</Button>
+                <Button
+                  type="dashed"
+                  icon={<PlusOutlined />}
+                  onClick={onAdd}>增加物料</Button>
               </div>
             );
           }}
         </FieldList>
-        产出：
+        <Divider orientation="left">产出：</Divider>
         <FieldList
           name="outGoodsList"
         >
@@ -110,20 +193,45 @@ const Setps = () => {
                 {state.value.map((item, index) => {
                   const onRemove = index => mutators.remove(index);
                   return (
-                    <RowStyleLayout key={index}>
-                      <SpuList spuName="supId" spuLabel="产品" />
-                      <FormItem
-                        name={`goodsList.${index}.num`}
-                        component={Input}
-                        title="数量"
+                    <div key={index}>
+
+                      <SpuList
+                        style={{display: 'inline-block', width: '30%'}}
+                        spuName={`outGoodsList.${index}.spuId`}
+                        spuLabel="产品"
+                        skusName={`outGoodsList.${index}.skuId`}
+                        skuLabel="规格" />
+                      <div style={{display: 'inline-block', width: '15%'}}>
+                        <FormItem
+                          name={`outGoodsList.${index}.num`}
+                          component={InputNumber}
+                          title="数量"
+                        />
+                      </div>
+
+                      <div style={{display: 'inline-block', width: '20%'}}>
+                        <FormItem
+                          name={`outGoodsList.${index}.qualityCheck`}
+                          component={Select}
+                          title="质检方案"
+                        />
+                      </div>
+                      <Button
+                        type="link"
+                        style={{float: 'right'}}
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          onRemove(index);
+                        }}
+                        danger
                       />
-                      <Button onClick={() => {
-                        onRemove(index);
-                      }}>remove</Button>
-                    </RowStyleLayout>
+                    </div>
                   );
                 })}
-                <Button onClick={onAdd}>增加</Button>
+                <Button
+                  type="dashed"
+                  icon={<PlusOutlined />}
+                  onClick={onAdd}>增加产出</Button>
               </div>
             );
           }}
@@ -146,10 +254,12 @@ const Setps = () => {
       <VirtualField name="audit">暂未开放</VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>
 
-      <FormButtonGroup offset={8} sticky>
-        <Submit>确定</Submit>
-        <Button>取消</Button>
-      </FormButtonGroup>
+      <div style={{marginTop: 16}}>
+        <FormButtonGroup offset={8} sticky>
+          <Submit>确定</Submit>
+          <Button>取消</Button>
+        </FormButtonGroup>
+      </div>
     </Form>
   );
 };

@@ -69,7 +69,7 @@ const SelectSpu = ({onChange,...props}) => {
     <AntdSelect
       options={options || []}
       open={false}
-      style={{width: 200}}
+      style={{width: 180}}
       {...props} />
   </Popover>);
 };

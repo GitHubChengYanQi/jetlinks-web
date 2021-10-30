@@ -252,7 +252,7 @@ const WorkFlow = ({config: _config}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer title="步骤设置" ref={ref} width={900}><Setps /></Drawer>
+      <Drawer title="步骤设置" ref={ref} width={1100}><Setps /></Drawer>
     </WFC.Provider>
   );
 };
