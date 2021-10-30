@@ -5,8 +5,8 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React from 'react';
-import {Input,InputNumber,TimePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
+import React, {useRef} from 'react';
+import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Space, Button} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -14,6 +14,12 @@ import * as apiUrl from '../spuUrl';
 import DatePicker from '@/components/DatePicker';
 import {categoryList, categoryTree, spuClassificationListSelect, unitListSelect} from '../spuUrl';
 import Attribute from '@/pages/Erp/spu/components/Attribute';
+import {useBoolean} from 'ahooks';
+import Modal from '@/components/Modal';
+import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
+import CategoryList from '@/pages/Erp/category/categoryList';
+import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
+import UnitList from '@/pages/Erp/unit/unitList';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
@@ -45,7 +51,21 @@ export const Cost = (props) =>{
 };
 
 export const SpuClass = (props) =>{
-  return (<Select api={apiUrl.spuClassificationListSelect} {...props} />);
+  const ref = useRef();
+
+  const [state, {toggle}] = useBoolean();
+
+  return (
+    <Space>
+      <Select resh={state} width={200} api={apiUrl.spuClassificationListSelect} {...props} />
+      <Button onClick={() => {
+        ref.current.open(false);
+      }}>设置分类</Button>
+      <Modal width={800} component={SpuClassificationList} ref={ref} onClose={() => {
+        ref.current.close();
+        toggle();
+      }} />
+    </Space>);
 };
 export const Vulnerability = (props) =>{
   return (<AntdSelect style={{width:200}} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
@@ -60,10 +80,39 @@ export const ClassId = (props) =>{
   return (<Input {...props}/>);
 };
 export const UnitId = (props) =>{
-  return (<Select api={apiUrl.unitListSelect} {...props}/>);
+  const ref = useRef();
+
+  const [state, {toggle}] = useBoolean();
+
+  return (
+    <Space>
+      <Select resh={state} width={200} api={apiUrl.unitListSelect} {...props} />
+      <Button onClick={() => {
+        ref.current.open(false);
+      }}>设置单位</Button>
+      <Modal width={800} component={UnitList} ref={ref} onClose={() => {
+        ref.current.close();
+        toggle();
+      }} />
+    </Space>);
 };
 export const CategoryId = (props) =>{
-  return (<Cascader api={categoryTree} {...props}/>);
+
+  const ref = useRef();
+
+  const [state, {toggle}] = useBoolean();
+
+  return (
+    <Space>
+      <Cascader refre={state} api={categoryTree} {...props}/>
+      <Button onClick={() => {
+        ref.current.open(false);
+      }}>设置类目</Button>
+      <Modal width={800} component={CategoryList} ref={ref} onClose={() => {
+        ref.current.close();
+        toggle();
+      }} />
+    </Space>);
 };
 export const Type = (props) =>{
   return (

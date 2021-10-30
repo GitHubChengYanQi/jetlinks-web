@@ -43,7 +43,6 @@ const SpuList = () => {
     return (
       <>
         <FormItem label="物品名字" name="name" component={SysField.Name} />
-        <FormItem label="类目" name="categoryId" component={SysField.CategoryId} />
       </>
     );
   };
@@ -65,7 +64,7 @@ const SpuList = () => {
               <Button type="link" onClick={() => {
                 history.push(`/SPU/spu/parts/${record.spuId}`);
               }}>
-                {value}
+                {value}&nbsp;/&nbsp;{record.model}
               </Button>
             </>
           );

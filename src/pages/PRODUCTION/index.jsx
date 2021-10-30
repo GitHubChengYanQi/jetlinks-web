@@ -12,6 +12,8 @@ import CodingRulesList from '@/pages/Erp/codingRules/codingRulesList';
 import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import Modal from '@/components/Modal';
+import QualityCheckClassificationList
+  from '@/pages/Erp/qualityCheck/components/qualityCheckClassification/qualityCheckClassificationList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -23,6 +25,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
     switch (type) {
       case 'gjflgl':
         return <ToolClassificationList />;
+      case 'zjflgl':
+        return <QualityCheckClassificationList />;
       default:
         return null;
     }
@@ -47,9 +51,12 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="gjflgl">
             <span>工具分类管理</span>
           </Menu.Item>
+          <Menu.Item key="zjflgl">
+            <span>质检分类管理</span>
+          </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal width={860} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
+      <Modal width={860} title="设置" footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };

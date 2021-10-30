@@ -88,7 +88,7 @@ const SpuEdit = (props) => {
             }}
             onSuccess={() => {
               openNotificationWithIcon('success');
-              history.push('/ERP/spu');
+              history.goBack();
             }}
           >
             <Row gutter={24}>

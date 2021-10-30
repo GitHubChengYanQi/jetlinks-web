@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Cascader as AntCascader} from 'antd';
 import {useRequest} from '@/util/Request';
 
@@ -22,13 +22,17 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width,defaultParams,top, api, onChange = () => {
+    value,width,defaultParams,refre,top, api, onChange = () => {
     }, ...other
   } = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {data} = useRequest(api,{defaultParams});
+  const {data,refresh} = useRequest(api,{defaultParams});
+
+  useEffect(()=>{
+    refresh();
+  },[refre]);
 
   if (!data) {
     return null;

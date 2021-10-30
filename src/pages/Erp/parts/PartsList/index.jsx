@@ -38,6 +38,8 @@ const PartsList = () => {
 
   const params = useParams();
 
+  const history = useHistory();
+
   const ref = useRef();
 
   const refAdd = useRef();
@@ -84,11 +86,13 @@ const PartsList = () => {
   };
 
   return (
-    <Card title="物料详情">
+    <Card title="物料详情" extra={<Button onClick={()=>{
+      history.goBack();
+    }}>返回</Button>}>
       <div style={{maxWidth: 1220, margin: 'auto'}}>
         <ProCard className="h2Card" title="详细信息" headerBordered>
           <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
-            <Descriptions.Item label="成品物料编号/名称"><Code type='spu' id={data.spuId} />{data.name}</Descriptions.Item>
+            <Descriptions.Item label="成品物料编号/名称"><Code type='spu' id={data.spuId} />{data.name}&nbsp;/&nbsp;{data.model}</Descriptions.Item>
             <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
             <Descriptions.Item label="型号">{data.model ? data.model : '--'}</Descriptions.Item>
             <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>
