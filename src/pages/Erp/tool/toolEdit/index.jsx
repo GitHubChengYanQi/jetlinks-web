@@ -52,7 +52,7 @@ const ToolEdit = ({...props}) => {
           name="coding"
           component={SysField.Codings}
           codingId={data && data[0] ? data[0].codingRulesId : null}
-          required
+          rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
         />
         <FormItem label="工具名称" name="name" component={SysField.Name} required />
         <FormItem label="单位" name="unitId" component={SysField.UnitId} required />

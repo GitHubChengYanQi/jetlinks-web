@@ -26,7 +26,7 @@ export const Codings = (props) => {
 
   const {codingId, ...other} = props;
 
-  return (<Coding codingId={codingId} width={400} {...other} />);
+  return (<Coding codingId={codingId || ''} width={400} {...other} />);
 };
 
 export const PlanName = (props) => {

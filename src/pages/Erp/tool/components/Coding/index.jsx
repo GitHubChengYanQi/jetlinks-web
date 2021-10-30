@@ -20,16 +20,8 @@ const Coding = ({value,width,onChange,codingId}) => {
   }, []);
 
   return (<div style={{width}}>
-    {!state ?
-      <AntdSelect defaultValue={`${codingId}`} style={{width: '50%'}} options={data || []} onSelect={(value) => {
-        onChange(value);
-      }} />
-      :
-      <Input placeholder="请输入编码" style={{width: '50%'}} disabled={!state} value={value} onChange={(value) => {
-        onChange(value.target.value);
-      }} />}
     <AntdSelect
-      style={{width: '30%', marginLeft: 16}}
+      style={{width: '30%', marginRight: 16}}
       defaultValue={value ? 1 : 0}
       options={[{label: '规则生成', value: 0}, {label: '手动输入', value: 1}]}
       onSelect={(value) => {
@@ -40,6 +32,14 @@ const Coding = ({value,width,onChange,codingId}) => {
         }
         setState(value);
       }} />
+    {!state ?
+      <AntdSelect defaultValue={codingId ? `${codingId}` : ''} style={{width: '50%'}} options={data && data.length>0 ? data : []} onSelect={(value) => {
+        onChange(value);
+      }} />
+      :
+      <Input placeholder="请输入编码" style={{width: '50%'}} disabled={!state} value={value} onChange={(value) => {
+        onChange(value.target.value);
+      }} />}
   </div>);
 };
 

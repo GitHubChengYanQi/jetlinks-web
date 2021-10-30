@@ -159,7 +159,8 @@ const QualityPlanEdit = (props) => {
               name="planCoding"
               codingId={data && data[0] ? data[0].codingRulesId : null}
               component={SysField.Codings}
-              required />
+              rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
+            />
             <FormItem label="方案名称" name="planName" component={SysField.PlanName} required />
             <FormItem label="质检类型" name="planType" component={SysField.PlanType} required />
             <FormItem
