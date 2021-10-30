@@ -18,22 +18,21 @@ import {SpuRouter} from '@/pages/Erp/spu/spuRouter';
 import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
+import ProducttionLayout from '@/pages/PRODUCTION';
 
-const ErpRouterConfig = [
+const ProductionRouterConfig = [
   {
-    path: '/ERP',
-    name: '仓储管理',
-    component: ErpLayout,
+    path: '/PRODUCTTION',
+    name: '生产管理',
+    component: ProducttionLayout,
     children:[
-      ...OutstockRouter,
-      ...StorehouseRouter,
-      ...StockRouter,
-      ...InstockRouter,
-      ...DeliveryRouter,
+      ...ToolRouter,
+      ...QualityCheckRouter,
+      ...ProductOrderRouter,
       {
-        redirect: '/ERP/stock',
+        redirect: '/PRODUCTTION/tool',
       }
     ]
   }
 ];
-export default ErpRouterConfig;
+export default ProductionRouterConfig;

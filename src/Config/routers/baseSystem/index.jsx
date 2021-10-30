@@ -5,6 +5,7 @@ import { LoginLogRouter } from '@/pages/BaseSystem/loginLog/loginLogRouter';
 import { SysDeptRouter } from '@/pages/BaseSystem/sysDept/sysDeptRouter';
 import {ConfigRouter} from '@/pages/BaseSystem/config/configRouter';
 import WorkflowConfig from '@/pages/Workflow/router';
+import {CodingRulesRouter} from '@/pages/BaseSystem/codingRules/codingRulesRouter';
 
 const systemConfig = [
   ...WorkflowConfig,
@@ -17,7 +18,7 @@ const systemConfig = [
       ...LoginLogRouter,
       ...GenRouter,
       ...ConfigRouter,
-
+      ...CodingRulesRouter,
       {
         path: '/mgr',
         name: '用户管理',

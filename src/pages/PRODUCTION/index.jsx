@@ -1,8 +1,16 @@
 import React, {useRef, useState} from 'react';
 import {Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
+import BrandList from '@/pages/Erp/brand/BrandList';
+import MaterialList from '@/pages/Erp/material/MaterialList';
 import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
+import UnitList from '@/pages/Erp/unit/unitList';
+import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 import SetView from '@/layouts/SetView';
+import CategoryList from '@/pages/Erp/category/categoryList';
+import CodingRulesList from '@/pages/Erp/codingRules/codingRulesList';
+import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
+import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import Modal from '@/components/Modal';
 
 
@@ -13,8 +21,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const RenderComponent = () => {
     switch (type) {
-      case 'ckgl':
-        return <StorehouseList />;
+      case 'gjflgl':
+        return <ToolClassificationList />;
       default:
         return null;
     }
@@ -36,8 +44,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             setType(item.key);
           }}
         >
-          <Menu.Item key="ckgl">
-            <span>仓库管理</span>
+          <Menu.Item key="gjflgl">
+            <span>工具分类管理</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />
@@ -47,11 +55,11 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 };
 
 
-const ErpLayout = ({children}) => {
+const ProducttionLayout = ({children}) => {
   return (
     <TopLayout rightMenu={RightMenu}>
       {children}
     </TopLayout>
   );
 };
-export default ErpLayout;
+export default ProducttionLayout;
