@@ -46,7 +46,7 @@ const ToolClassificationList = () => {
   };
 
   return (
-    <>
+    <div style={{padding:16}}>
       <Table
         title={<Breadcrumb title='工具分类' />}
         api={toolClassificationList}
@@ -75,7 +75,7 @@ const ToolClassificationList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </>
+    </div>
   );
 };
 

@@ -48,7 +48,7 @@ const CategoryList = () => {
   };
 
   return (
-    <>
+    <div style={{padding:16}}>
       <Table
         title={<Breadcrumb title='类目管理' />}
         api={categoryList}
@@ -95,7 +95,7 @@ const CategoryList = () => {
         tableRef.current.refresh();
         refAttribute.current.close();
       }} ref={refAttribute} />
-    </>
+    </div>
   );
 };
 

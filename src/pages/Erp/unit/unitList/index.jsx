@@ -57,7 +57,7 @@ const UnitList = () => {
   };
 
   return (
-    <>
+    <div style={{padding:16}}>
       <Table
         contentHeight
         title={<Breadcrumb title='单位管理'/>}
@@ -90,7 +90,7 @@ const UnitList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
-    </>
+    </div>
   );
 };
 

@@ -58,7 +58,9 @@ const QualityPlanEdit = (props) => {
 
 
   return (
-    <Card title="质检方案">
+    <Card title="质检方案" extra={<Button onClick={()=>{
+      history.goBack();
+    }}>返回</Button>}>
       <Form
         ref={formRef}
         value={params || false}

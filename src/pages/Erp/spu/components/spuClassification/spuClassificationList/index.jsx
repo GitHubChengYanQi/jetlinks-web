@@ -43,7 +43,7 @@ const SpuClassificationList = () => {
   };
 
   return (
-    <>
+    <div style={{padding:16}}>
       <Table
         title={<Breadcrumb title='物料分类' />}
         api={spuClassificationList}
@@ -71,7 +71,7 @@ const SpuClassificationList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </>
+    </div>
   );
 };
 
