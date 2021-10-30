@@ -169,7 +169,6 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
       }} placement="bottom" content={reslut && reslut.count > 0 && <Card style={{maxHeight: 500,minWidth:500, overflowY: 'auto', marginTop: 16}}>
         <List>
           {reslut.pois.map((item, index) => {
-            console.log(item);
             return (<List.Item key={index} title={item.name} onClick={() => {
               setData(item);
             }} extra={<Button type="primary" onClick={() => {
@@ -179,6 +178,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
                 city: item.cityname || item.pname
               };
               typeof onChange === 'function' && onChange(location);
+              setVisiable(false);
             }}>使用该地址</Button>}>{item.address}</List.Item>);
           })}
         </List>

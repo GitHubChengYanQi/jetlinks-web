@@ -20,6 +20,7 @@ import {useHistory} from 'ice';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
+import {ScanOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -57,10 +58,12 @@ const SpuList = () => {
         actions={actions()}
         ref={tableRef}
       >
+        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
+          return (<Code type='spu' id={record.spuId} />);
+        }} />
         <Column title="物品名字" fixed dataIndex="name" render={(value, record) => {
           return (
             <>
-              <Code type='spu' id={record.spuId} />
               <Button type="link" onClick={() => {
                 history.push(`/SPU/spu/parts/${record.spuId}`);
               }}>

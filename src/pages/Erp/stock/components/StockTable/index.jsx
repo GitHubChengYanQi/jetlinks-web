@@ -12,16 +12,17 @@ import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined, SelectOutlined} from '@ant-design/icons';
+import {QrcodeOutlined, ScanOutlined, SearchOutlined, SelectOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import CheckButton from '@/components/CheckButton';
-import {useBoolean} from "ahooks";
-import {useHistory} from "ice";
+import {useBoolean} from 'ahooks';
+import {useHistory} from 'ice';
 import SelButton from '@/components/SelButton';
 import {stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
 import Modal from '@/components/Modal';
 import DeliveryDetailsList from '@/pages/Erp/deliveryDetails/deliveryDetailsList';
+import Code from '@/pages/Erp/spu/components/Code';
 
 
 const {Column} = AntTable;
@@ -29,14 +30,11 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 const StockTable = (props) => {
 
-  const {choose, state,...other} = props;
+  const {choose, state, ...other} = props;
   const tableRef = useRef(null);
-  const ref = useRef(null);
-  const modalRef = useRef(null);
   const history = useHistory();
 
-  const [search,{toggle}]  = useBoolean(false);
-  const [selectData, setSelectData] = useState(null);
+  const [search, {toggle}] = useBoolean(false);
 
   useEffect(() => {
     if (state) {
@@ -49,16 +47,28 @@ const StockTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandId" component={SysField.BrandId} />
+          {/*<FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />*/}
         </>
       );
     };
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}}
+          labelAlign="left"
+          layoutProps={{wrapperWidth: 200}}
+          grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />
+
+          <div style={{display:'inline-block',width:!search && 200}}>
+            <FormItem
+              mega-props={{span: 1}}
+              placeholder="品牌"
+              name="brandId"
+              component={SysField.BrandId}
+            />
+          </div>
 
           {search ? formItem() : null}
         </MegaLayout>
@@ -72,11 +82,11 @@ const StockTable = (props) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}> <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
-              <FormItem hidden  name="storehouseId" value={state} component={SysField.Storehouse} />
+              <FormItem hidden name="storehouseId" value={state} component={SysField.Storehouse} />
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -84,33 +94,6 @@ const StockTable = (props) => {
     );
   };
 
-  const [ids, setIds] = useState([]);
-  const footer = () => {
-    /**
-     * 批量删除例子，根据实际情况修改接口地址
-     */
-    return (
-      <SelButton
-        size="small"
-        onClick={()=>{
-          if(selectData !== null && selectData.length > 0){
-            modalRef.current.open(false);
-          } else{
-            AntModal.confirm({
-              title: '提示',
-              content: '请至少选择一条数据!',
-              confirmLoading: true,
-              style: {marginTop: '15%'},
-              onOk: async () => {
-              },
-              onCancel: () => {
-              }
-            });
-          }
-        }}
-        icon={<SelectOutlined />}
-        type="primary" >批量选择</SelButton>);
-  };
 
   return (
     <>
@@ -124,14 +107,12 @@ const StockTable = (props) => {
         rowKey="stockId"
         searchForm={searchForm}
         ref={tableRef}
-        onChange={(keys, row) => {
-          setIds(keys);
-          setSelectData(row);
-        }}
         rowSelection
-        // footer={footer}
         {...other}
       >
+        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
+          return (<Code type='stock' id={record.stockId} />);
+        }} />
         <Column title="产品" render={(text, record) => {
           return (
             <>
@@ -154,34 +135,26 @@ const StockTable = (props) => {
           );
 
         }} sorter />
-        <Column title="品牌"  width={200} render={(text, record) => {
+        <Column title="品牌" width={200} render={(text, record) => {
           return (
             <>
               {record.brandResult && record.brandResult.brandName}
             </>
           );
-        }}  />
+        }} />
         <Column title="仓库名称" render={(text, record) => {
           return (
             <>
-              <Button type="link" onClick={() => {
-                history.push(`/ERP/stock/detail?storehouseId=${record.storehouseId}&brandId=${record.brandId}`);
-              }}>{record.storehouseResult.name}</Button>
+              {record.storehouseResult && record.storehouseResult.name}
             </>
           );
-        }}  />
-        <Column title="数量" width={120} align='center' sorter dataIndex="inventory" />
-        <Column />
-        {choose ? <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <CheckButton onClick={() => {
-                choose(record);
-                props.onSuccess();
-              }} />
-            </>
-          );
-        }} width={300} /> : null}
+        }} />
+        <Column title="数量" width={120} align="center" sorter dataIndex="inventory" />
+        <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
+          return <Button type="link" onClick={() => {
+            history.push(`/ERP/stock/detail?storehouseId=${record.storehouseId}&brandId=${record.brandId}&skuId=${record.skuId}`);
+          }}>查看</Button>;
+        }} />
 
       </Table>
     </>

@@ -125,7 +125,7 @@ const SpuEdit = (props) => {
             <div style={{textAlign: 'center'}}>
               <Submit showLoading>保存</Submit>
               <Button style={{marginLeft: 16}} onClick={() => {
-                history.push('/ERP/spu');
+                history.goBack();
               }}>返回</Button>
             </div>
           </Form>

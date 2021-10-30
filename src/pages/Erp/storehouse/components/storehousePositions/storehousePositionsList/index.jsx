@@ -19,6 +19,7 @@ import * as SysField from '../storehousePositionsField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {createFormActions} from '@formily/antd';
 import Code from '@/pages/Erp/spu/components/Code';
+import {ScanOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -60,16 +61,17 @@ const StorehousePositionsList = (props) => {
         actions={actions()}
         ref={tableRef}
       >
+        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
+          return (<Code type='storehousePositions' id={record.storehousePositionsId} />);
+        }} />
         <Column title="库位名称" width={200} dataIndex="name" render={(value,record)=>{
           return (
             <>
-              <Code id={record.storehousePositionsId} type='storehousePositions' />
               {value}
             </>
           );
         }} />
         <Column title="上级" dataIndex="pid" />
-        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -81,7 +83,7 @@ const StorehousePositionsList = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
       </Table>
       <Drawer width={800} title="编辑" component={StorehousePositionsEdit} onSuccess={() => {
         tableRef.current.refresh();

@@ -19,7 +19,7 @@ import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
+import {ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import {storehouseDelete, storehouseList} from '../StorehouseUrl';
 import * as SysField from '../StorehouseField';
@@ -129,11 +129,13 @@ const StorehouseList = (props) => {
           setIds(value);
         }}
       >
-        <Column title="仓库名称" fixed dataIndex="name" sorter render={(value, record) => {
+        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
+          return (<Code type='storehouse' id={record.storehouseId} />);
+        }} />
+        <Column title="仓库名称" dataIndex="name" sorter render={(value, record) => {
           return (
             <>
-              <Code id={record.storehouseId} type="storehouse" />
-              <Button type="link" onClick={() => {
+              <Button type="link" style={{padding:0}} onClick={() => {
                 refPosition.current.open(record.storehouseId);
               }}>{value}</Button>
             </>

@@ -11,6 +11,7 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../StorehouseUrl';
+import Amap from '@/components/Amap';
 const w = 200;
 
 export const Name = (props) =>{
@@ -20,7 +21,8 @@ export const Position = (props) =>{
   return (<Input   {...props}/>);
 };
 export const Palce = (props) =>{
-  return (<Input   {...props}/>);
+  console.log(props);
+  return (<Input {...props}/>);
 };
 export const Longitude = (props) =>{
   return (<InputNumber min={0}   {...props}/>);
@@ -33,4 +35,8 @@ export const Measure = (props) =>{
 };
 export const Capacity = (props) =>{
   return (<InputNumber min={0}   {...props}/>);
+};
+
+export const Map = (props) =>{
+  return (<Amap {...props}/>);
 };

@@ -17,6 +17,7 @@ import * as SysField from '../StockDetailsField';
 import Icon from '@/components/Icon';
 import Modal2 from '@/components/Modal';
 import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
+import {useHistory} from 'ice';
 
 
 const {Column} = AntTable;
@@ -26,30 +27,19 @@ const StockDetailsList = (props) => {
 
   const refDelivery = useRef(null);
   const tableRef = useRef(null);
+  const history = useHistory(null);
 
   const {value} = props;
 
-  console.log(props);
-  const {storehouseId, brandId, itemId} = props.searchParams;
-
-
-  useEffect(() => {
-    if (storehouseId || brandId || itemId) {
-      tableRef.current.formActions.setFieldValue('storehouseId', storehouseId || '');
-      tableRef.current.formActions.setFieldValue('brandId', brandId || '');
-      tableRef.current.formActions.setFieldValue('itemId', itemId || '');
-      tableRef.current.submit();
-    }
-  }, [storehouseId, brandId, itemId]);
+  const {storehouseId, brandId, skuId} = props.searchParams;
 
   const searchForm = () => {
 
     return (
       <>
-
         <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId} component={SysField.Storehouse} />
         <FormItem disabled placeholder="品牌名称" name="brandId" value={brandId} component={SysField.brandeId} />
-        <FormItem disabled placeholder="产品名称" name="itemId" value={itemId} component={SysField.ItemId} />
+        <FormItem disabled placeholder="产品名称" name="skuId" value={skuId} component={SysField.ItemId} />
         <FormItem placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
         <FormItem hidden name="stage" value={value ? 2 : 1} component={SysField.outStockOrderId} />
         {value && <FormItem hidden name="outStockOrderId" value={value} component={SysField.outStockOrderId} />}
@@ -75,7 +65,9 @@ const StockDetailsList = (props) => {
   };
 
   return (
-    <Card title='库存明细'>
+    <Card title='库存明细' extra={<Button onClick={()=>{
+      history.push('/ERP/stock');
+    }}>返回</Button>}>
       <Table
         title={<Breadcrumb />}
         api={stockDetailsList}
@@ -83,25 +75,43 @@ const StockDetailsList = (props) => {
         headStyle={{display:'none'}}
         rowKey="stockItemId"
         searchForm={searchForm}
+        rowSelection
         footer={value ? footer : false}
         onChange={(keys,all) => {
           setIds(all);
         }}
         ref={tableRef}
       >
-        <Column title="仓库名称" dataIndex="pname" render={(text, record) => {
+        <Column title="仓库库位" dataIndex="pname" render={(text, record) => {
           return (
             <>
-              {record.storehouseResult.name}
+              {record.storehouseResult && record.storehouseResult.name}
+              -
+              {record.storehousePositionsResult && record.storehousePositionsResult.name}
             </>
           );
         }} sorter />
-        <Column title="产品名称" dataIndex="iname" render={(text, record) => {
+        <Column title="产品" render={(text, record) => {
           return (
             <>
-              {record.itemsResult.name}
+              {record.spuResult && record.spuResult.name}
+              &nbsp;&nbsp;
+              &lt;
+              {
+                record.backSkus && record.backSkus.map((items, index) => {
+                  if (index === record.backSkus.length - 1) {
+                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
+                  } else {
+                    return <span
+                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
+                  }
+
+                })
+              }
+              &gt;
             </>
           );
+
         }} sorter />
         <Column title="品牌名称" dataIndex="brandId" render={(text, record) => {
           return (
@@ -110,7 +120,6 @@ const StockDetailsList = (props) => {
             </>
           );
         }} />
-        <Column title="条形码" dataIndex="barcode" />
         <Column title="产品价格" dataIndex="price" sorter />
         <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>

@@ -25,7 +25,7 @@ const Amap = ({title, value, onClose, onChange}) => {
   return (
     <>
       {value &&
-      <div style={{padding: 8}}>
+      <div style={{display:'inline-block'}}>
         <div style={{fontSize: 14, fontWeight: 900}}>{value.name}</div>
         {value.address}
       </div>}

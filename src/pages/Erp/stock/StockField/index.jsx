@@ -43,7 +43,7 @@ export const ItemId = (props) =>{
   return (<Select api={apiUrl.itemIdSelect}   {...props}/>);
 };
 export const BrandId = (props) =>{
-  return (<Select   api={apiUrl.brandIdSelect} {...props}/>);
+  return (<Select width={200}  api={apiUrl.brandIdSelect} {...props}/>);
 };
 export const Inventory = (props) =>{
   return (<InputNumber min={0}   {...props}/>);
