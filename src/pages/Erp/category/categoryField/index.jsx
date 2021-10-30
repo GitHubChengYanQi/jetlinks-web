@@ -12,9 +12,11 @@ import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../categoryUrl';
 import {categoryTree} from '@/pages/Erp/spu/spuUrl';
+import {useRequest} from '@/util/Request';
 
 export const Pid = (props) =>{
-  return (<Cascader api={categoryTree} {...props}/>);
+
+  return (<Cascader top api={categoryTree} {...props}/>);
 };
 export const CategoryName = (props) =>{
   return (<Input {...props}/>);

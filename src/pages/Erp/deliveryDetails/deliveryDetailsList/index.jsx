@@ -28,51 +28,6 @@ const DeliveryDetailsList = () => {
   const ref = useRef(null);
   const params = useParams();
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
-
-  const {run} = useRequest(deliveryDetailsEdit, {
-    manual: true, onSuccess: () => {
-      openNotificationWithIcon('success');
-      tableRef.current.refresh();
-    }
-  });
-
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: type === 'success' ? '发货成功！' : '请输入详细信息！！！！',
-    });
-  };
-
-  function confirmOk(record) {
-    Modal.confirm({
-      title: '发货',
-      centered: true,
-      content: `请确认是否执行发货操作!注意：发货之后不可修改。`,
-      style: {margin: 'auto'},
-      cancelText: '取消',
-      onOk: async () => {
-        if(record.customerId && record.adressId && record.contactsId && record.phoneId){
-          record.stage = 1;
-          await run(
-            {
-              data: record
-            }
-          );
-        }else {
-          openNotificationWithIcon('error');
-        }
-
-      }
-    });
-  }
 
   const searchForm = () => {
     return (
@@ -93,6 +48,9 @@ const DeliveryDetailsList = () => {
         isModal={false}
         searchForm={searchForm}
         // actions={actions()}
+        rowSelection
+        contentHeight
+        headStyle={{display:'none'}}
         ref={tableRef}
       >
         <Column title="产品编号" dataIndex="stockItemId" />

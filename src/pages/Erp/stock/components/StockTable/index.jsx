@@ -20,6 +20,8 @@ import {useHistory} from "ice";
 import SelButton from '@/components/SelButton';
 import {stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
+import Modal from '@/components/Modal';
+import DeliveryDetailsList from '@/pages/Erp/deliveryDetails/deliveryDetailsList';
 
 
 const {Column} = AntTable;
@@ -29,6 +31,7 @@ const StockTable = (props) => {
 
   const {choose, state,...other} = props;
   const tableRef = useRef(null);
+  const ref = useRef(null);
   const modalRef = useRef(null);
   const history = useHistory();
 

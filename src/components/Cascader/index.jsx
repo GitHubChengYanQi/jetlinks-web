@@ -22,7 +22,7 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width,defaultParams, api, onChange = () => {
+    value,width,defaultParams,top, api, onChange = () => {
     }, ...other
   } = props;
   if (!api) {
@@ -33,6 +33,14 @@ const Cascader = (props) => {
   if (!data) {
     return null;
   }
+
+  const dataSources = top ? [
+    {
+      value:'0',
+      label:'顶级',
+      children:data,
+    }
+  ] : data;
 
   let valueArray = [];
   if (value && typeof `${value}` === 'string') {
@@ -46,7 +54,7 @@ const Cascader = (props) => {
         }
       }
     } else {
-      valueArray = getParentValue($tmpValue, data);
+      valueArray = getParentValue($tmpValue, dataSources);
     }
   } else if (Array.isArray(value)) {
     valueArray = value;
@@ -59,7 +67,7 @@ const Cascader = (props) => {
     onChange(result);
   };
 
-  return (<AntCascader style={{width}} changeOnSelect options={data} value={valueArray} onChange={change}  {...other} />);
+  return (<AntCascader style={{width}} changeOnSelect options={dataSources} value={valueArray} onChange={change}  {...other} />);
 
 
 };
