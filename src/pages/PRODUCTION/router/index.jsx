@@ -19,6 +19,7 @@ import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 import ProducttionLayout from '@/pages/PRODUCTION';
+import {OrCodeBindRouter} from '@/pages/Erp/orCodeBind/orCodeBindRouter';
 
 const ProductionRouterConfig = [
   {
@@ -29,6 +30,7 @@ const ProductionRouterConfig = [
       ...ToolRouter,
       ...QualityCheckRouter,
       ...ProductOrderRouter,
+      ...OrCodeBindRouter,
       {
         redirect: '/PRODUCTTION/tool',
       }

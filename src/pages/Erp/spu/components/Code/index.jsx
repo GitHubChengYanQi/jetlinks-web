@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
-import {Button, Image, Modal} from 'antd';
+import {Button, Image, Modal, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import jrQrcode from 'jr-qrcode';
 import {config} from 'ice';
-import {QrcodeOutlined} from '@ant-design/icons';
+import {BarcodeOutlined, QrcodeOutlined} from '@ant-design/icons';
+import AcBarcode from 'ac-barcode';
 
 
-const Code = ({type, id}) => {
+const Code = ({source, id,value}) => {
 
   const {code} = config;
 
   const [show, setShow] = useState();
 
-  const [codes, setCodes] = useState();
+  const [visible, setVisible] = useState();
+
+  const [codes, setCodes] = useState(value);
 
   const {run} = useRequest(
     {
@@ -28,20 +31,30 @@ const Code = ({type, id}) => {
 
   return (
     <>
-      <Button type="link" onClick={() => {
-        run({
-          params: {
-            type,
-            id,
+      <Space>
+        <Button
+          type="link"
+          onClick={() => {
+            if (!value){
+              run({
+                params: {
+                  source,
+                  id,
+                }
+              });
+            }
+            setShow(true);
+          }}
+          icon={
+            <>
+              <BarcodeOutlined />
+              <QrcodeOutlined />
+            </>
           }
-        });
-        setShow(true);
-      }}
-      icon={<QrcodeOutlined />}
-      />
+        />
+      </Space>
       <Modal
         visible={show}
-        style={{maxWidth:270}}
         destroyOnClose
         keyboard
         centered
@@ -51,8 +64,11 @@ const Code = ({type, id}) => {
           setShow(false);
         }}
       >
-        <div style={{margin:'auto',maxWidth:256}}>
-          <Image src={jrQrcode.getQrBase64(`${code}?codes=${codes}`)} preview={false} />
+        <div style={{margin: 'auto', maxWidth: 256}}>
+          <Image src={jrQrcode.getQrBase64(`${code}?codes=${value || codes}`)} preview={false} />
+        </div>
+        <div style={{textAlign:'center'}}>
+          {value || codes && <AcBarcode value={value || codes} />}
         </div>
       </Modal>
     </>

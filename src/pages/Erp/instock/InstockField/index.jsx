@@ -97,12 +97,9 @@ export const barcode = (props) =>{
 
 export const SpuId = (props) => {
 
-  const { onChange, ...other} = props;
+  const {...other} = props;
 
   return (<SelectSpu
-    onChange={async (value) => {
-      onChange(value);
-    }}
     {...other} />);
 };
 

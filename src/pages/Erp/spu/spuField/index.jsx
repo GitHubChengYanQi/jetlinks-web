@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Space, Button} from 'antd';
+import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Space, Button, Switch} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -57,7 +57,7 @@ export const SpuClass = (props) =>{
 
   return (
     <Space>
-      <Select resh={state} width={200} api={apiUrl.spuClassificationListSelect} {...props} />
+      <Select resh={state} width={365} api={apiUrl.spuClassificationListSelect} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
       }}>设置分类</Button>
@@ -86,7 +86,7 @@ export const UnitId = (props) =>{
 
   return (
     <Space>
-      <Select resh={state} width={200} api={apiUrl.unitListSelect} {...props} />
+      <Select resh={state} width={365} api={apiUrl.unitListSelect} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
       }}>设置单位</Button>
@@ -150,3 +150,4 @@ export const Atts = (props) => {
     </>
   );
 };
+

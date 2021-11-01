@@ -5,9 +5,9 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Radio, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -20,7 +20,7 @@ import {useRequest} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {logger, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {spuDelete, spuDetail} from '@/pages/Erp/spu/spuUrl';
 import Modal from '@/components/Modal';
 import CheckButton from '@/components/CheckButton';
 import {partsDetail, partsEdit} from '@/pages/Erp/parts/PartsUrl';
@@ -33,7 +33,7 @@ const formActionsPublic = createFormActions();
 
 const SkuList = ({...props}) => {
 
-  const {value,onSuccess} = props;
+  const {value, onSuccess} = props;
 
   const {run} = useRequest(partsEdit, {
     manual: true,
@@ -42,13 +42,17 @@ const SkuList = ({...props}) => {
     }
   });
 
-  const {loading, data} = useRequest(partsDetail, {
-    defaultParams: {
-      data: {
-        partsId: value.partsId
-      }
-    },
-  });
+  const {loading, data, run: parts} = useRequest(partsDetail, {manual: true});
+
+  useEffect(() => {
+    if (value) {
+      parts({
+        data: {
+          partsId: value.partsId
+        }
+      });
+    }
+  }, []);
 
   const defaults = data && data.skus.split(',');
 
@@ -56,6 +60,7 @@ const SkuList = ({...props}) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
+
   const actions = () => {
     return (
       <>
@@ -81,7 +86,7 @@ const SkuList = ({...props}) => {
     return (
       <>
         <FormItem label="sku名字" name="skuName" component={SysField.SkuName} />
-        <FormItem label="spuId" name="spuId" value={value.spuId} component={SysField.SpuId} />
+        <FormItem label="spuId" style={{width:200}} name="spuId" value={value && value.spuId} component={SysField.SpuId} />
       </>
     );
   };
@@ -93,9 +98,10 @@ const SkuList = ({...props}) => {
   return (
     <>
       <Table
-        headStyle={{display: 'none'}}
+        headStyle={{display: value && 'none'}}
         api={skuList}
         rowKey="skuId"
+        rowSelection={!value}
         defaultSelectedRowKeys={defaults}
         searchForm={searchForm}
         formActions={formActionsPublic}
@@ -103,11 +109,19 @@ const SkuList = ({...props}) => {
         contentHeight
         bordered={false}
         ref={tableRef}
-        footer={footer}
+        footer={value && footer}
         onChange={(value) => {
           setIds(value);
         }}
       >
+        <Column title="物料分类" dataIndex="spuId" render={(value,record)=>{
+          return (
+            <>
+              {record.spuResult && record.spuResult.name}
+            </>
+          );
+        }} />
+
         <Column title="属性" render={(value, record) => {
           return (
             <>
@@ -117,11 +131,11 @@ const SkuList = ({...props}) => {
                 record.skuJsons.map((items, index) => {
                   if (index === record.skuJsons.length - 1) {
                     return (
-                      <span key={index}>{items.values && items.values.attributeValues}</span>
+                      <span key={index}>{items.attribute && items.attribute.attribute}：{items.values && items.values.attributeValues}</span>
                     );
                   } else {
                     return (
-                      <span key={index}>{items.values && items.values.attributeValues}&nbsp;,&nbsp;</span>
+                      <span key={index}>{items.attribute && items.attribute.attribute}：{items.values && items.values.attributeValues}&nbsp;,&nbsp;</span>
                     );
                   }
                 })
@@ -131,25 +145,25 @@ const SkuList = ({...props}) => {
         }
         } />
 
-        {/*<Column title="属性" render={(value, record) => {*/}
-        {/*  return (*/}
-        {/*    <>*/}
-        {/*      {*/}
-        {/*        record.backSkus && record.backSkus.map((items, index) => {*/}
-        {/*          if (index === record.backSkus.length - 1) {*/}
-        {/*            return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;*/}
-        {/*          } else {*/}
-        {/*            return <span*/}
-        {/*              key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;*/}
-        {/*          }*/}
-
-        {/*        })*/}
-        {/*      }*/}
-        {/*    </>*/}
-        {/*  );*/}
-        {/*}*/}
-        } />
+        <Column title="型号" dataIndex="skuName" />
+        <Column title="执行标准" dataIndex="oo" />
+        <Column title="操作" dataIndex="isBan" width={100} render={(value, record) => {
+          return (
+            <>
+              <EditButton onClick={() => {
+                ref.current.open(record.skuId);
+              }} />
+              <DelButton api={skuDelete} value={record.skuId} onSuccess={() => {
+                tableRef.current.refresh();
+              }} />
+            </>
+          );
+        }} />
       </Table>
+      <Modal title="物料" component={SkuEdit} onSuccess={() => {
+        tableRef.current.submit();
+        ref.current.close();
+      }} ref={ref} />
     </>
   );
 };

@@ -93,6 +93,7 @@ const InstockEdit = ({...props}) => {
                         key={index}>
                         <div>
                           <SpuList
+                            labelCol={7}
                             style={{width: '28%', display: 'inline-block'}}
                             spuName={`instockRequest.${index}.spuId`}
                             skusName={`instockRequest.${index}.skuId`}

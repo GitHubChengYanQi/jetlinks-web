@@ -43,8 +43,6 @@ const {onFieldValueChange$} = FormEffectHooks;
 
 const PartsEdit = ({...props}) => {
 
-  const [add, {setTrue, setFalse}] = useBoolean();
-
   const openNotificationWithIcon = type => {
     notification[type]({
       message: type === 'success' ? '保存成功！' : '删除成功！',
@@ -62,7 +60,6 @@ const PartsEdit = ({...props}) => {
         fieldKey="partsId"
         NoButton={false}
         onSuccess={() => {
-          setFalse();
           openNotificationWithIcon('success');
           props.onSuccess();
         }}
@@ -98,7 +95,6 @@ const PartsEdit = ({...props}) => {
         >
           {({state, mutators}) => {
             const onAdd = () => {
-              setTrue();
               mutators.push();
             };
             return (
@@ -135,7 +131,6 @@ const PartsEdit = ({...props}) => {
                         style={{float: 'right'}}
                         icon={<DeleteOutlined />}
                         onClick={() => {
-                          setTrue();
                           onRemove(index);
                         }}
                         danger

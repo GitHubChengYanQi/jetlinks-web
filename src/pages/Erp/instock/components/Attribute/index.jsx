@@ -15,7 +15,6 @@ const Attribute = ({sku, onChange, attributes}, ref) => {
   });
 
   const skuIds = sku && sku.list && sku.list.filter((values) => {
-    console.log(values,array);
     let skuId = false;
     for (let i = 0; i < atts.length; i++) {
       if (values[atts[i]] === attValue[i]) {

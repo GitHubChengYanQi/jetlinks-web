@@ -14,29 +14,17 @@ import * as apiUrl from '../skuUrl';
 import {useRequest} from '@/util/Request';
 import {itemAttributeList} from '@/pages/Erp/itemAttribute/itemAttributeUrl';
 import {attributeValuesList} from '@/pages/Erp/attributeValues/attributeValuesUrl';
-
-const {Column} = Table;
+import {spuListSelect} from '@/pages/Erp/parts/PartsUrl';
 
 export const SkuName = (props) => {
-  return (<Input {...props} />);
+  const {disabled,...other} = props;
+  return (<Input disabled={disabled} {...other} />);
 };
 export const SpuId = (props) => {
-  return (<Input {...props} />);
+  return (<Select api={spuListSelect} {...props} />);
 };
 
 export const Attributes = (props) => {
 
   return (<Input {...props} />);
-};
-export const Values = (props) => {
-
-  const {items,...other} = props;
-
-  return (
-    <Radio.Group {...other} defaultValue={items.length && items[0].attributeValuesId}>
-      {items && items.map((items,index)=>{
-        return  <Radio key={index} value={items.attributeValuesId}>{items.attributeValues}</Radio>;
-      })}
-    </Radio.Group>
-  );
 };

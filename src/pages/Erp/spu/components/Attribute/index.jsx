@@ -3,6 +3,7 @@ import {Button, Checkbox, Divider, Input, Radio, Table} from 'antd';
 import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import model from '../../../../../../.ice/auth/model';
+import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
 
 const {Column} = Table;
 
@@ -28,9 +29,29 @@ const Attribute = ({attribute, spuId, ...props}) => {
     }
   });
 
+  const {run:sku} = useRequest(skuList, {
+    manual: true,
+    onSuccess: (res) => {
+      const model = res.map((items)=>{
+        return items.skuName;
+      });
+      const state = res.map((items)=>{
+        return items.isBan;
+      });
+      setModel(model);
+      setState(state);
+    }
+  });
+
   useEffect(() => {
     if (spuId) {
       run({
+        data: {
+          spuId
+        }
+      });
+
+      sku({
         data: {
           spuId
         }
@@ -182,22 +203,22 @@ const Attribute = ({attribute, spuId, ...props}) => {
               />
             );
           })}
-          <Column title="型号" width={200} render={(value, record, index) => {
+          <Column title="型号" dataIndex='skuName' width={200} render={(value, record, index) => {
             return (
-              <Input placeholder="输入型号" onChange={(value) => {
+              <Input placeholder="输入型号" value={value} onChange={(value) => {
                 model[index] = value.target.value;
                 setModel([...model]);
               }} />
             );
           }} />
-          <Column title="操作" render={(value, record, index) => {
+          <Column title="操作" dataIndex='isBan' render={(value, record, index) => {
             return (
-              <Radio.Group defaultValue={1} onChange={(value) => {
+              <Radio.Group value={value || '0'} onChange={(value) => {
                 state[index] = value.target.value;
                 setState([...state]);
               }}>
-                <Radio value={0}>禁用</Radio>
-                <Radio value={1}>启用</Radio>
+                <Radio value='0'>启用</Radio>
+                <Radio value='1'>禁用</Radio>
               </Radio.Group>
             );
           }} />

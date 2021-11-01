@@ -3,22 +3,19 @@ import {spuListSelect} from '@/pages/Erp/productOrder/productOrderUrl';
 import React, {useEffect, useState} from 'react';
 import {Popover, Radio, Select as AntdSelect, Space} from 'antd';
 import Select from '@/components/Select';
-import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
+import {skuListSelect, spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 
 const SelectSpu = ({onChange, ...props}) => {
 
   const {data, run} = useRequest(spuListSelect);
 
-  const options = data && data.map((items, index) => {
-    return {
-      label: `${items.label}/${items.model}`,
-      value: items.value,
-    };
-  });
+  const {run:sku} = useRequest(skuDetail,{manual:true});
 
   const [spuClass, setSpuClass] = useState();
   const [spuType, setSpuType] = useState();
+  const [skuId, setSkuId] = useState();
 
   useEffect(() => {
     run({
@@ -36,8 +33,14 @@ const SelectSpu = ({onChange, ...props}) => {
           sku&nbsp;&nbsp;型号：
         </div>
         <div style={{display: 'inline-block', width: '87%'}}>
-          <Select api={spuClassificationListSelect} width="100%" value={spuClass} onChange={(value) => {
-            setSpuClass(value);
+          <Select api={skuListSelect} width="100%" value={skuId} onChange={async (value) => {
+            const data = await sku({
+              data:{
+                skuId:value,
+              }
+            });
+            setSkuId(value);
+            onChange(data && data.spuId);
           }} />
         </div>
       </div>
@@ -61,7 +64,7 @@ const SelectSpu = ({onChange, ...props}) => {
         <div>
           选择商品：
           <AntdSelect
-            options={options || []}
+            options={data || []}
             style={{width: 200}}
             {...props}
             allowClear
@@ -77,7 +80,7 @@ const SelectSpu = ({onChange, ...props}) => {
 
   return (<Popover placement="bottomLeft" content={content} trigger="click">
     <AntdSelect
-      options={options || []}
+      options={data || []}
       open={false}
       style={{width: 180}}
       {...props} />

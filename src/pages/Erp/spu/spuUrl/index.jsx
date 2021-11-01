@@ -57,3 +57,9 @@ export const spuClassificationListSelect = {
   method: 'POST',
 };
 
+export const skuListSelect = {
+  url: '/sku/listSelect',
+  method: 'POST',
+};
+
+

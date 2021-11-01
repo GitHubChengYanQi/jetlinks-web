@@ -16,7 +16,7 @@ import {
   Input,
   notification,
   Row,
-  Spin,
+  Spin, Switch,
   Table as AntTable,
   Table
 } from 'antd';
@@ -52,6 +52,8 @@ const SpuEdit = (props) => {
 
   const [attribute, setAttribute] = useState();
 
+  const [hiddenClass, setHiddenClass] = useState();
+
   const openNotificationWithIcon = type => {
     notification[type]({
       message: '创建成功！',
@@ -68,7 +70,7 @@ const SpuEdit = (props) => {
   return (
     <div style={{padding: 16, paddingLeft: 0, paddingTop: 0}}>
       <Card title={params ? '编辑物料信息' : '添加物料信息'} bordered={false}>
-        <div style={{maxWidth: 1200,margin:'auto'}}>
+        <div style={{maxWidth: 1200, margin: 'auto'}}>
           <Form
             NoButton={false}
             value={params || false}
@@ -90,12 +92,19 @@ const SpuEdit = (props) => {
               openNotificationWithIcon('success');
               history.goBack();
             }}
+            onSubmit={(value)=>{
+              return {...value,isHidden:!hiddenClass};
+            }}
           >
             <Row gutter={24}>
               <Col span={12}>
-                <ProCard title="基础信息" className="h2Card" headerBordered>
-                  <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />
-                  <FormItem label="产品名字" name="name" component={SysField.Name} required />
+                <ProCard title="基础信息" className="h2Card" headerBordered extra={
+                  <Switch checkedChildren="隐藏类目" unCheckedChildren="显示类目" defaultChecked onChange={(value)=>{
+                    setHiddenClass(value);
+                  }} />
+                }>
+                  {hiddenClass && <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />}
+                  <FormItem label="种类名字" name="name" component={SysField.Name} required />
                   <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
                   <FormItem label="分类" name="spuClassificationId" component={SysField.SpuClass} required />
                   <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
@@ -115,12 +124,12 @@ const SpuEdit = (props) => {
             </Row>
 
 
-            <ProCard title="属性信息" className="h2Card" headerBordered>
+            {hiddenClass && <ProCard title="属性信息" className="h2Card" headerBordered>
               {loading ?
                 <div style={{textAlign: 'center'}}><Spin size="large" /></div>
                 :
                 <FormItem name="spuAttributes" component={SysField.Atts} spuId={params} attribute={attribute} />}
-            </ProCard>
+            </ProCard>}
             <div style={{textAlign: 'center'}}>
               <Submit showLoading>保存</Submit>
               <Button style={{marginLeft: 16}} onClick={() => {

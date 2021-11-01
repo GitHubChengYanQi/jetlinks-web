@@ -130,7 +130,7 @@ const StorehouseList = (props) => {
         }}
       >
         <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code type='storehouse' id={record.storehouseId} />);
+          return (<Code source='storehouse' id={record.storehouseId} />);
         }} />
         <Column title="仓库名称" dataIndex="name" sorter render={(value, record) => {
           return (

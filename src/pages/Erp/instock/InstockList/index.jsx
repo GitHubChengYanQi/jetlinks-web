@@ -17,13 +17,14 @@ import MyModal from '@/components/Modal';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {ExclamationCircleOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import InstockEdit from '../InstockEdit';
 import {useRequest} from "@/util/Request";
 import {instockDelete, instockEdit, instockList, instockOrderList, itemIdSelect} from '../InstockUrl';
 import * as SysField from '../InstockField';
 import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
+import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -131,7 +132,10 @@ const InstockList = () => {
         ref={tableRef}
         rowSelection
       >
-        <Column title='入库单' fixed dataIndex='instockOrderId' render={(text)=>{
+        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
+          return (<Code source='instock' id={record.instockOrderId} />);
+        }} />
+        <Column title='入库单' dataIndex='instockOrderId' render={(text)=>{
           return (
             <a onClick={()=>{
               instockRef.current.open(text);

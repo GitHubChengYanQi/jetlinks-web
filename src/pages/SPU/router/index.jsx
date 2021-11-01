@@ -19,6 +19,7 @@ import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 import SpuLayout from '@/pages/SPU';
+import {SkuRouter} from '@/pages/Erp/sku/skuRouter';
 
 const SpuRouterConfig = [
   {
@@ -27,6 +28,7 @@ const SpuRouterConfig = [
     component: SpuLayout,
     children:[
       ...SpuRouter,
+      ...SkuRouter,
       ...PackageRouter,
       ...PartsRouter,
       {

@@ -111,7 +111,7 @@ const StockTable = (props) => {
         {...other}
       >
         <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code type='stock' id={record.stockId} />);
+          return (<Code source='stock' id={record.stockId} />);
         }} />
         <Column title="产品" render={(text, record) => {
           return (

@@ -21,6 +21,7 @@ import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
 import {ScanOutlined} from '@ant-design/icons';
+import SpuEdits from '@/pages/Erp/spu/SpuEdits';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -34,7 +35,8 @@ const SpuList = () => {
     return (
       <>
         <AddButton onClick={() => {
-          history.push('/SPU/spu/add');
+          // history.push('/SPU/spu/add');
+          ref.current.open(false);
         }} />
       </>
     );
@@ -59,7 +61,7 @@ const SpuList = () => {
         ref={tableRef}
       >
         <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code type='spu' id={record.spuId} />);
+          return (<Code source='spu' id={record.spuId} />);
         }} />
         <Column title="物品名字" dataIndex="name" render={(value, record) => {
           return (
@@ -67,19 +69,19 @@ const SpuList = () => {
               <Button type="link" onClick={() => {
                 history.push(`/SPU/spu/parts/${record.spuId}`);
               }}>
-                {value}&nbsp;/&nbsp;{record.model}
+                {value}
               </Button>
             </>
           );
         }} />
 
-        <Column title="类目" dataIndex="categoryId" render={(value, record) => {
-          return (
-            <>
-              {record.category && record.category.categoryName}
-            </>
-          );
-        }} />
+        {/*<Column title="类目" dataIndex="categoryId" render={(value, record) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      {record.category && record.category.categoryName}*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} />*/}
         <Column title="单位" width={120} align="center" dataIndex="unitId" render={(value, record) => {
           return (
             <>
@@ -87,7 +89,6 @@ const SpuList = () => {
             </>
           );
         }} sorter />
-        <Column title="型号" width={120} dataIndex="model" sorter />
         <Column title="分类" width={120} render={(value, record) => {
           return (
             <>
@@ -97,31 +98,32 @@ const SpuList = () => {
             </>
           );
         }} sorter />
-        <Column title="生产类型" width={120} align="center" dataIndex="productionType" render={(value) => {
-          switch (value) {
-            case 0:
-              return '自制件';
-            case 1:
-              return '委派件';
-            case 2:
-              return '外购件';
-            default:
-              break;
-          }
+        {/*<Column title="生产类型" width={120} align="center" dataIndex="productionType" render={(value) => {*/}
+        {/*  switch (value) {*/}
+        {/*    case 0:*/}
+        {/*      return '自制件';*/}
+        {/*    case 1:*/}
+        {/*      return '委派件';*/}
+        {/*    case 2:*/}
+        {/*      return '外购件';*/}
+        {/*    default:*/}
+        {/*      break;*/}
+        {/*  }*/}
 
-        }} sorter />
-        <Column title="养护周期" width={120} align="center" dataIndex="curingCycle" render={(value) => {
-          return (
-            <>
-              {value && `${value}天`}
-            </>
-          );
-        }} sorter />
+        {/*}} sorter />*/}
+        {/*<Column title="养护周期" width={120} align="center" dataIndex="curingCycle" render={(value) => {*/}
+        {/*  return (*/}
+        {/*    <>*/}
+        {/*      {value && `${value}天`}*/}
+        {/*    </>*/}
+        {/*  );*/}
+        {/*}} sorter />*/}
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                history.push(`/SPU/spu/add?id=${record.spuId}`);
+                // history.push(`/SPU/spu/add?id=${record.spuId}`);
+                ref.current.open(record.spuId);
               }} />
               <DelButton api={spuDelete} value={record.spuId} onSuccess={() => {
                 tableRef.current.refresh();
@@ -130,7 +132,7 @@ const SpuList = () => {
           );
         }} />
       </Table>
-      <Modal width={800} title="编辑" component={SpuEdit} onSuccess={() => {
+      <Modal width={800} title="编辑" component={SpuEdits} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

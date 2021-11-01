@@ -47,6 +47,8 @@ const SpuAttribute = ({onChange, skuId, select, value, sku, ...props}) => {
       ref.current.open(false);
     }}>
       {
+        value
+        &&
         data
           ?
           data.list.map((items, index) => {
