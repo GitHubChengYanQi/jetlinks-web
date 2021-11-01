@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useState} from 'react';
 import {Radio} from 'antd';
 
 
-const Attribute = ({sku, onChange,skus, attributes}) => {
+const Attribute = ({sku, onChange, attributes}, ref) => {
 
   const [array, setArray] = useState(attributes || []);
 
@@ -14,8 +14,8 @@ const Attribute = ({sku, onChange,skus, attributes}) => {
     return `s${items.k_s}`;
   });
 
-
   const skuIds = sku && sku.list && sku.list.filter((values) => {
+    console.log(values,array);
     let skuId = false;
     for (let i = 0; i < atts.length; i++) {
       if (values[atts[i]] === attValue[i]) {
@@ -28,9 +28,18 @@ const Attribute = ({sku, onChange,skus, attributes}) => {
     return skuId;
   });
 
-  if (skuIds && skuIds.length>0){
-    typeof onChange === 'function' && onChange(skuIds);
-  }
+
+  const onchange = () => {
+    if (skuIds && skuIds.length === 1) {
+      typeof onChange === 'function' && onChange(skuIds[0].id);
+    }
+  };
+
+  useImperativeHandle(ref, () => (
+    {
+      onchange,
+    }
+  ));
 
 
   return (
@@ -66,7 +75,6 @@ const Attribute = ({sku, onChange,skus, attributes}) => {
                   };
 
                   arrs[index] = {attribute: attributes, values: arrValues[0]};
-                  skus(arrs);
                   setArray(arrs);
                 }}>
                 {
@@ -85,4 +93,4 @@ const Attribute = ({sku, onChange,skus, attributes}) => {
   );
 };
 
-export default Attribute;
+export default React.forwardRef(Attribute);

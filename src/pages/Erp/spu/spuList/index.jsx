@@ -61,7 +61,7 @@ const SpuList = () => {
         <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
           return (<Code type='spu' id={record.spuId} />);
         }} />
-        <Column title="物品名字" fixed dataIndex="name" render={(value, record) => {
+        <Column title="物品名字" dataIndex="name" render={(value, record) => {
           return (
             <>
               <Button type="link" onClick={() => {

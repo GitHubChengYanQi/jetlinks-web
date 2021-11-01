@@ -14,9 +14,9 @@ import {useBoolean} from 'ahooks';
 import {FieldList, FormEffectHooks, FormPath} from '@formily/antd';
 import styled from 'styled-components';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import SpuList from '@/pages/Erp/parts/components/SpuList';
 import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import SpuList from '@/pages/Erp/instock/components/SpuList';
 
 const {FormItem} = Form;
 
@@ -78,7 +78,7 @@ const PartsEdit = ({...props}) => {
 
               setFieldState(
                 FormPath.transform(value.name, /\d/, $1 => {
-                  return `parts.${$1}.partsAttributes`;
+                  return `parts.${$1}.skuId`;
                 }),
                 state => {
                   if (value.active) {
@@ -109,11 +109,12 @@ const PartsEdit = ({...props}) => {
                     <RowStyleLayout key={index}>
 
                       <SpuList
+                        labelCol={7}
                         spuLabel="物料名称"
                         skuLabel="规格描述"
                         spuName={`parts.${index}.spuId`}
                         index={index}
-                        skusName={`parts.${index}.partsAttributes`} />
+                        skusName={`parts.${index}.skuId`} />
 
                       <FormItem
                         labelCol={7}

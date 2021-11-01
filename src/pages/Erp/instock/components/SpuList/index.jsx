@@ -4,13 +4,13 @@ import Form from '@/components/Form';
 
 const {FormItem} = Form;
 
-const SpuList = ({spuLabel,style, skuLabel, spuName, skusName}) => {
+const SpuList = ({spuLabel,style,labelCol, skuLabel, spuName, skusName}) => {
 
   return (
     <>
       <div style={style || {display:'inline-block'}}>
         <FormItem
-          labelCol={4}
+          labelCol={labelCol || 4}
           label={spuLabel}
           name={spuName}
           component={SysField.SpuId}
@@ -19,7 +19,7 @@ const SpuList = ({spuLabel,style, skuLabel, spuName, skusName}) => {
       </div>
       <div style={style || {display:'inline-block'}}>
         <FormItem
-          labelCol={4}
+          labelCol={ labelCol || 4}
           label={skuLabel}
           name={skusName}
           component={SysField.Remake}

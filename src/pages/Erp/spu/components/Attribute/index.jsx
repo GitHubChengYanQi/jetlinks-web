@@ -57,15 +57,16 @@ const Attribute = ({attribute, spuId, ...props}) => {
 
     if (arr.length > 0){
       if (arr.length < 2) {
-        const values = arr[0].map((items,index)=>{
+        const value = arr[0].map((items,index)=>{
           return {
-            ...items,
-            model:model[index],
-            state:state[index],
+            key:index,
+            attributeValues:[items],
+            skuName:model[index],
+            isBan:state[index],
           };
         });
-        onChange({spuRequests: values, values});
-        return arr[0] || [];
+        onChange({spuRequests: values, values:value});
+        return value || [];
       }
 
       const res = arr.reduce((total, currentValue) => {
@@ -87,13 +88,18 @@ const Attribute = ({attribute, spuId, ...props}) => {
         return res;
       });
 
-      res.map((items,index)=>{
-        items.push({model:model[index]});
-        items.push({state:state[index]});
-        return null;
+      const value = res.map((items,index)=>{
+        return {
+          key:index,
+          attributeValues:items,
+          skuName:model[index],
+          isBan:state[index],
+        };
       });
-      onChange({spuRequests: values, values: res});
-      return res;
+
+
+      onChange({spuRequests: values, values:value});
+      return value;
     }else {
       return [];
     }
@@ -134,6 +140,7 @@ const Attribute = ({attribute, spuId, ...props}) => {
                   return value.attributeValuesId === item;
                 });
                 return {
+                  attributeId:items.attribute.attributeId,
                   attributeValues: values[0].attributeValues,
                   attributeValuesId: `${values[0].attributeValuesId}`,
                 };
@@ -170,7 +177,7 @@ const Attribute = ({attribute, spuId, ...props}) => {
                 key={index}
                 title={items && items.attribute}
                 render={(value, record) => {
-                  return record instanceof Array ? record[index].attributeValues : record.attributeValues;
+                  return record.attributeValues && record.attributeValues[index].attributeValues;
                 }}
               />
             );

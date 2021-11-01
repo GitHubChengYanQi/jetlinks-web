@@ -2,39 +2,68 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Button} from 'antd';
 import Modal from '@/components/Modal';
 import Attribute from '@/pages/Erp/instock/components/Attribute';
+import {useRequest} from '@/util/Request';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 
 const SpuAttribute = ({onChange, skuId, select, value, sku, ...props}) => {
 
-  const [val, setVal] = useState();
+  const {data, run} = useRequest(skuDetail, {manual: true});
+
+  const attributes = data && data.list.map((items,index)=>{
+    return {
+      attribute:{
+        k:items.attributeName,
+        k_s:items.attributeId,
+      },
+      values:{
+        id:items.attributeValuesId,
+        name:items.attributeValues,
+      }
+    };
+  });
 
   useEffect(() => {
     if (select) {
       onChange(null);
-      setVal(null);
     }
   }, [select]);
 
   useEffect(() => {
-    setVal((val && typeof val === 'string') ? JSON.parse(val) : val);
+    if (value) {
+      run({
+        data: {
+          skuId: value,
+        }
+      });
+    }
   }, []);
 
   const ref = useRef();
+  const comRef = useRef();
 
   return (<>
     <Button type="link" onClick={() => {
       ref.current.open(false);
-    }}>{val ? (val && typeof val === 'object' &&
-      val.map((items, index) => {
-        if (index === val.length - 1) {
-          return `${items.values.name}`;
-        } else {
-          return `${items.values.name}，`;
-        }
-      })) : '选择规格'}</Button>
+    }}>
+      {
+        data
+          ?
+          data.list.map((items, index) => {
+            if (index === data.list.length - 1) {
+              return `${items.attributeValues}`;
+            } else {
+              return `${items.attributeValues}，`;
+            }
+          })
+          :
+          '选择规格'
+      }
+    </Button>
     <Modal
       ref={ref}
       component={Attribute}
+      compoentRef={comRef}
       sku={sku}
       skuId={(value) => {
         if (value) {
@@ -42,19 +71,20 @@ const SpuAttribute = ({onChange, skuId, select, value, sku, ...props}) => {
         }
       }}
       headTitle="选择规格"
-      onChange={(value) => {
-        if (value && value.length > 0) {
-          onChange(value[0].id);
-        }
+      onChange={async (value) => {
+        await run({
+          data: {
+            skuId: value,
+          }
+        });
+        onChange(value);
       }}
-      skus={(value) => {
-        setVal(value);
-      }}
-      attributes={(val && typeof val === 'string') ? JSON.parse(val) : val}
+      attributes={attributes}
       footer={
         <>
           <Button type="primary" onClick={() => {
             ref.current.close();
+            comRef.current.onchange();
           }}>保存</Button>
         </>
       } />

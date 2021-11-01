@@ -6,14 +6,14 @@ import Select from '@/components/Select';
 import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
-const SelectSpu = ({onChange,...props}) => {
+const SelectSpu = ({onChange, ...props}) => {
 
   const {data, run} = useRequest(spuListSelect);
 
-  const options = data && data.map((items,index)=>{
+  const options = data && data.map((items, index) => {
     return {
-      label:`${items.label}/${  items.model}`,
-      value:items.value,
+      label: `${items.label}/${items.model}`,
+      value: items.value,
     };
   });
 
@@ -31,6 +31,16 @@ const SelectSpu = ({onChange,...props}) => {
 
   const content = (
     <Space direction="vertical">
+      <div>
+        <div style={{display: 'inline-block',width:'auto'}}>
+          sku&nbsp;&nbsp;型号：
+        </div>
+        <div style={{display: 'inline-block', width: '87%'}}>
+          <Select api={spuClassificationListSelect} width="100%" value={spuClass} onChange={(value) => {
+            setSpuClass(value);
+          }} />
+        </div>
+      </div>
       <div>
         生产类型：
         <Radio.Group onChange={(value) => {
