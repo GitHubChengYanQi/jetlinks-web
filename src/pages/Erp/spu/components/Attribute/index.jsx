@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Divider, Radio, Table} from 'antd';
+import {Button, Checkbox, Divider, Input, Radio, Table} from 'antd';
 import {useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import model from '../../../../../../.ice/auth/model';
 
 const {Column} = Table;
 
@@ -11,16 +12,16 @@ const Attribute = ({attribute, spuId, ...props}) => {
 
   const [array, setArray] = useState([]);
 
+  const [model, setModel] = useState([]);
+
+  const [state, setState] = useState([]);
+
   const {run} = useRequest(spuDetail, {
     manual: true,
     onSuccess: (res) => {
       if (res.attribute) {
         const attribute = JSON.parse(res.attribute);
         if (attribute) {
-
-          const defaultValue = attribute.map((items) => {
-            return items.attributeValues;
-          });
           setArray(attribute);
         }
       }
@@ -40,6 +41,7 @@ const Attribute = ({attribute, spuId, ...props}) => {
   const dataSource = [];
   const title = [];
   const values = [];
+
   array.map((items) => {
     if (items.attributeValues.length > 0) {
       values.push(items);
@@ -53,31 +55,50 @@ const Attribute = ({attribute, spuId, ...props}) => {
 
   const attributes = (arr) => {
 
-    if (arr.length < 2) {
-      onChange({spuRequests: values, values: arr[0]});
-      return arr[0] || [];
-    }
-
-    const res = arr.reduce((total, currentValue) => {
-      const res = [];
-      if (total instanceof Array) {
-        total.forEach((t) => {
-          if (currentValue) {
-            currentValue.forEach((cv) => {
-              if (t instanceof Array) {
-                res.push([...t, cv]);
-              } else {
-                res.push([t, cv]);
-              }
-            });
-          }
+    if (arr.length > 0){
+      if (arr.length < 2) {
+        const values = arr[0].map((items,index)=>{
+          return {
+            ...items,
+            model:model[index],
+            state:state[index],
+          };
         });
+        onChange({spuRequests: values, values});
+        return arr[0] || [];
       }
 
+      const res = arr.reduce((total, currentValue) => {
+        const res = [];
+        if (total instanceof Array) {
+          total.forEach((t) => {
+            if (currentValue) {
+              currentValue.forEach((cv) => {
+                if (t instanceof Array) {
+                  res.push([...t, cv]);
+                } else {
+                  res.push([t, cv]);
+                }
+              });
+            }
+          });
+        }
+
+        return res;
+      });
+
+      res.map((items,index)=>{
+        items.push({model:model[index]});
+        items.push({state:state[index]});
+        return null;
+      });
+      onChange({spuRequests: values, values: res});
       return res;
-    });
-    onChange({spuRequests: values, values: res});
-    return res;
+    }else {
+      return [];
+    }
+
+
   };
 
 
@@ -107,9 +128,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
               {items.attribute.attribute}
             </Button>
             <Checkbox.Group options={values} value={defaultValue} onChange={(checkedValue) => {
-              // const arr = array.filter((value,index,array) => {
-              //   return value.attributeId !== items.attribute.attributeId;
-              // });
 
               const attributeValue = checkedValue.map((item, index) => {
                 const values = items.value.filter((value) => {
@@ -157,14 +175,27 @@ const Attribute = ({attribute, spuId, ...props}) => {
               />
             );
           })}
-          <Column title='操作' render={(value,record)=>{
+          <Column title="型号" width={200} render={(value, record, index) => {
             return (
-              <Radio.Group defaultValue={1}>
+              <Input placeholder="输入型号" onChange={(value) => {
+                model[index] = value.target.value;
+                setModel([...model]);
+              }} />
+            );
+          }} />
+          <Column title="操作" render={(value, record, index) => {
+            return (
+              <Radio.Group defaultValue={1} onChange={(value) => {
+                state[index] = value.target.value;
+                setState([...state]);
+              }}>
                 <Radio value={0}>禁用</Radio>
                 <Radio value={1}>启用</Radio>
               </Radio.Group>
             );
-          }}/>
+          }} />
+
+
         </Table>
       </div>
     </>
