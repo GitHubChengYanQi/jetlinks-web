@@ -45,10 +45,10 @@ const Code = ({source, id,value}) => {
             setShow(true);
           }}
           icon={
-            <>
+            <Space direction='horizontal'>
               <BarcodeOutlined />
               <QrcodeOutlined />
-            </>
+            </Space>
           }
         />
       </Space>

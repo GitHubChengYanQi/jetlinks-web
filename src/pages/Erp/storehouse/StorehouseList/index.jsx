@@ -129,12 +129,10 @@ const StorehouseList = (props) => {
           setIds(value);
         }}
       >
-        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code source='storehouse' id={record.storehouseId} />);
-        }} />
         <Column title="仓库名称" dataIndex="name" sorter render={(value, record) => {
           return (
             <>
+              <Code source='storehouse' id={record.storehouseId} />
               <Button type="link" style={{padding:0}} onClick={() => {
                 refPosition.current.open(record.storehouseId);
               }}>{value}</Button>
