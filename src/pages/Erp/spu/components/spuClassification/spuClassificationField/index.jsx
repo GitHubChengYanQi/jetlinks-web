@@ -11,6 +11,7 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../spuClassificationUrl';
+import {spuClassificationTreeVrew} from '../spuClassificationUrl';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
@@ -32,4 +33,12 @@ export const Display = (props) =>{
 };
 export const DeptId = (props) =>{
   return (<Input {...props}/>);
+};
+
+export const Sort = (props) =>{
+  return (<InputNumber {...props}/>);
+};
+
+export const Pid = (props) =>{
+  return (<Cascader top api={spuClassificationTreeVrew} {...props}/>);
 };

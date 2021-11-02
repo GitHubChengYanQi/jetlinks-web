@@ -16,8 +16,8 @@ import repair from '@/asseset/imgs/repair.png';
 import protal from '@/asseset/imgs/protal.png';
 import sys from '@/asseset/imgs/sys.png';
 import menu from '@/asseset/imgs/menu.png';
-import SPU from '@/asseset/imgs/Spu.png';
-import PRODUCTTION from '@/asseset/imgs/PRODUCTTION.png';
+import SPU from '@/asseset/imgs/spu.png';
+import PRODUCTTION from '@/asseset/imgs/producttion.png';
 
 import styles from './index.module.less';
 

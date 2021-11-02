@@ -35,3 +35,9 @@ export const spuClassificationList = {
   rowKey:'spuClassificationId'
 };
 
+export const spuClassificationTreeVrew = {
+  url: '/spuClassification/treeView',
+  method: 'POST',
+  rowKey:'spuClassificationId'
+};
+

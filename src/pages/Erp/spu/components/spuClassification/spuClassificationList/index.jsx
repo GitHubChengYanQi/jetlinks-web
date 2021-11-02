@@ -49,11 +49,13 @@ const SpuClassificationList = () => {
         api={spuClassificationList}
         rowKey="spuClassificationId"
         searchForm={searchForm}
+        contentHeight
+        rowSelection
         actions={actions()}
         ref={tableRef}
       >
         <Column title="名称" dataIndex="name" />
-        <Column />
+        <Column title='上级名称' dataIndex='pidName' />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

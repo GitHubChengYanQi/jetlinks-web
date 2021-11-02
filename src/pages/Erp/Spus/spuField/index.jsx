@@ -20,6 +20,7 @@ import ToolClassificationList from '@/pages/Erp/tool/components/toolClassificati
 import CategoryList from '@/pages/Erp/category/categoryList';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import UnitList from '@/pages/Erp/unit/unitList';
+import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
@@ -57,7 +58,7 @@ export const SpuClass = (props) =>{
 
   return (
     <Space>
-      <Select resh={state} width={160} api={apiUrl.spuClassificationListSelect} {...props} />
+      <Cascader refre={state} api={spuClassificationTreeVrew} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
       }}>设置分类</Button>

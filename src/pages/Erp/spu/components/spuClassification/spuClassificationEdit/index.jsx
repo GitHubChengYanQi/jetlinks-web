@@ -30,7 +30,9 @@ const SpuClassificationEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="spuClassificationId"
     >
+      <FormItem label="上级名称" name="pid" component={SysField.Pid} required/>
       <FormItem label="名称" name="name" component={SysField.Name} required/>
+      <FormItem label="排序" name="sort" component={SysField.Sort} required/>
     </Form>
   );
 };

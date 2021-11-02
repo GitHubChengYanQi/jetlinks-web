@@ -28,13 +28,12 @@ const SpuRouterConfig = [
     name: '产品物料',
     component: SpuLayout,
     children:[
-      ...SpuRouter,
       ...SkuRouter,
       ...PackageRouter,
       ...PartsRouter,
       ...SPUSRouter,
       {
-        redirect: '/SPU/spu',
+        redirect: '/SPU/sku',
       }
     ]
   }

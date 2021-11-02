@@ -31,6 +31,7 @@ import Modal from '@/components/Modal';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 export const SkuName = (props) => {
   const {disabled, model, onChange, skuname, ...other} = props;
@@ -52,17 +53,16 @@ export const SpuId = (props) => {
       }
     }
   });
-  useEffect(()=>{
+  useEffect(() => {
     run(
       {
         data: {
           type: 0,
-          spuClassificationId:props.classId,
+          spuClassificationId: props.classId,
         }
       }
     );
-  },[props.classId]);
-
+  }, [props.classId]);
 
 
   const options = data && data.map((items) => {
@@ -90,7 +90,7 @@ export const SpuId = (props) => {
             data: {
               name: value,
               type: 0,
-              spuClassificationId:props.classId,
+              spuClassificationId: props.classId,
             }
           }
         );
@@ -111,7 +111,7 @@ export const SpuClass = (props) => {
 
   return (
     <Space>
-      <Select resh={state} width={210} api={spuClassificationListSelect} {...props} />
+      <Cascader refre={state} api={spuClassificationTreeVrew} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
       }}>设置分类</Button>
