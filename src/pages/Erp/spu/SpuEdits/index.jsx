@@ -71,7 +71,7 @@ const SpuEdits = (props) => {
               props.onSuccess();
             }}
             onSubmit={(value)=>{
-              return {...value,isHidden:true};
+              return {...value,isHidden:true,type:0};
             }}
           >
             <FormItem label="上级分类" name="spuClassificationId" component={SysField.SpuClass} required />
