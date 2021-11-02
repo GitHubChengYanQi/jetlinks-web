@@ -5,11 +5,12 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
 import {Divider} from 'antd';
+import {createFormActions, FormEffectHooks} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -24,6 +25,9 @@ const SkuEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const [spu, setSpu] = useState();
+  const [sku, setSku] = useState();
+
   return (
     <div style={{padding: 16}}>
       <Form
@@ -31,15 +35,39 @@ const SkuEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="skuId"
-        onSubmit={(value)=>{
-          return {...value,type:0};
+        onSubmit={(value) => {
+          return {...value, type: 0};
+        }}
+        effect={() => {
+
+          const {setFieldState} = createFormActions();
+
+          FormEffectHooks.onFieldValueChange$('spuClassificationId').subscribe(({value}) => {
+            setFieldState(
+              'spu',
+              state => {
+                state.props.classId = value;
+              }
+            );
+          });
+
         }}
       >
         <FormItem label="分类" name="spuClassificationId" component={SysField.SpuClass} required />
-        <FormItem label="物料名称" name='spu' component={SysField.SpuId} required />
-        <FormItem label="型号" name='skuName' component={SysField.SkuName} required />
-        <FormItem label="执行标准" name='standard' component={SysField.SkuName} required />
-        <FormItem label="规格" name='specifications' component={SysField.SkuName} disabled={props.value} required />
+        <FormItem label="物料名称" name="spu" component={SysField.SpuId} model={(value) => {
+          setSpu(value);
+        }} required />
+        <FormItem
+          label="型号"
+          name="skuName"
+          skuname={spu && sku && `${spu}/${sku}`}
+          component={SysField.SkuName}
+          model={(value) => {
+            setSku(value);
+          }} required />
+        <FormItem label="执行标准" name="standard" component={SysField.SkuName} required />
+        <FormItem label="规格" name="specifications" component={SysField.SkuName} disabled={props.value} required />
+        <FormItem label="备注" name="note" component={SysField.Note} required />
       </Form>
     </div>
   );

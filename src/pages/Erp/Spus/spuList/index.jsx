@@ -43,7 +43,8 @@ const SpuList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="物品名字" name="name" component={SysField.Name} />
+        <FormItem label="整机名称" name="name" component={SysField.Name} />
+        <FormItem hidden name="type" value={1} component={SysField.type} />
       </>
     );
   };
@@ -58,7 +59,7 @@ const SpuList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="种类名称" dataIndex="name" render={(value, record) => {
+        <Column title="整机名称" dataIndex="name" render={(value, record) => {
           return (
             <>
               <Code source='spu' id={record.spuId} />

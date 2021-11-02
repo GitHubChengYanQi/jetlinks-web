@@ -38,7 +38,6 @@ const StorehouseEdit = ({...props}) => {
           const {setFieldState} = createFormActions();
 
           FormEffectHooks.onFieldValueChange$('amap').subscribe(({value}) => {
-            console.log(value);
             if (value) {
               setFieldState(
                 'palce',

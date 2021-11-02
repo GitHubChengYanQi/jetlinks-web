@@ -151,3 +151,11 @@ export const Atts = (props) => {
   );
 };
 
+export const type = (props) => {
+  return (
+    <>
+      <Input {...props} />
+    </>
+  );
+};
+

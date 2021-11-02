@@ -33,44 +33,39 @@ import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 export const SkuName = (props) => {
-  const {disabled, ...other} = props;
-  return (<Input disabled={disabled} {...other} />);
+  const {disabled, model, onChange, skuname, ...other} = props;
+  return (
+    <>
+      <Input disabled={disabled} {...other} onChange={(value) => {
+        onChange(value.target.value);
+        typeof model === 'function' && model(value.target.value);
+      }} />
+      {skuname}
+    </>);
 };
 export const SpuId = (props) => {
 
-  const {data, run} = useRequest(spuListSelect,{
-    defaultParams:{
-      data:{
-        type:0
+  const {data, run} = useRequest(spuListSelect, {
+    defaultParams: {
+      data: {
+        type: 0,
       }
     }
   });
-
-  const [name, setName] = useState();
-
-  const {run: spuRun} = useRequest(
-    {...spuDetail, data: {spuId: props.value}},
-    {
-      manual: true,
-      onSuccess: (res) => {
-        setName(res.name);
-      }
-    }
-  );
-
-  useEffect(() => {
-    if (props.value) {
-      spuRun(
-        {
-          data: {
-            spuId: props.value
-          }
+  useEffect(()=>{
+    run(
+      {
+        data: {
+          type: 0,
+          spuClassificationId:props.classId,
         }
-      );
-    }
-  }, []);
+      }
+    );
+  },[props.classId]);
 
-  const options = data && data.map((items, index) => {
+
+
+  const options = data && data.map((items) => {
     return {
       label: items.label,
       value: items.label,
@@ -80,18 +75,22 @@ export const SpuId = (props) => {
 
   return (
     <AutoComplete
-      defaultValue={name}
+      defaultValue={props.value && props.value.name}
       options={options || []}
       style={{width: 200}}
       onSelect={(value, option) => {
-        props.onChange({spuId:option.id});
+        typeof props.model === 'function' && props.model(value);
+        props.onChange({spuId: option.id});
       }}
       onChange={async (value) => {
-        props.onChange({spuName:value});
+        typeof props.model === 'function' && props.model(value);
+        props.onChange({name: value});
         await run(
           {
             data: {
               name: value,
+              type: 0,
+              spuClassificationId:props.classId,
             }
           }
         );
@@ -121,5 +120,9 @@ export const SpuClass = (props) => {
         toggle();
       }} />
     </Space>);
+};
+
+export const Note = (props) => {
+  return (<Input.TextArea {...props} />);
 };
 
