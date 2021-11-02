@@ -60,12 +60,10 @@ const SpuList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code source='spu' id={record.spuId} />);
-        }} />
         <Column title="种类名称" dataIndex="name" render={(value, record) => {
           return (
             <>
+              <Code source='spu' id={record.spuId} />
               <Button type="link" onClick={() => {
                 history.push(`/SPU/spu/parts/${record.spuId}`);
               }}>
