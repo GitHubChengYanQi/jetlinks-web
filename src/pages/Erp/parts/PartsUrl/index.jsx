@@ -64,3 +64,8 @@ export const ProductNameListSelect = {
   url: '/items/listSelect',
   method: 'POST',
 };
+
+export const backDetails = {
+  url: '/parts/backDetails',
+  method: 'GET'
+};

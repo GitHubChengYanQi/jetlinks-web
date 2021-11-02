@@ -60,7 +60,7 @@ const Parts = ({...props}) => {
           }
         >
           <ProCard className="h2Card" headerBordered title="基本信息">
-            <FormItem label="清单名称" name="partName" component={SysField.PartName} required />
+            <FormItem label="清单" name="partName" component={SysField.PartName} required />
             <FormItem
               label={
                 <Select
