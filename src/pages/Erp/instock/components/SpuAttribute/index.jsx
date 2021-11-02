@@ -10,7 +10,7 @@ const SpuAttribute = ({onChange, skuId, select, value, sku, ...props}) => {
 
   const {data, run} = useRequest(skuDetail, {manual: true});
 
-  const attributes = data && data.list.map((items,index)=>{
+  const attributes = data && data.list.map((items)=>{
     return {
       attribute:{
         k:items.attributeName,

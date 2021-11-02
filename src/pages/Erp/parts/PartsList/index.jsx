@@ -107,7 +107,7 @@ const PartsList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={1500} title="编辑" component={Parts} onSuccess={() => {
+      <Modal width={1200} title="清单" component={Parts} onSuccess={() => {
         tableRef.current.refresh();
         refAdd.current.close();
       }} ref={refAdd} spuId={params.cid} />

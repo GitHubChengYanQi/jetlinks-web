@@ -2,7 +2,7 @@ import React, {useEffect, useImperativeHandle, useState} from 'react';
 import {Radio} from 'antd';
 
 
-const Attribute = ({sku, onChange, attributes}, ref) => {
+const Attribute = ({sku, onChange, attributes,show}, ref) => {
 
   const [array, setArray] = useState(attributes || []);
 
@@ -27,6 +27,11 @@ const Attribute = ({sku, onChange, attributes}, ref) => {
     return skuId;
   });
 
+  if (show){
+    if (skuIds && skuIds.length === 1) {
+      typeof onChange === 'function' && onChange(skuIds[0].id);
+    }
+  }
 
   const onchange = () => {
     if (skuIds && skuIds.length === 1) {
