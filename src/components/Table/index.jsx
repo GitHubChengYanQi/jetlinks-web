@@ -32,6 +32,7 @@ const TableWarp = ({
   onChange,
   getCheckboxProps,
   layout,
+  expandable,
   listHeader = true,
   labelAlign,
   footer: parentFooter,
@@ -170,6 +171,7 @@ const TableWarp = ({
           <Card bordered={bordered} bodyStyle={bodyStyle}>
             <AntdTable
               showTotal
+              expandable={expandable}
               loading={loading}
               dataSource={dataSource || []}
               rowKey={rowKey}

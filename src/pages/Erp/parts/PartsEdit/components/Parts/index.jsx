@@ -26,7 +26,7 @@ const ApiConfig = {
 };
 
 
-const Parts = ({spuId, ...props}) => {
+const Parts = ({...props}) => {
 
   const formRef = useRef(null);
 

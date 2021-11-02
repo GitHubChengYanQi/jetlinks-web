@@ -42,7 +42,7 @@ const CategoryList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="类目名称" name="categoryName" component={SysField.CategoryName} />
+        <FormItem label="配置名称" name="categoryName" component={SysField.CategoryName} />
       </>
     );
   };
@@ -50,7 +50,7 @@ const CategoryList = () => {
   return (
     <div style={{padding:16}}>
       <Table
-        title={<Breadcrumb title='类目管理' />}
+        title={<Breadcrumb title='配置管理' />}
         api={categoryList}
         contentHeight
         formActions={formActionsPublic}
@@ -59,12 +59,12 @@ const CategoryList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="上级类目" dataIndex="pid" render={(value,record)=>{
+        <Column title="上级配置" dataIndex="pid" render={(value,record)=>{
           return (
             <>{record.pidCategoryResult ? record.pidCategoryResult.categoryName : '顶级'}</>
           );
         }} />
-        <Column title="物品类目名称" dataIndex="categoryName" render={(value,record)=>{
+        <Column title="配置名称" dataIndex="categoryName" render={(value,record)=>{
           return (
             <Button type='link' onClick={()=>{
               refAttribute.current.open(record.categoryId);
@@ -87,11 +87,11 @@ const CategoryList = () => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="类目" component={CategoryEdit} onSuccess={() => {
+      <Drawer width={800} title="配置" component={CategoryEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={800} title="属性" component={ItemAttributeList} onSuccess={() => {
+      <Modal width={800} title="配置项" component={ItemAttributeList} onSuccess={() => {
         tableRef.current.refresh();
         refAttribute.current.close();
       }} ref={refAttribute} />

@@ -59,7 +59,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           }}
         >
           <Menu.Item key="lmgl">
-            <span>类目管理</span>
+            <span>配置管理</span>
           </Menu.Item>
           <Menu.Item key="ppgl">
             <span>品牌管理</span>

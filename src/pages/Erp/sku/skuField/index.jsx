@@ -126,3 +126,10 @@ export const Note = (props) => {
   return (<Input.TextArea {...props} />);
 };
 
+export const State = (props) => {
+  return (<Radio.Group {...props}>
+    <Radio value={1}>标配</Radio>
+    <Radio value={0}>非标配</Radio>
+  </Radio.Group>);
+};
+
