@@ -74,8 +74,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
     }
   });
 
-
-
   const attributes = (arr) => {
 
     if (arr.length > 0){
@@ -129,10 +127,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
 
 
   };
-
-  if (dataSource){
-    attributes(dataSource);
-  }
 
 
   return (
@@ -191,47 +185,47 @@ const Attribute = ({attribute, spuId, ...props}) => {
           </div>
         );
       })}
-      {/*<Divider orientation="center">属性列表</Divider>*/}
+      <Divider orientation="center">属性列表</Divider>
 
-      {/*<div style={{overflow: 'auto'}}>*/}
-      {/*  <Table*/}
-      {/*    pagination={false}*/}
-      {/*    dataSource={attributes(dataSource)}*/}
-      {/*  >*/}
-      {/*    {title && title.map((items, index) => {*/}
-      {/*      return (*/}
-      {/*        <Column*/}
-      {/*          key={index}*/}
-      {/*          title={items && items.attribute}*/}
-      {/*          render={(value, record) => {*/}
-      {/*            return record.attributeValues && record.attributeValues[index].attributeValues;*/}
-      {/*          }}*/}
-      {/*        />*/}
-      {/*      );*/}
-      {/*    })}*/}
-      {/*    <Column title="型号" dataIndex='skuName' width={200} render={(value, record, index) => {*/}
-      {/*      return (*/}
-      {/*        <Input placeholder="输入型号" value={value} onChange={(value) => {*/}
-      {/*          model[index] = value.target.value;*/}
-      {/*          setModel([...model]);*/}
-      {/*        }} />*/}
-      {/*      );*/}
-      {/*    }} />*/}
-      {/*    <Column title="操作" dataIndex='isBan' render={(value, record, index) => {*/}
-      {/*      return (*/}
-      {/*        <Radio.Group value={value || '0'} onChange={(value) => {*/}
-      {/*          state[index] = value.target.value;*/}
-      {/*          setState([...state]);*/}
-      {/*        }}>*/}
-      {/*          <Radio value='0'>启用</Radio>*/}
-      {/*          <Radio value='1'>禁用</Radio>*/}
-      {/*        </Radio.Group>*/}
-      {/*      );*/}
-      {/*    }} />*/}
+      <div style={{overflow: 'auto'}}>
+        <Table
+          pagination={false}
+          dataSource={attributes(dataSource)}
+        >
+          {title && title.map((items, index) => {
+            return (
+              <Column
+                key={index}
+                title={items && items.attribute}
+                render={(value, record) => {
+                  return record.attributeValues && record.attributeValues[index].attributeValues;
+                }}
+              />
+            );
+          })}
+          <Column title="型号" dataIndex='skuName' width={200} render={(value, record, index) => {
+            return (
+              <Input placeholder="输入型号" value={value} onChange={(value) => {
+                model[index] = value.target.value;
+                setModel([...model]);
+              }} />
+            );
+          }} />
+          <Column title="操作" dataIndex='isBan' render={(value, record, index) => {
+            return (
+              <Radio.Group value={value || '0'} onChange={(value) => {
+                state[index] = value.target.value;
+                setState([...state]);
+              }}>
+                <Radio value='0'>启用</Radio>
+                <Radio value='1'>禁用</Radio>
+              </Radio.Group>
+            );
+          }} />
 
 
-      {/*  </Table>*/}
-      {/*</div>*/}
+        </Table>
+      </div>
     </>
   );
 

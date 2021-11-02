@@ -20,8 +20,6 @@ import {useHistory} from 'ice';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
-import {ScanOutlined} from '@ant-design/icons';
-import SpuEdits from '@/pages/Erp/spu/SpuEdits';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -46,7 +44,6 @@ const SpuList = () => {
     return (
       <>
         <FormItem label="物品名字" name="name" component={SysField.Name} />
-        <FormItem hidden name="type" value={0} component={SysField.Name} />
       </>
     );
   };
@@ -64,10 +61,20 @@ const SpuList = () => {
         <Column title="种类名称" dataIndex="name" render={(value, record) => {
           return (
             <>
-              <Code source="spu" id={record.spuId} />
-              <Button type='text'>
+              <Code source='spu' id={record.spuId} />
+              <Button type="link" onClick={() => {
+                history.push(`/SPU/SPUS/parts/${record.spuId}`);
+              }}>
                 {value}
               </Button>
+            </>
+          );
+        }} />
+
+        <Column title="类目" dataIndex="categoryId" render={(value, record) => {
+          return (
+            <>
+              {record.category && record.category.categoryName}
             </>
           );
         }} />
@@ -87,6 +94,26 @@ const SpuList = () => {
             </>
           );
         }} sorter />
+        <Column title="生产类型" width={120} align="center" dataIndex="productionType" render={(value) => {
+          switch (value) {
+            case 0:
+              return '自制件';
+            case 1:
+              return '委派件';
+            case 2:
+              return '外购件';
+            default:
+              break;
+          }
+
+        }} sorter />
+        <Column title="养护周期" width={120} align="center" dataIndex="curingCycle" render={(value) => {
+          return (
+            <>
+              {value && `${value}天`}
+            </>
+          );
+        }} sorter />
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
@@ -101,7 +128,7 @@ const SpuList = () => {
           );
         }} />
       </Table>
-      <Modal width={800} title="编辑" component={SpuEdits} onSuccess={() => {
+      <Modal width={1000} title="编辑" component={SpuEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

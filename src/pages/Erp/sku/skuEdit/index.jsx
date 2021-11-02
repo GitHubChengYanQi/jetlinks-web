@@ -31,8 +31,12 @@ const SkuEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="skuId"
+        onSubmit={(value)=>{
+          return {...value,type:0};
+        }}
       >
-        <FormItem label="物料分类" name='spuId' component={SysField.SpuId} required />
+        <FormItem label="分类" name="spuClassificationId" component={SysField.SpuClass} required />
+        <FormItem label="物料名称" name='spu' component={SysField.SpuId} required />
         <FormItem label="型号" name='skuName' component={SysField.SkuName} required />
         <FormItem label="执行标准" name='standard' component={SysField.SkuName} required />
         <FormItem label="规格" name='specifications' component={SysField.SkuName} disabled={props.value} required />

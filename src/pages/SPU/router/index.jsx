@@ -20,6 +20,7 @@ import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 import SpuLayout from '@/pages/SPU';
 import {SkuRouter} from '@/pages/Erp/sku/skuRouter';
+import {SPUSRouter} from '@/pages/Erp/Spus/spuRouter';
 
 const SpuRouterConfig = [
   {
@@ -31,6 +32,7 @@ const SpuRouterConfig = [
       ...SkuRouter,
       ...PackageRouter,
       ...PartsRouter,
+      ...SPUSRouter,
       {
         redirect: '/SPU/spu',
       }

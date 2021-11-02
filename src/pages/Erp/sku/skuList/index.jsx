@@ -113,7 +113,7 @@ const SkuList = ({...props}) => {
           setIds(value);
         }}
       >
-        <Column title="物料分类" dataIndex="spuId" render={(value,record)=>{
+        <Column title="物料名称" dataIndex="spuId" render={(value,record)=>{
           return (
             <>
               {record.spuResult && record.spuResult.name}
