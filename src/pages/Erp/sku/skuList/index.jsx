@@ -85,8 +85,7 @@ const SkuList = ({...props}) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="sku名字" name="skuName" component={SysField.SkuName} />
-        <FormItem label="spuId" style={{width:200}} name="spuId" value={value && value.spuId} component={SysField.SpuId} />
+        <FormItem label="种类名字" style={{width:200}} name="spuId" component={SysField.SpuId} />
       </>
     );
   };
@@ -146,7 +145,7 @@ const SkuList = ({...props}) => {
         } />
 
         <Column title="型号" dataIndex="skuName" />
-        <Column title="执行标准" dataIndex="oo" />
+        <Column title="执行标准" dataIndex="standard" />
         <Column title="操作" dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>

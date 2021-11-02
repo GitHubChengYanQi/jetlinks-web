@@ -13,14 +13,13 @@ const Code = ({source, id,value}) => {
 
   const [show, setShow] = useState();
 
-  const [visible, setVisible] = useState();
 
   const [codes, setCodes] = useState(value);
 
   const {run} = useRequest(
     {
       url: '/orCode/backCode',
-      method: 'GET',
+      method: 'POST',
     },
     {
       manual: true,
@@ -37,7 +36,7 @@ const Code = ({source, id,value}) => {
           onClick={() => {
             if (!value){
               run({
-                params: {
+                data: {
                   source,
                   id,
                 }
@@ -68,7 +67,7 @@ const Code = ({source, id,value}) => {
           <Image src={jrQrcode.getQrBase64(`${code}?codes=${value || codes}`)} preview={false} />
         </div>
         <div style={{textAlign:'center'}}>
-          {value || codes && <AcBarcode value={value || codes} />}
+          {(value || codes) && <AcBarcode value={value || codes} />}
         </div>
       </Modal>
     </>

@@ -12,7 +12,7 @@ import {useHistory, useParams} from 'ice';
 import {partsAdd, partsDelete, partsDetail, partsEdit, partsList} from '../PartsUrl';
 import {useRequest} from '@/util/Request';
 import {InternalFieldList as FieldList} from '@formily/antd';
-import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {DeleteOutlined, PlusOutlined, ScanOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import {spuDelete, spuDetail, spuList} from '@/pages/Erp/spu/spuUrl';
 import SpuList from '@/pages/Erp/parts/components/SpuList';
@@ -141,8 +141,10 @@ const PartsList = () => {
         <div style={{maxWidth: 1220, margin: 'auto'}}>
           <ProCard className="h2Card" title="详细信息" headerBordered>
             <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
-              <Descriptions.Item label="成品物料编号/名称">
+              <Descriptions.Item label={<ScanOutlined />}>
                 <Code source="spu" id={data.spuId} />
+              </Descriptions.Item>
+              <Descriptions.Item label="物料种类名称">
                 {data.name}
               </Descriptions.Item>
               <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
