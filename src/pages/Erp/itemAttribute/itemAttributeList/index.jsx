@@ -75,6 +75,11 @@ const ItemAttributeList = (props) => {
           );
         }} />
 
+        <Column dataIndex='standard' title='标配' render={(value)=>{
+          return <>
+            {value ? '是' : '否'}
+          </>;
+        }} />
         <Column dataIndex='sort' title='排序' />
         <Column title="操作" align="right" render={(value, record) => {
           return (

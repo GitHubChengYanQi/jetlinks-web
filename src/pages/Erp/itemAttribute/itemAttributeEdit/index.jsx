@@ -34,6 +34,7 @@ const ItemAttributeEdit = ({...props}) => {
     >
       <FormItem hidden name="categoryId" component={SysField.Version} value={categoryId} required/>
       <FormItem label="属性名称" name="attribute" component={SysField.attribute} required/>
+      <FormItem label="标配" name="standard" component={SysField.Standard} required/>
       <FormItem label='排序' name="sort" component={SysField.Scort} required/>
     </Form>
   );

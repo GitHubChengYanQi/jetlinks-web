@@ -30,7 +30,7 @@ const Parts = ({...props}) => {
 
   const formRef = useRef(null);
 
-  const [type, setType] = useState();
+  const [type, setType] = useState(props.value);
 
   return (
     <>

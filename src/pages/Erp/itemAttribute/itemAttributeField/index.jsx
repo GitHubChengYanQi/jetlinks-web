@@ -36,3 +36,10 @@ export const Display = (props) =>{
 export const Scort = (props) =>{
   return (<InputNumber {...props}/>);
 };
+
+export const Standard = (props) =>{
+  return (<Radio.Group {...props}>
+    <Radio value={1}>是</Radio>
+    <Radio value={0}>否</Radio>
+  </Radio.Group>);
+};

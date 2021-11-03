@@ -5,25 +5,17 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Radio, Table as AntTable} from 'antd';
+import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {skuDelete, skuDetail, skuList} from '../skuUrl';
+import {deleteBatch, skuDelete, skuList} from '../skuUrl';
 import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
-import {useRequest} from '@/util/Request';
-import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
-import {logger, useParams} from 'ice';
-import ProSkeleton from '@ant-design/pro-skeleton';
-import {spuDelete, spuDetail} from '@/pages/Erp/spu/spuUrl';
 import Modal from '@/components/Modal';
-import CheckButton from '@/components/CheckButton';
-import {partsDetail, partsEdit} from '@/pages/Erp/parts/PartsUrl';
 import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
@@ -32,29 +24,6 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const SkuList = ({...props}) => {
-
-  const {value, onSuccess} = props;
-
-  const {run} = useRequest(partsEdit, {
-    manual: true,
-    onSuccess: () => {
-      onSuccess();
-    }
-  });
-
-  const {loading, data, run: parts} = useRequest(partsDetail, {manual: true});
-
-  useEffect(() => {
-    if (value) {
-      parts({
-        data: {
-          partsId: value.partsId
-        }
-      });
-    }
-  }, []);
-
-  const defaults = data && data.skus.split(',');
 
   const [ids, setIds] = useState();
 
@@ -72,48 +41,39 @@ const SkuList = ({...props}) => {
   };
 
   const footer = () => {
-    return <CheckButton style={{padding: 0}} onClick={() => {
-      run({
-        data: {
-          partsId: value.partsId,
-          skuIds: ids,
-        }
-      });
-    }}>选择</CheckButton>;
+    return (<DelButton api={{
+      ...deleteBatch,
+    }} onSuccess={() => {
+      tableRef.current.refresh();
+    }} value={ids}>删除</DelButton>);
   };
 
   const searchForm = () => {
     return (
       <>
-        <FormItem label="种类名字" style={{width:200}} name="spuId" component={SysField.SpuId} />
+        <FormItem label="种类名字" style={{width: 200}} name="spuId" component={SysField.SpuId} />
       </>
     );
   };
 
-  if (loading) {
-    return (<ProSkeleton type="descriptions" />);
-  }
 
   return (
     <>
       <Table
-        headStyle={{display: value && 'none'}}
         api={skuList}
         rowKey="skuId"
-        rowSelection={!value}
-        defaultSelectedRowKeys={defaults}
         searchForm={searchForm}
         formActions={formActionsPublic}
         actions={actions()}
         contentHeight
         bordered={false}
         ref={tableRef}
-        footer={value && footer}
+        footer={footer}
         onChange={(value) => {
           setIds(value);
         }}
       >
-        <Column title="物料名称" dataIndex="spuId" render={(value,record)=>{
+        <Column title="物料名称" dataIndex="spuId" render={(value, record) => {
           return (
             <>
               {record.spuResult && record.spuResult.name}
@@ -130,11 +90,13 @@ const SkuList = ({...props}) => {
                 record.skuJsons.map((items, index) => {
                   if (index === record.skuJsons.length - 1) {
                     return (
-                      <span key={index}>{items.attribute && items.attribute.attribute}：{items.values && items.values.attributeValues}</span>
+                      <span
+                        key={index}>{items.attribute && items.attribute.attribute}：{items.values && items.values.attributeValues}</span>
                     );
                   } else {
                     return (
-                      <span key={index}>{items.attribute && items.attribute.attribute}：{items.values && items.values.attributeValues}&nbsp;,&nbsp;</span>
+                      <span
+                        key={index}>{items.attribute && items.attribute.attribute}：{items.values && items.values.attributeValues}&nbsp;,&nbsp;</span>
                     );
                   }
                 })

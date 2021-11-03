@@ -67,7 +67,6 @@ const SkuEdit = ({...props}) => {
           }} required />
         <FormItem label="执行标准" name="standard" component={SysField.SkuName}  />
         {!props.value && <FormItem label="规格" name="specifications" component={SysField.SkuName} required />}
-        {!props.value && <FormItem label="配置" name="isStandard" component={SysField.State} required />}
         <FormItem label="备注" name="remarks" component={SysField.Note} />
       </Form>
     </div>

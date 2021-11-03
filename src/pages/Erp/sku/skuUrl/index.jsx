@@ -1,7 +1,7 @@
 /**
  * sku表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-10-18 14:14:21
  */
 
@@ -33,5 +33,10 @@ export const skuList = {
   url: '/sku/list',
   method: 'POST',
   rowKey:'skuId'
+};
+
+export const deleteBatch = {
+  url: '/sku/deleteBatch',
+  method: 'POST',
 };
 

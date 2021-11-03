@@ -64,7 +64,7 @@ export const brandName = (props) => {
 };
 
 export const Attributes = (props) => {
-  const {spuId, onChange,value} = props;
+  const {spuId, onChange, value} = props;
 
   const [sku, setSku] = useState();
 
@@ -87,7 +87,7 @@ export const Attributes = (props) => {
     }
   }, [spuId]);
 
-  return (<Attribute show sku={sku} onChange={(value)=>{
+  return (<Attribute show sku={sku} onChange={(value) => {
     console.log(value);
     onChange(value);
   }} attributes={value} />);
@@ -100,15 +100,27 @@ export const Spu = (props) => {
     }
 
   }, [props.type]);
-  return (<Select width="100%" placeholder="产品" api={spuListSelect} value={props.value && props.value.spuId} onChange={(value)=>{
-    props.onChange({spuId:value});
-  }}/>);
+  return (<Select
+    width="100%"
+    placeholder="产品"
+    api={spuListSelect}
+    value={props.value && props.value.spuId}
+    onChange={(value) => {
+      props.onChange({spuId: value});
+    }} />);
 };
 export const Sku = (props) => {
 
   useEffect(() => {
-    props.onChange(null);
+    // props.onChange(null);
   }, [props.type]);
+
+  useEffect(() => {
+    if (props.value && props.value.skuId){
+      props.onChange(props.value.skuId);
+    }
+
+  }, []);
 
   const {data} = useRequest({url: '/sku/list', method: 'POST'});
   const options = data && data.map((items) => {
@@ -137,9 +149,15 @@ export const Sku = (props) => {
       value: items.skuId,
     };
   });
-  return (<AntdSelect placeholder="物料" style={{width: '100%'}} options={options || []} value={props.value && props.value.skuId} onChange={(value)=>{
-    props.onChange({skuId:value});
-  }} />);
+  console.log(options);
+  return (<AntdSelect
+    placeholder="物料"
+    style={{width: '100%'}}
+    options={options || []}
+    value={props.value && props.value.skuId}
+    onChange={(value) => {
+      props.onChange({skuId: value});
+    }} />);
 };
 
 export const SkuId = (props) => {
