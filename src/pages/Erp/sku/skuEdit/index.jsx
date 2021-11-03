@@ -64,7 +64,7 @@ const SkuEdit = ({...props}) => {
           model={(value) => {
             setSku(value);
           }} required />
-        <FormItem label="编码" name="coding" component={SysField.Coding} required />
+        <FormItem label="编码" name="standard" component={SysField.Coding} required />
         {!props.value && <FormItem label="规格" name="specifications" component={SysField.SkuName}  />}
         <FormItem label="备注" name="remarks" component={SysField.Note} />
       </Form>

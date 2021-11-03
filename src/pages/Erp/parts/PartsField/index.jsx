@@ -74,6 +74,14 @@ export const brandName = (props) => {
   return (<Input   {...props} />);
 };
 
+export const SkuName = (props) => {
+  return (<Input   {...props} />);
+};
+
+export const Note = (props) => {
+  return (<Input.TextArea   {...props} />);
+};
+
 export const Attributes = (props) => {
   const {spuId, onChange, value} = props;
 
@@ -140,64 +148,7 @@ export const Sku = (props) => {
   }, [props.type]);
 
 
-  const {loading,data,run} = useRequest({url: '/sku/list?limit=20&page=1', method: 'POST'},);
-
-  const options = data && data.map((items) => {
-    return {
-      label: <>
-        {items.spuResult && items.spuResult.name}
-        &nbsp;&nbsp;
-        (
-        {
-          items.skuJsons
-          &&
-          items.skuJsons.map((item, index) => {
-            if (index === items.skuJsons.length - 1) {
-              return <em key={index}>
-                {item.attribute && item.attribute.attribute}：{item.values && item.values.attributeValues}
-              </em>;
-            } else {
-              return <em key={index}>
-                {item.attribute && item.attribute.attribute}：{item.values && item.values.attributeValues}，
-              </em>;
-            }
-          })
-        }
-        )
-      </>,
-      value: items.skuId,
-    };
-  });
-
-
-  return (<AntdSelect
-    placeholder="物料"
-    showSearch
-    loading={loading}
-    style={{width: '100%'}}
-    // value={props.value && props.value.skuId}
-    onSearch={(value)=>{
-      run({
-        data:{
-          skuName:value
-        }
-      });
-    }}
-    onChange={(value) => {
-      console.log(value);
-      // props.onChange({skuId: value});
-    }} >
-    {options && options.map((items,index)=>{
-      console.log(items);
-      return (
-        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
-      );
-    })}
-  </AntdSelect>);
-};
-
-export const SkuId = (props) => {
-  const {data} = useRequest(skuList);
+  const {loading,data,run} = useRequest({...skuList,data:{type:0}},{debounceInterval:500});
 
   const options = data && data.map((items) => {
     let values = '';
@@ -214,19 +165,78 @@ export const SkuId = (props) => {
       value: items.skuId,
     };
   });
-  return (
-    <>
-      <AntdSelect
-        placeholder="输入型号"
-        dropdownMatchSelectWidth={500}
-        options={options || []}
-        allowClear
-        showSearch
-        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        {...props}
-      />
-    </>
-  );
+
+
+  return (<AntdSelect
+    placeholder="物料"
+    showSearch
+    loading={loading}
+    style={{width: '100%'}}
+    // value={props.value && props.value.skuId}
+    onSearch={(value)=>{
+      run({
+        data:{
+          skuName:value,
+          type:0
+        }
+      });
+    }}
+    onChange={(value,option) => {
+      props.onChange({skuId: option.children[1].props.children});
+    }} >
+    {options && options.map((items,index)=>{
+      return (
+        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
+      );
+    })}
+  </AntdSelect>);
+};
+
+export const SkuId = (props) => {
+
+  const {loading,data,run} = useRequest({...skuList,data:{type:0}},{debounceInterval:500});
+
+
+  const options = data && data.map((items) => {
+    let values = '';
+    items.skuJsons && items.skuJsons.map((item, index) => {
+      if (index === items.skuJsons.length - 1) {
+        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}`;
+      } else {
+        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}，`;
+      }
+    });
+
+    return {
+      label: items.spuResult && `${items.spuResult.name} / ${items.skuName}  (${values})`,
+      value: items.skuId,
+    };
+  });
+
+
+  return (<AntdSelect
+    placeholder="物料"
+    showSearch
+    loading={loading}
+    style={{width: '100%'}}
+    // value={props.value && props.value.skuId}
+    onSearch={(value)=>{
+      run({
+        data:{
+          skuName:value,
+          type:0
+        }
+      });
+    }}
+    onChange={(value,option) => {
+      props.onChange(option.children[1].props.children);
+    }} >
+    {options && options.map((items,index)=>{
+      return (
+        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
+      );
+    })}
+  </AntdSelect>);
 };
 
 

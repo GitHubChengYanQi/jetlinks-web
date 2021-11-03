@@ -10,9 +10,6 @@ const Attribute = ({sku, onChange, value}) => {
     <div style={{padding: 16}}>
       {
         sku && sku.tree && sku.tree.map((items, index) => {
-          const arr = array.filter((value) => {
-            return value.attribute.k_s === items.k_s;
-          });
 
           return (
             <div key={index} style={{margin:8}}>
@@ -20,7 +17,7 @@ const Attribute = ({sku, onChange, value}) => {
               &nbsp;&nbsp;
               <Radio.Group
                 key={index}
-                defaultValue={arr && arr[0] && arr[0].values && arr[0].values.id}
+                // defaultValue={arr && arr[0] && arr[0].values && arr[0].values.id}
                 onChange={(value) => {
 
                   const arrs = [];
@@ -33,12 +30,8 @@ const Attribute = ({sku, onChange, value}) => {
                     return values.id === value.target.value;
                   });
 
-                  const attributes = {
-                    k: items.k,
-                    k_s: items.k_s,
-                  };
 
-                  arrs[index] = {attribute: attributes, values: arrValues[0]};
+                  arrs[index] = {attributeId: items.k_s, attributeValuesId: arrValues[0].id};
                   onChange(arrs);
                   setArray(arrs);
                 }}>

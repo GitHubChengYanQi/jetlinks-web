@@ -25,7 +25,7 @@ const ApiConfig = {
 
 const Parts = ({...props}) => {
 
-  const {spuId,...other} = props;
+  const {spuId, ...other} = props;
 
   const formRef = useRef(null);
 
@@ -47,7 +47,7 @@ const Parts = ({...props}) => {
 
             FormEffectHooks.onFieldValueChange$('item').subscribe(({value}) => {
               setFieldState(
-                'pSkuId',
+                'skuRequests',
                 state => {
                   if (value && value.spuId) {
                     state.props.spuId = value && value.spuId;
@@ -78,7 +78,11 @@ const Parts = ({...props}) => {
               component={type ? SysField.Sku : SysField.Spu}
               required />
 
-            {!type && <FormItem label='配置' name="pSkuId" component={SysField.Attributes} required />}
+            {!type && <>
+              <FormItem label="配置" name="skuRequests" component={SysField.Attributes} required />
+              <FormItem label="型号" name="skuName" component={SysField.SkuName} required />
+              <FormItem label="备注" name="note" component={SysField.Note} required />
+            </>}
           </ProCard>
 
           <ProCard className="h2Card" headerBordered title="清单列表">
