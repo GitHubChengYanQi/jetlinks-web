@@ -112,7 +112,9 @@ export const Spu = (props) => {
 export const Sku = (props) => {
 
   useEffect(() => {
-    // props.onChange(null);
+    if (!props.type){
+      props.onChange(null);
+    }
   }, [props.type]);
 
 
