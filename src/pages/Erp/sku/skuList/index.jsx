@@ -52,6 +52,7 @@ const SkuList = ({...props}) => {
     return (
       <>
         <FormItem label="种类名字" style={{width: 200}} name="spuId" component={SysField.SpuId} />
+        <FormItem hidden style={{display:'none'}} name="type" value={0} component={SysField.Type} />
       </>
     );
   };
@@ -73,7 +74,7 @@ const SkuList = ({...props}) => {
           setIds(value);
         }}
       >
-        <Column title="物料名称" dataIndex="spuId" render={(value, record) => {
+        <Column title="名称" dataIndex="spuId" render={(value, record) => {
           return (
             <>
               {record.spuResult && record.spuResult.name}

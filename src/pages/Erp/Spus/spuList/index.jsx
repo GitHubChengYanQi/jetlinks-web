@@ -59,12 +59,12 @@ const SpuList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="整机名称" dataIndex="name" render={(value, record) => {
+        <Column title="名称" dataIndex="name" render={(value, record) => {
           return (
             <>
               <Code source='spu' id={record.spuId} />
               <Button type="link" onClick={() => {
-                history.push(`/SPU/SPUS/parts/${record.spuId}`);
+                history.push(`/spu/SPUS/detail/${record.spuId}`);
               }}>
                 {value}
               </Button>

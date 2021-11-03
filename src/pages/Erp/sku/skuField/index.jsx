@@ -33,6 +33,10 @@ import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
+export const Type = (props) => {
+
+  return (<InputNumber {...props} />);
+};
 export const SkuName = (props) => {
   const {disabled, model, onChange, skuname, ...other} = props;
   return (

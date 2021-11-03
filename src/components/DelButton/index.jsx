@@ -22,7 +22,7 @@ const DelButton = ({
   const {run} = useRequest(api, {
     manual: true,
     onError(err){
-      message.error(err.message);
+      // message.error(err.message);
     }
   });
 
