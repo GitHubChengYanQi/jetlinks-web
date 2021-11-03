@@ -6,7 +6,7 @@ const Attribute = ({sku, onChange, attributes,show}, ref) => {
 
   const [array, setArray] = useState(attributes || []);
 
-  const attValue = array.map((items) => {
+  const attValue = array && array.map((items) => {
     return items.values.id;
   });
 

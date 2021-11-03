@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
+import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button, Card} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
 import {spuListSelect} from '../PartsUrl';
@@ -87,19 +87,22 @@ export const Attributes = (props) => {
     }
   }, [spuId]);
 
-  return (<Attribute show sku={sku} onChange={(value) => {
-    console.log(value);
-    onChange(value);
-  }} attributes={value} />);
+  return (
+    <Card bodyStyle={{padding:0}}>
+      <Attribute show sku={sku} onChange={(value) => {
+        onChange(value);
+      }} attributes={value} />
+    </Card>
+  );
 };
 
 export const Spu = (props) => {
 
-  useEffect(()=>{
-    if (props.spuId){
-      props.onChange({spuId:props.spuId});
+  useEffect(() => {
+    if (props.spuId) {
+      props.onChange({spuId: props.spuId});
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (props.type) {
@@ -120,7 +123,7 @@ export const Spu = (props) => {
 export const Sku = (props) => {
 
   useEffect(() => {
-    if (!props.type){
+    if (!props.type) {
       props.onChange(null);
     }
   }, [props.type]);

@@ -78,7 +78,7 @@ const Parts = ({...props}) => {
               component={type ? SysField.Sku : SysField.Spu}
               required />
 
-            {!type && <FormItem name="pSkuId" component={SysField.Attributes} required />}
+            {!type && <FormItem label='配置' name="pSkuId" component={SysField.Attributes} required />}
           </ProCard>
 
           <ProCard className="h2Card" headerBordered title="清单列表">

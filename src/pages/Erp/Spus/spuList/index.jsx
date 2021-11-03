@@ -72,7 +72,7 @@ const SpuList = () => {
           );
         }} />
 
-        <Column title="类目" dataIndex="categoryId" render={(value, record) => {
+        <Column title="配置" dataIndex="categoryId" render={(value, record) => {
           return (
             <>
               {record.category && record.category.categoryName}

@@ -17,6 +17,7 @@ import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import {createFormActions} from '@formily/antd';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -60,6 +61,7 @@ const SkuList = ({...props}) => {
   return (
     <>
       <Table
+        title={<Breadcrumb title='物料管理' />}
         api={skuList}
         rowKey="skuId"
         searchForm={searchForm}

@@ -34,17 +34,13 @@ const Cascader = (props) => {
     refresh();
   },[refre]);
 
-  if (!data) {
-    return null;
-  }
-
   const dataSources = top ? [
     {
       value:'0',
       label:'顶级',
-      children:data,
+      children:data || [],
     }
-  ] : data;
+  ] : (data || []);
 
   let valueArray = [];
   if (value && typeof `${value}` === 'string') {

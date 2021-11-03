@@ -12,16 +12,13 @@ import {qualityPlanDetail, qualityPlanAdd, qualityPlanEdit} from '../qualityPlan
 import * as SysField from '../qualityPlanField';
 import ProCard from '@ant-design/pro-card';
 import {useRequest} from '@/util/Request';
-import {rulesRelationList} from '@/pages/Erp/codingRules/components/rulesRelation/rulesRelationUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions, FieldList, FormEffectHooks, FormPath} from '@formily/antd';
-import SpuList from '@/pages/Erp/parts/components/SpuList';
 import {DeleteOutlined, DownOutlined, PlusOutlined, UpOutlined} from '@ant-design/icons';
-import styled from 'styled-components';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {qualityCheckDetail} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
 import request from '../../../../../../util/Request/request';
 import {useHistory} from 'ice';
+import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
 
 const {FormItem} = Form;
 

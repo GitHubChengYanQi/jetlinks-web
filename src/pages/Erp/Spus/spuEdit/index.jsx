@@ -99,8 +99,8 @@ const SpuEdit = (props) => {
             <Row gutter={24}>
               <Col span={12}>
                 <ProCard title="基础信息" className="h2Card" headerBordered>
-                  <FormItem label="类目" name="categoryId" component={SysField.CategoryId} required />
-                  <FormItem label="种类名字" name="name" component={SysField.Name} required />
+                  <FormItem label="配置" name="categoryId" component={SysField.CategoryId} required />
+                  <FormItem label="名字" name="name" component={SysField.Name} required />
                   <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
                   <FormItem label="分类" name="spuClassificationId" component={SysField.SpuClass} required />
                   <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
