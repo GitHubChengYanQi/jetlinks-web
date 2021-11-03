@@ -43,7 +43,7 @@ const SpuList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="整机名称" name="name" component={SysField.Name} />
+        <FormItem label="名称" name="name" component={SysField.Name} />
         <FormItem hidden name="type" value={1} component={SysField.type} />
       </>
     );

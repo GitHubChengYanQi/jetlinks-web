@@ -114,7 +114,6 @@ const SpuEdit = (props) => {
                   <FormItem label="易损" name="vulnerability" component={SysField.Vulnerability} />
                   <FormItem label="重要程度" name="important" component={SysField.Important} />
                   <FormItem label="产品重量" name="weight" component={SysField.Weight} />
-                  <FormItem label="成本" name="cost" component={SysField.Cost} />
                 </ProCard>
               </Col>
             </Row>

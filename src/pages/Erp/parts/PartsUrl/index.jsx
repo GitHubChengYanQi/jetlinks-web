@@ -34,6 +34,12 @@ export const partsList = {
   method: 'POST',
   rowKey:'partsId'
 };
+
+export const partsOldList = {
+  url: '/parts/oldList',
+  method: 'POST',
+  rowKey:'partsId'
+};
 export const partsListSelect = {
   url: '/parts/listSelect',
   method: 'POST',
@@ -67,5 +73,9 @@ export const ProductNameListSelect = {
 
 export const backDetails = {
   url: '/parts/backDetails',
+  method: 'GET'
+};
+export const oldBackDetails = {
+  url: '/parts/oldBackDetails',
   method: 'GET'
 };

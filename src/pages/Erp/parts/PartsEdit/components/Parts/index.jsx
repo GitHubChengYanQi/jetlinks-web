@@ -9,12 +9,9 @@ import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {partsDetail, partsAdd, partsEdit} from '../../../PartsUrl';
 import * as SysField from '../../../PartsField';
-import {Sku} from '../../../PartsField';
 import {Button, Select} from 'antd';
 import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
-import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 
 const {FormItem} = Form;
@@ -22,21 +19,23 @@ const {FormItem} = Form;
 const ApiConfig = {
   view: partsDetail,
   add: partsAdd,
-  save: partsAdd
+  save: partsEdit
 };
 
 
 const Parts = ({...props}) => {
 
+  const {spuId,...other} = props;
+
   const formRef = useRef(null);
 
-  const [type, setType] = useState(props.value ? 1 : 0);
+  const [type, setType] = useState(other.value ? 1 : 0);
 
   return (
     <>
       <div style={{margin: '50px 150px'}}>
         <Form
-          {...props}
+          {...other}
           ref={formRef}
           api={ApiConfig}
           fieldKey="partsId"
@@ -66,6 +65,7 @@ const Parts = ({...props}) => {
                 <Select
                   defaultValue={type}
                   bordered={false}
+                  disabled={spuId}
                   options={[{label: '产品', value: 0}, {label: '物料', value: 1}]}
                   onChange={(value) => {
                     setType(value);
@@ -74,6 +74,7 @@ const Parts = ({...props}) => {
               }
               name="item"
               type={type}
+              spuId={spuId}
               component={type ? SysField.Sku : SysField.Spu}
               required />
 

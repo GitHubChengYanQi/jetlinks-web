@@ -52,7 +52,6 @@ const SkuList = ({...props}) => {
     return (
       <>
         <FormItem label="种类名字" style={{width: 200}} name="spuId" component={SysField.SpuId} />
-        <FormItem hidden style={{display:'none'}} name="type" value={0} component={SysField.Type} />
       </>
     );
   };
