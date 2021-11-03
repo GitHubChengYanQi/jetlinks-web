@@ -45,13 +45,13 @@ const PartsList = () => {
     return (
       <AddButton onClick={() => {
         refAdd.current.open(false);
-      }} />
+      }}/>
     );
   };
 
 
   return (
-    <Card title={<Breadcrumb />} extra={action()}>
+    <Card title={<Breadcrumb/>} extra={action()}>
       <Table
         rowKey="key"
         dataSource={dataSource || []}
@@ -59,7 +59,7 @@ const PartsList = () => {
           expandedRowKeys: key,
           onExpand: async (expand, record) => {
             if (expand) {
-              const res = await request({...backDetails, params: {id: record.skuId}});
+              const res = await request({...backDetails, params: {id: record.skuId, partsId: record.partsId}});
 
               record.children = res && res.map((items, index) => {
                 return {
@@ -109,28 +109,28 @@ const PartsList = () => {
               )
             </>
           );
-        }} />
-        {key.length>0 && <>
-          <Column title="数量" dataIndex="number" render={(value)=>{
+        }}/>
+        {key.length > 0 && <>
+          <Column title="数量" dataIndex="number" render={(value) => {
             return <>{value || null}</>;
-          }} />
-          <Column title="备注" dataIndex="note" />
+          }}/>
+          <Column title="备注" dataIndex="note"/>
         </>}
-        <Column title="清单" dataIndex="partName" />
+        <Column title="清单" dataIndex="partName"/>
         <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 refAdd.current.open(record.partsId);
-              }} />
+              }}/>
             </>
           );
-        }} />
+        }}/>
       </Table>
       <Modal width={1200} title="清单" component={Parts} onSuccess={() => {
         refresh();
         refAdd.current.close();
-      }} ref={refAdd} />
+      }} ref={refAdd}/>
     </Card>
   );
 };
