@@ -22,7 +22,7 @@ const {FormItem} = Form;
 const ApiConfig = {
   view: partsDetail,
   add: partsAdd,
-  save: partsEdit
+  save: partsAdd
 };
 
 
@@ -30,7 +30,7 @@ const Parts = ({...props}) => {
 
   const formRef = useRef(null);
 
-  const [type, setType] = useState(props.value);
+  const [type, setType] = useState(props.value ? 1 : 0);
 
   return (
     <>
@@ -64,7 +64,7 @@ const Parts = ({...props}) => {
             <FormItem
               label={
                 <Select
-                  defaultValue={0}
+                  defaultValue={type}
                   bordered={false}
                   options={[{label: '产品', value: 0}, {label: '物料', value: 1}]}
                   onChange={(value) => {

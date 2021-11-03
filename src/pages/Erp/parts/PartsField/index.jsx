@@ -115,12 +115,6 @@ export const Sku = (props) => {
     // props.onChange(null);
   }, [props.type]);
 
-  useEffect(() => {
-    if (props.value && props.value.skuId){
-      props.onChange(props.value.skuId);
-    }
-
-  }, []);
 
   const {data} = useRequest({url: '/sku/list', method: 'POST'});
   const options = data && data.map((items) => {
@@ -149,7 +143,7 @@ export const Sku = (props) => {
       value: items.skuId,
     };
   });
-  console.log(options);
+
   return (<AntdSelect
     placeholder="物料"
     style={{width: '100%'}}

@@ -123,9 +123,6 @@ const PartsList = () => {
               <EditButton onClick={() => {
                 refAdd.current.open(record.partsId);
               }} />
-              <DelButton api={partsDelete} value={record.partsId} onSuccess={() => {
-                refresh();
-              }} />
             </>
           );
         }} />
