@@ -9,7 +9,6 @@ import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
-import {Divider} from 'antd';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
 
 const {FormItem} = Form;
@@ -65,8 +64,8 @@ const SkuEdit = ({...props}) => {
           model={(value) => {
             setSku(value);
           }} required />
-        <FormItem label="执行标准" name="standard" component={SysField.SkuName}  />
-        {!props.value && <FormItem label="规格" name="specifications" component={SysField.SkuName} required />}
+        <FormItem label="编码" name="coding" component={SysField.Coding} required />
+        {!props.value && <FormItem label="规格" name="specifications" component={SysField.SkuName}  />}
         <FormItem label="备注" name="remarks" component={SysField.Note} />
       </Form>
     </div>

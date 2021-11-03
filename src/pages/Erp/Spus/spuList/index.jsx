@@ -129,7 +129,7 @@ const SpuList = () => {
           );
         }} />
       </Table>
-      <Modal width={1000} title="编辑" component={SpuEdit} onSuccess={() => {
+      <Modal width={1000} title="产品" component={SpuEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

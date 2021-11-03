@@ -6,7 +6,18 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button, Card} from 'antd';
+import {
+  Input,
+  InputNumber,
+  TimePicker,
+  DatePicker,
+  Select as AntdSelect,
+  Checkbox,
+  Radio,
+  Button,
+  Card,
+  Select as AntSelect
+} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
 import {spuListSelect} from '../PartsUrl';
@@ -89,9 +100,9 @@ export const Attributes = (props) => {
 
   return (
     <Card bodyStyle={{padding:0}}>
-      <Attribute show sku={sku} onChange={(value) => {
+      <Attribute sku={sku} onChange={(value) => {
         onChange(value);
-      }} attributes={value} />
+      }} value={value} />
     </Card>
   );
 };
@@ -129,7 +140,8 @@ export const Sku = (props) => {
   }, [props.type]);
 
 
-  const {data} = useRequest({url: '/sku/list', method: 'POST'});
+  const {loading,data,run} = useRequest({url: '/sku/list?limit=20&page=1', method: 'POST'},);
+
   const options = data && data.map((items) => {
     return {
       label: <>
@@ -157,14 +169,31 @@ export const Sku = (props) => {
     };
   });
 
+
   return (<AntdSelect
     placeholder="物料"
+    showSearch
+    loading={loading}
     style={{width: '100%'}}
-    options={options || []}
-    value={props.value && props.value.skuId}
+    // value={props.value && props.value.skuId}
+    onSearch={(value)=>{
+      run({
+        data:{
+          skuName:value
+        }
+      });
+    }}
     onChange={(value) => {
-      props.onChange({skuId: value});
-    }} />);
+      console.log(value);
+      // props.onChange({skuId: value});
+    }} >
+    {options && options.map((items,index)=>{
+      console.log(items);
+      return (
+        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
+      );
+    })}
+  </AntdSelect>);
 };
 
 export const SkuId = (props) => {
