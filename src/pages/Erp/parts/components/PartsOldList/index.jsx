@@ -59,7 +59,7 @@ const PartsOldList = (props) => {
         expandedRowKeys: key,
         onExpand: async (expand, record) => {
           if (expand) {
-            const res = await request({...oldBackDetails, params: {id: record.skuId}});
+            const res = await request({...oldBackDetails, params: {id: record.skuId,partsId:record.partsId}});
 
             record.children = res && res.map((items, index) => {
               return {
