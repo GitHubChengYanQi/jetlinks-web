@@ -47,14 +47,14 @@ const Parts = ({...props}) => {
             const {setFieldState} = createFormActions();
 
             FormEffectHooks.onFieldValueChange$('item').subscribe(({value}) => {
-              if (!type) {
-                setFieldState(
-                  'pSkuId',
-                  state => {
+              setFieldState(
+                'pSkuId',
+                state => {
+                  if (value && value.spuId) {
                     state.props.spuId = value && value.spuId;
                   }
-                );
-              }
+                }
+              );
             });
           }
           }
