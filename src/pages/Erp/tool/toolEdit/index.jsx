@@ -6,14 +6,12 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
-import {toolDetail, toolAdd, toolEdit, codingRulesList} from '../toolUrl';
+import {toolDetail, toolAdd, toolEdit} from '../toolUrl';
 import * as SysField from '../toolField';
 import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {rulesRelationList} from '@/pages/Erp/codingRules/components/rulesRelation/rulesRelationUrl';
-import {Codings} from '../toolField';
+import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
 
 const {FormItem} = Form;
 

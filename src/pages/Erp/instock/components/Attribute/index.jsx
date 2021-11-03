@@ -2,57 +2,14 @@ import React, {useEffect, useImperativeHandle, useState} from 'react';
 import {Radio} from 'antd';
 
 
-const Attribute = ({sku, onChange, attributes,show}, ref) => {
+const Attribute = ({sku, onChange, value}) => {
 
-  const [array, setArray] = useState(attributes || []);
-
-  const attValue = array.map((items) => {
-    return items.values.id;
-  });
-
-  const atts = sku && sku.tree && sku.tree.map((items) => {
-    return `s${items.k_s}`;
-  });
-
-  const skuIds = sku && sku.list && sku.list.filter((values) => {
-    let skuId = false;
-    for (let i = 0; i < atts.length; i++) {
-      if (values[atts[i]] === attValue[i]) {
-        skuId = true;
-      } else {
-        skuId = false;
-        break;
-      }
-    }
-    return skuId;
-  });
-
-  if (show){
-    if (skuIds && skuIds.length === 1) {
-      typeof onChange === 'function' && onChange(skuIds[0].id);
-    }
-  }
-
-  const onchange = () => {
-    if (skuIds && skuIds.length === 1) {
-      typeof onChange === 'function' && onChange(skuIds[0].id);
-    }
-  };
-
-  useImperativeHandle(ref, () => (
-    {
-      onchange,
-    }
-  ));
-
+  const [array, setArray] = useState(value || []);
 
   return (
     <div style={{padding: 16}}>
       {
         sku && sku.tree && sku.tree.map((items, index) => {
-          const arr = array.filter((value) => {
-            return value.attribute.k_s === items.k_s;
-          });
 
           return (
             <div key={index} style={{margin:8}}>
@@ -60,7 +17,7 @@ const Attribute = ({sku, onChange, attributes,show}, ref) => {
               &nbsp;&nbsp;
               <Radio.Group
                 key={index}
-                defaultValue={arr && arr[0] && arr[0].values && arr[0].values.id}
+                // defaultValue={arr && arr[0] && arr[0].values && arr[0].values.id}
                 onChange={(value) => {
 
                   const arrs = [];
@@ -73,12 +30,9 @@ const Attribute = ({sku, onChange, attributes,show}, ref) => {
                     return values.id === value.target.value;
                   });
 
-                  const attributes = {
-                    k: items.k,
-                    k_s: items.k_s,
-                  };
 
-                  arrs[index] = {attribute: attributes, values: arrValues[0]};
+                  arrs[index] = {attributeId: items.k_s, attributeValuesId: arrValues[0].id};
+                  onChange(arrs);
                   setArray(arrs);
                 }}>
                 {
@@ -97,4 +51,4 @@ const Attribute = ({sku, onChange, attributes,show}, ref) => {
   );
 };
 
-export default React.forwardRef(Attribute);
+export default Attribute;

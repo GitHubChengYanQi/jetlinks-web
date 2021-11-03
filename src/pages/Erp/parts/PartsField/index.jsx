@@ -6,7 +6,18 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
+import {
+  Input,
+  InputNumber,
+  TimePicker,
+  DatePicker,
+  Select as AntdSelect,
+  Checkbox,
+  Radio,
+  Button,
+  Card,
+  Select as AntSelect
+} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
 import {spuListSelect} from '../PartsUrl';
@@ -63,6 +74,14 @@ export const brandName = (props) => {
   return (<Input   {...props} />);
 };
 
+export const SkuName = (props) => {
+  return (<Input   {...props} />);
+};
+
+export const Note = (props) => {
+  return (<Input.TextArea   {...props} />);
+};
+
 export const Attributes = (props) => {
   const {spuId, onChange, value} = props;
 
@@ -87,19 +106,22 @@ export const Attributes = (props) => {
     }
   }, [spuId]);
 
-  return (<Attribute show sku={sku} onChange={(value) => {
-    console.log(value);
-    onChange(value);
-  }} attributes={value} />);
+  return (
+    <Card bodyStyle={{padding:0}}>
+      <Attribute sku={sku} onChange={(value) => {
+        onChange(value);
+      }} value={value} />
+    </Card>
+  );
 };
 
 export const Spu = (props) => {
 
-  useEffect(()=>{
-    if (props.spuId){
-      props.onChange({spuId:props.spuId});
+  useEffect(() => {
+    if (props.spuId) {
+      props.onChange({spuId: props.spuId});
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (props.type) {
@@ -120,52 +142,13 @@ export const Spu = (props) => {
 export const Sku = (props) => {
 
   useEffect(() => {
-    if (!props.type){
+    if (!props.type) {
       props.onChange(null);
     }
   }, [props.type]);
 
 
-  const {data} = useRequest({url: '/sku/list', method: 'POST'});
-  const options = data && data.map((items) => {
-    return {
-      label: <>
-        {items.spuResult && items.spuResult.name}
-        &nbsp;&nbsp;
-        (
-        {
-          items.skuJsons
-          &&
-          items.skuJsons.map((item, index) => {
-            if (index === items.skuJsons.length - 1) {
-              return <em key={index}>
-                {item.attribute && item.attribute.attribute}：{item.values && item.values.attributeValues}
-              </em>;
-            } else {
-              return <em key={index}>
-                {item.attribute && item.attribute.attribute}：{item.values && item.values.attributeValues}，
-              </em>;
-            }
-          })
-        }
-        )
-      </>,
-      value: items.skuId,
-    };
-  });
-
-  return (<AntdSelect
-    placeholder="物料"
-    style={{width: '100%'}}
-    options={options || []}
-    value={props.value && props.value.skuId}
-    onChange={(value) => {
-      props.onChange({skuId: value});
-    }} />);
-};
-
-export const SkuId = (props) => {
-  const {data} = useRequest(skuList);
+  const {loading,data,run} = useRequest({...skuList,data:{type:0}},{debounceInterval:500});
 
   const options = data && data.map((items) => {
     let values = '';
@@ -182,19 +165,78 @@ export const SkuId = (props) => {
       value: items.skuId,
     };
   });
-  return (
-    <>
-      <AntdSelect
-        placeholder="输入型号"
-        dropdownMatchSelectWidth={500}
-        options={options || []}
-        allowClear
-        showSearch
-        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        {...props}
-      />
-    </>
-  );
+
+
+  return (<AntdSelect
+    placeholder="物料"
+    showSearch
+    loading={loading}
+    style={{width: '100%'}}
+    // value={props.value && props.value.skuId}
+    onSearch={(value)=>{
+      run({
+        data:{
+          skuName:value,
+          type:0
+        }
+      });
+    }}
+    onChange={(value,option) => {
+      props.onChange({skuId: option.children[1].props.children});
+    }} >
+    {options && options.map((items,index)=>{
+      return (
+        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
+      );
+    })}
+  </AntdSelect>);
+};
+
+export const SkuId = (props) => {
+
+  const {loading,data,run} = useRequest({...skuList,data:{type:0}},{debounceInterval:500});
+
+
+  const options = data && data.map((items) => {
+    let values = '';
+    items.skuJsons && items.skuJsons.map((item, index) => {
+      if (index === items.skuJsons.length - 1) {
+        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}`;
+      } else {
+        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}，`;
+      }
+    });
+
+    return {
+      label: items.spuResult && `${items.spuResult.name} / ${items.skuName}  (${values})`,
+      value: items.skuId,
+    };
+  });
+
+
+  return (<AntdSelect
+    placeholder="物料"
+    showSearch
+    loading={loading}
+    style={{width: '100%'}}
+    // value={props.value && props.value.skuId}
+    onSearch={(value)=>{
+      run({
+        data:{
+          skuName:value,
+          type:0
+        }
+      });
+    }}
+    onChange={(value,option) => {
+      props.onChange(option.children[1].props.children);
+    }} >
+    {options && options.map((items,index)=>{
+      return (
+        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
+      );
+    })}
+  </AntdSelect>);
 };
 
 

@@ -17,6 +17,7 @@ import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import {createFormActions} from '@formily/antd';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,7 +52,8 @@ const SkuList = ({...props}) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="种类名字" style={{width: 200}} name="spuId" component={SysField.SpuId} />
+        <FormItem label="名字" style={{width: 200}} name="spuId" component={SysField.SpuId} />
+        <FormItem name="type" style={{display:'none'}} hidden value={0} component={SysField.Type} />
       </>
     );
   };
@@ -60,6 +62,7 @@ const SkuList = ({...props}) => {
   return (
     <>
       <Table
+        title={<Breadcrumb title='物料管理' />}
         api={skuList}
         rowKey="skuId"
         searchForm={searchForm}
@@ -107,7 +110,7 @@ const SkuList = ({...props}) => {
         } />
 
         <Column title="型号" dataIndex="skuName" />
-        <Column title="执行标准" dataIndex="standard" />
+        <Column title="编码" dataIndex="standard" />
         <Column title="操作" dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>

@@ -108,6 +108,10 @@ export const Attributes = (props) => {
   return (<Input {...props} />);
 };
 
+export const Coding = (props) => {
+  return (<Input {...props} />);
+};
+
 export const SpuClass = (props) => {
   const ref = useRef();
 
