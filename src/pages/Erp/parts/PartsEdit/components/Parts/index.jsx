@@ -19,7 +19,7 @@ const {FormItem} = Form;
 const ApiConfig = {
   view: partsDetail,
   add: partsAdd,
-  save: partsEdit
+  save: partsAdd
 };
 
 
