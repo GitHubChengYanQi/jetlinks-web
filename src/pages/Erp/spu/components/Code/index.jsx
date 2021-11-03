@@ -7,7 +7,7 @@ import {BarcodeOutlined, QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
 
 
-const Code = ({source, id,value}) => {
+const Code = ({source, id, value}) => {
 
   const {code} = config;
 
@@ -34,7 +34,7 @@ const Code = ({source, id,value}) => {
         <Button
           type="link"
           onClick={() => {
-            if (!value){
+            if (!value) {
               run({
                 data: {
                   source,
@@ -45,19 +45,16 @@ const Code = ({source, id,value}) => {
             setShow(true);
           }}
           icon={
-            <Space direction='horizontal'>
-              <BarcodeOutlined />
-              <QrcodeOutlined />
-            </Space>
+            <QrcodeOutlined />
           }
         />
       </Space>
       <Modal
+        title='查看二维码'
         visible={show}
         destroyOnClose
         keyboard
         centered
-        closable={false}
         footer={null}
         onCancel={() => {
           setShow(false);
@@ -66,7 +63,7 @@ const Code = ({source, id,value}) => {
         <div style={{margin: 'auto', maxWidth: 256}}>
           <Image src={jrQrcode.getQrBase64(`${code}?codes=${value || codes}`)} preview={false} />
         </div>
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign: 'center'}}>
           {(value || codes) && <AcBarcode value={value || codes} />}
         </div>
       </Modal>

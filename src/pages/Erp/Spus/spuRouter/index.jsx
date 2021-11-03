@@ -14,5 +14,11 @@ export const SPUSRouter = [
     component: lazy(() => import('../spuList')),
     fallback: <div>loading...</div>,
     exact: true,
+  },
+  {
+    path: '/SPUS/detail/:cid',
+    component: lazy(() => import('../components/SpuDetail/index')),
+    fallback: <div>loading...</div>,
+    exact: true,
   }
 ];

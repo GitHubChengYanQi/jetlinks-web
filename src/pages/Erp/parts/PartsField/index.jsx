@@ -94,25 +94,35 @@ export const Attributes = (props) => {
 };
 
 export const Spu = (props) => {
+
+  useEffect(()=>{
+    if (props.spuId){
+      props.onChange({spuId:props.spuId});
+    }
+  },[]);
+
   useEffect(() => {
     if (props.type) {
       props.onChange(null);
     }
-
   }, [props.type]);
   return (<Select
     width="100%"
     placeholder="产品"
+    disabled={props.spuId}
     api={spuListSelect}
     value={props.value && props.value.spuId}
     onChange={(value) => {
       props.onChange({spuId: value});
     }} />);
 };
+
 export const Sku = (props) => {
 
   useEffect(() => {
-    // props.onChange(null);
+    if (!props.type){
+      props.onChange(null);
+    }
   }, [props.type]);
 
 
