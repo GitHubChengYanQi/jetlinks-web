@@ -24,7 +24,7 @@ const PartsList = () => {
 
   const [dataSource, setDataSource] = useState();
 
-  const [key, setKey] = useState();
+  const [key, setKey] = useState([]);
 
   const {refresh} = useRequest(partsList, {
     onSuccess: (res) => {
@@ -68,16 +68,18 @@ const PartsList = () => {
                   children: [],
                 };
               });
-              if (key){
-                setKey([...key,`${record.skuId}_${record.partsId}`]);
-              }else {
-                setKey([`${record.skuId}_${record.partsId}`]);
+              setKey([...key, `${record.skuId}_${record.partsId}`]);
+
+            } else {
+              const array = [];
+              for (let i = 0; i < key.length; i++) {
+                if (key[i] !== `${record.skuId}_${record.partsId}`) {
+                  array.push(key[i]);
+                } else {
+                  break;
+                }
               }
 
-            }else {
-              const array = key && key.filter((value)=>{
-                return value !== `${record.skuId}_${record.partsId}`;
-              });
               setKey(array);
             }
           }
@@ -87,22 +89,33 @@ const PartsList = () => {
           return (
             <>
               {record.spuResult && record.spuResult.name}
+              &nbsp;&nbsp;
+              (
               {
-                record.backSkus && record.backSkus.map((items, index) => {
+                record.backSkus
+                &&
+                record.backSkus.map((items, index) => {
                   return <em key={index}>
                     {
                       items.itemAttribute.attribute
                     }
-                    :
+                    ：
                     {
                       items.attributeValues.attributeValues
                     }
                   </em>;
                 })
               }
+              )
             </>
           );
         }} />
+        {key.length>0 && <>
+          <Column title="数量" dataIndex="number" render={(value)=>{
+            return <>{value || null}</>;
+          }} />
+          <Column title="备注" dataIndex="note" />
+        </>}
         <Column title="清单" dataIndex="partName" />
         <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
           return (
