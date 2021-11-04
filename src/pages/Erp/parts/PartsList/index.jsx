@@ -96,6 +96,8 @@ const PartsList = ({spuId}) => {
       <Column title="物料" dataIndex="skuId" render={(value, record) => {
         return (
           <>
+            {record.sku && record.sku.skuName}
+            &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;
             (
@@ -164,6 +166,9 @@ const PartsList = ({spuId}) => {
           <Button type='primary' onClick={()=>{
             formRef.current.formRef.current.submit();
           }}>保存</Button>
+          <Button onClick={()=>{
+            refAdd.current.close();
+          }}>取消</Button>
         </>}
       />
 
