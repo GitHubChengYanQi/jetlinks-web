@@ -154,14 +154,13 @@ export const Sku = (props) => {
     let values = '';
     items.skuJsons && items.skuJsons.map((item, index) => {
       if (index === items.skuJsons.length - 1) {
-        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}`;
+        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}` : '';
       } else {
-        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}，`;
+        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}，` : '';
       }
     });
-
     return {
-      label: items.spuResult && `${items.spuResult.name} / ${items.skuName}  (${values})`,
+      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}  ${(values === '' ? '' : `( ${values} )`)}`,
       value: items.skuId,
     };
   });
@@ -201,14 +200,13 @@ export const SkuId = (props) => {
     let values = '';
     items.skuJsons && items.skuJsons.map((item, index) => {
       if (index === items.skuJsons.length - 1) {
-        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}`;
+        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}` : '';
       } else {
-        return values += `${item.attribute && item.attribute.attribute}:${item.values && item.values.attributeValues}，`;
+        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}，` : '';
       }
     });
-
     return {
-      label: items.spuResult && `${items.spuResult.name} / ${items.skuName}  (${values})`,
+      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}  ${(values === '' ? '' : `( ${values} )`)}`,
       value: items.skuId,
     };
   });

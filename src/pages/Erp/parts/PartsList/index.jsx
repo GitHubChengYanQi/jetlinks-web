@@ -24,6 +24,7 @@ const {Column} = Table;
 const PartsList = ({spuId}) => {
 
   const refAdd = useRef();
+  const formRef = useRef();
   const refOldList = useRef();
 
   const [dataSource, setDataSource] = useState();
@@ -54,7 +55,7 @@ const PartsList = ({spuId}) => {
     return (
       <AddButton onClick={() => {
         refAdd.current.open(false);
-      }}/>
+      }} />
     );
   };
 
@@ -123,14 +124,14 @@ const PartsList = ({spuId}) => {
         }} />
         <Column title="备注" dataIndex="note" />
       </>}
-      <Column title="清单" dataIndex="partName" />
+      <Column title="名称" dataIndex="partName" />
       <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
         return (
           <>
             <EditButton onClick={() => {
               refAdd.current.open(record.partsId);
             }} />
-            <Button icon={<ClockCircleOutlined />} type='link' onClick={()=>{
+            <Button icon={<ClockCircleOutlined />} type="link" onClick={() => {
               refOldList.current.open(record.skuId);
             }} />
           </>
@@ -149,10 +150,22 @@ const PartsList = ({spuId}) => {
         <Card title={<Breadcrumb />} extra={action()}>
           {table()}
         </Card>}
-      <Modal width={1200} title="清单" component={Parts} onSuccess={() => {
-        refresh();
-        refAdd.current.close();
-      }} ref={refAdd} spuId={spuId} />
+      <Modal
+        width={1200}
+        title="清单"
+        compoentRef={formRef}
+        component={Parts}
+        onSuccess={() => {
+          refresh();
+          refAdd.current.close();
+        }} ref={refAdd}
+        spuId={spuId}
+        footer={<>
+          <Button type='primary' onClick={()=>{
+            formRef.current.formRef.current.submit();
+          }}>保存</Button>
+        </>}
+      />
 
       <Modal width={1200} title="清单" component={PartsOldList} onSuccess={() => {
         refresh();

@@ -91,7 +91,7 @@ const SpuEdit = (props) => {
           props.onSuccess();
         }}
         onSubmit={(value) => {
-          return {...value, type: 1};
+          return {...value, type: 1,isHidden:false};
         }}
       >
         <Row gutter={24}>

@@ -5,7 +5,7 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {partsDetail, partsAdd, partsEdit} from '../../../PartsUrl';
 import * as SysField from '../../../PartsField';
@@ -23,7 +23,13 @@ const ApiConfig = {
 };
 
 
-const Parts = ({...props}) => {
+const Parts = ({...props},ref) => {
+
+  useImperativeHandle(ref,()=>(
+    {
+      formRef,
+    }
+  ));
 
   const {spuId, ...other} = props;
 
@@ -37,6 +43,7 @@ const Parts = ({...props}) => {
         <Form
           {...other}
           ref={formRef}
+          NoButton={false}
           api={ApiConfig}
           fieldKey="partsId"
           onSubmit={(value) => {
@@ -59,7 +66,7 @@ const Parts = ({...props}) => {
           }
         >
           <ProCard className="h2Card" headerBordered title="基本信息">
-            <FormItem label="清单" name="partName" component={SysField.PartName} required />
+            <FormItem label="名称" name="partName" component={SysField.PartName} required />
             <FormItem
               label={
                 <Select
@@ -81,7 +88,7 @@ const Parts = ({...props}) => {
             {!type && <>
               <FormItem label="配置" name="skuRequests" component={SysField.Attributes} required />
               <FormItem label="型号" name="skuName" component={SysField.SkuName} required />
-              <FormItem label="备注" name="note" component={SysField.Note} required />
+              <FormItem label="备注" name="note" component={SysField.Note} />
             </>}
           </ProCard>
 
@@ -154,4 +161,4 @@ const Parts = ({...props}) => {
   );
 };
 
-export default Parts;
+export default React.forwardRef(Parts);
