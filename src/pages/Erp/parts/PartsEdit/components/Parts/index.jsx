@@ -111,7 +111,7 @@ const Parts = ({...props},ref) => {
                           <div style={{display: 'inline-block', width: '45%'}}>
                             <FormItem
                               labelCol={7}
-                              label="产品"
+                              label="物料"
                               name={`parts.${index}.skuId`}
                               component={SysField.SkuId}
                               required

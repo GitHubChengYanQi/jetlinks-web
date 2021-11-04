@@ -24,8 +24,6 @@ const SkuEdit = ({...props}, ref) => {
 
   const {value} = props;
 
-  console.log(value);
-
   const formRef = useRef();
 
   const [spu, setSpu] = useState();

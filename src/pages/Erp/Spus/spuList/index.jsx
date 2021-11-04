@@ -9,7 +9,6 @@ import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -66,6 +65,7 @@ const SpuList = () => {
         title={<Breadcrumb />}
         api={spuList}
         rowKey="spuId"
+        tableKey='spu'
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
@@ -74,7 +74,7 @@ const SpuList = () => {
           setIds(ids);
         }}
       >
-        <Column title="名称" dataIndex="name" render={(value, record) => {
+        <Column title="名称" key={1} dataIndex="name" render={(value, record) => {
           return (
             <>
               <Code source="spu" id={record.spuId} />
@@ -87,21 +87,21 @@ const SpuList = () => {
           );
         }} />
 
-        <Column title="配置" dataIndex="categoryId" render={(value, record) => {
+        <Column title="配置" key={2} dataIndex="categoryId" render={(value, record) => {
           return (
             <>
               {record.category && record.category.categoryName}
             </>
           );
         }} />
-        <Column title="单位" width={120} align="center" dataIndex="unitId" render={(value, record) => {
+        <Column title="单位" key={3} width={120} align="center" dataIndex="unitId" render={(value, record) => {
           return (
             <>
               {record.unitResult && record.unitResult.unitName}
             </>
           );
         }} sorter />
-        <Column title="分类" width={120} render={(value, record) => {
+        <Column title="分类" key={4} width={120} render={(value, record) => {
           return (
             <>
               {
@@ -110,7 +110,7 @@ const SpuList = () => {
             </>
           );
         }} sorter />
-        <Column title="生产类型" width={120} align="center" dataIndex="productionType" render={(value) => {
+        <Column title="生产类型" key={5} width={120} align="center" dataIndex="productionType" render={(value) => {
           switch (value) {
             case 0:
               return '自制件';
@@ -123,14 +123,15 @@ const SpuList = () => {
           }
 
         }} sorter />
-        <Column title="养护周期" width={120} align="center" dataIndex="curingCycle" render={(value) => {
+        <Column title="养护周期" key={6} width={120} align="center" dataIndex="curingCycle" render={(value) => {
           return (
             <>
               {value && `${value}天`}
             </>
           );
         }} sorter />
-        <Column title="操作" fixed="right" align="right" render={(value, record) => {
+        <Column />
+        <Column title="操作" key={7} fixed="right" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

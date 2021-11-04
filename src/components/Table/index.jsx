@@ -25,6 +25,7 @@ const TableWarp = ({
   rowKey,
   headStyle,
   tab,
+  tableKey,
   rowSelection,
   bodyStyle,
   bordered,
@@ -134,9 +135,9 @@ const TableWarp = ({
     );
   };
 
-  const {tableColumn,setButton} = useTableSet(children);
+  const {tableColumn,setButton} = useTableSet(children,tableKey);
 
-  console.log(children);
+
 
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>

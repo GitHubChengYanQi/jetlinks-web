@@ -87,6 +87,7 @@ const SkuList = ({...props}) => {
       <Table
         title={<Breadcrumb title="物料管理" />}
         api={skuList}
+        tableKey='sku'
         rowKey="skuId"
         searchForm={searchForm}
         actions={actions()}
@@ -99,7 +100,7 @@ const SkuList = ({...props}) => {
           setSku(record);
         }}
       >
-        <Column title="型号 / 名称" dataIndex="spuId" render={(value, record) => {
+        <Column title="型号 / 名称" key={1} dataIndex="spuId" render={(value, record) => {
           return (
             <>
               {record.skuName}
@@ -109,7 +110,7 @@ const SkuList = ({...props}) => {
           );
         }} />
 
-        <Column title="配置" render={(value, record) => {
+        <Column title="配置" key={2} render={(value, record) => {
           return (
             <>
               {
@@ -134,7 +135,8 @@ const SkuList = ({...props}) => {
         }
         } />
         {/*<Column title="编码" dataIndex="standard" />*/}
-        <Column title="操作" dataIndex="isBan" width={100} render={(value, record) => {
+        <Column />
+        <Column title="操作" key={3} dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
