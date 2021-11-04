@@ -78,7 +78,7 @@ const SkuEdit = ({...props}, ref) => {
           }
         }}
         onSubmit={(value) => {
-          return {...value, type: 0};
+          return {...value, type: 0,isHidden:true};
         }}
         effect={() => {
 

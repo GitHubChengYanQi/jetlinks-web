@@ -34,6 +34,8 @@ const ApiConfig = {
 
 const BusinessEdit = (props,ref) => {
 
+  const {customerId,userId,...other} = props;
+
   const tableRef = useRef(null);
   const [result, setResult] = useState(props.value);
 
@@ -47,7 +49,7 @@ const BusinessEdit = (props,ref) => {
 
     <Form
       NoButton={false}
-      {...props}
+      {...other}
       value={result}
       ref={tableRef}
       api={ApiConfig}

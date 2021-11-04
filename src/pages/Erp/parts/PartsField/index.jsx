@@ -22,12 +22,13 @@ import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
 import {spuListSelect} from '../PartsUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import Attribute from '@/pages/Erp/instock/components/Attribute';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
 import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
 import Modal from '@/components/Modal';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 export const ItemId = (props) => {
   return (<Select api={apiUrl.itemIdSelect} {...props} />);
@@ -107,7 +108,7 @@ export const Attributes = (props) => {
   }, [spuId]);
 
   return (
-    <Card bodyStyle={{padding:0}}>
+    <Card bodyStyle={{padding: 0}}>
       <Attribute sku={sku} onChange={(value) => {
         onChange(value);
       }} value={value} />
@@ -147,94 +148,14 @@ export const Sku = (props) => {
     }
   }, [props.type]);
 
-
-  const {loading,data,run} = useRequest({...skuList,data:{type:0}},{debounceInterval:500});
-
-  const options = data && data.map((items) => {
-    let values = '';
-    items.skuJsons && items.skuJsons.map((item, index) => {
-      if (index === items.skuJsons.length - 1) {
-        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}` : '';
-      } else {
-        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}，` : '';
-      }
-    });
-    return {
-      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}  ${(values === '' ? '' : `( ${values} )`)}`,
-      value: items.skuId,
-    };
-  });
-
-
-  return (<AntdSelect
-    placeholder="物料"
-    showSearch
-    loading={loading}
-    style={{width: '100%'}}
-    // value={props.value && props.value.skuId}
-    onSearch={(value)=>{
-      run({
-        data:{
-          skuName:value,
-          type:0
-        }
-      });
-    }}
-    onChange={(value,option) => {
-      props.onChange({skuId: option.children[1].props.children});
-    }} >
-    {options && options.map((items,index)=>{
-      return (
-        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
-      );
-    })}
-  </AntdSelect>);
+  return (<SelectSku value={props.value && props.value.skuId} onChange={(value)=>{
+    props.onChange({skuId:value});
+  }} />);
 };
 
 export const SkuId = (props) => {
 
-  const {loading,data,run} = useRequest({...skuList,data:{type:0}},{debounceInterval:500});
-
-
-  const options = data && data.map((items) => {
-    let values = '';
-    items.skuJsons && items.skuJsons.map((item, index) => {
-      if (index === items.skuJsons.length - 1) {
-        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}` : '';
-      } else {
-        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}，` : '';
-      }
-    });
-    return {
-      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}  ${(values === '' ? '' : `( ${values} )`)}`,
-      value: items.skuId,
-    };
-  });
-
-
-  return (<AntdSelect
-    placeholder="物料"
-    showSearch
-    loading={loading}
-    style={{width: '100%'}}
-    // value={props.value && props.value.skuId}
-    onSearch={(value)=>{
-      run({
-        data:{
-          skuName:value,
-          type:0
-        }
-      });
-    }}
-    onChange={(value,option) => {
-      props.onChange(option.children[1].props.children);
-    }} >
-    {options && options.map((items,index)=>{
-      return (
-        <AntSelect.Option key={index} value={items.label}>{items.label}<div style={{display:'none'}}>{items.value}</div></AntSelect.Option>
-      );
-    })}
-  </AntdSelect>);
+  return (<SelectSku {...props} />);
 };
 
 

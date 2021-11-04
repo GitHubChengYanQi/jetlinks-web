@@ -99,7 +99,7 @@ const SkuList = ({...props}) => {
           setSku(record);
         }}
       >
-        <Column title="名称 / 型号" dataIndex="spuId" render={(value, record) => {
+        <Column title="型号 / 名称" dataIndex="spuId" render={(value, record) => {
           return (
             <>
               {record.skuName}

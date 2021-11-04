@@ -59,7 +59,7 @@ const CategoryList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="上级配置" dataIndex="pid" render={(value,record)=>{
+        <Column title="上级" dataIndex="pid" render={(value,record)=>{
           return (
             <>{record.pidCategoryResult ? record.pidCategoryResult.categoryName : '顶级'}</>
           );
@@ -73,7 +73,7 @@ const CategoryList = () => {
             </Button>
           );
         }} />
-        <Column title="排序" dataIndex="sort" />
+        <Column title="排序" dataIndex="sort" align='center' width={100} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
