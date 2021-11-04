@@ -22,6 +22,7 @@ const FormWrapper = (
     fieldKey,
     value,
     effect,
+    defaultValue,
     labelAlign,
     formatResult,
     NoButton = true,
@@ -92,6 +93,7 @@ const FormWrapper = (
     },
     onError: (error) => {
       // message.error(error.message);
+      onError(error);
     }
   });
 
@@ -131,7 +133,9 @@ const FormWrapper = (
     style={{margin: 'auto',height:'100%'}}
     actions={formActions}
     labelAlign={labelAlign}
+    // defaultValue={defaultValue}
     layout='horizontal'
+    value={defaultValue}
     className={style.formWarp}
     labelCol={labelCol !== undefined ? labelCol : 6}
     wrapperCol={wrapperCol || 15}

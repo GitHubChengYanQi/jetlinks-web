@@ -37,11 +37,17 @@ export const Type = (props) => {
 
   return (<InputNumber {...props} />);
 };
+
+export const Specifications = (props) => {
+  const {skuId, ...other} = props;
+  return (<Input disabled={skuId} {...other} />);
+};
 export const SkuName = (props) => {
-  const {disabled, model, onChange, skuname, ...other} = props;
+  const {model, onChange, skuname, ...other} = props;
+
   return (
     <>
-      <Input disabled={disabled} {...other} onChange={(value) => {
+      <Input {...other} onChange={(value) => {
         onChange(value.target.value);
         typeof model === 'function' && model(value.target.value);
       }} />
@@ -79,12 +85,13 @@ export const SpuId = (props) => {
 
   return (
     <AutoComplete
-      defaultValue={props.value && props.value.name}
+      value={props.value && props.value.name ? props.value.name : null}
       options={options || []}
-      style={{width: 200}}
+      disabled={props.skuId}
+      style={{width: 300}}
       onSelect={(value, option) => {
         typeof props.model === 'function' && props.model(value);
-        props.onChange({spuId: option.id});
+        props.onChange({name: value, spuId: option.id});
       }}
       onChange={async (value) => {
         typeof props.model === 'function' && props.model(value);
@@ -108,14 +115,22 @@ export const Attributes = (props) => {
   return (<Input {...props} />);
 };
 
+export const Coding = (props) => {
+  const {skuId, ...other} = props;
+  return (<Input disabled={skuId} {...other} />);
+};
+
 export const SpuClass = (props) => {
+
+  const {skuId, ...other} = props;
+
   const ref = useRef();
 
   const [state, {toggle}] = useBoolean();
 
   return (
     <Space>
-      <Cascader refre={state} api={spuClassificationTreeVrew} {...props} />
+      <Cascader refre={state} disabled={skuId} api={spuClassificationTreeVrew} {...other} />
       <Button onClick={() => {
         ref.current.open(false);
       }}>设置分类</Button>

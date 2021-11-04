@@ -108,7 +108,7 @@ export const CategoryId = (props) =>{
       <Cascader refre={state} api={categoryTree} {...props}/>
       <Button onClick={() => {
         ref.current.open(false);
-      }}>设置类目</Button>
+      }}>设置配置</Button>
       <Modal width={800} component={CategoryList} ref={ref} onClose={() => {
         ref.current.close();
         toggle();

@@ -19,8 +19,6 @@ const CustomerList = () => {
     };
   }) : [];
 
-  console.log(data);
-
 
   const [status, setStatus] = useState();
   const [state, setState] = useState();
