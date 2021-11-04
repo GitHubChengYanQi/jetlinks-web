@@ -5,7 +5,7 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,7 +13,7 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {spuDelete, spuList} from '../spuUrl';
+import {deleteBatch, spuDelete, spuList} from '../spuUrl';
 import SpuEdit from '../spuEdit';
 import * as SysField from '../spuField';
 import {useHistory} from 'ice';
@@ -29,11 +29,12 @@ const SpuList = () => {
   const tableRef = useRef(null);
   const history = useHistory();
 
+  const [ids, setIds] = useState([]);
+
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          // history.push('/SPU/spu/add');
           ref.current.open(false);
         }} />
       </>
@@ -49,6 +50,16 @@ const SpuList = () => {
     );
   };
 
+  const footer = () => {
+    return <>
+      <DelButton api={{
+        ...deleteBatch,
+      }} onSuccess={() => {
+        tableRef.current.refresh();
+      }} value={ids}>批量删除</DelButton>
+    </>;
+  };
+
   return (
     <>
       <Table
@@ -58,11 +69,15 @@ const SpuList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(ids) => {
+          setIds(ids);
+        }}
       >
         <Column title="名称" dataIndex="name" render={(value, record) => {
           return (
             <>
-              <Code source='spu' id={record.spuId} />
+              <Code source="spu" id={record.spuId} />
               <Button type="link" onClick={() => {
                 history.push(`/spu/SPUS/detail/${record.spuId}`);
               }}>

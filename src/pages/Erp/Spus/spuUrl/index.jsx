@@ -63,3 +63,9 @@ export const skuListSelect = {
 };
 
 
+export const deleteBatch = {
+  url: '/spu/deleteBatch',
+  method: 'POST',
+};
+
+
