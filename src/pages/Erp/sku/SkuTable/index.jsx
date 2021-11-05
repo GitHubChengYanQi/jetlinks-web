@@ -55,27 +55,25 @@ const SkuTable = (props) => {
   const footer = () => {
     return (
       <>
-        <Button type="link" icon={<CopyOutlined />} onClick={() => {
+        <Button type="link" disabled={sku.length !== 1} icon={<CopyOutlined />} onClick={() => {
           setEdit(false);
-          if (sku.length === 0) {
-            message.info('请选择数据');
-          } else if (sku.length === 1) {
-            const value = {
-              ...sku[0],
-              skuId: null,
-            };
-            ref.current.open(value);
-          } else {
-            message.error('只能复制一条');
-          }
+          const value = {
+            ...sku[0],
+            skuId: null,
+          };
+          ref.current.open(value);
         }}>
           复制添加
         </Button>
-        <DelButton api={{
-          ...deleteBatch,
-        }} onSuccess={() => {
-          tableRef.current.refresh();
-        }} value={ids}>批量删除</DelButton>
+        <DelButton
+          disabled={ids.length === 0}
+          api={{
+            ...deleteBatch,
+          }}
+          onSuccess={() => {
+            tableRef.current.refresh();
+          }}
+          value={ids}>批量删除</DelButton>
       </>
     );
   };
@@ -83,7 +81,7 @@ const SkuTable = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="名字" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
+        <FormItem placeholder="名字" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
         <FormItem name="type" style={{display: 'none'}} hidden value={0} component={SysField.Type} />
         <FormItem name="spuClass" style={{display: 'none'}} hidden component={SysField.SelectSpuClass} />
       </>
@@ -100,7 +98,6 @@ const SkuTable = (props) => {
         rowKey="skuId"
         searchForm={searchForm}
         actions={actions()}
-        contentHeight
         bordered={false}
         ref={tableRef}
         footer={footer}
@@ -118,7 +115,7 @@ const SkuTable = (props) => {
               {record.spuResult && record.spuResult.name}
             </>
           );
-        }} />
+        }} sorter />
 
         <Column title="配置" key={2} render={(value, record) => {
           return (
@@ -142,12 +139,11 @@ const SkuTable = (props) => {
               }
             </>
           );
-        }
-        } />
-        <Column key={3} title="编码" dataIndex="standard" />
-        <Column key={4} title="创建时间" dataIndex="createTime" />
+        }} />
+        <Column key={3} title="编码" width={200} dataIndex="standard" />
+        <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
         <Column />
-        <Column title="操作" key={3} dataIndex="isBan" width={100} render={(value, record) => {
+        <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

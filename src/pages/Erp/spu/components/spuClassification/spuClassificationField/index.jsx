@@ -39,6 +39,11 @@ export const Sort = (props) =>{
   return (<InputNumber {...props}/>);
 };
 
+
+export const CodingClass = (props) =>{
+  return (<Input placeholder='大写字母或数字' {...props}/>);
+};
+
 export const Pid = (props) =>{
   return (<Cascader top api={spuClassificationTreeVrew} {...props}/>);
 };

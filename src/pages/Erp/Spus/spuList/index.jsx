@@ -43,7 +43,7 @@ const SpuList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="名称" name="name" component={SysField.Name} />
+        <FormItem placeholder='名称' name="name" component={SysField.Name} />
         <FormItem hidden name="type" value={1} component={SysField.type} />
       </>
     );
@@ -85,7 +85,7 @@ const SpuList = () => {
               </Button>
             </>
           );
-        }} />
+        }} sorter />
 
         <Column title="配置" key={2} dataIndex="categoryId" render={(value, record) => {
           return (

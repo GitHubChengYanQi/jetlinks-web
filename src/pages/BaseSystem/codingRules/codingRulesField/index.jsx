@@ -55,25 +55,20 @@ export const DeptId = (props) => {
 
 export const Values = (props) => {
 
-  const {module,onChange,value} = props;
+  const {module, onChange, value} = props;
   console.log(value);
 
   const modules = () => {
     switch (module) {
       case 0:
         return [{
-          label: '订单',
-          value: '订单'
+          label: '物料',
+          value: '物料'
         }];
       case 1:
         return [{
-          label: '工具',
-          value: '工具'
-        }];
-      case 2:
-        return [{
-          label: '质检',
-          value: '质检'
+          label: '产品',
+          value: '产品'
         }];
       default:
         return [];
@@ -106,6 +101,12 @@ export const Values = (props) => {
     {
       label: '模块',
       options: modules()
+    }, {
+      label: '流水号',
+      options: [
+        // eslint-disable-next-line no-template-curly-in-string
+        {label: '${serial} 流水号', value: '${serial}'},
+      ]
     },
   ];
 
@@ -116,10 +117,10 @@ export const Values = (props) => {
       options={options}
       style={{width: 200}}
       placeholder="选择或自定义规则"
-      onChange={(value)=>{
+      onChange={(value) => {
         onChange(value);
       }}
-      onSelect={(value)=>{
+      onSelect={(value) => {
         onChange(value);
       }}
       filterOption={(input, option) =>
@@ -133,9 +134,8 @@ export const Values = (props) => {
 export const Module = (props) => {
 
   const options = [
-    {label: '订单', value: 0},
-    {label: '工具', value: 1},
-    {label: '质检', value: 2},
+    {label: '物料', value: 0},
+    {label: '产品', value: 1},
   ];
 
   return (<AntdSelect options={options} {...props} />);

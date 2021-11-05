@@ -17,6 +17,7 @@ import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import moment from 'moment';
+import {competitorListSelect} from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
 
 // 项目Id
 export const BusinessId = (props) => {
@@ -155,7 +156,7 @@ export const ChangeTimeListSelect17 = (props) => {
 export const CompetitorId = (props) => {
   const ref = useRef(null);
 
-  const {loading, data, run: getData} = useRequest(apiUrl.competitorListSelect);
+  const {loading, data, run: getData} = useRequest(competitorListSelect);
 
   return (
     <div style={{width: 300}}>

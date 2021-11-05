@@ -54,9 +54,10 @@ const SpuClassificationList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="名称" dataIndex="name" />
-        <Column title='上级名称' dataIndex='pidName' />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column key={1} title="名称" dataIndex="name" />
+        <Column key={2} title="编码" dataIndex="codingClass" />
+        <Column key={3} title='上级' dataIndex='pidName' />
+        <Column key={4} title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
