@@ -54,6 +54,12 @@ export const SkuName = (props) => {
       {skuname}
     </>);
 };
+
+export const SelectSpu = (props) => {
+
+  return (<Select api={spuListSelect} {...props} />);
+};
+
 export const SpuId = (props) => {
 
   const {data, run} = useRequest(spuListSelect, {
@@ -119,6 +125,11 @@ export const Coding = (props) => {
   const {skuId, ...other} = props;
   return (<Input disabled={skuId} {...other} />);
 };
+
+export const SelectSpuClass = (props) => {
+  return ( <Cascader api={spuClassificationTreeVrew} {...props} />);
+};
+
 
 export const SpuClass = (props) => {
 

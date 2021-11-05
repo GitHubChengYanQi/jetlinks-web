@@ -18,6 +18,7 @@ import {SpuRouter} from '@/pages/Erp/spu/spuRouter';
 import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
+import React, {lazy} from 'react';
 
 const ErpRouterConfig = [
   {
@@ -30,6 +31,13 @@ const ErpRouterConfig = [
       ...StockRouter,
       ...InstockRouter,
       ...DeliveryRouter,
+      {
+        path: '/test',
+        name: '发货管理',
+        component: lazy(() => import('../Test/index')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },
       {
         redirect: '/ERP/stock',
       }

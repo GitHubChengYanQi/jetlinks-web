@@ -62,7 +62,7 @@ const SkuEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="skuId"
-        onError={()=>{
+        onError={() => {
           openNotificationWithIcon('error');
         }}
         onSuccess={() => {
@@ -76,7 +76,7 @@ const SkuEdit = ({...props}, ref) => {
           }
         }}
         onSubmit={(value) => {
-          return {...value, type: 0,isHidden:true};
+          return {...value, type: 0, isHidden: true};
         }}
         effect={() => {
 
@@ -119,7 +119,8 @@ const SkuEdit = ({...props}, ref) => {
           label="编码"
           skuId={value.skuId}
           name="standard"
-          component={SysField.Coding} />
+          component={SysField.Coding}
+          required />
         <FormItem
           label="规格"
           skuId={value.skuId}
