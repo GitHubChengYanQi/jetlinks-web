@@ -1,14 +1,25 @@
 import {useRequest} from '@/util/Request';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
 import {Select as AntSelect, Select as AntdSelect} from 'antd';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 
 const SelectSku = ({value,onChange}) => {
 
   const {loading, data, run} = useRequest({...skuList, data: {type: 0}}, {debounceInterval: 500});
 
-  const options = data && data.map((items) => {
+  const [change,setChange] = useState();
+
+  useEffect(()=>{
+    run({
+      data: {
+        skuId: value,
+        type: 0
+      }
+    });
+  },[]);
+
+  const object = (items) => {
     let values = '';
     items.skuJsons && items.skuJsons.map((item, index) => {
       if (index === items.skuJsons.length - 1) {
@@ -21,15 +32,21 @@ const SelectSku = ({value,onChange}) => {
       label: items.spuResult && `${items.skuName} / ${items.spuResult.name}  ${(values === '' ? '' : `( ${values} )`)}`,
       value: items.skuId,
     };
+  };
+
+  const options = data && data.map((items) => {
+    return object(items);
   });
 
   return (<AntdSelect
     placeholder="物料"
     showSearch
-    value={value}
+    value={change || (value && options && options[0] && options[0].label)}
+    allowClear
     loading={loading}
     style={{width: '100%'}}
     onSearch={(value) => {
+      setChange(value);
       run({
         data: {
           skuName: value,
@@ -37,12 +54,15 @@ const SelectSku = ({value,onChange}) => {
         }
       });
     }}
-    onChange={(value) => {
-      onChange(value);
+    onChange={(value,option) => {
+      setChange(value);
+      if (option && option.key){
+        onChange(option.key);
+      }
     }}>
-    {options && options.map((items, index) => {
+    {options && options.map((items) => {
       return (
-        <AntSelect.Option key={index} value={items.value}>
+        <AntSelect.Option key={items.value} value={items.label}>
           {items.label}
         </AntSelect.Option>
       );
