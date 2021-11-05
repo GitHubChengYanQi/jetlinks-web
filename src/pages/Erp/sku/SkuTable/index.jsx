@@ -147,7 +147,7 @@ const SkuTable = (props) => {
         <Column key={3} title="编码" dataIndex="standard" />
         <Column key={4} title="创建时间" dataIndex="createTime" />
         <Column />
-        <Column title="操作" key={3} dataIndex="isBan" width={100} render={(value, record) => {
+        <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

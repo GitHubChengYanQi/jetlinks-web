@@ -150,6 +150,7 @@ const CustomerTable = (props) => {
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
+        tableKey='customer'
         isModal={false}
         ref={tableRef}
         footer={footer}

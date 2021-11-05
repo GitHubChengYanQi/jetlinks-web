@@ -121,7 +121,7 @@ const useTableSet = (column, tableKey) => {
     >
       {
         column && column.map((items) => {
-          if (items.key) {
+          if (!items.props.fixed && items.key) {
             return (
               <Menu.Item style={{background:'#fff'}} key={items.key}>
                 <Row gutter={24}>
@@ -157,7 +157,7 @@ const useTableSet = (column, tableKey) => {
 
   return {
     tableColumn,
-    setButton:
+    setButton:tableKey &&
       <>
         {state &&
         <Button
