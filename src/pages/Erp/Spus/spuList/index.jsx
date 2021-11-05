@@ -85,7 +85,7 @@ const SpuList = () => {
               </Button>
             </>
           );
-        }} />
+        }} sorter />
 
         <Column title="配置" key={2} dataIndex="categoryId" render={(value, record) => {
           return (
