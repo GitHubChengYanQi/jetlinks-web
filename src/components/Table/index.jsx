@@ -217,7 +217,7 @@ const TableWarp = ({
             >
               <Column fixed="left" title="序号" dataIndex='sort' width={80} align="center" render={(text, item, index) => {
                 return index + 1;
-              }} sorter />
+              }} />
               {tableColumn}
             </AntdTable>
           </Card>

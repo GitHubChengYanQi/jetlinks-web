@@ -39,7 +39,7 @@ const Parts = ({...props},ref) => {
 
   return (
     <>
-      <div style={{margin: '50px 150px'}}>
+      <div style={{padding:16}}>
         <Form
           {...other}
           ref={formRef}

@@ -38,7 +38,7 @@ const PartsList = ({spuId}) => {
       }
     },
     onSuccess: (res) => {
-      const data = res && res.length>0 && res.map((items, index) => {
+      const data = res && res.length > 0 && res.map((items, index) => {
         return {
           key: `${items.skuId}_${items.partsId}`,
           ...items,
@@ -69,7 +69,7 @@ const PartsList = ({spuId}) => {
           if (expand) {
             const res = await request({...backDetails, params: {id: record.skuId}});
 
-            record.children = res && res.length>0 && res.map((items, index) => {
+            record.children = res && res.length > 0 && res.map((items, index) => {
               return {
                 key: `${items.skuId}_${items.partsId}`,
                 ...items,
@@ -100,23 +100,19 @@ const PartsList = ({spuId}) => {
             &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;
-            (
-            {
-              record.backSkus
-              &&
-              record.backSkus.map((items, index) => {
-                return <em key={index}>
-                  {
-                    items.itemAttribute.attribute
-                  }
-                  ：
-                  {
-                    items.attributeValues.attributeValues
-                  }
-                </em>;
-              })
-            }
-            )
+            <em style={{color:'#c7c6c6'}}>
+              (
+              {
+                record.backSkus
+                &&
+                record.backSkus.map((items, index) => {
+                  return <span key={index}>
+                    {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
+                  </span>;
+                })
+              }
+              )
+            </em>
           </>
         );
       }} />
@@ -153,7 +149,7 @@ const PartsList = ({spuId}) => {
           {table()}
         </Card>}
       <Modal
-        width={1200}
+        width={900}
         title="清单"
         compoentRef={formRef}
         component={Parts}
@@ -163,12 +159,9 @@ const PartsList = ({spuId}) => {
         }} ref={refAdd}
         spuId={spuId}
         footer={<>
-          <Button type='primary' onClick={()=>{
+          <Button type="primary" onClick={() => {
             formRef.current.formRef.current.submit();
           }}>保存</Button>
-          <Button onClick={()=>{
-            refAdd.current.close();
-          }}>取消</Button>
         </>}
       />
 

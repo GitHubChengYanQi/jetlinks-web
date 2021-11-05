@@ -50,9 +50,11 @@ const SpuClassificationList = () => {
         rowKey="spuClassificationId"
         searchForm={searchForm}
         contentHeight
-        rowSelection
         actions={actions()}
         ref={tableRef}
+        onChange={(value)=>{
+          
+        }}
       >
         <Column key={1} title="名称" dataIndex="name" />
         <Column key={2} title="编码" width={200} dataIndex="codingClass" />
