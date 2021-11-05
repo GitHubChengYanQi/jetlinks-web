@@ -1,175 +1,71 @@
-/**
- * sku表列表页
- *
- * @author
- * @Date 2021-10-18 14:14:21
- */
+import React, {useEffect, useState} from 'react';
+import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
+import {Divider, Spin, Tree} from 'antd';
+import ListLayout from '@/layouts/ListLayout';
+import {useRequest} from '@/util/Request';
+import Select from '@/components/Select';
+import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
+import SkuTable from '@/pages/Erp/sku/SkuTable';
+import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
-import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
-import {Button, message, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {deleteBatch, skuDelete, skuList} from '../skuUrl';
-import SkuEdit from '../skuEdit';
-import * as SysField from '../skuField';
-import Modal from '@/components/Modal';
-import Breadcrumb from '@/components/Breadcrumb';
-import {CopyOutlined} from '@ant-design/icons';
 
-const {Column} = AntTable;
-const {FormItem} = Form;
+const SkuList = () => {
 
-const SkuList = ({...props}) => {
 
-  const [ids, setIds] = useState([]);
-  const [sku, setSku] = useState([]);
+  const {loading, data, run} = useRequest(spuClassificationTreeVrew);
 
-  const [edit, setEdit] = useState([]);
 
-  const ref = useRef(null);
-  const formRef = useRef(null);
-  const tableRef = useRef(null);
+  const [spuClass, setSpuClass] = useState();
 
-  const actions = () => {
+  const [value, setValue] = useState();
+
+
+  const Left = () => {
+    if (loading) {
+      return (<div style={{textAlign: 'center', marginTop: 50}}><Spin size="large" /></div>);
+    }
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-          setEdit(false);
-        }} />
-      </>
-    );
-  };
-
-  const footer = () => {
-    return (
-      <>
-        <Button type="link" icon={<CopyOutlined />} onClick={() => {
-          setEdit(false);
-          if (sku.length === 0) {
-            message.info('请选择数据');
-          } else if (sku.length === 1) {
-            const value = {
-              ...sku[0],
-              skuId:null,
-            };
-            ref.current.open(value);
-          } else {
-            message.error('只能复制一条');
-          }
-        }}>
-          复制添加
-        </Button>
-        <DelButton api={{
-          ...deleteBatch,
-        }} onSuccess={() => {
-          tableRef.current.refresh();
-        }} value={ids}>批量删除</DelButton>
-      </>
-    );
-  };
-
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="名字" style={{width: 200}} name="spuId" component={SysField.SpuId} />
-        <FormItem name="type" style={{display: 'none'}} hidden value={0} component={SysField.Type} />
-      </>
-    );
-  };
-
-
-  return (
-    <>
-      <Table
-        title={<Breadcrumb title="物料管理" />}
-        api={skuList}
-        tableKey='sku'
-        rowKey="skuId"
-        searchForm={searchForm}
-        actions={actions()}
-        contentHeight
-        bordered={false}
-        ref={tableRef}
-        footer={footer}
-        onChange={(value,record) => {
-          setIds(value);
-          setSku(record);
-        }}
-      >
-        <Column title="型号 / 名称" key={1} dataIndex="spuId" render={(value, record) => {
-          return (
-            <>
-              {record.skuName}
-              &nbsp;/&nbsp;
-              {record.spuResult && record.spuResult.name}
-            </>
-          );
-        }} />
-
-        <Column title="配置" key={2} render={(value, record) => {
-          return (
-            <>
-              {
-                record.skuJsons
-                &&
-                record.skuJsons.map((items, index) => {
-                  if (index === record.skuJsons.length - 1) {
-                    return (
-                      <span
-                        key={index}>{(items.values && items.values.attributeValues) && (`${(items.attribute && items.attribute.attribute)}：${items.values && items.values.attributeValues}`)}</span>
-                    );
-                  } else {
-                    return (
-                      <span
-                        key={index}>{(items.values && items.values.attributeValues) && (`${(items.attribute && items.attribute.attribute)}：${items.values && items.values.attributeValues}`)}&nbsp;,&nbsp;</span>
-                    );
+        <div>
+          <Select
+            width='100%'
+            api={spuClassificationListSelect}
+            placeholder="搜索分类"
+            value={value}
+            bordered={false}
+            onChange={async (value) => {
+              await run(
+                {
+                  data: {
+                    spuClassificationId: value
                   }
-                })
-              }
-            </>
-          );
-        }
-        } />
-        {/*<Column title="编码" dataIndex="standard" />*/}
-        <Column />
-        <Column title="操作" key={3} dataIndex="isBan" width={100} render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record);
-                setEdit(true);
-              }} />
-              <DelButton api={skuDelete} value={record.skuId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} />
-      </Table>
-      <Modal title="物料" compoentRef={formRef} component={SkuEdit} onSuccess={() => {
-        tableRef.current.submit();
-        ref.current.close();
-      }} ref={ref} footer={<>
-        {!edit && <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            formRef.current.nextAdd(true);
+                }
+              );
+              setValue(value);
+            }} />
+        </div>
+        <Tree
+          showLine
+          onSelect={(value) => {
+            setSpuClass(value);
           }}
-        >完成并添加下一个</Button>}
-        <Button
-          type="primary"
-          onClick={() => {
-            formRef.current.nextAdd(false);
-          }}
-        >完成</Button>
-      </>} />
-    </>
+          defaultExpandedKeys={['']}
+          treeData={[
+            {
+              title: '所有分类',
+              key: '',
+              children: data
+            },
+          ]}
+        />
+      </>);
+  };
+  return (
+    <ListLayout>
+      <SkuTable left={Left()} spuClass={spuClass} />
+    </ListLayout>
   );
 };
-
 export default SkuList;
+

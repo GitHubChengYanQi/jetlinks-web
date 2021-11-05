@@ -104,7 +104,7 @@ const useTableSet = (column, tableKey) => {
 
   const menu = (
     <Menu
-      style={{minWidth: 300}}
+      style={{minWidth: 290}}
       multiple
       selectedKeys={tableColumn && tableColumn.map((items) => {
         return items.key;
@@ -125,13 +125,13 @@ const useTableSet = (column, tableKey) => {
             return (
               <Menu.Item style={{background:'#fff'}} key={items.key}>
                 <Row gutter={24}>
-                  <Col span={4}>
+                  <Col span={2}>
                     <UnorderedListOutlined />
                   </Col>
-                  <Col span={16}>
+                  <Col span={19}>
                     {items.props.title}
                   </Col>
-                  <Col span={4}>
+                  <Col span={2}>
                     {checks(items)}
                   </Col>
                 </Row>

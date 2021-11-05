@@ -160,7 +160,7 @@ const CustomerTable = (props) => {
         }}
         {...other}
       >
-        <Column title="客户信息" fixed dataIndex="customerName" render={(value, record) => {
+        <Column key={1} title="客户信息" fixed dataIndex="customerName" render={(value, record) => {
           return (
             <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.customerId}`);
@@ -180,25 +180,25 @@ const CustomerTable = (props) => {
             </Row>
           );
         }} />
-        <Column title="客户状态" width={140} align="center" render={(text, record) => {
+        <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
           return (
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />
-        <Column title="客户来源" width={300} align="center" dataIndex="customerName" render={(text, record) => {
+        <Column key={3} title="客户来源" width={300} align="center" dataIndex="customerName" render={(text, record) => {
           return (
             <div>
               {record.originResult ? record.originResult.originName : '未填写'}
             </div>
           );
         }} />
-        <Column title="客户级别" width={120} align="center" render={(text, record) => {
+        <Column key={4} title="客户级别" width={120} align="center" render={(text, record) => {
           const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
           return (
             <CustomerLevel
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
-        <Column title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
+        <Column key={5} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
       <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
         tableRef.current.refresh();
