@@ -81,7 +81,7 @@ const SkuTable = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem placeholder="名字" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
+        <FormItem placeholder="物料名称" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
         <FormItem name="type" style={{display: 'none'}} hidden value={0} component={SysField.Type} />
         <FormItem name="spuClass" style={{display: 'none'}} hidden component={SysField.SelectSpuClass} />
       </>

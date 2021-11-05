@@ -38,7 +38,7 @@ const PartsList = ({spuId}) => {
       }
     },
     onSuccess: (res) => {
-      const data = res && res.map((items, index) => {
+      const data = res && res.length>0 && res.map((items, index) => {
         return {
           key: `${items.skuId}_${items.partsId}`,
           ...items,
@@ -69,11 +69,11 @@ const PartsList = ({spuId}) => {
           if (expand) {
             const res = await request({...backDetails, params: {id: record.skuId}});
 
-            record.children = res && res.map((items, index) => {
+            record.children = res && res.length>0 && res.map((items, index) => {
               return {
                 key: `${items.skuId}_${items.partsId}`,
                 ...items,
-                children: [],
+                children: items.isNull && [],
               };
             });
             setKey([...key, `${record.skuId}_${record.partsId}`]);
