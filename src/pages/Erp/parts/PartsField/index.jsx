@@ -131,6 +131,7 @@ export const Spu = (props) => {
   }, [props.type]);
   return (<Select
     width="100%"
+    data={{type:1}}
     placeholder="产品"
     disabled={props.spuId}
     api={spuListSelect}

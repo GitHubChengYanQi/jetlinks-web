@@ -29,8 +29,9 @@ const SelectSku = ({value,onChange}) => {
       }
     });
     return {
-      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}  ${(values === '' ? '' : `( ${values} )`)}`,
+      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
       value: items.skuId,
+      attribute:`${(values === '' ? '' : `( ${values} )`)}`,
     };
   };
 
@@ -63,7 +64,7 @@ const SelectSku = ({value,onChange}) => {
     {options && options.map((items) => {
       return (
         <AntSelect.Option key={items.value} value={items.label}>
-          {items.label}
+          {items.label} <em style={{color:'#c9c8c8',fontSize:10}}>{items.attribute}</em>
         </AntSelect.Option>
       );
     })}

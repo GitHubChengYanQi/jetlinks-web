@@ -34,7 +34,7 @@ const PartsOldList = (props) => {
         return {
           key: `${items.skuId}_${items.partsId}`,
           ...items,
-          children: []
+          children: items.isNull && [],
         };
       });
       setDataSource(data);

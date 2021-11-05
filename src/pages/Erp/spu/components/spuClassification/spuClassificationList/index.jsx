@@ -5,7 +5,7 @@
  * @Date 2021-10-25 17:52:03
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,7 +13,7 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {spuClassificationDelete, spuClassificationList} from '../spuClassificationUrl';
+import {spuClassificationDelete, spuClassificationdeleteBatch, spuClassificationList} from '../spuClassificationUrl';
 import SpuClassificationEdit from '../spuClassificationEdit';
 import * as SysField from '../spuClassificationField';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -24,6 +24,9 @@ const {FormItem} = Form;
 const SpuClassificationList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  const [ids,setIds] = useState([]);
+
   const actions = () => {
     return (
       <>
@@ -42,6 +45,13 @@ const SpuClassificationList = () => {
     );
   };
 
+  const footer = () => {
+
+    return <DelButton value={ids} disabled={ids.length === 0} api={spuClassificationdeleteBatch} onSuccess={()=>{
+      tableRef.current.submit();
+    }} >批量删除</DelButton>;
+  };
+
   return (
     <div style={{padding:16}}>
       <Table
@@ -53,12 +63,13 @@ const SpuClassificationList = () => {
         actions={actions()}
         ref={tableRef}
         onChange={(value)=>{
-          
+          setIds(value);
         }}
+        footer={footer}
       >
         <Column key={1} title="名称" dataIndex="name" />
         <Column key={2} title="编码" width={200} dataIndex="codingClass" />
-        <Column key={3} title='上级' dataIndex='pidName' />
+        <Column key={3} title='上级' width={200} dataIndex='pidName' />
         <Column key={4} title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -70,7 +81,7 @@ const SpuClassificationList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
       </Table>
       <Drawer width={800} title="编辑" component={SpuClassificationEdit} onSuccess={() => {
         tableRef.current.refresh();

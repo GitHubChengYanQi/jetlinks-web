@@ -100,7 +100,7 @@ const PartsList = ({spuId}) => {
             &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;
-            <em style={{color:'#c7c6c6'}}>
+            <em style={{color:'#c9c8c8',fontSize:10}}>
               (
               {
                 record.backSkus

@@ -41,3 +41,9 @@ export const spuClassificationTreeVrew = {
   rowKey:'spuClassificationId'
 };
 
+export const spuClassificationdeleteBatch = {
+  url: '/spuClassification/deleteBatch',
+  method: 'POST',
+};
+
+

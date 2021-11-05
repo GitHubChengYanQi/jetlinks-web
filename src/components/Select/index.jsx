@@ -3,11 +3,11 @@ import {Select as AntSelect, Button} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
-  const {value, api,border,resh,placeholder,disabled,defaultValue, width:wid ,...other} = props;
+  const {value, api,border,data:param,resh,placeholder,disabled,defaultValue, width:wid ,...other} = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {loading, data, run,refresh} = useRequest(api);
+  const {loading, data, refresh} = useRequest({...api,data:param});
 
   useEffect(()=>{
     refresh();
