@@ -58,6 +58,7 @@ const Head = () => {
   ];
 
   const {loading, data} = useRequest({url: '/rest/system/currentUserInfo', method: 'POST'});
+
   const date = () => {
     const hours = moment().hours();
     if (hours > 5 && hours < 8) {

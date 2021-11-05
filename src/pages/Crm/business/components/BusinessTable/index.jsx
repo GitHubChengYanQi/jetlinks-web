@@ -30,7 +30,7 @@ const {FormItem} = Form;
 
 const BusinessTable = (props) => {
 
-  const {status, state, statement, left} = props;
+  const {status, state, statement, ...other} = props;
 
   const [ids, setIds] = useState([]);
   const history = useHistory();
@@ -158,7 +158,7 @@ const BusinessTable = (props) => {
             return document.getElementById('listLayout');
           }
         }}
-        left={left}
+        {...other}
       >
         <Column
           title="项目信息"

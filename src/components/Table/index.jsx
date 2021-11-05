@@ -1,11 +1,13 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
-import {Card, Layout, Table as AntdTable} from 'antd';
+import {Row, Col, Card, Layout, Table as AntdTable, Button} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
 import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
-
+import Icon from '@/components/Icon';
 import style from './index.module.less';
+import useTableSet from '@/hook/useTableSet';
+
 
 const {Column} = AntdTable;
 const {Sider, Content} = Layout;
@@ -23,6 +25,7 @@ const TableWarp = ({
   rowKey,
   headStyle,
   tab,
+  tableKey,
   rowSelection,
   bodyStyle,
   bordered,
@@ -132,6 +135,10 @@ const TableWarp = ({
     );
   };
 
+  const {tableColumn,setButton} = useTableSet(children,tableKey);
+
+
+
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       <div style={headStyle}>
@@ -145,24 +152,31 @@ const TableWarp = ({
 
       </div>
       <Layout>
-        {left &&<Sider className={style.sider} width={180}>
+        {left && <Sider className={style.sider} width={180}>
           {left}
         </Sider>}
         <Content
           // style={{marginLeft: 260}}
-          style={{height:contentHeight || 'calc(100vh - 128px)',overflow:'auto'}}
+          style={{height: contentHeight || 'calc(100vh - 128px)', overflow: 'auto'}}
           id="tableContent"
         >
           {searchForm ? <div className="search" style={headStyle}>
-            <Form
-              layout={layout || 'inline'}
-              {...form}
-              actions={formActions}
-            >
-              {typeof searchForm === 'function' && searchForm()}
-              {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+            <Row justify="space-between">
+              <Col>
+                <Form
+                  layout={layout || 'inline'}
+                  {...form}
+                  actions={formActions}
+                >
+                  {typeof searchForm === 'function' && searchForm()}
+                  {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+                </Form>
+              </Col>
+              <Col className={style.setTing}>
+                {setButton}
+              </Col>
+            </Row>
 
-            </Form>
           </div> : <Form
             layout="inline"
             {...form}
@@ -179,6 +193,7 @@ const TableWarp = ({
               pagination={
                 {
                   ...pagination,
+                  showQuickJumper: true,
                   position: ['bottomRight']
                 }
               }
@@ -201,7 +216,10 @@ const TableWarp = ({
               {...other}
               {...props}
             >
-              {children}
+              <Column fixed="left" title="序号" width={80} align="center" render={(text,item,index) => {
+                return index+1;
+              }} />
+              {tableColumn}
             </AntdTable>
           </Card>
         </Content>

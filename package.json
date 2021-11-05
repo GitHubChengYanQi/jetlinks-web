@@ -55,6 +55,7 @@
     "html-react-parser": "^1.2.7",
     "jr-qrcode": "^1.1.4",
     "js-cookie": "^2.2.1",
+    "md5": "^2.3.0",
     "moment": "^2.24.0",
     "qs": "^6.9.4",
     "rc-resize-observer": "^1.0.0",
