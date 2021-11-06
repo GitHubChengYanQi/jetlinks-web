@@ -74,16 +74,6 @@ export const SpuId = (props) => {
       }
     }
   });
-  useEffect(() => {
-    run(
-      {
-        data: {
-          type: 0,
-          spuClassificationId: props.classId,
-        }
-      }
-    );
-  }, [props.classId]);
 
 
   const options = data && data.map((items) => {

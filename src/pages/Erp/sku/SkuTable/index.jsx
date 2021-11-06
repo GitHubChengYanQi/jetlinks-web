@@ -107,7 +107,7 @@ const SkuTable = (props) => {
         }}
         {...other}
       >
-        <Column title='编码' dataIndex='coding' />
+        {/*<Column title='编码' dataIndex='coding' />*/}
         <Column title="型号 / 名称" key={1} dataIndex="spuId" render={(value, record) => {
           return (
             <>
@@ -141,7 +141,7 @@ const SkuTable = (props) => {
             </>
           );
         }} />
-        <Column key={3} title="成品码" width={200} dataIndex="standard" sorter />
+        <Column key={3} title="编码" width={200} dataIndex="standard" sorter />
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
         <Column />
         <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {

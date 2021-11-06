@@ -5,7 +5,7 @@
  * @Date 2021-10-22 17:20:05
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Input,
   InputNumber,
@@ -15,7 +15,7 @@ import {
   Checkbox,
   Radio,
   AutoComplete,
-  Button
+  Button, Space
 } from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
@@ -67,6 +67,14 @@ export const Values = (props) => {
 
   const {module, onChange, value} = props;
 
+  const [state, setState] = useState(true);
+
+  useEffect(() => {
+    if (value) {
+      setState(false);
+    }
+  }, []);
+
   const modules = () => {
     switch (module) {
       case 0:
@@ -81,8 +89,7 @@ export const Values = (props) => {
     }
   };
 
-  const options = [
-    // eslint-disable-next-line no-template-curly-in-string
+  const input = [
     {
       label: '通用',
       options: [
@@ -105,36 +112,69 @@ export const Values = (props) => {
       ]
     },
     {
-      label: '模块',
-      options: modules()
-    }, {
       label: '流水号',
       options: [
         // eslint-disable-next-line no-template-curly-in-string
         {label: '${serial} 流水号', value: '${serial}'},
       ]
+    }, {
+      label: '模块',
+      options: modules()
     },
   ];
 
-  return (<>
-    <AutoComplete
-      allowClear
-      value={value}
-      options={options}
-      style={{width: 200}}
-      placeholder="选择或自定义规则"
-      onChange={(value) => {
-        onChange(value);
-      }}
-      onSelect={(value) => {
-        onChange(value);
-      }}
-      filterOption={(input, option) =>
-        option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      }
-    />
-    <InputNumber />
-  </>);
+  const options = [
+    ...input,
+    {
+      label: '自定义',
+      options: [
+        // eslint-disable-next-line no-template-curly-in-string
+        {label: '自定义', value: '自定义'},
+      ]
+    },
+  ];
+
+  return (<div>
+    {state ?
+      <Space>
+        <AntdSelect
+          style={{minWidth: 200,display:'inline-block'}}
+          options={options}
+          allowClear
+          showSearch
+          value={value}
+          filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          onSelect={(value) => {
+            onChange(value);
+            if (value === '自定义') {
+              setState(false);
+              onChange(null);
+            }
+          }} />
+        {/* eslint-disable-next-line no-template-curly-in-string */}
+        {value === '${serial}' && <InputNumber placeholder='长度' style={{display:'inline-block'}} min={0} max={5} onChange={(number)=>{
+          onChange(`${value}|${number}|`);
+        }} /> }
+      </Space>
+      :
+      <AutoComplete
+        allowClear
+        value={value}
+        options={input}
+        style={{minWidth: 200}}
+        placeholder="选择或自定义规则"
+        onChange={(value) => {
+          onChange(value);
+        }}
+        onSelect={(value) => {
+          onChange(value);
+          setState(true);
+        }}
+        filterOption={(input, option) =>
+          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      />}
+  </div>);
 };
 
 

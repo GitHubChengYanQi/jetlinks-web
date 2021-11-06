@@ -25,6 +25,7 @@ const TableWarp = ({
   rowKey,
   headStyle,
   tab,
+  noSort,
   tableKey,
   rowSelection,
   bodyStyle,
@@ -215,9 +216,15 @@ const TableWarp = ({
               {...other}
               {...props}
             >
-              <Column fixed="left" title="序号" dataIndex='sort' width={80} align="center" render={(text, item, index) => {
-                return index + 1;
-              }} />
+              {noSort || <Column
+                fixed="left"
+                title="序号"
+                dataIndex="sort"
+                width={80}
+                align="center"
+                render={(text, item, index) => {
+                  return index + 1;
+                }} />}
               {tableColumn}
             </AntdTable>
           </Card>

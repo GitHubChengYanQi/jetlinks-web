@@ -13,6 +13,7 @@ import {Button, Select} from 'antd';
 import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
+import {Standard} from '../../../PartsField';
 
 const {FormItem} = Form;
 
@@ -87,6 +88,7 @@ const Parts = ({...props},ref) => {
 
             {!type && <>
               <FormItem label="配置" name="skuRequests" component={SysField.Attributes} required />
+              <FormItem label="编码" name="standard" component={SysField.Standard} required />
               <FormItem label="型号" name="skuName" component={SysField.SkuName} required />
               <FormItem label="备注" name="note" component={SysField.Note} />
             </>}

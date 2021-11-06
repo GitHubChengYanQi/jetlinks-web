@@ -57,7 +57,7 @@ const Coding = ({value, width, onChange, codingId}) => {
       <AutoComplete
         allowClear
         value={value}
-        options={data || []}
+        options={[{label:'编码规则',options:data || []}]}
         style={{width: '100%'}}
         placeholder="请输入编码"
         onChange={(value) => {

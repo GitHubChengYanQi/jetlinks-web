@@ -32,6 +32,7 @@ const CodingRulesEdit = ({...props}) => {
     <div style={{padding: 16}}>
       <Form
         {...props}
+        labelCol={5}
         ref={formRef}
         api={ApiConfig}
         fieldKey="codingRulesId"
@@ -51,7 +52,7 @@ const CodingRulesEdit = ({...props}) => {
       >
         <ProCard className="h2Card" headerBordered title="基本信息">
           <FormItem label="编码规则名称" name="name" component={SysField.Name} required />
-          <FormItem label="模块" name="module" component={SysField.Module} />
+          <FormItem label="模块" name="module" component={SysField.Module} required />
           <FormItem label="描述" name="note" component={SysField.Note} />
         </ProCard>
         <ProCard className="h2Card" headerBordered title="编码规则设置">
@@ -69,7 +70,7 @@ const CodingRulesEdit = ({...props}) => {
                     const onRemove = index => mutators.remove(index);
                     return (
                       <div key={index} style={{display: 'block', marginRight: 8}}>
-                        <div style={{display: 'inline-block'}}>
+                        <div style={{display: 'inline-block',marginRight:8,}}>
                           <FormItem
                             name={`codings.${index}.values`}
                             component={SysField.Values}
@@ -78,7 +79,6 @@ const CodingRulesEdit = ({...props}) => {
                         </div>
                         <Button
                           type="dashed"
-                          // style={{float: 'right'}}
                           icon={<MinusOutlined />}
                           onClick={() => {
                             onRemove(index);

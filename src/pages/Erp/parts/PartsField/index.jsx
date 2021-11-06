@@ -140,6 +140,11 @@ export const Spu = (props) => {
       props.onChange({spuId: value});
     }} />);
 };
+export const Standard = (props) => {
+  const { ...other} = props;
+
+  return (<Input {...other} />);
+};
 
 export const Sku = (props) => {
 

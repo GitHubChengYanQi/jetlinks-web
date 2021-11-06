@@ -97,32 +97,26 @@ const SkuEdit = ({...props}, ref) => {
         }}
         effect={() => {
 
-          const {setFieldState} = createFormActions();
-
-          FormEffectHooks.onFieldValueChange$('spuClassificationId').subscribe(({value}) => {
-            setFieldState(
-              'spu',
-              state => {
-                state.props.classId = value;
-              }
-            );
-            setFieldState(
-              'standard',
-              state => {
-                state.props.classId = value;
-              }
-            );
-          });
+          // const {setFieldState} = createFormActions();
+          //
+          // FormEffectHooks.onFieldValueChange$('spuClassificationId').subscribe(({value}) => {
+          //   setFieldState(
+          //     'standard',
+          //     state => {
+          //       state.props.classId = value;
+          //     }
+          //   );
+          // });
 
         }}
       >
-        <FormItem
-          label="编码"
-          name="coding"
-          component={SysField.Codings}
-          codingId={data}
-          rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
-        />
+        {/*<FormItem*/}
+        {/*  label="编码"*/}
+        {/*  name="coding"*/}
+        {/*  component={SysField.Codings}*/}
+        {/*  codingId={data}*/}
+        {/*  rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}*/}
+        {/*/>*/}
         <FormItem
           label="分类"
           name="spuClassificationId"
@@ -130,7 +124,7 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.SpuClass}
           required />
         <FormItem
-          label="成品码"
+          label="编码"
           skuId={value.skuId}
           name="standard"
           component={SysField.Standard}

@@ -18,7 +18,7 @@ const useTableSet = (column, tableKey) => {
 
   const md5TableKey = () => {
     let keys = '';
-    column && column.map((items, index) => {
+    column && column.length > 0 && column.map((items, index) => {
       if (index === column.length - 1) {
         return keys += `${items.key}`;
       } else {
@@ -96,7 +96,7 @@ const useTableSet = (column, tableKey) => {
   const [visible, setVisible] = useState();
 
   const checks = (items) => {
-    const checked = tableColumn && tableColumn.filter((value) => {
+    const checked = tableColumn && tableColumn.length > 0 && tableColumn.filter((value) => {
       return value.key === items.key;
     });
     return checked.length > 0 && <CheckOutlined />;
@@ -106,7 +106,7 @@ const useTableSet = (column, tableKey) => {
     <Menu
       style={{minWidth: 220}}
       multiple
-      selectedKeys={tableColumn && tableColumn.map((items) => {
+      selectedKeys={tableColumn && tableColumn.length > 0 && tableColumn.map((items) => {
         return items.key;
       })}
       selectable
@@ -120,7 +120,7 @@ const useTableSet = (column, tableKey) => {
       }}
     >
       {
-        column && column.map((items) => {
+        column && column.length > 0 && column.map((items) => {
           if (!items.props.fixed && items.key) {
             return (
               <Menu.Item style={{background: '#fff', color: '#000'}} key={items.key}>

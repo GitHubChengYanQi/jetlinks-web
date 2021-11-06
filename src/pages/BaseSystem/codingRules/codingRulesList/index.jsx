@@ -127,7 +127,7 @@ const CodingRulesList = () => {
           );
         }} />
       </Table>
-      <Modal width={800} title="编码规则" component={CodingRulesEdit} onSuccess={() => {
+      <Modal width={600} title="编码规则" component={CodingRulesEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

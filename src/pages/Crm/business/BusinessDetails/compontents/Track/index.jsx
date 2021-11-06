@@ -68,6 +68,7 @@ const Track = (props) => {
         searchForm={searchForm}
         headStyle={{display: 'none'}}
         rowSelection
+        noSort
         bordered={false}
         bodyStyle={{padding: 0}}
         selectionType
