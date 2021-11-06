@@ -17,8 +17,12 @@ import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
-import {CopyOutlined} from '@ant-design/icons';
-import {SelectSpu, SelectSpuClass} from '../skuField';
+import {CopyOutlined, SearchOutlined} from '@ant-design/icons';
+import {SelectSkuName, SelectSpu, SelectSpuClass} from '../skuField';
+import {useBoolean} from 'ahooks';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import Icon from '@/components/Icon';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -52,6 +56,55 @@ const SkuTable = (props) => {
     );
   };
 
+  const [search, {toggle}] = useBoolean(false);
+
+  const searchForm = () => {
+
+    const formItem = () => {
+      return (
+        <>
+          <FormItem mega-props={{span: 1}} placeholder="物料名称" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
+          <FormItem mega-props={{span: 1}} placeholder="型号" name="skuName" component={SysField.SelectSkuName} />
+        </>
+      );
+    };
+
+
+    return (
+      <div style={{maxWidth: 800}}>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
+          columns={4} full autoRow>
+          <FormItem mega-props={{span: 1}} placeholder="编码" name="standard" component={SysField.Standard} />
+          {search ? formItem() : null}
+        </MegaLayout>
+
+      </div>
+    );
+  };
+
+
+  const Search = () => {
+    return (
+      <>
+        <MegaLayout>
+          <FormButtonGroup>
+            <Submit><SearchOutlined />查询</Submit>
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+              toggle();
+            }}>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+            <MegaLayout inline>
+              <FormItem mega-props={{span: 1}} name="type" style={{display: 'none'}} hidden value={0} component={SysField.Type} />
+              <FormItem mega-props={{span: 1}} name="spuClass" style={{display: 'none'}} hidden component={SysField.SelectSpuClass} />
+            </MegaLayout>
+          </FormButtonGroup>
+        </MegaLayout>
+      </>
+    );
+  };
+
+
   const footer = () => {
     return (
       <>
@@ -78,15 +131,6 @@ const SkuTable = (props) => {
     );
   };
 
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem placeholder="物料名称" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
-        <FormItem name="type" style={{display: 'none'}} hidden value={0} component={SysField.Type} />
-        <FormItem name="spuClass" style={{display: 'none'}} hidden component={SysField.SelectSpuClass} />
-      </>
-    );
-  };
 
 
   return (
@@ -96,6 +140,8 @@ const SkuTable = (props) => {
         api={skuList}
         tableKey="sku"
         rowKey="skuId"
+        layout={search}
+        SearchButton={Search()}
         searchForm={searchForm}
         actions={actions()}
         bordered={false}
@@ -107,7 +153,7 @@ const SkuTable = (props) => {
         }}
         {...other}
       >
-        {/*<Column title='编码' dataIndex='coding' />*/}
+        <Column title='编码' dataIndex='standard' />
         <Column title="型号 / 名称" key={1} dataIndex="spuId" render={(value, record) => {
           return (
             <>
@@ -141,7 +187,6 @@ const SkuTable = (props) => {
             </>
           );
         }} />
-        <Column key={3} title="编码" width={200} dataIndex="standard" sorter />
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
         <Column />
         <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {

@@ -44,6 +44,11 @@ export const Type = (props) => {
   return (<InputNumber {...props} />);
 };
 
+export const SelectSkuName = (props) => {
+
+  return (<Input {...props} />);
+};
+
 export const Specifications = (props) => {
   const {skuId, ...other} = props;
   return (<Input disabled={skuId} {...other} />);
@@ -130,9 +135,9 @@ export const Codings = (props) => {
 };
 
 export const Standard = (props) => {
-  const {skuId, ...other} = props;
+  const {...other} = props;
 
-  return (<Input disabled={skuId} {...other} />);
+  return (<Input {...other} />);
 };
 
 export const SelectSpuClass = (props) => {

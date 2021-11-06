@@ -53,7 +53,6 @@ const CustomerTable = (props) => {
     }
   }, [status, state, level]);
 
-  const {run} = useRequest({url: '/crm/excel/importCustomer', method: 'POST'}, {manual: true});
 
   const actions = () => {
     return (

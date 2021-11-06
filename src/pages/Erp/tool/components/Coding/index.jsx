@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {codingRulesListSelect} from '@/pages/Erp/tool/toolUrl';
-import {AutoComplete, Input, Select as AntdSelect} from 'antd';
+import {AutoComplete, Input, Select as AntdSelect, Space} from 'antd';
 
 
 const Coding = ({value, width, onChange, codingId}) => {
@@ -48,29 +48,30 @@ const Coding = ({value, width, onChange, codingId}) => {
         options={options || []}
         onSelect={(value) => {
           onChange(value);
-          if (value === '自定义'){
+          if (value === '自定义') {
             setState(false);
             onChange(null);
           }
         }} />
       :
-      <AutoComplete
-        allowClear
-        value={value}
-        options={[{label:'编码规则',options:data || []}]}
-        style={{width: '100%'}}
-        placeholder="请输入编码"
-        onChange={(value) => {
-          onChange(value);
-        }}
-        onSelect={(value) => {
-          onChange(value);
-          setState(true);
-        }}
-        filterOption={(input, option) =>
-          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      />
+      <Space>
+        <AntdSelect
+          value="自定义"
+          style={{minWidth: 100}}
+          options={[
+            {
+              label: '编码规则',
+              options: data || []
+            },
+          ]}
+          onSelect={(value) => {
+            setState(true);
+            onChange(value);
+          }} />
+        <Input value={value} placeholder="输入自定义编码" onChange={(value)=>{
+          onChange(value.target.value);
+        }} />
+      </Space>
     }
   </div>);
 };

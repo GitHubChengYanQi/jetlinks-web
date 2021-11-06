@@ -28,11 +28,12 @@ const {FormItem} = Form;
 
 const CodingRulesList = () => {
   const ref = useRef(null);
+  const formRef = useRef(null);
   const tableRef = useRef(null);
 
-  const {run} = useRequest(codingRulesEdit,{
-    manual:true,
-    onSuccess:()=>{
+  const {run} = useRequest(codingRulesEdit, {
+    manual: true,
+    onSuccess: () => {
       tableRef.current.submit();
     }
   });
@@ -56,7 +57,7 @@ const CodingRulesList = () => {
   };
 
   const module = (value) => {
-    switch (value){
+    switch (value) {
       case 0:
         return '物料';
       case 1:
@@ -83,18 +84,18 @@ const CodingRulesList = () => {
         ref={tableRef}
       >
         <Column title="编码规则名称" dataIndex="name" />
-        <Column title="模块" dataIndex="module" render={(value)=>{
+        <Column title="模块" dataIndex="module" render={(value) => {
           return (
             <>{module(value)}</>
           );
         }} />
-        <Column title="默认规则" dataIndex="state" render={(value,record)=>{
+        <Column title="默认规则" dataIndex="state" render={(value, record) => {
           return (
-            <Radio.Group value={value} onChange={(value)=>{
+            <Radio.Group value={value} onChange={(value) => {
               run({
-                data:{
-                  codingRulesId:record.codingRulesId,
-                  state:value.target.value
+                data: {
+                  codingRulesId: record.codingRulesId,
+                  state: value.target.value
                 }
               });
             }}>
@@ -103,17 +104,17 @@ const CodingRulesList = () => {
             </Radio.Group>
           );
         }} />
-        <Column title="编码规则" dataIndex="codingRules" render={(value)=>{
+        <Column title="编码规则" dataIndex="codingRules" render={(value) => {
           const array = value.split(',');
           let values = '';
-          typeof array === 'object' && array.map((items,index)=>{
+          typeof array === 'object' && array.map((items, index) => {
             return values += items;
           });
           return (
             <>{values}</>
           );
         }} />
-        <Column title='描述' dataIndex='note' />
+        <Column title="描述" dataIndex="note" />
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
@@ -127,10 +128,22 @@ const CodingRulesList = () => {
           );
         }} />
       </Table>
-      <Modal width={600} title="编码规则" component={CodingRulesEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Modal
+        width={600}
+        title="编码规则"
+        compoentRef={formRef}
+        footer={<>
+          <Button
+            type="primary"
+            onClick={() => {
+              formRef.current.formRef.current.submit();
+            }}>保存</Button></>
+        }
+        component={CodingRulesEdit}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref} />
 
     </>
   );

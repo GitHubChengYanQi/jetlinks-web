@@ -5,7 +5,7 @@
  * @Date 2021-10-22 17:20:05
  */
 
-import React, {useRef} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {Button, Collapse, Input, message, Table} from 'antd';
 import Form from '@/components/Form';
 import {codingRulesDetail, codingRulesAdd, codingRulesEdit} from '../codingRulesUrl';
@@ -24,15 +24,20 @@ const ApiConfig = {
   save: codingRulesEdit
 };
 
-const CodingRulesEdit = ({...props}) => {
+const CodingRulesEdit = ({...props},ref) => {
 
   const formRef = useRef();
+
+  useImperativeHandle(ref,()=>({
+    formRef,
+  }));
 
   return (
     <div style={{padding: 16}}>
       <Form
         {...props}
         labelCol={5}
+        NoButton={false}
         ref={formRef}
         api={ApiConfig}
         fieldKey="codingRulesId"
@@ -56,49 +61,52 @@ const CodingRulesEdit = ({...props}) => {
           <FormItem label="描述" name="note" component={SysField.Note} />
         </ProCard>
         <ProCard className="h2Card" headerBordered title="编码规则设置">
-          <FieldList
-            name="codings"
-            initialValue={[{}]}
-          >
-            {({state, mutators}) => {
-              const onAdd = () => {
-                mutators.push();
-              };
-              return (
-                <div>
-                  {state.value.map((item, index) => {
-                    const onRemove = index => mutators.remove(index);
-                    return (
-                      <div key={index} style={{display: 'block', marginRight: 8}}>
-                        <div style={{display: 'inline-block',marginRight:8,}}>
-                          <FormItem
-                            name={`codings.${index}.values`}
-                            component={SysField.Values}
-                            required
+          <div>
+            <FieldList
+              name="codings"
+              initialValue={[{}]}
+            >
+              {({state, mutators}) => {
+                const onAdd = () => {
+                  mutators.push();
+                };
+                return (
+                  <div>
+                    {state.value.map((item, index) => {
+                      const onRemove = index => mutators.remove(index);
+                      return (
+                        <div key={index} style={{display: 'block', marginRight: 8,textAlign:'center'}}>
+                          <div style={{display: 'inline-block', marginRight: 8,}}>
+                            <FormItem
+                              name={`codings.${index}.values`}
+                              component={SysField.Values}
+                              required
+                            />
+                          </div>
+                          <Button
+                            type="dashed"
+                            icon={<MinusOutlined />}
+                            onClick={() => {
+                              onRemove(index);
+                            }}
                           />
                         </div>
-                        <Button
-                          type="dashed"
-                          icon={<MinusOutlined />}
-                          onClick={() => {
-                            onRemove(index);
-                          }}
-                        />
-                      </div>
-                    );
-                  })}
-                  <Button
-                    type="dashed"
-                    icon={<PlusOutlined />}
-                    onClick={onAdd} />
-                </div>
-              );
-            }}
-          </FieldList>
+                      );
+                    })}
+                    <Button
+                      type="text"
+                      style={{width:'100%'}}
+                      icon={<PlusOutlined />}
+                      onClick={onAdd} />
+                  </div>
+                );
+              }}
+            </FieldList>
+          </div>
         </ProCard>
       </Form>
     </div>
   );
 };
 
-export default CodingRulesEdit;
+export default React.forwardRef(CodingRulesEdit);

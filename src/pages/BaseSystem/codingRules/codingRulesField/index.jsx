@@ -138,7 +138,8 @@ export const Values = (props) => {
     {state ?
       <Space>
         <AntdSelect
-          style={{minWidth: 200,display:'inline-block'}}
+          placeholder='选择编码类型'
+          style={{minWidth: 292,display:'inline-block'}}
           options={options}
           allowClear
           showSearch
@@ -152,28 +153,25 @@ export const Values = (props) => {
             }
           }} />
         {/* eslint-disable-next-line no-template-curly-in-string */}
-        {value === '${serial}' && <InputNumber placeholder='长度' style={{display:'inline-block'}} min={0} max={5} onChange={(number)=>{
-          onChange(`${value}|${number}|`);
-        }} /> }
+        {/*{value === '${serial}' && <InputNumber placeholder='长度' style={{display:'inline-block'}} min={0} max={5} onChange={(number)=>{*/}
+        {/*  onChange(`${value}|${number}|`);*/}
+        {/*}} /> }*/}
       </Space>
       :
-      <AutoComplete
-        allowClear
-        value={value}
-        options={input}
-        style={{minWidth: 200}}
-        placeholder="选择或自定义规则"
-        onChange={(value) => {
-          onChange(value);
-        }}
-        onSelect={(value) => {
-          onChange(value);
-          setState(true);
-        }}
-        filterOption={(input, option) =>
-          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      />}
+      <Space>
+        <AntdSelect
+          value="自定义"
+          style={{minWidth: 50}}
+          options={input}
+          dropdownMatchSelectWidth={292}
+          onSelect={(value) => {
+            setState(true);
+            onChange(value);
+          }} />
+        <Input value={value} style={{width:200}} placeholder="输入自定义编码" onChange={(value)=>{
+          onChange(value.target.value);
+        }} />
+      </Space>}
   </div>);
 };
 
