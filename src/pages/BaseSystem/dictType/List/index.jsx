@@ -49,7 +49,7 @@ const DictTypeList = () => {
               <EditButton onClick={() => {
                 ref.current.open(row.dictTypeId);
               }}/>
-              <DelButton/>
+              {/*<DelButton/>*/}
             </>
           );
         }}/>

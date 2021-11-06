@@ -12,7 +12,8 @@ const DelButton = ({
 
   if (!api) {
     api = {};
-    console.warn('DelButton Component: api cannot be empty,But now it doesn\'t exist!');
+    // console.warn('DelButton Component: api cannot be empty,But now it doesn\'t exist!');
+    message.error('api为空！！！');
   }
 
   if (!rowKey) {

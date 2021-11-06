@@ -1,7 +1,7 @@
 /**
  * 物品分类表接口配置
  *
- * @author 
+ * @author
  * @Date 2021-10-18 10:54:16
  */
 
@@ -34,4 +34,10 @@ export const categoryList = {
   method: 'POST',
   rowKey:'categoryId'
 };
+export const categoryDeleteBatch = {
+  url: '/category/deleteBatch',
+  method: 'POST',
+  rowKey:'categoryId'
+};
+
 

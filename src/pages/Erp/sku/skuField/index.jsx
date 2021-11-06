@@ -37,6 +37,7 @@ import {
 } from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import {codingRulesBackCoding} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
 import Coding from '@/pages/Erp/tool/components/Coding';
+import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 
 export const Type = (props) => {
 
@@ -124,7 +125,6 @@ export const ClassCode = (props) => {
 export const Codings = (props) => {
 
   const {codingId, ...other} = props;
-  console.log(codingId);
 
   return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };
@@ -139,26 +139,11 @@ export const SelectSpuClass = (props) => {
   return (<Cascader api={spuClassificationTreeVrew} {...props} />);
 };
 
-
 export const SpuClass = (props) => {
 
   const {skuId, ...other} = props;
 
-  const ref = useRef();
-
-  const [state, {toggle}] = useBoolean();
-
-  return (
-    <Space>
-      <Cascader refre={state} disabled={skuId} api={spuClassificationTreeVrew} {...other} />
-      <Button onClick={() => {
-        ref.current.open(false);
-      }}>设置分类</Button>
-      <Modal width={800} component={SpuClassificationList} ref={ref} onClose={() => {
-        ref.current.close();
-        toggle();
-      }} />
-    </Space>);
+  return (<SetSelectOrCascader api={spuClassificationTreeVrew} disabled={skuId} cascader width={200} title='设置分类' component={SpuClassificationList} {...other} />);
 };
 
 export const Note = (props) => {

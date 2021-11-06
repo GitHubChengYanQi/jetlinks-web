@@ -10,7 +10,7 @@ const Select = (props) => {
   const {loading, data, refresh} = useRequest({...api,data:param});
 
   useEffect(()=>{
-    if (resh !== undefined){
+    if (resh){
       refresh();
     }
   },[resh]);

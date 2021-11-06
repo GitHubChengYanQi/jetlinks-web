@@ -22,7 +22,7 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width,defaultParams,refre,top, api, onChange = () => {
+    value,width,defaultParams,resh,top, api, onChange = () => {
     }, ...other
   } = props;
 
@@ -32,8 +32,10 @@ const Cascader = (props) => {
   const {data,refresh} = useRequest(api,{defaultParams});
 
   useEffect(()=>{
-    refresh();
-  },[refre]);
+    if (resh){
+      refresh();
+    }
+  },[resh]);
 
   const dataSources = top ? [
     {

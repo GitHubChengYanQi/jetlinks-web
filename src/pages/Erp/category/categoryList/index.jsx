@@ -5,7 +5,7 @@
  * @Date 2021-10-18 10:54:16
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -13,13 +13,15 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {categoryDelete, categoryList} from '../categoryUrl';
+import {categoryDelete, categoryDeleteBatch, categoryList} from '../categoryUrl';
 import CategoryEdit from '../categoryEdit';
 import * as SysField from '../categoryField';
 import Modal from '@/components/Modal';
 import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
 import {createFormActions} from '@formily/antd';
 import Breadcrumb from '@/components/Breadcrumb';
+import {categoryTree} from '@/pages/Erp/spu/spuUrl';
+import {spuClassificationdeleteBatch} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -29,6 +31,10 @@ const CategoryList = () => {
   const ref = useRef(null);
   const refAttribute = useRef(null);
   const tableRef = useRef(null);
+
+
+  const [ids,setIds] = useState([]);
+
   const actions = () => {
     return (
       <>
@@ -47,38 +53,36 @@ const CategoryList = () => {
     );
   };
 
+  const footer = () => {
+    return <DelButton value={ids} disabled={ids.length === 0} api={categoryDeleteBatch} onSuccess={() => {
+      tableRef.current.submit();
+    }}>批量删除</DelButton>;
+  };
+
+
   return (
     <div style={{padding:16}}>
       <Table
         title={<Breadcrumb title='配置管理' />}
-        api={categoryList}
+        api={categoryTree}
         contentHeight
+        noSort
         formActions={formActionsPublic}
-        rowKey="categoryId"
+        rowKey="key"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        footer={footer}
+        onChange={(value)=>{
+          setIds(value);
+        }}
       >
-        <Column title="上级" dataIndex="pid" render={(value,record)=>{
-          return (
-            <>{record.pidCategoryResult ? record.pidCategoryResult.categoryName : '顶级'}</>
-          );
-        }} />
-        <Column title="配置名称" dataIndex="categoryName" render={(value,record)=>{
-          return (
-            <Button type='link' onClick={()=>{
-              refAttribute.current.open(record.categoryId);
-            }}>
-              {value}
-            </Button>
-          );
-        }} />
-        <Column title="排序" dataIndex="sort" align='center' width={100} />
+        <Column title='配置名称' dataIndex='title' />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.categoryId);
+                ref.current.open(record.key);
               }} />
               <DelButton api={categoryDelete} value={record.categoryId} onSuccess={() => {
                 tableRef.current.refresh();

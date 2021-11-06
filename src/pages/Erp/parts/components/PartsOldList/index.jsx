@@ -30,11 +30,11 @@ const PartsOldList = (props) => {
       }
     },
     onSuccess: (res) => {
-      const data = res && res.map((items, index) => {
+      const data = res && res.length > 0 && res.map((items, index) => {
         return {
           key: `${items.skuId}_${items.partsId}`,
           ...items,
-          children: items.isNull && [],
+          children: [],
         };
       });
       setDataSource(data);
@@ -59,13 +59,13 @@ const PartsOldList = (props) => {
         expandedRowKeys: key,
         onExpand: async (expand, record) => {
           if (expand) {
-            const res = await request({...oldBackDetails, params: {id: record.skuId,partsId:record.partsId}});
+            const res = await request({...oldBackDetails, params: {id: record.skuId,partsId:record.id ||record.partsId}});
 
-            record.children = res && res.map((items, index) => {
+            record.children = res && res.length > 0 && res.map((items, index) => {
               return {
                 key: `${items.skuId}_${items.partsId}`,
                 ...items,
-                children: [],
+                children: items.isNull && [],
               };
             });
             setKey([...key, `${record.skuId}_${record.partsId}`]);

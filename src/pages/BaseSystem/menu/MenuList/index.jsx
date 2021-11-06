@@ -31,6 +31,7 @@ const MenuList = () => {
     <Card title={<Breadcrumb />} extra={actions()}>
       <Table
         dataSource={data || []}
+        rowKey='id'
       >
         <Column title="名称" dataIndex="label" width={200}/>
         <Column title="编码" dataIndex="value" width={200}/>

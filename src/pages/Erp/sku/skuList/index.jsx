@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import {Divider, Spin, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
-import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import SkuTable from '@/pages/Erp/sku/SkuTable';
 import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
@@ -12,9 +10,7 @@ import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
 const SkuList = () => {
 
-
   const {loading, data, run} = useRequest(spuClassificationTreeVrew);
-
 
   const [spuClass, setSpuClass] = useState();
 

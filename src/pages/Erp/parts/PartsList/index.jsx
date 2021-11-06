@@ -8,16 +8,15 @@
 import React, {useRef, useState} from 'react';
 import {backDetails, partsDelete, partsList} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
-import DelButton from '@/components/DelButton';
 import Modal from '@/components/Modal';
-import Parts from '@/pages/Erp/parts/PartsEdit/components/Parts';
 import EditButton from '@/components/EditButton';
 import AddButton from '@/components/AddButton';
 import {Button, Card, Table} from 'antd';
 import {request, useRequest} from '@/util/Request';
+import PartsOldList from '@/pages/Erp/parts/components/PartsOldList';
+import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import ProCard from '@ant-design/pro-card';
 import {ClockCircleOutlined} from '@ant-design/icons';
-import PartsOldList from '@/pages/Erp/parts/components/PartsOldList';
 
 const {Column} = Table;
 
@@ -100,7 +99,7 @@ const PartsList = ({spuId}) => {
             &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;
-            <em style={{color:'#c9c8c8',fontSize:10}}>
+            <em style={{color: '#c9c8c8', fontSize: 10}}>
               (
               {
                 record.backSkus
@@ -123,17 +122,17 @@ const PartsList = ({spuId}) => {
         <Column title="备注" dataIndex="note" />
       </>}
       <Column title="名称" dataIndex="partName" />
+
       <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
-        return (
+        return record.children &&
           <>
             <EditButton onClick={() => {
-              refAdd.current.open(record.partsId);
+              refAdd.current.open(record.id|| record.partsId);
             }} />
             <Button icon={<ClockCircleOutlined />} type="link" onClick={() => {
               refOldList.current.open(record.skuId);
             }} />
-          </>
-        );
+          </>;
       }} />
     </Table>;
   };
@@ -152,7 +151,7 @@ const PartsList = ({spuId}) => {
         width={900}
         title="清单"
         compoentRef={formRef}
-        component={Parts}
+        component={PartsEdit}
         onSuccess={() => {
           refresh();
           refAdd.current.close();

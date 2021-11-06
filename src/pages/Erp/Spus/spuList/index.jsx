@@ -25,6 +25,7 @@ const {FormItem} = Form;
 
 const SpuList = () => {
   const ref = useRef(null);
+  const formRef = useRef(null);
   const tableRef = useRef(null);
   const history = useHistory();
 
@@ -43,7 +44,7 @@ const SpuList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem placeholder='产品名称' name="name" component={SysField.Name} />
+        <FormItem placeholder="产品名称" name="name" component={SysField.Name} />
         <FormItem hidden name="type" value={1} component={SysField.type} />
       </>
     );
@@ -65,7 +66,7 @@ const SpuList = () => {
         title={<Breadcrumb />}
         api={spuList}
         rowKey="spuId"
-        tableKey='spu'
+        tableKey="spu"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
@@ -145,10 +146,23 @@ const SpuList = () => {
           );
         }} />
       </Table>
-      <Modal width={1000} title="产品" component={SpuEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Modal
+        width={1000}
+        title="产品"
+        compoentRef={formRef}
+        component={SpuEdit}
+        footer={<>
+          <Button type='primary' onClick={()=>{
+            formRef.current.formRef.current.submit();
+          }}>保存</Button>
+          <Button type='default' onClick={()=>{
+            ref.current.close();
+          }}>取消</Button>
+        </>}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref} />
     </>
   );
 };

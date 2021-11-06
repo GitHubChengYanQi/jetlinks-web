@@ -15,6 +15,7 @@ import {useRequest} from '@/util/Request';
 import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import {Standard} from '../skuField';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 const {FormItem} = Form;
 
@@ -60,7 +61,7 @@ const SkuEdit = ({...props}, ref) => {
   });
 
   if (loading){
-    return null;
+    return (<ProSkeleton type="descriptions" />);
   }
 
   return (
@@ -110,25 +111,25 @@ const SkuEdit = ({...props}, ref) => {
 
         }}
       >
-        {/*<FormItem*/}
-        {/*  label="编码"*/}
-        {/*  name="coding"*/}
-        {/*  component={SysField.Codings}*/}
-        {/*  codingId={data}*/}
-        {/*  rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}*/}
-        {/*/>*/}
+        <FormItem
+          label="编码"
+          name="standard"
+          component={SysField.Codings}
+          codingId={data}
+          rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
+        />
         <FormItem
           label="分类"
           name="spuClassificationId"
           skuId={value.skuId}
           component={SysField.SpuClass}
           required />
-        <FormItem
-          label="编码"
-          skuId={value.skuId}
-          name="standard"
-          component={SysField.Standard}
-          required />
+        {/*<FormItem*/}
+        {/*  label="编码"*/}
+        {/*  skuId={value.skuId}*/}
+        {/*  name="standard"*/}
+        {/*  component={SysField.Standard}*/}
+        {/*  required />*/}
         <FormItem
           label="物料名称"
           skuId={value.skuId}

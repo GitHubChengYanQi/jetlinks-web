@@ -53,7 +53,7 @@ const RoleList = () => {
             <EditButton onClick={() => {
               ref.current.open(record.roleId);
             }}/>
-            <DelButton/>
+            {/*<DelButton/>*/}
           </>
         );
       }

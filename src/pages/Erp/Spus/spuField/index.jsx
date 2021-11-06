@@ -21,6 +21,7 @@ import CategoryList from '@/pages/Erp/category/categoryList';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import UnitList from '@/pages/Erp/unit/unitList';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
+import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 
 export const Name = (props) =>{
   return (<Input {...props}/>);
@@ -52,21 +53,8 @@ export const Cost = (props) =>{
 };
 
 export const SpuClass = (props) =>{
-  const ref = useRef();
 
-  const [state, {toggle}] = useBoolean();
-
-  return (
-    <Space>
-      <Cascader refre={state} api={spuClassificationTreeVrew} {...props} />
-      <Button onClick={() => {
-        ref.current.open(false);
-      }}>设置分类</Button>
-      <Modal width={800} component={SpuClassificationList} ref={ref} onClose={() => {
-        ref.current.close();
-        toggle();
-      }} />
-    </Space>);
+  return (<SetSelectOrCascader api={spuClassificationTreeVrew} width={200} cascader title='设置分类' component={SpuClassificationList} {...props} />);
 };
 export const Vulnerability = (props) =>{
   return (<AntdSelect style={{width:200}} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
@@ -81,39 +69,11 @@ export const ClassId = (props) =>{
   return (<Input {...props}/>);
 };
 export const UnitId = (props) =>{
-  const ref = useRef();
-
-  const [state, {toggle}] = useBoolean();
-
-  return (
-    <Space>
-      <Select resh={state} width={160} api={apiUrl.unitListSelect} {...props} />
-      <Button onClick={() => {
-        ref.current.open(false);
-      }}>设置单位</Button>
-      <Modal width={800} component={UnitList} ref={ref} onClose={() => {
-        ref.current.close();
-        toggle();
-      }} />
-    </Space>);
+  return (<SetSelectOrCascader api={apiUrl.unitListSelect} width={200} title='设置单位' component={UnitList} {...props} />);
 };
 export const CategoryId = (props) =>{
 
-  const ref = useRef();
-
-  const [state, {toggle}] = useBoolean();
-
-  return (
-    <Space>
-      <Cascader refre={state} api={categoryTree} {...props}/>
-      <Button onClick={() => {
-        ref.current.open(false);
-      }}>设置配置</Button>
-      <Modal width={800} component={CategoryList} ref={ref} onClose={() => {
-        ref.current.close();
-        toggle();
-      }} />
-    </Space>);
+  return (<SetSelectOrCascader api={categoryTree} width={200} cascader title='设置配置' component={CategoryList} {...props} />);
 };
 export const Type = (props) =>{
   return (

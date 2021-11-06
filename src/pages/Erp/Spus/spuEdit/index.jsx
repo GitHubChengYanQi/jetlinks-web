@@ -5,7 +5,7 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {
   Affix,
   Button,
@@ -40,13 +40,10 @@ const ApiConfig = {
 };
 
 
-const SpuEdit = (props) => {
+const SpuEdit = ({...props},ref) => {
 
   const formRef = useRef();
 
-  const history = useHistory();
-
-  // const params = props.searchParams.id;
 
   const {onFieldValueChange$} = FormEffectHooks;
 
@@ -64,12 +61,15 @@ const SpuEdit = (props) => {
     }
   });
 
+  useImperativeHandle(ref,()=>({
+    formRef,
+  }));
+
 
   return (
     <div style={{padding: 16}}>
       <Form
         NoButton={false}
-        // value={params || false}
         {...props}
         ref={formRef}
         api={ApiConfig}
@@ -123,16 +123,9 @@ const SpuEdit = (props) => {
             :
             <FormItem name="spuAttributes" component={SysField.Atts} spuId={props.value} attribute={attribute} />}
         </ProCard>
-        <div style={{textAlign: 'center'}}>
-          <Submit showLoading>保存</Submit>
-          <Button style={{marginLeft: 16}} onClick={() => {
-            // history.goBack();
-            props.onSuccess();
-          }}>返回</Button>
-        </div>
       </Form>
     </div>
   );
 };
 
-export default SpuEdit;
+export default React.forwardRef(SpuEdit);
