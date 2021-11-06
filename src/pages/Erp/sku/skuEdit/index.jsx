@@ -11,6 +11,9 @@ import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
 import {notification} from 'antd';
+import {useRequest} from '@/util/Request';
+import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
+import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 
 const {FormItem} = Form;
 
@@ -45,6 +48,19 @@ const SkuEdit = ({...props}, ref) => {
     await setNext(next);
     await formRef.current.submit();
   };
+
+  const {loading,data} = useRequest(codingRulesList, {
+    defaultParams: {
+      data: {
+        module: 0,
+        state:1
+      }
+    }
+  });
+
+  if (loading){
+    return null;
+  }
 
   return (
     <div style={{padding: 16}}>
@@ -89,6 +105,12 @@ const SkuEdit = ({...props}, ref) => {
                 state.props.classId = value;
               }
             );
+            setFieldState(
+              'standard',
+              state => {
+                state.props.classId = value;
+              }
+            );
           });
 
         }}
@@ -98,6 +120,13 @@ const SkuEdit = ({...props}, ref) => {
           name="spuClassificationId"
           skuId={value.skuId}
           component={SysField.SpuClass}
+          required />
+        <FormItem
+          label="成品码"
+          coding={data}
+          skuId={value.skuId}
+          name="standard"
+          component={SysField.Coding}
           required />
         <FormItem
           label="物料名称"
@@ -115,12 +144,6 @@ const SkuEdit = ({...props}, ref) => {
           model={(value) => {
             setSku(value);
           }} required />
-        <FormItem
-          label="编码"
-          skuId={value.skuId}
-          name="standard"
-          component={SysField.Coding}
-          required />
         <FormItem
           label="规格"
           skuId={value.skuId}

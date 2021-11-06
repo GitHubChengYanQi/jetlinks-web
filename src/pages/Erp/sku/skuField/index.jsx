@@ -31,7 +31,11 @@ import Modal from '@/components/Modal';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
+import {
+  spuClassificationDetail,
+  spuClassificationTreeVrew
+} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
+import {codingRulesBackCoding} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
 
 export const Type = (props) => {
 
@@ -121,13 +125,49 @@ export const Attributes = (props) => {
   return (<Input {...props} />);
 };
 
+
+export const ClassCode = (props) => {
+  return (<Input {...props} />);
+};
+
 export const Coding = (props) => {
-  const {skuId, ...other} = props;
+  const {skuId, coding,classId, ...other} = props;
+
+  const {run:spuClassDetail} = useRequest(spuClassificationDetail,{
+    manual:true,
+  });
+
+  const {run} = useRequest(codingRulesBackCoding,{
+    manual:true,
+    onSuccess:async (res)=>{
+      const data = await spuClassDetail({
+        data:{
+          spuClassificationId:classId,
+        }
+      });
+      if (data){
+        // eslint-disable-next-line no-template-curly-in-string
+        props.onChange(res.replace('${skuClass}',data.codingClass));
+      }
+    }
+  });
+
+
+  useEffect(() => {
+    if (coding && coding.length > 0 && classId){
+      run({
+        data:{
+          codingRulesId:coding[0] && coding[0].codingRulesId,
+        }
+      });
+    }
+  }, [classId]);
+
   return (<Input disabled={skuId} {...other} />);
 };
 
 export const SelectSpuClass = (props) => {
-  return ( <Cascader api={spuClassificationTreeVrew} {...props} />);
+  return (<Cascader api={spuClassificationTreeVrew} {...props} />);
 };
 
 

@@ -68,7 +68,7 @@ const SpuClassificationList = () => {
         footer={footer}
       >
         <Column key={1} title="名称" dataIndex="name" />
-        <Column key={2} title="成品码" width={200} dataIndex="codingClass" />
+        <Column key={2} title="分类码" width={200} dataIndex="codingClass" />
         <Column key={3} title='上级' dataIndex='pidName' />
         <Column key={4} title="操作" align="right" render={(value, record) => {
           return (

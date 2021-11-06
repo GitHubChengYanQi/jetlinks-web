@@ -63,7 +63,7 @@ const SelectSku = ({value,onChange}) => {
     }}>
     {options && options.map((items) => {
       return (
-        <AntSelect.Option key={items.value} value={items.label}>
+        <AntSelect.Option key={items.value} title={items.label+items.attribute} value={items.label+items.attribute}>
           {items.label} <em style={{color:'#c9c8c8',fontSize:10}}>{items.attribute}</em>
         </AntSelect.Option>
       );

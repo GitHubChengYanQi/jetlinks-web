@@ -25,6 +25,7 @@ const Cascader = (props) => {
     value,width,defaultParams,refre,top, api, onChange = () => {
     }, ...other
   } = props;
+
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
@@ -43,7 +44,7 @@ const Cascader = (props) => {
   ] : (data || []);
 
   let valueArray = [];
-  if (value && typeof `${value}` === 'string') {
+  if ((value || value === 0) && typeof `${value}` === 'string') {
     const $tmpValue = `${value}`;
     if ($tmpValue.indexOf(',') >= 0) {
       const tmpValue = $tmpValue.split(',');
