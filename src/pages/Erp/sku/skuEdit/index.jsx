@@ -14,6 +14,7 @@ import {notification} from 'antd';
 import {useRequest} from '@/util/Request';
 import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
+import {Standard} from '../skuField';
 
 const {FormItem} = Form;
 
@@ -115,6 +116,13 @@ const SkuEdit = ({...props}, ref) => {
 
         }}
       >
+        {/*<FormItem*/}
+        {/*  label="编码"*/}
+        {/*  name="coding"*/}
+        {/*  component={SysField.Codings}*/}
+        {/*  codingId={data && data[0] ? data[0].codingRulesId : null}*/}
+        {/*  rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}*/}
+        {/*/>*/}
         <FormItem
           label="分类"
           name="spuClassificationId"
@@ -122,11 +130,11 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.SpuClass}
           required />
         <FormItem
-          label="成品码"
+          label="编码"
           coding={data}
           skuId={value.skuId}
           name="standard"
-          component={SysField.Coding}
+          component={SysField.Standard}
           required />
         <FormItem
           label="物料名称"

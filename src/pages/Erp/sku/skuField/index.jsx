@@ -36,6 +36,7 @@ import {
   spuClassificationTreeVrew
 } from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import {codingRulesBackCoding} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
+import Coding from '@/pages/Erp/tool/components/Coding';
 
 export const Type = (props) => {
 
@@ -130,38 +131,15 @@ export const ClassCode = (props) => {
   return (<Input {...props} />);
 };
 
-export const Coding = (props) => {
-  const {skuId, coding,classId, ...other} = props;
+export const Codings = (props) => {
 
-  const {run:spuClassDetail} = useRequest(spuClassificationDetail,{
-    manual:true,
-  });
+  const {codingId, ...other} = props;
 
-  const {run} = useRequest(codingRulesBackCoding,{
-    manual:true,
-    onSuccess:async (res)=>{
-      const data = await spuClassDetail({
-        data:{
-          spuClassificationId:classId,
-        }
-      });
-      if (data){
-        // eslint-disable-next-line no-template-curly-in-string
-        props.onChange(res.replace('${skuClass}',data.codingClass));
-      }
-    }
-  });
+  return (<Coding codingId={codingId} {...other} />);
+};
 
-
-  useEffect(() => {
-    if (coding && coding.length > 0 && classId){
-      run({
-        data:{
-          codingRulesId:coding[0] && coding[0].codingRulesId,
-        }
-      });
-    }
-  }, [classId]);
+export const Standard = (props) => {
+  const {skuId, ...other} = props;
 
   return (<Input disabled={skuId} {...other} />);
 };
