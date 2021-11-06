@@ -42,7 +42,7 @@ const SelectSku = ({value,onChange}) => {
   return (<AntdSelect
     placeholder="物料"
     showSearch
-    value={change || (value && options && options[0] && options[0].label)}
+    value={change || (value && options && options[0] && options[0].label+options[0].attribute)}
     allowClear
     loading={loading}
     style={{width: '100%'}}
