@@ -32,7 +32,7 @@ const SpuClassificationEdit = ({...props}) => {
     >
       <FormItem label="上级名称" name="pid" component={SysField.Pid} required/>
       <FormItem label="名称" name="name" component={SysField.Name} required/>
-      <FormItem label="编码" name="codingClass" component={SysField.CodingClass} rules={[{required:true,pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',message:'只能输入大写字母或数字！'}]}/>
+      <FormItem label="成品码" name="codingClass" component={SysField.CodingClass} rules={[{required:true,pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',message:'只能输入大写字母或数字！'}]}/>
       <FormItem label="排序" name="sort" component={SysField.Sort} required/>
     </Form>
   );
