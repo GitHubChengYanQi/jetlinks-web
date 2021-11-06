@@ -7,7 +7,7 @@
 
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Select, Table as AntTable} from 'antd';
+import {Button, Radio, Select, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -20,6 +20,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {createFormActions} from '@formily/antd';
 import {useBoolean} from 'ahooks';
 import Modal from '@/components/Modal';
+import {useRequest} from '@/util/Request';
 
 const formActionsPublic = createFormActions();
 const {Column} = AntTable;
@@ -27,11 +28,14 @@ const {FormItem} = Form;
 
 const CodingRulesList = () => {
   const ref = useRef(null);
-  const refRule = useRef(null);
   const tableRef = useRef(null);
 
-
-  const [state, {toggle}] = useBoolean();
+  const {run} = useRequest(codingRulesEdit,{
+    manual:true,
+    onSuccess:()=>{
+      tableRef.current.submit();
+    }
+  });
 
   const actions = () => {
     return (
@@ -54,7 +58,7 @@ const CodingRulesList = () => {
   const module = (value) => {
     switch (value){
       case 0:
-        return '订单';
+        return '物料';
       case 1:
         return '工具';
       case 2:
@@ -62,7 +66,7 @@ const CodingRulesList = () => {
       default:
         break;
     }
-  }
+  };
 
 
   return (
@@ -84,6 +88,21 @@ const CodingRulesList = () => {
             <>{module(value)}</>
           );
         }} />
+        <Column title="默认规则" dataIndex="state" render={(value,record)=>{
+          return (
+            <Radio.Group value={value} onChange={(value)=>{
+              run({
+                data:{
+                  codingRulesId:record.codingRulesId,
+                  state:value.target.value
+                }
+              });
+            }}>
+              <Radio value={1}>是</Radio>
+              <Radio value={0}>否</Radio>
+            </Radio.Group>
+          );
+        }} />
         <Column title="编码规则" dataIndex="codingRules" render={(value)=>{
           const array = value.split(',');
           let values = '';
@@ -94,6 +113,7 @@ const CodingRulesList = () => {
             <>{values}</>
           );
         }} />
+        <Column title='描述' dataIndex='note' />
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>

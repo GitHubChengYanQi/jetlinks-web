@@ -1,45 +1,77 @@
 import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {codingRulesListSelect} from '@/pages/Erp/tool/toolUrl';
-import {Input, Select as AntdSelect} from 'antd';
+import {AutoComplete, Input, Select as AntdSelect} from 'antd';
 
 
-const Coding = ({value,width,onChange,codingId}) => {
+const Coding = ({value, width, onChange, codingId}) => {
 
   const [state, setState] = useState();
 
   const {data} = useRequest(codingRulesListSelect);
 
+  const options = [
+    {
+      label: '编码规则',
+      options: data || []
+    },
+    {
+      label: '自定义',
+      options: [
+        {
+          label: '自定义',
+          value: '自定义'
+        }
+      ]
+    }
+  ];
+
   useEffect(() => {
     if (value) {
       onChange(value);
-      setState(1);
+      setState(false);
     } else {
       onChange(codingId);
+      setState(true);
     }
   }, []);
 
   return (<div style={{width}}>
-    <AntdSelect
-      style={{width: '30%', marginRight: 16}}
-      defaultValue={value ? 1 : 0}
-      options={[{label: '规则生成', value: 0}, {label: '手动输入', value: 1}]}
-      onSelect={(value) => {
-        if (value === 0) {
-          onChange(codingId);
-        }else {
-          onChange(null);
-        }
-        setState(value);
-      }} />
-    {!state ?
-      <AntdSelect defaultValue={codingId ? `${codingId}` : ''} style={{width: '50%'}} options={data && data.length>0 ? data : []} onSelect={(value) => {
-        onChange(value);
-      }} />
+    {state ?
+      <AntdSelect
+        allowClear
+        showSearch
+        value={value}
+        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        defaultValue={codingId ? `${codingId}` : ''}
+        style={{width: '100%'}}
+        options={options || []}
+        onSelect={(value) => {
+          onChange(value);
+          if (value === '自定义'){
+            setState(false);
+            onChange(null);
+          }
+        }} />
       :
-      <Input placeholder="请输入编码" style={{width: '50%'}} disabled={!state} value={value} onChange={(value) => {
-        onChange(value.target.value);
-      }} />}
+      <AutoComplete
+        allowClear
+        value={value}
+        options={data || []}
+        style={{width: '100%'}}
+        placeholder="请输入编码"
+        onChange={(value) => {
+          onChange(value);
+        }}
+        onSelect={(value) => {
+          onChange(value);
+          setState(true);
+        }}
+        filterOption={(input, option) =>
+          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      />
+    }
   </div>);
 };
 

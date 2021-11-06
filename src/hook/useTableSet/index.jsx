@@ -104,7 +104,7 @@ const useTableSet = (column, tableKey) => {
 
   const menu = (
     <Menu
-      style={{minWidth: 290}}
+      style={{minWidth: 220}}
       multiple
       selectedKeys={tableColumn && tableColumn.map((items) => {
         return items.key;
@@ -123,18 +123,11 @@ const useTableSet = (column, tableKey) => {
         column && column.map((items) => {
           if (!items.props.fixed && items.key) {
             return (
-              <Menu.Item style={{background:'#fff',color:'#000'}} key={items.key}>
-                <Row gutter={24}>
-                  <Col span={2}>
-                    <UnorderedListOutlined />
-                  </Col>
-                  <Col span={19}>
-                    {items.props.title}
-                  </Col>
-                  <Col span={2}>
-                    {checks(items)}
-                  </Col>
-                </Row>
+              <Menu.Item style={{background: '#fff', color: '#000'}} key={items.key}>
+                <UnorderedListOutlined />
+                &nbsp;
+                {items.props.title}
+                <span style={{float: 'right'}}>{checks(items)}</span>
               </Menu.Item>
             );
           } else {
@@ -157,7 +150,7 @@ const useTableSet = (column, tableKey) => {
 
   return {
     tableColumn,
-    setButton:tableKey &&
+    setButton: tableKey &&
       <>
         {state &&
         <Button

@@ -52,23 +52,29 @@ export const DeptId = (props) => {
   return (<Input {...props} />);
 };
 
+export const Note = (props) => {
+  return (<Input.TextArea {...props} />);
+};
+export const State = (props) => {
+  return (<Radio.Group {...props} >
+    <Radio>是</Radio>
+    <Radio>是</Radio>
+  </Radio.Group>);
+};
+
 
 export const Values = (props) => {
 
   const {module, onChange, value} = props;
-  console.log(value);
 
   const modules = () => {
     switch (module) {
       case 0:
         return [{
-          label: '物料',
-          value: '物料'
-        }];
-      case 1:
-        return [{
-          label: '产品',
-          value: '产品'
+          // eslint-disable-next-line no-template-curly-in-string
+          label: '${skuClass}分类码',
+          // eslint-disable-next-line no-template-curly-in-string
+          value: '${skuClass}'
         }];
       default:
         return [];
@@ -127,6 +133,7 @@ export const Values = (props) => {
         option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     />
+    <InputNumber />
   </>);
 };
 
@@ -135,7 +142,6 @@ export const Module = (props) => {
 
   const options = [
     {label: '物料', value: 0},
-    {label: '产品', value: 1},
   ];
 
   return (<AntdSelect options={options} {...props} />);

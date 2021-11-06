@@ -35,6 +35,12 @@ const routerConfig = [
       ...ProductionRouterConfig,
       ...SpuRouterConfig,
       {
+        path: '/test',
+        component: lazy(() => import('@/pages/Test/index')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },
+      {
         path: '/member',
         component: lazy(() => import(('@/pages/Member'))),
       },

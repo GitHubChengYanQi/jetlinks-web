@@ -32,13 +32,6 @@ const ErpRouterConfig = [
       ...InstockRouter,
       ...DeliveryRouter,
       {
-        path: '/test',
-        name: '发货管理',
-        component: lazy(() => import('../Test/index')),
-        fallback: <div>loading...</div>,
-        exact: true,
-      },
-      {
         redirect: '/ERP/stock',
       }
     ]

@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, Collapse, Input, message} from 'antd';
+import {Button, Collapse, Input, message, Table} from 'antd';
 import Form from '@/components/Form';
 import {codingRulesDetail, codingRulesAdd, codingRulesEdit} from '../codingRulesUrl';
 import * as SysField from '../codingRulesField';
@@ -49,9 +49,12 @@ const CodingRulesEdit = ({...props}) => {
           });
         }}
       >
-        <FormItem label="编码规则名称" name="name" component={SysField.Name} required />
-        <FormItem label="模块" name="module" component={SysField.Module} />
-        <ProCard className="h2Card" headerBordered title="定义规则">
+        <ProCard className="h2Card" headerBordered title="基本信息">
+          <FormItem label="编码规则名称" name="name" component={SysField.Name} required />
+          <FormItem label="模块" name="module" component={SysField.Module} />
+          <FormItem label="描述" name="note" component={SysField.Note} />
+        </ProCard>
+        <ProCard className="h2Card" headerBordered title="编码规则设置">
           <FieldList
             name="codings"
             initialValue={[{}]}
@@ -65,7 +68,7 @@ const CodingRulesEdit = ({...props}) => {
                   {state.value.map((item, index) => {
                     const onRemove = index => mutators.remove(index);
                     return (
-                      <div key={index} style={{display: 'inline-block', marginRight: 8}}>
+                      <div key={index} style={{display: 'block', marginRight: 8}}>
                         <div style={{display: 'inline-block'}}>
                           <FormItem
                             name={`codings.${index}.values`}
@@ -74,8 +77,8 @@ const CodingRulesEdit = ({...props}) => {
                           />
                         </div>
                         <Button
-                          type='dashed'
-                          style={{float: 'right'}}
+                          type="dashed"
+                          // style={{float: 'right'}}
                           icon={<MinusOutlined />}
                           onClick={() => {
                             onRemove(index);

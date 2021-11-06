@@ -116,13 +116,13 @@ const SkuEdit = ({...props}, ref) => {
 
         }}
       >
-        {/*<FormItem*/}
-        {/*  label="编码"*/}
-        {/*  name="coding"*/}
-        {/*  component={SysField.Codings}*/}
-        {/*  codingId={data && data[0] ? data[0].codingRulesId : null}*/}
-        {/*  rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}*/}
-        {/*/>*/}
+        <FormItem
+          label="编码"
+          name="coding"
+          component={SysField.Codings}
+          codingId={data}
+          rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
+        />
         <FormItem
           label="分类"
           name="spuClassificationId"
@@ -130,8 +130,7 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.SpuClass}
           required />
         <FormItem
-          label="编码"
-          coding={data}
+          label="成品码"
           skuId={value.skuId}
           name="standard"
           component={SysField.Standard}

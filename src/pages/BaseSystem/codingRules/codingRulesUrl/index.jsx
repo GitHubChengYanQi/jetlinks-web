@@ -35,6 +35,12 @@ export const codingRulesList = {
   rowKey:'codingRulesId'
 };
 
+export const codingRulesBackCoding = {
+  url: '/codingRules/backCoding',
+  method: 'POST',
+  rowKey:'codingRulesId'
+};
+
 export const codingRulesClassificationListSelect = {
   url: '/codingRulesClassification/listSelect',
   method: 'POST',

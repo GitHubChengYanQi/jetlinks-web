@@ -134,8 +134,9 @@ export const ClassCode = (props) => {
 export const Codings = (props) => {
 
   const {codingId, ...other} = props;
+  console.log(codingId);
 
-  return (<Coding codingId={codingId} {...other} />);
+  return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };
 
 export const Standard = (props) => {
