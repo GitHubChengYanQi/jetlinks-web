@@ -146,6 +146,7 @@ const BusinessTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        tableKey='business'
         footer={footer}
         isModal={false}
         SearchButton={Search()}
@@ -164,6 +165,7 @@ const BusinessTable = (props) => {
           title="项目信息"
           dataIndex="businessName"
           fixed
+          key={1}
           sortDirections={['ascend', 'descend']}
           render={(text, record) => {
             return (
@@ -182,7 +184,7 @@ const BusinessTable = (props) => {
 
             );
           }} />
-        <Column title="盈率" width={150} align="center" dataIndex="salesId" render={(value, record) => {
+        <Column key={2} title="盈率" width={150} align="center" dataIndex="salesId" render={(value, record) => {
           return (
             <Statistic
               title={record.process && record.process.name || record.sales && record.sales.process.length > 0 && record.sales.process[0].name}
@@ -194,12 +196,13 @@ const BusinessTable = (props) => {
           );
         }} />
         <Column
+          key={3}
           title="立项日期"
           width={200}
           dataIndex="time"
           sorter
           sortDirections={['ascend', 'descend']} />
-        <Column title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
+        <Column key={4} title="机会来源" width={120} dataIndex="originName" render={(value, record) => {
           return (
             <div>
               {
@@ -209,6 +212,7 @@ const BusinessTable = (props) => {
           );
         }} />
         <Column
+          key={5}
           title="项目金额"
           width={120}
           align="center"

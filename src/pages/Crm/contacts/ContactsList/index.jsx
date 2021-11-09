@@ -120,7 +120,7 @@ const ContactsTable = (props) => {
     AntModal.confirm({
       title: '联系人离职',
       centered: true,
-      content: `请确认离职操作`,
+      content: '请确认离职操作',
       style: {margin: 'auto'},
       cancelText: '取消',
       onOk: async () => {
@@ -168,6 +168,7 @@ const ContactsTable = (props) => {
         rowKey="contactsId"
         searchForm={searchForm}
         SearchButton={Search()}
+        tableKey='contacts'
         isModal={false}
         layout={search}
         footer={footer}
@@ -177,21 +178,21 @@ const ContactsTable = (props) => {
           setIds(keys);
         }}
       >
-        <Column title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
-        <Column title="职务" align="center" width={200} render={(value, record) => {
+        <Column key={1} title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
+        <Column key={2} title="职务" align="center" width={200} render={(value, record) => {
           return (
             <>
               {record.companyRoleResult && record.companyRoleResult.position}
             </>
           );
         }} />
-        <Column title="客户名称" width={300} dataIndex="clientId" render={(value, record) => {
+        <Column key={3} title="客户名称" width={300} dataIndex="clientId" render={(value, record) => {
           return (
             record.customerResults && record.customerResults.length > 0 && record.customerResults[0].customerName
           );
         }} />
 
-        <Column title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
+        <Column key={4} title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
           return (
             <>
               {
@@ -212,7 +213,7 @@ const ContactsTable = (props) => {
 
         }} />
         <Column />
-        <Column title="操作" fixed="right" width={200} align="right" render={(value, record) => {
+        <Column key={5} title="操作" fixed="right" width={200} align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

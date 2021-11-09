@@ -96,13 +96,14 @@ const BusinessTrackList = () => {
         title={<Breadcrumb />}
         api={businessTrackList}
         rowKey="trackId"
+        tableKey='track'
         layout={search}
         SearchButton={Search()}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="客户" render={(value, record) => {
+        <Column key={1} title="客户" render={(value, record) => {
           return (
             <>
               <a onClick={() => {
@@ -113,42 +114,41 @@ const BusinessTrackList = () => {
             </>
           );
         }} />
-        <Column title="跟踪类型" dataIndex="type" />
-        <Column title="提醒时间" dataIndex="time" />
-        <Column title="图片" dataIndex="image" render={(value) => {
+        <Column key={2} title="跟踪类型" dataIndex="type" />
+        <Column key={3} title="提醒时间" dataIndex="time" />
+        <Column key={4} title="图片" dataIndex="image" render={(value) => {
           return (
             <>
               {value && <Image width={100} src={value} />}
             </>
           );
         }} />
-        <Column title="负责人" dataIndex="userId" render={(value, record) => {
+        <Column key={5} title="负责人" dataIndex="userId" render={(value, record) => {
           return(
-            <a>
+            <>
               {record.userResult.name}
-            </a>
+            </>
           );
         }
 
         } />
-        <Column title="分类" dataIndex="classify" render={(value, record) => {
+        <Column key={6} title="分类" dataIndex="classify" render={(value, record) => {
           return(
-            <a>
+            <>
               {record.categoryName}
-            </a>
+            </>
           );
         }} />
-        <Column title="名称" dataIndex="classifyId" render={(value, record) => {
-          console.log(record);
+        <Column key={7} title="名称" dataIndex="classifyId" render={(value, record) => {
           return(
-            <a>
+            <>
               {record.name}
-            </a>
+            </>
           );
         }} />
       </Table>
 
-      <Modal width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
+      <Modal key={1} width={1400} title="跟进" ref={refTrack} component={CrmBusinessTrackEdit} onSuccess={() => {
         refTrack.current.close();
         tableRef.current.submit();
       }} track={null}

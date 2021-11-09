@@ -28,7 +28,7 @@ const CompetitorTable = ({...props}) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const {status, value,businessId} = props;
+  const {status, value, businessId} = props;
   const actions = () => {
     return (
       <>
@@ -53,7 +53,8 @@ const CompetitorTable = ({...props}) => {
     const formItem = () => {
       return (
         <>
-          {businessId ? null : <FormItem mega-props={{span: 1}} placeholder="请选择关联项目" name="businessId" component={SysField.BusinessId} />}
+          {businessId ? null :
+            <FormItem mega-props={{span: 1}} placeholder="请选择关联项目" name="businessId" component={SysField.BusinessId} />}
         </>
       );
     };
@@ -68,7 +69,9 @@ const CompetitorTable = ({...props}) => {
           columns={4}
           full
           autoRow>
-          {value ? null : <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称"  name="competitorId" style={{width:200}}  component={SysField.Competitor} />}
+          {value ? null :
+            <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称" name="competitorId" style={{width: 200}}
+                      component={SysField.Competitor} />}
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -82,7 +85,7 @@ const CompetitorTable = ({...props}) => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               if (search) {
                 setSearch(false);
               } else {
@@ -93,7 +96,8 @@ const CompetitorTable = ({...props}) => {
             <MegaLayout inline>
               <FormItem hidden name="campType" component={SysField.CampType} />
               {value && <FormItem hidden name="competitorId" value={value || null} component={SysField.CompetitorId} />}
-              {businessId && <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />}
+              {businessId &&
+              <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />}
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -109,8 +113,9 @@ const CompetitorTable = ({...props}) => {
         title={businessId ? false : <Breadcrumb />}
         api={competitorQuoteList}
         rowKey="quoteId"
+        tableKey="quote"
         isModal={false}
-        headStyle={{display:businessId && 'none'}}
+        headStyle={{display: businessId && 'none'}}
         searchForm={searchForm}
         SearchButton={Search()}
         layout={search}
@@ -118,7 +123,7 @@ const CompetitorTable = ({...props}) => {
         ref={tableRef}
         {...props}
       >
-        <Column width={200} title="报价方名称" dataIndex="competitorId" render={(value, record) => {
+        <Column key={1} width={200} title="报价方名称" dataIndex="competitorId" render={(value, record) => {
           return (
             <div>
               {
@@ -127,7 +132,7 @@ const CompetitorTable = ({...props}) => {
             </div>
           );
         }} />
-        <Column width={200} title="关联项目" dataIndex="businessId" render={(value, record) => {
+        <Column key={2} width={200} title="关联项目" dataIndex="businessId" render={(value, record) => {
           return (
             <div>
               {
@@ -136,8 +141,8 @@ const CompetitorTable = ({...props}) => {
             </div>
           );
         }} />
-        <Column width={100} title="报价金额" dataIndex="competitorsQuote" />
-        <Column width={200} title="报价日期" dataIndex="createTime" />
+        <Column key={3} width={100} title="报价金额" dataIndex="competitorsQuote" />
+        <Column key={4} width={200} title="报价日期" dataIndex="createTime" />
 
       </Table>
       <Drawer width={600} title="编辑" component={CompetitorQuoteEdit} onSuccess={() => {

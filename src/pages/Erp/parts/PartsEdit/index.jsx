@@ -111,7 +111,6 @@ const PartsEdit = ({...props},ref) => {
                       const onRemove = index => mutators.remove(index);
                       return (
                         <div key={index}>
-
                           <div style={{display: 'inline-block', width: '45%'}}>
                             <FormItem
                               labelCol={7}

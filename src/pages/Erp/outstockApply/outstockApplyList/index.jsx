@@ -146,47 +146,48 @@ const OutstockApplyList = () => {
         api={outstockApplyList}
         rowKey="outstockApplyId"
         searchForm={searchForm}
+        tableKey='outstockApply'
         actions={actions()}
         ref={tableRef}
         SearchButton={Search()}
         layout={search}
       >
-        <Column title="发货申请单号" width={120} dataIndex="outstockApplyId" render={(value,record)=>{
+        <Column key={1} title="发货申请单号" width={120} dataIndex="outstockApplyId" render={(value,record)=>{
           return (
             <Button type='link' onClick={()=>{
               refDetail.current.open(record.outstockApplyId);
             }}>{value}</Button>
           );
         }} />
-        <Column title="负责人" dataIndex="userId" render={(value,record)=>{
+        <Column key={2} title="负责人" dataIndex="userId" render={(value,record)=>{
           return (
             <>
               {record.userResult && record.userResult.name}
             </>
           );
         }} />
-        <Column title="客户" dataIndex="customerId" render={(value,record)=>{
+        <Column key={3} title="客户" dataIndex="customerId" render={(value,record)=>{
           return (
             <>
               {record.customerResult && record.customerResult.customerName}
             </>
           );
         }}/>
-        <Column title="地址" dataIndex="adressId" render={(value,record)=>{
+        <Column key={4} title="地址" dataIndex="adressId" render={(value,record)=>{
           return (
             <>
               {record.adressResult && record.adressResult.location}
             </>
           );
         }}/>
-        <Column title="联系人" dataIndex="contactsId" render={(value,record)=>{
+        <Column key={5} title="联系人" dataIndex="contactsId" render={(value,record)=>{
           return (
             <>
               {record.contactsResult && record.contactsResult.contactsName}
             </>
           );
         }}/>
-        <Column title="电话" dataIndex="phoneId" render={(value,record)=>{
+        <Column key={6} title="电话" dataIndex="phoneId" render={(value,record)=>{
           return (
             <>
               {record.phoneResult && record.phoneResult.phoneNumber}
@@ -194,7 +195,7 @@ const OutstockApplyList = () => {
           );
         }}/>
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column key={7} title="操作" align="right" render={(value, record) => {
           return (
             <>
               {record.applyState === 2 && <Button style={{margin: '0 10px'}} onClick={() => {

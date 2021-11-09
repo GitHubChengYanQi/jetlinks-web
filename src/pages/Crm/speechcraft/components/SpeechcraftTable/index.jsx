@@ -61,16 +61,17 @@ const SpeechcraftTable = (props) => {
         title={<Breadcrumb />}
         api={speechcraftList}
         rowKey="speechcraftId"
+        tableKey='speechcrafft'
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
         {...other}
       >
-        <Column title="标题" dataIndex="speechcraftTitle" />
-        <Column title="详情" dataIndex="speechcraftDetails" />
-        <Column title="事件" dataIndex="speechcraftKey" />
+        <Column key={1} title="标题" dataIndex="speechcraftTitle" />
+        <Column key={2} title="详情" dataIndex="speechcraftDetails" />
+        <Column key={3} title="事件" dataIndex="speechcraftKey" />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column key={4} title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

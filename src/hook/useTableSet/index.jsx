@@ -169,7 +169,7 @@ const useTableSet = (column, tableKey) => {
     >
       {
         column && column.length > 0 && column.map((items) => {
-          if (!items.props.fixed && items.key) {
+          if (items.props && !items.props.fixed && items.key) {
             return (
               <Menu.Item style={{background: '#fff', color: '#000'}} key={items.key}>
                 <UnorderedListOutlined />

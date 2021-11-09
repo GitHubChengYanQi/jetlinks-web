@@ -189,6 +189,7 @@ const ContractTable = (props) => {
         api={contractList}
         actions={actions()}
         rowKey="contractId"
+        tableKey='contract'
         isModal={false}
         searchForm={searchForm}
         ref={tableRef}
@@ -201,7 +202,7 @@ const ContractTable = (props) => {
         }}
         {...other}
       >
-        <Column title="合同名称" fixed dataIndex="name" render={(text, record) => {
+        <Column key={1} title="合同名称" dataIndex="name" render={(text, record) => {
           return (
             <Button
               style={{width: '100%', textAlign: 'left', cursor: 'pointer', height: '100%'}}
@@ -212,7 +213,7 @@ const ContractTable = (props) => {
               }}>{text}</Button>
           );
         }} />
-        <Column title="甲方信息" dataIndex="partAName" render={(text, record) => {
+        <Column key={2} title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <div title="点击进入甲方详情" style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.partyA}`);
@@ -227,7 +228,7 @@ const ContractTable = (props) => {
             </div>
           );
         }} />
-        <Column title="乙方信息" dataIndex="partAName" render={(text, record) => {
+        <Column key={3} title="乙方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <div title="点击进入乙方详情" style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${record.partyB}`);
@@ -242,13 +243,14 @@ const ContractTable = (props) => {
             </div>
           );
         }} />
-        <Column title="创建时间" width={200} dataIndex="createTime" sorter />
+        <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
             <BadgeState state={record.audit} text={['未审核', '已审核']} color={['red', 'green']} />
           );
         }} />
-        <Column title="操作" fixed="right" align="right" render={(value, record) => {
+        <Column />
+        <Column key={5} title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
               {record.audit === 0 ?

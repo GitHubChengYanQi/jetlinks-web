@@ -14,11 +14,11 @@ const routerConfig = [
   {
     path: '/login',
     name: '登录',
-    component: lazy(() => import((`@/pages/Login`))),// Login,
+    component: lazy(() => import(('@/pages/Login'))),// Login,
   },
   {
     path: '/logout',
-    component: lazy(() => import((`@/pages/Logout`))),
+    component: lazy(() => import(('@/pages/Logout'))),
   },
   {
     path: '/',

@@ -146,6 +146,7 @@ const CompetitorTable = (props) => {
         api={competitorList}
         isModal={false}
         rowKey="competitorId"
+        tableKey='competitor'
         searchForm={searchForm}
         headStyle={{display:businessId && 'none'}}
         SearchButton={Search()}
@@ -159,7 +160,7 @@ const CompetitorTable = (props) => {
         }}
         {...other}
       >
-        <Column width={150} fiexd title="基础信息" dataIndex="name" render={(value, record) => {
+        <Column width={150} key={1} fixed title="基础信息" dataIndex="name" render={(value, record) => {
           return (
             <div style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/competitor/${record.competitorId}`);
@@ -182,7 +183,8 @@ const CompetitorTable = (props) => {
             </div>
           );
         }} />
-        <Column title="操作" align="right" render={(value, record) => {
+        <Column />
+        <Column key={2} title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

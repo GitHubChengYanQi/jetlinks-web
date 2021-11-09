@@ -23,6 +23,7 @@ import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
+import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -153,9 +154,11 @@ const SkuTable = (props) => {
         }}
         {...other}
       >
+
         <Column title="型号 / 名称" key={1} dataIndex="spuId" render={(value, record) => {
           return (
             <>
+              <Code source="sku" id={record.skuId} />
               {record.skuName}
               &nbsp;/&nbsp;
               {record.spuResult && record.spuResult.name}
@@ -186,9 +189,13 @@ const SkuTable = (props) => {
             </>
           );
         }} />
+
         <Column title='编码' key={3} dataIndex='standard' />
+
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
+
         <Column />
+
         <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>
@@ -202,7 +209,9 @@ const SkuTable = (props) => {
             </>
           );
         }} />
+
       </Table>
+
       <Modal title="物料" compoentRef={formRef} component={SkuEdit} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
