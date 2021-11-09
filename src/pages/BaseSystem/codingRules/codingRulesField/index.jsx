@@ -94,7 +94,7 @@ export const Values = (props) => {
       label: '流水号',
       options: [
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${serial} 流水号', value: '${serial}'},
+        {label: '流水号', value: 'serial'},
       ]
     }
   ];
@@ -144,8 +144,8 @@ export const Values = (props) => {
       case '流水号':
         return <Space>
           <AntdSelect
-            placeholder="选择编码类型"
-            style={{minWidth: 194, display: 'inline-block'}}
+            placeholder="流水号"
+            style={{minWidth: 50, display: 'inline-block'}}
             options={[
               ...input,
               {
@@ -158,7 +158,7 @@ export const Values = (props) => {
             ]}
             allowClear
             showSearch
-            value={`\${serial} 流水号`}
+            value='流水号'
             filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             onSelect={(value) => {
               onChange(value);
@@ -169,8 +169,8 @@ export const Values = (props) => {
                 setState(true);
               }
             }} />
-          <InputNumber placeholder="长度" defaultValue="5" min="0" max="5" onChange={(value) => {
-            onChange(`\${serial[${value}]}`);
+          <InputNumber style={{width: 200}} placeholder="长度,(最大5)" min="0" max="5" onChange={(value) => {
+            onChange(`<serial[${value}]>` );
           }} />
         </Space>;
       case '自定义':
@@ -182,9 +182,9 @@ export const Values = (props) => {
             dropdownMatchSelectWidth={292}
             onSelect={(value) => {
               onChange(value);
-              if (value === `\${serial}`) {
+              if (value === 'serial') {
                 setState('流水号');
-                onChange(`\${serial[5]}`);
+                onChange(null);
               } else {
                 setState(true);
               }
@@ -206,9 +206,9 @@ export const Values = (props) => {
             if (value === '自定义') {
               setState('自定义');
               onChange(null);
-            } else if (value === `\${serial}`) {
+            } else if (value === 'serial') {
               setState('流水号');
-              onChange(`\${serial[5]}`);
+              onChange(null);
             } else {
               setState(true);
               onChange(value);
