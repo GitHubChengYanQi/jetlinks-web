@@ -1,10 +1,15 @@
 import Icon from '@/components/Icon';
-import {Button, Col, Dropdown, Input, Menu, Modal, notification, Row, Select, Space, Spin} from 'antd';
+import {Button, Col, Dropdown, Input, Menu, message, Modal, notification, Row, Select, Space, Spin} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {useBoolean} from 'ahooks';
 import {useRequest} from '@/util/Request';
-import {tableViewAdd, tableViewDetail, tableViewListSelect} from '@/hook/useTableSet/components/TableViewUrl';
-import {CheckOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {
+  tableViewAdd,
+  tableViewDetail,
+  tableViewEdit,
+  tableViewListSelect
+} from '@/hook/useTableSet/components/TableViewUrl';
+import {CheckOutlined, ExclamationCircleOutlined, UnorderedListOutlined} from '@ant-design/icons';
 
 const md5 = require('md5');
 
@@ -32,6 +37,8 @@ const useTableSet = (column, tableKey) => {
 
   const [name, setName] = useState();
 
+  const [detail, setDetail] = useState();
+
   const [state, {setTrue, setFalse}] = useBoolean();
 
   const [showModal, setShowModal] = useState();
@@ -45,13 +52,24 @@ const useTableSet = (column, tableKey) => {
 
   const {loading, data, refresh} = useRequest({...tableViewListSelect, data: {tableKey: md5TableKey()}});
 
+  const {run} = useRequest(tableViewEdit, {
+    manual: true,
+    onSuccess: () => {
+      setFalse();
+      refresh();
+    }
+  });
+
   const {run: viewAdd} = useRequest(tableViewAdd,
     {
       manual: true,
       onSuccess: (res) => {
+        if (res){
+          setDetail(res);
+        }
 
-        if (res) {
-          localStorage.setItem(md5TableKey(), res);
+        if (res.tableViewId) {
+          localStorage.setItem(md5TableKey(), res.tableViewId);
         }
 
         setFalse();
@@ -84,9 +102,12 @@ const useTableSet = (column, tableKey) => {
     {
       manual: true,
       onSuccess: (res) => {
-        if (res.field) {
-          if (res.tableKey === md5TableKey()) {
-            select(JSON.parse(res.field));
+        if (res) {
+          setDetail(res);
+          if (res.field) {
+            if (res.tableKey === md5TableKey()) {
+              select(JSON.parse(res.field));
+            }
           }
         }
       }
@@ -100,6 +121,33 @@ const useTableSet = (column, tableKey) => {
       return value.key === items.key;
     });
     return checked.length > 0 && <CheckOutlined />;
+  };
+
+
+  const cover = async () => {
+    if (detail) {
+      Modal.confirm({
+        title: '覆盖当前视图',
+        icon: <ExclamationCircleOutlined />,
+        content: `更改视图展现的内容，确定覆盖视图「${detail.name}」？`,
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          const columnKeys = tableColumn && tableColumn.map((items) => {
+            return items.key;
+          });
+          run({
+            data: {
+              tableViewId: detail.tableViewId,
+              field: columnKeys,
+            }
+          });
+        }
+      });
+    } else {
+      message.error('未选中当前视图！');
+    }
+
   };
 
   const menu = (
@@ -138,6 +186,26 @@ const useTableSet = (column, tableKey) => {
     </Menu>
   );
 
+  const save = (
+    <Menu
+      style={{minWidth: 220}}
+      onClick={(value) => {
+        if (value.key === '0') {
+          setShowModal(true);
+        } else if (value.key === '1') {
+          cover();
+        }
+      }}
+    >
+      <Menu.Item key={0}>
+        另存为新视图
+      </Menu.Item>
+      <Menu.Item key={1} disabled={!detail}>
+        覆盖当前视图
+      </Menu.Item>
+    </Menu>
+  );
+
   useEffect(() => {
     if (view) {
       viewDetail({
@@ -153,11 +221,9 @@ const useTableSet = (column, tableKey) => {
     setButton: tableKey &&
       <>
         {state &&
-        <Button
-          style={{marginRight: 8}}
-          onClick={() => {
-            setShowModal(true);
-          }}>保存视图</Button>}
+        <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
+          <Button style={{marginRight: 8}}>保存视图</Button>
+        </Dropdown>}
 
         {loading ?
           <Spin />
@@ -178,7 +244,8 @@ const useTableSet = (column, tableKey) => {
                 }
               });
 
-            }} defaultValue={view} />}
+            }}
+            value={detail && detail.tableViewId} />}
 
         <Dropdown overlay={menu} onVisibleChange={(value) => {
           setVisible(value);

@@ -64,7 +64,7 @@ const SkuTable = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="物料名称" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
-          <FormItem mega-props={{span: 1}} placeholder="型号" name="skuName" component={SysField.SelectSkuName} />
+          <FormItem mega-props={{span: 1}} placeholder="编码" name="standard" component={SysField.Standard} />
         </>
       );
     };
@@ -75,7 +75,7 @@ const SkuTable = (props) => {
         <MegaLayout
           responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="编码" name="standard" component={SysField.Standard} />
+          <FormItem mega-props={{span: 1}} placeholder="型号" name="skuName" component={SysField.SelectSkuName} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -186,7 +186,7 @@ const SkuTable = (props) => {
             </>
           );
         }} />
-        <Column title='编码' dataIndex='standard' />
+        <Column title='编码' key={3} dataIndex='standard' />
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
         <Column />
         <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {
