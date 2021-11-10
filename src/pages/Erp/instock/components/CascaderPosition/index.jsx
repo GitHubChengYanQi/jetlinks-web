@@ -6,7 +6,7 @@ import {useRequest} from '@/util/Request';
 import {instockEdit} from '@/pages/Erp/instock/InstockUrl';
 
 
-const CascaderPosition = ({value, onSuccess, ...props}) => {
+const CascaderPosition = ({value, onSuccess}) => {
 
   const {run} = useRequest(instockEdit, {
     manual: true, onSuccess: () => {

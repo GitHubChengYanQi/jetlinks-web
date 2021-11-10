@@ -61,24 +61,26 @@ const Instock = (props) => {
               </>
             );
           }} sorter />
-          <Column title="产品" render={(text, record) => {
+          <Column title="物料" render={(text, record) => {
             return (
               <>
+                {record.sku && record.sku.skuName}
+                &nbsp;/&nbsp;
                 {record.spuResult && record.spuResult.name}
                 &nbsp;&nbsp;
-                &lt;
-                {
-                  record.backSkus && record.backSkus.map((items, index) => {
-                    if (index === record.backSkus.length - 1) {
-                      return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                    } else {
-                      return <span
-                        key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
-                    }
-
-                  })
-                }
-                &gt;
+                <em style={{color: '#c9c8c8', fontSize: 10}}>
+                  (
+                  {
+                    record.backSkus
+                    &&
+                    record.backSkus.map((items, index) => {
+                      return <span key={index}>
+                        {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
+                      </span>;
+                    })
+                  }
+                  )
+                </em>
               </>
             );
 
@@ -95,9 +97,9 @@ const Instock = (props) => {
           <Column title="售价" width={120} align="center" dataIndex="sellingPrice" sorter />
           <Column title="操作" width={120} render={(text, record) => {
             return (
-              <Button style={{margin: '0 10px'}} onClick={async () => {
+              <Button style={{margin: '0 10px'}} disabled={record.number === 0} onClick={async () => {
                 refPositions.current.open(record);
-              }}><Icon type="icon-ruku" />入库</Button>
+              }}><Icon type="icon-ruku" />{record.number === 0 ? '已入库' : '入库'}</Button>
             );
           }} />
         </Table>

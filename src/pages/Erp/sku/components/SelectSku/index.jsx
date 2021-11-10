@@ -4,7 +4,7 @@ import {Select as AntSelect, Select as AntdSelect} from 'antd';
 import React, {useEffect, useState} from 'react';
 
 
-const SelectSku = ({value,onChange}) => {
+const SelectSku = ({value,onChange,dropdownMatchSelectWidth}) => {
 
   const {loading, data, run} = useRequest({...skuList, data: {type: 0}}, {debounceInterval: 500});
 
@@ -40,12 +40,12 @@ const SelectSku = ({value,onChange}) => {
   });
 
   return (<AntdSelect
-    placeholder="物料"
+    placeholder="输入型号搜索"
     showSearch
     value={change || (value && options && options[0] && options[0].label+options[0].attribute)}
     allowClear
     loading={loading}
-    style={{width: '100%'}}
+    dropdownMatchSelectWidth={dropdownMatchSelectWidth}
     onSearch={(value) => {
       setChange(value);
       run({

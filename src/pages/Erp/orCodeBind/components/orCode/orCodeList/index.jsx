@@ -39,9 +39,30 @@ const OrCodeList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="类型" name="type" component={SysField.Type} />
+        <FormItem label="类型" style={{width: 200}} name="type" component={SysField.Type} />
       </>
     );
+  };
+
+  const type = (type) => {
+    switch (type) {
+      case 'sku':
+        return '物料';
+      case 'instock':
+        return '入库';
+      case 'outstock':
+        return '出库';
+      case 'stock':
+        return '库存';
+      case 'storehouse':
+        return '仓库';
+      case 'storehousePositions':
+        return '库位';
+      case 'spu':
+        return '产品';
+      default:
+        return null;
+    }
   };
 
   return (
@@ -54,10 +75,13 @@ const OrCodeList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
+        <Column title={<ScanOutlined />} align="center" width={20} render={(value, record) => {
           return (<Code value={record.orCodeId} />);
         }} />
-        <Column title="类型" dataIndex="type" />
+        <Column title="类型" dataIndex="type" render={(value)=>{
+          return type(value);
+        }} />
+        <Column title='创建时间' dataIndex='createTime' />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

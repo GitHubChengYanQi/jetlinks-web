@@ -61,7 +61,7 @@ const StockTable = (props) => {
           grid={search}
           columns={4} full autoRow>
 
-          <div style={{display:'inline-block',width:!search && 200}}>
+          <div style={{display: 'inline-block', width: !search && 200}}>
             <FormItem
               mega-props={{span: 1}}
               placeholder="品牌"
@@ -110,27 +110,24 @@ const StockTable = (props) => {
         rowSelection
         {...other}
       >
-        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code source='stock' id={record.stockId} />);
-        }} />
         <Column title="产品" render={(text, record) => {
           return (
             <>
+              <Code source="stock" id={record.stockId} />
+              {record.sku && `${record.sku.skuName  }  /  `}
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
-              &lt;
-              {
-                record.backSkus && record.backSkus.map((items, index) => {
-                  if (index === record.backSkus.length - 1) {
-                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                  } else {
-                    return <span
-                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
-                  }
-
-                })
-              }
-              &gt;
+              { record.backSkus && record.backSkus.length>0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
+                (
+                {
+                  record.backSkus.map((items, index) => {
+                    return <span key={index}>{items.itemAttribute.attribute}
+                      ：
+                      {items.attributeValues.attributeValues}</span>;
+                  })
+                }
+                )
+              </em>}
             </>
           );
 
@@ -153,7 +150,7 @@ const StockTable = (props) => {
         <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
           return <Button type="link" onClick={() => {
             history.push(`/ERP/stock/detail?storehouseId=${record.storehouseId}&brandId=${record.brandId}&skuId=${record.skuId}`);
-          }}>查看</Button>;
+          }}>查看库存详情</Button>;
         }} />
 
       </Table>

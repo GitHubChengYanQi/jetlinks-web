@@ -20,7 +20,7 @@ import {FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import InstockEdit from '../InstockEdit';
-import {useRequest} from "@/util/Request";
+import {useRequest} from '@/util/Request';
 import {instockDelete, instockEdit, instockList, instockOrderList, itemIdSelect} from '../InstockUrl';
 import * as SysField from '../InstockField';
 import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
@@ -40,60 +40,38 @@ const InstockList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
-  const [search,{toggle}]  = useBoolean(false);
-
-  const {run} = useRequest(instockEdit, {
-    manual: true, onSuccess: () => {
-      openNotificationWithIcon('success');
-      tableRef.current.refresh();
-    }
-  });
-
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: type === 'success' ? '入库成功！' : '已入库！',
-    });
-  };
-
-  function confirmOk(record) {
-    Modal.confirm({
-      title: '入库',
-      centered: true,
-      content: `请确认是否执行入库操作!注意：入库之后不可删除。`,
-      style: {margin: 'auto'},
-      cancelText: '取消',
-      onOk: async () => {
-        record.state = 1;
-        await run(
-          {
-            data: record
-          }
-        );
-      }
-    });
-  }
+  const [search, {toggle}] = useBoolean(false);
 
   const searchForm = () => {
 
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemIdSelect}/>
-          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandId" component={SysField.BrandId}/>
+          <FormItem mega-props={{span: 1}} placeholder="负责人" name="itemId" component={SysField.UserId} />
         </>
       );
     };
 
-
     return (
-      <div style={{maxWidth:800}} >
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="storehouseId" component={SysField.StoreHouseSelect}/>
+      <div style={{maxWidth: 800}}>
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}}
+          labelAlign="left"
+          layoutProps={{wrapperWidth: 200}}
+          grid={search}
+          columns={4}
+          full
+          autoRow>
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder="仓库名称"
+            name="storehouseId"
+            component={SysField.StoreHouseSelect} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -107,10 +85,10 @@ const InstockList = () => {
         <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
-            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
+              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
           </FormButtonGroup>
         </MegaLayout>
       </>
@@ -125,6 +103,7 @@ const InstockList = () => {
         api={instockOrderList}
         rowKey="instockOrderId"
         isModal={false}
+        tableKey="instock"
         SearchButton={Search()}
         layout={search}
         searchForm={searchForm}
@@ -132,42 +111,43 @@ const InstockList = () => {
         ref={tableRef}
         rowSelection
       >
-        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code source='instock' id={record.instockOrderId} />);
-        }} />
-        <Column title='入库单' dataIndex='instockOrderId' render={(text)=>{
+        <Column key={1} title="入库单" dataIndex="instockOrderId" render={(text) => {
           return (
-            <a onClick={()=>{
-              instockRef.current.open(text);
-            }}>
-              {text}
-            </a>
+            <>
+              <Code source="instock" id={text} />
+              <a onClick={() => {
+                instockRef.current.open(text);
+              }}>
+                {text}
+              </a>
+            </>
           );
-        }}/>
-        <Column title="仓库名称" dataIndex="storeHouseId" render={(text, record) => {
+        }} />
+        <Column key={2} title="仓库名称" dataIndex="storeHouseId" render={(text, record) => {
           return (
             <>
               {record.storehouseResult && record.storehouseResult.name}
             </>
           );
-        }} sorter/>
-        <Column title="负责人" width={200} dataIndex="userId" sorter render={(text, record) => {
+        }} sorter />
+        <Column key={3} title="负责人" width={200} dataIndex="userId" sorter render={(text, record) => {
           return (
             <>
               {record.userResult && record.userResult.name}
             </>
           );
-        }}/>
-        <Column title="登记时间" width={200} dataIndex="time" sorter/>
+        }} />
+        <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
       </Table>
-      <MyModal width={1100} title="入库单" component={InstockEdit} onSuccess={() => {
+
+      <MyModal width={1200} title="入库单" component={InstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
 
       <MyModal width={1300} component={Instock} onSuccess={() => {
         instockRef.current.close();
-      }} ref={instockRef}/>
+      }} ref={instockRef} />
     </>
   );
 };

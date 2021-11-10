@@ -12,6 +12,7 @@ import Select from '@/components/Select';
 import {storeHouseSelect} from '@/pages/Erp/outstock/OutstockUrl';
 import * as apiUrl from '@/pages/Erp/outstockApply/outstockApplyUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 export const State = (props) =>{
   props.onChange(1);
@@ -44,6 +45,9 @@ export const Number = (props) =>{
 };
 
 
+export const SkuId = (props) => {
+  return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
+};
 
 
 export const Customer = (props) => {

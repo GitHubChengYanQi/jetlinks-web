@@ -23,7 +23,7 @@ const useTableSet = (column, tableKey) => {
 
   const md5TableKey = () => {
     let keys = '';
-    column && column.length > 0 && column.map((items, index) => {
+    tableKey && column && column.length > 0 && column.map((items, index) => {
       if (index === column.length - 1) {
         return keys += `${items.key}`;
       } else {
@@ -155,7 +155,7 @@ const useTableSet = (column, tableKey) => {
       style={{minWidth: 220}}
       multiple
       selectedKeys={tableColumn && tableColumn.length > 0 && tableColumn.map((items) => {
-        return items.key;
+        return items && items.key;
       })}
       selectable
       onDeselect={(value) => {
@@ -168,7 +168,7 @@ const useTableSet = (column, tableKey) => {
       }}
     >
       {
-        column && column.length > 0 && column.map((items) => {
+        tableKey && column && column.length > 0 && column.map((items) => {
           if (items.props && !items.props.fixed && items.key) {
             return (
               <Menu.Item style={{background: '#fff', color: '#000'}} key={items.key}>

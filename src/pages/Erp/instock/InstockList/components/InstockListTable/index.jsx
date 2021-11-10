@@ -12,7 +12,7 @@ const formActionsPublic = createFormActions();
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const InstockListTable = ({...props},ref) => {
+const InstockListTable = ({...props}, ref) => {
 
   const tableRef = useRef(null);
 
@@ -44,31 +44,33 @@ const InstockListTable = ({...props},ref) => {
       searchForm={searchForm}
       ref={tableRef}
     >
-      <Column title="仓库名称" fixed dataIndex="storehouseId" render={(text, record) => {
+      <Column title="仓库库位" dataIndex="storehouseId" render={(text, record) => {
         return (
           <>
-            {record.storehouseResult && record.storehouseResult.name}
+            {record.storehouseResult && record.storehouseResult.name} - {record.storehousePositions && record.storehousePositions.name}
           </>
         );
       }} sorter />
-      <Column title="产品" render={(text, record) => {
+      <Column title="物料" render={(text, record) => {
         return (
           <>
+            {record.sku && record.sku.skuName}
+            &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;
-            &lt;
-            {
-              record.backSkus && record.backSkus.map((items, index) => {
-                if (index === record.backSkus.length - 1) {
-                  return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                } else {
-                  return <span
-                    key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
-                }
-
-              })
-            }
-            &gt;
+            <em style={{color: '#c9c8c8', fontSize: 10}}>
+              (
+              {
+                record.backSkus
+                &&
+                record.backSkus.map((items, index) => {
+                  return (
+                    <span key={index}>{items.itemAttribute.attribute}：{items.attributeValues.attributeValues}</span>
+                  );
+                })
+              }
+              )
+            </em>
           </>
         );
 

@@ -13,7 +13,20 @@ import Select from '@/components/Select';
 import * as apiUrl from '../orCodeUrl';
 
 export const Type = (props) =>{
-  return (<Input {...props}/>);
+  return (<AntdSelect
+    allowClear
+    options={
+      [
+        {label:'物料',value:'sku'},
+        {label:'产品',value:'spu'},
+        {label:'入库',value:'instock'},
+        {label:'出库',value:'outstock'},
+        {label:'库存',value:'stock'},
+        {label:'仓库',value:'storehouse'},
+        {label:'库位',value:'storehousePositions'},
+      ]
+    }
+    {...props}/>);
 };
 export const Data = (props) =>{
   return (<Input {...props}/>);
