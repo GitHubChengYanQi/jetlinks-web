@@ -10,7 +10,7 @@ import Form from '@/components/Form';
 import {instockDetail, instockAdd, instockEdit, instockOrderAdd} from '../InstockUrl';
 import * as SysField from '../InstockField';
 import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
-import {Button, Card} from 'antd';
+import {Avatar, Button, Card} from 'antd';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {itemId} from '../InstockField';
@@ -42,29 +42,29 @@ const InstockEdit = ({...props}) => {
         api={ApiConfig}
         fieldKey="instockId"
         effects={({setFieldState}) => {
-          onFieldValueChange$('instockRequest.*.spuId').subscribe(async (value) => {
-            if (value.value) {
-              const data = await request({
-                ...spuDetail,
-                data: {
-                  spuId: value.value
-                }
-              });
-
-              setFieldState(
-                FormPath.transform(value.name, /\d/, $1 => {
-                  return `instockRequest.${$1}.skuId`;
-                }),
-                state => {
-                  if (value.active) {
-                    state.props.select = value;
-                  }
-                  state.props.sku = data.sku;
-                }
-              );
-            }
-
-          });
+          // onFieldValueChange$('instockRequest.*.spuId').subscribe(async (value) => {
+          //   if (value.value) {
+          //     const data = await request({
+          //       ...spuDetail,
+          //       data: {
+          //         spuId: value.value
+          //       }
+          //     });
+          //
+          //     setFieldState(
+          //       FormPath.transform(value.name, /\d/, $1 => {
+          //         return `instockRequest.${$1}.skuId`;
+          //       }),
+          //       state => {
+          //         if (value.active) {
+          //           state.props.select = value;
+          //         }
+          //         state.props.sku = data.sku;
+          //       }
+          //     );
+          //   }
+          //
+          // });
         }}
       >
 
@@ -73,7 +73,7 @@ const InstockEdit = ({...props}) => {
           <FormItem label="负责人" name="userId" component={SysField.UserId} required />
           <FormItem label="登记时间" name="time" component={SysField.RegisterTime} required />
         </ProCard>
-        <ProCard title="产品信息" className="h2Card" headerBordered>
+        <ProCard title="物料列表" className="h2Card" headerBordered>
           <FieldList
             name="instockRequest"
             initialValue={[
@@ -88,65 +88,72 @@ const InstockEdit = ({...props}) => {
                     const onRemove = index => mutators.remove(index);
                     return (
                       <Card
+                        style={{marginTop:8}}
                         headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
-                        title={`产品${index + 1}`}
+                        bodyStyle={{padding:8}}
                         key={index}>
-                        <div>
-                          <SpuList
+                        <Avatar size={24}>{`${index + 1}`}</Avatar>
+                        <div style={{width: '23%', display: 'inline-block'}}>
+                          <FormItem
                             labelCol={7}
-                            style={{width: '28%', display: 'inline-block'}}
-                            spuName={`instockRequest.${index}.spuId`}
-                            skusName={`instockRequest.${index}.skuId`}
-                            spuLabel="产品"
-                            skuLabel="规格" />
-                          <div style={{width: '28%', display: 'inline-block'}}>
-                            <FormItem
-                              labelCol={7}
-                              label="品牌"
-                              name={`instockRequest.${index}.brandId`}
-                              component={SysField.BrandId}
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <div style={{width: '28%', display: 'inline-block'}}>
-                            <FormItem
-                              labelCol={7}
-                              label="数量"
-                              name={`instockRequest.${index}.number`}
-                              component={SysField.Number}
-                              required
-                            />
-                          </div>
-                          <div style={{width: '28%', display: 'inline-block'}}>
-                            <FormItem
-                              labelCol={7}
-                              label="原价"
-                              name={`instockRequest.${index}.costPrice`}
-                              component={SysField.CostPrice}
-                              required
-                            />
-                          </div>
-                          <div style={{width: '28%', display: 'inline-block'}}>
-                            <FormItem
-                              labelCol={7}
-                              label="售价"
-                              name={`instockRequest.${index}.sellingPrice`}
-                              component={SysField.SellingPrice}
-                              required
-                            />
-                          </div>
-                          <Button
-                            type="link"
-                            style={{display: state.value.length === 1 ? 'none' : 'inline-block', float: 'right'}}
-                            icon={<DeleteOutlined />}
-                            onClick={() => {
-                              onRemove(index);
-                            }}
-                            danger
+                            itemStyle={{margin:0}}
+                            label="物料"
+                            name={`instockRequest.${index}.skuId`}
+                            component={SysField.SkuId}
+                            required
                           />
                         </div>
+                        <div style={{width: '23%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin:0}}
+                            label="品牌"
+                            name={`instockRequest.${index}.brandId`}
+                            component={SysField.BrandId}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '16%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin:0}}
+                            label="数量"
+                            name={`instockRequest.${index}.number`}
+                            component={SysField.Number}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '16%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin:0}}
+                            label="原价"
+                            name={`instockRequest.${index}.costPrice`}
+                            component={SysField.CostPrice}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '16%', display: 'inline-block'}}>
+                          <FormItem
+                            labelAlign='left'
+                            itemStyle={{margin:0}}
+                            labelCol={7}
+                            label="售价"
+                            name={`instockRequest.${index}.sellingPrice`}
+                            component={SysField.SellingPrice}
+                            required
+                          />
+                        </div>
+                        <Button
+                          type="link"
+                          style={{float: 'right'}}
+                          disabled={state.value.length === 1}
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
+                        />
                       </Card>
                     );
                   })}

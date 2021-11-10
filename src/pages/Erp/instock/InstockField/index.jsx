@@ -16,6 +16,7 @@ import * as apiUrl from '../InstockUrl';
 import {UserIdSelect} from '../InstockUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 const {Search} = Input;
 
@@ -81,14 +82,14 @@ export const  ItemIdSelect = (props) =>{
   return (<Select   api={apiUrl.itemIdSelect} {...props}/>);
 };
 export const  StoreHouseSelect = (props) =>{
-  return (<Select   api={apiUrl.storeHouseSelect} {...props}/>);
+  return (<Select width={200} api={apiUrl.storeHouseSelect} {...props}/>);
 };
 // 产品名称
 export const itemId = (props) =>{
   return (<Select api={apiUrl.ProductNameListSelect}  {...props}/>);
 };
 export const UserId = (props) =>{
-  return (<Select api={apiUrl.UserIdSelect}  {...props}/>);
+  return (<Select width={200} api={apiUrl.UserIdSelect}  {...props}/>);
 };
 
 export const barcode = (props) =>{
@@ -108,4 +109,8 @@ export const Remake = (props) => {
   const {sku, select,...other} = props;
 
   return (<SpuAttribute sku={sku} select={select} {...other} />);
+};
+
+export const SkuId = (props) => {
+  return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
 };
