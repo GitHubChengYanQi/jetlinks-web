@@ -61,7 +61,7 @@ const Code = ({source, id, value}) => {
         }}
       >
         <div style={{margin: 'auto', maxWidth: 256}}>
-          <Image src={jrQrcode.getQrBase64(value || `${code}?codes=${codes}`)} preview={false} />
+          <Image src={jrQrcode.getQrBase64(value || `${code}?id=${codes}`)} preview={false} />
         </div>
         <div style={{textAlign: 'center'}}>
           {(value || codes) && <AcBarcode value={value || codes} />}
