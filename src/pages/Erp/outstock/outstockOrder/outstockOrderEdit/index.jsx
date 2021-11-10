@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Input, Steps} from 'antd';
+import {Avatar, Button, Input, Steps} from 'antd';
 import Form from '@/components/Form';
 import {outstockOrderDetail, outstockOrderAdd, outstockOrderEdit} from '../outstockOrderUrl';
 import * as SysField from '../outstockOrderField';
@@ -81,13 +81,18 @@ const OutstockOrderEdit = ({...props}) => {
                   const onRemove = index => mutators.remove(index);
                   return (
                     <div key={index}>
-                      <SpuList
-                        style={{width: '25%', display: 'inline-block'}}
-                        spuName={`applyDetails.${index}.spuId`}
-                        skusName={`applyDetails.${index}.skuId`}
-                        spuLabel="产品"
-                        skuLabel="规格" />
-                      <div style={{display:'inline-block',width:'25%'}}>
+                      <Avatar size={24}>{`${index + 1}`}</Avatar>
+                      <div style={{width: '30%', display: 'inline-block'}}>
+                        <FormItem
+                          labelCol={7}
+                          itemStyle={{margin: 0}}
+                          label="物料"
+                          name={`instockRequest.${index}.skuId`}
+                          component={SysField.SkuId}
+                          required
+                        />
+                      </div>
+                      <div style={{display:'inline-block',width:'30%'}}>
                         <FormItem
                           label="品牌"
                           name={`applyDetails.${index}.brandId`}
@@ -95,7 +100,7 @@ const OutstockOrderEdit = ({...props}) => {
                           required
                         />
                       </div>
-                      <div style={{display:'inline-block',width:'17%'}}>
+                      <div style={{display:'inline-block',width:'30%'}}>
                         <FormItem
                           label="数量"
                           name={`applyDetails.${index}.number`}
@@ -105,7 +110,8 @@ const OutstockOrderEdit = ({...props}) => {
                       </div>
                       <Button
                         type="link"
-                        style={{display: state.value.length === 1 ? 'none' : 'inline-block', float: 'right'}}
+                        disabled={state.value.length === 1}
+                        style={{float: 'right'}}
                         icon={<DeleteOutlined />}
                         onClick={() => {
                           onRemove(index);

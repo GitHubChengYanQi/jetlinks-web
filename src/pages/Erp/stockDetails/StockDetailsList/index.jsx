@@ -94,21 +94,20 @@ const StockDetailsList = (props) => {
         <Column title="产品" render={(text, record) => {
           return (
             <>
+              {record.sku && `${record.sku.skuName  }  /  `}
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
-              &lt;
-              {
-                record.backSkus && record.backSkus.map((items, index) => {
-                  if (index === record.backSkus.length - 1) {
-                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                  } else {
-                    return <span
-                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
-                  }
-
-                })
-              }
-              &gt;
+              { record.backSkus && record.backSkus.length>0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
+                (
+                {
+                  record.backSkus.map((items, index) => {
+                    return <span key={index}>{items.itemAttribute.attribute}
+                      ：
+                      {items.attributeValues.attributeValues}</span>;
+                  })
+                }
+                )
+              </em>}
             </>
           );
 

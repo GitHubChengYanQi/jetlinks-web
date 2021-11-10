@@ -10,7 +10,7 @@ import Form from '@/components/Form';
 import {instockDetail, instockAdd, instockEdit, instockOrderAdd} from '../InstockUrl';
 import * as SysField from '../InstockField';
 import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
-import {Avatar, Button, Card} from 'antd';
+import {Avatar, Button, Card, Row, Space} from 'antd';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {itemId} from '../InstockField';
@@ -69,9 +69,10 @@ const InstockEdit = ({...props}) => {
       >
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
-          <FormItem label="仓库名称" name="storeHouseId" component={SysField.StoreHouseSelect} required />
-          <FormItem label="负责人" name="userId" component={SysField.UserId} required />
-          <FormItem label="登记时间" name="time" component={SysField.RegisterTime} required />
+          <Space>
+            <FormItem label="仓库名称" name="storeHouseId" component={SysField.StoreHouseSelect} required />
+            <FormItem label="负责人" name="userId" component={SysField.UserId} required />
+          </Space>
         </ProCard>
         <ProCard title="物料列表" className="h2Card" headerBordered>
           <FieldList
@@ -88,15 +89,15 @@ const InstockEdit = ({...props}) => {
                     const onRemove = index => mutators.remove(index);
                     return (
                       <Card
-                        style={{marginTop:8}}
+                        style={{marginTop: 8}}
                         headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
-                        bodyStyle={{padding:8}}
+                        bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
                         <div style={{width: '23%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
-                            itemStyle={{margin:0}}
+                            itemStyle={{margin: 0}}
                             label="物料"
                             name={`instockRequest.${index}.skuId`}
                             component={SysField.SkuId}
@@ -106,7 +107,7 @@ const InstockEdit = ({...props}) => {
                         <div style={{width: '23%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
-                            itemStyle={{margin:0}}
+                            itemStyle={{margin: 0}}
                             label="品牌"
                             name={`instockRequest.${index}.brandId`}
                             component={SysField.BrandId}
@@ -116,7 +117,7 @@ const InstockEdit = ({...props}) => {
                         <div style={{width: '16%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
-                            itemStyle={{margin:0}}
+                            itemStyle={{margin: 0}}
                             label="数量"
                             name={`instockRequest.${index}.number`}
                             component={SysField.Number}
@@ -126,7 +127,7 @@ const InstockEdit = ({...props}) => {
                         <div style={{width: '16%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
-                            itemStyle={{margin:0}}
+                            itemStyle={{margin: 0}}
                             label="原价"
                             name={`instockRequest.${index}.costPrice`}
                             component={SysField.CostPrice}
@@ -135,8 +136,8 @@ const InstockEdit = ({...props}) => {
                         </div>
                         <div style={{width: '16%', display: 'inline-block'}}>
                           <FormItem
-                            labelAlign='left'
-                            itemStyle={{margin:0}}
+                            labelAlign="left"
+                            itemStyle={{margin: 0}}
                             labelCol={7}
                             label="售价"
                             name={`instockRequest.${index}.sellingPrice`}

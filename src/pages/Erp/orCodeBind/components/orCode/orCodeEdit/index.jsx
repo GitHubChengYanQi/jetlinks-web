@@ -31,13 +31,6 @@ const OrCodeEdit = ({...props}) => {
       fieldKey="orCodeId"
     >
       <FormItem label="类型" name="type" component={SysField.Type} required/>
-      <FormItem label="信息" name="data" component={SysField.Data} required/>
-      <FormItem label="创建者" name="createUser" component={SysField.CreateUser} required/>
-      <FormItem label="修改者" name="updateUser" component={SysField.UpdateUser} required/>
-      <FormItem label="创建时间" name="createTime" component={SysField.CreateTime} required/>
-      <FormItem label="修改时间" name="updateTime" component={SysField.UpdateTime} required/>
-      <FormItem label="状态" name="display" component={SysField.Display} required/>
-      <FormItem label="部门id" name="deptId" component={SysField.DeptId} required/>
     </Form>
   );
 };

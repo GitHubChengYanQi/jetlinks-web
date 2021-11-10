@@ -52,18 +52,26 @@ const InstockList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemIdSelect} />
-          <FormItem mega-props={{span: 1}} placeholder="品牌" name="brandId" component={SysField.BrandId} />
+          <FormItem mega-props={{span: 1}} placeholder="负责人" name="itemId" component={SysField.UserId} />
         </>
       );
     };
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-                    columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="仓库名称" name="storehouseId"
-                    component={SysField.StoreHouseSelect} />
+        <MegaLayout
+          responsive={{s: 1, m: 2, lg: 2}}
+          labelAlign="left"
+          layoutProps={{wrapperWidth: 200}}
+          grid={search}
+          columns={4}
+          full
+          autoRow>
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder="仓库名称"
+            name="storehouseId"
+            component={SysField.StoreHouseSelect} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -95,7 +103,7 @@ const InstockList = () => {
         api={instockOrderList}
         rowKey="instockOrderId"
         isModal={false}
-        tableKey='instock'
+        tableKey="instock"
         SearchButton={Search()}
         layout={search}
         searchForm={searchForm}

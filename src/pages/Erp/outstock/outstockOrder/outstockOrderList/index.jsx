@@ -94,7 +94,7 @@ const OutstockOrderList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal width={1200} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
+      <Modal width={800} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
