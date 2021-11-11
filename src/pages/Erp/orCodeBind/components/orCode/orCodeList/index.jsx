@@ -60,6 +60,8 @@ const OrCodeList = () => {
         return '库位';
       case 'spu':
         return '产品';
+      case 'item':
+        return '实物';
       default:
         return null;
     }

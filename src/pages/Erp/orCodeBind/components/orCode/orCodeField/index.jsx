@@ -17,6 +17,7 @@ export const Type = (props) =>{
     allowClear
     options={
       [
+        {label:'实物',value:'item'},
         {label:'物料',value:'sku'},
         {label:'产品',value:'spu'},
         {label:'入库',value:'instock'},

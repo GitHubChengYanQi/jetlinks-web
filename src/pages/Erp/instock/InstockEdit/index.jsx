@@ -27,8 +27,6 @@ const ApiConfig = {
   save: instockEdit
 };
 
-const {onFieldValueChange$} = FormEffectHooks;
-
 const InstockEdit = ({...props}) => {
 
   const formRef = useRef();
@@ -41,30 +39,11 @@ const InstockEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="instockId"
-        effects={({setFieldState}) => {
-          // onFieldValueChange$('instockRequest.*.spuId').subscribe(async (value) => {
-          //   if (value.value) {
-          //     const data = await request({
-          //       ...spuDetail,
-          //       data: {
-          //         spuId: value.value
-          //       }
-          //     });
-          //
-          //     setFieldState(
-          //       FormPath.transform(value.name, /\d/, $1 => {
-          //         return `instockRequest.${$1}.skuId`;
-          //       }),
-          //       state => {
-          //         if (value.active) {
-          //           state.props.select = value;
-          //         }
-          //         state.props.sku = data.sku;
-          //       }
-          //     );
-          //   }
-          //
-          // });
+        onSuccess={()=>{
+          props.onSuccess();
+        }}
+        onError={()=>{
+
         }}
       >
 

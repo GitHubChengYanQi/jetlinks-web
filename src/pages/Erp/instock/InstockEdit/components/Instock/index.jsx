@@ -3,7 +3,7 @@ import * as SysField from '@/pages/Erp/instock/InstockField';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {Badge, Button, message, Table as AntTable} from 'antd';
+import {Badge, Button, Card, message, Modal, Space, Table as AntTable} from 'antd';
 import Icon from '@/components/Icon';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -14,8 +14,6 @@ import ProCard from '@ant-design/pro-card';
 import InstockListTable from '@/pages/Erp/instock/InstockList/components/InstockListTable';
 import Cascader from '@/components/Cascader';
 import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
-import Modal from '@/components/Modal';
-import CascaderPosition from '@/pages/Erp/instock/components/CascaderPosition';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -24,12 +22,22 @@ const formActionsPublic = createFormActions();
 
 const Instock = (props) => {
 
-  const refPositions = useRef();
+  const [show, setShow] = useState();
 
+  const [position, setPosition] = useState();
 
   const tableRef = useRef(null);
   const instockRef = useRef(null);
 
+  const [items, setItems] = useState();
+
+  const {run} = useRequest(instockEdit, {
+    manual: true, onSuccess: () => {
+      setShow(false);
+      tableRef.current.submit();
+      instockRef.current.tableRef.current.submit();
+    }
+  });
 
   const searchForm = () => {
 
@@ -98,19 +106,41 @@ const Instock = (props) => {
           <Column title="操作" width={120} render={(text, record) => {
             return (
               <Button style={{margin: '0 10px'}} disabled={record.number === 0} onClick={async () => {
-                refPositions.current.open(record);
+                setItems(record);
+                setShow(true);
               }}><Icon type="icon-ruku" />{record.number === 0 ? '已入库' : '入库'}</Button>
             );
           }} />
         </Table>
       </ProCard>
 
-      <Modal component={CascaderPosition} ref={refPositions} onSuccess={() => {
-        refPositions.current.close();
-        tableRef.current.submit();
-        instockRef.current.tableRef.current.submit();
-      }} />
-
+      <Modal
+        visible={show}
+        title='选择库位'
+        onCancel={()=>{
+          setShow(false);
+        }}
+        onOk={async ()=>{
+          if (position) {
+            await run({
+              data: {
+                ...items,
+                storehousePositionsId: position,
+              }
+            });
+          } else {
+            message.error('请选择库位！');
+          }
+        }}
+      >
+        <Cascader
+          width="100%"
+          defaultParams={{params: {ids: items && items.storeHouseId}}}
+          api={storehousePositionsTreeView}
+          onChange={(value) => {
+            setPosition(value);
+          }} value={position} />
+      </Modal>
       <ProCard className="h2Card" headerBordered title="入库明细">
         <InstockListTable ref={instockRef} value={props.value} />
       </ProCard>
