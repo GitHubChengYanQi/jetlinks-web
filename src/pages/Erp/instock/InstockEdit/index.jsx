@@ -13,11 +13,14 @@ import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formil
 import {Avatar, Button, Card, Row, Space} from 'antd';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
-import {itemId} from '../InstockField';
+import {Codings, itemId} from '../InstockField';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuList from '@/pages/Erp/instock/components/SpuList';
+import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {config} from 'ice';
 
 const {FormItem} = Form;
 
@@ -27,9 +30,24 @@ const ApiConfig = {
   save: instockEdit
 };
 
+const {code} = config;
+
 const InstockEdit = ({...props}) => {
 
   const formRef = useRef();
+
+  const {loading, data} = useRequest(codingRulesList, {
+    defaultParams: {
+      data: {
+        module: 1,
+        state: 1
+      }
+    }
+  });
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
 
 
   return (
@@ -39,19 +57,29 @@ const InstockEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="instockId"
-        onSuccess={()=>{
+        onSuccess={() => {
           props.onSuccess();
         }}
-        onError={()=>{
+        onError={() => {
 
+        }}
+        onSubmit={(value)=>{
+          // eslint-disable-next-line no-template-curly-in-string
+          return {...value,url:`${code}?id=codeId`};
         }}
       >
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
-          <Space>
+          <div style={{display: 'inline-block',width:'30%'}}>
+            <FormItem label="编码" name="coding" codingId={data} component={SysField.Codings} required />
+          </div>
+          <div style={{display: 'inline-block',width:'30%'}}>
             <FormItem label="仓库名称" name="storeHouseId" component={SysField.StoreHouseSelect} required />
+          </div>
+          <div style={{display: 'inline-block',width:'30%'}}>
             <FormItem label="负责人" name="userId" component={SysField.UserId} required />
-          </Space>
+          </div>
+
         </ProCard>
         <ProCard title="物料列表" className="h2Card" headerBordered>
           <FieldList

@@ -84,6 +84,13 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           value: '${skuClass}'
         }];
+      case 1:
+        return [{
+          // eslint-disable-next-line no-template-curly-in-string
+          label: '${instock}入库码',
+          // eslint-disable-next-line no-template-curly-in-string
+          value: '${instock}'
+        }];
       default:
         return [];
     }
@@ -158,7 +165,7 @@ export const Values = (props) => {
             ]}
             allowClear
             showSearch
-            value='流水号'
+            value="流水号"
             filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             onSelect={(value) => {
               onChange(value);
@@ -170,7 +177,7 @@ export const Values = (props) => {
               }
             }} />
           <InputNumber style={{width: 200}} placeholder="长度,(最大5)" min="0" max="5" onChange={(value) => {
-            onChange(`<serial[${value}]>` );
+            onChange(`<serial[${value}]>`);
           }} />
         </Space>;
       case '自定义':
@@ -178,7 +185,7 @@ export const Values = (props) => {
           <AntdSelect
             value="自定义"
             style={{minWidth: 50}}
-            options={[...input,...serial]}
+            options={[...input, ...serial]}
             dropdownMatchSelectWidth={292}
             onSelect={(value) => {
               onChange(value);
@@ -227,6 +234,7 @@ export const Module = (props) => {
 
   const options = [
     {label: '物料', value: 0},
+    {label: '入库', value: 1},
   ];
 
   return (<AntdSelect options={options} {...props} />);

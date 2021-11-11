@@ -61,7 +61,7 @@ const CodingRulesList = () => {
       case 0:
         return '物料';
       case 1:
-        return '工具';
+        return '入库';
       case 2:
         return '质检';
       default:

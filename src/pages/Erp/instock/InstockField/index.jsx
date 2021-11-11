@@ -17,6 +17,7 @@ import {UserIdSelect} from '../InstockUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import Coding from '@/pages/Erp/tool/components/Coding';
 
 const {Search} = Input;
 
@@ -113,4 +114,11 @@ export const Remake = (props) => {
 
 export const SkuId = (props) => {
   return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
+};
+
+export const Codings = (props) => {
+
+  const {codingId, ...other} = props;
+
+  return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };

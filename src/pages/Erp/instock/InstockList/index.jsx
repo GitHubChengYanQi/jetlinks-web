@@ -111,12 +111,12 @@ const InstockList = () => {
         ref={tableRef}
         rowSelection
       >
-        <Column key={1} title="入库单" dataIndex="instockOrderId" render={(text) => {
+        <Column key={1} title="入库单" dataIndex="coding" render={(text,record) => {
           return (
             <>
               <Code source="instock" id={text} />
               <a onClick={() => {
-                instockRef.current.open(text);
+                instockRef.current.open(record.instockOrderId);
               }}>
                 {text}
               </a>
