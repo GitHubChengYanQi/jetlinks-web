@@ -93,11 +93,8 @@ const OrCodeList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title={<ScanOutlined />} align="center" width={20} render={(value, record) => {
-          return (<Code value={record.orCodeId} />);
-        }} />
-        <Column title="类型" dataIndex="type" render={(value) => {
-          return type(value);
+        <Column title="类型" dataIndex="type" render={(value,record) => {
+          return (<><Code value={record.orCodeId} />{type(value)}</>);
         }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column />

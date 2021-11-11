@@ -1,13 +1,11 @@
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/instock/InstockField';
-import {MegaLayout} from '@formily/antd-components';
-import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-import {Badge, Button, Card, message, Modal, Space, Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import { Button, message, Modal,  Table as AntTable} from 'antd';
 import Icon from '@/components/Icon';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
-import {instock, instockEdit, instockList, instockOrderList} from '@/pages/Erp/instock/InstockUrl';
+import {instock, instockEdit} from '@/pages/Erp/instock/InstockUrl';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
 import ProCard from '@ant-design/pro-card';

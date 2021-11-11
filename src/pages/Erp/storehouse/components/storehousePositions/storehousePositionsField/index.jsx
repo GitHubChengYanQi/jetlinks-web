@@ -33,5 +33,5 @@ export const Note = (props) =>{
 export const Pid = (props) =>{
   const {stroehouseId,...other} = props;
 
-  return (<Cascader api={apiUrl.storehousePositionsTreeView} defaultParams={{params:{ids:stroehouseId}}} {...other}/>);
+  return (<Cascader api={apiUrl.storehousePositionsTreeView} top defaultParams={{params:{ids:stroehouseId}}} {...other}/>);
 };
