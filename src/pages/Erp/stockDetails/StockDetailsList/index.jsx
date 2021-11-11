@@ -5,7 +5,7 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Card, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -18,6 +18,9 @@ import Icon from '@/components/Icon';
 import Modal2 from '@/components/Modal';
 import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
 import {useHistory} from 'ice';
+import {useRequest} from '@/util/Request';
+import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 
 const {Column} = AntTable;
@@ -33,6 +36,17 @@ const StockDetailsList = (props) => {
 
   const {storehouseId, brandId, skuId} = props.searchParams;
 
+  const [ids, setIds] = useState([]);
+
+  const {loading, data} = useRequest({
+    url: '/storehousePositions/treeView',
+    method: 'GET',
+  });
+
+  if (loading){
+    return (<ProSkeleton type="descriptions" />);
+  }
+
   const searchForm = () => {
 
     return (
@@ -46,8 +60,6 @@ const StockDetailsList = (props) => {
       </>
     );
   };
-
-  const [ids, setIds] = useState([]);
 
   const footer = () => {
     return (
@@ -86,8 +98,11 @@ const StockDetailsList = (props) => {
           return (
             <>
               {record.storehouseResult && record.storehouseResult.name}
-              -
-              {record.storehousePositionsResult && record.storehousePositionsResult.name}
+              {record.storehousePositionsId !== 0 && record.storehousePositionsId
+              &&
+              <>
+                -<TreeSelectSee data={data} value={record.storehousePositionsId} />
+              </>}
             </>
           );
         }} sorter />

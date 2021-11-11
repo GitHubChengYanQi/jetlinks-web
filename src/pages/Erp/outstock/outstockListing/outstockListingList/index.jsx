@@ -14,9 +14,12 @@ import {outstockListingList} from '../outstockListingUrl';
 import OutstockListingEdit from '../outstockListingEdit';
 import * as SysField from '../outstockListingField';
 import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const OutstockListingList = (props) => {
 
@@ -44,7 +47,7 @@ const OutstockListingList = (props) => {
         <FormItem label="部门编号" name="deptId" component={SysField.DeptId} />
         <FormItem label="产品id" name="itemId" component={SysField.ItemId} />
         <FormItem label="出库状态" name="state" component={SysField.State} />
-        <FormItem label="出库单号" name="outstockOrderId" value={value || ' '}  component={SysField.OutstockOrderId} />
+        <FormItem label="出库单号" name="outstockOrderId" value={value || ' '} component={SysField.OutstockOrderId} />
         <FormItem label="发货申请" name="outstockApplyId" component={SysField.OutstockApplyId} />
       </>
     );
@@ -57,36 +60,41 @@ const OutstockListingList = (props) => {
         rowKey="outstockListingId"
         searchForm={searchForm}
         rowSelection
-        bodyStyle={{padding:0}}
+        formActions={formActionsPublic}
+        bodyStyle={{padding: 0}}
         bordered={false}
         contentHeight
-        headStyle={{display:'none'}}
+        headStyle={{display: 'none'}}
         showSearchButton={false}
         ref={tableRef}
       >
         <Column title="产品" render={(text, record) => {
           return (
             <>
+              {record.sku && record.sku.skuName}
+              &nbsp;/&nbsp;
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
-              &lt;
-              {
-                record.backSkus && record.backSkus.map((items, index) => {
-                  if (index === record.backSkus.length - 1) {
-                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                  } else {
-                    return <span
-                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
-                  }
-
-                })
-              }
-              &gt;
+              <em style={{color: '#c9c8c8', fontSize: 10}}>
+                (
+                {
+                  record.backSkus
+                  &&
+                  record.backSkus.map((items, index) => {
+                    return (
+                      <span key={index}>
+                        {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
+                      </span>
+                    );
+                  })
+                }
+                )
+              </em>
             </>
           );
 
         }} sorter />
-        <Column title="品牌" dataIndex="brandId" render={(value,record)=>{
+        <Column title="品牌" dataIndex="brandId" render={(value, record) => {
           return (
             <>
               {record.brandResult && record.brandResult.brandName}

@@ -33,7 +33,7 @@ const CategoryList = () => {
   const tableRef = useRef(null);
 
 
-  const [ids,setIds] = useState([]);
+  const [ids, setIds] = useState([]);
 
   const actions = () => {
     return (
@@ -61,9 +61,9 @@ const CategoryList = () => {
 
 
   return (
-    <div style={{padding:16}}>
+    <div style={{padding: 16}}>
       <Table
-        title={<Breadcrumb title='配置管理' />}
+        title={<Breadcrumb title="配置管理" />}
         api={categoryTree}
         contentHeight
         noSort
@@ -73,11 +73,22 @@ const CategoryList = () => {
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        onChange={(value)=>{
+        onChange={(value) => {
           setIds(value);
         }}
       >
-        <Column title='配置名称' dataIndex='title' />
+        <Column title="配置名称" dataIndex="title" render={(value, record) => {
+          if (record.children && record.children.length === 0) {
+            record.children = null;
+          }
+          return (
+            <>
+              {
+                value
+              }
+            </>
+          );
+        }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

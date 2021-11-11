@@ -17,10 +17,13 @@ import DelButton from '@/components/DelButton';
 import Icon from '@/components/Icon';
 import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
 import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const OutstockList = (props) => {
 
@@ -78,6 +81,7 @@ const OutstockList = (props) => {
         api={outstockList}
         contentHeight
         isModal={false}
+        formActions={formActionsPublic}
         rowKey="outstockId"
         ref={tableRef}
         showSearchButton={false}
@@ -98,21 +102,25 @@ const OutstockList = (props) => {
         <Column title="产品" render={(text, record) => {
           return (
             <>
+              {record.sku && record.sku.skuName}
+              &nbsp;/&nbsp;
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
-              &lt;
-              {
-                record.backSkus && record.backSkus.map((items, index) => {
-                  if (index === record.backSkus.length - 1) {
-                    return <span key={index}>{items.attributeValues && items.attributeValues.attributeValues}</span>;
-                  } else {
-                    return <span
-                      key={index}>{items.attributeValues && items.attributeValues.attributeValues}&nbsp;&nbsp;，</span>;
-                  }
-
-                })
-              }
-              &gt;
+              <em style={{color: '#c9c8c8', fontSize: 10}}>
+                (
+                {
+                  record.backSkus
+                  &&
+                  record.backSkus.map((items, index) => {
+                    return (
+                      <span key={index}>
+                        {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
+                      </span>
+                    );
+                  })
+                }
+                )
+              </em>
             </>
           );
 

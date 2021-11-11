@@ -8,14 +8,15 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {orCodeDetail, orCodeAdd, orCodeEdit} from '../orCodeUrl';
+import {orCodeDetail, orCodeAdd, orCodeEdit, orCodeBatchAdd} from '../orCodeUrl';
 import * as SysField from '../orCodeField';
+import {Number} from '../orCodeField';
 
 const {FormItem} = Form;
 
 const ApiConfig = {
   view: orCodeDetail,
-  add: orCodeAdd,
+  add: orCodeBatchAdd,
   save: orCodeEdit
 };
 
@@ -30,7 +31,7 @@ const OrCodeEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="orCodeId"
     >
-      <FormItem label="类型" name="type" component={SysField.Type} required/>
+      <FormItem label="批量生成" name="addSize" component={SysField.Number} required/>
     </Form>
   );
 };

@@ -28,6 +28,10 @@ export const Type = (props) =>{
     }
     {...props}/>);
 };
+
+export const Number = (props) =>{
+  return (<InputNumber style={{width:200}} placeholder='数量（最多1000个）' min={1} max={1000} step={100} {...props} />);
+};
 export const Data = (props) =>{
   return (<Input {...props}/>);
 };

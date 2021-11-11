@@ -4,8 +4,11 @@ import Table from '@/components/Table';
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {createFormActions} from '@formily/antd';
 import * as SysField from '@/pages/Erp/instock/InstockField';
-import {Table as AntTable} from 'antd';
+import {Spin, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
+import {request, useRequest} from '@/util/Request';
+import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
+import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 
 const formActionsPublic = createFormActions();
 
@@ -16,10 +19,14 @@ const InstockListTable = ({...props}, ref) => {
 
   const tableRef = useRef(null);
 
+  const {loading, data} = useRequest({
+    url: '/storehousePositions/treeView',
+    method: 'GET',
+  });
+
   useImperativeHandle(ref, () => ({
     tableRef,
   }));
-
 
   const searchForm = () => {
 
@@ -27,6 +34,10 @@ const InstockListTable = ({...props}, ref) => {
       <FormItem name="instockOrderId" value={props.value} component={SysField.barcode} />
     );
   };
+
+  if (loading) {
+    return <Spin />;
+  }
 
   return (
     <Table
@@ -45,9 +56,15 @@ const InstockListTable = ({...props}, ref) => {
       ref={tableRef}
     >
       <Column title="仓库库位" dataIndex="storehouseId" render={(text, record) => {
+
         return (
           <>
-            {record.storehouseResult && record.storehouseResult.name} - {record.storehousePositions && record.storehousePositions.name}
+            {record.storehouseResult && record.storehouseResult.name}
+            {record.storehousePositionsId !== 0 && record.storehousePositionsId
+            &&
+            <>
+              -<TreeSelectSee data={data} value={record.storehousePositionsId} />
+            </>}
           </>
         );
       }} sorter />

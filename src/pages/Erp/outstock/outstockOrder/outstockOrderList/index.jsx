@@ -86,7 +86,7 @@ const OutstockOrderList = () => {
                   refOutStock.current.open(record.outstockOrderId);
                 }}><Icon type="icon-chuku" />出库</Button>
                 <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
-                  tableRef.current.refresh();
+                  tableRef.current.submit();
                 }} />
               </>}
 

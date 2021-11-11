@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,7 +17,7 @@ import {orCodeDelete, orCodeList} from '../orCodeUrl';
 import OrCodeEdit from '../orCodeEdit';
 import * as SysField from '../orCodeField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {ScanOutlined} from '@ant-design/icons';
+import {RedoOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
@@ -71,6 +71,22 @@ const OrCodeList = () => {
         title={<Breadcrumb />}
         api={orCodeList}
         rowKey="orCodeId"
+        SearchButton={
+          <Space>
+            <Button type="primary" onClick={() => {
+              tableRef.current.submit();
+            }}>
+              <SearchOutlined />查询
+            </Button>
+            <Button type="default" onClick={() => {
+              tableRef.current.formActions.setFieldValue('*', null);
+              tableRef.current.submit();
+            }}>
+              <RedoOutlined />刷新
+            </Button>
+          </Space>
+
+        }
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
@@ -78,23 +94,11 @@ const OrCodeList = () => {
         <Column title={<ScanOutlined />} align="center" width={20} render={(value, record) => {
           return (<Code value={record.orCodeId} />);
         }} />
-        <Column title="类型" dataIndex="type" render={(value)=>{
+        <Column title="类型" dataIndex="type" render={(value) => {
           return type(value);
         }} />
-        <Column title='创建时间' dataIndex='createTime' />
+        <Column title="创建时间" dataIndex="createTime" />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.orCodeId);
-              }} />
-              <DelButton api={orCodeDelete} value={record.orCodeId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={OrCodeEdit} onSuccess={() => {
         tableRef.current.refresh();

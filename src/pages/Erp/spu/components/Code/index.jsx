@@ -7,7 +7,7 @@ import {BarcodeOutlined, QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
 
 
-const Code = ({source, id, value}) => {
+const Code = ({source, id,style, value}) => {
 
   const {code} = config;
 
@@ -33,6 +33,7 @@ const Code = ({source, id, value}) => {
       <Space>
         <Button
           type="link"
+          style={style}
           onClick={() => {
             if (!value) {
               run({

@@ -87,7 +87,7 @@ const OutstockOrderEdit = ({...props}) => {
                           labelCol={7}
                           itemStyle={{margin: 0}}
                           label="物料"
-                          name={`instockRequest.${index}.skuId`}
+                          name={`applyDetails.${index}.skuId`}
                           component={SysField.SkuId}
                           required
                         />

@@ -65,30 +65,6 @@ const SpuClassificationList = () => {
 
   return (
     <div style={{padding: 16}}>
-      {/*<AntTable*/}
-      {/*  dataSource={data || []}*/}
-      {/*  rowSelection={{*/}
-      {/*    type: 'checkbox',*/}
-      {/*    onChange: (selectedRowKeys, selectedRows) => {*/}
-      {/*      setIds(selectedRowKeys);*/}
-      {/*    },*/}
-      {/*  }}*/}
-      {/*  footer={footer}*/}
-      {/*>*/}
-      {/*  <Column title="名称" dataIndex="label" />*/}
-      {/*  <Column title="操作" align="right" render={(value, record) => {*/}
-      {/*    return (*/}
-      {/*      <>*/}
-      {/*        <EditButton onClick={() => {*/}
-      {/*          ref.current.open(record.key);*/}
-      {/*        }} />*/}
-      {/*        <DelButton api={spuClassificationDelete} value={record.spuClassificationId} onSuccess={() => {*/}
-      {/*          tableRef.current.refresh();*/}
-      {/*        }} />*/}
-      {/*      </>*/}
-      {/*    );*/}
-      {/*  }} width={100} />*/}
-      {/*</AntTable>*/}
       <Table
         title={<Breadcrumb title="物料分类" />}
         api={spuClassificationTreeVrew}
@@ -104,7 +80,18 @@ const SpuClassificationList = () => {
         }}
         footer={footer}
       >
-        <Column title="名称" dataIndex="label" />
+        <Column title="名称" dataIndex="label" render={(value,record)=>{
+          if (record.children && record.children.length === 0) {
+            record.children = null;
+          }
+          return (
+            <>
+              {
+                value
+              }
+            </>
+          );
+        }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

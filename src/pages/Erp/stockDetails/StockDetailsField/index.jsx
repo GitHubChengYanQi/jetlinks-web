@@ -9,6 +9,7 @@ import React, {useRef} from 'react';
 import {Input, InputNumber, DatePicker, Button} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../StockDetailsUrl/index';
+import {skuListSelect} from '@/pages/Erp/spu/spuUrl';
 
 export const Stock = (props) =>{
   return (<Input {...props} />);
@@ -17,7 +18,7 @@ export const StockId = (props) =>{
   return (<Select api={apiUrl.stockIdSelect}   {...props}/>);
 };
 export const ItemId = (props) =>{
-  return (<Select api={apiUrl.ProductNameListSelect}   {...props}/>);
+  return (<Select api={skuListSelect}   {...props}/>);
 };
 export const  Storehouse= (props) =>{
   return (<Select api={apiUrl.storehouseIdSelect}   {...props}/>);

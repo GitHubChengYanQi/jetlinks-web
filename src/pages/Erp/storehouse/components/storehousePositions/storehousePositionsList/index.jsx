@@ -13,7 +13,11 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {storehousePositionsDelete, storehousePositionsList} from '../storehousePositionsUrl';
+import {
+  storehousePositionsDelete,
+  storehousePositionsList,
+  storehousePositionsTreeView
+} from '../storehousePositionsUrl';
 import StorehousePositionsEdit from '../storehousePositionsEdit';
 import * as SysField from '../storehousePositionsField';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -52,37 +56,43 @@ const StorehousePositionsList = (props) => {
     <>
       <Table
         title={<Breadcrumb title='仓库库位' />}
-        api={storehousePositionsList}
-        rowKey="storehousePositionsId"
+        api={{
+          url: `/storehousePositions/treeView?ids=${value}`,
+          method: 'GET',
+        }}
+        rowKey="value"
         formActions={formActionsPublic}
         rowSelection
+        noSort
         contentHeight
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title={<ScanOutlined />} align='center' width={20} render={(value,record)=>{
-          return (<Code source='storehousePositions' id={record.storehousePositionsId} />);
-        }} />
-        <Column title="库位名称" width={200} dataIndex="name" render={(value,record)=>{
+        <Column title="库位名称" width={200} dataIndex="label" render={(value,record)=>{
+          if (record.children && record.children.length === 0){
+            record.children = null;
+          }
           return (
             <>
+              <Code style={{width:24,height:24}} source='storehousePositions' id={record.value} />
               {value}
             </>
           );
         }} />
-        <Column title="上级" dataIndex="pid" />
         <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.storehousePositionsId);
-              }} />
-              <DelButton api={storehousePositionsDelete} value={record.storehousePositionsId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
+          if (record.value !== '0'){
+            return (
+              <>
+                <EditButton onClick={() => {
+                  ref.current.open(record.value);
+                }} />
+                <DelButton api={storehousePositionsDelete} value={record.value} onSuccess={() => {
+                  tableRef.current.refresh();
+                }} />
+              </>
+            );
+          }
         }} width={100} />
       </Table>
       <Drawer width={800} title="编辑" component={StorehousePositionsEdit} onSuccess={() => {

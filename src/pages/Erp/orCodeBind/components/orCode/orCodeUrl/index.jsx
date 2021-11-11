@@ -11,6 +11,13 @@ export const orCodeAdd = {
   rowKey:'orCodeId'
 };
 
+
+export const orCodeBatchAdd = {
+  url: '/orCode/batchAdd',
+  method: 'POST',
+  rowKey:'orCodeId'
+};
+
 export const orCodeEdit = {
   url: '/orCode/edit',
   method: 'POST',
