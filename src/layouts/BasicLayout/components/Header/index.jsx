@@ -20,6 +20,11 @@ import SPU from '@/asseset/imgs/spu.png';
 import PRODUCTTION from '@/asseset/imgs/producttion.png';
 
 import styles from './index.module.less';
+import Message from '@/layouts/BasicLayout/components/Header/components/Message';
+import Commission from '@/layouts/BasicLayout/components/Header/components/Commission';
+import {useRequest} from '@/util/Request';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import Remind from '@/layouts/BasicLayout/components/Header/components/Remind';
 
 const {TabPane} = Tabs;
 
@@ -47,6 +52,13 @@ const Header = () => {
   const {menus} = userInfo;
 
   const [visible, setVisible] = useState(false);
+
+  const {loading, data} = useRequest({url: '/businessTrack/list', method: 'POST'});
+
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
   return (
     <>
       <header className={styles.navbar}>
@@ -111,13 +123,13 @@ const Header = () => {
                 <div className={styles.message}>
                   <Tabs centered>
                     <TabPane tab="消息" key="1">
-                      <div className="noMessage">暂无消息</div>
+                      <Message data={data} />
                     </TabPane>
                     <TabPane tab="通知" key="2">
-                      <div className="noMessage">暂无通知</div>
+                      <Remind data={data} />
                     </TabPane>
                     <TabPane tab="待办" key="3">
-                      <div className="noMessage">暂无待办</div>
+                      <Commission data={data} />
                     </TabPane>
                   </Tabs>
                 </div>
