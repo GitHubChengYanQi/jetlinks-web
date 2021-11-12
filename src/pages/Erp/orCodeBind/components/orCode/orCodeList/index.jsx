@@ -138,14 +138,14 @@ const OrCodeList = () => {
         <Column title="类型" dataIndex="type" render={(value, record) => {
           return (<>
             <Code value={record.orCodeId} />
+            {type(value)}
+          </>);
+        }} />
+        <Column title="绑定关系" dataIndex="type" render={(value, record) => {
+          return (<>
             {
               items(record.object)
             }
-          </>);
-        }} />
-        <Column title="类型" dataIndex="type" render={(value, record) => {
-          return (<>
-            {type(value)}
           </>);
         }} />
         <Column title="创建时间" dataIndex="createTime" />

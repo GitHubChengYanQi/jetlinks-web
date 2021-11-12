@@ -67,11 +67,35 @@ export const Values = (props) => {
 
   const {module, onChange, value} = props;
 
+  const [number,setNumber] = useState();
+
   const [state, setState] = useState(true);
 
   useEffect(() => {
     if (value) {
-      setState('自定义');
+      switch (value) {
+        case `\${YYYY}`:
+        case `\${YY}`:
+        case `\${MM}`:
+        case `\${dd}`:
+        case `\${randomInt}`:
+        case `\${week}`:
+        case `\${randomString}`:
+        case `\${quarter}`:
+        case `\${skuClass}`:
+        case `\${storehouse}`:
+          setState('通用');
+          break;
+        default:
+          if (/\$\{(serial.*?(\[(\d[0-9]?)\]))\}/.test(value)){
+            setNumber(value.split('[')[1].split(']')[0]);
+            setState('流水号');
+          }else {
+            setState('自定义');
+          }
+          break;
+
+      }
     }
   }, []);
 
@@ -176,7 +200,8 @@ export const Values = (props) => {
                 setState(true);
               }
             }} />
-          <InputNumber style={{width: 200}} placeholder="长度,(最大5)" min="0" max="5" onChange={(value) => {
+          <InputNumber style={{width: 200}} value={number} placeholder="长度,(最大5)" min="0" max="5" onChange={(value) => {
+            setNumber(value);
             onChange(`\${serial[${value}]}`);
           }} />
         </Space>;
