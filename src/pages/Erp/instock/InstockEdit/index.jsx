@@ -111,9 +111,9 @@ const InstockEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '23%', display: 'inline-block'}}>
+                        <div style={{width: '27%', display: 'inline-block'}}>
                           <FormItem
-                            labelCol={7}
+                            labelCol={10}
                             itemStyle={{margin: 0}}
                             label="品牌(供应商)"
                             name={`instockRequest.${index}.brandId`}
@@ -121,7 +121,7 @@ const InstockEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '16%', display: 'inline-block'}}>
+                        <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -131,7 +131,7 @@ const InstockEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '16%', display: 'inline-block'}}>
+                        <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -141,7 +141,7 @@ const InstockEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '16%', display: 'inline-block'}}>
+                        <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
                             labelAlign="left"
                             itemStyle={{margin: 0}}

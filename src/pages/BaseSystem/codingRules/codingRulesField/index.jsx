@@ -104,14 +104,14 @@ export const Values = (props) => {
       case 0:
         return [{
           // eslint-disable-next-line no-template-curly-in-string
-          label: '${skuClass}分类码',
+          label: '分类码',
           // eslint-disable-next-line no-template-curly-in-string
           value: '${skuClass}'
         }];
       case 1:
         return [{
           // eslint-disable-next-line no-template-curly-in-string
-          label: '${storehouse}仓库码',
+          label: '仓库码',
           // eslint-disable-next-line no-template-curly-in-string
           value: '${storehouse}'
         }];
@@ -135,21 +135,21 @@ export const Values = (props) => {
       label: '通用',
       options: [
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${YYYY} 年（四位数）', value: '${YYYY}'},
+        {label: '四位数年', value: '${YYYY}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${YY} 年（两位数）', value: '${YY}'},
+        {label: '两位数年', value: '${YY}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${MM} 月', value: '${MM}'},
+        {label: '月', value: '${MM}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${dd} 日', value: '${dd}'},
+        {label: '日', value: '${dd}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${randomInt} 随机数', value: '${randomInt}'},
+        {label: '随机数', value: '${randomInt}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${week} 当前日期所属年份的第几周', value: '${week}'},
+        {label: '当前日期所属年份的第几周', value: '${week}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${randomString} 随机字符串', value: '${randomString}'},
+        {label: '随机字符串', value: '${randomString}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '${quarter} 当前季度', value: '${quarter}'},
+        {label: '当前季度', value: '${quarter}'},
       ]
     },
     {

@@ -22,6 +22,8 @@ const TableWarp = ({
   api,
   contentHeight,
   searchForm,
+  cardTitle,
+  data,
   rowKey,
   headStyle,
   tab,
@@ -125,6 +127,8 @@ const TableWarp = ({
 
   const {loading, dataSource, pagination, ...other} = tableProps;
 
+  typeof data === 'function' && data(dataSource);
+
   const footer = () => {
     return (
       <div className={style.footer}>
@@ -182,7 +186,7 @@ const TableWarp = ({
             {...form}
             actions={formActions}
           />}
-          <Card bordered={bordered} bodyStyle={bodyStyle}>
+          <Card bordered={bordered} title={cardTitle} bodyStyle={bodyStyle}>
             <AntdTable
               showTotal
               expandable={expandable}

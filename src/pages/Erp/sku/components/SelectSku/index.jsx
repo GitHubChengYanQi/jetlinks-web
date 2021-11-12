@@ -1,23 +1,34 @@
 import {useRequest} from '@/util/Request';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
-import {Select as AntSelect, Select as AntdSelect} from 'antd';
+import {Popover, Select as AntSelect, Select as AntdSelect, Space} from 'antd';
 import React, {useEffect, useState} from 'react';
+import Select from '@/components/Select';
+import Cascader from '@/components/Cascader';
+import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value,onChange,dropdownMatchSelectWidth}) => {
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
 
-  const {loading, data, run} = useRequest({...skuList, data: {type: 0}}, {debounceInterval: 500});
+  const {loading, data, run} = useRequest({...skuList, data: {type: 0}}, {
+    debounceInterval: 500, onSuccess: (res) => {
+      if (res.length === 1){
+        setSpuClass(res && res[0].spuResult.spuClassificationId);
+      }
+    }
+  });
 
-  const [change,setChange] = useState();
+  const [change, setChange] = useState();
 
-  useEffect(()=>{
+  const [spuClass, setSpuClass] = useState();
+
+  useEffect(() => {
     run({
       data: {
         skuId: value,
         type: 0
       }
     });
-  },[]);
+  }, []);
 
   const object = (items) => {
     let values = '';
@@ -31,7 +42,7 @@ const SelectSku = ({value,onChange,dropdownMatchSelectWidth}) => {
     return {
       label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
       value: items.skuId,
-      attribute:`${(values === '' ? '' : `( ${values} )`)}`,
+      attribute: `${(values === '' ? '' : `( ${values} )`)}`,
     };
   };
 
@@ -39,36 +50,71 @@ const SelectSku = ({value,onChange,dropdownMatchSelectWidth}) => {
     return object(items);
   });
 
-  return (<AntdSelect
-    placeholder="输入型号搜索"
-    showSearch
-    value={change || (value && options && options[0] && options[0].label+options[0].attribute)}
-    allowClear
-    loading={loading}
-    dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-    onSearch={(value) => {
-      setChange(value);
-      run({
-        data: {
-          skuName: value,
-          type: 0
-        }
-      });
-    }}
-    onChange={(value,option) => {
-      setChange(value);
-      if (option && option.key){
-        onChange(option.key);
-      }
-    }}>
-    {options && options.map((items) => {
-      return (
-        <AntSelect.Option key={items.value} title={items.label+items.attribute} value={items.label+items.attribute}>
-          {items.label} <em style={{color:'#c9c8c8',fontSize:10}}>{items.attribute}</em>
-        </AntSelect.Option>
-      );
-    })}
-  </AntdSelect>);
+  const content = () => {
+    return <Space direction="horizontal">
+      <Cascader
+        width={200}
+        placeholder="请选择物料分类"
+        value={spuClass}
+        api={spuClassificationTreeVrew}
+        onChange={(value) => {
+          setSpuClass(value);
+          run({
+            data: {
+              spuClass: value,
+              type: 0
+            }
+          });
+        }} />
+      <AntdSelect
+        style={{width: 200}}
+        placeholder="输入型号搜索"
+        showSearch
+        value={change || (value && options && options[0] && options[0].label + options[0].attribute)}
+        allowClear
+        loading={loading}
+        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+        onSearch={(value) => {
+          setChange(value);
+          run({
+            data: {
+              spuClass,
+              skuName: value,
+              type: 0
+            }
+          });
+        }}
+        onChange={(value, option) => {
+          setChange(value);
+          if (option && option.key) {
+            onChange(option.key);
+          }
+        }}>
+        {options && options.map((items) => {
+          return (
+            <AntSelect.Option
+              key={items.value}
+              title={items.label + items.attribute}
+              value={items.label + items.attribute}>
+              {items.label} <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>
+            </AntSelect.Option>
+          );
+        })}
+      </AntdSelect>
+    </Space>;
+  };
+
+  return (
+    <>
+      <Popover placement="bottomLeft" content={content} trigger="click">
+        <AntdSelect
+          options={data || []}
+          open={false}
+          style={{width: 180}}
+          value={change || (value && options && options[0] && options[0].label + options[0].attribute)}
+        />
+      </Popover>
+    </>);
 };
 
 export default SelectSku;

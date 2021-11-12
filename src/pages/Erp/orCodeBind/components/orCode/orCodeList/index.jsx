@@ -5,9 +5,9 @@
  * @Date 2021-10-29 10:23:27
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Space, Table as AntTable} from 'antd';
+import {Button, Radio, Space, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -19,11 +19,17 @@ import * as SysField from '../orCodeField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {RedoOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Code from '@/pages/Erp/spu/components/Code';
+import {config} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
+const {code} = config;
+
 const OrCodeList = () => {
+
+  const [exports,setExports] = useState(0);
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -40,6 +46,7 @@ const OrCodeList = () => {
     return (
       <>
         <FormItem label="类型" style={{width: 200}} name="type" component={SysField.Type} />
+        <FormItem hidden style={{width: 200}} name="codeType" component={SysField.Type} />
       </>
     );
   };
@@ -107,6 +114,36 @@ const OrCodeList = () => {
   return (
     <>
       <Table
+        cardTitle={
+          <>
+            <Radio.Group defaultValue={0} onChange={(value) => {
+              setExports(value.target.value);
+              switch (value.target.value) {
+                case 0:
+                  tableRef.current.formActions.setFieldValue('*', null);
+                  break;
+                case 1:
+                  tableRef.current.formActions.setFieldValue('codeType', 'null');
+                  break;
+                case 2:
+                  tableRef.current.formActions.setFieldValue('codeType', 'noNull');
+                  break;
+                default:
+                  break;
+              }
+              tableRef.current.submit();
+            }}>
+              <Radio value={0}>查看所有码</Radio>
+              <Radio value={1}>查看未使用码</Radio>
+              <Radio value={2}>查看已使用码</Radio>
+            </Radio.Group>
+            <Button onClick={() => {
+              console.log(exports,`${code}?id=codeId`);
+            }}>
+              导出当前选中的码
+            </Button>
+          </>
+        }
         title={<Breadcrumb />}
         api={orCodeList}
         rowKey="orCodeId"
@@ -122,12 +159,6 @@ const OrCodeList = () => {
               tableRef.current.submit();
             }}>
               <RedoOutlined />刷新
-            </Button>
-            <Button type="dashed" onClick={() => {
-              tableRef.current.formActions.setFieldValue('type', 'null');
-              tableRef.current.submit();
-            }}>
-              查询所有空码
             </Button>
           </Space>
         }

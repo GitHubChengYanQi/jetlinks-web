@@ -22,7 +22,7 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width,defaultParams,resh,top, api, onChange = () => {
+    value,width,defaultParams,placeholder,resh,top, api, onChange = () => {
     }, ...other
   } = props;
 
@@ -70,7 +70,7 @@ const Cascader = (props) => {
     onChange(result);
   };
 
-  return (<AntCascader style={{width}} changeOnSelect options={dataSources} value={valueArray} onChange={change}  {...other} />);
+  return (<AntCascader style={{width}} changeOnSelect options={dataSources} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
 
 
 };
