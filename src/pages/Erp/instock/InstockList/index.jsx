@@ -114,7 +114,7 @@ const InstockList = () => {
         <Column key={1} title="入库单" dataIndex="coding" render={(text,record) => {
           return (
             <>
-              <Code source="instock" id={text} />
+              <Code source="instock" id={record.instockOrderId} />
               <a onClick={() => {
                 instockRef.current.open(record.instockOrderId);
               }}>

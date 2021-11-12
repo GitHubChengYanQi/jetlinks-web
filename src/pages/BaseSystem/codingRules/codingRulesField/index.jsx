@@ -176,6 +176,7 @@ export const Values = (props) => {
         return <Space>
           <AntdSelect
             placeholder="流水号"
+            dropdownMatchSelectWidth={292}
             style={{minWidth: 50, display: 'inline-block'}}
             options={[
               ...input,
