@@ -70,23 +70,20 @@ const Instock = (props) => {
           <Column title="物料" render={(text, record) => {
             return (
               <>
-                {record.sku && record.sku.skuName}
-                &nbsp;/&nbsp;
+                {record.sku && `${record.sku.skuName  }  /  `}
                 {record.spuResult && record.spuResult.name}
                 &nbsp;&nbsp;
-                <em style={{color: '#c9c8c8', fontSize: 10}}>
+                { record.backSkus && record.backSkus.length>0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
                   (
                   {
-                    record.backSkus
-                    &&
                     record.backSkus.map((items, index) => {
-                      return <span key={index}>
-                        {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
-                      </span>;
+                      return <span key={index}>{items.itemAttribute.attribute}
+                        ：
+                        {items.attributeValues.attributeValues}</span>;
                     })
                   }
                   )
-                </em>
+                </em>}
               </>
             );
 

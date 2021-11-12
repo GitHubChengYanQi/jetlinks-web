@@ -87,9 +87,9 @@ export const Values = (props) => {
       case 1:
         return [{
           // eslint-disable-next-line no-template-curly-in-string
-          label: '${instock}入库码',
+          label: '${storehouse}仓库码',
           // eslint-disable-next-line no-template-curly-in-string
-          value: '${instock}'
+          value: '${storehouse}'
         }];
       default:
         return [];
@@ -177,7 +177,7 @@ export const Values = (props) => {
               }
             }} />
           <InputNumber style={{width: 200}} placeholder="长度,(最大5)" min="0" max="5" onChange={(value) => {
-            onChange(`<serial[${value}]>`);
+            onChange(`\${serial[${value}]}`);
           }} />
         </Space>;
       case '自定义':

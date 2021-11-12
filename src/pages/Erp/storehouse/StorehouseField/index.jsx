@@ -40,3 +40,7 @@ export const Capacity = (props) =>{
 export const Map = (props) =>{
   return (<Amap {...props}/>);
 };
+
+export const Coding = (props) =>{
+  return (<Input placeholder='大写字母或数字' {...props}/>);
+};

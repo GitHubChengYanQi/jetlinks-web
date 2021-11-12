@@ -44,6 +44,43 @@ const OrCodeList = () => {
     );
   };
 
+  const items = (object) => {
+    switch (object && object.type) {
+      case 'item':
+      case 'sku':
+        if (object.orcodeBackItem) {
+          return <>
+            {object.orcodeBackItem.skuName && `${object.orcodeBackItem.skuName}  /  `}
+            {object.orcodeBackItem.backSpu && object.orcodeBackItem.backSpu.name}
+            &nbsp;&nbsp;
+            {object.orcodeBackItem.backSkus && object.orcodeBackItem.backSkus.length > 0 &&
+            <em style={{color: '#c9c8c8', fontSize: 10}}>
+              (
+              {
+                object.orcodeBackItem.backSkus.map((items, index) => {
+                  return <span key={index}>{items.itemAttribute.attribute}
+                    ：
+                    {items.attributeValues.attributeValues}</span>;
+                })
+              }
+              )
+            </em>}
+          </>;
+        } else {
+          return null;
+        }
+      case 'instock':
+        return <>{object.result && object.result.coding}</>;
+      case 'storehouse':
+        return object.result && <>
+          {object.result.storehouseResult && object.result.storehouseResult.name} - {object.result && object.result.name}
+        </>;
+      default:
+        break;
+    }
+  };
+
+
   const type = (type) => {
     switch (type) {
       case 'sku':
@@ -86,15 +123,30 @@ const OrCodeList = () => {
             }}>
               <RedoOutlined />刷新
             </Button>
+            <Button type="dashed" onClick={() => {
+              tableRef.current.formActions.setFieldValue('type', 'null');
+              tableRef.current.submit();
+            }}>
+              查询所有空码
+            </Button>
           </Space>
-
         }
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="类型" dataIndex="type" render={(value,record) => {
-          return (<><Code value={record.orCodeId} />{type(value)}</>);
+        <Column title="类型" dataIndex="type" render={(value, record) => {
+          return (<>
+            <Code value={record.orCodeId} />
+            {
+              items(record.object)
+            }
+          </>);
+        }} />
+        <Column title="类型" dataIndex="type" render={(value, record) => {
+          return (<>
+            {type(value)}
+          </>);
         }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column />
