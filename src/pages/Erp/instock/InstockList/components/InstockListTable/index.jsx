@@ -55,19 +55,6 @@ const InstockListTable = ({...props}, ref) => {
       searchForm={searchForm}
       ref={tableRef}
     >
-      <Column title="仓库库位" dataIndex="storehouseId" render={(text, record) => {
-
-        return (
-          <>
-            {record.storehouseResult && record.storehouseResult.name}
-            {record.storehousePositionsId !== 0 && record.storehousePositionsId
-            &&
-            <>
-              -<TreeSelectSee data={data} value={record.storehousePositionsId} />
-            </>}
-          </>
-        );
-      }} sorter />
       <Column title="物料" render={(text, record) => {
         return (
           <>
@@ -96,6 +83,19 @@ const InstockListTable = ({...props}, ref) => {
         return (
           <>
             {record.brandResult && record.brandResult.brandName}
+          </>
+        );
+      }} sorter />
+      <Column title="仓库库位" dataIndex="storehouseId" render={(text, record) => {
+
+        return (
+          <>
+            {record.storehouseResult && record.storehouseResult.name}
+            {record.storehousePositionsId !== 0 && record.storehousePositionsId
+            &&
+            <>
+              -<TreeSelectSee data={data} value={record.storehousePositionsId} />
+            </>}
           </>
         );
       }} sorter />

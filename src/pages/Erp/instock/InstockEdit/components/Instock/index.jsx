@@ -71,13 +71,6 @@ const Instock = (props) => {
           searchForm={searchForm}
           ref={tableRef}
         >
-          <Column title="仓库名称" fixed dataIndex="storehouseId" render={(text, record) => {
-            return (
-              <>
-                {record.storehouseResult && record.storehouseResult.name}
-              </>
-            );
-          }} sorter />
           <Column title="物料" render={(text, record) => {
             return (
               <>
