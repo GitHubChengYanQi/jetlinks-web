@@ -116,7 +116,7 @@ const InstockList = () => {
             <>
               <Code source="instock" id={record.instockOrderId} />
               <a onClick={() => {
-                instockRef.current.open(record.instockOrderId);
+                instockRef.current.open(record);
               }}>
                 {text}
               </a>

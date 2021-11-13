@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/instock/InstockField';
 import {createFormActions} from '@formily/antd';
-import { Button, message, Modal,  Table as AntTable} from 'antd';
+import {Button, Descriptions, message, Modal, Table as AntTable} from 'antd';
 import Icon from '@/components/Icon';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -12,6 +12,7 @@ import ProCard from '@ant-design/pro-card';
 import InstockListTable from '@/pages/Erp/instock/InstockList/components/InstockListTable';
 import Cascader from '@/components/Cascader';
 import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
+import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -19,6 +20,8 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const Instock = (props) => {
+
+  const {value} = props;
 
   const [show, setShow] = useState();
 
@@ -40,13 +43,21 @@ const Instock = (props) => {
   const searchForm = () => {
 
     return (
-      <FormItem name="instockOrderId" value={props.value} component={SysField.barcode} />
+      <FormItem name="instockOrderId" value={value.instockOrderId} component={SysField.barcode} />
     );
   };
 
 
   return (
     <div style={{padding: 24}}>
+      <ProCard className="h2Card" title="入库信息" headerBordered>
+        <Descriptions column={2} bordered labelStyle={{width: 120}}>
+          <Descriptions.Item label="入库单">  <Code source="instock" id={value.instockOrderId} />{value.coding}</Descriptions.Item>
+          <Descriptions.Item label="入库仓库"> {value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
+          <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
+          <Descriptions.Item label="创建时间">{value.createTime}</Descriptions.Item>
+        </Descriptions>
+      </ProCard>
       <ProCard className="h2Card" headerBordered title="入库清单">
         <Table
           title={<Breadcrumb />}
@@ -137,7 +148,7 @@ const Instock = (props) => {
           }} value={position} />
       </Modal>
       <ProCard className="h2Card" headerBordered title="入库明细">
-        <InstockListTable ref={instockRef} value={props.value} />
+        <InstockListTable ref={instockRef} value={value.instockOrderId} />
       </ProCard>
     </div>
   );

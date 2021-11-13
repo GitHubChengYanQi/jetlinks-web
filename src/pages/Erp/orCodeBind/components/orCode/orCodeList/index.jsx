@@ -48,7 +48,7 @@ const OrCodeList = () => {
     return (
       <>
         <FormItem label="类型" style={{width: 200}} name="type" component={SysField.Type} />
-        <FormItem hidden style={{width: 200}} name="codeType" component={SysField.Type} />
+        <FormItem hidden style={{width: 200}} name="state" component={SysField.Type} />
       </>
     );
   };
@@ -74,6 +74,9 @@ const OrCodeList = () => {
               }
               )
             </em>}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            ×
+            {object.inKindNumber}
           </>;
         } else {
           return null;
@@ -125,19 +128,19 @@ const OrCodeList = () => {
                   tableRef.current.formActions.setFieldValue('*', null);
                   break;
                 case 1:
-                  tableRef.current.formActions.setFieldValue('codeType', 'null');
+                  tableRef.current.formActions.setFieldValue('state', '0');
                   break;
                 case 2:
-                  tableRef.current.formActions.setFieldValue('codeType', 'noNull');
+                  tableRef.current.formActions.setFieldValue('state', '1');
                   break;
                 default:
                   break;
               }
               tableRef.current.submit();
             }}>
-              <Radio value={0}>查看所有码</Radio>
-              <Radio value={1}>查看未使用码</Radio>
-              <Radio value={2}>查看已使用码</Radio>
+              <Radio.Button  value={0}>查看所有码</Radio.Button>
+              <Radio.Button  value={1}>查看未使用码</Radio.Button>
+              <Radio.Button  value={2}>查看已使用码</Radio.Button>
             </Radio.Group>
             <Button type='link' onClick={() => {
               const url = code.replaceAll(':','%3A').replaceAll('/','%2F').replaceAll('#','%23');
