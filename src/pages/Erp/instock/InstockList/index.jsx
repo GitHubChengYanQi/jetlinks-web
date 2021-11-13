@@ -115,11 +115,11 @@ const InstockList = () => {
           return (
             <>
               <Code source="instock" id={record.instockOrderId} />
-              {/*<a onClick={() => {*/}
-              {/*  instockRef.current.open(record.instockOrderId);*/}
-              {/*}}>*/}
-              {text}
-              {/*</a>*/}
+              <a onClick={() => {
+                instockRef.current.open(record.instockOrderId);
+              }}>
+                {text}
+              </a>
             </>
           );
         }} />

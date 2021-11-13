@@ -16,6 +16,7 @@ import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import ProCard from '@ant-design/pro-card';
 
 const {FormItem} = Form;
 
@@ -67,69 +68,89 @@ const OutstockOrderEdit = ({...props}) => {
         }}
       >
 
-        <FieldList
-          name="applyDetails"
-          initialValue={[
-            {itemId: ''},
-          ]}
-        >
-          {({state, mutators}) => {
-            const onAdd = () => mutators.push();
-            return (
-              <div>
-                {state.value.map((item, index) => {
-                  const onRemove = index => mutators.remove(index);
-                  return (
-                    <div key={index}>
-                      <Avatar size={24}>{`${index + 1}`}</Avatar>
-                      <div style={{width: '30%', display: 'inline-block'}}>
-                        <FormItem
-                          labelCol={7}
-                          itemStyle={{margin: 0}}
-                          label="物料"
-                          name={`applyDetails.${index}.skuId`}
-                          component={SysField.SkuId}
-                          required
+        <ProCard title="入库信息" className="h2Card" headerBordered>
+          {/*<div style={{display: 'inline-block',width:'30%'}}>*/}
+          {/*  <FormItem label="编码" name="coding" codingId={data} component={SysField.Codings} required />*/}
+          {/*</div>*/}
+          <div style={{display: 'inline-block', width: '30%'}}>
+            <FormItem label="仓库" name="storehouseId" component={SysField.Storhouse} required />
+          </div>
+          <div style={{display: 'inline-block', width: '30%'}}>
+            <FormItem label="负责人" name="userId" component={SysField.UserId} required />
+          </div>
+          <div style={{display: 'inline-block', width: '30%'}}>
+            <FormItem
+              label="备注"
+              name="note"
+              component={SysField.Note}
+            />
+          </div>
+        </ProCard>
+
+        <ProCard title="入库信息" className="h2Card" headerBordered>
+          <FieldList
+            name="applyDetails"
+            initialValue={[
+              {itemId: ''},
+            ]}
+          >
+            {({state, mutators}) => {
+              const onAdd = () => mutators.push();
+              return (
+                <div>
+                  {state.value.map((item, index) => {
+                    const onRemove = index => mutators.remove(index);
+                    return (
+                      <div key={index}>
+                        <Avatar size={24}>{`${index + 1}`}</Avatar>
+                        <div style={{width: '30%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin: 0}}
+                            label="物料"
+                            name={`applyDetails.${index}.skuId`}
+                            component={SysField.SkuId}
+                            required
+                          />
+                        </div>
+                        <div style={{display: 'inline-block', width: '30%'}}>
+                          <FormItem
+                            label="品牌"
+                            name={`applyDetails.${index}.brandId`}
+                            component={SysField.BrandId}
+                          />
+                        </div>
+                        <div style={{display: 'inline-block', width: '30%'}}>
+                          <FormItem
+                            label="数量"
+                            name={`applyDetails.${index}.number`}
+                            component={SysField.Number}
+                            required
+                          />
+                        </div>
+                        <Button
+                          type="link"
+                          disabled={state.value.length === 1}
+                          style={{float: 'right'}}
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
                         />
                       </div>
-                      <div style={{display:'inline-block',width:'30%'}}>
-                        <FormItem
-                          label="品牌"
-                          name={`applyDetails.${index}.brandId`}
-                          component={SysField.BrandId}
-                          required
-                        />
-                      </div>
-                      <div style={{display:'inline-block',width:'30%'}}>
-                        <FormItem
-                          label="数量"
-                          name={`applyDetails.${index}.number`}
-                          component={SysField.Number}
-                          required
-                        />
-                      </div>
-                      <Button
-                        type="link"
-                        disabled={state.value.length === 1}
-                        style={{float: 'right'}}
-                        icon={<DeleteOutlined />}
-                        onClick={() => {
-                          onRemove(index);
-                        }}
-                        danger
-                      />
-                    </div>
-                  );
-                })}
-                <Button
-                  type="dashed"
-                  style={{marginTop: 8}}
-                  icon={<PlusOutlined />}
-                  onClick={onAdd}>增加产品</Button>
-              </div>
-            );
-          }}
-        </FieldList>
+                    );
+                  })}
+                  <Button
+                    type="dashed"
+                    style={{marginTop: 8}}
+                    icon={<PlusOutlined />}
+                    onClick={onAdd}>增加产品</Button>
+                </div>
+              );
+            }}
+          </FieldList>
+        </ProCard>
 
       </Form>
     </div>

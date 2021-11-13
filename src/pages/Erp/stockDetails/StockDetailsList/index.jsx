@@ -98,7 +98,7 @@ const StockDetailsList = (props) => {
         <Column title="物料" render={(text, record) => {
           return (
             <>
-              <Code value={record.qrCodeId} />
+              {record.qrCodeId && <Code value={record.qrCodeId} />}
               {record.sku && `${record.sku.skuName  }  /  `}
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;

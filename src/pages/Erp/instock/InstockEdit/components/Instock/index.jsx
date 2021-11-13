@@ -98,14 +98,14 @@ const Instock = (props) => {
           <Column title="入库数量" width={120} align="center" dataIndex="number" sorter />
           <Column title="原价" width={120} align="center" dataIndex="costPrice" sorter />
           <Column title="售价" width={120} align="center" dataIndex="sellingPrice" sorter />
-          <Column title="操作" width={120} render={(text, record) => {
-            return (
-              <Button style={{margin: '0 10px'}} disabled={record.number === 0} onClick={async () => {
-                setItems(record);
-                setShow(true);
-              }}><Icon type="icon-ruku" />{record.number === 0 ? '已入库' : '入库'}</Button>
-            );
-          }} />
+          {/*<Column title="操作" width={120} render={(text, record) => {*/}
+          {/*  return (*/}
+          {/*    <Button style={{margin: '0 10px'}} disabled={record.number === 0} onClick={async () => {*/}
+          {/*      setItems(record);*/}
+          {/*      setShow(true);*/}
+          {/*    }}><Icon type="icon-ruku" />{record.number === 0 ? '已入库' : '入库'}</Button>*/}
+          {/*  );*/}
+          {/*}} />*/}
         </Table>
       </ProCard>
 

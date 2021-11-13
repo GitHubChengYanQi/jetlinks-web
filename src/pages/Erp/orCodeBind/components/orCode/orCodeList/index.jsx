@@ -141,7 +141,7 @@ const OrCodeList = () => {
             </Radio.Group>
             <Button onClick={() => {
               const url = `${code}?id=codeId`;
-              window.location.href = `${baseURI}/api/qrCodetoExcel?type=${exports}&url=${url}`;
+              window.location.href = `${baseURI}api/qrCodetoExcel?type=${exports}&url=${url}`;
             }}>
               导出当前选中的码
             </Button>
