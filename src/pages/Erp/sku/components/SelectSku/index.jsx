@@ -43,6 +43,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
       label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
       value: items.skuId,
       attribute: `${(values === '' ? '' : `( ${values} )`)}`,
+      spu:items.spuResult
     };
   };
 
@@ -59,6 +60,8 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
         api={spuClassificationTreeVrew}
         onChange={(value) => {
           setSpuClass(value);
+          setChange(null);
+          onChange(null);
           run({
             data: {
               spuClass: value,
@@ -86,6 +89,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
         }}
         onChange={(value, option) => {
           setChange(value);
+          setSpuClass(option.spu && option.spu.spuClassificationId);
           if (option && option.key) {
             onChange(option.key);
           }
@@ -94,6 +98,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
           return (
             <AntSelect.Option
               key={items.value}
+              spu={items.spu}
               title={items.label + items.attribute}
               value={items.label + items.attribute}>
               {items.label} <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>

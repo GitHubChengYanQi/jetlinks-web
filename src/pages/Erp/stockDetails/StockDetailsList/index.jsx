@@ -21,6 +21,7 @@ import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import Code from '@/pages/Erp/spu/components/Code';
 
 
 const {Column} = AntTable;
@@ -94,21 +95,10 @@ const StockDetailsList = (props) => {
         }}
         ref={tableRef}
       >
-        <Column title="仓库库位" dataIndex="pname" render={(text, record) => {
+        <Column title="物料" render={(text, record) => {
           return (
             <>
-              {record.storehouseResult && record.storehouseResult.name}
-              {record.storehousePositionsId !== 0 && record.storehousePositionsId
-              &&
-              <>
-                -<TreeSelectSee data={data} value={record.storehousePositionsId} />
-              </>}
-            </>
-          );
-        }} sorter />
-        <Column title="产品" render={(text, record) => {
-          return (
-            <>
+              <Code value={record.qrCodeId} />
               {record.sku && `${record.sku.skuName  }  /  `}
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
@@ -127,13 +117,26 @@ const StockDetailsList = (props) => {
           );
 
         }} sorter />
-        <Column title="品牌名称" dataIndex="brandId" render={(text, record) => {
+        <Column title="仓库库位" dataIndex="pname" render={(text, record) => {
+          return (
+            <>
+              {record.storehouseResult && record.storehouseResult.name}
+              {record.storehousePositionsId !== 0 && record.storehousePositionsId
+              &&
+              <>
+                -<TreeSelectSee data={data} value={record.storehousePositionsId} />
+              </>}
+            </>
+          );
+        }} sorter />
+        <Column title="品牌(供应商)" dataIndex="brandId" render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}
             </>
           );
         }} />
+        <Column title="数量" dataIndex="number" sorter />
         <Column title="产品价格" dataIndex="price" sorter />
         <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>

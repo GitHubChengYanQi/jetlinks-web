@@ -20,15 +20,17 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {RedoOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Code from '@/pages/Erp/spu/components/Code';
 import {config} from 'ice';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const {code} = config;
+const {code,baseURI} = config;
 
 const OrCodeList = () => {
 
   const [exports,setExports] = useState(0);
+
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -116,7 +118,7 @@ const OrCodeList = () => {
       <Table
         cardTitle={
           <>
-            <Radio.Group defaultValue={0} onChange={(value) => {
+            <Radio.Group defaultValue={0} value={exports} onChange={(value) => {
               setExports(value.target.value);
               switch (value.target.value) {
                 case 0:
@@ -138,7 +140,8 @@ const OrCodeList = () => {
               <Radio value={2}>查看已使用码</Radio>
             </Radio.Group>
             <Button onClick={() => {
-              console.log(exports,`${code}?id=codeId`);
+              const url = `${code}?id=codeId`;
+              window.location.href = `${baseURI}/api/qrCodetoExcel?type=${exports}&url=${url}`;
             }}>
               导出当前选中的码
             </Button>
@@ -155,6 +158,7 @@ const OrCodeList = () => {
               <SearchOutlined />查询
             </Button>
             <Button type="default" onClick={() => {
+              setExports(0);
               tableRef.current.formActions.setFieldValue('*', null);
               tableRef.current.submit();
             }}>

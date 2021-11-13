@@ -110,7 +110,7 @@ const StockTable = (props) => {
         rowSelection
         {...other}
       >
-        <Column title="产品" render={(text, record) => {
+        <Column title="物料" render={(text, record) => {
           return (
             <>
               <Code source="stock" id={record.stockId} />
@@ -132,7 +132,7 @@ const StockTable = (props) => {
           );
 
         }} sorter />
-        <Column title="品牌" width={200} render={(text, record) => {
+        <Column title="品牌(供应商)" width={200} render={(text, record) => {
           return (
             <>
               {record.brandResult && record.brandResult.brandName}

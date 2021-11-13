@@ -99,6 +99,7 @@ const InstockListTable = ({...props}, ref) => {
           </>
         );
       }} sorter />
+      <Column title="数量" width={120} align="center" dataIndex="number" sorter />
       <Column title="原价" width={120} align="center" dataIndex="costPrice" sorter />
       <Column title="售价" width={120} align="center" dataIndex="sellingPrice" sorter />
     </Table>
