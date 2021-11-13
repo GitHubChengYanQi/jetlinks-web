@@ -22,7 +22,6 @@ export const Type = (props) =>{
         {label:'产品',value:'spu'},
         {label:'入库',value:'instock'},
         {label:'出库',value:'outstock'},
-        {label:'库存',value:'stock'},
         {label:'仓库',value:'storehouse'},
         {label:'库位',value:'storehousePositions'},
       ]

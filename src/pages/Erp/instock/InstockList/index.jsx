@@ -140,7 +140,7 @@ const InstockList = () => {
         <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
       </Table>
 
-      <MyModal width={1200} title="入库单" component={InstockEdit} onSuccess={() => {
+      <MyModal width={1250} title="入库单" component={InstockEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

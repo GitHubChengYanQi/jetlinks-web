@@ -135,10 +135,9 @@ const InstockEdit = ({...props}) => {
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
-                            label="原价"
+                            label="总价"
                             name={`instockRequest.${index}.costPrice`}
                             component={SysField.CostPrice}
-                            required
                           />
                         </div>
                         <div style={{width: '14%', display: 'inline-block'}}>
@@ -149,7 +148,6 @@ const InstockEdit = ({...props}) => {
                             label="售价"
                             name={`instockRequest.${index}.sellingPrice`}
                             component={SysField.SellingPrice}
-                            required
                           />
                         </div>
                         <Button

@@ -70,7 +70,7 @@ const StorehouseEdit = ({...props}) => {
           <FormItem label="纬度" name="latitude" component={SysField.Latitude} required />
         </div>
         <FormItem label="仓库面积" name="measure" component={SysField.Measure} />
-        <FormItem label="仓库容量" name="capacity" component={SysField.Capacity} />
+        <FormItem label="仓库高度" name="capacity" component={SysField.Capacity} />
       </Form>
     </div>
   );

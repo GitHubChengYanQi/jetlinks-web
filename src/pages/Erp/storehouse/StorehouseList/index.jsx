@@ -142,7 +142,7 @@ const StorehouseList = (props) => {
         <Column title="仓库码" width={200} dataIndex="coding" sorter />
         <Column title="地点" dataIndex="palce" sorter />
         <Column title="面积" width={100} align="center" dataIndex="measure" sorter />
-        <Column title="容量" width={100} align="center" dataIndex="capacity" sorter />
+        <Column title="高度" width={100} align="center" dataIndex="capacity" sorter />
         <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
             <>

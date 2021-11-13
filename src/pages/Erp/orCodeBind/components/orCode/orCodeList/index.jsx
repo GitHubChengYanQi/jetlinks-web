@@ -83,9 +83,16 @@ const OrCodeList = () => {
         }
       case 'instock':
         return <>{object.result && object.result.coding}</>;
+      case 'outstock':
+        return <>{object.result && object.result.outstockOrderId}</>;
       case 'storehouse':
         return object.result && <>
-          {object.result.storehouseResult && object.result.storehouseResult.name} - {object.result && object.result.name}
+          {object.result.name}
+        </>;
+      case 'storehousePositions':
+        return object.result && <>
+          {object.result.name}
+
         </>;
       default:
         break;
@@ -93,7 +100,7 @@ const OrCodeList = () => {
   };
 
 
-  const type = (type) => {
+  const Type = (type) => {
     switch (type) {
       case 'sku':
         return '物料';
@@ -101,8 +108,6 @@ const OrCodeList = () => {
         return '入库';
       case 'outstock':
         return '出库';
-      case 'stock':
-        return '库存';
       case 'storehouse':
         return '仓库';
       case 'storehousePositions':
@@ -128,6 +133,7 @@ const OrCodeList = () => {
                   tableRef.current.formActions.setFieldValue('*', null);
                   break;
                 case 1:
+                  tableRef.current.formActions.setFieldValue('*', null);
                   tableRef.current.formActions.setFieldValue('state', '0');
                   break;
                 case 2:
@@ -156,6 +162,8 @@ const OrCodeList = () => {
         SearchButton={
           <Space>
             <Button type="primary" onClick={() => {
+              setExports(2);
+              tableRef.current.formActions.setFieldValue('state', 1);
               tableRef.current.submit();
             }}>
               <SearchOutlined />查询
@@ -176,7 +184,7 @@ const OrCodeList = () => {
         <Column title="类型" dataIndex="type" render={(value, record) => {
           return (<>
             <Code value={record.orCodeId} />
-            {type(value)}
+            {Type(value)}
           </>);
         }} />
         <Column title="绑定关系" dataIndex="type" render={(value, record) => {
