@@ -111,7 +111,7 @@ const InstockList = () => {
         ref={tableRef}
         rowSelection
       >
-        <Column key={1} title="入库单" dataIndex="coding" render={(text, record) => {
+        <Column key={1} title="入库单号" dataIndex="coding" render={(text, record) => {
           return (
             <>
               <Code source="instock" id={record.instockOrderId} />

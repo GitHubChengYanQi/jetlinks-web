@@ -52,7 +52,7 @@ const Instock = (props) => {
     <div style={{padding: 24}}>
       <ProCard className="h2Card" title="入库信息" headerBordered>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="入库单">  <Code source="instock" id={value.instockOrderId} />{value.coding}</Descriptions.Item>
+          <Descriptions.Item label="入库单号">  <Code source="instock" id={value.instockOrderId} />{value.coding}</Descriptions.Item>
           <Descriptions.Item label="入库仓库"> {value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
           <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{value.createTime}</Descriptions.Item>
@@ -92,7 +92,7 @@ const Instock = (props) => {
             );
 
           }} sorter />
-          <Column title="品牌(供应商)" dataIndex="brandId" width={200} render={(text, record) => {
+          <Column title="供应商 / 品牌" dataIndex="brandId" width={200} render={(text, record) => {
             return (
               <>
                 {record.brandResult && record.brandResult.brandName}

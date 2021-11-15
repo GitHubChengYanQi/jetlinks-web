@@ -13,9 +13,9 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {orCodeDelete, orCodeList} from '../orCodeUrl';
-import OrCodeEdit from '../orCodeEdit';
-import * as SysField from '../orCodeField';
+import {orCodeDelete, orCodeList} from '../qrCodeUrl';
+import OrCodeEdit from '../qrCodeEdit';
+import * as SysField from '../qrCodeField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {RedoOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Code from '@/pages/Erp/spu/components/Code';
@@ -27,7 +27,7 @@ const {FormItem} = Form;
 
 const {code,baseURI} = config;
 
-const OrCodeList = () => {
+const QrCodeList = () => {
 
   const [exports,setExports] = useState(0);
 
@@ -205,4 +205,4 @@ const OrCodeList = () => {
   );
 };
 
-export default OrCodeList;
+export default QrCodeList;

@@ -7,8 +7,8 @@ import ShopRouterConfig from '@/pages/Shop/router';
 import UserInfoRouterConfig from '@/pages/UserInfo/router';
 import RepairRouterConfig from '@/pages/Repair/router';
 import baseSystem from './baseSystem';
-import ProductionRouterConfig from '@/pages/PRODUCTION/router';
 import SpuRouterConfig from '@/pages/SPU/router';
+import ProductionRouterConfig from '@/pages/Production/router';
 
 const routerConfig = [
   {
