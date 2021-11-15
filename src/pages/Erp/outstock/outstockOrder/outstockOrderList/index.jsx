@@ -8,34 +8,19 @@
 import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Button, Modal as AntModal, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import Breadcrumb from '@/components/Breadcrumb';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
 import Modal from '@/components/Modal';
-import Icon from '@/components/Icon';
-import {useRequest} from '@/util/Request';
-import Message from '@/components/Message';
 import {outBound, outstock, outstockOrderDelete, outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
-import OutStock from '@/pages/Erp/outstock/components/OutStock';
 import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
 
 const OutstockOrderList = () => {
 
-  const {run} = useRequest(outBound, {
-    manual: true, onSuccess: () => {
-      tableRef.current.refresh();
-      refOutStock.current.close();
-    }
-  });
-
-  const [items, setItems] = useState();
-
   const ref = useRef(null);
-  const refOutStock = useRef(null);
   const refSee = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -57,11 +42,11 @@ const OutstockOrderList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="出库单号" dataIndex="outstockOrderId" render={(text, record) => {
+        <Column title="出库单号" dataIndex="coding" render={(text, record) => {
           return <>
             <Code source="outstock" id={record.outstockOrderId} />
             <Button type="link" onClick={() => {
-              refSee.current.open(record.outstockOrderId);
+              refSee.current.open(record);
             }}>{text}</Button>
           </>;
         }} />
@@ -87,24 +72,7 @@ const OutstockOrderList = () => {
             </>
           );
         }} />
-        <Column title="出库时间" dataIndex="updateTime" />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              {record.state === 0 && <>
-                <Button style={{margin: '0 10px'}} onClick={() => {
-                  setItems(record);
-                  refOutStock.current.open(record);
-                }}><Icon type="icon-chuku" />出库</Button>
-                <DelButton api={outstockOrderDelete} value={record.outstockOrderId} onSuccess={() => {
-                  tableRef.current.submit();
-                }} />
-              </>}
-
-            </>
-          );
-        }} width={300} />
       </Table>
       <Modal width={1000} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
         tableRef.current.refresh();
@@ -114,18 +82,6 @@ const OutstockOrderList = () => {
         tableRef.current.refresh();
         refSee.current.close();
       }} ref={refSee} />
-      <Modal
-        padding={1}
-        width={1300}
-        // footer={<Button type="primary" onClick={async () => {
-        //   await run({
-        //     data: {
-        //       ...items,
-        //       state: 1
-        //     }
-        //   });
-        // }}>出库</Button>}
-        component={OutStock} ref={refOutStock} />
     </>
   );
 };

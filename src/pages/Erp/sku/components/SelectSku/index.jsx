@@ -7,9 +7,9 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth,params}) => {
 
-  const {loading, data, run} = useRequest({...skuList, data: {type: 0}}, {
+  const {loading, data, run} = useRequest({...skuList, data: {type: 0,...params}}, {
     debounceInterval: 500, onSuccess: (res) => {
       if (res.length === 1){
         setSpuClass(res && res[0].spuResult.spuClassificationId);
@@ -25,10 +25,11 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
     run({
       data: {
         skuId: value,
-        type: 0
+        type: 0,
+        ...params
       }
     });
-  }, []);
+  }, [params]);
 
   const object = (items) => {
     let values = '';
@@ -61,11 +62,11 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
         onChange={(value) => {
           setSpuClass(value);
           setChange(null);
-          onChange(null);
           run({
             data: {
               spuClass: value,
-              type: 0
+              type: 0,
+              ...params
             }
           });
         }} />
@@ -73,7 +74,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
         style={{width: 200}}
         placeholder="输入型号搜索"
         showSearch
-        value={change || (value && options && options[0] && options[0].label + options[0].attribute)}
+        value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
         allowClear
         loading={loading}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
@@ -83,7 +84,8 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
             data: {
               spuClass,
               skuName: value,
-              type: 0
+              type: 0,
+              ...params
             }
           });
         }}
@@ -116,7 +118,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth}) => {
           options={data || []}
           open={false}
           style={{width: 180}}
-          value={change || (value && options && options[0] && options[0].label + options[0].attribute)}
+          value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
         />
       </Popover>
     </>);

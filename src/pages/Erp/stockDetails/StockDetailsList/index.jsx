@@ -129,7 +129,7 @@ const StockDetailsList = (props) => {
             </>
           );
         }} sorter />
-        <Column title="品牌(供应商)" dataIndex="brandId" render={(text, record) => {
+        <Column title="供应商 / 品牌" dataIndex="brandId" render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}

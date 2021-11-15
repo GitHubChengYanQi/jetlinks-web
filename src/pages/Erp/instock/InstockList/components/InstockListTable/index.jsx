@@ -79,7 +79,7 @@ const InstockListTable = ({...props}, ref) => {
         );
 
       }} sorter />
-      <Column title="品牌(供应商)" dataIndex="brandId" width={200} render={(text, record) => {
+      <Column title="供应商 / 品牌" dataIndex="brandId" width={200} render={(text, record) => {
         return (
           <>
             {record.brandResult && record.brandResult.brandName}

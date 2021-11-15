@@ -14,9 +14,12 @@ import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formil
 import styled from 'styled-components';
 import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {request} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import ProCard from '@ant-design/pro-card';
+import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {config} from 'ice';
 
 const {FormItem} = Form;
 
@@ -28,11 +31,25 @@ const ApiConfig = {
 
 const {onFieldValueChange$} = FormEffectHooks;
 
+const {code} = config;
+
 const OutstockOrderEdit = ({...props}) => {
 
 
   const formRef = useRef();
 
+  const {loading, data} = useRequest(codingRulesList, {
+    defaultParams: {
+      data: {
+        module: 2,
+        state: 1
+      }
+    }
+  });
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
 
   return (
     <div style={{padding: 24}}>
@@ -41,44 +58,93 @@ const OutstockOrderEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="outstockOrderId"
-        effects={({setFieldState}) => {
-          onFieldValueChange$('applyDetails.*.spuId').subscribe(async (value) => {
-            if (value.value) {
-              const data = await request({
-                ...spuDetail,
-                data: {
-                  spuId: value.value
+        onSuccess={() => {
+          props.onSuccess();
+        }}
+        onError={() => {
+
+        }}
+        onSubmit={(value)=>{
+          return {...value,url:`${code}?id=codeId`};
+        }}
+        effects={({setFieldState,getFieldState}) => {
+
+          onFieldValueChange$('storehouseId').subscribe(async ({value}) => {
+            if (value) {
+
+              const skuIds = await request({
+                url:'/stockDetails/backSkuByStoreHouse',
+                method:'GET',
+                params:{
+                  id:value
                 }
               });
 
+
               setFieldState(
-                FormPath.transform(value.name, /\d/, $1 => {
-                  return `applyDetails.${$1}.skuId`;
-                }),
+                'applyDetails.*.skuId',
                 state => {
-                  if (value.active) {
-                    state.props.select = value;
-                  }
-                  state.props.sku = data.sku;
+                  state.props.skuIds = skuIds;
+                  // const skuId = getFieldState('applyDetails.*.skuId',(state)=>{
+                  //   console.log(state);
+                  // });
+
+                  // if (skuId.value){
+                  //   state.value = null;
+                  // }
+                  state.value = null;
+                }
+              );
+
+              setFieldState(
+                'applyDetails.*.number',
+                state => {
+                  state.props.storehouseId = value;
                 }
               );
             }
-
           });
-        }}
+
+          onFieldValueChange$('applyDetails.*.skuId').subscribe(async ({name,value}) => {
+            if (value && name) {
+              setFieldState(
+                FormPath.transform(name, /\d/, $1 => {
+                  return `applyDetails.${$1}.number`;
+                }),
+                state => {
+                  state.props.skuId = value;
+                }
+              );
+            }
+          })
+          ;
+          onFieldValueChange$('applyDetails.*.brandId').subscribe(async ({name,value}) => {
+            if (value && name) {
+              setFieldState(
+                FormPath.transform(name, /\d/, $1 => {
+                  return `applyDetails.${$1}.number`;
+                }),
+                state => {
+                  state.props.brandId = value;
+                }
+              );
+            }
+          });
+        }
+        }
       >
 
-        <ProCard title="入库信息" className="h2Card" headerBordered>
-          {/*<div style={{display: 'inline-block',width:'30%'}}>*/}
-          {/*  <FormItem label="编码" name="coding" codingId={data} component={SysField.Codings} required />*/}
-          {/*</div>*/}
-          <div style={{display: 'inline-block', width: '30%'}}>
+        <ProCard title="出库信息" className="h2Card" headerBordered>
+          <div style={{display: 'inline-block', width: '50%'}}>
+            <FormItem label="编码" name="coding" codingId={data} component={SysField.Codings} required />
+          </div>
+          <div style={{display: 'inline-block', width: '50%'}}>
             <FormItem label="仓库" name="storehouseId" component={SysField.Storhouse} required />
           </div>
-          <div style={{display: 'inline-block', width: '30%'}}>
+          <div style={{display: 'inline-block', width: '50%'}}>
             <FormItem label="负责人" name="userId" component={SysField.UserId} required />
           </div>
-          <div style={{display: 'inline-block', width: '30%'}}>
+          <div style={{display: 'inline-block', width: '50%'}}>
             <FormItem
               label="备注"
               name="note"
@@ -87,7 +153,7 @@ const OutstockOrderEdit = ({...props}) => {
           </div>
         </ProCard>
 
-        <ProCard title="入库信息" className="h2Card" headerBordered>
+        <ProCard title="出库信息" className="h2Card" headerBordered>
           <FieldList
             name="applyDetails"
             initialValue={[
@@ -115,9 +181,11 @@ const OutstockOrderEdit = ({...props}) => {
                         </div>
                         <div style={{display: 'inline-block', width: '30%'}}>
                           <FormItem
-                            label="品牌"
+                            labelCol={10}
+                            label="供应商 / 品牌"
                             name={`applyDetails.${index}.brandId`}
                             component={SysField.BrandId}
+                            required
                           />
                         </div>
                         <div style={{display: 'inline-block', width: '30%'}}>
@@ -125,7 +193,7 @@ const OutstockOrderEdit = ({...props}) => {
                             label="数量"
                             name={`applyDetails.${index}.number`}
                             component={SysField.Number}
-                            required
+                            rules={[{required:true,message:'必填项！'}]}
                           />
                         </div>
                         <Button

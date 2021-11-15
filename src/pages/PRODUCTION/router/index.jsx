@@ -18,22 +18,22 @@ import {SpuRouter} from '@/pages/Erp/spu/spuRouter';
 import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
-import ProducttionLayout from '@/pages/PRODUCTION';
-import {OrCodeBindRouter} from '@/pages/Erp/orCodeBind/orCodeBindRouter';
-import {OrCodeRouter} from '@/pages/Erp/orCodeBind/components/orCode/orCodeRouter';
+import SpuLayout from '@/pages/SPU';
+import {SkuRouter} from '@/pages/Erp/sku/skuRouter';
+import {SPUSRouter} from '@/pages/Erp/Spus/spuRouter';
+import {QrCodeRouter} from '@/pages/Erp/qrCode/qrCodeRouter';
 
 const ProductionRouterConfig = [
   {
-    path: '/PRODUCTTION',
-    name: '生产管理',
-    component: ProducttionLayout,
+    path: '/production',
+    name: '产品物料',
+    component: SpuLayout,
     children:[
       ...ToolRouter,
       ...QualityCheckRouter,
-      ...ProductOrderRouter,
-      ...OrCodeRouter,
+      ...QrCodeRouter,
       {
-        redirect: '/PRODUCTTION/tool',
+        redirect: '/production/sku',
       }
     ]
   }

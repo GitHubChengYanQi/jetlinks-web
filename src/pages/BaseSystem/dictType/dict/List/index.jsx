@@ -73,7 +73,6 @@ const DictList = () => {
               <EditButton onClick={() => {
                 ref.current.open(row.dictId);
               }}/>
-              <DelButton/>
             </>
           );
         }}/>
