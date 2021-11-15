@@ -80,10 +80,19 @@ const OutstockOrderEdit = ({...props}) => {
                 }
               });
 
+
               setFieldState(
                 'applyDetails.*.skuId',
                 state => {
                   state.props.skuIds = skuIds;
+                  // const skuId = getFieldState('applyDetails.*.skuId',(state)=>{
+                  //   console.log(state);
+                  // });
+
+                  // if (skuId.value){
+                  //   state.value = null;
+                  // }
+                  state.value = null;
                 }
               );
 

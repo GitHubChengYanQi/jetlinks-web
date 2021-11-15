@@ -14,7 +14,7 @@ const routerConfig = [
   {
     path: '/login',
     name: '登录',
-    component: lazy(() => import(('@/pages/Login'))),
+    component: lazy(() => import(('@/pages/Login'))),// Login,
   },
   {
     path: '/logout',

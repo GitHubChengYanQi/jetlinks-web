@@ -84,6 +84,11 @@ export const Number = (props) => {
 
 export const SkuId = (props) => {
   const {skuIds, ...other} = props;
+  useEffect(()=>{
+    if (props.value){
+      props.onChange(null);
+    }
+  },[skuIds]);
   return (<SelectSku {...other} params={{skuIds}} dropdownMatchSelectWidth={400} />);
 };
 
