@@ -13,6 +13,7 @@ import Modal from '@/components/Modal';
 import {useRequest} from '@/util/Request';
 import ProCard from '@ant-design/pro-card';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
+import Code from '@/pages/Erp/spu/components/Code';
 
 const OutStock = (props) => {
 
@@ -23,6 +24,7 @@ const OutStock = (props) => {
     <Card title="出库设置" bordered={false}>
       <ProCard className="h2Card" title="出库信息" headerBordered>
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
+          <Descriptions.Item label="出库单号"> <Code source="outstock" id={value.outstockOrderId} />{value.coding}</Descriptions.Item>
           <Descriptions.Item label="仓库">{value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
           <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
           <Descriptions.Item label="备注">{value.note}</Descriptions.Item>

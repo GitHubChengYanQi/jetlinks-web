@@ -64,7 +64,6 @@ const InstockEdit = ({...props}) => {
 
         }}
         onSubmit={(value)=>{
-          // eslint-disable-next-line no-template-curly-in-string
           return {...value,url:`${code}?id=codeId`};
         }}
       >
@@ -101,7 +100,7 @@ const InstockEdit = ({...props}) => {
                         bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
-                        <div style={{width: '23%', display: 'inline-block'}}>
+                        <div style={{width: '21%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -115,15 +114,15 @@ const InstockEdit = ({...props}) => {
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}
-                            label="品牌(供应商)"
+                            label="供应商 / 品牌"
                             name={`instockRequest.${index}.brandId`}
                             component={SysField.BrandId}
                             required
                           />
                         </div>
-                        <div style={{width: '14%', display: 'inline-block'}}>
+                        <div style={{width: '15%', display: 'inline-block'}}>
                           <FormItem
-                            labelCol={7}
+                            labelCol={8}
                             itemStyle={{margin: 0}}
                             label="数量"
                             name={`instockRequest.${index}.number`}

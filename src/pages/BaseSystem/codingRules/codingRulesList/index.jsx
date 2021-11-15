@@ -63,7 +63,7 @@ const CodingRulesList = () => {
       case 1:
         return '入库';
       case 2:
-        return '质检';
+        return '出库';
       default:
         break;
     }

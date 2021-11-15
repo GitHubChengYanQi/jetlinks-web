@@ -115,6 +115,13 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           value: '${storehouse}'
         }];
+      case 2:
+        return [{
+          // eslint-disable-next-line no-template-curly-in-string
+          label: '仓库码',
+          // eslint-disable-next-line no-template-curly-in-string
+          value: '${storehouse}'
+        }];
       default:
         return [];
     }
@@ -261,6 +268,7 @@ export const Module = (props) => {
   const options = [
     {label: '物料', value: 0},
     {label: '入库', value: 1},
+    {label: '出库', value: 2},
   ];
 
   return (<AntdSelect options={options} {...props} />);

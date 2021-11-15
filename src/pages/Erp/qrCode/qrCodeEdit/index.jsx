@@ -8,9 +8,8 @@
 import React, {useRef} from 'react';
 import {Input} from 'antd';
 import Form from '@/components/Form';
-import {orCodeDetail, orCodeAdd, orCodeEdit, orCodeBatchAdd} from '../orCodeUrl';
-import * as SysField from '../orCodeField';
-import {Number} from '../orCodeField';
+import {orCodeDetail, orCodeAdd, orCodeEdit, orCodeBatchAdd} from '../qrCodeUrl';
+import * as SysField from '../qrCodeField';
 
 const {FormItem} = Form;
 
@@ -20,7 +19,7 @@ const ApiConfig = {
   save: orCodeEdit
 };
 
-const OrCodeEdit = ({...props}) => {
+const QrCodeEdit = ({...props}) => {
 
   const formRef = useRef();
 
@@ -36,4 +35,4 @@ const OrCodeEdit = ({...props}) => {
   );
 };
 
-export default OrCodeEdit;
+export default QrCodeEdit;

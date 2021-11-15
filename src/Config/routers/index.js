@@ -6,7 +6,7 @@ import ProtalRouterConfig from '@/pages/Portal/router';
 import ShopRouterConfig from '@/pages/Shop/router';
 import UserInfoRouterConfig from '@/pages/UserInfo/router';
 import RepairRouterConfig from '@/pages/Repair/router';
-import ProductionRouterConfig from '@/pages/PRODUCTION/router';
+import ProductionRouterConfig from '@/pages/Production/router';
 import SpuRouterConfig from '@/pages/SPU/router';
 import WorkflowConfig from '@/pages/Workflow/router';
 import FormConfig from '@/pages/Form/router';
@@ -16,7 +16,7 @@ const routerConfig = [
   {
     path: '/login',
     name: '登录',
-    component: lazy(() => import(('@/pages/Login'))),// Login,
+    component: lazy(() => import(('@/pages/Login'))),
   },
   {
     path: '/logout',
