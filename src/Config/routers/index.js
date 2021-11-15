@@ -8,13 +8,13 @@ import UserInfoRouterConfig from '@/pages/UserInfo/router';
 import RepairRouterConfig from '@/pages/Repair/router';
 import baseSystem from './baseSystem';
 import SpuRouterConfig from '@/pages/SPU/router';
-import ProductionRouterConfig from '@/pages/Production1/router';
+import ProductionRouterConfig from '@/pages/Production/router';
 
 const routerConfig = [
   {
     path: '/login',
     name: '登录',
-    component: lazy(() => import(('@/pages/Login'))),// Login,
+    component: lazy(() => import(('@/pages/Login'))),
   },
   {
     path: '/logout',
