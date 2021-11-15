@@ -19,6 +19,7 @@ import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import ProCard from '@ant-design/pro-card';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {config} from 'ice';
 
 const {FormItem} = Form;
 
@@ -29,6 +30,8 @@ const ApiConfig = {
 };
 
 const {onFieldValueChange$} = FormEffectHooks;
+
+const {code} = config;
 
 const OutstockOrderEdit = ({...props}) => {
 
@@ -55,7 +58,10 @@ const OutstockOrderEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="outstockOrderId"
-        effects={({setFieldState,getFieldState}) => {
+        onSubmit={(value)=>{
+          return {...value,url:`${code}?id=codeId`};
+        }}
+        effects={({setFieldState}) => {
 
           onFieldValueChange$('storehouseId').subscribe(async ({value}) => {
             if (value) {

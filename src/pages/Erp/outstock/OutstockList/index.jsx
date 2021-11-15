@@ -106,7 +106,6 @@ const OutstockList = (props) => {
           }}
         >
 
-          <Column title="产品编号" width={200} dataIndex="stockItemId" />
           <Column title="产品" render={(text, record) => {
             return (
               <>
@@ -139,6 +138,7 @@ const OutstockList = (props) => {
               </>
             );
           }} />
+          <Column title='数量' dataIndex='number' width={70} align='center' />
           <Column title="状态" width={200} dataIndex="state" render={(text, record) => {
             return (
               <>
@@ -146,18 +146,6 @@ const OutstockList = (props) => {
               </>
             );
           }} />
-          {value ? null : <Column title="操作" fixed="right" align="right" render={(value, record) => {
-            return (
-              <>
-                <EditButton onClick={() => {
-                  ref.current.open(record);
-                }} />
-                <DelButton api={outstockDelete} value={record.outstockId} onSuccess={() => {
-                  tableRef.current.refresh();
-                }} />
-              </>
-            );
-          }} width={100} />}
         </Table>
       </ProCard>
       <Modal title="产品出库" component={OutstockEdit} onSuccess={() => {

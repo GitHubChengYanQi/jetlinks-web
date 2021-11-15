@@ -95,7 +95,7 @@ const TableWarp = ({
       response = await ajaxService({
         ...api,
         data: {
-          ...values
+          ...values,
         },
         ...other,
         params: page

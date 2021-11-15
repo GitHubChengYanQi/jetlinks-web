@@ -64,7 +64,6 @@ const InstockEdit = ({...props}) => {
 
         }}
         onSubmit={(value)=>{
-          // eslint-disable-next-line no-template-curly-in-string
           return {...value,url:`${code}?id=codeId`};
         }}
       >
