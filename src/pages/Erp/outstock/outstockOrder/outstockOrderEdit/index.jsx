@@ -92,7 +92,7 @@ const OutstockOrderEdit = ({...props}) => {
                   // if (skuId.value){
                   //   state.value = null;
                   // }
-                  state.value = null;
+                  // state.value = null;
                 }
               );
 
