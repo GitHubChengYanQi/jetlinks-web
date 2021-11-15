@@ -58,10 +58,16 @@ const OutstockOrderEdit = ({...props}) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="outstockOrderId"
+        onSuccess={() => {
+          props.onSuccess();
+        }}
+        onError={() => {
+
+        }}
         onSubmit={(value)=>{
           return {...value,url:`${code}?id=codeId`};
         }}
-        effects={({setFieldState}) => {
+        effects={({setFieldState,getFieldState}) => {
 
           onFieldValueChange$('storehouseId').subscribe(async ({value}) => {
             if (value) {
@@ -79,8 +85,10 @@ const OutstockOrderEdit = ({...props}) => {
                 'applyDetails.*.skuId',
                 state => {
                   state.props.skuIds = skuIds;
-                  // const skuId = getFieldState('applyDetails.*.skuId');
-                  // console.log(skuId);
+                  // const skuId = getFieldState('applyDetails.*.skuId',(state)=>{
+                  //   console.log(state);
+                  // });
+
                   // if (skuId.value){
                   //   state.value = null;
                   // }
