@@ -33,7 +33,7 @@ const ProductionRouterConfig = [
       ...QualityCheckRouter,
       ...QrCodeRouter,
       {
-        redirect: '/production/sku',
+        redirect: '/production/tool',
       }
     ]
   }
