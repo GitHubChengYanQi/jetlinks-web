@@ -6,9 +6,11 @@ import ProtalRouterConfig from '@/pages/Portal/router';
 import ShopRouterConfig from '@/pages/Shop/router';
 import UserInfoRouterConfig from '@/pages/UserInfo/router';
 import RepairRouterConfig from '@/pages/Repair/router';
-import baseSystem from './baseSystem';
 import ProductionRouterConfig from '@/pages/PRODUCTION/router';
 import SpuRouterConfig from '@/pages/SPU/router';
+import WorkflowConfig from '@/pages/Workflow/router';
+import FormConfig from '@/pages/Form/router';
+import baseSystem from './baseSystem';
 
 const routerConfig = [
   {
@@ -25,6 +27,8 @@ const routerConfig = [
     name: 'Home',
     component: BasicLayout,
     children: [
+      ...FormConfig,
+      ...WorkflowConfig,
       ...CrmRouterConfig,
       ...ErpRouterConfig,
       ...baseSystem,
