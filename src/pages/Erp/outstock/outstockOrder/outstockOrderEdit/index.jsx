@@ -80,7 +80,6 @@ const OutstockOrderEdit = ({...props}) => {
                 }
               });
 
-
               setFieldState(
                 'applyDetails.*.skuId',
                 state => {

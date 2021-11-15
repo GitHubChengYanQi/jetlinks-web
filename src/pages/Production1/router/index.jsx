@@ -1,13 +1,12 @@
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
-import SpuLayout from '@/pages/SPU';
 import {QrCodeRouter} from '@/pages/Erp/qrCode/qrCodeRouter';
 import ProducttionLayout from '@/pages/Production';
 
 const ProductionRouterConfig = [
   {
     path: '/production',
-    name: '产品物料',
+    name: '生产管理',
     component: ProducttionLayout,
     children:[
       ...ToolRouter,
