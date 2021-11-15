@@ -1,3 +1,4 @@
+import {ProductOrderRouter} from '@/pages/Erp/productOrder/productOrderRouter';
 import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 import {QrCodeRouter} from '@/pages/Erp/qrCode/qrCodeRouter';
@@ -11,6 +12,7 @@ const ProductionRouterConfig = [
     children:[
       ...ToolRouter,
       ...QualityCheckRouter,
+      ...ProductOrderRouter,
       ...QrCodeRouter,
       {
         redirect: '/production/tool',
