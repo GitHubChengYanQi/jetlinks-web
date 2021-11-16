@@ -19,6 +19,7 @@ import {qualityCheckDetail} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
 import request from '../../../../../../util/Request/request';
 import {useHistory} from 'ice';
 import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
+import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 
 const {FormItem} = Form;
 
@@ -39,20 +40,20 @@ const QualityPlanEdit = (props) => {
 
   const history = useHistory();
 
-  const {loading, data} = useRequest(rulesRelationList, {
+  const {onFieldValueChange$} = FormEffectHooks;
+
+  const {loading,data} = useRequest(codingRulesList, {
     defaultParams: {
       data: {
-        moduleId: 2
+        module: 3,
+        state:1
       }
     }
   });
 
-  if (loading) {
+  if (loading){
     return (<ProSkeleton type="descriptions" />);
   }
-
-  const {onFieldValueChange$} = FormEffectHooks;
-
 
   return (
     <Card title="质检方案" extra={<Button onClick={()=>{
@@ -152,10 +153,10 @@ const QualityPlanEdit = (props) => {
         <div style={{maxWidth: 1220, margin: 'auto'}}>
           <ProCard className="h2Card" title="基本信息" headerBordered>
             <FormItem
-              label="方案编号"
+              label="编码"
               name="planCoding"
-              codingId={data && data[0] ? data[0].codingRulesId : null}
               component={SysField.Codings}
+              codingId={data}
               rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
             />
             <FormItem label="方案名称" name="planName" component={SysField.PlanName} required />

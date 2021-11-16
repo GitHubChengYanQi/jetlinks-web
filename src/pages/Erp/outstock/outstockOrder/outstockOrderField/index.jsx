@@ -61,7 +61,7 @@ export const Number = (props) => {
       }else {
         props.onChange(null);
         setNumber(0);
-        message.error('仓库没有此物料!');
+        // message.error('仓库没有此物料!');
       }
     }
   });

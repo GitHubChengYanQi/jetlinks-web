@@ -40,3 +40,9 @@ export const qualityCheckListSelect = {
   method: 'POST',
 };
 
+
+export const qualityPlanListSelect = {
+  url: '/qualityPlan/listSelect',
+  method: 'POST',
+};
+

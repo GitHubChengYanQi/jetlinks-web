@@ -26,11 +26,15 @@ export const Codings = (props) => {
 
   const {codingId, ...other} = props;
 
-  return (<Coding codingId={codingId || ''} width={400} {...other} />);
+  return (<Coding width={400} codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };
 
 export const PlanName = (props) => {
-  return (<Input style={{width: 200}} {...props} />);
+  return (<Input style={{width: 400}} {...props} />);
+};
+
+export const Name = (props) => {
+  return (<Input {...props} />);
 };
 export const PlanStatus = (props) => {
   return (<Input {...props} />);

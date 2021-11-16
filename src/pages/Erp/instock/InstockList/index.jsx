@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal, notification, Table as AntTable} from 'antd';
+import {Badge, Button, Modal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -136,6 +136,18 @@ const InstockList = () => {
               {record.userResult && record.userResult.name}
             </>
           );
+        }} />
+        <Column key={4} title="状态" width={200} dataIndex="state" sorter render={(value) => {
+          switch (value) {
+            case 0:
+              return <Badge text="待入库" color="blue" />;
+            case 1:
+              return <Badge text="未完成" color="green" />;
+            case 2:
+              return <Badge text="已完成" color="red" />;
+            default:
+              return null;
+          }
         }} />
         <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
       </Table>

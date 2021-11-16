@@ -18,6 +18,7 @@ import QualityPlanEdit from '../qualityPlanEdit';
 import * as SysField from '../qualityPlanField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useHistory} from 'ice';
+import {Name} from '../qualityPlanField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,9 +39,8 @@ const QualityPlanList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="方案名称" name="planName" component={SysField.PlanName} />
+        <FormItem label="方案名称" name="planName" component={SysField.Name} />
         <FormItem label="状态" name="planStatus" component={SysField.PlanStatus} />
-        <FormItem label="质检类型" name="planType" component={SysField.PlanType} />
       </>
     );
   };

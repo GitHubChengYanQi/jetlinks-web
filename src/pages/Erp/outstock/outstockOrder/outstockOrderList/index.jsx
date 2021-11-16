@@ -5,14 +5,14 @@
  * @Date 2021-08-16 10:51:46
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Modal as AntModal, notification, Table as AntTable} from 'antd';
+import {Button,Table as AntTable} from 'antd';
 import AddButton from '@/components/AddButton';
 import Breadcrumb from '@/components/Breadcrumb';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
 import Modal from '@/components/Modal';
-import {outBound, outstock, outstockOrderDelete, outstockOrderList} from '../outstockOrderUrl';
+import {outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
 import Code from '@/pages/Erp/spu/components/Code';
 
@@ -65,13 +65,6 @@ const OutstockOrderList = () => {
           );
         }} />
         <Column title="备注" dataIndex="note" />
-        <Column title="出库状态" width={200} dataIndex="state" render={(text, record) => {
-          return (
-            <>
-              {record.state ? '已出库' : '未出库'}
-            </>
-          );
-        }} />
         <Column />
       </Table>
       <Modal width={1000} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
