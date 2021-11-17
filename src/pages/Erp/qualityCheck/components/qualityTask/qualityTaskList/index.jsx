@@ -39,7 +39,8 @@ const QualityTaskList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="负责人" name="userId" component={SysField.UserId} />
+        <FormItem label="类型" style={{width:200}} name="type" component={SysField.Type} />
+        <FormItem label="负责人" style={{width:200}} name="userId" component={SysField.UserId} />
       </>
     );
   };
