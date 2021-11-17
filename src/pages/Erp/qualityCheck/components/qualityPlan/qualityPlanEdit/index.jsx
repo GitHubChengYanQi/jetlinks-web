@@ -90,6 +90,7 @@ const QualityPlanEdit = (props) => {
               }),
               state => {
                 state.props.typeClass = value.value;
+                state.value = null;
               }
             );
 
@@ -118,6 +119,21 @@ const QualityPlanEdit = (props) => {
                 state => {
                   state.props.type = result.type;
                   state.props.active = value.active;
+
+                  switch (result.type) {
+                    case 3:
+                      state.visible = false;
+                      break;
+                    case 6:
+                      state.visible = false;
+                      break;
+                    case 7:
+                      state.visible = false;
+                      break;
+                    default:
+                      state.visible = true;
+                      break;
+                  }
                 }
               );
 
@@ -206,12 +222,14 @@ const QualityPlanEdit = (props) => {
                             <FormItem
                               name={`.qualityPlanDetailParams.${index}.operator`}
                               component={SysField.Operator}
+                              required
                             />
                           </div>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
                               name={`qualityPlanDetailParams.${index}.standardValue`}
                               component={SysField.StandardValue}
+                              required
                             />
                           </div>
                           <div style={{display: 'inline-block', width: '10%'}}>

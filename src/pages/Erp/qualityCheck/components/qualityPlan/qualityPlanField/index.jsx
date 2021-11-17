@@ -88,7 +88,7 @@ export const StandardValue = (props) => {
   const {type, typeClass, active, ...other} = props;
 
   useEffect(() => {
-    if (active) {
+    if (active && other.value) {
       other.onChange(null);
     }
   }, [type]);
@@ -98,12 +98,12 @@ export const StandardValue = (props) => {
   const types = (bai) => {
     if (typeClass === 6) {
       return <>
-        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && other.value.split(',')[0]} min={0} max={bai && 100} onChange={(val) => {
-          other.onChange(`${val},${other.value ? other.value[1] : ''}`);
+        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && `${other.value}`.split(',')[0]} min={0} max={bai && 100} onChange={(val) => {
+          other.onChange(`${val},${other.value ? other.value.split(',')[1] : ''}`);
         }} />{bai && '  %'}
         &nbsp;&lt;&gt;&nbsp;
-        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && other.value.split(',')[1]} max={bai && 100} onChange={(val) => {
-          other.onChange(`${other.value ? other.value[0] : ''},${val}`);
+        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && `${other.value}`.split(',')[1]} max={bai && 100} onChange={(val) => {
+          other.onChange(`${other.value ? other.value.split(',')[0] : ''},${val}`);
         }} />{bai && '  %'}
       </>;
     } else {
@@ -119,7 +119,7 @@ export const StandardValue = (props) => {
     case 3:
       return null;
     case 4:
-      return <FileUpload title="上传图片" {...other} />;
+      return null;
     case 5:
       return types(true);
     case 6:

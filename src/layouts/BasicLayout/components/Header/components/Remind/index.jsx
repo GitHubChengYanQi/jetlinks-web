@@ -11,19 +11,19 @@ const Remind = ({data}) => {
           size="small"
           dataSource={data}
           renderItem={(item) => {
-            if (item.time && item.type !== '代办') {
-              return <List.Item>
-                <Space direction="vertical">
-                  <Space>
-                    <Typography.Text strong>提醒内容: </Typography.Text>{item.message}
-                  </Space>
-                  <Space>
-                    <Typography.Text strong>提醒时间：</Typography.Text>{item.time}
-                  </Space>
+            return <List.Item>
+              <Space direction="vertical">
+                <Space>
+                  {item.title}
+                  {item.time}
                 </Space>
-              </List.Item>;
-            }
-          }}
+                <Space>
+                  {item.content}
+                </Space>
+              </Space>
+            </List.Item>;
+          }
+          }
         />
       </div>
     );

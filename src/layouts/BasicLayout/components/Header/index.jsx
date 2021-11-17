@@ -53,7 +53,7 @@ const Header = () => {
 
   const [visible, setVisible] = useState(false);
 
-  const {loading, data} = useRequest({url: '/businessTrack/list', method: 'POST'});
+  const {loading, data} = useRequest({url: '/message/list', method: 'POST'});
 
   if (loading) {
     return <ProSkeleton type="descriptions" />;
