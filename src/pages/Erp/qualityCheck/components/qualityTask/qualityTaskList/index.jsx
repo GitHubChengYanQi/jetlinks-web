@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Badge, Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -70,18 +70,27 @@ const QualityTaskList = () => {
           );
         }} />
         <Column title="类型" dataIndex="type" />
-        <Column title="负责人" dataIndex="userId" />
+        <Column title="负责人" dataIndex="userName" />
+        <Column title="状态" dataIndex="state" render={(value) => {
+          return value === 0 ? <Badge text="进行中" color="blue" /> : <Badge text="已完成" color="green" />;
+        }} />
         <Column title="备注" dataIndex="remark" />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.qualityTaskId);
-              }} />
-            </>
-          );
-        }} width={300} />
+        <Column title="操作" width={100} align='right' render={(value, record) => {
+          if (record.state === 1) {
+            switch (record.type) {
+              case '入厂':
+                return record.state && <Button>生成入库单</Button>;
+              case '出厂':
+                return record.state && <Button>生成出库单</Button>;
+              default:
+                return null;
+            }
+          } else {
+            return null;
+          }
+
+        }} />
       </Table>
       <Modal width={1200} title="编辑" component={QualityTaskEdit} onSuccess={() => {
         tableRef.current.refresh();

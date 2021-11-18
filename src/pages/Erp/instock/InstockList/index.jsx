@@ -143,7 +143,7 @@ const InstockList = () => {
               return <Badge text="待入库" color="blue" />;
             case 1:
               return <Badge text="未完成" color="green" />;
-            case 2:
+            case 3:
               return <Badge text="已完成" color="red" />;
             default:
               return null;

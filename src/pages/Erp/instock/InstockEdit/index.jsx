@@ -67,7 +67,66 @@ const InstockEdit = ({...props}) => {
         onSubmit={(value) => {
           return {...value, url: `${code}?id=codeId`};
         }}
-        effects={({setFieldState}) => {
+        effects={({setFieldState,getFieldState}) => {
+
+          FormEffectHooks.onFieldValueChange$('instockRequest.*.number').subscribe(({name, value}) => {
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `instockRequest.${$1}.costPrice`;
+              }),
+              state => {
+                state.value = null;
+              }
+            );
+
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `instockRequest.${$1}.sellingPrice`;
+              }),
+              state => {
+                state.value = null;
+              }
+            );
+
+          });
+
+          FormEffectHooks.onFieldValueChange$('instockRequest.*.costPrice').subscribe(({name, value}) => {
+            const number = getFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `instockRequest.${$1}.number`;
+              }),);
+
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `instockRequest.${$1}.sellingPrice`;
+              }),
+              state => {
+                state.value = value / number.value;
+              }
+            );
+
+          });
+
+          FormEffectHooks.onFieldValueChange$('instockRequest.*.sellingPrice').subscribe(({name, value}) => {
+            const number = getFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `instockRequest.${$1}.number`;
+              }),);
+
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `instockRequest.${$1}.costPrice`;
+              }),
+              state => {
+                state.value = value * number.value;
+              }
+            );
+
+          });
+
+
+
+
           FormEffectHooks.onFieldValueChange$('instockRequest.*.skuId').subscribe(async ({name, value}) => {
             if (value) {
 

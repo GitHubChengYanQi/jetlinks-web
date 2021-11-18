@@ -52,7 +52,7 @@ const QualityTaskDetailList = ({value}) => {
             <Descriptions column={1} bordered labelStyle={{width: 120}}>
               <Descriptions.Item label="编号"> {value.coding}</Descriptions.Item>
               <Descriptions.Item label="类型">{value.type}</Descriptions.Item>
-              <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
+              <Descriptions.Item label="负责人">{value.userName}</Descriptions.Item>
               <Descriptions.Item label="备注">{value.remark}</Descriptions.Item>
             </Descriptions>
           </Col>
@@ -68,6 +68,8 @@ const QualityTaskDetailList = ({value}) => {
           api={qualityTaskDetailList}
           rowKey="qualityTaskDetailId"
           contentHeight
+          rowSelection
+          noPagination
           searchForm={searchForm}
           actions={actions()}
           ref={tableRef}
