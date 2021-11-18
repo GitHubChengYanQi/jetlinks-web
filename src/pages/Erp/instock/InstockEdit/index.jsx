@@ -21,6 +21,7 @@ import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {config} from 'ice';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -63,19 +64,38 @@ const InstockEdit = ({...props}) => {
         onError={() => {
 
         }}
-        onSubmit={(value)=>{
-          return {...value,url:`${code}?id=codeId`};
+        onSubmit={(value) => {
+          return {...value, url: `${code}?id=codeId`};
+        }}
+        effects={({setFieldState}) => {
+          FormEffectHooks.onFieldValueChange$('instockRequest.*.skuId').subscribe(async ({name, value}) => {
+            if (value) {
+
+              const sku = await request({...skuDetail, data: {skuId: value}});
+
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `instockRequest.${$1}.unitId`;
+                }),
+                state => {
+                  state.value = sku && sku.unit && sku.unit.unitId;
+                }
+              );
+            }
+
+
+          });
         }}
       >
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
-          <div style={{display: 'inline-block',width:'30%'}}>
+          <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="编码" name="coding" codingId={data} component={SysField.Codings} required />
           </div>
-          <div style={{display: 'inline-block',width:'30%'}}>
+          <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="仓库名称" name="storeHouseId" component={SysField.StoreHouseSelect} required />
           </div>
-          <div style={{display: 'inline-block',width:'30%'}}>
+          <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="负责人" name="userId" component={SysField.UserId} required />
           </div>
 
@@ -120,17 +140,25 @@ const InstockEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '15%', display: 'inline-block'}}>
-                          <FormItem
-                            labelCol={8}
-                            itemStyle={{margin: 0}}
-                            label="数量"
-                            name={`instockRequest.${index}.number`}
-                            component={SysField.Number}
-                            required
-                          />
+                        <div style={{width: '18%', display: 'inline-block'}}>
+                          <Space>
+                            <FormItem
+                              labelCol={8}
+                              itemStyle={{margin: 0}}
+                              label="数量"
+                              name={`instockRequest.${index}.number`}
+                              component={SysField.Number}
+                              required
+                            />
+                            <FormItem
+                              labelCol={8}
+                              itemStyle={{margin: 0}}
+                              name={`instockRequest.${index}.unitId`}
+                              component={SysField.Unit}
+                            />
+                          </Space>
                         </div>
-                        <div style={{width: '14%', display: 'inline-block'}}>
+                        <div style={{width: '12%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -139,12 +167,12 @@ const InstockEdit = ({...props}) => {
                             component={SysField.CostPrice}
                           />
                         </div>
-                        <div style={{width: '14%', display: 'inline-block'}}>
+                        <div style={{width: '12%', display: 'inline-block'}}>
                           <FormItem
                             labelAlign="left"
                             itemStyle={{margin: 0}}
                             labelCol={7}
-                            label="售价"
+                            label="单价"
                             name={`instockRequest.${index}.sellingPrice`}
                             component={SysField.SellingPrice}
                           />

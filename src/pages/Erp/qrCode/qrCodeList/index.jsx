@@ -25,12 +25,11 @@ import {useRequest} from '@/util/Request';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const {code,baseURI} = config;
+const {code, baseURI} = config;
 
 const QrCodeList = () => {
 
-  const [exports,setExports] = useState(0);
-
+  const [exports, setExports] = useState(0);
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -48,7 +47,9 @@ const QrCodeList = () => {
     return (
       <>
         <FormItem label="类型" style={{width: 200}} name="type" component={SysField.Type} />
-        <FormItem hidden style={{width: 200}} name="state" component={SysField.Type} />
+        <div style={{height:8}}>
+          <FormItem hidden style={{width: 200}} name="state" component={SysField.Type} />
+        </div>
       </>
     );
   };
@@ -124,38 +125,6 @@ const QrCodeList = () => {
   return (
     <>
       <Table
-        cardTitle={
-          <>
-            <Radio.Group defaultValue={0} value={exports} onChange={(value) => {
-              setExports(value.target.value);
-              switch (value.target.value) {
-                case 0:
-                  tableRef.current.formActions.setFieldValue('*', null);
-                  break;
-                case 1:
-                  tableRef.current.formActions.setFieldValue('*', null);
-                  tableRef.current.formActions.setFieldValue('state', '0');
-                  break;
-                case 2:
-                  tableRef.current.formActions.setFieldValue('state', '1');
-                  break;
-                default:
-                  break;
-              }
-              tableRef.current.submit();
-            }}>
-              <Radio.Button  value={0}>查看所有码</Radio.Button>
-              <Radio.Button  value={1}>查看未使用码</Radio.Button>
-              <Radio.Button  value={2}>查看已使用码</Radio.Button>
-            </Radio.Group>
-            <Button type='link' onClick={() => {
-              const url = code.replaceAll(':','%3A').replaceAll('/','%2F').replaceAll('#','%23');
-              window.location.href = `${baseURI}api/qrCodetoExcel?type=${exports}&url=${url}%3Fid%3DcodeId`;
-            }}>
-              导出当前选中的码
-            </Button>
-          </>
-        }
         title={<Breadcrumb />}
         api={orCodeList}
         rowKey="orCodeId"
@@ -175,6 +144,36 @@ const QrCodeList = () => {
             }}>
               <RedoOutlined />刷新
             </Button>
+            <div>
+              <Radio.Group defaultValue={0} value={exports} onChange={(value) => {
+                setExports(value.target.value);
+                switch (value.target.value) {
+                  case 0:
+                    tableRef.current.formActions.setFieldValue('*', null);
+                    break;
+                  case 1:
+                    tableRef.current.formActions.setFieldValue('*', null);
+                    tableRef.current.formActions.setFieldValue('state', '0');
+                    break;
+                  case 2:
+                    tableRef.current.formActions.setFieldValue('state', '1');
+                    break;
+                  default:
+                    break;
+                }
+                tableRef.current.submit();
+              }}>
+                <Radio.Button value={0}>查看所有码</Radio.Button>
+                <Radio.Button value={1}>查看未使用码</Radio.Button>
+                <Radio.Button value={2}>查看已使用码</Radio.Button>
+              </Radio.Group>
+              <Button type="link" onClick={() => {
+                const url = code.replaceAll(':', '%3A').replaceAll('/', '%2F').replaceAll('#', '%23');
+                window.location.href = `${baseURI}api/qrCodetoExcel?type=${exports}&url=${url}%3Fid%3DcodeId`;
+              }}>
+                导出当前选中的码
+              </Button>
+            </div>
           </Space>
         }
         searchForm={searchForm}

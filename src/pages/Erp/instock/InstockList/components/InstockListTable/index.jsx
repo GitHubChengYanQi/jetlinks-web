@@ -7,7 +7,6 @@ import * as SysField from '@/pages/Erp/instock/InstockField';
 import {Spin, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import {request, useRequest} from '@/util/Request';
-import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 
 const formActionsPublic = createFormActions();

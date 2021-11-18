@@ -29,7 +29,7 @@ import {spuListSelect} from '@/pages/Erp/parts/PartsUrl';
 import {useBoolean} from 'ahooks';
 import Modal from '@/components/Modal';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
-import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
+import {spuClassificationListSelect, unitListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {
   spuClassificationDetail,
@@ -38,6 +38,7 @@ import {
 import {codingRulesBackCoding} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
+import UnitList from '@/pages/Erp/unit/unitList';
 
 export const Type = (props) => {
 
@@ -132,6 +133,10 @@ export const Codings = (props) => {
   const {codingId, ...other} = props;
 
   return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
+};
+export const UnitId = (props) =>{
+  const {skuId, ...other} = props;
+  return (<SetSelectOrCascader api={unitListSelect} disabled={skuId} width={200} title='设置单位' component={UnitList} {...other} />);
 };
 
 export const Standard = (props) => {

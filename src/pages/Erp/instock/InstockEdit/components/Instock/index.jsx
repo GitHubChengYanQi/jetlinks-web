@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import * as SysField from '@/pages/Erp/instock/InstockField';
 import {createFormActions} from '@formily/antd';
-import {Button, Descriptions, message, Modal, Table as AntTable} from 'antd';
+import {Button, Col, Descriptions, message, Modal, Row, Space, Table as AntTable} from 'antd';
 import Icon from '@/components/Icon';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -51,12 +51,20 @@ const Instock = (props) => {
   return (
     <div style={{padding: 24}}>
       <ProCard className="h2Card" title="入库信息" headerBordered>
-        <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="入库单号">  <Code source="instock" id={value.instockOrderId} />{value.coding}</Descriptions.Item>
-          <Descriptions.Item label="入库仓库"> {value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
-          <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
-          <Descriptions.Item label="创建时间">{value.createTime}</Descriptions.Item>
-        </Descriptions>
+        <Row gutter={24}>
+          <Col span={16}>
+            <Descriptions column={1} bordered labelStyle={{width: 120}}>
+              <Descriptions.Item label="入库单号"> {value.coding}</Descriptions.Item>
+              <Descriptions.Item
+                label="入库仓库"> {value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
+              <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
+              <Descriptions.Item label="创建时间">{value.createTime}</Descriptions.Item>
+            </Descriptions>
+          </Col>
+          <Col span={8}>
+            <Code source="instock" id={value.instockOrderId} image codeWidth={210} />
+          </Col>
+        </Row>
       </ProCard>
       <ProCard className="h2Card" headerBordered title="入库清单">
         <Table
@@ -74,10 +82,10 @@ const Instock = (props) => {
           <Column title="物料" render={(text, record) => {
             return (
               <>
-                {record.sku && `${record.sku.skuName  }  /  `}
+                {record.sku && `${record.sku.skuName}  /  `}
                 {record.spuResult && record.spuResult.name}
                 &nbsp;&nbsp;
-                { record.backSkus && record.backSkus.length>0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
+                {record.backSkus && record.backSkus.length > 0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
                   (
                   {
                     record.backSkus.map((items, index) => {
@@ -102,24 +110,16 @@ const Instock = (props) => {
           <Column title="入库数量" width={120} align="center" dataIndex="number" sorter />
           <Column title="原价" width={120} align="center" dataIndex="costPrice" sorter />
           <Column title="售价" width={120} align="center" dataIndex="sellingPrice" sorter />
-          {/*<Column title="操作" width={120} render={(text, record) => {*/}
-          {/*  return (*/}
-          {/*    <Button style={{margin: '0 10px'}} disabled={record.number === 0} onClick={async () => {*/}
-          {/*      setItems(record);*/}
-          {/*      setShow(true);*/}
-          {/*    }}><Icon type="icon-ruku" />{record.number === 0 ? '已入库' : '入库'}</Button>*/}
-          {/*  );*/}
-          {/*}} />*/}
         </Table>
       </ProCard>
 
       <Modal
         visible={show}
-        title='选择库位'
-        onCancel={()=>{
+        title="选择库位"
+        onCancel={() => {
           setShow(false);
         }}
-        onOk={async ()=>{
+        onOk={async () => {
           if (position) {
             await run({
               data: {

@@ -58,6 +58,7 @@ const Coding = ({value, width, onChange, codingId}) => {
         <AntdSelect
           value="自定义"
           style={{minWidth: 100}}
+          dropdownMatchSelectWidth={200}
           options={[
             {
               label: '编码规则',

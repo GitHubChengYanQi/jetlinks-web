@@ -64,7 +64,7 @@ const QualityTaskEdit = ({...props}) => {
       >
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
-          <div style={{display: 'inline-block',width:'25%'}}>
+          <div style={{display: 'inline-block',width:'40%'}}>
             <FormItem
               label="编码"
               name="coding"
@@ -73,13 +73,13 @@ const QualityTaskEdit = ({...props}) => {
               rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
             />
           </div>
-          <div style={{display: 'inline-block',width:'25%'}}>
+          <div style={{display: 'inline-block',width:'30%'}}>
             <FormItem label="类型" name="type" component={SysField.Type} required/>
           </div>
-          <div style={{display: 'inline-block',width:'25%'}}>
+          <div style={{display: 'inline-block',width:'30%'}}>
             <FormItem label="负责人" name="userId" component={SysField.UserId} required/>
           </div>
-          <div style={{display: 'inline-block',width:'25%'}}>
+          <div style={{display: 'inline-block',width:'40%'}}>
             <FormItem label="备注" name="remark" component={SysField.Remark}/>
           </div>
 

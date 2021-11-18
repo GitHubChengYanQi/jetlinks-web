@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Image, Modal, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import jrQrcode from 'jr-qrcode';
@@ -7,7 +7,7 @@ import {BarcodeOutlined, QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
 
 
-const Code = ({source, id,style, value}) => {
+const Code = ({source, id, style, value, image,codeWidth}) => {
 
   const {code} = config;
 
@@ -28,9 +28,33 @@ const Code = ({source, id,style, value}) => {
       }
     });
 
+  useEffect(()=>{
+    if (image){
+      run({
+        data: {
+          source,
+          id,
+        }
+      });
+    }
+  },[]);
+
+  const img = () => {
+    return <>
+      <div style={{margin: 'auto', maxWidth: 256}}>
+        <Image src={jrQrcode.getQrBase64(value || `${code}?id=${codes}`)} preview={false} />
+      </div>
+      <div style={{textAlign: 'center'}}>
+        {(value || codes) && <AcBarcode value={value || codes} />}
+      </div>
+    </>;
+  };
+
   return (
     <>
-      <Space>
+      {image ? <div style={{margin: 'auto', maxWidth: codeWidth}}>
+        <Image src={jrQrcode.getQrBase64(value || `${code}?id=${codes}`)} preview={false} />
+      </div> : <Space>
         <Button
           type="link"
           style={style}
@@ -49,9 +73,9 @@ const Code = ({source, id,style, value}) => {
             <QrcodeOutlined />
           }
         />
-      </Space>
+      </Space>}
       <Modal
-        title='查看二维码'
+        title="查看二维码"
         visible={show}
         destroyOnClose
         keyboard
@@ -61,12 +85,7 @@ const Code = ({source, id,style, value}) => {
           setShow(false);
         }}
       >
-        <div style={{margin: 'auto', maxWidth: 256}}>
-          <Image src={jrQrcode.getQrBase64(value || `${code}?id=${codes}`)} preview={false} />
-        </div>
-        <div style={{textAlign: 'center'}}>
-          {(value || codes) && <AcBarcode value={value || codes} />}
-        </div>
+        {img()}
       </Modal>
     </>
   );

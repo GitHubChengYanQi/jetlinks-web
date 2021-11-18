@@ -11,10 +11,11 @@ import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
 import {notification} from 'antd';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {FormItem} = Form;
 
@@ -50,16 +51,16 @@ const SkuEdit = ({...props}, ref) => {
     await formRef.current.submit();
   };
 
-  const {loading,data} = useRequest(codingRulesList, {
+  const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
       data: {
         module: 0,
-        state:1
+        state: 1
       }
     }
   });
 
-  if (loading){
+  if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
@@ -70,6 +71,7 @@ const SkuEdit = ({...props}, ref) => {
         ref={formRef}
         defaultValue={{
           'spuClassificationId': value.spuResult && value.spuResult.spuClassificationId,
+          'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,
           'skuName': value.skuName,
           'standard': value.standard,
@@ -97,16 +99,30 @@ const SkuEdit = ({...props}, ref) => {
         }}
         effect={() => {
 
-          // const {setFieldState} = createFormActions();
-          //
-          // FormEffectHooks.onFieldValueChange$('spuClassificationId').subscribe(({value}) => {
-          //   setFieldState(
-          //     'standard',
-          //     state => {
-          //       state.props.classId = value;
-          //     }
-          //   );
-          // });
+          const {setFieldState} = createFormActions();
+
+          FormEffectHooks.onFieldValueChange$('spu').subscribe(async ({value}) => {
+            if (value && value.spuId){
+
+              const spu = await request({...spuDetail,data:{spuId:value.spuId}});
+
+              setFieldState(
+                'unitId',
+                state => {
+                  state.value= spu.unitId;
+                }
+              );
+
+              setFieldState(
+                'spuClassificationId',
+                state => {
+                  state.value= spu.spuClassificationId;
+                }
+              );
+
+            }
+
+          });
 
         }}
       >
@@ -115,7 +131,7 @@ const SkuEdit = ({...props}, ref) => {
           name="standard"
           component={SysField.Codings}
           codingId={data}
-          rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
+          rules={[{required: true, message: data && data.length > 0 ? '该字段是必填字段' : '请先设置编码！'}]}
         />
         <FormItem
           label="分类"
@@ -139,6 +155,12 @@ const SkuEdit = ({...props}, ref) => {
           model={(value) => {
             setSku(value);
           }} required />
+        <FormItem
+          label="单位"
+          skuId={value.skuId}
+          name="unitId"
+          component={SysField.UnitId}
+          required />
         <FormItem
           label="规格"
           skuId={value.skuId}

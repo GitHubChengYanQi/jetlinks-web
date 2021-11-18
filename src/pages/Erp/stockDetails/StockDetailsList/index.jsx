@@ -113,6 +113,9 @@ const StockDetailsList = (props) => {
                 }
                 )
               </em>}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              ×
+              {record.number}
             </>
           );
 
@@ -136,7 +139,6 @@ const StockDetailsList = (props) => {
             </>
           );
         }} />
-        <Column title="数量" dataIndex="number" sorter />
         <Column title="产品价格" dataIndex="price" sorter />
         <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>

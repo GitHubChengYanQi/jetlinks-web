@@ -56,6 +56,7 @@ const OutstockListingList = (props) => {
   return (
     <div>
       <Table
+        noPagination
         api={outstockListingList}
         rowKey="outstockListingId"
         searchForm={searchForm}

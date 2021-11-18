@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Badge, Button, Descriptions, message, Table as AntTable, Tag} from 'antd';
+import {Badge, Button, Col, Descriptions, message, Row, Table as AntTable, Tag} from 'antd';
 import Form from '@/components/Form';
 import Modal from '@/components/Modal';
 import OutstockEdit from '@/pages/Erp/outstock/OutstockEdit';
@@ -75,13 +75,20 @@ const OutstockList = (props) => {
   return (
     <div style={{padding: 24}}>
       <ProCard className="h2Card" title="出库信息" headerBordered>
-        <Descriptions column={2} bordered labelStyle={{width: 120}}>
-          <Descriptions.Item label="出库单号"> <Code source="outstock" id={value.outstockOrderId} />{value.coding}
-          </Descriptions.Item>
-          <Descriptions.Item label="仓库">{value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
-          <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
-          <Descriptions.Item label="备注">{value.note}</Descriptions.Item>
-        </Descriptions>
+        <Row gutter={24}>
+          <Col span={16}>
+            <Descriptions column={1} bordered labelStyle={{width: 120}}>
+              <Descriptions.Item label="出库单号">{value.coding}
+              </Descriptions.Item>
+              <Descriptions.Item label="仓库">{value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
+              <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
+              <Descriptions.Item label="备注">{value.note}</Descriptions.Item>
+            </Descriptions>
+          </Col>
+          <Col span={8}>
+            <Code source="instock" id={value.instockOrderId} image codeWidth={210} />
+          </Col>
+        </Row>
       </ProCard>
       <ProCard className="h2Card" title="出库清单" headerBordered>
         <OutstockListingList value={value.outstockOrderId} />
@@ -92,13 +99,14 @@ const OutstockList = (props) => {
           api={outstockList}
           contentHeight
           isModal={false}
+          noPagination
           formActions={formActionsPublic}
           rowKey="outstockId"
           ref={tableRef}
           showSearchButton={false}
           searchForm={searchForm}
           getCheckboxProps={(record) => ({
-            disabled: record.state === 1, // Column configuration not to be checked
+            disabled: record.state === 1,
           })}
           footer={value ? footer : false}
           onChange={(value, record) => {
@@ -138,7 +146,7 @@ const OutstockList = (props) => {
               </>
             );
           }} />
-          <Column title='数量' dataIndex='number' width={70} align='center' />
+          <Column title="数量" dataIndex="number" width={70} align="center" />
           <Column title="状态" width={200} dataIndex="state" render={(text, record) => {
             return (
               <>

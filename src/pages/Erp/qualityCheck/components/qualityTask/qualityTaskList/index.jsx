@@ -19,12 +19,14 @@ import * as SysField from '../qualityTaskField';
 import Modal from '@/components/Modal';
 import Code from '@/pages/Erp/spu/components/Code';
 import Breadcrumb from '@/components/Breadcrumb';
+import QualityTaskDetailList from '@/pages/Erp/qualityCheck/components/qualityTaskDetail/qualityTaskDetailList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const QualityTaskList = () => {
   const ref = useRef(null);
+  const detail = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -39,8 +41,8 @@ const QualityTaskList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="类型" style={{width:200}} name="type" component={SysField.Type} />
-        <FormItem label="负责人" style={{width:200}} name="userId" component={SysField.UserId} />
+        <FormItem label="类型" style={{width: 200}} name="type" component={SysField.Type} />
+        <FormItem label="状态" name="state" component={SysField.State} />
       </>
     );
   };
@@ -55,11 +57,15 @@ const QualityTaskList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="编码" dataIndex="coding" render={(value, record) => {
+        <Column title="编号" dataIndex="coding" render={(value, record) => {
           return (
             <>
               <Code id={record.qualityTaskId} source="quality" />
-              {value}
+              <a onClick={() => {
+                detail.current.open(record);
+              }}>
+                {value}
+              </a>
             </>
           );
         }} />
@@ -73,9 +79,6 @@ const QualityTaskList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.qualityTaskId);
               }} />
-              <DelButton api={qualityTaskDelete} value={record.qualityTaskId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
             </>
           );
         }} width={300} />
@@ -84,6 +87,9 @@ const QualityTaskList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+      <Modal width={1200} component={QualityTaskDetailList} onSuccess={() => {
+        detail.current.close();
+      }} ref={detail} />
     </>
   );
 };

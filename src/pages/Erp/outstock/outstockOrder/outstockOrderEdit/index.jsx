@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Input, Steps} from 'antd';
+import {Avatar, Button, Input, Space, Steps} from 'antd';
 import Form from '@/components/Form';
 import {outstockOrderDetail, outstockOrderAdd, outstockOrderEdit} from '../outstockOrderUrl';
 import * as SysField from '../outstockOrderField';
@@ -20,6 +20,7 @@ import ProCard from '@ant-design/pro-card';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {config} from 'ice';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -64,19 +65,19 @@ const OutstockOrderEdit = ({...props}) => {
         onError={() => {
 
         }}
-        onSubmit={(value)=>{
-          return {...value,url:`${code}?id=codeId`};
+        onSubmit={(value) => {
+          return {...value, url: `${code}?id=codeId`};
         }}
-        effects={({setFieldState,getFieldState}) => {
+        effects={({setFieldState, getFieldState}) => {
 
           onFieldValueChange$('storehouseId').subscribe(async ({value}) => {
             if (value) {
 
               const skuIds = await request({
-                url:'/stockDetails/backSkuByStoreHouse',
-                method:'GET',
-                params:{
-                  id:value
+                url: '/stockDetails/backSkuByStoreHouse',
+                method: 'GET',
+                params: {
+                  id: value
                 }
               });
 
@@ -97,8 +98,22 @@ const OutstockOrderEdit = ({...props}) => {
             }
           });
 
-          onFieldValueChange$('applyDetails.*.skuId').subscribe(async ({name,value}) => {
+          onFieldValueChange$('applyDetails.*.skuId').subscribe(async ({name, value}) => {
+
+
             if (value && name) {
+
+              const sku = await request({...skuDetail, data: {skuId: value}});
+
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `applyDetails.${$1}.unitId`;
+                }),
+                state => {
+                  state.value = sku && sku.unit && sku.unit.unitId;
+                }
+              );
+
               setFieldState(
                 FormPath.transform(name, /\d/, $1 => {
                   return `applyDetails.${$1}.number`;
@@ -110,7 +125,7 @@ const OutstockOrderEdit = ({...props}) => {
             }
           })
           ;
-          onFieldValueChange$('applyDetails.*.brandId').subscribe(async ({name,value}) => {
+          onFieldValueChange$('applyDetails.*.brandId').subscribe(async ({name, value}) => {
             if (value && name) {
               setFieldState(
                 FormPath.transform(name, /\d/, $1 => {
@@ -180,12 +195,19 @@ const OutstockOrderEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{display: 'inline-block', width: '30%'}}>
+                        <div style={{display: 'inline-block', width: '20%'}}>
                           <FormItem
                             label="数量"
                             name={`applyDetails.${index}.number`}
                             component={SysField.Number}
-                            rules={[{required:true,message:'必填项！'}]}
+                            rules={[{required: true, message: '必填项！'}]}
+                          />
+                        </div>
+                        <div style={{display: 'inline-block', width: '10%'}}>
+                          <FormItem
+                            itemStyle={{margin: 0}}
+                            name={`applyDetails.${index}.unitId`}
+                            component={SysField.Unit}
                           />
                         </div>
                         <Button

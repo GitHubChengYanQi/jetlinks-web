@@ -7,11 +7,11 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange, dropdownMatchSelectWidth,params}) => {
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
 
-  const {loading, data, run} = useRequest({...skuList, data: {type: 0,...params}}, {
+  const {loading, data, run} = useRequest({...skuList, data: {type: 0, ...params}}, {
     debounceInterval: 500, onSuccess: (res) => {
-      if (res.length === 1){
+      if (res.length === 1) {
         setSpuClass(res && res[0].spuResult.spuClassificationId);
       }
     }
@@ -44,7 +44,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,params}) => {
       label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
       value: items.skuId,
       attribute: `${(values === '' ? '' : `( ${values} )`)}`,
-      spu:items.spuResult
+      spu: items.spuResult
     };
   };
 
@@ -91,10 +91,22 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,params}) => {
         }}
         onChange={(value, option) => {
           setChange(value);
-          setSpuClass(option.spu && option.spu.spuClassificationId);
-          if (option && option.key) {
-            onChange(option.key);
+          if (option) {
+            setSpuClass(option.spu && option.spu.spuClassificationId);
+            if (option && option.key) {
+              onChange(option.key);
+            }
+          } else {
+            setSpuClass(null);
+            onChange(null);
+            run({
+              data: {
+                type: 0,
+                ...params
+              }
+            });
           }
+
         }}>
         {options && options.map((items) => {
           return (

@@ -16,6 +16,7 @@ import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import {useRequest} from '@/util/Request';
 import {stockList} from '@/pages/Erp/stock/StockUrl';
+import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 
 export const State = (props) => {
   props.onChange(1);
@@ -41,6 +42,10 @@ export const UserId = (props) => {
 };
 export const Note = (props) => {
   return (<Input.TextArea {...props} />);
+};
+
+export const Unit = (props) => {
+  return (<Select border={false} api={unitListSelect} disabled showArrow={false} width={60} {...props} />);
 };
 
 export const Number = (props) => {
@@ -78,7 +83,7 @@ export const Number = (props) => {
     }
   }, [storehouseId, skuId, brandId]);
 
-  return (<InputNumber min={0} max={number || 0} placeholder={number !== undefined ? `库存${number}个` : '' } style={{width:200}} {...other} />);
+  return (<InputNumber min={0} max={number || 0} placeholder={number !== undefined ? `库存${number}` : '' } style={{width:'100%'}} {...other} />);
 };
 
 

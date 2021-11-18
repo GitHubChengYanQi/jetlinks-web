@@ -20,6 +20,7 @@ const TableWarp = ({
   actions,
   title,
   api,
+  noPagination,
   contentHeight,
   searchForm,
   cardTitle,
@@ -195,7 +196,7 @@ const TableWarp = ({
               rowKey={rowKey}
               columns={columns}
               pagination={
-                {
+                noPagination ? false : {
                   ...pagination,
                   showQuickJumper: true,
                   position: ['bottomRight']

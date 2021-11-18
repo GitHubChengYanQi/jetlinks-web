@@ -57,6 +57,13 @@ export const QualityPlanId = (props) =>{
   return (<Select api={qualityPlanListSelect} {...props}/>);
 };
 
+export const State = (props) =>{
+  return (<Radio.Group {...props}>
+    <Radio.Button value={1}>已完成</Radio.Button>
+    <Radio.Button value={0}>未完成</Radio.Button>
+  </Radio.Group>);
+};
+
 export const Type = (props) =>{
   return (<AntdSelect options={[{label:'入厂',value:'入厂'},{label:'出厂',value:'出厂'},]} {...props}/>);
 };
