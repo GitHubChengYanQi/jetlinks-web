@@ -17,6 +17,7 @@ import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {SkuId} from '@/pages/Workflow/Process/processField';
 
 const actions = createFormActions();
 
@@ -48,57 +49,6 @@ const Setps = () => {
             });
           }
         });
-
-        // 控制投入物料的产品规格联动
-        FormEffectHooks.onFieldValueChange$('inGoodsList.*.spuId').subscribe(async (value) => {
-          if (value.value) {
-            const data = await request({
-              ...spuDetail,
-              data: {
-                spuId: value.value
-              }
-            });
-
-            setFieldState(
-              FormPath.transform(value.name, /\d/, $1 => {
-                return `inGoodsList.${$1}.skuId`;
-              }),
-              state => {
-                if (value.active) {
-                  state.props.select = value;
-                }
-                state.props.sku = data.sku;
-              }
-            );
-          }
-
-        });
-
-        // 控制投入物料的产品规格联动
-        FormEffectHooks.onFieldValueChange$('outGoodsList.*.spuId').subscribe(async (value) => {
-          if (value.value) {
-            const data = await request({
-              ...spuDetail,
-              data: {
-                spuId: value.value
-              }
-            });
-
-            setFieldState(
-              FormPath.transform(value.name, /\d/, $1 => {
-                return `outGoodsList.${$1}.skuId`;
-              }),
-              state => {
-                if (value.active) {
-                  state.props.select = value;
-                }
-                state.props.sku = data.sku;
-              }
-            );
-          }
-
-        });
-
       }}
       defaultValue={{
         type: 'setp'
@@ -149,12 +99,15 @@ const Setps = () => {
                   return (
                     <div key={index}>
 
-                      <SpuList
-                        style={{display: 'inline-block', width: '30%'}}
-                        spuName={`inGoodsList.${index}.spuId`}
-                        spuLabel="产品"
-                        skusName={`inGoodsList.${index}.skuId`}
-                        skuLabel="规格" />
+                      <div style={{display: 'inline-block', width: '30%'}}>
+                        <FormItem
+                          labelCol={7}
+                          label="物料"
+                          name={`inGoodsList.${index}.skuId`}
+                          component={SkuId}
+                          required
+                        />
+                      </div>
                       <div style={{display: 'inline-block', width: '15%'}}>
                         <FormItem
                           name={`inGoodsList.${index}.num`}
@@ -195,12 +148,15 @@ const Setps = () => {
                   return (
                     <div key={index}>
 
-                      <SpuList
-                        style={{display: 'inline-block', width: '30%'}}
-                        spuName={`outGoodsList.${index}.spuId`}
-                        spuLabel="产品"
-                        skusName={`outGoodsList.${index}.skuId`}
-                        skuLabel="规格" />
+                      <div style={{display: 'inline-block', width: '30%'}}>
+                        <FormItem
+                          labelCol={7}
+                          label="物料"
+                          name={`outGoodsList.${index}.skuId`}
+                          component={SkuId}
+                          required
+                        />
+                      </div>
                       <div style={{display: 'inline-block', width: '15%'}}>
                         <FormItem
                           name={`outGoodsList.${index}.num`}
