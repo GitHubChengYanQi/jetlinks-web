@@ -46,11 +46,11 @@ export const DeptId = (props) =>{
 };
 
 export const Number = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={1} {...props}/>);
 };
 
 export const BrandId = (props) =>{
-  return (<Select   api={brandIdSelect} {...props}/>);
+  return (<Select api={brandIdSelect} {...props}/>);
 };
 
 export const QualityPlanId = (props) =>{

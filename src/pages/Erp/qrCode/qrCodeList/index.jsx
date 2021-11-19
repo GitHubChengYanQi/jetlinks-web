@@ -47,7 +47,7 @@ const QrCodeList = () => {
     return (
       <>
         <FormItem label="类型" style={{width: 200}} name="type" component={SysField.Type} />
-        <div style={{height:8}}>
+        <div style={{height: 8}}>
           <FormItem hidden style={{width: 200}} name="state" component={SysField.Type} />
         </div>
       </>
@@ -55,6 +55,7 @@ const QrCodeList = () => {
   };
 
   const items = (object) => {
+
     switch (object && object.type) {
       case 'item':
       case 'sku':
@@ -90,6 +91,10 @@ const QrCodeList = () => {
         return object.result && <>
           {object.result.name}
         </>;
+      case 'quality':
+        return object.result && <>
+          {object.result && object.result.coding}
+        </>;
       case 'storehousePositions':
         return object.result && <>
           {object.result.name}
@@ -117,6 +122,8 @@ const QrCodeList = () => {
         return '产品';
       case 'item':
         return '实物';
+      case 'quality':
+        return '质检任务';
       default:
         return null;
     }
