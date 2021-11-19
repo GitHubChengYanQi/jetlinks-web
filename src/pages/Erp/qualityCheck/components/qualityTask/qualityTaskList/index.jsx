@@ -76,21 +76,6 @@ const QualityTaskList = () => {
         }} />
         <Column title="备注" dataIndex="remark" />
         <Column />
-        <Column title="操作" width={100} align='right' render={(value, record) => {
-          if (record.state === 1) {
-            switch (record.type) {
-              case '入厂':
-                return record.state && <Button>生成入库单</Button>;
-              case '出厂':
-                return record.state && <Button>生成出库单</Button>;
-              default:
-                return null;
-            }
-          } else {
-            return null;
-          }
-
-        }} />
       </Table>
       <Modal width={1200} title="编辑" component={QualityTaskEdit} onSuccess={() => {
         tableRef.current.refresh();
