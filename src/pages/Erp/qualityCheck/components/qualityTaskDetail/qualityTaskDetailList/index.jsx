@@ -18,11 +18,16 @@ import QualityTaskDetailEdit from '../qualityTaskDetailEdit';
 import * as SysField from '../qualityTaskDetailField';
 import ProCard from '@ant-design/pro-card';
 import Code from '@/pages/Erp/spu/components/Code';
+import Details from '@/pages/Erp/qualityCheck/components/Details';
+import {useRequest} from '@/util/Request';
+import {qualityTaskBackInkind, qualityTaskList} from '@/pages/Erp/qualityCheck/components/qualityTask/qualityTaskUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const QualityTaskDetailList = ({value}) => {
+
+  const {loading, data} = useRequest({...qualityTaskBackInkind, params: {id: value.qualityTaskId}});
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -43,6 +48,10 @@ const QualityTaskDetailList = ({value}) => {
       </>
     );
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <div style={{padding: 24}}>
@@ -74,7 +83,7 @@ const QualityTaskDetailList = ({value}) => {
           actions={actions()}
           ref={tableRef}
         >
-          <Column title="物料" dataIndex="skuId" render={(value,record)=>{
+          <Column title="物料" dataIndex="skuId" render={(value, record) => {
 
             return <>
               {record.skuResult && record.skuResult.skuName}
@@ -95,24 +104,33 @@ const QualityTaskDetailList = ({value}) => {
                 )
               </em>
             </>;
+
           }} />
-          <Column title="供应商 / 品牌" dataIndex="brandId" render={(value,record)=>{
+          <Column title="供应商 / 品牌" dataIndex="brandId" width={120} render={(value, record) => {
             return <>
               {record.brand && record.brand.brandName}
             </>;
           }} />
-          <Column title="数量" dataIndex="number" />
-          <Column title="质检方案" dataIndex="qualityPlanId" render={(value,record)=>{
+          <Column title='总数量' dataIndex='number' width={100} align='center' />
+          <Column title="未检数量" dataIndex="number" width={100} align='center' render={(value, record) => {
+            const count = data && data.filter((value) => {
+              return value.skuId === record.skuId;
+            });
+            return <>
+              {count ? (value - count[0].count) : value}
+            </>;
+          }} />
+          <Column title="质检方案" dataIndex="qualityPlanId" render={(value, record) => {
             return <>
               {record.qualityPlanResult && record.qualityPlanResult.planName}
             </>;
-          }}  />
+          }} />
           <Column />
         </Table>
       </ProCard>
 
       <ProCard className="h2Card" title="质检详情" headerBordered>
-
+        <Details qualityTaskId={value.qualityTaskId} />
       </ProCard>
 
       <Drawer width={800} title="编辑" component={QualityTaskDetailEdit} onSuccess={() => {

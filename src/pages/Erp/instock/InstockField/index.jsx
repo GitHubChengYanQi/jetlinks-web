@@ -66,7 +66,7 @@ export const StorehouseId = (props) => {
   </>);
 };
 export const Number = (props) => {
-  return (<><InputNumber min={0}   {...props} /></>);
+  return (<><InputNumber min={1}   {...props} /></>);
 };
 export const CostPrice = (props) => {
   return (<InputNumber min={0}   {...props} />);

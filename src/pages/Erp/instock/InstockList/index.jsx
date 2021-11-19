@@ -140,16 +140,16 @@ const InstockList = () => {
         <Column key={4} title="状态" width={200} dataIndex="state" sorter render={(value) => {
           switch (value) {
             case 0:
-              return <Badge text="待入库" color="blue" />;
+              return <Badge text="待入库" color="red" />;
             case 1:
-              return <Badge text="未完成" color="green" />;
-            case 3:
-              return <Badge text="已完成" color="red" />;
+              return <Badge text="未完成" color="blue" />;
+            case 2:
+              return <Badge text="已完成" color="green" />;
             default:
               return null;
           }
         }} />
-        <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
+        <Column key={5} title="创建时间" width={200} dataIndex="createTime" sorter />
       </Table>
 
       <MyModal width={1300} title="入库单" component={InstockEdit} onSuccess={() => {

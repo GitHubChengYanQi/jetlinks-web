@@ -1,7 +1,7 @@
 /**
  * 质检任务接口配置
  *
- * @author 
+ * @author
  * @Date 2021-11-16 09:54:41
  */
 
@@ -31,6 +31,18 @@ export const qualityTaskDetail = {
 
 export const qualityTaskList = {
   url: '/qualityTask/list',
+  method: 'POST',
+  rowKey:'qualityTaskId'
+};
+
+export const qualityTaskBackInkind = {
+  url: '/qualityTask/backInkind',
+  method: 'GET',
+};
+
+
+export const qualityTaskFormDetail = {
+  url: '/qualityTask/formDetail',
   method: 'POST',
   rowKey:'qualityTaskId'
 };

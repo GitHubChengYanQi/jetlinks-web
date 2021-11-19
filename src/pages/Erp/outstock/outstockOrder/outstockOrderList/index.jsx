@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button,Table as AntTable} from 'antd';
+import {Badge, Button, Table as AntTable} from 'antd';
 import AddButton from '@/components/AddButton';
 import Breadcrumb from '@/components/Breadcrumb';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
@@ -63,6 +63,18 @@ const OutstockOrderList = () => {
               {record.userResult && record.userResult.name}
             </>
           );
+        }} />
+        <Column key={4} title="状态" width={200} dataIndex="state" sorter render={(value) => {
+          switch (value) {
+            case 0:
+              return <Badge text="待出库" color="red" />;
+            case 1:
+              return <Badge text="未完成" color="blue" />;
+            case 2:
+              return <Badge text="已完成" color="green" />;
+            default:
+              return null;
+          }
         }} />
         <Column title="备注" dataIndex="note" />
         <Column />

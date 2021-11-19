@@ -102,7 +102,8 @@ const OutstockListingList = (props) => {
             </>
           );
         }} />
-        <Column title="出库数量" dataIndex="number" />
+        <Column title="总数量" dataIndex="delivery" width={100} align="center" />
+        <Column title="剩余数量" dataIndex="number" width={100} align="center" />
       </Table>
       <Drawer width={800} title="编辑" component={OutstockListingEdit} onSuccess={() => {
         tableRef.current.refresh();

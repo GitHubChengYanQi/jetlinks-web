@@ -32,16 +32,16 @@ const QualityTaskEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {loading,data} = useRequest(codingRulesList, {
+  const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
       data: {
         module: 4,
-        state:1
+        state: 1
       }
     }
   });
 
-  if (loading){
+  if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
@@ -58,29 +58,29 @@ const QualityTaskEdit = ({...props}) => {
         onError={() => {
 
         }}
-        onSubmit={(value)=>{
-          return {...value,url:`${code}?id=codeId`};
+        onSubmit={(value) => {
+          return {...value, url: `${code}?id=codeId`};
         }}
       >
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
-          <div style={{display: 'inline-block',width:'40%'}}>
+          <div style={{display: 'inline-block', width: '40%'}}>
             <FormItem
               label="编码"
               name="coding"
               component={SysField.Codings}
               codingId={data}
-              rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
+              rules={[{required: true, message: data && data.length > 0 ? '该字段是必填字段' : '请先设置编码！'}]}
             />
           </div>
-          <div style={{display: 'inline-block',width:'30%'}}>
-            <FormItem label="类型" name="type" component={SysField.Type} required/>
+          <div style={{display: 'inline-block', width: '30%'}}>
+            <FormItem label="类型" name="type" component={SysField.Type} required />
           </div>
-          <div style={{display: 'inline-block',width:'30%'}}>
-            <FormItem label="负责人" name="userId" component={SysField.UserId} required/>
+          <div style={{display: 'inline-block', width: '30%'}}>
+            <FormItem label="负责人" name="userId" component={SysField.UserId} required />
           </div>
-          <div style={{display: 'inline-block',width:'40%'}}>
-            <FormItem label="备注" name="remark" component={SysField.Remark}/>
+          <div style={{display: 'inline-block', width: '40%'}}>
+            <FormItem label="备注" name="remark" component={SysField.Remark} />
           </div>
 
         </ProCard>
@@ -134,7 +134,7 @@ const QualityTaskEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '25%', display: 'inline-block'}}>
+                        <div style={{width: '23%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={8}
                             itemStyle={{margin: 0}}
@@ -142,6 +142,12 @@ const QualityTaskEdit = ({...props}) => {
                             name={`details.${index}.qualityPlanId`}
                             component={SysField.QualityPlanId}
                             required
+                          />
+                        </div>
+                        <div style={{width: '7%', display: 'inline-block'}}>
+                          <FormItem
+                            name={`details.${index}.batch`}
+                            component={SysField.Batch}
                           />
                         </div>
                         <Button

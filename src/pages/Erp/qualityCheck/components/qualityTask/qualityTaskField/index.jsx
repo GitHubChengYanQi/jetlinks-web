@@ -64,6 +64,16 @@ export const State = (props) =>{
   </Radio.Group>);
 };
 
+export const Batch = (props) =>{
+  return (<Checkbox checked={props.value} onChange={(value)=>{
+    if (value.target.checked){
+      props.onChange(1);
+    }else {
+      props.onChange(0);
+    }
+  }}>批量</Checkbox>);
+};
+
 export const Type = (props) =>{
   return (<AntdSelect options={[{label:'入厂',value:'入厂'},{label:'出厂',value:'出厂'},]} {...props}/>);
 };

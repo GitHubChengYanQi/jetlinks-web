@@ -20,6 +20,7 @@ const TableWarp = ({
   actions,
   title,
   api,
+  tableData,
   noPagination,
   contentHeight,
   searchForm,
@@ -161,7 +162,6 @@ const TableWarp = ({
           {left}
         </Sider>}
         <Content
-          // style={{marginLeft: 260}}
           style={{height: contentHeight || 'calc(100vh - 128px)', overflow: 'auto'}}
           id="tableContent"
         >
