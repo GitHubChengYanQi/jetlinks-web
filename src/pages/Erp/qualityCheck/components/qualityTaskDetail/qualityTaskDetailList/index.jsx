@@ -21,9 +21,12 @@ import Code from '@/pages/Erp/spu/components/Code';
 import Details from '@/pages/Erp/qualityCheck/components/Details';
 import {useRequest} from '@/util/Request';
 import {qualityTaskBackInkind, qualityTaskList} from '@/pages/Erp/qualityCheck/components/qualityTask/qualityTaskUrl';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const QualityTaskDetailList = ({value}) => {
 
@@ -73,6 +76,7 @@ const QualityTaskDetailList = ({value}) => {
 
       <ProCard className="h2Card" title="质检清单" headerBordered>
         <Table
+          formActions={formActionsPublic}
           headStyle={{display: 'none'}}
           api={qualityTaskDetailList}
           rowKey="qualityTaskDetailId"
@@ -117,7 +121,7 @@ const QualityTaskDetailList = ({value}) => {
               return value.skuId === record.skuId;
             });
             return <>
-              {count ? (value - count[0].count) : value}
+              {(count && count.length>0 ) ? (record.batch === 1 ? 0 : (value - count[0].count)) : value}
             </>;
           }} />
           <Column title="质检方案" dataIndex="qualityPlanId" render={(value, record) => {

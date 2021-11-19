@@ -42,21 +42,21 @@ const QualityPlanEdit = (props) => {
 
   const {onFieldValueChange$} = FormEffectHooks;
 
-  const {loading,data} = useRequest(codingRulesList, {
+  const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
       data: {
         module: 3,
-        state:1
+        state: 1
       }
     }
   });
 
-  if (loading){
+  if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
   return (
-    <Card title="质检方案" extra={<Button onClick={()=>{
+    <Card title="质检方案" extra={<Button onClick={() => {
       history.goBack();
     }}>返回</Button>}>
       <Form
@@ -68,13 +68,13 @@ const QualityPlanEdit = (props) => {
         onSuccess={() => {
           history.goBack();
         }}
-        onSubmit={(value)=>{
+        onSubmit={(value) => {
           value = {
             ...value,
-            qualityPlanDetailParams:value.qualityPlanDetailParams.map((items,index)=>{
+            qualityPlanDetailParams: value.qualityPlanDetailParams.map((items, index) => {
               return {
                 ...items,
-                sort:index,
+                sort: index,
               };
             })
           };
@@ -90,7 +90,9 @@ const QualityPlanEdit = (props) => {
               }),
               state => {
                 state.props.typeClass = value.value;
-                state.value = null;
+                if (value.active){
+                  state.value = null;
+                }
               }
             );
 
@@ -121,12 +123,10 @@ const QualityPlanEdit = (props) => {
                   state.props.active = value.active;
 
                   switch (result.type) {
+                    case 2:
                     case 3:
-                      state.visible = false;
-                      break;
+                    case 4:
                     case 6:
-                      state.visible = false;
-                      break;
                     case 7:
                       state.visible = false;
                       break;
@@ -173,7 +173,7 @@ const QualityPlanEdit = (props) => {
               name="planCoding"
               component={SysField.Codings}
               codingId={data}
-              rules={[{required:true,message: data && data.length>0 ? '该字段是必填字段' : '请先设置编码！' }]}
+              rules={[{required: true, message: data && data.length > 0 ? '该字段是必填字段' : '请先设置编码！'}]}
             />
             <FormItem label="方案名称" name="planName" component={SysField.PlanName} required />
             <FormItem label="质检类型" name="planType" component={SysField.PlanType} required />
@@ -208,7 +208,7 @@ const QualityPlanEdit = (props) => {
                       };
                       return (
                         <div key={index}>
-                          <>{index+1}</>
+                          <>{index + 1}</>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
                               labelCol={7}

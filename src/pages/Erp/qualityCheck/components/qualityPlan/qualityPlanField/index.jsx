@@ -115,17 +115,13 @@ export const StandardValue = (props) => {
     case 1:
       return types();
     case 2:
-      return <Input style={{width: 200}} placeholder={placeholder} {...other} />;
     case 3:
-      return null;
     case 4:
+    case 6:
+    case 7:
       return null;
     case 5:
       return types(true);
-    case 6:
-      return <FileUpload title="上传视频" {...other} />;
-    case 7:
-      return <FileUpload {...other} />;
     default:
       return <Input style={{width: 200}} placeholder={placeholder} {...other} />;
   }
