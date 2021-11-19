@@ -33,10 +33,12 @@ const RowStyleLayout = styled(props => <div {...props} />)`
   }
 `;
 
-const Setps = () => {
+const Setps = ({value, onChange}) => {
 
   return (
     <Form
+      labelCol={4}
+      wrapperCol={10}
       actions={actions}
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
@@ -52,6 +54,9 @@ const Setps = () => {
       }}
       defaultValue={{
         type: 'setp'
+      }}
+      onSubmit={(values)=>{
+        typeof onChange === 'function' &&  onChange(values);
       }}
     >
       <FormItem
@@ -99,16 +104,15 @@ const Setps = () => {
                   return (
                     <div key={index}>
 
-                      <div style={{display: 'inline-block', width: '30%'}}>
+                      <div style={{display: 'inline-block', width: '40%'}}>
                         <FormItem
-                          labelCol={7}
                           label="物料"
                           name={`inGoodsList.${index}.skuId`}
                           component={SkuId}
                           required
                         />
                       </div>
-                      <div style={{display: 'inline-block', width: '15%'}}>
+                      <div style={{display: 'inline-block', width: '40%'}}>
                         <FormItem
                           name={`inGoodsList.${index}.num`}
                           component={InputNumber}
@@ -148,16 +152,15 @@ const Setps = () => {
                   return (
                     <div key={index}>
 
-                      <div style={{display: 'inline-block', width: '30%'}}>
+                      <div style={{display: 'inline-block', width: '40%'}}>
                         <FormItem
-                          labelCol={7}
                           label="物料"
                           name={`outGoodsList.${index}.skuId`}
                           component={SkuId}
                           required
                         />
                       </div>
-                      <div style={{display: 'inline-block', width: '15%'}}>
+                      <div style={{display: 'inline-block', width: '20%'}}>
                         <FormItem
                           name={`outGoodsList.${index}.num`}
                           component={InputNumber}
@@ -165,7 +168,7 @@ const Setps = () => {
                         />
                       </div>
 
-                      <div style={{display: 'inline-block', width: '20%'}}>
+                      <div style={{display: 'inline-block', width: '30%'}}>
                         <FormItem
                           name={`outGoodsList.${index}.qualityCheck`}
                           component={Select}
@@ -207,7 +210,25 @@ const Setps = () => {
           ]}
         />
       </VirtualField>
-      <VirtualField name="audit">暂未开放</VirtualField>
+      <VirtualField name="audit">
+        <FormItem
+          required
+          label="类型"
+          name="auditType"
+          component={Select}
+          dataSource={[
+            {label: '指定人', value: 'person'},
+            {label: '主管', value: 'supervisor'},
+            {label: '自主选择', value: 'optional'},
+          ]}
+        />
+        <FormItem
+          required
+          label="审批规则"
+          name="rule"
+          component={Input}
+        />
+      </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>
 
       <div style={{marginTop: 16}}>

@@ -20,6 +20,20 @@ const CoverLine = ({first = false, last = false}) => {
 
 const BranchNode = (props) => {
 
+  const type = (value) => {
+    switch (value.type) {
+      case 'audit':
+        return <>
+          <div>审批</div>
+          <div>类型：{value.auditType === 'person' ? '指定人' : (value.auditType === 'supervisor' ? '主管' : '自主选择')}</div>
+          <div>规则：{value.rule}</div>
+        </>;
+      default:
+        break;
+    }
+  };
+
+
   const {first = false, last = false} = props;
 
   return (
@@ -35,7 +49,7 @@ const BranchNode = (props) => {
           {!last && <div className="sort-right" onClick={props.sortRight} />}
           <div className="content" onClick={() => props.onBranchClick(props.objRef)}>
             <div className="text">
-              {props.owner ? props.owner : <span className="placeholder">请设置条件</span>}
+              {props.owner ? type(props.owner) : <span className="placeholder">请设置条件</span>}
             </div>
             {/* <i className="anticon anticon-right arrow"></i> */}
           </div>

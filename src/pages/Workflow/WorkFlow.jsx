@@ -9,7 +9,6 @@ import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
 
 
-
 const $config = {
   'code': '200',
   'msg': 'success',
@@ -179,12 +178,12 @@ const $config = {
   }
 };
 
-const WorkFlow = ({config: _config,value,onChange}) => {
+const WorkFlow = ({config: _config, value, onChange}) => {
 
   const ref = useRef();
 
   const defaultConfig = {
-    'pkId': 'sid-start-node',
+    'pkId': 'start-node',
     'nodeName': '发起人',
     'priorityLevel': '',
     'type': 0,
@@ -202,17 +201,20 @@ const WorkFlow = ({config: _config,value,onChange}) => {
     'ccSelfSelectFlag': '',
     'conditionList': [],
     'nodeUserList': [],
-    'childNode': {},
-    'conditionNodes': []
+    'childNode': {},  // 下级步骤
+    'conditionNodes': [] // 分支
   };
 
   const [config, setConfig] = useState(value || defaultConfig);
 
+  const [currentNode, setCurrentNode] = useState();
+
   function updateNode() {
+    typeof onChange === 'function' && onChange({...config});
     setConfig({...config});
   }
 
-  let currentNode = null;
+  // let currentNode = null;
 
   // 链表操作: 几种行为， 添加行为，删除行为，点击行为     pRef.childNode -> objRef.childNode -> 后继
   // 添加节点
@@ -242,11 +244,10 @@ const WorkFlow = ({config: _config,value,onChange}) => {
 
   // 删除节点
   function onDeleteNode(pRef, objRef, type, index) {
+    console.log(pRef, objRef, type, index);
     if (window.confirm('是否删除节点？')) {
       if (type === NodeTypes.BRANCH) {
-        console.log([...objRef.conditionNodes], index);
         objRef.conditionNodes.splice(index, 1);
-        console.log(objRef.conditionNodes);
       } else {
         const newObj = objRef.childNode;
         pRef.childNode = newObj;
@@ -258,25 +259,41 @@ const WorkFlow = ({config: _config,value,onChange}) => {
 
   // 获取节点
   function onSelectNode(pRef, objRef) {
-    currentNode = {
+    setCurrentNode({
       current: objRef,
       prev: pRef
-    };
-    console.log('currentNode:', currentNode);
+    });
+
     ref.current.open(true);
   }
 
-  // console.log(config);
-  typeof onChange === 'function' && onChange(config);
   return (
     <WFC.Provider value={{config, updateNode, onAddNode, onDeleteNode, onSelectNode}}>
       <section className={styles.dingflowDesign}>
         <ZoomLayout>
-          <Render config={config} onContentClick={()=>{console.log(1111);}} />
+          <Render config={config} onContentClick={() => {
+            console.log(1111);
+          }} />
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer title="步骤设置" ref={ref} width={1100}><Setps /></Drawer>
+      <Drawer title="步骤设置" ref={ref} width={800}><Setps onChange={(value) => {
+        console.log(currentNode);
+        switch (value.type) {
+          case 'audit':
+            if (currentNode.current.pkId === 'start-node') {
+              currentNode.current.flowPermission = value;
+            } else {
+              currentNode.current.owner = value;
+            }
+            updateNode();
+            break;
+          default:
+            break;
+        }
+        ref.current.close();
+        updateNode();
+      }} /></Drawer>
     </WFC.Provider>
   );
 };

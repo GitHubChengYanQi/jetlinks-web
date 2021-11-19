@@ -50,7 +50,7 @@ function TitleElement(props) {
           placeholder={props.placeholder} />
         :
         <span className="editable-title" onClick={onClick}>{title}</span>}
-    <Icon type="icon-close" className="close" onClick={props.delNode}/>
+    <Icon type="icon-close" className="close" onClick={props.delNode} />
   </React.Fragment>);
 }
 

@@ -39,10 +39,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             ref.current.open(false);
             setType(item.key);
           }}
-        >
-
-        </Menu>} />
-      <Modal width={1000} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
+        />} />
+      <Modal width={1000} title="设置" footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };
