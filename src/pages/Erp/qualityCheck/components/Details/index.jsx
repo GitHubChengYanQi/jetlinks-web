@@ -67,7 +67,7 @@ const Details = ({qualityTaskId}) => {
       case 2:
         return <>{items.value}</>;
       case 3:
-        return <>{items.value ? '合格' : '不合格'}</>;
+        return <>{items.value === '1' ? '合格' : '不合格'}</>;
       case 4:
         return <Image src={items.value}/>;
       case 5:
@@ -91,7 +91,6 @@ const Details = ({qualityTaskId}) => {
           expandedRowRender: (record) =>{
             return <>
               {record.valueResults && record.valueResults.map((items,index)=>{
-                console.log(items);
                 return <div key={index}>
                   <Descriptions bordered column={4}>
                     <Descriptions.Item labelStyle={{width:100}} contentStyle={{width:150,backgroundColor:'#fff'}} label="质检项"> {items.name}</Descriptions.Item>

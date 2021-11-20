@@ -34,7 +34,9 @@ const formActionsPublic = createFormActions();
 
 const QualityPlanEdit = (props) => {
 
-  const params = props.searchParams.id;
+  const {value} = props;
+
+  const params = props.searchParams && props.searchParams.id;
 
   const formRef = useRef();
 
@@ -56,12 +58,13 @@ const QualityPlanEdit = (props) => {
   }
 
   return (
-    <Card title="质检方案" extra={<Button onClick={() => {
+    <Card title="质检方案" extra={!value && <Button onClick={() => {
       history.goBack();
     }}>返回</Button>}>
       <Form
         ref={formRef}
         value={params || false}
+        defaultValue={{...value}}
         api={ApiConfig}
         fieldKey="qualityPlanId"
         formActions={formActionsPublic}
@@ -264,10 +267,10 @@ const QualityPlanEdit = (props) => {
                               component={SysField.Yes}
                             />
                           </div>
-                          <div style={{display: state.value.length === 1 ? 'none' : 'inline-block', float: 'right'}}>
+                          <div style={{display: 'inline-block', float: 'right'}}>
                             <Button
                               type="link"
-                              disabled={index === 0}
+                              disabled={state.value.length === 1 || index === 0}
                               style={{marginRight: 8}}
                               onClick={() => {
                                 onMoveUp(index);
@@ -278,15 +281,15 @@ const QualityPlanEdit = (props) => {
                             </Button>
                             <Button
                               type="link"
-                              disabled={index === state.value.length - 1}
+                              disabled={state.value.length === 1 || index === state.value.length - 1}
                               style={{marginRight: 8}}
-                              // icon={<DownOutlined />}
                               onClick={() => {
                                 onMoveDown(index);
                               }}
                             >下移</Button>
                             <Button
                               type="link"
+                              disabled={state.value.length === 1}
                               style={{marginRight: 8}}
                               icon={<DeleteOutlined />}
                               onClick={() => {

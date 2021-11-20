@@ -5,20 +5,23 @@
  * @Date 2021-10-28 10:29:56
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {qualityPlanDelete, qualityPlanList} from '../qualityPlanUrl';
+import {qualityPlanDelete, qualityPlanDetail, qualityPlanList} from '../qualityPlanUrl';
 import QualityPlanEdit from '../qualityPlanEdit';
 import * as SysField from '../qualityPlanField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useHistory} from 'ice';
 import {Name} from '../qualityPlanField';
+import {CopyOutlined} from '@ant-design/icons';
+import {request} from '@/util/Request';
+import Modal from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -26,6 +29,10 @@ const {FormItem} = Form;
 const QualityPlanList = (props) => {
   const history = useHistory();
   const tableRef = useRef(null);
+  const addRef = useRef(null);
+
+  const [ids, setIds] = useState([]);
+
   const actions = () => {
     return (
       <>
@@ -55,10 +62,23 @@ const QualityPlanList = (props) => {
         actions={actions()}
         ref={tableRef}
         {...props}
+        footer={() => {
+          return <Button type="link" disabled={ids.length !== 1} icon={<CopyOutlined />} onClick={async () => {
+            const data = await request({...qualityPlanDetail, data: {qualityPlanId: ids[0]}});
+
+            addRef.current.open({...data,planCoding:null,planName:null,qualityPlanId:null});
+          }}>
+            复制添加
+          </Button>;
+        }
+        }
+        onChange={(value) => {
+          setIds(value);
+        }}
       >
         <Column title="方案名称" dataIndex="planName" />
-        <Column title="质检类型" dataIndex="planType" render={(value)=>{
-          switch (value){
+        <Column title="质检类型" dataIndex="planType" render={(value) => {
+          switch (value) {
             case '1':
               return <>生产检</>;
             case '2':
@@ -67,8 +87,8 @@ const QualityPlanList = (props) => {
               break;
           }
         }} />
-        <Column title="检查类型" dataIndex="testingType" render={(value)=>{
-          switch (value){
+        <Column title="检查类型" dataIndex="testingType" render={(value) => {
+          switch (value) {
             case '1':
               return <>抽检检查</>;
             case '2':
@@ -89,8 +109,12 @@ const QualityPlanList = (props) => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
+
       </Table>
+      <Modal ref={addRef} width={1200} component={QualityPlanEdit} onSuccess={()=>{
+
+      }} />
     </>
   );
 };
