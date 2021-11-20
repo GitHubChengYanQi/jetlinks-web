@@ -10,13 +10,14 @@ import {Avatar, Button, Card, Input} from 'antd';
 import Form from '@/components/Form';
 import {qualityTaskDetail, qualityTaskAdd, qualityTaskEdit} from '../qualityTaskUrl';
 import * as SysField from '../qualityTaskField';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {config} from 'ice';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -60,6 +61,31 @@ const QualityTaskEdit = ({...props}) => {
         }}
         onSubmit={(value) => {
           return {...value, url: `${code}?id=codeId`};
+        }}
+        effects={({setFieldState})=>{
+
+          FormEffectHooks.onFieldValueChange$('details.*.skuId').subscribe(async ({name,value}) => {
+            if (value){
+              const sku = await request({
+                ...skuDetail,
+                data:{
+                  skuId:value,
+                }
+              });
+              if (sku && sku.qualityPlanId){
+                setFieldState(
+                  FormPath.transform(name, /\d/, ($1) => {
+                    return `details.${$1}.qualityPlanId`;
+                  }),
+                  state => {
+                    state.value = sku.qualityPlanId;
+                  }
+                );
+              }
+
+            }
+
+          });
         }}
       >
 

@@ -278,7 +278,6 @@ const WorkFlow = ({config: _config, value, onChange}) => {
         </ZoomLayout>
       </section>
       <Drawer title="步骤设置" ref={ref} width={800}><Setps onChange={(value) => {
-        console.log(currentNode);
         switch (value.type) {
           case 'audit':
             if (currentNode.current.pkId === 'start-node') {

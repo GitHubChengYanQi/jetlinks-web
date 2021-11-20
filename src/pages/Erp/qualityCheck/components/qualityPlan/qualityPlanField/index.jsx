@@ -19,7 +19,7 @@ import {qualityCheckClassificationListSelect} from '@/pages/Erp/qualityCheck/qua
 import {useRequest} from '@/util/Request';
 import {qualityCheckListSelect} from '../qualityPlanUrl';
 import {spuListSelect} from '@/pages/Erp/productOrder/productOrderUrl';
-import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
+import {spuClassificationListSelect, unitListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
 export const Codings = (props) => {
@@ -240,4 +240,8 @@ export const Operator = (props) => {
 
 export const Sort = (props) => {
   return <Input {...props} />;
+};
+
+export const UnitId = (props) => {
+  return <Select placeholder='单位' api={unitListSelect} {...props} />;
 };

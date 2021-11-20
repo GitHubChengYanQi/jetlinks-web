@@ -90,7 +90,7 @@ const QualityPlanEdit = (props) => {
               }),
               state => {
                 state.props.typeClass = value.value;
-                if (value.active){
+                if (value.active) {
                   state.value = null;
                 }
               }
@@ -132,6 +132,25 @@ const QualityPlanEdit = (props) => {
                       break;
                     default:
                       state.visible = true;
+                      break;
+                  }
+                }
+              );
+
+              setFieldState(
+                FormPath.transform(value.name, /\d/, ($1) => {
+                  return `qualityPlanDetailParams.${$1}.unitId`;
+                }),
+                state => {
+                  state.props.type = result.type;
+                  state.props.active = value.active;
+
+                  switch (result.type) {
+                    case 1:
+                      state.visible = true;
+                      break;
+                    default:
+                      state.visible = false;
                       break;
                   }
                 }
@@ -229,6 +248,13 @@ const QualityPlanEdit = (props) => {
                             <FormItem
                               name={`qualityPlanDetailParams.${index}.standardValue`}
                               component={SysField.StandardValue}
+                              required
+                            />
+                          </div>
+                          <div style={{display: 'inline-block',marginLeft:8}}>
+                            <FormItem
+                              name={`qualityPlanDetailParams.${index}.unitId`}
+                              component={SysField.UnitId}
                               required
                             />
                           </div>

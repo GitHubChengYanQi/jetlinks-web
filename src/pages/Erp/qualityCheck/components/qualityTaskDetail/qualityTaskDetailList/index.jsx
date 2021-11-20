@@ -30,7 +30,6 @@ const formActionsPublic = createFormActions();
 
 const QualityTaskDetailList = ({value}) => {
 
-  const {loading, data} = useRequest({...qualityTaskBackInkind, params: {id: value.qualityTaskId}});
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -52,9 +51,6 @@ const QualityTaskDetailList = ({value}) => {
     );
   };
 
-  if (loading) {
-    return null;
-  }
 
   return (
     <div style={{padding: 24}}>
@@ -116,14 +112,7 @@ const QualityTaskDetailList = ({value}) => {
             </>;
           }} />
           <Column title='总数量' dataIndex='number' width={100} align='center' />
-          <Column title="未检数量" dataIndex="number" width={100} align='center' render={(value, record) => {
-            const count = data && data.filter((value) => {
-              return value.skuId === record.skuId;
-            });
-            return <>
-              {(count && count.length>0 ) ? (record.batch === 1 ? 0 : (value - count[0].count)) : value}
-            </>;
-          }} />
+          <Column title="未检数量" dataIndex="remaining" width={100} align='center'/>
           <Column title="质检方案" dataIndex="qualityPlanId" render={(value, record) => {
             return <>
               {record.qualityPlanResult && record.qualityPlanResult.planName}
