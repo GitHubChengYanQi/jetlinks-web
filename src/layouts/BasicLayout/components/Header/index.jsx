@@ -17,7 +17,8 @@ import protal from '@/asseset/imgs/protal.png';
 import sys from '@/asseset/imgs/sys.png';
 import menu from '@/asseset/imgs/menu.png';
 import SPU from '@/asseset/imgs/spu.png';
-import production from '@/asseset/imgs/producttion.png';
+import production from '@/asseset/imgs/production.png';
+import workflow from '@/asseset/imgs/workflow.png';
 
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
@@ -37,8 +38,10 @@ const AppIcon = {
   protal,
   production,
   SPU,
+  workflow,
 
 };
+
 
 const Header = () => {
 
