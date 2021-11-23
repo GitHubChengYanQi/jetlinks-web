@@ -5,8 +5,8 @@
  * @Date 2021-09-15 11:15:44
  */
 
-import React, {useRef} from 'react';
-import {Card, Table as AntTable} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Descriptions, Table as AntTable} from 'antd';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
@@ -15,6 +15,9 @@ import OutstockListingEdit from '../outstockListingEdit';
 import * as SysField from '../outstockListingField';
 import Table from '@/components/Table';
 import {createFormActions} from '@formily/antd';
+import {request, useRequest} from '@/util/Request';
+import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
+import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -24,6 +27,12 @@ const formActionsPublic = createFormActions();
 const OutstockListingList = (props) => {
 
   const {value} = props;
+
+  const [key, setKey] = useState([]);
+
+  const [data, setData] = useState();
+
+  const {data: storehouseposition} = useRequest(storehousePositionsTreeView);
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -60,6 +69,52 @@ const OutstockListingList = (props) => {
         api={outstockListingList}
         rowKey="outstockListingId"
         searchForm={searchForm}
+        expandable={{
+          expandedRowKeys: key,
+          onExpand: async (expand, record) => {
+            if (expand) {
+              const data = await request({
+                url: '/stockDetails/list',
+                method: 'POST',
+                data: {
+                  skuId: record.skuId,
+                  storehouseId: record.storehouseId,
+                  brandId: record.brandId,
+                },
+              });
+              setData(data);
+              setKey([record.outstockListingId]);
+            } else {
+              setKey([]);
+            }
+
+          },
+          expandedRowRender: (record) => {
+            return <>
+              {
+                data && data.map((items, index) => {
+                  return <div key={index}>
+                    <Descriptions bordered column={2}>
+                      <Descriptions.Item
+                        labelStyle={{width:100}}
+                        contentStyle={{width: 150, backgroundColor: '#fff'}}
+                        label="库位">
+                        <TreeSelectSee data={storehouseposition} value={items.storehousePositionsId} />
+                      </Descriptions.Item>
+                      <Descriptions.Item
+                        labelStyle={{width: 100}}
+                        contentStyle={{width: 150, backgroundColor: '#fff'}}
+                        label="数量">
+                        × {items.number}
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </div>;
+                })
+              }
+
+            </>;
+          },
+        }}
         rowSelection
         formActions={formActionsPublic}
         bodyStyle={{padding: 0}}

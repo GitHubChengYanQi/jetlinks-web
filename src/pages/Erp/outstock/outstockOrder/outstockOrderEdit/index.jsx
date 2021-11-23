@@ -68,7 +68,7 @@ const OutstockOrderEdit = ({...props}) => {
         onSubmit={(value) => {
           return {...value, url: `${code}?id=codeId`};
         }}
-        effects={({setFieldState, getFieldState}) => {
+        effects={({setFieldState}) => {
 
           onFieldValueChange$('storehouseId').subscribe(async ({value}) => {
             if (value) {
