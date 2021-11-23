@@ -3,7 +3,6 @@ import React from 'react';
 import MatchNode from './MatchNode';
 
 function Render({config, pRef}) {
-  console.log(config);
   return (
     <React.Fragment>
       <MatchNode pRef={pRef} config={config} />

@@ -7,6 +7,7 @@ import WFC from './OperatorContext';
 import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
+import UserTree from '@/pages/Workflow/Nodes/UserTree';
 
 
 const $config = {
@@ -181,27 +182,28 @@ const $config = {
 const WorkFlow = ({config: _config, value, onChange}) => {
 
   const ref = useRef();
+  const refStart = useRef();
 
   const defaultConfig = {
-    'pkId': 'start-node',
+    'pkId': 'start',
     'nodeName': '发起人',
-    'priorityLevel': '',
+    // 'priorityLevel': '',
     'type': 0,
-    'settype': '',
-    'selectMode': '',
-    'selectRange': '',
-    'examineRoleId': '',
-    'directorLevel': '',
-    'replaceByUp': '',
-    'examineMode': '',
-    'noHanderAction': '',
-    'examineEndType': '',
-    'examineEndRoleId': '',
-    'examineEndDirectorLevel': '',
-    'ccSelfSelectFlag': '',
-    'conditionList': [],
-    'nodeUserList': [],
-    'childNode': {},  // 下级步骤
+    // 'settype': '',
+    // 'selectMode': '',
+    // 'selectRange': '',
+    // 'examineRoleId': '',
+    // 'directorLevel': '',
+    // 'replaceByUp': '',
+    // 'examineMode': '',
+    // 'noHanderAction': '',
+    // 'examineEndType': '',
+    // 'examineEndRoleId': '',
+    // 'examineEndDirectorLevel': '',
+    // 'ccSelfSelectFlag': '',
+    // 'conditionList': [],
+    // 'nodeUserList': [],
+    'childNode': null,  // 下级步骤
     'conditionNodeList': [] // 分支
   };
 
@@ -247,10 +249,12 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     console.log(pRef, objRef, type, index);
     if (window.confirm('是否删除节点？')) {
       if (type === NodeTypes.BRANCH) {
-        objRef.conditionNodes.splice(index, 1);
+        objRef.conditionNodeList.splice(index, 1);
       } else {
         const newObj = objRef.childNode;
+        const newluYou = objRef.luYou;
         pRef.childNode = newObj;
+        pRef.luYou = newluYou;
       }
       updateNode();
     }
@@ -264,7 +268,11 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       prev: pRef
     });
 
-    ref.current.open(true);
+    if (objRef.type === 0) {
+      refStart.current.open(true);
+    } else if (objRef.type !== 3) {
+      ref.current.open(true);
+    }
   }
 
   return (
@@ -277,22 +285,43 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer title="步骤设置" ref={ref} width={800}><Setps onChange={(value) => {
-        switch (value.type) {
-          case 'audit':
-            if (currentNode.current.pkId === 'start-node') {
-              currentNode.current.flowPermission = value;
-            } else {
-              currentNode.current.owner = value;
+      <Drawer title="步骤设置" ref={ref} width={800}>
+        <Setps
+          value={currentNode && currentNode.current && {type:currentNode.current.stepType,auditType:currentNode.current.auditType,rule:currentNode.current.rule && currentNode.current.rule[0]}}
+          onChange={(value) => {
+            switch (value.type) {
+              case 'audit':
+                currentNode.current.stepType = value.type;
+                currentNode.current.auditType = value.auditType;
+                currentNode.current.rule = value.rule && [value.rule];
+                currentNode.current.owner = <>
+                  <strong>审批人</strong>
+                  <div>{value.auditType === 'person' ? value.rule && value.rule.label : '主管'}</div>
+                </>;
+                updateNode();
+                break;
+              default:
+                break;
             }
+            ref.current.close();
             updateNode();
-            break;
-          default:
-            break;
-        }
-        ref.current.close();
-        updateNode();
-      }} /></Drawer>
+          }} />
+      </Drawer>
+      <Drawer title="发起人设置" ref={refStart} width={800}>
+        <UserTree value={currentNode && currentNode.current && currentNode.current.rule} onChange={(value) => {
+          currentNode.current.rule = value;
+          currentNode.current.flowPermission = value && value.map((item, index) => {
+            if (item.key !== 0) {
+              return <span key={index}>{item.title}，</span>;
+            } else {
+              return null;
+            }
+
+          });
+          updateNode();
+          refStart.current.close();
+        }} />
+      </Drawer>
     </WFC.Provider>
   );
 };

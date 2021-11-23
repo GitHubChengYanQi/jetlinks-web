@@ -8,30 +8,15 @@ import {
   FieldList,
   Submit,
   FormButtonGroup,
-  Reset, FormPath
 } from '@formily/antd';
 import {Radio, Select, Input} from '@formily/antd-components';
 import {Button, Divider, InputNumber} from 'antd';
-import styled from 'styled-components';
-import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {request} from '@/util/Request';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {SkuId} from '@/pages/Workflow/Process/processField';
+import {UserId} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 
 const actions = createFormActions();
 
-const RowStyleLayout = styled(props => <div {...props} />)`
-  .ant-btn {
-    margin-right: 16px;
-  }
-
-  .ant-form-item {
-    display: inline-flex;
-    margin-right: 16px;
-    margin-bottom: 16px;
-  }
-`;
 
 const Setps = ({value, onChange}) => {
 
@@ -51,18 +36,35 @@ const Setps = ({value, onChange}) => {
             });
           }
         });
+
+
+        FormEffectHooks.onFieldValueChange$('auditType').subscribe(({value}) => {
+          if (value === 'person') {
+            setFieldState('rule', (state) => {
+              state.visible = true;
+            });
+          } else if (value === 'supervisor') {
+            setFieldState('rule', (state) => {
+              state.visible = false;
+            });
+          }
+        });
+
       }}
       defaultValue={{
-        type: 'setp'
+        type: value && value.type || 'audit',
+        auditType: value && value.auditType,
+        rule: value && value.rule
       }}
-      onSubmit={(values)=>{
-        typeof onChange === 'function' &&  onChange(values);
+      onSubmit={(values) => {
+        typeof onChange === 'function' && onChange(values);
       }}
     >
       <FormItem
         required
         label="类型"
         name="type"
+        disabled
         component={Radio.Group}
         dataSource={[
           {label: '工序', value: 'setp'},
@@ -219,14 +221,15 @@ const Setps = ({value, onChange}) => {
           dataSource={[
             {label: '指定人', value: 'person'},
             {label: '主管', value: 'supervisor'},
-            {label: '自主选择', value: 'optional'},
+            // {label: '自主选择', value: 'optional'},
           ]}
         />
         <FormItem
           required
-          label="审批规则"
+          label="指定人"
+          visible={false}
           name="rule"
-          component={Input}
+          component={UserId}
         />
       </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>
