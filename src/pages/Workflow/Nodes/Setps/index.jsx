@@ -23,12 +23,12 @@ const Setps = ({value, onChange}) => {
   return (
     <Form
       labelCol={4}
-      wrapperCol={10}
+      wrapperCol={12}
       actions={actions}
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
 
-          const item = ['setp', 'ship', 'audit', 'audit_process'];
+          const item = ['setp', 'ship', 'audit','quality', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
             const field = item[i];
             setFieldState(field, state => {
@@ -64,13 +64,13 @@ const Setps = ({value, onChange}) => {
         required
         label="类型"
         name="type"
-        disabled
         component={Radio.Group}
         dataSource={[
-          {label: '工序', value: 'setp'},
-          {label: '工艺', value: 'ship'},
+          {label: '工序', value: 'setp', disabled: true},
+          {label: '工艺', value: 'ship', disabled: true},
           {label: '审批', value: 'audit'},
-          {label: '流程', value: 'audit_process'}
+          {label: '质检', value: 'quality'},
+          {label: '流程', value: 'audit_process', disabled: true}
         ]} />
       <VirtualField name="setp">
         <FormItem
@@ -230,6 +230,18 @@ const Setps = ({value, onChange}) => {
           visible={false}
           name="rule"
           component={UserId}
+        />
+      </VirtualField>
+      <VirtualField name="quality">
+        <FormItem
+          required
+          label="质检动作"
+          name="action"
+          component={Select}
+          dataSource={[
+            {label: '执行任务', value: '执行任务'},
+            {label: '完成任务', value: '完成任务'},
+          ]}
         />
       </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>

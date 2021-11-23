@@ -246,7 +246,6 @@ const WorkFlow = ({config: _config, value, onChange}) => {
 
   // 删除节点
   function onDeleteNode(pRef, objRef, type, index) {
-    console.log(pRef, objRef, type, index);
     if (window.confirm('是否删除节点？')) {
       if (type === NodeTypes.BRANCH) {
         objRef.conditionNodeList.splice(index, 1);
@@ -287,7 +286,11 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       </section>
       <Drawer title="步骤设置" ref={ref} width={800}>
         <Setps
-          value={currentNode && currentNode.current && {type:currentNode.current.stepType,auditType:currentNode.current.auditType,rule:currentNode.current.rule && currentNode.current.rule[0]}}
+          value={currentNode && currentNode.current && {
+            type: currentNode.current.stepType,
+            auditType: currentNode.current.auditType,
+            rule: currentNode.current.rule && currentNode.current.rule[0]
+          }}
           onChange={(value) => {
             switch (value.type) {
               case 'audit':
@@ -297,6 +300,15 @@ const WorkFlow = ({config: _config, value, onChange}) => {
                 currentNode.current.owner = <>
                   <strong>审批人</strong>
                   <div>{value.auditType === 'person' ? value.rule && value.rule.label : '主管'}</div>
+                </>;
+                updateNode();
+                break;
+              case 'quality':
+                currentNode.current.stepType = value.type;
+                currentNode.current.rule = value.action && [{title:value.action}];
+                currentNode.current.owner = <>
+                  <strong>质检动作</strong>
+                  <div>{value.action}</div>
                 </>;
                 updateNode();
                 break;

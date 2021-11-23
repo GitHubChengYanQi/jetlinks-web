@@ -5,7 +5,14 @@ import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
 
 const UserTree = ({value, onChange}) => {
 
-  const {loading,data} = useRequest(UserIdSelect);
+  const {loading, data} = useRequest(UserIdSelect);
+
+  const {loading: deptLoading, data: depts} = useRequest({
+    url: '/rest/dept/tree',
+    method: 'POST',
+  });
+
+  console.log(depts);
 
   const [check, setCheck] = useState(value || []);
 
@@ -16,7 +23,7 @@ const UserTree = ({value, onChange}) => {
     };
   });
 
-  if (loading){
+  if (loading || deptLoading) {
     return null;
   }
 
@@ -24,7 +31,7 @@ const UserTree = ({value, onChange}) => {
     <Tree
       checkable
       defaultExpandAll
-      checkedKeys={check.map((items,index)=>{
+      checkedKeys={check.map((items, index) => {
         return items.key;
       })}
       onCheck={(value, option) => {
@@ -34,10 +41,10 @@ const UserTree = ({value, onChange}) => {
     />
     <div style={{margin: 16, textAlign: 'center'}}>
       <Space>
-        <Button type="primary" onClick={()=>{
+        <Button type="primary" onClick={() => {
           typeof onChange === 'function' && onChange(check);
         }}>确定</Button>
-        <Button type="default" onClick={()=>{
+        <Button type="default" onClick={() => {
 
         }}>清空</Button>
       </Space>
