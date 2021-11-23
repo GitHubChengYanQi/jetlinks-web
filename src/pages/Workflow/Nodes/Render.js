@@ -3,10 +3,12 @@ import React from 'react';
 import MatchNode from './MatchNode';
 
 function Render({config, pRef}) {
+  console.log(config);
   return (
     <React.Fragment>
       <MatchNode pRef={pRef} config={config} />
       {config.childNode && <Render pRef={config} config={config.childNode} />}
+      {config.luYou && <Render pRef={config} config={config.luYou} />}
     </React.Fragment>
   );
 }

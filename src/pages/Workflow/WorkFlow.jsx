@@ -202,7 +202,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     'conditionList': [],
     'nodeUserList': [],
     'childNode': {},  // 下级步骤
-    'conditionNodes': [] // 分支
+    'conditionNodeList': [] // 分支
   };
 
   const [config, setConfig] = useState(value || defaultConfig);
@@ -229,15 +229,15 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       objRef.childNode = {...NodeTemplates[OptionTypes.NOTIFIER], childNode: o};
     }
     if (type === OptionTypes.CONDITION) {
-      objRef.childNode = {
-        ...NodeTemplates[OptionTypes.CONDITION], conditionNodes: [
+      objRef.luYou = {
+        ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
           {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', childNode: o},
           {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2'},
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodes.push({...NodeTemplates[NodeTypes.BRANCH]});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH]});
     }
     updateNode();
   }

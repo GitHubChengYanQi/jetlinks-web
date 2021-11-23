@@ -14,6 +14,7 @@ const WorkflowAdd = () => {
     <Row style={{padding: 16}} gutter={24}>
       <Col span={23}>添加流程步骤</Col>
       <Col span={1}> <Button type="primary" onClick={()=>{
+        console.log(value);
         run({
           data:{
             ...value

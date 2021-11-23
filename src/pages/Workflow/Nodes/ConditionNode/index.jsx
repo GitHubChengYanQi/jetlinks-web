@@ -61,7 +61,8 @@ const BranchNode = (props) => {
 };
 
 
-function ConditionNode({conditionNodes: branches = [], ...restProps}) {
+function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
+
   const {onAddNode, onDeleteNode, onSelectNode} = useContext(WFC);
 
   function addBranch() {
@@ -100,6 +101,7 @@ function ConditionNode({conditionNodes: branches = [], ...restProps}) {
                 {...item} first={index === 0} onBranchClick={onBranchClick} delBranch={() => delBranch(index)}
                 last={index === branches.length - 1} objRef={item} />
               {item.childNode && <Render pRef={item} config={item.childNode} />}
+              {item.luYou && <Render pRef={item} config={item.luYou} />}
               <CoverLine first={index === 0} last={index === branches.length - 1} />
             </div>);
           })}

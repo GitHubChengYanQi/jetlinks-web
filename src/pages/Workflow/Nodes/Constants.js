@@ -38,7 +38,7 @@ export const NodeTemplates = {
     'nodeName': '路由',
     'type': OptionTypes.CONDITION,
     'childNode': null,
-    'conditionNodes': []
+    'conditionNodeList': []
   },
   [OptionTypes.BRANCH]: {
     'nodeName': '条件',
