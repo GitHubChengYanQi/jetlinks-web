@@ -59,7 +59,7 @@ const QualityPlanEdit = (props) => {
 
   return (
     <Card title="质检方案" extra={!value && <Button onClick={() => {
-      history.goBack();
+      history.push('/production/qualityCheck');
     }}>返回</Button>}>
       <Form
         ref={formRef}
@@ -69,7 +69,8 @@ const QualityPlanEdit = (props) => {
         fieldKey="qualityPlanId"
         formActions={formActionsPublic}
         onSuccess={() => {
-          history.goBack();
+          history.push('/production/qualityCheck');
+          typeof props.onSuccess === 'function' && props.onSuccess();
         }}
         onSubmit={(value) => {
           value = {
