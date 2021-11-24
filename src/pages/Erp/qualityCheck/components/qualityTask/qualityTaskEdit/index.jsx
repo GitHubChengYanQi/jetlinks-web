@@ -27,7 +27,7 @@ const ApiConfig = {
   save: qualityTaskEdit
 };
 
-const {code} = config;
+const {wxCp} = config;
 
 const QualityTaskEdit = ({...props}) => {
 
@@ -60,7 +60,7 @@ const QualityTaskEdit = ({...props}) => {
 
         }}
         onSubmit={(value) => {
-          return {...value, url: `${code}?id=codeId`};
+          return {...value, url: `${wxCp}OrCode?id=codeId`};
         }}
         effects={({setFieldState})=>{
 

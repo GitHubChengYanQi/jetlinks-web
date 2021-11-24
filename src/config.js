@@ -7,7 +7,7 @@ export default {
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
     wxBind:'https://wx.daoxin.gf2025.com',
-    code:'https://wx.daoxin.gf2025.com/cp/#/OrCode',
+    wxCp:'https://wx.daoxin.gf2025.com/cp/#/',
   },
   buildZjzc: {
     logLevel: 'info',
@@ -17,7 +17,7 @@ export default {
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
     wxBind:'https://wx.zjzc.gf2025.com',
-    code:'https://wx.zjzc.gf2025.com/cp/#/OrCode',
+    wxCp:'https://wx.zjzc.gf2025.com/cp/#/',
   },
   cheng: {
     logLevel: 'info',
@@ -27,7 +27,7 @@ export default {
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
     wxBind:'https://wx.daoxin.gf2025.com',
-    code:'https://wx.daoxin.gf2025.com/cp/#/OrCode',
+    wxCp:'https://wx.daoxin.gf2025.com/cp/#/',
   },
   ren: {
     logLevel: 'info',

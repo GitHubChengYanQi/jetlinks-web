@@ -12,6 +12,23 @@ const NodeMaps = {
   4: ConditionNode
 };
 
+export const Owner = (props) => {
+  switch (props.stepType) {
+    case 'audit':
+      return <>
+        <strong>审批人</strong>
+        <div>{props.auditType === '指定人' ? props.rule && props.rule.label : '主管'}</div>
+      </>;
+    case 'quality':
+      return <>
+        <strong>质检动作</strong>
+        <div>{props.auditType}</div>
+      </>;
+    default:
+      break;
+  }
+};
+
 const MatchNode = ({config, pRef}) => {
   const Node = NodeMaps[config.type] || null;
   return Node && <Node {...config} objRef={config} pRef={pRef} />;

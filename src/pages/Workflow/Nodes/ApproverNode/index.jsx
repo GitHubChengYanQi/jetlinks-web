@@ -3,6 +3,7 @@ import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
+import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 
 function ApproverNode(props) {
@@ -32,7 +33,10 @@ function ApproverNode(props) {
     titleStyle={{backgroundColor: 'rgb(255, 148, 62)'}} onContentClick={onContentClick} title={TitleEl}
     objRef={props.objRef}>
     <div className="text">
-      {props.owner || '请选择'}
+      {props.stepType ?
+        Owner(props)
+        :
+        '请选择'}
     </div>
     <Icon type="icon-arrow-right" />
 

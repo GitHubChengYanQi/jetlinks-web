@@ -39,11 +39,11 @@ const Setps = ({value, onChange}) => {
 
 
         FormEffectHooks.onFieldValueChange$('auditType').subscribe(({value}) => {
-          if (value === 'person') {
+          if (value === '指定人') {
             setFieldState('rule', (state) => {
               state.visible = true;
             });
-          } else if (value === 'supervisor') {
+          } else if (value === '主管') {
             setFieldState('rule', (state) => {
               state.visible = false;
             });
@@ -54,7 +54,8 @@ const Setps = ({value, onChange}) => {
       defaultValue={{
         type: value && value.type || 'audit',
         auditType: value && value.auditType,
-        rule: value && value.rule
+        rule: value && value.rule,
+        action: value && value.auditType,
       }}
       onSubmit={(values) => {
         typeof onChange === 'function' && onChange(values);
@@ -219,8 +220,8 @@ const Setps = ({value, onChange}) => {
           name="auditType"
           component={Select}
           dataSource={[
-            {label: '指定人', value: 'person'},
-            {label: '主管', value: 'supervisor'},
+            {label: '指定人', value: '指定人'},
+            {label: '主管', value: '主管'},
             // {label: '自主选择', value: 'optional'},
           ]}
         />

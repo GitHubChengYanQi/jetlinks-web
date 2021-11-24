@@ -8,6 +8,7 @@ import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
+import Originator from '@/pages/Workflow/Nodes/Originator';
 
 
 const $config = {
@@ -289,28 +290,19 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           value={currentNode && currentNode.current && {
             type: currentNode.current.stepType,
             auditType: currentNode.current.auditType,
-            rule: currentNode.current.rule && currentNode.current.rule[0]
+            rule: currentNode.current.rule,
+            action: currentNode.current.auditType,
           }}
           onChange={(value) => {
             switch (value.type) {
               case 'audit':
                 currentNode.current.stepType = value.type;
                 currentNode.current.auditType = value.auditType;
-                currentNode.current.rule = value.rule && [value.rule];
-                currentNode.current.owner = <>
-                  <strong>审批人</strong>
-                  <div>{value.auditType === 'person' ? value.rule && value.rule.label : '主管'}</div>
-                </>;
-                updateNode();
+                currentNode.current.rule = value.rule;
                 break;
               case 'quality':
                 currentNode.current.stepType = value.type;
-                currentNode.current.rule = value.action && [{title:value.action}];
-                currentNode.current.owner = <>
-                  <strong>质检动作</strong>
-                  <div>{value.action}</div>
-                </>;
-                updateNode();
+                currentNode.current.auditType = value.action;
                 break;
               default:
                 break;
@@ -320,19 +312,14 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           }} />
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
-        <UserTree value={currentNode && currentNode.current && currentNode.current.rule} onChange={(value) => {
-          currentNode.current.rule = value;
-          currentNode.current.flowPermission = value && value.map((item, index) => {
-            if (item.key !== 0) {
-              return <span key={index}>{item.title}，</span>;
-            } else {
-              return null;
-            }
-
-          });
-          updateNode();
-          refStart.current.close();
-        }} />
+        {/*<Originator value={currentNode && currentNode.current && currentNode.current.rule} onChange={(value) => {*/}
+        {/*  currentNode.current.rule = value;*/}
+        {/*  currentNode.current.stepType = 'start';*/}
+        {/*  currentNode.current.auditType = 'start';*/}
+        {/*  updateNode();*/}
+        {/*  refStart.current.close();*/}
+        {/*}} />*/}
+        <Originator />
       </Drawer>
     </WFC.Provider>
   );
