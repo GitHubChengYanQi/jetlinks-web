@@ -32,7 +32,7 @@ const ProcessEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       onSubmit={(value)=>{
-        return {...value, url: `${wxCp}Work/Workflow?id=stepId`};
+        return {...value, url: `${wxCp}Work/Workflow?formId=formvalue&setpsId=setpsvalue`};
       }}
       fieldKey="processId"
     >

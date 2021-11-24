@@ -9,19 +9,26 @@ const WorkflowAdd = () => {
 
   const params = useParams();
 
-  const {loading,run:detail} = useRequest({url:'/activitiSteps/detail',method:'POST'},{manual:true});
+  const [value, setValue] = useState(false);
+
+  const {loading,run:detail} = useRequest(
+    {url:'/activitiSteps/detail',method:'POST'},
+    {
+      manual:true,
+      onSuccess:(res)=>{
+        setValue(res);
+      }
+    });
 
   useEffect(()=>{
     if (params.cid){
-      // detail({
-      //   data:{
-      //     processId: params.cid
-      //   }
-      // });
+      detail({
+        data:{
+          processId: params.cid
+        }
+      });
     }
   },[]);
-
-  const [value, setValue] = useState(false);
 
   const history = useHistory();
 
@@ -47,7 +54,7 @@ const WorkflowAdd = () => {
                 processId:params.cid,
               }
             });
-            // history.goBack();
+            history.goBack();
           }}>保存</Button>
           <Button onClick={() => {
             history.goBack();

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Drawer from '@/components/Drawer';
 import EndNode from './Nodes/EndNode';
 import Render from './Nodes/Render';
@@ -252,9 +252,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
         objRef.conditionNodeList.splice(index, 1);
       } else {
         const newObj = objRef.childNode;
-        const newluYou = objRef.luYou;
         pRef.childNode = newObj;
-        pRef.luYou = newluYou;
       }
       updateNode();
     }
@@ -274,6 +272,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       ref.current.open(true);
     }
   }
+
+  useEffect(()=>{
+    if (value){
+      setConfig({...value});
+    }
+
+  },[value]);
 
   return (
     <WFC.Provider value={{config, updateNode, onAddNode, onDeleteNode, onSelectNode}}>
