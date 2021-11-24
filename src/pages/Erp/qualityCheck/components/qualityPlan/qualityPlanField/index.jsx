@@ -101,7 +101,7 @@ export const StandardValue = (props) => {
         <InputNumber style={{width: bai ? 71 : 88}} value={other.value && `${other.value}`.split(',')[0]} min={0} max={bai && 100} onChange={(val) => {
           other.onChange(`${val},${other.value ? other.value.split(',')[1] : ''}`);
         }} />{bai && '  %'}
-        &nbsp;&lt;&gt;&nbsp;
+        &nbsp;——&nbsp;
         <InputNumber style={{width: bai ? 71 : 88}} value={other.value && `${other.value}`.split(',')[1]} max={bai && 100} onChange={(val) => {
           other.onChange(`${other.value ? other.value.split(',')[0] : ''},${val}`);
         }} />{bai && '  %'}
