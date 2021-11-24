@@ -41,12 +41,12 @@ const WorkflowAdd = () => {
         <Space>
           <Button type="primary" onClick={() => {
             console.log(value);
-            // run({
-            //   data:{
-            //     ...value,
-            //     processId:params.cid,
-            //   }
-            // });
+            run({
+              data:{
+                ...value,
+                processId:params.cid,
+              }
+            });
             // history.goBack();
           }}>保存</Button>
           <Button onClick={() => {

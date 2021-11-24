@@ -3,13 +3,13 @@ import {Button, message, Modal, Select, Space} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 
-export const SelectOriginator = ({options, setOptions,defaultValue, onChange, value}) => {
+export const SelectOriginator = ({options, setOptions, onChange, defaultValue, value}) => {
 
   const [visiable, setVisiable] = useState();
 
   const [change, setChange] = useState();
 
-  const [selectValue, setSelectValue] = useState();
+  const [selectValue, setSelectValue] = useState(defaultValue);
 
   const type = () => {
     switch (selectValue) {
@@ -38,6 +38,7 @@ export const SelectOriginator = ({options, setOptions,defaultValue, onChange, va
 
   return <Space>
     <Select value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
+
       setSelectValue(value);
       const change = options.filter((values) => {
         return value !== values.value;
@@ -93,22 +94,36 @@ const Originator = ({value, onChange}) => {
     {
       label: '指定人',
       value: 'users',
-      disabled:value && value.users
+      disabled: value && value.users
     },
     {
       label: '指定部门',
       value: 'depts',
-      disabled:value && value.depts
+      disabled: value && value.depts
     }
   ]);
 
-  const [count, setCount] = useState(1);
+  const counts = options.filter((value)=>{
+    return value.disabled;
+  });
+
+  const [count, setCount] = useState(counts.length > 0 ? counts.length :  1);
 
   const selects = (index) => {
+    const option = [];
+    if (value){
+      if (value.users) {
+        option.push('users');
+      }
+      if (value.depts){
+        option.push('depts');
+      }
+    }
+
     return <div key={index} style={{marginBottom: 16}}>
       <SelectOriginator
-        defaultValue={value}
         options={options}
+        defaultValue={option[index]}
         setOptions={(value) => {
           setOptions(value);
         }}

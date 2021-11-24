@@ -232,7 +232,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       objRef.childNode = {...NodeTemplates[OptionTypes.NOTIFIER], childNode: o};
     }
     if (type === OptionTypes.CONDITION) {
-      objRef.luYou = {
+      objRef.childNode = {
         ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
           {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', childNode: o},
           {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2'},
