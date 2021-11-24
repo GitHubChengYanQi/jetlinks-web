@@ -3,11 +3,10 @@ import {Button, Col, Radio, Row, Space, Tree} from 'antd';
 import {useRequest} from '@/util/Request';
 import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
 
-const UserTree = ({value, onChange}) => {
+const UserTree = ({type, value, onChange}) => {
 
   const {loading, data} = useRequest(UserIdSelect);
 
-  const [select, setSelect] = useState(0);
 
   const {loading: deptLoading, data: depts} = useRequest({
     url: '/rest/dept/tree',
@@ -28,48 +27,45 @@ const UserTree = ({value, onChange}) => {
     return null;
   }
 
-  return <>
-    <Radio.Group value={select} style={{margin:16}} onChange={(value) => {
-      setSelect(value.target.value);
-    }}>
-      <Radio.Button value={0}>人员</Radio.Button>
-      <Radio.Button value={1}>部门</Radio.Button>
-    </Radio.Group>
-    {!select ?
-      <Tree
-        checkable
-        defaultExpandAll
-        checkedKeys={check.users && check.users.map((items, index) => {
-          return items.key;
-        })}
-        onCheck={(value, option) => {
-          setCheck({users: option.checkedNodes});
-        }}
-        treeData={[{title: '全选', key: 0, children: treeData || []}]}
-      />
-      :
-      <Tree
+
+  switch (type) {
+    case 'users':
+      return <>
+        <Tree
+          checkable
+          defaultExpandAll
+          checkedKeys={check.users && check.users.map((items, index) => {
+            return items.key;
+          })}
+          onCheck={(value, option) => {
+            const users = option.checkedNodes.filter((value)=>{
+              return value.key !== 0;
+            });
+            setCheck({users});
+            typeof onChange === 'function' && onChange({users});
+          }}
+          treeData={[{title: '全选', key: 0, children: treeData || []}]}
+        />
+      </>;
+    case 'depts':
+      return <Tree
         checkable
         defaultExpandAll
         checkedKeys={check.depts && check.depts.map((items, index) => {
           return items.key;
         })}
         onCheck={(value, option) => {
-          setCheck({depts: option.checkedNodes});
+          const depts = option.checkedNodes.filter((value)=>{
+            return value.key !== '0';
+          });
+          setCheck({depts});
+          typeof onChange === 'function' && onChange({depts});
         }}
         treeData={depts || []}
-      />}
-    <div style={{margin: 16, textAlign: 'center'}}>
-      <Space>
-        <Button type="primary" onClick={() => {
-          typeof onChange === 'function' && onChange(check);
-        }}>确定</Button>
-        <Button type="default" onClick={() => {
-
-        }}>清空</Button>
-      </Space>
-    </div>
-  </>;
+      />;
+    default:
+      return null;
+  }
 };
 
 export default UserTree;

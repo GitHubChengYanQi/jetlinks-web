@@ -312,14 +312,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           }} />
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
-        {/*<Originator value={currentNode && currentNode.current && currentNode.current.rule} onChange={(value) => {*/}
-        {/*  currentNode.current.rule = value;*/}
-        {/*  currentNode.current.stepType = 'start';*/}
-        {/*  currentNode.current.auditType = 'start';*/}
-        {/*  updateNode();*/}
-        {/*  refStart.current.close();*/}
-        {/*}} />*/}
-        <Originator />
+        <Originator value={currentNode && currentNode.current && currentNode.current.rule} onChange={(value) => {
+          currentNode.current.rule = value;
+          currentNode.current.stepType = 'start';
+          currentNode.current.auditType = 'start';
+          updateNode();
+          refStart.current.close();
+        }} />
       </Drawer>
     </WFC.Provider>
   );
