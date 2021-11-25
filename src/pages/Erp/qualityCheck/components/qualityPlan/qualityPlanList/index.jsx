@@ -66,7 +66,20 @@ const QualityPlanList = (props) => {
           return <Button type="link" disabled={ids.length !== 1} icon={<CopyOutlined />} onClick={async () => {
             const data = await request({...qualityPlanDetail, data: {qualityPlanId: ids[0]}});
 
-            addRef.current.open({...data,planCoding:null,planName:null,qualityPlanId:null});
+            const detail = data && data.qualityPlanDetailParams && data.qualityPlanDetailParams.map((items, index) => {
+              return {
+                ...items,
+                planDetailId: null,
+              };
+            });
+
+            addRef.current.open({
+              ...data,
+              planCoding: null,
+              planName: null,
+              qualityPlanId: null,
+              qualityPlanDetailParams: detail
+            });
           }}>
             复制添加
           </Button>;
@@ -112,8 +125,9 @@ const QualityPlanList = (props) => {
         }} width={100} />
 
       </Table>
-      <Modal ref={addRef} width={1200} component={QualityPlanEdit} onSuccess={()=>{
-
+      <Modal ref={addRef} width={1200} component={QualityPlanEdit} onSuccess={() => {
+        addRef.current.close();
+        tableRef.current.submit();
       }} />
     </>
   );
