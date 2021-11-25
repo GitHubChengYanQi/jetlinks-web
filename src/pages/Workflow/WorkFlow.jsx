@@ -266,7 +266,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       prev: pRef
     });
 
-    if (objRef.type === 0) {
+    if (objRef.type === 0 || objRef.type === '0') {
       refStart.current.open(true);
     } else if (objRef.type !== 3) {
       ref.current.open(true);
@@ -295,15 +295,15 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           value={currentNode && currentNode.current && {
             type: currentNode.current.stepType,
             auditType: currentNode.current.auditType,
-            rule: currentNode.current.rule,
+            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.startUsers,
             action: currentNode.current.auditType,
           }}
           onChange={(value) => {
             switch (value.type) {
               case 'audit':
                 currentNode.current.stepType = value.type;
-                currentNode.current.auditType = value.auditType;
-                currentNode.current.rule = value.rule;
+                currentNode.current.auditType = 'person';
+                currentNode.current.auditRule = {startUsers:value.auditRule};
                 break;
               case 'quality':
                 currentNode.current.stepType = value.type;
@@ -317,8 +317,8 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           }} />
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
-        <Originator value={currentNode && currentNode.current && currentNode.current.rule} onChange={(value) => {
-          currentNode.current.rule = value;
+        <Originator value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.startUsers} onChange={(value) => {
+          currentNode.current.auditRule = {startUsers:value};
           currentNode.current.stepType = 'start';
           currentNode.current.auditType = 'start';
           updateNode();

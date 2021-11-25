@@ -13,12 +13,13 @@ import {Radio, Select, Input} from '@formily/antd-components';
 import {Button, Divider, InputNumber} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {SkuId} from '@/pages/Workflow/Process/processField';
-import {UserId} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
+import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 
 const actions = createFormActions();
 
 
 const Setps = ({value, onChange}) => {
+  console.log(value);
 
   return (
     <Form
@@ -37,25 +38,11 @@ const Setps = ({value, onChange}) => {
           }
         });
 
-
-        FormEffectHooks.onFieldValueChange$('auditType').subscribe(({value}) => {
-          if (value === '指定人') {
-            setFieldState('rule', (state) => {
-              state.visible = true;
-            });
-          } else if (value === '主管') {
-            setFieldState('rule', (state) => {
-              state.visible = false;
-            });
-          }
-        });
-
       }}
       defaultValue={{
         type: value && value.type || 'audit',
-        auditType: value && value.auditType,
-        rule: value && value.rule,
-        action: value && value.auditType,
+        auditRule: value && value.auditRule,
+        action: value && value.action,
       }}
       onSubmit={(values) => {
         typeof onChange === 'function' && onChange(values);
@@ -216,21 +203,8 @@ const Setps = ({value, onChange}) => {
       <VirtualField name="audit">
         <FormItem
           required
-          label="类型"
-          name="auditType"
-          component={Select}
-          dataSource={[
-            {label: '指定人', value: '指定人'},
-            {label: '主管', value: '主管'},
-            // {label: '自主选择', value: 'optional'},
-          ]}
-        />
-        <FormItem
-          required
-          label="指定人"
-          visible={false}
-          name="rule"
-          component={UserId}
+          name="auditRule"
+          component={Rule}
         />
       </VirtualField>
       <VirtualField name="quality">
@@ -240,8 +214,8 @@ const Setps = ({value, onChange}) => {
           name="action"
           component={Select}
           dataSource={[
-            {label: '执行任务', value: '执行任务'},
-            {label: '完成任务', value: '完成任务'},
+            {label: '执行任务', value: 'performTask'},
+            {label: '完成任务', value: 'completeTask'},
           ]}
         />
       </VirtualField>

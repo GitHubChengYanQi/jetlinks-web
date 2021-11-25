@@ -27,7 +27,6 @@ const UserTree = ({type, value, onChange}) => {
     return null;
   }
 
-
   switch (type) {
     case 'users':
       return <>

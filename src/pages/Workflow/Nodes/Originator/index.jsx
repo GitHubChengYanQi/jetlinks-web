@@ -1,9 +1,9 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, message, Modal, Select, Space} from 'antd';
-import {PlusOutlined} from '@ant-design/icons';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 
-export const SelectOriginator = ({options, setOptions, onChange, defaultValue, value}) => {
+export const SelectOriginator = ({options, setOptions, onChange, defaultValue, value,remove}) => {
 
   const [visiable, setVisiable] = useState();
 
@@ -17,18 +17,20 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.users ? value.users.map((items, index) => {
-            return <span key={index}>{items.title},</span>;
-          }) : '选择'}
+          {value && value.users ? (value.users.map((items,index)=>{
+            return items.title;
+          })).toString() : '选择'}
         </Button>;
       case 'depts':
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.depts ? value.depts.map((items, index) => {
-            return <span key={index}>{items.title},</span>;
-          }) : '选择'}
+          {value && value.depts ? (value.depts.map((items,index)=>{
+            return items.title;
+          })).toString() : '选择'}
         </Button>;
+      case 'supervisor':
+        return null;
       default:
         return <Button type="link" onClick={() => {
           message.error('请选择发起人');
@@ -37,6 +39,14 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
   };
 
   return <Space>
+    <Button
+      type="link"
+      icon={<DeleteOutlined />}
+      onClick={() => {
+        typeof remove === 'function' && remove(selectValue);
+      }}
+      danger
+    />
     <Select value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
 
       setSelectValue(value);
@@ -64,6 +74,17 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
             }
           ]);
           break;
+        case 'supervisor':
+          typeof onChange === 'function' && onChange({supervisor:true});
+          setOptions([
+            ...change,
+            {
+              label: '直接主管',
+              value: 'supervisor',
+              disabled: true,
+            }
+          ]);
+          break;
         default:
           break;
       }
@@ -86,7 +107,10 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
   </Space>;
 };
 
-const Originator = ({value, onChange}) => {
+
+
+
+const Originator = ({value, onChange,hidden}) => {
 
   const [change, setChange] = useState(value);
 
@@ -100,23 +124,30 @@ const Originator = ({value, onChange}) => {
       label: '指定部门',
       value: 'depts',
       disabled: value && value.depts
-    }
+    }, {
+      label: '直接主管',
+      value: 'supervisor',
+      disabled: value && value.supervisor
+    },
   ]);
 
-  const counts = options.filter((value)=>{
+  const counts = options.filter((value) => {
     return value.disabled;
   });
 
-  const [count, setCount] = useState(counts.length > 0 ? counts.length :  1);
+  const [count, setCount] = useState(counts.length > 0 ? counts.length : 1);
 
   const selects = (index) => {
     const option = [];
-    if (value){
+    if (value) {
       if (value.users) {
         option.push('users');
       }
-      if (value.depts){
+      if (value.depts) {
         option.push('depts');
+      }
+      if (value.supervisor) {
+        option.push('supervisor');
       }
     }
 
@@ -127,9 +158,19 @@ const Originator = ({value, onChange}) => {
         setOptions={(value) => {
           setOptions(value);
         }}
+        remove={(value)=>{
+          if (value){
+            const val = change;
+            delete val[value];
+            setChange(val);
+          }else {
+            console.log(index);
+          }
+        }}
         value={change}
         onChange={(value) => {
           setChange({...change, ...value});
+          hidden && typeof onChange === 'function' && onChange({...change, ...value});
         }} />
     </div>;
   };
@@ -150,7 +191,7 @@ const Originator = ({value, onChange}) => {
         <Button type="dashed" disabled={count === options.length} onClick={() => {
           setCount(count + 1);
         }}><PlusOutlined />增加</Button>
-        <Button type="primary" onClick={() => {
+        <Button type="primary" hidden={hidden} onClick={() => {
           typeof onChange === 'function' && onChange(change);
         }}>保存</Button>
       </Space>

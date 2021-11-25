@@ -32,7 +32,7 @@ function ApproverNode(props) {
   return (<NodeWrap
     titleStyle={{backgroundColor: 'rgb(255, 148, 62)'}} onContentClick={onContentClick} title={TitleEl}
     objRef={props.objRef}>
-    <div className="text">
+    <div>
       {props.stepType ?
         Owner(props)
         :

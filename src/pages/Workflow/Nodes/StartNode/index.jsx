@@ -2,36 +2,31 @@ import React, {useContext} from 'react';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import WFC from '@/pages/Workflow/OperatorContext';
+import {Typography} from 'antd';
 
 
 function getOwner(props) {
 
-  if (props.rule) {
+  if (props.auditRule && props.auditRule.startUsers) {
     return <>
+      <strong>发起人</strong>
+      {props.auditRule.startUsers.users &&
+      <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+        <strong>人员:</strong>
+        {(props.auditRule.startUsers.users.map((item) => {
+          return item.title;
+        })).toString()}
+      </Typography.Paragraph>}
+      {props.auditRule.startUsers.depts &&
+      <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+        <strong>部门:</strong>
+        {(props.auditRule.startUsers.depts.map((item) => {
+          return item.title;
+        })).toString()}
+      </Typography.Paragraph>}
       {
-        props.rule.users &&
-        <div>
-          <strong>人员:</strong>
-          {props.rule.users.map((item, index) => {
-            if (item.key !== 0) {
-              return <span key={index}>{item.title}，</span>;
-            } else {
-              return null;
-            }
-          })}
-        </div>
-      }
-
-      {
-        props.rule.depts && <div>
-          <strong>部门:</strong>
-          {props.rule.depts.map((item, index) => {
-            if (item.key !== 0) {
-              return <span key={index}>{item.title}，</span>;
-            } else {
-              return null;
-            }
-          })}
+        props.auditRule.startUsers.supervisor && <div>
+          <strong>直接主管</strong>
         </div>
       }
     </>;
@@ -52,7 +47,7 @@ function StartNode(props) {
 
   return (
     <NodeWrap type={0} objRef={props.objRef} onContentClick={onContentClick} title={<span>{props.nodeName}</span>}>
-      <div className="text">
+      <div>
         {props.stepType ? getOwner(props) : '请选择发起人'}
       </div>
       <Icon type="icon-arrow-right" />

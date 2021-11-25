@@ -4,12 +4,21 @@ import {Affix, Button, Card, Col, Row, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {processDetail} from '@/pages/Workflow/Process/processUrl';
 
 const WorkflowAdd = () => {
 
   const params = useParams();
 
   const [value, setValue] = useState(false);
+
+  const {loading:processLoading,data} = useRequest(processDetail,{
+    defaultParams:{
+      data:{
+        processId: params.cid
+      }
+    }
+  });
 
   const {loading,run:detail} = useRequest(
     {url:'/activitiSteps/detail',method:'POST'},
@@ -36,7 +45,7 @@ const WorkflowAdd = () => {
     {url: '/activitiSteps/add', method: 'POST'},
     {manual: true});
 
-  if (loading){
+  if (processLoading || loading){
     return (<ProSkeleton type="descriptions" />);
   }
 
@@ -46,7 +55,7 @@ const WorkflowAdd = () => {
       <div style={{display: 'inline-block', width: '50%'}}>添加流程步骤</div>
       <div style={{display: 'inline-block', textAlign: 'right', width: '50%'}}>
         <Space>
-          <Button type="primary" onClick={() => {
+          <Button type="primary" disabled={data && data.status === 99} onClick={() => {
             console.log(value);
             run({
               data:{
@@ -55,7 +64,7 @@ const WorkflowAdd = () => {
               }
             });
             history.goBack();
-          }}>保存</Button>
+          }}>{data && data.status === 99 ? '启用中' : '保存'}</Button>
           <Button onClick={() => {
             history.goBack();
           }}>返回</Button>

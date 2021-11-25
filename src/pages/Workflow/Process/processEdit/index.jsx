@@ -38,6 +38,7 @@ const ProcessEdit = ({...props}) => {
     >
       <FormItem label="名称" name="processName" component={SysField.ProcessName} required/>
       <FormItem label="类型" name="type" component={SysField.Type} required/>
+      <FormItem label="功能" name="module" component={SysField.Module} required/>
     </Form>
   );
 };
