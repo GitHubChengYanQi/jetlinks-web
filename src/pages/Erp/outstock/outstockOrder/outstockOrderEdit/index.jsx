@@ -32,7 +32,7 @@ const ApiConfig = {
 
 const {onFieldValueChange$} = FormEffectHooks;
 
-const {code} = config;
+const {wxCp} = config;
 
 const OutstockOrderEdit = ({...props}) => {
 
@@ -66,7 +66,7 @@ const OutstockOrderEdit = ({...props}) => {
 
         }}
         onSubmit={(value) => {
-          return {...value, url: `${code}?id=codeId`};
+          return {...value, url: `${wxCp}OrCode?id=codeId`};
         }}
         effects={({setFieldState}) => {
 

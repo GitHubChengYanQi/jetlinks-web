@@ -16,36 +16,36 @@ export const OptionNames = {
 export const NodeTemplates = {
   [OptionTypes.APPROVER]: {
     'nodeName': '过程',
-    'error': true,
+    // 'error': true,
     'type': OptionTypes.APPROVER,
-    'settype': 1,
-    'selectMode': 0,
-    'selectRange': 0,
-    'directorLevel': 1,
-    'replaceByUp': 0,
-    'examineMode': 1,
-    'noHanderAction': 1,
-    'examineEndDirectorLevel': 0,
-    'nodeUserList': []
+    // 'settype': 1,
+    // 'selectMode': 0,
+    // 'selectRange': 0,
+    // 'directorLevel': 1,
+    // 'replaceByUp': 0,
+    // 'examineMode': 1,
+    // 'noHanderAction': 1,
+    // 'examineEndDirectorLevel': 0,
+    // 'nodeUserList': []
   },
   [OptionTypes.NOTIFIER]: {
     'nodeName': '抄送人',
     'type': OptionTypes.NOTIFIER,
-    'ccSelfSelectFlag': 1,
-    'nodeUserList': []
+    // 'ccSelfSelectFlag': 1,
+    // 'nodeUserList': []
   },
   [OptionTypes.CONDITION]: {
     'nodeName': '路由',
     'type': OptionTypes.CONDITION,
     'childNode': null,
-    'conditionNodes': []
+    // 'conditionNodeList': []
   },
   [OptionTypes.BRANCH]: {
     'nodeName': '条件',
     'type': OptionTypes.BRANCH,
     'priorityLevel': 2,
-    'conditionList': [],
-    'nodeUserList': [],
+    // 'conditionList': [],
+    // 'nodeUserList': [],
     'childNode': null
   }
 };

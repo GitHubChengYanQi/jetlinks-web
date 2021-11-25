@@ -200,7 +200,16 @@ const QrCodeList = () => {
             }
           </>);
         }} />
-        <Column title="创建时间" dataIndex="createTime" />
+        <Column title="创建时间" dataIndex="createTime" sorter />
+        <Column title="绑定时间" dataIndex="updateTime" render={(value,record)=>{
+          if (record.type === ''){
+            return <></>;
+          }else if (record.type === 'item'){
+            return <>{value}</>;
+          }else {
+            return <>{record.createTime}</>;
+          }
+        }} sorter />
         <Column />
       </Table>
       <Drawer width={800} title="编辑" component={OrCodeEdit} onSuccess={() => {

@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {processDetail, processAdd, processEdit} from '../processUrl';
 import * as SysField from '../processField';
+import {config} from 'ice';
 
 const {FormItem} = Form;
 
@@ -18,6 +19,8 @@ const ApiConfig = {
   add: processAdd,
   save: processEdit
 };
+
+const {wxCp} = config;
 
 const ProcessEdit = ({...props}) => {
 
@@ -28,12 +31,14 @@ const ProcessEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
+      onSubmit={(value)=>{
+        return {...value, url: `${wxCp}Work/Workflow?formId=formvalue&setpsId=setpsvalue`};
+      }}
       fieldKey="processId"
     >
       <FormItem label="名称" name="processName" component={SysField.ProcessName} required/>
-      {/*<FormItem label="分类Id" name="categoryId" component={SysField.CategoryId} required/>*/}
       <FormItem label="类型" name="type" component={SysField.Type} required/>
-      {/*<FormItem label="工艺表Id或表单Id" name="formId" component={SysField.FormId} required/>*/}
+      <FormItem label="功能" name="module" component={SysField.Module} required/>
     </Form>
   );
 };

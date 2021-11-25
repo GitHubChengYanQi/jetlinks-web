@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Drawer from '@/components/Drawer';
 import EndNode from './Nodes/EndNode';
 import Render from './Nodes/Render';
@@ -7,6 +7,8 @@ import WFC from './OperatorContext';
 import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
+import UserTree from '@/pages/Workflow/Nodes/UserTree';
+import Originator from '@/pages/Workflow/Nodes/Originator';
 
 
 const $config = {
@@ -181,28 +183,29 @@ const $config = {
 const WorkFlow = ({config: _config, value, onChange}) => {
 
   const ref = useRef();
+  const refStart = useRef();
 
   const defaultConfig = {
-    'pkId': 'start-node',
+    'pkId': 'start',
     'nodeName': '发起人',
-    'priorityLevel': '',
+    // 'priorityLevel': '',
     'type': 0,
-    'settype': '',
-    'selectMode': '',
-    'selectRange': '',
-    'examineRoleId': '',
-    'directorLevel': '',
-    'replaceByUp': '',
-    'examineMode': '',
-    'noHanderAction': '',
-    'examineEndType': '',
-    'examineEndRoleId': '',
-    'examineEndDirectorLevel': '',
-    'ccSelfSelectFlag': '',
-    'conditionList': [],
-    'nodeUserList': [],
-    'childNode': {},  // 下级步骤
-    'conditionNodes': [] // 分支
+    // 'settype': '',
+    // 'selectMode': '',
+    // 'selectRange': '',
+    // 'examineRoleId': '',
+    // 'directorLevel': '',
+    // 'replaceByUp': '',
+    // 'examineMode': '',
+    // 'noHanderAction': '',
+    // 'examineEndType': '',
+    // 'examineEndRoleId': '',
+    // 'examineEndDirectorLevel': '',
+    // 'ccSelfSelectFlag': '',
+    // 'conditionList': [],
+    // 'nodeUserList': [],
+    'childNode': null,  // 下级步骤
+    'conditionNodeList': [] // 分支
   };
 
   const [config, setConfig] = useState(value || defaultConfig);
@@ -230,24 +233,23 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     }
     if (type === OptionTypes.CONDITION) {
       objRef.childNode = {
-        ...NodeTemplates[OptionTypes.CONDITION], conditionNodes: [
+        ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
           {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', childNode: o},
           {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2'},
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodes.push({...NodeTemplates[NodeTypes.BRANCH]});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH]});
     }
     updateNode();
   }
 
   // 删除节点
   function onDeleteNode(pRef, objRef, type, index) {
-    console.log(pRef, objRef, type, index);
     if (window.confirm('是否删除节点？')) {
       if (type === NodeTypes.BRANCH) {
-        objRef.conditionNodes.splice(index, 1);
+        objRef.conditionNodeList.splice(index, 1);
       } else {
         const newObj = objRef.childNode;
         pRef.childNode = newObj;
@@ -264,8 +266,19 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       prev: pRef
     });
 
-    ref.current.open(true);
+    if (objRef.type === 0 || objRef.type === '0') {
+      refStart.current.open(true);
+    } else if (objRef.type !== 3) {
+      ref.current.open(true);
+    }
   }
+
+  useEffect(()=>{
+    if (value){
+      setConfig({...value});
+    }
+
+  },[value]);
 
   return (
     <WFC.Provider value={{config, updateNode, onAddNode, onDeleteNode, onSelectNode}}>
@@ -277,22 +290,41 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer title="步骤设置" ref={ref} width={800}><Setps onChange={(value) => {
-        switch (value.type) {
-          case 'audit':
-            if (currentNode.current.pkId === 'start-node') {
-              currentNode.current.flowPermission = value;
-            } else {
-              currentNode.current.owner = value;
+      <Drawer title="步骤设置" ref={ref} width={800}>
+        <Setps
+          value={currentNode && currentNode.current && {
+            type: currentNode.current.stepType,
+            auditType: currentNode.current.auditType,
+            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.startUsers,
+            action: currentNode.current.auditType,
+          }}
+          onChange={(value) => {
+            switch (value.type) {
+              case 'audit':
+                currentNode.current.stepType = value.type;
+                currentNode.current.auditType = 'person';
+                currentNode.current.auditRule = {startUsers:value.auditRule};
+                break;
+              case 'quality':
+                currentNode.current.stepType = value.type;
+                currentNode.current.auditType = value.action;
+                break;
+              default:
+                break;
             }
+            ref.current.close();
             updateNode();
-            break;
-          default:
-            break;
-        }
-        ref.current.close();
-        updateNode();
-      }} /></Drawer>
+          }} />
+      </Drawer>
+      <Drawer title="发起人设置" ref={refStart} width={800}>
+        <Originator value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.startUsers} onChange={(value) => {
+          currentNode.current.auditRule = {startUsers:value};
+          currentNode.current.stepType = 'start';
+          currentNode.current.auditType = 'start';
+          updateNode();
+          refStart.current.close();
+        }} />
+      </Drawer>
     </WFC.Provider>
   );
 };

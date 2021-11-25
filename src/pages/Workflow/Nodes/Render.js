@@ -7,6 +7,7 @@ function Render({config, pRef}) {
     <React.Fragment>
       <MatchNode pRef={pRef} config={config} />
       {config.childNode && <Render pRef={config} config={config.childNode} />}
+      {config.luYou && <Render pRef={config} config={config.luYou} />}
     </React.Fragment>
   );
 }

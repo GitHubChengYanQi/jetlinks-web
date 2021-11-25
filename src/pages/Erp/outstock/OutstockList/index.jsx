@@ -91,7 +91,7 @@ const OutstockList = (props) => {
         </Row>
       </ProCard>
       <ProCard className="h2Card" title="出库清单" headerBordered>
-        <OutstockListingList value={value.outstockOrderId} />
+        <OutstockListingList value={value} />
       </ProCard>
       <ProCard className="h2Card" title="出库详情" headerBordered>
         <Table

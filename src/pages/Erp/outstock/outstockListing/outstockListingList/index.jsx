@@ -36,28 +36,11 @@ const OutstockListingList = (props) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
 
   const searchForm = () => {
     return (
       <>
-        <FormItem label="出库时间" name="time" component={SysField.Time} />
-        <FormItem label="出库数量" name="number" component={SysField.Number} />
-        <FormItem label="出库价格" name="price" component={SysField.Price} />
-        <FormItem label="品牌id" name="brandId" component={SysField.BrandId} />
-        <FormItem label="部门编号" name="deptId" component={SysField.DeptId} />
-        <FormItem label="产品id" name="itemId" component={SysField.ItemId} />
-        <FormItem label="出库状态" name="state" component={SysField.State} />
-        <FormItem label="出库单号" name="outstockOrderId" value={value || ' '} component={SysField.OutstockOrderId} />
-        <FormItem label="发货申请" name="outstockApplyId" component={SysField.OutstockApplyId} />
+        <FormItem label="出库单号" name="outstockOrderId" value={value && value.outstockOrderId || ' '} component={SysField.OutstockOrderId} />
       </>
     );
   };
@@ -73,23 +56,23 @@ const OutstockListingList = (props) => {
           expandedRowKeys: key,
           onExpand: async (expand, record) => {
             if (expand) {
-              const data = await request({
+              const stockdetails = await request({
                 url: '/stockDetails/list',
                 method: 'POST',
                 data: {
                   skuId: record.skuId,
-                  storehouseId: record.storehouseId,
+                  storehouseId: value.storehouseId,
                   brandId: record.brandId,
                 },
               });
-              setData(data);
+              setData(stockdetails);
               setKey([record.outstockListingId]);
             } else {
               setKey([]);
             }
 
           },
-          expandedRowRender: (record) => {
+          expandedRowRender: () => {
             return <>
               {
                 data && data.map((items, index) => {

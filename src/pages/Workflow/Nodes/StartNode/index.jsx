@@ -2,30 +2,38 @@ import React, {useContext} from 'react';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import WFC from '@/pages/Workflow/OperatorContext';
+import {Typography} from 'antd';
 
-const type = (value) => {
-  switch (value.type) {
-    case 'audit':
-      return <>
-        <div>审批</div>
-        <div>类型：{value.auditType === 'person' ? '指定人' : (value.auditType === 'supervisor' ? '主管' : '自主选择')}</div>
-        <div>规则：{value.rule}</div>
-      </>;
-    default:
-      break;
-  }
-};
 
-function getOwner(flowPermission) {
-  // console.log('flowPermission:',flowPermission);
-  if (flowPermission){
-    return <>{type(flowPermission)}</>;
-  }else {
+function getOwner(props) {
+
+  if (props.auditRule && props.auditRule.startUsers) {
+    return <>
+      <strong>发起人</strong>
+      {props.auditRule.startUsers.users &&
+      <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+        <strong>人员:</strong>
+        {(props.auditRule.startUsers.users.map((item) => {
+          return item.title;
+        })).toString()}
+      </Typography.Paragraph>}
+      {props.auditRule.startUsers.depts &&
+      <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+        <strong>部门:</strong>
+        {(props.auditRule.startUsers.depts.map((item) => {
+          return item.title;
+        })).toString()}
+      </Typography.Paragraph>}
+      {
+        props.auditRule.startUsers.supervisor && <div>
+          <strong>直接主管</strong>
+        </div>
+      }
+    </>;
+  } else {
     return null;
   }
-
 }
-
 
 
 function StartNode(props) {
@@ -37,11 +45,13 @@ function StartNode(props) {
     props.onContentClick && props.onContentClick();
   }
 
-  return (<NodeWrap type={0} objRef={props.objRef} onContentClick={onContentClick} title={<span>{props.nodeName}</span>}>
-    <div className="text">
-      {getOwner(props.flowPermission) || '所有人'}
-    </div>
-    <Icon type="icon-arrow-right" />
-  </NodeWrap>);
+  return (
+    <NodeWrap type={0} objRef={props.objRef} onContentClick={onContentClick} title={<span>{props.nodeName}</span>}>
+      <div>
+        {props.stepType ? getOwner(props) : '请选择发起人'}
+      </div>
+      <Icon type="icon-arrow-right" />
+    </NodeWrap>);
 }
+
 export default StartNode;

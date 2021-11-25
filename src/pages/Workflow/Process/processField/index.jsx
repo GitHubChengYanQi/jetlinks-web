@@ -22,6 +22,10 @@ export const CategoryId = (props) =>{
 export const Type = (props) =>{
   return (<AntdSelect options={[{label:'工艺',value:'ship'},{label:'审核',value:'audit'}]} {...props}/>);
 };
+
+export const Module = (props) =>{
+  return (<AntdSelect options={[{label:'质检',value:'quality'}]} {...props}/>);
+};
 export const FormId = (props) =>{
   return (<Input {...props}/>);
 };
@@ -29,3 +33,4 @@ export const FormId = (props) =>{
 export const SkuId = (props) => {
   return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
 };
+

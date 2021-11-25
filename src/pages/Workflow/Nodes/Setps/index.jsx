@@ -8,42 +8,28 @@ import {
   FieldList,
   Submit,
   FormButtonGroup,
-  Reset, FormPath
 } from '@formily/antd';
 import {Radio, Select, Input} from '@formily/antd-components';
 import {Button, Divider, InputNumber} from 'antd';
-import styled from 'styled-components';
-import SpuList from '@/pages/Erp/instock/components/SpuList';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {request} from '@/util/Request';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {SkuId} from '@/pages/Workflow/Process/processField';
+import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 
 const actions = createFormActions();
 
-const RowStyleLayout = styled(props => <div {...props} />)`
-  .ant-btn {
-    margin-right: 16px;
-  }
-
-  .ant-form-item {
-    display: inline-flex;
-    margin-right: 16px;
-    margin-bottom: 16px;
-  }
-`;
 
 const Setps = ({value, onChange}) => {
+  console.log(value);
 
   return (
     <Form
       labelCol={4}
-      wrapperCol={10}
+      wrapperCol={12}
       actions={actions}
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
 
-          const item = ['setp', 'ship', 'audit', 'audit_process'];
+          const item = ['setp', 'ship', 'audit','quality', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
             const field = item[i];
             setFieldState(field, state => {
@@ -51,12 +37,15 @@ const Setps = ({value, onChange}) => {
             });
           }
         });
+
       }}
       defaultValue={{
-        type: 'setp'
+        type: value && value.type || 'audit',
+        auditRule: value && value.auditRule,
+        action: value && value.action,
       }}
-      onSubmit={(values)=>{
-        typeof onChange === 'function' &&  onChange(values);
+      onSubmit={(values) => {
+        typeof onChange === 'function' && onChange(values);
       }}
     >
       <FormItem
@@ -65,10 +54,11 @@ const Setps = ({value, onChange}) => {
         name="type"
         component={Radio.Group}
         dataSource={[
-          {label: '工序', value: 'setp'},
-          {label: '工艺', value: 'ship'},
+          {label: '工序', value: 'setp', disabled: true},
+          {label: '工艺', value: 'ship', disabled: true},
           {label: '审批', value: 'audit'},
-          {label: '流程', value: 'audit_process'}
+          {label: '质检', value: 'quality'},
+          {label: '流程', value: 'audit_process', disabled: true}
         ]} />
       <VirtualField name="setp">
         <FormItem
@@ -213,20 +203,20 @@ const Setps = ({value, onChange}) => {
       <VirtualField name="audit">
         <FormItem
           required
-          label="类型"
-          name="auditType"
-          component={Select}
-          dataSource={[
-            {label: '指定人', value: 'person'},
-            {label: '主管', value: 'supervisor'},
-            {label: '自主选择', value: 'optional'},
-          ]}
+          name="auditRule"
+          component={Rule}
         />
+      </VirtualField>
+      <VirtualField name="quality">
         <FormItem
           required
-          label="审批规则"
-          name="rule"
-          component={Input}
+          label="质检动作"
+          name="action"
+          component={Select}
+          dataSource={[
+            {label: '执行任务', value: 'performTask'},
+            {label: '完成任务', value: 'completeTask'},
+          ]}
         />
       </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>

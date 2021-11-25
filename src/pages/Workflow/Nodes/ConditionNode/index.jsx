@@ -20,19 +20,6 @@ const CoverLine = ({first = false, last = false}) => {
 
 const BranchNode = (props) => {
 
-  const type = (value) => {
-    switch (value.type) {
-      case 'audit':
-        return <>
-          <div>审批</div>
-          <div>类型：{value.auditType === 'person' ? '指定人' : (value.auditType === 'supervisor' ? '主管' : '自主选择')}</div>
-          <div>规则：{value.rule}</div>
-        </>;
-      default:
-        break;
-    }
-  };
-
 
   const {first = false, last = false} = props;
 
@@ -49,7 +36,7 @@ const BranchNode = (props) => {
           {!last && <div className="sort-right" onClick={props.sortRight} />}
           <div className="content" onClick={() => props.onBranchClick(props.objRef)}>
             <div className="text">
-              {props.owner ? type(props.owner) : <span className="placeholder">请设置条件</span>}
+              {props.owner || <span className="placeholder">请设置条件</span>}
             </div>
             {/* <i className="anticon anticon-right arrow"></i> */}
           </div>
@@ -61,7 +48,8 @@ const BranchNode = (props) => {
 };
 
 
-function ConditionNode({conditionNodes: branches = [], ...restProps}) {
+function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
+
   const {onAddNode, onDeleteNode, onSelectNode} = useContext(WFC);
 
   function addBranch() {
@@ -100,6 +88,7 @@ function ConditionNode({conditionNodes: branches = [], ...restProps}) {
                 {...item} first={index === 0} onBranchClick={onBranchClick} delBranch={() => delBranch(index)}
                 last={index === branches.length - 1} objRef={item} />
               {item.childNode && <Render pRef={item} config={item.childNode} />}
+              {item.luYou && <Render pRef={item} config={item.luYou} />}
               <CoverLine first={index === 0} last={index === branches.length - 1} />
             </div>);
           })}
