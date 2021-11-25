@@ -110,78 +110,81 @@ const QualityPlanEdit = (props) => {
                   qualityCheckId: value.value
                 }
               });
-              setFieldState(
-                value.path,
-                state => {
-                  state.props.type = result.type;
-                }
-              );
-
-              setFieldState(
-                FormPath.transform(value.name, /\d/, ($1) => {
-                  return `qualityPlanDetailParams.${$1}.standardValue`;
-                }),
-                state => {
-                  state.props.type = result.type;
-                  state.props.active = value.active;
-
-                  switch (result.type) {
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 6:
-                    case 7:
-                      state.visible = false;
-                      break;
-                    default:
-                      state.visible = true;
-                      break;
+              if (result){
+                setFieldState(
+                  value.path,
+                  state => {
+                    state.props.type = result.type;
                   }
-                }
-              );
+                );
 
-              setFieldState(
-                FormPath.transform(value.name, /\d/, ($1) => {
-                  return `qualityPlanDetailParams.${$1}.unitId`;
-                }),
-                state => {
-                  state.props.type = result.type;
-                  state.props.active = value.active;
+                setFieldState(
+                  FormPath.transform(value.name, /\d/, ($1) => {
+                    return `qualityPlanDetailParams.${$1}.standardValue`;
+                  }),
+                  state => {
+                    state.props.type = result.type;
+                    state.props.active = value.active;
 
-                  switch (result.type) {
-                    case 1:
-                      state.visible = true;
-                      break;
-                    default:
-                      state.visible = false;
-                      break;
+                    switch (result.type) {
+                      case 2:
+                      case 3:
+                      case 4:
+                      case 6:
+                      case 7:
+                        state.visible = false;
+                        break;
+                      default:
+                        state.visible = true;
+                        break;
+                    }
                   }
-                }
-              );
+                );
 
-              setFieldState(
-                FormPath.transform(value.name, /\d/, ($1) => {
-                  return `qualityPlanDetailParams.${$1}.operator`;
-                }),
-                state => {
-                  switch (result.type) {
-                    case 1:
-                    case 5:
-                      state.visible = true;
-                      break;
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 6:
-                    case 7:
-                      state.visible = false;
-                      break;
-                    default:
-                      state.visible = true;
-                      break;
+                setFieldState(
+                  FormPath.transform(value.name, /\d/, ($1) => {
+                    return `qualityPlanDetailParams.${$1}.unitId`;
+                  }),
+                  state => {
+                    state.props.type = result.type;
+                    state.props.active = value.active;
+
+                    switch (result.type) {
+                      case 1:
+                        state.visible = true;
+                        break;
+                      default:
+                        state.visible = false;
+                        break;
+                    }
                   }
-                }
-              );
+                );
+
+                setFieldState(
+                  FormPath.transform(value.name, /\d/, ($1) => {
+                    return `qualityPlanDetailParams.${$1}.operator`;
+                  }),
+                  state => {
+                    switch (result.type) {
+                      case 1:
+                      case 5:
+                        state.visible = true;
+                        break;
+                      case 2:
+                      case 3:
+                      case 4:
+                      case 6:
+                      case 7:
+                        state.visible = false;
+                        break;
+                      default:
+                        state.visible = true;
+                        break;
+                    }
+                  }
+                );
+              }
+
 
             }
 

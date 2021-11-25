@@ -136,10 +136,8 @@ export const Type = (props) => {
       <Radio value={1}>数值</Radio>
       <Radio value={2}>文本</Radio>
       <Radio value={3}>是否</Radio>
-      <Radio value={4}>图片</Radio>
-      <Radio value={5}>百分比</Radio>
-      <Radio value={6}>视频</Radio>
-      <Radio value={7}>附件</Radio>
+      <Radio value={4}>百分比</Radio>
+      <Radio value={5}>附件</Radio>
     </Radio.Group>
   </>);
 };

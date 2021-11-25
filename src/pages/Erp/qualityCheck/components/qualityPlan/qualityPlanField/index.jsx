@@ -194,12 +194,8 @@ export const QualityCheckId = (props) => {
       case 3:
         return <Input disabled value="是否" />;
       case 4:
-        return <Input disabled value="图片" />;
-      case 5:
         return <Input disabled value="百分比" />;
-      case 6:
-        return <Input disabled value="视频" />;
-      case 7:
+      case 5:
         return <Input disabled value="附件" />;
       default:
         return <Input disabled value="" />;

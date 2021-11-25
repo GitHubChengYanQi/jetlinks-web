@@ -88,12 +88,8 @@ const QualityTable = (props) => {
             case 3:
               return <>是否</>;
             case 4:
-              return <>图片</>;
-            case 5:
               return <>百分比</>;
-            case 6:
-              return <>视频</>;
-            case 7:
+            case 5:
               return <>附件</>;
             default:
               return <></>;
