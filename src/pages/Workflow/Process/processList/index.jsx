@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Radio, Table as AntTable} from 'antd';
+import {Badge, Button, Radio, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -93,12 +93,14 @@ const ProcessList = () => {
               break;
           }
         }} />
-        <Column title="状态" dataIndex="display" render={(value, record) => {
+        <Column title="状态" dataIndex="status" render={(value, record) => {
           switch (value) {
-            case 1:
-              return <>启用</>;
             case 0:
-              return <>停用</>;
+              return <Badge color='yellow' text='未发布' />;
+            case 99:
+              return <Badge color='green' text='启用' />;
+            case 98:
+              return <Badge color='red' text='停用' />;
             default:
               break;
           }
@@ -113,7 +115,7 @@ const ProcessList = () => {
                     data: {
                       processId: record.processId,
                       module: 'quality',
-                      status: 99
+                      status: 98
                     }
                   });
                 }}>发布</Button>
@@ -125,8 +127,28 @@ const ProcessList = () => {
                 }} />
               </>
             );
-          } else {
-            return null;
+          } else if (record.status === 98) {
+            return <>
+              <Button type='link' onClick={()=>{
+                run({
+                  data: {
+                    processId: record.processId,
+                    module: 'quality',
+                    status: 99
+                  }
+                });
+              }}>启用</Button>
+            </>;
+          }else if (record.status === 99){
+            return <Button type='link' danger onClick={()=>{
+              run({
+                data: {
+                  processId: record.processId,
+                  module: 'quality',
+                  status: 98
+                }
+              });
+            }}>停用</Button>;
           }
 
         }} width={300} />
