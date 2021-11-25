@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, message, Modal, Select, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 
-export const SelectOriginator = ({options, setOptions, onChange, defaultValue, value,remove}) => {
+export const SelectOriginator = ({options, onChange, defaultValue, value, remove}) => {
 
   const [visiable, setVisiable] = useState();
 
@@ -11,13 +11,17 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
 
   const [selectValue, setSelectValue] = useState(defaultValue);
 
+  useEffect(() => {
+    setSelectValue(defaultValue);
+  }, [defaultValue]);
+
   const type = () => {
     switch (selectValue) {
       case 'users':
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.users ? (value.users.map((items,index)=>{
+          {value && value.users ? (value.users.map((items, index) => {
             return items.title;
           })).toString() : '选择'}
         </Button>;
@@ -25,7 +29,7 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.depts ? (value.depts.map((items,index)=>{
+          {value && value.depts ? (value.depts.map((items, index) => {
             return items.title;
           })).toString() : '选择'}
         </Button>;
@@ -50,40 +54,9 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
     <Select value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
 
       setSelectValue(value);
-      const change = options.filter((values) => {
-        return value !== values.value;
-      });
       switch (value) {
-        case 'users':
-          setOptions([
-            ...change,
-            {
-              label: '指定人',
-              value: 'users',
-              disabled: true,
-            },
-          ]);
-          break;
-        case 'depts':
-          setOptions([
-            ...change,
-            {
-              label: '指定部门',
-              value: 'depts',
-              disabled: true,
-            }
-          ]);
-          break;
         case 'supervisor':
-          typeof onChange === 'function' && onChange({supervisor:true});
-          setOptions([
-            ...change,
-            {
-              label: '直接主管',
-              value: 'supervisor',
-              disabled: true,
-            }
-          ]);
+          typeof onChange === 'function' && onChange({supervisor: true});
           break;
         default:
           break;
@@ -108,64 +81,60 @@ export const SelectOriginator = ({options, setOptions, onChange, defaultValue, v
 };
 
 
-
-
-const Originator = ({value, onChange,hidden}) => {
+const Originator = ({value, onChange, hidden}) => {
 
   const [change, setChange] = useState(value);
 
-  const [options, setOptions] = useState([
-    {
-      label: '指定人',
-      value: 'users',
-      disabled: value && value.users
-    },
-    {
-      label: '指定部门',
-      value: 'depts',
-      disabled: value && value.depts
-    }, {
-      label: '直接主管',
-      value: 'supervisor',
-      disabled: value && value.supervisor
-    },
-  ]);
+  const [options, setOptions] = useState([]);
 
-  const counts = options.filter((value) => {
-    return value.disabled;
-  });
+  useEffect(() => {
+    setOptions(
+      [
+        {
+          label: '指定人',
+          value: 'users',
+          disabled: change && change.users
+        },
+        {
+          label: '指定部门',
+          value: 'depts',
+          disabled: change && change.depts
+        },
+        {
+          label: '直接主管',
+          value: 'supervisor',
+          disabled: change && change.supervisor
+        },
+      ]
+    );
+  }, [change]);
 
-  const [count, setCount] = useState(counts.length > 0 ? counts.length : 1);
+  const [count, setCount] = useState(1);
 
-  const selects = (index) => {
-    const option = [];
-    if (value) {
-      if (value.users) {
-        option.push('users');
-      }
-      if (value.depts) {
-        option.push('depts');
-      }
-      if (value.supervisor) {
-        option.push('supervisor');
-      }
-    }
+  useEffect(() => {
+    const counts = options.filter((value) => {
+      return value.disabled;
+    });
+    setCount(counts.length > 0 ? counts.length : 1);
+  }, [options]);
+
+  const selects = (index, value) => {
+
 
     return <div key={index} style={{marginBottom: 16}}>
       <SelectOriginator
         options={options}
-        defaultValue={option[index]}
+        defaultValue={value}
         setOptions={(value) => {
           setOptions(value);
         }}
-        remove={(value)=>{
-          if (value){
+        remove={(value) => {
+          if (value) {
             const val = change;
             delete val[value];
             setChange(val);
-          }else {
-            console.log(index);
           }
+          setCount(count - 1);
         }}
         value={change}
         onChange={(value) => {
@@ -176,9 +145,21 @@ const Originator = ({value, onChange,hidden}) => {
   };
 
   const add = () => {
+    const option = [];
+    if (change) {
+      if (change.users) {
+        option.push('users');
+      }
+      if (change.depts) {
+        option.push('depts');
+      }
+      if (change.supervisor) {
+        option.push('supervisor');
+      }
+    }
     const array = new Array(count);
     for (let i = 0; i < count; i++) {
-      array.push(selects(i));
+      array.push(selects(i, option[i]));
     }
     return array;
   };
