@@ -20,7 +20,7 @@ export const Owner = (props) => {
       return <>
         {
           rule.users &&
-          <Typography.Paragraph ellipsis style={{marginBottom:0}}>
+          <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
             <strong>人员:</strong>
             {(rule.users.map((item, index) => {
               return item.title;
@@ -29,7 +29,7 @@ export const Owner = (props) => {
         }
 
         {
-          rule.depts && <Typography.Paragraph ellipsis style={{marginBottom:0}}>
+          rule.depts && <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
             <strong>部门:</strong>
             {(rule.depts.map((item, index) => {
               return item.title;
@@ -54,10 +54,15 @@ export const Owner = (props) => {
         <strong>审批</strong>
         <div>{Rule(props.auditRule && props.auditRule.startUsers)}</div>
       </>;
+    case 'send':
+      return <>
+        <strong>抄送</strong>
+        <div>{Rule(props.auditRule && props.auditRule.startUsers)}</div>
+      </>;
     case 'quality':
       return <>
         <strong>质检动作</strong>
-        <div>{props.auditType ===  'performTask' ? '执行任务' : '完成任务'}</div>
+        <div>{props.auditType === 'performTask' ? '执行任务' : '完成任务'}</div>
       </>;
     default:
       break;

@@ -6,6 +6,7 @@ import WFC from '../../OperatorContext';
 import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 function NotifierNode(props) {
+  console.log(props);
   const {onDeleteNode, onSelectNode} = useContext(WFC);
 
   function delNode() {

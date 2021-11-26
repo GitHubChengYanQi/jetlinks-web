@@ -234,13 +234,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     if (type === OptionTypes.CONDITION) {
       objRef.childNode = {
         ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1',auditType:'branch', childNode: o},
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2',auditType:'branch',},
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', auditType: 'branch', childNode: o},
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2', auditType: 'branch',},
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH],auditType:'luyou',});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'luyou',});
     }
     updateNode();
   }
@@ -266,7 +266,6 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       prev: pRef
     });
 
-    console.log(objRef.type);
     if (objRef.type === 0 || objRef.type === '0' || objRef.type === 2 || objRef.type === '2') {
       refStart.current.open(true);
     } else if (objRef.type !== 3 && objRef.type !== '3') {
@@ -274,11 +273,11 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     }
   }
 
-  useEffect(()=>{
-    if (value){
+  useEffect(() => {
+    if (value) {
       setConfig({...value});
     }
-  },[value]);
+  }, [value]);
 
   return (
     <WFC.Provider value={{config, updateNode, onAddNode, onDeleteNode, onSelectNode}}>
@@ -303,7 +302,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
               case 'audit':
                 currentNode.current.stepType = value.type;
                 currentNode.current.auditType = 'person';
-                currentNode.current.auditRule = {startUsers:value.auditRule};
+                currentNode.current.auditRule = {startUsers: value.auditRule};
                 break;
               case 'quality':
                 currentNode.current.stepType = value.type;
@@ -315,19 +314,34 @@ const WorkFlow = ({config: _config, value, onChange}) => {
             ref.current.close();
             updateNode();
           }}
-          onClose={()=>{
+          onClose={() => {
             ref.current.close();
           }}
         />
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
-        <Originator value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.startUsers} onChange={(value) => {
-          currentNode.current.auditRule = {startUsers:value};
-          currentNode.current.stepType = 'start';
-          currentNode.current.auditType = 'start';
-          updateNode();
-          refStart.current.close();
-        }} />
+        <Originator
+          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.startUsers}
+          onChange={(value) => {
+            switch (currentNode.current.type) {
+              case 0:
+              case '0':
+                currentNode.current.auditRule = {startUsers: value};
+                currentNode.current.stepType = 'start';
+                currentNode.current.auditType = 'start';
+                break;
+              case 2:
+              case '2':
+                currentNode.current.auditRule = {startUsers: value};
+                currentNode.current.stepType = 'send';
+                currentNode.current.auditType = 'send';
+                break;
+              default:
+                break;
+            }
+            updateNode();
+            refStart.current.close();
+          }} />
       </Drawer>
     </WFC.Provider>
   );
