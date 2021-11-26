@@ -21,7 +21,7 @@ function TitleElement(props) {
   }
 
   function onClick() {
-    setEditable(true);
+    // setEditable(true);
   }
 
   useEffect(() => {

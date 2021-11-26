@@ -46,7 +46,11 @@ function StartNode(props) {
   }
 
   return (
-    <NodeWrap type={0} objRef={props.objRef} onContentClick={onContentClick} title={<span>{props.nodeName}</span>}>
+    <NodeWrap
+      type={0}
+      objRef={props.objRef}
+      onContentClick={()=>{onContentClick();}}
+      title={<span>{props.nodeName || '发起人'}</span>}>
       <div>
         {props.stepType ? getOwner(props) : '请选择发起人'}
       </div>

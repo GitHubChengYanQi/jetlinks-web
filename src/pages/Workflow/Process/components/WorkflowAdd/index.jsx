@@ -12,40 +12,44 @@ const WorkflowAdd = () => {
 
   const [value, setValue] = useState(false);
 
-  const {loading:processLoading,data} = useRequest(processDetail,{
-    defaultParams:{
-      data:{
+  const {loading: processLoading, data} = useRequest(processDetail, {
+    defaultParams: {
+      data: {
         processId: params.cid
       }
     }
   });
 
-  const {loading,run:detail} = useRequest(
-    {url:'/activitiSteps/detail',method:'POST'},
+  const {loading, run: detail} = useRequest(
+    {url: '/activitiSteps/detail', method: 'POST'},
     {
-      manual:true,
-      onSuccess:(res)=>{
+      manual: true,
+      onSuccess: (res) => {
         setValue(res);
       }
     });
 
-  useEffect(()=>{
-    if (params.cid){
+  useEffect(() => {
+    if (params.cid) {
       detail({
-        data:{
+        data: {
           processId: params.cid
         }
       });
     }
-  },[]);
+  }, []);
 
   const history = useHistory();
 
   const {run} = useRequest(
     {url: '/activitiSteps/add', method: 'POST'},
-    {manual: true});
+    {
+      manual: true, onSuccess: () => {
+        history.push('/workflow');
+      }
+    });
 
-  if (processLoading || loading){
+  if (processLoading || loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
@@ -57,15 +61,14 @@ const WorkflowAdd = () => {
         <Space>
           <Button type="primary" disabled={data && data.status !== 0} onClick={() => {
             run({
-              data:{
+              data: {
                 ...value,
-                processId:params.cid,
+                processId: params.cid,
               }
             });
-            history.goBack();
           }}>{data && data.status !== 0 ? '已发布' : '保存'}</Button>
           <Button onClick={() => {
-            history.goBack();
+            history.push('/workflow');
           }}>返回</Button>
         </Space>
       </div>

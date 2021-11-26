@@ -6,7 +6,6 @@ import WFC from '../../OperatorContext';
 import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 function NotifierNode(props) {
-  console.log(props);
   const {onDeleteNode, onSelectNode} = useContext(WFC);
 
   function delNode() {
@@ -23,12 +22,15 @@ function NotifierNode(props) {
   }
 
   const TitleEl = <TitleElement
-    delNode={delNode} placeholder={props.nodeName} nodeName={props.nodeName}
-    onTitleChange={onChange} />;
+    delNode={delNode}
+    placeholder={props.nodeName}
+    nodeName={props.nodeName || '抄送'}
+    onTitleChange={onChange}
+  />;
   return (<NodeWrap
     titleStyle={{backgroundColor: 'rgb(50, 150, 250)'}}
     onContentClick={onContentClick}
-    // title={TitleEl}
+    title={TitleEl}
     objRef={props.objRef}>
     <div className="text">
       {props.stepType ?

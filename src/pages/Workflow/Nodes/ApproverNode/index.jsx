@@ -26,13 +26,13 @@ function ApproverNode(props) {
 
   // TODO: 这里读取props数据
   const TitleEl = <TitleElement
-    delNode={delNode} placeholder={props.nodeName} nodeName={props.nodeName}
+    delNode={delNode} placeholder={props.nodeName || '过程'} nodeName={props.nodeName || '过程'}
     onTitleChange={onChange} />;
 
   return (<NodeWrap
     titleStyle={{backgroundColor: 'rgb(255, 148, 62)'}}
     onContentClick={onContentClick}
-    // title={TitleEl}
+    title={TitleEl}
     objRef={props.objRef}>
     <div>
       {props.stepType ?
