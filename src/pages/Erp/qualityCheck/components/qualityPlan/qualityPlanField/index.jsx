@@ -116,11 +116,9 @@ export const StandardValue = (props) => {
       return types();
     case 2:
     case 3:
-    case 4:
-    case 6:
-    case 7:
-      return null;
     case 5:
+      return null;
+    case 4:
       return types(true);
     default:
       return <Input style={{width: 200}} placeholder={placeholder} {...other} />;
