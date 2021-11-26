@@ -36,6 +36,7 @@ export const NodeTemplates = {
   },
   [OptionTypes.CONDITION]: {
     'nodeName': '路由',
+    'auditType':'luyou',
     'type': OptionTypes.CONDITION,
     'childNode': null,
     // 'conditionNodeList': []
