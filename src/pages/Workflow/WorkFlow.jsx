@@ -234,13 +234,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     if (type === OptionTypes.CONDITION) {
       objRef.childNode = {
         ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', childNode: o},
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2'},
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1',auditType:'branch', childNode: o},
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2',auditType:'branch',},
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH]});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH],auditType:'luyou',});
     }
     updateNode();
   }
@@ -314,7 +314,11 @@ const WorkFlow = ({config: _config, value, onChange}) => {
             }
             ref.current.close();
             updateNode();
-          }} />
+          }}
+          onClose={()=>{
+            ref.current.close();
+          }}
+        />
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
         <Originator value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.startUsers} onChange={(value) => {

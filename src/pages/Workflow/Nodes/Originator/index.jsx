@@ -3,7 +3,7 @@ import {Button, message, Modal, Select, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 
-export const SelectOriginator = ({options, onChange, defaultValue, value, remove}) => {
+export const SelectOriginator = ({options,count, onChange, defaultValue, value, remove}) => {
 
   const [visiable, setVisiable] = useState();
 
@@ -21,7 +21,7 @@ export const SelectOriginator = ({options, onChange, defaultValue, value, remove
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.users ? (value.users.map((items, index) => {
+          {value && value.users && value.users.length > 0 ? (value.users.map((items, index) => {
             return items.title;
           })).toString() : '选择'}
         </Button>;
@@ -29,7 +29,7 @@ export const SelectOriginator = ({options, onChange, defaultValue, value, remove
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.depts ? (value.depts.map((items, index) => {
+          {value && value.depts && value.depts.length > 0 ? (value.depts.map((items, index) => {
             return items.title;
           })).toString() : '选择'}
         </Button>;
@@ -45,6 +45,7 @@ export const SelectOriginator = ({options, onChange, defaultValue, value, remove
   return <Space>
     <Button
       type="link"
+      disabled={count === 1}
       icon={<DeleteOutlined />}
       onClick={() => {
         typeof remove === 'function' && remove(selectValue);
@@ -52,9 +53,14 @@ export const SelectOriginator = ({options, onChange, defaultValue, value, remove
       danger
     />
     <Select value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
-
       setSelectValue(value);
       switch (value) {
+        case 'users':
+          typeof onChange === 'function' && onChange({users: []});
+          break;
+        case 'depts':
+          typeof onChange === 'function' && onChange({depts: []});
+          break;
         case 'supervisor':
           typeof onChange === 'function' && onChange({supervisor: true});
           break;
@@ -83,56 +89,57 @@ export const SelectOriginator = ({options, onChange, defaultValue, value, remove
 
 const Originator = ({value, onChange, hidden}) => {
 
+  const config = (value) =>{
+    return  [
+      {
+        label: '指定人',
+        value: 'users',
+        disabled: value && value.users
+      },
+      {
+        label: '指定部门',
+        value: 'depts',
+        disabled: value && value.depts
+      },
+      {
+        label: '直接主管',
+        value: 'supervisor',
+        disabled: value && value.supervisor
+      },
+    ];
+  };
+
   const [change, setChange] = useState(value);
 
-  const [options, setOptions] = useState([]);
-
-  useEffect(() => {
-    setOptions(
-      [
-        {
-          label: '指定人',
-          value: 'users',
-          disabled: change && change.users
-        },
-        {
-          label: '指定部门',
-          value: 'depts',
-          disabled: change && change.depts
-        },
-        {
-          label: '直接主管',
-          value: 'supervisor',
-          disabled: change && change.supervisor
-        },
-      ]
-    );
-  }, [change]);
+  const [options, setOptions] = useState(config(value));
 
   const [count, setCount] = useState(1);
 
   useEffect(() => {
-    const counts = options.filter((value) => {
+    setOptions(config(change));
+  }, [change,count]);
+
+
+
+  useEffect(() => {
+    const counts = options && options.filter((value) => {
       return value.disabled;
     });
-    setCount(counts.length > 0 ? counts.length : 1);
-  }, [options]);
+    setCount(counts && counts.length > 0 ? counts.length : 1);
+  }, []);
 
   const selects = (index, value) => {
-
-
     return <div key={index} style={{marginBottom: 16}}>
       <SelectOriginator
         options={options}
+        count={count}
         defaultValue={value}
-        setOptions={(value) => {
-          setOptions(value);
-        }}
         remove={(value) => {
           if (value) {
             const val = change;
             delete val[value];
             setChange(val);
+            hidden && typeof onChange === 'function' && onChange(val);
           }
           setCount(count - 1);
         }}
@@ -164,13 +171,19 @@ const Originator = ({value, onChange, hidden}) => {
     return array;
   };
 
-
   return <>
     {add()}
     <div style={{marginTop: 16}}>
       <Space>
         <Button type="dashed" disabled={count === options.length} onClick={() => {
-          setCount(count + 1);
+          const disabledCount = options.filter((value)=>{
+            return value.disabled;
+          });
+          if (disabledCount.length === count){
+            setCount(count + 1);
+          }else {
+            message.warn('请先选择！');
+          }
         }}><PlusOutlined />增加</Button>
         <Button type="primary" hidden={hidden} onClick={() => {
           typeof onChange === 'function' && onChange(change);

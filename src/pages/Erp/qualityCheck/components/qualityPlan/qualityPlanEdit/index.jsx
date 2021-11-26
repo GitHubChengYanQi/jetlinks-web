@@ -128,15 +128,12 @@ const QualityPlanEdit = (props) => {
                     state.props.active = value.active;
 
                     switch (result.type) {
-                      case 2:
-                      case 3:
+                      case 1:
                       case 4:
-                      case 6:
-                      case 7:
-                        state.visible = false;
+                        state.visible = true;
                         break;
                       default:
-                        state.visible = true;
+                        state.visible = false;
                         break;
                     }
                   }

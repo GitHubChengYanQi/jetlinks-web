@@ -18,8 +18,7 @@ import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 const actions = createFormActions();
 
 
-const Setps = ({value, onChange}) => {
-  console.log(value);
+const Setps = ({value,onClose, onChange}) => {
 
   return (
     <Form
@@ -224,7 +223,9 @@ const Setps = ({value, onChange}) => {
       <div style={{marginTop: 16}}>
         <FormButtonGroup offset={8} sticky>
           <Submit>确定</Submit>
-          <Button>取消</Button>
+          <Button onClick={()=>{
+            typeof onClose === 'function' && onClose();
+          }}>取消</Button>
         </FormButtonGroup>
       </div>
     </Form>
