@@ -240,7 +240,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'luyou',});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'luYou',});
     }
     updateNode();
   }
