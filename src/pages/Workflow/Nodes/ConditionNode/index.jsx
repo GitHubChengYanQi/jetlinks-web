@@ -30,13 +30,13 @@ const BranchNode = (props) => {
           {!first && <div className="sort-left" onClick={props.sortLeft} />}
           <div className="title-wrapper">
             <span className="editable-title">{props.nodeName}</span>
-            <span className="priority-title">优先级{props.priorityLevel}</span>
+            {/*<span className="priority-title">优先级{props.priorityLevel}</span>*/}
             <Icon type="icon-close" className="close" onClick={props.delBranch} />
           </div>
           {!last && <div className="sort-right" onClick={props.sortRight} />}
           <div className="content" onClick={() => props.onBranchClick(props.objRef)}>
             <div className="text">
-              {props.owner || <span className="placeholder">请设置条件</span>}
+              {props.owner || <span className="placeholder">无条件</span>}
             </div>
             {/* <i className="anticon anticon-right arrow"></i> */}
           </div>

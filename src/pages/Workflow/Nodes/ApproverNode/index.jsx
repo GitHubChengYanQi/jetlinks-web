@@ -30,7 +30,9 @@ function ApproverNode(props) {
     onTitleChange={onChange} />;
 
   return (<NodeWrap
-    titleStyle={{backgroundColor: 'rgb(255, 148, 62)'}} onContentClick={onContentClick} title={TitleEl}
+    titleStyle={{backgroundColor: 'rgb(255, 148, 62)'}}
+    onContentClick={onContentClick}
+    // title={TitleEl}
     objRef={props.objRef}>
     <div>
       {props.stepType ?

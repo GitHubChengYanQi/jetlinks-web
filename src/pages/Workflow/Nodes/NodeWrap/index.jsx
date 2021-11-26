@@ -17,7 +17,6 @@ function NodeWrap(props) {
         </div>
         <AddNode objRef={props.objRef} />
       </div>
-
     </div>
   );
 }

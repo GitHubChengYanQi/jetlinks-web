@@ -25,7 +25,9 @@ function NotifierNode(props) {
     delNode={delNode} placeholder={props.nodeName} nodeName={props.nodeName}
     onTitleChange={onChange} />;
   return (<NodeWrap
-    titleStyle={{backgroundColor: 'rgb(50, 150, 250)'}} onContentClick={onContentClick} title={TitleEl}
+    titleStyle={{backgroundColor: 'rgb(50, 150, 250)'}}
+    onContentClick={onContentClick}
+    // title={TitleEl}
     objRef={props.objRef}>
     <div className="text">
       {props.stepType ?

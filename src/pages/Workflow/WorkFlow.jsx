@@ -267,7 +267,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     });
 
     console.log(objRef.type);
-    if (objRef.type === 0 || objRef.type === '0') {
+    if (objRef.type === 0 || objRef.type === '0' || objRef.type === 2 || objRef.type === '2') {
       refStart.current.open(true);
     } else if (objRef.type !== 3 && objRef.type !== '3') {
       ref.current.open(true);
