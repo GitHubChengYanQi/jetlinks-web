@@ -59,18 +59,14 @@ const Details = ({qualityTaskId}) => {
   const valueType = (items) => {
     switch (items.type) {
       case 1:
-        return <>{items.value}</>;
+        return <>{items.value && items.value.value}</>;
       case 2:
-        return <>{items.value}</>;
+        return <>{items.value && items.value.value}</>;
       case 3:
-        return <>{items.value === '1' ? '合格' : '不合格'}</>;
+        return <>{items.value && items.value.value === '1' ? '合格' : '不合格'}</>;
       case 4:
-        return <Image src={items.value}/>;
+        return <>{items.value && items.value.value} % </>;
       case 5:
-        return <>{items.value} % </>;
-      case 6:
-        return <Image src={items.value}/>;
-      case 7:
         return <Image src={items.value}/>;
       default:
         return <Input disabled value="" />;
@@ -87,6 +83,7 @@ const Details = ({qualityTaskId}) => {
           expandedRowRender: (record) =>{
             return <>
               {record.valueResults && record.valueResults.map((items,index)=>{
+
                 return <div key={index}>
                   <Descriptions bordered column={4}>
                     <Descriptions.Item labelStyle={{width:100}} contentStyle={{width:150,backgroundColor:'#fff'}} label="质检项"> {items.name}</Descriptions.Item>
