@@ -10,14 +10,14 @@ function getOwner(props) {
   if (props.auditRule && props.auditRule.startUsers) {
     return <>
       <strong>发起人</strong>
-      {props.auditRule.startUsers.users &&
+      {props.auditRule.startUsers.users && props.auditRule.startUsers.users.length > 0 &&
       <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
         <strong>人员:</strong>
         {(props.auditRule.startUsers.users.map((item) => {
           return item.title;
         })).toString()}
       </Typography.Paragraph>}
-      {props.auditRule.startUsers.depts &&
+      {props.auditRule.startUsers.depts && props.auditRule.startUsers.depts.length > 0 &&
       <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
         <strong>部门:</strong>
         {(props.auditRule.startUsers.depts.map((item) => {

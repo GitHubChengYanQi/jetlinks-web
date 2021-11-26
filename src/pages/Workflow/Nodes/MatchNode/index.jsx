@@ -19,7 +19,7 @@ export const Owner = (props) => {
     if (rule) {
       return <>
         {
-          rule.users &&
+          rule.users && rule.users.length > 0 &&
           <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
             <strong>人员:</strong>
             {(rule.users.map((item, index) => {
@@ -29,7 +29,7 @@ export const Owner = (props) => {
         }
 
         {
-          rule.depts && <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+          rule.depts && rule.depts.length > 0 && <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
             <strong>部门:</strong>
             {(rule.depts.map((item, index) => {
               return item.title;
