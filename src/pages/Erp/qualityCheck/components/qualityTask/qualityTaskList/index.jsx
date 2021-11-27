@@ -74,6 +74,7 @@ const QualityTaskList = () => {
         <Column title="状态" dataIndex="state" render={(value) => {
           return value === 0 ? <Badge text="进行中" color="blue" /> : <Badge text="已完成" color="green" />;
         }} />
+        <Column title="创建时间" dataIndex="createTime" />
         <Column title="备注" dataIndex="remark" />
         <Column />
       </Table>
