@@ -89,7 +89,7 @@ const QualityTaskEdit = ({...props}) => {
         }}
       >
 
-        <ProCard title="入库信息" className="h2Card" headerBordered>
+        <ProCard title="质检信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '40%'}}>
             <FormItem
               label="编码"
