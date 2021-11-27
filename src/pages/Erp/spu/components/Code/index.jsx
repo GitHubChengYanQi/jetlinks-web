@@ -42,7 +42,7 @@ const Code = ({source, id, style, value, image,codeWidth}) => {
   const img = () => {
     return <>
       <div style={{margin: 'auto', maxWidth: 256}}>
-        <Image src={jrQrcode.getQrBase64(value ||  `${wxCp}OrCode?id==${codes}`)} preview={false} />
+        <Image src={jrQrcode.getQrBase64(value ||  `${wxCp}OrCode?id=${codes}`)} preview={false} />
       </div>
       <div style={{textAlign: 'center'}}>
         {(value || codes) && <AcBarcode value={value || codes} />}
@@ -53,7 +53,7 @@ const Code = ({source, id, style, value, image,codeWidth}) => {
   return (
     <>
       {image ? <div style={{margin: 'auto', maxWidth: codeWidth}}>
-        <Image src={jrQrcode.getQrBase64(value || `${wxCp}OrCode?id==${codes}`)} preview={false} />
+        <Image src={jrQrcode.getQrBase64(value || `${wxCp}OrCode?id=${codes}`)} preview={false} />
       </div> : <Space>
         <Button
           type="link"
