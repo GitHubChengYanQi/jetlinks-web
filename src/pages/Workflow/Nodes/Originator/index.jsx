@@ -3,7 +3,7 @@ import {Button, message, Modal, Select, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 
-export const SelectOriginator = ({options,count, onChange, defaultValue, value, remove}) => {
+export const SelectOriginator = ({options, count, onChange, defaultValue, value, remove}) => {
 
   const [visiable, setVisiable] = useState();
 
@@ -21,7 +21,7 @@ export const SelectOriginator = ({options,count, onChange, defaultValue, value, 
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.users && value.users.length > 0 ? (value.users.map((items, index) => {
+          {value && value.users && value.users.length > 0 ? (value.users.map((items) => {
             return items.title;
           })).toString() : '选择'}
         </Button>;
@@ -29,12 +29,12 @@ export const SelectOriginator = ({options,count, onChange, defaultValue, value, 
         return <Button type="link" onClick={() => {
           setVisiable(true);
         }}>
-          {value && value.depts && value.depts.length > 0 ? (value.depts.map((items, index) => {
-            return items.title;
+          {value && value.depts && value.depts.length > 0 ? (value.depts.map((items) => {
+            return `${items.title}(${items.positions && items.positions.map((items) => {
+              return items.label;
+            })})`;
           })).toString() : '选择'}
         </Button>;
-      case 'supervisor':
-        return null;
       default:
         return <Button type="link" onClick={() => {
           message.warn('请选择发起人');
@@ -61,9 +61,6 @@ export const SelectOriginator = ({options,count, onChange, defaultValue, value, 
         case 'depts':
           typeof onChange === 'function' && onChange({depts: []});
           break;
-        case 'supervisor':
-          typeof onChange === 'function' && onChange({supervisor: true});
-          break;
         default:
           break;
       }
@@ -88,23 +85,19 @@ export const SelectOriginator = ({options,count, onChange, defaultValue, value, 
 
 
 const Originator = ({value, onChange, hidden}) => {
+  ;
 
-  const config = (value) =>{
-    return  [
+  const config = (value) => {
+    return [
       {
         label: '指定人',
         value: 'users',
-        disabled: value && value.users
+        disabled: value && value.users && value.users.length > 0
       },
       {
-        label: '指定部门',
+        label: '部门+职位',
         value: 'depts',
-        disabled: value && value.depts
-      },
-      {
-        label: '直接主管',
-        value: 'supervisor',
-        disabled: value && value.supervisor
+        disabled: value && value.depts && value.depts.length > 0
       },
     ];
   };
@@ -117,8 +110,7 @@ const Originator = ({value, onChange, hidden}) => {
 
   useEffect(() => {
     setOptions(config(change));
-  }, [change,count]);
-
+  }, [change, count]);
 
 
   useEffect(() => {
@@ -154,14 +146,11 @@ const Originator = ({value, onChange, hidden}) => {
   const add = () => {
     const option = [];
     if (change) {
-      if (change.users) {
+      if (change.users && change.users.length > 0) {
         option.push('users');
       }
-      if (change.depts) {
+      if (change.depts && change.depts.length > 0) {
         option.push('depts');
-      }
-      if (change.supervisor) {
-        option.push('supervisor');
       }
     }
     const array = new Array(count);
@@ -176,12 +165,12 @@ const Originator = ({value, onChange, hidden}) => {
     <div style={{marginTop: 16}}>
       <Space>
         <Button type="dashed" disabled={count === options.length} onClick={() => {
-          const disabledCount = options.filter((value)=>{
+          const disabledCount = options.filter((value) => {
             return value.disabled;
           });
-          if (disabledCount.length === count){
+          if (disabledCount.length === count) {
             setCount(count + 1);
-          }else {
+          } else {
             message.warn('请先选择！');
           }
         }}><PlusOutlined />增加</Button>

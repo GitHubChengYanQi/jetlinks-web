@@ -4,7 +4,7 @@ import ApproverNode from '../ApproverNode';
 import NotifierNode from '../NotifierNode';
 // eslint-disable-next-line import/no-cycle
 import ConditionNode from '../ConditionNode';
-import {Space, Typography} from 'antd';
+import {Typography} from 'antd';
 
 const NodeMaps = {
   0: StartNode,
@@ -35,7 +35,7 @@ export const Owner = (props) => {
           rule.users && rule.users.length > 0 &&
           <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
             <strong>人员:</strong>
-            {(rule.users.map((item, index) => {
+            {(rule.users.map((item) => {
               return item.title;
             })).toString()}
           </Typography.Paragraph>
@@ -44,16 +44,12 @@ export const Owner = (props) => {
         {
           rule.depts && rule.depts.length > 0 && <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
             <strong>部门:</strong>
-            {(rule.depts.map((item, index) => {
-              return item.title;
+            {(rule.depts.map((item) => {
+              return `${item.title}(${item.positions && item.positions.map((items)=>{
+                return items.label;
+              })})`;
             })).toString()}
           </Typography.Paragraph>
-        }
-
-        {
-          rule.supervisor && <div>
-            <strong>直接主管</strong>
-          </div>
         }
       </>;
     } else {
@@ -62,20 +58,25 @@ export const Owner = (props) => {
   };
 
   switch (props.stepType) {
+    case 'start':
+      return <>
+        <strong>发起人</strong>
+        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
+      </>;
     case 'audit':
       return <>
         <strong>审批</strong>
-        <div>{Rule(props.auditRule && props.auditRule.startUsers)}</div>
+        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
       </>;
     case 'send':
       return <>
         <strong>抄送</strong>
-        <div>{Rule(props.auditRule && props.auditRule.startUsers)}</div>
+        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
       </>;
     case 'quality':
       return <>
-        <strong>质检动作</strong>
-        <div>{action(props.auditType)}</div>
+        <strong>{action(props.auditType)}</strong>
+        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
       </>;
     default:
       break;

@@ -294,7 +294,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
           value={currentNode && currentNode.current && {
             type: currentNode.current.stepType,
             auditType: currentNode.current.auditType,
-            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.startUsers,
+            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.qualityRules,
             action: currentNode.current.auditType,
           }}
           onChange={(value) => {
@@ -302,11 +302,12 @@ const WorkFlow = ({config: _config, value, onChange}) => {
               case 'audit':
                 currentNode.current.stepType = value.type;
                 currentNode.current.auditType = 'quality_task_person';
-                currentNode.current.auditRule = {startUsers: value.auditRule};
+                currentNode.current.auditRule = {qualityRules: value.auditRule};
                 break;
               case 'quality':
                 currentNode.current.stepType = value.type;
                 currentNode.current.auditType = value.action;
+                currentNode.current.auditRule = {qualityRules: value.actionRule};
                 break;
               default:
                 break;
@@ -321,18 +322,18 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
         <Originator
-          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.startUsers}
+          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.qualityRules}
           onChange={(value) => {
             switch (currentNode.current.type) {
               case 0:
               case '0':
-                currentNode.current.auditRule = {startUsers: value};
+                currentNode.current.auditRule = {qualityRules: value};
                 currentNode.current.stepType = 'start';
                 currentNode.current.auditType = 'quality_task_start';
                 break;
               case 2:
               case '2':
-                currentNode.current.auditRule = {startUsers: value};
+                currentNode.current.auditRule = {qualityRules: value};
                 currentNode.current.stepType = 'send';
                 currentNode.current.auditType = 'quality_task_send';
                 break;

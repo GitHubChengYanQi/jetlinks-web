@@ -18,7 +18,7 @@ import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 const actions = createFormActions();
 
 
-const Setps = ({value,onClose, onChange}) => {
+const Setps = ({value, onClose, onChange}) => {
 
   return (
     <Form
@@ -28,7 +28,7 @@ const Setps = ({value,onClose, onChange}) => {
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
 
-          const item = ['setp', 'ship', 'audit','quality', 'audit_process'];
+          const item = ['setp', 'ship', 'audit', 'quality', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
             const field = item[i];
             setFieldState(field, state => {
@@ -37,10 +37,24 @@ const Setps = ({value,onClose, onChange}) => {
           }
         });
 
+        FormEffectHooks.onFieldValueChange$('action').subscribe(({value}) => {
+
+
+          setFieldState('actionRule', state => {
+            if (value === 'quality_task_dispatch') {
+              state.visible = true;
+            } else {
+              state.visible = false;
+            }
+          });
+
+        });
+
       }}
       defaultValue={{
         type: value && value.type || 'audit',
         auditRule: value && value.auditRule,
+        actionRule: value && value.auditRule,
         action: value && value.action,
       }}
       onSubmit={(values) => {
@@ -220,13 +234,20 @@ const Setps = ({value,onClose, onChange}) => {
             {label: '完成任务', value: 'quality_task_complete'},
           ]}
         />
+        <FormItem
+          required
+          visible={false}
+          label="设置规则"
+          name="actionRule"
+          component={Rule}
+        />
       </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>
 
       <div style={{marginTop: 16}}>
         <FormButtonGroup offset={8} sticky>
           <Submit>确定</Submit>
-          <Button onClick={()=>{
+          <Button onClick={() => {
             typeof onClose === 'function' && onClose();
           }}>取消</Button>
         </FormButtonGroup>
