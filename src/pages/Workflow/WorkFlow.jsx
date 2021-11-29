@@ -240,7 +240,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'luYou',});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'route',});
     }
     updateNode();
   }
@@ -301,7 +301,7 @@ const WorkFlow = ({config: _config, value, onChange}) => {
             switch (value.type) {
               case 'audit':
                 currentNode.current.stepType = value.type;
-                currentNode.current.auditType = 'person';
+                currentNode.current.auditType = 'quality_task_person';
                 currentNode.current.auditRule = {startUsers: value.auditRule};
                 break;
               case 'quality':
@@ -328,13 +328,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
               case '0':
                 currentNode.current.auditRule = {startUsers: value};
                 currentNode.current.stepType = 'start';
-                currentNode.current.auditType = 'start';
+                currentNode.current.auditType = 'quality_task_start';
                 break;
               case 2:
               case '2':
                 currentNode.current.auditRule = {startUsers: value};
                 currentNode.current.stepType = 'send';
-                currentNode.current.auditType = 'send';
+                currentNode.current.auditType = 'quality_task_send';
                 break;
               default:
                 break;

@@ -15,6 +15,19 @@ const NodeMaps = {
 
 export const Owner = (props) => {
 
+  const action = (value) => {
+    switch (value) {
+      case 'quality_task_dispatch':
+        return <>分派任务</>;
+      case 'quality_task_perform':
+        return <>执行任务</>;
+      case 'quality_task_complete':
+        return <>完成任务</>;
+      default:
+        break;
+    }
+  };
+
   const Rule = (rule) => {
     if (rule) {
       return <>
@@ -62,7 +75,7 @@ export const Owner = (props) => {
     case 'quality':
       return <>
         <strong>质检动作</strong>
-        <div>{props.auditType === 'performTask' ? '执行任务' : '完成任务'}</div>
+        <div>{action(props.auditType)}</div>
       </>;
     default:
       break;

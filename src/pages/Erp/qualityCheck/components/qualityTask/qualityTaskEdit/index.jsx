@@ -103,7 +103,7 @@ const QualityTaskEdit = ({...props}) => {
             <FormItem label="类型" name="type" component={SysField.Type} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="负责人" name="userId" component={SysField.UserId} required />
+            <FormItem label="负责人" name="userId" component={SysField.UserId} />
           </div>
           <div style={{display: 'inline-block', width: '40%'}}>
             <FormItem label="备注" name="remark" component={SysField.Remark} />

@@ -149,6 +149,7 @@ const Setps = ({value,onClose, onChange}) => {
                           required
                         />
                       </div>
+
                       <div style={{display: 'inline-block', width: '20%'}}>
                         <FormItem
                           name={`outGoodsList.${index}.num`}
@@ -164,6 +165,7 @@ const Setps = ({value,onClose, onChange}) => {
                           title="质检方案"
                         />
                       </div>
+
                       <Button
                         type="link"
                         style={{float: 'right'}}
@@ -213,8 +215,9 @@ const Setps = ({value,onClose, onChange}) => {
           name="action"
           component={Select}
           dataSource={[
-            {label: '执行任务', value: 'performTask'},
-            {label: '完成任务', value: 'completeTask'},
+            {label: '分派任务', value: 'quality_task_dispatch'},
+            {label: '执行任务', value: 'quality_task_perform'},
+            {label: '完成任务', value: 'quality_task_complete'},
           ]}
         />
       </VirtualField>

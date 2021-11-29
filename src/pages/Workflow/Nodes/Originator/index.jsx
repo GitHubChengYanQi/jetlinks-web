@@ -37,7 +37,7 @@ export const SelectOriginator = ({options,count, onChange, defaultValue, value, 
         return null;
       default:
         return <Button type="link" onClick={() => {
-          message.error('请选择发起人');
+          message.warn('请选择发起人');
         }}>选择</Button>;
     }
   };
