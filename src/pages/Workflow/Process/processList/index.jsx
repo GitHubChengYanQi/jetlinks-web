@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Badge, Button, Radio, Table as AntTable} from 'antd';
+import {Badge, Button, Modal, Radio, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -20,6 +20,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
 import {codingRulesEdit} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -34,6 +35,38 @@ const ProcessList = () => {
       tableRef.current.submit();
     }
   });
+
+  const action = (type,processId,status) => {
+    let statusType = '';
+    switch (type) {
+      case 0:
+        statusType = '发布';
+        break;
+      case 98:
+        statusType = '停用';
+        break;
+      case 99:
+        statusType = '启用';
+        break;
+      default:
+        break;
+    }
+    Modal.confirm({
+      title: `是否 [ ${statusType} ]该流程?`,
+      icon: <ExclamationCircleOutlined />,
+      content: type === 0 ? '提示：发布之后不能进行修改' : '提示：每种功能模块只能并最少启用一个',
+      onOk:async ()=>{
+        return await run({
+          data: {
+            processId,
+            module: 'quality',
+            status,
+          }
+        });
+      },
+      onCancel() {},
+    });
+  };
 
   const history = useHistory();
 
@@ -111,13 +144,7 @@ const ProcessList = () => {
             return (
               <>
                 <Button type="link" onClick={() => {
-                  run({
-                    data: {
-                      processId: record.processId,
-                      module: 'quality',
-                      status: 98
-                    }
-                  });
+                  action(0,record.processId,98);
                 }}>发布</Button>
                 <EditButton onClick={() => {
                   ref.current.open(record.processId);
@@ -130,24 +157,12 @@ const ProcessList = () => {
           } else if (record.status === 98) {
             return <>
               <Button type='link' onClick={()=>{
-                run({
-                  data: {
-                    processId: record.processId,
-                    module: 'quality',
-                    status: 99
-                  }
-                });
+                action(99,record.processId,99);
               }}>启用</Button>
             </>;
           }else if (record.status === 99){
             return <Button type='link' danger onClick={()=>{
-              run({
-                data: {
-                  processId: record.processId,
-                  module: 'quality',
-                  status: 98
-                }
-              });
+              action(98,record.processId,98);
             }}>停用</Button>;
           }
 
