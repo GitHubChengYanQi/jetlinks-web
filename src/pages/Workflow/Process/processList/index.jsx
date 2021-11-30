@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Badge, Button, Modal, Radio, Table as AntTable} from 'antd';
+import {Badge, Button, Modal,  Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -19,7 +19,6 @@ import * as SysField from '../processField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
-import {codingRulesEdit} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
@@ -59,7 +58,7 @@ const ProcessList = () => {
         return await run({
           data: {
             processId,
-            module: 'quality',
+            module:'inQuality',
             status,
           }
         });
@@ -120,8 +119,8 @@ const ProcessList = () => {
         }} />
         <Column title="功能" dataIndex="module" render={(value, record) => {
           switch (value) {
-            case 'quality':
-              return <>质检</>;
+            case 'inQuality':
+              return <>入厂检</>;
             default:
               break;
           }

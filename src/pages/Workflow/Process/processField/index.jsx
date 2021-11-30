@@ -24,7 +24,7 @@ export const Type = (props) =>{
 };
 
 export const Module = (props) =>{
-  return (<AntdSelect options={[{label:'质检',value:'quality'}]} {...props}/>);
+  return (<AntdSelect options={[{label:'入厂检',value:'inQuality'}]} {...props}/>);
 };
 export const FormId = (props) =>{
   return (<Input {...props}/>);

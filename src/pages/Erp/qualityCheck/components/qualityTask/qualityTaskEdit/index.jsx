@@ -167,7 +167,6 @@ const QualityTaskEdit = ({...props}) => {
                             label="质检方案"
                             name={`details.${index}.qualityPlanId`}
                             component={SysField.QualityPlanId}
-                            required
                           />
                         </div>
                         <div style={{width: '7%', display: 'inline-block'}}>
