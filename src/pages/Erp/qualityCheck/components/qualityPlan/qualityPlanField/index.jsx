@@ -77,9 +77,9 @@ export const QualityAmount = (props) => {
 };
 
 export const TestingType = (props) => {
-  return (<Radio.Group {...props}>
-    <Radio value="1">抽检检查</Radio>
+  return (<Radio.Group {...props} defaultValue='2'>
     <Radio value="2">固定检查</Radio>
+    <Radio value="1">抽检检查</Radio>
   </Radio.Group>);
 };
 

@@ -78,7 +78,7 @@ const QualityTaskList = () => {
         <Column title="备注" dataIndex="remark" />
         <Column />
       </Table>
-      <Modal width={1200} title="编辑" component={QualityTaskEdit} onSuccess={() => {
+      <Modal width={1250} title="编辑" component={QualityTaskEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

@@ -5,7 +5,7 @@
  * @Date 2021-11-16 09:54:41
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
@@ -16,6 +16,7 @@ import {userIdSelect} from '@/pages/Portal/remind/remindUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {brandIdSelect} from '@/pages/Erp/instock/InstockUrl';
 import {qualityPlanList, qualityPlanListSelect} from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';
+import {useBoolean} from 'ahooks';
 
 export const Time = (props) =>{
   return (<Input {...props}/>);
@@ -54,7 +55,13 @@ export const BrandId = (props) =>{
 };
 
 export const QualityPlanId = (props) =>{
-  return (<Select api={qualityPlanListSelect} {...props}/>);
+  const {type,...other} = props;
+  useEffect(()=>{
+    if (type !== undefined){
+      other.onChange(null);
+    }
+  },[type]);
+  return (<Select resh={type} api={qualityPlanListSelect} placeholder={type === 1 ? '抽检检查' : '固定检查' } data={{testingType:type}}  {...other}/>);
 };
 
 export const State = (props) =>{
@@ -87,4 +94,9 @@ export const Codings = (props) => {
 
 export const SkuId = (props) => {
   return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
+};
+
+
+export const Remaining = (props) => {
+  return (<><InputNumber min={1} max={100} placeholder='抽检(%)' {...props}/>&nbsp;&nbsp;%</>);
 };

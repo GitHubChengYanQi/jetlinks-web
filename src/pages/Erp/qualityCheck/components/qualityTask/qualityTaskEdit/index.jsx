@@ -62,17 +62,26 @@ const QualityTaskEdit = ({...props}) => {
         onSubmit={(value) => {
           return {...value, url: `${wxCp}OrCode?id=codeId`};
         }}
-        effects={({setFieldState})=>{
+        effects={({setFieldState}) => {
 
-          FormEffectHooks.onFieldValueChange$('details.*.skuId').subscribe(async ({name,value}) => {
-            if (value){
+          FormEffectHooks.onFieldValueChange$('details.*.skuId').subscribe(async ({name, value}) => {
+            if (value) {
               const sku = await request({
                 ...skuDetail,
-                data:{
-                  skuId:value,
+                data: {
+                  skuId: value,
                 }
               });
-              if (sku && sku.qualityPlanId){
+              if (sku && sku.qualityPlanId) {
+                setFieldState(
+                  FormPath.transform(name, /\d/, ($1) => {
+                    return `details.${$1}.batch`;
+                  }),
+                  state => {
+                    state.value = sku.batch;
+                  }
+                );
+
                 setFieldState(
                   FormPath.transform(name, /\d/, ($1) => {
                     return `details.${$1}.qualityPlanId`;
@@ -84,6 +93,28 @@ const QualityTaskEdit = ({...props}) => {
               }
 
             }
+
+          });
+
+
+          FormEffectHooks.onFieldValueChange$('details.*.batch').subscribe(({name, value}) => {
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `details.${$1}.qualityPlanId`;
+              }),
+              state => {
+                state.props.type = value ? 1 : 2;
+              }
+            );
+
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return `details.${$1}.remaining`;
+              }),
+              state => {
+                state.visible = value;
+              }
+            );
 
           });
         }}
@@ -130,7 +161,7 @@ const QualityTaskEdit = ({...props}) => {
                         bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
-                        <div style={{width: '21%', display: 'inline-block'}}>
+                        <div style={{width: '20%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -140,7 +171,7 @@ const QualityTaskEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '27%', display: 'inline-block'}}>
+                        <div style={{width: '26%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}
@@ -150,7 +181,7 @@ const QualityTaskEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '15%', display: 'inline-block'}}>
+                        <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={8}
                             itemStyle={{margin: 0}}
@@ -160,7 +191,7 @@ const QualityTaskEdit = ({...props}) => {
                             required
                           />
                         </div>
-                        <div style={{width: '23%', display: 'inline-block'}}>
+                        <div style={{width: '18%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={8}
                             itemStyle={{margin: 0}}
@@ -169,7 +200,14 @@ const QualityTaskEdit = ({...props}) => {
                             component={SysField.QualityPlanId}
                           />
                         </div>
-                        <div style={{width: '7%', display: 'inline-block'}}>
+                        <div style={{display: 'inline-block',marginRight:8}}>
+                          <FormItem
+                            visible={false}
+                            name={`details.${index}.remaining`}
+                            component={SysField.Remaining}
+                          />
+                        </div>
+                        <div style={{width: '6%', display: 'inline-block'}}>
                           <FormItem
                             name={`details.${index}.batch`}
                             component={SysField.Batch}
