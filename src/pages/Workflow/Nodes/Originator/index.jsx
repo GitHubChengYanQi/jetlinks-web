@@ -146,10 +146,10 @@ const Originator = ({value, onChange, hidden}) => {
   useEffect(() => {
 
     const array = [];
-    if (value.users && value.users.length > 0) {
+    if (value && value.users && value.users.length > 0) {
       array.push({users: value.users, name: 'users'});
     }
-    if (value.depts && value.depts.length > 0) {
+    if (value && value.depts && value.depts.length > 0) {
       array.push({depts: value.depts, name: 'depts'});
     }
 
