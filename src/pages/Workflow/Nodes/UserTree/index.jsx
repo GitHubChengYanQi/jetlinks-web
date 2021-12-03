@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, Col, message, Radio, Row, Select, Space, Tree} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Select,  Tree} from 'antd';
 import {useRequest} from '@/util/Request';
 import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
 
@@ -20,6 +20,10 @@ const UserTree = ({type, value, onChange}) => {
 
 
   const [check, setCheck] = useState(value || {});
+
+  useEffect(()=>{
+    onChange(check);
+  },[]);
 
   const treeData = data && data.map((item) => {
     return {
@@ -71,6 +75,7 @@ const UserTree = ({type, value, onChange}) => {
     />;
   };
 
+
   const deptChildren = (children) => {
     return children.map((items) => {
       return {
@@ -116,13 +121,6 @@ const UserTree = ({type, value, onChange}) => {
           checkedKeys={check.depts && check.depts.map((items, index) => {
             return items.key;
           })}
-          onCheck={(value,event) => {
-            if (!event.checked){
-              message.warn('请清除职位！');
-            }else {
-              message.warn('请选择职位！');
-            }
-          }}
           treeData={deptPosition || []}
         />
       </>;

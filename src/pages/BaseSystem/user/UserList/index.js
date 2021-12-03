@@ -149,7 +149,6 @@ const UserList = () => {
             <EditButton onClick={() => {
               dfRef.current.open(record.userId);
             }}/>
-            {/*<DelButton/>*/}
           </>
         );
       }

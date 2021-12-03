@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {Button, message, Modal, Select, Space} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, message, Select, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
+import Modal from '@/components/Modal';
 
-export const SelectOriginator = ({options, count, onChange, defaultValue, value, remove}) => {
+export const SelectOriginator = ({options, count, index, onChange, defaultValue, value, remove}) => {
 
-  const [visiable, setVisiable] = useState();
+  const ref = useRef();
 
   const [change, setChange] = useState();
 
@@ -15,21 +16,22 @@ export const SelectOriginator = ({options, count, onChange, defaultValue, value,
     setSelectValue(defaultValue);
   }, [defaultValue]);
 
+
   const type = () => {
     switch (selectValue) {
       case 'users':
         return <Button type="link" onClick={() => {
-          setVisiable(true);
+          ref.current.open(true);
         }}>
-          {value && value.users && value.users.length > 0 ? (value.users.map((items) => {
+          {value[index] && value[index].users && value[index].users.length > 0 ? (value[index].users.map((items) => {
             return items.title;
           })).toString() : '选择'}
         </Button>;
       case 'depts':
         return <Button type="link" onClick={() => {
-          setVisiable(true);
+          ref.current.open(true);
         }}>
-          {value && value.depts && value.depts.length > 0 ? (value.depts.map((items) => {
+          {value[index] && value[index].depts && value[index].depts.length > 0 ? (value[index].depts.map((items) => {
             return `${items.title}(${items.positions && items.positions.map((items) => {
               return items.label;
             })})`;
@@ -56,10 +58,10 @@ export const SelectOriginator = ({options, count, onChange, defaultValue, value,
       setSelectValue(value);
       switch (value) {
         case 'users':
-          typeof onChange === 'function' && onChange({users: []});
+          typeof onChange === 'function' && onChange({name: value, users: []});
           break;
         case 'depts':
-          typeof onChange === 'function' && onChange({depts: []});
+          typeof onChange === 'function' && onChange({name: value, depts: []});
           break;
         default:
           break;
@@ -68,24 +70,27 @@ export const SelectOriginator = ({options, count, onChange, defaultValue, value,
     />
     {type()}
     <Modal
-      visible={visiable}
-      onCancel={() => {
-        setVisiable(false);
-      }}
-      onOk={() => {
-        typeof onChange === 'function' && onChange(change);
-        setVisiable(false);
-      }}>
-      <UserTree type={selectValue} value={value} onChange={(value) => {
-        setChange(value);
-      }} />
+      ref={ref}
+      width={600}
+      footer={
+        <Button type="primary" onClick={() => {
+          typeof onChange === 'function' && onChange({name: selectValue, ...change});
+          ref.current.close();
+        }}>
+          保存
+        </Button>
+      }>
+      <div style={{padding:16}}>
+        <UserTree type={selectValue} value={value[index]} onChange={(value) => {
+          setChange(value);
+        }} />
+      </div>
     </Modal>
   </Space>;
 };
 
 
 const Originator = ({value, onChange, hidden}) => {
-  ;
 
   const config = (value) => {
     return [
@@ -102,18 +107,54 @@ const Originator = ({value, onChange, hidden}) => {
     ];
   };
 
-  const [change, setChange] = useState(value);
+  const [change, setChange] = useState([]);
 
   const [options, setOptions] = useState(config(value));
 
   const [count, setCount] = useState(1);
 
-  useEffect(() => {
-    setOptions(config(change));
-  }, [change, count]);
+  const config1 = (array) => {
+
+    const users = array.filter((value) => {
+      return value.users;
+    });
+
+    const depts = array.filter((value) => {
+      return value.depts;
+    });
+
+    setOptions([
+      {
+        label: '指定人',
+        value: 'users',
+        disabled: users.length > 0
+      },
+      {
+        label: '部门+职位',
+        value: 'depts',
+        disabled: depts.length > 0
+      },
+    ]);
+
+    return {
+      users: users.length > 0 ? users[0].users : [],
+      depts: depts.length > 0 ? depts[0].depts : []
+    };
+  };
 
 
   useEffect(() => {
+
+    const array = [];
+    if (value.users && value.users.length > 0) {
+      array.push({users: value.users, name: 'users'});
+    }
+    if (value.depts && value.depts.length > 0) {
+      array.push({depts: value.depts, name: 'depts'});
+    }
+
+    setChange(array);
+
     const counts = options && options.filter((value) => {
       return value.disabled;
     });
@@ -125,37 +166,31 @@ const Originator = ({value, onChange, hidden}) => {
       <SelectOriginator
         options={options}
         count={count}
+        index={index}
         defaultValue={value}
         remove={(value) => {
           if (value) {
-            const val = change;
-            delete val[value];
-            setChange(val);
-            hidden && typeof onChange === 'function' && onChange(val);
+            change.splice(index, 1);
+            const backValue = config1(change);
+            hidden && typeof onChange === 'function' && onChange(backValue);
           }
           setCount(count - 1);
         }}
         value={change}
         onChange={(value) => {
-          setChange({...change, ...value});
-          hidden && typeof onChange === 'function' && onChange({...change, ...value});
+          const array = change;
+          array[index] = value;
+          setChange(array);
+          const backValue = config1(array);
+          hidden && typeof onChange === 'function' && onChange(backValue);
         }} />
     </div>;
   };
 
   const add = () => {
-    const option = [];
-    if (change) {
-      if (change.users && change.users.length > 0) {
-        option.push('users');
-      }
-      if (change.depts && change.depts.length > 0) {
-        option.push('depts');
-      }
-    }
     const array = new Array(count);
     for (let i = 0; i < count; i++) {
-      array.push(selects(i, option[i]));
+      array.push(selects(i, change[i] && change[i].name));
     }
     return array;
   };
@@ -165,17 +200,11 @@ const Originator = ({value, onChange, hidden}) => {
     <div style={{marginTop: 16}}>
       <Space>
         <Button type="dashed" disabled={count === options.length} onClick={() => {
-          const disabledCount = options.filter((value) => {
-            return value.disabled;
-          });
-          if (disabledCount.length === count) {
-            setCount(count + 1);
-          } else {
-            message.warn('请先选择！');
-          }
+          setCount(count + 1);
         }}><PlusOutlined />增加</Button>
         <Button type="primary" hidden={hidden} onClick={() => {
-          typeof onChange === 'function' && onChange(change);
+          const backValue = config1(change);
+          typeof onChange === 'function' && onChange(backValue);
         }}>保存</Button>
       </Space>
     </div>
