@@ -140,7 +140,6 @@ const ContactsEdit = ({...props}, ref) => {
                               </div>
                             );
                           })}
-                          {/*<Button type="link" style={{float: 'right'}} onClick={onAdd}>增加电话号码</Button>*/}
                           <Button
                             type="dashed"
                             icon={<PlusOutlined />}

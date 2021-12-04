@@ -24,8 +24,6 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     return `/${item.id}` === match.path;
   });
 
-  // console.log(subMenu);
-
   const loopMenu = (subMenus) => {
     if (!Array.isArray(subMenus)) {
       return null;
