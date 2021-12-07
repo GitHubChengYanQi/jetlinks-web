@@ -37,6 +37,8 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
             })})`;
           })).toString() : '选择'}
         </Button>;
+      case 'perform':
+        return null;
       default:
         return <Button type="link" onClick={() => {
           message.warn('请选择发起人');
@@ -63,6 +65,9 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
         case 'depts':
           typeof onChange === 'function' && onChange({name: value, depts: []});
           break;
+        case 'perform':
+          typeof onChange === 'function' && onChange({name: value, perform: false});
+          break;
         default:
           break;
       }
@@ -80,7 +85,7 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
           保存
         </Button>
       }>
-      <div style={{padding:16}}>
+      <div style={{padding: 16}}>
         <UserTree type={selectValue} value={value[index]} onChange={(value) => {
           setChange(value);
         }} />
@@ -104,6 +109,11 @@ const Originator = ({value, onChange, hidden}) => {
         value: 'depts',
         disabled: value && value.depts && value.depts.length > 0
       },
+      {
+        label: '所有人',
+        value: 'perform',
+        disabled: value && value.perform
+      },
     ];
   };
 
@@ -123,6 +133,10 @@ const Originator = ({value, onChange, hidden}) => {
       return value.depts;
     });
 
+    const perform = array.filter((value) => {
+      return value.perform;
+    });
+
     setOptions([
       {
         label: '指定人',
@@ -133,12 +147,17 @@ const Originator = ({value, onChange, hidden}) => {
         label: '部门+职位',
         value: 'depts',
         disabled: depts.length > 0
+      }, {
+        label: '所有人',
+        value: 'perform',
+        disabled: perform.length > 0
       },
     ]);
 
     return {
       users: users.length > 0 ? users[0].users : [],
-      depts: depts.length > 0 ? depts[0].depts : []
+      depts: depts.length > 0 ? depts[0].depts : [],
+      perform:perform.length > 0 ? perform[0].perform : false,
     };
   };
 
@@ -151,6 +170,9 @@ const Originator = ({value, onChange, hidden}) => {
     }
     if (value && value.depts && value.depts.length > 0) {
       array.push({depts: value.depts, name: 'depts'});
+    }
+    if (value && value.perform) {
+      array.push({perform: value.perform, name: 'perform'});
     }
 
     setChange(array);
