@@ -111,8 +111,7 @@ const QualityTaskDetailList = ({value}) => {
               {record.brand && record.brand.brandName}
             </>;
           }} />
-          <Column title='总数量' dataIndex='number' width={100} align='center' />
-          <Column title="未检数量" dataIndex="remaining" width={100} align='center'/>
+          <Column title="总数量" dataIndex="number" width={100} align="center" />
           <Column title="质检方案" dataIndex="qualityPlanId" render={(value, record) => {
             return <>
               {record.qualityPlanResult && record.qualityPlanResult.planName}

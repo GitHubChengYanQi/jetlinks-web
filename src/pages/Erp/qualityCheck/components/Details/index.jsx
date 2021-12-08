@@ -83,7 +83,6 @@ const Details = ({qualityTaskId}) => {
           expandedRowRender: (record) =>{
             return <>
               {record.valueResults && record.valueResults.map((items,index)=>{
-
                 return <div key={index}>
                   <Descriptions bordered column={4}>
                     <Descriptions.Item labelStyle={{width:100}} contentStyle={{width:150,backgroundColor:'#fff'}} label="质检项"> {items.name}</Descriptions.Item>

@@ -230,6 +230,7 @@ const Setps = ({value, onClose, onChange}) => {
           component={Select}
           dataSource={[
             {label: '分派任务', value: 'quality_task_dispatch'},
+            {label: '执行任务', value: 'quality_task_perform'},
             {label: '完成任务', value: 'quality_task_complete'},
           ]}
         />
