@@ -5,16 +5,12 @@
  * @Date 2021-11-16 09:54:41
  */
 
-import React, {useEffect, useRef} from 'react';
-import Table from '@/components/Table';
-import {Col, Descriptions, Row, Table as AntTable} from 'antd';
-import {qualityTaskDetailList} from '../qualityTaskDetailUrl';
+import React, {useEffect} from 'react';
+import {Descriptions, Table as AntTable} from 'antd';
 import ProCard from '@ant-design/pro-card';
-import Details from '@/pages/Erp/qualityCheck/components/Details';
-import {useRequest} from '@/util/Request';
-import {createFormActions} from '@formily/antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 
@@ -29,7 +25,6 @@ const QualityTaskDetailList = ({value}) => {
       manual: true,
     },
   );
-  console.log(data, value);
 
   useEffect(() => {
     if (value) {
@@ -65,8 +60,9 @@ const QualityTaskDetailList = ({value}) => {
       <ProCard className="h2Card" title="子任务信息" headerBordered>
         {data.childTasks &&
         <AntTable
+          pagination={false}
           dataSource={data.childTasks}
-          key="qualityTaskId"
+          rowKey="qualityTaskId"
         >
           <Column title="质检人" width={100} align="center" render={(value, record) => {
             return <>

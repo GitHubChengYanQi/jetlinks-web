@@ -79,7 +79,7 @@ const QualityTaskList = () => {
             case 2:
               return <Badge text="已完成" color="green" />;
             case 3:
-              return <Badge text="待入库" color="grey" />;
+              return <Badge text="待入库" color="red" />;
             default:
               break;
           }

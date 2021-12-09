@@ -11,6 +11,7 @@ import SetView from '@/layouts/SetView';
 import DataClassificationList from '@/pages/Crm/data/dataClassification/dataClassificationList';
 import SpeechcraftTypeList from '@/pages/Crm/speechcraft/speechcraftType/speechcraftTypeList';
 import Modal from '@/components/Modal';
+import ContractClassList from '@/pages/Crm/contract/components/contractClass/contractClassList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -37,6 +38,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <DataClassificationList />;
       case 'hsfl':
         return <SpeechcraftTypeList />;
+      case 'htfl':
+        return <ContractClassList />;
       default:
         return null;
     }
@@ -82,9 +85,12 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="hsfl">
             <span>话术分类管理</span>
           </Menu.Item>
+          <Menu.Item key="htfl">
+            <span>合同分类管理</span>
+          </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal width={860} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
+      <Modal width={860} title="设置" footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };

@@ -65,7 +65,7 @@ const AddCustomerButton = (props) => {
 
       <CreateNewCustomer
         title="客户"
-        widths={1600}
+        widths={1200}
         onSuccess={() => {
           ref.current.close();
         }}

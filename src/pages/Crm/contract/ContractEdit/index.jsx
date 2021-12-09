@@ -29,8 +29,6 @@ import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetai
 import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
 
 
-const {onFieldValueChange$} = FormEffectHooks;
-
 const company = '1416605276529807486';
 
 
@@ -45,38 +43,39 @@ const ApiConfig = {
 
 const AddContractEdit = ({businessId,loading,...props}) => {
 
-
-
-
   const {Step} = Steps;
 
   const {value, customerId, ...other} = props;
 
   const formRef = useRef();
 
-
-
   const [result, setResult] = useState(value);
+  const [current, setCurrent] = React.useState(0);
+
+
+  const next = () => {
+    setCurrent(current + 1);
+  };
 
   const content = () => {
     return (
-      <div style={{padding: 20, maxWidth: 1200}}>
+      <div style={{padding: 20, width: 1200}}>
         <Form
-          {...props}
+          {...other}
           value={result ? result.contractId : false}
           ref={formRef}
           api={ApiConfig}
           NoButton={false}
           fieldKey="contractId"
-          onSuccess={(result) => {
+          onSuccess={() => {
             props.onSuccess();
           }}
         >
           <FormItem name="content" component={SysField.Content} result={result} required />
         </Form>
-        <Card title="添加产品明细" bordered={false}>
-          <TableDetail contractId={result && result.contractId} onSuccess={()=>{}}/>
-        </Card>
+        {/*<Card title="添加产品明细" bordered={false}>*/}
+        {/*  <TableDetail contractId={result && result.contractId} onSuccess={()=>{}}/>*/}
+        {/*</Card>*/}
         <Button type="primary" style={{width: '100%'}} onClick={() => {
           formRef.current.submit();
         }}>
@@ -87,7 +86,6 @@ const AddContractEdit = ({businessId,loading,...props}) => {
   };
 
 
-  const [current, setCurrent] = React.useState(0);
 
   const {run: business} = useRequest({
     ...businessEdit,
@@ -138,9 +136,7 @@ const AddContractEdit = ({businessId,loading,...props}) => {
               <ProCard headerBordered className="h2Card" title="基础信息">
                 <FormItem labelCol={5} label="选择合同模板" name="templateId" component={SysField.Template} required />
                 <FormItem labelCol={5} label="合同名称" name="name" component={SysField.Name} required />
-                <div style={{height: 0}}>
-                  <FormItem hidden name="audit" component={SysField.Audit} required />
-                </div>
+                <FormItem labelCol={5} label="分批付款" name="money" component={SysField.Name} required />
               </ProCard>
 
               <Row gutter={24}>
@@ -174,16 +170,6 @@ const AddContractEdit = ({businessId,loading,...props}) => {
         </>
     },
   ];
-
-
-  const next = () => {
-    setCurrent(current + 1);
-  };
-
-
-  const prev = () => {
-    setCurrent(current - 1);
-  };
 
   return (
     <div style={{minWidth: 1200}}>

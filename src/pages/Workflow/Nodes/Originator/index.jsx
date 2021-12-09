@@ -19,20 +19,20 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
 
   const type = () => {
     switch (selectValue) {
-      case 'AppointUser':
+      case 'AppointUsers':
         return <Button type="link" onClick={() => {
           ref.current.open(true);
         }}>
-          {value[index] && value[index].data && value[index].data.length > 0 ? (value[index].data.map((items) => {
-            return items.AppointUser.title;
+          {value[index] && value[index].appointUsers && value[index].appointUsers.length > 0 ? (value[index].appointUsers.map((items) => {
+            return items.title;
           })).toString() : '选择'}
         </Button>;
-      case 'DepstPositions':
+      case 'DeptPositions':
         return <Button type="link" onClick={() => {
           ref.current.open(true);
         }}>
-          {value[index] && value[index].data && value[index].data.length > 0 ? (value[index].data.map((items) => {
-            return `${items.DepstPositions.title}(${items.DepstPositions.positions && items.DepstPositions.positions.map((items) => {
+          {value[index] && value[index].deptPositions && value[index].deptPositions.length > 0 ? (value[index].deptPositions.map((items) => {
+            return `${items.title}(${items.positions && items.positions.map((items) => {
               return items.label;
             })})`;
           })).toString() : '选择'}
@@ -60,10 +60,10 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
       setSelectValue(value);
       switch (value) {
         case 'AppointUser':
-          typeof onChange === 'function' && onChange({type: value, data: []});
+          typeof onChange === 'function' && onChange({type: value, appointUsers: []});
           break;
-        case 'DepstPositions':
-          typeof onChange === 'function' && onChange({type: value, data: []});
+        case 'DeptPosition':
+          typeof onChange === 'function' && onChange({type: value, deptPositions: []});
           break;
         case 'AllPeople':
           typeof onChange === 'function' && onChange({type: value});
@@ -101,22 +101,22 @@ const Originator = ({value, onChange, hidden}) => {
     return [
       {
         label: '指定人',
-        value: 'AppointUser',
+        value: 'AppointUsers',
         disabled: array.filter((value) => {
-          return value.type === 'AppointUser';
+          return value.type === 'AppointUsers';
         }).length > 0
       },
       {
         label: '部门+职位',
-        value: 'DepstPositions',
+        value: 'DeptPositions',
         disabled: array.filter((value) => {
-          return value.type === 'DepstPositions';
+          return value.type === 'DeptPositions';
         }).length > 0
       },
       {
         label: '所有人',
         value: 'AllPeople',
-        disabled:  array.filter((value) => {
+        disabled: array.filter((value) => {
           return value.type === 'AllPeople';
         }).length > 0
       },
@@ -130,7 +130,6 @@ const Originator = ({value, onChange, hidden}) => {
   const [count, setCount] = useState(1);
 
   const refreshConfig = (array) => {
-
     setOptions(config(array));
   };
 

@@ -35,26 +35,27 @@ export const Owner = (props) => {
       return <>
         {
           rule.map((items, index) => {
-            if (items.type === 'AppointUser') {
+            console.log(items);
+            if (items.type === 'AppointUsers') {
               return <div key={index}>
                 {
-                  items.data && items.data.length > 0 &&
+                  items.appointUsers && items.appointUsers.length > 0 &&
                   <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
                     <strong>人员:</strong>
-                    {(items.data.map((item) => {
-                      return item.AppointUser.title;
+                    {(items.appointUsers.map((item) => {
+                      return item.title;
                     })).toString()}
                   </Typography.Paragraph>
                 }
               </div>;
-            } else if (items.type === 'DepstPositions') {
+            } else if (items.type === 'DeptPositions') {
               return <div key={index}>
                 {
-                  items.data && items.data.length > 0 &&
+                  items.deptPositions && items.deptPositions.length > 0 &&
                   <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
                     <strong>部门:</strong>
-                    {(items.data.map((item) => {
-                      return `${item.DepstPositions.title}(${item.DepstPositions.positions && item.DepstPositions.positions.map((items) => {
+                    {(items.deptPositions.map((item) => {
+                      return `${item.title}(${item.positions && item.positions.map((items) => {
                         return items.label;
                       })})`;
                     })).toString()}

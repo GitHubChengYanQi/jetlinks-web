@@ -1,34 +1,51 @@
-import React, {useRef} from 'react';
-import Drawer from '@/components/Drawer';
-import {Input} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Select} from 'antd';
+import {useRequest} from '@/util/Request';
+import {customerIdSelect} from '@/pages/Erp/order/OrderUrl';
+import {skuListSelect} from '@/pages/Erp/Spus/spuUrl';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
-const {Search} = Input;
+const Choose = ({type, value, width,placeholder, onChange}) => {
 
-const Choose = (props) => {
+  const [options, setOptions] = useState([]);
+
+  const {run: customerRun} = useRequest(
+    customerIdSelect,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setOptions(res && res.map((items) => {
+          return {
+            label: items.label,
+            value: items.label
+          };
+        }));
+      }
+    });
 
 
-  const {domNode,Table,record:rec} = props;
+  useEffect(() => {
+    switch (type) {
+      case 'customer':
+        customerRun({});
+        break;
+      default:
+        break;
+    }
+  }, []);
 
-  const ref = useRef(null);
 
-  if (domNode) {
-    return (
-      <>
-        <Search style={{width: 200, margin: '0 10px'}} value={domNode.children[0].data} onSearch={() => {
-          ref.current.open(false);
-        }} enterButton />
-        <Drawer width={1700} title="选择" component={Table} onSuccess={() => {
-          ref.current.close();
-        }} ref={ref} choose={(record) => {
-          ref.current.close();
-          rec(record);
-        }}
-        />
-      </>
-    );
-  } else {
-    return null;
-  }
+
+  return <Select
+    style={{width: width || 200}}
+    value={value}
+    allowClear
+    showSearch
+    placeholder={placeholder}
+    options={options}
+    onChange={(value) => {
+      typeof onChange === 'function' && onChange(value);
+    }} />;
 
 
 };

@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {FormItem} from '@formily/antd';
 
 
-const CustomerAll = ({customerId,customer,contacts,style,adress,phone}) => {
+const CustomerAll = ({customerId, customer, contacts, adress, phone, width}) => {
 
 
   const {refresh: refreshContactsn, data: Contacts, run: ContactsRun} = useRequest({
@@ -37,56 +37,35 @@ const CustomerAll = ({customerId,customer,contacts,style,adress,phone}) => {
 
   return (
     <>
-      {customerId ?
-        <FormItem
-          label="客户"
-          name={customer || 'customerId'}
-          value={customerId}
-          component={SysField.CustomerId}
-          placeholder="请选择客户"
-          customers={async (customer) => {
-            setCustomerIds(customer);
-            if (customer) {
-              await ContactsRun({
-                data: {
-                  customerId: customer
-                }
-              });
-              await AdressRun({
-                data: {
-                  customerId: customer
-                }
-              });
-            }
-          }}
-          required
-        /> : <FormItem
-          label="客户"
-          name={customer || 'customerId'}
-          component={SysField.Customer}
-          style={style}
-          placeholder="请选择客户"
-          refresh={() => {
-            refresh();
-          }}
-          customers={async (customer) => {
-            setCustomerIds(customer);
-            if (customer) {
-              await ContactsRun({
-                data: {
-                  customerId: customer
-                }
-              });
-              await AdressRun({
-                data: {
-                  customerId: customer
-                }
-              });
-            }
-          }}
-          required
-        />}
       <FormItem
+        label="客户"
+        width={width || 200}
+        value={customerId}
+        name={customer || 'customerId'}
+        component={customerId ? SysField.CustomerId : SysField.Customer}
+        placeholder="请选择客户"
+        refresh={() => {
+          refresh();
+        }}
+        customers={async (customer) => {
+          setCustomerIds(customer);
+          if (customer) {
+            await ContactsRun({
+              data: {
+                customerId: customer
+              }
+            });
+            await AdressRun({
+              data: {
+                customerId: customer
+              }
+            });
+          }
+        }}
+        required
+      />
+      <FormItem
+        width={width || 200}
         label="联系人"
         name={contacts || 'contactsId'}
         component={SysField.Contacts}
@@ -109,6 +88,7 @@ const CustomerAll = ({customerId,customer,contacts,style,adress,phone}) => {
         required
       />
       <FormItem
+        width={width || 200}
         label="电话"
         name={phone || 'phoneId'}
         refresh={() => {
@@ -121,6 +101,7 @@ const CustomerAll = ({customerId,customer,contacts,style,adress,phone}) => {
         required
       />
       <FormItem
+        width={width || 200}
         label="地址"
         refresh={() => {
           refresh();
@@ -132,6 +113,7 @@ const CustomerAll = ({customerId,customer,contacts,style,adress,phone}) => {
         customers={Adress || null}
         required
       />
+
     </>
   );
 };

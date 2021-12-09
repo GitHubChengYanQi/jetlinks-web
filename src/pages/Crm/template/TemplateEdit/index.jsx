@@ -24,17 +24,17 @@ const TemplateEdit = ({...props}) => {
   const formRef = useRef();
 
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="templateId"
-    >
-      <FormItem label="合同名" name="name" component={SysField.Name} required/>
-      <FormItem label="合同内容" name="content" component={SysField.Content} required/>
-
-    </Form>
-
+    <div style={{padding:16}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="templateId"
+      >
+        <FormItem label="合同名" name="name" component={SysField.Name} required />
+        <FormItem name="content" component={SysField.Content} required />
+      </Form>
+    </div>
   );
 };
 

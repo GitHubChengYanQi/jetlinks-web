@@ -66,7 +66,7 @@ const ProductOrderEdit = ({...props}) => {
         }}
       >
         <ProCard className="h2Card" headerBordered title="订单信息">
-          <CustomerAll style={{width: 200}} />
+          <CustomerAll width={200} />
         </ProCard>
         <ProCard className="h2Card" headerBordered title="产品信息">
           <FieldList

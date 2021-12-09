@@ -5,11 +5,11 @@
  * @Date 2021-07-21 08:22:02
  */
 
-import React, {useRef, useState,createElement} from 'react';
+import React, {useRef, useState} from 'react';
+import { Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
-import {Input, InputNumber, PageHeader, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -17,8 +17,8 @@ import {templateDelete, templateList} from '../TemplateUrl';
 import TemplateEdit from '../TemplateEdit';
 import * as SysField from '../TemplateField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
-import {createFormActions} from '@formily/antd';
+import Modal from '@/components/Modal';
+
 const {Column} = AntTable;
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -90,7 +90,7 @@ const TemplateList = () => {
           );
         }} width={300}/>
       </Table>
-      <Modal2 width={1500} title="编辑" component={TemplateEdit} onSuccess={() => {
+      <Modal width={1000} title="合同模板" component={TemplateEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>
