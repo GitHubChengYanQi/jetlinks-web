@@ -173,7 +173,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
               setData(item);
             }} extra={<Button type="primary" onClick={() => {
               const location = {
-                address: item.pname + item.cityname + item.address + name,
+                address: item.pname + item.cityname + item.address,
                 location: [item.location.lng, item.location.lat],
                 city: item.cityname || item.pname
               };

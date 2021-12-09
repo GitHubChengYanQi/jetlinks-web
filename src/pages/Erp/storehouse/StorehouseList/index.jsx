@@ -146,12 +146,8 @@ const StorehouseList = (props) => {
         <Column title="操作" fixed="right" width={choose ? 200 : 100} align="right" render={(value, record) => {
           return (
             <>
-              {choose ? <CheckButton onClick={() => {
-                choose(record);
-                props.onSuccess();
-              }} /> : null}
               <EditButton onClick={() => {
-                ref.current.open(record.storehouseId);
+                ref.current.open(record);
               }} />
               <DelButton api={storehouseDelete} value={record.storehouseId} onSuccess={() => {
                 tableRef.current.refresh();

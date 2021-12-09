@@ -60,7 +60,14 @@ const QualityTaskEdit = ({...props}) => {
 
         }}
         onSubmit={(value) => {
-          return {...value, url: `${wxCp}OrCode?id=codeId`};
+          return {
+            ...value, details: value.details.map((items) => {
+              return {
+                ...items,
+                percentum: items.percentum / 100
+              };
+            })
+          };
         }}
         effects={({setFieldState}) => {
 
@@ -109,10 +116,11 @@ const QualityTaskEdit = ({...props}) => {
 
             setFieldState(
               FormPath.transform(name, /\d/, ($1) => {
-                return `details.${$1}.remaining`;
+                return `details.${$1}.percentum`;
               }),
               state => {
                 state.visible = value;
+                state.required = value;
               }
             );
 
@@ -200,10 +208,10 @@ const QualityTaskEdit = ({...props}) => {
                             component={SysField.QualityPlanId}
                           />
                         </div>
-                        <div style={{display: 'inline-block',marginRight:8}}>
+                        <div style={{display: 'inline-block', marginRight: 8}}>
                           <FormItem
                             visible={false}
-                            name={`details.${index}.remaining`}
+                            name={`details.${index}.percentum`}
                             component={SysField.Remaining}
                           />
                         </div>

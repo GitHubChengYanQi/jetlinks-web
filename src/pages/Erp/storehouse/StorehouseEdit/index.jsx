@@ -5,14 +5,10 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useRef, useState} from 'react';
-import {Button, Input, Steps} from 'antd';
+import React, {useRef} from 'react';
 import Form from '@/components/Form';
-import {placeDetail, placeAdd, placeEdit, storehouseDetail, storehouseAdd, storehouseEdit} from '../StorehouseUrl';
+import { storehouseDetail, storehouseAdd, storehouseEdit} from '../StorehouseUrl';
 import * as SysField from '../StorehouseField';
-import {request} from '@/util/Request';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import {createFormActions, FormEffectHooks, FormPath} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -24,41 +20,30 @@ const ApiConfig = {
 
 const StorehouseEdit = ({...props}) => {
 
+  const {value,...other} = props;
+
   const formRef = useRef();
 
   return (
     <div style={{padding: 16}}>
       <Form
-        {...props}
+        {...other}
+        value={value && value.storehouseId}
         ref={formRef}
         api={ApiConfig}
+        defaultValue={{
+          amap:{
+            address: value.palce,
+          },
+        }}
         fieldKey="storehouseId"
-        effect={() => {
-
-          const {setFieldState} = createFormActions();
-
-          FormEffectHooks.onFieldValueChange$('amap').subscribe(({value}) => {
-            if (value) {
-              setFieldState(
-                'palce',
-                state => {
-                  state.value = value.address;
-                }
-              );
-              setFieldState(
-                'longitude',
-                state => {
-                  state.value = value.location[0];
-                }
-              );
-              setFieldState(
-                'latitude',
-                (state) => {
-                  state.value = value.location[1];
-                }
-              );
-            }
-          });
+        onSubmit={(value)=>{
+          return {
+            ...value,
+            palce:value.amap.address,
+            longitude:value.amap.location && value.amap.location[0],
+            latitude:value.amap.location && value.amap.location[1]
+          };
         }}
       >
         <FormItem label="仓库码" name="coding" component={SysField.Coding} rules={[{required:true,pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',message:'只能输入大写字母或数字！'}]}/>

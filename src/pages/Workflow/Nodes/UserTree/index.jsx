@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Select,  Tree} from 'antd';
+import {Select, Tree} from 'antd';
 import {useRequest} from '@/util/Request';
 import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
 
@@ -21,9 +21,9 @@ const UserTree = ({type, value, onChange}) => {
 
   const [check, setCheck] = useState(value || {});
 
-  useEffect(()=>{
+  useEffect(() => {
     onChange(check);
-  },[]);
+  }, []);
 
   const treeData = data && data.map((item) => {
     return {
@@ -38,13 +38,13 @@ const UserTree = ({type, value, onChange}) => {
 
   const position = (dept) => {
 
-    const thisDept  = check.depts && check.depts.filter((value)=>{
-      return value.key === dept.key;
+    const thisDept = check.data && check.data.filter((value) => {
+      return value.DepstPositions && value.DepstPositions.key === dept.key;
     });
 
     return <Select
       mode="multiple"
-      value={thisDept && thisDept.length>0 && thisDept[0].positions && thisDept[0].positions.map((items)=>{
+      value={thisDept && thisDept.length > 0 && thisDept[0].DepstPositions.positions && thisDept[0].DepstPositions.positions.map((items) => {
         return items.value;
       }) || []}
       onClear
@@ -59,16 +59,16 @@ const UserTree = ({type, value, onChange}) => {
           positions: option,
         };
 
-        const checkDepts = check.depts.filter((value) => {
-          return value.key !== dept.key;
+        const checkDepts = check.data.filter((value) => {
+          return value.DepstPositions.key !== dept.key;
         });
 
         if (option.length > 0) {
-          setCheck({depts: [...checkDepts, depts]});
-          typeof onChange === 'function' && onChange({depts: [...checkDepts, depts]});
+          setCheck({data: [...checkDepts, {DepstPositions:depts}]});
+          typeof onChange === 'function' && onChange({data: [...checkDepts, {DepstPositions:depts}]});
         } else {
-          setCheck({depts: checkDepts});
-          typeof onChange === 'function' && onChange({depts: checkDepts});
+          setCheck({data: checkDepts});
+          typeof onChange === 'function' && onChange({data: checkDepts});
         }
 
       }}
@@ -95,31 +95,38 @@ const UserTree = ({type, value, onChange}) => {
   });
 
   switch (type) {
-    case 'users':
+    case 'AppointUser':
       return <>
         <Tree
           checkable
           defaultExpandAll
-          checkedKeys={check.users && check.users.map((items, index) => {
-            return items.key;
+          checkedKeys={check.data && check.data.map((items, index) => {
+            return items.AppointUser.key;
           })}
           onCheck={(value, option) => {
             const users = option.checkedNodes.filter((value) => {
               return value.key !== 0;
             });
-            setCheck({users});
-            typeof onChange === 'function' && onChange({users});
+
+            const AppointUser = users.map((items) => {
+              return {
+                AppointUser: items,
+              };
+            });
+
+            setCheck({data:AppointUser });
+            typeof onChange === 'function' && onChange({data: AppointUser});
           }}
           treeData={[{title: '全选', key: 0, children: treeData || []}]}
         />
       </>;
-    case 'depts':
+    case 'DepstPositions':
       return <>
         <Tree
           checkable={false}
           defaultExpandAll
-          checkedKeys={check.depts && check.depts.map((items, index) => {
-            return items.key;
+          checkedKeys={check.data && check.data.map((items, index) => {
+            return items.DepstPositions.key;
           })}
           treeData={deptPosition || []}
         />

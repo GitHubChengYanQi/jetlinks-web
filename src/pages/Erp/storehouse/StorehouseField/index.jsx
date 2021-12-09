@@ -21,7 +21,6 @@ export const Position = (props) =>{
   return (<Input   {...props}/>);
 };
 export const Palce = (props) =>{
-  console.log(props);
   return (<Input {...props}/>);
 };
 export const Longitude = (props) =>{

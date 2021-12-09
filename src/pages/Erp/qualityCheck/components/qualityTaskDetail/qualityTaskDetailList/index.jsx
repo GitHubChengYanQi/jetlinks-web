@@ -5,130 +5,102 @@
  * @Date 2021-11-16 09:54:41
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Table from '@/components/Table';
 import {Col, Descriptions, Row, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {qualityTaskDetailDelete, qualityTaskDetailList} from '../qualityTaskDetailUrl';
-import QualityTaskDetailEdit from '../qualityTaskDetailEdit';
-import * as SysField from '../qualityTaskDetailField';
+import {qualityTaskDetailList} from '../qualityTaskDetailUrl';
 import ProCard from '@ant-design/pro-card';
-import Code from '@/pages/Erp/spu/components/Code';
 import Details from '@/pages/Erp/qualityCheck/components/Details';
 import {useRequest} from '@/util/Request';
-import {qualityTaskBackInkind, qualityTaskList} from '@/pages/Erp/qualityCheck/components/qualityTask/qualityTaskUrl';
 import {createFormActions} from '@formily/antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
-
-const formActionsPublic = createFormActions();
 
 const QualityTaskDetailList = ({value}) => {
 
+  const {loading, data, run} = useRequest(
+    {
+      url: '/qualityTask/getTask',
+      method: 'GET',
+    },
+    {
+      manual: true,
+    },
+  );
+  console.log(data, value);
 
-  const ref = useRef(null);
-  const tableRef = useRef(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
+  useEffect(() => {
+    if (value) {
+      run({
+        params: {
+          id: value,
+        },
+      });
+    }
+  }, []);
 
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="主表id" name="qualityTaskId" value={value.qualityTaskId} component={SysField.QualityTaskId} />
-      </>
-    );
-  };
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
+  if (!data) {
+    return null;
+  }
 
 
   return (
     <div style={{padding: 24}}>
       <ProCard className="h2Card" title="基本信息" headerBordered>
-        <Row gutter={24}>
-          <Col span={16}>
-            <Descriptions column={1} bordered labelStyle={{width: 120}}>
-              <Descriptions.Item label="编号"> {value.coding}</Descriptions.Item>
-              <Descriptions.Item label="类型">{value.type}</Descriptions.Item>
-              <Descriptions.Item label="负责人">{value.userName}</Descriptions.Item>
-              <Descriptions.Item label="备注">{value.remark}</Descriptions.Item>
-            </Descriptions>
-          </Col>
-          <Col span={8}>
-            <Code source="quality" id={value.qualityTaskId} image codeWidth={210} />
-          </Col>
-        </Row>
+        <Descriptions column={1} bordered labelStyle={{width: 120}}>
+          <Descriptions.Item label="编码">{data.coding}</Descriptions.Item>
+          <Descriptions.Item label="类型">{data.type}</Descriptions.Item>
+          <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
+          <Descriptions.Item label="备注">{data.remark || '无'}</Descriptions.Item>
+          <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
+        </Descriptions>
       </ProCard>
 
-      <ProCard className="h2Card" title="质检清单" headerBordered>
-        <Table
-          formActions={formActionsPublic}
-          headStyle={{display: 'none'}}
-          api={qualityTaskDetailList}
-          rowKey="qualityTaskDetailId"
-          contentHeight
-          rowSelection
-          noPagination
-          searchForm={searchForm}
-          actions={actions()}
-          ref={tableRef}
+      <ProCard className="h2Card" title="子任务信息" headerBordered>
+        {data.childTasks &&
+        <AntTable
+          dataSource={data.childTasks}
+          key="qualityTaskId"
         >
-          <Column title="物料" dataIndex="skuId" render={(value, record) => {
-
+          <Column title="质检人" width={100} align="center" render={(value, record) => {
             return <>
-              {record.skuResult && record.skuResult.skuName}
-              &nbsp;/&nbsp;
-              {record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.name}
-              &nbsp;&nbsp;
-              <em style={{color: '#c9c8c8', fontSize: 10}}>
-                (
-                {
-                  record.skuResult.skuJsons
-                  &&
-                  record.skuResult.skuJsons.map((items, index) => {
-                    return (
-                      <span key={index}>{items.attribute.attribute}：{items.values.attributeValues}</span>
-                    );
-                  })
-                }
-                )
-              </em>
-            </>;
-
-          }} />
-          <Column title="供应商 / 品牌" dataIndex="brandId" width={120} render={(value, record) => {
-            return <>
-              {record.brand && record.brand.brandName}
+              {record.users && record.users.map((items) => {
+                return items.name;
+              }).toString()}
             </>;
           }} />
-          <Column title="总数量" dataIndex="number" width={100} align="center" />
-          <Column title="质检方案" dataIndex="qualityPlanId" render={(value, record) => {
+          <Column title="地点" dataIndex="qualityPlanId" render={(value, record) => {
             return <>
-              {record.qualityPlanResult && record.qualityPlanResult.planName}
+              {record.address && JSON.parse(record.address).address}
             </>;
           }} />
-          <Column />
-        </Table>
+          <Column title="联系人" dataIndex="person" width={100} align="center" />
+          <Column title="电话" dataIndex="phone" width={100} align="center" />
+          <Column title="备注" dataIndex="note" width={200} />
+          <Column title="分派人" dataIndex="user" render={(value, record) => {
+            return <>
+              {record.user && record.user.name}
+            </>;
+          }} />
+          <Column title="分派时间" dataIndex="createTime" width={120} />
+          <Column title="状态" dataIndex="state" width={100} align="center" render={(value) => {
+            return <>
+              {
+                value > 1 ?
+                  <><CheckCircleOutlined style={{color: 'green'}} /> &nbsp;&nbsp;完成</>
+                  :
+                  <><CloseCircleOutlined style={{color: 'red'}} />&nbsp;&nbsp; 未完成</>
+              }
+            </>;
+          }} />
+        </AntTable>}
       </ProCard>
-
-      <ProCard className="h2Card" title="质检详情" headerBordered>
-        <Details qualityTaskId={value.qualityTaskId} />
-      </ProCard>
-
-      <Drawer width={800} title="编辑" component={QualityTaskDetailEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
     </div>
   );
 };

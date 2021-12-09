@@ -1,10 +1,12 @@
 import React from 'react';
+import {Typography} from 'antd';
+
+
 import StartNode from '../StartNode';
 import ApproverNode from '../ApproverNode';
 import NotifierNode from '../NotifierNode';
-// eslint-disable-next-line import/no-cycle
 import ConditionNode from '../ConditionNode';
-import {Typography} from 'antd';
+// eslint-disable-next-line import/no-cycle
 
 const NodeMaps = {
   0: StartNode,
@@ -17,11 +19,11 @@ export const Owner = (props) => {
 
   const action = (value) => {
     switch (value) {
-      case 'quality_task_dispatch':
+      case 'quality_dispatch':
         return <>分派任务</>;
-      case 'quality_task_perform':
+      case 'quality_perform':
         return <>执行任务</>;
-      case 'quality_task_complete':
+      case 'quality_complete':
         return <>完成任务</>;
       default:
         break;
@@ -32,24 +34,39 @@ export const Owner = (props) => {
     if (rule) {
       return <>
         {
-          rule.users && rule.users.length > 0 &&
-          <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
-            <strong>人员:</strong>
-            {(rule.users.map((item) => {
-              return item.title;
-            })).toString()}
-          </Typography.Paragraph>
-        }
-
-        {
-          rule.depts && rule.depts.length > 0 && <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
-            <strong>部门:</strong>
-            {(rule.depts.map((item) => {
-              return `${item.title}(${item.positions && item.positions.map((items)=>{
-                return items.label;
-              })})`;
-            })).toString()}
-          </Typography.Paragraph>
+          rule.map((items, index) => {
+            if (items.type === 'AppointUser') {
+              return <div key={index}>
+                {
+                  items.data && items.data.length > 0 &&
+                  <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+                    <strong>人员:</strong>
+                    {(items.data.map((item) => {
+                      return item.AppointUser.title;
+                    })).toString()}
+                  </Typography.Paragraph>
+                }
+              </div>;
+            } else if (items.type === 'DepstPositions') {
+              return <div key={index}>
+                {
+                  items.data && items.data.length > 0 &&
+                  <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+                    <strong>部门:</strong>
+                    {(items.data.map((item) => {
+                      return `${item.DepstPositions.title}(${item.DepstPositions.positions && item.DepstPositions.positions.map((items) => {
+                        return items.label;
+                      })})`;
+                    })).toString()}
+                  </Typography.Paragraph>
+                }
+              </div>;
+            } else if (items.type === 'AllPeople') {
+              return <strong key={index}>所有人</strong>;
+            }else {
+              return null;
+            }
+          })
         }
       </>;
     } else {
@@ -61,22 +78,22 @@ export const Owner = (props) => {
     case 'start':
       return <>
         <strong>发起人</strong>
-        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
+        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
       </>;
     case 'audit':
       return <>
         <strong>审批</strong>
-        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
+        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
       </>;
     case 'send':
       return <>
         <strong>抄送</strong>
-        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
+        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
       </>;
     case 'quality':
       return <>
-        <strong>{action(props.auditType)}</strong>
-        <div>{Rule(props.auditRule && props.auditRule.qualityRules)}</div>
+        <strong>{action(props.auditRule && props.auditRule.type)}</strong>
+        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
       </>;
     default:
       break;

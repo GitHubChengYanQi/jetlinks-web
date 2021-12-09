@@ -234,13 +234,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     if (type === OptionTypes.CONDITION) {
       objRef.childNode = {
         ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', auditType: 'branch', childNode: o},
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2', auditType: 'branch',},
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', auditType: 'branch',stepType:'branch', childNode: o},
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2', auditType: 'branch',stepType:'branch',},
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'route',});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'route',stepType:'route'});
     }
     updateNode();
   }
@@ -293,21 +293,20 @@ const WorkFlow = ({config: _config, value, onChange}) => {
         <Setps
           value={currentNode && currentNode.current && {
             type: currentNode.current.stepType,
-            auditType: currentNode.current.auditType,
-            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.qualityRules,
-            action: currentNode.current.auditType,
+            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.rules,
+            action: currentNode.current.auditRule && currentNode.current.auditRule.type,
           }}
           onChange={(value) => {
             switch (value.type) {
               case 'audit':
                 currentNode.current.stepType = value.type;
-                currentNode.current.auditType = 'quality_task_person';
-                currentNode.current.auditRule = {qualityRules: value.auditRule};
+                currentNode.current.auditType = 'process';
+                currentNode.current.auditRule = {type:'audit',rules: value.auditRule};
                 break;
               case 'quality':
                 currentNode.current.stepType = value.type;
-                currentNode.current.auditType = value.action;
-                currentNode.current.auditRule = {qualityRules: value.actionRule};
+                currentNode.current.auditType = 'process';
+                currentNode.current.auditRule = {type:value.action,rules: value.actionRule};
                 break;
               default:
                 break;
@@ -322,20 +321,20 @@ const WorkFlow = ({config: _config, value, onChange}) => {
       </Drawer>
       <Drawer title="发起人设置" ref={refStart} width={800}>
         <Originator
-          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.qualityRules}
+          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.rules}
           onChange={(value) => {
             switch (currentNode.current.type) {
               case 0:
               case '0':
-                currentNode.current.auditRule = {qualityRules: value};
+                currentNode.current.auditRule = {type:'start',rules: value};
                 currentNode.current.stepType = 'start';
-                currentNode.current.auditType = 'quality_task_start';
+                currentNode.current.auditType = 'start';
                 break;
               case 2:
               case '2':
-                currentNode.current.auditRule = {qualityRules: value};
+                currentNode.current.auditRule = {type:'send',rules: value};
                 currentNode.current.stepType = 'send';
-                currentNode.current.auditType = 'quality_task_send';
+                currentNode.current.auditType = 'send';
                 break;
               default:
                 break;

@@ -41,7 +41,7 @@ const Setps = ({value, onClose, onChange}) => {
 
 
           setFieldState('actionRule', state => {
-            if (value === 'quality_task_dispatch') {
+            if (value === 'quality_dispatch') {
               state.visible = true;
             } else {
               state.visible = false;
@@ -229,9 +229,9 @@ const Setps = ({value, onClose, onChange}) => {
           name="action"
           component={Select}
           dataSource={[
-            {label: '分派任务', value: 'quality_task_dispatch'},
-            {label: '执行任务', value: 'quality_task_perform'},
-            {label: '完成任务', value: 'quality_task_complete'},
+            {label: '分派任务', value: 'quality_dispatch'},
+            {label: '执行任务', value: 'quality_perform'},
+            {label: '完成任务', value: 'quality_complete'},
           ]}
         />
         <FormItem

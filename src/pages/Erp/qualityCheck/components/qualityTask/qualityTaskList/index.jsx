@@ -60,9 +60,8 @@ const QualityTaskList = () => {
         <Column title="编号" dataIndex="coding" render={(value, record) => {
           return (
             <>
-              <Code id={record.qualityTaskId} source="quality" />
               <a onClick={() => {
-                detail.current.open(record);
+                detail.current.open(record.qualityTaskId);
               }}>
                 {value}
               </a>
@@ -72,7 +71,18 @@ const QualityTaskList = () => {
         <Column title="类型" dataIndex="type" />
         <Column title="负责人" dataIndex="userName" />
         <Column title="状态" dataIndex="state" render={(value) => {
-          return value === 0 ? <Badge text="进行中" color="blue" /> : <Badge text="已完成" color="green" />;
+          switch (value) {
+            case 0:
+              return <Badge text="执行中" color="blue" />;
+            case 1:
+              return <Badge text="已分派" color="yellow" />;
+            case 2:
+              return <Badge text="已完成" color="green" />;
+            case 3:
+              return <Badge text="待入库" color="grey" />;
+            default:
+              break;
+          }
         }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column title="备注" dataIndex="remark" />

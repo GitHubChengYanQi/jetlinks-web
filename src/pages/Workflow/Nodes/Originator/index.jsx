@@ -19,25 +19,25 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
 
   const type = () => {
     switch (selectValue) {
-      case 'users':
+      case 'AppointUser':
         return <Button type="link" onClick={() => {
           ref.current.open(true);
         }}>
-          {value[index] && value[index].users && value[index].users.length > 0 ? (value[index].users.map((items) => {
-            return items.title;
+          {value[index] && value[index].data && value[index].data.length > 0 ? (value[index].data.map((items) => {
+            return items.AppointUser.title;
           })).toString() : '选择'}
         </Button>;
-      case 'depts':
+      case 'DepstPositions':
         return <Button type="link" onClick={() => {
           ref.current.open(true);
         }}>
-          {value[index] && value[index].depts && value[index].depts.length > 0 ? (value[index].depts.map((items) => {
-            return `${items.title}(${items.positions && items.positions.map((items) => {
+          {value[index] && value[index].data && value[index].data.length > 0 ? (value[index].data.map((items) => {
+            return `${items.DepstPositions.title}(${items.DepstPositions.positions && items.DepstPositions.positions.map((items) => {
               return items.label;
             })})`;
           })).toString() : '选择'}
         </Button>;
-      case 'perform':
+      case 'AllPeople':
         return null;
       default:
         return <Button type="link" onClick={() => {
@@ -59,14 +59,14 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
     <Select value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
       setSelectValue(value);
       switch (value) {
-        case 'users':
-          typeof onChange === 'function' && onChange({name: value, users: []});
+        case 'AppointUser':
+          typeof onChange === 'function' && onChange({type: value, data: []});
           break;
-        case 'depts':
-          typeof onChange === 'function' && onChange({name: value, depts: []});
+        case 'DepstPositions':
+          typeof onChange === 'function' && onChange({type: value, data: []});
           break;
-        case 'perform':
-          typeof onChange === 'function' && onChange({name: value, perform: false});
+        case 'AllPeople':
+          typeof onChange === 'function' && onChange({type: value});
           break;
         default:
           break;
@@ -79,7 +79,7 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
       width={600}
       footer={
         <Button type="primary" onClick={() => {
-          typeof onChange === 'function' && onChange({name: selectValue, ...change});
+          typeof onChange === 'function' && onChange({type: selectValue, ...change});
           ref.current.close();
         }}>
           保存
@@ -97,86 +97,45 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
 
 const Originator = ({value, onChange, hidden}) => {
 
-  const config = (value) => {
+  const config = (array) => {
     return [
       {
         label: '指定人',
-        value: 'users',
-        disabled: value && value.users && value.users.length > 0
+        value: 'AppointUser',
+        disabled: array.filter((value) => {
+          return value.type === 'AppointUser';
+        }).length > 0
       },
       {
         label: '部门+职位',
-        value: 'depts',
-        disabled: value && value.depts && value.depts.length > 0
+        value: 'DepstPositions',
+        disabled: array.filter((value) => {
+          return value.type === 'DepstPositions';
+        }).length > 0
       },
       {
         label: '所有人',
-        value: 'perform',
-        disabled: value && value.perform
+        value: 'AllPeople',
+        disabled:  array.filter((value) => {
+          return value.type === 'AllPeople';
+        }).length > 0
       },
     ];
   };
 
-  const [change, setChange] = useState([]);
+  const [change, setChange] = useState(value || []);
 
-  const [options, setOptions] = useState(config(value));
+  const [options, setOptions] = useState(config(value || []));
 
   const [count, setCount] = useState(1);
 
-  const config1 = (array) => {
+  const refreshConfig = (array) => {
 
-    const users = array.filter((value) => {
-      return value.users;
-    });
-
-    const depts = array.filter((value) => {
-      return value.depts;
-    });
-
-    const perform = array.filter((value) => {
-      return value.perform;
-    });
-
-    setOptions([
-      {
-        label: '指定人',
-        value: 'users',
-        disabled: users.length > 0
-      },
-      {
-        label: '部门+职位',
-        value: 'depts',
-        disabled: depts.length > 0
-      }, {
-        label: '所有人',
-        value: 'perform',
-        disabled: perform.length > 0
-      },
-    ]);
-
-    return {
-      users: users.length > 0 ? users[0].users : [],
-      depts: depts.length > 0 ? depts[0].depts : [],
-      perform:perform.length > 0 ? perform[0].perform : false,
-    };
+    setOptions(config(array));
   };
 
 
   useEffect(() => {
-
-    const array = [];
-    if (value && value.users && value.users.length > 0) {
-      array.push({users: value.users, name: 'users'});
-    }
-    if (value && value.depts && value.depts.length > 0) {
-      array.push({depts: value.depts, name: 'depts'});
-    }
-    if (value && value.perform) {
-      array.push({perform: value.perform, name: 'perform'});
-    }
-
-    setChange(array);
-
     const counts = options && options.filter((value) => {
       return value.disabled;
     });
@@ -193,8 +152,8 @@ const Originator = ({value, onChange, hidden}) => {
         remove={(value) => {
           if (value) {
             change.splice(index, 1);
-            const backValue = config1(change);
-            hidden && typeof onChange === 'function' && onChange(backValue);
+            refreshConfig(change);
+            hidden && typeof onChange === 'function' && onChange(change);
           }
           setCount(count - 1);
         }}
@@ -203,8 +162,8 @@ const Originator = ({value, onChange, hidden}) => {
           const array = change;
           array[index] = value;
           setChange(array);
-          const backValue = config1(array);
-          hidden && typeof onChange === 'function' && onChange(backValue);
+          refreshConfig(change);
+          hidden && typeof onChange === 'function' && onChange(change);
         }} />
     </div>;
   };
@@ -212,7 +171,7 @@ const Originator = ({value, onChange, hidden}) => {
   const add = () => {
     const array = new Array(count);
     for (let i = 0; i < count; i++) {
-      array.push(selects(i, change[i] && change[i].name));
+      array.push(selects(i, change[i] && change[i].type));
     }
     return array;
   };
@@ -225,8 +184,8 @@ const Originator = ({value, onChange, hidden}) => {
           setCount(count + 1);
         }}><PlusOutlined />增加</Button>
         <Button type="primary" hidden={hidden} onClick={() => {
-          const backValue = config1(change);
-          typeof onChange === 'function' && onChange(backValue);
+          refreshConfig(change);
+          typeof onChange === 'function' && onChange(change);
         }}>保存</Button>
       </Space>
     </div>
