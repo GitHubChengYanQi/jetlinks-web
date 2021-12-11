@@ -10,7 +10,7 @@ const Desc = (props) => {
   if (data) {
     return (
       <>
-        <Descriptions title="合同信息" column={2}>
+        <Descriptions column={2}>
           <Descriptions.Item label="甲方信息">
             <div style={{cursor: 'pointer'}} onClick={() => {
               history.push(`/CRM/customer/${data.partyA}`);

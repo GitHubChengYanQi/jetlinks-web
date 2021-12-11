@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Row, Tabs} from 'antd';
+import {Avatar, Button, Card, Col, Descriptions, Input, InputNumber, Row, Tabs} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {EditOutlined} from '@ant-design/icons';
@@ -15,6 +15,8 @@ import Desc from '@/pages/Crm/contract/components/Desc';
 import parse from 'html-react-parser';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
+import DatePicker from '@/components/DatePicker';
+import Choose from '@/pages/Crm/contract/components/Choose';
 
 const {TabPane} = Tabs;
 
@@ -23,7 +25,7 @@ const Detail = () => {
   const ref = useRef(null);
   const refTrack = useRef(null);
 
-  const [width,setWidth] = useState();
+  const [width, setWidth] = useState();
 
   const submitRef = useRef(null);
 
@@ -34,7 +36,6 @@ const Detail = () => {
       }
     }
   });
-
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -49,7 +50,7 @@ const Detail = () => {
         <div className={styles.title}>
           <Row gutter={24}>
             <Col>
-              <Avatar size={64}>{data.name.substring(0,1)}</Avatar>
+              <Avatar size={64}>{data.name.substring(0, 1)}</Avatar>
             </Col>
             <Col>
               <h3>{data.name}</h3>
@@ -86,7 +87,7 @@ const Detail = () => {
                 </Button>
               </>}
             component={CrmBusinessTrackEdit}
-            onWidthChange={(value)=>{
+            onWidthChange={(value) => {
               setWidth(value);
             }}
             onSuccess={() => {
@@ -129,7 +130,7 @@ const Detail = () => {
         <Row>
           <Col span={16}>
             <div className={styles.main}>
-              <Card>
+              <Card title="合同信息">
                 <Desc data={data} />
               </Card>
             </div>
@@ -139,11 +140,47 @@ const Detail = () => {
               <Card>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="合同内容" key="1">
-                    {parse(data.content)}
+                    {
+                      parse(data.content, {
+                        replace: domNode => {
+                          if (domNode.name === 'input' && domNode.attribs && domNode.attribs.placeholder)
+                            switch (domNode.attribs.class) {
+                              case 'inp':
+                              case 'number':
+                              case 'date':
+                              case 'customer':
+                                return <>{domNode.attribs.placeholder}</>;
+                              default:
+                                break;
+                            }
+                        }
+                      })
+                    }
                   </TabPane>
-                  <TabPane tab="产品明细" key="2">
+                  <TabPane tab="付款信息" key="2">
+                    {data.payment && data.payment.details.map((items, index) => {
+                      return <Descriptions labelStyle={{width:100}} contentStyle={{width:200}} key={index} column={5} bordered >
+                        <Descriptions.Item key={index}>
+                          {`第${index + 1}批`}
+                        </Descriptions.Item>
+                        <Descriptions.Item key={index} label="名称">
+                          {items.name}
+                        </Descriptions.Item>
+                        <Descriptions.Item key={index} label="金额">
+                          {items.money}
+                        </Descriptions.Item>
+                        <Descriptions.Item key={index} label="百分比">
+                          {items.percent}
+                        </Descriptions.Item>
+                        <Descriptions.Item key={index} label="时间">
+                          {items.time}
+                        </Descriptions.Item>
+                      </Descriptions>;
+                    })}
+                  </TabPane>;
+                  <TabPane tab="产品明细" key="3">
                     <TableDetail value={data.contractId} />
-                  </TabPane>
+                  </TabPane>;
                 </Tabs>
               </Card>
             </div>
@@ -158,11 +195,12 @@ const Detail = () => {
                 </Tabs>
               </Card>
             </div>
-          </Col>
+          </Col>;
         </Row>
       </div>
 
-    </div>;
+    </div>
+      ;
   }
 
   return '暂无合同';
@@ -171,3 +209,4 @@ const Detail = () => {
 };
 
 export default Detail;
+;

@@ -82,7 +82,7 @@ const CrmBusinessTrackEdit = (props, ref) => {
         fieldKey="trackMessageId"
         NoButton={false}
         wrapperCol={24}
-        effect={() => {
+        effects={() => {
           onFieldChange$('businessTrackParams.*.classify').subscribe(({value}) => {
             typeof onWidthChange === 'function' && onWidthChange(value);
             setClassNmb(value);

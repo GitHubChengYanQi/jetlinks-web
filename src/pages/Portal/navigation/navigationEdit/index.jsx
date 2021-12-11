@@ -39,7 +39,7 @@ const NavigationEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="navigationId"
-      effect={() => {
+      effects={() => {
         onFieldValueChange$('link').subscribe(({value}) => {
           if (value === '/pages/Data/Detail/index?id=') {
             setVisable('detail');

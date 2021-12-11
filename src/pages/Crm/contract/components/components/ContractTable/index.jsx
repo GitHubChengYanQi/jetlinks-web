@@ -26,6 +26,7 @@ import Icon from '@/components/Icon';
 import {useBoolean} from 'ahooks';
 import {useRequest} from '@/util/Request';
 import {useHistory} from 'ice';
+import ContractContent from '@/pages/Crm/contract/components/ContractContent';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,6 +40,9 @@ const ContractTable = (props) => {
   const history = useHistory();
 
   const ref = useRef(null);
+  const contractContent = useRef(null);
+  const compoentRef = useRef(null);
+  const contentRef = useRef(null);
   const content = useRef(null);
   const tableRef = useRef(null);
 
@@ -174,7 +178,7 @@ const ContractTable = (props) => {
         );
       }
     });
-  }
+  };
 
   return (
     <>
@@ -189,7 +193,7 @@ const ContractTable = (props) => {
         api={contractList}
         actions={actions()}
         rowKey="contractId"
-        tableKey='contract'
+        tableKey="contract"
         isModal={false}
         searchForm={searchForm}
         ref={tableRef}
@@ -263,7 +267,7 @@ const ContractTable = (props) => {
                   </Button>
                   <EditButton
                     onClick={() => {
-                      ref.current.open(record);
+                      contractContent.current.open(record);
                     }} />
                   <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
                     tableRef.current.submit();
@@ -273,11 +277,39 @@ const ContractTable = (props) => {
           );
         }} width={200} />
       </Table>
-      <Modal width="auto" title="合同" component={AddContractEdit} customerId={customerId} onSuccess={() => {
-        tableRef.current.submit();
-        ref.current.close();
-      }} ref={ref} />
-      <Modal width={1200} component={Contract} onSuccess={() => {
+      <Modal
+        width={1000}
+        title="合同"
+        compoentRef={compoentRef}
+        footer={<Button
+          type="primary"
+          onClick={() => {
+            compoentRef.current.formRef.current.submit();
+          }}>保存</Button>}
+        component={AddContractEdit}
+        customerId={customerId}
+        onSuccess={(value) => {
+          tableRef.current.submit();
+          ref.current.close();
+          contractContent.current.open(value.data);
+        }} ref={ref} />
+
+      <Modal
+        width={1200}
+        compoentRef={contentRef}
+        footer={<Button
+          type="primary"
+          onClick={() => {
+            contentRef.current.formRef.current.submit();
+          }}>保存</Button>}
+        title="合同"
+        component={ContractContent}
+        onSuccess={() => {
+          tableRef.current.submit();
+          contractContent.current.close();
+        }} ref={contractContent} />
+
+      <Modal width={1250} component={Contract} onSuccess={() => {
         tableRef.current.submit();
         content.current.close();
       }} ref={content} />

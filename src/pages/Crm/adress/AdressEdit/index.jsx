@@ -36,7 +36,7 @@ const AdressEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="adressId"
-      effect={()=>{
+      effects={()=>{
         onFieldChange$('map').subscribe(({ value }) => {
           setCity(value && value.city);
         });

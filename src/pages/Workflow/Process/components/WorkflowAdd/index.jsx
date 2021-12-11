@@ -11,6 +11,7 @@ const WorkflowAdd = () => {
   const params = useParams();
 
   const [value, setValue] = useState(false);
+  console.log(value);
 
   const {loading: processLoading, data} = useRequest(processDetail, {
     defaultParams: {

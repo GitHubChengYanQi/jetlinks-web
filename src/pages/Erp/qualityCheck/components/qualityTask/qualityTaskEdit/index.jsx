@@ -64,7 +64,7 @@ const QualityTaskEdit = ({...props}) => {
             ...value, details: value.details.map((items) => {
               return {
                 ...items,
-                percentum: items.percentum / 100
+                percentum: items.percentum ? items.percentum / 100 : 1
               };
             })
           };

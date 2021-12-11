@@ -97,7 +97,7 @@ const SkuEdit = ({...props}, ref) => {
         onSubmit={(value) => {
           return {...value, type: 0, isHidden: true};
         }}
-        effect={() => {
+        effects={() => {
 
           const {setFieldState} = createFormActions();
 

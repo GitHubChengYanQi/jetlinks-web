@@ -73,13 +73,13 @@ const QualityTaskList = () => {
         <Column title="状态" dataIndex="state" render={(value) => {
           switch (value) {
             case 0:
-              return <Badge text="执行中" color="blue" />;
+              return <Badge text="待分派" color="red" />;
             case 1:
               return <Badge text="已分派" color="yellow" />;
             case 2:
-              return <Badge text="已完成" color="green" />;
+              return <Badge text="已完成" color="blue" />;
             case 3:
-              return <Badge text="待入库" color="red" />;
+              return <Badge text="已入库" color="green" />;
             default:
               break;
           }

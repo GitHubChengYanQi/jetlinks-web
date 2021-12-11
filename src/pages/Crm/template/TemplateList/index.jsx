@@ -77,6 +77,7 @@ const TemplateList = () => {
         formActions={formActions}
       >
         <Column title="合同模板" dataIndex="name"/>
+        <Column title="合同分类" dataIndex="contractClassId"/>
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

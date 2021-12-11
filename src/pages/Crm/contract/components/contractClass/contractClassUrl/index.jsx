@@ -35,3 +35,9 @@ export const contractClassList = {
   rowKey:'contractClassId'
 };
 
+export const contractClassListSelect = {
+  url: '/contractClass/listSelect',
+  method: 'POST',
+  rowKey:'contractClassId'
+};
+

@@ -5,8 +5,9 @@
  * @Date 2021-07-21 08:22:02
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {
+  Avatar,
   Button,
   Card,
   Col,
@@ -14,19 +15,21 @@ import {
   InputNumber,
   message,
   Row,
-  Select as AntdSelect,
+  Select as AntdSelect, Space,
   Steps,
   Table as AntTable
 } from 'antd';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
-import {useRequest} from '@/util/Request';
-import {createFormActions, FormEffectHooks} from '@formily/antd';
+import {request, useRequest} from '@/util/Request';
+import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {templateDetail} from '@/pages/Crm/template/TemplateUrl';
 
 
 const company = '1416605276529807486';
@@ -41,148 +44,239 @@ const ApiConfig = {
 };
 
 
-const AddContractEdit = ({businessId,loading,...props}) => {
-
-  const {Step} = Steps;
+const AddContractEdit = ({businessId, loading, ...props}, ref) => {
 
   const {value, customerId, ...other} = props;
 
   const formRef = useRef();
 
-  const [result, setResult] = useState(value);
-  const [current, setCurrent] = React.useState(0);
-
-
-  const next = () => {
-    setCurrent(current + 1);
-  };
-
-  const content = () => {
-    return (
-      <div style={{padding: 20, width: 1200}}>
-        <Form
-          {...other}
-          value={result ? result.contractId : false}
-          ref={formRef}
-          api={ApiConfig}
-          NoButton={false}
-          fieldKey="contractId"
-          onSuccess={() => {
-            props.onSuccess();
-          }}
-        >
-          <FormItem name="content" component={SysField.Content} result={result} required />
-        </Form>
-        {/*<Card title="添加产品明细" bordered={false}>*/}
-        {/*  <TableDetail contractId={result && result.contractId} onSuccess={()=>{}}/>*/}
-        {/*</Card>*/}
-        <Button type="primary" style={{width: '100%'}} onClick={() => {
-          formRef.current.submit();
-        }}>
-          完成
-        </Button>
-      </div>
-    );
-  };
-
-
+  useImperativeHandle(ref, () => ({
+    formRef,
+  }));
 
   const {run: business} = useRequest({
     ...businessEdit,
-  },{manual:true});
+  }, {manual: true});
 
-
-
-  if (props.value) {
-    return content();
-  }
-
-
-
-
-  const steps = [
-    {
-      title: '必填项',
-      content:
-        <>
-          <div style={{margin: '0 150px'}}>
-            <Form
-              NoButton={false}
-              value={result ? result.contractId : false}
-              {...other}
-              ref={formRef}
-              api={ApiConfig}
-              fieldKey="contractId"
-              onSuccess={async (result) => {
-                if (result.data !== '') {
-                  if (businessId){
-                    if (result.data.contractId) {
-                      await business({
-                        data: {
-                          businessId,
-                          contractId: result.data.contractId
-                        }
-                      });
-                    }else {
-                      message.error('创建合同失败！');
-                    }
-                  }
-
-                  setResult(result.data);
-                }
-                next();
-              }}
-            >
-              <ProCard headerBordered className="h2Card" title="基础信息">
-                <FormItem labelCol={5} label="选择合同模板" name="templateId" component={SysField.Template} required />
-                <FormItem labelCol={5} label="合同名称" name="name" component={SysField.Name} required />
-                <FormItem labelCol={5} label="分批付款" name="money" component={SysField.Name} required />
-              </ProCard>
-
-              <Row gutter={24}>
-                <Col span={12}>
-                  <ProCard headerBordered className="h2Card" title="甲方信息">
-                    <CustomerAll customer='partyA' adress='partyAAdressId' contacts='partyAContactsId' phone='partyAPhone' customerId={customerId} />
-                  </ProCard>
-                </Col>
-                <Col span={12}>
-                  <ProCard className="h2Card" headerBordered title="乙方信息">
-                    <CustomerAll customer='partyB' adress='partyBAdressId' contacts='partyBContactsId' phone='partyBPhone' customerId={company} />
-                  </ProCard>
-                </Col>
-              </Row>
-
-              <Button style={{float: 'right', margin: 24}} type="primary" htmlType="submit">
-                下一步
-              </Button>
-            </Form>
-          </div>
-        </>
-    },
-    {
-      title: '选填项',
-      content:
-        <>
-          <div style={{margin: '50px 150px'}}>
-            {content()}
-          </div>
-
-        </>
-    },
-  ];
 
   return (
-    <div style={{minWidth: 1200}}>
-      <Steps current={current} style={{padding: '30px 150px '}}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[current].content}</div>
+    <div style={{padding: 16}}>
+      <Form
+        NoButton={false}
+        value={value}
+        {...other}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="contractId"
+        onError={()=>{}}
+        onSuccess={async (result) => {
+          if (result.data !== '') {
+            if (businessId) {
+              if (result.data.contractId) {
+                await business({
+                  data: {
+                    businessId,
+                    contractId: result.data.contractId
+                  }
+                });
+              } else {
+                message.error('创建合同失败！');
+              }
+            }
+          }
+          other.onSuccess(result);
+        }}
+        onSubmit={(value)=>{
+          return {...value,payment: {details: value.details}};
+        }}
+        effects={() => {
 
+          const {setFieldState, getFieldState} = createFormActions();
+
+          FormEffectHooks.onFieldValueChange$('templateId').subscribe(async ({value})=>{
+            if (value){
+              const data = await request({...templateDetail,data:{templateId:value}});
+              setFieldState('contractClassId',(state)=>{
+                state.value = data.contractClassId;
+              });
+            }
+          });
+
+          // 输入百分比计算金额
+          FormEffectHooks.onFieldValueChange$('details.*.percent').subscribe(({active, name, value}) => {
+            const allMoney = getFieldState('allMoney');
+            if (active) {
+              if (allMoney.value) {
+                let percents = 0;
+                const details = getFieldState('details');
+                details.value.map((items) => {
+                  return percents += items.percent;
+                });
+                setFieldState(
+                  FormPath.transform(name, /\d/, ($1) => {
+                    return `details.${$1}.money`;
+                  }),
+                  state => {
+                    if (percents > 100) {
+                      message.warning('不能超过百分之百！');
+                      state.value = null;
+                    } else
+                      state.value = allMoney.value * (value / 100);
+                  }
+                );
+              } else {
+                message.warning('请先输入总金额！');
+              }
+            }
+          });
+
+          // 输入金额计算百分比
+          FormEffectHooks.onFieldValueChange$('details.*.money').subscribe(({active, name, value}) => {
+            const allMoney = getFieldState('allMoney');
+            if (active) {
+              if (allMoney.value) {
+                let moneys = 0;
+                const details = getFieldState('details');
+                details.value.map((items) => {
+                  return moneys += items.money;
+                });
+                setFieldState(
+                  FormPath.transform(name, /\d/, ($1) => {
+                    return `details.${$1}.percent`;
+                  }),
+                  state => {
+                    if (moneys > allMoney.value) {
+                      message.warning('不能超过总金额！');
+                      state.value = null;
+                    } else {
+                      state.value = (value / allMoney.value) * 100;
+                    }
+                  }
+                );
+              } else {
+                message.warning('请先输入总金额！');
+              }
+            }
+          });
+
+        }}
+
+      >
+        <ProCard headerBordered className="h2Card" title="基础信息">
+          <FormItem labelCol={5} label="选择合同模板" name="templateId" component={SysField.Template} required />
+          <FormItem labelCol={5} label="合同名称" name="name" component={SysField.Name} required />
+          <FormItem labelCol={5} label="合同分类" name="contractClassId" component={SysField.ContractClassId} required />
+          <FormItem labelCol={5} label="付款总金额" name="allMoney" component={SysField.AllMoney} required />
+        </ProCard>
+        <ProCard headerBordered className="h2Card" title="付款信息">
+          <FieldList
+            name="details"
+            initialValue={[
+              {},
+            ]}
+          >
+            {({state, mutators}) => {
+              const onAdd = () => mutators.push();
+              return (
+                <div>
+                  {state.value.map((item, index) => {
+                    const onRemove = index => mutators.remove(index);
+                    return (
+                      <Card
+                        style={{marginTop: 8}}
+                        headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
+                        bodyStyle={{padding: 8}}
+                        key={index}>
+                        <div style={{width: '5%', display: 'inline-block'}}>{`第${index + 1}批`}</div>
+                        <div style={{width: '25%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin: 0}}
+                            label="名称"
+                            name={`details.${index}.name`}
+                            component={SysField.MoneyName}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '18%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={8}
+                            itemStyle={{margin: 0}}
+                            label="金额"
+                            name={`details.${index}.money`}
+                            component={SysField.Money}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '23%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={8}
+                            itemStyle={{margin: 0}}
+                            label="百分比"
+                            name={`details.${index}.percent`}
+                            component={SysField.Percent}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '25%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin: 0}}
+                            label="付款时间"
+                            name={`details.${index}.time`}
+                            component={SysField.Time}
+                          />
+                        </div>
+                        <Button
+                          type="link"
+                          style={{float: 'right'}}
+                          disabled={state.value.length === 1}
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
+                        />
+                      </Card>
+                    );
+                  })}
+                  <Button
+                    type="dashed"
+                    style={{marginTop: 8}}
+                    icon={<PlusOutlined />}
+                    onClick={onAdd}>增加付款信息</Button>
+                </div>
+              );
+            }}
+          </FieldList>
+        </ProCard>
+
+        <Row gutter={24}>
+          <Col span={12}>
+            <ProCard headerBordered className="h2Card" title="甲方信息">
+              <CustomerAll
+                customer="partyA"
+                adress="partyAAdressId"
+                contacts="partyAContactsId"
+                phone="partyAPhone"
+                customerId={customerId} />
+            </ProCard>
+          </Col>
+          <Col span={12}>
+            <ProCard className="h2Card" headerBordered title="乙方信息">
+              <CustomerAll
+                customer="partyB"
+                adress="partyBAdressId"
+                contacts="partyBContactsId"
+                phone="partyBPhone"
+                customerId={company} />
+            </ProCard>
+          </Col>
+        </Row>
+      </Form>
     </div>
   );
 
 };
 
-export default AddContractEdit;
+export default React.forwardRef(AddContractEdit);

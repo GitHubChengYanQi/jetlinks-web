@@ -28,42 +28,43 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
 
 
   useEffect(() => {
-    setTagNumber({
-      inp: defaultNumbers('class="inp"'),
-      number:defaultNumbers('class="number"'),
-    });
+    if (template)
+      setTagNumber({
+        inp: defaultNumbers('class="inp"'),
+        number: defaultNumbers('class="number"'),
+      });
   }, []);
 
   const insertHtml = (type, number) => {
     switch (type) {
       case 'inp':
-        return `<strong class='inp' key=${number}>文本框</strong>`;
+        return `<input class='inp' key=${number} placeholder="文本框" disabled />`;
       case 'number':
-        return `<strong class="number" key=${number}>数字框</strong>`;
+        return `<input class="number" key=${number} placeholder="数字框" disabled />`;
       case 'date':
-        return `<strong class="date" key=${number}>时间框</strong>`;
+        return `<input class="date" key=${number} placeholder="时间框" disabled/>`;
       case 'customer':
-        return `<strong class="customer" key=${number}>客户</strong>`;
+        return `<input class="customer" key=${number} placeholder="客户" disabled/>`;
       case 'sku':
-        return `<strong class="sku" key=${number}>物料</strong>`;
+        return `<input class="sku" key=${number} placeholder="物料"  disabled/>`;
       case 'Acontacts':
-        return `<strong class="Acontacts" key=${number}>甲方联系人</strong>`;
+        return `<input class="Acontacts" key=${number} placeholder="甲方联系人"  disabled/>`;
       case 'Bcontacts':
-        return `<strong class="Bcontacts" key=${number}>乙方联系人</strong>`;
+        return `<input class="Bcontacts" key=${number} placeholder="乙方联系人"  disabled/>`;
       case 'AAddress':
-        return `<strong class="AAddress" key=${number}>甲方地址</strong>`;
+        return `<input class="AAddress" key=${number} placeholder="甲方地址"  disabled/>`;
       case 'BAddress':
-        return `<strong class="BAddress" key=${number}>乙方地址</strong>`;
+        return `<input class="BAddress" key=${number} placeholder="乙方地址" disabled />`;
       case 'APhone':
-        return `<strong class="APhone" key=${number}>甲方电话</strong>`;
+        return `<input class="APhone" key=${number} placeholder="甲方电话"  disabled/>`;
       case 'BPhone':
-        return `<strong class="BPhone" key=${number}>乙方电话</strong>`;
+        return `<input class="BPhone" key=${number} placeholder="乙方电话"  disabled/>`;
       case 'ACustomer':
-        return `<strong class="ACustomer" key=${number}>甲方客户</strong>`;
+        return `<input class="ACustomer" key=${number} placeholder="甲方客户"  disabled/>`;
       case 'BCustomer':
-        return `<strong class="BCustomer" key=${number}>乙方客户</strong>`;
+        return `<input class="BCustomer" key=${number} placeholder="乙方客户"  disabled/>`;
       case 'package':
-        return `<strong class="package" key=${number}>套餐</strong>`;
+        return `<input class="package" key=${number} placeholder="套餐"  disabled/>`;
       default:
         break;
     }
@@ -77,7 +78,7 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
     let number = 0;
     switch (type) {
       case 'inp':
-        if (tagNumber.inp !== undefined){
+        if (tagNumber.inp !== undefined) {
           number = tagNumber.inp + 1;
         }
         setTagNumber({
@@ -86,7 +87,7 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         });
         break;
       case 'number':
-        if (tagNumber.number !== undefined){
+        if (tagNumber.number !== undefined) {
           number = tagNumber.number + 1;
         }
         setTagNumber({
@@ -95,111 +96,111 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         });
         break;
       case 'date':
-        if (tagNumber.date !== undefined){
+        if (tagNumber.date !== undefined) {
           number = tagNumber.date + 1;
         }
         setTagNumber({
           ...tagNumber,
-          date:number,
+          date: number,
         });
         break;
       case 'customer':
-        if (tagNumber.customer !== undefined){
+        if (tagNumber.customer !== undefined) {
           number = tagNumber.customer + 1;
         }
         setTagNumber({
           ...tagNumber,
-          customer:number,
+          customer: number,
         });
         break;
       case 'sku':
-        if (tagNumber.sku !== undefined){
+        if (tagNumber.sku !== undefined) {
           number = tagNumber.sku + 1;
         }
         setTagNumber({
           ...tagNumber,
-          sku:number,
+          sku: number,
         });
         break;
       case 'Acontacts':
-        if (tagNumber.Acontacts !== undefined){
+        if (tagNumber.Acontacts !== undefined) {
           number = tagNumber.Acontacts + 1;
         }
         setTagNumber({
           ...tagNumber,
-          Acontacts:number,
+          Acontacts: number,
         });
         break;
       case 'Bcontacts':
-        if (tagNumber.Bcontacts !== undefined){
+        if (tagNumber.Bcontacts !== undefined) {
           number = tagNumber.Bcontacts + 1;
         }
         setTagNumber({
           ...tagNumber,
-          Bcontacts:number,
+          Bcontacts: number,
         });
         break;
       case 'AAddress':
-        if (tagNumber.AAddress !== undefined){
+        if (tagNumber.AAddress !== undefined) {
           number = tagNumber.AAddress + 1;
         }
         setTagNumber({
           ...tagNumber,
-          AAddress:number,
+          AAddress: number,
         });
         break;
       case 'BAddress':
-        if (tagNumber.BAddress !== undefined){
+        if (tagNumber.BAddress !== undefined) {
           number = tagNumber.BAddress + 1;
         }
         setTagNumber({
           ...tagNumber,
-          BAddress:number,
+          BAddress: number,
         });
         break;
       case 'APhone':
-        if (tagNumber.APhone !== undefined){
+        if (tagNumber.APhone !== undefined) {
           number = tagNumber.APhone + 1;
         }
         setTagNumber({
           ...tagNumber,
-          APhone:number,
+          APhone: number,
         });
         break;
       case 'BPhone':
-        if (tagNumber.BPhone !== undefined){
+        if (tagNumber.BPhone !== undefined) {
           number = tagNumber.BPhone + 1;
         }
         setTagNumber({
           ...tagNumber,
-          BPhone:number,
+          BPhone: number,
         });
         break;
       case 'ACustomer':
-        if (tagNumber.ACustomer !== undefined){
+        if (tagNumber.ACustomer !== undefined) {
           number = tagNumber.ACustomer + 1;
         }
         setTagNumber({
           ...tagNumber,
-          ACustomer:number,
+          ACustomer: number,
         });
         break;
       case 'BCustomer':
-        if (tagNumber.BCustomer !== undefined){
+        if (tagNumber.BCustomer !== undefined) {
           number = tagNumber.BCustomer + 1;
         }
         setTagNumber({
           ...tagNumber,
-          BCustomer:number,
+          BCustomer: number,
         });
         break;
       case 'package':
-        if (tagNumber.package !== undefined){
+        if (tagNumber.package !== undefined) {
           number = tagNumber.package + 1;
         }
         setTagNumber({
           ...tagNumber,
-          package:number,
+          package: number,
         });
         break;
       default:
@@ -216,8 +217,8 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         <Card.Grid style={CardGridStyle} onClick={() => tagClick('number')}>数字框</Card.Grid>
         <Card.Grid style={CardGridStyle} onClick={() => tagClick('date')}>时间框</Card.Grid>
         <Card.Grid style={CardGridStyle} onClick={() => tagClick('customer')}>客户</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('sku')}>物料</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('package')}>套餐</Card.Grid>
+        {/* <Card.Grid style={CardGridStyle} onClick={() => tagClick('sku')}>物料</Card.Grid> */}
+        {/* <Card.Grid style={CardGridStyle} onClick={() => tagClick('package')}>套餐</Card.Grid> */}
         <Card.Grid style={CardGridStyle} onClick={() => tagClick('Acontacts')}>甲方联系人</Card.Grid>
         <Card.Grid style={CardGridStyle} onClick={() => tagClick('Bcontacts')}> 乙方联系人</Card.Grid>
         <Card.Grid style={CardGridStyle} onClick={() => tagClick('AAddress')}> 甲方地址</Card.Grid>

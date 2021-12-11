@@ -52,7 +52,7 @@ const PartsEdit = ({...props},ref) => {
           onSubmit={(value) => {
             return value;
           }}
-          effect={() => {
+          effects={() => {
             const {setFieldState} = createFormActions();
 
             FormEffectHooks.onFieldValueChange$('item').subscribe(({value}) => {

@@ -66,10 +66,10 @@ export const QualityPlanId = (props) =>{
 
 export const State = (props) =>{
   return (<Radio.Group {...props}>
-    <Radio.Button value={0}>执行中</Radio.Button>
+    <Radio.Button value={0}>待分派</Radio.Button>
     <Radio.Button value={1}>已分派</Radio.Button>
     <Radio.Button value={2}>已完成</Radio.Button>
-    <Radio.Button value={3}>待入库</Radio.Button>
+    <Radio.Button value={3}>已入库</Radio.Button>
   </Radio.Group>);
 };
 

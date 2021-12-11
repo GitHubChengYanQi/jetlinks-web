@@ -41,7 +41,7 @@ const CodingRulesEdit = ({...props},ref) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="codingRulesId"
-        effect={() => {
+        effects={() => {
 
           const {setFieldState} = createFormActions();
 

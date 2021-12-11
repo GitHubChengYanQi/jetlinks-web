@@ -77,7 +77,7 @@ const SpuEdit = (props) => {
             ref={formRef}
             api={ApiConfig}
             fieldKey="spuId"
-            effect={() => {
+            effects={() => {
               onFieldValueChange$('categoryId').subscribe(({value}) => {
                 if (value !== undefined && value !== '0') {
                   run({

@@ -7,7 +7,6 @@ import {
 import {MegaLayout as antMegaLayout} from '@formily/antd-components';
 import useRequest from '@/util/Request/useRequest';
 import {SkeletonForm} from '@/components/Skeleton';
-import {message} from 'antd';
 
 import style from './index.module.less';
 
@@ -21,7 +20,6 @@ const FormWrapper = (
     api,
     fieldKey,
     value,
-    effect,
     defaultValue,
     labelAlign,
     formatResult,
