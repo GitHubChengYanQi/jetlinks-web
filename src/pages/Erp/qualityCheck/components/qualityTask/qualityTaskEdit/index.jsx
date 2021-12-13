@@ -5,7 +5,7 @@
  * @Date 2021-11-16 09:54:41
  */
 
-import React, {useRef} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {Avatar, Button, Card, Input} from 'antd';
 import Form from '@/components/Form';
 import {qualityTaskDetail, qualityTaskAdd, qualityTaskEdit} from '../qualityTaskUrl';
@@ -27,9 +27,8 @@ const ApiConfig = {
   save: qualityTaskEdit
 };
 
-const {wxCp} = config;
 
-const QualityTaskEdit = ({...props}) => {
+const QualityTaskEdit = ({...props},ref) => {
 
   const formRef = useRef();
 
@@ -42,6 +41,10 @@ const QualityTaskEdit = ({...props}) => {
     }
   });
 
+  useImperativeHandle(ref,()=>({
+    formRef,
+  }));
+
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
@@ -52,6 +55,7 @@ const QualityTaskEdit = ({...props}) => {
         {...props}
         ref={formRef}
         api={ApiConfig}
+        NoButton={false}
         fieldKey="qualityTaskId"
         onSuccess={() => {
           props.onSuccess();
@@ -249,4 +253,4 @@ const QualityTaskEdit = ({...props}) => {
   );
 };
 
-export default QualityTaskEdit;
+export default React.forwardRef(QualityTaskEdit);

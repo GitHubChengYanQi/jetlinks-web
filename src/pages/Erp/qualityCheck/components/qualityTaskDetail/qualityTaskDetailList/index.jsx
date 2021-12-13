@@ -79,21 +79,23 @@ const QualityTaskDetailList = ({value}) => {
           <Column title="联系人" dataIndex="person" width={100} align="center" />
           <Column title="电话" dataIndex="phone" width={100} align="center" />
           <Column title="备注" dataIndex="note" width={200} />
-          <Column title="分派人" dataIndex="user" render={(value, record) => {
+          <Column title="联系人" dataIndex="user" render={(value, record) => {
             return <>
               {record.user && record.user.name}
             </>;
           }} />
           <Column title="分派时间" dataIndex="createTime" width={120} />
           <Column title="状态" dataIndex="state" width={100} align="center" render={(value) => {
-            return <>
-              {
-                value > 1 ?
-                  <><CheckCircleOutlined style={{color: 'green'}} /> &nbsp;&nbsp;完成</>
-                  :
-                  <><CloseCircleOutlined style={{color: 'red'}} />&nbsp;&nbsp; 未完成</>
-              }
-            </>;
+            switch (value) {
+              case 1:
+                return <><CloseCircleOutlined style={{color: 'red'}} />&nbsp;&nbsp; 未完成</>;
+              case 2:
+                return <><CheckCircleOutlined style={{color: 'green'}} /> &nbsp;&nbsp;已完成</>;
+              case 3:
+                return <><CheckCircleOutlined style={{color: 'green'}} /> &nbsp;&nbsp;已入库</>;
+              default:
+                break;
+            }
           }} />
         </AntTable>}
       </ProCard>

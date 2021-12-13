@@ -26,6 +26,7 @@ const {FormItem} = Form;
 
 const QualityTaskList = () => {
   const ref = useRef(null);
+  const compoentRef = useRef(null);
   const detail = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -88,10 +89,23 @@ const QualityTaskList = () => {
         <Column title="备注" dataIndex="remark" />
         <Column />
       </Table>
-      <Modal width={1250} title="编辑" component={QualityTaskEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Modal
+        width={1250}
+        title="质检任务"
+        compoentRef={compoentRef}
+        component={QualityTaskEdit}
+        footer={<Button
+          type="primary"
+          onClick={() => {
+            compoentRef.current.formRef.current.submit();
+          }}>
+          发起
+        </Button>}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }}
+        ref={ref} />
       <Modal width={1200} component={QualityTaskDetailList} onSuccess={() => {
         detail.current.close();
       }} ref={detail} />
