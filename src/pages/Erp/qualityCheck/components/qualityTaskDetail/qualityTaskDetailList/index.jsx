@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect} from 'react';
-import {Descriptions, Table as AntTable} from 'antd';
+import {Badge, Descriptions, Table as AntTable} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
@@ -61,9 +61,17 @@ const QualityTaskDetailList = ({value}) => {
         {data.childTasks &&
         <AntTable
           pagination={false}
-          dataSource={data.childTasks}
+          dataSource={data.childTasks.filter((value)=>{
+            return value.state !== -1;
+          })}
           rowKey="qualityTaskId"
         >
+          <Column title="分派人" dataIndex="user" render={(value, record) => {
+            return <>
+              {record.user && record.user.name}
+            </>;
+          }} />
+          <Column title="分派时间" dataIndex="createTime" width={120} />
           <Column title="质检人" width={100} align="center" render={(value, record) => {
             return <>
               {record.users && record.users.map((items) => {
@@ -79,26 +87,41 @@ const QualityTaskDetailList = ({value}) => {
           <Column title="联系人" dataIndex="person" width={100} align="center" />
           <Column title="电话" dataIndex="phone" width={100} align="center" />
           <Column title="备注" dataIndex="note" width={200} />
-          <Column title="联系人" dataIndex="user" render={(value, record) => {
-            return <>
-              {record.user && record.user.name}
-            </>;
-          }} />
-          <Column title="分派时间" dataIndex="createTime" width={120} />
           <Column title="状态" dataIndex="state" width={100} align="center" render={(value) => {
             switch (value) {
+              case -1:
+                return <Badge text='已拒绝' color='red'/>;
               case 1:
-                return <><CloseCircleOutlined style={{color: 'red'}} />&nbsp;&nbsp; 未完成</>;
+                return <Badge text='进行中' color='yellow'/>;
               case 2:
-                return <><CheckCircleOutlined style={{color: 'green'}} /> &nbsp;&nbsp;已完成</>;
+                return <Badge text='已完成' color='blue'/>;
               case 3:
-                return <><CheckCircleOutlined style={{color: 'green'}} /> &nbsp;&nbsp;已入库</>;
+                return <Badge text='已入库' color='green'/>;
               default:
                 break;
             }
           }} />
         </AntTable>}
       </ProCard>
+
+      {/*<ProCard className="h2Card" title="拒检任务信息" headerBordered>*/}
+      {/*  {data.childTasks &&*/}
+      {/*  <AntTable*/}
+      {/*    pagination={false}*/}
+      {/*    dataSource={data.childTasks.filter((value)=>{*/}
+      {/*      return value.state === -1;*/}
+      {/*    })}*/}
+      {/*    rowKey="qualityTaskId"*/}
+      {/*  >*/}
+      {/*    <Column title="拒检人" width={100} align="center" render={(value, record) => {*/}
+      {/*      return <>*/}
+      {/*        {record.user && record.user.name}*/}
+      {/*      </>;*/}
+      {/*    }} />*/}
+      {/*    <Column title="拒检时间" dataIndex="createTime" width={120} />*/}
+      {/*    <Column title="备注" dataIndex="note" width={200} />*/}
+      {/*  </AntTable>}*/}
+      {/*</ProCard>*/}
     </div>
   );
 };

@@ -73,6 +73,8 @@ const QualityTaskList = () => {
         <Column title="负责人" dataIndex="userName" />
         <Column title="状态" dataIndex="state" render={(value) => {
           switch (value) {
+            case -1:
+              return <Badge text="已拒绝" color="red" />;
             case 0:
               return <Badge text="待分派" color="red" />;
             case 1:
