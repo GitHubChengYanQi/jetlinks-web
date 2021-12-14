@@ -35,9 +35,9 @@ const ProcessList = () => {
     }
   });
 
-  const action = (type,processId,status) => {
+  const action = (status,processId,updateStatus,type,module) => {
     let statusType = '';
-    switch (type) {
+    switch (status) {
       case 0:
         statusType = '发布';
         break;
@@ -58,8 +58,9 @@ const ProcessList = () => {
         return await run({
           data: {
             processId,
-            module:'inQuality',
-            status,
+            type,
+            module,
+            status:updateStatus,
           }
         });
       },
@@ -143,7 +144,7 @@ const ProcessList = () => {
             return (
               <>
                 <Button type="link" onClick={() => {
-                  action(0,record.processId,98);
+                  action(0,record.processId,98,record.type,record.module);
                 }}>发布</Button>
                 <EditButton onClick={() => {
                   ref.current.open(record.processId);
@@ -156,12 +157,12 @@ const ProcessList = () => {
           } else if (record.status === 98) {
             return <>
               <Button type='link' onClick={()=>{
-                action(99,record.processId,99);
+                action(99,record.processId,99,record.type,record.module);
               }}>启用</Button>
             </>;
           }else if (record.status === 99){
             return <Button type='link' danger onClick={()=>{
-              action(98,record.processId,98);
+              action(98,record.processId,98,record.type,record.module);
             }}>停用</Button>;
           }
 

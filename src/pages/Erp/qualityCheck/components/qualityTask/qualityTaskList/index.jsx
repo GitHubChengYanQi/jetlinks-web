@@ -5,7 +5,7 @@
  * @Date 2021-11-16 09:54:41
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Table from '@/components/Table';
 import {Badge, Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -29,6 +29,7 @@ const QualityTaskList = () => {
   const compoentRef = useRef(null);
   const detail = useRef(null);
   const tableRef = useRef(null);
+  const [loading,setLoading] = useState(false);
   const actions = () => {
     return (
       <>
@@ -93,16 +94,28 @@ const QualityTaskList = () => {
       </Table>
       <Modal
         width={1250}
+        loading={(loading)=>{
+          setLoading(loading);
+        }}
         title="质检任务"
         compoentRef={compoentRef}
         component={QualityTaskEdit}
-        footer={<Button
-          type="primary"
-          onClick={() => {
-            compoentRef.current.formRef.current.submit();
-          }}>
-          发起
-        </Button>}
+        footer={<>
+          <Button
+            loading={loading}
+            type="primary"
+            onClick={() => {
+              compoentRef.current.formRef.current.submit();
+            }}>
+            发起
+          </Button>
+          <Button
+            onClick={() => {
+              ref.current.close();
+            }}>
+            取消
+          </Button>
+        </>}
         onSuccess={() => {
           tableRef.current.refresh();
           ref.current.close();

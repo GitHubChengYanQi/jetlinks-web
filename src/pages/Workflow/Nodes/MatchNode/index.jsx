@@ -35,7 +35,6 @@ export const Owner = (props) => {
       return <>
         {
           rule.map((items, index) => {
-            console.log(items);
             if (items.type === 'AppointUsers') {
               return <div key={index}>
                 {

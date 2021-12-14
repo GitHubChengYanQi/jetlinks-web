@@ -9,6 +9,7 @@ import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 import Originator from '@/pages/Workflow/Nodes/Originator';
+import {Modal} from 'antd';
 
 
 const $config = {
@@ -234,28 +235,38 @@ const WorkFlow = ({config: _config, value, onChange}) => {
     if (type === OptionTypes.CONDITION) {
       objRef.childNode = {
         ...NodeTemplates[OptionTypes.CONDITION], conditionNodeList: [
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件1', auditType: 'branch',stepType:'branch', childNode: o},
-          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2', auditType: 'branch',stepType:'branch',},
+          {
+            ...NodeTemplates[OptionTypes.BRANCH],
+            nodeName: '条件1',
+            auditType: 'branch',
+            stepType: 'branch',
+            childNode: o
+          },
+          {...NodeTemplates[OptionTypes.BRANCH], nodeName: '条件2', auditType: 'branch', stepType: 'branch',},
         ]
       };
     }
     if (type === OptionTypes.BRANCH) {
-      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'route',stepType:'route'});
+      objRef.conditionNodeList.push({...NodeTemplates[NodeTypes.BRANCH], auditType: 'branch', stepType: 'branch'});
     }
     updateNode();
   }
 
   // 删除节点
   function onDeleteNode(pRef, objRef, type, index) {
-    if (window.confirm('是否删除节点？')) {
-      if (type === NodeTypes.BRANCH) {
-        objRef.conditionNodeList.splice(index, 1);
-      } else {
-        const newObj = objRef.childNode;
-        pRef.childNode = newObj;
+    Modal.confirm({
+      centered:true,
+      title: '是否删除节点?',
+      onOk: () => {
+        if (type === NodeTypes.BRANCH) {
+          objRef.conditionNodeList.splice(index, 1);
+        } else {
+          const newObj = objRef.childNode;
+          pRef.childNode = newObj;
+        }
+        updateNode();
       }
-      updateNode();
-    }
+    });
   }
 
 
@@ -301,12 +312,12 @@ const WorkFlow = ({config: _config, value, onChange}) => {
               case 'audit':
                 currentNode.current.stepType = value.type;
                 currentNode.current.auditType = 'process';
-                currentNode.current.auditRule = {type:'audit',rules: value.auditRule};
+                currentNode.current.auditRule = {type: 'audit', rules: value.auditRule};
                 break;
               case 'quality':
                 currentNode.current.stepType = value.type;
                 currentNode.current.auditType = 'process';
-                currentNode.current.auditRule = {type:value.action,rules: value.actionRule};
+                currentNode.current.auditRule = {type: value.action, rules: value.actionRule};
                 break;
               default:
                 break;
@@ -326,13 +337,13 @@ const WorkFlow = ({config: _config, value, onChange}) => {
             switch (currentNode.current.type) {
               case 0:
               case '0':
-                currentNode.current.auditRule = {type:'start',rules: value};
+                currentNode.current.auditRule = {type: 'start', rules: value};
                 currentNode.current.stepType = 'start';
                 currentNode.current.auditType = 'start';
                 break;
               case 2:
               case '2':
-                currentNode.current.auditRule = {type:'send',rules: value};
+                currentNode.current.auditRule = {type: 'send', rules: value};
                 currentNode.current.stepType = 'send';
                 currentNode.current.auditType = 'send';
                 break;

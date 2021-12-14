@@ -28,6 +28,9 @@ const FormWrapper = (
     onSubmit = (values) => {
       return values;
     },
+    loading = () =>{
+
+    },
     onSuccess = () => {
     },
     onError = () => {
@@ -94,6 +97,10 @@ const FormWrapper = (
       onError(error);
     }
   });
+
+  useEffect(()=>{
+    loading(saveLoad);
+  },[saveLoad]);
 
 
   if (!formActions) {

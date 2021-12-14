@@ -9,6 +9,9 @@ const Modal = (
     component: Component,
     width,
     headTitle,
+    loading = () => {
+
+    },
     footer,
     padding,
     onSuccess = () => {
@@ -58,11 +61,14 @@ const Modal = (
       title={headTitle || (title && (value ? `编辑${title}` : `添加${title}`))}
       destroyOnClose
     >
-      <div style={{maxHeight: footer ? 'calc(100vh - 110px)':'calc(100vh - 55px)', overflow: 'auto'}}>
+      <div style={{maxHeight: footer ? 'calc(100vh - 110px)' : 'calc(100vh - 55px)', overflow: 'auto'}}>
         {Component ? <Component
           {...props}
           ref={compoentRef}
           value={value}
+          loading={(load) => {
+            loading(load);
+          }}
           onSuccess={(response) => {
             onSuccess(response);
           }}

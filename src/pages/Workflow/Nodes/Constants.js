@@ -36,7 +36,8 @@ export const NodeTemplates = {
   },
   [OptionTypes.CONDITION]: {
     'nodeName': '路由',
-    'auditType':'route',
+    'auditType': 'route',
+    'step_type': 'route',
     'type': OptionTypes.CONDITION,
     'childNode': null,
     // 'conditionNodeList': []
