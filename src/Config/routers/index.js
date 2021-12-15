@@ -11,6 +11,7 @@ import SpuRouterConfig from '@/pages/SPU/router';
 import WorkflowConfig from '@/pages/Workflow/router';
 import FormConfig from '@/pages/Form/router';
 import baseSystem from './baseSystem';
+import PurshaseRouterConfig from '@/pages/Purshase/router';
 
 const routerConfig = [
   {
@@ -38,6 +39,7 @@ const routerConfig = [
       ...RepairRouterConfig,
       ...ProductionRouterConfig,
       ...SpuRouterConfig,
+      ...PurshaseRouterConfig,
       {
         path: '/test',
         component: lazy(() => import('@/pages/Test/index')),
