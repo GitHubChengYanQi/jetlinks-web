@@ -20,7 +20,6 @@ const UserTree = ({type, value, onChange}) => {
 
 
   const [check, setCheck] = useState(value || {});
-  console.log(check);
 
   useEffect(() => {
     onChange(check);

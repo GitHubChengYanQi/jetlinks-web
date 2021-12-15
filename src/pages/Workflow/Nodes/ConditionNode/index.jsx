@@ -6,6 +6,7 @@ import Render from '../Render';
 import {NodeTypes} from '../Constants';
 import WFC from '../../OperatorContext';
 import styles from './index.module.scss';
+import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 
 const CoverLine = ({first = false, last = false}) => {
@@ -36,7 +37,10 @@ const BranchNode = (props) => {
           {!last && <div className="sort-right" onClick={props.sortRight} />}
           <div className="content" onClick={() => props.onBranchClick(props.objRef)}>
             <div className="text">
-              {props.owner || <span className="placeholder">无条件</span>}
+              {props.auditRule ?
+                Owner(props)
+                :
+                '无条件'}
             </div>
             {/* <i className="anticon anticon-right arrow"></i> */}
           </div>

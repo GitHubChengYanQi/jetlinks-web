@@ -44,7 +44,6 @@ const QualityTaskDetailList = ({value}) => {
     return null;
   }
 
-
   return (
     <div style={{padding: 24}}>
       <ProCard className="h2Card" title="基本信息" headerBordered>
@@ -61,9 +60,7 @@ const QualityTaskDetailList = ({value}) => {
         {data.childTasks &&
         <AntTable
           pagination={false}
-          dataSource={data.childTasks.filter((value)=>{
-            return value.state !== -1;
-          })}
+          dataSource={data.childTasks}
           rowKey="qualityTaskId"
         >
           <Column title="分派人" dataIndex="user" render={(value, record) => {
@@ -104,24 +101,55 @@ const QualityTaskDetailList = ({value}) => {
         </AntTable>}
       </ProCard>
 
-      {/*<ProCard className="h2Card" title="拒检任务信息" headerBordered>*/}
-      {/*  {data.childTasks &&*/}
-      {/*  <AntTable*/}
-      {/*    pagination={false}*/}
-      {/*    dataSource={data.childTasks.filter((value)=>{*/}
-      {/*      return value.state === -1;*/}
-      {/*    })}*/}
-      {/*    rowKey="qualityTaskId"*/}
-      {/*  >*/}
-      {/*    <Column title="拒检人" width={100} align="center" render={(value, record) => {*/}
-      {/*      return <>*/}
-      {/*        {record.user && record.user.name}*/}
-      {/*      </>;*/}
-      {/*    }} />*/}
-      {/*    <Column title="拒检时间" dataIndex="createTime" width={120} />*/}
-      {/*    <Column title="备注" dataIndex="note" width={200} />*/}
-      {/*  </AntTable>}*/}
-      {/*</ProCard>*/}
+      <ProCard className="h2Card" title="拒检任务信息" headerBordered>
+        {data.childTasks &&
+        <AntTable
+          pagination={false}
+          dataSource={data.refuse}
+          rowKey="refuseId"
+        >
+          <Column title="拒检人" width={100} align="center" render={(value, record) => {
+            return <>
+              {record.user && record.user.name}
+            </>;
+          }} />
+          <Column title="拒检物料" render={(value, record) => {
+            return <>
+              {record.skuResult && record.skuResult.skuName}
+              &nbsp;/&nbsp;
+              {record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.name}
+              &nbsp;&nbsp;
+              <em style={{ color: '#c9c8c8', fontSize: 10 }}>
+                (
+                {
+                  record.skuResult
+                  &&
+                  record.skuResult.list
+                  &&
+                  record.skuResult.list.map((items, index) => {
+                    return (
+                      <span key={index}>{items.itemAttributeResult.attribute}：{items.attributeValues}</span>
+                    );
+                  })
+                }
+                )
+              </em>
+            </>;
+          }} />
+          <Column title="品牌 / 供应商" width={120} align="center" render={(value, record) => {
+            return <>
+              {record.brandResult && record.brandResult.brandName}
+            </>;
+          }} />
+          <Column title="数量" width={100} align="center" render={(value, record) => {
+            return <>
+              {record.number}
+            </>;
+          }} />
+          <Column title="拒检时间" dataIndex="createTime" width={200} />
+          <Column title="备注" dataIndex="note" width={200} />
+        </AntTable>}
+      </ProCard>
     </div>
   );
 };

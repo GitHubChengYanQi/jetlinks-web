@@ -18,7 +18,31 @@ import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 const actions = createFormActions();
 
 
-const Setps = ({value, onClose, onChange}) => {
+const Setps = ({value, onClose, onChange, type}) => {
+
+  const module = () => {
+    switch (type) {
+      case 'quality':
+        return [
+          {label: '审批', value: 'audit'},
+          {label: '质检', value: 'quality'},
+        ];
+      case 'purchase':
+        return [
+          {label: '审批', value: 'audit'},
+          {label: '采购', value: 'purchase'},
+        ];
+      default:
+        return [
+          {label: '工序', value: 'setp',},
+          {label: '工艺', value: 'ship',},
+          {label: '审批', value: 'audit'},
+          {label: '质检', value: 'quality'},
+          {label: '采购', value: 'purchase'},
+          {label: '流程', value: 'audit_process',}
+        ];
+    }
+  };
 
   return (
     <Form
@@ -28,7 +52,7 @@ const Setps = ({value, onClose, onChange}) => {
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
 
-          const item = ['setp', 'ship', 'audit', 'quality', 'audit_process'];
+          const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
             const field = item[i];
             setFieldState(field, state => {
@@ -55,7 +79,8 @@ const Setps = ({value, onClose, onChange}) => {
         type: value && value.type || 'audit',
         auditRule: value && value.auditRule,
         actionRule: value && value.auditRule,
-        action: value && value.action,
+        quality_action: value && value.action,
+        purchase_action: value && value.action
       }}
       onSubmit={(values) => {
         typeof onChange === 'function' && onChange(values);
@@ -66,13 +91,7 @@ const Setps = ({value, onClose, onChange}) => {
         label="类型"
         name="type"
         component={Radio.Group}
-        dataSource={[
-          {label: '工序', value: 'setp', disabled: true},
-          {label: '工艺', value: 'ship', disabled: true},
-          {label: '审批', value: 'audit'},
-          {label: '质检', value: 'quality'},
-          {label: '流程', value: 'audit_process', disabled: true}
-        ]} />
+        dataSource={module()} />
       <VirtualField name="setp">
         <FormItem
           wrapperCol={10}
@@ -226,7 +245,7 @@ const Setps = ({value, onClose, onChange}) => {
         <FormItem
           required
           label="质检动作"
-          name="action"
+          name="quality_action"
           component={Select}
           dataSource={[
             {label: '分派任务', value: 'quality_dispatch'},
@@ -240,6 +259,17 @@ const Setps = ({value, onClose, onChange}) => {
           label="设置规则"
           name="actionRule"
           component={Rule}
+        />
+      </VirtualField>
+      <VirtualField name="purchase">
+        <FormItem
+          required
+          label="采购动作"
+          name="purchase_action"
+          component={Select}
+          dataSource={[
+            {label: '采购完成', value: 'purchase_complete'},
+          ]}
         />
       </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>

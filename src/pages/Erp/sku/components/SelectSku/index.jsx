@@ -1,8 +1,7 @@
+import {Popover, Select, Space, Spin} from 'antd';
+import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
-import {Popover, Select as AntSelect, Select as AntdSelect, Space} from 'antd';
-import React, {useEffect, useState} from 'react';
-import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
@@ -10,12 +9,13 @@ import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassific
 const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
 
   const {loading, data, run} = useRequest({...skuList, data: {type: 0, ...params}}, {
-    debounceInterval: 500, onSuccess: (res) => {
+    debounceInterval: 1000, onSuccess: (res) => {
       if (res.length === 1) {
         setSpuClass(res && res[0].spuResult.spuClassificationId);
       }
     }
   });
+
 
   const [change, setChange] = useState();
 
@@ -48,9 +48,9 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
     };
   };
 
-  const options = data && data.map((items) => {
+  const options = !loading ? data && data.map((items) => {
     return object(items);
-  });
+  }) : [];
 
   const content = () => {
     return <Space direction="horizontal">
@@ -70,13 +70,13 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
             }
           });
         }} />
-      <AntdSelect
+      <Select
         style={{width: 200}}
         placeholder="输入型号搜索"
         showSearch
         value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
         allowClear
-        loading={loading}
+        notFoundContent={loading && <Spin style={{margin:'auto'}} />}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         onSearch={(value) => {
           setChange(value);
@@ -110,23 +110,23 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
         }}>
         {options && options.map((items) => {
           return (
-            <AntSelect.Option
+            <Select.Option
               key={items.value}
               spu={items.spu}
               title={items.label + items.attribute}
               value={items.label + items.attribute}>
               {items.label} <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>
-            </AntSelect.Option>
+            </Select.Option>
           );
         })}
-      </AntdSelect>
+      </Select>
     </Space>;
   };
 
   return (
     <>
       <Popover placement="bottomLeft" content={content} trigger="click">
-        <AntdSelect
+        <Select
           options={data || []}
           open={false}
           style={{width: 180}}

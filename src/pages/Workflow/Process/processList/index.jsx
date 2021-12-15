@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Badge, Button, Modal,  Table as AntTable} from 'antd';
+import {Badge, Button, Modal, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -35,7 +35,7 @@ const ProcessList = () => {
     }
   });
 
-  const action = (status,processId,updateStatus,type,module) => {
+  const action = (status, processId, updateStatus, type, module) => {
     let statusType = '';
     switch (status) {
       case 0:
@@ -54,17 +54,18 @@ const ProcessList = () => {
       title: `是否 [ ${statusType} ]该流程?`,
       icon: <ExclamationCircleOutlined />,
       content: type === 0 ? '提示：发布之后不能进行修改' : '提示：每种功能模块只能并最少启用一个',
-      onOk:async ()=>{
+      onOk: async () => {
         return await run({
           data: {
             processId,
             type,
             module,
-            status:updateStatus,
+            status: updateStatus,
           }
         });
       },
-      onCancel() {},
+      onCancel() {
+      },
     });
   };
 
@@ -108,20 +109,24 @@ const ProcessList = () => {
             </>
           );
         }} />
-        <Column title="类型" dataIndex="type" render={(value, record) => {
+        <Column title="类型" dataIndex="type" render={(value) => {
           switch (value) {
             case 'ship':
               return <>工艺</>;
-            case 'audit':
-              return <>审核</>;
+            case 'quality':
+              return <>质检</>;
+            case 'purchase':
+              return <>采购</>;
             default:
               break;
           }
         }} />
-        <Column title="功能" dataIndex="module" render={(value, record) => {
+        <Column title="功能" dataIndex="module" render={(value) => {
           switch (value) {
             case 'inQuality':
               return <>入厂检</>;
+            case 'purchaseAsk':
+              return <>采购申请</>;
             default:
               break;
           }
@@ -129,11 +134,11 @@ const ProcessList = () => {
         <Column title="状态" dataIndex="status" render={(value, record) => {
           switch (value) {
             case 0:
-              return <Badge color='yellow' text='未发布' />;
+              return <Badge color="yellow" text="未发布" />;
             case 99:
-              return <Badge color='green' text='启用' />;
+              return <Badge color="green" text="启用" />;
             case 98:
-              return <Badge color='red' text='停用' />;
+              return <Badge color="red" text="停用" />;
             default:
               break;
           }
@@ -144,7 +149,7 @@ const ProcessList = () => {
             return (
               <>
                 <Button type="link" onClick={() => {
-                  action(0,record.processId,98,record.type,record.module);
+                  action(0, record.processId, 98, record.type, record.module);
                 }}>发布</Button>
                 <EditButton onClick={() => {
                   ref.current.open(record.processId);
@@ -156,13 +161,13 @@ const ProcessList = () => {
             );
           } else if (record.status === 98) {
             return <>
-              <Button type='link' onClick={()=>{
-                action(99,record.processId,99,record.type,record.module);
+              <Button type="link" onClick={() => {
+                action(99, record.processId, 99, record.type, record.module);
               }}>启用</Button>
             </>;
-          }else if (record.status === 99){
-            return <Button type='link' danger onClick={()=>{
-              action(98,record.processId,98,record.type,record.module);
+          } else if (record.status === 99) {
+            return <Button type="link" danger onClick={() => {
+              action(98, record.processId, 98, record.type, record.module);
             }}>停用</Button>;
           }
 

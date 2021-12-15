@@ -1,11 +1,11 @@
 // 添加节点类型
 export const OptionTypes = {
-  APPROVER: 1,
-  NOTIFIER: 2,
-  BRANCH: 3,
-  CONDITION: 4
+  APPROVER: '1',
+  NOTIFIER: '2',
+  BRANCH: '3',
+  CONDITION: '4'
 };
-export const NodeTypes = {...OptionTypes, START: 0};
+export const NodeTypes = {...OptionTypes, START: '0'};
 // 节点类型默认标题名
 export const OptionNames = {
   [OptionTypes.APPROVER]: '过程',

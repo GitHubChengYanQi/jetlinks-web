@@ -20,11 +20,11 @@ export const CategoryId = (props) =>{
   return (<Input {...props}/>);
 };
 export const Type = (props) =>{
-  return (<AntdSelect options={[{label:'工艺',value:'ship'},{label:'审核',value:'audit'}]} {...props}/>);
+  return (<AntdSelect options={[{label:'工艺',value:'ship'},{label:'质检',value:'quality'},{label:'采购',value:'purchase'},]} {...props}/>);
 };
 
 export const Module = (props) =>{
-  return (<AntdSelect options={[{label:'入厂检',value:'inQuality'}]} {...props}/>);
+  return (<AntdSelect options={[{label:'入厂检',value:'inQuality'},{label:'采购申请',value:'purchaseAsk'},]} {...props}/>);
 };
 export const FormId = (props) =>{
   return (<Input {...props}/>);

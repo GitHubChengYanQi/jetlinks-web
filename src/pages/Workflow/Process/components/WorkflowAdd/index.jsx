@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import WorkFlow from '@/pages/Workflow/WorkFlow';
-import {Affix, Button, Card, Col, Row, Space} from 'antd';
+import {Affix, Button, Card, Col, Empty, Row, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -19,6 +19,7 @@ const WorkflowAdd = () => {
       }
     }
   });
+
 
   const {loading, run: detail} = useRequest(
     {url: '/activitiSteps/detail', method: 'POST'},
@@ -53,6 +54,9 @@ const WorkflowAdd = () => {
     return (<ProSkeleton type="descriptions" />);
   }
 
+  if (!data)
+    return <Empty style={{padding:64}} />;
+
 
   return <>
     <div style={{padding: 16}}>
@@ -74,7 +78,7 @@ const WorkflowAdd = () => {
       </div>
     </div>
     <Card style={{height: '90vh'}}>
-      <WorkFlow value={value} onChange={(value) => {
+      <WorkFlow value={value} type={data.type} onChange={(value) => {
         setValue(value);
       }} />
     </Card>

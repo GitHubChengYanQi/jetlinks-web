@@ -1,21 +1,45 @@
 import React from 'react';
-import {Typography} from 'antd';
+import {Space, Typography} from 'antd';
 
 
 import StartNode from '../StartNode';
 import ApproverNode from '../ApproverNode';
 import NotifierNode from '../NotifierNode';
 import ConditionNode from '../ConditionNode';
-// eslint-disable-next-line import/no-cycle
 
 const NodeMaps = {
-  0: StartNode,
-  1: ApproverNode,
-  2: NotifierNode,
-  4: ConditionNode
+  '0': StartNode,
+  '1': ApproverNode,
+  '2': NotifierNode,
+  '4': ConditionNode
 };
 
 export const Owner = (props) => {
+
+  const purchaseAsk = (rule) => {
+    if (rule && rule.length > 0)
+      return rule.map((items, index) => {
+        let type = '';
+        switch (items.type) {
+          case 'number':
+            type = '采购数量';
+            break;
+          case 'type_number':
+            type = '采购种类';
+            break;
+          case 'money':
+            type = '总金额';
+            break;
+          default:
+            break;
+        }
+        return <Space key={index} direction='horizontal'>
+          <div>{type}</div>
+          <div>{items.purchaseAsk && items.purchaseAsk.operator}</div>
+          <div>{items.purchaseAsk && items.purchaseAsk.value}</div>
+        </Space>;
+      });
+  };
 
   const action = (value) => {
     switch (value) {
@@ -25,6 +49,8 @@ export const Owner = (props) => {
         return <>执行任务</>;
       case 'quality_complete':
         return <>完成任务</>;
+      case 'purchase_complete':
+        return <>采购完成</>;
       default:
         break;
     }
@@ -63,7 +89,7 @@ export const Owner = (props) => {
               </div>;
             } else if (items.type === 'AllPeople') {
               return <strong key={index}>所有人</strong>;
-            }else {
+            } else {
               return null;
             }
           })
@@ -95,6 +121,19 @@ export const Owner = (props) => {
         <strong>{action(props.auditRule && props.auditRule.type)}</strong>
         <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
       </>;
+    case 'purchase':
+      return <>
+        <strong>{action(props.auditRule && props.auditRule.type)}</strong>
+      </>;
+    case 'branch':
+      switch (props.auditRule && props.auditRule.type) {
+        case 'purchaseAsk':
+          return <>
+            <div>{purchaseAsk(props.auditRule && props.auditRule.rules)}</div>
+          </>;
+        default:
+          return '无条件';
+      }
     default:
       break;
   }

@@ -56,13 +56,13 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
       }}
       danger
     />
-    <Select value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
+    <Select style={{minWidth: 100}} value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
       setSelectValue(value);
       switch (value) {
-        case 'AppointUser':
+        case 'AppointUsers':
           typeof onChange === 'function' && onChange({type: value, appointUsers: []});
           break;
-        case 'DeptPosition':
+        case 'DeptPositions':
           typeof onChange === 'function' && onChange({type: value, deptPositions: []});
           break;
         case 'AllPeople':
