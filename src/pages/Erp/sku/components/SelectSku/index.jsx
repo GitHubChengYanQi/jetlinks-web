@@ -6,7 +6,7 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds,refresh}) => {
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) => {
 
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();

@@ -6,12 +6,18 @@
  */
 
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Input, Popover, Row, Space} from 'antd';
+import {Avatar, Button, Card, Col, Input, message, Popover, Row, Space} from 'antd';
 import Form from '@/components/Form';
 import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
 import ProCard from '@ant-design/pro-card';
-import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
+import {
+  createAsyncFormActions,
+  createFormActions,
+  FormEffectHooks,
+  FormPath,
+  InternalFieldList as FieldList
+} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Codings, LisingNote} from '../purchaseAskField';
 import {useRequest} from '@/util/Request';
@@ -61,17 +67,19 @@ const PurchaseAskEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="purchaseAskId"
-        effects={({setFieldState}) => {
-
+        onSubmit={(value) => {
+          const required = value.purchaseListingParams.filter((items) => {
+            return !items.skuId || !items.applyNumber;
+          });
+          if (required.length > 0) {
+            message.warning('物料和申请数量为必填项！');
+            return false;
+          } else {
+            return value;
+          }
+        }}
+        effects={() => {
           FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(({name, value}) => {
-            // setFieldState(
-            //   FormPath.transform(name, /\d/, ($1) => {
-            //     return `purchaseListingParams.${$1}.skuId`;
-            //   }),
-            //   state => {
-            //     state.props.refresh = value;
-            //   }
-            // );
             const array = skuIds;
             if (value !== undefined)
               array[name.match(/\d/g)[0]] = value;
@@ -123,7 +131,6 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             skuIds={skuIds}
                             name={`purchaseListingParams.${index}.skuId`}
                             component={SysField.SkuId}
-                            required
                           />
                         </div>
                         <div style={{width: '15%', display: 'inline-block'}}>
@@ -133,7 +140,6 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             label="申请数量"
                             name={`purchaseListingParams.${index}.applyNumber`}
                             component={SysField.ApplyNumber}
-                            required
                           />
                         </div>
                         <div style={{width: '20%', display: 'inline-block'}}>
