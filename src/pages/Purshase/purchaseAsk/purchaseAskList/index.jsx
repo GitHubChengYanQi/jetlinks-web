@@ -18,12 +18,14 @@ import PurchaseAskEdit from '../purchaseAskEdit';
 import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
+import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const PurchaseAskList = () => {
   const ref = useRef(null);
+  const detailRef = useRef(null);
   const compoentRef = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -54,38 +56,35 @@ const PurchaseAskList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="编号" dataIndex="coding" />
-        <Column title="采购类型" dataIndex="type" />
+        <Column title="编号" dataIndex="coding" render={(value,record)=>{
+          return <Button type='link' onClick={()=>{
+            detailRef.current.open(record.purchaseAskId);
+          }}>{value}</Button>;
+        }} />
+        <Column title="创建人" render={(value, record) => {
+          return <>
+            {record.createUserName}
+          </>;
+        }} />
+        <Column title="创建时间" dataIndex="createTime" />
         <Column title="备注" dataIndex="note" />
         <Column title="申请状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:
               return <Badge text="待审核" color="yellow" />;
-            case 1:
+            case 2:
               return <Badge text="已通过" color="green" />;
-            case -1:
+            case 1:
               return <Badge text="已拒绝" color="red" />;
             default:
               break;
           }
         }} />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.purchaseAskId);
-              }} />
-              <DelButton api={purchaseAskDelete} value={record.purchaseAskId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={300} />
       </Table>
       <Modal
         width={1300}
-        title="编辑"
+        title="采购申请"
         compoentRef={compoentRef}
         component={PurchaseAskEdit}
         footer={<>
@@ -104,6 +103,13 @@ const PurchaseAskList = () => {
           tableRef.current.refresh();
           ref.current.close();
         }} ref={ref} />
+
+      <Modal
+        width={1300}
+        headTitle="采购申请详情"
+        component={PurchaseListingList}
+        ref={detailRef}
+      />
     </>
   );
 };

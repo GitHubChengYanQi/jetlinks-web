@@ -68,6 +68,8 @@ const CodingRulesList = () => {
         return '质检';
       case 4:
         return '质检任务';
+      case 5:
+        return '采购申请';
       default:
         break;
     }

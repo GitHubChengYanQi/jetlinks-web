@@ -47,7 +47,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
   const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
       data: {
-        module: 1,
+        module: 5,
         state: 1
       }
     }

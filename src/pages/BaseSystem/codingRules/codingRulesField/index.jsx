@@ -129,6 +129,8 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           value: '${type}'
         }];
+      case 5:
+        return [];
       default:
         return [];
     }
@@ -278,6 +280,7 @@ export const Module = (props) => {
     {label: '出库', value: 2},
     {label: '质检', value: 3},
     {label: '质检任务', value: 4},
+    {label: '采购申请', value: 5},
   ];
 
   return (<AntdSelect options={options} {...props} />);
