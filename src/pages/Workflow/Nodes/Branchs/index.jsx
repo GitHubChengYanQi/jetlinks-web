@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Input, InputNumber, Select, Space} from 'antd';
+import {Button, InputNumber, Select, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 
 const Branchs = ({value, onChange}) => {
@@ -48,6 +48,19 @@ const Branchs = ({value, onChange}) => {
     setCount(counts && counts.length > 0 ? counts.length : 1);
   }, []);
 
+  const unit = (value) => {
+    switch (value) {
+      case 'number':
+        return '个';
+      case 'type_number':
+        return '个';
+      case 'money':
+        return '元';
+      default:
+        break;
+    }
+  };
+
   const selects = (index, value) => {
 
     return <Space key={index} style={{marginBottom: 16}}>
@@ -58,7 +71,7 @@ const Branchs = ({value, onChange}) => {
         options={options}
         onChange={(value) => {
           const array = change;
-          array[index] = {...array[index],type: value, };
+          array[index] = {...array[index], type: value,};
           setChange(array);
           refreshConfig(change);
         }}
@@ -72,11 +85,14 @@ const Branchs = ({value, onChange}) => {
           {label: '>=', value: '>=',},
           {label: '<', value: '<',},
           {label: '<=', value: '<=',},
-          {label: '===', value: '===',},
+          {label: '=', value: '=',},
         ]}
         onChange={(value) => {
           const array = change;
-          array[index] = {...array[index], purchaseAsk: {...array[index] && array[index].purchaseAsk,operator: value},};
+          array[index] = {
+            ...array[index],
+            purchaseAsk: {...array[index] && array[index].purchaseAsk, operator: value},
+          };
           setChange(array);
           refreshConfig(change);
         }} />
@@ -91,6 +107,7 @@ const Branchs = ({value, onChange}) => {
           refreshConfig(change);
         }}
       />
+      {unit(value && value.type)}
       <Button
         type="link"
         disabled={count === 1}

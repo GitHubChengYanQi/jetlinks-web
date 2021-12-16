@@ -5,18 +5,20 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useImperativeHandle, useRef} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, Input, Popover, Row, Space} from 'antd';
 import Form from '@/components/Form';
 import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
 import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Codings, LisingNote} from '../purchaseAskField';
 import {useRequest} from '@/util/Request';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {createActions} from 'react-eva';
+import {useBoolean} from 'ahooks';
 
 const {FormItem} = Form;
 
@@ -29,6 +31,8 @@ const ApiConfig = {
 const PurchaseAskEdit = ({...props}, ref) => {
 
   const formRef = useRef();
+
+  const [skuIds, setSkuIds] = useState([]);
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -57,6 +61,25 @@ const PurchaseAskEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="purchaseAskId"
+        effects={({setFieldState}) => {
+
+          FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(({name, value}) => {
+            // setFieldState(
+            //   FormPath.transform(name, /\d/, ($1) => {
+            //     return `purchaseListingParams.${$1}.skuId`;
+            //   }),
+            //   state => {
+            //     state.props.refresh = value;
+            //   }
+            // );
+            const array = skuIds;
+            if (value !== undefined)
+              array[name.match(/\d/g)[0]] = value;
+            else
+              array.splice(name.match(/\d/g)[0], 1);
+            setSkuIds(array);
+          });
+        }}
       >
         <ProCard title="入库信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '30%'}}>
@@ -82,7 +105,9 @@ const PurchaseAskEdit = ({...props}, ref) => {
               return (
                 <div>
                   {state.value.map((item, index) => {
-                    const onRemove = index => mutators.remove(index);
+                    const onRemove = index => {
+                      mutators.remove(index);
+                    };
                     return (
                       <Card
                         style={{marginTop: 8}}
@@ -95,6 +120,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             labelCol={7}
                             itemStyle={{margin: 0}}
                             label="物料"
+                            skuIds={skuIds}
                             name={`purchaseListingParams.${index}.skuId`}
                             component={SysField.SkuId}
                             required
@@ -115,8 +141,8 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             labelCol={10}
                             itemStyle={{margin: 0}}
                             label={<>可用数量&nbsp;&nbsp;
-                              <Popover content='您当前可使用此物料的数量=库存数量+采购数量-其他生产订单预定数量'>
-                                <QuestionCircleOutlined style={{cursor:'pointer'}} />
+                              <Popover content="您当前可使用此物料的数量=库存数量+采购数量-其他生产订单预定数量">
+                                <QuestionCircleOutlined style={{cursor: 'pointer'}} />
                               </Popover></>}
                             value={666}
                             name={`purchaseListingParams.${index}.availableNumber`}

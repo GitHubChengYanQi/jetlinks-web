@@ -6,30 +6,10 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
-
-  const {loading, data, run} = useRequest({...skuList, data: {type: 0, ...params}}, {
-    debounceInterval: 1000, onSuccess: (res) => {
-      if (res.length === 1) {
-        setSpuClass(res && res[0].spuResult.spuClassificationId);
-      }
-    }
-  });
-
-
-  const [change, setChange] = useState();
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds,refresh}) => {
 
   const [spuClass, setSpuClass] = useState();
-
-  useEffect(() => {
-    run({
-      data: {
-        skuId: value,
-        type: 0,
-        ...params
-      }
-    });
-  }, [params]);
+  const [change, setChange] = useState();
 
   const object = (items) => {
     let values = '';
@@ -41,12 +21,37 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
       }
     });
     return {
+      disabled: skuIds && skuIds.filter((value) => {
+        return value === items.skuId;
+      }).length > 0,
       label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
       value: items.skuId,
       attribute: `${(values === '' ? '' : `( ${values} )`)}`,
       spu: items.spuResult
     };
   };
+
+  const {loading, data, run} = useRequest({...skuList, data: {type: 0, ...params}}, {
+    debounceInterval: 1000, onSuccess: (res) => {
+      if (res.length === 1) {
+        onChange(res[0].skuId);
+        setChange(object(res[0]).label + object(res[0]).attribute);
+        setSpuClass(res[0].spuResult.spuClassificationId);
+      }
+    }
+  });
+
+
+  useEffect(() => {
+    run({
+      data: {
+        skuId: value,
+        type: 0,
+        ...params
+      }
+    });
+  }, [params, value]);
+
 
   const options = !loading ? data && data.map((items) => {
     return object(items);
@@ -74,9 +79,12 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
         style={{width: 200}}
         placeholder="输入型号搜索"
         showSearch
-        value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
         allowClear
-        notFoundContent={loading && <Spin style={{margin:'auto'}} />}
+        onClear={()=>{
+          onChange(null);
+        }}
+        value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
+        notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         onSearch={(value) => {
           setChange(value);
@@ -113,6 +121,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params}) => {
             <Select.Option
               key={items.value}
               spu={items.spu}
+              disabled={items.disabled}
               title={items.label + items.attribute}
               value={items.label + items.attribute}>
               {items.label} <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>

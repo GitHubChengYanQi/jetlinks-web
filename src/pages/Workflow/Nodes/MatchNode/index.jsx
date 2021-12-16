@@ -16,6 +16,19 @@ const NodeMaps = {
 
 export const Owner = (props) => {
 
+  const unit = (value) => {
+    switch (value) {
+      case 'number':
+        return '个';
+      case 'type_number':
+        return '个';
+      case 'money':
+        return '元';
+      default:
+        break;
+    }
+  };
+
   const purchaseAsk = (rule) => {
     if (rule && rule.length > 0)
       return rule.map((items, index) => {
@@ -37,6 +50,7 @@ export const Owner = (props) => {
           <div>{type}</div>
           <div>{items.purchaseAsk && items.purchaseAsk.operator}</div>
           <div>{items.purchaseAsk && items.purchaseAsk.value}</div>
+          <div>{unit(items.type)}</div>
         </Space>;
       });
   };
