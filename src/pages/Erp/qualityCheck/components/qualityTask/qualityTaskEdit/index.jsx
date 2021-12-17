@@ -137,6 +137,7 @@ const QualityTaskEdit = ({...props},ref) => {
             <FormItem
               label="编码"
               name="coding"
+              module={4}
               component={SysField.Codings}
               codingId={data}
               rules={[{required: true, message: data && data.length > 0 ? '该字段是必填字段' : '请先设置编码！'}]}

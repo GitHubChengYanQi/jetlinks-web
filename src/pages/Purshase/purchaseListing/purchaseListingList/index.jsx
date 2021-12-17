@@ -52,8 +52,6 @@ const PurchaseListingList = ({value}) => {
     }
   };
 
-  console.log(data);
-
   return (
     <div style={{padding: 16}}>
       <ProCard headerBordered className="h2Card" title="基础信息">

@@ -91,7 +91,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
       >
         <ProCard title="入库信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="编号" name="coding" component={SysField.Codings} codingId={data} required />
+            <FormItem label="编号" name="coding" component={SysField.Codings} module={5} codingId={data} required />
           </div>
           {/*<div style={{display: 'inline-block', width: '30%'}}>*/}
           {/*  <FormItem label="采购类型" name="type" component={SysField.Type} required />*/}

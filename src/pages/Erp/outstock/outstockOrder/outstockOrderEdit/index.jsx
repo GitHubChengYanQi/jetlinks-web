@@ -143,7 +143,7 @@ const OutstockOrderEdit = ({...props}) => {
 
         <ProCard title="出库信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '50%'}}>
-            <FormItem label="编码" name="coding" codingId={data} component={SysField.Codings} required />
+            <FormItem label="编码" name="coding" module={2} codingId={data} component={SysField.Codings} required />
           </div>
           <div style={{display: 'inline-block', width: '50%'}}>
             <FormItem label="仓库" name="storehouseId" component={SysField.Storhouse} required />

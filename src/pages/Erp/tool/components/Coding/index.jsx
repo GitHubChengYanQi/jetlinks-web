@@ -4,11 +4,18 @@ import {codingRulesListSelect} from '@/pages/Erp/tool/toolUrl';
 import {Input, Select as AntdSelect, Space} from 'antd';
 
 
-const Coding = ({value, width, onChange, codingId}) => {
+const Coding = ({value, width, onChange, codingId,module}) => {
 
   const [state, setState] = useState();
 
-  const {data} = useRequest(codingRulesListSelect);
+  const {data} = useRequest(codingRulesListSelect,
+    {
+      defaultParams:{
+        data:{
+          module
+        }
+      }
+    });
 
   const options = [
     {
