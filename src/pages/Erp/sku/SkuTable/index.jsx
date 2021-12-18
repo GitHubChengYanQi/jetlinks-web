@@ -57,51 +57,24 @@ const SkuTable = (props) => {
     );
   };
 
-  const [search, {toggle}] = useBoolean(false);
-
   const searchForm = () => {
-
-    const formItem = () => {
-      return (
-        <>
-          <FormItem mega-props={{span: 1}} placeholder="物料名称" style={{width: 200}} name="spuId" component={SysField.SelectSpu} />
-          <FormItem mega-props={{span: 1}} placeholder="编码" name="standard" component={SysField.Standard} />
-        </>
-      );
-    };
-
 
     return (
       <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-          columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="型号" name="skuName" component={SysField.SelectSkuName} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
+        <FormItem
+          placeholder="型号 / 编码 / 物料名称"
+          name="skuName"
+          component={SysField.SelectSkuName} />
+        <FormItem
+          style={{display: 'none'}}
+          hidden v
+          alue={0}
+          component={SysField.Type} />
+        <FormItem
+          name="spuClass" style={{display: 'none'}}
+          hidden
+          component={SysField.SelectSpuClass} />
       </div>
-    );
-  };
-
-
-  const Search = () => {
-    return (
-      <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem mega-props={{span: 1}} name="type" style={{display: 'none'}} hidden value={0} component={SysField.Type} />
-              <FormItem mega-props={{span: 1}} name="spuClass" style={{display: 'none'}} hidden component={SysField.SelectSpuClass} />
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
-      </>
     );
   };
 
@@ -133,7 +106,6 @@ const SkuTable = (props) => {
   };
 
 
-
   return (
     <>
       <Table
@@ -141,8 +113,6 @@ const SkuTable = (props) => {
         api={skuList}
         tableKey="sku"
         rowKey="skuId"
-        layout={search}
-        SearchButton={Search()}
         searchForm={searchForm}
         actions={actions()}
         bordered={false}
@@ -190,7 +160,7 @@ const SkuTable = (props) => {
           );
         }} />
 
-        <Column title='编码' key={3} dataIndex='standard' />
+        <Column title="编码" key={3} dataIndex="standard" />
 
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
 

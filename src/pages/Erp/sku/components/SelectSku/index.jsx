@@ -27,7 +27,8 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) 
       label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
       value: items.skuId,
       attribute: `${(values === '' ? '' : `( ${values} )`)}`,
-      spu: items.spuResult
+      spu: items.spuResult,
+      standard:items.standard
     };
   };
 
@@ -98,7 +99,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) 
           });
         }}
         onChange={(value, option) => {
-          setChange(value);
+          setChange(value.replace(`standard:${option.standard}`,''));
           if (option) {
             setSpuClass(option.spu && option.spu.spuClassificationId);
             if (option && option.key) {
@@ -123,7 +124,8 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) 
               spu={items.spu}
               disabled={items.disabled}
               title={items.label + items.attribute}
-              value={items.label + items.attribute}>
+              standard={items.standard}
+              value={`${items.label + items.attribute}standard:${items.standard}`}>
               {items.label} <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>
             </Select.Option>
           );
@@ -136,7 +138,6 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) 
     <>
       <Popover placement="bottomLeft" content={content} trigger="click">
         <Select
-          options={data || []}
           open={false}
           style={{width: 180}}
           value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}

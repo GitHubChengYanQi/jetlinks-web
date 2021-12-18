@@ -3,6 +3,7 @@ import {
   BellOutlined,
   FullscreenOutlined
 } from '@ant-design/icons';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import Icon from '@/components/Icon';
 import {Menu, Drawer, Avatar, Button, Dropdown, Tabs} from 'antd';
 import store from '@/store';
@@ -19,12 +20,12 @@ import menu from '@/asseset/imgs/menu.png';
 import SPU from '@/asseset/imgs/spu.png';
 import production from '@/asseset/imgs/production.png';
 import workflow from '@/asseset/imgs/workflow.png';
+import purchase from '@/asseset/imgs/purchase.png';
 
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
 import Commission from '@/layouts/BasicLayout/components/Header/components/Commission';
 import {useRequest} from '@/util/Request';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import Remind from '@/layouts/BasicLayout/components/Header/components/Remind';
 
 const {TabPane} = Tabs;
@@ -39,7 +40,7 @@ const AppIcon = {
   production,
   SPU,
   workflow,
-
+  purchase,
 };
 
 

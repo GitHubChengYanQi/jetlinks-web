@@ -18,6 +18,7 @@ import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formil
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {config} from 'ice';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import {useSetState} from 'ahooks';
 
 const {FormItem} = Form;
 
@@ -31,6 +32,8 @@ const ApiConfig = {
 const QualityTaskEdit = ({...props},ref) => {
 
   const formRef = useRef();
+
+  const [skuIds, setSkuIds] = useSetState({data:[]});
 
   const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
@@ -76,6 +79,12 @@ const QualityTaskEdit = ({...props},ref) => {
         effects={({setFieldState}) => {
 
           FormEffectHooks.onFieldValueChange$('details.*.skuId').subscribe(async ({name, value}) => {
+            const array = skuIds.data;
+            if (value !== undefined)
+              array[name.match(/\d/g)[0]] = value;
+            else
+              array.splice(name.match(/\d/g)[0], 1);
+            setSkuIds({data:array});
             if (value) {
               const sku = await request({
                 ...skuDetail,
@@ -179,6 +188,7 @@ const QualityTaskEdit = ({...props},ref) => {
                             labelCol={7}
                             itemStyle={{margin: 0}}
                             label="物料"
+                            skuIds={skuIds.data}
                             name={`details.${index}.skuId`}
                             component={SysField.SkuId}
                             required

@@ -24,7 +24,7 @@ import {useRequest} from '@/util/Request';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {createActions} from 'react-eva';
-import {useBoolean} from 'ahooks';
+import {useBoolean, useSetState} from 'ahooks';
 
 const {FormItem} = Form;
 
@@ -38,7 +38,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
 
   const formRef = useRef();
 
-  const [skuIds, setSkuIds] = useState([]);
+  const [skuIds, setSkuIds] = useSetState({data:[]});
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -84,12 +84,12 @@ const PurchaseAskEdit = ({...props}, ref) => {
         }}
         effects={() => {
           FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(({name, value}) => {
-            const array = skuIds;
+            const array = skuIds.data;
             if (value !== undefined)
               array[name.match(/\d/g)[0]] = value;
             else
               array.splice(name.match(/\d/g)[0], 1);
-            setSkuIds(array);
+            setSkuIds({data:array});
           });
         }}
       >
@@ -132,7 +132,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             labelCol={7}
                             itemStyle={{margin: 0}}
                             label="物料"
-                            skuIds={skuIds}
+                            skuIds={skuIds.data}
                             name={`purchaseListingParams.${index}.skuId`}
                             component={SysField.SkuId}
                           />
