@@ -61,8 +61,7 @@ const Setps = ({value, onClose, onChange, type}) => {
           }
         });
 
-        FormEffectHooks.onFieldValueChange$('action').subscribe(({value}) => {
-
+        FormEffectHooks.onFieldValueChange$('quality_action').subscribe(({value}) => {
 
           setFieldState('actionRule', state => {
             if (value === 'quality_dispatch') {

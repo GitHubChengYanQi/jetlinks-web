@@ -67,6 +67,10 @@ const PurchaseAskEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="purchaseAskId"
+        onSuccess={()=>{
+          props.onSuccess();
+        }}
+        onError={()=>{}}
         onSubmit={(value) => {
           const required = value.purchaseListingParams.filter((items) => {
             return !items.skuId || !items.applyNumber;
