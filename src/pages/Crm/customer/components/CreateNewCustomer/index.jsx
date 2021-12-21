@@ -10,6 +10,7 @@ const CreateNewCustomer = ({
   widths,
   onChange,
   wxUser,
+  supply,
   ...props
 }, ref) => {
 
@@ -54,7 +55,7 @@ const CreateNewCustomer = ({
         </Space>
       </>
     } title={title}  >
-      <CustomerEdit value={value} wxUser={user} ref={compoentRef} onSuccess={()=>{
+      <CustomerEdit value={value} supply={supply} wxUser={user} ref={compoentRef} onSuccess={()=>{
         onSuccess();
       }} onChange={(res)=>{
         typeof onChange === 'function' && onChange(res);

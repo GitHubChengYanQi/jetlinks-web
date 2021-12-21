@@ -1,12 +1,12 @@
 import React, {useRef, useState} from 'react';
-import { Button, Card, Col, Row, Tabs, Statistic, Divider} from 'antd';
+import {Button, Card, Col, Row, Tabs, Empty} from 'antd';
+import {useHistory, useParams} from 'ice';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {EditOutlined} from '@ant-design/icons';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import {customerDelete, customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
-import {useHistory, useParams} from 'ice';
-import ProCard from '@ant-design/pro-card';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
 import AdressList from '@/pages/Crm/customer/CustomerEdit/components/AdressList';
@@ -15,7 +15,6 @@ import OrderList from '@/pages/Erp/order/OrderList';
 import ContractTable from '@/pages/Crm/contract/components/components/ContractTable';
 import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
-import {EditOutlined} from '@ant-design/icons';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import Modal from '@/components/Modal';
 import ContactsTable from '@/pages/Crm/contacts/ContactsList';
@@ -24,41 +23,40 @@ import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
 import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
-import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
+import DetailMenu from '@/pages/Crm/customer/CustomerDetail/compontents/DetailMenu';
 import styles from './index.module.scss';
+import InvoiceList from '@/pages/Crm/invoice/invoiceList';
+import SupplyList from '@/pages/Crm/supply/supplyList';
 
 const {TabPane} = Tabs;
 
-const CustomerDetail = () => {
+const CustomerDetail = ({id}) => {
 
   const params = useParams();
 
-  const [responsive, setResponsive] = useState(false);
-
-  const ref = useRef(null);
   const addRef = useRef(null);
   const refTrack = useRef(null);
   const submitRef = useRef(null);
   const history = useHistory();
 
-  const {loading, data, run, refresh} = useRequest(customerDetail, {
+  const {loading, data, refresh} = useRequest(customerDetail, {
     defaultParams: {
       data: {
-        customerId: params.cid
+        customerId: params.cid || id
       }
     }
   });
 
   const {run: runCustomer} = useRequest(customerEdit, {manual: true});
 
-  const [width,setWidth] = useState();
+  const [width, setWidth] = useState();
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
   if (!data) {
-    return '暂无客户';
+    return <Empty />;
   }
 
   return (
@@ -80,7 +78,9 @@ const CustomerDetail = () => {
                       avatar: value
                     }
                   });
-                }} value={data.avatar} />
+                }}
+                value={data.avatar}
+              />
             </Col>
             <Col>
               <EditName value={data && data.customerName || '未填写'} onChange={async (value) => {
@@ -92,7 +92,9 @@ const CustomerDetail = () => {
                 });
               }} />
               <div>
-                <em>公司地址：
+                <em>
+                  {data.supply === 1 && <>供应商&nbsp;&nbsp;/&nbsp;&nbsp;</>}
+                  公司地址：
                   <InputEdit value={data && data.signIn} onChange={async (value) => {
                     await runCustomer({
                       data: {
@@ -122,7 +124,15 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-          <CustomerMenu data={data} api={customerDelete} url='/CRM/customer' edit />
+          <DetailMenu
+            supply={data.supply === 1}
+            data={data}
+            type="customer"
+            deletaApi={customerDelete}
+            url="/CRM/customer"
+            refresh={() => {
+              refresh();
+            }} />
           <Button
             style={params.state === 'false' ? {'display': 'none'} : null}
             onClick={() => {
@@ -171,14 +181,14 @@ const CustomerDetail = () => {
               refresh();
             }} val={data.customerId} number={0} />
           <Button onClick={() => {
-            history.push("/CRM/customer");
+            history.push(id ? '/purchase/supply' : '/CRM/customer');
           }}><Icon type="icon-huifu" />返回</Button>
         </div>
       </Card>
       <div
         className={styles.main}>
         <Card>
-          <Desc data={data} />
+          <Desc data={data} supply={id} />
         </Card>
       </div>
       {/* <div */}
@@ -211,10 +221,14 @@ const CustomerDetail = () => {
                   <Description data={data} />
                 </TabPane>
                 <TabPane tab="联系人" key="2">
-                  <ContactsTable customerId={data && data.customerId} />
+                  <ContactsTable customer={data} refresh={() => {
+                    refresh();
+                  }} />
                 </TabPane>
                 <TabPane tab="地址" key="3">
-                  <AdressList customerId={data && data.customerId} />
+                  <AdressList customer={data} refresh={() => {
+                    refresh();
+                  }} />
                 </TabPane>
                 <TabPane tab="合同" key="4">
                   <ContractTable customerId={data && data.customerId} />
@@ -227,6 +241,14 @@ const CustomerDetail = () => {
                 </TabPane>
                 <TabPane tab="附件" key="7">
                   <Upload customerId={data && data.customerId} />
+                </TabPane>
+                <TabPane tab="开票信息" key="8">
+                  <InvoiceList customer={data} refresh={() => {
+                    refresh();
+                  }} />
+                </TabPane>
+                <TabPane tab="物料信息" key="9">
+                  <SupplyList customer={data} />
                 </TabPane>
               </Tabs>
             </Card>
@@ -246,8 +268,6 @@ const CustomerDetail = () => {
             </Card>
           </Col>
         </Row>
-
-
       </div>
 
     </div>

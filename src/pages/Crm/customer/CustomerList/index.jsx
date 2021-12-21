@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
+import React, {useState} from 'react';
 import {Divider, Spin, Tree} from 'antd';
+import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
 import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
-import SkuTable from '@/pages/Erp/sku/SkuTable';
 
 
-const CustomerList = () => {
+const CustomerList = ({supply}) => {
 
 
   const {loading, data, run} = useRequest({url: '/crmCustomerLevel/list', method: 'POST', rowKey: 'customerLevelId'});
@@ -34,58 +33,62 @@ const CustomerList = () => {
     }
     return (
       <>
-        <Tree
-          onSelect={(value) => {
-            setStatus(value);
-          }}
-          showLine
-          // switcherIcon={<DownOutlined />}
-          defaultExpandedKeys={['']}
-          // onSelect={this.onSelect}
-          treeData={[
-            {
-              title: '所有客户',
-              key: '',
-              children: [
-                {
-                  title: '潜在客户',
-                  key: '0',
-                },
-                {
-                  title: '正式客户',
-                  key: '1',
-                },
-              ],
-            },
-          ]}
-        />
-        <Divider />
-        <Tree
-          showLine
-          onSelect={(value) => {
-            setState(value);
-          }}
-          // switcherIcon={<DownOutlined />}
-          defaultExpandedKeys={['']}
-          // onSelect={this.onSelect}
-          treeData={[
-            {
-              title: '所有分类',
-              key: '',
-              children: [
-                {
-                  title: '代理商',
-                  key: '0',
-                },
-                {
-                  title: '终端用户',
-                  key: '1',
-                },
-              ],
-            },
-          ]}
-        />
-        <Divider />
+        {!supply &&
+        <>
+          <Tree
+            onSelect={(value) => {
+              setStatus(value);
+            }}
+            showLine
+            // switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['']}
+            // onSelect={this.onSelect}
+            treeData={[
+              {
+                title: '所有客户',
+                key: '',
+                children: [
+                  {
+                    title: '潜在客户',
+                    key: '0',
+                  },
+                  {
+                    title: '正式客户',
+                    key: '1',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Divider />
+          <Tree
+            showLine
+            onSelect={(value) => {
+              setState(value);
+            }}
+            // switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['']}
+            // onSelect={this.onSelect}
+            treeData={[
+              {
+                title: '所有分类',
+                key: '',
+                children: [
+                  {
+                    title: '代理商',
+                    key: '0',
+                  },
+                  {
+                    title: '终端用户',
+                    key: '1',
+                  },
+                ],
+              },
+            ]}
+          />
+          <Divider />
+        </>
+        }
         <div>
           <Select
             api={CustomerLevelIdSelect}
@@ -123,7 +126,7 @@ const CustomerList = () => {
   };
   return (
     <ListLayout>
-      <CustomerTable left={Left()} status={status} state={state} level={level} />
+      <CustomerTable left={Left()} status={status} state={state} supply={supply || 0} level={level} />
     </ListLayout>
   );
 };

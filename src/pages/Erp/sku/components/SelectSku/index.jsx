@@ -99,7 +99,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) 
           });
         }}
         onChange={(value, option) => {
-          setChange(value.replace(`standard:${option.standard}`,''));
+          setChange(value && value.replace(`standard:${option.standard}`,''));
           if (option) {
             setSpuClass(option.spu && option.spu.spuClassificationId);
             if (option && option.key) {

@@ -36,7 +36,7 @@ const {FormItem} = Form;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level, choose, ...other} = props;
+  const {status, state, level, choose,supply, ...other} = props;
   const history = useHistory();
 
 
@@ -66,7 +66,7 @@ const CustomerTable = (props) => {
             name='file'
             fileList={null}
           >
-            <Button icon={<Icon type='icon-daoru' />}>导入客户</Button>
+            <Button icon={<Icon type='icon-daoru' />}>{supply ? '导入供应商' : '导入客户'}</Button>
           </Upload>
         </div>
         <AddButton onClick={() => {
@@ -85,7 +85,7 @@ const CustomerTable = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
-          <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />
+          {supply === 0 && <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />}
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserName} />
           <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
         </>
@@ -98,7 +98,7 @@ const CustomerTable = (props) => {
         <MegaLayout
           responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="客户名称" name="customerName" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} placeholder={supply ? '供应商名称' : '客户名称'} name="customerName" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -121,6 +121,7 @@ const CustomerTable = (props) => {
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
               <FormItem hidden name="customerLevelId" component={SysField.Name} />
+              <FormItem hidden name="supply" value={supply} component={SysField.Name} />
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -160,10 +161,10 @@ const CustomerTable = (props) => {
         }}
         {...other}
       >
-        <Column key={1} title="客户信息" fixed dataIndex="customerName" render={(value, record) => {
+        <Column key={1} title={supply ? '供应商信息' : '客户信息'} fixed dataIndex="customerName" render={(value, record) => {
           return (
             <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
-              history.push(`/CRM/customer/${record.customerId}`);
+              history.push(`${supply === 1 ? '/purchase/supply/' : '/CRM/customer/'}${record.customerId}`);
             }}>
               <Col>
                 <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>
@@ -180,19 +181,19 @@ const CustomerTable = (props) => {
             </Row>
           );
         }} />
-        <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
+        {supply === 0 && <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
           return (
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
-        }} />
-        <Column key={3} title="客户来源" width={300} align="center" dataIndex="customerName" render={(text, record) => {
+        }} />}
+        <Column key={3} title={supply ? '供应商来源' : '客户来源'} width={300} align="center" dataIndex="customerName" render={(text, record) => {
           return (
             <div>
               {record.originResult ? record.originResult.originName : '未填写'}
             </div>
           );
         }} />
-        <Column key={4} title="客户级别" width={120} align="center" render={(text, record) => {
+        <Column key={4} title={supply ? '供应商级别' : '客户级别'} width={120} align="center" render={(text, record) => {
           const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
           return (
             <CustomerLevel
@@ -200,7 +201,7 @@ const CustomerTable = (props) => {
         }} />
         <Column key={5} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
-      <CreateNewCustomer title="客户" model={CustomerEdit} widths={1200} onSuccess={() => {
+      <CreateNewCustomer title={supply ? '供应商' : '客户'} model={CustomerEdit} supply={supply} widths={1200} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

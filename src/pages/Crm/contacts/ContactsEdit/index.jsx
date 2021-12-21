@@ -40,23 +40,19 @@ const RowStyleLayout = styled(props => <div {...props} />)`
 
 const ContactsEdit = ({...props}, ref) => {
 
-  const {customerId} = props;
+  const {customerId,...other} = props;
   const formRef = useRef(null);
   const [result, setResult] = useState(props.value.contactsId || false);
-  const height = () => {
-    if (window.document.body.clientHeight < 1088) {
-      return 'calc(100vh - 206px)';
-    }
-    return 500;
-  };
+
   useImperativeHandle(ref, () => ({
     formRef,
   }));
+
   return (
     <>
-      <div style={{height: height(), padding: '0px 20px'}}>
+      <div style={{padding: 16}}>
         <Form
-          {...props}
+          {...other}
           NoButton={false}
           value={result}
           ref={formRef}
@@ -68,10 +64,11 @@ const ContactsEdit = ({...props}, ref) => {
             }
             props.onSuccess(data && data.data && data.data.contactsId);
           }}
+          onError={()=>{}}
         >
           <Row gutter={24}>
             <Col span={12}>
-              <div style={{paddingRight: 10, height: height(), overflow: 'auto'}}>
+              <div style={{paddingRight: 10, overflow: 'auto'}}>
                 <ProCard
                   className="h2Card"
                   style={{marginTop: 8}}
@@ -96,7 +93,7 @@ const ContactsEdit = ({...props}, ref) => {
               </div>
             </Col>
             <Col span={12}>
-              <div style={{height: height(), overflow: 'auto'}}>
+              <div style={{overflow: 'auto'}}>
                 <ProCard
                   className="h2Card"
                   style={{marginTop: 8}}

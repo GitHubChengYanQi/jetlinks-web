@@ -1,27 +1,21 @@
 import React, {useRef, useState} from 'react';
-import {useRouteMatch, useHistory} from 'ice';
-import store from '@/store';
-import {Drawer, Menu, Modal} from 'antd';
+import {Menu} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
-import BannerDifferenceList from '@/pages/Portal/bannerDifference/bannerDifferenceList';
-import NavigationDifferenceList from '@/pages/Portal/navigationDifference/navigationDifferenceList';
-import RemindList from '@/pages/Portal/remind/remindList';
 import SetView from '@/layouts/SetView';
+import SupplierBlacklistList from '@/pages/Crm/supplierBlacklist/supplierBlacklistList';
+import Modal from '@/components/Modal';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
 
   const [type, setType] = useState(null);
-  const [visible, showModel] = useState(false);
+
+  const ref = useRef();
 
   const RenderComponent = () => {
     switch (type) {
-      case 'lbtfl':
-        return <BannerDifferenceList />;
-      case 'dhfl':
-        return <NavigationDifferenceList />;
-      case 'shtx':
-        return <RemindList />;
+      case 'hmd':
+        return <SupplierBlacklistList />;
       default:
         return null;
     }
@@ -40,14 +34,14 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           style={{width: '100%'}}
           onClick={(item) => {
             setType(item.key);
-            showModel(true);
+            ref.current.open(true);
           }}
         >
-
+          <Menu.Item key="hmd">
+            <span>供应商黑名单管理</span>
+          </Menu.Item>
         </Menu>} />
-      <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {
-        showModel(false);
-      }} footer={null}>{RenderComponent()}</Modal>
+      <Modal footer={[]} width={1200} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };

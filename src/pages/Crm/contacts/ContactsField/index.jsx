@@ -21,7 +21,7 @@ export const ContactsName = (props) => {
   return (<Input style={{width: 200}} {...props} />);
 };
 export const Job = (props) => {
-  return (<Select  api={apiUrl.companyRoleSelect} {...props} />);
+  return (<Select api={apiUrl.companyRoleSelect} {...props} />);
 };
 export const Phone = (props) => {
   return (<InputNumber min={0}   {...props} />);
@@ -35,8 +35,9 @@ export const Customer = (props) => {
 };
 
 export const CustomerAdd = (props) => {
-  props.onChange(props.customerId);
-  return (<Input    {...props} />);
+  const {customerId, ...other} = props;
+  props.onChange(customerId);
+  return (<Input {...other} />);
 };
 
 export const CompanyRole = (props) => {
@@ -69,13 +70,16 @@ export const CompanyRole = (props) => {
 
 export const SelectCustomers = (props) => {
 
-  useEffect(()=>{
-    props.onChange(props.customer.customerId);
-  },[]);
+  const {customer, ...other} = props;
+
+  useEffect(() => {
+    if (customer)
+      props.onChange(customer.customerId);
+  }, []);
 
 
   return (
-    <SelectCustomer {...props} value={props.customer && props.customer.customerName} onChange={(value)=>{
+    <SelectCustomer {...other} value={customer && customer.customerName} onChange={(value) => {
       props.onChange(value && value.customerId);
     }} />
   );
@@ -83,11 +87,11 @@ export const SelectCustomers = (props) => {
 
 export const CustomerId = (props) => {
 
-  const {customer} = props;
+  const {customer, ...other} = props;
   if (customer !== null) {
     props.onChange(customer);
   }
-  return (<Select disabled={customer} api={apiUrl.customerIdSelect} {...props} />);
+  return (<Select disabled={customer} width={200} api={apiUrl.customerIdSelect} {...other} />);
 };
 
 export const CustomerIds = (props) => {
@@ -95,6 +99,6 @@ export const CustomerIds = (props) => {
 };
 
 
-export const PhoneNumber = (props) =>{
-  return (<Input  {...props}/>);
+export const PhoneNumber = (props) => {
+  return (<Input  {...props} />);
 };

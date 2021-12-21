@@ -20,11 +20,12 @@ import {
 } from '@formily/antd';
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Codings, LisingNote} from '../purchaseAskField';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {createActions} from 'react-eva';
 import {useBoolean, useSetState} from 'ahooks';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -38,7 +39,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
 
   const formRef = useRef();
 
-  const [skuIds, setSkuIds] = useSetState({data:[]});
+  const [skuIds, setSkuIds] = useSetState({data: []});
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -67,10 +68,11 @@ const PurchaseAskEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="purchaseAskId"
-        onSuccess={()=>{
+        onSuccess={() => {
           props.onSuccess();
         }}
-        onError={()=>{}}
+        onError={() => {
+        }}
         onSubmit={(value) => {
           const required = value.purchaseListingParams.filter((items) => {
             return !items.skuId || !items.applyNumber;
@@ -82,14 +84,27 @@ const PurchaseAskEdit = ({...props}, ref) => {
             return value;
           }
         }}
-        effects={() => {
-          FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(({name, value}) => {
+        effects={({setFieldState}) => {
+          FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(async ({name, value}) => {
             const array = skuIds.data;
             if (value !== undefined)
               array[name.match(/\d/g)[0]] = value;
             else
               array.splice(name.match(/\d/g)[0], 1);
-            setSkuIds({data:array});
+            setSkuIds({data: array});
+
+            if (value) {
+              const sku = await request({...skuDetail, data: {skuId: value}});
+
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `purchaseListingParams.${$1}.unitId`;
+                }),
+                state => {
+                  state.value = sku && sku.unit && sku.unit.unitId;
+                }
+              );
+            }
           });
         }}
       >
@@ -127,7 +142,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                         bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
-                        <div style={{width: '22%', display: 'inline-block'}}>
+                        <div style={{width: '20%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -137,16 +152,24 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             component={SysField.SkuId}
                           />
                         </div>
-                        <div style={{width: '15%', display: 'inline-block'}}>
-                          <FormItem
-                            labelCol={10}
-                            itemStyle={{margin: 0}}
-                            label="申请数量"
-                            name={`purchaseListingParams.${index}.applyNumber`}
-                            component={SysField.ApplyNumber}
-                          />
-                        </div>
                         <div style={{width: '20%', display: 'inline-block'}}>
+                          <Space>
+                            <FormItem
+                              labelCol={10}
+                              itemStyle={{margin: 0}}
+                              label="申请数量"
+                              name={`purchaseListingParams.${index}.applyNumber`}
+                              component={SysField.ApplyNumber}
+                            />
+                            <FormItem
+                              labelCol={10}
+                              itemStyle={{margin: 0}}
+                              name={`purchaseListingParams.${index}.unitId`}
+                              component={SysField.UnitId}
+                            />
+                          </Space>
+                        </div>
+                        <div style={{width: '15%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}

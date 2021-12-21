@@ -41,6 +41,7 @@ const AdressEdit = ({...props}) => {
           setCity(value && value.city);
         });
       }}
+      onError={()=>{}}
     >
       <FormItem label="省市区地址" name="region" component={SysField.Region} city={city} required/>
       <FormItem label='详细地址' name="map" component={SysField.Map}/>

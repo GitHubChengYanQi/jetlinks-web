@@ -1,5 +1,6 @@
 import {PurchaseAskRouter} from '@/pages/Purshase/purchaseAsk/purchaseAskRouter';
 import PurshaseLayout from '@/pages/Purshase';
+import {SupplyListingRouter} from '@/pages/Purshase/Supply/router';
 
 const PurshaseRouterConfig = [
   {
@@ -8,8 +9,9 @@ const PurshaseRouterConfig = [
     component: PurshaseLayout,
     children:[
       ...PurchaseAskRouter,
+      ...SupplyListingRouter,
       {
-        redirect: '/purchase/purchaseAsk',
+        redirect: '/purchase/supply',
       }
     ]
   }

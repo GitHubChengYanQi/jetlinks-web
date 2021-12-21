@@ -5,34 +5,30 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import Table from '@/components/Table';
+import React, {useRef, useState} from 'react';
 import {Button, Divider, Modal as AntModal, Table as AntTable, Tag} from 'antd';
-import DelButton from '@/components/DelButton';
+import {MegaLayout} from '@formily/antd-components';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
-import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
-import CheckButton from '@/components/CheckButton';
-import PhoneList from '@/pages/Crm/phone/phoneList';
-import {batchDelete, contactsBind, contactsDelete, contactsList} from '@/pages/Crm/contacts/contactsUrl';
+import {contactsBind, contactsList} from '@/pages/Crm/contacts/contactsUrl';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
-import {CustomerIds} from '@/pages/Crm/contacts/ContactsField';
 import {useRequest} from '@/util/Request';
+import {customerEdit} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ContactsTable = (props) => {
 
-  const {customerId} = props;
-
+  const {customer, refresh} = props;
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -43,6 +39,30 @@ const ContactsTable = (props) => {
       tableRef.current.submit();
     }
   });
+
+  const {run: editCustomer} = useRequest(customerEdit,
+    {
+      manual: true,
+      onSuccess: () => {
+        if (typeof refresh === 'function')
+          refresh();
+      }
+    });
+
+  const defaultContacts = (name, contactsId) => {
+    AntModal.confirm({
+      title: `是否将[${name}]设为默认联系人?`,
+      icon: <ExclamationCircleOutlined />,
+      onOk: async () => {
+        await editCustomer({
+          data: {
+            customerId: customer.customerId,
+            defaultContacts: contactsId
+          }
+        });
+      },
+    });
+  };
 
   const actions = () => {
     return (
@@ -80,7 +100,6 @@ const ContactsTable = (props) => {
           autoRow>
           <FormItem mega-props={{span: 1}} placeholder="联系人姓名" name="contactsName" component={SysField.ContactsName} />
           {search ? formItem() : null}
-
         </MegaLayout>
 
       </div>
@@ -103,9 +122,9 @@ const ContactsTable = (props) => {
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
-              {customerId && <FormItem
+              {customer && <FormItem
                 hidden
-                value={customerId || ' '}
+                value={customer.customerId || ' '}
                 name="customerId"
                 component={SysField.Customer} />}
             </MegaLayout>
@@ -114,7 +133,6 @@ const ContactsTable = (props) => {
       </>
     );
   };
-  const [ids, setIds] = useState([]);
 
   const confirmOutStock = (record) => {
     AntModal.confirm({
@@ -132,51 +150,34 @@ const ContactsTable = (props) => {
         });
         tableRef.current.submit();
       },
-      onCancel:()=>{
+      onCancel: () => {
         tableRef.current.submit();
       }
     });
   };
 
 
-
-  const footer = () => {
-    /**
-     * 批量删除例子，根据实际情况修改接口地址
-     */
-    return (<DelButton api={{
-      ...batchDelete
-    }} onSuccess={() => {
-      tableRef.current.refresh();
-    }} value={ids}>批量删除</DelButton>);
-  };
-
-
   return (
     <>
-      {customerId && <Divider orientation="right">
+      {customer && <Divider orientation="right">
         <AddButton ghost onClick={() => {
           ref.current.open(false);
         }} />
       </Divider>}
       <Table
-        headStyle={{display: customerId && 'none'}}
-        bodyStyle={{padding: customerId && 0}}
-        bordered={!customerId}
+        headStyle={{display: customer && 'none'}}
+        bodyStyle={{padding: customer && 0}}
+        bordered={!customer}
         title={<Breadcrumb />}
         api={contactsList}
         rowKey="contactsId"
         searchForm={searchForm}
         SearchButton={Search()}
-        tableKey='contacts'
+        tableKey="contacts"
         isModal={false}
         layout={search}
-        footer={footer}
         actions={actions()}
         ref={tableRef}
-        onChange={(keys) => {
-          setIds(keys);
-        }}
       >
         <Column key={1} title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
         <Column key={2} title="职务" align="center" width={200} render={(value, record) => {
@@ -213,9 +214,13 @@ const ContactsTable = (props) => {
 
         }} />
         <Column />
-        <Column key={5} title="操作" fixed="right" width={200} align="right" render={(value, record) => {
+        <Column key={5} title="操作" fixed="right" width={customer ? 260 : 150} align="right" render={(value, record) => {
+          const isDefaultContacts = customer && record.contactsId === customer.defaultContacts;
           return (
             <>
+              {customer && <Button disabled={isDefaultContacts} type="link" onClick={() => {
+                defaultContacts(record.contactsName, record.contactsId);
+              }}>{isDefaultContacts ? '已设为默认联系人' : '设为默认联系人'}</Button>}
               <EditButton onClick={() => {
                 ref.current.open(record);
               }} />
@@ -230,7 +235,7 @@ const ContactsTable = (props) => {
         width={1000}
         title="联系人"
         component={ContactsEdit}
-        customerId={customerId}
+        customerId={customer && customer.customerId}
         onSuccess={() => {
           tableRef.current.refresh();
           ref.current.close();

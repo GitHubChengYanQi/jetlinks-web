@@ -267,7 +267,7 @@ const Setps = ({value, onClose, onChange, type}) => {
           name="purchase_action"
           component={Select}
           dataSource={[
-            {label: '采购完成', value: 'purchase_complete'},
+            {label: '采购申请完成', value: 'purchase_complete'},
           ]}
         />
       </VirtualField>

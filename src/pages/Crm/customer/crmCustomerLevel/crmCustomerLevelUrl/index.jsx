@@ -36,6 +36,6 @@ export const crmCustomerLevelList = {
 };
 
 export const customerLevelIdSelect = {
-  url: '/customer/listSelect',
+  url: '/crmCustomerLevel/listSelect',
   method: 'POST'
 };

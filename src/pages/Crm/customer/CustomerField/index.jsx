@@ -56,7 +56,6 @@ export const Name = (props) => {
   return (<Input {...props} />);
 };
 export const Region = (props) => {
-  console.log(props.value);
   return (<CascaderAdress {...props} />);
 };
 export const CompanyRoleId = (props) => {
@@ -64,10 +63,10 @@ export const CompanyRoleId = (props) => {
 };
 export const CustomerName = (props) => {
 
-  const {value, onChange, method, onSuccess, ...other} = props;
+  const {value, onChange, method,supply, onSuccess, ...other} = props;
 
   return (
-    <CustomerSelect value={value} method={method} onSuccess={(value) => {
+    <CustomerSelect value={value} method={method} supply={supply} onSuccess={(value) => {
       onSuccess(value);
     }} onChange={(value) => {
       onChange(value);
@@ -163,6 +162,14 @@ export const Classification = (props) => {
     <Radio.Group {...props} defaultValue={0}>
       <Radio value={0}>代理商</Radio>
       <Radio value={1}>终端用户</Radio>
+    </Radio.Group>
+  );
+};
+export const Supply = (props) => {
+  return (
+    <Radio.Group {...props} defaultValue={0}>
+      <Radio value={0}>否</Radio>
+      <Radio value={1}>是</Radio>
     </Radio.Group>
   );
 };

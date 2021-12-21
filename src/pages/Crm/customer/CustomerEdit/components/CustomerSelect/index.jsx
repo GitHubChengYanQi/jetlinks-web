@@ -5,7 +5,7 @@ import {AutoComplete, Input, Popover} from 'antd';
 const CustomerSelect = (props) => {
 
 
-  const {value, onChange, style, method, onblur, disabled, onSuccess, ...other} = props;
+  const {value, onChange, style,supply, method, onblur, disabled, onSuccess, ...other} = props;
 
   const {data, run} = useRequest({url: '/customer/list', method: 'POST'}, {
     debounceInterval: 300,
@@ -44,7 +44,7 @@ const CustomerSelect = (props) => {
     <AutoComplete
       dropdownMatchSelectWidth={100}
       options={content}
-      placeholder='选择客户'
+      placeholder={supply ? '搜索供应商' : '搜索客户'}
       style={style}
       value={value}
       onSelect={(value) => {
@@ -61,7 +61,8 @@ const CustomerSelect = (props) => {
           if (value.target.value) {
             await run({
               data: {
-                customerName: value
+                customerName: value,
+                supply
               }
             });
           } else {
@@ -69,6 +70,9 @@ const CustomerSelect = (props) => {
               params: {
                 limit: 5,
                 page:1
+              },
+              data:{
+                supply,
               }
             });
           }

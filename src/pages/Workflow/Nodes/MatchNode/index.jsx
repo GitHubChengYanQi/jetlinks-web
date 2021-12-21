@@ -64,7 +64,7 @@ export const Owner = (props) => {
       case 'quality_complete':
         return <>完成任务</>;
       case 'purchase_complete':
-        return <>采购完成</>;
+        return <>采购申请完成</>;
       default:
         break;
     }

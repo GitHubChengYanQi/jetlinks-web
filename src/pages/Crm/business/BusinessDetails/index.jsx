@@ -16,16 +16,14 @@ import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import CompetitorTable from '@/pages/Crm/competitorQuote/components/competitorTable';
 import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
-import CustomerMenu from '@/pages/Crm/customer/CustomerDetail/compontents/CustomerMenu';
+import DetailMenu from '@/pages/Crm/customer/CustomerDetail/compontents/DetailMenu';
 import styles from './index.module.scss';
 import Dynamic from '@/pages/Crm/customer/CustomerDetail/compontents/Dynamic';
 
 const {TabPane} = Tabs;
-const {Link} = Anchor;
 
 const CustomerDetail = () => {
   const params = useParams();
-  const ref = useRef(null);
   const refTrack = useRef(null);
   const submitRef = useRef(null);
   const history = useHistory();
@@ -64,7 +62,7 @@ const CustomerDetail = () => {
           </Row>
         </div>
         <div className={styles.titleButton}>
-          <CustomerMenu data={data} api={businessDelete} title="删除项目" url="/CRM/business" />
+          <DetailMenu data={data} deletaApi={businessDelete} type='bussiness'  url="/CRM/business" />
           <Button
             type="primary"
             style={params.state === 'false' ? {'display': 'none'} : null}

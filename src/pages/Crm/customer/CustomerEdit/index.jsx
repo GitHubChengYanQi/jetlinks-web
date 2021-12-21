@@ -70,7 +70,7 @@ const ApiConfig = {
 
 const CustomerEdit = ({onChange, ...props}, ref) => {
 
-  const {wxUser, ...other} = props;
+  const {wxUser, supply, ...other} = props;
 
   const city = wxUser && wxUser.openUserInfo && wxUser.openUserInfo.rawUserInfo && (JSON.parse(wxUser.openUserInfo.rawUserInfo).city || JSON.parse(wxUser.openUserInfo.rawUserInfo).province || JSON.parse(wxUser.openUserInfo.rawUserInfo).country);
 
@@ -94,7 +94,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
   }
 
   return (
-    <div className={style.from} style={{maxHeight: 880, height: 'calc(100vh - 110px)', padding: '0 24px'}}>
+    <div className={style.from} style={{maxHeight: 920, height: 'calc(100vh - 110px)', padding: '0 24px'}}>
       <Form
         {...other}
         labelAlign="left"
@@ -104,9 +104,12 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         labelCol={null}
         wrapperCol={24}
         fieldKey="customerId"
+        onSubmit={(value)=>{
+          return {...value,supply};
+        }}
         onSuccess={(res) => {
-          if (res) {
-            typeof onChange === 'function' && onChange(res);
+          if (res && typeof onChange === 'function') {
+            onChange(res);
           }
           props.onSuccess();
         }}
@@ -118,22 +121,21 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
               <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="基本信息" headerBordered>
                 <MegaLayout labelWidth={100}>
                   <FormItem
-                    label="客户名称" name="customerName" component={SysField.CustomerName}
+                    label={supply ? '供应商名称' : '客户名称'} name="customerName" component={SysField.CustomerName}
                     method={props.value}
+                    supply={supply}
                     onSuccess={(customer) => {
-                      history.push(`/CRM/customer/${customer && customer.customerId}`);
+                      history.push(`${supply === 1 ? '/purchase/supply/' : '/CRM/customer/'}${customer && customer.customerId}`);
                     }} required />
                 </MegaLayout>
-                <MegaLayout labelWidth={100} grid>
+                {supply === 0 && <MegaLayout labelWidth={100} grid>
                   <FormItem label="客户状态" name="status" component={SysField.Status} />
                   <FormItem label="客户分类" name="classification" component={SysField.Classification} />
-                </MegaLayout>
+                </MegaLayout>}
                 <MegaLayout labelWidth={100} grid>
                   <FormItem label="负责人" name="userId" component={SysField.UserName} />
-                  <FormItem label="客户级别" name="customerLevelId" component={SysField.CustomerLevelId} />
+                  <FormItem label={supply ? '供应商级别' : '客户级别'} name="customerLevelId" component={SysField.CustomerLevelId} />
                 </MegaLayout>
-
-
               </ProCard>
 
               <ProCard
@@ -158,7 +160,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </MegaLayout>
 
                 <MegaLayout labelWidth={100} grid>
-                  <FormItem label="客户来源" name="originId" component={SysField.OriginId} />
+                  <FormItem label={supply ? '供应商来源' : '客户来源'} name="originId" component={SysField.OriginId} />
                   <FormItem label="邮箱" name="emall" component={SysField.Emall} rules={[{
                     message: '请输入正确的邮箱',
                     pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'
@@ -307,7 +309,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </FieldList>
               </ProCard>
 
-              <ProCard style={{marginTop: 8}} bodyStyle={{padding: 16}} title="客户地址" className="h2Card" headerBordered>
+              <ProCard style={{marginTop: 8}} bodyStyle={{padding: 16}} title={supply ? '供应商地址' : '客户地址'} className="h2Card" headerBordered>
                 <FieldList
                   name="adressParams"
                   initialValue={[
