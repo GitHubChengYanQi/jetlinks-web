@@ -124,7 +124,7 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
               supplierBlack({
                 data: {
                   supplierId: data.customerId,
-                  remake:note
+                  remark:note
                 }
               });
             }}>拉入黑名单</Button>

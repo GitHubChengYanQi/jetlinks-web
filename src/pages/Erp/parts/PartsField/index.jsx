@@ -22,12 +22,10 @@ import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
 import {spuListSelect} from '../PartsUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
-import {request, useRequest} from '@/util/Request';
+import { useRequest} from '@/util/Request';
 import Attribute from '@/pages/Erp/instock/components/Attribute';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
-import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
-import Modal from '@/components/Modal';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 export const ItemId = (props) => {

@@ -8,12 +8,9 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Badge, Button, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {purchaseAskDelete, purchaseAskList} from '../purchaseAskUrl';
+import { purchaseAskList} from '../purchaseAskUrl';
 import PurchaseAskEdit from '../purchaseAskEdit';
 import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -49,9 +46,9 @@ const PurchaseAskList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
         api={purchaseAskList}
         rowKey="purchaseAskId"
+        title={<Breadcrumb />}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

@@ -104,7 +104,9 @@ const TableWarp = ({
       });
       return new Promise((resolve) => {
         resolve({
-          dataSource: Array.isArray(response.data) ? response.data : [],
+          dataSource: Array.isArray(response.data) ? response.data.map((items)=>{
+            return {...items,children:items.children && (items.children.length > 0 ? items.children : null)};
+          }) : [],
           total: response.count,
           current: response.current,
           pageSize: response.pageSize,
@@ -144,7 +146,6 @@ const TableWarp = ({
 
   const {tableColumn, setButton} = useTableSet(children, tableKey);
 
-
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       <div style={headStyle}>
@@ -155,7 +156,6 @@ const TableWarp = ({
             <div className="button">{actions}</div>
           </div>
         </div> : null}
-
       </div>
       <Layout>
         {left && <Sider className={style.sider} width={180}>

@@ -129,7 +129,7 @@ const CustomerDetail = ({id}) => {
             data={data}
             type="customer"
             deletaApi={customerDelete}
-            url="/CRM/customer"
+            url={id ? '/purchase/supply' : '/CRM/customer'}
             refresh={() => {
               refresh();
             }} />

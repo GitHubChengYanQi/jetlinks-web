@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Modal, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -18,20 +18,36 @@ import SupplierBlacklistEdit from '../supplierBlacklistEdit';
 import * as SysField from '../supplierBlacklistField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const SupplierBlacklistList = () => {
   const tableRef = useRef(null);
 
   const {run} = useRequest(supplierBlacklistDelete,
     {
-      manual:true,
-      onSuccess:()=>{
+      manual: true,
+      onSuccess: () => {
         tableRef.current.submit();
       }
     });
+
+  const Remove = (record) => {
+    Modal.confirm({
+      content: '是否移出黑名单？',
+      onOk: () => {
+        run({
+          data: {
+            blackListId: record.blackListId
+          }
+        });
+      }
+    });
+  };
 
   const searchForm = () => {
     return (
@@ -47,12 +63,13 @@ const SupplierBlacklistList = () => {
         contentHeight
         title={<Breadcrumb />}
         api={supplierBlacklistList}
+        formActions={formActionsPublic}
         rowKey="blackListId"
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="供应商名称" dataIndex="customerResult" render={(value)=>{
-          return <>{value.customerName}</>;
+        <Column title="供应商名称" dataIndex="customerResult" render={(value) => {
+          return <>{value && value.customerName}</>;
         }} />
         <Column title="创建人" dataIndex="createUserName" />
         <Column title="创建时间" dataIndex="createTime" />
@@ -60,16 +77,12 @@ const SupplierBlacklistList = () => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <Button type='link' onClick={()=>{
-                run({
-                  data:{
-                    blackListId:record.blackListId
-                  }
-                });
+              <Button type="link" onClick={() => {
+                Remove(record);
               }}>移出黑名单</Button>
             </>
           );
-        }}/>
+        }} />
       </Table>
     </>
   );

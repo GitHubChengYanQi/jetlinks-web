@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Select as AntSelect, Button} from 'antd';
+import {Select as AntSelect} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {

@@ -58,6 +58,11 @@ const systemConfig = [
         exact: true,
       },
       {
+        path: '/dictType/purchaseConfig',
+        name:'采购配置管理',
+        component: lazy(() => import('@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigList')),
+      },
+      {
         path: '/dictType/:dictTypeId',
         name:'字典管理',
         component: lazy(() => import('@/pages/BaseSystem/dictType/dict/List')),

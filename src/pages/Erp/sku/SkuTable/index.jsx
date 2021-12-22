@@ -24,6 +24,7 @@ import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import Code from '@/pages/Erp/spu/components/Code';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -40,6 +41,7 @@ const SkuTable = (props) => {
   const ref = useRef(null);
   const formRef = useRef(null);
   const tableRef = useRef(null);
+  const history = useHistory(null);
 
   useEffect(() => {
     tableRef.current.formActions.setFieldValue('spuClass', spuClass ? spuClass[0] : null);
@@ -129,9 +131,13 @@ const SkuTable = (props) => {
           return (
             <>
               <Code source="sku" id={record.skuId} />
-              {record.skuName}
-              &nbsp;/&nbsp;
-              {record.spuResult && record.spuResult.name}
+              <Button type="link" onClick={() => {
+                history.push(`/SPU/sku/${record.skuId}`);
+              }}>
+                {record.skuName}
+                &nbsp;/&nbsp;
+                {record.spuResult && record.spuResult.name}
+              </Button>
             </>
           );
         }} sorter />

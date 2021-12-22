@@ -25,7 +25,14 @@ const DictTypeList = () => {
         <Column title="名称" width={200} render={(value, row) => {
           return (
             <Button type="link" onClick={() => {
-              history.push(`/BASE_SYSTEM/dictType/${row.dictTypeId}`);
+              switch (row.code) {
+                case 'PURCHASE':
+                  history.push('/BASE_SYSTEM/dictType/purchaseConfig');
+                  break;
+                default:
+                  history.push(`/BASE_SYSTEM/dictType/${row.dictTypeId}`);
+                  break;
+              }
             }}>{row.name}</Button>
           );
         }}/>

@@ -1,6 +1,8 @@
 import {PurchaseAskRouter} from '@/pages/Purshase/purchaseAsk/purchaseAskRouter';
 import PurshaseLayout from '@/pages/Purshase';
 import {SupplyListingRouter} from '@/pages/Purshase/Supply/router';
+import {ToBuyPlanRouter} from '@/pages/Purshase/ToBuyPlan/router';
+import {ProcurementPlanRouter} from '@/pages/Purshase/procurementPlan/procurementPlanRouter';
 
 const PurshaseRouterConfig = [
   {
@@ -10,6 +12,8 @@ const PurshaseRouterConfig = [
     children:[
       ...PurchaseAskRouter,
       ...SupplyListingRouter,
+      ...ToBuyPlanRouter,
+      ...ProcurementPlanRouter,
       {
         redirect: '/purchase/supply',
       }

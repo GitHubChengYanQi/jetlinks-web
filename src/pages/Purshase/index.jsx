@@ -4,6 +4,8 @@ import TopLayout from '@/layouts/TopLayout';
 import SetView from '@/layouts/SetView';
 import SupplierBlacklistList from '@/pages/Crm/supplierBlacklist/supplierBlacklistList';
 import Modal from '@/components/Modal';
+import TaxRateList from '@/pages/Purshase/taxRate/taxRateList';
+import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -16,6 +18,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
     switch (type) {
       case 'hmd':
         return <SupplierBlacklistList />;
+      case 'slgl':
+        return <TaxRateList />;
       default:
         return null;
     }
@@ -37,8 +41,11 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             ref.current.open(true);
           }}
         >
+          <Menu.Item key="slgl">
+            <span>税率管理</span>
+          </Menu.Item>
           <Menu.Item key="hmd">
-            <span>供应商黑名单管理</span>
+            <span>黑名单管理</span>
           </Menu.Item>
         </Menu>} />
       <Modal footer={[]} width={1200} ref={ref}>{RenderComponent()}</Modal>

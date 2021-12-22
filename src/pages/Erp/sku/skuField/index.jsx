@@ -151,6 +151,7 @@ export const SelectSpuClass = (props) => {
 
 export const SpuClass = (props) => {
 
+
   const {skuId, ...other} = props;
 
   return (<SetSelectOrCascader api={spuClassificationTreeVrew} disabled={skuId} cascader width={200} title='设置分类' component={SpuClassificationList} {...other} />);

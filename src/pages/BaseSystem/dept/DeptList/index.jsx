@@ -1,15 +1,15 @@
 import React, {useRef} from 'react';
+import {Input} from 'antd';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
-import Drawer from "@/components/Drawer";
-import AddButton from "@/components/AddButton";
-import DeptEdit from "@/pages/BaseSystem/dept/DeptEdit";
-import EditButton from "@/components/EditButton";
-import DelButton from "@/components/DelButton";
-import {deptDelete, deptList, deptTree} from "@/pages/BaseSystem/dept/url";
-import {Input} from "antd";
-import Form from "@/components/Form";
-import Cascader from "@/components/Cascader";
+import Drawer from '@/components/Drawer';
+import AddButton from '@/components/AddButton';
+import DeptEdit from '@/pages/BaseSystem/dept/DeptEdit';
+import EditButton from '@/components/EditButton';
+import DelButton from '@/components/DelButton';
+import {deptDelete, deptList, deptTree} from '@/pages/BaseSystem/dept/url';
+import Form from '@/components/Form';
+import Cascader from '@/components/Cascader';
 
 const {FormItem} = Form;
 

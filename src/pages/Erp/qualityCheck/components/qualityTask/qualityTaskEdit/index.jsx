@@ -16,7 +16,6 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import ProCard from '@ant-design/pro-card';
 import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {config} from 'ice';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import {useSetState} from 'ahooks';
 
