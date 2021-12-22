@@ -78,7 +78,7 @@ const WorkflowAdd = () => {
       </div>
     </div>
     <Card style={{height: '90vh'}}>
-      <WorkFlow value={value} type={data.type} onChange={(value) => {
+      <WorkFlow value={value} type={data.type} module={data.module} onChange={(value) => {
         setValue(value);
       }} />
     </Card>

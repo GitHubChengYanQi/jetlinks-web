@@ -11,6 +11,7 @@ import Form from '@/components/Form';
 import {processDetail, processAdd, processEdit} from '../processUrl';
 import * as SysField from '../processField';
 import {config} from 'ice';
+import {FormEffectHooks} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -19,8 +20,6 @@ const ApiConfig = {
   add: processAdd,
   save: processEdit
 };
-
-const {wxCp} = config;
 
 const ProcessEdit = ({...props}) => {
 
@@ -31,14 +30,19 @@ const ProcessEdit = ({...props}) => {
       {...props}
       ref={formRef}
       api={ApiConfig}
-      onSubmit={(value)=>{
-        return {...value, url: `${wxCp}Work/Workflow?id=taskId`};
-      }}
       fieldKey="processId"
+      effects={({setFieldState}) => {
+        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
+
+          setFieldState('module', state => {
+            state.props.type = value;
+          });
+        });
+      }}
     >
-      <FormItem label="名称" name="processName" component={SysField.ProcessName} required/>
-      <FormItem label="类型" name="type" component={SysField.Type} required/>
-      <FormItem label="功能" name="module" component={SysField.Module} required/>
+      <FormItem label="名称" name="processName" component={SysField.ProcessName} required />
+      <FormItem label="类型" name="type" component={SysField.Type} required />
+      <FormItem label="功能" name="module" component={SysField.Module} required />
     </Form>
   );
 };

@@ -127,6 +127,8 @@ const ProcessList = () => {
               return <>入厂检</>;
             case 'purchaseAsk':
               return <>采购申请</>;
+            case 'purchasePlan':
+              return <>采购计划</>;
             default:
               break;
           }

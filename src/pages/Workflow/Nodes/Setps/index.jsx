@@ -18,9 +18,9 @@ import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 const actions = createFormActions();
 
 
-const Setps = ({value, onClose, onChange, type}) => {
+const Setps = ({value, onClose, onChange, type, module}) => {
 
-  const module = () => {
+  const types = () => {
     switch (type) {
       case 'quality':
         return [
@@ -41,6 +41,35 @@ const Setps = ({value, onClose, onChange, type}) => {
           {label: '采购', value: 'purchase'},
           {label: '流程', value: 'audit_process',}
         ];
+    }
+  };
+
+  const modules = () => {
+    switch (type) {
+      case 'quality':
+        switch (module) {
+          case 'inQuality':
+            return [
+              {label: '分派任务', value: 'quality_dispatch'},
+              {label: '执行任务', value: 'quality_perform'},
+              {label: '完成任务', value: 'quality_complete'},
+            ];
+          default:
+            return [];
+        }
+      case 'purchase':
+        switch (module) {
+          case 'purchaseAsk':
+            return [
+              {label: '采购申请完成', value: 'purchase_complete'},
+            ];
+          case 'purchasePlan':
+            return [];
+          default:
+            return [];
+        }
+      default:
+        return [];
     }
   };
 
@@ -90,7 +119,7 @@ const Setps = ({value, onClose, onChange, type}) => {
         label="类型"
         name="type"
         component={Radio.Group}
-        dataSource={module()} />
+        dataSource={types()} />
       <VirtualField name="setp">
         <FormItem
           wrapperCol={10}
@@ -246,11 +275,7 @@ const Setps = ({value, onClose, onChange, type}) => {
           label="质检动作"
           name="quality_action"
           component={Select}
-          dataSource={[
-            {label: '分派任务', value: 'quality_dispatch'},
-            {label: '执行任务', value: 'quality_perform'},
-            {label: '完成任务', value: 'quality_complete'},
-          ]}
+          dataSource={modules()}
         />
         <FormItem
           required
@@ -266,9 +291,7 @@ const Setps = ({value, onClose, onChange, type}) => {
           label="采购动作"
           name="purchase_action"
           component={Select}
-          dataSource={[
-            {label: '采购申请完成', value: 'purchase_complete'},
-          ]}
+          dataSource={modules()}
         />
       </VirtualField>
       <VirtualField name="audit_process">暂未开放</VirtualField>

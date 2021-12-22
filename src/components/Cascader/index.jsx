@@ -79,7 +79,9 @@ const Cascader = (props) => {
     options={dataSources}
     value={valueArray}
     placeholder={placeholder}
-    onChange={change}  {...other} />);
+    onChange={change}
+    {...other}
+  />);
 
 
 };

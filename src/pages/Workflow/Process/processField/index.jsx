@@ -6,28 +6,45 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
+import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../processUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
-export const ProcessName = (props) =>{
-  return (<Input {...props}/>);
+export const ProcessName = (props) => {
+  return (<Input {...props} />);
 };
-export const CategoryId = (props) =>{
-  return (<Input {...props}/>);
+export const CategoryId = (props) => {
+  return (<Input {...props} />);
 };
-export const Type = (props) =>{
-  return (<AntdSelect options={[{label:'工艺',value:'ship'},{label:'质检',value:'quality'},{label:'采购',value:'purchase'},]} {...props}/>);
+export const Type = (props) => {
+  return (<AntdSelect options={[{label: '工艺', value: 'ship'}, {label: '质检', value: 'quality'}, {
+    label: '采购',
+    value: 'purchase'
+  },]} {...props} />);
 };
 
-export const Module = (props) =>{
-  return (<AntdSelect options={[{label:'入厂检',value:'inQuality'},{label:'采购申请',value:'purchaseAsk'},]} {...props}/>);
+export const Module = (props) => {
+  const {type, ...other} = props;
+  const options = () => {
+    switch (type) {
+      case 'ship':
+        return [];
+      case 'quality':
+        return [{label: '入厂检', value: 'inQuality'}];
+      case 'purchase':
+        return [{label: '采购申请', value: 'purchaseAsk'},{label: '采购计划', value: 'purchasePlan'}];
+      default:
+        return [];
+    }
+  };
+  return (
+    <AntdSelect options={options()} {...other} />);
 };
-export const FormId = (props) =>{
-  return (<Input {...props}/>);
+export const FormId = (props) => {
+  return (<Input {...props} />);
 };
 
 export const SkuId = (props) => {

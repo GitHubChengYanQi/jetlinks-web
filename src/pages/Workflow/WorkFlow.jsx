@@ -13,7 +13,7 @@ import {Modal} from 'antd';
 import Branchs from '@/pages/Workflow/Nodes/Branchs';
 
 
-const WorkFlow = ({config: _config, value, onChange, type}) => {
+const WorkFlow = ({config: _config, value, onChange, type, module}) => {
 
   const ref = useRef();
   const refStart = useRef();
@@ -101,7 +101,15 @@ const WorkFlow = ({config: _config, value, onChange, type}) => {
     else if (objRef.type === '3') {
       switch (type) {
         case 'purchase':
-          refBranch.current.open(true);
+          switch (module) {
+            case 'purchaseAsk':
+              refBranch.current.open(true);
+              break;
+            case 'purchasePlan':
+              break;
+            default:
+              break;
+          }
           break;
         default:
           break;
@@ -129,6 +137,7 @@ const WorkFlow = ({config: _config, value, onChange, type}) => {
       <Drawer title="步骤设置" ref={ref} width={800}>
         <Setps
           type={type}
+          module={module}
           value={currentNode && currentNode.current && {
             type: currentNode.current.stepType,
             auditRule: currentNode.current.auditRule && currentNode.current.auditRule.rules,

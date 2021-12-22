@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const ProcurementPlanRouter = [
   {
     path: '/procurementPlan',
+    name:'采购计划',
     component: lazy(() => import('../procurementPlanList')),
     fallback: <div>loading...</div>,
     exact: true,
