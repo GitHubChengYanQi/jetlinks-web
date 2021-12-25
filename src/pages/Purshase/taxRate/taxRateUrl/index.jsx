@@ -1,7 +1,7 @@
 /**
  * 接口配置
  *
- * @author 
+ * @author
  * @Date 2021-12-21 11:29:07
  */
 
@@ -31,6 +31,12 @@ export const taxRateDetail = {
 
 export const taxRateList = {
   url: '/taxRate/list',
+  method: 'POST',
+  rowKey:'taxRateId'
+};
+
+export const taxRateListSelect = {
+  url: '/taxRate/listSelect',
   method: 'POST',
   rowKey:'taxRateId'
 };

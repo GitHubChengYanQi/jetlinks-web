@@ -3,6 +3,7 @@ import PurshaseLayout from '@/pages/Purshase';
 import {SupplyListingRouter} from '@/pages/Purshase/Supply/router';
 import {ToBuyPlanRouter} from '@/pages/Purshase/ToBuyPlan/router';
 import {ProcurementPlanRouter} from '@/pages/Purshase/procurementPlan/procurementPlanRouter';
+import {PurchaseQuotationRouter} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationRouter';
 
 const PurshaseRouterConfig = [
   {
@@ -14,6 +15,7 @@ const PurshaseRouterConfig = [
       ...SupplyListingRouter,
       ...ToBuyPlanRouter,
       ...ProcurementPlanRouter,
+      ...PurchaseQuotationRouter,
       {
         redirect: '/purchase/supply',
       }

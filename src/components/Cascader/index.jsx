@@ -22,26 +22,26 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value, width, defaultParams, placeholder, resh, top, api, onChange = () => {
+    value,width,defaultParams,placeholder,resh,top, api, onChange = () => {
     }, ...other
   } = props;
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {data, refresh} = useRequest(api, {defaultParams});
+  const {data,refresh} = useRequest(api,{defaultParams});
 
-  useEffect(() => {
-    if (resh) {
+  useEffect(()=>{
+    if (resh){
       refresh();
     }
-  }, [resh]);
+  },[resh]);
 
   const dataSources = top ? [
     {
-      value: '0',
-      label: '顶级',
-      children: data || [],
+      value:'0',
+      label:'顶级',
+      children:data || [],
     }
   ] : (data || []);
 
@@ -58,8 +58,6 @@ const Cascader = (props) => {
       }
     } else {
       valueArray = getParentValue($tmpValue, dataSources);
-      if (valueArray.length === 0)
-        onChange(null);
     }
   } else if (Array.isArray(value)) {
     valueArray = value;
@@ -67,21 +65,12 @@ const Cascader = (props) => {
     valueArray = '';
   }
 
-
   const change = (value) => {
     const result = value ? value[value.length - 1] : value;
     onChange(result);
   };
 
-  return (<AntCascader
-    style={{width}}
-    changeOnSelect
-    options={dataSources}
-    value={valueArray}
-    placeholder={placeholder}
-    onChange={change}
-    {...other}
-  />);
+  return (<AntCascader style={{width}} changeOnSelect options={dataSources} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
 
 
 };

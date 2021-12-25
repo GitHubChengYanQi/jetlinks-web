@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, Divider, Input, message, Modal, notification, Space, Table as AntTable} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Card, Divider, Input, message, Modal as AntModal, notification, Space, Table as AntTable} from 'antd';
 import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
-import SkuResult from '@/pages/Erp/sku/components/SkuResult';
 import {useRequest} from '@/util/Request';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import Modal from '@/components/Modal';
+import Quote from '@/pages/Purshase/Quote';
 
 const {Column} = AntTable;
 
@@ -13,6 +14,8 @@ const ToBuyPlanList = () => {
   const {loading, data, run, refresh} = useRequest(toBuyPlanList, {manual: true});
 
   const [visible, setVisible] = useState();
+
+  const quoteRef = useRef();
 
   const [createPlanData, setCreatePlanData] = useState({});
 
@@ -109,15 +112,20 @@ const ToBuyPlanList = () => {
       <Breadcrumb />
     </div>
     <Divider style={{width: '100%', margin: 0}} />
-    <div style={{padding: 16}}>
+    <Space style={{padding: 16}}>
       <Button
         disabled={keys.length === 0}
         type="default"
         onClick={() => {
           setVisible(true);
         }}>创建采购计划</Button>
-      <Divider style={{margin:'16px 0 0 0'}} />
-    </div>
+      <Button
+        type="default"
+        onClick={() => {
+          quoteRef.current.open(true);
+        }}>添加报价</Button>
+      <Divider style={{margin: '16px 0 0 0'}} />
+    </Space>
     <Card bordered style={{margin: '0 16px'}}>
       <AntTable
         pagination={false}
@@ -161,7 +169,7 @@ const ToBuyPlanList = () => {
       </AntTable>
     </Card>
 
-    <Modal
+    <AntModal
       visible={visible}
       title="创建采购计划"
       onCancel={() => {
@@ -182,7 +190,6 @@ const ToBuyPlanList = () => {
         } else {
           message.warn('请输入采购计划名称！');
         }
-
       }}>
       <Space direction="vertical" style={{width: '100%'}}>
         <Input placeholder="采购计划名称" onChange={(value) => {
@@ -192,7 +199,18 @@ const ToBuyPlanList = () => {
           setCreatePlanData({...createPlanData, remark: value.target.value});
         }} />
       </Space>
-    </Modal>
+    </AntModal>
+
+    <Modal headTitle='添加报价信息' skus={data && data.map((items)=>{
+      return {
+        value:items.skuId,
+        label:<SkuResultSkuJsons skuResult={items.skuResult} />
+      };
+    })} width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
+      quoteRef.current.close();
+    }} />
+
+
   </div>;
 };
 

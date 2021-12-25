@@ -24,7 +24,7 @@ export const Type = (props) => {
   return (<Input {...props} />);
 };
 export const Note = (props) => {
-  return (<Input.TextArea {...props} />);
+  return (<Input.TextArea  {...props} />);
 };
 export const SkuId = (props) => {
   return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);

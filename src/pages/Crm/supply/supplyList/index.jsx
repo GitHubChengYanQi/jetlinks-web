@@ -66,9 +66,6 @@ const SupplyList = ({customer}) => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
-              <EditButton onClick={() => {
-                ref.current.open(record.supplyId);
-              }} />
               <DelButton api={supplyDelete} value={record.supplyId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />

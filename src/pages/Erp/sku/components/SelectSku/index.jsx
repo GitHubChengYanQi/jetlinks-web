@@ -6,7 +6,7 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) => {
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, params, skuIds}) => {
 
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
@@ -138,6 +138,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth, params, skuIds}) 
     <>
       <Popover placement="bottomLeft" content={content} trigger="click">
         <Select
+          placeholder={placeholder}
           open={false}
           style={{width: 180}}
           value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
