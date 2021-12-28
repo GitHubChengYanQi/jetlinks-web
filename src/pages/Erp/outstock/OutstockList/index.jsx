@@ -86,7 +86,7 @@ const OutstockList = (props) => {
             </Descriptions>
           </Col>
           <Col span={8}>
-            <Code source="instock" id={value.instockOrderId} image codeWidth={210} />
+            <Code source="outstock" id={value.outstockOrderId} image codeWidth={210} />
           </Col>
         </Row>
       </ProCard>

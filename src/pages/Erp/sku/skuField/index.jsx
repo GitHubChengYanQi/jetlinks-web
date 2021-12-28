@@ -5,40 +5,25 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {
   Input,
   InputNumber,
-  TimePicker,
-  DatePicker,
-  Select as AntdSelect,
-  Checkbox,
-  Radio,
-  Table,
-  Space,
-  Button, AutoComplete
+  Radio, AutoComplete
 } from 'antd';
-import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
-import * as apiUrl from '../skuUrl';
 import {useRequest} from '@/util/Request';
-import {itemAttributeList} from '@/pages/Erp/itemAttribute/itemAttributeUrl';
-import {attributeValuesList} from '@/pages/Erp/attributeValues/attributeValuesUrl';
 import {spuListSelect} from '@/pages/Erp/parts/PartsUrl';
-import {useBoolean} from 'ahooks';
-import Modal from '@/components/Modal';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
-import {spuClassificationListSelect, unitListSelect} from '@/pages/Erp/Spus/spuUrl';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {unitListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {
-  spuClassificationDetail,
   spuClassificationTreeVrew
 } from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
-import {codingRulesBackCoding} from '@/pages/BaseSystem/codingRules/codingRulesUrl';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import UnitList from '@/pages/Erp/unit/unitList';
+import FileUpload from '@/components/FileUpload';
 
 export const Type = (props) => {
 
@@ -159,6 +144,10 @@ export const SpuClass = (props) => {
 
 export const Note = (props) => {
   return (<Input.TextArea {...props} />);
+};
+
+export const FileId = (props) => {
+  return (<FileUpload {...props} />);
 };
 
 export const State = (props) => {

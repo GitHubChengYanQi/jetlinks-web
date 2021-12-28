@@ -189,7 +189,7 @@ const OutstockOrderEdit = ({...props}) => {
                         <div style={{display: 'inline-block', width: '30%'}}>
                           <FormItem
                             labelCol={10}
-                            label="供应商 / 品牌"
+                            label="供应商(品牌)"
                             name={`applyDetails.${index}.brandId`}
                             component={SysField.BrandId}
                             required

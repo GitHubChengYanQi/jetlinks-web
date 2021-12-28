@@ -3,7 +3,7 @@ import {Button, Image, Modal, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import jrQrcode from 'jr-qrcode';
 import {config} from 'ice';
-import {BarcodeOutlined, QrcodeOutlined} from '@ant-design/icons';
+import {QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
 
 

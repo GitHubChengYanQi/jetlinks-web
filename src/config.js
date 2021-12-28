@@ -19,6 +19,16 @@ export default {
     wxBind:'https://wx.zjzc.gf2025.com',
     wxCp:'https://wx.zjzc.gf2025.com/cp/#/',
   },
+  buildHunHe: {
+    logLevel: 'info',
+    component: 'ant',
+    baseURI: 'http://api.hh.gf2025.com/',
+    projectName: '道昕云',
+    AMAP_KEY: '',
+    AMAP_VERSION: '2.0',
+    wxBind:'http://wx.hh.gf2025.com',
+    wxCp:'http://wx.hh.gf2025.com/cp/',
+  },
   cheng: {
     logLevel: 'info',
     component: 'ant',

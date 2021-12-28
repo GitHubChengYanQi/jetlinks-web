@@ -4,7 +4,7 @@ import {Button, message, Space, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 
 
-const FileUploadUrl = ({value,onChange,fileName,title}) => {
+const FileUpload = ({value,onChange,fileName,title}) => {
 
   const [fileList,setFileList] = useState(value ? [{
     url: value,
@@ -55,7 +55,7 @@ const FileUploadUrl = ({value,onChange,fileName,title}) => {
               message.success('上传成功！');
               setFileList([{url:`${oss && oss.host}/${oss && oss.key}`,name:file.file.name}]);
               typeof fileName === 'function' && fileName(file.file.name);
-              onChange(`${oss && oss.host}/${oss && oss.key}`);
+              onChange(oss.mediaId);
               break;
             case 'error':
               message.error('上传失败！');
@@ -92,4 +92,4 @@ const FileUploadUrl = ({value,onChange,fileName,title}) => {
   );
 };
 
-export default FileUploadUrl;
+export default FileUpload;

@@ -5,24 +5,19 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import Table from '@/components/Table';
-import {Button, Modal as AntModal, Table as AntTable} from 'antd';
-import Form from '@/components/Form';
-import Breadcrumb from '@/components/Breadcrumb';
+import React, {useEffect, useRef,} from 'react';
+import {Button,  Table as AntTable} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {QrcodeOutlined, ScanOutlined, SearchOutlined, SelectOutlined} from '@ant-design/icons';
-import Icon from '@/components/Icon';
-import CheckButton from '@/components/CheckButton';
+import {SearchOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
 import {useHistory} from 'ice';
-import SelButton from '@/components/SelButton';
+import Icon from '@/components/Icon';
+import Breadcrumb from '@/components/Breadcrumb';
+import Form from '@/components/Form';
+import Table from '@/components/Table';
 import {stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
-import Modal from '@/components/Modal';
-import DeliveryDetailsList from '@/pages/Erp/deliveryDetails/deliveryDetailsList';
-import Code from '@/pages/Erp/spu/components/Code';
 
 
 const {Column} = AntTable;
@@ -131,7 +126,7 @@ const StockTable = (props) => {
           );
 
         }} sorter />
-        <Column title="供应商 / 品牌" width={200} render={(text, record) => {
+        <Column title="供应商(品牌)" width={200} render={(text, record) => {
           return (
             <>
               {record.brandResult && record.brandResult.brandName}
@@ -148,7 +143,7 @@ const StockTable = (props) => {
         <Column title="数量" width={120} align="center" sorter dataIndex="inventory" />
         <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
           return <Button type="link" onClick={() => {
-            history.push(`/ERP/stock/detail?storehouseId=${record.storehouseId}&brandId=${record.brandId}&skuId=${record.skuId}`);
+            history.push(`/ERP/stock/detail?stockId=${record.stockId}`);
           }}>查看库存详情</Button>;
         }} />
 

@@ -28,6 +28,7 @@
     "zhu": "icejs start --port 5555 --mode zhu",
     "devOnline": "icejs build --mode devOnline",
     "buildZjzc": "icejs build --mode buildZjzc",
+    "buildHunHe": "icejs build --mode buildHunHe",
     "song": "icejs start --port 5555 --mode song",
     "build": "icejs build",
     "screenshot": "screenshot -l",

@@ -193,7 +193,7 @@ const InstockEdit = ({...props}) => {
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}
-                            label="供应商 / 品牌"
+                            label="供应商(品牌)"
                             name={`instockRequest.${index}.brandId`}
                             component={SysField.BrandId}
                             required

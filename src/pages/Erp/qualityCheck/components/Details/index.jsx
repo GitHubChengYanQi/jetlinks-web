@@ -122,7 +122,7 @@ const Details = ({qualityTaskId}) => {
             </>
           );
         }} />
-        <Column title="供应商 / 品牌" dataIndex="brandId" render={(value,record)=>{
+        <Column title="供应商(品牌)" dataIndex="brandId" render={(value,record)=>{
           return (
             <>
               {record.brand && record.brand.brandName}

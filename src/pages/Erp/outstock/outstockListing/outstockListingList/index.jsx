@@ -18,6 +18,7 @@ import {createFormActions} from '@formily/antd';
 import {request, useRequest} from '@/util/Request';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
+import SkuResult from '@/pages/Erp/sku/components/SkuResult';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -40,7 +41,8 @@ const OutstockListingList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="出库单号" name="outstockOrderId" value={value && value.outstockOrderId || ' '} component={SysField.OutstockOrderId} />
+        <FormItem label="出库单号" name="outstockOrderId" value={value && value.outstockOrderId || ' '}
+                  component={SysField.OutstockOrderId} />
       </>
     );
   };
@@ -79,7 +81,7 @@ const OutstockListingList = (props) => {
                   return <div key={index}>
                     <Descriptions bordered column={2}>
                       <Descriptions.Item
-                        labelStyle={{width:100}}
+                        labelStyle={{width: 100}}
                         contentStyle={{width: 150, backgroundColor: '#fff'}}
                         label="库位">
                         <TreeSelectSee data={storehouseposition} value={items.storehousePositionsId} />
@@ -114,21 +116,23 @@ const OutstockListingList = (props) => {
               &nbsp;/&nbsp;
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
-              <em style={{color: '#c9c8c8', fontSize: 10}}>
-                (
-                {
-                  record.backSkus
-                  &&
-                  record.backSkus.map((items, index) => {
+              {
+                record.backSkus
+                &&
+                record.backSkus.length > 0
+                &&
+                record.backSkus[0].attributeValues.attributeValues
+                &&
+                (<em style={{color: '#c9c8c8', fontSize: 10}}>
+                  {record.backSkus.map((items, index) => {
                     return (
                       <span key={index}>
                         {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
                       </span>
                     );
-                  })
-                }
-                )
-              </em>
+                  })}
+                </em>)
+              }
             </>
           );
 

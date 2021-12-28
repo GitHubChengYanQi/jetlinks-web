@@ -5,13 +5,10 @@
  * @Date 2021-09-11 13:35:54
  */
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   Input,
-  Select as AntSelect, Space, Upload, Button, message
 } from 'antd';
-import {useRequest} from '@/util/Request';
-import {UploadOutlined} from '@ant-design/icons';
 import {dataClassificationSelect, itemIdSelect} from '../dataUrl';
 import Select from '@/components/Select';
 import Editor from '@/components/Editor';

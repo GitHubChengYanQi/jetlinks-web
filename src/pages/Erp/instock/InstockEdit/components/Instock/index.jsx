@@ -100,7 +100,7 @@ const Instock = (props) => {
             );
 
           }} sorter />
-          <Column title="供应商 / 品牌" dataIndex="brandId" width={200} render={(text, record) => {
+          <Column title="供应商(品牌)" dataIndex="brandId" width={200} render={(text, record) => {
             return (
               <>
                 {record.brandResult && record.brandResult.brandName}

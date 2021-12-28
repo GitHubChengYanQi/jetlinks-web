@@ -65,6 +65,7 @@ const OutstockOrderList = () => {
             </>
           );
         }} />
+        <Column title="创建时间" dataIndex="createTime" />
         <Column key={4} title="状态" width={200} dataIndex="state" sorter render={(value) => {
           switch (value) {
             case 0:

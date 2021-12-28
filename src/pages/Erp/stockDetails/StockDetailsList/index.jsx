@@ -5,23 +5,22 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import Table from '@/components/Table';
+import React, { useRef, useState} from 'react';
 import {Button, Card, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
+import {useHistory, useParams} from 'ice';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import Table from '@/components/Table';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import {stockDetailsList} from '@/pages/Erp/stockDetails/StockDetailsUrl';
-import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '../StockDetailsField';
 import Icon from '@/components/Icon';
 import Modal2 from '@/components/Modal';
 import DeliveryDetailsEdit from '@/pages/Erp/deliveryDetails/deliveryDetailsEdit';
-import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import Code from '@/pages/Erp/spu/components/Code';
+import {StockId} from '../StockDetailsField';
 
 
 const {Column} = AntTable;
@@ -35,7 +34,7 @@ const StockDetailsList = (props) => {
 
   const {value} = props;
 
-  const {storehouseId, brandId, skuId} = props.searchParams;
+  const {stockId} = props.searchParams;
 
   const [ids, setIds] = useState([]);
 
@@ -52,9 +51,7 @@ const StockDetailsList = (props) => {
 
     return (
       <>
-        <FormItem disabled placeholder="仓库名称" name="storehouseId" value={storehouseId} component={SysField.Storehouse} />
-        <FormItem disabled placeholder="品牌名称" name="brandId" value={brandId} component={SysField.brandeId} />
-        <FormItem disabled placeholder="产品名称" name="skuId" value={skuId} component={SysField.ItemId} />
+        <FormItem disabled placeholder="仓库名称" name="stockId" value={stockId} component={SysField.StockId} />
         <FormItem placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
         <FormItem hidden name="stage" value={value ? 2 : 1} component={SysField.outStockOrderId} />
         {value && <FormItem hidden name="outStockOrderId" value={value} component={SysField.outStockOrderId} />}
@@ -132,7 +129,7 @@ const StockDetailsList = (props) => {
             </>
           );
         }} sorter />
-        <Column title="供应商 / 品牌" dataIndex="brandId" render={(text, record) => {
+        <Column title="供应商(品牌)" dataIndex="brandId" render={(text, record) => {
           return (
             <>
               {record.brandResult.brandName}

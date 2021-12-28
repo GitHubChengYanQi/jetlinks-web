@@ -170,6 +170,10 @@ const SkuEdit = ({...props}, ref) => {
           label="备注"
           name="remarks"
           component={SysField.Note} />
+        <FormItem
+          label="附件"
+          name="fileId"
+          component={SysField.FileId} />
       </Form>
     </div>
   );
