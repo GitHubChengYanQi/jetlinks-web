@@ -61,7 +61,7 @@ export const QualityPlanId = (props) =>{
       other.onChange(null);
     }
   },[type]);
-  return (<Select resh={type} api={qualityPlanListSelect} placeholder={type === 1 ? '抽检检查' : '固定检查' } data={{testingType:type}}  {...other}/>);
+  return (<Select resh={type} api={qualityPlanListSelect} placeholder={type === 1 ? '抽检检查' : '固定检查' } data={{testingType:type || 1}}  {...other}/>);
 };
 
 export const State = (props) =>{

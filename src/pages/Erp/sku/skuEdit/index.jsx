@@ -16,6 +16,7 @@ import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rules
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {Batch} from '../skuField';
 
 const {FormItem} = Form;
 
@@ -170,6 +171,10 @@ const SkuEdit = ({...props}, ref) => {
           label="备注"
           name="remarks"
           component={SysField.Note} />
+        <FormItem
+          label="批量"
+          name="batch"
+          component={SysField.Batch} />
         <FormItem
           label="附件"
           name="fileId"

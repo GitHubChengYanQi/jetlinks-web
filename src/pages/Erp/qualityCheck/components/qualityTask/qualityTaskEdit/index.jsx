@@ -28,11 +28,11 @@ const ApiConfig = {
 };
 
 
-const QualityTaskEdit = ({...props},ref) => {
+const QualityTaskEdit = ({...props}, ref) => {
 
   const formRef = useRef();
 
-  const [skuIds, setSkuIds] = useSetState({data:[]});
+  const [skuIds, setSkuIds] = useSetState({data: []});
 
   const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
@@ -43,7 +43,7 @@ const QualityTaskEdit = ({...props},ref) => {
     }
   });
 
-  useImperativeHandle(ref,()=>({
+  useImperativeHandle(ref, () => ({
     formRef,
   }));
 
@@ -66,6 +66,8 @@ const QualityTaskEdit = ({...props},ref) => {
 
         }}
         onSubmit={(value) => {
+          console.log(value);
+          return false;
           return {
             ...value, details: value.details.map((items) => {
               return {
@@ -83,7 +85,7 @@ const QualityTaskEdit = ({...props},ref) => {
               array[name.match(/\d/g)[0]] = value;
             else
               array.splice(name.match(/\d/g)[0], 1);
-            setSkuIds({data:array});
+            setSkuIds({data: array});
             if (value) {
               const sku = await request({
                 ...skuDetail,
@@ -91,7 +93,8 @@ const QualityTaskEdit = ({...props},ref) => {
                   skuId: value,
                 }
               });
-              if (sku && sku.qualityPlanId) {
+              if (sku) {
+                const batch = sku.batch === 1;
                 setFieldState(
                   FormPath.transform(name, /\d/, ($1) => {
                     return `details.${$1}.batch`;
@@ -106,7 +109,20 @@ const QualityTaskEdit = ({...props},ref) => {
                     return `details.${$1}.qualityPlanId`;
                   }),
                   state => {
-                    state.value = sku.qualityPlanId;
+                    state.props.type = batch ? 1 : 2;
+                    if (sku.qualityPlanId) {
+                      state.value = sku.qualityPlanId;
+                    }
+                  }
+                );
+
+                setFieldState(
+                  FormPath.transform(name, /\d/, ($1) => {
+                    return `details.${$1}.percentum`;
+                  }),
+                  state => {
+                    state.visible = batch;
+                    state.required = batch;
                   }
                 );
               }
@@ -115,28 +131,6 @@ const QualityTaskEdit = ({...props},ref) => {
 
           });
 
-
-          FormEffectHooks.onFieldValueChange$('details.*.batch').subscribe(({name, value}) => {
-            setFieldState(
-              FormPath.transform(name, /\d/, ($1) => {
-                return `details.${$1}.qualityPlanId`;
-              }),
-              state => {
-                state.props.type = value ? 1 : 2;
-              }
-            );
-
-            setFieldState(
-              FormPath.transform(name, /\d/, ($1) => {
-                return `details.${$1}.percentum`;
-              }),
-              state => {
-                state.visible = value;
-                state.required = value;
-              }
-            );
-
-          });
         }}
       >
 
@@ -182,7 +176,7 @@ const QualityTaskEdit = ({...props},ref) => {
                         bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
-                        <div style={{width: '20%', display: 'inline-block'}}>
+                        <div style={{width: '22%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -193,7 +187,7 @@ const QualityTaskEdit = ({...props},ref) => {
                             required
                           />
                         </div>
-                        <div style={{width: '26%', display: 'inline-block'}}>
+                        <div style={{width: '27%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}
@@ -203,7 +197,7 @@ const QualityTaskEdit = ({...props},ref) => {
                             required
                           />
                         </div>
-                        <div style={{width: '14%', display: 'inline-block'}}>
+                        <div style={{width: '16%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={8}
                             itemStyle={{margin: 0}}
@@ -213,7 +207,7 @@ const QualityTaskEdit = ({...props},ref) => {
                             required
                           />
                         </div>
-                        <div style={{width: '18%', display: 'inline-block'}}>
+                        <div style={{width: '17%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={8}
                             itemStyle={{margin: 0}}
@@ -229,8 +223,9 @@ const QualityTaskEdit = ({...props},ref) => {
                             component={SysField.Remaining}
                           />
                         </div>
-                        <div style={{width: '6%', display: 'inline-block'}}>
+                        <div style={{display: 'none'}}>
                           <FormItem
+                            visible={false}
                             name={`details.${index}.batch`}
                             component={SysField.Batch}
                           />

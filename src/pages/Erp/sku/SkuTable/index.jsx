@@ -115,9 +115,9 @@ const SkuTable = (props) => {
         api={skuList}
         tableKey="sku"
         rowKey="skuId"
+        isModal={false}
         searchForm={searchForm}
         actions={actions()}
-        bordered={false}
         ref={tableRef}
         footer={footer}
         onChange={(value, record) => {

@@ -9,7 +9,7 @@ import React from 'react';
 import {
   Input,
   InputNumber,
-  Radio, AutoComplete
+  Radio, AutoComplete, Checkbox
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -155,5 +155,15 @@ export const State = (props) => {
     <Radio value={1}>标配</Radio>
     <Radio value={0}>非标配</Radio>
   </Radio.Group>);
+};
+
+export const Batch = (props) => {
+  return (<Checkbox checked={props.value} onChange={(value)=>{
+    if (value.target.checked){
+      props.onChange(1);
+    }else {
+      props.onChange(0);
+    }
+  }} />);
 };
 

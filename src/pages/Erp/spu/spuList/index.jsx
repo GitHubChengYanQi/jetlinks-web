@@ -29,7 +29,6 @@ const {FormItem} = Form;
 const SpuList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const history = useHistory();
 
   const actions = () => {
     return (
@@ -57,6 +56,7 @@ const SpuList = () => {
         title={<Breadcrumb />}
         api={spuList}
         rowKey="spuId"
+        isModal={false}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

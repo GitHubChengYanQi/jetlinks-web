@@ -93,7 +93,7 @@ const QualityTaskList = () => {
         <Column />
       </Table>
       <Modal
-        width={1250}
+        width={1200}
         loading={(loading)=>{
           setLoading(loading);
         }}
