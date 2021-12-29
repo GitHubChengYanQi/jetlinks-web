@@ -2,16 +2,29 @@ import React, {useEffect, useRef, useState} from 'react';
 import ReactWEditor from 'wangeditor-for-react';
 import {Card} from 'antd';
 
-const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps, ...props}, ref) => {
+const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps, type, ...props}, ref) => {
 
   const editorRef = useRef(null);
 
   const [tagNumber, setTagNumber] = useState({});
 
-  const CardGridStyle = {
-    cursor: 'pointer',
-    padding: 8,
-    width: '25%'
+  const CardGridStyle = () => {
+    switch (type) {
+      case 'PHYSICALDETAIL':
+        return {
+          cursor: 'pointer',
+          padding: 8,
+          width: '25%'
+        };
+      case 'inkindDetail':
+        return {
+          cursor: 'pointer',
+          padding: 8,
+          width: '25%'
+        };
+      default:
+        return null;
+    }
   };
 
   const defaultNumbers = (text) => {
@@ -209,26 +222,50 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
     editorCmd(type, number);
   };
 
+  const templateType = () => {
+    switch (type) {
+      case 'PHYSICALDETAIL':
+        return <Card>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${name}')
+          }>物料名称</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${brand}')
+          }>供应商(品牌)</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${number}')
+          }>数量</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${qrCode}')
+          }>二维码</Card.Grid>
+        </Card>;
+      case 'contacts':
+        return <Card>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('inp')}>文本框</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('number')}>数字框</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('date')}>时间框</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('customer')}>客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Acontacts')}>甲方联系人</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Bcontacts')}> 乙方联系人</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('AAddress')}> 甲方地址</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BAddress')}> 乙方地址</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('APhone')}> 甲方电话</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BPhone')}> 乙方电话</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('ACustomer')}> 甲方客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BCustomer')}> 乙方客户</Card.Grid>
+        </Card>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
-      {template &&
-      <Card>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('inp')}>文本框</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('number')}>数字框</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('date')}>时间框</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('customer')}>客户</Card.Grid>
-        {/* <Card.Grid style={CardGridStyle} onClick={() => tagClick('sku')}>物料</Card.Grid> */}
-        {/* <Card.Grid style={CardGridStyle} onClick={() => tagClick('package')}>套餐</Card.Grid> */}
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('Acontacts')}>甲方联系人</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('Bcontacts')}> 乙方联系人</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('AAddress')}> 甲方地址</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('BAddress')}> 乙方地址</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('APhone')}> 甲方电话</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('BPhone')}> 乙方电话</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('ACustomer')}> 甲方客户</Card.Grid>
-        <Card.Grid style={CardGridStyle} onClick={() => tagClick('BCustomer')}> 乙方客户</Card.Grid>
-      </Card>
-      }
+      {templateType()}
       <br />
       <ReactWEditor
         placeholder={placeholder}

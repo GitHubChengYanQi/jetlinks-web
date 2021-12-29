@@ -10,6 +10,7 @@ import CategoryList from '@/pages/Erp/category/categoryList';
 import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import Modal from '@/components/Modal';
+import PrintTemplateList from '@/pages/SPU/printTemplate/printTemplateList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -25,8 +26,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <BrandList />;
       case 'czgl':
         return <MaterialList />;
-      // case 'cpflgl':
-      //   return <ItemClassList />;
+      case 'dymb':
+        return <PrintTemplateList />;
       case 'dwgl':
         return <UnitList />;
       case 'gjflgl':
@@ -68,6 +69,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           </Menu.Item>
           <Menu.Item key="wlfl">
             <span>分类管理</span>
+          </Menu.Item>
+          <Menu.Item key="dymb">
+            <span>打印模板管理</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />

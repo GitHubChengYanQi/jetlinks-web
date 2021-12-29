@@ -51,7 +51,7 @@ const StockDetailsList = (props) => {
 
     return (
       <>
-        <FormItem disabled placeholder="仓库名称" name="stockId" value={stockId} component={SysField.StockId} />
+        <FormItem disabled placeholder="库存" name="stockId" value={stockId} component={SysField.StockId} />
         <FormItem placeholder="入库时间" name="storageTime" component={SysField.StorageTime} />
         <FormItem hidden name="stage" value={value ? 2 : 1} component={SysField.outStockOrderId} />
         {value && <FormItem hidden name="outStockOrderId" value={value} component={SysField.outStockOrderId} />}

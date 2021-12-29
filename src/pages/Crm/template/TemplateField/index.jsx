@@ -16,7 +16,7 @@ export const Name = (props) => {
   return (<Input   {...props} />);
 };
 export const Content = (props) => {
-  return (<Editor template placeholder='输入合同模板..'  {...props} />);
+  return (<Editor type='contacts' placeholder='输入合同模板..'  {...props} />);
 };
 
 export const ContractClassId = (props) => {
