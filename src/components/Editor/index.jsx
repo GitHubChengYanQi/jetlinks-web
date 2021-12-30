@@ -242,6 +242,10 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
             // eslint-disable-next-line no-template-curly-in-string
             editorRef.current.editor.cmd.do('insertHTML', '${qrCode}')
           }>二维码</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${coding}')
+          }>编码</Card.Grid>
         </Card>;
       case 'contacts':
         return <Card>

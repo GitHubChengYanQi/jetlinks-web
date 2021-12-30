@@ -6,25 +6,19 @@
  */
 
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Button, Input, InputNumber, Select as AntSelect, Space} from 'antd';
-import parse, {attributesToProps} from 'html-react-parser';
+import parse from 'html-react-parser';
+import {PlusOutlined} from '@ant-design/icons';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
-import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import DatePicker from '@/components/DatePicker';
-import ItemsList from '@/pages/Erp/items/ItemsList';
-import ErpPackageList from '@/pages/Erp/package/packageList';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
-import TableDetail from '@/pages/Crm/contract/ContractEdit/components/TableDetail';
-import {PlusOutlined} from '@ant-design/icons';
 import Modal from '@/components/Modal';
 import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import Drawer from '@/components/Drawer';
 import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import PhoneEdit from '@/pages/Crm/phone/phoneEdit';
-import {customerIdSelect} from '@/pages/Erp/order/OrderUrl';
-import {useRequest} from '@/util/Request';
 import Choose from '@/pages/Crm/contract/components/Choose';
 import {contractClassListSelect} from '@/pages/Crm/contract/components/contractClass/contractClassUrl';
 
