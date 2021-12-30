@@ -22,7 +22,7 @@ export default {
   buildHunHe: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://api.hh.gf2025.com/',
+    baseURI: 'https://api.hh.gf2025.com/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
