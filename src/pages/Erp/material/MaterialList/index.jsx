@@ -17,9 +17,12 @@ import Modal2 from '@/components/Modal';
 import MaterialEdit from '../MaterialEdit';
 import * as SysField from '../MaterialField';
 import {batchDelete, materialDelete, materialList} from '../MaterialUrl';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const MaterialList = () => {
   const ref = useRef(null);
@@ -58,6 +61,7 @@ const MaterialList = () => {
   return (
     <>
       <Table
+        formActions={formActionsPublic}
         contentHeight
         title={<Breadcrumb title='材质管理'/>}
         api={materialList}

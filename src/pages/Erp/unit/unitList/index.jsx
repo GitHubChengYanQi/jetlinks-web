@@ -18,9 +18,12 @@ import Breadcrumb from "@/components/Breadcrumb";
 import {batchDelete, unitDelete, unitList} from '../unitUrl';
 
 import * as SysField from '../unitField';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const UnitList = () => {
   const ref = useRef(null);
@@ -60,6 +63,7 @@ const UnitList = () => {
     <div style={{padding:16}}>
       <Table
         contentHeight
+        formActions={formActionsPublic}
         title={<Breadcrumb title='单位管理'/>}
         api={unitList}
         rowKey="unitId"

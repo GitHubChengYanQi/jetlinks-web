@@ -120,8 +120,8 @@ export const Codings = (props) => {
   return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };
 export const UnitId = (props) =>{
-  const {skuId, ...other} = props;
-  return (<SetSelectOrCascader api={unitListSelect} disabled={skuId} width={200} title='设置单位' component={UnitList} {...other} />);
+  const { ...other} = props;
+  return (<SetSelectOrCascader api={unitListSelect} width={200} title='设置单位' component={UnitList} {...other} />);
 };
 
 export const Standard = (props) => {
@@ -137,9 +137,9 @@ export const SelectSpuClass = (props) => {
 export const SpuClass = (props) => {
 
 
-  const {skuId, ...other} = props;
+  const {...other} = props;
 
-  return (<SetSelectOrCascader api={spuClassificationTreeVrew} disabled={skuId} cascader width={200} title='设置分类' component={SpuClassificationList} {...other} />);
+  return (<SetSelectOrCascader api={spuClassificationTreeVrew} cascader width={200} title='设置分类' component={SpuClassificationList} {...other} />);
 };
 
 export const Note = (props) => {
