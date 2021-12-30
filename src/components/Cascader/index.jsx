@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Cascader as AntCascader} from 'antd';
 import {useRequest} from '@/util/Request';
+import {logger} from 'ice';
 
 const getParentValue = (value, data) => {
   if (!Array.isArray(data)) {
@@ -58,6 +59,9 @@ const Cascader = (props) => {
       }
     } else {
       valueArray = getParentValue($tmpValue, dataSources);
+      if (valueArray.length <= 0){
+        onChange(null);
+      }
     }
   } else if (Array.isArray(value)) {
     valueArray = value;

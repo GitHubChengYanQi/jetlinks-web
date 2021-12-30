@@ -98,7 +98,7 @@ const SpuClassificationList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.key);
               }} />
-              <DelButton api={spuClassificationDelete} value={record.spuClassificationId} onSuccess={() => {
+              <DelButton api={spuClassificationDelete} value={record.key} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>

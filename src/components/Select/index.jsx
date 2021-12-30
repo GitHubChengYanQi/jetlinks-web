@@ -15,6 +15,17 @@ const Select = (props) => {
     }
   },[resh]);
 
+  useEffect(()=>{
+    if (value){
+      const items = data && data.filter((items)=>{
+        return items.value === value;
+      });
+      if (items && items.length <= 0){
+        other.onChange(null);
+      }
+    }
+  },[data,value]);
+
   let valueArray = [];
   const {mode} = other;
   if (value) {
