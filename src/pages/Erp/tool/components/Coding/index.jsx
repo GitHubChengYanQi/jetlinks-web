@@ -6,7 +6,7 @@ import {Col, Input, Row, Select as AntdSelect, Space} from 'antd';
 
 const Coding = ({value, width, onChange, codingId, module}) => {
 
-  const [state, setState] = useState();
+  const [state, setState] = useState(false);
 
   const {data} = useRequest(codingRulesListSelect,
     {
@@ -31,8 +31,7 @@ const Coding = ({value, width, onChange, codingId, module}) => {
   useEffect(() => {
     if (value) {
       onChange(value);
-      setState(false);
-    } else {
+    } else if (codingId){
       onChange(codingId);
       setState(true);
     }
