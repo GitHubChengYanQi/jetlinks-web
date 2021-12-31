@@ -31,6 +31,7 @@ const TableWarp = ({
   tab,
   noSort,
   tableKey,
+  branch,
   rowSelection,
   bodyStyle,
   bordered,
@@ -104,8 +105,8 @@ const TableWarp = ({
       });
       return new Promise((resolve) => {
         resolve({
-          dataSource: Array.isArray(response.data) ? response.data.map((items)=>{
-            return {...items,children:items.children && (items.children.length > 0 ? items.children : null)};
+          dataSource: Array.isArray(response.data) ? response.data.map((items) => {
+            return {...items, children: items.children && (items.children.length > 0 ? items.children : null)};
           }) : [],
           total: response.count,
           current: response.current,
@@ -208,7 +209,7 @@ const TableWarp = ({
                 onChange: (selectedRowKeys, selectedRows) => {
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
                 },
-                getCheckboxProps
+                getCheckboxProps,
               }}
               footer={footer}
               layout

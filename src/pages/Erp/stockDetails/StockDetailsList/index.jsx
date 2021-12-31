@@ -5,7 +5,7 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, { useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Card, Table as AntTable} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -43,7 +43,7 @@ const StockDetailsList = (props) => {
     method: 'GET',
   });
 
-  if (loading){
+  if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
@@ -64,7 +64,7 @@ const StockDetailsList = (props) => {
       <>
         <Button icon={<Icon type="icon-chuhuo" />} onClick={() => {
           refDelivery.current.open(false);
-        }} type="text" >批量发货</Button>
+        }} type="text">批量发货</Button>
         <Modal2 title="产品出库" component={DeliveryDetailsEdit} onSuccess={() => {
           tableRef.current.refresh();
           refDelivery.current.close();
@@ -75,48 +75,53 @@ const StockDetailsList = (props) => {
   };
 
   return (
-    <Card title='库存明细' extra={<Button onClick={()=>{
+    <Card title="库存明细" extra={<Button onClick={() => {
       history.push('/ERP/stock');
     }}>返回</Button>}>
       <Table
         title={<Breadcrumb />}
         api={stockDetailsList}
         isModal={false}
-        headStyle={{display:'none'}}
+        headStyle={{display: 'none'}}
         rowKey="stockItemId"
         searchForm={searchForm}
         rowSelection
         footer={value ? footer : false}
-        onChange={(keys,all) => {
+        onChange={(keys, all) => {
           setIds(all);
         }}
         ref={tableRef}
       >
-        <Column title="物料" render={(text, record) => {
-          return (
-            <>
-              {record.qrCodeId && <Code value={record.qrCodeId} />}
-              {record.sku && `${record.sku.skuName  }  /  `}
-              {record.spuResult && record.spuResult.name}
-              &nbsp;&nbsp;
-              { record.backSkus && record.backSkus.length>0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
-                (
-                {
-                  record.backSkus.map((items, index) => {
-                    return <span key={index}>{items.itemAttribute.attribute}
-                      ：
-                      {items.attributeValues.attributeValues}</span>;
-                  })
-                }
-                )
-              </em>}
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              ×
-              {record.number}
-            </>
-          );
+        <Column
+          // onFilter={(value,record) => {
+          //   return record.number > 0;
+          // }}
+          title="物料"
+          render={(text, record) => {
+            return (
+              <>
+                {record.qrCodeId && <Code value={record.qrCodeId} />}
+                {record.sku && `${record.sku.skuName}  /  `}
+                {record.spuResult && record.spuResult.name}
+                &nbsp;&nbsp;
+                {record.backSkus && record.backSkus.length > 0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
+                  (
+                  {
+                    record.backSkus.map((items, index) => {
+                      return <span key={index}>{items.itemAttribute.attribute}
+                        ：
+                        {items.attributeValues.attributeValues}</span>;
+                    })
+                  }
+                  )
+                </em>}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                ×
+                {record.number}
+              </>
+            );
 
-        }} sorter />
+          }} sorter />
         <Column title="仓库库位" dataIndex="pname" render={(text, record) => {
           return (
             <>

@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {codingRulesListSelect} from '@/pages/Erp/tool/toolUrl';
-import {Input, Select as AntdSelect, Space} from 'antd';
+import {Col, Input, Row, Select as AntdSelect, Space} from 'antd';
 
 
-const Coding = ({value, width, onChange, codingId,module}) => {
+const Coding = ({value, width, onChange, codingId, module}) => {
 
   const [state, setState] = useState();
 
   const {data} = useRequest(codingRulesListSelect,
     {
-      defaultParams:{
-        data:{
+      defaultParams: {
+        data: {
           module
         }
       }
@@ -19,17 +19,12 @@ const Coding = ({value, width, onChange, codingId,module}) => {
 
   const options = [
     {
-      label: '编码规则',
-      options: data || []
+      label: '系统编码',
+      value: 'sys'
     },
     {
       label: '自定义',
-      options: [
-        {
-          label: '自定义',
-          value: '自定义'
-        }
-      ]
+      value: 'defined'
     }
   ];
 
@@ -43,45 +38,39 @@ const Coding = ({value, width, onChange, codingId,module}) => {
     }
   }, []);
 
-  return (<div style={{width}}>
-    {state ?
+  return (
+    <Space style={{width}}>
       <AntdSelect
-        allowClear
-        showSearch
-        value={value}
-        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        defaultValue={codingId ? `${codingId}` : ''}
-        style={{width: '100%'}}
-        options={options || []}
+        style={{width: 100}}
+        value={state ? 'sys' : 'defined'}
+        dropdownMatchSelectWidth={200}
+        options={options}
         onSelect={(value) => {
-          onChange(value);
-          if (value === '自定义') {
-            setState(false);
-            onChange(null);
-          }
-        }} />
-      :
-      <Space>
-        <AntdSelect
-          value="自定义"
-          style={{minWidth: 100}}
-          dropdownMatchSelectWidth={200}
-          options={[
-            {
-              label: '编码规则',
-              options: data || []
-            },
-          ]}
-          onSelect={(value) => {
-            setState(true);
-            onChange(value);
-          }} />
-        <Input value={value} style={width && {width:(width-100)}} placeholder="输入自定义编码" onChange={(value)=>{
-          onChange(value.target.value);
-        }} />
-      </Space>
-    }
-  </div>);
+          setState(value !== 'defined');
+          onChange(null);
+        }}
+      />
+      <div style={{minWidth:100}}>
+        {
+          state ?
+            <AntdSelect
+              allowClear
+              showSearch
+              value={value}
+              filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              defaultValue={codingId ? `${codingId}` : ''}
+              options={data || []}
+              onSelect={(value) => {
+                onChange(value);
+              }} />
+            :
+            <Input value={value} placeholder="输入自定义编码" onChange={(value) => {
+              onChange(value.target.value);
+            }} />
+        }
+      </div>
+    </Space>
+  );
 };
 
 export default Coding;

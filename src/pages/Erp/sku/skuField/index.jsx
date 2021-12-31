@@ -158,12 +158,13 @@ export const State = (props) => {
 };
 
 export const Batch = (props) => {
-  return (<Checkbox checked={props.value} onChange={(value)=>{
-    if (value.target.checked){
-      props.onChange(1);
-    }else {
-      props.onChange(0);
-    }
-  }} />);
+  return (<Radio.Group {...props}>
+    <Radio value={1}>
+      是
+    </Radio>
+    <Radio value={0}>
+      否
+    </Radio>
+  </Radio.Group>);
 };
 

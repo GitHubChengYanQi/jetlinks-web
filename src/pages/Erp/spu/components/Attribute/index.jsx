@@ -209,9 +209,9 @@ const Attribute = ({attribute, spuId, ...props}) => {
       {/*        />*/}
       {/*      );*/}
       {/*    })}*/}
-      {/*    <Column title="型号" dataIndex='skuName' width={200} render={(value, record, index) => {*/}
+      {/*    <Column title="型号(零件号)" dataIndex='skuName' width={200} render={(value, record, index) => {*/}
       {/*      return (*/}
-      {/*        <Input placeholder="输入型号" value={value} onChange={(value) => {*/}
+      {/*        <Input placeholder="输入型号(零件号)" value={value} onChange={(value) => {*/}
       {/*          model[index] = value.target.value;*/}
       {/*          setModel([...model]);*/}
       {/*        }} />*/}

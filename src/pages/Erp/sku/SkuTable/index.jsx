@@ -64,7 +64,7 @@ const SkuTable = (props) => {
     return (
       <div style={{maxWidth: 800}}>
         <FormItem
-          placeholder="型号 / 编码 / 物料名称"
+          placeholder="型号(零件号) / 编码 / 物料名称"
           name="skuName"
           component={SysField.SelectSkuName} />
         <FormItem
@@ -127,7 +127,7 @@ const SkuTable = (props) => {
         {...other}
       >
 
-        <Column title="型号 / 名称" key={1} dataIndex="spuId" render={(value, record) => {
+        <Column title="型号(零件号) / 名称" key={1} dataIndex="spuId" render={(value, record) => {
           return (
             <>
               <Code source="sku" id={record.skuId} />

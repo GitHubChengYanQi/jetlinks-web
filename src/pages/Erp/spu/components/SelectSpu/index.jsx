@@ -30,7 +30,7 @@ const SelectSpu = ({onChange, ...props}) => {
     <Space direction="vertical">
       <div>
         <div style={{display: 'inline-block',width:'auto'}}>
-          sku&nbsp;&nbsp;型号：
+          sku&nbsp;&nbsp;型号(零件号)：
         </div>
         <div style={{display: 'inline-block', width: '87%'}}>
           <Select api={skuListSelect} width="100%" value={skuId} onChange={async (value) => {

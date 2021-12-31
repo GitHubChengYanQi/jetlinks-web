@@ -39,7 +39,7 @@ const SkuDetail = () => {
       <Card>
         <div className={styles.title}>
           <Descriptions title="基础数据">
-            <Descriptions.Item label="型号">{data.skuName}</Descriptions.Item>
+            <Descriptions.Item label="型号(零件号)(零件号)">{data.skuName}</Descriptions.Item>
             <Descriptions.Item label="名称">{data.spuResult && data.spuResult.name}</Descriptions.Item>
             <Descriptions.Item label="配置">
               <Space>

@@ -78,7 +78,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
         }} />
       <Select
         style={{width: 200}}
-        placeholder="输入型号搜索"
+        placeholder="输入型号(零件号)搜索"
         showSearch
         allowClear
         onClear={()=>{

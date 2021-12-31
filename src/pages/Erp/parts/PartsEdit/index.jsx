@@ -91,7 +91,7 @@ const PartsEdit = ({...props},ref) => {
             {!type && <>
               <FormItem label="配置" name="skuRequests" component={SysField.Attributes} required />
               <FormItem label="编码" name="standard" component={SysField.Standard} required />
-              <FormItem label="型号" name="skuName" component={SysField.SkuName} required />
+              <FormItem label="型号(零件号)" name="skuName" component={SysField.SkuName} required />
               <FormItem label="备注" name="note" component={SysField.Note} />
             </>}
           </ProCard>

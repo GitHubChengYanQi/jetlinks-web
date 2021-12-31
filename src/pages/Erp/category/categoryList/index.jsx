@@ -82,11 +82,13 @@ const CategoryList = () => {
             record.children = null;
           }
           return (
-            <>
+            <Button type='link' onClick={()=>{
+              refAttribute.current.open(record.key);
+            }}>
               {
                 value
               }
-            </>
+            </Button>
           );
         }} />
         <Column title="操作" align="right" render={(value, record) => {

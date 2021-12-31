@@ -132,7 +132,8 @@ const SkuEdit = ({...props}, ref) => {
           name="standard"
           component={SysField.Codings}
           codingId={data}
-          rules={[{required: true, message: data && data.length > 0 ? '该字段是必填字段' : '请先设置编码！'}]}
+          module={0}
+          rules={[{required: true, message: data && data.length > 0 ? '请输入编码' : '请先设置编码！'}]}
         />
         <FormItem
           label="物料名称"
@@ -148,7 +149,7 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.SpuClass}
           required />
         <FormItem
-          label="型号"
+          label="型号(零件号)"
           name="skuName"
           skuname={spu && sku && `${sku} / ${spu}`}
           component={SysField.SkuName}
@@ -161,6 +162,12 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.UnitId}
           required />
         <FormItem
+          label="批量"
+          name="batch"
+          component={SysField.Batch}
+          required
+        />
+        <FormItem
           label="规格"
           skuId={value.skuId}
           name="specifications"
@@ -169,10 +176,6 @@ const SkuEdit = ({...props}, ref) => {
           label="备注"
           name="remarks"
           component={SysField.Note} />
-        <FormItem
-          label="批量"
-          name="batch"
-          component={SysField.Batch} />
         <FormItem
           label="附件"
           name="fileId"
