@@ -61,6 +61,8 @@ const StorehousePositionsList = (props) => {
           method: 'GET',
         }}
         rowKey="value"
+        pagination={false}
+        footer={false}
         formActions={formActionsPublic}
         rowSelection
         noSort
