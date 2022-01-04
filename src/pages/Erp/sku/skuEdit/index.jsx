@@ -175,7 +175,7 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="规格配置"
           skuId={value.skuId}
-          name="specifications"
+          name="sku"
           value={value && value.skuJsons.map((items) => {
             return {
               label: items.attribute.attribute,
