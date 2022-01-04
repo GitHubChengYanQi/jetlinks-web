@@ -48,11 +48,11 @@ const StorehouseEdit = ({...props}) => {
       >
         <FormItem label="仓库码" name="coding"  component={SysField.Coding} rules={[{required:true,pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',message:'只能输入大写字母或数字！'}]}/>
         <FormItem label="仓库名称" name="name" component={SysField.Name} required />
-        <FormItem label="仓库地点" name="amap" component={SysField.Map} />
+        <FormItem label="仓库地点" name="amap" component={SysField.Map} required />
         <div style={{display:'none'}}>
-          <FormItem name="palce" component={SysField.Palce} required />
-          <FormItem label="经度" name="longitude" component={SysField.Longitude} required />
-          <FormItem label="纬度" name="latitude" component={SysField.Latitude} required />
+          <FormItem name="palce" component={SysField.Palce} />
+          <FormItem label="经度" name="longitude" component={SysField.Longitude} />
+          <FormItem label="纬度" name="latitude" component={SysField.Latitude} />
         </div>
         <FormItem label="仓库面积" name="measure" component={SysField.Measure} />
         <FormItem label="仓库高度" name="capacity" component={SysField.Capacity} />
