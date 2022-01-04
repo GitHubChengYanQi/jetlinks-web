@@ -11,12 +11,14 @@ import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import * as apiUrl from '../inventoryUrl';
+import Coding from '@/pages/Erp/tool/components/Coding';
+import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
 
 export const InventoryTaskName = (props) =>{
   return (<Input {...props}/>);
 };
 export const Remark = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input.TextArea {...props}/>);
 };
 export const Display = (props) =>{
   return (<Input {...props}/>);
@@ -36,3 +38,16 @@ export const UpdateTime = (props) =>{
 export const DeptId = (props) =>{
   return (<Input {...props}/>);
 };
+
+
+export const UserId = (props) =>{
+  return (<Select api={UserIdSelect} {...props}/>);
+};
+
+export const Codings = (props) => {
+
+  const {codingId, ...other} = props;
+
+  return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
+};
+

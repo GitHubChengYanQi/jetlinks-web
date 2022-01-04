@@ -9,7 +9,7 @@ import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
-import {createFormActions, FormEffectHooks} from '@formily/antd';
+import {createAsyncFormActions, createFormActions, FormEffectHooks} from '@formily/antd';
 import {notification} from 'antd';
 import {request, useRequest} from '@/util/Request';
 import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
@@ -34,6 +34,8 @@ const SkuEdit = ({...props}, ref) => {
 
   const [spu, setSpu] = useState();
   const [sku, setSku] = useState();
+
+  const [details,setDetails] = useState();
 
   const [next, setNext] = useState();
 
@@ -82,10 +84,13 @@ const SkuEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="skuId"
+        details={(res)=>{
+          setDetails(res);
+        }}
         onError={() => {
           openNotificationWithIcon('error');
         }}
-        onSuccess={() => {
+        onSuccess={(res) => {
           openNotificationWithIcon('success');
           if (!next) {
             props.onSuccess();
@@ -98,26 +103,26 @@ const SkuEdit = ({...props}, ref) => {
         onSubmit={(value) => {
           return {...value, type: 0, isHidden: true};
         }}
-        effects={() => {
+        effects={async () => {
 
           const {setFieldState} = createFormActions();
 
           FormEffectHooks.onFieldValueChange$('spu').subscribe(async ({value}) => {
-            if (value && value.spuId){
+            if (value && value.spuId) {
 
-              const spu = await request({...spuDetail,data:{spuId:value.spuId}});
+              const spu = await request({...spuDetail, data: {spuId: value.spuId}});
 
               setFieldState(
                 'unitId',
                 state => {
-                  state.value= spu.unitId;
+                  state.value = spu.unitId;
                 }
               );
 
               setFieldState(
                 'spuClassificationId',
                 state => {
-                  state.value= spu.spuClassificationId;
+                  state.value = spu.spuClassificationId;
                 }
               );
 
@@ -171,7 +176,16 @@ const SkuEdit = ({...props}, ref) => {
           label="规格配置"
           skuId={value.skuId}
           name="specifications"
-          component={SysField.Specifications} />
+          value={value && value.skuJsons.map((items) => {
+            return {
+              label: items.attribute.attribute,
+              value: items.values.attributeValues,
+              disabled:true,
+            };
+          })}
+          details={details && details.sku}
+          component={SysField.Specifications}
+        />
         <FormItem
           label="备注"
           name="remarks"

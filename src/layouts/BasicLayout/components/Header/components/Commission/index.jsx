@@ -7,6 +7,7 @@ const Commission = ({data}) => {
     return (
       <div style={{maxHeight: 100, overflow: 'auto'}}>
         <List
+          onClick={()=>{}}
           size="small"
           dataSource={data}
           renderItem={(item) => {

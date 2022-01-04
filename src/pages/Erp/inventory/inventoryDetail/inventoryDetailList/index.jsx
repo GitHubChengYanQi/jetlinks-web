@@ -6,8 +6,8 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -28,21 +28,16 @@ const InventoryDetailList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
 
- const searchForm = () => {
-   return (
-     <>
-       <FormItem label="对应实物id" name="inkindId" component={SysField.InkindId}/>
-       <FormItem label="" name="createUser" component={SysField.CreateUser}/>
-       <FormItem label="" name="updateUser" component={SysField.UpdateUser}/>
-       <FormItem label="" name="createTime" component={SysField.CreateTime}/>
-       <FormItem label="" name="updateTime" component={SysField.UpdateTime}/>
-       <FormItem label="部门id" name="deptId" component={SysField.DeptId}/>
-     </>
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="对应实物id" name="inkindId" component={SysField.InkindId} />
+      </>
     );
   };
 
@@ -50,36 +45,42 @@ const InventoryDetailList = () => {
     <>
       <Table
         title={<h2>列表</h2>}
+        headStyle={{display: 'none'}}
         api={inventoryDetailList}
         rowKey="detailId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="对应实物id" dataIndex="inkindId"/>
-        <Column title="" dataIndex="createUser"/>
-        <Column title="" dataIndex="updateUser"/>
-        <Column title="" dataIndex="createTime"/>
-        <Column title="" dataIndex="updateTime"/>
-        <Column title="部门id" dataIndex="deptId"/>
-        <Column/>
+        <Column title="物料" dataIndex="inkindId" />
+        <Column title="状态" dataIndex="status" render={(value) => {
+          switch (value) {
+            case 1:
+              return <>正常</>;
+            case 2:
+              return <>异常</>;
+            default:
+              return null;
+          }
+        }} />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.detailId);
-              }}/>
-              <DelButton api={inventoryDetailDelete} value={record.detailId} onSuccess={()=>{
+              }} />
+              <DelButton api={inventoryDetailDelete} value={record.detailId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={InventoryDetailEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

@@ -7,29 +7,18 @@
 
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {
-  Affix,
-  Button,
-  Card,
-  Checkbox,
   Col,
-  Divider,
-  Input,
   notification,
   Row,
-  Spin, Switch,
-  Table as AntTable,
-  Table
+  Spin,
 } from 'antd';
+import ProCard from '@ant-design/pro-card';
+import {createFormActions, FormEffectHooks,} from '@formily/antd';
 import Form from '@/components/Form';
 import {spuDetail, spuAdd, spuEdit} from '../spuUrl';
 import * as SysField from '../spuField';
-import ProCard from '@ant-design/pro-card';
-import {FormEffectHooks, InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
-import styled from 'styled-components';
 import {useRequest} from '@/util/Request';
 import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
-import {useHistory, useParams} from 'ice';
-import {AttributeId} from '../spuField';
 
 const {FormItem} = Form;
 
@@ -39,6 +28,7 @@ const ApiConfig = {
   save: spuEdit
 };
 
+const formActionsPublic = createFormActions();
 
 const SpuEdit = ({...props},ref) => {
 
@@ -73,6 +63,7 @@ const SpuEdit = ({...props},ref) => {
         {...props}
         ref={formRef}
         api={ApiConfig}
+        formActions={formActionsPublic}
         fieldKey="spuId"
         effects={() => {
           onFieldValueChange$('categoryId').subscribe(({value}) => {

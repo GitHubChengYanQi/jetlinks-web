@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Image, Modal, Space} from 'antd';
-import {useRequest} from '@/util/Request';
 import jrQrcode from 'jr-qrcode';
 import {config} from 'ice';
 import {QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
+import {useRequest} from '@/util/Request';
 
 
 const Code = ({source, id, style, value, image,codeWidth}) => {
