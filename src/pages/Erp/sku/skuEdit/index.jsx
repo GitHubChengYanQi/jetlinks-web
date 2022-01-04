@@ -168,7 +168,7 @@ const SkuEdit = ({...props}, ref) => {
           required
         />
         <FormItem
-          label="规格"
+          label="规格配置"
           skuId={value.skuId}
           name="specifications"
           component={SysField.Specifications} />

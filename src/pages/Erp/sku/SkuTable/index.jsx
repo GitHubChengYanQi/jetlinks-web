@@ -33,6 +33,8 @@ const SkuTable = (props) => {
 
   const {spuClass, ...other} = props;
 
+  const [loading, setLoading] = useState();
+
   const [ids, setIds] = useState([]);
   const [sku, setSku] = useState([]);
 
@@ -188,24 +190,35 @@ const SkuTable = (props) => {
 
       </Table>
 
-      <Modal title="物料" compoentRef={formRef} component={SkuEdit} onSuccess={() => {
-        tableRef.current.submit();
-        ref.current.close();
-      }} ref={ref} footer={<>
-        {!edit && <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            formRef.current.nextAdd(true);
-          }}
-        >完成并添加下一个</Button>}
-        <Button
-          type="primary"
-          onClick={() => {
-            formRef.current.nextAdd(false);
-          }}
-        >完成</Button>
-      </>} />
+      <Modal
+        title="物料"
+        compoentRef={formRef}
+        loading={(load) => {
+          setLoading(load);
+        }}
+        component={SkuEdit}
+        onSuccess={() => {
+          tableRef.current.submit();
+          ref.current.close();
+        }}
+        ref={ref}
+        footer={<>
+          {!edit && <Button
+            loading={loading}
+            type="primary"
+            ghost
+            onClick={() => {
+              formRef.current.nextAdd(true);
+            }}
+          >完成并添加下一个</Button>}
+          <Button
+            loading={loading}
+            type="primary"
+            onClick={() => {
+              formRef.current.nextAdd(false);
+            }}
+          >完成</Button>
+        </>} />
     </>
   );
 };
