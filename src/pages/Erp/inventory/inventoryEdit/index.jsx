@@ -32,7 +32,7 @@ const InventoryEdit = ({...props}) => {
   const {loading, data} = useRequest(codingRulesList, {
     defaultParams: {
       data: {
-        module: 1,
+        module: 6,
         state: 1
       }
     }
@@ -44,29 +44,31 @@ const InventoryEdit = ({...props}) => {
 
 
   return (
-    <Form
-      {...props}
-      ref={formRef}
-      api={ApiConfig}
-      fieldKey="inventoryTaskId"
-      onSuccess={() => {
-        props.onSuccess();
-      }}
-      onError={() => {
+    <div style={{padding:16}}>
+      <Form
+        {...props}
+        ref={formRef}
+        api={ApiConfig}
+        fieldKey="inventoryTaskId"
+        onSuccess={() => {
+          props.onSuccess();
+        }}
+        onError={() => {
 
-      }}
-      onSubmit={(value) => {
-        return {...value};
-      }}
-      effects={({setFieldState, getFieldState}) => {
+        }}
+        onSubmit={(value) => {
+          return {...value};
+        }}
+        effects={({setFieldState, getFieldState}) => {
 
-      }}
-    >
-      <FormItem label="编码" name="coding" codingId={data} module={1} component={SysField.Codings} required />
-      <FormItem label="任务名称" name="inventoryTaskName" component={SysField.InventoryTaskName} required />
-      <FormItem label="负责人" name="userId" component={SysField.UserId} required />
-      <FormItem label="备注" name="userId" component={SysField.Remark} required />
-    </Form>
+        }}
+      >
+        <FormItem label="编码" name="coding" codingId={data} module={6} component={SysField.Codings} required />
+        <FormItem label="任务名称" name="inventoryTaskName" component={SysField.InventoryTaskName} required />
+        <FormItem label="负责人" name="userId" component={SysField.UserId} required />
+        <FormItem label="备注" name="remake" component={SysField.Remark} />
+      </Form>
+    </div>
   );
 };
 

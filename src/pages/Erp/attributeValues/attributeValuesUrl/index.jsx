@@ -35,6 +35,12 @@ export const attributeValuesList = {
   rowKey:'attributeValuesId'
 };
 
+export const attributeValuesListSelect = {
+  url: '/attributeValues/listSelect',
+  method: 'POST',
+  rowKey:'attributeValuesId'
+};
+
 export const itemAttributeListSelect = {
   url: '/itemAttribute/listSelect',
   method: 'GET',

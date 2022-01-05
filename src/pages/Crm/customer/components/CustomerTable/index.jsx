@@ -18,7 +18,7 @@ import {
   customerList,
 } from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
-import {useHistory} from 'ice';
+import {config, useHistory} from 'ice';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
@@ -33,6 +33,8 @@ import cookie from 'js-cookie';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const {baseURI} = config;
 
 const CustomerTable = (props) => {
 
@@ -59,7 +61,7 @@ const CustomerTable = (props) => {
       <>
         <div style={{display: 'inline-block'}}>
           <Upload
-            action='http://192.168.1.228/crm/excel/importAdress'
+            action={`${baseURI}Excel/crm/excel/importAdress`}
             headers={
               {Authorization: cookie.get('tianpeng-token')}
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Col, Divider, Row, Space, Statistic} from 'antd';
+import {Avatar, Col, Divider, Empty, Row, Space, Statistic} from 'antd';
 import styles from '@/pages/Overview/index.module.scss';
 import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -89,6 +89,9 @@ const Head = () => {
     }
   };
 
+  if (!data){
+    return <Empty />;
+  }
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);

@@ -21,6 +21,7 @@ const FormWrapper = (
     fieldKey,
     value,
     defaultValue,
+    details,
     labelAlign,
     formatResult,
     NoButton = true,
@@ -78,6 +79,7 @@ const FormWrapper = (
       return response.data;
     },
     onSuccess: (reslut) => {
+      typeof details === 'function' && details(reslut);
       setFindData(reslut);
     }
   });

@@ -160,7 +160,7 @@ const StorehouseList = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-      <Modal width={800} title="仓库库位" component={StorehousePositionsList} onSuccess={() => {
+      <Modal width={800} headTitle="仓库库位" component={StorehousePositionsList} onSuccess={() => {
         tableRef.current.refresh();
         refPosition.current.close();
       }} ref={refPosition} />

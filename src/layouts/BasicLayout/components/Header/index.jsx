@@ -127,10 +127,10 @@ const Header = () => {
                 <div className={styles.message}>
                   <Tabs centered>
                     <TabPane tab="消息" key="1">
-                      <Message data={data} />
+
                     </TabPane>
                     <TabPane tab="通知" key="2">
-                      <Remind data={data} />
+
                     </TabPane>
                     <TabPane tab="待办" key="3">
                       <Commission data={data} />

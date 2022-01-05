@@ -1,6 +1,5 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import React, {forwardRef,  useImperativeHandle, useState} from 'react';
 import {message, Modal as AntdModal} from 'antd';
-import {randomString} from '@/util/Tools';
 
 const Modal = (
   {

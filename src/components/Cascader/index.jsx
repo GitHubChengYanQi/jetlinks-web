@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Cascader as AntCascader} from 'antd';
+import {Cascader as AntCascader, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import {logger} from 'ice';
 
@@ -30,13 +30,16 @@ const Cascader = (props) => {
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {data,refresh} = useRequest(api,{defaultParams});
+  const {loading,data,refresh} = useRequest(api,{defaultParams});
 
   useEffect(()=>{
     if (resh){
       refresh();
     }
   },[resh]);
+
+  if (loading || !data)
+    return <Spin />;
 
   const dataSources = top ? [
     {
@@ -74,7 +77,7 @@ const Cascader = (props) => {
     onChange(result);
   };
 
-  return (<AntCascader style={{width}} changeOnSelect options={dataSources} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
+  return (<AntCascader loading={loading} style={{width}} changeOnSelect options={dataSources} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
 
 
 };

@@ -37,6 +37,7 @@ const StorehousePositionsEdit = ({...props}) => {
       </div>
       <FormItem label="上级" name="pid" component={SysField.Pid} stroehouseId={storehouse} required />
       <FormItem label="库位名称" name="name" component={SysField.Name} required />
+      <FormItem label="排序" name="sort" component={SysField.Sort}  />
       <FormItem label="库位说明" name="note" component={SysField.Note} />
     </Form>
   );

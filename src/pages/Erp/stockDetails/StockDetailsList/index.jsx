@@ -93,9 +93,6 @@ const StockDetailsList = (props) => {
         ref={tableRef}
       >
         <Column
-          // onFilter={(value,record) => {
-          //   return record.number > 0;
-          // }}
           title="物料"
           render={(text, record) => {
             return (
@@ -141,7 +138,7 @@ const StockDetailsList = (props) => {
             </>
           );
         }} />
-        <Column title="产品价格" dataIndex="price" sorter />
+        <Column title="价格" dataIndex="price" sorter width={100} />
         <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>
     </Card>

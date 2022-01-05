@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, message, Table as AntTable} from 'antd';
+import {Button, message, Space, Table as AntTable, Upload} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -24,14 +24,19 @@ import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import Code from '@/pages/Erp/spu/components/Code';
-import {useHistory} from 'ice';
+import {config, useHistory} from 'ice';
+import cookie from 'js-cookie';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
+const {baseURI} = config;
+
 const SkuTable = (props) => {
 
   const {spuClass, ...other} = props;
+
+  const [loading, setLoading] = useState();
 
   const [ids, setIds] = useState([]);
   const [sku, setSku] = useState([]);
@@ -50,12 +55,22 @@ const SkuTable = (props) => {
 
   const actions = () => {
     return (
-      <>
+      <Space>
+        <Upload
+          action={`${baseURI}Excel/importSku`}
+          headers={
+            {Authorization: cookie.get('tianpeng-token')}
+          }
+          name='file'
+          fileList={null}
+        >
+          <Button icon={<Icon type='icon-daoru' />}>导入物料</Button>
+        </Upload>
         <AddButton onClick={() => {
           ref.current.open(false);
           setEdit(false);
         }} />
-      </>
+      </Space>
     );
   };
 
@@ -142,25 +157,19 @@ const SkuTable = (props) => {
           );
         }} sorter />
 
-        <Column title="配置" key={2} render={(value, record) => {
+        <Column title="规格" key={2} render={(value, record) => {
           return (
             <>
               {
                 record.skuJsons
                 &&
                 record.skuJsons.map((items, index) => {
-                  if (index === record.skuJsons.length - 1) {
-                    return (
-                      <span
-                        key={index}>{(items.values && items.values.attributeValues) && (`${(items.attribute && items.attribute.attribute)}：${items.values && items.values.attributeValues}`)}</span>
-                    );
-                  } else {
-                    return (
-                      <span
-                        key={index}>{(items.values && items.values.attributeValues) && (`${(items.attribute && items.attribute.attribute)}：${items.values && items.values.attributeValues}`)}&nbsp;,&nbsp;</span>
-                    );
+                  if (items.values && items.values.attributeValues && items.attribute && items.values){
+                    return `${items.attribute.attribute} : ${items.values.attributeValues}`;
+                  }else {
+                    return null;
                   }
-                })
+                }).toString()
               }
             </>
           );
@@ -188,24 +197,35 @@ const SkuTable = (props) => {
 
       </Table>
 
-      <Modal title="物料" compoentRef={formRef} component={SkuEdit} onSuccess={() => {
-        tableRef.current.submit();
-        ref.current.close();
-      }} ref={ref} footer={<>
-        {!edit && <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            formRef.current.nextAdd(true);
-          }}
-        >完成并添加下一个</Button>}
-        <Button
-          type="primary"
-          onClick={() => {
-            formRef.current.nextAdd(false);
-          }}
-        >完成</Button>
-      </>} />
+      <Modal
+        title="物料"
+        compoentRef={formRef}
+        loading={(load) => {
+          setLoading(load);
+        }}
+        component={SkuEdit}
+        onSuccess={() => {
+          tableRef.current.submit();
+          ref.current.close();
+        }}
+        ref={ref}
+        footer={<>
+          {!edit && <Button
+            loading={loading}
+            type="primary"
+            ghost
+            onClick={() => {
+              formRef.current.nextAdd(true);
+            }}
+          >完成并添加下一个</Button>}
+          <Button
+            loading={loading}
+            type="primary"
+            onClick={() => {
+              formRef.current.nextAdd(false);
+            }}
+          >完成</Button>
+        </>} />
     </>
   );
 };

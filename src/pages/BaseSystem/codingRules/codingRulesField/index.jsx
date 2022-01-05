@@ -67,7 +67,7 @@ export const Values = (props) => {
 
   const {module, onChange, value} = props;
 
-  const [number,setNumber] = useState();
+  const [number, setNumber] = useState();
 
   const [state, setState] = useState(true);
 
@@ -87,10 +87,10 @@ export const Values = (props) => {
           setState('通用');
           break;
         default:
-          if (/\$\{(serial.*?(\[(\d[0-9]?)\]))\}/.test(value)){
+          if (/\$\{(serial.*?(\[(\d[0-9]?)\]))\}/.test(value)) {
             setNumber(value.split('[')[1].split(']')[0]);
             setState('流水号');
-          }else {
+          } else {
             setState('自定义');
           }
           break;
@@ -102,6 +102,7 @@ export const Values = (props) => {
   const modules = () => {
     switch (module) {
       case 0:
+        // 物料
         return [{
           // eslint-disable-next-line no-template-curly-in-string
           label: '分类码',
@@ -109,13 +110,9 @@ export const Values = (props) => {
           value: '${skuClass}'
         }];
       case 1:
-        return [{
-          // eslint-disable-next-line no-template-curly-in-string
-          label: '仓库码',
-          // eslint-disable-next-line no-template-curly-in-string
-          value: '${storehouse}'
-        }];
       case 2:
+        // 1.出库
+        // 2.入库
         return [{
           // eslint-disable-next-line no-template-curly-in-string
           label: '仓库码',
@@ -123,6 +120,7 @@ export const Values = (props) => {
           value: '${storehouse}'
         }];
       case 4:
+        // 质检任务
         return [{
           // eslint-disable-next-line no-template-curly-in-string
           label: '类型',
@@ -130,6 +128,9 @@ export const Values = (props) => {
           value: '${type}'
         }];
       case 5:
+      case 6:
+        // 5. 采购申请
+        // 6.盘点任务
         return [];
       default:
         return [];
@@ -281,6 +282,7 @@ export const Module = (props) => {
     {label: '质检', value: 3},
     {label: '质检任务', value: 4},
     {label: '采购申请', value: 5},
+    {label: '盘点任务', value: 6},
   ];
 
   return (<AntdSelect options={options} {...props} />);

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import {Input, Select as AntdSelect, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import {codingRulesListSelect} from '@/pages/Erp/tool/toolUrl';
-import {Col, Input, Row, Select as AntdSelect, Space} from 'antd';
 
 
 const Coding = ({value, width, onChange, codingId, module}) => {

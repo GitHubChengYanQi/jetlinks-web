@@ -24,6 +24,7 @@ import Coding from '@/pages/Erp/tool/components/Coding';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import UnitList from '@/pages/Erp/unit/unitList';
 import FileUpload from '@/components/FileUpload';
+import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
 
 export const Type = (props) => {
 
@@ -36,9 +37,11 @@ export const SelectSkuName = (props) => {
 };
 
 export const Specifications = (props) => {
-  const {skuId, ...other} = props;
-  return (<Input disabled={skuId} {...other} />);
+  return (<SkuConfiguration {...props} />);
 };
+
+
+
 export const SkuName = (props) => {
   const {model, onChange, skuname, ...other} = props;
 

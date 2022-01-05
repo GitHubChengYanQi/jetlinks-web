@@ -36,8 +36,6 @@ const SpuClassificationList = () => {
 
   const [ids, setIds] = useState([]);
 
-  const {data} = useRequest(spuClassificationTreeVrew);
-
   const actions = () => {
     return (
       <>
