@@ -30,6 +30,10 @@ export const Display = (props) =>{
 export const Note = (props) =>{
   return (<Input.TextArea {...props}/>);
 };
+
+export const Sort = (props) =>{
+  return (<InputNumber {...props}/>);
+};
 export const Pid = (props) =>{
   const {stroehouseId,...other} = props;
 

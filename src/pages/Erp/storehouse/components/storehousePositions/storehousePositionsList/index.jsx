@@ -46,8 +46,8 @@ const StorehousePositionsList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem hidden label="仓库" name="storehouseId" value={value} component={SysField.StorehouseId} />
-        <FormItem label="库位名称" name="name" component={SysField.Name} />
+        <FormItem hidden name="storehouseId" value={value} component={SysField.StorehouseId} />
+        <FormItem hidden name="name" component={SysField.Name} />
       </>
     );
   };
@@ -62,6 +62,8 @@ const StorehousePositionsList = (props) => {
         }}
         rowKey="value"
         formActions={formActionsPublic}
+        SearchButton
+        headStyle={{margin:0,padding:0}}
         rowSelection
         noSort
         contentHeight
