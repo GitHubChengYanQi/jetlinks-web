@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -19,6 +19,7 @@ import * as SysField from '../inventoryField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import InventoryDetailList from '@/pages/Erp/inventory/inventoryDetail/inventoryDetailList';
+import Code from '@/pages/Erp/spu/components/Code';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -56,9 +57,12 @@ const InventoryList = () => {
         ref={tableRef}
       >
         <Column title="盘点任务编码" dataIndex="coding" render={(value, record) => {
-          return <Button type="link" onClick={() => {
-            refDetail.current.open(record.inventoryTaskId);
-          }}>{value}</Button>;
+          return <Space>
+            <Code source="inventory" id={record.inventoryTaskId} />
+            <Button type="link" onClick={() => {
+              refDetail.current.open(record.inventoryTaskId);
+            }}>{value}</Button>
+          </Space>;
         }} />
         <Column title="盘点任务名称" dataIndex="inventoryTaskName" />
         <Column title="负责人" dataIndex="userId" />

@@ -30,7 +30,7 @@ const PrintTemplateEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="printTemplateId"
-      effects={({setFieldState,getFieldState}) => {
+      effects={({setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value})=>{
           setFieldState('templete',(state)=>{
             state.props.type = value;

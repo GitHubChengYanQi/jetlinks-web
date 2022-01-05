@@ -14,7 +14,7 @@ import * as apiUrl from '../printTemplateUrl';
 import Editor from '@/components/Editor';
 
 export const Type = (props) =>{
-  return (<AntdSelect style={{width:200}} options={[{label:'实物详情',value:'PHYSICALDETAIL'}]} {...props}/>);
+  return (<AntdSelect style={{width:200}} options={[{label:'实物详情',value:'PHYSICALDETAIL'},{label:'库位详情',value:'POSITIONS'},]} {...props}/>);
 };
 export const Name = (props) =>{
   return (<Input {...props}/>);

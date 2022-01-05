@@ -61,7 +61,6 @@ const PrintTemplateList = () => {
       >
         <Column title="类型" dataIndex="type" />
         <Column title="名称" dataIndex="name" />
-        {/*<Column title="模板" dataIndex="templete" />*/}
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

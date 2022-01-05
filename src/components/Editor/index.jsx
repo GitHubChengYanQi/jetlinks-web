@@ -22,6 +22,12 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
           padding: 8,
           width: '25%'
         };
+      case 'POSITIONS':
+        return {
+          cursor: 'pointer',
+          padding: 8,
+          width: '50%'
+        };
       default:
         return null;
     }
@@ -255,6 +261,17 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
             editorRef.current.editor.cmd.do('insertHTML', '${skuCoding}')
           }>物料编码</Card.Grid>
         </Card>;
+      case 'POSITIONS':
+        return <Card>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${name}')
+          }>库位名称</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '${qrCode}')
+          }>二维码</Card.Grid>
+        </Card>;
       case 'contacts':
         return <Card>
           <Card.Grid style={CardGridStyle()} onClick={() => tagClick('inp')}>文本框</Card.Grid>
@@ -262,13 +279,13 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
           <Card.Grid style={CardGridStyle()} onClick={() => tagClick('date')}>时间框</Card.Grid>
           <Card.Grid style={CardGridStyle()} onClick={() => tagClick('customer')}>客户</Card.Grid>
           <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Acontacts')}>甲方联系人</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Bcontacts')}> 乙方联系人</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('AAddress')}> 甲方地址</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BAddress')}> 乙方地址</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('APhone')}> 甲方电话</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BPhone')}> 乙方电话</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('ACustomer')}> 甲方客户</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BCustomer')}> 乙方客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Bcontacts')}>乙方联系人</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('AAddress')}>甲方地址</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BAddress')}>乙方地址</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('APhone')}>甲方电话</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BPhone')}>乙方电话</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('ACustomer')}>甲方客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BCustomer')}>乙方客户</Card.Grid>
         </Card>;
       default:
         return null;
