@@ -6,7 +6,6 @@ const SkuResultSkuJsons = ({skuResult}) => {
   if (!skuResult)
     return <Empty />;
 
-
   return <>
     {skuResult.skuName}
     &nbsp;/&nbsp;
@@ -31,7 +30,6 @@ const SkuResultSkuJsons = ({skuResult}) => {
         )
       </em>
     }
-
   </>;
 };
 

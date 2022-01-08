@@ -138,7 +138,7 @@ const StockDetailsList = (props) => {
             </>
           );
         }} />
-        <Column title="价格" dataIndex="price" sorter width={100} />
+        {/* <Column title="价格" dataIndex="price" sorter width={100} /> */}
         <Column title="入库时间" dataIndex="createTime" sorter />
       </Table>
     </Card>

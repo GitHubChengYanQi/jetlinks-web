@@ -83,7 +83,7 @@ const StorehousePositionsList = (props) => {
                     ref.current.open(record.value);
                   }} />
                   <DelButton api={storehousePositionsDelete} value={record.value} onSuccess={() => {
-                    tableRef.current.refresh();
+                    refresh();
                   }} />
                 </>
               );

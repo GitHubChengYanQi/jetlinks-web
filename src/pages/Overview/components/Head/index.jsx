@@ -1,24 +1,24 @@
 import React from 'react';
-import {Avatar, Col, Divider, Empty, Row, Space, Statistic} from 'antd';
-import styles from '@/pages/Overview/index.module.scss';
-import {useRequest} from '@/util/Request';
+import {Avatar, Col, Empty, Row} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import moment from 'moment';
+import styles from '@/pages/Overview/index.module.scss';
+import {useRequest} from '@/util/Request';
 import BusinessNumber from '@/pages/Overview/components/BusinessNumber';
 
 
 const Head = () => {
 
-  if (!window.sessionStorage.getItem('num')){
-    window.sessionStorage.setItem('num',0);
+  if (!window.sessionStorage.getItem('num')) {
+    window.sessionStorage.setItem('num', 0);
   }
-  window.onbeforeunload = () =>{
+  window.onbeforeunload = () => {
     // eslint-disable-next-line radix
-    if (parseInt(window.sessionStorage.getItem('num')) < 3){
+    if (parseInt(window.sessionStorage.getItem('num')) < 3) {
       // eslint-disable-next-line radix
-      window.sessionStorage.setItem('num',parseInt(window.sessionStorage.getItem('num'))+1);
-    }else {
-      window.sessionStorage.setItem('num',0);
+      window.sessionStorage.setItem('num', parseInt(window.sessionStorage.getItem('num')) + 1);
+    } else {
+      window.sessionStorage.setItem('num', 0);
     }
 
   };
@@ -89,7 +89,7 @@ const Head = () => {
     }
   };
 
-  if (!data){
+  if (!data) {
     return <Empty />;
   }
 

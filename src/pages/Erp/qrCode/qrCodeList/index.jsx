@@ -60,26 +60,31 @@ const QrCodeList = () => {
       case 'item':
       case 'sku':
         if (object.orcodeBackItem) {
-          return <>
-            {object.orcodeBackItem.skuName && `${object.orcodeBackItem.skuName}  /  `}
-            {object.orcodeBackItem.backSpu && object.orcodeBackItem.backSpu.name}
-            &nbsp;&nbsp;
-            {object.orcodeBackItem.backSkus && object.orcodeBackItem.backSkus.length > 0 &&
-            <em style={{color: '#c9c8c8', fontSize: 10}}>
-              (
-              {
-                object.orcodeBackItem.backSkus.map((items, index) => {
-                  return <span key={index}>{items.itemAttribute.attribute}
-                    ：
-                    {items.attributeValues.attributeValues}</span>;
-                })
-              }
-              )
-            </em>}
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            ×
-            {object.inKindNumber}
-          </>;
+          return <Space>
+            <div>
+              {object.orcodeBackItem.skuName && `${object.orcodeBackItem.skuName}  /  `}
+              {object.orcodeBackItem.backSpu && object.orcodeBackItem.backSpu.name}
+              &nbsp;&nbsp;
+              {object.orcodeBackItem.backSkus && object.orcodeBackItem.backSkus.length > 0 &&
+              <em style={{color: '#c9c8c8', fontSize: 10}}>
+                (
+                {
+                  object.orcodeBackItem.backSkus.map((items, index) => {
+                    return <span key={index}>{items.itemAttribute.attribute}
+                      ：
+                      {items.attributeValues.attributeValues}</span>;
+                  })
+                }
+                )
+              </em>}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              ×
+              {object.inKindNumber}
+            </div>
+            <div>{
+              object.state !== '0' ? '已入库' : '未入库'
+            }</div>
+          </Space>;
         } else {
           return null;
         }
@@ -201,12 +206,12 @@ const QrCodeList = () => {
           </>);
         }} />
         <Column title="创建时间" dataIndex="createTime" sorter />
-        <Column title="绑定时间" dataIndex="updateTime" render={(value,record)=>{
-          if (record.type === ''){
+        <Column title="绑定时间" dataIndex="updateTime" render={(value, record) => {
+          if (record.type === '') {
             return <></>;
-          }else if (record.type === 'item'){
+          } else if (record.type === 'item') {
             return <>{value}</>;
-          }else {
+          } else {
             return <>{record.createTime}</>;
           }
         }} sorter />
