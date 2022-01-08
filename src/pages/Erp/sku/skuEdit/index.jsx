@@ -35,7 +35,7 @@ const SkuEdit = ({...props}, ref) => {
   const [spu, setSpu] = useState();
   const [sku, setSku] = useState();
 
-  const [details,setDetails] = useState();
+  const [details, setDetails] = useState();
 
   const [next, setNext] = useState();
 
@@ -84,7 +84,7 @@ const SkuEdit = ({...props}, ref) => {
         api={ApiConfig}
         NoButton={false}
         fieldKey="skuId"
-        details={(res)=>{
+        details={(res) => {
           setDetails(res);
         }}
         onError={() => {
@@ -176,14 +176,14 @@ const SkuEdit = ({...props}, ref) => {
           label="规格配置"
           skuId={value.skuId}
           name="sku"
-          value={value && value.skuJsons.map((items) => {
+          value={value && value.skuJsons && value.skuJsons.length > 0 ? value.skuJsons.map((items) => {
             return {
               label: items.attribute.attribute,
               value: items.values.attributeValues,
-              disabled:true,
+              disabled: true,
             };
-          })}
-          details={details && details.sku}
+          }) : []}
+          details={details && details.skuTree}
           component={SysField.Specifications}
         />
         <FormItem
