@@ -9,7 +9,7 @@ import React from 'react';
 import {
   Input,
   InputNumber,
-  Radio, AutoComplete, Checkbox
+  Radio, AutoComplete
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -39,8 +39,6 @@ export const SelectSkuName = (props) => {
 export const Specifications = (props) => {
   return (<SkuConfiguration {...props} />);
 };
-
-
 
 export const SkuName = (props) => {
   const {model, onChange, skuname, ...other} = props;

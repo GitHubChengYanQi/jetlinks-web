@@ -82,7 +82,7 @@ const QrCodeList = () => {
               {object.inKindNumber}
             </div>
             <div>{
-              object.state !== '0' ? '已入库' : '未入库'
+              object.state ? '已入库' : '未入库'
             }</div>
           </Space>;
         } else {
