@@ -5,8 +5,8 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useRef} from 'react';
-import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Space, Button, Switch} from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Space, Button, Switch, Spin} from 'antd';
 import Tree from '@/components/Tree';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -22,60 +22,71 @@ import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/
 import UnitList from '@/pages/Erp/unit/unitList';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
+import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
 
-export const Name = (props) =>{
-  return (<Input {...props}/>);
+export const Name = (props) => {
+  return (<Input {...props} />);
 };
-export const ShelfLife = (props) =>{
-  return (<><InputNumber min={0}  {...props}/>&nbsp;&nbsp;天</>);
+export const ShelfLife = (props) => {
+  return (<><InputNumber min={0}  {...props} />&nbsp;&nbsp;天</>);
 };
 
-export const CuringCycle = (props) =>{
-  return (<><InputNumber min={0}  {...props}/>&nbsp;&nbsp;天</>);
+export const CuringCycle = (props) => {
+  return (<><InputNumber min={0}  {...props} />&nbsp;&nbsp;天</>);
 };
-export const Inventory = (props) =>{
-  return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;个/件</>);
+export const Inventory = (props) => {
+  return (<><InputNumber min={0} {...props} />&nbsp;&nbsp;个/件</>);
 };
-export const ProductionTime = (props) =>{
+export const ProductionTime = (props) => {
   return (<DatePicker   {...props} />);
 };
-export const Important = (props) =>{
-  return (<><InputNumber min={0}  man={100} {...props}/>&nbsp;&nbsp;0~100</>);
+export const Important = (props) => {
+  return (<><InputNumber min={0} man={100} {...props} />&nbsp;&nbsp;0~100</>);
 };
-export const Weight = (props) =>{
-  return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;kg</>);
+export const Weight = (props) => {
+  return (<><InputNumber min={0} {...props} />&nbsp;&nbsp;kg</>);
 };
-export const MaterialId = (props) =>{
-  return (<Select width={200} api={apiUrl.materialIdSelect} {...props}/>);
+export const MaterialId = (props) => {
+  return (<Select width={200} api={apiUrl.materialIdSelect} {...props} />);
 };
-export const Cost = (props) =>{
-  return (<><InputNumber min={0} {...props}/>&nbsp;&nbsp;元</>);
+export const Cost = (props) => {
+  return (<><InputNumber min={0} {...props} />&nbsp;&nbsp;元</>);
 };
 
-export const SpuClass = (props) =>{
+export const SpuClass = (props) => {
 
-  return (<SetSelectOrCascader api={spuClassificationTreeVrew} width={200} cascader title='设置分类' component={SpuClassificationList} {...props} />);
+  return (<SetSelectOrCascader
+    api={spuClassificationTreeVrew}
+    width={200}
+    cascader
+    title="设置分类"
+    component={SpuClassificationList} {...props} />);
 };
-export const Vulnerability = (props) =>{
-  return (<AntdSelect style={{width:200}} showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0} options={[{value:0,label:'易损'},{value:1,label:'不易损'}]} {...props}/>);
+export const Vulnerability = (props) => {
+  return (<AntdSelect
+    style={{width: 200}}
+    showSearch
+    filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+    options={[{value: 0, label: '易损'}, {value: 1, label: '不易损'}]} {...props} />);
 };
-export const DeptId = (props) =>{
-  return (<Input {...props}/>);
+export const DeptId = (props) => {
+  return (<Input {...props} />);
 };
-export const Class = (props) =>{
-  return (<Input {...props}/>);
+export const Class = (props) => {
+  return (<Input {...props} />);
 };
-export const ClassId = (props) =>{
-  return (<Input {...props}/>);
+export const ClassId = (props) => {
+  return (<Input {...props} />);
 };
-export const UnitId = (props) =>{
-  return (<SetSelectOrCascader api={apiUrl.unitListSelect} width={200} title='设置单位' component={UnitList} {...props} />);
+export const UnitId = (props) => {
+  return (<SetSelectOrCascader api={apiUrl.unitListSelect} width={200} title="设置单位" component={UnitList} {...props} />);
 };
-export const CategoryId = (props) =>{
+export const CategoryId = (props) => {
 
-  return (<SetSelectOrCascader api={categoryTree} width={200} cascader title='设置配置' component={CategoryList} {...props} />);
+  return (
+    <SetSelectOrCascader api={categoryTree} width={200} cascader title="设置配置" component={CategoryList} {...props} />);
 };
-export const Type = (props) =>{
+export const Type = (props) => {
   return (
     <Radio.Group {...props} >
       <Radio value={0}>自制件</Radio>
@@ -84,26 +95,40 @@ export const Type = (props) =>{
     </Radio.Group>
   );
 };
-export const AttributeId = (props) =>{
-  return (<Input {...props}/>);
+export const AttributeId = (props) => {
+  return (<Input {...props} />);
 };
 
 export const Values = (props) => {
-  const {items,...other} = props;
+  const {items, ...other} = props;
 
   return (
     <Radio.Group {...other} defaultValue={items.length && items[0].attributeValuesId}>
-      {items && items.map((items,index)=>{
-        return  <Radio key={index} value={items.attributeValuesId}>{items.attributeValues}</Radio>;
+      {items && items.map((items, index) => {
+        return <Radio key={index} value={items.attributeValuesId}>{items.attributeValues}</Radio>;
       })}
     </Radio.Group>
   );
 };
 
+export const Spu = (props) => {
+  const {refresh,loading,...other} = props;
+  const ref = useRef();
+  return loading ? <Spin /> : <Space>
+    <AntdSelect style={{width:200}} {...other} placeholder="请选择分类下的产品" />
+    <Button onClick={() => {
+      ref.current.open(false);
+    }}>设置产品</Button>
+    <Modal width={800} component={SpuTable} ref={ref} onClose={() => {
+      ref.current.close();
+      typeof refresh === 'function' && refresh();
+    }} />
+  </Space>;
+};
 
 export const Atts = (props) => {
 
-  const {attribute,spuId,...other} = props;
+  const {attribute, spuId, ...other} = props;
 
   return (
     <>

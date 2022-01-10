@@ -1,5 +1,5 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
-import {Row, Col, Card, Layout, Table as AntdTable, Button} from 'antd';
+import {Row, Col, Card, Layout, Table as AntdTable, Button, Input, InputNumber} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Service from '@/util/Service';
 import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
@@ -7,6 +7,7 @@ import useUrlState from '@ahooksjs/use-url-state';
 import Icon from '@/components/Icon';
 import style from './index.module.less';
 import useTableSet from '@/hook/useTableSet';
+import TableSort from '@/components/Table/components/TableSort';
 
 
 const {Column} = AntdTable;
@@ -44,6 +45,7 @@ const TableWarp = ({
   expandable,
   listHeader = true,
   labelAlign,
+  sortList,
   footer: parentFooter,
   isModal = true,
   formActions = null,
@@ -63,6 +65,8 @@ const TableWarp = ({
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
 
+  // 排序
+  const [sorts, setSorts] = useState([]);
 
   const {ajaxService} = Service();
 
@@ -229,7 +233,21 @@ const TableWarp = ({
                 width={80}
                 align="center"
                 render={(text, item, index) => {
-                  return index + 1;
+                  if (text || text === 0) {
+                    return <TableSort
+                      rowKey={item[rowKey]}
+                      sorts={sorts}
+                      value={text}
+                      onChange={(value) => {
+                        if (typeof sortList === 'function') {
+                          sortList(value);
+                        }
+                        setSorts(value);
+                      }} />;
+                  } else {
+                    return <>{index + 1}</>;
+                  }
+
                 }} />}
               {tableColumn}
             </AntdTable>

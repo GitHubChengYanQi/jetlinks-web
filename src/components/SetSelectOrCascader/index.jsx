@@ -8,7 +8,6 @@ import Select from '@/components/Select';
 
 const SetSelectOrCascader = ({disabled, component, title, cascader, width, api, ...props}) => {
 
-
   const ref = useRef();
 
   const [state, {setTrue, setFalse}] = useBoolean();

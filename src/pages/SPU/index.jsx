@@ -11,6 +11,7 @@ import ToolClassificationList from '@/pages/Erp/tool/components/toolClassificati
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import Modal from '@/components/Modal';
 import PrintTemplateList from '@/pages/SPU/printTemplate/printTemplateList';
+import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -33,7 +34,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
       case 'gjflgl':
         return <ToolClassificationList />;
       case 'wlfl':
-        return <SpuClassificationList />;
+        return <SpuClassificationList type={1} />;
+      case 'cpgl':
+        return <SpuTable />;
       default:
         return null;
     }
@@ -70,12 +73,15 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="wlfl">
             <span>分类管理</span>
           </Menu.Item>
+          <Menu.Item key="cpgl">
+            <span>产品管理</span>
+          </Menu.Item>
           <Menu.Item key="dymb">
-            <span>打印模板管理</span>
+            <span>打印模板</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal width={1000} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
+      <Modal width={1000} title="设置" footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };

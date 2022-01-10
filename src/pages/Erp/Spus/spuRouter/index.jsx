@@ -10,7 +10,7 @@ import React, {lazy} from 'react';
 export const SPUSRouter = [
   {
     path: '/SPUS',
-    name:'产品管理',
+    name:'型号管理',
     component: lazy(() => import('../spuList')),
     fallback: <div>loading...</div>,
     exact: true,

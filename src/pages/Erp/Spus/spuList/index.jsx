@@ -44,7 +44,7 @@ const SpuList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem placeholder="产品名称" name="name" component={SysField.Name} />
+        <FormItem placeholder="型号名称" name="name" component={SysField.Name} />
         <FormItem hidden name="type" value={1} component={SysField.type} />
       </>
     );
@@ -148,7 +148,7 @@ const SpuList = () => {
       </Table>
       <Modal
         width={1000}
-        title="产品"
+        title="型号"
         compoentRef={formRef}
         component={SpuEdit}
         footer={<>

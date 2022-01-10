@@ -5,11 +5,11 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Input,
   InputNumber,
-  Radio, AutoComplete
+  Radio, AutoComplete, Spin, Space, Select as AntdSelect, Button
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -25,6 +25,8 @@ import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import UnitList from '@/pages/Erp/unit/unitList';
 import FileUpload from '@/components/FileUpload';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
+import Modal from '@/components/Modal';
+import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
 
 export const Type = (props) => {
 
@@ -58,18 +60,28 @@ export const SelectSpu = (props) => {
   return (<Select api={spuListSelect} {...props} />);
 };
 
+
 export const SpuId = (props) => {
 
-  const {data, run} = useRequest(spuListSelect, {
-    defaultParams: {
+  const {classId, value, onChange, skuId, model} = props;
+
+  const {loading,data, run} = useRequest(spuListSelect);
+
+  const action = (name) => {
+    run({
       data: {
-        type: 0,
+        name,
+        spuClassificationId: classId,
       }
-    }
-  });
+    });
+  };
+
+  useEffect(() => {
+    action(value && value.name);
+  }, [classId]);
 
 
-  const options = data && data.map((items) => {
+  const options = loading ? [] : data && data.map((items) => {
     return {
       label: items.label,
       value: items.label,
@@ -79,26 +91,19 @@ export const SpuId = (props) => {
 
   return (
     <AutoComplete
-      value={props.value && props.value.name ? props.value.name : null}
+      value={value && value.name ? value.name : null}
+      notFoundContent={loading && <Spin />}
       options={options || []}
-      disabled={props.skuId}
+      disabled={skuId}
       style={{width: 300}}
       onSelect={(value, option) => {
-        typeof props.model === 'function' && props.model(value);
-        props.onChange({name: value, spuId: option.id});
+        typeof model === 'function' && model(value);
+        onChange({name: value, spuId: option.id});
       }}
       onChange={async (value) => {
-        typeof props.model === 'function' && props.model(value);
-        props.onChange({name: value});
-        await run(
-          {
-            data: {
-              name: value,
-              type: 0,
-              spuClassificationId: props.classId,
-            }
-          }
-        );
+        typeof model === 'function' && model(value);
+        onChange({name: value});
+        action(value);
       }}
       placeholder="输入物料名称"
     />
@@ -120,9 +125,9 @@ export const Codings = (props) => {
 
   return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };
-export const UnitId = (props) =>{
-  const { ...other} = props;
-  return (<SetSelectOrCascader api={unitListSelect} width={200} title='设置单位' component={UnitList} {...other} />);
+export const UnitId = (props) => {
+  const {...other} = props;
+  return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitList} {...other} />);
 };
 
 export const Standard = (props) => {
@@ -140,7 +145,8 @@ export const SpuClass = (props) => {
 
   const {...other} = props;
 
-  return (<SetSelectOrCascader api={spuClassificationTreeVrew} cascader width={200} title='设置分类' component={SpuClassificationList} {...other} />);
+  return (<SetSelectOrCascader api={spuClassificationTreeVrew} cascader width={200} title="设置分类"
+                               component={SpuClassificationList} {...other} />);
 };
 
 export const Note = (props) => {

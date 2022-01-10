@@ -30,7 +30,7 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const SpuClassificationList = ({type}) => {
+const SpuTable = ({type}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -50,7 +50,7 @@ const SpuClassificationList = ({type}) => {
     return (
       <>
         <FormItem label="名称" name="name" component={SysField.Name} />
-        <FormItem hidden name="isNotproduct" value={type} component={SysField.Name} />
+        <FormItem hidden name="type" value={2} component={SysField.Name} />
       </>
     );
   };
@@ -65,9 +65,9 @@ const SpuClassificationList = ({type}) => {
   return (
     <div style={{padding: 16}}>
       <Table
-        title={<Breadcrumb title="物料分类管理" />}
-        api={spuClassificationTreeVrew}
-        rowKey="key"
+        title={<Breadcrumb title="产品管理" />}
+        api={spuClassificationList}
+        rowKey="spuClassificationId"
         searchForm={searchForm}
         noSort
         contentHeight
@@ -79,25 +79,14 @@ const SpuClassificationList = ({type}) => {
         }}
         footer={footer}
       >
-        <Column title="名称" dataIndex="label" render={(value, record) => {
-          if (record.children && record.children.length === 0) {
-            record.children = null;
-          }
-          return (
-            <>
-              {
-                value
-              }
-            </>
-          );
-        }} />
+        <Column title="名称" dataIndex="name" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.key);
+                ref.current.open(record.spuClassificationId);
               }} />
-              <DelButton api={spuClassificationDelete} value={record.key} onSuccess={() => {
+              <DelButton api={spuClassificationDelete} value={record.spuClassificationId} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>
@@ -112,4 +101,4 @@ const SpuClassificationList = ({type}) => {
   );
 };
 
-export default SpuClassificationList;
+export default SpuTable;

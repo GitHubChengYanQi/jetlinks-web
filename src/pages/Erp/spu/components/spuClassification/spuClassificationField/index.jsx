@@ -45,5 +45,5 @@ export const CodingClass = (props) =>{
 };
 
 export const Pid = (props) =>{
-  return (<Cascader top api={spuClassificationTreeVrew} {...props}/>);
+  return (<Cascader api={spuClassificationTreeVrew} {...props}/>);
 };

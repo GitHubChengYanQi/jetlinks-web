@@ -6,20 +6,14 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Space, Popover} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import {Input, InputNumber, Select as AntdSelect, Checkbox, Radio, Space, Popover} from 'antd';
 import Select from '@/components/Select';
-import * as apiUrl from '../qualityPlanUrl';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import FileUpload from '@/pages/Crm/data/components/FileUpload';
-import CheckButton from '@/components/CheckButton';
-import UpLoadImg from '@/components/Upload';
 import {qualityCheckClassificationListSelect} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
 import {useRequest} from '@/util/Request';
 import {qualityCheckListSelect} from '../qualityPlanUrl';
-import {spuListSelect} from '@/pages/Erp/productOrder/productOrderUrl';
-import {spuClassificationListSelect, unitListSelect} from '@/pages/Erp/spu/spuUrl';
+import { unitListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
 export const Codings = (props) => {

@@ -6,7 +6,7 @@
  */
 
 import React, {lazy, useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Input, PageHeader, Row, Table as AntTable, Tag, Tooltip, Upload} from 'antd';
+import {Avatar, Button, Card, Col, Input, PageHeader, Row, Space, Table as AntTable, Tag, Tooltip, Upload} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -30,6 +30,7 @@ import {useBoolean} from 'ahooks';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import {useRequest} from '@/util/Request';
 import cookie from 'js-cookie';
+import UpdateSort from '@/components/Table/components/UpdateSort';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,9 +39,10 @@ const {baseURI} = config;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level, choose,supply, ...other} = props;
+  const {status, state, level, choose, supply, ...other} = props;
   const history = useHistory();
 
+  const [sorts, setSorts] = useState([]);
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -65,10 +67,10 @@ const CustomerTable = (props) => {
             headers={
               {Authorization: cookie.get('tianpeng-token')}
             }
-            name='file'
+            name="file"
             fileList={null}
           >
-            <Button icon={<Icon type='icon-daoru' />}>{supply ? '导入供应商' : '导入客户'}</Button>
+            <Button icon={<Icon type="icon-daoru" />}>{supply ? '导入供应商' : '导入客户'}</Button>
           </Upload>
         </div>
         <AddButton onClick={() => {
@@ -87,7 +89,8 @@ const CustomerTable = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
-          {supply === 0 && <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />}
+          {supply === 0 &&
+          <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />}
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserName} />
           <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
         </>
@@ -100,7 +103,10 @@ const CustomerTable = (props) => {
         <MegaLayout
           responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder={supply ? '供应商名称' : '客户名称'} name="customerName" component={SysField.Name} />
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder={supply ? '供应商名称' : '客户名称'} name="customerName"
+            component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
 
@@ -137,11 +143,21 @@ const CustomerTable = (props) => {
     /**
      * 批量删除例子，根据实际情况修改接口地址
      */
-    return (<DelButton api={{
-      ...customerBatchDelete
-    }} onSuccess={() => {
-      tableRef.current.refresh();
-    }} value={ids}>删除</DelButton>);
+    return (<Space>
+      <UpdateSort
+        disabled={sorts.length === 0}
+        type="customer"
+        sorts={sorts}
+        success={() => {
+          tableRef.current.submit();
+          setSorts([]);
+        }} />
+      <DelButton api={{
+        ...customerBatchDelete
+      }} onSuccess={() => {
+        tableRef.current.refresh();
+      }} value={ids}>删除</DelButton>
+    </Space>);
   };
 
   return (
@@ -152,7 +168,10 @@ const CustomerTable = (props) => {
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
-        tableKey='customer'
+        tableKey="customer"
+        sortList={(value) => {
+          setSorts(value);
+        }}
         isModal={false}
         ref={tableRef}
         footer={footer}
@@ -188,13 +207,14 @@ const CustomerTable = (props) => {
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
         }} />}
-        <Column key={3} title={supply ? '供应商来源' : '客户来源'} width={300} align="center" dataIndex="customerName" render={(text, record) => {
-          return (
-            <div>
-              {record.originResult ? record.originResult.originName : '未填写'}
-            </div>
-          );
-        }} />
+        <Column key={3} title={supply ? '供应商来源' : '客户来源'} width={300} align="center" dataIndex="customerName"
+                render={(text, record) => {
+                  return (
+                    <div>
+                      {record.originResult ? record.originResult.originName : '未填写'}
+                    </div>
+                  );
+                }} />
         <Column key={4} title={supply ? '供应商级别' : '客户级别'} width={120} align="center" render={(text, record) => {
           const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
           return (
@@ -203,10 +223,11 @@ const CustomerTable = (props) => {
         }} />
         <Column key={5} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
-      <CreateNewCustomer title={supply ? '供应商' : '客户'} model={CustomerEdit} supply={supply} widths={1200} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <CreateNewCustomer title={supply ? '供应商' : '客户'} model={CustomerEdit} supply={supply} widths={1200}
+                         onSuccess={() => {
+                           tableRef.current.refresh();
+                           ref.current.close();
+                         }} ref={ref} />
     </>
   );
 };
