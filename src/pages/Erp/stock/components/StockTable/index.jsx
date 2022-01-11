@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef, useState,} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Checkbox, Table as AntTable} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
@@ -29,8 +29,6 @@ const StockTable = (props) => {
   const tableRef = useRef(null);
   const history = useHistory();
 
-  const [search, {toggle}] = useBoolean(false);
-
   const [allStock, {setTrue, setFalse}] = useBoolean();
 
   useEffect(() => {
@@ -41,53 +39,17 @@ const StockTable = (props) => {
   }, [state]);
 
   const searchForm = () => {
-    const formItem = () => {
-      return (
-        <>
-          {/*<FormItem mega-props={{span: 1}} placeholder="产品名称" name="itemId" component={SysField.ItemId} />*/}
-        </>
-      );
-    };
 
-    return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4} full autoRow>
-
-          <div style={{display: 'inline-block', width: !search && 200}}>
-            <FormItem
-              mega-props={{span: 1}}
-              placeholder="品牌"
-              name="brandId"
-              component={SysField.BrandId}
-            />
-          </div>
-
-          {search ? formItem() : null}
-        </MegaLayout>
-      </div>
-    );
-  };
-
-  const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}> <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="storehouseId" value={state} component={SysField.Storehouse} />
-              <FormItem hidden name="stockNumber" component={SysField.Storehouse} />
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormItem hidden name="storehouseId" value={state} component={SysField.Storehouse} />
+        <FormItem placeholder="物料" name="skuId" component={SysField.Sku} />
+        <FormItem
+          placeholder="品牌"
+          name="brandId"
+          component={SysField.BrandId}
+        />
+        <FormItem label="所有库存" name="stockNumber" component={SysField.Stock} />
       </>
     );
   };
@@ -100,25 +62,9 @@ const StockTable = (props) => {
         api={stockList}
         isModal={false}
         formActions={formActionsPublic}
-        SearchButton={Search()}
-        layout={search}
         rowKey="stockId"
         searchForm={searchForm}
         ref={tableRef}
-        actions={<Button onClick={() => {
-          if (allStock){
-            tableRef.current.formActions.setFieldValue('stockNumber', null);
-            setFalse();
-          } else {
-            setTrue();
-            tableRef.current.formActions.setFieldValue('stockNumber', 0);
-          }
-          tableRef.current.submit();
-        }}>
-          {
-            allStock ? '查看当前库存' : '查看所有库存'
-          }
-        </Button>}
         rowSelection
         {...other}
       >
