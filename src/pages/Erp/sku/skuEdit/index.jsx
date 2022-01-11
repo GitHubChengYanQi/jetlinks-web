@@ -84,8 +84,7 @@ const SkuEdit = ({...props}, ref) => {
         value={value.skuId || false}
         ref={formRef}
         defaultValue={{
-          'spuClass': value.spuResult && value.spuResult.spuClassificationResult && value.spuResult.spuClassificationResult.pid,
-          'spuClassificationId': value.spuResult && value.spuResult.spuClassificationId,
+          'spuClassification': value.spuResult && {name:value.spuResult.spuClassificationResult.name,id:value.spuResult.spuClassificationId},
           'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,
           'skuName': value.skuName,
@@ -129,19 +128,21 @@ const SkuEdit = ({...props}, ref) => {
                 }
               );
 
-              setFieldState(
-                'spuClass',
-                state => {
-                  state.value = spu.spuClassificationResult.pid;
-                }
-              );
+              if (spu.spuClassificationResult.type === 2){
+                setFieldState(
+                  'spuClass',
+                  state => {
+                    state.value = spu.spuClassificationResult.pid;
+                  }
+                );
 
-              setFieldState(
-                'spuClassificationId',
-                state => {
-                  state.value = {name:spu.spuClassificationResult.name,id:spu.spuClassificationId};
-                }
-              );
+                setFieldState(
+                  'spuClassification',
+                  state => {
+                    state.value = {name:spu.spuClassificationResult.name,id:spu.spuClassificationId};
+                  }
+                );
+              }
 
             }
           });
@@ -159,22 +160,19 @@ const SkuEdit = ({...props}, ref) => {
               setSpus([]);
             }
             setFieldState(
-              'spuClassificationId',
+              'spuClassification',
               state => {
                 state.value = null;
               }
             );
           });
 
-          FormEffectHooks.onFieldValueChange$('spuClassificationId').subscribe(({value}) => {
+          FormEffectHooks.onFieldValueChange$('spuClassification').subscribe(({value}) => {
             if (value){
-              console.log(value);
               setFieldState(
                 'spu',
                 state => {
                   state.props.classId = value.id;
-                  if (value.id){
-                  }
                 }
               );
             }
@@ -194,13 +192,12 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="分类"
           name="spuClass"
-          value={details && details.spuClassification && details.spuClassification.pid}
           defaultParams={{data: {isNotproduct: 1}}}
           component={SysField.SpuClass}
           required />
         <FormItem
           label="产品"
-          name="spuClassificationId"
+          name="spuClassification"
           component={Spu}
           required
           loading={spuClassLoading}

@@ -68,7 +68,7 @@ const SpuEdit = ({...props}, ref) => {
 
   const [details, setDetails] = useState();
 
-  const [spuClassId,setSpuClassId] = useState();
+  const [spuClassId, setSpuClassId] = useState();
 
 
   return (
@@ -129,19 +129,12 @@ const SpuEdit = ({...props}, ref) => {
                 required />
               <FormItem
                 label="产品"
-                name="spuClassificationId"
+                name="spuClassification"
                 component={SysField.Spu}
                 required
                 loading={spuClassLoading}
                 options={spus}
-                refresh={() => {
-                  spuClass({
-                    data: {
-                      spuClassificationId: spuClassId,
-                      type: 2,
-                    }
-                  });
-                }} />
+              />
               <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
               <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
             </ProCard>
