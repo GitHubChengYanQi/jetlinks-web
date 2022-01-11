@@ -21,6 +21,7 @@ import {createFormActions} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import Code from '@/pages/Erp/spu/components/Code';
 import OutstockListingList from '@/pages/Erp/outstock/outstockListing/outstockListingList';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 
 const {Column} = AntTable;
@@ -115,28 +116,7 @@ const OutstockList = (props) => {
         >
 
           <Column title="产品" render={(text, record) => {
-            return (
-              <>
-                {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
-                &nbsp;/&nbsp;
-                {record.spuResult && record.spuResult.name}
-                &nbsp;&nbsp;
-                <em style={{color: '#c9c8c8', fontSize: 10}}>
-                  (
-                  {
-                    record.backSkus
-                    &&
-                    record.backSkus.map((items, index) => {
-                      return (
-                        <span key={index}>{items.itemAttribute.attribute}：{items.attributeValues.attributeValues}</span>
-                      );
-                    })
-                  }
-                  )
-                </em>
-              </>
-            );
-
+            return <BackSkus record={record} />;
           }} sorter />
 
           <Column title="品牌名称" width={200} dataIndex="brandId" render={(text, record) => {

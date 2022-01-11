@@ -251,11 +251,7 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
           <Card.Grid style={CardGridStyle()} onClick={() =>
             // eslint-disable-next-line no-template-curly-in-string
             editorRef.current.editor.cmd.do('insertHTML', '${coding}')
-          }>库存编码</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() =>
-            // eslint-disable-next-line no-template-curly-in-string
-            editorRef.current.editor.cmd.do('insertHTML', '${skuName}')
-          }>型号(零件号)</Card.Grid>
+          }>实物编码</Card.Grid>
           <Card.Grid style={CardGridStyle()} onClick={() =>
             // eslint-disable-next-line no-template-curly-in-string
             editorRef.current.editor.cmd.do('insertHTML', '${skuCoding}')

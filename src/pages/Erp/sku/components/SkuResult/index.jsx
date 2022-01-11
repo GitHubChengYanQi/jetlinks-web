@@ -3,14 +3,14 @@ import {Empty} from 'antd';
 
 const SkuResult = ({skuResult}) => {
 
-  if (!skuResult)
+  if (!(skuResult && skuResult.spuResult))
     return <Empty />;
 
 
   return <>
-    {skuResult.skuName}
+    {skuResult.spuResult.spuClassificationResult.name}
     &nbsp;/&nbsp;
-    {skuResult.spuResult && skuResult.spuResult.name}
+    {skuResult.spuResult.name}
     &nbsp;&nbsp;
     {
       skuResult.list

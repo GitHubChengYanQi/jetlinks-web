@@ -20,6 +20,7 @@ import ProCard from '@ant-design/pro-card';
 import {useRequest} from '@/util/Request';
 import {purchaseAskDetail} from '@/pages/Purshase/purchaseAsk/purchaseAskUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 
@@ -70,29 +71,9 @@ const PurchaseListingList = ({value}) => {
           rowKey="purchaseListingId"
         >
           <Column title="物料" dataIndex="skuId" render={(value, record) => {
-            return <>
-              {record.skuResult && `${record.skuResult.skuName}  /  `}
-              {record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.name}
-              &nbsp;&nbsp;
-              {record.skuResult
-              &&
-              record.skuResult.skuJsons
-              &&
-              record.skuResult.skuJsons.length > 0
-              &&
-              <em style={{color: '#c9c8c8', fontSize: 10}}>
-                (
-                {
-                  record.skuResult.skuJsons.map((items, index) => {
-                    return <span key={index}>{items.attribute.attribute}
-                      ：
-                      {items.values.attributeValues}</span>;
-                  })
-                }
-                )
-              </em>}
-            </>;
-          }} />
+            return <SkuResultSkuJsons skuResult={record.skuResult} />;
+          }}
+          />
           <Column title="申请数量" dataIndex="applyNumber" />
           <Column title="可用数量" dataIndex="availableNumber" />
           <Column title="交付日期" dataIndex="deliveryDate" />

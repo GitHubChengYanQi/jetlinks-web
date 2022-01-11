@@ -19,6 +19,7 @@ import {request, useRequest} from '@/util/Request';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
 import SkuResult from '@/pages/Erp/sku/components/SkuResult';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -110,32 +111,7 @@ const OutstockListingList = (props) => {
         ref={tableRef}
       >
         <Column title="产品" render={(text, record) => {
-          return (
-            <>
-              {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
-              &nbsp;/&nbsp;
-              {record.spuResult && record.spuResult.name}
-              &nbsp;&nbsp;
-              {
-                record.backSkus
-                &&
-                record.backSkus.length > 0
-                &&
-                record.backSkus[0].attributeValues.attributeValues
-                &&
-                (<em style={{color: '#c9c8c8', fontSize: 10}}>
-                  {record.backSkus.map((items, index) => {
-                    return (
-                      <span key={index}>
-                        {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
-                      </span>
-                    );
-                  })}
-                </em>)
-              }
-            </>
-          );
-
+          return <BackSkus record={record} />;
         }} sorter />
         <Column title="品牌" dataIndex="brandId" render={(value, record) => {
           return (

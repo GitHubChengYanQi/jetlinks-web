@@ -11,6 +11,7 @@ import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
+import SkuResult from '@/pages/Erp/sku/components/SkuResult';
 
 const {Column} = AntTable;
 
@@ -87,13 +88,13 @@ const QualityTaskDetailList = ({value}) => {
           <Column title="状态" dataIndex="state" width={100} align="center" render={(value) => {
             switch (value) {
               case -1:
-                return <Badge text='已拒绝' color='red'/>;
+                return <Badge text="已拒绝" color="red" />;
               case 1:
-                return <Badge text='进行中' color='yellow'/>;
+                return <Badge text="进行中" color="yellow" />;
               case 2:
-                return <Badge text='已完成' color='blue'/>;
+                return <Badge text="已完成" color="blue" />;
               case 3:
-                return <Badge text='已入库' color='green'/>;
+                return <Badge text="已入库" color="green" />;
               default:
                 break;
             }
@@ -114,29 +115,9 @@ const QualityTaskDetailList = ({value}) => {
             </>;
           }} />
           <Column title="拒检物料" render={(value, record) => {
-            return <>
-              {record.skuResult && record.skuResult.skuName}
-              &nbsp;/&nbsp;
-              {record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.name}
-              &nbsp;&nbsp;
-              <em style={{ color: '#c9c8c8', fontSize: 10 }}>
-                (
-                {
-                  record.skuResult
-                  &&
-                  record.skuResult.list
-                  &&
-                  record.skuResult.list.map((items, index) => {
-                    return (
-                      <span key={index}>{items.itemAttributeResult.attribute}：{items.attributeValues}</span>
-                    );
-                  })
-                }
-                )
-              </em>
-            </>;
+            return <SkuResult skuResult={record.skuResult} />;
           }} />
-          <Column title="品牌 / 供应商" width={120} align="center" render={(value, record) => {
+          <Column title="供应商(品牌)" width={120} align="center" render={(value, record) => {
             return <>
               {record.brandResult && record.brandResult.brandName}
             </>;

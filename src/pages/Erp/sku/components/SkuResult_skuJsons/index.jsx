@@ -3,13 +3,13 @@ import {Empty} from 'antd';
 
 const SkuResultSkuJsons = ({skuResult}) => {
 
-  if (!skuResult)
+  if (!(skuResult && skuResult.spuResult))
     return <Empty />;
 
   return <>
-    {skuResult.skuName}
+    {skuResult.spuResult.spuClassificationResult && skuResult.spuResult.spuClassificationResult.name}
     &nbsp;/&nbsp;
-    {skuResult.spuResult && skuResult.spuResult.name}
+    {skuResult.spuResult.name}
     &nbsp;&nbsp;
     {
       skuResult.skuJsons

@@ -24,7 +24,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
       disabled: skuIds && skuIds.filter((value) => {
         return value === items.skuId;
       }).length > 0,
-      label: items.spuResult && `${items.skuName} / ${items.spuResult.name}`,
+      label: items.spuResult && `${items.spuResult.spuClassificationResult && items.spuResult.spuClassificationResult.name} / ${items.spuResult.name}`,
       value: items.skuId,
       attribute: `${(values === '' ? '' : `( ${values} )`)}`,
       spu: items.spuResult,

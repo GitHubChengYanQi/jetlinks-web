@@ -8,6 +8,7 @@ import {Spin, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import {request, useRequest} from '@/util/Request';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const formActionsPublic = createFormActions();
 
@@ -55,28 +56,7 @@ const InstockListTable = ({...props}, ref) => {
       ref={tableRef}
     >
       <Column title="物料" render={(text, record) => {
-        return (
-          <>
-            {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
-            &nbsp;/&nbsp;
-            {record.spuResult && record.spuResult.name}
-            &nbsp;&nbsp;
-            <em style={{color: '#c9c8c8', fontSize: 10}}>
-              (
-              {
-                record.backSkus
-                &&
-                record.backSkus.map((items, index) => {
-                  return (
-                    <span key={index}>{items.itemAttribute.attribute}：{items.attributeValues.attributeValues}</span>
-                  );
-                })
-              }
-              )
-            </em>
-          </>
-        );
-
+        return <BackSkus record={record} />;
       }} sorter />
       <Column title="供应商(品牌)" dataIndex="brandId" width={200} render={(text, record) => {
         return (

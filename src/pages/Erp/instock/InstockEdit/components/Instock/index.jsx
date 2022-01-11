@@ -13,6 +13,7 @@ import InstockListTable from '@/pages/Erp/instock/InstockList/components/Instock
 import Cascader from '@/components/Cascader';
 import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
 import Code from '@/pages/Erp/spu/components/Code';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -80,26 +81,7 @@ const Instock = (props) => {
           ref={tableRef}
         >
           <Column title="物料" render={(text, record) => {
-            return (
-              <>
-                {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
-                ／
-                {record.spuResult && record.spuResult.name}
-                &nbsp;&nbsp;
-                {record.backSkus && record.backSkus.length > 0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
-                  (
-                  {
-                    record.backSkus.map((items, index) => {
-                      return <span key={index}>{items.itemAttribute.attribute}
-                        ：
-                        {items.attributeValues.attributeValues}</span>;
-                    })
-                  }
-                  )
-                </em>}
-              </>
-            );
-
+            return <BackSkus record={record} />;
           }} sorter />
           <Column title="供应商(品牌)" dataIndex="brandId" width={200} render={(text, record) => {
             return (

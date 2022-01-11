@@ -42,19 +42,6 @@ export const Specifications = (props) => {
   return (<SkuConfiguration {...props} />);
 };
 
-export const SkuName = (props) => {
-  const {model, onChange, skuname, ...other} = props;
-
-  return (
-    <>
-      <Input {...other} onChange={(value) => {
-        onChange(value.target.value);
-        typeof model === 'function' && model(value.target.value);
-      }} />
-      {skuname}
-    </>);
-};
-
 export const SelectSpu = (props) => {
 
   return (<Select api={spuListSelect} {...props} />);

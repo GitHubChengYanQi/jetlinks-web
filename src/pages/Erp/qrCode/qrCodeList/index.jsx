@@ -62,7 +62,8 @@ const QrCodeList = () => {
         if (object.orcodeBackItem) {
           return <Space>
             <div>
-              {object.orcodeBackItem.skuName && `${object.orcodeBackItem.skuName}  /  `}
+              {object.orcodeBackItem.backSpu && object.orcodeBackItem.backSpu.spuClassificationResult && object.orcodeBackItem.backSpu.spuClassificationResult.name}
+              &nbsp;/&nbsp;
               {object.orcodeBackItem.backSpu && object.orcodeBackItem.backSpu.name}
               &nbsp;&nbsp;
               {object.orcodeBackItem.backSkus && object.orcodeBackItem.backSkus.length > 0 &&
