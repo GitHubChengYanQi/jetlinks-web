@@ -10,7 +10,11 @@ import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
 const SkuList = () => {
 
-  const {loading, data, run} = useRequest(spuClassificationTreeVrew);
+  const {loading, data, run} = useRequest({
+    ...spuClassificationTreeVrew, data: {
+      isNotproduct: 1
+    }
+  });
 
   const [spuClass, setSpuClass] = useState();
 
@@ -25,7 +29,7 @@ const SkuList = () => {
       <>
         <div>
           <Select
-            width='100%'
+            width="100%"
             api={spuClassificationListSelect}
             placeholder="搜索分类"
             value={value}

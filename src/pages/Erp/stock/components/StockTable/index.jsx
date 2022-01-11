@@ -5,8 +5,8 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useEffect, useRef,} from 'react';
-import {Button,  Table as AntTable} from 'antd';
+import React, {useEffect, useRef, useState,} from 'react';
+import {Button, Table as AntTable} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
@@ -30,6 +30,8 @@ const StockTable = (props) => {
   const history = useHistory();
 
   const [search, {toggle}] = useBoolean(false);
+
+  const [allStock, {setTrue, setFalse}] = useBoolean();
 
   useEffect(() => {
     if (state) {
@@ -103,11 +105,19 @@ const StockTable = (props) => {
         rowKey="stockId"
         searchForm={searchForm}
         ref={tableRef}
-        actions={<Button onClick={()=>{
-          tableRef.current.formActions.setFieldValue('stockNumber', 0);
+        actions={<Button onClick={() => {
+          if (allStock){
+            tableRef.current.formActions.setFieldValue('stockNumber', null);
+            setFalse();
+          } else {
+            setTrue();
+            tableRef.current.formActions.setFieldValue('stockNumber', 0);
+          }
           tableRef.current.submit();
         }}>
-          查看所有库存
+          {
+            allStock ? '查看当前库存' : '查看所有库存'
+          }
         </Button>}
         rowSelection
         {...other}
@@ -115,10 +125,10 @@ const StockTable = (props) => {
         <Column title="物料" render={(text, record) => {
           return (
             <>
-              {record.sku && `${record.sku.skuName  }  /  `}
+              {record.sku && `${record.sku.skuName}  /  `}
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
-              { record.backSkus && record.backSkus.length>0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
+              {record.backSkus && record.backSkus.length > 0 && <em style={{color: '#c9c8c8', fontSize: 10}}>
                 (
                 {
                   record.backSkus.map((items, index) => {

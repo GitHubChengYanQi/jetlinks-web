@@ -142,7 +142,7 @@ const SkuTable = (props) => {
         {...other}
       >
 
-        <Column title="型号(零件号) / 名称" key={1} dataIndex="spuId" render={(value, record) => {
+        <Column title="型号" key={1} dataIndex="spuId" render={(value, record) => {
           return (
             <>
               <Code source="sku" id={record.skuId} />
@@ -157,7 +157,7 @@ const SkuTable = (props) => {
           );
         }} sorter />
 
-        <Column title="规格" key={2} render={(value, record) => {
+        <Column title="参数组合" key={2} render={(value, record) => {
           return (
             <>
               {

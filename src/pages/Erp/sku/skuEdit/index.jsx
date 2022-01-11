@@ -216,14 +216,6 @@ const SkuEdit = ({...props}, ref) => {
             setSpu(value);
           }} required />
         <FormItem
-          label="成品号"
-          name="skuName"
-          skuname={spu && sku && `${sku} / ${spu}`}
-          component={SysField.SkuName}
-          model={(value) => {
-            setSku(value);
-          }} required />
-        <FormItem
           label="单位"
           name="unitId"
           component={SysField.UnitId}
