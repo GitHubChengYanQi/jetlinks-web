@@ -5,24 +5,25 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useEffect, useRef} from 'react';
-import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Space, Button, Switch, Spin} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import React from 'react';
+import {
+  Input,
+  InputNumber,
+  Select as AntdSelect,
+  Radio,
+  Spin,
+  AutoComplete
+} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../spuUrl';
 import DatePicker from '@/components/DatePicker';
-import {categoryList, categoryTree, spuClassificationListSelect, unitListSelect} from '../spuUrl';
+import {categoryTree} from '../spuUrl';
 import Attribute from '@/pages/Erp/spu/components/Attribute';
-import {useBoolean} from 'ahooks';
-import Modal from '@/components/Modal';
-import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
 import CategoryList from '@/pages/Erp/category/categoryList';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import UnitList from '@/pages/Erp/unit/unitList';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
-import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
 
 export const Name = (props) => {
   return (<Input {...props} />);
@@ -49,10 +50,6 @@ export const Weight = (props) => {
 export const MaterialId = (props) => {
   return (<Select width={200} api={apiUrl.materialIdSelect} {...props} />);
 };
-export const Cost = (props) => {
-  return (<><InputNumber min={0} {...props} />&nbsp;&nbsp;元</>);
-};
-
 export const SpuClass = (props) => {
 
   return (<SetSelectOrCascader
@@ -112,18 +109,29 @@ export const Values = (props) => {
 };
 
 export const Spu = (props) => {
-  const {refresh,loading,...other} = props;
-  const ref = useRef();
-  return loading ? <Spin /> : <Space>
-    <AntdSelect style={{width:200}} {...other} placeholder="请选择分类下的产品" />
-    <Button onClick={() => {
-      ref.current.open(false);
-    }}>设置产品</Button>
-    <Modal width={800} component={SpuTable} ref={ref} onClose={() => {
-      ref.current.close();
-      typeof refresh === 'function' && refresh();
-    }} />
-  </Space>;
+  const {value, onChange, loading,options} = props;
+
+  return (
+    <AutoComplete
+      value={value && value.name ? value.name : null}
+      notFoundContent={loading && <Spin />}
+      options={options && options.map((items)=>{
+        return {
+          label:items.label,
+          value:items.label,
+          id:items.value
+        };
+      }) || []}
+      style={{width: 300}}
+      onSelect={(value, option) => {
+        onChange({name: value, id: option.id});
+      }}
+      onChange={async (value) => {
+        onChange({name: value});
+      }}
+      placeholder="输入产品名称"
+    />
+  );
 };
 
 export const Atts = (props) => {

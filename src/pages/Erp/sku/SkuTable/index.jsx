@@ -7,7 +7,7 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, message, Space, Table as AntTable, Upload} from 'antd';
+import {Button, Space, Table as AntTable, Upload} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';

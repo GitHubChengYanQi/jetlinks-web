@@ -50,9 +50,9 @@ export const SelectSpu = (props) => {
 
 export const SpuId = (props) => {
 
-  const {classId, value, onChange, skuId, model} = props;
+  const {classId, value, onChange, skuId} = props;
 
-  const {loading,data, run} = useRequest(spuListSelect);
+  const {loading, data, run} = useRequest(spuListSelect);
 
   const action = (name) => {
     run({
@@ -68,7 +68,7 @@ export const SpuId = (props) => {
   }, [classId]);
 
 
-  const options = loading ? [] : data && data.map((items) => {
+  const options = !classId || loading ? [] : data && data.map((items) => {
     return {
       label: items.label,
       value: items.label,
@@ -84,11 +84,9 @@ export const SpuId = (props) => {
       disabled={skuId}
       style={{width: 300}}
       onSelect={(value, option) => {
-        typeof model === 'function' && model(value);
         onChange({name: value, spuId: option.id});
       }}
       onChange={async (value) => {
-        typeof model === 'function' && model(value);
         onChange({name: value});
         action(value);
       }}
@@ -132,8 +130,12 @@ export const SpuClass = (props) => {
 
   const {...other} = props;
 
-  return (<SetSelectOrCascader api={spuClassificationTreeVrew} cascader width={200} title="设置分类"
-                               component={SpuClassificationList} {...other} />);
+  return (<SetSelectOrCascader
+    api={spuClassificationTreeVrew}
+    cascader
+    width={200}
+    title="设置分类"
+    component={SpuClassificationList} {...other} />);
 };
 
 export const Note = (props) => {

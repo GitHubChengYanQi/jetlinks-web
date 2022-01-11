@@ -19,7 +19,7 @@ const Coding = ({value, width, onChange, codingId, module}) => {
 
   const options = [
     {
-      label: '系统编码',
+      label: '自动生成',
       value: 'sys'
     },
     {
