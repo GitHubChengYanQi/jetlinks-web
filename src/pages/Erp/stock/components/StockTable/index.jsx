@@ -82,6 +82,7 @@ const StockTable = (props) => {
             }}> <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
             <MegaLayout inline>
               <FormItem hidden name="storehouseId" value={state} component={SysField.Storehouse} />
+              <FormItem hidden name="stockNumber" component={SysField.Storehouse} />
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -102,6 +103,12 @@ const StockTable = (props) => {
         rowKey="stockId"
         searchForm={searchForm}
         ref={tableRef}
+        actions={<Button onClick={()=>{
+          tableRef.current.formActions.setFieldValue('stockNumber', 0);
+          tableRef.current.submit();
+        }}>
+          查看所有库存
+        </Button>}
         rowSelection
         {...other}
       >
