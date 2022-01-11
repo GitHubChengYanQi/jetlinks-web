@@ -112,7 +112,7 @@ const OutstockListingList = (props) => {
         <Column title="产品" render={(text, record) => {
           return (
             <>
-              {record.sku && record.sku.skuName}
+              {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
               &nbsp;/&nbsp;
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;

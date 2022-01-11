@@ -61,10 +61,10 @@ const SkuTable = (props) => {
           headers={
             {Authorization: cookie.get('tianpeng-token')}
           }
-          name='file'
+          name="file"
           fileList={null}
         >
-          <Button icon={<Icon type='icon-daoru' />}>导入物料</Button>
+          <Button icon={<Icon type="icon-daoru" />}>导入物料</Button>
         </Upload>
         <AddButton onClick={() => {
           ref.current.open(false);
@@ -79,7 +79,7 @@ const SkuTable = (props) => {
     return (
       <div style={{maxWidth: 800}}>
         <FormItem
-          placeholder="型号(零件号) / 编码 / 物料名称"
+          placeholder="产品 / 型号/ 编码"
           name="skuName"
           component={SysField.SelectSkuName} />
         <FormItem
@@ -142,19 +142,20 @@ const SkuTable = (props) => {
         {...other}
       >
 
-        <Column title="型号" key={1} dataIndex="spuId" render={(value, record) => {
-          return (
-            <>
-              <Code source="sku" id={record.skuId} />
-              <Button type="link" onClick={() => {
-                history.push(`/SPU/sku/${record.skuId}`);
-              }}>
-                {record.skuName}
-                &nbsp;/&nbsp;
-                {record.spuResult && record.spuResult.name}
-              </Button>
-            </>
-          );
+        <Column title="产品 / 型号" key={1} dataIndex="spuId" render={(value, record) => {
+          if (record.spuResult)
+            return (
+              <>
+                <Code source="sku" id={record.skuId} />
+                <Button type="link" onClick={() => {
+                  history.push(`/SPU/sku/${record.skuId}`);
+                }}>
+                  {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
+                  &nbsp;/&nbsp;
+                  {record.spuResult.name}
+                </Button>
+              </>
+            );
         }} sorter />
 
         <Column title="参数组合" key={2} render={(value, record) => {
@@ -164,9 +165,9 @@ const SkuTable = (props) => {
                 record.skuJsons
                 &&
                 record.skuJsons.map((items, index) => {
-                  if (items.values && items.values.attributeValues && items.attribute && items.values){
+                  if (items.values && items.values.attributeValues && items.attribute && items.values) {
                     return `${items.attribute.attribute} : ${items.values.attributeValues}`;
-                  }else {
+                  } else {
                     return null;
                   }
                 }).toString()

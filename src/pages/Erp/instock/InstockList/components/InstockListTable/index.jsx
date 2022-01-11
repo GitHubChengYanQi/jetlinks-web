@@ -57,7 +57,7 @@ const InstockListTable = ({...props}, ref) => {
       <Column title="物料" render={(text, record) => {
         return (
           <>
-            {record.sku && record.sku.skuName}
+            {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
             &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;

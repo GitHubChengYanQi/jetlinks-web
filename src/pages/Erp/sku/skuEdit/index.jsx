@@ -176,7 +176,7 @@ const SkuEdit = ({...props}, ref) => {
         }}
       >
         <FormItem
-          label="编码"
+          label="成品码"
           name="standard"
           component={SysField.Codings}
           codingId={data}

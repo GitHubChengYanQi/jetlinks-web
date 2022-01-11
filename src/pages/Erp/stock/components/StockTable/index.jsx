@@ -125,7 +125,8 @@ const StockTable = (props) => {
         <Column title="物料" render={(text, record) => {
           return (
             <>
-              {record.sku && `${record.sku.skuName}  /  `}
+              {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
+              &nbsp;/&nbsp;
               {record.spuResult && record.spuResult.name}
               &nbsp;&nbsp;
               {record.backSkus && record.backSkus.length > 0 && <em style={{color: '#c9c8c8', fontSize: 10}}>

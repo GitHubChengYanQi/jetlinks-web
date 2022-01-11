@@ -95,7 +95,7 @@ const PartsList = ({spuId}) => {
       <Column title="物料" dataIndex="skuId" render={(value, record) => {
         return (
           <>
-            {record.sku && record.sku.skuName}
+            {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
             &nbsp;/&nbsp;
             {record.spuResult && record.spuResult.name}
             &nbsp;&nbsp;
