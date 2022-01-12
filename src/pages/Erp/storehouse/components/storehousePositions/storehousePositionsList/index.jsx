@@ -19,12 +19,17 @@ import StorehousePositionsEdit from '../storehousePositionsEdit';
 import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
 import {useRequest} from '@/util/Request';
+import TableSort from '@/components/Table/components/TableSort';
+import UpdateSort from '@/components/Table/components/UpdateSort';
 
 const {Column} = AntTable;
 
 const StorehousePositionsList = (props) => {
   const {value} = props;
   const ref = useRef(null);
+
+  // 排序
+  const [sorts, setSorts] = useState([]);
 
   const [name,setName] = useState();
   const actions = () => {
@@ -56,6 +61,14 @@ const StorehousePositionsList = (props) => {
               }
             });
           }}><SearchOutlined />查询</Button>
+          <UpdateSort
+            disabled={sorts.length === 0}
+            type="positions"
+            sorts={sorts}
+            success={() => {
+              refresh();
+              setSorts([]);
+            }} />
         </Space>
         <Divider />
         <AntTable
@@ -75,6 +88,25 @@ const StorehousePositionsList = (props) => {
               </>
             );
           }} />
+          <Column
+            title="序号"
+            dataIndex="sort"
+            width={50}
+            align="center"
+            render={(text, item, index) => {
+              if (text || text === 0) {
+                return <TableSort
+                  rowKey={item.value}
+                  sorts={sorts}
+                  value={text}
+                  onChange={(value) => {
+                    setSorts(value);
+                  }} />;
+              } else {
+                return <>{index + 1}</>;
+              }
+
+            }} />
           <Column title="操作" align="right" render={(value, record) => {
             if (record.value !== '0') {
               return (

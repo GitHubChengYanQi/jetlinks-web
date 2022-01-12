@@ -18,8 +18,8 @@ const SkuList = () => {
 
   const array = data ? data.map((items)=>{
     return {
-      value:items.value,
-      label:items.label,
+      key:items.value,
+      title:items.label,
     };
   }) : [];
 
@@ -60,8 +60,8 @@ const SkuList = () => {
           defaultExpandedKeys={['']}
           treeData={[
             {
-              label: '所有分类',
-              value: '',
+              title: '所有分类',
+              key: '',
               children: array
             },
           ]}
