@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import { SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons';
 import {Button, Card, Divider, Input, Space, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -31,7 +31,7 @@ const StorehousePositionsList = (props) => {
   // 排序
   const [sorts, setSorts] = useState([]);
 
-  const [name,setName] = useState();
+  const [name, setName] = useState();
   const actions = () => {
     return (
       <>
@@ -51,7 +51,7 @@ const StorehousePositionsList = (props) => {
     <>
       <Card title={<Breadcrumb title="仓库库位" />} extra={actions()}>
         <Space>
-          <Input placeholder="库位名称" onChange={(value)=>{
+          <Input placeholder="库位名称" onChange={(value) => {
             setName(value.target.value);
           }} />
           <Button type="primary" onClick={() => {
@@ -94,18 +94,13 @@ const StorehousePositionsList = (props) => {
             width={50}
             align="center"
             render={(text, item, index) => {
-              if (text || text === 0) {
-                return <TableSort
-                  rowKey={item.value}
-                  sorts={sorts}
-                  value={text}
-                  onChange={(value) => {
-                    setSorts(value);
-                  }} />;
-              } else {
-                return <>{index + 1}</>;
-              }
-
+              return <TableSort
+                rowKey={item.value}
+                sorts={sorts}
+                value={text || 0}
+                onChange={(value) => {
+                  setSorts(value);
+                }} />;
             }} />
           <Column title="操作" align="right" render={(value, record) => {
             if (record.value !== '0') {
