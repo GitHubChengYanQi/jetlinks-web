@@ -111,8 +111,7 @@ export const Codings = (props) => {
   return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
 };
 export const UnitId = (props) => {
-  const {...other} = props;
-  return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitList} {...other} />);
+  return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitList} {...props} />);
 };
 
 export const Standard = (props) => {

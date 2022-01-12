@@ -16,9 +16,9 @@ const Select = (props) => {
   },[resh]);
 
   useEffect(()=>{
-    if (value){
+    if (value && data){
       const items = data && data.filter((items)=>{
-        return items.value === value;
+        return `${items.value}` === `${value}`;
       });
       if (items && items.length <= 0){
         other.onChange(null);

@@ -109,12 +109,11 @@ export const Values = (props) => {
 };
 
 export const Spu = (props) => {
-  const {value, onChange, loading,options} = props;
+  const {value, onChange, options} = props;
 
   return (
     <AutoComplete
       value={value && value.name ? value.name : null}
-      notFoundContent={loading && <Spin />}
       options={options && options.map((items)=>{
         return {
           label:items.label,

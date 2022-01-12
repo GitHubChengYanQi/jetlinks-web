@@ -42,8 +42,8 @@ const Cascader = (props) => {
 
   const dataSources = top ? [
     {
-      key: '0',
-      title: '顶级',
+      value: '0',
+      label: '顶级',
       children: data || [],
     }
   ] : (data || []);

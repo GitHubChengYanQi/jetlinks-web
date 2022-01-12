@@ -55,9 +55,7 @@ const SkuEdit = ({...props}, ref) => {
 
   const [spus, setSpus] = useState([]);
 
-  const [spuClassId, setSpuClassId] = useState();
-
-  const {loading: spuClassLoading, run: spuClass} = useRequest(spuClassificationListSelect, {
+  const {run: spuClass} = useRequest(spuClassificationListSelect, {
     manual: true,
     onSuccess: (res) => {
       setSpus(res);
@@ -77,6 +75,8 @@ const SkuEdit = ({...props}, ref) => {
     return (<ProSkeleton type="descriptions" />);
   }
 
+
+
   return (
     <div style={{padding: 16}}>
       <Form
@@ -87,7 +87,6 @@ const SkuEdit = ({...props}, ref) => {
           'spuClassification': value.spuResult && {name:value.spuResult.spuClassificationResult.name,id:value.spuResult.spuClassificationId},
           'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,
-          'skuName': value.skuName,
           'standard': value.standard,
           'specifications': value.specifications,
           'remarks': value.remarks
@@ -101,7 +100,7 @@ const SkuEdit = ({...props}, ref) => {
         onError={() => {
           openNotificationWithIcon('error');
         }}
-        onSuccess={(res) => {
+        onSuccess={() => {
           openNotificationWithIcon('success');
           if (!next) {
             props.onSuccess();
@@ -148,7 +147,6 @@ const SkuEdit = ({...props}, ref) => {
           });
 
           FormEffectHooks.onFieldValueChange$('spuClass').subscribe(async ({value}) => {
-            setSpuClassId(value);
             if (value) {
               spuClass({
                 data: {
@@ -200,7 +198,6 @@ const SkuEdit = ({...props}, ref) => {
           name="spuClassification"
           component={Spu}
           required
-          loading={spuClassLoading}
           options={spus}
         />
         <FormItem

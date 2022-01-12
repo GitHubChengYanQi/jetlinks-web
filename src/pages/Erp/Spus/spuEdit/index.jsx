@@ -131,7 +131,6 @@ const SpuEdit = ({...props}, ref) => {
                 component={SysField.Spu}
                 value={{name:details && details.spuClassificationResult && details.spuClassificationResult.name,id:details && details.spuClassificationId}}
                 required
-                loading={spuClassLoading}
                 options={spus}
               />
               <FormItem label="单位" name="unitId" value={details && details.unitId} component={SysField.UnitId} required />

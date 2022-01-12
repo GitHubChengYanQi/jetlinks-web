@@ -160,7 +160,7 @@ const SkuTable = (props) => {
               {
                 record.skuJsons
                 &&
-                record.skuJsons.map((items, index) => {
+                record.skuJsons.map((items) => {
                   if (items.values && items.values.attributeValues && items.attribute && items.values) {
                     return `${items.attribute.attribute} : ${items.values.attributeValues}`;
                   } else {
@@ -172,7 +172,7 @@ const SkuTable = (props) => {
           );
         }} />
 
-        <Column title="编码" key={3} dataIndex="standard" />
+        <Column title="成品码" key={3} dataIndex="standard" />
 
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
 
