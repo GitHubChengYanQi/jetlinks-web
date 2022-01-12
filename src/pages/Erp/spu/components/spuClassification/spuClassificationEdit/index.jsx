@@ -36,9 +36,9 @@ const SpuClassificationEdit = ({...props}) => {
     >
       <FormItem label="上级名称" name="pid" component={SysField.Pid} defaultParams={{data:{isNotproduct:1}}} top={type === 1} required />
       <FormItem label="名称" name="name" component={SysField.Name} required />
-      {type !== 1 &&
+      {type === 1 &&
       <FormItem
-        label="产品码"
+        label="分类码"
         name="codingClass"
         component={SysField.CodingClass}
         rules={[{
