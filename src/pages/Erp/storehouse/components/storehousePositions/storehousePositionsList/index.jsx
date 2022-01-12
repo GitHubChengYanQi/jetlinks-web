@@ -25,7 +25,7 @@ const {Column} = AntTable;
 const StorehousePositionsList = (props) => {
   const {value} = props;
   const ref = useRef(null);
-  const tableRef = useRef(null);
+
   const [name,setName] = useState();
   const actions = () => {
     return (

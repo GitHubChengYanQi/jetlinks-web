@@ -10,6 +10,7 @@ const TableSort = ({rowKey, sorts, value = [], onChange}) => {
 
   return <InputNumber
     bordered={false}
+    min={0}
     className={style.sortInput}
     value={sort.length > 0 ? sort[0].sort : value}
     onChange={((changeValue) => {

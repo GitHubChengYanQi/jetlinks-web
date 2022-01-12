@@ -68,7 +68,6 @@ const SpuEdit = ({...props}, ref) => {
 
   const [details, setDetails] = useState();
 
-  const [spuClassId, setSpuClassId] = useState();
 
 
   return (
@@ -96,7 +95,6 @@ const SpuEdit = ({...props}, ref) => {
 
           onFieldValueChange$('spuClass').subscribe(async ({value}) => {
             if (value) {
-              setSpuClassId(value);
               spuClass({
                 data: {
                   spuClassificationId: value,
@@ -131,11 +129,12 @@ const SpuEdit = ({...props}, ref) => {
                 label="产品"
                 name="spuClassification"
                 component={SysField.Spu}
+                value={{name:details && details.spuClassificationResult && details.spuClassificationResult.name,id:details && details.spuClassificationId}}
                 required
                 loading={spuClassLoading}
                 options={spus}
               />
-              <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
+              <FormItem label="单位" name="unitId" value={details && details.unitId} component={SysField.UnitId} required />
               <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
             </ProCard>
           </Col>

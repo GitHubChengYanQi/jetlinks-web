@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Divider, Spin, Tree} from 'antd';
+import React, { useState} from 'react';
+import { Spin, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
@@ -15,6 +15,13 @@ const SkuList = () => {
       isNotproduct: 1
     }
   });
+
+  const array = data ? data.map((items)=>{
+    return {
+      key:items.key,
+      title:items.title,
+    };
+  }) : [];
 
   const [spuClass, setSpuClass] = useState();
 
@@ -55,7 +62,7 @@ const SkuList = () => {
             {
               title: '所有分类',
               key: '',
-              children: data
+              children: array
             },
           ]}
         />

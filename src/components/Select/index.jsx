@@ -53,7 +53,12 @@ const Select = (props) => {
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect bordered={border} options={data} defaultValue={defaultValue} showArrow={showArrow} disabled={disabled}  placeholder={placeholder} style={{ width: wid }} value={valueArray} {...other} allowClear showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        {!loading &&<AntSelect bordered={border} options={data.map((items)=>{
+          return {
+            label:items.label,
+            value:items.value
+          };
+        })} defaultValue={defaultValue} showArrow={showArrow} disabled={disabled}  placeholder={placeholder} style={{ width: wid }} value={valueArray} {...other} allowClear showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         />}
       </>
     );

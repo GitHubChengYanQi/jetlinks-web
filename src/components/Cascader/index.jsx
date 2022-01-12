@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {Cascader as AntCascader, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
-import {logger} from 'ice';
 
 const getParentValue = (value, data) => {
   if (!Array.isArray(data)) {
@@ -23,29 +22,29 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width,defaultParams,placeholder,resh,top, api, onChange = () => {
+    value,width, defaultParams, placeholder, resh, top, api, onChange = () => {
     }, ...other
   } = props;
 
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {loading,data,refresh} = useRequest(api,{defaultParams});
+  const {loading, data, refresh} = useRequest(api, {defaultParams});
 
-  useEffect(()=>{
-    if (resh){
+  useEffect(() => {
+    if (resh) {
       refresh();
     }
-  },[resh]);
+  }, [resh]);
 
   if (loading || !data)
     return <Spin />;
 
   const dataSources = top ? [
     {
-      value:'0',
-      label:'顶级',
-      children:data || [],
+      key: '0',
+      title: '顶级',
+      children: data || [],
     }
   ] : (data || []);
 
@@ -62,7 +61,7 @@ const Cascader = (props) => {
       }
     } else {
       valueArray = getParentValue($tmpValue, dataSources);
-      if (valueArray.length <= 0){
+      if (valueArray.length <= 0) {
         onChange(null);
       }
     }
@@ -77,7 +76,24 @@ const Cascader = (props) => {
     onChange(result);
   };
 
-  return (<AntCascader loading={loading} style={{width}} changeOnSelect options={dataSources} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
+  const childrenData = (dataSources) => {
+    if (!Array.isArray(dataSources)) {
+      return [];
+    }
+    return dataSources.map((item) => {
+      return {
+        key: item.key,
+        title: item.title,
+        children: childrenData(item.children),
+      };
+    });
+  };
+
+  return (<AntCascader
+    loading={loading}
+    style={{width}}
+    changeOnSelect
+    options={childrenData(dataSources)} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
 
 
 };
