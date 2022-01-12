@@ -82,8 +82,8 @@ const Cascader = (props) => {
     }
     return dataSources.map((item) => {
       return {
-        key: item.key,
-        title: item.title,
+        value: item.value,
+        label: item.label,
         children: childrenData(item.children),
       };
     });
