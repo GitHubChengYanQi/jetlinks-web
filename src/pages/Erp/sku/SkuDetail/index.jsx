@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useHistory, useParams} from 'ice';
-import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {Button, Card, Col, Descriptions, Empty, Row, Space, Tabs} from 'antd';
+import {useRequest} from '@/util/Request';
 import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import Modal from '@/components/Modal';
+import Quote from '@/pages/Purshase/Quote';
+import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
 
 const {TabPane} = Tabs;
 
 const SkuDetail = () => {
 
   const params = useParams();
+
+  const quoteRef = useRef();
 
   const history = useHistory();
 
@@ -33,15 +38,26 @@ const SkuDetail = () => {
 
   return (
     <div className={styles.detail}>
-      <Card>
-        <Breadcrumb />
-      </Card>
-      <Card>
+      <Card title={<Breadcrumb />} extra={<Button onClick={() => {
+        history.push('/SPU/sku');
+      }}>返回</Button>} />
+      <Card title="基础数据" extra={<Button onClick={() => {
+        quoteRef.current.open(
+          {
+            skuId: data.skuId,
+            sourceId: data.skuId,
+            source: 'sku'
+          }
+        );
+      }}>添加报价</Button>}>
         <div className={styles.title}>
-          <Descriptions title="基础数据">
-            <Descriptions.Item label="型号(零件号)(零件号)">{data.skuName}</Descriptions.Item>
+          <Descriptions>
+            <Descriptions.Item
+              label="产品">
+              {data.spuResult && data.spuResult.spuClassificationResult && data.spuResult.spuClassificationResult.name}
+            </Descriptions.Item>
             <Descriptions.Item label="名称">{data.spuResult && data.spuResult.name}</Descriptions.Item>
-            <Descriptions.Item label="配置">
+            <Descriptions.Item label="参数组合">
               <Space>
                 (
                 {
@@ -62,27 +78,27 @@ const SkuDetail = () => {
                 )
               </Space>
             </Descriptions.Item>
-            <Descriptions.Item label="编码">{data.standard}</Descriptions.Item>
+            <Descriptions.Item label="成品码">{data.standard}</Descriptions.Item>
             <Descriptions.Item label="分类">{data.spuClassification && data.spuClassification.name}</Descriptions.Item>
             <Descriptions.Item label="单位">{data.unit ? data.unit.unitName : '无'}</Descriptions.Item>
+            <Descriptions.Item label="批量">{data.batch ? '是' : '否'}</Descriptions.Item>
             <Descriptions.Item label="备注">{data.remarks || '无'}</Descriptions.Item>
             <Descriptions.Item label="创建人">{data.createUserName || '无'}</Descriptions.Item>
             <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
           </Descriptions>
         </div>
       </Card>
-      <Card>
-        <Descriptions title="默认数据" column={4}>
+      <Card title="默认数据">
+        <Descriptions column={4}>
           <Descriptions.Item label="质检方案">{data.qualityPlan ? data.qualityPlan.planName : '无'}</Descriptions.Item>
-          <Descriptions.Item label="批量">{data.batch ? '是' : '否'}</Descriptions.Item>
         </Descriptions>
       </Card>
       <div
         className={styles.main}>
         <Card>
           <Tabs defaultActiveKey="1">
-            <TabPane tab="tab1" key="1">
-              tab1
+            <TabPane tab="报价信息" key="1">
+              <PurchaseQuotationList value={data.skuId} />
             </TabPane>
             <TabPane tab="tab2" key="2">
               tab2
@@ -96,6 +112,11 @@ const SkuDetail = () => {
           </Tabs>
         </Card>
       </div>
+
+
+      <Modal headTitle="添加报价信息" width={2000} ref={quoteRef} component={Quote} onSuccess={() => {
+        quoteRef.current.close();
+      }} />
 
     </div>
 

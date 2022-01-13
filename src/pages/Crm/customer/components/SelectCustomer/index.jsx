@@ -7,14 +7,7 @@ import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton
 
 const SelectCustomer = (props) => {
 
-  const {value: values, onChange, width} = props;
-
-  const [visible, setVisible] = useState(false);
-
-  const [value, setValue] = useState(values);
-
-  const [blur, setBlur] = useState();
-
+  const {value, onChange,supply, width} = props;
 
   return (
     <>
@@ -23,27 +16,13 @@ const SelectCustomer = (props) => {
           method={false}
           style={{width}}
           value={value}
-          onSuccess={async (value) => {
-            setValue(value && value.customerName);
-            onChange(value);
-            setBlur(true);
-          }}
+          supply={supply}
           onChange={(value) => {
             onChange(value);
-            setValue(value);
-            setVisible(true);
-            setBlur(false);
-          }}
-          onblur={() => {
-            if (!blur) {
-              onChange(null);
-            }
           }}
         />
-        <AddCustomerButton {...props} visi={visible} onChange={(value) => {
-          setValue(value && value.customerName);
-          onChange(value);
-          setBlur(true);
+        <AddCustomerButton {...props} onChange={(value) => {
+          onChange(value);;
         }} />
       </Space>
 

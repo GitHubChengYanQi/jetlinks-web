@@ -5,7 +5,7 @@ import {customerAdd} from '@/pages/Crm/customer/CustomerUrl';
 import {CloseOutlined} from '@ant-design/icons';
 import style from './index.module.less';
 
-const FastCreateCustomer = ({close, add}) => {
+const FastCreateCustomer = ({close,supply, add}) => {
 
   const {run} = useRequest(customerAdd, {
     manual: true,
@@ -27,10 +27,10 @@ const FastCreateCustomer = ({close, add}) => {
           <CloseOutlined />
         </Button>}
         title={
-          <div>快速创建客户</div>
+          <div>{supply ? '快速创建供应商' : '快速创建客户'}</div>
         }
         headStyle={{textAlign: 'center',padding:0,minHeight:40}} bordered={false}>
-        <Input placeholder="输入客户名称" onChange={(value) => {
+        <Input placeholder={supply ? '输入供应商名称' : '输入客户名称'} onChange={(value) => {
           setValue(value.target.value);
         }} />
         <Divider style={{margin: '10px 0'}} />
@@ -40,15 +40,16 @@ const FastCreateCustomer = ({close, add}) => {
               const data = await run(
                 {
                   data: {
-                    customerName: value
+                    customerName: value,
+                    supply,
                   }
                 }
               );
-              typeof add === 'function' && add(data);
+              typeof add === 'function' && add(data.customerId);
             } else {
-              message.info('请输入客户名称！');
+              message.warn(supply ? '请输入供应商名称' : '请输入客户名称！');
             }
-          }}>创建新客户</Button>
+          }}>{supply ? '创建新供应商' : '创建新客户'}</Button>
         </div>
       </Card>
     </>

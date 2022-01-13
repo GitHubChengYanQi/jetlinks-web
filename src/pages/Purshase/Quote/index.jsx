@@ -9,27 +9,29 @@ import Form from '@/components/Form';
 import * as SysField from '@/pages/Purshase/purchaseQuotation/purchaseQuotationField';
 import {useRequest} from '@/util/Request';
 import {purchaseConfigList} from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigUrl';
-import {purchaseQuotationAdd} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
+import {purchaseQuotationAdd, purchaseQuotationAddbatch} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
+import {useBoolean} from 'ahooks';
 
-const ApiConfig = {
-  view: purchaseQuotationAdd,
-  add: purchaseQuotationAdd,
-  save: purchaseQuotationAdd
-};
 
 const {FormItem} = Form;
 
 const Quote = (props) => {
 
-  const {skus, onSuccess} = props;
+  const {value: {skuId, skus, source, sourceId}, onSuccess,} = props;
 
-  const [loading,setLoading] = useState(false);
+  const ApiConfig = {
+    view: purchaseQuotationAdd,
+    add: skus ? purchaseQuotationAdd : purchaseQuotationAddbatch,
+    save: purchaseQuotationAdd
+  };
+
+  const [loading, setLoading] = useState(false);
 
   const formRef = useRef();
 
   const [supply, setSupply] = useState();
 
-  const [options, setOptions] = useState([]);
+  const [skuIds, setSkuIds] = useState([]);
 
   const {data: supplyData, run: getSupply} = useRequest({
     url: 'supply/getSupplyByLevel',
@@ -54,12 +56,17 @@ const Quote = (props) => {
           return value.type === 'level';
         });
 
-        getSupply({
-          params: {
-            levelId: level && level.length > 0 && JSON.parse(level[0].value).value
-          }
-        });
+        const levelId = level && level.length > 0 && JSON.parse(level[0].value).value;
 
+        if (levelId) {
+          getSupply({
+            params: {
+              levelId,
+            }
+          });
+        } else {
+          getSupply({});
+        }
         setConfig({
           supply: supplys && supplys.length > 0 && supplys[0].value,
           level: level && level.length > 0 && level[0].value,
@@ -76,7 +83,7 @@ const Quote = (props) => {
 
   return <>
     <Card
-      title={<Select
+      title={skus && <Select
         placeholder="选择供应商"
         allowClear
         options={supplyData && supplyData.map((items) => {
@@ -86,13 +93,13 @@ const Quote = (props) => {
             key: items
           };
         }) || []}
-        onClear={()=>{
+        onClear={() => {
           formRef.current.reset();
         }}
         onSelect={(value, option) => {
           formRef.current.reset();
           if (config.supply && config.supply === '是') {
-            setOptions(skus);
+            setSkuIds(skus);
           } else {
             // 取出供应商有的物料
             const array = skus && skus.filter((items) => {
@@ -101,18 +108,18 @@ const Quote = (props) => {
                 option.key.supplyResults
                 &&
                 option.key.supplyResults.filter((value) => {
-                  return value.skuId === items.value;
+                  return value.skuId === items;
                 });
               return arr && arr.length > 0;
             });
-            setOptions(array);
+            setSkuIds(array);
           }
           setSupply(value);
         }}
       />}>
 
       <Form
-        loading={(load)=>{
+        loading={(load) => {
           setLoading(load);
         }}
         value={false}
@@ -121,17 +128,33 @@ const Quote = (props) => {
         NoButton={false}
         fieldKey="purchaseAskId"
         onSubmit={(value) => {
-          if (!supply) {
+          if (skus && !supply) {
             message.warn('请选择供应商！');
             return false;
           }
           if (value.quotationParams.filter((items) => {
-            return (items && !items.skuId);
+            if (skus) {
+              return (items && !items.skuId);
+            } else {
+              return (items && !items.customerId);
+            }
           }).length > 0) {
-            message.warn('物料未必填项！');
+            message.warn(skus ? '供应商为必填项' : '物料为必填项！');
             return false;
           }
-          return {...value, CustomerId: supply,source:'toBuyPlan'};
+          if (skus) {
+            return {...value, CustomerId: supply, source, sourceId};
+          } else {
+            const array = value.quotationParams.map((item)=>{
+              return {
+                ...item,
+                skuId,
+                source,
+                sourceId,
+              };
+            });
+            return {quotationParams: array};
+          }
         }}
         onSuccess={() => {
           notification.success({
@@ -206,8 +229,8 @@ const Quote = (props) => {
       >
         <Space style={{backgroundColor: '#E6E6E6', padding: 16}}>
           <div style={{width: 50, textAlign: 'center'}} />
-          <div style={{width: 200, textAlign: 'center'}}>
-            物料
+          <div style={{width: skus ? 200 : 328, textAlign: 'center'}}>
+            {skus ? '物料' : '供应商'}
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
             采购数量
@@ -277,19 +300,40 @@ const Quote = (props) => {
                           <Button
                             type="link"
                             onClick={() => {
-                              mutators.insert(index + 1, {...formRef.current.getFieldValue('quotationParams')[index]});
+                              if (skus) {
+                                if (formRef.current.getFieldValue('quotationParams')[index] && formRef.current.getFieldValue('quotationParams')[index].skuId) {
+                                  mutators.insert(index + 1, {...formRef.current.getFieldValue('quotationParams')[index]});
+                                } else {
+                                  message.warn('请选择物料！');
+                                }
+                              } else if (formRef.current.getFieldValue('quotationParams')[index] && formRef.current.getFieldValue('quotationParams')[index].customerId) {
+                                mutators.insert(index + 1, {...formRef.current.getFieldValue('quotationParams')[index]});
+                              } else {
+                                message.warn('请选择供应商！');
+                              }
                             }}
                             icon={<PlusOutlined />}
                           />
                         </div>
 
-                        <FormItem
-                          itemStyle={{margin: 0}}
-                          placeholder="物料"
-                          name={`quotationParams.${index}.skuId`}
-                          component={SysField.SkuId}
-                          options={options}
-                        />
+                        {skus ?
+                          <FormItem
+                            itemStyle={{margin: 0}}
+                            placeholder="物料"
+                            name={`quotationParams.${index}.skuId`}
+                            component={SysField.SkuId}
+                            ids={skuIds}
+                          />
+                          :
+                          <FormItem
+                            itemStyle={{margin: 0}}
+                            placeholder="供应商"
+                            width={200}
+                            supply={1}
+                            name={`quotationParams.${index}.customerId`}
+                            component={SysField.SupplyId}
+                          />
+                        }
 
                         <FormItem
                           itemStyle={{margin: 0}}
@@ -389,7 +433,6 @@ const Quote = (props) => {
                             component={SysField.IsFreight}
                           />
                         </div>
-
                         <div style={{width: 50, textAlign: 'center'}}>
                           <Button
                             type="link"
@@ -411,7 +454,13 @@ const Quote = (props) => {
                       type="dashed"
                       style={{marginTop: 8}}
                       icon={<PlusOutlined />}
-                      onClick={onAdd}>增加物料</Button>
+                      onClick={() => {
+                        if (skus && !supply) {
+                          message.warn('请选择供应商！');
+                          return null;
+                        }
+                        onAdd();
+                      }}>增加物料</Button>
                     <Button
                       type="primary"
                       loading={loading}

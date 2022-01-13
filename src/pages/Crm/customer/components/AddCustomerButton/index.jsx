@@ -4,20 +4,13 @@ import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer
 import React, {useEffect, useRef, useState} from 'react';
 import {DownOutlined} from '@ant-design/icons';
 
-const {Panel} = Collapse;
-
 
 const AddCustomerButton = (props) => {
 
 
-  const {onChange, visi} = props;
+  const {onChange, supply} = props;
 
   const ref = useRef(null);
-
-  useEffect(() => {
-    setVisible(false);
-  }, [visi]);
-
 
   const [visible, setVisible] = useState(false);
 
@@ -29,19 +22,22 @@ const AddCustomerButton = (props) => {
         <Button ghost type="primary" style={{borderBottom: 'none', width: '100%'}} onClick={() => {
           setDrow(false);
           ref.current.open(false);
-        }}>创建客户</Button>
+        }}>{supply ? '创建供应商' : '创建客户'}</Button>
       </Menu.Item>
       <Menu.Item key="2" style={{padding: 0}}>
         <Popover placement="rightTop" visible={visible} onVisibleChange={(visible) => {
           setVisible(visible);
-        }} content={<FastCreateCustomer close={() => {
-          setDrow(false);
-          setVisible(false);
-        }} add={(value) => {
-          setDrow(false);
-          setVisible(false);
-          onChange(value);
-        }} />} trigger="click">
+        }} content={<FastCreateCustomer
+          close={() => {
+            setDrow(false);
+            setVisible(false);
+          }}
+          supply={supply}
+          add={(value) => {
+            setDrow(false);
+            setVisible(false);
+            onChange(value);
+          }} />} trigger="click">
           <Button ghost type="primary" style={{width: '100%'}} onClick={() => {
             setVisible(true);
           }}>快速创建</Button>
@@ -58,20 +54,21 @@ const AddCustomerButton = (props) => {
       }
       }>
         <Button type="primary">
-          新建客户 <DownOutlined />
+          {supply ? '新建供应商' : '新建客户'} <DownOutlined />
         </Button>
       </Dropdown>
 
 
       <CreateNewCustomer
-        title="客户"
+        title={supply ? '供应商' : '客户'}
+        supply={supply}
         widths={1200}
         onSuccess={() => {
           ref.current.close();
         }}
         ref={ref}
         onChange={(res) => {
-          onChange(res.data);
+          onChange(res.data.customerId);
         }} />
     </>
   );

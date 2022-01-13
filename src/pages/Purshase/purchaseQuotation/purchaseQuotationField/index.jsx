@@ -11,13 +11,17 @@ import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import {customerIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 export const SkuId = (props) =>{
-  const {options,...other} = props;
-  return (<AntdSelect options={options || []} {...other} style={{width:200}} dropdownMatchSelectWidth={500} />);
+  return (<SelectSku {...props} />);
 };
 export const SkuListSelect = (props) =>{
   return (<SelectSku {...props} />);
+};
+export const SupplyId = (props) =>{
+  return ( <SelectCustomer {...props}/>);
 };
 export const Price = (props) =>{
   return (<InputNumber min={1} {...props}/>);
@@ -38,7 +42,7 @@ export const AllAfterTax = (props) =>{
   return (<div style={{width:90,textAlign:'center'}}>{value || 0}</div>);
 };
 export const CustomerId = (props) =>{
-  return (<Input {...props}/>);
+  return (<Select api={customerIdSelect} data={{supply:1}} width={200}  {...props}/>);
 };
 export const InvoiceType = (props) =>{
   return (<AntdSelect options={[{label:'票据类型1',value:'票据类型1'}]} style={{width:120}} {...props}/>);

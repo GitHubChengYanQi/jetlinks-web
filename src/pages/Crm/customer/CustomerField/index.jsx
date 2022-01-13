@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, Popover} from 'antd';
+import {Input, InputNumber, Select as AntdSelect, Radio, Popover, AutoComplete} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import TreeSelect from '@/components/TreeSelect';
@@ -56,22 +56,52 @@ export const Name = (props) => {
   return (<Input {...props} />);
 };
 export const Region = (props) => {
-  return (<CascaderAdress {...props} />);
+  return (<Cascader api={commonArea} {...props} />);
 };
 export const CompanyRoleId = (props) => {
   return (<Select width="100%" api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
 export const CustomerName = (props) => {
 
-  const {value, onChange, method,supply, onSuccess, ...other} = props;
+  const {value, onChange, supply, onSuccess} = props;
 
-  return (
-    <CustomerSelect value={value} method={method} supply={supply} onSuccess={(value) => {
-      onSuccess(value);
-    }} onChange={(value) => {
-      onChange(value);
-    }} />
-  );
+  const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST'}, {
+    debounceInterval: 300,
+  });
+
+  const options = !loading ? data && data.map((value) => {
+    return {
+      value: value.customerName,
+      label: value.customerName,
+      id: value.customerId,
+    };
+  }) : [];
+
+
+  return <>
+    <AutoComplete
+      dropdownMatchSelectWidth={100}
+      options={options}
+      placeholder={supply ? '搜索供应商' : '搜索客户'}
+      value={value}
+      onSelect={(value, option) => {
+        onSuccess(option.id);
+      }}
+    >
+      <Input.Search
+        onChange={(value) => {
+          onChange(value);
+          run({
+            data: {
+              customerName: value.target.value,
+              supply
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
+
 };
 
 export const ContactsId = (props) => {
@@ -79,7 +109,7 @@ export const ContactsId = (props) => {
 };
 
 export const Setup = (props) => {
-  return (<DatePicker disabledDate={(current)=>{
+  return (<DatePicker disabledDate={(current) => {
     return current && current > moment().endOf('day');
   }}  {...props} />);
 };
@@ -114,7 +144,7 @@ export const CompanyType = (props) => {
     }, {value: '其他类型', label: '其他类型'}]} {...props} />);
 };
 export const BusinessTerm = (props) => {
-  return (<DatePicker disabledDate={(current)=>{
+  return (<DatePicker disabledDate={(current) => {
     return current && current < moment().endOf('day');
   }} {...props} />);
 };
@@ -127,9 +157,6 @@ export const Introduction = (props) => {
 
 export const DeptId = (props) => {
   return (<Input   {...props} />);
-};
-export const ClientId = (props) => {
-  return (<Select api={apiUrl.customerIdSelect} {...props} />);
 };
 
 export const client = (props) => {
@@ -150,7 +177,7 @@ export const Client = (props) => {
 
 export const Status = (props) => {
   return (
-    <Radio.Group {...props} defaultValue={0} >
+    <Radio.Group {...props} defaultValue={0}>
       <Radio value={0}>潜在客户</Radio>
       <Radio value={1}>正式客户</Radio>
     </Radio.Group>
@@ -188,9 +215,9 @@ export const OriginId = (props) => {
 
 export const UserName = (props) => {
   const {loading, data} = useRequest({url: '/rest/system/currentUserInfo', method: 'POST'});
-  useEffect(()=>{
+  useEffect(() => {
     props.onChange(data && data.userId);
-  },[loading]);
+  }, [loading]);
 
   return (<Select width={120} api={apiUrl.UserIdSelect}  {...props} />);
 };

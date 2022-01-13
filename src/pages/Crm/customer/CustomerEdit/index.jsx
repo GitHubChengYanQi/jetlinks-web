@@ -8,6 +8,7 @@
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import {Button, Collapse, Divider, Row, Col} from 'antd';
 import {
+  commonArea,
   customerAdd,
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
@@ -122,10 +123,9 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 <MegaLayout labelWidth={100}>
                   <FormItem
                     label={supply ? '供应商名称' : '客户名称'} name="customerName" component={SysField.CustomerName}
-                    method={props.value}
                     supply={supply}
-                    onSuccess={(customer) => {
-                      history.push(`${supply === 1 ? '/purchase/supply/' : '/CRM/customer/'}${customer && customer.customerId}`);
+                    onSuccess={(customerId) => {
+                      history.push(`${supply === 1 ? '/purchase/supply/' : '/CRM/customer/'}${customerId}`);
                     }} required />
                 </MegaLayout>
                 {supply === 0 && <MegaLayout labelWidth={100} grid>
@@ -325,7 +325,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                           return (
                             <ProCard
                               headStyle={{borderLeft: 'none', padding: '8px 16px'}}
-                              title={<Title title="地址明细" level={6} />}
+                              title={<Title title={`地址明细 ${index + 1}`} level={6} />}
                               headerBordered
                               extra={
                                 <Button

@@ -11,6 +11,12 @@ export const purchaseQuotationAdd = {
   rowKey:'purchaseQuotationId'
 };
 
+export const purchaseQuotationAddbatch = {
+  url: '/purchaseQuotation/addbatch',
+  method: 'POST',
+  rowKey:'purchaseQuotationId'
+};
+
 export const purchaseQuotationEdit = {
   url: '/purchaseQuotation/edit',
   method: 'POST',

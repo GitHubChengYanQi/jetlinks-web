@@ -47,7 +47,7 @@ export const customerList = {
 
 
 export const customerIdSelect = {
-  url: '/items/list',
+  url: '/customer/listSelect',
   method: 'POST'
 };
 

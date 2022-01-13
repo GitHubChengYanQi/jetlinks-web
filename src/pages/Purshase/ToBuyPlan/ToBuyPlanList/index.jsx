@@ -6,6 +6,7 @@ import {useRequest} from '@/util/Request';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import Quote from '@/pages/Purshase/Quote';
+import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
 
 const {Column} = AntTable;
 
@@ -16,6 +17,8 @@ const ToBuyPlanList = () => {
   const [visible, setVisible] = useState();
 
   const quoteRef = useRef();
+
+  const quotationRef = useRef();
 
   const [createPlanData, setCreatePlanData] = useState({});
 
@@ -122,7 +125,14 @@ const ToBuyPlanList = () => {
       <Button
         type="default"
         onClick={() => {
-          quoteRef.current.open(true);
+          quoteRef.current.open(
+            {
+              skus: data && data.map((items) => {
+                return items.skuId;
+              }),
+              sourceId: null,
+              source: 'purchasePlan'
+            });
         }}>添加报价</Button>
       <Divider style={{margin: '16px 0 0 0'}} />
     </Space>
@@ -158,7 +168,9 @@ const ToBuyPlanList = () => {
         <Column title="申请时间" dataIndex="createTime" />
         <Column title="历史报价" dataIndex="skuId" render={(value, record) => {
           if (record.purchaseListingId.indexOf('mainKey:') !== -1) {
-            return <Button type="link">
+            return <Button type="link" onClick={() => {
+              quotationRef.current.open(record.skuId);
+            }}>
               查看
             </Button>;
           }
@@ -201,13 +213,12 @@ const ToBuyPlanList = () => {
       </Space>
     </AntModal>
 
-    <Modal headTitle='添加报价信息' skus={data && data.map((items)=>{
-      return {
-        value:items.skuId,
-        label:<SkuResultSkuJsons skuResult={items.skuResult} />
-      };
-    })} width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
+    <Modal headTitle="添加报价信息" width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
       quoteRef.current.close();
+    }} />
+
+    <Modal headTitle="报价信息" width={1600} ref={quotationRef} component={PurchaseQuotationList} onSuccess={() => {
+      quotationRef.current.close();
     }} />
 
 

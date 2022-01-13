@@ -17,6 +17,7 @@ import {supplyDelete, supplyList} from '../supplyUrl';
 import SupplyEdit from '../supplyEdit';
 import * as SysField from '../supplyField';
 import SkuResult from '@/pages/Erp/sku/components/SkuResult';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -60,7 +61,7 @@ const SupplyList = ({customer}) => {
         ref={tableRef}
       >
         <Column title="物料" dataIndex="skuId" render={(value,record)=>{
-          return <SkuResult skuResult={record.skuResult} />;
+          return <SkuResultSkuJsons skuResult={record.skuResult} />;
         }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
