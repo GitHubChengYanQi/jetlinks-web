@@ -14,7 +14,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
   const [city, setCity] = useState();
 
-  const [visiable,setVisiable] = useState();
+  const [visiable, setVisiable] = useState();
 
 
   const {run} = useRequest({url: '/commonArea/treeView', method: 'POST'}, {manual: true});
@@ -119,6 +119,18 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
   }, []);
 
+  const children = (data) => {
+    if (!Array.isArray(data))
+      return [];
+    return data.map((item) => {
+      return {
+        value: item.value,
+        label: item.label,
+        children: children(item.children),
+      };
+    });
+  };
+
 
   return (
     <div
@@ -131,7 +143,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
         showSearch={(inputValue, path) => {
           path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
         }}
-        options={citys}
+        options={children(citys)}
         defaultValue={[city.city]}
         onChange={async (value) => {
           let cityId = null;
@@ -164,9 +176,10 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
             }
           });
         }} />}</span>
-      <Popover onVisibleChange={(visible)=>{
+      <Popover onVisibleChange={(visible) => {
         setVisiable(visible);
-      }} placement="bottom" content={reslut && reslut.count > 0 && <Card style={{maxHeight: 500,minWidth:500, overflowY: 'auto', marginTop: 16}}>
+      }} placement="bottom" content={reslut && reslut.count > 0 &&
+      <Card style={{maxHeight: 500, minWidth: 500, overflowY: 'auto', marginTop: 16}}>
         <List>
           {reslut.pois.map((item, index) => {
             return (<List.Item key={index} title={item.name} onClick={() => {

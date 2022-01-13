@@ -6,7 +6,7 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, params, skuIds}) => {
+const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, params, skuIds,ids}) => {
 
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
@@ -32,7 +32,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
     };
   };
 
-  const {loading, data, run} = useRequest({...skuList, data: {type: 0, ...params}}, {
+  const {loading, data, run} = useRequest({...skuList, data: {skuIds:ids,type: 0, ...params}}, {
     debounceInterval: 1000, onSuccess: (res) => {
       if (res.length === 1) {
         onChange(res[0].skuId);
@@ -46,12 +46,13 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
   useEffect(() => {
     run({
       data: {
+        skuIds:ids,
         skuId: value,
         type: 0,
         ...params
       }
     });
-  }, [params, value]);
+  }, [params, value,ids]);
 
 
   const options = !loading ? data && data.map((items) => {
@@ -70,6 +71,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
           setChange(null);
           run({
             data: {
+              skuIds:ids,
               spuClass: value,
               type: 0,
               ...params
@@ -91,6 +93,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
           setChange(value);
           run({
             data: {
+              skuIds:ids,
               spuClass,
               skuName: value,
               type: 0,
@@ -110,6 +113,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
             onChange(null);
             run({
               data: {
+                skuIds:ids,
                 type: 0,
                 ...params
               }

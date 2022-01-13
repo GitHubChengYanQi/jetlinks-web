@@ -22,6 +22,8 @@ import Icon from '@/components/Icon';
 import Code from '@/pages/Erp/spu/components/Code';
 import {config, useHistory} from 'ice';
 import cookie from 'js-cookie';
+import FileUpload from '@/components/FileUpload';
+import {request} from '@/util/Service';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -48,6 +50,8 @@ const SkuTable = (props) => {
     tableRef.current.formActions.setFieldValue('spuClass', spuClass ? spuClass[0] : null);
     tableRef.current.submit();
   }, [spuClass]);
+
+
 
   const actions = () => {
     return (

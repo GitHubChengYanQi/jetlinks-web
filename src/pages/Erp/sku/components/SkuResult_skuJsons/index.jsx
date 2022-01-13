@@ -4,7 +4,7 @@ import {Empty} from 'antd';
 const SkuResultSkuJsons = ({skuResult}) => {
 
   if (!(skuResult && skuResult.spuResult))
-    return <Empty />;
+    return null;
 
   return <>
     {skuResult.spuResult.spuClassificationResult && skuResult.spuResult.spuClassificationResult.name}

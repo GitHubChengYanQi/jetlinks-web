@@ -4,7 +4,7 @@ import {Empty} from 'antd';
 const BackSkus = ({record}) => {
 
   if (!record.spuResult) {
-    return <Empty />;
+    return null;
   }
 
   return <>

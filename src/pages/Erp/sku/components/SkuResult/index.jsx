@@ -4,7 +4,7 @@ import {Empty} from 'antd';
 const SkuResult = ({skuResult}) => {
 
   if (!(skuResult && skuResult.spuResult))
-    return <Empty />;
+    return null;
 
 
   return <>
