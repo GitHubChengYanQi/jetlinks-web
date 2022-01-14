@@ -16,6 +16,8 @@ const ToBuyPlanList = () => {
 
   const [visible, setVisible] = useState();
 
+  const [skuName,setSkuName] = useState();
+
   const quoteRef = useRef();
 
   const quotationRef = useRef();
@@ -169,6 +171,7 @@ const ToBuyPlanList = () => {
         <Column title="历史报价" dataIndex="skuId" render={(value, record) => {
           if (record.purchaseListingId.indexOf('mainKey:') !== -1) {
             return <Button type="link" onClick={() => {
+              setSkuName(<SkuResultSkuJsons skuResult={record.skuResult} />);
               quotationRef.current.open(record.skuId);
             }}>
               查看
@@ -217,7 +220,7 @@ const ToBuyPlanList = () => {
       quoteRef.current.close();
     }} />
 
-    <Modal headTitle="报价信息" width={1600} ref={quotationRef} component={PurchaseQuotationList} onSuccess={() => {
+    <Modal headTitle={skuName || '报价信息'} width={1600} ref={quotationRef} component={PurchaseQuotationList} onSuccess={() => {
       quotationRef.current.close();
     }} />
 

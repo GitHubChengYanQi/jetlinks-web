@@ -38,6 +38,8 @@ const PurchaseQuotationList = ({value}) => {
   return (
     <>
       <Table
+        rowSelection
+        contentHeight={value}
         title={<Breadcrumb />}
         headStyle={{display:value && 'none'}}
         api={purchaseQuotationList}

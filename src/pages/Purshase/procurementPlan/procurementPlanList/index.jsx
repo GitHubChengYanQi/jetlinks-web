@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Badge, Button, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import {procurementPlanList} from '../procurementPlanUrl';
@@ -66,6 +66,9 @@ const ProcurementPlanList = () => {
         }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column title="备注" dataIndex="remark" />
+        <Column title="状态" dataIndex="status" width={100} align="center" render={(value) => {
+          return value !== 0 ? <Badge text="已完成" color="green" /> : <Badge text="未完成" color="red" />;
+        }} />
         <Column title="操作" align="center" width={100} render={(text, record) => {
           return <>
             <Button type="link" onClick={() => {
@@ -82,7 +85,6 @@ const ProcurementPlanList = () => {
       <Modal headTitle='添加报价信息' width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
         quoteRef.current.close();
       }} />
-
 
       <Modal width={800} headTitle="采购计划详情" component={ProcurementPlanDetalList} onSuccess={() => {
         tableRef.current.refresh();

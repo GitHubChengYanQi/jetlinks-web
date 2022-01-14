@@ -22,7 +22,7 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value,width, defaultParams, placeholder, resh, top, api, onChange = () => {
+    value, width, defaultParams, placeholder, resh, top, api, onChange = () => {
     }, ...other
   } = props;
 
@@ -61,9 +61,6 @@ const Cascader = (props) => {
       }
     } else {
       valueArray = getParentValue($tmpValue, dataSources);
-      if (valueArray.length <= 0) {
-        onChange(null);
-      }
     }
   } else if (Array.isArray(value)) {
     valueArray = value;
@@ -89,11 +86,23 @@ const Cascader = (props) => {
     });
   };
 
+  const filter = (inputValue, path) => {
+    return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+  };
+
   return (<AntCascader
+    showSearch={{
+      filter,
+    }}
     loading={loading}
     style={{width}}
     changeOnSelect
-    options={childrenData(dataSources)} value={valueArray} placeholder={placeholder} onChange={change}  {...other} />);
+    options={childrenData(dataSources)}
+    value={valueArray}
+    placeholder={placeholder}
+    onChange={change}
+    {...other}
+  />);
 
 
 };

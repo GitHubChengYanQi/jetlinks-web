@@ -6,17 +6,15 @@
  */
 
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Col, Divider, Input, Row, Steps} from 'antd';
-
+import {Button, Col, Divider, Row} from 'antd';
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import Title from '@/components/Title';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
 import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
 import Form from '@/components/Form';
-import {CustomerId, SelectCustomers} from '@/pages/Crm/contacts/ContactsField';
-import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 
 const {FormItem} = Form;
 
@@ -42,7 +40,9 @@ const ContactsEdit = ({...props}, ref) => {
 
   const {customerId,...other} = props;
   const formRef = useRef(null);
-  const [result, setResult] = useState(props.value.contactsId || false);
+  const [result, setResult] = useState(props.value && props.value.contactsId || false);
+
+  const formActionsPublic = createFormActions();
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -54,6 +54,7 @@ const ContactsEdit = ({...props}, ref) => {
         <Form
           {...other}
           NoButton={false}
+          formActions={formActionsPublic}
           value={result}
           ref={formRef}
           api={ApiConfig}

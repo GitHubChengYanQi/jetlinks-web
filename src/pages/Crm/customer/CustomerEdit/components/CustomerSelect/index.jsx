@@ -58,8 +58,8 @@ const CustomerSelect = (props) => {
       showSearch
       allowClear
       onChange={(value, option) => {
-        onSuccess(option.key);
-        onChange(option.key);
+        onSuccess(option && option.key);
+        onChange(option && option.key);
         setName(value);
       }}
       onSearch={(value) => {

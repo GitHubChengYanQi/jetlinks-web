@@ -3,28 +3,40 @@ import {Select as AntSelect} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
-  const {value, api,border,data:param,resh,showArrow,placeholder,disabled,defaultValue, width:wid ,...other} = props;
+  const {
+    value,
+    api,
+    border,
+    data: param,
+    resh,
+    showArrow,
+    placeholder,
+    disabled,
+    defaultValue,
+    width: wid,
+    ...other
+  } = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
-  const {loading, data, refresh} = useRequest({...api,data:param});
+  const {loading, data, refresh} = useRequest({...api, data: param});
 
-  useEffect(()=>{
-    if (resh){
+  useEffect(() => {
+    if (resh) {
       refresh();
     }
-  },[resh]);
+  }, [resh]);
 
-  useEffect(()=>{
-    if (value && data){
-      const items = data && data.filter((items)=>{
+  useEffect(() => {
+    if (value && data) {
+      const items = data && data.filter((items) => {
         return `${items.value}` === `${value}`;
       });
-      if (items && items.length <= 0){
+      if (items && items.length <= 0) {
         other.onChange(null);
       }
     }
-  },[data,value]);
+  }, [data, value]);
 
   let valueArray = [];
   const {mode} = other;
@@ -53,13 +65,28 @@ const Select = (props) => {
   if (data) {
     return (
       <>
-        {!loading &&<AntSelect bordered={border} options={data.map((items)=>{
-          return {
-            label:items.label,
-            value:items.value
-          };
-        })} defaultValue={defaultValue} showArrow={showArrow} disabled={disabled}  placeholder={placeholder} style={{ width: wid }} value={valueArray} {...other} allowClear showSearch filterOption={(input, option) =>option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        />}
+        {
+          !loading
+          &&
+          <AntSelect
+            bordered={border}
+            options={data.map((items) => {
+              return {
+                label: items.label,
+                value: items.value
+              };
+            })}
+            defaultValue={defaultValue}
+            showArrow={showArrow}
+            disabled={disabled}
+            placeholder={placeholder}
+            style={{width: wid}}
+            value={valueArray}
+            {...other}
+            allowClear
+            showSearch
+            filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          />}
       </>
     );
   } else {

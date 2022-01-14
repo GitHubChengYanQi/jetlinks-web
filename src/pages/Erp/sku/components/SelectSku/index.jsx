@@ -37,11 +37,10 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
       if (res.length === 1) {
         onChange(res[0].skuId);
         setChange(object(res[0]).label + object(res[0]).attribute);
-        setSpuClass(res[0].spuResult.spuClassificationId);
+        setSpuClass(res[0].spuResult.spuClassificationResult.pid);
       }
     }
   });
-
 
   useEffect(() => {
     run({
@@ -65,7 +64,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
         width={200}
         placeholder="请选择物料分类"
         value={spuClass}
-        api={spuClassificationTreeVrew}
+        api={{...spuClassificationTreeVrew,data:{isNotproduct:1}}}
         onChange={(value) => {
           setSpuClass(value);
           setChange(null);
@@ -104,7 +103,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
         onChange={(value, option) => {
           setChange(value && value.replace(`standard:${option.standard}`,''));
           if (option) {
-            setSpuClass(option.spu && option.spu.spuClassificationId);
+            setSpuClass(option.spu && option.spu.spuClassificationResult && option.spu.spuClassificationResult.pid);
             if (option && option.key) {
               onChange(option.key);
             }

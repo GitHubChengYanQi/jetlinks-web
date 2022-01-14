@@ -1,8 +1,8 @@
 import React from 'react';
 import {runApp} from 'ice';
-import LoadingPage from '@/components/LoadingPage';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
+import LoadingPage from '@/components/LoadingPage';
 
 
 

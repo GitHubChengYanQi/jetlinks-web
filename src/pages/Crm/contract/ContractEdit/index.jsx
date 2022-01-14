@@ -30,6 +30,8 @@ import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetai
 import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {templateDetail} from '@/pages/Crm/template/TemplateUrl';
+import {contactsList} from '@/pages/Crm/contacts/contactsUrl';
+import {adressList} from '@/pages/Crm/adress/AdressUrl';
 
 
 const company = '1416605276529807486';
@@ -68,7 +70,8 @@ const AddContractEdit = ({businessId, loading, ...props}, ref) => {
         ref={formRef}
         api={ApiConfig}
         fieldKey="contractId"
-        onError={()=>{}}
+        onError={() => {
+        }}
         onSuccess={async (result) => {
           if (result.data !== '') {
             if (businessId) {
@@ -86,17 +89,62 @@ const AddContractEdit = ({businessId, loading, ...props}, ref) => {
           }
           other.onSuccess(result);
         }}
-        onSubmit={(value)=>{
-          return {...value,payment: {details: value.details}};
+        onSubmit={(value) => {
+          return {...value, payment: {details: value.details}};
         }}
         effects={() => {
 
           const {setFieldState, getFieldState} = createFormActions();
 
-          FormEffectHooks.onFieldValueChange$('templateId').subscribe(async ({value})=>{
-            if (value){
-              const data = await request({...templateDetail,data:{templateId:value}});
-              setFieldState('contractClassId',(state)=>{
+          FormEffectHooks.onFieldValueChange$('partyA').subscribe(async ({value}) => {
+            if (value) {
+              setFieldState('partyAContactsId', (state) => {
+                state.props.customerId = value;
+              });
+              setFieldState('partyAAdressId', (state) => {
+                state.props.customerId = value;
+              });
+              setFieldState('partyAPhone', (state) => {
+                state.props.customerId = value;
+              });
+            }
+          });
+
+          FormEffectHooks.onFieldValueChange$('partyB').subscribe(async ({value}) => {
+            if (value) {
+              setFieldState('partyBContactsId', (state) => {
+                state.props.customerId = value;
+              });
+              setFieldState('partyBAdressId', (state) => {
+                state.props.customerId = value;
+              });
+              setFieldState('partyBPhone', (state) => {
+                state.props.customerId = value;
+              });
+            }
+          });
+
+          FormEffectHooks.onFieldValueChange$('partyAContactsId').subscribe(async ({value}) => {
+            if (value) {
+              setFieldState('partyAPhone', (state) => {
+                state.props.contactsId = value;
+              });
+            }
+          });
+
+          FormEffectHooks.onFieldValueChange$('partyBContactsId').subscribe(async ({value}) => {
+            if (value) {
+              setFieldState('partyBPhone', (state) => {
+                state.props.contactsId = value;
+              });
+            }
+          });
+
+
+          FormEffectHooks.onFieldValueChange$('templateId').subscribe(async ({value}) => {
+            if (value) {
+              const data = await request({...templateDetail, data: {templateId: value}});
+              setFieldState('contractClassId', (state) => {
                 state.value = data.contractClassId;
               });
             }
@@ -256,8 +304,8 @@ const AddContractEdit = ({businessId, loading, ...props}, ref) => {
             <ProCard headerBordered className="h2Card" title="甲方信息">
               <CustomerAll
                 customer="partyA"
-                adress="partyAAdressId"
                 contacts="partyAContactsId"
+                adress="partyAAdressId"
                 phone="partyAPhone"
                 customerId={customerId} />
             </ProCard>

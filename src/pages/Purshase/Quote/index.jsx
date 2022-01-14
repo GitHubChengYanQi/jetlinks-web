@@ -11,6 +11,8 @@ import {useRequest} from '@/util/Request';
 import {purchaseConfigList} from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigUrl';
 import {purchaseQuotationAdd, purchaseQuotationAddbatch} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
 import {useBoolean} from 'ahooks';
+import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
+import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 
 const {FormItem} = Form;
@@ -83,14 +85,19 @@ const Quote = (props) => {
 
   return <>
     <Card
-      title={skus && <Select
+      title={skus
+      &&
+      <Select
         placeholder="选择供应商"
+        showSearch
+        style={{minWidth:200}}
+        filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         allowClear
         options={supplyData && supplyData.map((items) => {
           return {
             value: items.customerId,
             label: items.customerName,
-            key: items
+            object: items
           };
         }) || []}
         onClear={() => {
@@ -103,11 +110,11 @@ const Quote = (props) => {
           } else {
             // 取出供应商有的物料
             const array = skus && skus.filter((items) => {
-              const arr = option.key
+              const arr = option.object
                 &&
-                option.key.supplyResults
+                option.object.supplyResults
                 &&
-                option.key.supplyResults.filter((value) => {
+                option.object.supplyResults.filter((value) => {
                   return value.skuId === items;
                 });
               return arr && arr.length > 0;
