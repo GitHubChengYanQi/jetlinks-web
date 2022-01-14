@@ -28,6 +28,12 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
           padding: 8,
           width: '50%'
         };
+      case 'contacts':
+        return {
+          cursor: 'pointer',
+          padding: 8,
+          width: '20%'
+        };
       default:
         return null;
     }
@@ -67,21 +73,29 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
       case 'sku':
         return `<input class="sku" key=${number} placeholder="物料"  disabled/>`;
       case 'Acontacts':
-        return `<input class="Acontacts" key=${number} placeholder="甲方联系人"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{Acontacts}}';
       case 'Bcontacts':
-        return `<input class="Bcontacts" key=${number} placeholder="乙方联系人"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{Bcontacts}}';
       case 'AAddress':
-        return `<input class="AAddress" key=${number} placeholder="甲方地址"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{AAddress}}';
       case 'BAddress':
-        return `<input class="BAddress" key=${number} placeholder="乙方地址" disabled />`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{BAddress}}';
       case 'APhone':
-        return `<input class="APhone" key=${number} placeholder="甲方电话"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{APhone}}';
       case 'BPhone':
-        return `<input class="BPhone" key=${number} placeholder="乙方电话"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{BPhone}}';
       case 'ACustomer':
-        return `<input class="ACustomer" key=${number} placeholder="甲方客户"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{ACustomer}}';
       case 'BCustomer':
-        return `<input class="BCustomer" key=${number} placeholder="乙方客户"  disabled/>`;
+        // eslint-disable-next-line no-template-curly-in-string
+        return '${{BCustomer}}';
       case 'package':
         return `<input class="package" key=${number} placeholder="套餐"  disabled/>`;
       default:
@@ -139,78 +153,6 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         setTagNumber({
           ...tagNumber,
           sku: number,
-        });
-        break;
-      case 'Acontacts':
-        if (tagNumber.Acontacts !== undefined) {
-          number = tagNumber.Acontacts + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          Acontacts: number,
-        });
-        break;
-      case 'Bcontacts':
-        if (tagNumber.Bcontacts !== undefined) {
-          number = tagNumber.Bcontacts + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          Bcontacts: number,
-        });
-        break;
-      case 'AAddress':
-        if (tagNumber.AAddress !== undefined) {
-          number = tagNumber.AAddress + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          AAddress: number,
-        });
-        break;
-      case 'BAddress':
-        if (tagNumber.BAddress !== undefined) {
-          number = tagNumber.BAddress + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          BAddress: number,
-        });
-        break;
-      case 'APhone':
-        if (tagNumber.APhone !== undefined) {
-          number = tagNumber.APhone + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          APhone: number,
-        });
-        break;
-      case 'BPhone':
-        if (tagNumber.BPhone !== undefined) {
-          number = tagNumber.BPhone + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          BPhone: number,
-        });
-        break;
-      case 'ACustomer':
-        if (tagNumber.ACustomer !== undefined) {
-          number = tagNumber.ACustomer + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          ACustomer: number,
-        });
-        break;
-      case 'BCustomer':
-        if (tagNumber.BCustomer !== undefined) {
-          number = tagNumber.BCustomer + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          BCustomer: number,
         });
         break;
       case 'package':

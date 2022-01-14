@@ -65,6 +65,8 @@ const Setps = ({value, onClose, onChange, type, module}) => {
             ];
           case 'purchasePlan':
             return [];
+          case 'purchaseOrder':
+            return [];
           default:
             return [];
         }

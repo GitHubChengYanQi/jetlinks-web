@@ -35,7 +35,7 @@ export const Module = (props) => {
       case 'quality':
         return [{label: '入厂检', value: 'inQuality'}];
       case 'purchase':
-        return [{label: '采购申请', value: 'purchaseAsk'},{label: '采购计划', value: 'purchasePlan'}];
+        return [{label: '采购申请', value: 'purchaseAsk'},{label: '采购计划', value: 'purchasePlan'},{label: '采购单', value: 'purchaseOrder'}];
       default:
         return [];
     }

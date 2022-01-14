@@ -6,8 +6,8 @@
  */
 
 
-import React  from 'react';
-import { Input, InputNumber, Select as AntSelect} from 'antd';
+import React, {useEffect} from 'react';
+import {Input, InputNumber, Select as AntSelect} from 'antd';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
@@ -104,19 +104,14 @@ export const Content = (props) => {
     }
     if (props.value.match(pattern)) {
       const oldDom = props.value.match(pattern).filter((value) => {
-        if (
-          value.indexOf(`class="${domNode.attribs.class}"`) !== -1
+        return value.indexOf(`class="${domNode.attribs.class}"`) !== -1
           &&
           value.indexOf(`key="${domNode.attribs.key}"`) !== -1
           &&
-          value.indexOf(`placeholder="${domNode.attribs.placeholder}"`) !== -1
-        )
-          return true;
-        else
-          return false;
+          value.indexOf(`placeholder="${domNode.attribs.placeholder}"`) !== -1;
       });
-      if (oldDom.length > 0) ;
-      props.onChange(props.value.replace(oldDom[0], newDom));
+      if (oldDom.length > 0)
+        props.onChange(props.value.replace(oldDom[0], newDom));
     }
   };
 
@@ -157,32 +152,22 @@ export const Content = (props) => {
           onChange={(value) => {
             replaceDom(domNode, value, 'dom');
           }} />;
-      case 'Acontacts':
-        return replaceDom(domNode, result.partyAContacts ? result.partyAContacts.contactsName : '', 'string');
-      case 'Bcontacts':
-        return replaceDom(domNode, result.partyBContacts ? result.partyBContacts.contactsName : '', 'string');
-      case 'AAddress':
-        return replaceDom(domNode, result.partyAAdress ? result.partyAAdress.location : '', 'string');
-      case 'BAddress':
-        return replaceDom(domNode, result.partyBAdress ? result.partyBAdress.location : '', 'string');
-      case 'APhone':
-        return replaceDom(domNode, result.phoneA ? result.phoneA.phoneNumber : '', 'string');
-      case 'BPhone':
-        return replaceDom(domNode, result.phoneB ? result.phoneB.phoneNumber : '', 'string');
-      case 'ACustomer':
-        return replaceDom(domNode, result.partA ? result.partA.customerName : '', 'string');
-      case 'BCustomer':
-        return replaceDom(domNode, result.partB ? result.partB.customerName : '', 'string');
       default:
         break;
     }
   };
 
+  // eslint-disable-next-line no-template-curly-in-string
+  const string = props.value.replace('${{Acontacts}}', result.partyAContacts ? result.partyAContacts.contactsName : '').replace('${{Bcontacts}}', result.partyBContacts ? result.partyBContacts.contactsName : '').replace('${{AAddress}}', result.partyAAdress ? result.partyAAdress.location : '').replace('${{BAddress}}', result.partyBAdress ? result.partyBAdress.location : '').replace('${{APhone}}', result.phoneA ? result.phoneA.phoneNumber : '').replace('${{BPhone}}', result.phoneB ? result.phoneB.phoneNumber : '').replace('${{ACustomer}}', result.partA ? result.partA.customerName : '').replace('${{BCustomer}}', result.partB ? result.partB.customerName : '');
+
+  useEffect(()=>{
+    props.onChange(string);
+  },[]);
 
   return (
     <>
       {
-        parse(props.value, {
+        parse(string, {
           replace: domNode => {
             if (domNode.name === 'input')
               return replaceHtml(domNode);
