@@ -34,7 +34,7 @@ const ProcurementPlanList = () => {
       const ids = res && res.detalResults && res.detalResults.map((item) => {
         return item.skuId;
       });
-      quoteRef.current.open({skus:ids,sourceId:res.procurementPlanId,source:'purchasePlan'});
+      quoteRef.current.open({skus: ids, sourceId: res.procurementPlanId, source: 'purchasePlan'});
     }
   });
 
@@ -67,7 +67,16 @@ const ProcurementPlanList = () => {
         <Column title="创建时间" dataIndex="createTime" />
         <Column title="备注" dataIndex="remark" />
         <Column title="状态" dataIndex="status" width={100} align="center" render={(value) => {
-          return value !== 0 ? <Badge text="已完成" color="green" /> : <Badge text="未完成" color="red" />;
+          switch (value) {
+            case 0:
+              return <Badge text="进行中" color="blue" />;
+            case 97:
+              return <Badge text="已拒绝" color="red" />;
+            case 99:
+              return <Badge text="已完成" color="green" />;
+            default:
+              break;
+          }
         }} />
         <Column title="操作" align="center" width={100} render={(text, record) => {
           return <>
@@ -82,7 +91,7 @@ const ProcurementPlanList = () => {
         }} />
       </Table>
 
-      <Modal headTitle='添加报价信息' width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
+      <Modal headTitle="添加报价信息" width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
         quoteRef.current.close();
       }} />
 

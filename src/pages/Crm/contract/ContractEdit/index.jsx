@@ -5,33 +5,24 @@
  * @Date 2021-07-21 08:22:02
  */
 
-import React, {useImperativeHandle, useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {
-  Avatar,
   Button,
   Card,
   Col,
-  Input,
-  InputNumber,
   message,
   Row,
-  Select as AntdSelect, Space,
-  Steps,
-  Table as AntTable
 } from 'antd';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
+import ProCard from '@ant-design/pro-card';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
 import {request, useRequest} from '@/util/Request';
-import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
-import ProCard from '@ant-design/pro-card';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
-import TableDetail from '@/pages/Crm/business/BusinessEdit/components/TableDetail';
 import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
-import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {templateDetail} from '@/pages/Crm/template/TemplateUrl';
-import {contactsList} from '@/pages/Crm/contacts/contactsUrl';
-import {adressList} from '@/pages/Crm/adress/AdressUrl';
 
 
 const company = '1416605276529807486';

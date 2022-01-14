@@ -6,17 +6,20 @@
  */
 
 import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
+import {Input, Select as AntdSelect} from 'antd';
 import Editor from '@/components/Editor';
 import Select from '@/components/Select';
 import {contractClassListSelect} from '@/pages/Crm/contract/components/contractClass/contractClassUrl';
 
-const w = 200;
 export const Name = (props) => {
   return (<Input   {...props} />);
 };
 export const Content = (props) => {
   return (<Editor type='contacts' placeholder='输入合同模板..'  {...props} />);
+};
+
+export const Module = (props) => {
+  return (<AntdSelect options={[{label:'采购',value:'procurement'}]}  {...props} />);
 };
 
 export const ContractClassId = (props) => {

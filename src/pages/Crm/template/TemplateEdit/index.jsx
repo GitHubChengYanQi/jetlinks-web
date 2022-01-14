@@ -33,6 +33,7 @@ const TemplateEdit = ({...props}) => {
       >
         <FormItem label="合同名" name="name" component={SysField.Name} required />
         <FormItem label="合同分类" name="contractClassId" component={SysField.ContractClassId} required />
+        <FormItem label="合同类型" name="module" component={SysField.Module} required />
         <FormItem name="content" component={SysField.Content} required />
       </Form>
     </div>

@@ -32,7 +32,7 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
     };
   };
 
-  const {loading, data, run} = useRequest({...skuList, data: {skuIds:ids,type: 0, ...params}}, {
+  const {loading, data, run} = useRequest({...skuList, data: {skuIds:ids, ...params}}, {
     debounceInterval: 1000, onSuccess: (res) => {
       if (res.length === 1) {
         onChange(res[0].skuId);
@@ -47,7 +47,6 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
       data: {
         skuIds:ids,
         skuId: value,
-        type: 0,
         ...params
       }
     });
@@ -72,7 +71,6 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
             data: {
               skuIds:ids,
               spuClass: value,
-              type: 0,
               ...params
             }
           });
@@ -95,7 +93,6 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
               skuIds:ids,
               spuClass,
               skuName: value,
-              type: 0,
               ...params
             }
           });
@@ -113,7 +110,6 @@ const SelectSku = ({value, onChange, dropdownMatchSelectWidth,placeholder, param
             run({
               data: {
                 skuIds:ids,
-                type: 0,
                 ...params
               }
             });

@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import { Table as AntTable} from 'antd';
+import {Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
@@ -30,7 +30,7 @@ const TemplateList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
@@ -43,8 +43,6 @@ const TemplateList = () => {
       </>
     );
   };
-
-
 
 
   const [ids, setIds] = useState([]);
@@ -68,7 +66,7 @@ const TemplateList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title='合同模板管理' />}
+        title={<Breadcrumb title="合同模板管理" />}
         api={templateList}
         rowKey="templateId"
         searchForm={searchForm}
@@ -76,25 +74,35 @@ const TemplateList = () => {
         ref={tableRef}
         formActions={formActions}
       >
-        <Column title="合同模板" dataIndex="name"/>
-        <Column title="合同分类" dataIndex="contractClassId"/>
+        <Column title="合同模板" dataIndex="name" />
+        <Column title="合同分类" dataIndex="classResult" render={(value)=>{
+          return <>{value && value.name}</>;
+        }} />
+        <Column title="合同类型" dataIndex="module" render={(value) => {
+          switch (value) {
+            case 'procurement':
+              return <>采购</>;
+            default:
+              break;
+          }
+        }} />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
                 ref.current.open(record.templateId);
-              }}/>
-              <DelButton api={templateDelete} value={record.templateId} onSuccess={()=>{
+              }} />
+              <DelButton api={templateDelete} value={record.templateId} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Modal width={1000} title="合同模板" component={TemplateEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

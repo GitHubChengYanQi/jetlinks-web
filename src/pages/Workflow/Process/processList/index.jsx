@@ -135,7 +135,7 @@ const ProcessList = () => {
               break;
           }
         }} />
-        <Column title="状态" dataIndex="status" render={(value, record) => {
+        <Column title="状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:
               return <Badge color="yellow" text="未发布" />;

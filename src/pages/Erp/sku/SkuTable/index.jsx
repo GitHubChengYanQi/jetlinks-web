@@ -6,8 +6,11 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
+import cookie from 'js-cookie';
+import {Button, Space, Table as AntTable, Upload, Modal as AntModal, Progress, message} from 'antd';
+import {CopyOutlined} from '@ant-design/icons';
+import {config, useHistory} from 'ice';
 import Table from '@/components/Table';
-import {Button, Space, Table as AntTable, Upload} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -17,13 +20,8 @@ import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
-import {CopyOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import Code from '@/pages/Erp/spu/components/Code';
-import {config, useHistory} from 'ice';
-import cookie from 'js-cookie';
-import FileUpload from '@/components/FileUpload';
-import {request} from '@/util/Service';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,18 +49,77 @@ const SkuTable = (props) => {
     tableRef.current.submit();
   }, [spuClass]);
 
+  const [filelist, setFilelist] = useState([]);
 
+  const importErrData = (errData) => {
+    const data = errData.map((item, index) => {
+      return {
+        key: index,
+        sku: item.产品,
+        class: item.分类,
+        unit: item.单位,
+        name: item.型号,
+        coding: item.成品码,
+        batch: item.是否批量,
+        attributes: item.attributes && item.attributes.map((item) => {
+          return item;
+        }).toString()
+      };
+    });
+    AntModal.error({
+      width: 1000,
+      title: '异常数据',
+      content: <div style={{padding:8}}>
+        <Table rowKey="key" dataSource={data || []}>
+          <Table.Column title="产品" dataIndex="sku" />
+          <Table.Column title="分类" dataIndex="class" />
+          <Table.Column title="单位" dataIndex="unit" />
+          <Table.Column title="型号" dataIndex="name" />
+          <Table.Column title="成品码" dataIndex="coding" />
+          <Table.Column title="是否批量" dataIndex="batch" />
+          <Table.Column title="参数配置" dataIndex="attributes" />
+        </Table>
+      </div>
+    });
+  };
 
   const actions = () => {
     return (
       <Space>
         <Upload
+          fileList={filelist}
           action={`${baseURI}Excel/importSku`}
           headers={
             {Authorization: cookie.get('tianpeng-token')}
           }
           name="file"
-          fileList={null}
+          beforeUpload={() => {
+            message.loading({
+              content: '导入中，请稍后...',
+              key: 1,
+              style: {
+                marginTop: '20vh',
+              },
+            });
+            return true;
+          }}
+          onChange={async ({file, fileList, event}) => {
+            setFilelist(fileList);
+            if (file.status === 'done') {
+              setFilelist([]);
+              if (file.response.data && file.response.data.length > 0) {
+                importErrData(file.response.data);
+              }
+              message.success({
+                content: '导入成功！',
+                key: 1,
+                duration: 2,
+                style: {
+                  marginTop: '20vh',
+                },
+              });
+            }
+          }}
         >
           <Button icon={<Icon type="icon-daoru" />}>导入物料</Button>
         </Upload>
