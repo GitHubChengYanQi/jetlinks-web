@@ -52,7 +52,7 @@ const SkuTable = (props) => {
   const [filelist, setFilelist] = useState([]);
 
   const importErrData = (errData) => {
-    const data = errData.map((item, index) => {
+    const data = errData && errData.map((item, index) => {
       return {
         key: index,
         sku: item.产品,
@@ -67,18 +67,18 @@ const SkuTable = (props) => {
       };
     });
     AntModal.error({
-      width: 1000,
-      title: '异常数据',
-      content: <div style={{padding:8}}>
-        <Table rowKey="key" dataSource={data || []}>
-          <Table.Column title="产品" dataIndex="sku" />
+      width: 1200,
+      title: `异常数据 / ${data.length}`,
+      content: <div style={{padding: 8,maxHeight:'50vh',overflow:'auto',}}>
+        <AntTable rowKey="key" dataSource={data || []} pagination={false}>
           <Table.Column title="分类" dataIndex="class" />
-          <Table.Column title="单位" dataIndex="unit" />
+          <Table.Column title="产品" dataIndex="sku" />
           <Table.Column title="型号" dataIndex="name" />
           <Table.Column title="成品码" dataIndex="coding" />
+          <Table.Column title="单位" dataIndex="unit" />
           <Table.Column title="是否批量" dataIndex="batch" />
           <Table.Column title="参数配置" dataIndex="attributes" />
-        </Table>
+        </AntTable>
       </div>
     });
   };
@@ -103,12 +103,12 @@ const SkuTable = (props) => {
             });
             return true;
           }}
-          onChange={async ({file, fileList, event}) => {
+          onChange={async ({file, fileList}) => {
             setFilelist(fileList);
             if (file.status === 'done') {
               setFilelist([]);
               if (file.response.data && file.response.data.length > 0) {
-                importErrData(file.response.data);
+                importErrData(file.response && file.response.data);
               }
               message.success({
                 content: '导入成功！',
