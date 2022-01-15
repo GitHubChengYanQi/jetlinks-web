@@ -35,6 +35,7 @@ const SkuTable = (props) => {
   const [loading, setLoading] = useState();
 
   const [ids, setIds] = useState([]);
+
   const [sku, setSku] = useState([]);
 
   const [edit, setEdit] = useState([]);
@@ -55,6 +56,7 @@ const SkuTable = (props) => {
     const data = errData && errData.map((item, index) => {
       return {
         key: index,
+        line:item.line,
         sku: item.产品,
         class: item.分类,
         unit: item.单位,
@@ -69,8 +71,8 @@ const SkuTable = (props) => {
     AntModal.error({
       width: 1200,
       title: `异常数据 / ${data.length}`,
-      content: <div style={{padding: 8,maxHeight:'50vh',overflow:'auto',}}>
-        <AntTable rowKey="key" dataSource={data || []} pagination={false}>
+      content: <div style={{padding: 8}}>
+        <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh' }}>
           <Table.Column title="分类" dataIndex="class" />
           <Table.Column title="产品" dataIndex="sku" />
           <Table.Column title="型号" dataIndex="name" />
