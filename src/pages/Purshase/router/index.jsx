@@ -5,6 +5,7 @@ import {ToBuyPlanRouter} from '@/pages/Purshase/ToBuyPlan/router';
 import {ProcurementPlanRouter} from '@/pages/Purshase/procurementPlan/procurementPlanRouter';
 import {PurchaseQuotationRouter} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationRouter';
 import {ProcurementOrderRouter} from '@/pages/Purshase/procurementOrder/procurementOrderRouter';
+import {InquiryTaskRouter} from '@/pages/Purshase/inquiryTask/inquiryTaskRouter';
 
 const PurshaseRouterConfig = [
   {
@@ -18,6 +19,7 @@ const PurshaseRouterConfig = [
       ...ProcurementPlanRouter,
       ...PurchaseQuotationRouter,
       ...ProcurementOrderRouter,
+      ...InquiryTaskRouter,
       {
         redirect: '/purchase/supply',
       }

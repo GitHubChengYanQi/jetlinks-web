@@ -63,8 +63,8 @@ const ProcurementOrderDetailList = ({value}) => {
         <Column title="物料" dataIndex="skuResult" render={(value)=>{
           return <SkuResultSkuJsons skuResult={value} />;
         }} />
-        <Column title="供应商(品牌)" dataIndex="brandResult" render={(value)=>{
-          return <>{value && value.brandName}</>;
+        <Column title="供应商(品牌)" dataIndex="customerResult" render={(value)=>{
+          return <>{value && value.customerName}</>;
         }}  />
         <Column title="数量" dataIndex="number" />
       </Table>

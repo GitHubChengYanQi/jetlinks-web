@@ -9,28 +9,12 @@ import React, {useEffect, useState} from 'react';
 import {
   Input,
   InputNumber,
-  TimePicker,
-  DatePicker,
   Select as AntdSelect,
-  Checkbox,
   Radio,
-  AutoComplete,
-  Button, Space
+  Space
 } from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
-import * as apiUrl from '../codingRulesUrl';
-import {codingRulesClassificationListSelect} from '../codingRulesUrl';
-import {DeleteOutlined, UserOutlined} from '@ant-design/icons';
 
-export const CodingRulesClassificationId = (props) => {
-  return (<Select api={apiUrl.codingRulesClassificationListSelect} {...props} />);
-};
 export const Name = (props) => {
-  return (<Input {...props} />);
-};
-export const CodingRules = (props) => {
   return (<Input {...props} />);
 };
 export const CreateUser = (props) => {
@@ -129,8 +113,10 @@ export const Values = (props) => {
         }];
       case 5:
       case 6:
-        // 5. 采购申请
+      case 7:
+        // 5.采购申请
         // 6.盘点任务
+        // 7.采购询价
         return [];
       default:
         return [];
@@ -283,6 +269,7 @@ export const Module = (props) => {
     {label: '质检任务', value: 4},
     {label: '采购申请', value: 5},
     {label: '盘点任务', value: 6},
+    {label: '采购询价', value: 7},
   ];
 
   return (<AntdSelect options={options} {...props} />);

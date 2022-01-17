@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Table as AntTable} from 'antd';
+import {Card, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
@@ -24,39 +24,45 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const PurchaseQuotationList = ({value}) => {
+const PurchaseQuotationList = ({value = {}}) => {
+
+  const {skuId,name, customerId, check, source, sourceId} = value;
+
   const ref = useRef(null);
   const tableRef = useRef(null);
 
   const searchForm = () => {
     return (
       <>
-        <FormItem label="物料" name="skuId" value={value} disabled={value} component={SysField.SkuListSelect} />
-        <FormItem label="供应商" name="customerId" component={SysField.CustomerId} />
+        <FormItem label="物料" name="skuId" value={skuId} component={SysField.SkuListSelect} />
+        <FormItem label="供应商" name="customerId" value={customerId} component={SysField.CustomerId} />
         <FormItem label="是否含税" name="isTax" component={IsFreight} />
+        <FormItem label="来源" name="source" value={source} component={SysField.Source} />
+        <FormItem hidden name="sourceId" value={sourceId} component={SysField.SourceId} />
       </>
     );
   };
 
   return (
     <>
+      {name && <Card title={name} bordered={false} bodyStyle={{padding:0}} />}
       <Table
         rowSelection
         formActions={formActionsPublic}
-        contentHeight={value}
+        contentHeight={check}
         title={<Breadcrumb />}
-        headStyle={{display:value && 'none'}}
+        headStyle={{display: check && 'none'}}
         api={purchaseQuotationList}
         rowKey="purchaseQuotationId"
         searchForm={searchForm}
         ref={tableRef}
       >
-        {!value && <Column title="物料" dataIndex="skuResult" render={(value) => {
+        {!skuId && <Column title="物料" dataIndex="skuResult" render={(value) => {
           return <SkuResultSkuJsons skuResult={value} />;
         }} />}
-        <Column title="供应商" dataIndex="customerResult" render={(value) => {
+        {!customerId && <Column title="供应商" dataIndex="customerResult" render={(value) => {
           return <>{value && value.customerName}</>;
-        }} />
+        }} />}
         <Column title="价格" dataIndex="price" width={100} align="center" />
         <Column title="报价有效期" dataIndex="periodOfValidity" width={180} align="center" />
         <Column title="数量" dataIndex="total" align="center" width={70} />
@@ -72,6 +78,10 @@ const PurchaseQuotationList = ({value}) => {
               return '待买计划';
             case 'purchasePlan':
               return '采购计划';
+            case 'inquiryTask':
+              return '询价任务';
+            case 'sku':
+              return '物料';
             default:
               break;
           }
@@ -81,7 +91,7 @@ const PurchaseQuotationList = ({value}) => {
           return <>{value && value.name}</>;
         }} />
         <Column />
-        {!value && <Column title="操作" align="right" render={(value, record) => {
+        {!check && <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <DelButton api={purchaseQuotationDelete} value={record.purchaseQuotationId} onSuccess={() => {

@@ -10,5 +10,5 @@ export const dbTableList = {
 };
 
 export const execute = {
-  url:'/execute'
+  url:'execute'
 };

@@ -98,7 +98,7 @@ const SkuDetail = () => {
         <Card>
           <Tabs defaultActiveKey="1">
             <TabPane tab="报价信息" key="1">
-              <PurchaseQuotationList value={data.skuId} />
+              <PurchaseQuotationList value={{skuId:data.skuId,check:true}} />
             </TabPane>
             <TabPane tab="tab2" key="2">
               tab2

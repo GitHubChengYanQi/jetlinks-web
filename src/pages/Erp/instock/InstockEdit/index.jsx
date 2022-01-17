@@ -141,15 +141,13 @@ const InstockEdit = ({...props}) => {
                 }
               );
             }
-
-
           });
         }}
       >
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="编码" name="coding" codingId={data} module={1} component={SysField.Codings} required />
+            <FormItem label="编码" name="coding" codingId={data} module={7} component={SysField.Codings} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="仓库名称" name="storeHouseId" component={SysField.StoreHouseSelect} required />

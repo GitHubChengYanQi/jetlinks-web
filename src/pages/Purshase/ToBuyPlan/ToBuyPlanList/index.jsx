@@ -7,18 +7,36 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import Quote from '@/pages/Purshase/Quote';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
+import InquiryTaskEdit from '@/pages/Purshase/inquiryTask/inquiryTaskEdit';
 
 const {Column} = AntTable;
 
 const ToBuyPlanList = () => {
 
-  const {loading, data, run, refresh} = useRequest(toBuyPlanList, {manual: true});
+  const [skus, setSkus] = useState([]);
+
+  const {loading, data, run, refresh} = useRequest(
+    toBuyPlanList,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        const allSku = [];
+        if (Array.isArray(res)){
+          res.map((item) => {
+            return item.children.map((value) => {
+              return allSku.push(value);
+            });
+          });
+        }
+        setSkus(allSku);
+      }
+    });
 
   const [visible, setVisible] = useState();
 
-  const [skuName,setSkuName] = useState();
-
   const quoteRef = useRef();
+
+  const inquiryRef = useRef();
 
   const quotationRef = useRef();
 
@@ -57,12 +75,13 @@ const ToBuyPlanList = () => {
   const selectKeys = (key, checked) => {
     let array = [];
 
-    if (checked)
+    if (checked) {
       array.push(key);
-    else
+    } else {
       array = keys.filter((value) => {
         return value !== key;
       });
+    }
 
     if (key.indexOf('mainKey') !== -1) {
       getMainKey(key).map((items) => {
@@ -101,10 +120,11 @@ const ToBuyPlanList = () => {
         }
       }
     }
-    if (checked)
+    if (checked) {
       setKeys(keys.concat(array));
-    else
+    } else {
       setKeys(array);
+    }
   };
 
 
@@ -124,6 +144,15 @@ const ToBuyPlanList = () => {
         onClick={() => {
           setVisible(true);
         }}>创建采购计划</Button>
+      <Button
+        type="default"
+        disabled={keys.length === 0}
+        onClick={() => {
+          const array = skus.filter((item)=>{
+            return keys.includes(item.purchaseListingId);
+          });
+          inquiryRef.current.open(array);
+        }}>指派询价任务</Button>
       <Button
         type="default"
         onClick={() => {
@@ -171,8 +200,7 @@ const ToBuyPlanList = () => {
         <Column title="历史报价" dataIndex="skuId" render={(value, record) => {
           if (record.purchaseListingId.indexOf('mainKey:') !== -1) {
             return <Button type="link" onClick={() => {
-              setSkuName(<SkuResultSkuJsons skuResult={record.skuResult} />);
-              quotationRef.current.open(record.skuId);
+              quotationRef.current.open({skuId:record.skuId,check:true,name:<SkuResultSkuJsons skuResult={record.skuResult} />});
             }}>
               查看
             </Button>;
@@ -216,13 +244,31 @@ const ToBuyPlanList = () => {
       </Space>
     </AntModal>
 
-    <Modal headTitle="添加报价信息" width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
-      quoteRef.current.close();
-    }} />
+    <Modal
+      headTitle="添加报价信息"
+      width={1870}
+      ref={quoteRef}
+      component={Quote}
+      onSuccess={() => {
+        quoteRef.current.close();
+      }} />
 
-    <Modal headTitle={skuName || '报价信息'} width={1600} ref={quotationRef} component={PurchaseQuotationList} onSuccess={() => {
-      quotationRef.current.close();
-    }} />
+    <Modal
+      headTitle="指派询价任务"
+      width={1200}
+      ref={inquiryRef}
+      component={InquiryTaskEdit}
+      onSuccess={() => {
+        inquiryRef.current.close();
+      }} />
+
+    <Modal
+      width={1600}
+      ref={quotationRef}
+      component={PurchaseQuotationList}
+      onSuccess={() => {
+        quotationRef.current.close();
+      }} />
 
 
   </div>;

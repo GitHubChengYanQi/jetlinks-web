@@ -16,7 +16,7 @@ const {FormItem} = Form;
 
 const Quote = (props) => {
 
-  const {value: {skuId, skus, source, sourceId}, onSuccess,} = props;
+  const {value: {skuId, skus, source, sourceId,customerId,levelId}, onSuccess} = props;
 
   const ApiConfig = {
     view: purchaseQuotationAdd,
@@ -28,7 +28,7 @@ const Quote = (props) => {
 
   const formRef = useRef();
 
-  const [supply, setSupply] = useState();
+  const [supply, setSupply] = useState(customerId);
 
   const [skuIds, setSkuIds] = useState([]);
 
@@ -55,12 +55,12 @@ const Quote = (props) => {
           return value.type === 'level';
         });
 
-        const levelId = level && level.length > 0 && JSON.parse(level[0].value).value;
+        const configLevel = level && level.length > 0 && JSON.parse(level[0].value).value;
 
-        if (levelId) {
+        if (configLevel) {
           getSupply({
             params: {
-              levelId,
+              configLevel,
             }
           });
         } else {
@@ -76,7 +76,16 @@ const Quote = (props) => {
   );
 
   useEffect(() => {
-    configRun();
+    if (levelId){
+      setSkuIds(skus);
+      getSupply({
+        params: {
+          levelId,
+        }
+      });
+    }else {
+      configRun();
+    }
   }, []);
 
 
@@ -86,7 +95,9 @@ const Quote = (props) => {
       &&
       <Select
         placeholder="选择供应商"
+        disabled={customerId}
         showSearch
+        value={supply}
         style={{minWidth:200}}
         filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         allowClear
@@ -102,7 +113,7 @@ const Quote = (props) => {
         }}
         onSelect={(value, option) => {
           formRef.current.reset();
-          if (config.supply && config.supply === '是') {
+          if ((config.supply && config.supply === '是')) {
             setSkuIds(skus);
           } else {
             // 取出供应商有的物料

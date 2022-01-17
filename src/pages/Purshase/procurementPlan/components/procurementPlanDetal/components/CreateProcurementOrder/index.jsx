@@ -1,6 +1,6 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Button, Card, Descriptions,  Empty, message, notification, Select, Spin} from 'antd';
-import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
+import { InternalFieldList as FieldList} from '@formily/antd';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
@@ -66,7 +66,6 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
 
   const quotationRef = useRef();
 
-  const [sku, setSku] = useState();
   const {loading, data: brands, run} = useRequest({
     url: '/supplierBrand/getSupplierBySku',
     method: 'GET'
@@ -196,8 +195,7 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
             </Descriptions.Item>
             <Descriptions.Item style={{width: 100}} contentStyle={{textAlign: 'center'}}>
               <Button type="link" onClick={() => {
-                setSku(<SkuResultSkuJsons skuResult={item.skuResult} />);
-                quotationRef.current.open(item.skuId);
+                quotationRef.current.open({skuId:item.skuId,check:true});
               }}>报价信息</Button>
             </Descriptions.Item>
           </Descriptions>;
@@ -206,7 +204,6 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
     </Card>
 
     <Modal
-      headTitle={sku || '报价信息'}
       width={1600}
       ref={quotationRef}
       component={PurchaseQuotationList}
