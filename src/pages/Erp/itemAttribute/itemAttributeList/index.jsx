@@ -6,8 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,11 +17,9 @@ import Form from '@/components/Form';
 import {itemAttributeDelete, itemAttributeList} from '../itemAttributeUrl';
 import ItemAttributeEdit from '../itemAttributeEdit';
 import * as SysField from '../itemAttributeField';
-import {attribute} from '../itemAttributeField';
 import Breadcrumb from '@/components/Breadcrumb';
 import AttributeValuesList from '@/pages/Erp/attributeValues/attributeValuesList';
 import Modal from '@/components/Modal';
-import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,8 +46,8 @@ const ItemAttributeList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="配置项名称" style={{width:200}} name="attribute" component={SysField.attribute} />
-        <FormItem hidden  name="categoryId" value={value || '111'} component={SysField.Version} />
+        <FormItem label="配置项名称" style={{width: 200}} name="attribute" component={SysField.attribute} />
+        <FormItem hidden name="categoryId" value={value || '111'} component={SysField.Version} />
       </>
     );
   };
@@ -57,7 +56,7 @@ const ItemAttributeList = (props) => {
     <>
       <Table
         contentHeight
-        title={<Breadcrumb title='配置项管理' />}
+        title={<Breadcrumb title="配置项管理" />}
         api={itemAttributeList}
         formActions={formActionsPublic}
         rowKey="attributeId"
@@ -65,9 +64,9 @@ const ItemAttributeList = (props) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="配置项名称" dataIndex="attribute" render={(value,record)=>{
+        <Column title="配置项名称" dataIndex="attribute" render={(value, record) => {
           return (
-            <Button type='link' onClick={()=>{
+            <Button type="link" onClick={() => {
               refValues.current.open(record.attributeId);
             }}>
               {value}
@@ -75,12 +74,12 @@ const ItemAttributeList = (props) => {
           );
         }} />
 
-        <Column dataIndex='standard' title='标配' render={(value)=>{
+        <Column dataIndex="standard" title="标配" render={(value) => {
           return <>
             {value ? '是' : '否'}
           </>;
         }} />
-        <Column dataIndex='sort' title='排序' />
+        <Column dataIndex="sort" title="排序" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

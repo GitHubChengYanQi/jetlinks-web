@@ -28,8 +28,6 @@ const TableDetail = (props) => {
   const {value} = props;
   const ref = useRef(null);
   const tableRef = useRef(null);
-  const refAddOne = useRef(null);
-  const refAddAll = useRef(null);
 
   const searchForm = () => {
     return (
@@ -42,43 +40,11 @@ const TableDetail = (props) => {
 
   return (
     <>
-      <div style={{textAlign: 'right'}}>
-        <Button key="1" style={{marginRight: 10}} onClick={() => {
-          refAddOne.current.open(false);
-        }}>
-          添加产品
-        </Button>
-        <Modal
-          width={1600}
-          title="选择"
-          component={ItemsList}
-          onSuccess={() => {
-            refAddOne.current.close();
-            tableRef.current.submit();
-          }} ref={refAddOne}
-          contractId={value}
-        />
-        <Button key="2" onClick={() => {
-          refAddAll.current.open(false);
-        }}>
-          添加产品套餐
-        </Button>
-        <Modal
-          width={700}
-          title="选择"
-          component={ItemPackage}
-          onSuccess={() => {
-            refAddAll.current.close();
-            tableRef.current.submit();
-          }} ref={refAddAll}
-          disabled={false}
-          contractId={value}
-        />
-      </div>
       <Table
         contentHeight
         headStyle={{display: 'none'}}
         api={contractDetailList}
+        formActions={formActionsPublic}
         rowKey="id"
         searchForm={searchForm}
         ref={tableRef}
@@ -95,23 +61,7 @@ const TableDetail = (props) => {
         <Column title="销售单价" dataIndex="salePrice" />
         <Column title="数量" dataIndex="quantity" />
         <Column title="小计" dataIndex="totalPrice" />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <EditButton onClick={() => {
-                ref.current.open(record.id);
-              }} />
-              <DelButton api={contractDetailDelete} value={record.id} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={300} />
       </Table>
-      <Drawer width={800} title="产品" component={ContractDetailEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
     </>
   );
 };

@@ -6,21 +6,16 @@
  */
 
 import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
-import {Badge, Button, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {procurementPlanDetalDelete, procurementPlanDetalList} from '../procurementPlanDetalUrl';
-import ProcurementPlanDetalEdit from '../procurementPlanDetalEdit';
-import * as SysField from '../procurementPlanDetalField';
 import {createFormActions} from '@formily/antd';
+import {Badge, Button, notification, Table as AntTable} from 'antd';
+import Table from '@/components/Table';
+import AddButton from '@/components/AddButton';
+import Form from '@/components/Form';
+import { procurementPlanDetalList} from '../procurementPlanDetalUrl';
+import * as SysField from '../procurementPlanDetalField';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
-import CreateProcurementOrder
-  from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/components/CreateProcurementOrder';
+import CreateProcurementOrder from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/components/CreateProcurementOrder';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -46,7 +41,7 @@ const ProcurementPlanDetalList = ({value}) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem name="planId" value={value} component={SysField.PlanId} />
+        <FormItem name="planId" value={value && value.procurementPlanId} component={SysField.PlanId} />
       </>
     );
   };
@@ -59,7 +54,7 @@ const ProcurementPlanDetalList = ({value}) => {
         api={procurementPlanDetalList}
         rowKey="detailId"
         getCheckboxProps={(record) => ({
-          disabled: record.status === 99,
+          disabled: value.status === 97 || record.status === 99,
         })}
         formActions={formActionsPublic}
         searchForm={searchForm}
@@ -68,7 +63,7 @@ const ProcurementPlanDetalList = ({value}) => {
         }}
         footer={() => <Button disabled={items.length === 0} type="link" onClick={() => {
           createOrderRef.current.open(items);
-        }}>创建采购单</Button>}
+        }}>{value.status === 97 ? '已拒绝' : '创建采购单'}</Button>}
         actions={actions()}
         ref={tableRef}
       >
@@ -83,7 +78,7 @@ const ProcurementPlanDetalList = ({value}) => {
 
       <Modal
         width={1200}
-        palnId={value}
+        palnId={value.procurementPlanId}
         compoentRef={compoentRef}
         footer={<Button type="primary" onClick={() => {
           compoentRef.current.create();

@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {attributeValuesDetail, attributeValuesAdd, attributeValuesEdit} from '../attributeValuesUrl';
 import * as SysField from '../attributeValuesField';
@@ -31,8 +30,10 @@ const AttributeValuesEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="attributeValuesId"
+      onSubmit={(value)=>{
+        return {...value,attributeId};
+      }}
     >
-      <FormItem hidden name="attributeId" value={attributeId} component={SysField.Difference} required/>
       <FormItem label="值" name="attributeValues" component={SysField.Number} required/>
     </Form>
   );

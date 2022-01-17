@@ -4,7 +4,6 @@ import TopLayout from '@/layouts/TopLayout';
 import BrandList from '@/pages/Erp/brand/BrandList';
 import MaterialList from '@/pages/Erp/material/MaterialList';
 import UnitList from '@/pages/Erp/unit/unitList';
-import ItemClassList from '@/pages/Erp/itemClass/itemClassList';
 import SetView from '@/layouts/SetView';
 import CategoryList from '@/pages/Erp/category/categoryList';
 import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';

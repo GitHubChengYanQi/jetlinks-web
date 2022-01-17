@@ -21,6 +21,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ProcurementPlanList = () => {
+
   const ref = useRef(null);
   const tableRef = useRef(null);
   const quoteRef = useRef(null);
@@ -58,7 +59,7 @@ const ProcurementPlanList = () => {
       >
         <Column title="采购计划名称" dataIndex="procurementPlanName" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            ref.current.open(record.procurementPlanId);
+            ref.current.open(record);
           }}>{value}</Button>;
         }} />
         <Column title="创建人" dataIndex="user" render={(value) => {
@@ -80,7 +81,7 @@ const ProcurementPlanList = () => {
         }} />
         <Column title="操作" align="center" width={100} render={(text, record) => {
           return <>
-            <Button type="link" onClick={() => {
+            <Button disabled={record.status === 97} type="link" onClick={() => {
               run({
                 data: {
                   procurementPlanId: record.procurementPlanId,

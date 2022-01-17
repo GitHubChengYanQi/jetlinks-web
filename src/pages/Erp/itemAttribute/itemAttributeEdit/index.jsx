@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {itemAttributeDetail, itemAttributeAdd, itemAttributeEdit} from '../itemAttributeUrl';
 import * as SysField from '../itemAttributeField';
@@ -31,8 +30,10 @@ const ItemAttributeEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="attributeId"
+      onSubmit={(value)=>{
+        return {...value,categoryId};
+      }}
     >
-      <FormItem hidden name="categoryId" component={SysField.Version} value={categoryId} required/>
       <FormItem label="属性名称" name="attribute" component={SysField.attribute} required/>
       <FormItem label="标配" name="standard" component={SysField.Standard} required/>
       <FormItem label='排序' name="sort" component={SysField.Scort} required/>

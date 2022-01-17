@@ -7,6 +7,7 @@
 
 import React, {useRef} from 'react';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -20,6 +21,8 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const PurchaseQuotationList = ({value}) => {
   const ref = useRef(null);
@@ -39,6 +42,7 @@ const PurchaseQuotationList = ({value}) => {
     <>
       <Table
         rowSelection
+        formActions={formActionsPublic}
         contentHeight={value}
         title={<Breadcrumb />}
         headStyle={{display:value && 'none'}}

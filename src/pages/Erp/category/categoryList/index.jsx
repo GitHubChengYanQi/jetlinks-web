@@ -6,22 +6,21 @@
  */
 
 import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
 import {Button, Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {categoryDelete, categoryDeleteBatch, categoryList} from '../categoryUrl';
+import {categoryDelete, categoryDeleteBatch} from '../categoryUrl';
 import CategoryEdit from '../categoryEdit';
 import * as SysField from '../categoryField';
 import Modal from '@/components/Modal';
 import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
-import {createFormActions} from '@formily/antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import {categoryTree} from '@/pages/Erp/spu/spuUrl';
-import {spuClassificationdeleteBatch} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -82,7 +81,7 @@ const CategoryList = () => {
             record.children = null;
           }
           return (
-            <Button type='link' onClick={()=>{
+            <Button type="link" style={{padding: 0}} onClick={() => {
               refAttribute.current.open(record.key);
             }}>
               {
@@ -97,7 +96,7 @@ const CategoryList = () => {
               <EditButton onClick={() => {
                 ref.current.open(record.key);
               }} />
-              <DelButton api={categoryDelete} value={record.categoryId} onSuccess={() => {
+              <DelButton api={categoryDelete} value={record.key} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>
@@ -105,11 +104,11 @@ const CategoryList = () => {
         }} width={300} />
       </Table>
       <Drawer width={800} title="配置" component={CategoryEdit} onSuccess={() => {
-        tableRef.current.refresh();
+        tableRef.current.submit();
         ref.current.close();
       }} ref={ref} />
       <Modal width={800} title="配置项" component={ItemAttributeList} onSuccess={() => {
-        tableRef.current.refresh();
+        tableRef.current.submit();
         refAttribute.current.close();
       }} ref={refAttribute} />
     </div>

@@ -159,7 +159,12 @@ const Detail = () => {
                   </TabPane>
                   <TabPane tab="付款信息" key="2">
                     {data.payment && data.payment.details.map((items, index) => {
-                      return <Descriptions labelStyle={{width:100}} contentStyle={{width:200}} key={index} column={5} bordered >
+                      return <Descriptions
+                        labelStyle={{width: 100}}
+                        contentStyle={{width: 200}}
+                        key={index}
+                        column={5}
+                        bordered>
                         <Descriptions.Item key={index}>
                           {`第${index + 1}批`}
                         </Descriptions.Item>
@@ -199,14 +204,10 @@ const Detail = () => {
         </Row>
       </div>
 
-    </div>
-      ;
+    </div>;
   }
-
   return '暂无合同';
-
 
 };
 
 export default Detail;
-;

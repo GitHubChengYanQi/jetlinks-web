@@ -1,28 +1,43 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Button, Card, Descriptions, Empty, Input, message, Select, Spin} from 'antd';
+import {Button, Card, Descriptions,  Empty, message, notification, Select, Spin} from 'antd';
+import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
 import {useRequest} from '@/util/Request';
+import Form from '@/components/Form';
+import * as SysField from '../OrderSysField';
+import {purchaseQuotationAdd} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
+import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
-const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
+const {FormItem} = Form;
+
+const ApiConfig = {
+  view: purchaseQuotationAdd,
+  add: purchaseQuotationAdd,
+  save: purchaseQuotationAdd
+};
+
+const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
+
+  const formRef = useRef();
 
   const [data, setData] = useState(value && value.map((item) => {
     return {
-      status:99,
+      status: 99,
       skuResult: item.skuResult,
       skuId: item.skuId,
       number: item.total,
-      detailId:item.detailId
+      detailId: item.detailId
     };
   }));
 
-  const {run:createOrder} = useRequest({
-    url:'/procurementOrder/add',
-    method:'POST',
-  },{
-    manual:true,
-    onSuccess:()=>{
+  const {run: createOrder} = useRequest({
+    url: '/procurementOrder/add',
+    method: 'POST',
+  }, {
+    manual: true,
+    onSuccess: () => {
       onSuccess();
     }
   });
@@ -34,12 +49,14 @@ const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
     if (noCustomer.length > 0) {
       return message.warn('请选择供应商！');
     }
-    createOrder({
-      data:{
-        detailParams:data,
-        procurementPlanId:palnId,
-        status:99,
-      }}
+    createOrder(
+      {
+        data: {
+          detailParams: data,
+          procurementPlanId: palnId,
+          status: 99,
+        }
+      }
     );
   };
 
@@ -50,7 +67,6 @@ const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
   const quotationRef = useRef();
 
   const [sku, setSku] = useState();
-
   const {loading, data: brands, run} = useRequest({
     url: '/supplierBrand/getSupplierBySku',
     method: 'GET'
@@ -58,7 +74,7 @@ const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
     manual: true
   });
 
-  const [skuId,setSkuId] = useState();
+  const [skuId, setSkuId] = useState();
 
   const options = !loading ? brands && brands.map((item) => {
     return {
@@ -74,6 +90,70 @@ const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
 
   return <>
     <Card title="创建采购单">
+      <Form
+        value={false}
+        ref={formRef}
+        api={ApiConfig}
+        NoButton={false}
+        fieldKey="procurementPlanId"
+        onSubmit={(value) => {
+          return false;
+        }}
+        onSuccess={() => {
+          notification.success({
+            message: '添加报价成功！',
+          });
+          onSuccess();
+        }}
+        onError={() => {
+
+        }}
+        effects={({setFieldState, getFieldState}) => {
+          // FormEffectHooks.onFieldValueChange$('').subscribe(async ({name, value}) => {
+          //   setFieldState(FormPath.transform(name, /\d/, ($1) => {
+          //     return `quotationParams.${$1}.allPreTax`;
+          //   }), (state) => {
+          //
+          //   });
+          // });
+        }}
+      >
+        <FieldList
+          name="detailParams"
+          initialValue={value && value.map((item) => {
+            return {
+              status: 99,
+              skuId: item.skuResult,
+              // skuId: item.skuId,
+              number: item.total,
+              detailId: item.detailId
+            };
+          })}
+        >
+          {({state}) => {
+            return (
+              <div>
+                {state.value.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <FormItem
+                        itemStyle={{margin: 0}}
+                        placeholder="物料"
+                        width={200}
+                        supply={1}
+                        name={`detailParams.${index}.skuId`}
+                        component={SysField.Sku}
+                      />
+                      <CustomerAll />
+                    </div>
+                  );
+                })}
+
+              </div>
+            );
+          }}
+        </FieldList>
+      </Form>
       {
         data.map((item, index) => {
           const th = index === 0 || null;
@@ -91,7 +171,7 @@ const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
                 value={item.customerId}
                 showSearch
                 onFocus={() => {
-                  if (skuId !== item.skuId){
+                  if (skuId !== item.skuId) {
                     setSkuId(item.skuId);
                     run({
                       params: {
@@ -108,9 +188,8 @@ const CreateProcurementOrder = ({value,palnId,onSuccess}, ref) => {
                 }}
                 filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 onChange={(value, option) => {
-                  console.log(option);
                   const array = data;
-                  array[index] = {...array[index], customerId: value,brandId:option.id};
+                  array[index] = {...array[index], customerId: value, brandId: option.id};
                   setData(array);
                 }}
               />

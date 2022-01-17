@@ -10,9 +10,6 @@ import * as SysField from '@/pages/Purshase/purchaseQuotation/purchaseQuotationF
 import {useRequest} from '@/util/Request';
 import {purchaseConfigList} from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigUrl';
 import {purchaseQuotationAdd, purchaseQuotationAddbatch} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
-import {useBoolean} from 'ahooks';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 
 const {FormItem} = Form;
