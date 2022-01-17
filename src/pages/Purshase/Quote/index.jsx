@@ -16,7 +16,7 @@ const {FormItem} = Form;
 
 const Quote = (props) => {
 
-  const {value: {skuId, skus, source, sourceId,customerId,levelId}, onSuccess} = props;
+  const {value: {skuId, skus, source, sourceId, customerId, levelId}, onSuccess} = props;
 
   const ApiConfig = {
     view: purchaseQuotationAdd,
@@ -76,14 +76,14 @@ const Quote = (props) => {
   );
 
   useEffect(() => {
-    if (levelId){
+    if (levelId) {
       setSkuIds(skus);
       getSupply({
         params: {
           levelId,
         }
       });
-    }else {
+    } else {
       configRun();
     }
   }, []);
@@ -98,7 +98,7 @@ const Quote = (props) => {
         disabled={customerId}
         showSearch
         value={supply}
-        style={{minWidth:200}}
+        style={{minWidth: 200}}
         filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         allowClear
         options={supplyData && supplyData.map((items) => {
@@ -149,18 +149,18 @@ const Quote = (props) => {
           }
           if (value.quotationParams.filter((items) => {
             if (skus) {
-              return (items && !items.skuId);
+              return (items && !items.skuId) || !items.total || !items.price;
             } else {
-              return (items && !items.customerId);
+              return (items && !items.customerId) || !items.total || !items.price;
             }
           }).length > 0) {
-            message.warn(skus ? '供应商为必填项' : '物料为必填项！');
+            message.warn('请输入必填项');
             return false;
           }
           if (skus) {
             return {...value, CustomerId: supply, source, sourceId};
           } else {
-            const array = value.quotationParams.map((item)=>{
+            const array = value.quotationParams.map((item) => {
               return {
                 ...item,
                 skuId,
@@ -244,14 +244,14 @@ const Quote = (props) => {
       >
         <Space style={{backgroundColor: '#E6E6E6', padding: 16}}>
           <div style={{width: 50, textAlign: 'center'}} />
-          <div style={{width: skus ? 200 : 328, textAlign: 'center'}}>
-            {skus ? '物料' : '供应商'}
+          <div style={{width: skus ? 180 : 328, textAlign: 'center'}}>
+            {skus ? '物料(必填)' : '供应商(必填)'}
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
-            采购数量
+            数量(必填)
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
-            单价
+            单价(必填)
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
             总价

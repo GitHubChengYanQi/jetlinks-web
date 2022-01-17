@@ -70,6 +70,7 @@ const ProcurementPlanList = () => {
         <Column title="状态" dataIndex="status" width={100} align="center" render={(value) => {
           switch (value) {
             case 0:
+            case 98:
               return <Badge text="进行中" color="blue" />;
             case 97:
               return <Badge text="已拒绝" color="red" />;

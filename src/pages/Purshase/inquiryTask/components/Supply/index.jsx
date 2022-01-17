@@ -1,11 +1,12 @@
 import React, {useRef} from 'react';
-import {Avatar, Button, Card, Descriptions, Empty} from 'antd';
+import {Avatar, Button, Card, Descriptions, Empty, Space} from 'antd';
 import {EditOutlined, EllipsisOutlined} from '@ant-design/icons';
 import Meta from 'antd/es/card/Meta';
 import {useHistory} from 'ice';
 import Quote from '@/pages/Purshase/Quote';
 import Modal from '@/components/Modal';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const Supply = ({data, skuIds, id, levelId, supplySku}) => {
 
@@ -34,8 +35,18 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
                 <Button
                   type="link"
                   onClick={() => {
+                    let skus = skuIds;
+                    if (supplySku !== 1) {
+                      const supplySkus = item.skuResultList && item.skuResultList.map((item, index) => {
+                        return item.skuId;
+                      });
+                      skus = skuIds.filter((item) => {
+                        return supplySkus.includes(item);
+                      });
+                    }
+
                     quoteRef.current.open({
-                      skus: skuIds,
+                      skus,
                       sourceId: id,
                       source: 'inquiryTask',
                       customerId: item.customerId,
@@ -47,6 +58,7 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
                   type="link"
                   onClick={() => {
                     quotationRef.current.open({
+                      name:item.customerName,
                       check: true,
                       source: 'inquiryTask',
                       sourceId: id,
@@ -68,7 +80,16 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
                     <Descriptions.Item label="联系人">1</Descriptions.Item>
                     <Descriptions.Item label="电话">1</Descriptions.Item>
                     <Descriptions.Item label="地址">1</Descriptions.Item>
-                    <Descriptions.Item label="物料">1</Descriptions.Item>
+                    <Descriptions.Item label="物料">
+                      <Space direction="vertical">
+                        {
+                          item.skuResultList && item.skuResultList.map((item, index) => {
+                            console.log(item);
+                            return <div key={index}><SkuResultSkuJsons skuResult={item} /></div>;
+                          })
+                        }
+                      </Space>
+                    </Descriptions.Item>
                   </Descriptions>
                 }
               />

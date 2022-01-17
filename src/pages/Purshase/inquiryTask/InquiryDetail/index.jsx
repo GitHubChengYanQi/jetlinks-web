@@ -1,7 +1,7 @@
 import {useHistory, useParams} from 'ice';
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {Badge, Button, Card, Col, Collapse, Descriptions, Empty, Row, Space, Table, Tabs} from 'antd';
+import {Badge, Button, Card, Col, Collapse, Descriptions, Empty, Row, Space, Table} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -22,7 +22,7 @@ const InquiryDetail = () => {
 
   const quoteRef = useRef(null);
 
-  const {loading, data, refresh} = useRequest(inquiryTaskDetail, {
+  const {loading, data} = useRequest(inquiryTaskDetail, {
     defaultParams: {
       data: {
         inquiryTaskId: params.cid

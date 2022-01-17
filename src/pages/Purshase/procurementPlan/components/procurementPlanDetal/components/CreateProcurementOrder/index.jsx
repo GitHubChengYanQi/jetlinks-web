@@ -1,26 +1,12 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Button, Card, Descriptions,  Empty, message, notification, Select, Spin} from 'antd';
-import { InternalFieldList as FieldList} from '@formily/antd';
+import {Button, Card, Descriptions, Empty, Input, InputNumber, message, Select, Spin} from 'antd';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
 import {useRequest} from '@/util/Request';
-import Form from '@/components/Form';
-import * as SysField from '../OrderSysField';
-import {purchaseQuotationAdd} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
-import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 
-const {FormItem} = Form;
-
-const ApiConfig = {
-  view: purchaseQuotationAdd,
-  add: purchaseQuotationAdd,
-  save: purchaseQuotationAdd
-};
 
 const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
-
-  const formRef = useRef();
 
   const [data, setData] = useState(value && value.map((item) => {
     return {
@@ -89,74 +75,10 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
 
   return <>
     <Card title="创建采购单">
-      <Form
-        value={false}
-        ref={formRef}
-        api={ApiConfig}
-        NoButton={false}
-        fieldKey="procurementPlanId"
-        onSubmit={(value) => {
-          return false;
-        }}
-        onSuccess={() => {
-          notification.success({
-            message: '添加报价成功！',
-          });
-          onSuccess();
-        }}
-        onError={() => {
-
-        }}
-        effects={({setFieldState, getFieldState}) => {
-          // FormEffectHooks.onFieldValueChange$('').subscribe(async ({name, value}) => {
-          //   setFieldState(FormPath.transform(name, /\d/, ($1) => {
-          //     return `quotationParams.${$1}.allPreTax`;
-          //   }), (state) => {
-          //
-          //   });
-          // });
-        }}
-      >
-        <FieldList
-          name="detailParams"
-          initialValue={value && value.map((item) => {
-            return {
-              status: 99,
-              skuId: item.skuResult,
-              // skuId: item.skuId,
-              number: item.total,
-              detailId: item.detailId
-            };
-          })}
-        >
-          {({state}) => {
-            return (
-              <div>
-                {state.value.map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <FormItem
-                        itemStyle={{margin: 0}}
-                        placeholder="物料"
-                        width={200}
-                        supply={1}
-                        name={`detailParams.${index}.skuId`}
-                        component={SysField.Sku}
-                      />
-                      <CustomerAll />
-                    </div>
-                  );
-                })}
-
-              </div>
-            );
-          }}
-        </FieldList>
-      </Form>
       {
         data.map((item, index) => {
           const th = index === 0 || null;
-          return <Descriptions key={index} column={4} layout="vertical" bordered>
+          return <Descriptions key={index} column={5} layout="vertical" bordered>
             <Descriptions.Item label={th && '物料'} style={{width: 500}}>
               <SkuResultSkuJsons skuResult={item.skuResult} />
             </Descriptions.Item>
@@ -193,9 +115,12 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
                 }}
               />
             </Descriptions.Item>
+            <Descriptions.Item label={th && '总价'} style={{width: 100}}>
+              <InputNumber />
+            </Descriptions.Item>
             <Descriptions.Item style={{width: 100}} contentStyle={{textAlign: 'center'}}>
               <Button type="link" onClick={() => {
-                quotationRef.current.open({skuId:item.skuId,check:true});
+                quotationRef.current.open({skuId: item.skuId, check: true});
               }}>报价信息</Button>
             </Descriptions.Item>
           </Descriptions>;
