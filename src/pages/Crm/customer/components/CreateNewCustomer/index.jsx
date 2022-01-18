@@ -1,6 +1,6 @@
-import Modal from '@/components/Modal';
 import {Button, Space} from 'antd';
 import React, {useImperativeHandle, useRef, useState} from 'react';
+import Modal from '@/components/Modal';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 
 
@@ -11,6 +11,7 @@ const CreateNewCustomer = ({
   onChange,
   wxUser,
   supply,
+  data,
   ...props
 }, ref) => {
 
@@ -55,7 +56,7 @@ const CreateNewCustomer = ({
         </Space>
       </>
     } title={title}  >
-      <CustomerEdit value={value} supply={supply} wxUser={user} ref={compoentRef} onSuccess={()=>{
+      <CustomerEdit data={data} value={value} supply={supply} wxUser={user} ref={compoentRef} onSuccess={()=>{
         onSuccess();
       }} onChange={(res)=>{
         typeof onChange === 'function' && onChange(res);

@@ -1,14 +1,14 @@
-import {Button, Collapse, Dropdown, Menu, Popover} from 'antd';
+import {Button, Dropdown, Menu, Popover} from 'antd';
+import React, {useRef, useState} from 'react';
+import {DownOutlined} from '@ant-design/icons';
 import FastCreateCustomer from '@/pages/Crm/customer/components/FastCreateCustomer';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import React, {useEffect, useRef, useState} from 'react';
-import {DownOutlined} from '@ant-design/icons';
 
 
 const AddCustomerButton = (props) => {
 
 
-  const {onChange, supply} = props;
+  const {onChange, supply,data} = props;
 
   const ref = useRef(null);
 
@@ -28,6 +28,7 @@ const AddCustomerButton = (props) => {
         <Popover placement="rightTop" visible={visible} onVisibleChange={(visible) => {
           setVisible(visible);
         }} content={<FastCreateCustomer
+          data={data}
           close={() => {
             setDrow(false);
             setVisible(false);
@@ -60,6 +61,7 @@ const AddCustomerButton = (props) => {
 
 
       <CreateNewCustomer
+        data={data}
         title={supply ? '供应商' : '客户'}
         supply={supply}
         widths={1200}
@@ -68,7 +70,7 @@ const AddCustomerButton = (props) => {
         }}
         ref={ref}
         onChange={(res) => {
-          onChange(res.data.customerId);
+          onChange(res.data);
         }} />
     </>
   );

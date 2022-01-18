@@ -30,7 +30,6 @@ const TaxRateEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="taxRateId"
     >
-      <FormItem label="税率名称" name="taxRateName" component={SysField.TaxRateName} required/>
       <FormItem label="税率值" name="taxRateValue" component={SysField.TaxRateValue} required/>
     </Form>
   );

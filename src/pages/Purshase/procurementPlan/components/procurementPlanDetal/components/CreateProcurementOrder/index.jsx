@@ -5,7 +5,6 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
 import {useRequest} from '@/util/Request';
-import Customer from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/components/Customer';
 
 
 const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
@@ -55,8 +54,6 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
   }));
 
   const quotationRef = useRef();
-
-  const customerRef = useRef();
 
   const {loading, data: brands, run} = useRequest({
     url: '/supplierBrand/getSupplierBySku',
@@ -126,9 +123,6 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
                     setItems({data: array});
                   }}
                 />
-                {item.customerId && <Button type="link" onClick={()=>{
-                  customerRef.current.open({...item,key:item.skuId});
-                }}>完善信息</Button>}
               </Space>
             </Descriptions.Item>
             <Descriptions.Item label={th && '总价'} style={{width: 100}}>
@@ -188,26 +182,6 @@ const CreateProcurementOrder = ({value, palnId, onSuccess}, ref) => {
         });
         setItems({data: array});
         quotationRef.current.close();
-      }} />
-
-    <Modal
-      headTitle='完善信息'
-      width={300}
-      ref={customerRef}
-      component={Customer}
-      onSuccess={(res) => {
-        const array = items.data.map((item) => {
-          if (item.skuId === res.key) {
-            return {
-              ...item,
-              ...res,
-            };
-          } else {
-            return item;
-          }
-        });
-        setItems({data: array});
-        customerRef.current.close();
       }} />
   </>;
 };

@@ -34,9 +34,9 @@ export const AllPrice = (props) => {
 export const TaxPrice = (props) => {
   return (<InputNumber min={1} {...props} />);
 };
-export const AllPreTax = (props) => {
+export const Money = (props) => {
   const {value} = props;
-  return (<div style={{width: 90, textAlign: 'center'}}>{value || 0}</div>);
+  return (<div style={{width: 90, textAlign: 'center'}}>{value && value.toFixed(2) || 0}</div>);
 };
 export const AllAfterTax = (props) => {
   const {value} = props;
@@ -46,10 +46,11 @@ export const CustomerId = (props) => {
   return (<Select api={customerIdSelect} data={{supply: 1}} width={200}  {...props} />);
 };
 export const InvoiceType = (props) => {
-  return (<AntdSelect options={[{label: '票据类型1', value: '票据类型1'}]} style={{width: 120}} {...props} />);
+  return (
+    <AntdSelect options={[{label: '普票', value: '普票'}, {label: '专票', value: '专票'},]} style={{width: 120}} {...props} />);
 };
 export const PaymentMethod = (props) => {
-  return (<AntdSelect options={[{label: '付款1', value: '付款1'}]} style={{width: 120}} {...props} />);
+  return (<Input style={{width: 120}} {...props} />);
 };
 export const PeriodOfValidity = (props) => {
   return (<DatePicker width={120} {...props} />);
@@ -73,7 +74,7 @@ export const IsFreight = (props) => {
   return (<Checkbox {...props} checked={props.value} />);
 };
 export const Source = (props) => {
-  return (<AntdSelect style={{width:200}} options={[
+  return (<AntdSelect style={{width: 200}} options={[
     {
       value: 'toBuyPlan',
       label: '待买计划'
@@ -122,5 +123,8 @@ export const DeliveryDate = (props) => {
 };
 
 export const TaxRateId = (props) => {
-  return (<Select api={taxRateListSelect} width={120} {...props} />);
+  const {value, onChange,...other} = props;
+  return (<Select api={taxRateListSelect} width={120} {...other} value={typeof value === 'object' ? value.value : value} onChange={(value,option)=>{
+    onChange(option);
+  }} />);
 };

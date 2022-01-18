@@ -5,7 +5,6 @@ import SetView from '@/layouts/SetView';
 import SupplierBlacklistList from '@/pages/Crm/supplierBlacklist/supplierBlacklistList';
 import Modal from '@/components/Modal';
 import TaxRateList from '@/pages/Purshase/taxRate/taxRateList';
-import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {

@@ -21,7 +21,7 @@ const SelectCustomer = (props) => {
           }}
         />
         <AddCustomerButton {...props} onChange={(value) => {
-          onChange(value);
+          onChange(value && value.customerId);
         }} />
       </Space>
 

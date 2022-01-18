@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {message, Button, Card, Input, Modal, Divider} from 'antd';
+import {message, Button, Card, Input, Divider} from 'antd';
+import {CloseOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {customerAdd} from '@/pages/Crm/customer/CustomerUrl';
-import {CloseOutlined} from '@ant-design/icons';
 import style from './index.module.less';
 
-const FastCreateCustomer = ({close,supply, add}) => {
+const FastCreateCustomer = ({close,supply, add,data:paramData}) => {
 
   const {run} = useRequest(customerAdd, {
     manual: true,
@@ -42,10 +42,11 @@ const FastCreateCustomer = ({close,supply, add}) => {
                   data: {
                     customerName: value,
                     supply,
+                    ...paramData,
                   }
                 }
               );
-              typeof add === 'function' && add(data.customerId);
+              typeof add === 'function' && add(data);
             } else {
               message.warn(supply ? '请输入供应商名称' : '请输入客户名称！');
             }

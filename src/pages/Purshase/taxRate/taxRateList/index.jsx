@@ -6,8 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 import {Table as AntTable} from 'antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,7 +18,6 @@ import {taxRateDelete, taxRateList} from '../taxRateUrl';
 import TaxRateEdit from '../taxRateEdit';
 import * as SysField from '../taxRateField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -58,7 +58,6 @@ const TaxRateList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="税率名称" dataIndex="taxRateName" />
         <Column title="税率值" dataIndex="taxRateValue" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

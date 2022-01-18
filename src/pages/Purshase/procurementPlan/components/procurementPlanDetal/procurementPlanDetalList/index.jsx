@@ -49,6 +49,7 @@ const ProcurementPlanDetalList = ({value}) => {
   return (
     <>
       <Table
+        bodyStyle={{padding:0}}
         contentHeight
         headStyle={{display: 'none'}}
         api={procurementPlanDetalList}

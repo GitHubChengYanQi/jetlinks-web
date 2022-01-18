@@ -301,7 +301,6 @@ const ToBuyPlanList = () => {
       compoentRef={addQuoteRef}
       footer={<Button
         type="primary"
-        loading={loading}
         style={{marginTop: 8}}
         onClick={() => {
           addQuoteRef.current.submit();
@@ -318,6 +317,9 @@ const ToBuyPlanList = () => {
       ref={inquiryRef}
       component={InquiryTaskEdit}
       onSuccess={() => {
+        notification.success({
+          message: '创建询价任务成功！',
+        });
         inquiryRef.current.close();
       }} />
 

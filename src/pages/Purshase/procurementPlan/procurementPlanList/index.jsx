@@ -7,13 +7,13 @@
 
 import React, {useRef} from 'react';
 import {Badge, Button, Table as AntTable} from 'antd';
+import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
-import {procurementPlanList} from '../procurementPlanUrl';
+import {procurementPlanDetail, procurementPlanList} from '../procurementPlanUrl';
 import * as SysField from '../procurementPlanField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
-import ProcurementPlanDetalList from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/procurementPlanDetalList';
 import {useRequest} from '@/util/Request';
 import Quote from '@/pages/Purshase/Quote';
 
@@ -22,20 +22,23 @@ const {FormItem} = Form;
 
 const ProcurementPlanList = () => {
 
-  const ref = useRef(null);
   const tableRef = useRef(null);
   const quoteRef = useRef(null);
+  const addQuoteRef = useRef(null);
+  const history = useHistory();
 
-  const {run} = useRequest({
-    url: '/procurementPlan/detail',
-    method: 'POST',
-  }, {
+  const {run} = useRequest(procurementPlanDetail, {
     manual: true,
     onSuccess: (res) => {
-      const ids = res && res.detalResults && res.detalResults.map((item) => {
-        return item.skuId;
+      quoteRef.current.open({
+        skus: res && res.detalResults && res.detalResults.map((item) => {
+          return {
+            skuId: item.skuId,
+            skuResult: item.skuResult,
+            number: item.total
+          };
+        }), sourceId: res.procurementPlanId, source: 'purchasePlan'
       });
-      quoteRef.current.open({skus: ids, sourceId: res.procurementPlanId, source: 'purchasePlan'});
     }
   });
 
@@ -59,7 +62,7 @@ const ProcurementPlanList = () => {
       >
         <Column title="采购计划名称" dataIndex="procurementPlanName" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            ref.current.open(record);
+            history.push(`/purchase/procurementPlan/${record.procurementPlanId}`);
           }}>{value}</Button>;
         }} />
         <Column title="创建人" dataIndex="user" render={(value) => {
@@ -80,27 +83,8 @@ const ProcurementPlanList = () => {
               break;
           }
         }} />
-        <Column title="操作" align="center" width={100} render={(text, record) => {
-          return <>
-            <Button disabled={record.status === 97} type="link" onClick={() => {
-              run({
-                data: {
-                  procurementPlanId: record.procurementPlanId,
-                }
-              });
-            }}>添加报价</Button>
-          </>;
-        }} />
+        <Column />
       </Table>
-
-      <Modal headTitle="添加报价信息" width={1870} ref={quoteRef} component={Quote} onSuccess={() => {
-        quoteRef.current.close();
-      }} />
-
-      <Modal width={800} headTitle="采购计划详情" component={ProcurementPlanDetalList} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
     </>
   );
 };

@@ -14,5 +14,11 @@ export const ProcurementPlanRouter = [
     component: lazy(() => import('../procurementPlanList')),
     fallback: <div>loading...</div>,
     exact: true,
-  }
+  }, {
+    path: '/procurementPlan/:cid',
+    name:'采购计划详情',
+    component: lazy(() => import('../PlanDetail/index')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
 ];

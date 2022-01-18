@@ -5,21 +5,20 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Collapse, Divider, Row, Col} from 'antd';
-import {
-  commonArea,
-  customerAdd,
-  customerDetail, customerEdit
-} from '@/pages/Crm/customer/CustomerUrl';
-import * as SysField from '@/pages/Crm/customer/CustomerField';
+import React, {forwardRef, useImperativeHandle, useRef,} from 'react';
+import {Button,  Divider, Row, Col} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {useHistory} from 'ice';
 import {MegaLayout} from '@formily/antd-components';
-import {createFormActions, InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import styled from 'styled-components';
-import Form from '@/components/Form';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import Form from '@/components/Form';
+import * as SysField from '@/pages/Crm/customer/CustomerField';
+import {
+  customerAdd,
+  customerDetail, customerEdit
+} from '@/pages/Crm/customer/CustomerUrl';
 import Title from '@/components/Title';
 
 import style from './index.module.scss';
@@ -71,7 +70,7 @@ const ApiConfig = {
 
 const CustomerEdit = ({onChange, ...props}, ref) => {
 
-  const {wxUser, supply, ...other} = props;
+  const {wxUser, supply,data:paramData, ...other} = props;
 
   const city = wxUser && wxUser.openUserInfo && wxUser.openUserInfo.rawUserInfo && (JSON.parse(wxUser.openUserInfo.rawUserInfo).city || JSON.parse(wxUser.openUserInfo.rawUserInfo).province || JSON.parse(wxUser.openUserInfo.rawUserInfo).country);
 
@@ -100,13 +99,14 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
         {...other}
         labelAlign="left"
         ref={formRef}
+        defaultValue={{...paramData}}
         NoButton={false}
         api={ApiConfig}
         labelCol={null}
         wrapperCol={24}
         fieldKey="customerId"
         onSubmit={(value)=>{
-          return {...value,supply};
+          return {...value,supply,...paramData};
         }}
         onSuccess={(res) => {
           if (res && typeof onChange === 'function') {
@@ -235,13 +235,11 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                     label="联系人姓名"
                                     name={`contactsParams.${index}.contactsName`}
                                     component={SysField.ContactsName}
-                                    required
                                   />
                                   <FormItem
                                     label="职务"
                                     name={`contactsParams.${index}.companyRole`}
                                     component={SysField.CompanyRoleId}
-                                    required
                                   />
                                   {/* <ProCard style={{marginTop: 8}} headerBordered> */}
                                   <div style={{width: '88%', display: 'inline-block'}}>
@@ -263,7 +261,6 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                                                     label={`联系电话 ${indexs + 1}`}
                                                     name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
                                                     component={SysField.PhoneNumber}
-                                                    required
                                                     rules={[{
                                                       message: '请输入正确的手机号码!',
                                                       pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/

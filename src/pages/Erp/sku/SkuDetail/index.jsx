@@ -18,6 +18,8 @@ const SkuDetail = () => {
 
   const quoteRef = useRef();
 
+  const addQuoteRef = useRef();
+
   const history = useHistory();
 
   const {loading, data, refresh} = useRequest(skuDetail, {
@@ -68,7 +70,7 @@ const SkuDetail = () => {
                   data.list[0].attributeValues
                     ?
                     <em>
-                      {data.list.map((items, index) => {
+                      {data.list.map((items) => {
                         return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
                       }).toString()}
                     </em>
@@ -114,9 +116,21 @@ const SkuDetail = () => {
       </div>
 
 
-      <Modal headTitle="添加报价信息" width={2000} ref={quoteRef} component={Quote} onSuccess={() => {
-        quoteRef.current.close();
-      }} />
+      <Modal
+        headTitle="添加报价信息"
+        width={2000}
+        compoentRef={addQuoteRef}
+        footer={<Button
+          type="primary"
+          style={{marginTop: 8}}
+          onClick={() => {
+            addQuoteRef.current.submit();
+          }}>添加报价</Button>}
+        ref={quoteRef}
+        component={Quote}
+        onSuccess={() => {
+          quoteRef.current.close();
+        }} />
 
     </div>
 

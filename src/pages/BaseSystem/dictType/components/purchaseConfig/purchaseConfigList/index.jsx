@@ -6,8 +6,8 @@
  */
 
 import React, {useRef} from 'react';
+import {Breadcrumb as AntBreadcrumb, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -15,13 +15,11 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {purchaseConfigDelete, purchaseConfigList} from '../purchaseConfigUrl';
 import PurchaseConfigEdit from '../purchaseConfigEdit';
-import * as SysField from '../purchaseConfigField';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
 
-const PurchaseConfigList = () => {
+const PurchaseConfigList = ({value}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -30,14 +28,6 @@ const PurchaseConfigList = () => {
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
-      </>
-    );
-  };
-
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="类型" name="type" component={SysField.Type} />
       </>
     );
   };
@@ -56,10 +46,15 @@ const PurchaseConfigList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={ <AntBreadcrumb>
+          <AntBreadcrumb.Item>Home</AntBreadcrumb.Item>
+          <AntBreadcrumb.Item>设置</AntBreadcrumb.Item>
+          <AntBreadcrumb.Item>字典管理</AntBreadcrumb.Item>
+          <AntBreadcrumb.Item>采购配置</AntBreadcrumb.Item>
+        </AntBreadcrumb>}
         api={purchaseConfigList}
         rowKey="purchaseConfigId"
-        // searchForm={searchForm}
+        contentHeight={value}
         actions={actions()}
         ref={tableRef}
       >
@@ -94,7 +89,7 @@ const PurchaseConfigList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
       </Table>
       <Drawer width={800} title="采购配置" component={PurchaseConfigEdit} onSuccess={() => {
         tableRef.current.refresh();

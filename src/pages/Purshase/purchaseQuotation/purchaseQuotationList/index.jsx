@@ -9,16 +9,14 @@ import React, {useRef} from 'react';
 import {Card, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
-import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import Form from '@/components/Form';
-import {purchaseQuotationDelete, purchaseQuotationList} from '../purchaseQuotationUrl';
+import {purchaseQuotationList} from '../purchaseQuotationUrl';
 import PurchaseQuotationEdit from '../purchaseQuotationEdit';
 import * as SysField from '../purchaseQuotationField';
 import {IsFreight} from '../purchaseQuotationField';
 import Breadcrumb from '@/components/Breadcrumb';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -27,9 +25,6 @@ const formActionsPublic = createFormActions();
 
 const PurchaseQuotationList = ({
   value = {},
-  onSuccess = () => {
-  },
-  action,
 }) => {
 
   const {skuId, name, customerId, check, source, sourceId} = value;
@@ -72,7 +67,6 @@ const PurchaseQuotationList = ({
         <Column title="价格" dataIndex="price" width={100} align="center" sorter />
         <Column title="报价有效期" dataIndex="periodOfValidity" width={180} align="center" />
         <Column title="数量" dataIndex="total" align="center" width={80} sorter />
-        <Column title="税率" dataIndex="taxRateId" width={70} />
         <Column title="税前单价" dataIndex="preTax" width={120} align="center" sorter />
         <Column title="运费价格" dataIndex="freight" width={120} align="center" sorter />
         <Column title="税后单价" dataIndex="afterTax" width={120} align="center" sorter />
@@ -99,24 +93,6 @@ const PurchaseQuotationList = ({
           return <>{value && value.name}</>;
         }} />
         <Column />
-        {!check && <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-              <DelButton api={purchaseQuotationDelete} value={record.purchaseQuotationId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} width={100} />}
-        {action && <Column title="操作" align="right" fixed='right' render={(value, record) => {
-          return (
-            <>
-              <CheckButton onClick={()=>{
-                onSuccess(record);
-              }} />
-            </>
-          );
-        }} width={100} />}
       </Table>
       <Drawer width={800} title="编辑" component={PurchaseQuotationEdit} onSuccess={() => {
         tableRef.current.refresh();
