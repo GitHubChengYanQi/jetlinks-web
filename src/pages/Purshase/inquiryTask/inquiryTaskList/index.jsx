@@ -10,7 +10,6 @@ import {Badge, Button, Table as AntTable} from 'antd';
 import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
 import {inquiryTaskList} from '../inquiryTaskUrl';
 import InquiryTaskEdit from '../inquiryTaskEdit';
@@ -24,15 +23,6 @@ const InquiryTaskList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const history = useHistory(null);
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
 
   const searchForm = () => {
     return (
@@ -50,7 +40,6 @@ const InquiryTaskList = () => {
         api={inquiryTaskList}
         rowKey="inquiryTaskId"
         searchForm={searchForm}
-        actions={actions()}
         ref={tableRef}
       >
         <Column title="任务编码" dataIndex="inquiryTaskCode" render={(value, record) => {

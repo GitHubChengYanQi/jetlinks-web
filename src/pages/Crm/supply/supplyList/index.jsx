@@ -22,7 +22,7 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const SupplyList = ({customer}) => {
+const SupplyList = ({customer,brandIds}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -74,7 +74,7 @@ const SupplyList = ({customer}) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="物料" customerId={customer && customer.customerId} component={SupplyEdit} onSuccess={() => {
+      <Drawer width={800} title="物料" brandIds={brandIds} customerId={customer && customer.customerId} component={SupplyEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {Button, Card, message, notification, Select, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined,} from '@ant-design/icons';
 import {
@@ -14,7 +14,7 @@ import {purchaseQuotationAdd, purchaseQuotationAddbatch} from '@/pages/Purshase/
 
 const {FormItem} = Form;
 
-const Quote = (props) => {
+const Quote = ({...props},ref) => {
 
   const {value: {skuId, skus, source, sourceId, customerId, levelId}, onSuccess} = props;
 
@@ -24,13 +24,15 @@ const Quote = (props) => {
     save: purchaseQuotationAdd
   };
 
-  const [loading, setLoading] = useState(false);
-
   const formRef = useRef();
+
+  useImperativeHandle(ref,()=>({
+    submit:formRef.current.submit,
+  }));
 
   const [supply, setSupply] = useState(customerId);
 
-  const [skuIds, setSkuIds] = useState([]);
+  const [skuIds, setSkuIds] = useState(skus || []);
 
   const {data: supplyData, run: getSupply} = useRequest({
     url: 'supply/getSupplyByLevel',
@@ -112,7 +114,6 @@ const Quote = (props) => {
           formRef.current.reset();
         }}
         onSelect={(value, option) => {
-          formRef.current.reset();
           if ((config.supply && config.supply === '是')) {
             setSkuIds(skus);
           } else {
@@ -123,7 +124,7 @@ const Quote = (props) => {
                 option.object.supplyResults
                 &&
                 option.object.supplyResults.filter((value) => {
-                  return value.skuId === items;
+                  return value.skuId === items.skuId;
                 });
               return arr && arr.length > 0;
             });
@@ -134,9 +135,6 @@ const Quote = (props) => {
       />}>
 
       <Form
-        loading={(load) => {
-          setLoading(load);
-        }}
         value={false}
         ref={formRef}
         api={ApiConfig}
@@ -244,14 +242,14 @@ const Quote = (props) => {
       >
         <Space style={{backgroundColor: '#E6E6E6', padding: 16}}>
           <div style={{width: 50, textAlign: 'center'}} />
-          <div style={{width: skus ? 180 : 328, textAlign: 'center'}}>
-            {skus ? '物料(必填)' : '供应商(必填)'}
+          <div style={{width: skus ? 200 : 328, textAlign: 'center'}}>
+            {skus ? '物料' : '供应商'}
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
-            数量(必填)
+            采购数量
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
-            单价(必填)
+            单价
           </div>
           <div style={{width: 90, textAlign: 'center'}}>
             总价
@@ -293,14 +291,17 @@ const Quote = (props) => {
         </Space>
         <FieldList
           name="quotationParams"
-          initialValue={[
-            {},
-          ]}
+          initialValue={
+            skuIds.map((item) => {
+              return {
+                skuId: item.skuId,
+                skuResult: item.skuResult,
+                total: item.number,
+              };
+            })
+          }
         >
           {({state, mutators}) => {
-            const onAdd = () => {
-              mutators.push();
-            };
             return (
               <div>
                 {state.value.map((item, index) => {
@@ -332,13 +333,15 @@ const Quote = (props) => {
                         </div>
 
                         {skus ?
-                          <FormItem
-                            itemStyle={{margin: 0}}
-                            placeholder="物料"
-                            name={`quotationParams.${index}.skuId`}
-                            component={SysField.SkuId}
-                            ids={skuIds}
-                          />
+                          <div style={{width: 200}}>
+                            <FormItem
+                              itemStyle={{margin: 0}}
+                              placeholder="物料"
+                              name={`quotationParams.${index}.skuResult`}
+                              component={SysField.SkuId}
+                              ids={skuIds}
+                            />
+                          </div>
                           :
                           <FormItem
                             itemStyle={{margin: 0}}
@@ -362,6 +365,10 @@ const Quote = (props) => {
                           placeholder="单价"
                           name={`quotationParams.${index}.price`}
                           component={SysField.Price}
+                          rules={[{
+                            required:true,
+                            message:'必填！',
+                          }]}
                         />
 
                         <FormItem
@@ -443,6 +450,7 @@ const Quote = (props) => {
                         <div style={{width: 50, textAlign: 'center'}}>
                           <FormItem
                             itemStyle={{margin: 0}}
+                            value={1}
                             placeholder="是否含运"
                             name={`quotationParams.${index}.isFreight`}
                             component={SysField.IsFreight}
@@ -463,28 +471,6 @@ const Quote = (props) => {
                     </div>
                   );
                 })}
-                <div style={{width: '100%', textAlign: 'center'}}>
-                  <Space>
-                    <Button
-                      type="dashed"
-                      style={{marginTop: 8}}
-                      icon={<PlusOutlined />}
-                      onClick={() => {
-                        if (skus && !supply) {
-                          message.warn('请选择供应商！');
-                          return null;
-                        }
-                        onAdd();
-                      }}>增加物料</Button>
-                    <Button
-                      type="primary"
-                      loading={loading}
-                      style={{marginTop: 8}}
-                      onClick={() => {
-                        formRef.current.submit();
-                      }}>添加报价</Button>
-                  </Space>
-                </div>
               </div>
             );
           }}
@@ -495,4 +481,4 @@ const Quote = (props) => {
   </>;
 };
 
-export default Quote;
+export default React.forwardRef(Quote);

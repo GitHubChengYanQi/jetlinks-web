@@ -8,7 +8,6 @@ import {adressList} from '@/pages/Crm/adress/AdressUrl';
 const Customer = ({value = {},onSuccess=()=>{}}) => {
 
   const {customerId,key,...other} = value;
-  console.log(value);
 
   const [contactsId,setContactsId] = useState(other.contactsId);
   const [phoneId,setPhoneId] = useState(other.phoneId);
@@ -19,6 +18,7 @@ const Customer = ({value = {},onSuccess=()=>{}}) => {
       <Module
         value={contactsId}
         onChange={(value) => {
+          setPhoneId(null);
           setContactsId(value);
         }}
         width={200}

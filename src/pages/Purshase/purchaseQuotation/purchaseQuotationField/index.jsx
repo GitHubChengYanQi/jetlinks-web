@@ -13,9 +13,10 @@ import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {customerIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 export const SkuId = (props) => {
-  return (<SelectSku {...props} />);
+  return (<SkuResultSkuJsons skuResult={props.value} />);
 };
 export const SkuListSelect = (props) => {
   return (<SelectSku {...props} />);

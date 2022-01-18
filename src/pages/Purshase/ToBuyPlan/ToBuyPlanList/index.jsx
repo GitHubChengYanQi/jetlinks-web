@@ -15,6 +15,44 @@ const ToBuyPlanList = () => {
 
   const [skus, setSkus] = useState([]);
 
+  const addQuoteRef = useRef();
+
+  const snameSkus = (value) => {
+    let array = [];
+    const skuIds = value.map((item) => {
+      return item.skuId;
+    });
+    const oneSkus = [];
+    let sname = [];
+
+    value.map((item) => {
+      if (skuIds.filter((value) => {
+        return item.skuId === value;
+      }).length === 1) {
+        oneSkus.push(item);
+      } else {
+        const snameSku = [];
+        const sku = [];
+        sname.map((value)=>{
+          if (value.skuId === item.skuId){
+            snameSku.push(value);
+          }else {
+            sku.push(item);
+          }
+          return null;
+        });
+        if (snameSku.length > 0){
+          sname = [...sku,{...snameSku[0],applyNumber:snameSku[0].applyNumber + item.applyNumber}];
+        }else {
+          sname.push(item);
+        }
+      }
+      return array = [...oneSkus,...sname];
+    });
+    return array;
+  };
+
+
   const {loading, data, run, refresh} = useRequest(
     toBuyPlanList,
     {
@@ -151,18 +189,31 @@ const ToBuyPlanList = () => {
           const array = skus.filter((item)=>{
             return keys.includes(item.purchaseListingId);
           });
-          inquiryRef.current.open(array);
+          inquiryRef.current.open(snameSkus(array));
         }}>指派询价任务</Button>
       <Button
         type="default"
         onClick={() => {
+          let array = [];
+          if (keys.length > 0){
+            array = skus.filter((item)=>{
+              return keys.includes(item.purchaseListingId);
+            });
+          }else {
+            array = skus;
+          }
+          const skuArray = snameSkus(array);
           quoteRef.current.open(
             {
-              skus: data && data.map((items) => {
-                return items.skuId;
+              skus: skuArray.map((item)=>{
+                return {
+                  skuId:item.skuId,
+                  skuResult:item.skuResult,
+                  number:item.applyNumber
+                };
               }),
               sourceId: null,
-              source: 'purchasePlan'
+              source: 'toBuyPlan'
             });
         }}>添加报价</Button>
       <Divider style={{margin: '16px 0 0 0'}} />
@@ -247,6 +298,14 @@ const ToBuyPlanList = () => {
     <Modal
       headTitle="添加报价信息"
       width={1870}
+      compoentRef={addQuoteRef}
+      footer={<Button
+        type="primary"
+        loading={loading}
+        style={{marginTop: 8}}
+        onClick={() => {
+          addQuoteRef.current.submit();
+        }}>添加报价</Button>}
       ref={quoteRef}
       component={Quote}
       onSuccess={() => {

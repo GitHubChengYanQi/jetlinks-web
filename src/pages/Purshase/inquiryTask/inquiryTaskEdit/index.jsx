@@ -5,7 +5,7 @@
  * @Date 2022-01-17 09:29:56
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
@@ -27,46 +27,6 @@ const ApiConfig = {
 const InquiryTaskEdit = ({...props}) => {
 
   const {value,onSuccess} = props;
-
-  const [skus,setSkus] = useState([]);
-
-  useEffect(()=>{
-    if (Array.isArray(value)) {
-      const skuIds = value.map((item) => {
-        return item.skuId;
-      });
-      const oneSkus = [];
-      let sname = [];
-
-      value.map((item) => {
-        if (skuIds.filter((value) => {
-          return item.skuId === value;
-        }).length === 1) {
-          oneSkus.push(item);
-        } else {
-          const snameSku = [];
-          const sku = [];
-          sname.map((value)=>{
-            if (value.skuId === item.skuId){
-              snameSku.push(value);
-            }else {
-              sku.push(item);
-            }
-            return null;
-          });
-          if (snameSku.length > 0){
-            sname = [...sku,{...snameSku[0],applyNumber:snameSku[0].applyNumber + item.applyNumber}];
-          }else {
-            sname.push(item);
-          }
-        }
-        setSkus([...oneSkus,...sname]);
-        return null;
-      });
-    }
-  },[]);
-
-
 
   const formRef = useRef();
 
@@ -121,7 +81,7 @@ const InquiryTaskEdit = ({...props}) => {
           <FieldList
             name="detailParams"
             initialValue={
-              skus.map((item)=>{
+              value.map((item)=>{
                 return {
                   total:item.applyNumber,
                   skuId:item.skuId,

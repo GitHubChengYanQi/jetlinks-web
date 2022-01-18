@@ -33,33 +33,12 @@ export const Module = (props) => {
     }
   );
 
-  const defaultValue = async () => {
-    const res = await run({
-      data: {customerId, contactsId},
-    });
-    if (res && res.length > 0) {
-      switch (module) {
-        case 'contacts':
-          other.onChange(res[0].contactsId);
-          break;
-        case 'address':
-          other.onChange(res[0].adressId);
-          break;
-        case 'phone':
-          other.onChange(res[0].phoneId);
-          break;
-        default:
-          return null;
-      }
-    } else {
-      other.onChange(null);
-    }
-
-  };
 
   useEffect(() => {
     if (customerId || contactsId) {
-      // defaultValue();
+      run({
+        data: {customerId, contactsId},
+      });
     }
   }, [customerId, contactsId]);
 
