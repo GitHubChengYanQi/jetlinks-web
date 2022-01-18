@@ -18,15 +18,21 @@ import * as SysField from '../purchaseQuotationField';
 import {IsFreight} from '../purchaseQuotationField';
 import Breadcrumb from '@/components/Breadcrumb';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import CheckButton from '@/components/CheckButton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const PurchaseQuotationList = ({value = {}}) => {
+const PurchaseQuotationList = ({
+  value = {},
+  onSuccess = () => {
+  },
+  action,
+}) => {
 
-  const {skuId,name, customerId, check, source, sourceId} = value;
+  const {skuId, name, customerId, check, source, sourceId} = value;
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -45,7 +51,7 @@ const PurchaseQuotationList = ({value = {}}) => {
 
   return (
     <>
-      {name && <Card title={name} bordered={false} bodyStyle={{padding:0}} />}
+      {name && <Card title={name} bordered={false} bodyStyle={{padding: 0}} />}
       <Table
         rowSelection
         formActions={formActionsPublic}
@@ -63,15 +69,17 @@ const PurchaseQuotationList = ({value = {}}) => {
         {!customerId && <Column title="供应商" dataIndex="customerResult" render={(value) => {
           return <>{value && value.customerName}</>;
         }} />}
-        <Column title="价格" dataIndex="price" width={100} align="center" />
+        <Column title="价格" dataIndex="price" width={100} align="center" sorter />
         <Column title="报价有效期" dataIndex="periodOfValidity" width={180} align="center" />
-        <Column title="数量" dataIndex="total" align="center" width={70} />
-        <Column title="税率" dataIndex="taxRateId" />
-        <Column title="税前单价" dataIndex="preTax" width={100} align="center" />
-        <Column title="运费价格" dataIndex="freight" width={100} align="center" />
-        <Column title="税后单价" dataIndex="afterTax" width={100} align="center" />
+        <Column title="数量" dataIndex="total" align="center" width={80} sorter />
+        <Column title="税率" dataIndex="taxRateId" width={70} />
+        <Column title="税前单价" dataIndex="preTax" width={120} align="center" sorter />
+        <Column title="运费价格" dataIndex="freight" width={120} align="center" sorter />
+        <Column title="税后单价" dataIndex="afterTax" width={120} align="center" sorter />
         <Column title="税额" dataIndex="taxPrice" width={80} align="center" />
-        <Column title="是否包含运费" dataIndex="isFreight" width={80} align="center" />
+        <Column title="运费" dataIndex="isFreight" width={80} align="center" render={(value) => {
+          return value ? '√' : '×';
+        }} />
         <Column title="来源" dataIndex="source" width={100} align="center" render={(value) => {
           switch (value) {
             case 'toBuyPlan':
@@ -87,7 +95,7 @@ const PurchaseQuotationList = ({value = {}}) => {
           }
         }} />
         <Column title="创建时间" dataIndex="createTime" width={200} align="center" />
-        <Column title="创建用户" dataIndex="user" render={(value) => {
+        <Column title="创建人" dataIndex="user" render={(value) => {
           return <>{value && value.name}</>;
         }} />
         <Column />
@@ -96,6 +104,15 @@ const PurchaseQuotationList = ({value = {}}) => {
             <>
               <DelButton api={purchaseQuotationDelete} value={record.purchaseQuotationId} onSuccess={() => {
                 tableRef.current.refresh();
+              }} />
+            </>
+          );
+        }} width={100} />}
+        {action && <Column title="操作" align="right" fixed='right' render={(value, record) => {
+          return (
+            <>
+              <CheckButton onClick={()=>{
+                onSuccess(record);
               }} />
             </>
           );

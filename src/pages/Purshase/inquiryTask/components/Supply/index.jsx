@@ -26,7 +26,11 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
         data.map((item, index) => {
           return <Card.Grid
             key={index}
-            style={{padding: 16, width: '18%', margin: 8}}
+            style={{
+              padding: '16px 16px 0px 16px',
+              width: '18%',
+              margin: 8
+            }}
           >
             <Card
               key={index}
@@ -58,7 +62,7 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
                   type="link"
                   onClick={() => {
                     quotationRef.current.open({
-                      name:item.customerName,
+                      name: item.customerName,
                       check: true,
                       source: 'inquiryTask',
                       sourceId: id,
@@ -73,6 +77,10 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
               ]}
             >
               <Meta
+                style={{
+                  height: 250,
+                  overflowY: 'auto',
+                }}
                 avatar={<Avatar src={item.avatar}>{!item.avatar && item.customerName.substring(0, 1)}</Avatar>}
                 title={item.customerName}
                 description={
@@ -84,7 +92,6 @@ const Supply = ({data, skuIds, id, levelId, supplySku}) => {
                       <Space direction="vertical">
                         {
                           item.skuResultList && item.skuResultList.map((item, index) => {
-                            console.log(item);
                             return <div key={index}><SkuResultSkuJsons skuResult={item} /></div>;
                           })
                         }

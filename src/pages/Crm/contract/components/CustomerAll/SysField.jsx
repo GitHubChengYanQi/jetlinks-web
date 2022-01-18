@@ -37,7 +37,7 @@ export const Module = (props) => {
     const res = await run({
       data: {customerId, contactsId},
     });
-    if (res && res.length > 0)
+    if (res && res.length > 0) {
       switch (module) {
         case 'contacts':
           other.onChange(res[0].contactsId);
@@ -51,11 +51,15 @@ export const Module = (props) => {
         default:
           return null;
       }
+    } else {
+      other.onChange(null);
+    }
+
   };
 
   useEffect(() => {
     if (customerId || contactsId) {
-      defaultValue();
+      // defaultValue();
     }
   }, [customerId, contactsId]);
 

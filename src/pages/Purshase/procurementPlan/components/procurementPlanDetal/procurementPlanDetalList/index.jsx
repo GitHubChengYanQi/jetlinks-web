@@ -77,7 +77,7 @@ const ProcurementPlanDetalList = ({value}) => {
       </Table>
 
       <Modal
-        width={1300}
+        width={1200}
         palnId={value.procurementPlanId}
         compoentRef={compoentRef}
         footer={<Button type="primary" onClick={() => {
