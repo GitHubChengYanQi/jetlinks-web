@@ -30,6 +30,25 @@ export const Module = (props) => {
     api,
     {
       manual: true,
+      onSuccess: (res) => {
+        if (!other.value) {
+          other.onChange(null);
+        }
+        if (res && res.length > 0) {
+          switch (module) {
+            case 'contacts':
+              break;
+            case 'address':
+              break;
+            case 'phone':
+              if (contactsId)
+                other.onChange(res[0].phoneId);
+              break;
+            default:
+              return null;
+          }
+        }
+      }
     }
   );
 
@@ -42,27 +61,33 @@ export const Module = (props) => {
     }
   }, [customerId, contactsId]);
 
-  const options = data ? data.map((item) => {
+  const options = () => {
     switch (module) {
       case 'contacts':
-        return {
-          label: item.contactsName,
-          value: item.contactsId
-        };
+        return data && customerId ? data.map((item) => {
+          return {
+            label: item.contactsName,
+            value: item.contactsId
+          };
+        }) : [];
       case 'address':
-        return {
-          label: item.location,
-          value: item.adressId
-        };
+        return data && customerId ? data.map((item) => {
+          return {
+            label: item.location,
+            value: item.adressId
+          };
+        }) : [];
       case 'phone':
-        return {
-          label: item.phoneNumber,
-          value: item.phoneId
-        };
+        return data && contactsId ? data.map((item) => {
+          return {
+            label: item.phoneNumber,
+            value: item.phoneId
+          };
+        }) : [];
       default:
         return null;
     }
-  }) : [];
+  };
 
 
   const type = () => {
@@ -111,7 +136,7 @@ export const Module = (props) => {
       }}
       style={{width}}
       filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-      options={options}
+      options={options() || []}
       {...other}
     />
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {

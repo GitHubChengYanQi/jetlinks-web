@@ -10,12 +10,12 @@ import {Badge, Button, Table as AntTable} from 'antd';
 import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
-import {procurementPlanDetail, procurementPlanList} from '../procurementPlanUrl';
+import {procurementPlanList} from '../procurementPlanUrl';
 import * as SysField from '../procurementPlanField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
-import {useRequest} from '@/util/Request';
-import Quote from '@/pages/Purshase/Quote';
+import ProcurementPlanDetalList
+  from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/procurementPlanDetalList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -23,24 +23,8 @@ const {FormItem} = Form;
 const ProcurementPlanList = () => {
 
   const tableRef = useRef(null);
-  const quoteRef = useRef(null);
-  const addQuoteRef = useRef(null);
+  const detailRef = useRef(null);
   const history = useHistory();
-
-  const {run} = useRequest(procurementPlanDetail, {
-    manual: true,
-    onSuccess: (res) => {
-      quoteRef.current.open({
-        skus: res && res.detalResults && res.detalResults.map((item) => {
-          return {
-            skuId: item.skuId,
-            skuResult: item.skuResult,
-            number: item.total
-          };
-        }), sourceId: res.procurementPlanId, source: 'purchasePlan'
-      });
-    }
-  });
 
   const searchForm = () => {
     return (
@@ -60,11 +44,7 @@ const ProcurementPlanList = () => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="采购计划名称" dataIndex="procurementPlanName" render={(value, record) => {
-          return <Button type="link" onClick={() => {
-            history.push(`/purchase/procurementPlan/${record.procurementPlanId}`);
-          }}>{value}</Button>;
-        }} />
+        <Column title="采购计划名称" dataIndex="procurementPlanName"/>
         <Column title="创建人" dataIndex="user" render={(value) => {
           return <>{value && value.name}</>;
         }} />
@@ -73,6 +53,7 @@ const ProcurementPlanList = () => {
         <Column title="状态" dataIndex="status" width={100} align="center" render={(value) => {
           switch (value) {
             case 0:
+              return <Badge text="审批中" color="yellow" />;
             case 98:
               return <Badge text="进行中" color="blue" />;
             case 97:
@@ -84,7 +65,21 @@ const ProcurementPlanList = () => {
           }
         }} />
         <Column />
+        <Column width={100} fixed='right' align='center' title='操作' render={(value, record)=>{
+          return <Button type="link" disabled={record.status === 0} onClick={() => {
+            if (record.status === 97) {
+              return detailRef.current.open(record.procurementPlanId);
+            }
+            history.push(`/purchase/procurementPlan/${record.procurementPlanId}`);
+          }}>查看详情</Button>;
+        }} />
       </Table>
+
+      <Modal
+        headTitle='采购计划详情'
+        component={ProcurementPlanDetalList}
+        ref={detailRef}
+      />
     </>
   );
 };

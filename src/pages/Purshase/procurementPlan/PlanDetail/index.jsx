@@ -1,17 +1,13 @@
 import {useHistory, useParams} from 'ice';
 import React from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {Badge, Button, Card, Descriptions, Empty, Space, Table} from 'antd';
+import {Badge, Button, Card, Descriptions, Empty, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
-import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Supply from '@/pages/Purshase/inquiryTask/components/Supply';
 import {procurementPlanDetail} from '@/pages/Purshase/procurementPlan/procurementPlanUrl';
-import CreateProcurementOrder
-  from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/components/CreateProcurementOrder';
-import ProcurementPlanDetalList
-  from '@/pages/Purshase/procurementPlan/components/procurementPlanDetal/procurementPlanDetalList';
+import CreatePurchaseOrder from '@/pages/Purshase/procurementPlan/components/CreatePurchaseOrder';
 
 const PlanDetail = () => {
 
@@ -27,7 +23,6 @@ const PlanDetail = () => {
       }
     }
   });
-  console.log(data);
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -73,7 +68,14 @@ const PlanDetail = () => {
       <div
         className={styles.main}>
         <Card title="物料清单" bodyStyle={{padding:0}}>
-          <ProcurementPlanDetalList value={data} />
+          <CreatePurchaseOrder
+            data={data.detalResults || []}
+            quotations={data.quotationResults || []}
+            palnId={params.cid}
+            onChange={()=>{
+              refresh();
+            }}
+          />
         </Card>
       </div>
 

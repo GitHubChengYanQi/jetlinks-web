@@ -23,6 +23,7 @@ import {request, useRequest} from '@/util/Request';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 import {businessEdit} from '@/pages/Crm/business/BusinessUrl';
 import {templateDetail} from '@/pages/Crm/template/TemplateUrl';
+import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 
 
 const company = '1416605276529807486';
@@ -89,11 +90,14 @@ const AddContractEdit = ({businessId, loading, ...props}, ref) => {
 
           FormEffectHooks.onFieldValueChange$('partyA').subscribe(async ({value}) => {
             if (value) {
+              const res = await request({...customerDetail, data: {customerId: value}});
               setFieldState('partyAContactsId', (state) => {
                 state.props.customerId = value;
+                state.value = res.defaultContacts || null;
               });
               setFieldState('partyAAdressId', (state) => {
                 state.props.customerId = value;
+                state.value = res.defaultAddress || null;
               });
               setFieldState('partyAPhone', (state) => {
                 state.props.customerId = value;
@@ -103,32 +107,31 @@ const AddContractEdit = ({businessId, loading, ...props}, ref) => {
 
           FormEffectHooks.onFieldValueChange$('partyB').subscribe(async ({value}) => {
             if (value) {
+              const res = await request({...customerDetail, data: {customerId: value}});
               setFieldState('partyBContactsId', (state) => {
                 state.props.customerId = value;
+                state.value = res.defaultContacts || null;
               });
               setFieldState('partyBAdressId', (state) => {
                 state.props.customerId = value;
-              });
-              setFieldState('partyBPhone', (state) => {
-                state.props.customerId = value;
+                state.value = res.defaultAddress || null;
               });
             }
           });
 
           FormEffectHooks.onFieldValueChange$('partyAContactsId').subscribe(async ({value}) => {
-            if (value) {
-              setFieldState('partyAPhone', (state) => {
-                state.props.contactsId = value;
-              });
-            }
+            setFieldState('partyAPhone', (state) => {
+              state.props.contactsId = value;
+            });
           });
 
           FormEffectHooks.onFieldValueChange$('partyBContactsId').subscribe(async ({value}) => {
-            if (value) {
-              setFieldState('partyBPhone', (state) => {
-                state.props.contactsId = value;
-              });
-            }
+            setFieldState('partyBPhone', (state) => {
+              state.props.contactsId = value;
+              if (!value) {
+                state.value = null;
+              }
+            });
           });
 
 
