@@ -3,7 +3,7 @@ import {
   Badge,
   Button,
   Card,
-  Descriptions,
+  Descriptions, Divider,
   Empty,
   message,
   Modal,
@@ -13,14 +13,17 @@ import {
   Statistic,
   Table
 } from 'antd';
-import {MoneyCollectOutlined} from '@ant-design/icons';
+import {DollarCircleOutlined, MoneyCollectOutlined} from '@ant-design/icons';
 import {useSetState} from 'ahooks';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
+import {purchaseQuotationAllList} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
-const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
+const CreatePurchaseOrder = ({data, palnId, onChange}) => {
 
-  const {run: createOrder} = useRequest({
+
+  const {loading: createLoading, run: createOrder} = useRequest({
     url: '/procurementOrder/add',
     method: 'POST',
   }, {
@@ -32,6 +35,8 @@ const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
       });
     }
   });
+
+  const {loading: quotationsLoading, data: quotations} = useRequest(purchaseQuotationAllList);
 
   const [skus, setSkus] = useSetState({data: []});
 
@@ -45,7 +50,11 @@ const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
 
   const [visible, setVisible] = useState();
 
-  if (!data) {
+  if (quotationsLoading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
+  if (!data && !quotations) {
     return <Empty />;
   }
 
@@ -84,7 +93,7 @@ const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
       onCancel={() => {
         setVisible(false);
       }}
-      footer={[<Button key="create" type="primary" onClick={() => {
+      footer={[<Button loading={createLoading} key="create" type="primary" onClick={() => {
         if (skus.data.filter((item) => {
           return !item.money;
         }).length > 0) {
@@ -102,7 +111,6 @@ const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
                 };
               }),
               procurementPlanId: palnId,
-              status: 99,
             }
           }
         );
@@ -115,6 +123,7 @@ const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
               return value.skuId === item.skuId;
             });
             return <Descriptions.Item
+              contentStyle={{width: '100%', display: 'block',maxHeight:200,overflowY:'auto'}}
               label={<>
                 <SkuResultSkuJsons skuResult={item.skuResult} />
                 <div style={{float: 'right'}}>数量:{item.total} 总价格:{item.money || 0}</div>
@@ -123,27 +132,37 @@ const CreatePurchaseOrder = ({data, palnId, quotations, onChange}) => {
             >
               {skuQuotation.length > 0
                 ?
-                <Radio.Group key={index} value={skus.data[index].quotations} onChange={({target: {value}}) => {
-                  const array = skus.data;
-                  const money = (value.afterTax || value.price) * item.total;
-                  array[index] = {
-                    ...array[index],
-                    customerId: value.customerId,
-                    money,
-                    quotations: value
-                  };
-                  setSkus({data: array});
-                }}>
-                  <Space direction="vertical">
+                <Radio.Group
+                  key={index}
+                  style={{width: '100%'}}
+                  value={skus.data[index].quotations}
+                  onChange={({target: {value}}) => {
+                    const array = skus.data;
+                    const money = (value.afterTax || value.price) * item.total;
+                    array[index] = {
+                      ...array[index],
+                      customerId: value.customerId,
+                      money,
+                      quotations: value
+                    };
+                    setSkus({data: array});
+                  }}>
+                  <Space direction="vertical" style={{width: '100%'}}>
                     {skuQuotation.map((item, index) => {
-                      return <Radio value={item} key={index}>
-                        <Statistic
-                          title={item.customerResult && item.customerResult.customerName}
-                          value={item.afterTax || item.price}
-                          prefix={<MoneyCollectOutlined />}
-                          suffix={<em style={{fontSize: 14, color: '#b2b0b0'}}>{item.afterTax > 0 ? '有税' : '无税'}</em>}
-                        />
-                      </Radio>;
+                      return <>
+                        <Radio value={item} key={index} style={{width: '100%'}}>
+                          <div style={{width: '100%'}}>
+                            <Statistic
+                              title={item.customerResult && item.customerResult.customerName}
+                              value={item.afterTax || item.price}
+                              prefix={<DollarCircleOutlined />}
+                              suffix={<em
+                                style={{fontSize: 14, color: '#b2b0b0'}}>{item.afterTax > 0 ? '有税' : '无税'}</em>}
+                            />
+                          </div>
+                        </Radio>
+                        <Divider style={{margin:8}} />
+                      </>;
                     })}
                   </Space>
                 </Radio.Group>

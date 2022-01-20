@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
+import {Badge, Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -40,7 +40,7 @@ const ProcurementOrderList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="采购计划" name="procurementPlanId" component={SysField.ProcurementPlanId} />
+        <FormItem name="status" component={SysField.Status} />
       </>
     );
   };
@@ -48,6 +48,7 @@ const ProcurementOrderList = () => {
   return (
     <>
       <Table
+        rowSelection
         title={<Breadcrumb />}
         api={procurementOrderList}
         rowKey="procurementOrderId"
@@ -60,15 +61,19 @@ const ProcurementOrderList = () => {
             ref.current.open(value);
           }}>{value}</Button>;
         }} />
-        <Column title="状态" dataIndex="status" />
-        <Column title="备注" dataIndex="note" />
+        <Column title="状态" dataIndex="status" render={(value)=>{
+          switch (value) {
+            case 0:
+              return <Badge text="审批中" color="yellow" />;
+            case 97:
+              return <Badge text="已拒绝" color="red" />;
+            case 99:
+              return <Badge text="已同意" color="green" />;
+            default:
+              break;
+          }
+        }} />
         <Column />
-        <Column title="操作" align="right" render={(value, record) => {
-          return (
-            <>
-            </>
-          );
-        }} width={300} />
       </Table>
       <Modal width={1000} headTitle="采购单详情" component={ProcurementOrderDetailList} onSuccess={() => {
         tableRef.current.refresh();

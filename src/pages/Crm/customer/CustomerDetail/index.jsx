@@ -248,7 +248,7 @@ const CustomerDetail = ({id}) => {
                   }} />
                 </TabPane>
                 <TabPane tab="物料信息" key="9">
-                  <SupplyList customer={data} brandIds={data.brandResults} />
+                  <SupplyList customer={data} />
                 </TabPane>
               </Tabs>
             </Card>

@@ -19,35 +19,42 @@ const ToBuyPlanList = () => {
 
   const snameSkus = (value) => {
     let array = [];
-    const skuIds = value.map((item) => {
-      return item.skuId;
+
+    const skus = value.map((item) => {
+      return {
+        skuId:item.skuId,
+        brandId:item.brandId,
+      };
     });
+
     const oneSkus = [];
     let sname = [];
 
     value.map((item) => {
-      if (skuIds.filter((value) => {
-        return item.skuId === value;
-      }).length === 1) {
+      if (
+        skus.filter((value) => {
+          return item.skuId === value.skuId && item.brandId === value.brandId;
+        }).length === 1
+      ) {
         oneSkus.push(item);
       } else {
         const snameSku = [];
         const sku = [];
-        sname.map((value)=>{
-          if (value.skuId === item.skuId){
+        sname.map((value) => {
+          if (value.skuId === item.skuId && value.brandId === item.brandId) {
             snameSku.push(value);
-          }else {
+          } else {
             sku.push(item);
           }
           return null;
         });
-        if (snameSku.length > 0){
-          sname = [...sku,{...snameSku[0],applyNumber:snameSku[0].applyNumber + item.applyNumber}];
-        }else {
+        if (snameSku.length > 0) {
+          sname = [...sku, {...snameSku[0], applyNumber: snameSku[0].applyNumber + item.applyNumber}];
+        } else {
           sname.push(item);
         }
       }
-      return array = [...oneSkus,...sname];
+      return array = [...oneSkus, ...sname];
     });
     return array;
   };
@@ -59,7 +66,7 @@ const ToBuyPlanList = () => {
       manual: true,
       onSuccess: (res) => {
         const allSku = [];
-        if (Array.isArray(res)){
+        if (Array.isArray(res)) {
           res.map((item) => {
             return item.children.map((value) => {
               return allSku.push(value);
@@ -186,7 +193,7 @@ const ToBuyPlanList = () => {
         type="default"
         disabled={keys.length === 0}
         onClick={() => {
-          const array = skus.filter((item)=>{
+          const array = skus.filter((item) => {
             return keys.includes(item.purchaseListingId);
           });
           inquiryRef.current.open(snameSkus(array));
@@ -195,21 +202,24 @@ const ToBuyPlanList = () => {
         type="default"
         onClick={() => {
           let array = [];
-          if (keys.length > 0){
-            array = skus.filter((item)=>{
+          if (keys.length > 0) {
+            array = skus.filter((item) => {
               return keys.includes(item.purchaseListingId);
             });
-          }else {
+          } else {
             array = skus;
           }
           const skuArray = snameSkus(array);
+
           quoteRef.current.open(
             {
-              skus: skuArray.map((item)=>{
+              skus: skuArray.map((item) => {
                 return {
-                  skuId:item.skuId,
-                  skuResult:item.skuResult,
-                  number:item.applyNumber
+                  skuId: item.skuId,
+                  skuResult: item.skuResult,
+                  number: item.applyNumber,
+                  brandId: item.brandId,
+                  brandResult: item.brandResult,
                 };
               }),
               sourceId: null,
@@ -243,6 +253,9 @@ const ToBuyPlanList = () => {
         <Column title="物料" dataIndex="skuResult" render={(value) => {
           return value && <SkuResultSkuJsons skuResult={value} />;
         }} />
+        <Column title="品牌" dataIndex="brandResult" render={(value) => {
+          return value ? value.brandName : '任意品牌';
+        }} />
         <Column title="数量" dataIndex="applyNumber" />
         <Column title="申请人" dataIndex="user" render={(value) => {
           return <>{value && value.name}</>;
@@ -251,7 +264,11 @@ const ToBuyPlanList = () => {
         <Column title="历史报价" dataIndex="skuId" render={(value, record) => {
           if (record.purchaseListingId.indexOf('mainKey:') !== -1) {
             return <Button type="link" onClick={() => {
-              quotationRef.current.open({skuId:record.skuId,check:true,name:<SkuResultSkuJsons skuResult={record.skuResult} />});
+              quotationRef.current.open({
+                skuId: record.skuId,
+                check: true,
+                name: <SkuResultSkuJsons skuResult={record.skuResult} />
+              });
             }}>
               查看
             </Button>;
@@ -297,7 +314,7 @@ const ToBuyPlanList = () => {
 
     <Modal
       headTitle="添加报价信息"
-      width={1870}
+      width={2100}
       compoentRef={addQuoteRef}
       footer={<Button
         type="primary"

@@ -5,8 +5,9 @@
  * @Date 2021-12-22 11:17:27
  */
 
-import React from 'react';
-import {Input, InputNumber, Select as AntdSelect, Checkbox} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Input, InputNumber, Select as AntdSelect, Checkbox, Space} from 'antd';
+import {PlusCircleOutlined} from '@ant-design/icons';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
@@ -14,6 +15,10 @@ import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {customerIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
+import Drawer from '@/components/Drawer';
+import BrandEdit from '@/pages/Erp/brand/BrandEdit';
+import {useRequest} from '@/util/Request';
 
 export const SkuId = (props) => {
   return (<SkuResultSkuJsons skuResult={props.value} />);
@@ -122,9 +127,60 @@ export const DeliveryDate = (props) => {
   return (<DatePicker width={120}  {...props} />);
 };
 
+export const BrandResult = (props) => {
+  return (<div style={{width:200,textAlign:'center'}}>{props.value && props.value.brandName}</div>);
+};
+
+export const BrandSelect = (props) => {
+
+  const {isSupplySku, data, refresh,brandIds, ...other} = props;
+
+  const options = data ? data.filter((item)=>{
+    return brandIds && brandIds.includes(item.value);
+  }) : [];
+
+  const ref = useRef();
+
+  return (<Space style={{width: 200}}>
+    <AntdSelect
+      style={{width: 170}}
+      options={options || []}
+      allowClear
+      showSearch
+      filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+      {...other}
+    />
+    {isSupplySku && <PlusCircleOutlined onClick={() => {
+      ref.current.open(false);
+    }} />}
+    <Drawer
+      title="添加品牌"
+      component={BrandEdit}
+      onSuccess={(res) => {
+        refresh();
+        ref.current.close();
+        if (res) {
+          props.onChange(res.data);
+        }
+      }}
+      ref={ref} />
+  </Space>);
+};
+
+
 export const TaxRateId = (props) => {
-  const {value, onChange,...other} = props;
-  return (<Select api={taxRateListSelect} width={120} {...other} value={typeof value === 'object' ? value.value : value} onChange={(value,option)=>{
-    onChange(option);
-  }} />);
+  const {value, onChange,data} = props;
+  return (
+    <AntdSelect
+      style={{width: 120}}
+      options={data || []}
+      value={typeof value === 'object' ? value.value : value}
+      allowClear
+      showSearch
+      filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+      onChange={(value, option) => {
+        onChange(option);
+      }}
+    />
+  );
 };

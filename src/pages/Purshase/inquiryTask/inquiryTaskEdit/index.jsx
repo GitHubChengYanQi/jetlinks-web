@@ -15,6 +15,7 @@ import {inquiryTaskDetail, inquiryTaskAdd, inquiryTaskEdit} from '../inquiryTask
 import * as SysField from '../inquiryTaskField';
 import {useRequest} from '@/util/Request';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
+import {BrandResult} from '../inquiryTaskField';
 
 const {FormItem} = Form;
 
@@ -85,7 +86,9 @@ const InquiryTaskEdit = ({...props}) => {
                 return {
                   total:item.applyNumber,
                   skuId:item.skuId,
-                  sku:item.skuResult
+                  sku:item.skuResult,
+                  brandId:item.brandId,
+                  brandResult:item.brandResult,
                 };
               })
             }
@@ -101,7 +104,7 @@ const InquiryTaskEdit = ({...props}) => {
                         bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
-                        <div style={{width: '40%', display: 'inline-block'}}>
+                        <div style={{width: '35%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={4}
                             itemStyle={{margin: 0}}
@@ -112,13 +115,22 @@ const InquiryTaskEdit = ({...props}) => {
                         </div>
                         <div style={{width: '20%', display: 'inline-block'}}>
                           <FormItem
+                            labelCol={4}
+                            itemStyle={{margin: 0}}
+                            label="品牌"
+                            name={`detailParams.${index}.brandResult`}
+                            component={SysField.BrandResult}
+                          />
+                        </div>
+                        <div style={{width: '15%', display: 'inline-block'}}>
+                          <FormItem
                             labelCol={10}
                             label="询价数量"
                             name={`detailParams.${index}.total`}
                             component={SysField.Number}
                           />
                         </div>
-                        <div style={{width: '30%', display: 'inline-block'}}>
+                        <div style={{width: '25%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={4}
                             itemStyle={{margin: 0}}

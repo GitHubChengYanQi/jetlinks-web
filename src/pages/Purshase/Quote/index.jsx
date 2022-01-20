@@ -5,6 +5,7 @@ import {
   FormEffectHooks, FormPath,
   InternalFieldList as FieldList
 } from '@formily/antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Purshase/purchaseQuotation/purchaseQuotationField';
 import {request, useRequest} from '@/util/Request';
@@ -14,7 +15,8 @@ import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import Modal from '@/components/Modal';
 import PurchaseConfigList from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigList';
 import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton';
-import ProSkeleton from '@ant-design/pro-skeleton';
+import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
+import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
 
 
 const {FormItem} = Form;
@@ -43,6 +45,10 @@ const Quote = ({...props}, ref) => {
 
   const [loading, setLoading] = useState(false);
 
+  const {data: brandData, refresh} = useRequest(brandIdSelect);
+
+  const {data: taxRateData} = useRequest(taxRateListSelect);
+
   const {data: supplyData, run: getSupply} = useRequest({
     url: 'supply/getSupplyByLevel',
     method: 'POST'
@@ -66,6 +72,8 @@ const Quote = ({...props}, ref) => {
     level
   });
 
+  const isSupplySku = !customer && config.isSupplySku === '否';
+
   const {loading: configLoading, run: configRun} = useRequest(
     purchaseConfigList,
     {
@@ -80,16 +88,16 @@ const Quote = ({...props}, ref) => {
           return value.type === 'level';
         });
 
-        const isSupplySku = supplys && supplys.length > 0 && supplys[0].value;
+        const isSupply = supplys && supplys.length > 0 && supplys[0].value;
         const configLevel = levels && levels.length > 0 && JSON.parse(levels[0].value);
 
         if (configLevel) {
-          getSupplys(configLevel.value, isSupplySku === '是');
+          getSupplys(configLevel.value, isSupply === '否');
         } else {
           getSupplys();
         }
         setConfig({
-          isSupplySku,
+          isSupplySku:isSupply,
           level: configLevel,
         });
 
@@ -125,7 +133,7 @@ const Quote = ({...props}, ref) => {
         </Descriptions>}
 
         <Descriptions title="供应商信息" column={5}>
-          <Descriptions.Item label="供应商" style={{width: !customer && 500}}>
+          <Descriptions.Item label="供应商" style={{width: isSupplySku && 500}}>
             <Space>
               <Select
                 placeholder="选择供应商"
@@ -146,11 +154,13 @@ const Quote = ({...props}, ref) => {
                   setSupply({});
                 }}
                 onSelect={async (value, option) => {
+
                   if (!value) {
                     setSupply({});
                     return null;
                   }
-                  if ((config.isSupplySku && config.isSupplySku !== '是')) {
+
+                  if (!isSupplySku) {
                     // 取出供应商有的物料
                     const array = skus && skus.filter((items) => {
                       const arr = option.object
@@ -158,12 +168,24 @@ const Quote = ({...props}, ref) => {
                         option.object.supplyResults
                         &&
                         option.object.supplyResults.filter((value) => {
-                          return value.skuId === items.skuId;
+                          return value.skuId === items.skuId && (items.brandId === 0 || value.brandId === items.brandId);
                         });
                       return arr && arr.length > 0;
                     });
                     setLoading(true);
-                    setSkuIds(array);
+
+                    setSkuIds(array.map((item)=>{
+                      const skus = option.object.supplyResults.filter((value)=>{
+                        return value.skuId === item.skuId;
+                      });
+                      return {
+                        ...item,
+                        brandIds:skus.map((item)=>{
+                          return item.brandId;
+                        }),
+                      };
+                    }));
+
                     setTimeout(() => {
                       setLoading(false);
                     }, 100);
@@ -178,12 +200,12 @@ const Quote = ({...props}, ref) => {
                   setSupply(res);
                 }}
               />
-              {!customer && <AddCustomerButton
+              {isSupplySku && <AddCustomerButton
                 data={{customerLevelId: config.level && config.level.value}}
                 supply={1}
                 onChange={(value) => {
                   setSupply(value);
-                  getSupplys(config.level.value, config.isSupplySku === '是');
+                  getSupplys(config.level.value, isSupplySku);
                 }} />}
             </Space>
           </Descriptions.Item>
@@ -240,6 +262,23 @@ const Quote = ({...props}, ref) => {
           }}
           onError={() => {}}
           effects={({setFieldState, getFieldState}) => {
+
+            FormEffectHooks.onFieldValueChange$('quotationParams.*.brandId').subscribe(({name, value}) => {
+
+              const quotationParams = getFieldState('quotationParams');
+
+              setFieldState(FormPath.transform(name, /\d/, ($1) => {
+                return `quotationParams.${$1}.brandId`;
+              }), (state) => {
+                state.visible = !value;
+                state.props.brandIds = quotationParams.initialValue[name.split('.')[1]].brandIds;
+              });
+              setFieldState(FormPath.transform(name, /\d/, ($1) => {
+                return `quotationParams.${$1}.brandResult`;
+              }), (state) => {
+                state.visible = value;
+              });
+            });
 
             // 数量
             FormEffectHooks.onFieldValueChange$('quotationParams.*.total').subscribe(({name, value: totalValue}) => {
@@ -416,6 +455,9 @@ const Quote = ({...props}, ref) => {
             <div style={{width: skus ? 200 : 328, textAlign: 'center'}}>
               {skus ? '物料' : '供应商'}
             </div>
+            <div style={{width: 200, textAlign: 'center'}}>
+              品牌
+            </div>
             <div style={{width: 90, textAlign: 'center'}}>
               采购数量
             </div>
@@ -468,6 +510,9 @@ const Quote = ({...props}, ref) => {
                   skuId: item.skuId,
                   skuResult: item.skuResult,
                   total: item.number,
+                  brandId: item.brandId || null,
+                  brandResult: item.brandResult,
+                  brandIds:item.brandIds,
                 };
               }) : [{}]
             }
@@ -533,6 +578,29 @@ const Quote = ({...props}, ref) => {
 
                           <FormItem
                             itemStyle={{margin: 0}}
+                            placeholder="品牌"
+                            isSupplySku={isSupplySku}
+                            data={brandData}
+                            refresh={() => {
+                              refresh();
+                            }}
+                            name={`quotationParams.${index}.brandId`}
+                            component={SysField.BrandSelect}
+                            rules={[{
+                              required: true,
+                              message: '必填！',
+                            }]}
+                          />
+
+                          <FormItem
+                            itemStyle={{margin: 0}}
+                            isSupplySku={isSupplySku}
+                            name={`quotationParams.${index}.brandResult`}
+                            component={SysField.BrandResult}
+                          />
+
+                          <FormItem
+                            itemStyle={{margin: 0}}
                             placeholder="采购数量"
                             name={`quotationParams.${index}.total`}
                             component={SysField.Total}
@@ -570,6 +638,7 @@ const Quote = ({...props}, ref) => {
                           <FormItem
                             itemStyle={{margin: 0}}
                             placeholder="税率"
+                            data={taxRateData}
                             name={`quotationParams.${index}.taxRateId`}
                             component={SysField.TaxRateId}
                           />
@@ -675,6 +744,7 @@ const Quote = ({...props}, ref) => {
         component={PurchaseConfigList}
         ref={configRef}
         onClose={() => {
+          setSupply({});
           configRun();
         }}
       />

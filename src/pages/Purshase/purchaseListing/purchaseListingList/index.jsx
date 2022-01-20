@@ -58,7 +58,7 @@ const PurchaseListingList = ({value}) => {
       <ProCard headerBordered className="h2Card" title="基础信息">
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
           <Descriptions.Item label="采购申请编号"> {data.coding}</Descriptions.Item>
-          <Descriptions.Item label="创建人">{data.createUserName}</Descriptions.Item>
+          <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
           <Descriptions.Item label="备注"> {data.note || '无'}</Descriptions.Item>
           <Descriptions.Item label="状态">{status(data.status)}</Descriptions.Item>
@@ -72,6 +72,10 @@ const PurchaseListingList = ({value}) => {
         >
           <Column title="物料" dataIndex="skuId" render={(value, record) => {
             return <SkuResultSkuJsons skuResult={record.skuResult} />;
+          }}
+          />
+          <Column title="品牌" dataIndex="brandResult" render={(value) => {
+            return <>{value ? value.brandName : '任意品牌'}</>;
           }}
           />
           <Column title="申请数量" dataIndex="applyNumber" />

@@ -13,8 +13,6 @@ import * as SysField from '../BrandField';
 
 const {FormItem} = Form;
 
-const {Step} = Steps;
-
 const ApiConfig = {
   view: brandDetail,
   add: brandAdd,

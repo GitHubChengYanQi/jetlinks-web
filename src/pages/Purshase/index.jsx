@@ -5,6 +5,7 @@ import SetView from '@/layouts/SetView';
 import SupplierBlacklistList from '@/pages/Crm/supplierBlacklist/supplierBlacklistList';
 import Modal from '@/components/Modal';
 import TaxRateList from '@/pages/Purshase/taxRate/taxRateList';
+import BrandList from '@/pages/Erp/brand/BrandList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -19,6 +20,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <SupplierBlacklistList />;
       case 'slgl':
         return <TaxRateList />;
+      case 'ppgl':
+        return <BrandList />;
       default:
         return null;
     }
@@ -40,6 +43,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             ref.current.open(true);
           }}
         >
+          <Menu.Item key="ppgl">
+            <span>品牌管理</span>
+          </Menu.Item>
           <Menu.Item key="slgl">
             <span>税率管理</span>
           </Menu.Item>

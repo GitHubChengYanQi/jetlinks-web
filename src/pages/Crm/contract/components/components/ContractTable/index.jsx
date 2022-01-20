@@ -247,6 +247,7 @@ const ContractTable = (props) => {
             </div>
           );
         }} />
+        <Column title='总金额' dataIndex='allMoney' />
         <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (

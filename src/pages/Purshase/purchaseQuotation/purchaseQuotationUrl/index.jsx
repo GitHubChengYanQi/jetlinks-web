@@ -41,3 +41,9 @@ export const purchaseQuotationList = {
   rowKey:'purchaseQuotationId'
 };
 
+export const purchaseQuotationAllList = {
+  url: '/purchaseQuotation/allList',
+  method: 'POST',
+  rowKey:'purchaseQuotationId'
+};
+

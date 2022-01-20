@@ -1,23 +1,11 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {Button, message, Table as AntTable} from 'antd';
-import {crmBusinessDetailedDelete, crmBusinessDetailedList} from '@/pages/Crm/business/BusinessUrl';
-import EditButton from '@/components/EditButton';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
+import React, {useRef} from 'react';
+import { Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import * as SysField from '@/pages/Crm/business/BusinessField';
 import Form from '@/components/Form';
-import Modal from '@/components/Modal';
-import {useRequest} from '@/util/Request';
-import CrmBusinessDetailedEdit from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedEdit';
-import ItemPackage from '@/pages/Crm/business/BusinessEdit/components/ItemPackage';
-import ItemsList from '@/pages/Erp/items/ItemsList';
-import ErpPackageList from '@/pages/Erp/package/packageList';
-import {crmBusinessDetailedAdd} from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
-import Breadcrumb from '@/components/Breadcrumb';
 import Table from '@/components/Table';
-import {createFormActions} from '@formily/antd';
-import {contractDetailDelete, contractDetailList} from '@/pages/Crm/contract/contractDetail/contractDetailUrl';
-import ContractDetailEdit from '@/pages/Crm/contract/contractDetail/contractDetailEdit';
+import {contractDetailList} from '@/pages/Crm/contract/contractDetail/contractDetailUrl';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
@@ -25,8 +13,9 @@ const {Column} = AntTable;
 const formActionsPublic = createFormActions();
 
 const TableDetail = (props) => {
+
   const {value} = props;
-  const ref = useRef(null);
+
   const tableRef = useRef(null);
 
   const searchForm = () => {
@@ -42,6 +31,7 @@ const TableDetail = (props) => {
     <>
       <Table
         contentHeight
+        rowSelection
         headStyle={{display: 'none'}}
         api={contractDetailList}
         formActions={formActionsPublic}
@@ -49,16 +39,13 @@ const TableDetail = (props) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="产品名称" dataIndex="items" render={(value, record) => {
-          return (
-            <div>
-              {
-                record.itemsResult ? record.itemsResult.name : null
-              }
-            </div>
-          );
+        <Column title="产品名称" dataIndex="skuResult" render={(value) => {
+          return (<SkuResultSkuJsons skuResult={value} />);
         }} />
-        <Column title="销售单价" dataIndex="salePrice" />
+        <Column title="供应商" dataIndex="customerResult" render={(value) => {
+          return (<>{value && value.customerName}</>);
+        }} />
+        <Column title="单价" dataIndex="salePrice" />
         <Column title="数量" dataIndex="quantity" />
         <Column title="小计" dataIndex="totalPrice" />
       </Table>

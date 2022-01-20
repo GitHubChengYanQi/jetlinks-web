@@ -78,7 +78,7 @@ const TemplateList = () => {
         <Column title="合同分类" dataIndex="classResult" render={(value)=>{
           return <>{value && value.name}</>;
         }} />
-        <Column title="合同类型" dataIndex="module" render={(value) => {
+        <Column title="合同类型" width={120} dataIndex="module" render={(value) => {
           switch (value) {
             case 'procurement':
               return <>采购</>;
@@ -97,7 +97,7 @@ const TemplateList = () => {
               }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
       </Table>
       <Modal width={1000} title="合同模板" component={TemplateEdit} onSuccess={() => {
         tableRef.current.refresh();

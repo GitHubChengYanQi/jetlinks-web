@@ -50,8 +50,7 @@ const Drawer = (
         {...props}
         value={value}
         onSuccess={(response) => {
-          // message.success(response.message);
-          onSuccess();
+          onSuccess(response);
         }}
         onError={(error) => {
           message.error(error.message);

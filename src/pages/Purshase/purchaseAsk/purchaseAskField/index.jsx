@@ -6,13 +6,15 @@
  */
 
 import React from 'react';
-import {Input, InputNumber,} from 'antd';
+import {Input, InputNumber, Select as AntSelect, Spin} from 'antd';
+import moment from 'moment';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import DatePicker from '@/components/DatePicker';
 import Coding from '@/pages/Erp/tool/components/Coding';
-import moment from 'moment';
 import Select from '@/components/Select';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
+import {useRequest} from '@/util/Request';
+import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
 
 export const Codings = (props) => {
 
@@ -22,6 +24,31 @@ export const Codings = (props) => {
 };
 export const Type = (props) => {
   return (<Input {...props} />);
+};
+
+export const BrandId = (props) => {
+  const {loading, data} = useRequest(brandIdSelect);
+
+  if (loading) {
+    return <Spin />;
+  }
+
+  if (!data) {
+    return <></>;
+  }
+
+  const options = [
+    {label:'任意品牌',value:0},
+    ...data,
+  ];
+
+  return (<AntSelect
+    options={options}
+    {...props}
+    allowClear
+    showSearch
+    filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+  />);
 };
 export const Note = (props) => {
   return (<Input.TextArea  {...props} />);

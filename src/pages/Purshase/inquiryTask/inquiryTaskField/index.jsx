@@ -26,6 +26,10 @@ export const SkuId = (props) => {
   return (<SkuResultSkuJsons skuResult={props.value} />);
 };
 
+export const BrandResult = (props) => {
+  return (<>{props.value ? props.value.brandName : '任意品牌'}</>);
+};
+
 export const Remark = (props) => {
   return (<Input.TextArea {...props} />);
 };

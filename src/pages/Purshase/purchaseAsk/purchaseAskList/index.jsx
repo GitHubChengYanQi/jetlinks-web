@@ -80,7 +80,7 @@ const PurchaseAskList = () => {
         <Column />
       </Table>
       <Modal
-        width={1500}
+        width={1700}
         title="采购申请"
         compoentRef={compoentRef}
         component={PurchaseAskEdit}

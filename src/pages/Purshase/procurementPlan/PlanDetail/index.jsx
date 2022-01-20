@@ -70,7 +70,6 @@ const PlanDetail = () => {
         <Card title="物料清单" bodyStyle={{padding:0}}>
           <CreatePurchaseOrder
             data={data.detalResults || []}
-            quotations={data.quotationResults || []}
             palnId={params.cid}
             onChange={()=>{
               refresh();

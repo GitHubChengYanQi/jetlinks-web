@@ -11,18 +11,16 @@ import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {supplyDelete, supplyList} from '../supplyUrl';
 import SupplyEdit from '../supplyEdit';
 import * as SysField from '../supplyField';
-import SkuResult from '@/pages/Erp/sku/components/SkuResult';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const SupplyList = ({customer,brandIds}) => {
+const SupplyList = ({customer}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -38,7 +36,7 @@ const SupplyList = ({customer,brandIds}) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="供应商id" name="customerId" value={customer && customer.customerId} component={SysField.CustomerId} />
+        <FormItem label="供应商" name="customerId" value={customer && customer.customerId} component={SysField.CustomerId} />
       </>
     );
   };
@@ -63,6 +61,9 @@ const SupplyList = ({customer,brandIds}) => {
         <Column title="物料" dataIndex="skuId" render={(value,record)=>{
           return <SkuResultSkuJsons skuResult={record.skuResult} />;
         }} />
+        <Column title="品牌" dataIndex="brandResult" render={(value)=>{
+          return <>{value && value.brandName}</>;
+        }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (
@@ -74,7 +75,7 @@ const SupplyList = ({customer,brandIds}) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="物料" brandIds={brandIds} customerId={customer && customer.customerId} component={SupplyEdit} onSuccess={() => {
+      <Drawer width={800} title="物料" customerId={customer && customer.customerId} component={SupplyEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

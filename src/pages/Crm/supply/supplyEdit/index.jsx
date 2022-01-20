@@ -32,10 +32,11 @@ const SupplyEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="supplyId"
       onSubmit={(value)=>{
-        return {...value,customerId,brandParams:brandIds};
+        return {...value,customerId};
       }}
     >
       <FormItem label="物料" name="skuId" component={SysField.SkuId} customerId={customerId} required/>
+      <FormItem label="品牌" name="brandIds" component={SysField.BrandId} required />
     </Form>
   );
 };

@@ -6,19 +6,19 @@
  */
 
 import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal2 from '@/components/Modal';
 import {brandDelete, brandList} from '../BrandUrl';
 import BrandEdit from '../BrandEdit';
 import * as SysField from '../BrandField';
 import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
-import {createFormActions} from '@formily/antd';
+import Drawer from '@/components/Drawer';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,11 +30,11 @@ const BrandList = () => {
   const tableRef = useRef(null);
   const actions = () => {
     return (
-      <>
+      <div style={{marginRight:24}}>
         <AddButton onClick={() => {
           ref.current.open(false);
         }}/>
-      </>
+      </div>
     );
   };
 
@@ -90,7 +90,7 @@ const BrandList = () => {
           );
         }} width={100}/>
       </Table>
-      <Modal2 width={800} title="品牌" component={BrandEdit} onSuccess={() => {
+      <Drawer width={800} title="品牌" component={BrandEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}/>

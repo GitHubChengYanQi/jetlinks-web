@@ -60,7 +60,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
 
   return (
     <div
-      style={{padding: 16}}
+      style={{padding: 16,width:1700,overflow:'auto'}}
     >
       <Form
         {...props}
@@ -138,7 +138,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                         bodyStyle={{padding: 8}}
                         key={index}>
                         <Avatar size={24}>{`${index + 1}`}</Avatar>
-                        <div style={{width: '20%', display: 'inline-block'}}>
+                        <div style={{width: '16%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -148,7 +148,17 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             component={SysField.SkuId}
                           />
                         </div>
-                        <div style={{width: '20%', display: 'inline-block'}}>
+                        <div style={{width: '16%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={7}
+                            itemStyle={{margin: 0}}
+                            label="品牌"
+                            value={0}
+                            name={`purchaseListingParams.${index}.brandId`}
+                            component={SysField.BrandId}
+                          />
+                        </div>
+                        <div style={{width: '18%', display: 'inline-block'}}>
                           <Space>
                             <FormItem
                               labelCol={10}
@@ -165,7 +175,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             />
                           </Space>
                         </div>
-                        <div style={{width: '15%', display: 'inline-block'}}>
+                        <div style={{width: '13%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}
@@ -178,7 +188,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             component={SysField.AvailableNumber}
                           />
                         </div>
-                        <div style={{width: '18%', display: 'inline-block'}}>
+                        <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
                             labelCol={7}
                             itemStyle={{margin: 0}}
@@ -187,7 +197,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             component={SysField.Date}
                           />
                         </div>
-                        <div style={{width: '20%', display: 'inline-block'}}>
+                        <div style={{width: '16%', display: 'inline-block'}}>
                           <FormItem
                             itemStyle={{margin: 0}}
                             labelCol={7}

@@ -6,14 +6,16 @@
  */
 
 import React, {useEffect} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Spin} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
-import * as apiUrl from '../supplyUrl';
+import {
+  Input,
+  Spin,
+  Tag,
+  Select as AntSelect
+} from 'antd';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {useRequest} from '@/util/Request';
-import {supplyAdd, supplyListSelect} from '../supplyUrl';
+import {supplyListSelect} from '../supplyUrl';
+import {brandListSelect} from '@/pages/Erp/brand/BrandUrl';
 
 export const SkuId = (props) => {
   const {customerId, ...other} = props;
@@ -25,6 +27,7 @@ export const SkuId = (props) => {
       }
     });
   }, []);
+
   if (loading)
     return <Spin />;
 
@@ -34,11 +37,76 @@ export const SkuId = (props) => {
       return skuIds.push(items.label);
     });
 
-  return (<SelectSku {...other} skuIds={skuIds} />);
+  return (<SelectSku {...other} width='100%' skuIds={skuIds} />);
 };
 export const CustomerId = (props) => {
   return (<Input {...props} />);
 };
 export const Display = (props) => {
   return (<Input {...props} />);
+};
+
+export const BrandId = (props) => {
+
+  const {value,displays} = props;
+
+
+  const brandBindResults = [];
+
+  if (value && value.length > 0){
+    if (typeof value[0] === 'object'){
+      value.forEach((items)=>{
+        brandBindResults.push(items && `${items.brandId}`);
+      });
+    }else {
+      value.forEach((items)=>{
+        brandBindResults.push(items);
+      });
+    }
+  }
+
+  useEffect(()=>{
+    if (brandBindResults.length > 0){
+      props.onChange(brandBindResults);
+    }
+  },[]);
+
+
+  const {data} = useRequest(brandListSelect);
+
+  const options = data || [];
+
+  const tagRender = (props) => {
+    const {label, closable, onClose} = props;
+    const onPreventMouseDown = event => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    return (
+      <Tag
+        color="green"
+        onMouseDown={onPreventMouseDown}
+        closable={closable}
+        onClose={onClose}
+        style={{marginRight: 3}}
+      >
+        {label}
+      </Tag>
+    );
+  };
+
+
+  return (
+    <AntSelect
+      mode="multiple"
+      showArrow
+      value={brandBindResults}
+      tagRender={tagRender}
+      style={{width: '100%',display:displays || null}}
+      options={options}
+      onChange={(value) => {
+        props.onChange(value);
+      }}
+    />
+  );
 };
