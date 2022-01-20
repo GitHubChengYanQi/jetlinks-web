@@ -40,25 +40,30 @@ const SkuDetail = () => {
 
   return (
     <div className={styles.detail}>
-      <Card title={<Breadcrumb />} extra={<Button onClick={() => {
-        history.push('/SPU/sku');
-      }}>返回</Button>} />
-      <Card title="基础数据" extra={<Button onClick={() => {
-        quoteRef.current.open(
-          {
-            skuId: data.skuId,
-            sourceId: data.skuId,
-            source: 'sku'
-          }
-        );
-      }}>添加报价</Button>}>
+      <Card title={<Breadcrumb />} extra={<Space>
+        <Button onClick={() => {
+          quoteRef.current.open(
+            {
+              skuId: data.skuId,
+              sourceId: data.skuId,
+              source: 'sku'
+            }
+          );
+        }}>添加报价</Button>
+        <Button onClick={() => {
+          history.push('/SPU/sku');
+        }}>返回</Button>
+      </Space>} />
+      <Card title="基础数据">
         <div className={styles.title}>
           <Descriptions>
+            <Descriptions.Item label="成品码">{data.standard}</Descriptions.Item>
+            <Descriptions.Item label="分类">{data.spuClass && data.spuClass.name}</Descriptions.Item>
             <Descriptions.Item
               label="产品">
               {data.spuResult && data.spuResult.spuClassificationResult && data.spuResult.spuClassificationResult.name}
             </Descriptions.Item>
-            <Descriptions.Item label="名称">{data.spuResult && data.spuResult.name}</Descriptions.Item>
+            <Descriptions.Item label="型号">{data.spuResult && data.spuResult.name}</Descriptions.Item>
             <Descriptions.Item label="参数组合">
               <Space>
                 (
@@ -80,8 +85,6 @@ const SkuDetail = () => {
                 )
               </Space>
             </Descriptions.Item>
-            <Descriptions.Item label="成品码">{data.standard}</Descriptions.Item>
-            <Descriptions.Item label="分类">{data.spuClassification && data.spuClassification.name}</Descriptions.Item>
             <Descriptions.Item label="单位">{data.unit ? data.unit.unitName : '无'}</Descriptions.Item>
             <Descriptions.Item label="批量">{data.batch ? '是' : '否'}</Descriptions.Item>
             <Descriptions.Item label="备注">{data.remarks || '无'}</Descriptions.Item>
@@ -100,7 +103,7 @@ const SkuDetail = () => {
         <Card>
           <Tabs defaultActiveKey="1">
             <TabPane tab="报价信息" key="1">
-              <PurchaseQuotationList value={{skuId:data.skuId,check:true}} />
+              <PurchaseQuotationList value={{skuId: data.skuId, check: true}} />
             </TabPane>
             <TabPane tab="tab2" key="2">
               tab2

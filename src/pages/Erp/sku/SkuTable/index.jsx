@@ -57,12 +57,12 @@ const SkuTable = (props) => {
       return {
         key: index,
         line:item.line,
-        sku: item.产品,
-        class: item.分类,
-        unit: item.单位,
-        name: item.型号,
-        coding: item.成品码,
-        batch: item.是否批量,
+        sku: item.classItem,
+        class: item.spuClass,
+        unit: item.unit,
+        name: item.spuName,
+        coding: item.standard,
+        batch: item.isNotBatch,
         attributes: item.attributes && item.attributes.map((item) => {
           return item;
         }).toString()
