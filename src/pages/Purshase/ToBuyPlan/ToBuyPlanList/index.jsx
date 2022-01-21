@@ -222,7 +222,7 @@ const ToBuyPlanList = () => {
                   brandResult: item.brandResult,
                 };
               }),
-              sourceId: null,
+              sourceId: 0,
               source: 'toBuyPlan'
             });
         }}>添加报价</Button>

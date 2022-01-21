@@ -27,7 +27,6 @@ const InquiryDetail = () => {
       }
     }
   });
-  console.log(data);
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -79,6 +78,9 @@ const InquiryDetail = () => {
             <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
               return <SkuResultSkuJsons skuResult={value} />;
             }} />
+            <Table.Column title="品牌" dataIndex="brandResult" render={(value) => {
+              return <>{value ? value.brandName : '任意品牌'}</>;
+            }} />
             <Table.Column title="数量" dataIndex="total" />
             <Table.Column title="备注" dataIndex="remark" />
             <Table.Column width={100} render={(value, record) => {
@@ -102,7 +104,7 @@ const InquiryDetail = () => {
             onChange={() => {
               refresh();
             }}
-            source='inquiryTask'
+            source="inquiryTask"
             level={{label: '', value: data.supplierLevel}}
             supplySku={data.isSupplier}
             data={data.customerResults}

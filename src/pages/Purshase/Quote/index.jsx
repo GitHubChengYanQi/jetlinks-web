@@ -10,7 +10,7 @@ import Form from '@/components/Form';
 import * as SysField from '@/pages/Purshase/purchaseQuotation/purchaseQuotationField';
 import {request, useRequest} from '@/util/Request';
 import {purchaseConfigList} from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigUrl';
-import {purchaseQuotationAdd, purchaseQuotationAddbatch} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
+import {purchaseQuotationAdd} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import Modal from '@/components/Modal';
 import PurchaseConfigList from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigList';
@@ -29,7 +29,7 @@ const Quote = ({...props}, ref) => {
 
   const ApiConfig = {
     view: purchaseQuotationAdd,
-    add: skus ? purchaseQuotationAdd : purchaseQuotationAddbatch,
+    add: purchaseQuotationAdd,
     save: purchaseQuotationAdd
   };
 
@@ -172,6 +172,7 @@ const Quote = ({...props}, ref) => {
                         });
                       return arr && arr.length > 0;
                     });
+
                     setLoading(true);
 
                     setSkuIds(array.map((item)=>{
@@ -232,7 +233,7 @@ const Quote = ({...props}, ref) => {
           NoButton={false}
           fieldKey="purchaseAskId"
           onSubmit={(value) => {
-            if (skus && !supply) {
+            if (skus && !supply.customerId) {
               message.warn('请选择供应商！');
               return false;
             }
@@ -240,18 +241,24 @@ const Quote = ({...props}, ref) => {
               message.warn('报价信息不能为空！');
               return false;
             }
-            if (skus) {
-              return {...value, CustomerId: supply.customerId, source, sourceId};
+            if (!skuId) {
+              const array = value.quotationParams.map((item) => {
+                return {
+                  ...item,
+                  brandId:item.brandId || item.brandResult.brandId,
+                  customerId:supply.customerId,
+                };
+              });
+              return {quotationParams: array,source, sourceId,};
             } else {
               const array = value.quotationParams.map((item) => {
                 return {
                   ...item,
+                  brandId:item.brandId || item.brandResult.brandId,
                   skuId,
-                  source,
-                  sourceId,
                 };
               });
-              return {quotationParams: array};
+              return {quotationParams: array,source, sourceId,};
             }
           }}
           onSuccess={() => {
@@ -263,21 +270,24 @@ const Quote = ({...props}, ref) => {
           onError={() => {}}
           effects={({setFieldState, getFieldState}) => {
 
-            FormEffectHooks.onFieldValueChange$('quotationParams.*.brandId').subscribe(({name, value}) => {
+            FormEffectHooks.onFieldValueChange$('quotationParams.*.brandResult').subscribe(({name, value}) => {
 
-              const quotationParams = getFieldState('quotationParams');
+              if (!skuId){
+                const quotationParams = getFieldState('quotationParams');
 
-              setFieldState(FormPath.transform(name, /\d/, ($1) => {
-                return `quotationParams.${$1}.brandId`;
-              }), (state) => {
-                state.visible = !value;
-                state.props.brandIds = quotationParams.initialValue[name.split('.')[1]].brandIds;
-              });
-              setFieldState(FormPath.transform(name, /\d/, ($1) => {
-                return `quotationParams.${$1}.brandResult`;
-              }), (state) => {
-                state.visible = value;
-              });
+                setFieldState(FormPath.transform(name, /\d/, ($1) => {
+                  return `quotationParams.${$1}.brandId`;
+                }), (state) => {
+                  state.visible = !value;
+                  state.props.brandIds = quotationParams.initialValue[name.split('.')[1]].brandIds;
+                });
+                setFieldState(FormPath.transform(name, /\d/, ($1) => {
+                  return `quotationParams.${$1}.brandResult`;
+                }), (state) => {
+                  state.visible = value;
+                });
+              }
+
             });
 
             // 数量
@@ -593,6 +603,7 @@ const Quote = ({...props}, ref) => {
                           />
 
                           <FormItem
+                            visible={!skuId}
                             itemStyle={{margin: 0}}
                             isSupplySku={isSupplySku}
                             name={`quotationParams.${index}.brandResult`}
@@ -744,6 +755,7 @@ const Quote = ({...props}, ref) => {
         component={PurchaseConfigList}
         ref={configRef}
         onClose={() => {
+          setSkuIds([]);
           setSupply({});
           configRun();
         }}

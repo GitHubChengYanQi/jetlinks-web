@@ -27,7 +27,7 @@ const PurchaseQuotationList = ({
   value = {},
 }) => {
 
-  const {skuId, name, customerId, check, source, sourceId} = value;
+  const {skuId, name, customerId,brandId, check, source, sourceId} = value;
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -37,6 +37,7 @@ const PurchaseQuotationList = ({
       <>
         <FormItem label="物料" name="skuId" value={skuId} component={SysField.SkuListSelect} />
         <FormItem label="供应商" name="customerId" value={customerId} component={SysField.CustomerId} />
+        <FormItem label="品牌" name="brandId" value={brandId} component={SysField.BrandId} />
         <FormItem label="是否含税" name="isTax" component={IsFreight} />
         <FormItem label="来源" name="source" value={source} component={SysField.Source} />
         <FormItem hidden name="sourceId" value={sourceId} component={SysField.SourceId} />
@@ -63,6 +64,9 @@ const PurchaseQuotationList = ({
         }} />}
         {!customerId && <Column title="供应商" dataIndex="customerResult" render={(value) => {
           return <>{value && value.customerName}</>;
+        }} />}
+        {!brandId && <Column title="品牌" dataIndex="brandResult" render={(value) => {
+          return <>{value && value.brandName}</>;
         }} />}
         <Column title="价格" dataIndex="price" width={100} align="center" sorter />
         <Column title="报价有效期" dataIndex="periodOfValidity" width={180} align="center" />

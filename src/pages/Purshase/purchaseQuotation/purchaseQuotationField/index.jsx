@@ -5,7 +5,7 @@
  * @Date 2021-12-22 11:17:27
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Input, InputNumber, Select as AntdSelect, Checkbox, Space} from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
 import DatePicker from '@/components/DatePicker';
@@ -128,15 +128,20 @@ export const DeliveryDate = (props) => {
 };
 
 export const BrandResult = (props) => {
-  return (<div style={{width:200,textAlign:'center'}}>{props.value && props.value.brandName}</div>);
+  return (<div style={{width: 200, textAlign: 'center'}}>{props.value && props.value.brandName}</div>);
+};
+
+
+export const BrandId = (props) => {
+  return (<Select width={200} api={brandIdSelect} {...props} />);
 };
 
 export const BrandSelect = (props) => {
 
-  const {isSupplySku, data, refresh,brandIds, ...other} = props;
+  const {isSupplySku, data, refresh, brandIds, ...other} = props;
 
-  const options = data ? data.filter((item)=>{
-    return brandIds && brandIds.includes(item.value);
+  const options = data ? data.filter((item) => {
+    return !brandIds ? true : brandIds.includes(item.value);
   }) : [];
 
   const ref = useRef();
@@ -169,11 +174,12 @@ export const BrandSelect = (props) => {
 
 
 export const TaxRateId = (props) => {
-  const {value, onChange,data} = props;
+  const {value, onChange, data} = props;
   return (
     <AntdSelect
       style={{width: 120}}
       options={data || []}
+      placeholder="选择税率"
       value={typeof value === 'object' ? value.value : value}
       allowClear
       showSearch

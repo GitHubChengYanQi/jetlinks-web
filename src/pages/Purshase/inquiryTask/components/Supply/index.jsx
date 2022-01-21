@@ -12,7 +12,7 @@ import {useRequest} from '@/util/Request';
 import {purchaseConfigList} from '@/pages/BaseSystem/dictType/components/purchaseConfig/purchaseConfigUrl';
 
 const Supply = ({
-  skus, id, level, supplySku,source, onChange = () => {
+  skus, id, level, supplySku, source, onChange = () => {
   }
 }) => {
 
@@ -25,8 +25,8 @@ const Supply = ({
     {
       url: '/supply/getSupplyBySku',
       method: 'POST',
-    },{
-      manual:true,
+    }, {
+      manual: true,
     }
   );
 
@@ -66,9 +66,9 @@ const Supply = ({
   );
 
   useEffect(() => {
-    if (!level){
+    if (!level) {
       configRun();
-    }else {
+    } else {
       run({
         data: {
           skuIds: skus.map((item) => {
@@ -133,6 +133,8 @@ const Supply = ({
                       skus: skuResult.map((item) => {
                         return {
                           skuId: item.skuId,
+                          brandId: item.brandId,
+                          brandResult: item.brandResult,
                           skuResult: item.skuResult,
                           number: item.total,
                         };
@@ -207,7 +209,7 @@ const Supply = ({
           </Card.Grid>;
         })
       }
-      {config.isSupplySku === '是' && <Card.Grid
+      {config.isSupplySku === '否' && <Card.Grid
         style={{
           padding: 0,
           width: 'auto',
@@ -220,6 +222,8 @@ const Supply = ({
             skus: skus.map((item) => {
               return {
                 skuId: item.skuId,
+                brandId:item.brandId,
+                brandResult: item.brandResult,
                 skuResult: item.skuResult,
                 number: item.total,
               };
@@ -245,7 +249,7 @@ const Supply = ({
 
     <Modal
       headTitle="添加报价信息"
-      width={1870}
+      width={2100}
       compoentRef={addQuoteRef}
       footer={<Button
         type="primary"
