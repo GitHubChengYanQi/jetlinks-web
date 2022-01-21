@@ -100,7 +100,7 @@ const StockTable = (props) => {
         <Column title="供应商" width={200} render={(text, record) => {
           return (
             <>
-              {record.brandResult && record.brandResult.brandName}
+              {record.customerResult && record.customerResult.customerName}
             </>
           );
         }} />

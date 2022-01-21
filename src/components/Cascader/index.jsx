@@ -37,7 +37,7 @@ const Cascader = (props) => {
     }
   }, [resh]);
 
-  if (loading || !data)
+  if (loading)
     return <Spin />;
 
   const dataSources = top ? [

@@ -73,14 +73,14 @@ const StorehousePositionsBindList = ({value}) => {
         <Column title="物料" dataIndex="skuResult" render={(value) => {
           return <SkuResultSkuJsons skuResult={value} />;
         }} />
-        <Column />
         <Column
+          fixed='right'
           title={<Button
             onClick={() => {
               ref.current.open(false);
             }}
           >添加物料</Button>}
-          align="right"
+          align="center"
           render={(value, record) => {
             return (
               <>
@@ -89,7 +89,7 @@ const StorehousePositionsBindList = ({value}) => {
                 }} />
               </>
             );
-          }} width={300} />
+          }} width={120} />
       </Table>
 
       <Drawer
