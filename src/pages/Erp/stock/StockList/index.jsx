@@ -15,7 +15,7 @@ import Select from '@/components/Select';
 
 const StockList = () => {
 
-  const {loading, data, run} = useRequest({url: '/storehouse/list', method: 'POST'});
+  const {data, run} = useRequest({url: '/storehouse/list', method: 'POST'});
 
   const Storehouse = data ? data.map((values) => {
     return {

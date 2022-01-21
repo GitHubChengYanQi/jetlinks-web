@@ -91,8 +91,14 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           label: '分类码',
           // eslint-disable-next-line no-template-curly-in-string
-          value: '${skuClass}'
-        }];
+          value: '${classCode}'
+        }, {
+          // eslint-disable-next-line no-template-curly-in-string
+          label: '产品码',
+          // eslint-disable-next-line no-template-curly-in-string
+          value: '${spuCode}'
+        }
+        ];
       case 1:
       case 2:
         // 1.出库
@@ -163,7 +169,7 @@ export const Values = (props) => {
 
   const options = [
     ...input,
-    ...serial,
+    // ...serial,
     {
       label: '自定义',
       options: [

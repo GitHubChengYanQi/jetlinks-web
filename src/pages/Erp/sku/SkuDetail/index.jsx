@@ -121,7 +121,7 @@ const SkuDetail = () => {
 
       <Modal
         headTitle="添加报价信息"
-        width={2000}
+        width={2228}
         compoentRef={addQuoteRef}
         footer={<Button
           type="primary"
@@ -132,6 +132,7 @@ const SkuDetail = () => {
         ref={quoteRef}
         component={Quote}
         onSuccess={() => {
+          refresh();
           quoteRef.current.close();
         }} />
 

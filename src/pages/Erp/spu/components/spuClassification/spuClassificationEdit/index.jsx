@@ -34,18 +34,17 @@ const SpuClassificationEdit = ({...props}) => {
         return {...value, type: type ? 1 : 2};
       }}
     >
-      <FormItem label="上级名称" name="pid" component={SysField.Pid} defaultParams={{data:{isNotproduct:1}}} top={type === 1} required />
+      <FormItem label={type !== 1 ? '分类名称' : '上级分类'} name="pid" component={SysField.Pid} defaultParams={{data:{isNotproduct:1}}} top={type === 1} required />
       <FormItem label="名称" name="name" component={SysField.Name} required />
-      {type === 1 &&
       <FormItem
-        label="分类码"
+        label={type !== 1 ? '产品码' : '分类码'}
         name="codingClass"
         component={SysField.CodingClass}
         rules={[{
           required: true,
           pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',
           message: '只能输入大写字母或数字！'
-        }]} />}
+        }]} />
       <FormItem label="排序" name="sort" component={SysField.Sort} />
     </Form>
   );

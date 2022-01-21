@@ -90,7 +90,14 @@ const StockTable = (props) => {
           );
 
         }} sorter />
-        <Column title="供应商(品牌)" width={200} render={(text, record) => {
+        <Column title="品牌" width={200} render={(text, record) => {
+          return (
+            <>
+              {record.brandResult && record.brandResult.brandName}
+            </>
+          );
+        }} />
+        <Column title="供应商" width={200} render={(text, record) => {
           return (
             <>
               {record.brandResult && record.brandResult.brandName}

@@ -5,13 +5,15 @@
  * @Date 2021-07-14 14:19:04
  */
 
-import React, {useRef, useState} from 'react';
-import {Button, Input, Steps} from 'antd';
+import React, {useRef} from 'react';
+import {createFormActions} from '@formily/antd';
 import Form from '@/components/Form';
 import {brandDetail, brandAdd, brandEdit} from '../BrandUrl';
 import * as SysField from '../BrandField';
 
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ApiConfig = {
   view: brandDetail,
@@ -31,6 +33,7 @@ const BrandEdit = ({...props}) => {
       <Form
         {...props}
         ref={formRef}
+        formActions={formActionsPublic}
         api={ApiConfig}
         fieldKey="brandId"
       >

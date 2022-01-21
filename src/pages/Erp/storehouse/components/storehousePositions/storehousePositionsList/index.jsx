@@ -21,12 +21,15 @@ import Code from '@/pages/Erp/spu/components/Code';
 import {useRequest} from '@/util/Request';
 import TableSort from '@/components/Table/components/TableSort';
 import UpdateSort from '@/components/Table/components/UpdateSort';
+import StorehousePositionsBindList
+  from '@/pages/Erp/storehouse/components/storehousePositionsBind/storehousePositionsBindList';
 
 const {Column} = AntTable;
 
 const StorehousePositionsList = (props) => {
   const {value} = props;
   const ref = useRef(null);
+  const bindRef = useRef(null);
 
   // 排序
   const [sorts, setSorts] = useState([]);
@@ -106,6 +109,11 @@ const StorehousePositionsList = (props) => {
             if (record.value !== '0') {
               return (
                 <>
+                  {
+                    !record.children && <Button type='link' onClick={()=>{
+                      bindRef.current.open(record.value);
+                    }}>绑定物料</Button>
+                  }
                   <EditButton onClick={() => {
                     ref.current.open(record.value);
                   }} />
@@ -122,6 +130,10 @@ const StorehousePositionsList = (props) => {
         refresh();
         ref.current.close();
       }} ref={ref} storehouse={value} />
+
+      <Drawer width={800} title="物料信息" component={StorehousePositionsBindList} onSuccess={() => {
+        bindRef.current.close();
+      }} ref={bindRef} />
     </>
   );
 };
