@@ -107,7 +107,8 @@ const Quote = ({...props}, ref) => {
 
 
   useEffect(() => {
-    if (level && supplySku) {
+    console.log(customer);
+    if (level) {
       getSupplys(level.value, supplySku);
     } else {
       configRun();
