@@ -118,7 +118,6 @@ const StockDetailsList = (props) => {
                 {record.number}
               </>
             );
-
           }} sorter />
         <Column title="仓库库位" dataIndex="pname" render={(text, record) => {
           return (

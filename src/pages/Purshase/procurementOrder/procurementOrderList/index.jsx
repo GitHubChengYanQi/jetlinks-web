@@ -61,6 +61,7 @@ const ProcurementOrderList = () => {
             ref.current.open(value);
           }}>{value}</Button>;
         }} />
+        <Column title="创建时间" dataIndex="createTime" />
         <Column title="状态" dataIndex="status" render={(value)=>{
           switch (value) {
             case 0:

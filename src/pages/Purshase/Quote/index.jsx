@@ -97,7 +97,7 @@ const Quote = ({...props}, ref) => {
           getSupplys();
         }
         setConfig({
-          isSupplySku:isSupply,
+          isSupplySku: isSupply,
           level: configLevel,
         });
 
@@ -107,9 +107,39 @@ const Quote = ({...props}, ref) => {
 
 
   useEffect(() => {
-    console.log(customer);
-    if (level) {
-      getSupplys(level.value, supplySku);
+    if (customer) {
+      if (supplySku) {
+        // 取出供应商有的物料
+        const array = skus && skus.filter((items) => {
+          const arr = customer.skuResultList && customer.skuResultList.filter((value) => {
+            return value.skuId === items.skuId && (items.brandId === 0 || value.brandId === items.brandId);
+          });
+          return arr && arr.length > 0;
+        });
+
+        setLoading(true);
+        setSkuIds(array.map((item) => {
+          const skus = customer.skuResultList.filter((value) => {
+            return value.skuId === item.skuId;
+          });
+          return {
+            ...item,
+            brandIds: skus.map((item) => {
+              return item.brandId;
+            }),
+          };
+        }));
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
+      }
+      if (level){
+        getSupplys(level.value);
+      }else {
+        configRun();
+      }
+
     } else {
       configRun();
     }
@@ -126,7 +156,7 @@ const Quote = ({...props}, ref) => {
       &&
       <Space direction="vertical">
 
-        {!level && <Descriptions title="系统配置" extra={<Button onClick={() => {
+        {source !== 'inquiryTask' && <Descriptions title="系统配置" extra={<Button onClick={() => {
           configRef.current.open(true);
         }}>修改默认配置</Button>}>
           <Descriptions.Item label="是否是供应商物料">{config && config.isSupplySku}</Descriptions.Item>
@@ -176,13 +206,13 @@ const Quote = ({...props}, ref) => {
 
                     setLoading(true);
 
-                    setSkuIds(array.map((item)=>{
-                      const skus = option.object.supplyResults.filter((value)=>{
+                    setSkuIds(array.map((item) => {
+                      const skus = option.object.supplyResults.filter((value) => {
                         return value.skuId === item.skuId;
                       });
                       return {
                         ...item,
-                        brandIds:skus.map((item)=>{
+                        brandIds: skus.map((item) => {
                           return item.brandId;
                         }),
                       };
@@ -246,20 +276,20 @@ const Quote = ({...props}, ref) => {
               const array = value.quotationParams.map((item) => {
                 return {
                   ...item,
-                  brandId:item.brandId || item.brandResult.brandId,
-                  customerId:supply.customerId,
+                  brandId: item.brandId || item.brandResult.brandId,
+                  customerId: supply.customerId,
                 };
               });
-              return {quotationParams: array,source, sourceId,};
+              return {quotationParams: array, source, sourceId, customerId: supply.customerId};
             } else {
               const array = value.quotationParams.map((item) => {
                 return {
                   ...item,
-                  brandId:item.brandId || item.brandResult.brandId,
+                  brandId: item.brandId || item.brandResult.brandId,
                   skuId,
                 };
               });
-              return {quotationParams: array,source, sourceId,};
+              return {quotationParams: array, source, sourceId,};
             }
           }}
           onSuccess={() => {
@@ -268,12 +298,13 @@ const Quote = ({...props}, ref) => {
             });
             onSuccess();
           }}
-          onError={() => {}}
+          onError={() => {
+          }}
           effects={({setFieldState, getFieldState}) => {
 
             FormEffectHooks.onFieldValueChange$('quotationParams.*.brandResult').subscribe(({name, value}) => {
 
-              if (!skuId){
+              if (!skuId) {
                 const quotationParams = getFieldState('quotationParams');
 
                 setFieldState(FormPath.transform(name, /\d/, ($1) => {
@@ -523,7 +554,7 @@ const Quote = ({...props}, ref) => {
                   total: item.number,
                   brandId: item.brandId || null,
                   brandResult: item.brandResult,
-                  brandIds:item.brandIds,
+                  brandIds: item.brandIds,
                 };
               }) : [{}]
             }

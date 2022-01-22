@@ -20,36 +20,37 @@ const ToBuyPlanList = () => {
   const snameSkus = (value) => {
     let array = [];
 
-    const skus = value.map((item) => {
+    const skuBrand = value.map((item) => {
       return {
         skuId:item.skuId,
         brandId:item.brandId,
       };
     });
+    console.log(value);
 
     const oneSkus = [];
     let sname = [];
 
     value.map((item) => {
       if (
-        skus.filter((value) => {
+        skuBrand.filter((value) => {
           return item.skuId === value.skuId && item.brandId === value.brandId;
         }).length === 1
       ) {
         oneSkus.push(item);
       } else {
-        const snameSku = [];
+        let snameSku = null;
         const sku = [];
         sname.map((value) => {
           if (value.skuId === item.skuId && value.brandId === item.brandId) {
-            snameSku.push(value);
+            snameSku = value;
           } else {
-            sku.push(item);
+            sku.push(value);
           }
           return null;
         });
-        if (snameSku.length > 0) {
-          sname = [...sku, {...snameSku[0], applyNumber: snameSku[0].applyNumber + item.applyNumber}];
+        if (snameSku) {
+          sname = [...sku, {...snameSku, applyNumber: snameSku.applyNumber + item.applyNumber}];
         } else {
           sname.push(item);
         }

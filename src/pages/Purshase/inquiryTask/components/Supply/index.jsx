@@ -120,15 +120,14 @@ const Supply = ({
                   type="link"
                   onClick={() => {
                     let skuResult = skus;
-                    if (config.isSupplySku !== '是') {
-                      const supplySkus = item.skuResultList && item.skuResultList.map((item, index) => {
+                    if (config.isSupplySku === '是') {
+                      const supplySkus = item.skuResultList && item.skuResultList.map((item) => {
                         return item.skuId;
                       });
                       skuResult = skus.filter((item) => {
                         return supplySkus.includes(item.skuId);
                       });
                     }
-
                     quoteRef.current.open({
                       skus: skuResult.map((item) => {
                         return {
@@ -147,8 +146,8 @@ const Supply = ({
                           level: item.level.level
                         }
                       },
-                      supplySku,
-                      level,
+                      supplySku:config.isSupplySku === '是',
+                      level:config.level,
                     });
                   }}><EditOutlined key="edit" title="添加报价" /></Button>,
                 <Button
@@ -230,8 +229,8 @@ const Supply = ({
             }),
             sourceId: id,
             source,
-            supplySku,
-            level,
+            supplySku:config.isSupplySku === '是',
+            level:config.level,
           });
         }}
       >
