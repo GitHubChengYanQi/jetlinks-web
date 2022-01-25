@@ -38,6 +38,11 @@ export const customerDetail = {
   rowKey:'customerId'
 };
 
+export const customerEnterprise = {
+  url: '/customer/enterprise',
+  method: 'GET',
+};
+
 export const customerList = {
   url: '/customer/list',
   method: 'POST',

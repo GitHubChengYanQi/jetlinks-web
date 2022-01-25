@@ -6,7 +6,7 @@
  */
 
 export const procurementOrderAdd = {
-  url: '/procurementOrder/add',
+  url: '/procurementOrder/addOrder',
   method: 'POST',
   rowKey:'procurementOrderId'
 };

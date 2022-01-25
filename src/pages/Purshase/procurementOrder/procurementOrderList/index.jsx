@@ -6,20 +6,17 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Badge, Button, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
+import Table from '@/components/Table';
 import Form from '@/components/Form';
-import {procurementOrderDelete, procurementOrderList} from '../procurementOrderUrl';
-import ProcurementOrderEdit from '../procurementOrderEdit';
+import {procurementOrderAdd, procurementOrderList} from '../procurementOrderUrl';
 import * as SysField from '../procurementOrderField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import ProcurementOrderDetailList
   from '@/pages/Purshase/procurementOrder/components/procurementOrderDetail/procurementOrderDetailList';
+import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -27,12 +24,17 @@ const {FormItem} = Form;
 const ProcurementOrderList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const addContract = useRef();
+  const contactRef = useRef();
+
+  const {run} = useRequest(procurementOrderAdd, {manual: true});
+
   const actions = () => {
     return (
       <>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
+        <Button onClick={() => {
+          contactRef.current.open(false);
+        }}>创建采购单</Button>
       </>
     );
   };
@@ -56,13 +58,13 @@ const ProcurementOrderList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="采购单" dataIndex="procurementOrderId" render={(value)=>{
-          return<Button type='link' onClick={()=>{
+        <Column title="采购单" dataIndex="procurementOrderId" render={(value) => {
+          return <Button type="link" onClick={() => {
             ref.current.open(value);
           }}>{value}</Button>;
         }} />
         <Column title="创建时间" dataIndex="createTime" />
-        <Column title="状态" dataIndex="status" render={(value)=>{
+        <Column title="状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:
               return <Badge text="审批中" color="yellow" />;
@@ -80,6 +82,33 @@ const ProcurementOrderList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
+
+      <Modal
+        headTitle="创建采购单"
+        width={1000}
+        supplyB
+        component={AddContractEdit}
+        enterpriseA
+        ref={contactRef}
+        compoentRef={addContract}
+        footer={<Button type="primary" onClick={() => {
+          addContract.current.submit();
+        }}>保存</Button>}
+        response={(res) => {
+          if (res.contractId){
+            run({
+              data: {
+                contractId: res.contractId
+              }
+            });
+          }
+        }}
+        onSuccess={() => {
+          tableRef.current.submit();
+          contactRef.current.close();
+        }}
+      />
+
     </>
   );
 };

@@ -7,16 +7,20 @@ import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import PhoneEdit from '@/pages/Crm/phone/phoneEdit';
 import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import {useRequest} from '@/util/Request';
+import Select from '@/components/Select';
+import {customerIdSelect} from '@/pages/Erp/order/OrderUrl';
 
 export const Customer = (props) => {
 
-  const {customers, width, refresh, style, onChange, ...other} = props;
+  const {customers, width, refresh, style, ...other} = props;
 
   return (<>
-    <SelectCustomer width={width} {...other} onChange={(value) => {
-      onChange(value);
-    }} />
+    <SelectCustomer width={width} {...other} />
   </>);
+};
+
+export const CustomerId = (props) => {
+  return <Select api={customerIdSelect} disabled {...props} />;
 };
 
 export const Module = (props) => {

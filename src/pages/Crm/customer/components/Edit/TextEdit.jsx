@@ -1,22 +1,39 @@
 import React, {useState} from 'react';
-import Editor from '@/components/Editor';
 import parse from 'html-react-parser';
+import {Modal} from 'antd';
+import Editor from '@/components/Editor';
 
-const TextEdit = ({value, onChange}) => {
+const TextEdit = ({
+  value,
+  onChange = () => {
+  }
+}) => {
 
-  const [visiable, setVisiable] = useState(true);
+  const [visiable, setVisiable] = useState(false);
   const [change, setChange] = useState(value);
 
   return (
-    <div onClick={() => {
-      setVisiable(false);
-    }} style={{cursor: visiable && 'pointer'}}>
-      {visiable ? <div>{change ? parse(change) : '暂无'}</div> : <Editor value={change} onChange={(value) => {
-        setChange(value);
-        typeof onChange === 'function' && onChange(value);
-        setVisiable(true);
-      }} />}
-    </div>
+    <>
+      <div
+        style={{cursor: 'pointer'}}
+        onClick={() => {
+          setVisiable(true);
+        }}>{change ? parse(change) : '未填写'}</div>
+      <Modal
+        visible={visiable}
+        onCancel={() => {
+          setVisiable(false);
+        }}
+        onOk={() => {
+          setVisiable(false);
+        }}
+      >
+        <Editor onChange={(value) => {
+          setChange(value);
+          onChange(value);
+        }} />
+      </Modal>
+    </>
 
   );
 };

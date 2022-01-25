@@ -6,7 +6,7 @@ import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton
 
 const SelectCustomer = (props) => {
 
-  const {value, onChange,supply, width} = props;
+  const {value, onChange,supply = 0, width} = props;
 
   return (
     <>

@@ -69,7 +69,7 @@ const InstockEdit = ({...props}) => {
         }}
         effects={({setFieldState,getFieldState}) => {
 
-          FormEffectHooks.onFieldValueChange$('instockRequest.*.number').subscribe(({name, value}) => {
+          FormEffectHooks.onFieldValueChange$('instockRequest.*.number').subscribe(({name}) => {
             setFieldState(
               FormPath.transform(name, /\d/, ($1) => {
                 return `instockRequest.${$1}.costPrice`;
@@ -123,8 +123,6 @@ const InstockEdit = ({...props}) => {
             );
 
           });
-
-
 
 
           FormEffectHooks.onFieldValueChange$('instockRequest.*.skuId').subscribe(async ({name, value}) => {

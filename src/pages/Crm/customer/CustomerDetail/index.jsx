@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Card, Col, Row, Tabs, Empty} from 'antd';
+import {Button, Card, Col, Row, Tabs, Empty, Typography} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {EditOutlined} from '@ant-design/icons';
@@ -18,7 +18,6 @@ import Track from '@/pages/Crm/business/BusinessDetails/compontents/Track';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
 import Modal from '@/components/Modal';
 import ContactsTable from '@/pages/Crm/contacts/ContactsList';
-import {EditName} from '@/pages/Crm/customer/components/Edit/indexName';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
 import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
@@ -30,7 +29,7 @@ import SupplyList from '@/pages/Crm/supply/supplyList';
 
 const {TabPane} = Tabs;
 
-const CustomerDetail = ({id}) => {
+const CustomerDetail = ({id, status}) => {
 
   const params = useParams();
 
@@ -42,22 +41,32 @@ const CustomerDetail = ({id}) => {
   const {loading, data, refresh} = useRequest(customerDetail, {
     defaultParams: {
       data: {
-        customerId: params.cid || id
+        customerId: params.cid || id,
+        status,
       }
     }
   });
 
-  const {run: runCustomer} = useRequest(customerEdit, {manual: true});
+  const {loading: editLoading, run: runCustomer} = useRequest(
+    customerEdit,
+    {
+      manual: true,
+      onSuccess: () => {
+        refresh();
+      }
+    });
 
   const [width, setWidth] = useState();
 
-  if (loading) {
+  if (loading || editLoading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
   if (!data) {
     return <Empty />;
   }
+
+  const enterprise = data.status === 99;
 
   return (
     <div className={styles.detail}>
@@ -83,14 +92,19 @@ const CustomerDetail = ({id}) => {
               />
             </Col>
             <Col>
-              <EditName value={data && data.customerName || '未填写'} onChange={async (value) => {
-                await runCustomer({
-                  data: {
-                    customerId: data.customerId,
-                    customerName: value
+              <Typography.Paragraph
+                strong
+                copyable
+                editable={{
+                  onChange: (value) => {
+                    runCustomer({
+                      data: {
+                        customerId: data.customerId,
+                        customerName: value
+                      }
+                    });
                   }
-                });
-              }} />
+                }}>{data && data.customerName}</Typography.Paragraph>
               <div>
                 <em>
                   {data.supply === 1 && <>供应商&nbsp;&nbsp;/&nbsp;&nbsp;</>}
@@ -123,7 +137,7 @@ const CustomerDetail = ({id}) => {
             </Col>
           </Row>
         </div>
-        <div className={styles.titleButton}>
+        {!enterprise && <div className={styles.titleButton}>
           <DetailMenu
             supply={data.supply === 1}
             data={data}
@@ -183,38 +197,18 @@ const CustomerDetail = ({id}) => {
           <Button onClick={() => {
             history.push(id ? '/purchase/supply' : '/CRM/customer');
           }}><Icon type="icon-huifu" />返回</Button>
-        </div>
+        </div>}
       </Card>
       <div
         className={styles.main}>
         <Card>
-          <Desc data={data} supply={id} />
+          <Desc data={data} enterprise={enterprise} supply={id} />
         </Card>
       </div>
-      {/* <div */}
-      {/*  className={styles.main}> */}
-      {/*  <ProCard.Group title="核心指标" direction={responsive ? 'column' : 'row'}> */}
-      {/*    <ProCard> */}
-      {/*      <Statistic title="今日UV" value={79.0} precision={2} /> */}
-      {/*    </ProCard> */}
-      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} /> */}
-      {/*    <ProCard> */}
-      {/*      <Statistic title="冻结金额" value={112893.0} precision={2} /> */}
-      {/*    </ProCard> */}
-      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} /> */}
-      {/*    <ProCard> */}
-      {/*      <Statistic title="信息完整度" value={93} suffix="/ 100" /> */}
-      {/*    </ProCard> */}
-      {/*    <Divider type={responsive ? 'horizontal' : 'vertical'} /> */}
-      {/*    <ProCard> */}
-      {/*      <Statistic title="冻结金额" value={112893.0} /> */}
-      {/*    </ProCard> */}
-      {/*  </ProCard.Group> */}
-      {/* </div> */}
       <div
         className={styles.main}>
-        <Row gutter={12}>
-          <Col span={16}>
+        <Row gutter={24}>
+          <Col span={!enterprise ? 16 : 24}>
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
@@ -253,7 +247,7 @@ const CustomerDetail = ({id}) => {
               </Tabs>
             </Card>
           </Col>
-          <Col span={8}>
+          {!enterprise && <Col span={8}>
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="跟进" key="1">
@@ -266,7 +260,7 @@ const CustomerDetail = ({id}) => {
                 </TabPane>
               </Tabs>
             </Card>
-          </Col>
+          </Col>}
         </Row>
       </div>
 

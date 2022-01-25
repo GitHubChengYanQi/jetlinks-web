@@ -21,6 +21,12 @@ const systemConfig = [
       ...CodingRulesRouter,
       ...OperationLogRouter,
       {
+        path: '/enterprise',
+        name: '企业信息',
+        component: lazy(() => import('@/pages/BaseSystem/Enterprise/index')),
+        exact: true,
+      },
+      {
         path: '/mgr',
         name: '用户管理',
         component: lazy(() => import('@/pages/BaseSystem/user/UserList')),

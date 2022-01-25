@@ -1,42 +1,87 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Badge,
   Button,
   Card,
-  Descriptions, Divider,
-  Empty,
+  Empty, Input,
   message,
   Modal,
   notification,
-  Radio,
-  Space,
-  Statistic,
   Table
 } from 'antd';
-import {DollarCircleOutlined} from '@ant-design/icons';
 import {useSetState} from 'ahooks';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
 import {purchaseQuotationAllList} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationUrl';
+import CreateContracts from '@/pages/Purshase/procurementPlan/components/CreateContracts';
+import {procurementOrderAdd} from '@/pages/Purshase/procurementOrder/procurementOrderUrl';
 
 const CreatePurchaseOrder = ({data, palnId, onChange}) => {
 
+  const [quotations, setQuotations] = useSetState({data: []});
 
-  const {loading: createLoading, run: createOrder} = useRequest({
-    url: '/procurementOrder/add',
-    method: 'POST',
-  }, {
-    manual: true,
-    onSuccess: () => {
-      onChange();
-      notification.success({
-        message: '创建采购单成功！',
-      });
-    }
-  });
+  const [createContracts, setCreateContracts] = useState([]);
 
-  const {loading: quotationsLoading, data: quotations} = useRequest(purchaseQuotationAllList);
+  const contractRef = useRef();
+
+  const {loading: createLoading, run: createOrder} = useRequest(
+    procurementOrderAdd
+    , {
+      manual: true,
+      onSuccess: (res) => {
+        const array = [];
+        skus.data.map((item) => {
+          if (array.length === 0) {
+            return array.push({
+              customerId: item.customerId,
+              money: item.money,
+              skus: [item]
+            });
+          }
+          return array.map((value, index) => {
+            if (value.customerId === item.customerId) {
+              array[index] = {
+                customerId: item.customerId,
+                money: value.money + item.money,
+                skus: [
+                  ...value.skus,
+                  {
+                    ...item
+                  }
+                ]
+              };
+            } else {
+              array.push({
+                customerId: item.customerId,
+                skus: [item],
+                money: item.money,
+              });
+            }
+            return null;
+          });
+        });
+        setCreateContracts(array.map((item) => {
+          return {...item, orderId: res};
+        }));
+        notification.success({
+          message: '创建采购单成功！',
+        });
+      }
+    });
+
+  const {loading: quotationsLoading, run: quotationsRun} = useRequest(
+    purchaseQuotationAllList,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setQuotations({data: res});
+      }
+    });
+
+  useEffect(() => {
+    quotationsRun();
+  }, []);
 
   const [skus, setSkus] = useSetState({data: []});
 
@@ -90,22 +135,28 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
     </Table>
 
     <Modal
-      width={800}
+      width={1100}
       visible={visible}
       destroyOnClose
       onCancel={() => {
+        setCreateContracts([]);
         setVisible(false);
+        onChange();
       }}
       footer={[<Button loading={createLoading} key="create" type="primary" onClick={() => {
+        if (createContracts.length > 0) {
+          contractRef.current.next();
+          return;
+        }
         if (skus.data.filter((item) => {
           return !item.money;
         }).length > 0) {
           return message.warn('请选择物料的供应商和报价信息！');
         }
+
         createOrder(
           {
             data: {
-              money: allMoney,
               detailParams: skus.data.map((item) => {
                 return {
                   ...item,
@@ -117,83 +168,90 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
             }
           }
         );
-      }}>创建</Button>]}
-      maskClosable={false}>
-      <Card title="创建采购单" bordered={false} extra={<>总金额:{allMoney}</>}>
-        <Descriptions column={1} bordered layout="vertical">
-          {skus.data.map((item, index) => {
-            const skuQuotation = quotations.filter((value) => {
-              return value.skuId === item.skuId && (item.brandId ? value.brandId === item.brandId : true);
-            });
-            return <Descriptions.Item
-              contentStyle={{width: '100%', display: 'block', maxHeight: 200, overflowY: 'auto'}}
-              label={<>
-                <Space direction="vertical">
-                  <SkuResultSkuJsons skuResult={item.skuResult} />
-                  {item.brandResult && item.brandResult.brandName}
-                </Space>
-                <div style={{float: 'right'}}>数量:{item.total} 总价格:{item.money || 0}</div>
-              </>}
-              key={index}
-            >
-              <div key={index} style={{overflowX: 'hidden'}}>
-                {skuQuotation.length > 0
-                  ?
-                  <Radio.Group
-                    key={index}
-                    style={{width: '100%'}}
-                    value={skus.data[index].quotations}
-                    onChange={({target: {value}}) => {
+      }}>
+        创建
+      </Button>]}
+      maskClosable={false}
+    >
+      {
+        createContracts.length > 0
+          ?
+          <CreateContracts ref={contractRef} data={createContracts} onSuccess={() => {
+            onChange();
+            setCreateContracts([]);
+            setVisible(false);
+          }} />
+          :
+          <Card title="创建采购单" bordered={false} extra={<>采购总金额：{allMoney}</>}>
+            {skus.data.map((item, index) => {
+              const skuQuotation = quotations.data.filter((value) => {
+                return value.skuId === item.skuId && (item.brandResult ? value.brandId === item.brandId : true);
+              });
+              return <Card
+                key={index}
+                title={
+                  <>
+                    <SkuResultSkuJsons skuResult={item.skuResult} />
+                    <div style={{float: 'right'}}>采购数量:{item.total} 总金额:{item.money || 0}</div>
+                  </>
+                }
+              >
+                <Table
+                  rowSelection={{
+                    type: 'radio',
+                    onChange: (value, record) => {
+                      const skuDetail = record[0];
                       const array = skus.data;
-                      const money = (value.afterTax || value.price) * item.total;
+                      const money = (skuDetail.afterTax || skuDetail.price) * item.total;
                       array[index] = {
                         ...array[index],
-                        customerId: value.customerId,
-                        brandId:value.brandId,
+                        customerId: skuDetail.customerId,
+                        brandId: skuDetail.brandId,
                         money,
-                        quotations: value
+                        quotations: skuDetail
                       };
                       setSkus({data: array});
-                    }}>
-                    <Space direction="vertical" style={{width: '100%'}}>
-                      {skuQuotation.map((quotationItem, index) => {
-                        return <div key={index}>
-                          <Radio value={quotationItem} key={index} style={{width: '100%'}}>
-                            <div style={{width: '100%'}}>
-                              <Statistic
-                                title={
-                                  <Space>
-                                    {!item.brandResult && <div>
-                                      <strong>品牌：</strong>{quotationItem.brandResult && quotationItem.brandResult.brandName}
-                                    </div>}
-                                    <div>
-                                      <strong>供应商：</strong>{quotationItem.customerResult && quotationItem.customerResult.customerName}
-                                    </div>
-                                  </Space>
-                                }
-                                value={quotationItem.afterTax || quotationItem.price}
-                                prefix={<DollarCircleOutlined />}
-                                suffix={<em
-                                  style={{
-                                    fontSize: 14,
-                                    color: '#b2b0b0'
-                                  }}>{quotationItem.afterTax > 0 ? '有税' : '无税'}</em>}
-                              />
-                            </div>
-                          </Radio>
-                          <Divider style={{margin: 8}} />
-                        </div>;
-                      })}
-                    </Space>
-                  </Radio.Group>
-                  :
-                  <Empty key={index} description="暂无报价" image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                }
-              </div>
-            </Descriptions.Item>;
-          })}
-        </Descriptions>
-      </Card>
+                    }
+                  }}
+                  key={index}
+                  scroll={{y: 300}}
+                  pagination={false}
+                  dataSource={skuQuotation || []}
+                  rowKey="purchaseQuotationId"
+                >
+                  <Table.Column title="供应商" dataIndex="customerResult" render={(value) => {
+                    return <>{value && value.customerName}</>;
+                  }} />
+                  <Table.Column title="品牌" dataIndex="brandResult" render={(value) => {
+                    return <>{value && value.brandName}</>;
+                  }} />
+                  <Table.Column title="票据类型" dataIndex="InvoiceType" />
+                  <Table.Column title="税率" dataIndex="afterTax" render={(value) => {
+                    return <>{value}</>;
+                  }} />
+                  <Table.Column title="税后单价" dataIndex="customerResult" render={(value, record, index) => {
+                    return <Input value={record.afterTax || record.price} onChange={(value) => {
+                      const array = quotations.data.map((item) => {
+                        if (item.purchaseQuotationId === record.purchaseQuotationId) {
+                          return {
+                            ...record,
+                            afterTax: value.target.value,
+                            price: value.target.value,
+                          };
+                        } else {
+                          return item;
+                        }
+                      });
+                      setQuotations({data: array});
+                    }} />;
+                  }} />
+                  <Table.Column title="税后总价" dataIndex="customerResult" render={(value, record) => {
+                    return <>{item.total * (record.afterTax || record.price)}</>;
+                  }} />
+                </Table>
+              </Card>;
+            })}
+          </Card>}
     </Modal>
   </div>;
 };

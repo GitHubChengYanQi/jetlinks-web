@@ -16,7 +16,7 @@ const CustomerAll = ({customerId, customer, contacts, adress, phone,supply, widt
         value={customerId}
         name={customer || 'customerId'}
         supply={supply}
-        component={SysField.Customer}
+        component={customerId ? SysField.CustomerId : SysField.Customer}
         placeholder="请选择客户"
         required
       />

@@ -139,7 +139,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
               </ProCard>
 
               <ProCard
-                title="详细信息"
+                title="企业基本信息"
                 className="h2Card"
                 headerBordered
                 bodyStyle={{padding: 16}}

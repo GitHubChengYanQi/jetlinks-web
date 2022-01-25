@@ -70,6 +70,7 @@ const ProcurementOrderDetailList = ({value}) => {
           return <>{value && value.customerName}</>;
         }}  />
         <Column title="数量" dataIndex="number" />
+        <Column title="单价" dataIndex="money" />
       </Table>
     </div>
   );

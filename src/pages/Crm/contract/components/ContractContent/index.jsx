@@ -16,13 +16,13 @@ const ContractContent = ({value,...props},ref) => {
   const formRef = useRef();
 
   useImperativeHandle(ref,()=>({
-    formRef,
+    submit:formRef.current.submit,
   }));
 
   return <>
     <Form
       {...props}
-      value={value ? value.contractId : false}
+      value={value.contractId }
       ref={formRef}
       api={ApiConfig}
       NoButton={false}
@@ -32,9 +32,6 @@ const ContractContent = ({value,...props},ref) => {
       }}
     >
       <FormItem name="content" component={SysField.Content} result={value} required />
-      {/*<Card title="添加产品明细" bordered={false}>*/}
-      {/*  <TableDetail contractId={result && result.contractId} onSuccess={()=>{}}/>*/}
-      {/*</Card>*/}
     </Form>
   </>;
 };

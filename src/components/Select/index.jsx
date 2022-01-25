@@ -28,7 +28,7 @@ const Select = (props) => {
   }, [resh]);
 
   useEffect(() => {
-    if (value && data) {
+    if (value && data && !param) {
       const items = data && data.filter((items) => {
         return `${items.value}` === `${value}`;
       });

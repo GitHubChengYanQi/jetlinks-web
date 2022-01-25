@@ -14,12 +14,44 @@ import * as apiUrl from '@/pages/Crm/contract/ContractUrl';
 import DatePicker from '@/components/DatePicker';
 import Choose from '@/pages/Crm/contract/components/Choose';
 import {contractClassListSelect} from '@/pages/Crm/contract/components/contractClass/contractClassUrl';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
+import {customerIdSelect} from '@/pages/Erp/order/OrderUrl';
 
 
 export const Name = (props) => {
   return (<Input  {...props} />);
 };
 
+
+export const SkuId = (props) => {
+  return (<SelectSku  {...props} />);
+};
+
+
+export const Quantity = (props) => {
+  return (<InputNumber min={1}  {...props} />);
+};
+
+export const SalePrice = (props) => {
+  return (<InputNumber min={1}  {...props} />);
+};
+
+export const BrandId = (props) => {
+  const {skuId, supplySkus = [], ...other} = props;
+
+  const ids = skuId ? supplySkus.filter((item) => {
+    return item.skuId === skuId;
+  }).map((item) => {
+    return item.brandId;
+  }) : [];
+
+  return (<Select width={150} api={brandIdSelect} data={{ids}} resh={ids.length}  {...other} />);
+};
+
+export const CustomerId = (props) => {
+  return (<Select api={customerIdSelect} data={{supply: 1}}  {...props} />);
+};
 
 export const Note = (props) => {
   return (<Input  {...props} />);
@@ -160,9 +192,9 @@ export const Content = (props) => {
   // eslint-disable-next-line no-template-curly-in-string
   const string = props.value.replace('${{Acontacts}}', result.partyAContacts ? result.partyAContacts.contactsName : '').replace('${{Bcontacts}}', result.partyBContacts ? result.partyBContacts.contactsName : '').replace('${{AAddress}}', result.partyAAdress ? result.partyAAdress.location : '').replace('${{BAddress}}', result.partyBAdress ? result.partyBAdress.location : '').replace('${{APhone}}', result.phoneA ? result.phoneA.phoneNumber : '').replace('${{BPhone}}', result.phoneB ? result.phoneB.phoneNumber : '').replace('${{ACustomer}}', result.partA ? result.partA.customerName : '').replace('${{BCustomer}}', result.partB ? result.partB.customerName : '');
 
-  useEffect(()=>{
+  useEffect(() => {
     props.onChange(string);
-  },[]);
+  }, []);
 
   return (
     <>

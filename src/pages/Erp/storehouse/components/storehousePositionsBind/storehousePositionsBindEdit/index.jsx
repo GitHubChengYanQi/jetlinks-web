@@ -41,7 +41,7 @@ const StorehousePositionsBindEdit = ({...props}) => {
         return {...value,positionId};
       }}
     >
-      <FormItem label="物料型号" name="spuId" component={SysField.SpuId} required/>
+      <FormItem label="物料型号" name="spuId" component={SysField.SpuId} spu required/>
     </Form>
   );
 };

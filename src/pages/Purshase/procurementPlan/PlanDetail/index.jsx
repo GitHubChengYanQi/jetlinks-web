@@ -1,5 +1,5 @@
 import {useHistory, useParams} from 'ice';
-import React from 'react';
+import React, {useRef} from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {Badge, Button, Card, Descriptions, Empty, Space} from 'antd';
 import {useRequest} from '@/util/Request';
@@ -67,11 +67,11 @@ const PlanDetail = () => {
 
       <div
         className={styles.main}>
-        <Card title="物料清单" bodyStyle={{padding:0}}>
+        <Card title="物料清单" bodyStyle={{padding: 0}}>
           <CreatePurchaseOrder
             data={data.detalResults || []}
             palnId={params.cid}
-            onChange={()=>{
+            onChange={() => {
               refresh();
             }}
           />

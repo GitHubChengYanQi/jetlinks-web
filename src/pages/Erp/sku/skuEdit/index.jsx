@@ -160,6 +160,7 @@ const SkuEdit = ({...props}, ref) => {
             setFieldState(
               'spuClassification',
               state => {
+                state.visible = value;
                 state.value = null;
               }
             );
@@ -195,6 +196,7 @@ const SkuEdit = ({...props}, ref) => {
           required />
         <FormItem
           label="产品"
+          visible={false}
           name="spuClassification"
           component={Spu}
           required

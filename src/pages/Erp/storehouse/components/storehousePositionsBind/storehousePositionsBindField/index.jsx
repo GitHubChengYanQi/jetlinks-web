@@ -7,9 +7,7 @@
 
 import React from 'react';
 import {Input} from 'antd';
-import Select from '@/components/Select';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
-import {spuListSelect} from '@/pages/Erp/parts/PartsUrl';
 
 export const PositionId = (props) =>{
   return (<Input {...props}/>);
@@ -19,7 +17,7 @@ export const SkuId = (props) =>{
 };
 
 export const SpuId = (props) =>{
-  return (<Select api={spuListSelect} width={200} {...props}/>);
+  return (<SelectSku {...props}/>);
 };
 
 export const Sort = (props) =>{

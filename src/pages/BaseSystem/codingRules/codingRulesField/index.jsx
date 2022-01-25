@@ -169,7 +169,7 @@ export const Values = (props) => {
 
   const options = [
     ...input,
-    // ...serial,
+    ...serial,
     {
       label: '自定义',
       options: [

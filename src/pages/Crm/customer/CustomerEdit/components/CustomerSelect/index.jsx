@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import {Select, Spin} from 'antd';
 import {request, useRequest} from '@/util/Request';
-import {AutoComplete, Input, Popover, Select, Spin} from 'antd';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 
 const CustomerSelect = (props) => {

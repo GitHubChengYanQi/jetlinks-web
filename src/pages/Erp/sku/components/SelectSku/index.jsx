@@ -6,7 +6,17 @@ import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
 
-const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder, params, skuIds,ids}) => {
+const SelectSku = ({
+  value,
+  onChange,
+  width,
+  dropdownMatchSelectWidth,
+  placeholder,
+  params,
+  skuIds,
+  ids,
+  spu
+}) => {
 
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
@@ -28,14 +38,14 @@ const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder,
       value: items.skuId,
       attribute: `${(values === '' ? '' : `( ${values} )`)}`,
       spu: items.spuResult,
-      standard:items.standard
+      standard: items.standard
     };
   };
 
-  const {loading, data, run} = useRequest({...skuList, data: {skuIds:ids, ...params}}, {
+  const {loading, data, run} = useRequest({...skuList, data: {skuIds: ids, ...params}}, {
     debounceInterval: 1000, onSuccess: (res) => {
       if (res.length === 1) {
-        onChange(res[0].skuId);
+        onChange(spu ? res[0].spuId : res[0].skuId);
         setChange(object(res[0]).label + object(res[0]).attribute);
         setSpuClass(res[0].spuResult.spuClassificationResult.pid);
       }
@@ -45,12 +55,12 @@ const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder,
   useEffect(() => {
     run({
       data: {
-        skuIds:ids,
+        skuIds: ids,
         skuId: value,
         ...params
       }
     });
-  }, [params, value,ids]);
+  }, [params, value, ids]);
 
 
   const options = !loading ? data && data.map((items) => {
@@ -63,13 +73,13 @@ const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder,
         width={200}
         placeholder="请选择物料分类"
         value={spuClass}
-        api={{...spuClassificationTreeVrew,data:{isNotproduct:1}}}
+        api={{...spuClassificationTreeVrew, data: {isNotproduct: 1}}}
         onChange={(value) => {
           setSpuClass(value);
           setChange(null);
           run({
             data: {
-              skuIds:ids,
+              skuIds: ids,
               spuClass: value,
               ...params
             }
@@ -77,20 +87,20 @@ const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder,
         }} />
       <Select
         style={{width: 200}}
-        placeholder="名称/型号/成品码"
+        placeholder={spu ? '名称/型号' : '名称/型号/成品码'}
         showSearch
         allowClear
-        onClear={()=>{
+        onClear={() => {
           onChange(null);
         }}
         value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
         notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+        dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
         onSearch={(value) => {
           setChange(value);
           run({
             data: {
-              skuIds:ids,
+              skuIds: ids,
               spuClass,
               skuName: value,
               ...params
@@ -98,18 +108,18 @@ const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder,
           });
         }}
         onChange={(value, option) => {
-          setChange(value && value.replace(`standard:${option.standard}`,''));
+          setChange(value && value.replace(`standard:${option.standard}`, ''));
           if (option) {
             setSpuClass(option.spu && option.spu.spuClassificationResult && option.spu.spuClassificationResult.pid);
             if (option && option.key) {
-              onChange(option.key);
+              onChange(spu ? option.spu.spuId : option.key);
             }
           } else {
             setSpuClass(null);
             onChange(null);
             run({
               data: {
-                skuIds:ids,
+                skuIds: ids,
                 ...params
               }
             });
@@ -122,10 +132,10 @@ const SelectSku = ({value, onChange,width, dropdownMatchSelectWidth,placeholder,
               key={items.value}
               spu={items.spu}
               disabled={items.disabled}
-              title={items.label + items.attribute}
+              title={items.label + (!spu && items.attribute)}
               standard={items.standard}
               value={`${items.label + items.attribute}standard:${items.standard}`}>
-              {items.label} <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>
+              {items.label} {!spu && <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>}
             </Select.Option>
           );
         })}

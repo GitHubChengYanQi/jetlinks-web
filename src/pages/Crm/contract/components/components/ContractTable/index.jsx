@@ -6,8 +6,13 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
+import {useHistory} from 'ice';
+import {MegaLayout} from '@formily/antd-components';
+import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
+import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useBoolean} from 'ahooks';
+import {Button, notification, Modal as AntModal, Table as AntTable,Divider} from 'antd';
 import Table from '@/components/Table';
-import {Button, notification, Modal as AntModal, Table as AntTable, Tag, Divider} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -18,15 +23,9 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import Contract from '@/pages/Crm/contract/components/components/Contract';
-import {MegaLayout} from '@formily/antd-components';
-import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import Icon from '@/components/Icon';
-import {useBoolean} from 'ahooks';
 import {useRequest} from '@/util/Request';
-import {useHistory} from 'ice';
-import ContractContent from '@/pages/Crm/contract/components/ContractContent';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -40,9 +39,7 @@ const ContractTable = (props) => {
   const history = useHistory();
 
   const ref = useRef(null);
-  const contractContent = useRef(null);
   const compoentRef = useRef(null);
-  const contentRef = useRef(null);
   const content = useRef(null);
   const tableRef = useRef(null);
 
@@ -247,7 +244,7 @@ const ContractTable = (props) => {
             </div>
           );
         }} />
-        <Column title='总金额' dataIndex='allMoney' />
+        <Column title="总金额" dataIndex="allMoney" />
         <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
@@ -268,7 +265,7 @@ const ContractTable = (props) => {
                   </Button>
                   <EditButton
                     onClick={() => {
-                      contractContent.current.open(record);
+                      ref.current.open(record);
                     }} />
                   <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
                     tableRef.current.submit();
@@ -279,7 +276,7 @@ const ContractTable = (props) => {
         }} width={200} />
       </Table>
       <Modal
-        width={1000}
+        width={1250}
         title="合同"
         compoentRef={compoentRef}
         footer={<Button
@@ -288,32 +285,25 @@ const ContractTable = (props) => {
             compoentRef.current.formRef.current.submit();
           }}>保存</Button>}
         component={AddContractEdit}
+        partyB='1416605276529807486'
         customerId={customerId}
-        onSuccess={(value) => {
-          tableRef.current.submit();
-          ref.current.close();
-          contractContent.current.open(value.data);
-        }} ref={ref} />
-
-      <Modal
-        width={1200}
-        compoentRef={contentRef}
-        footer={<Button
-          type="primary"
-          onClick={() => {
-            contentRef.current.formRef.current.submit();
-          }}>保存</Button>}
-        title="合同"
-        component={ContractContent}
         onSuccess={() => {
           tableRef.current.submit();
-          contractContent.current.close();
-        }} ref={contractContent} />
+          ref.current.close();
+        }}
+        ref={ref}
+      />
 
-      <Modal width={1250} component={Contract} onSuccess={() => {
-        tableRef.current.submit();
-        content.current.close();
-      }} ref={content} />
+
+      <Modal
+        width={1250}
+        component={Contract}
+        onSuccess={() => {
+          tableRef.current.submit();
+          content.current.close();
+        }}
+        ref={content}
+      />
     </>
   );
 };

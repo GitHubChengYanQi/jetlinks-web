@@ -6,13 +6,13 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, Popover, AutoComplete} from 'antd';
+import {Input, InputNumber, Select as AntdSelect, Radio, Popover, AutoComplete, Spin} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import TreeSelect from '@/components/TreeSelect';
 import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
-import {commonArea, CompanyRoleIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {commonArea, CompanyRoleIdSelect, CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import Cascader from '@/components/Cascader';
 import Amap from '@/components/Amap';
 import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
@@ -206,7 +206,18 @@ export const Note = (props) => {
 };
 
 export const CustomerLevelId = (props) => {
-  return (<Select width={120} api={apiUrl.CustomerLevelIdSelect}  {...props} />);
+  const {loading,data} = useRequest(CustomerLevelIdSelect);
+
+  useEffect(()=>{
+    if (data){
+      props.onChange(data && data[data.length-1].value);
+    }
+  },[data]);
+
+  if (loading)
+    return <Spin />;
+
+  return (<AntdSelect options={data} {...props} />);
 };
 
 export const OriginId = (props) => {
