@@ -318,9 +318,35 @@ const AddContractEdit = ({
           <FormItem labelCol={5} label="合同模板" name="templateId" component={SysField.Template} required />
           <FormItem labelCol={5} label="合同名称" name="name" component={SysField.Name} required />
           <FormItem labelCol={5} label="合同分类" name="contractClassId" component={SysField.ContractClassId} required />
-          <FormItem labelCol={5} label="付款总金额" name="allMoney" component={SysField.AllMoney} required />
         </ProCard>
+        <Row gutter={24}>
+          <Col span={12}>
+            <ProCard headerBordered className="h2Card" title="甲方信息">
+              <CustomerAll
+                supply={supplyA}
+                customer="partyA"
+                contacts="partyAContactsId"
+                adress="partyAAdressId"
+                phone="partyAPhone"
+                customerId={(enterpriseA && data.customerId) || partyA}
+              />
+            </ProCard>
+          </Col>
+          <Col span={12}>
+            <ProCard className="h2Card" headerBordered title="乙方信息">
+              <CustomerAll
+                supply={supplyB}
+                customer="partyB"
+                adress="partyBAdressId"
+                contacts="partyBContactsId"
+                phone="partyBPhone"
+                customerId={(enterpriseB && data.customerId) || partyB}
+              />
+            </ProCard>
+          </Col>
+        </Row>
         <ProCard headerBordered className="h2Card" title="付款信息">
+          <FormItem labelCol={3}  label='付款总金额' name="allMoney" component={SysField.AllMoney} placeholder='总金额'  required />
           <FieldList
             name="details"
             initialValue={[
@@ -402,32 +428,6 @@ const AddContractEdit = ({
             }}
           </FieldList>
         </ProCard>
-        <Row gutter={24}>
-          <Col span={12}>
-            <ProCard headerBordered className="h2Card" title="甲方信息">
-              <CustomerAll
-                supply={supplyA}
-                customer="partyA"
-                contacts="partyAContactsId"
-                adress="partyAAdressId"
-                phone="partyAPhone"
-                customerId={(enterpriseA && data.customerId) || partyA}
-              />
-            </ProCard>
-          </Col>
-          <Col span={12}>
-            <ProCard className="h2Card" headerBordered title="乙方信息">
-              <CustomerAll
-                supply={supplyB}
-                customer="partyB"
-                adress="partyBAdressId"
-                contacts="partyBContactsId"
-                phone="partyBPhone"
-                customerId={(enterpriseB && data.customerId) || partyB}
-              />
-            </ProCard>
-          </Col>
-        </Row>
         <ProCard headerBordered className="h2Card" title="物料信息">
           <FieldList
             name="contractDetailList"

@@ -47,7 +47,7 @@ const DataList = ({
           countTitle: '型号种类',
           cardTitle: '型号列表',
           nameTitle: '型号名称',
-          name: item.spuName,
+          name: `${item.className} / ${item.spuName}`,
         };
       default:
         return {};
