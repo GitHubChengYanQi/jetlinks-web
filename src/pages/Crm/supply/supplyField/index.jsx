@@ -18,26 +18,8 @@ import {supplyListSelect} from '../supplyUrl';
 import {brandListSelect} from '@/pages/Erp/brand/BrandUrl';
 
 export const SkuId = (props) => {
-  const {customerId, ...other} = props;
-  const {loading, data, run} = useRequest(supplyListSelect, {manual: true});
-  useEffect(() => {
-    run({
-      data: {
-        customerId,
-      }
-    });
-  }, []);
 
-  if (loading)
-    return <Spin />;
-
-  const skuIds = [];
-  if (data)
-    data.map((items) => {
-      return skuIds.push(items.label);
-    });
-
-  return (<SelectSku {...other} width='100%' skuIds={skuIds} />);
+  return (<SelectSku {...props} width='100%' />);
 };
 export const CustomerId = (props) => {
   return (<Input {...props} />);

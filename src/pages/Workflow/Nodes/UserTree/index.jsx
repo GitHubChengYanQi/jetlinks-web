@@ -123,7 +123,7 @@ const UserTree = ({type, value, onChange}) => {
         <Tree
           checkable={false}
           defaultExpandAll
-          checkedKeys={check.deptPositions && check.deptPositions.map((items, index) => {
+          checkedKeys={check.deptPositions && check.deptPositions.map((items) => {
             return items.key;
           })}
           treeData={deptPosition || []}

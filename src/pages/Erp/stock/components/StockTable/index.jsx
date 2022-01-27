@@ -6,18 +6,19 @@
  */
 
 import React, {useEffect, useRef, useState,} from 'react';
-import {Button, Checkbox, Table as AntTable} from 'antd';
-import {MegaLayout} from '@formily/antd-components';
-import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-import {useBoolean} from 'ahooks';
-import {useHistory} from 'ice';
-import Icon from '@/components/Icon';
+import {Button, message, Modal as AntModal, Space, Table as AntTable, Upload} from 'antd';
+import {createFormActions} from '@formily/antd';
+import {config, useHistory} from 'ice';
+import cookie from 'js-cookie';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
 import {stockList} from '../../StockUrl';
 import * as SysField from '../../StockField';
+import Icon from '@/components/Icon';
+import AddButton from '@/components/AddButton';
+
+const {baseURI} = config;
 
 
 const {Column} = AntTable;
@@ -29,7 +30,86 @@ const StockTable = (props) => {
   const tableRef = useRef(null);
   const history = useHistory();
 
-  const [allStock, {setTrue, setFalse}] = useBoolean();
+
+  const [filelist, setFilelist] = useState([]);
+
+  const importErrData = (errData) => {
+    const data = errData && errData.map((item, index) => {
+      return {
+        key: index,
+        line: item.line,
+        sku: item.classItem,
+        class: item.spuClass,
+        unit: item.unit,
+        name: item.spuName,
+        coding: item.standard,
+        batch: item.isNotBatch,
+        attributes: item.attributes && item.attributes.map((item) => {
+          return item;
+        }).toString()
+      };
+    });
+    AntModal.error({
+      width: 1200,
+      title: `异常数据 / ${data.length}`,
+      content: <div style={{padding: 8}}>
+        <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh'}}>
+          <Table.Column title="错误行" dataIndex="line" />
+          <Table.Column title="分类" dataIndex="class" />
+          <Table.Column title="产品" dataIndex="sku" />
+          <Table.Column title="型号" dataIndex="name" />
+          <Table.Column title="成品码" dataIndex="coding" />
+          <Table.Column title="单位" dataIndex="unit" />
+          <Table.Column title="是否批量" dataIndex="batch" />
+          <Table.Column title="参数配置" dataIndex="attributes" />
+        </AntTable>
+      </div>
+    });
+  };
+
+  const actions = () => {
+    return (
+      <Space>
+        <Upload
+          fileList={filelist}
+          action={`${baseURI}Excel/importInstock`}
+          headers={
+            {Authorization: cookie.get('tianpeng-token')}
+          }
+          name="file"
+          beforeUpload={() => {
+            message.loading({
+              content: '导入中，请稍后...',
+              key: 1,
+              style: {
+                marginTop: '20vh',
+              },
+            });
+            return true;
+          }}
+          onChange={async ({file, fileList}) => {
+            setFilelist(fileList);
+            if (file.status === 'done') {
+              setFilelist([]);
+              if (file.response.data && file.response.data.length > 0) {
+                importErrData(file.response && file.response.data);
+              }
+              message.success({
+                content: '导入成功！',
+                key: 1,
+                duration: 2,
+                style: {
+                  marginTop: '20vh',
+                },
+              });
+            }
+          }}
+        >
+          <Button icon={<Icon type="icon-daoru" />}>导入库存</Button>
+        </Upload>
+      </Space>
+    );
+  };
 
   useEffect(() => {
     if (state) {
@@ -59,6 +139,7 @@ const StockTable = (props) => {
     <>
       <Table
         title={<Breadcrumb />}
+        actions={actions()}
         api={stockList}
         isModal={false}
         formActions={formActionsPublic}

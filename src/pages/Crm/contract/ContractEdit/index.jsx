@@ -37,6 +37,8 @@ const ApiConfig = {
   save: contractEdit
 };
 
+const formActionsPublic = createFormActions();
+
 const AddContractEdit = ({
   defaultValue = {},
   submitValue,
@@ -112,6 +114,7 @@ const AddContractEdit = ({
     <div style={{padding: 16}}>
       <Form
         NoButton={false}
+        formActions={formActionsPublic}
         defaultValue={defaultValue}
         value={value}
         ref={formRef}

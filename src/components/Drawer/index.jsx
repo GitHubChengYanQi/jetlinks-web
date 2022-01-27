@@ -41,7 +41,7 @@ const Drawer = (
       }}
       destroyOnClose
       width={width}
-      title={value ? `${title}` : `${title}`}
+      title={title}
       afterVisibleChange={(v) => {
         // setShow(v);
       }}

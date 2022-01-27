@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {supplyDetail, supplyAdd, supplyEdit} from '../supplyUrl';
 import * as SysField from '../supplyField';
@@ -35,7 +34,7 @@ const SupplyEdit = ({...props}) => {
         return {...value,customerId};
       }}
     >
-      <FormItem label="物料" name="skuId" component={SysField.SkuId} customerId={customerId} required/>
+      <FormItem label="物料" name="skuId" component={SysField.SkuId} required/>
       <FormItem label="品牌" name="brandIds" component={SysField.BrandId} required />
     </Form>
   );

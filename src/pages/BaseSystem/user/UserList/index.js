@@ -1,11 +1,10 @@
-import React, { useRef, useState} from 'react';
+import React, { useRef} from 'react';
+import {Form, Input, Button, Switch, Modal, message} from 'antd';
 import {userFreeze, userList, userReset, userUnfreeze} from '@/Config/ApiUrl/system/user';
 import Table from '@/components/Table';
-import {Form, Input, Button, Switch, Modal, message} from 'antd';
 import {useRequest} from '@/util/Request';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-import DelButton from '@/components/DelButton';
 import UserEdit from '@/pages/BaseSystem/user/UserEdit';
 import Drawer from '@/components/Drawer';
 import UserRole from '@/pages/BaseSystem/user/UserRole';
@@ -20,9 +19,7 @@ const UserList = () => {
     return (
       <>
         <Form.Item name="name" label="名称">
-          <Input.Search placeholder="按名称搜索" onSearch={() => {
-            ref.current.submit();
-          }} enterButton/>
+          <Input placeholder="按名称搜索"/>
         </Form.Item>
       </>
     );
@@ -37,8 +34,6 @@ const UserList = () => {
       </>
     );
   };
-
-  const [roleUserId, setRoleUserId] = useState(null);
 
   // 冻结账号
   const {run: freezeRun} = useRequest(userFreeze,
@@ -166,7 +161,7 @@ const UserList = () => {
         searchForm={searchForm}
         actions={actions()}
       />
-      <Drawer ref={dfRef} component={UserEdit} onSuccess={() => {
+      <Drawer ref={dfRef} title='编辑客户' component={UserEdit} onSuccess={() => {
         ref.current.refresh();
         dfRef.current.close();
       }}/>

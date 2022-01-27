@@ -1,41 +1,43 @@
-import React, {useState, useEffect} from 'react';
-
-import {useRequest} from '@/Config/BaseRequest';
+import React from 'react';
+import {Spin, Tree} from 'antd';
 import {deptTree} from '@/Config/ApiUrl/system/dept';
-import {Tree} from '@alifd/next';
+import {useRequest} from '@/util/Request';
 
-import styles from './index.module.scss';
 
-const TreeNode = Tree.Node;
+const DeptTree = ({onChange=()=>{}, value}) => {
 
-const DeptTree = ({onSelect}) => {
+  const {loading, data} = useRequest(deptTree);
 
-  const {request} = useRequest(deptTree);
-  const {run:get,data} = request();
-
-  const renderTreeNode = (data) => {
-    if (!Array.isArray(data)) {
-      return null;
-    }
-    return data.map((item) => {
-      if (item.children && item.children.length > 0) {
-        return (<TreeNode label={item.title} key={item.key}>{renderTreeNode(item.children)}</TreeNode>);
-      } else {
-        return (<TreeNode label={item.title} key={item.key}/>);
-      }
+  const deptChildren = (children) => {
+    return children.map((items) => {
+      return {
+        title: items.title,
+        key: items.key,
+        children: deptChildren(items.children),
+      };
     });
   };
 
-  return data?
-    <Tree
-      className={styles.DetpTree}
-      showLine
-      defaultExpandAll
-      onSelect={(selectedKeys, extra) => {
-        typeof onSelect === 'function' && onSelect(selectedKeys, extra);
-      }}
-    >
-      {renderTreeNode(data.data)}
-    </Tree>:null
+  const deptPosition = data && data.map((items) => {
+    return {
+      title: items.title,
+      key: items.key,
+      children: deptChildren(items.children),
+    };
+  });
+
+  if (loading) {
+    return <div style={{textAlign: 'center'}}><Spin size="large" /></div>;
+  }
+
+  return <Tree
+    checkable
+    defaultExpandAll
+    checkedKeys={value}
+    treeData={deptPosition || []}
+    onCheck={(value, options) => {
+      onChange(value);
+    }}
+  />;
 };
 export default DeptTree;

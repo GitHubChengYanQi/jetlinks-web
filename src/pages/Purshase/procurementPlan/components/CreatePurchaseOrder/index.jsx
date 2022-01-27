@@ -229,7 +229,7 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
                   <Table.Column title="税率" dataIndex="afterTax" render={(value) => {
                     return <>{value}</>;
                   }} />
-                  <Table.Column title="税后单价" dataIndex="customerResult" render={(value, record, index) => {
+                  <Table.Column title="税后单价" dataIndex="customerResult" render={(value, record) => {
                     return <Input value={record.afterTax || record.price} onChange={(value) => {
                       const array = quotations.data.map((item) => {
                         if (item.purchaseQuotationId === record.purchaseQuotationId) {

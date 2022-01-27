@@ -2,6 +2,7 @@ import React, {useImperativeHandle, useRef} from 'react';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/contract/ContractField';
 import {contractAdd, contractDetail, contractEdit} from '@/pages/Crm/contract/ContractUrl';
+import {createFormActions} from '@formily/antd';
 
 const ApiConfig = {
   view: contractDetail,
@@ -10,6 +11,8 @@ const ApiConfig = {
 };
 
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ContractContent = ({value,...props},ref) => {
 
@@ -23,6 +26,7 @@ const ContractContent = ({value,...props},ref) => {
     <Form
       {...props}
       value={value.contractId }
+      formActions={formActionsPublic}
       ref={formRef}
       api={ApiConfig}
       NoButton={false}

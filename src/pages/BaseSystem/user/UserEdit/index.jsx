@@ -1,19 +1,20 @@
 import React from 'react';
-import Form from '@/components/Form';
-import {DatePicker, Input, Radio} from 'antd';
-import {getUserInfo, userAdd, userSave} from '@/Config/ApiUrl/system/user';
+import {DatePicker, Input, Radio, Select} from 'antd';
 import moment from 'moment';
+import Form from '@/components/Form';
+import {getUserInfo, userAdd, userSave} from '@/Config/ApiUrl/system/user';
 import {deptTree} from '@/Config/ApiUrl/system/dept';
-import Select from '@/components/Select';
 import TreeSelect from '@/components/TreeSelect';
 import {positionAllList} from '@/Config/ApiUrl/system/position';
-import {createFormActions, FormEffectHooks} from '@formily/antd';
+import {useRequest} from '@/util/Request';
 
 const {FormItem} = Form;
 
 const UserEdit = (props) => {
 
   let password = '';
+
+  const {data} = useRequest(positionAllList);
 
   const {value} = props;
 
@@ -101,7 +102,7 @@ const UserEdit = (props) => {
       ]} />
       <FormItem component={Input} label="邮箱" required placeholder="请输入邮箱" name="email" />
       <FormItem component={TreeSelect} api={deptTree} label="部门" required name="deptId" />
-      <FormItem component={Select} api={positionAllList} label="职位" required name="positionIds" mode="multiple" />
+      <FormItem component={Select} options={data || []} label="职位" required name="positionIds" mode="multiple" />
     </Form>
   );
 };

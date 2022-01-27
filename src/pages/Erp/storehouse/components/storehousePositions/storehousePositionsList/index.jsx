@@ -7,7 +7,7 @@
 
 import React, {useRef, useState} from 'react';
 import {SearchOutlined} from '@ant-design/icons';
-import {Button, Card, Divider, Input, Space, Table as AntTable} from 'antd';
+import {Button, Card, Divider, Input, Space, Table as AntTable, Drawer as AntDrawer} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -23,6 +23,7 @@ import TableSort from '@/components/Table/components/TableSort';
 import UpdateSort from '@/components/Table/components/UpdateSort';
 import StorehousePositionsBindList
   from '@/pages/Erp/storehouse/components/storehousePositionsBind/storehousePositionsBindList';
+import DeptTree from '@/components/DeptTree';
 
 const {Column} = AntTable;
 
@@ -30,9 +31,32 @@ const StorehousePositionsList = (props) => {
   const {value} = props;
   const ref = useRef(null);
   const bindRef = useRef(null);
+  const [deptVisible, setDeptVisible] = useState();
+
+  const [depts, setDepts] = useState([]);
 
   // 排序
   const [sorts, setSorts] = useState([]);
+
+  const {run: deptRun} = useRequest({
+    url: '/storehousePositionsDeptBind/add',
+    method: 'POST'
+  }, {
+    manual: true,
+    onSuccess: () => {
+      setDeptVisible(false);
+    }
+  });
+
+  const {run: getDeptRun} = useRequest({
+    url: '/storehousePositionsDeptBind/getDeptIds',
+    method: 'GET'
+  }, {
+    manual: true,
+    onSuccess: (res) => {
+      setDepts(res || []);
+    }
+  });
 
   const [name, setName] = useState();
   const actions = () => {
@@ -96,7 +120,7 @@ const StorehousePositionsList = (props) => {
             dataIndex="sort"
             width={50}
             align="center"
-            render={(text, item, index) => {
+            render={(text, item) => {
               return <TableSort
                 rowKey={item.value}
                 sorts={sorts}
@@ -110,9 +134,19 @@ const StorehousePositionsList = (props) => {
               return (
                 <>
                   {
-                    !record.children && <Button type='link' onClick={()=>{
-                      bindRef.current.open(record.value);
-                    }}>绑定物料</Button>
+                    !record.children && <Space>
+                      <Button type="link" onClick={() => {
+                        bindRef.current.open(record.value);
+                      }}>绑定物料</Button>
+                      <Button type="link" onClick={async () => {
+                        await getDeptRun({
+                          params: {
+                            positionId: record.value
+                          }
+                        });
+                        setDeptVisible(record.value);
+                      }}>设置权限</Button>
+                    </Space>
                   }
                   <EditButton onClick={() => {
                     ref.current.open(record.value);
@@ -134,6 +168,35 @@ const StorehousePositionsList = (props) => {
       <Drawer width={800} title="物料信息" component={StorehousePositionsBindList} onSuccess={() => {
         bindRef.current.close();
       }} ref={bindRef} />
+
+      <AntDrawer
+        visible={deptVisible}
+        width={800}
+        title="设置权限"
+        destroyOnClose
+        onClose={() => {
+          setDeptVisible(false);
+          setDepts([]);
+        }}
+      >
+        <DeptTree value={depts} onChange={setDepts} />
+        <div style={{textAlign: 'center', margin: 16}}>
+          <Space>
+            <Button disabled={depts.length === 0} type="primary" onClick={() => {
+              deptRun({
+                data: {
+                  storehousePositionsId: deptVisible,
+                  deptId: depts.toString(),
+                }
+              });
+            }}>确定</Button>
+            <Button onClick={() => {
+              setDepts([]);
+              setDeptVisible(false);
+            }}>取消</Button>
+          </Space>
+        </div>
+      </AntDrawer>
     </>
   );
 };
