@@ -6,15 +6,11 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
+import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {procurementOrderDetailDelete, procurementOrderDetailList} from '../procurementOrderDetailUrl';
-import ProcurementOrderDetailEdit from '../procurementOrderDetailEdit';
+import {procurementOrderDetailList} from '../procurementOrderDetailUrl';
 import * as SysField from '../procurementOrderDetailField';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 

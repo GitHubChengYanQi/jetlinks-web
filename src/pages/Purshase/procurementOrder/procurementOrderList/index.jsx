@@ -7,6 +7,7 @@
 
 import React, {useRef} from 'react';
 import {Badge, Button, Table as AntTable} from 'antd';
+import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import {procurementOrderAdd, procurementOrderList} from '../procurementOrderUrl';
@@ -22,7 +23,7 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const ProcurementOrderList = () => {
-  const ref = useRef(null);
+  const history = useHistory(null);
   const tableRef = useRef(null);
   const addContract = useRef();
   const contactRef = useRef();
@@ -60,7 +61,7 @@ const ProcurementOrderList = () => {
       >
         <Column title="采购单" dataIndex="procurementOrderId" render={(value) => {
           return <Button type="link" onClick={() => {
-            ref.current.open(value);
+            history.push(`/purchase/procurementOrder/${value}`);
           }}>{value}</Button>;
         }} />
         <Column title="创建时间" dataIndex="createTime" />
@@ -78,10 +79,6 @@ const ProcurementOrderList = () => {
         }} />
         <Column />
       </Table>
-      <Modal width={1000} headTitle="采购单详情" component={ProcurementOrderDetailList} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
 
       <Modal
         headTitle="创建采购单"

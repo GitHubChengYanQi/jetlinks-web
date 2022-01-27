@@ -14,5 +14,11 @@ export const ProcurementOrderRouter = [
     component: lazy(() => import('../procurementOrderList')),
     fallback: <div>loading...</div>,
     exact: true,
-  }
+  }, {
+    path: '/procurementOrder/:cid',
+    name:'采购单详情',
+    component: lazy(() => import('../Details/index')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
 ];

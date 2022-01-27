@@ -1,5 +1,5 @@
 import {useHistory, useParams} from 'ice';
-import React, {useRef} from 'react';
+import React from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {Badge, Button, Card, Descriptions, Empty, Space} from 'antd';
 import {useRequest} from '@/util/Request';
