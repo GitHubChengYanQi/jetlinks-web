@@ -5,68 +5,61 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useRef, useState} from 'react';
-import {Tree} from 'antd';
+import React, {useState} from 'react';
+import {Input, Spin, Tree} from 'antd';
 import {storehouse} from '../StockUrl';
 import {useRequest} from '@/util/Request';
 import ListLayout from '@/layouts/ListLayout';
-import StockTable from '@/pages/Erp/stock/components/StockTable';
-import Select from '@/components/Select';
+import StockTable from '@/pages/Erp/stock/StockTable';
 
 const StockList = () => {
 
-  const {data, run} = useRequest({url: '/storehouse/list', method: 'POST'});
+  const {loading, data, run} = useRequest(storehouse);
 
   const Storehouse = data ? data.map((values) => {
     return {
-      title: values.name,
-      key: values.storehouseId,
+      title: values.label,
+      key: values.value,
     };
   }) : [];
-
-  const [value, setValue] = useState();
-
 
   const [state, setState] = useState();
 
   const Left = () => {
     return (
       <>
-        <Select
-          api={storehouse}
-          placeholder="搜索仓库"
-          width="100%"
-          value={value}
-          bordered={false}
-          onChange={async (value) => {
-            await run(
-              {
-                data: {
-                  storehouseId: value
-                }
-              }
-            );
-            setValue(value);
-          }} />
-        <Tree
-          showLine
-          onSelect={(value) => {
-            setState(value);
-          }}
-          defaultExpandedKeys={['']}
-          treeData={[
-            {
-              title: '所有仓库',
-              key: '',
-              children: Storehouse
-            },
-          ]}
-        />
+        <Input allowClear placeholder="搜索仓库" bordered={false} onChange={(value) => {
+          run({
+            data: {
+              name: value.target.value,
+            }
+          });
+        }} />
+        {
+          loading ?
+            <div style={{padding:16}}><Spin size="large" /></div>
+            :
+            <Tree
+              showLine
+              checkedKeys={state}
+              onSelect={(value) => {
+                setState(value);
+              }}
+              defaultExpandedKeys={['']}
+              treeData={[
+                {
+                  title: '所有仓库',
+                  key: '',
+                  children: Storehouse
+                },
+              ]}
+            />
+        }
       </>);
   };
   return (
     <ListLayout>
-      <StockTable left={Left()} state={state} />
+      <StockTable left={Left()} state={state && state[0]} />
     </ListLayout>
   );
 };

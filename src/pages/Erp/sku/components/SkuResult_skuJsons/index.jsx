@@ -1,5 +1,4 @@
 import React from 'react';
-import {Empty} from 'antd';
 
 const SkuResultSkuJsons = ({skuResult}) => {
 
@@ -18,7 +17,7 @@ const SkuResultSkuJsons = ({skuResult}) => {
       &&
       skuResult.skuJsons[0].values.attributeValues
       &&
-      <em style={{color: '#c9c8c8', fontSize: 10}}>
+      <em style={{color: '#949292', fontSize: 10}}>
         (
         {
           skuResult.skuJsons.map((items, index) => {
