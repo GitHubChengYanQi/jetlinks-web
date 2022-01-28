@@ -4,7 +4,6 @@ import { dictList } from '@/Config/ApiUrl/system/dict';
 import { Input, Button } from 'antd';
 import { useParams, useHistory } from 'ice';
 import EditButton from '@/components/EditButton';
-import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import DictEdit from '@/pages/BaseSystem/dictType/dict/Edit';
 import AddButton from '@/components/AddButton';
@@ -52,6 +51,7 @@ const DictList = () => {
   return (
     <>
       <Table
+        isModal={false}
         title={<Breadcrumb/>}
         ref={tableRef}
         api={dictList}

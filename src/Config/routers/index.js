@@ -12,6 +12,7 @@ import WorkflowConfig from '@/pages/Workflow/router';
 import FormConfig from '@/pages/Form/router';
 import baseSystem from './baseSystem';
 import PurshaseRouterConfig from '@/pages/Purshase/router';
+import ProcessRouterConfig from '@/pages/Process/route';
 
 const routerConfig = [
   {
@@ -40,6 +41,7 @@ const routerConfig = [
       ...ProductionRouterConfig,
       ...SpuRouterConfig,
       ...PurshaseRouterConfig,
+      ...ProcessRouterConfig,
       {
         path: '/test',
         component: lazy(() => import('@/pages/Test/index')),

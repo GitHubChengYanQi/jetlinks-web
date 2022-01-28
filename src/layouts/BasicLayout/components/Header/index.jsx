@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {
-  BellOutlined,
   FullscreenOutlined
 } from '@ant-design/icons';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import Icon from '@/components/Icon';
-import {Menu, Drawer, Avatar, Button, Dropdown, Tabs} from 'antd';
-import store from '@/store';
+import {Menu, Drawer, Avatar, Button, Dropdown} from 'antd';
 import {useHistory, config} from 'ice';
+import Icon from '@/components/Icon';
+import store from '@/store';
 import AppEntFUNC from '@/asseset/imgs/88.png';
 import PassWord from '@/pages/Member/passWord';
 
@@ -24,11 +23,8 @@ import purchase from '@/asseset/imgs/purchase.png';
 
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
-import Commission from '@/layouts/BasicLayout/components/Header/components/Commission';
 import {useRequest} from '@/util/Request';
-import Remind from '@/layouts/BasicLayout/components/Header/components/Remind';
-
-const {TabPane} = Tabs;
+import {FullScreen, toggleFullScreen} from '@/layouts/BasicLayout/components/Header/components/FullScreen';
 
 const AppIcon = {
   ENT_FUNC: menu,
@@ -47,7 +43,6 @@ const AppIcon = {
 const Header = () => {
 
   const [visiblePwd, setVisiblePwd] = useState(false);
-  const [messageVisible, setMessageVisible] = useState(false);
 
   const history = useHistory();
 
@@ -57,11 +52,6 @@ const Header = () => {
 
   const [visible, setVisible] = useState(false);
 
-  const {loading, data} = useRequest({url: '/message/list', method: 'POST'});
-
-  if (loading) {
-    return <ProSkeleton type="descriptions" />;
-  }
 
   return (
     <>
@@ -121,26 +111,10 @@ const Header = () => {
                   />
                 </Button>
               </Dropdown>
-              <Dropdown visible={messageVisible} onVisibleChange={(value) => {
-                setMessageVisible(value);
-              }} trigger={['click']} overlay={
-                <div className={styles.message}>
-                  <Tabs centered>
-                    <TabPane tab="消息" key="1">
-
-                    </TabPane>
-                    <TabPane tab="通知" key="2">
-
-                    </TabPane>
-                    <TabPane tab="待办" key="3">
-                      <Commission data={data} />
-                    </TabPane>
-                  </Tabs>
-                </div>
-              } placement="bottomRight">
-                <Button type="text" size="large" icon={<BellOutlined />} style={{height: 60, color: '#FFF'}} />
-              </Dropdown>
-              <Button type="text" size="large" icon={<FullscreenOutlined />} style={{height: 60, color: '#FFF'}} />
+              <Message />
+              <Button type="text" size="large" style={{height: 60, color: '#FFF'}} onClick={(event)=>{
+                toggleFullScreen(event);
+              }} ><FullscreenOutlined /></Button>
             </div>
           </div>
         </div>

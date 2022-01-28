@@ -6,17 +6,16 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import Table from '@/components/Table';
 import {Button, Table as AntTable, Tag} from 'antd';
+import {FormItem} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import DataEdit from '@/pages/Crm/data/dataEdit';
 import {dataDelete, dataList} from '@/pages/Crm/data/dataUrl';
-import {FormItem} from '@formily/antd';
 import * as SysField from '../../dataField';
 import Modal from '@/components/Modal';
 import Conent from '@/pages/Crm/data/components/Conent';
@@ -29,12 +28,7 @@ const DataTable = (props) => {
 
   const refConent = useRef();
 
-  useEffect(()=>{
-    if (Class){
-      tableRef.current.formActions.setFieldValue('dataClassificationId', Class.length > 0 ? Class[0] : '');
-      tableRef.current.submit();
-    }
-  },[Class]);
+
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -47,6 +41,13 @@ const DataTable = (props) => {
       </>
     );
   };
+
+  useEffect(()=>{
+    if (Class){
+      tableRef.current.formActions.setFieldValue('dataClassificationId', Class.length > 0 ? Class[0] : '');
+      tableRef.current.submit();
+    }
+  },[Class]);
 
   const searchForm = () => {
     return (

@@ -225,11 +225,6 @@ export const OriginId = (props) => {
 };
 
 export const UserName = (props) => {
-  const {loading, data} = useRequest({url: '/rest/system/currentUserInfo', method: 'POST'});
-  useEffect(() => {
-    props.onChange(data && data.userId);
-  }, [loading]);
-
   return (<Select width={120} api={apiUrl.UserIdSelect}  {...props} />);
 };
 
