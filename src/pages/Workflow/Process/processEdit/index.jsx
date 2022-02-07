@@ -6,12 +6,10 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
+import {FormEffectHooks} from '@formily/antd';
 import Form from '@/components/Form';
 import {processDetail, processAdd, processEdit} from '../processUrl';
 import * as SysField from '../processField';
-import {config} from 'ice';
-import {FormEffectHooks} from '@formily/antd';
 
 const {FormItem} = Form;
 

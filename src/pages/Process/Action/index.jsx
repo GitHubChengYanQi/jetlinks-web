@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
-import {Avatar, Button, Card, Comment, List, message, Modal, notification, Space} from 'antd';
+import {Avatar, Button, Card, Comment, Image, List, message, Modal, notification, Space} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {FormOutlined} from '@ant-design/icons';
 import Empty from '@/components/Empty';
@@ -187,7 +187,15 @@ const Action = () => {
             renderItem={item => (
               <li>
                 <Comment
-                  actions={item.actions}
+                  actions={item.photoId && [
+                    <Image.PreviewGroup>
+                      {
+                        item.photoId.split(',').map((item) => {
+                          return <Image width={100} src={item} />;
+                        })
+                      }
+                    </Image.PreviewGroup>
+                  ]}
                   author={item.user.name}
                   avatar={<Avatar
                     shape="square"
@@ -261,21 +269,13 @@ const Action = () => {
         }}
         value={note}
         getUserIds={(value) => {
-          if (value && value.length > 0) {
-          }
-          const userIds = value.map((items) => {
+          const users = value.map((items) => {
             return items.value;
           });
-          setUserIds(userIds);
+          setUserIds(users);
         }}
-        getImgs={(imgs) => {
-          if (imgs && imgs.length > 0) {
-
-          }
-          const imgIds = imgs.map((items) => {
-            return items.id;
-          });
-          setImgs(imgIds);
+        getImgs={(img) => {
+          setImgs(img);
         }}
       />
     </Modal>

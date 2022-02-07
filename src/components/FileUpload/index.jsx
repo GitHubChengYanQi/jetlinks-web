@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import {useRequest} from '@/util/Request';
 import {Button, message, Space, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
+import {useRequest} from '@/util/Request';
 
-
-const FileUpload = ({value,onChange,fileName,title}) => {
+const FileUpload = ({value,onChange=()=>{},fileName=()=>{},title,maxCount}) => {
 
   const [fileList,setFileList] = useState(value ? [{
     url: value,
   }] : null);
-
 
   const [oss, setOss] = useState({});
 
@@ -38,14 +36,14 @@ const FileUpload = ({value,onChange,fileName,title}) => {
         action={oss && oss.host}
         data={oss}
         fileList={fileList}
-        maxCount={1}
+        maxCount={maxCount || 1}
         listType="picture"
         onChange={(file) => {
           switch (file.file.status) {
             case 'removed':
               message.warning('已删除！');
               setFileList([]);
-              typeof fileName === 'function' && fileName('');
+              fileName('');
               onChange(null);
               break;
             case 'uploading':
@@ -54,13 +52,13 @@ const FileUpload = ({value,onChange,fileName,title}) => {
             case 'done':
               message.success('上传成功！');
               setFileList([{url:`${oss && oss.host}/${oss && oss.key}`,name:file.file.name}]);
-              typeof fileName === 'function' && fileName(file.file.name);
+              fileName(file.file.name);
               onChange(oss.mediaId);
               break;
             case 'error':
               message.error('上传失败！');
               setFileList([]);
-              typeof fileName === 'function' && fileName('');
+              fileName('');
               onChange(null);
               break;
             default:

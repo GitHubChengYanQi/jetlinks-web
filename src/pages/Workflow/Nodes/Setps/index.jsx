@@ -49,6 +49,7 @@ const Setps = ({value, onClose, onChange, type, module}) => {
       case 'quality':
         switch (module) {
           case 'inQuality':
+          case 'purchaseQuality':
             return [
               {label: '分派任务', value: 'quality_dispatch'},
               {label: '执行任务', value: 'quality_perform'},

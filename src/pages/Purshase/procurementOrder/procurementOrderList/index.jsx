@@ -64,6 +64,9 @@ const ProcurementOrderList = () => {
             history.push(`/purchase/procurementOrder/${value}`);
           }}>{value}</Button>;
         }} />
+        <Column title="创建人" dataIndex="user" render={(value) => {
+          return <>{value && value.name}</>;
+        }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column title="状态" dataIndex="status" render={(value) => {
           switch (value) {
@@ -71,8 +74,10 @@ const ProcurementOrderList = () => {
               return <Badge text="审批中" color="yellow" />;
             case 97:
               return <Badge text="已拒绝" color="red" />;
+            case 98:
+              return <Badge text="已完成" color="green" />;
             case 99:
-              return <Badge text="已同意" color="green" />;
+              return <Badge text="已同意" color="blue" />;
             default:
               break;
           }

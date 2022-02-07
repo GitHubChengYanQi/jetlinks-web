@@ -9,7 +9,7 @@ import {
   notification,
   Table
 } from 'antd';
-import {useSetState} from 'ahooks';
+import {useBoolean, useSetState} from 'ahooks';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
@@ -22,6 +22,8 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
   const [quotations, setQuotations] = useSetState({data: []});
 
   const [createContracts, setCreateContracts] = useState([]);
+
+  const [closable,{setTrue,setFalse}] = useBoolean();
 
   const contractRef = useRef();
 
@@ -61,6 +63,7 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
             return null;
           });
         });
+        setFalse();
         setCreateContracts(array.map((item) => {
           return {...item, orderId: res};
         }));
@@ -106,6 +109,7 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
   return <div style={{padding: 16}}>
     <Table
       footer={() => <Button disabled={skus.data.length === 0} onClick={() => {
+        setTrue();
         setVisible(true);
       }}>创建采购单</Button>}
       pagination={false}
@@ -137,7 +141,9 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
     <Modal
       width={1100}
       visible={visible}
+      closable={closable}
       destroyOnClose
+      keyboard={false}
       onCancel={() => {
         setCreateContracts([]);
         setVisible(false);
@@ -153,7 +159,6 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
         }).length > 0) {
           return message.warn('请选择物料的供应商和报价信息！');
         }
-
         createOrder(
           {
             data: {

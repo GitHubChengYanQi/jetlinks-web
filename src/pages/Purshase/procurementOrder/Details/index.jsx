@@ -55,8 +55,10 @@ const Detail = () => {
         return <Badge text="审批中" color="yellow" />;
       case 97:
         return <Badge text="已拒绝" color="red" />;
+      case 98:
+        return <Badge text="已完成" color="green" />;
       case 99:
-        return <Badge text="已同意" color="green" />;
+        return <Badge text="已同意" color="blue" />;
       default:
         break;
     }

@@ -1,18 +1,19 @@
-import React, { useRef, useState } from 'react';
-import {Collapse, Input} from 'antd';
-import { PaperClipOutlined } from '@ant-design/icons';
-import { getLastMeasureIndex } from './LastMention';
+import React, {useState} from 'react';
+import {Input} from 'antd';
+import {getLastMeasureIndex} from './LastMention';
+import FileUpload from '@/components/FileUpload';
 
-const MentionsNote = ({ getUserIds, onChange, value, placeholder, getImgs }) => {
+const MentionsNote = ({
+  getUserIds = () => {
+  }, onChange = () => {
+  }, value, placeholder, getImgs = () => {
+  }
+}) => {
 
   const [users, setUsers] = useState([]);
 
-  const [imgs, setImgs] = useState([]);
-
-  const ref = useRef();
-
   const onKeyUp = (even) => {
-    const { location: measureIndex, prefix: measurePrefix } = getLastMeasureIndex(
+    const {location: measureIndex, prefix: measurePrefix} = getLastMeasureIndex(
       value,
       '@',
     );
@@ -34,19 +35,22 @@ const MentionsNote = ({ getUserIds, onChange, value, placeholder, getImgs }) => 
           return value.target.value.indexOf(items.label) !== -1;
         });
         setUsers(user);
-        typeof getUserIds === 'function' && getUserIds(user);
-        typeof onChange === 'function' && onChange(value.target.value);
+        getUserIds(user);
+        onChange(value.target.value);
       }}
       onKeyUp={(e) => {
         onKeyUp(e);
       }}
     />
 
-    {/*<Collapse>*/}
-    {/*  <Collapse.Panel key='1' title={<>上传  <PaperClipOutlined /></>}>*/}
-
-    {/*  </Collapse.Panel>*/}
-    {/*</Collapse>*/}
+    <div style={{marginTop: 16}}>
+      <FileUpload
+        title="上传图片"
+        maxCount={10}
+        onChange={(value) => {
+          getImgs([value]);
+        }} />
+    </div>
 
   </>;
 
