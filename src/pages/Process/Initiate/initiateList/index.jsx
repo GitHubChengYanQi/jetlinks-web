@@ -4,6 +4,7 @@ import {Button, Input} from 'antd';
 import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import store from '@/store';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = Table;
 
@@ -27,6 +28,7 @@ const InitiateList = () => {
 
   return <>
     <Table
+      title={<Breadcrumb />}
       searchForm={searchForm}
       ref={tableRef}
       rowKey="processTaskId"

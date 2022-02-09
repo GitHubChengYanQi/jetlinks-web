@@ -130,7 +130,7 @@ export const Spu = (props) => {
   return (<Select
     width="100%"
     data={{type:1}}
-    placeholder="产品"
+    placeholder="型号"
     disabled={props.spuId}
     api={spuListSelect}
     value={props.value && props.value.spuId}
@@ -139,9 +139,7 @@ export const Spu = (props) => {
     }} />);
 };
 export const Standard = (props) => {
-  const { ...other} = props;
-
-  return (<Input {...other} />);
+  return (<Input {...props} />);
 };
 
 export const Sku = (props) => {

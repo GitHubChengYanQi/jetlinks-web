@@ -37,7 +37,6 @@ const Drawer = (
       onClose={() => {
         show(null);
         onClose();
-        onSuccess();
       }}
       destroyOnClose
       width={width}

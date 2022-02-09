@@ -6,21 +6,21 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {backDetails, partsDelete, partsList} from '../PartsUrl';
+import {Button, Card, Table} from 'antd';
+import ProCard from '@ant-design/pro-card';
+import {ClockCircleOutlined} from '@ant-design/icons';
+import {backDetails, partsList} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import EditButton from '@/components/EditButton';
 import AddButton from '@/components/AddButton';
-import {Button, Card, Table} from 'antd';
 import {request, useRequest} from '@/util/Request';
 import PartsOldList from '@/pages/Erp/parts/components/PartsOldList';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
-import ProCard from '@ant-design/pro-card';
-import {ClockCircleOutlined} from '@ant-design/icons';
 
 const {Column} = Table;
 
-const PartsList = ({spuId}) => {
+const PartsList = ({spuId, type = 2}) => {
 
   const refAdd = useRef();
   const formRef = useRef();
@@ -30,14 +30,15 @@ const PartsList = ({spuId}) => {
 
   const [key, setKey] = useState([]);
 
-  const {refresh} = useRequest(partsList, {
+  const {loading, refresh} = useRequest(partsList, {
     defaultParams: {
       data: {
-        spuId
+        spuId,
+        type,
       }
     },
     onSuccess: (res) => {
-      const data = res && res.length > 0 && res.map((items, index) => {
+      const data = res && res.length > 0 && res.map((items) => {
         return {
           key: `${items.skuId}_${items.partsId}`,
           ...items,
@@ -60,6 +61,7 @@ const PartsList = ({spuId}) => {
 
   const table = () => {
     return <Table
+      loading={loading}
       rowKey="key"
       dataSource={dataSource || []}
       expandable={{
@@ -122,12 +124,18 @@ const PartsList = ({spuId}) => {
         <Column title="备注" dataIndex="note" />
       </>}
       <Column title="名称" dataIndex="partName" />
+      <Column title="创建时间" dataIndex="createTime" render={(value, record) => {
+        return !record.partsDetailId && <>{value}</>;
+      }} />
+      <Column title="创建人" dataIndex="userResult" render={(value) => {
+        return <>{value && value.name}</>;
+      }} />
 
       <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
         return record.children &&
           <>
             <EditButton onClick={() => {
-              refAdd.current.open(record.id|| record.partsId);
+              refAdd.current.open(record.id || record.partsId);
             }} />
             <Button icon={<ClockCircleOutlined />} type="link" onClick={() => {
               refOldList.current.open(record.skuId);
@@ -149,6 +157,7 @@ const PartsList = ({spuId}) => {
         </Card>}
       <Modal
         width={900}
+        type={type}
         title="清单"
         compoentRef={formRef}
         component={PartsEdit}
@@ -159,7 +168,7 @@ const PartsList = ({spuId}) => {
         spuId={spuId}
         footer={<>
           <Button type="primary" onClick={() => {
-            formRef.current.formRef.current.submit();
+            formRef.current.submit();
           }}>保存</Button>
         </>}
       />

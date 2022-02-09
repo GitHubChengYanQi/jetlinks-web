@@ -8,7 +8,6 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
 
 
-
 import {Button, Select} from 'antd';
 import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
@@ -26,31 +25,34 @@ const ApiConfig = {
 };
 
 
-const PartsEdit = ({...props},ref) => {
+const PartsEdit = ({...props}, ref) => {
 
-  const {spuId, ...other} = props;
+  const {spuId, type: bomType, ...other} = props;
 
   const formRef = useRef(null);
 
-  useImperativeHandle(ref,()=>(
-    {
-      formRef,
-    }
-  ));
+  useImperativeHandle(ref, () => ({
+    submit: formRef.current.submit,
+  }));
 
   const [type, setType] = useState(other.value ? 1 : 0);
 
   return (
     <>
-      <div style={{padding:16}}>
+      <div style={{padding: 16}}>
         <Form
           {...other}
           ref={formRef}
           NoButton={false}
           api={ApiConfig}
           fieldKey="partsId"
+          onError={() => {
+          }}
+          onSuccess={() => {
+            props.onSuccess();
+          }}
           onSubmit={(value) => {
-            return value;
+            return {...value, type: bomType};
           }}
           effects={() => {
             const {setFieldState} = createFormActions();
@@ -76,7 +78,7 @@ const PartsEdit = ({...props},ref) => {
                   defaultValue={type}
                   bordered={false}
                   disabled={spuId}
-                  options={[{label: '产品', value: 0}, {label: '物料', value: 1}]}
+                  options={[{label: '型号', value: 0}, {label: '物料', value: 1}]}
                   onChange={(value) => {
                     setType(value);
                   }}
@@ -91,7 +93,6 @@ const PartsEdit = ({...props},ref) => {
             {!type && <>
               <FormItem label="配置" name="skuRequests" component={SysField.Attributes} required />
               <FormItem label="编码" name="standard" component={SysField.Standard} required />
-              <FormItem label="型号(零件号)" name="skuName" component={SysField.SkuName} required />
               <FormItem label="备注" name="note" component={SysField.Note} />
             </>}
           </ProCard>

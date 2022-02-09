@@ -5,14 +5,13 @@
  * @Date 2021-08-20 17:11:20
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, Col, Input, Row, Steps} from 'antd';
+import React, { useRef, useState} from 'react';
+import ProCard from '@ant-design/pro-card';
+import {MegaLayout} from '@formily/antd-components';
 import Form from '@/components/Form';
 import {repairDetail, repairAdd, repairEdit} from '../repairUrl';
 import * as SysField from '../repairField';
 import {useRequest} from '@/util/Request';
-import ProCard from '@ant-design/pro-card';
-import {MegaLayout} from '@formily/antd-components';
 
 const {FormItem} = Form;
 

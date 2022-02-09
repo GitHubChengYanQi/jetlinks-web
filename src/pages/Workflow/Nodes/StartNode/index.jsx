@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import WFC from '@/pages/Workflow/OperatorContext';
-import {Typography} from 'antd';
 import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 
