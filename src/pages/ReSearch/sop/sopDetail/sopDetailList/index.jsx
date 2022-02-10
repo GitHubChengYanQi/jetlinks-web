@@ -1,0 +1,146 @@
+/**
+ * sop详情列表页
+ *
+ * @author song
+ * @Date 2022-02-10 09:21:35
+ */
+
+import React from 'react';
+import {Button, Card, Col, Descriptions, Image, Row, Space, Steps, Table, Tabs,} from 'antd';
+import {useHistory, useParams} from 'ice';
+import ProCard from '@ant-design/pro-card';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
+import Breadcrumb from '@/components/Breadcrumb';
+import {useRequest} from '@/util/Request';
+import {sopDetail} from '@/pages/ReSearch/sop/sopUrl';
+import Empty from '@/components/Empty';
+
+const SopDetailList = () => {
+  const params = useParams();
+  const history = useHistory();
+
+  const {loading, data, run} = useRequest(sopDetail, {
+    defaultParams: {
+      data: {
+        sopId: params.cid,
+      }
+    }
+  });
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
+  }
+
+  if (!data) {
+    return <Empty />;
+  }
+
+  return (
+    <div className={styles.detail}>
+      <Card title={<Breadcrumb title="SOP详情" />} extra={<Button onClick={() => {
+        if (data.display === 0) {
+          run({
+            data: {
+              sopId: data.pid,
+            }
+          });
+        } else {
+          history.push('/research/sop');
+        }
+      }}>{data.display === 0 ? '返回正在使用的SOP' : '返回'}</Button>} />
+      <div
+        className={styles.main}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <ProCard className="h2Card" headerBordered title="作业步骤">
+              <Card
+                title="成品图"
+                headStyle={{border: 'none', borderBottom: '1px solid #eee', padding: '0 8px'}}
+                bordered={false}
+              >
+                <Space>
+                  {
+                    data.mediaUrls.map((item, index) => {
+                      return <Image key={index} src={item} width={150} height={100} />;
+                    })
+                  }
+                </Space>
+                <div>
+                  作业要求及注意事项：{data.note || '无'}
+                </div>
+              </Card>
+              <Card
+                title="步骤"
+                headStyle={{border: 'none', borderBottom: '1px solid #eee', padding: '0 8px'}}
+                bordered={false}>
+                <Steps direction="vertical">
+                  {
+                    data.sopDetails.map((item, index) => {
+                      return <Steps.Step
+                        style={{minHeight: 200}}
+                        status="finish "
+                        key={index}
+                        title={
+                          <Image src={item.mediaUrl} height={100} />
+                        }
+                        description={`操作说明：${item.instructions}`}
+                      />;
+                    })
+                  }
+                </Steps>,
+              </Card>
+            </ProCard>
+          </Col>
+          <Col span={16}>
+            <Space direction="vertical">
+              <ProCard className="h2Card" headerBordered title="基本信息">
+                <Descriptions>
+                  <Descriptions.Item label="SOP编号">{data.coding}</Descriptions.Item>
+                  <Descriptions.Item label="SOP名称">{data.name}</Descriptions.Item>
+                  <Descriptions.Item label="SOP版本号">{data.versionNumber}</Descriptions.Item>
+                  <Descriptions.Item label="创建人">{}</Descriptions.Item>
+                  <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
+                  <Descriptions.Item label="关联工序">{data.shipSetpId || '暂无'}</Descriptions.Item>
+                </Descriptions>
+              </ProCard>
+              <Tabs defaultActiveKey="1">
+                <Tabs.TabPane tab="修改记录" key="1">
+                  <Table
+                    dataSource={data.oldSop}
+                    rowKey="sopId"
+                  >
+                    <Table.Column title="修改人" dataIndex="user" render={(value) => {
+                      return <>{value && value.name}</>;
+                    }} />
+                    <Table.Column title="修改原因" dataIndex="alterWhy" />
+                    <Table.Column title="修改时间" dataIndex="createTime" />
+                    <Table.Column title="修改前版本号" dataIndex="versionNumber" />
+                    <Table.Column title="操作" width={100} align="center" dataIndex="sopId" render={(value) => {
+                      return <>
+                        <Button type="link" onClick={() => {
+                          run({
+                            data: {
+                              sopId: value,
+                            }
+                          });
+                        }}>查看</Button>
+                      </>;
+                    }} />
+                  </Table>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="浏览记录" key="2">
+
+                </Tabs.TabPane>
+              </Tabs>
+            </Space>
+          </Col>
+        </Row>
+      </div>
+
+    </div>
+
+  );
+};
+
+export default SopDetailList;

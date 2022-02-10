@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Card, Table} from 'antd';
+import {Button, Card, Space, Switch, Table} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {ClockCircleOutlined} from '@ant-design/icons';
 import {backDetails, partsList} from '../PartsUrl';
@@ -17,6 +17,7 @@ import AddButton from '@/components/AddButton';
 import {request, useRequest} from '@/util/Request';
 import PartsOldList from '@/pages/Erp/parts/components/PartsOldList';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const {Column} = Table;
 
@@ -24,11 +25,13 @@ const PartsList = ({spuId, type = 2}) => {
 
   const refAdd = useRef();
   const formRef = useRef();
+
   const refOldList = useRef();
 
   const [dataSource, setDataSource] = useState();
 
   const [key, setKey] = useState([]);
+  console.log(key);
 
   const {loading, refresh} = useRequest(partsList, {
     defaultParams: {
@@ -68,54 +71,38 @@ const PartsList = ({spuId, type = 2}) => {
         expandedRowKeys: key,
         onExpand: async (expand, record) => {
           if (expand) {
-            const res = await request({...backDetails, params: {id: record.skuId}});
+            const res = await request({...backDetails, params: {id: record.skuId, type}});
 
-            record.children = res && res.length > 0 && res.map((items, index) => {
+            record.children = res && res.length > 0 && res.map((items) => {
               return {
-                key: `${items.skuId}_${items.partsId}`,
+                key: `${record.partsId}_${items.skuId}_${items.partsId}`,
                 ...items,
                 children: items.isNull && [],
               };
             });
-            setKey([...key, `${record.skuId}_${record.partsId}`]);
 
-          } else {
-            const array = [];
-            for (let i = 0; i < key.length; i++) {
-              if (key[i] !== `${record.skuId}_${record.partsId}`) {
-                array.push(key[i]);
-              } else {
-                break;
-              }
+            if (record.partsDetailId) {
+              setKey([...key, `${record.partsId}_${record.skuId}_${record.partsId}`]);
+            } else {
+              setKey([...key, `${record.skuId}_${record.partsId}`]);
             }
 
+
+          } else {
+            const array = key.filter((item) => {
+              if (record.partsDetailId) {
+                return item !== `${record.partsId}_${record.skuId}_${record.partsId}`;
+              } else {
+                return item !== `${record.skuId}_${record.partsId}` && item.indexOf(record.partsId) === -1;
+              }
+            });
             setKey(array);
           }
         }
       }}
     >
       <Column title="物料" dataIndex="skuId" render={(value, record) => {
-        return (
-          <>
-            {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
-            &nbsp;/&nbsp;
-            {record.spuResult && record.spuResult.name}
-            &nbsp;&nbsp;
-            <em style={{color: '#c9c8c8', fontSize: 10}}>
-              (
-              {
-                record.backSkus
-                &&
-                record.backSkus.map((items, index) => {
-                  return <span key={index}>
-                    {items.itemAttribute.attribute}：{items.attributeValues.attributeValues}
-                  </span>;
-                })
-              }
-              )
-            </em>
-          </>
-        );
+        return (<BackSkus record={record} />);
       }} />
       {key.length > 0 && <>
         <Column title="数量" dataIndex="number" render={(value) => {
@@ -131,16 +118,25 @@ const PartsList = ({spuId, type = 2}) => {
         return <>{value && value.name}</>;
       }} />
 
-      <Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {
-        return record.children &&
-          <>
-            <EditButton onClick={() => {
-              refAdd.current.open(record.id || record.partsId);
-            }} />
-            <Button icon={<ClockCircleOutlined />} type="link" onClick={() => {
-              refOldList.current.open(record.skuId);
-            }} />
-          </>;
+      <Column title="操作" fixed="right" align="center" width={200} render={(value, record) => {
+        return <Space>
+          {
+            record.children &&
+            <>
+              {
+                type === 2 && !record.partsDetailId &&
+                <Switch checkedChildren="启用" unCheckedChildren="禁用" defaultChecked={false} />
+              }
+              <EditButton onClick={() => {
+                refAdd.current.open(record.id || record.partsId);
+              }} />
+              <Button icon={<ClockCircleOutlined />} type="link" onClick={() => {
+                refOldList.current.open(record.skuId);
+              }} />
+            </>
+          }
+
+        </Space>;
       }} />
     </Table>;
   };
@@ -164,7 +160,8 @@ const PartsList = ({spuId, type = 2}) => {
         onSuccess={() => {
           refresh();
           refAdd.current.close();
-        }} ref={refAdd}
+        }}
+        ref={refAdd}
         spuId={spuId}
         footer={<>
           <Button type="primary" onClick={() => {
@@ -173,7 +170,7 @@ const PartsList = ({spuId, type = 2}) => {
         </>}
       />
 
-      <Modal width={1200} title="清单" component={PartsOldList} onSuccess={() => {
+      <Modal width={1200} title="清单" type={type} component={PartsOldList} onSuccess={() => {
         refresh();
         refOldList.current.close();
       }} ref={refOldList} spuId={spuId} />

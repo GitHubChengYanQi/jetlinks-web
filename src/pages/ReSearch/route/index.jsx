@@ -1,5 +1,6 @@
 import ReSeachLayout from '@/pages/ReSearch';
 import {ResearchBomRouter} from '@/pages/ReSearch/ResearchBom/route';
+import {SopRouter} from '@/pages/ReSearch/sop/sopRouter';
 
 const ResearchRouterConfig = [
   {
@@ -8,6 +9,7 @@ const ResearchRouterConfig = [
     component: ReSeachLayout,
     children:[
       ...ResearchBomRouter,
+      ...SopRouter,
       {
         redirect: '/research/researchBom',
       }

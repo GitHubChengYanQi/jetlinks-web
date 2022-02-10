@@ -6,26 +6,23 @@
  */
 
 import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
 import {Button, Radio, Space, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
+import {RedoOutlined, SearchOutlined} from '@ant-design/icons';
+import {config} from 'ice';
+import Table from '@/components/Table';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {orCodeDelete, orCodeList} from '../qrCodeUrl';
+import {orCodeList} from '../qrCodeUrl';
 import OrCodeEdit from '../qrCodeEdit';
 import * as SysField from '../qrCodeField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {RedoOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Code from '@/pages/Erp/spu/components/Code';
-import {config} from 'ice';
-import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const {code, baseURI} = config;
+const {baseURI} = config;
 
 const QrCodeList = () => {
 
@@ -181,7 +178,7 @@ const QrCodeList = () => {
                 <Radio.Button value={2}>查看已使用码</Radio.Button>
               </Radio.Group>
               <Button type="link" onClick={() => {
-                const url = code.replaceAll(':', '%3A').replaceAll('/', '%2F').replaceAll('#', '%23');
+                const url = baseURI.replaceAll(':', '%3A').replaceAll('/', '%2F').replaceAll('#', '%23');
                 window.location.href = `${baseURI}api/qrCodetoExcel?type=${exports}&url=${url}%3Fid%3DcodeId`;
               }}>
                 导出当前选中的码

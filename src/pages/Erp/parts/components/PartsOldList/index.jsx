@@ -5,32 +5,31 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef, useState} from 'react';
-import AddButton from '@/components/AddButton';
-import {Button, Card, Table} from 'antd';
+import React, {useState} from 'react';
+import { Table} from 'antd';
 import {request, useRequest} from '@/util/Request';
-import {backDetails, oldBackDetails, partsOldList} from '@/pages/Erp/parts/PartsUrl';
+import {backDetails, partsOldList} from '@/pages/Erp/parts/PartsUrl';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const {Column} = Table;
 
 const PartsOldList = (props) => {
 
-  const {value} = props;
-
-  const refAdd = useRef();
+  const {value,type} = props;
 
   const [dataSource, setDataSource] = useState();
 
   const [key, setKey] = useState([]);
 
-  const {refresh} = useRequest(partsOldList, {
+  useRequest(partsOldList, {
     defaultParams: {
       data: {
         skuId:value,
+        type,
       }
     },
     onSuccess: (res) => {
-      const data = res && res.length > 0 && res.map((items, index) => {
+      const data = res && res.length > 0 && res.map((items) => {
         return {
           key: `${items.skuId}_${items.partsId}`,
           ...items,
@@ -42,73 +41,46 @@ const PartsOldList = (props) => {
   });
 
 
-  const action = () => {
-
-    return (
-      <AddButton onClick={() => {
-        refAdd.current.open(false);
-      }} />
-    );
-  };
-
   const table = () => {
     return <Table
       rowKey="key"
       dataSource={dataSource || []}
+      pagination={false}
       expandable={{
         expandedRowKeys: key,
         onExpand: async (expand, record) => {
           if (expand) {
-            const res = await request({...oldBackDetails, params: {id: record.skuId,partsId:record.id ||record.partsId}});
+            const res = await request({...backDetails, params: {id: record.skuId,partsId:record.id ||record.partsId, type}});
 
-            record.children = res && res.length > 0 && res.map((items, index) => {
+            record.children = res && res.length > 0 && res.map((items) => {
               return {
-                key: `${items.skuId}_${items.partsId}`,
+                key: `${record.partsId}_${items.skuId}_${items.partsId}`,
                 ...items,
                 children: items.isNull && [],
               };
             });
-            setKey([...key, `${record.skuId}_${record.partsId}`]);
 
-          } else {
-            const array = [];
-            for (let i = 0; i < key.length; i++) {
-              if (key[i] !== `${record.skuId}_${record.partsId}`) {
-                array.push(key[i]);
-              } else {
-                break;
-              }
+            if (record.partsDetailId) {
+              setKey([...key, `${record.partsId}_${record.skuId}_${record.partsId}`]);
+            } else {
+              setKey([...key, `${record.skuId}_${record.partsId}`]);
             }
 
+          } else {
+            const array = key.filter((item) => {
+              if (record.partsDetailId) {
+                return item !== `${record.partsId}_${record.skuId}_${record.partsId}`;
+              } else {
+                return item !== `${record.skuId}_${record.partsId}` && item.indexOf(record.partsId) === -1;
+              }
+            });
             setKey(array);
           }
         }
       }}
     >
       <Column title="物料" dataIndex="skuId" render={(value, record) => {
-        return (
-          <>
-            {record.spuResult && record.spuResult.name}
-            &nbsp;&nbsp;
-            (
-            {
-              record.backSkus
-              &&
-              record.backSkus.map((items, index) => {
-                return <em key={index}>
-                  {
-                    items.itemAttribute.attribute
-                  }
-                  ：
-                  {
-                    items.attributeValues.attributeValues
-                  }
-                </em>;
-              })
-            }
-            )
-          </>
-        );
+        return (<BackSkus record={record} />);
       }} />
       {key.length > 0 && <>
         <Column title="数量" dataIndex="number" render={(value) => {
@@ -117,13 +89,6 @@ const PartsOldList = (props) => {
         <Column title="备注" dataIndex="note" />
       </>}
       <Column title="清单" dataIndex="partName" />
-      {/*<Column title="操作" fixed="right" align="center" width={100} render={(value, record) => {*/}
-      {/*  return (*/}
-      {/*    <>*/}
-      {/*      <Button icon={<ClockCircleOutlined />} type="link" />*/}
-      {/*    </>*/}
-      {/*  );*/}
-      {/*}} />*/}
     </Table>;
   };
 
