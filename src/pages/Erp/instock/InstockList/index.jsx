@@ -5,7 +5,7 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Table from '@/components/Table';
 import {Badge, Button, Modal, notification, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -25,6 +25,7 @@ import {instockDelete, instockEdit, instockList, instockOrderList, itemIdSelect}
 import * as SysField from '../InstockField';
 import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
 import Code from '@/pages/Erp/spu/components/Code';
+import {getSearchParams} from 'ice';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -34,6 +35,14 @@ const InstockList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const instockRef = useRef(null);
+
+  const params = getSearchParams();
+
+  useEffect(() => {
+    if (params.id) {
+      instockRef.current.open(params.id);
+    }
+  }, []);
 
   const actions = () => {
     return (

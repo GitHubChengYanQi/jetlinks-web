@@ -21,7 +21,7 @@ const Commission = ({data,onClose=()=>{}}) => {
             onClick={() => {
               switch (item.source) {
                 case 'instock':
-                  history.push('/ERP/instock');
+                  history.push(`/ERP/instock?${item.sourceId}`);
                   break;
                 case 'processTask':
                   history.push(`/process/action/${item.sourceId}`);

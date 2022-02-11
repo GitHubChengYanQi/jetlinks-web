@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {AlertOutlined, BellOutlined, CloseCircleOutlined, MessageOutlined} from '@ant-design/icons';
-import {Button, Drawer, Select, Space} from 'antd';
+import {Badge, Button, Drawer, Space, Tabs} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {useRequest} from '@/util/Request';
 import Empty from '@/components/Empty';
@@ -21,31 +21,24 @@ const Message = () => {
       case '1':
         return <Empty />;
       case '2':
-        return <Commission onClose={()=>{setVisible(false);}} data={data} />;
+        return <Commission onClose={() => {
+          setVisible(false);
+        }} data={data} />;
       default:
         break;
     }
   };
 
   const title = () => {
-    return <Select
-      value={key}
-      style={{width: 100}}
-      bordered={false}
-      options={[
-        {
-          value: '0',
-          label: <Space><MessageOutlined />消息</Space>,
-        },
-        {
-          value: '1',
-          label: <Space><BellOutlined />通知</Space>,
-        },
-        {
-          value: '2',
-          label: <Space><AlertOutlined />待办</Space>,
-        },
-      ]}
+    return <Tabs
+      tabBarExtraContent={<Button
+        type="link"
+        onClick={() => {
+          setVisible(false);
+        }}
+        icon={<CloseCircleOutlined />}
+      />}
+      activeKey={key}
       onChange={(value) => {
         setKey(value);
         switch (value) {
@@ -60,7 +53,11 @@ const Message = () => {
             break;
         }
       }}
-    />;
+    >
+      <Tabs.TabPane tab={<Badge count={0} size="small"><div style={{padding:3}}><MessageOutlined style={{marginRight:4}} />消息</div></Badge>} key="0" />
+      <Tabs.TabPane tab={<Badge count={1} size="small"><div style={{padding:3}}><BellOutlined style={{marginRight:4}} />通知</div></Badge>} key="1" />
+      <Tabs.TabPane tab={<Badge count={5} size="small"><div style={{padding:3}}><AlertOutlined style={{marginRight:4}} />待办</div></Badge>} key="2" />
+    </Tabs>;
   };
 
   return (
@@ -78,18 +75,11 @@ const Message = () => {
       <Drawer
         closable={false}
         destroyOnClose
-        afterVisibleChange={()=>{
+        afterVisibleChange={() => {
           run();
         }}
-        extra={<Button
-          type="link"
-          onClick={() => {
-            setVisible(false);
-          }}
-          icon={<CloseCircleOutlined />}
-        />}
         style={{marginTop: 60}}
-        bodyStyle={{padding: 0,marginBottom:'5vh'}}
+        bodyStyle={{padding: 0, marginBottom: '5vh'}}
         onClose={() => {
           setVisible(false);
         }}

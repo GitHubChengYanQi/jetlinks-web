@@ -103,7 +103,7 @@ const Action = () => {
         return <QualityTask />;
       case 'purchase':
       case 'purchaseAsk':
-        return <PurchaseAsk />;
+        return <PurchaseAsk data={data.object} />;
       case 'purchasePlan':
         return <PurchasePlan />;
       case 'procurementOrder':
@@ -142,7 +142,7 @@ const Action = () => {
             break;
           case 'purchase':
           case 'purchaseAsk':
-            history.push('/purchase/purchaseAsk');
+            history.push(`/purchase/purchaseAsk?id=${data.formId}`);
             break;
           case 'purchasePlan':
             history.push(`/purchase/procurementPlan/${111}`);

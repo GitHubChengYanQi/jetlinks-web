@@ -1,8 +1,12 @@
 import React from 'react';
 import {Descriptions} from 'antd';
+import Empty from '@/components/Empty';
 
 const PurchaseOrder = ({data}) => {
 
+  if (!data) {
+    return <Empty />;
+  }
 
   return <>
     <Descriptions>

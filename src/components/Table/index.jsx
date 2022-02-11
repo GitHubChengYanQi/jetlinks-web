@@ -25,7 +25,6 @@ const TableWarp = ({
   contentHeight,
   searchForm,
   cardTitle,
-  data,
   rowKey,
   headStyle,
   tab,
@@ -146,14 +145,11 @@ const TableWarp = ({
 
   const {loading, dataSource, pagination, ...other} = tableProps;
 
-  typeof data === 'function' && data(dataSource);
-
   const footer = () => {
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {pagination && <div className={style.right}>共{pagination.total}条</div>}
-        {/* {pagination && <Pagination style={{float: 'right'}} {...pagination} size="small" />} */}
+        {pagination && <div className={style.right}>共{pagination.total || dataSource.length}条</div>}
         <br style={{clear: 'both'}} />
       </div>
     );
