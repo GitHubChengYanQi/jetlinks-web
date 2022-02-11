@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Menu, Modal} from 'antd';
 import TopLayout from '@/layouts/TopLayout';
-import RemindList from '@/pages/Portal/remind/remindList';
 import SetView from '@/layouts/SetView';
+import ShipSetpClassList from '@/pages/ReSearch/shipSetp/shipSetpClass/shipSetpClassList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -12,8 +12,8 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const RenderComponent = () => {
     switch (type) {
-      case 'shtx':
-        return <RemindList />;
+      case 'gxfl':
+        return <ShipSetpClassList />;
       default:
         return null;
     }
@@ -35,7 +35,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             showModel(true);
           }}
         >
-
+          <Menu.Item key="gxfl">
+            <span>工序分类</span>
+          </Menu.Item>
           <Menu.Divider />
         </Menu>} />
       <Modal centered destroyOnClose maskClosable={false} width={860} visible={visible} onCancel={() => {

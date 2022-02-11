@@ -81,8 +81,8 @@ const SopEdit = ({...props}, ref) => {
               return (
                 <div>
                   {state.value.map((item, index) => {
-                    const onRemove = index => {
-                      mutators.remove(index);
+                    const onRemove = removeIndex => {
+                      mutators.remove(removeIndex);
                       toggle();
                     };
                     return (

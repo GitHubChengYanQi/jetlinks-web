@@ -31,7 +31,6 @@ const PartsList = ({spuId, type = 2}) => {
   const [dataSource, setDataSource] = useState();
 
   const [key, setKey] = useState([]);
-  console.log(key);
 
   const {loading, refresh} = useRequest(partsList, {
     defaultParams: {

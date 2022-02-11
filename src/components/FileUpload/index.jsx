@@ -31,6 +31,8 @@ const FileUpload = ({
           imgs:value.split(',')
         }
       });
+    }else {
+      setFileList([]);
     }
   }, [refresh]);
 

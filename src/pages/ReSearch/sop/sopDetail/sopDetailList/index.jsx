@@ -16,14 +16,14 @@ import {useRequest} from '@/util/Request';
 import {sopDetail} from '@/pages/ReSearch/sop/sopUrl';
 import Empty from '@/components/Empty';
 
-const SopDetailList = () => {
+const SopDetailList = ({id}) => {
   const params = useParams();
   const history = useHistory();
 
   const {loading, data, run} = useRequest(sopDetail, {
     defaultParams: {
       data: {
-        sopId: params.cid,
+        sopId: params.cid || id,
       }
     }
   });
@@ -38,7 +38,7 @@ const SopDetailList = () => {
 
   return (
     <div className={styles.detail}>
-      <Card title={<Breadcrumb title="SOP详情" />} extra={<Button onClick={() => {
+      {!id && <Card title={<Breadcrumb title="SOP详情" />} extra={<Button onClick={() => {
         if (data.display === 0) {
           run({
             data: {
@@ -48,11 +48,11 @@ const SopDetailList = () => {
         } else {
           history.push('/research/sop');
         }
-      }}>{data.display === 0 ? '返回正在使用的SOP' : '返回'}</Button>} />
+      }}>{data.display === 0 ? '返回正在使用的SOP' : '返回'}</Button>} />}
       <div
         className={styles.main}>
         <Row gutter={24}>
-          <Col span={8}>
+          <Col span={id ? 24 : 8}>
             <ProCard className="h2Card" headerBordered title="作业步骤">
               <Card
                 title="成品图"
@@ -92,7 +92,7 @@ const SopDetailList = () => {
               </Card>
             </ProCard>
           </Col>
-          <Col span={16}>
+          {!id && <Col span={16}>
             <Space direction="vertical">
               <ProCard className="h2Card" headerBordered title="基本信息">
                 <Descriptions>
@@ -134,7 +134,7 @@ const SopDetailList = () => {
                 </Tabs.TabPane>
               </Tabs>
             </Space>
-          </Col>
+          </Col>}
         </Row>
       </div>
 

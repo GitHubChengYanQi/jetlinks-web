@@ -5,9 +5,9 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
+import React, {useRef, useState} from 'react';
 import {Badge, Button, Table as AntTable} from 'antd';
+import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
 import { purchaseAskList} from '../purchaseAskUrl';
@@ -25,6 +25,9 @@ const PurchaseAskList = () => {
   const detailRef = useRef(null);
   const compoentRef = useRef(null);
   const tableRef = useRef(null);
+
+  const [loading,setLoading] = useState();
+
   const actions = () => {
     return (
       <>
@@ -84,8 +87,10 @@ const PurchaseAskList = () => {
         title="采购申请"
         compoentRef={compoentRef}
         component={PurchaseAskEdit}
+        loading={setLoading}
         footer={<>
           <Button
+            loading={loading}
             type="primary"
             onClick={() => {
               compoentRef.current.formRef.current.submit();

@@ -35,3 +35,10 @@ export const sopList = {
   rowKey:'sopId'
 };
 
+
+export const sopListSelect = {
+  url: '/sop/listSelect',
+  method: 'POST',
+  rowKey:'sopId'
+};
+

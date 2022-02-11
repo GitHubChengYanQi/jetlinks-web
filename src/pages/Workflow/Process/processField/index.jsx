@@ -5,12 +5,8 @@
  * @Date 2021-11-19 10:58:01
  */
 
-import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
-import * as apiUrl from '../processUrl';
+import React, {useEffect} from 'react';
+import {Input,Select as AntdSelect} from 'antd';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 export const ProcessName = (props) => {
@@ -40,8 +36,12 @@ export const Module = (props) => {
         return [];
     }
   };
-  return (
-    <AntdSelect options={options()} {...other} />);
+  useEffect(()=>{
+    if (type){
+      props.onChange(null);
+    }
+  },[type]);
+  return (<AntdSelect options={options()} {...other} />);
 };
 export const FormId = (props) => {
   return (<Input {...props} />);
