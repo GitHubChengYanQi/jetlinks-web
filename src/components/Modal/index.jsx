@@ -1,5 +1,5 @@
 import React, {forwardRef,  useImperativeHandle, useState} from 'react';
-import {message, Modal as AntdModal} from 'antd';
+import {Modal as AntdModal} from 'antd';
 
 const Modal = (
   {
@@ -71,10 +71,7 @@ const Modal = (
           onSuccess={(response) => {
             onSuccess(response);
           }}
-          onError={(error) => {
-            message.error(error.message);
-            show(null);
-            onClose();
+          onError={() => {
           }}
         /> : children}
       </div>

@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   FullscreenOutlined
 } from '@ant-design/icons';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import {Menu, Drawer, Avatar, Button, Dropdown} from 'antd';
 import {useHistory, config} from 'ice';
 import Icon from '@/components/Icon';
@@ -23,8 +22,7 @@ import purchase from '@/asseset/imgs/purchase.png';
 
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
-import {useRequest} from '@/util/Request';
-import {FullScreen, toggleFullScreen} from '@/layouts/BasicLayout/components/Header/components/FullScreen';
+import {toggleFullScreen} from '@/layouts/BasicLayout/components/Header/components/FullScreen';
 
 const AppIcon = {
   ENT_FUNC: menu,
@@ -72,7 +70,7 @@ const Header = () => {
                 }}
                 id="navigation-title"
                 className={styles.navigationTitle}>
-                {config.projectName}
+                {userInfo.abbreviation}
               </div>
             </div>
             <div className={styles.middle} />
@@ -139,7 +137,7 @@ const Header = () => {
               <span
                 aria-haspopup="true"
                 aria-expanded="false"
-              >{config.projectName}</span></div>
+              >{userInfo.abbreviation}</span></div>
           </div>
         </div>
         <div className="docker-middle">

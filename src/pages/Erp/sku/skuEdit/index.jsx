@@ -181,7 +181,7 @@ const SkuEdit = ({...props}, ref) => {
         }}
       >
         <FormItem
-          label="成品码"
+          label="物料编码"
           name="standard"
           component={SysField.Codings}
           codingId={data}
@@ -189,7 +189,7 @@ const SkuEdit = ({...props}, ref) => {
           rules={[{required: true, message: data && data.length > 0 ? '请输入编码' : '请先设置编码！'}]}
         />
         <FormItem
-          label="分类"
+          label="物料分类"
           name="spuClass"
           defaultParams={{data: {isNotproduct: 1}}}
           component={SysField.SpuClass}

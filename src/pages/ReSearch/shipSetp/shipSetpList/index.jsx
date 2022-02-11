@@ -64,10 +64,10 @@ const ShipSetpList = () => {
         <Column title="工序分类" dataIndex="shipSetpClassResult" render={(value) => {
           return <>{value && value.shipSetpClassName}</>;
         }} />
-        <Column title="SOP作业指导" dataIndex="sopId" render={(value, record) => {
+        <Column title="SOP作业指导" dataIndex="sopResult" render={(value, record) => {
           return <Button type="link" onClick={() => {
             history.push(`/research/sop/${record.sopId}`);
-          }}>{value && value.shipSetpClassName}</Button>;
+          }}>{value && value.name}</Button>;
         }} />
         <Column title="创建者" dataIndex="userResult" render={(value) => {
           return <>{value && value.name}</>;

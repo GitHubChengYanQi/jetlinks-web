@@ -74,10 +74,10 @@ const SkuTable = (props) => {
       content: <div style={{padding: 8}}>
         <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh' }}>
           <Table.Column title="错误行" dataIndex="line" />
-          <Table.Column title="分类" dataIndex="class" />
+          <Table.Column title="物料分类" dataIndex="class" />
           <Table.Column title="产品" dataIndex="sku" />
           <Table.Column title="型号" dataIndex="name" />
-          <Table.Column title="成品码" dataIndex="coding" />
+          <Table.Column title="物料编码" dataIndex="coding" />
           <Table.Column title="单位" dataIndex="unit" />
           <Table.Column title="是否批量" dataIndex="batch" />
           <Table.Column title="参数配置" dataIndex="attributes" />
@@ -186,7 +186,7 @@ const SkuTable = (props) => {
   return (
     <>
       <Table
-        title={<Breadcrumb title="物料管理" />}
+        title={<Breadcrumb />}
         api={skuList}
         tableKey="sku"
         rowKey="skuId"
@@ -236,7 +236,7 @@ const SkuTable = (props) => {
           );
         }} />
 
-        <Column title="成品码" key={3} dataIndex="standard" />
+        <Column title="物料编码" key={3} dataIndex="standard" />
 
         <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
 

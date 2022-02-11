@@ -55,6 +55,9 @@ export const value = (props) => {
 export const Name = (props) => {
   return (<Input {...props} />);
 };
+export const Abbreviation = (props) => {
+  return (<Input {...props} />);
+};
 export const Region = (props) => {
   return (<Cascader api={commonArea} {...props} />);
 };

@@ -5,6 +5,7 @@ const Drawer = (
   {
     title,
     children,
+    headTitle,
     component: Component,
     width = 600,
     onSuccess = () => {
@@ -40,7 +41,7 @@ const Drawer = (
       }}
       destroyOnClose
       width={width}
-      title={title}
+      title={headTitle || (title && (value ? `编辑${title}` : `添加${title}`))}
       afterVisibleChange={(v) => {
         // setShow(v);
       }}
@@ -51,10 +52,7 @@ const Drawer = (
         onSuccess={(response) => {
           onSuccess(response);
         }}
-        onError={(error) => {
-          message.error(error.message);
-          show(null);
-          onClose();
+        onError={() => {
         }}
       /> : children}
     </AntDrawer>

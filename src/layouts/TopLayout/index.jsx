@@ -40,8 +40,10 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     }
     return (
       <Menu.Item key={item.url} icon={item.icon &&
-      <Icon style={{fontSize: 16, color: mode === 'vertical' ? '#fff' : '#000'}}
-            type={item.icon} />}>{item.name}</Menu.Item>
+      <Icon
+        style={{fontSize: 16, color: mode === 'vertical' ? '#fff' : '#000'}}
+        type={item.icon} />}>{item.name}
+      </Menu.Item>
     );
   };
 

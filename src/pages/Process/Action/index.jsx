@@ -47,8 +47,6 @@ const Action = () => {
     },
   );
 
-  console.log(data);
-
   // 任务评论
   const {loading: commentsLoading, run: taskComments} = useRequest(
     {
@@ -104,6 +102,7 @@ const Action = () => {
       case 'quality_task':
         return <QualityTask />;
       case 'purchase':
+      case 'purchaseAsk':
         return <PurchaseAsk />;
       case 'purchasePlan':
         return <PurchasePlan />;
@@ -142,6 +141,7 @@ const Action = () => {
             history.push('/production/qualityCheck');
             break;
           case 'purchase':
+          case 'purchaseAsk':
             history.push('/purchase/purchaseAsk');
             break;
           case 'purchasePlan':

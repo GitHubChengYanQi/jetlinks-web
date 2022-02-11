@@ -79,10 +79,7 @@ const SpuClassificationList = ({type}) => {
         }}
         footer={footer}
       >
-        <Column title="名称" dataIndex="label" render={(value, record) => {
-          if (record.children && record.children.length === 0) {
-            record.children = null;
-          }
+        <Column title="分类名称" dataIndex="label" render={(value, record) => {
           return (
             <>
               {
@@ -104,7 +101,7 @@ const SpuClassificationList = ({type}) => {
           );
         }} width={100} />
       </Table>
-      <Drawer width={800} title="编辑" type={type} component={SpuClassificationEdit} onSuccess={() => {
+      <Drawer width={800} title="分类" type={type} component={SpuClassificationEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

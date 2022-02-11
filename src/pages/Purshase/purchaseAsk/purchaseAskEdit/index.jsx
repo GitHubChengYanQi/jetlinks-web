@@ -39,8 +39,6 @@ const PurchaseAskEdit = ({...props}, ref) => {
 
   const formRef = useRef();
 
-  const [skuIds, setSkuIds] = useSetState({data: []});
-
   useImperativeHandle(ref, () => ({
     formRef,
   }));
@@ -60,7 +58,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
 
   return (
     <div
-      style={{padding: 16,width:1700,overflow:'auto'}}
+      style={{padding: 16, width: 1700, overflow: 'auto'}}
     >
       <Form
         {...props}
@@ -77,21 +75,36 @@ const PurchaseAskEdit = ({...props}, ref) => {
           const required = value.purchaseListingParams.filter((items) => {
             return !items.skuId || !items.applyNumber;
           });
+
+          const skuBrands = value.purchaseListingParams.map((items) => {
+            return `${items.skuId}${items.brandId}`;
+          });
+
+          const sname = skuBrands.filter((item)=>{
+            const array = skuBrands.filter((value)=>{
+              return value === item;
+            });
+            return array.length > 1;
+          });
+
           if (required.length > 0) {
-            message.warning('物料和申请数量为必填项！');
+            message.warning('物料、申请数量为必填项！');
             return false;
-          } else {
+          }else if (sname.length > 0){
+            message.warning('物料和品牌不能重复！');
+            return false;
+          }else {
             return value;
           }
         }}
         effects={({setFieldState}) => {
           FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(async ({name, value}) => {
-            const array = skuIds.data;
-            if (value !== undefined)
-              array[name.match(/\d/g)[0]] = value;
-            else
-              array.splice(name.match(/\d/g)[0], 1);
-            setSkuIds({data: array});
+            // const array = skuIds.data;
+            // if (value !== undefined)
+            //   array[name.match(/\d/g)[0]] = value;
+            // else
+            //   array.splice(name.match(/\d/g)[0], 1);
+            // setSkuIds({data: array});
 
             if (value) {
               const sku = await request({...skuDetail, data: {skuId: value}});
@@ -143,7 +156,6 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             labelCol={7}
                             itemStyle={{margin: 0}}
                             label="物料"
-                            skuIds={skuIds.data}
                             name={`purchaseListingParams.${index}.skuId`}
                             component={SysField.SkuId}
                           />

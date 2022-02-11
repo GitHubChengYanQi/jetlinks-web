@@ -40,7 +40,7 @@ const SkuDetail = () => {
 
   return (
     <div className={styles.detail}>
-      <Card title={<Breadcrumb />} extra={<Space>
+      <Card title={<Breadcrumb title='物料详情' />} extra={<Space>
         <Button onClick={() => {
           quoteRef.current.open(
             {

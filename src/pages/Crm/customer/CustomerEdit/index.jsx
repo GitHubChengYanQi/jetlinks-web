@@ -153,6 +153,11 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 </MegaLayout>
 
                 <MegaLayout labelWidth={100} grid>
+                  <FormItem label="企业简称" name="abbreviation" component={SysField.Abbreviation} />
+                  <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
+                </MegaLayout>
+
+                <MegaLayout labelWidth={100} grid>
                   <FormItem label="成立时间" name="setup" component={SysField.Setup} />
                   <FormItem label="社会信用代码" name="utscc" component={SysField.Utscc} />
                 </MegaLayout>
@@ -177,9 +182,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                   }]} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={100} grid>
-                  <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
-                </MegaLayout>
+
 
                 <MegaLayout labelWidth={100}>
                   <FormItem label="简介" name="introduction" component={SysField.Introduction} />

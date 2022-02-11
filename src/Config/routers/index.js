@@ -15,6 +15,7 @@ import PurshaseRouterConfig from '@/pages/Purshase/router';
 import ProcessRouterConfig from '@/pages/Process/route';
 import ResearchRouterConfig from '@/pages/ReSearch/route';
 
+
 const routerConfig = [
   {
     path: '/login',

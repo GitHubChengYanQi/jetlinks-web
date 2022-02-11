@@ -85,7 +85,7 @@ const systemConfig = [
         component: lazy(() => import('@/pages/BaseSystem/swagger')),
       },
       {
-        redirect: '/BASE_SYSTEM/mgr',
+        redirect: '/BASE_SYSTEM/enterprise',
       }
     ]
   },

@@ -80,6 +80,17 @@ const TableWarp = ({
   }
   // const [formActions,setFormActions] = useState(formActionsPublic);
 
+  const dataSourcedChildren = (data) => {
+    if (!Array.isArray(data.children) || data.children.length === 0) {
+      return {...data, children: null};
+    }
+    return {
+      ...data, children: data.children.map((item) => {
+        return dataSourcedChildren(item);
+      })
+    };
+  };
+
   const requestMethod = async (params) => {
     const {values, pagination, sorter, ...other} = params;
     const page = {};
@@ -109,7 +120,7 @@ const TableWarp = ({
       return new Promise((resolve) => {
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
-            return {...items, children: items.children && (items.children.length > 0 ? items.children : null)};
+            return dataSourcedChildren(items);
           }) : [],
           total: response.count,
           current: response.current,

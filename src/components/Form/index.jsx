@@ -64,7 +64,7 @@ const FormWrapper = (
 
 
   // 获取数据
-  const {run: find, loading: findLoad, mutate} = useRequest(api.view, {
+  const {run: find, loading: findLoad} = useRequest(api.view, {
     manual: true,
     onError: (error) => {
       onError(error);

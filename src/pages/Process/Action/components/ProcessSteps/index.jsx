@@ -70,11 +70,11 @@ const ProcessSteps = ({
     const fontSize = 32;
     switch (step.auditType) {
       case 'start':
-        return <Icon type="icon-caigou_faqiren" style={{fontSize}} />;
+        return <Icon type="icon-caigou_faqiren" style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
       case 'send':
-        return <SendOutlined style={{fontSize}} />;
+        return <SendOutlined style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
       case 'route':
-        return <AuditOutlined style={{fontSize}} />;
+        return <AuditOutlined style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
       case 'process':
         switch (step.auditRule.type) {
           case 'audit':
@@ -96,7 +96,7 @@ const ProcessSteps = ({
                 return 'null';
             }
           default:
-            return <Icon type="icon-caigou_dongzuo" style={{fontSize}} />;
+            return <Icon type="icon-caigou_dongzuo" style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
         }
       default:
         return 'null';
@@ -117,7 +117,7 @@ const ProcessSteps = ({
         stepStatus = 'error';
         break;
       case 1:
-        stepStatus = 'process';
+        stepStatus = 'finish';
         break;
       default:
         stepStatus = 'wait';
@@ -137,7 +137,7 @@ const ProcessSteps = ({
               >{data.createName.substring(0, 1)}</Avatar>
               {data.createName}
             </Space>}
-            icon={status(step)} />
+            icon={status(step,stepStatus)} />
           {steps(step.childNode, step.logResult && step.logResult.status === 1)}
         </>;
       case 'route':
@@ -154,7 +154,7 @@ const ProcessSteps = ({
                 </Space>
               </div>
             }
-            icon={status(step)} />
+            icon={status(step,stepStatus)} />
           {steps(step.childNode, step.logResult && step.logResult.status === 1)}
         </>;
       case 'send':
