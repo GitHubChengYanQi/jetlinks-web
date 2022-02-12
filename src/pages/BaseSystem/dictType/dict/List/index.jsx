@@ -52,6 +52,7 @@ const DictList = () => {
     <>
       <Table
         isModal={false}
+        noPagination
         title={<Breadcrumb/>}
         ref={tableRef}
         api={dictList}

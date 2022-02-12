@@ -11,8 +11,14 @@ const ProcessRouterConfig = [
       ...InitiateRouter,
       {
         path: '/MyAudit',
-        name: '我审核的',
+        name: '未审核的',
         component: lazy(() => import('../MyAudit/index')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },{
+        path: '/audit',
+        name: '我审核的',
+        component: lazy(() => import('../Audit/index')),
         fallback: <div>loading...</div>,
         exact: true,
       },

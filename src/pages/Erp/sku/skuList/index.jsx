@@ -1,32 +1,35 @@
-import React, { useState} from 'react';
-import { Spin, Tree} from 'antd';
+import React, {useState} from 'react';
+import {Spin, Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
 import {useRequest} from '@/util/Request';
-import Select from '@/components/Select';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import SkuTable from '@/pages/Erp/sku/SkuTable';
-import {spuClassificationListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
 const SkuList = () => {
 
-  const {loading, data, run} = useRequest({
+  const {loading, data} = useRequest({
     ...spuClassificationTreeVrew, data: {
       isNotproduct: 1
     }
   });
 
-  const array = data ? data.map((items)=>{
-    return {
-      key:items.value,
-      title:items.label,
-    };
-  }) : [];
+  const dataResult = (items) => {
+    if (!Array.isArray(items)) {
+      return [];
+    }
+    return items.map((item) => {
+      return {
+        key: item.value,
+        title: item.label,
+        children: dataResult(item.children),
+      };
+    });
+  };
+
+  const dataSource = dataResult(data);
 
   const [spuClass, setSpuClass] = useState();
-
-  const [value, setValue] = useState();
-
 
   const Left = () => {
     if (loading) {
@@ -34,24 +37,6 @@ const SkuList = () => {
     }
     return (
       <>
-        <div>
-          <Select
-            width="100%"
-            api={spuClassificationListSelect}
-            placeholder="搜索分类"
-            value={value}
-            bordered={false}
-            onChange={async (value) => {
-              await run(
-                {
-                  data: {
-                    spuClassificationId: value
-                  }
-                }
-              );
-              setValue(value);
-            }} />
-        </div>
         <Tree
           showLine
           onSelect={(value) => {
@@ -62,7 +47,7 @@ const SkuList = () => {
             {
               title: '所有分类',
               key: '',
-              children: array
+              children: dataSource
             },
           ]}
         />

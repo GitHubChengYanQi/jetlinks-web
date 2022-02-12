@@ -1,20 +1,19 @@
 import React from 'react';
-import {Button, Card, Table} from 'antd';
 import {useHistory} from 'ice';
+import {Button, Card, Table} from 'antd';
 import {useRequest} from '@/util/Request';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = Table;
 
-const MyAudit = () => {
-
+const Audit = () => {
   const history = useHistory(null);
 
   const {loading, data} = useRequest({
     url: '/remarks/auditList',
     method: 'POST',
-    data: {
-      status: -1
+    data:{
+      status:1
     }
   });
 
@@ -29,6 +28,18 @@ const MyAudit = () => {
       }} />
       <Column title="发起人" dataIndex="user" render={(value) => {
         return <>{value && value.name}</>;
+      }} />
+      <Column title="操作" dataIndex="status" render={(value) => {
+        switch (value) {
+          case -1:
+            return '未审核';
+          case 0:
+            return '拒绝';
+          case 1:
+            return '同意';
+          default:
+            return null;
+        }
       }} />
       <Column title="创建时间" dataIndex="taskResult" render={(value) => {
         return <>{value && value.createTime}</>;
@@ -59,4 +70,4 @@ const MyAudit = () => {
   </Card>;
 };
 
-export default MyAudit;
+export default Audit;

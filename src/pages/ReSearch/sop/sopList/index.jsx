@@ -7,6 +7,7 @@
 
 import React, {useRef} from 'react';
 import {Button, Table as AntTable} from 'antd';
+import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -16,7 +17,7 @@ import SopEdit from '../sopEdit';
 import * as SysField from '../sopField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
-import {useHistory} from 'ice';
+
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -55,8 +56,8 @@ const SopList = () => {
         ref={tableRef}
       >
         <Column title="编号" dataIndex="coding" />
-        <Column title="关联工序" dataIndex="shipSetpId" render={(value) => {
-          return value || '暂无';
+        <Column title="关联工序" dataIndex="shipSetpResult" render={(value) => {
+          return value.shipSetpName || '暂无';
         }} />
         <Column title="名称" dataIndex="name" />
         <Column title="版本号" dataIndex="versionNumber" />

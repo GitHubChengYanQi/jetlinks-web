@@ -252,7 +252,7 @@ const useTableSet = (column, tableKey) => {
         }} visible={visible} placement="bottomRight" trigger={['click']}>
           <Button type="text" onClick={() => {
             setVisible(true);
-          }}><Icon type="icon-xitongpeizhi" />设置列</Button>
+          }}><Icon type="icon-xitongpeizhi" />列设置</Button>
         </Dropdown>
 
         <Modal

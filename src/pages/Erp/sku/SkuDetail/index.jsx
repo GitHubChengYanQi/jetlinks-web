@@ -40,31 +40,33 @@ const SkuDetail = () => {
 
   return (
     <div className={styles.detail}>
-      <Card title={<Breadcrumb title='物料详情' />} extra={<Space>
-        <Button onClick={() => {
-          quoteRef.current.open(
-            {
-              skuId: data.skuId,
-              sourceId: data.skuId,
-              source: 'sku'
-            }
-          );
-        }}>添加报价</Button>
-        <Button onClick={() => {
-          history.push('/SPU/sku');
-        }}>返回</Button>
-      </Space>} />
-      <Card title="基础数据">
+      <Card title={<Breadcrumb />}  bodyStyle={{padding:0}} bordered={false} >
+        <Card title='物料详情' headStyle={{border:'none'}} style={{padding:0}} bordered={false} bodyStyle={{padding:0}} extra={<Space>
+          <Button onClick={() => {
+            quoteRef.current.open(
+              {
+                skuId: data.skuId,
+                sourceId: data.skuId,
+                source: 'sku'
+              }
+            );
+          }}>添加报价</Button>
+          <Button onClick={() => {
+            history.push('/SPU/sku');
+          }}>返回</Button>
+        </Space>} />
+      </Card>
+      <Card title="基本信息">
         <div className={styles.title}>
           <Descriptions>
-            <Descriptions.Item label="成品码">{data.standard}</Descriptions.Item>
-            <Descriptions.Item label="分类">{data.spuClass && data.spuClass.name}</Descriptions.Item>
+            <Descriptions.Item label="物料编码">{data.standard}</Descriptions.Item>
+            <Descriptions.Item label="物料分类">{data.skuClass && data.skuClass.name}</Descriptions.Item>
             <Descriptions.Item
-              label="产品">
+              label="名称">
               {data.spuResult && data.spuResult.spuClassificationResult && data.spuResult.spuClassificationResult.name}
             </Descriptions.Item>
             <Descriptions.Item label="型号">{data.spuResult && data.spuResult.name}</Descriptions.Item>
-            <Descriptions.Item label="参数组合">
+            <Descriptions.Item label="物料描述">
               <Space>
                 (
                 {
@@ -85,18 +87,28 @@ const SkuDetail = () => {
                 )
               </Space>
             </Descriptions.Item>
+            <Descriptions.Item label="规格">{data.specifications || '无'}</Descriptions.Item>
             <Descriptions.Item label="单位">{data.unit ? data.unit.unitName : '无'}</Descriptions.Item>
             <Descriptions.Item label="批量">{data.batch ? '是' : '否'}</Descriptions.Item>
             <Descriptions.Item label="备注">{data.remarks || '无'}</Descriptions.Item>
+            <Descriptions.Item label="质检方案">{data.qualityPlan ? data.qualityPlan.planName : '无'}</Descriptions.Item>
             <Descriptions.Item label="创建人">{data.createUserName || '无'}</Descriptions.Item>
             <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
           </Descriptions>
         </div>
       </Card>
-      <Card title="默认数据">
-        <Descriptions column={4}>
-          <Descriptions.Item label="质检方案">{data.qualityPlan ? data.qualityPlan.planName : '无'}</Descriptions.Item>
-        </Descriptions>
+      <Card title="物料描述">
+        <Space direction="vertical">
+          <div>
+            图片：
+          </div>
+          <div>
+            图纸：
+          </div>
+          <div>
+            附件：
+          </div>
+        </Space>
       </Card>
       <div
         className={styles.main}>
@@ -105,13 +117,16 @@ const SkuDetail = () => {
             <TabPane tab="报价信息" key="1">
               <PurchaseQuotationList value={{skuId: data.skuId, check: true}} />
             </TabPane>
-            <TabPane tab="tab2" key="2">
+            <TabPane tab="操作日志" key="2">
+
+            </TabPane>
+            <TabPane tab="tab2" key="3">
               tab2
             </TabPane>
-            <TabPane tab="tab3" key="3">
+            <TabPane tab="tab3" key="4">
               tab3
             </TabPane>
-            <TabPane tab="tab4" key="4">
+            <TabPane tab="tab4" key="5">
               tab4
             </TabPane>
           </Tabs>

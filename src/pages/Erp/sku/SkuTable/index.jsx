@@ -6,10 +6,9 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import cookie from 'js-cookie';
-import {Button, Space, Table as AntTable, Upload, Modal as AntModal, Progress, message} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import {CopyOutlined} from '@ant-design/icons';
-import {config, useHistory} from 'ice';
+import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -20,13 +19,13 @@ import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
-import Icon from '@/components/Icon';
 import Code from '@/pages/Erp/spu/components/Code';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
+import Icon from '@/components/Icon';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const {baseURI} = config;
 
 const SkuTable = (props) => {
 
@@ -50,82 +49,13 @@ const SkuTable = (props) => {
     tableRef.current.submit();
   }, [spuClass]);
 
-  const [filelist, setFilelist] = useState([]);
-
-  const importErrData = (errData) => {
-    const data = errData && errData.map((item, index) => {
-      return {
-        key: index,
-        line:item.line,
-        sku: item.classItem,
-        class: item.spuClass,
-        unit: item.unit,
-        name: item.spuName,
-        coding: item.standard,
-        batch: item.isNotBatch,
-        attributes: item.attributes && item.attributes.map((item) => {
-          return item;
-        }).toString()
-      };
-    });
-    AntModal.error({
-      width: 1200,
-      title: `异常数据 / ${data.length}`,
-      content: <div style={{padding: 8}}>
-        <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh' }}>
-          <Table.Column title="错误行" dataIndex="line" />
-          <Table.Column title="物料分类" dataIndex="class" />
-          <Table.Column title="产品" dataIndex="sku" />
-          <Table.Column title="型号" dataIndex="name" />
-          <Table.Column title="物料编码" dataIndex="coding" />
-          <Table.Column title="单位" dataIndex="unit" />
-          <Table.Column title="是否批量" dataIndex="batch" />
-          <Table.Column title="参数配置" dataIndex="attributes" />
-        </AntTable>
-      </div>
-    });
-  };
 
   const actions = () => {
     return (
       <Space>
-        <Upload
-          fileList={filelist}
-          action={`${baseURI}Excel/importSku`}
-          headers={
-            {Authorization: cookie.get('tianpeng-token')}
-          }
-          name="file"
-          beforeUpload={() => {
-            message.loading({
-              content: '导入中，请稍后...',
-              key: 1,
-              style: {
-                marginTop: '20vh',
-              },
-            });
-            return true;
-          }}
-          onChange={async ({file, fileList}) => {
-            setFilelist(fileList);
-            if (file.status === 'done') {
-              setFilelist([]);
-              if (file.response.data && file.response.data.length > 0) {
-                importErrData(file.response && file.response.data);
-              }
-              message.success({
-                content: '导入成功！',
-                key: 1,
-                duration: 2,
-                style: {
-                  marginTop: '20vh',
-                },
-              });
-            }
-          }}
-        >
-          <Button icon={<Icon type="icon-daoru" />}>导入物料</Button>
-        </Upload>
+        <Button type="link">查看日志</Button>
+        <Import />
+        <Button icon={<Icon type="icon-daoru" />}>导出物料</Button>
         <AddButton onClick={() => {
           ref.current.open(false);
           setEdit(false);
@@ -137,21 +67,28 @@ const SkuTable = (props) => {
   const searchForm = () => {
 
     return (
-      <div style={{maxWidth: 800}}>
+      <>
         <FormItem
-          placeholder="产品 / 型号/ 编码"
-          name="skuName"
+          placeholder="名称"
+          name="spuClassName"
+          component={SysField.SelectSkuName} />
+        <FormItem
+          placeholder="型号"
+          name="spuName"
+          component={SysField.SelectSkuName} />
+        <FormItem
+          placeholder="编码"
+          name="standard"
           component={SysField.SelectSkuName} />
         <FormItem
           style={{display: 'none'}}
-          hidden v
-          alue={0}
+          hidden value={0}
           component={SysField.Type} />
         <FormItem
-          name="spuClass" style={{display: 'none'}}
+          name="spuClass"
           hidden
           component={SysField.SelectSpuClass} />
-      </div>
+      </>
     );
   };
 
@@ -202,11 +139,23 @@ const SkuTable = (props) => {
         {...other}
       >
 
-        <Column title="产品 / 型号" key={1} dataIndex="spuId" render={(value, record) => {
+        <Column title="物料编码" key={3} dataIndex="standard" render={(value, record) => {
+          return (
+            <>
+              <Code source="sku" id={record.skuId} />
+              <Button type="link" onClick={() => {
+                history.push(`/SPU/sku/${record.skuId}`);
+              }}>
+                {value}
+              </Button>
+            </>
+          );
+        }} />
+
+        <Column title="名称 / 型号" key={1} dataIndex="spuId" render={(value, record) => {
           if (record.spuResult)
             return (
               <>
-                <Code source="sku" id={record.skuId} />
                 <Button type="link" onClick={() => {
                   history.push(`/SPU/sku/${record.skuId}`);
                 }}>
@@ -218,31 +167,61 @@ const SkuTable = (props) => {
             );
         }} sorter />
 
-        <Column title="参数组合" key={2} render={(value, record) => {
+        <Column title="名称" key={1} dataIndex="spuId" render={(value, record) => {
+          return (
+            <>
+              {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
+            </>
+          );
+        }} sorter />
+
+        <Column title="型号" key={1} dataIndex="spuId" render={(value, record) => {
+          return (
+            <>
+              {record.spuResult && record.spuResult.name}
+            </>
+          );
+        }} sorter />
+
+        <Column title="物料描述" key={2} render={(value, record) => {
           return (
             <>
               {
                 record.skuJsons
                 &&
-                record.skuJsons.map((items) => {
+                record.skuJsons.map((items, index) => {
                   if (items.values && items.values.attributeValues && items.attribute && items.values) {
-                    return `${items.attribute.attribute} : ${items.values.attributeValues}`;
+                    if (index === record.skuJsons.length - 1) {
+                      return `${items.attribute.attribute} : ${items.values.attributeValues}`;
+                    }
+                    return `${items.attribute.attribute} : ${items.values.attributeValues} / `;
                   } else {
                     return null;
                   }
-                }).toString()
+                })
               }
             </>
           );
         }} />
 
-        <Column title="物料编码" key={3} dataIndex="standard" />
+        <Column title="规格" key={4} dataIndex="specifications" />
 
-        <Column key={4} title="创建时间" sorter width={159} align="center" dataIndex="createTime" />
+        <Column
+          key={5}
+          title="添加人 / 时间"
+          sorter
+          width={250}
+          align="center"
+          dataIndex="user"
+          render={(value, record) => {
+            return <>
+              {value && value.name} / {record.createTime}
+            </>;
+          }} />
 
         <Column />
 
-        <Column title="操作" key={5} dataIndex="isBan" width={100} render={(value, record) => {
+        <Column title="操作" key={6} dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

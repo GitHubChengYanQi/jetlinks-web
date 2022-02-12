@@ -10,13 +10,13 @@ import React, {lazy} from 'react';
 export const SkuRouter = [
   {
     path: '/sku',
-    name: '物料管理',
+    name: '基础物料明细',
     component: lazy(() => import('../skuList/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }, {
     path: '/sku/:cid',
-    name:'物料管理',
+    name:'基础物料明细',
     component: lazy(() => import('../SkuDetail')),
     fallback: <div>loading...</div>,
     exact: true,

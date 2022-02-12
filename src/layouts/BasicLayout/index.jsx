@@ -14,7 +14,7 @@ export default function BasicLayout({ children }) {
   const [state, dispatchers] = store.useModel('user');
 
   useEffect(() => {
-    window.document.title = '后台管理系统';
+    window.document.title = '道昕智造（沈阳）网络科技有限公司';
     try {
       const data = cookie.get('tianpeng-token');
       if (!data) {

@@ -9,7 +9,7 @@ import React, {useEffect, useRef} from 'react';
 import {
   Input,
   InputNumber,
-  Radio, AutoComplete, Spin, Space, Select as AntdSelect, Button
+  Radio, AutoComplete, Spin, Space, Select as AntdSelect, Button, Popover
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -27,6 +27,7 @@ import FileUpload from '@/components/FileUpload';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
 import Modal from '@/components/Modal';
 import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 
 export const Type = (props) => {
 
@@ -105,10 +106,7 @@ export const ClassCode = (props) => {
 };
 
 export const Codings = (props) => {
-
-  const {codingId, ...other} = props;
-
-  return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
+  return (<Coding {...props} />);
 };
 export const UnitId = (props) => {
   return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitList} {...props} />);
@@ -141,8 +139,31 @@ export const Note = (props) => {
   return (<Input.TextArea {...props} />);
 };
 
+export const Specs = (props) => {
+  return (<Input {...props} />);
+};
+
 export const FileId = (props) => {
-  return (<FileUpload {...props} />);
+  return (<Space>
+    <div style={{maxWidth: 300}}>
+      <FileUpload {...props} maxCount={1} />
+    </div>
+    <Popover content="附件支持类型：">
+      <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+    </Popover>
+  </Space>);
+};
+
+export const Img = (props) => {
+  return (<div style={{maxWidth: 300}}>
+    <FileUpload {...props} maxCount={1} title='物料图片' />
+  </div>);
+};
+
+export const Bind = (props) => {
+  return (<div style={{maxWidth: 300}}>
+    <FileUpload {...props} maxCount={1} title='关联图纸' />
+  </div>);
 };
 
 export const State = (props) => {

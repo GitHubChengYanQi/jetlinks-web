@@ -51,7 +51,6 @@ const SpuClassificationEdit = ({...props}) => {
         name="codingClass"
         component={SysField.CodingClass}
         rules={[{
-          required: true,
           pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',
           message: '只能输入大写字母或数字！'
         }]} />

@@ -25,21 +25,27 @@ export const Remark = (props) => {
 export const Accessories = (props) => {
   return (<Input {...props} />);
 };
+
 export const CreateUser = (props) => {
   return (<Input {...props} />);
 };
+
 export const UpdateUser = (props) => {
   return (<Input {...props} />);
 };
+
 export const CreateTime = (props) => {
   return (<Input {...props} />);
 };
+
 export const UpdateTime = (props) => {
   return (<Input {...props} />);
 };
+
 export const Display = (props) => {
   return (<Input {...props} />);
 };
+
 export const DeptId = (props) => {
   return (<Input {...props} />);
 };
@@ -59,7 +65,7 @@ export const SopId = (props) => {
   const ref = useRef();
   return (
     <Space>
-      <Select api={sopListSelect} width={200} {...props} />
+      <Select api={sopListSelect} width={200} data={{sopId:props.value}} {...props} />
       {props.value && <Button type="link" onClick={() => {
         ref.current.open(false);
       }}>查看SOP</Button>}

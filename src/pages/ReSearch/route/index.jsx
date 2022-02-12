@@ -9,9 +9,9 @@ const ResearchRouterConfig = [
     name: '产研管理',
     component: ReSeachLayout,
     children:[
-      ...ResearchBomRouter,
-      ...SopRouter,
-      ...ShipSetpRouter,
+      // ...ResearchBomRouter,
+      // ...SopRouter,
+      // ...ShipSetpRouter,
       {
         redirect: '/research/researchBom',
       }

@@ -36,7 +36,7 @@ export const DeptId = (props) =>{
 };
 
 export const Sort = (props) =>{
-  return (<InputNumber {...props}/>);
+  return (<InputNumber min={0} {...props}/>);
 };
 
 
