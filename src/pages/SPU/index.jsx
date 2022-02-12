@@ -70,7 +70,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             <span>单位管理</span>
           </Menu.Item>
           <Menu.Item key="wlfl">
-            <span>分类管理</span>
+            <span>物料分类管理</span>
           </Menu.Item>
           <Menu.Item key="cpgl">
             <span>产品管理</span>

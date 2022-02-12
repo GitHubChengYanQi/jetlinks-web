@@ -4,6 +4,7 @@ import store from '@/store';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
 import Icon from '@/components/Icon';
 import styles from './index.module.less';
+import Empty from '@/components/Empty';
 
 const {Header, Sider, Content} = Layout;
 const {Item: MenuItem} = Menu;
@@ -38,7 +39,11 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
       return (<Menu.SubMenu key={item.id} title={item.name}>{loopMenu(item.children)}</Menu.SubMenu>);
     }
     return (
-      <Menu.Item key={item.url} icon={item.icon && <Icon style={{  fontSize:16,color:mode === 'vertical' ? '#fff' : '#000'}} type={item.icon} />} >{item.name}</Menu.Item>
+      <Menu.Item key={item.url} icon={item.icon &&
+      <Icon
+        style={{fontSize: 16, color: mode === 'vertical' ? '#fff' : '#000'}}
+        type={item.icon} />}>{item.name}
+      </Menu.Item>
     );
   };
 
@@ -87,8 +92,12 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     );
   };
 
+  if (!subMenu) {
+    return <Empty />;
+  }
+
   return (
-    <Layout style={{height:'100%'}}>
+    <Layout style={{height: '100%'}}>
       {mode === 'horizontal' && <Header theme="light" className={styles.header}>
         <div className={styles.leftMenu}>{renderLeftMenu()}</div>
         <div className={styles.rightMenu}>
@@ -96,11 +105,11 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
         </div>
       </Header>}
       {mode === 'vertical' && <Sider theme="dark" width={200}>
-        <div style={{height:'100%'}}>
+        <div style={{height: '100%'}}>
           <div className={styles.leftLogo}>
             {subMenu.name}
           </div>
-          <div style={{maxHeight:'calc(100% - 98px)',overflowY:'auto'}}>
+          <div style={{maxHeight: 'calc(100% - 98px)', overflowY: 'auto'}}>
             {renderLeftMenu()}
           </div>
 

@@ -117,9 +117,6 @@ const QualityPlanList = (props) => {
               <EditButton onClick={() => {
                 history.push(`/production/qualityCheck/add?id=${record.qualityPlanId}`);
               }} />
-              {/*<DelButton api={qualityPlanDelete} value={record.qualityPlanId} onSuccess={() => {*/}
-              {/*  tableRef.current.refresh();*/}
-              {/*}} />*/}
             </>
           );
         }} width={100} />

@@ -28,7 +28,7 @@ const TextEdit = ({
           setVisiable(false);
         }}
       >
-        <Editor onChange={(value) => {
+        <Editor value={change} onChange={(value) => {
           setChange(value);
           onChange(value);
         }} />

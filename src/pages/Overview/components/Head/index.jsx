@@ -5,9 +5,11 @@ import moment from 'moment';
 import styles from '@/pages/Overview/index.module.scss';
 import {useRequest} from '@/util/Request';
 import BusinessNumber from '@/pages/Overview/components/BusinessNumber';
-
+import store from '@/store';
 
 const Head = () => {
+
+  const [userInfo] = store.useModel('user');
 
   if (!window.sessionStorage.getItem('num')) {
     window.sessionStorage.setItem('num', 0);
@@ -109,7 +111,7 @@ const Head = () => {
             <h3 className={styles.sayHi}>{date().hours}，{data.name}，{date().title}</h3>
             <div>
               <div style={{marginBottom: 10}}>
-                <em>{data.roleName}&nbsp;&nbsp;/&nbsp;&nbsp; 道昕智造－{data.deptName}－{data.positionNames}</em>
+                <em>{data.roleName}&nbsp;&nbsp;/&nbsp;&nbsp; {userInfo.customerName}－{data.deptName}－{data.positionNames}</em>
               </div>
             </div>
           </Col>

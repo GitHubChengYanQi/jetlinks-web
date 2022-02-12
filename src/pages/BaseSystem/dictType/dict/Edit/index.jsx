@@ -28,7 +28,7 @@ const DictEdit = ({dictTypeId,...props}) => {
         name="dictTypeId"
         component={Select}
         initialValue={dictTypeId}
-        defaultValue={dictTypeId}
+        value={dictTypeId}
         api={dictTypeSelect}
         disabled
       />

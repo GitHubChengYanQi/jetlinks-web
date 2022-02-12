@@ -49,7 +49,7 @@ const SkuConfiguration = ({value, onChange, details}) => {
           }}>
           <div style={{backgroundColor: '#f7f8fa', padding: 8}}>
             <Space>
-              规格名：
+              名称：
               <AutoComplete
                 value={items.label}
                 disabled={items.disabled}
@@ -125,7 +125,7 @@ const SkuConfiguration = ({value, onChange, details}) => {
           </div>
           <div style={{padding: 8}}>
             <Space>
-              规格值：
+              内容：
               <AutoComplete
                 options={optionsValue(items)}
                 disabled={!items.label}
@@ -153,7 +153,7 @@ const SkuConfiguration = ({value, onChange, details}) => {
       setDatas({
         data: array
       });
-    }}>添加规格</Button>
+    }}>添加描述</Button>
   </>;
 };
 

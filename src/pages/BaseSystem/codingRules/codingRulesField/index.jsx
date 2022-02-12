@@ -37,7 +37,7 @@ export const DeptId = (props) => {
 };
 
 export const Note = (props) => {
-  return (<Input.TextArea {...props} />);
+  return (<Input.TextArea placeholder='请填写该编码规则的编制原则，如每个字段代表何种意思' {...props} />);
 };
 export const State = (props) => {
   return (<Radio.Group {...props} >

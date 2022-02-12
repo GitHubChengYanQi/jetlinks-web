@@ -1,9 +1,8 @@
 import React, {useRef} from 'react';
+import {Input, Radio as AntRadio} from 'antd';
 import {menuAdd, menuSave, menuTree, menuView} from '@/Config/ApiUrl/system/menu';
 import Form from '@/components/Form';
-import {Input, Radio as AntRadio} from 'antd';
 import Cascader from '@/components/Cascader';
-import SelectIcon from '@/components/SelectIcon';
 import Radio from '@/components/Radio';
 import {dictRadioByCode} from '@/Config/ApiUrl/system/dict';
 
@@ -25,6 +24,7 @@ const MenuEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="menuId"
+      onError={()=>{}}
       onSubmit={(values) => {
         if (Array.isArray(values.pids) && values.pids.length > 0) {
           values.pid = values.pids[values.pids.length - 1];

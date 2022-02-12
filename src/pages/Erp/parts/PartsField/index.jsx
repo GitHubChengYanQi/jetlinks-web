@@ -16,13 +16,13 @@ import {
   Radio,
   Button,
   Card,
-  Select as AntSelect
+  Select as AntSelect, Spin, Switch
 } from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
-import {spuListSelect} from '../PartsUrl';
+import {partsList, spuListSelect} from '../PartsUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
-import { useRequest} from '@/util/Request';
+import {useRequest} from '@/util/Request';
 import Attribute from '@/pages/Erp/instock/components/Attribute';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
@@ -129,8 +129,8 @@ export const Spu = (props) => {
   }, [props.type]);
   return (<Select
     width="100%"
-    data={{type:1}}
-    placeholder="产品"
+    data={{type: 1}}
+    placeholder="型号"
     disabled={props.spuId}
     api={spuListSelect}
     value={props.value && props.value.spuId}
@@ -139,9 +139,7 @@ export const Spu = (props) => {
     }} />);
 };
 export const Standard = (props) => {
-  const { ...other} = props;
-
-  return (<Input {...other} />);
+  return (<Input {...props} />);
 };
 
 export const Sku = (props) => {
@@ -152,14 +150,61 @@ export const Sku = (props) => {
     }
   }, [props.type]);
 
-  return (<SelectSku value={props.value && props.value.skuId} onChange={(value)=>{
-    props.onChange({skuId:value});
+  return (<SelectSku value={props.value && props.value.skuId} onChange={(value) => {
+    props.onChange({skuId: value});
   }} />);
 };
 
 export const SkuId = (props) => {
 
   return (<SelectSku {...props} />);
+};
+
+export const Pid = (props) => {
+
+  const {value, onChange, getSkuId} = props;
+
+  const {loading, data, run} = useRequest(partsList, {manual: true});
+
+  const options = !loading ? data && data.map((item) => {
+    return {
+      label: item.partName,
+      value: item.partsId,
+      key: item.skuId,
+    };
+  }) : [];
+
+  useEffect(() => {
+    run({data:{type: 1}});
+  }, []);
+
+  return (<AntdSelect
+    options={options || []}
+    notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
+    showSearch
+    onSearch={(value) => {
+      run({
+        data: {
+          partName: value,
+          type: 1
+        }
+      });
+    }}
+    value={value}
+    onChange={(value, option) => {
+      onChange(value);
+      getSkuId(option.key);
+    }}
+  />);
+};
+
+export const Action = (props) => {
+  return <Radio.Group value={props.value} onChange={(value)=>{
+    props.onChange(value.target.value);
+  }} >
+    <Radio.Button value="researchBom">增加设计BOM</Radio.Button>
+    <Radio.Button value="productionBom">增加子物料BOM</Radio.Button>
+  </Radio.Group>;
 };
 
 

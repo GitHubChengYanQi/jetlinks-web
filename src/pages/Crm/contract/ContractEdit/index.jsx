@@ -272,9 +272,11 @@ const AddContractEdit = ({
               if (allMoney.value) {
                 let moneys = 0;
                 const details = getFieldState('details');
-                details.value.map((items) => {
-                  return moneys += items.money;
-                });
+                if (details.value) {
+                  details.value.map((items) => {
+                    return moneys += items.money;
+                  });
+                }
                 setFieldState(
                   FormPath.transform(name, /\d/, ($1) => {
                     return `details.${$1}.percent`;
@@ -346,7 +348,8 @@ const AddContractEdit = ({
           </Col>
         </Row>
         <ProCard headerBordered className="h2Card" title="付款信息">
-          <FormItem labelCol={3}  label='付款总金额' name="allMoney" component={SysField.AllMoney} placeholder='总金额'  required />
+          <FormItem labelCol={3} label="付款总金额" name="allMoney" component={SysField.AllMoney} placeholder="总金额"
+                    required />
           <FieldList
             name="details"
             initialValue={[

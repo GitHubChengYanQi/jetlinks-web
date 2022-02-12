@@ -1,6 +1,6 @@
 import SiderLayout from '@/layouts/SiderLayout';
 import React from 'react';
-import { useRouteMatch, useHistory } from 'ice';
+import {useRouteMatch, useHistory, useLocation} from 'ice';
 import store from '@/store';
 import { Menu } from 'antd';
 // import * as Icon from '@ant-design/icons';
@@ -9,6 +9,8 @@ const BaseSystem = ({ children }) => {
 
   const match = useRouteMatch();
   const history = useHistory();
+
+  const location = useLocation();
 
   const [userInfo] = store.useModel('user');
   const { menus } = userInfo;
@@ -26,9 +28,13 @@ const BaseSystem = ({ children }) => {
 
   const renderLeftMenu = (subMenus) => {
     if (subMenus) {
+      const pathName = location.pathname;
+      const pathArray = pathName.split('/');
+      const key = `/${pathArray[1]}/${pathArray[2]}`;
       return (
         <Menu
           selectable
+          selectedKeys={[key]}
           onClick={(obj) => {
             history.push(obj.key);
           }}

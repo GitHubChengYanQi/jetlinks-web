@@ -23,6 +23,7 @@ import Title from '@/components/Title';
 
 import style from './index.module.scss';
 import {useRequest} from '@/util/Request';
+import store from '@/store';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -69,6 +70,8 @@ const ApiConfig = {
 };
 
 const CustomerEdit = ({onChange, ...props}, ref) => {
+
+  const [userInfo] = store.useModel('user');
 
   const {wxUser, supply,data:paramData, ...other} = props;
 
@@ -133,7 +136,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                   <FormItem label="客户分类" name="classification" component={SysField.Classification} />
                 </MegaLayout>}
                 <MegaLayout labelWidth={100} grid>
-                  <FormItem label="负责人" name="userId" component={SysField.UserName} />
+                  <FormItem label="负责人" name="userId" component={SysField.UserName} value={userInfo.id} />
                   <FormItem label={supply ? '供应商级别' : '客户级别'} name="customerLevelId" component={SysField.CustomerLevelId} />
                 </MegaLayout>
               </ProCard>
@@ -147,6 +150,11 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                 <MegaLayout labelWidth={100} grid>
                   <FormItem label="法定代表人" name="legal" component={SysField.Legal} />
                   <FormItem label="公司类型" name="companyType" component={SysField.CompanyType} />
+                </MegaLayout>
+
+                <MegaLayout labelWidth={100} grid>
+                  <FormItem label="企业简称" name="abbreviation" component={SysField.Abbreviation} />
+                  <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
                 </MegaLayout>
 
                 <MegaLayout labelWidth={100} grid>
@@ -174,9 +182,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                   }]} />
                 </MegaLayout>
 
-                <MegaLayout labelWidth={100} grid>
-                  <FormItem label="行业" name="industryId" component={SysField.IndustryOne} />
-                </MegaLayout>
+
 
                 <MegaLayout labelWidth={100}>
                   <FormItem label="简介" name="introduction" component={SysField.Introduction} />

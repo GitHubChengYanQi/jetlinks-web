@@ -282,7 +282,7 @@ const ContractTable = (props) => {
         footer={<Button
           type="primary"
           onClick={() => {
-            compoentRef.current.formRef.current.submit();
+            compoentRef.current.submit();
           }}>保存</Button>}
         component={AddContractEdit}
         partyB='1416605276529807486'

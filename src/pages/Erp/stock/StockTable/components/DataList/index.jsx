@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, Card, Descriptions, Empty, List, Progress, Space, Statistic} from 'antd';
+import {Button, Card, Descriptions, List, Progress, Space, Statistic} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import Empty from '@/components/Empty';
 
 
 const DataList = ({
@@ -23,7 +24,7 @@ const DataList = ({
   };
 
   if (!data) {
-    return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+    return <Empty />;
   }
 
   const titleType = (item = {}) => {

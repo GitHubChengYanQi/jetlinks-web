@@ -5,12 +5,13 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
+import React, {useEffect, useRef, useState} from 'react';
 import {Badge, Button, Table as AntTable} from 'antd';
+import {getSearchParams} from 'ice';
+import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
-import { purchaseAskList} from '../purchaseAskUrl';
+import {purchaseAskList} from '../purchaseAskUrl';
 import PurchaseAskEdit from '../purchaseAskEdit';
 import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -25,6 +26,17 @@ const PurchaseAskList = () => {
   const detailRef = useRef(null);
   const compoentRef = useRef(null);
   const tableRef = useRef(null);
+
+  const params = getSearchParams();
+
+  useEffect(() => {
+    if (params.id) {
+      // detailRef.current.open(params.id);
+    }
+  }, []);
+
+  const [loading, setLoading] = useState();
+
   const actions = () => {
     return (
       <>
@@ -53,8 +65,8 @@ const PurchaseAskList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="编号" dataIndex="coding" render={(value,record)=>{
-          return <Button type='link' onClick={()=>{
+        <Column title="编号" dataIndex="coding" render={(value, record) => {
+          return <Button type="link" onClick={() => {
             detailRef.current.open(record.purchaseAskId);
           }}>{value}</Button>;
         }} />
@@ -84,8 +96,10 @@ const PurchaseAskList = () => {
         title="采购申请"
         compoentRef={compoentRef}
         component={PurchaseAskEdit}
+        loading={setLoading}
         footer={<>
           <Button
+            loading={loading}
             type="primary"
             onClick={() => {
               compoentRef.current.formRef.current.submit();

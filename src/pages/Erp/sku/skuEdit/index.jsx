@@ -62,19 +62,6 @@ const SkuEdit = ({...props}, ref) => {
     }
   });
 
-  const {loading, data} = useRequest(codingRulesList, {
-    defaultParams: {
-      data: {
-        module: 0,
-        state: 1
-      }
-    }
-  });
-
-  if (loading) {
-    return (<ProSkeleton type="descriptions" />);
-  }
-
 
 
   return (
@@ -181,21 +168,22 @@ const SkuEdit = ({...props}, ref) => {
         }}
       >
         <FormItem
-          label="成品码"
+          label="物料编码"
           name="standard"
+          placeholder='请输入自定义物料编码'
           component={SysField.Codings}
-          codingId={data}
           module={0}
-          rules={[{required: true, message: data && data.length > 0 ? '请输入编码' : '请先设置编码！'}]}
+          required
         />
         <FormItem
-          label="分类"
+          label="物料分类"
           name="spuClass"
+          placeholder='请选择所属分类'
           defaultParams={{data: {isNotproduct: 1}}}
           component={SysField.SpuClass}
           required />
         <FormItem
-          label="产品"
+          label="物料名称"
           visible={false}
           name="spuClassification"
           component={Spu}
@@ -220,7 +208,13 @@ const SkuEdit = ({...props}, ref) => {
           required
         />
         <FormItem
-          label="规格配置"
+          label="规格"
+          placeholder='无规格内容可填写“型号”'
+          name="specifications"
+          component={SysField.Specs}
+        />
+        <FormItem
+          label="物料描述"
           skuId={value.skuId}
           name="sku"
           value={value && value.skuJsons && value.skuJsons.length > 0 ? value.skuJsons.map((items) => {
@@ -241,6 +235,14 @@ const SkuEdit = ({...props}, ref) => {
           label="附件"
           name="fileId"
           component={SysField.FileId} />
+        <FormItem
+          label="物料图片"
+          name="img"
+          component={SysField.Img} />
+        <FormItem
+          label="关联图纸"
+          name="bind"
+          component={SysField.Bind} />
       </Form>
     </div>
   );

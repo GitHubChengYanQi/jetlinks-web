@@ -1,13 +1,12 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Marker} from 'react-amap';
+import {Button, Card, Cascader as AntCascader, Input, List, Popover, Space} from 'antd';
 import {useRequest} from '@/util/Request';
-import {Button, Card, Cascader as AntCascader, Input, List, Popover, Select} from 'antd';
-import Icon from '@/components/Icon';
 
 let MSearch = null;
 let Geocoder = null;
 
-const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
+const AmapSearch = ({__ele__, __map__, onChange=()=>{}, center}, ref) => {
 
 
   const [citys, setCitys] = useState();
@@ -15,6 +14,12 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
   const [city, setCity] = useState();
 
   const [visiable, setVisiable] = useState();
+
+  const [value, setValue] = useState('');
+  const [adinfo, setadinfo] = useState({});
+  const [reslut, setResult] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState(null);
+
 
 
   const {run} = useRequest({url: '/commonArea/treeView', method: 'POST'}, {manual: true});
@@ -44,10 +49,6 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
 
   // const MSearch = new __map__.PlaceSearch();
   // console.log(MSearch);
-  const [value, setValue] = useState('');
-  const [adinfo, setadinfo] = useState({});
-  const [reslut, setResult] = useState(null);
-  const [markerPosition, setMarkerPosition] = useState(null);
 
   const onClick = () => {
     MSearch.search(value); // 关键字查询
@@ -182,7 +183,7 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
       <Card style={{maxHeight: 500, minWidth: 500, overflowY: 'auto', marginTop: 16}}>
         <List>
           {reslut.pois.map((item, index) => {
-            return (<List.Item key={index} title={item.name} onClick={() => {
+            return (<List.Item key={index} onClick={() => {
               setData(item);
             }} extra={<Button type="primary" onClick={() => {
               const location = {
@@ -190,9 +191,21 @@ const AmapSearch = ({__ele__, __map__, onChange, center}, ref) => {
                 location: [item.location.lng, item.location.lat],
                 city: item.cityname || item.pname
               };
-              typeof onChange === 'function' && onChange(location);
+              onChange(location);
               setVisiable(false);
-            }}>使用该地址</Button>}>{item.address}</List.Item>);
+            }}>使用该地址</Button>}>
+              <Space direction='vertical'>
+                <div>
+                  {item.name}
+                </div>
+                <div>
+                  {item.address}
+                </div>
+                <div>
+                  {item.type}
+                </div>
+              </Space>
+            </List.Item>);
           })}
         </List>
       </Card>} visible={visiable}>

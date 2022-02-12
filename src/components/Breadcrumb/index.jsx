@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { Breadcrumb as AntBreadcrumb } from 'antd';
+import {Link} from 'react-router';
+import {Breadcrumb as AntBreadcrumb, Button} from 'antd';
+import {useHistory, useRouteMatch} from 'ice';
 import routes from '@/routes';
-import { useRouteMatch } from 'ice';
+import store from '@/store';
 
 const itemRender = (route, params, routes, paths) => {
 
@@ -41,13 +42,31 @@ const getRoute = (path, routes) => {
 };
 
 const Breadcrumb = ({title}) => {
+
+  const history = useHistory();
+
   const match = useRouteMatch();
+
   const routesArray = getRoute(match.path, routes);
+
+  const [userInfo] = store.useModel('user');
+
   return (
     <AntBreadcrumb>
       {
         routesArray.map((item, index) => {
-          return (<AntBreadcrumb.Item key={index}>{item.name}</AntBreadcrumb.Item>);
+          if (index === 0) {
+            return <AntBreadcrumb.Item key={index}>
+              <a onClick={() => {
+                history.push('/');
+              }}>{userInfo.abbreviation || 'Home'}</a>
+            </AntBreadcrumb.Item>;
+          }
+          return (<AntBreadcrumb.Item key={index}>
+            <a onClick={() => {
+              history.push(item.path);
+            }}>{item.name}</a>
+          </AntBreadcrumb.Item>);
         })
       }
       {title && <AntBreadcrumb.Item key={title}>{title}</AntBreadcrumb.Item>}

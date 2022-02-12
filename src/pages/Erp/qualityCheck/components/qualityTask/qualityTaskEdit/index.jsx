@@ -66,8 +66,6 @@ const QualityTaskEdit = ({...props}, ref) => {
 
         }}
         onSubmit={(value) => {
-          console.log(value);
-          return false;
           return {
             ...value, details: value.details.map((items) => {
               return {

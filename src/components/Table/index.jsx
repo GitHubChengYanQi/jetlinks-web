@@ -25,7 +25,6 @@ const TableWarp = ({
   contentHeight,
   searchForm,
   cardTitle,
-  data,
   rowKey,
   headStyle,
   tab,
@@ -80,6 +79,17 @@ const TableWarp = ({
   }
   // const [formActions,setFormActions] = useState(formActionsPublic);
 
+  const dataSourcedChildren = (data) => {
+    if (!Array.isArray(data.children) || data.children.length === 0) {
+      return {...data, children: null};
+    }
+    return {
+      ...data, children: data.children.map((item) => {
+        return dataSourcedChildren(item);
+      })
+    };
+  };
+
   const requestMethod = async (params) => {
     const {values, pagination, sorter, ...other} = params;
     const page = {};
@@ -109,7 +119,7 @@ const TableWarp = ({
       return new Promise((resolve) => {
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
-            return {...items, children: items.children && (items.children.length > 0 ? items.children : null)};
+            return dataSourcedChildren(items);
           }) : [],
           total: response.count,
           current: response.current,
@@ -135,14 +145,11 @@ const TableWarp = ({
 
   const {loading, dataSource, pagination, ...other} = tableProps;
 
-  typeof data === 'function' && data(dataSource);
-
   const footer = () => {
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {pagination && <div className={style.right}>共{pagination.total}条</div>}
-        {/* {pagination && <Pagination style={{float: 'right'}} {...pagination} size="small" />} */}
+        {pagination && <div className={style.right}>共{pagination.total || dataSource.length}条</div>}
         <br style={{clear: 'both'}} />
       </div>
     );

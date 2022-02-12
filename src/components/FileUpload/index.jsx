@@ -1,15 +1,40 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Button, message, Popover, Space, Spin, Upload} from 'antd';
+import {QuestionCircleOutlined, UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
-import {Button, message, Space, Upload} from 'antd';
-import {UploadOutlined} from '@ant-design/icons';
 
+const FileUpload = ({
+  value,
+  onChange = () => {
+  },
+  title,
+  maxCount,
+  refresh,
+}) => {
 
-const FileUpload = ({value,onChange,fileName,title}) => {
+  const [fileList, setFileList] = useState([]);
 
-  const [fileList,setFileList] = useState(value ? [{
-    url: value,
-  }] : null);
+  const {loading, run: getUrl} = useRequest({
+    url: '/sop/getImgUrls',
+    method: 'POST',
+  }, {
+    manual: true,
+    onSuccess: (res) => {
+      setFileList(res.map((item,index)=>{return {url:item,id:value.split(',')[index]};}));
+    }
+  });
 
+  useEffect(() => {
+    if (value) {
+      getUrl({
+        data: {
+          imgs:value.split(',')
+        }
+      });
+    }else {
+      setFileList([]);
+    }
+  }, [refresh]);
 
   const [oss, setOss] = useState({});
 
@@ -18,7 +43,7 @@ const FileUpload = ({value,onChange,fileName,title}) => {
     method: 'GET'
   }, {
     manual: true,
-    onSuccess:(res)=>{
+    onSuccess: (res) => {
       if (res.errCode === 0) {
         oss.key = res.data.key;
         oss.host = res.data.host;
@@ -31,6 +56,10 @@ const FileUpload = ({value,onChange,fileName,title}) => {
     }
   });
 
+  if (loading) {
+    return <Spin />;
+  }
+
 
   return (
     <Space direction="vertical" style={{width: '100%'}} size="large">
@@ -38,35 +67,50 @@ const FileUpload = ({value,onChange,fileName,title}) => {
         action={oss && oss.host}
         data={oss}
         fileList={fileList}
-        maxCount={1}
+        maxCount={maxCount || 5}
         listType="picture"
         onChange={(file) => {
           switch (file.file.status) {
             case 'removed':
               message.warning('已删除！');
-              setFileList([]);
-              typeof fileName === 'function' && fileName('');
-              onChange(null);
               break;
             case 'uploading':
               // message.success("上传中！");
               break;
             case 'done':
               message.success('上传成功！');
-              setFileList([{url:`${oss && oss.host}/${oss && oss.key}`,name:file.file.name}]);
-              typeof fileName === 'function' && fileName(file.file.name);
-              onChange(oss.mediaId);
               break;
             case 'error':
               message.error('上传失败！');
-              setFileList([]);
-              typeof fileName === 'function' && fileName('');
-              onChange(null);
               break;
             default:
               break;
           }
-          setFileList(file.fileList);
+          if (file.file.status === 'removed') {
+            setFileList(file.fileList);
+            onChange(file.fileList.map((item) => {
+              return item.id;
+            }).toString());
+            return;
+          }
+
+          if (file.fileList.length === 1) {
+            setFileList([{...file.fileList[0], id: oss.mediaId}]);
+            onChange([oss.mediaId].toString());
+          } else {
+            const array = [];
+            for (let i = 0; i < file.fileList.length; i++) {
+              if (i === file.fileList.length - 1) {
+                array.push({...file.fileList[i], id: oss.mediaId});
+              } else {
+                array.push(file.fileList[i]);
+              }
+            }
+            setFileList(array);
+            onChange(array.map((item) => {
+              return item.id;
+            }).toString());
+          }
         }}
         beforeUpload={async (file) => {
           const type = file.type.split('/')[1];

@@ -5,11 +5,11 @@
  * @Date 2021-10-22 17:20:05
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
+import {createFormActions} from '@formily/antd';
+import {Button, Radio, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
-import {Button, Radio, Select, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -17,8 +17,6 @@ import {codingRulesDelete, codingRulesEdit, codingRulesList} from '../codingRule
 import CodingRulesEdit from '../codingRulesEdit';
 import * as SysField from '../codingRulesField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {createFormActions} from '@formily/antd';
-import {useBoolean} from 'ahooks';
 import Modal from '@/components/Modal';
 import {useRequest} from '@/util/Request';
 
@@ -93,8 +91,8 @@ const CodingRulesList = () => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="编码规则名称" dataIndex="name" />
-        <Column title="模块" dataIndex="module" render={(value) => {
+        <Column title="规则名称" dataIndex="name" />
+        <Column title="对应模块" dataIndex="module" render={(value) => {
           return (
             <>{module(value)}</>
           );
@@ -114,7 +112,7 @@ const CodingRulesList = () => {
             </Radio.Group>
           );
         }} />
-        <Column title="编码规则" dataIndex="codingRules" render={(value) => {
+        <Column title="规则设置" dataIndex="codingRules" render={(value) => {
           const array = value.split(',');
           let values = '';
           typeof array === 'object' && array.map((items, index) => {
@@ -124,7 +122,7 @@ const CodingRulesList = () => {
             <>{values}</>
           );
         }} />
-        <Column title="描述" dataIndex="note" />
+        <Column title="规则描述" dataIndex="note" />
         <Column title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
