@@ -54,7 +54,9 @@ const SkuTable = (props) => {
     return (
       <Space>
         <Button type="link">查看日志</Button>
-        <Import />
+        <Import onOk={()=>{
+          tableRef.current.submit();
+        }} />
         <Button icon={<Icon type="icon-daoru" />}>导出物料</Button>
         <AddButton onClick={() => {
           ref.current.open(false);

@@ -38,6 +38,7 @@ const SopEdit = ({...props}, ref) => {
     <div style={{padding: 16}}>
       <Form
         {...props}
+        NoButton={false}
         ref={formRef}
         api={ApiConfig}
         fieldKey="sopId"

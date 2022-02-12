@@ -5,7 +5,7 @@
  * @Date 2022-02-10 09:21:35
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Table as AntTable} from 'antd';
 import {useHistory} from 'ice';
 import Table from '@/components/Table';
@@ -24,8 +24,12 @@ const {FormItem} = Form;
 
 const SopList = () => {
   const ref = useRef(null);
+  const addRef = useRef(null);
   const history = useHistory();
   const tableRef = useRef(null);
+
+  const [loading,setLoading] = useState();
+
   const actions = () => {
     return (
       <>
@@ -68,7 +72,7 @@ const SopList = () => {
           return (
             <>
               <Button type="link" onClick={() => {
-                history.push(`/research/sop/${record.sopId}`);
+                history.push(`/SPU/sop/${record.sopId}`);
               }}>详情</Button>
               <EditButton onClick={() => {
                 ref.current.open(record.sopId);
@@ -77,10 +81,21 @@ const SopList = () => {
           );
         }} width={300} />
       </Table>
-      <Modal width={700} title="编辑SOP" component={SopEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Modal
+        width={700}
+        title="编辑SOP"
+        component={SopEdit}
+        loading={setLoading}
+        compoentRef={addRef}
+        footer={<Button loading={loading} type="primary" onClick={() => {
+          addRef.current.submit();
+        }}>
+          保存
+        </Button>}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref} />
     </>
   );
 };

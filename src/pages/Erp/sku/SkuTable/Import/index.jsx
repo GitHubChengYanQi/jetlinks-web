@@ -7,7 +7,7 @@ import Table from '@/components/Table';
 
 const {baseURI} = config;
 
-const Import = () => {
+const Import = ({onOk=()=>{}}) => {
 
 
   const [filelist, setFilelist] = useState([]);
@@ -96,6 +96,7 @@ const Import = () => {
               if (file.status === 'done') {
                 setFilelist([]);
                 setVisible(false);
+                onOk();
                 if (file.response.data && file.response.data.length > 0) {
                   importErrData(file.response && file.response.data);
                 }

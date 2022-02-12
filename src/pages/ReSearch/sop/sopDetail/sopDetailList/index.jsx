@@ -46,7 +46,7 @@ const SopDetailList = ({id}) => {
             }
           });
         } else {
-          history.push('/research/sop');
+          history.push('/SPU/sop');
         }
       }}>{data.display === 0 ? '返回正在使用的SOP' : '返回'}</Button>} />}
       <div
