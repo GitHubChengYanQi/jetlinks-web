@@ -30,6 +30,7 @@ const Import = ({
         name: item.spuName,
         coding: item.standard,
         batch: item.isNotBatch,
+        error:item.error,
         attributes: item.attributes && item.attributes.map((item) => {
           return item;
         }).toString()
@@ -42,8 +43,8 @@ const Import = ({
         <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh'}}>
           <Table.Column title="错误行" dataIndex="line" />
           <Table.Column title="物料分类" dataIndex="class" />
-          <Table.Column title="产品" dataIndex="sku" />
-          <Table.Column title="型号" dataIndex="name" />
+          <Table.Column title="产品" dataIndex="name" />
+          <Table.Column title="型号" dataIndex="sku" />
           <Table.Column title="物料编码" dataIndex="coding" />
           <Table.Column title="单位" dataIndex="unit" />
           <Table.Column title="是否批量" dataIndex="batch" />
