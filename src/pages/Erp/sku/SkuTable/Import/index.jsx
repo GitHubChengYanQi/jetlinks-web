@@ -9,11 +9,14 @@ const {baseURI} = config;
 
 const Import = ({
   onOk = () => {
-  }
+  },
+  templateUrl,
 }) => {
 
 
   const [filelist, setFilelist] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const [visible, setVisible] = useState();
 
@@ -51,20 +54,66 @@ const Import = ({
     });
   };
 
+  const handleUpload = () => {
+    const formData = new FormData();
+    filelist.forEach(file => {
+      formData.append('file', file);
+    });
+    setLoading(true);
+
+    fetch(`${baseURI}Excel/importSku`, {
+      method: 'POST',
+      headers: {Authorization: cookie.get('tianpeng-token')},
+      body: formData,
+    })
+      .then((res) => {
+        res.json().then((response) => {
+          if (!response || response.errCode !== 0) {
+            return message.error('导入失败!');
+          }
+          message.success('导入成功!');
+          importErrData(response.data);
+        });
+      })
+      .then(() => {
+        setFilelist([]);
+        setVisible(false);
+        onOk();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
 
   return <>
     <Button icon={<Icon type="icon-daoru" />} onClick={() => {
       setVisible(true);
     }}>导入物料</Button>
-    <Modal title="导入基础物料" visible={visible} onCancel={() => {
-      setVisible(false);
-    }} footer={[]} width={800}>
+    <Modal
+      title="导入基础物料"
+      visible={visible}
+      onCancel={() => {
+        setVisible(false);
+      }}
+      footer={[
+        <Button
+          loading={loading}
+          disabled={filelist.length === 0}
+          type="primary"
+          key={1}
+          onClick={() => {
+            handleUpload();
+          }}>开始导入</Button>,
+        <Button key={2}>取消</Button>
+      ]}
+      width={800}>
       <Space direction="vertical">
         <div>
           操作步骤：
         </div>
         <div>
-          1、下载 <a href={`${baseURI}api/SkuExcel`}>《基础物料模板》</a>
+          1、下载 <a href={templateUrl}>《基础物料模板》</a>
         </div>
         <div>
           2、打开下载表，将对应信息填入或粘贴至表内，为保证导入成功，请使用纯文本或数字
@@ -78,40 +127,23 @@ const Import = ({
 
         <Space>
           <Upload
+            maxCount={1}
             fileList={filelist}
+            onRemove={() => {
+              setFilelist([]);
+            }}
             action={`${baseURI}Excel/importSku`}
             headers={
               {Authorization: cookie.get('tianpeng-token')}
             }
             name="file"
-            beforeUpload={() => {
-              message.loading({
-                content: '导入中，请稍后...',
-                key: 1,
-                style: {
-                  marginTop: '20vh',
-                },
-              });
-              return true;
-            }}
-            onChange={async ({file, fileList}) => {
-              setFilelist(fileList);
-              if (file.status === 'done') {
-                setFilelist([]);
-                setVisible(false);
-                onOk();
-                if (file.response.data && file.response.data.length > 0) {
-                  importErrData(file.response && file.response.data);
-                }
-                message.success({
-                  content: '导入成功！',
-                  key: 1,
-                  duration: 2,
-                  style: {
-                    marginTop: '20vh',
-                  },
-                });
+            beforeUpload={(file) => {
+              if (file.name.indexOf('xlsx') === -1) {
+                message.warn('请上传xlsx类型的文件!');
+                return false;
               }
+              setFilelist([file]);
+              return false;
             }}
           >
             <Button icon={<Icon type="icon-daoru" />} ghost type="primary">上传文件</Button>

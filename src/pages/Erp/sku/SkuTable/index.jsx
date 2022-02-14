@@ -56,10 +56,13 @@ const SkuTable = (props) => {
     return (
       <Space>
         <Button type="link">查看日志</Button>
-        <Import onOk={()=>{
-          tableRef.current.submit();
-        }} />
-        <Button icon={<Icon type="icon-daoru" />} onClick={()=>{
+        <Import
+          onOk={() => {
+            tableRef.current.submit();
+          }}
+          templateUrl={`${baseURI}api/SkuExcel`}
+        />
+        <Button icon={<Icon type="icon-daoru" />} onClick={() => {
 
         }}>导出物料</Button>
         <AddButton onClick={() => {
