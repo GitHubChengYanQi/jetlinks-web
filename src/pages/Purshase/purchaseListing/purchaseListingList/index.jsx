@@ -21,6 +21,7 @@ import {useRequest} from '@/util/Request';
 import {purchaseAskDetail} from '@/pages/Purshase/purchaseAsk/purchaseAskUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import Note from '@/components/Note';
 
 const {Column} = AntTable;
 
@@ -60,7 +61,7 @@ const PurchaseListingList = ({value}) => {
           <Descriptions.Item label="采购申请编号"> {data.coding}</Descriptions.Item>
           <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
-          <Descriptions.Item label="备注"> {data.note || '无'}</Descriptions.Item>
+          <Descriptions.Item label="备注"> <Note width='100%' value={data.note || '无'} /></Descriptions.Item>
           <Descriptions.Item label="状态">{status(data.status)}</Descriptions.Item>
         </Descriptions>
       </ProCard>
@@ -79,9 +80,11 @@ const PurchaseListingList = ({value}) => {
           }}
           />
           <Column title="申请数量" dataIndex="applyNumber" />
-          <Column title="可用数量" dataIndex="availableNumber" />
+          {/* <Column title="可用数量" dataIndex="availableNumber" /> */}
           <Column title="交付日期" dataIndex="deliveryDate" />
-          <Column title="备注" dataIndex="note" />
+          <Column title="备注" dataIndex="note" render={(value) => {
+            return <Note value={value || '无'} />;
+          }} />
         </AntTable>
       </ProCard>
     </div>

@@ -37,20 +37,6 @@ const InstockEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {loading, data} = useRequest(codingRulesList, {
-    defaultParams: {
-      data: {
-        module: 1,
-        state: 1
-      }
-    }
-  });
-
-  if (loading) {
-    return (<ProSkeleton type="descriptions" />);
-  }
-
-
   return (
     <div style={{padding: 16}}>
       <Form
@@ -121,9 +107,7 @@ const InstockEdit = ({...props}) => {
                 state.value = value * number.value;
               }
             );
-
           });
-
 
           FormEffectHooks.onFieldValueChange$('instockRequest.*.skuId').subscribe(async ({name, value}) => {
             if (value) {
@@ -145,7 +129,7 @@ const InstockEdit = ({...props}) => {
 
         <ProCard title="入库信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="编码" name="coding" codingId={data} module={7} component={SysField.Codings} required />
+            <FormItem label="编码" name="coding" module={1} component={SysField.Codings} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="仓库名称" name="storeHouseId" component={SysField.StoreHouseSelect} required />

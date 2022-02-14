@@ -212,13 +212,14 @@ export const CustomerLevelId = (props) => {
   const {loading,data} = useRequest(CustomerLevelIdSelect);
 
   useEffect(()=>{
-    if (data){
+    if (data && data[data.length-1]){
       props.onChange(data && data[data.length-1].value);
     }
   },[data]);
 
-  if (loading)
+  if (loading){
     return <Spin />;
+  }
 
   return (<AntdSelect options={data} {...props} />);
 };
