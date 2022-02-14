@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
-import cookie from 'js-cookie';
-// import sha1 from 'sha1';
 import SLogin from './component';
 
 import style from './index.module.scss';
 
 const Login = () => {
   useEffect(() => {
-    window.document.title = '系统登录';
+    window.document.title = '感谢使用道昕智造企业数字化管理系统';
   });
 
   return (

@@ -64,7 +64,7 @@ export default {
   song: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.230/',
+    baseURI: 'http://192.168.1.221/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'

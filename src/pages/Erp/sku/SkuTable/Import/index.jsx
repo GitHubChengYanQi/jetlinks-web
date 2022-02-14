@@ -7,7 +7,10 @@ import Table from '@/components/Table';
 
 const {baseURI} = config;
 
-const Import = ({onOk=()=>{}}) => {
+const Import = ({
+  onOk = () => {
+  }
+}) => {
 
 
   const [filelist, setFilelist] = useState([]);
@@ -61,7 +64,7 @@ const Import = ({onOk=()=>{}}) => {
           操作步骤：
         </div>
         <div>
-          1、下载 <a>《基础物料模板》</a>
+          1、下载 <a href={`${baseURI}api/SkuExcel`}>《基础物料模板》</a>
         </div>
         <div>
           2、打开下载表，将对应信息填入或粘贴至表内，为保证导入成功，请使用纯文本或数字

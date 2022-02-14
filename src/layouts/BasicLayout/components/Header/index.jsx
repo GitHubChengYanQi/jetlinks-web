@@ -70,7 +70,7 @@ const Header = () => {
                 }}
                 id="navigation-title"
                 className={styles.navigationTitle}>
-                {userInfo.abbreviation}
+                {userInfo.abbreviation || '道昕云'}
               </div>
             </div>
             <div className={styles.middle} />
@@ -137,7 +137,7 @@ const Header = () => {
               <span
                 aria-haspopup="true"
                 aria-expanded="false"
-              >{userInfo.abbreviation}</span></div>
+              >{userInfo.abbreviation || '道昕云'}</span></div>
           </div>
         </div>
         <div className="docker-middle">

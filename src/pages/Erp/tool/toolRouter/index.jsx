@@ -10,6 +10,7 @@ import React, {lazy} from 'react';
 export const ToolRouter = [
   {
     path: '/tool',
+    name:'工具管理',
     component: lazy(() => import('../toolList')),
     fallback: <div>loading...</div>,
     exact: true,

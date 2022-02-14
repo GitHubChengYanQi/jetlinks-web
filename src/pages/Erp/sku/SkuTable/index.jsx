@@ -8,7 +8,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {CopyOutlined} from '@ant-design/icons';
-import {useHistory} from 'ice';
+import {config, useHistory} from 'ice';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -25,6 +25,8 @@ import Icon from '@/components/Icon';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const {baseURI} = config;
 
 
 const SkuTable = (props) => {
@@ -57,7 +59,9 @@ const SkuTable = (props) => {
         <Import onOk={()=>{
           tableRef.current.submit();
         }} />
-        <Button icon={<Icon type="icon-daoru" />}>导出物料</Button>
+        <Button icon={<Icon type="icon-daoru" />} onClick={()=>{
+
+        }}>导出物料</Button>
         <AddButton onClick={() => {
           ref.current.open(false);
           setEdit(false);

@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Badge, Button, Table as AntTable} from 'antd';
+import {Badge, Button, Table as AntTable, Typography} from 'antd';
 import {getSearchParams} from 'ice';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
@@ -17,6 +17,7 @@ import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
+import Note from '@/components/Note';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -60,6 +61,7 @@ const PurchaseAskList = () => {
       <Table
         api={purchaseAskList}
         rowKey="purchaseAskId"
+        rowSelection
         title={<Breadcrumb />}
         searchForm={searchForm}
         actions={actions()}
@@ -76,7 +78,9 @@ const PurchaseAskList = () => {
           </>;
         }} />
         <Column title="创建时间" dataIndex="createTime" />
-        <Column title="备注" dataIndex="note" />
+        <Column title="备注" dataIndex="note" width={200} render={(value)=>{
+          return <Note value={value} />;
+        }} />
         <Column title="申请状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:

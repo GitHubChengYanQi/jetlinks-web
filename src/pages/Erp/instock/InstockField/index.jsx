@@ -106,7 +106,8 @@ export const SpuId = (props) => {
   const {...other} = props;
 
   return (<SelectSpu
-    {...other} />);
+    {...other}
+  />);
 };
 
 export const Remake = (props) => {
@@ -122,7 +123,5 @@ export const SkuId = (props) => {
 
 export const Codings = (props) => {
 
-  const {codingId, ...other} = props;
-
-  return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
+  return (<Coding {...props} />);
 };
