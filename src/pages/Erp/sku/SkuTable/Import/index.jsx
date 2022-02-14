@@ -13,7 +13,6 @@ const Import = ({
   templateUrl,
 }) => {
 
-
   const [filelist, setFilelist] = useState([]);
 
   const [loading, setLoading] = useState(false);
@@ -49,6 +48,7 @@ const Import = ({
           <Table.Column title="单位" dataIndex="unit" />
           <Table.Column title="是否批量" dataIndex="batch" />
           <Table.Column title="参数配置" dataIndex="attributes" />
+          <Table.Column title="问题原因" dataIndex="error" />
         </AntTable>
       </div>
     });
