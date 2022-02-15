@@ -18,9 +18,7 @@ import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
 
 export const Codings = (props) => {
 
-  const {codingId, ...other} = props;
-
-  return (<Coding codingId={codingId && codingId.length > 0 && codingId[0].codingRulesId} {...other} />);
+  return (<Coding {...props} />);
 };
 export const Type = (props) => {
   return (<Input {...props} />);
@@ -38,7 +36,7 @@ export const BrandId = (props) => {
   }
 
   const options = [
-    {label:'任意品牌',value:0},
+    {label:'无指定品牌',value:0},
     ...data,
   ];
 
@@ -87,8 +85,8 @@ export const UpdateUser = (props) => {
   return (<Input {...props} />);
 };
 export const Date = (props) => {
-  return (<DatePicker disabledDate={(current) => {
-    return current && current < moment().endOf('day');
+  return (<DatePicker disabledDate={(currentDate) => {
+    return currentDate && currentDate < moment().subtract(1, 'days');
   }} {...props} />);
 };
 export const Display = (props) => {
@@ -109,5 +107,5 @@ export const SelectCoding = (props) => {
   return (<Input {...props} />);
 };
 export const UnitId = (props) => {
-  return (<Select border={false} disabled api={unitListSelect} width={100} {...props} />);
+  return (<Select border={false} disabled showArrow={false} api={unitListSelect} width={100} {...props} />);
 };

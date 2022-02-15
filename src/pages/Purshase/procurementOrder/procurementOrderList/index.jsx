@@ -14,8 +14,6 @@ import {procurementOrderAdd, procurementOrderList} from '../procurementOrderUrl'
 import * as SysField from '../procurementOrderField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
-import ProcurementOrderDetailList
-  from '@/pages/Purshase/procurementOrder/components/procurementOrderDetail/procurementOrderDetailList';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import {useRequest} from '@/util/Request';
 

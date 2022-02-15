@@ -61,8 +61,6 @@ const AddContractEdit = ({
 
   const contentRef = useRef(null);
 
-  const [skuIds, setSkuIds] = useSetState({data: []});
-
   const [success, setSuccess] = useState(value);
 
   const [supplySkus, setSupplySkus] = useState([]);
@@ -240,69 +238,96 @@ const AddContractEdit = ({
           // 输入百分比计算金额
           FormEffectHooks.onFieldValueChange$('details.*.percent').subscribe(({active, name, value}) => {
             const allMoney = getFieldState('allMoney');
-            if (active) {
-              if (allMoney.value) {
-                let percents = 0;
-                const details = getFieldState('details');
-                details.value.map((items) => {
+            if (allMoney.value) {
+              let percents = 0;
+              const details = getFieldState('details');
+              details.value.map((items) => {
+                if (items) {
                   return percents += items.percent;
-                });
-                setFieldState(
-                  FormPath.transform(name, /\d/, ($1) => {
-                    return `details.${$1}.money`;
-                  }),
-                  state => {
-                    if (percents > 100) {
-                      message.warning('不能超过百分之百！');
-                      state.value = null;
-                    } else
-                      state.value = allMoney.value * (value / 100);
-                  }
-                );
-              } else {
-                message.warning('请先输入总金额！');
-              }
+                }
+                return true;
+              });
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `details.${$1}.money`;
+                }),
+                state => {
+                  if (percents > 100) {
+                    message.warning('不能超过百分之百！');
+                    state.value = null;
+                  } else
+                    state.value = allMoney.value * (value / 100);
+                }
+              );
+            } else if (active) {
+              message.warning('请先输入总金额！');
             }
           });
+          // 计算物料总金额
+          FormEffectHooks.onFieldValueChange$('contractDetailList').subscribe(({value}) => {
+            if (value) {
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return 'allMoney';
+                }),
+                state => {
+                  let money = 0;
+                  value.map((item) => {
+                    if (item) {
+                      money += item.quantity * item.salePrice;
+                    }
+                    return item;
+                  });
+                  state.value = money;
+                }
+              );
+            }
 
+          });
+          // 总金额改变清空付款信息
+          FormEffectHooks.onFieldValueChange$('allMoney').subscribe(({value}) => {
+            setFieldState(
+              FormPath.transform(name, /\d/, ($1) => {
+                return 'details';
+              }),
+              state => {
+                state.value = [{}];
+              }
+            );
+          });
           // 输入金额计算百分比
           FormEffectHooks.onFieldValueChange$('details.*.money').subscribe(({active, name, value}) => {
             const allMoney = getFieldState('allMoney');
-            if (active) {
-              if (allMoney.value) {
-                let moneys = 0;
-                const details = getFieldState('details');
-                if (details.value) {
-                  details.value.map((items) => {
+            if (allMoney.value) {
+              let moneys = 0;
+              const details = getFieldState('details');
+              if (details.value) {
+                details.value.map((items) => {
+                  if (items) {
                     return moneys += items.money;
-                  });
-                }
-                setFieldState(
-                  FormPath.transform(name, /\d/, ($1) => {
-                    return `details.${$1}.percent`;
-                  }),
-                  state => {
-                    if (moneys > allMoney.value) {
-                      message.warning('不能超过总金额！');
-                      state.value = null;
-                    } else {
-                      state.value = (value / allMoney.value) * 100;
-                    }
                   }
-                );
-              } else {
-                message.warning('请先输入总金额！');
+                  return true;
+                });
               }
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `details.${$1}.percent`;
+                }),
+                state => {
+                  if (moneys > allMoney.value) {
+                    message.warning('不能超过总金额！');
+                    state.value = null;
+                  } else {
+                    state.value = (value / allMoney.value) * 100;
+                  }
+                }
+              );
+            } else if (active) {
+              message.warning('请先输入总金额！');
             }
           });
           // 物料发生变化
           FormEffectHooks.onFieldValueChange$('contractDetailList.*.skuId').subscribe(({name, value}) => {
-            const array = skuIds.data;
-            if (value !== undefined)
-              array[name.match(/\d/g)[0]] = value;
-            else
-              array.splice(name.match(/\d/g)[0], 1);
-            setSkuIds({data: array});
 
             setFieldState(
               FormPath.transform(name, /\d/, ($1) => {
@@ -314,7 +339,6 @@ const AddContractEdit = ({
             );
           });
         }}
-
       >
         <ProCard headerBordered className="h2Card" title="基础信息">
           <FormItem labelCol={5} label="合同模板" name="templateId" component={SysField.Template} required />
@@ -347,9 +371,100 @@ const AddContractEdit = ({
             </ProCard>
           </Col>
         </Row>
+        <ProCard headerBordered className="h2Card" title="物料信息">
+          <FieldList
+            name="contractDetailList"
+            initialValue={[
+              {},
+            ]}
+          >
+            {({state, mutators}) => {
+              const onAdd = () => mutators.push();
+              return (
+                <div>
+                  {state.value.map((item, index) => {
+                    const onRemove = index => mutators.remove(index);
+                    return (
+                      <Card
+                        style={{marginTop: 8}}
+                        headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
+                        bodyStyle={{padding: 8}}
+                        key={index}>
+                        <div style={{width: '5%', display: 'inline-block'}}>{`第${index + 1}批`}</div>
+                        <div style={{width: '30%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={6}
+                            itemStyle={{margin: 0}}
+                            label="物料"
+                            name={`contractDetailList.${index}.skuId`}
+                            ids={supplySkus.map((item) => {
+                              return item.skuId;
+                            })}
+                            component={SysField.SkuId}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '23%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={6}
+                            itemStyle={{margin: 0}}
+                            label="品牌"
+                            supplySkus={supplySkus}
+                            name={`contractDetailList.${index}.brandId`}
+                            component={SysField.BrandId}
+                          />
+                        </div>
+                        <div style={{width: '17%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={8}
+                            itemStyle={{margin: 0}}
+                            label="数量"
+                            name={`contractDetailList.${index}.quantity`}
+                            component={SysField.Quantity}
+                            required
+                          />
+                        </div>
+                        <div style={{width: '20%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={8}
+                            itemStyle={{margin: 0}}
+                            label="单价"
+                            name={`contractDetailList.${index}.salePrice`}
+                            component={SysField.SalePrice}
+                            required
+                          />
+                        </div>
+                        {!defaultValue.contractDetailList && <Button
+                          type="link"
+                          style={{float: 'right'}}
+                          disabled={state.value.length === 1}
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
+                        />}
+                      </Card>
+                    );
+                  })}
+                  {!defaultValue.contractDetailList && <Button
+                    type="dashed"
+                    style={{marginTop: 8}}
+                    icon={<PlusOutlined />}
+                    onClick={onAdd}>增加物料</Button>}
+                </div>
+              );
+            }}
+          </FieldList>
+        </ProCard>
         <ProCard headerBordered className="h2Card" title="付款信息">
-          <FormItem labelCol={3} label="付款总金额" name="allMoney" component={SysField.AllMoney} placeholder="总金额"
-                    required />
+          <FormItem
+            labelCol={3}
+            label="付款总金额"
+            name="allMoney"
+            component={SysField.AllMoney}
+            placeholder="总金额"
+            required />
           <FieldList
             name="details"
             initialValue={[
@@ -426,93 +541,6 @@ const AddContractEdit = ({
                     style={{marginTop: 8}}
                     icon={<PlusOutlined />}
                     onClick={onAdd}>增加付款信息</Button>
-                </div>
-              );
-            }}
-          </FieldList>
-        </ProCard>
-        <ProCard headerBordered className="h2Card" title="物料信息">
-          <FieldList
-            name="contractDetailList"
-            initialValue={[
-              {},
-            ]}
-          >
-            {({state, mutators}) => {
-              const onAdd = () => mutators.push();
-              return (
-                <div>
-                  {state.value.map((item, index) => {
-                    const onRemove = index => mutators.remove(index);
-                    return (
-                      <Card
-                        style={{marginTop: 8}}
-                        headStyle={{border: 'none', borderBottom: 'solid 1px #eee'}}
-                        bodyStyle={{padding: 8}}
-                        key={index}>
-                        <div style={{width: '5%', display: 'inline-block'}}>{`第${index + 1}批`}</div>
-                        <div style={{width: '30%', display: 'inline-block'}}>
-                          <FormItem
-                            labelCol={6}
-                            itemStyle={{margin: 0}}
-                            label="物料"
-                            skuIds={skuIds.data}
-                            name={`contractDetailList.${index}.skuId`}
-                            ids={supplySkus.map((item) => {
-                              return item.skuId;
-                            })}
-                            component={SysField.SkuId}
-                            required
-                          />
-                        </div>
-                        <div style={{width: '23%', display: 'inline-block'}}>
-                          <FormItem
-                            labelCol={6}
-                            itemStyle={{margin: 0}}
-                            label="品牌"
-                            supplySkus={supplySkus}
-                            name={`contractDetailList.${index}.brandId`}
-                            component={SysField.BrandId}
-                          />
-                        </div>
-                        <div style={{width: '17%', display: 'inline-block'}}>
-                          <FormItem
-                            labelCol={8}
-                            itemStyle={{margin: 0}}
-                            label="数量"
-                            name={`contractDetailList.${index}.quantity`}
-                            component={SysField.Quantity}
-                            required
-                          />
-                        </div>
-                        <div style={{width: '20%', display: 'inline-block'}}>
-                          <FormItem
-                            labelCol={8}
-                            itemStyle={{margin: 0}}
-                            label="单价"
-                            name={`contractDetailList.${index}.salePrice`}
-                            component={SysField.SalePrice}
-                            required
-                          />
-                        </div>
-                        {!defaultValue.contractDetailList && <Button
-                          type="link"
-                          style={{float: 'right'}}
-                          disabled={state.value.length === 1}
-                          icon={<DeleteOutlined />}
-                          onClick={() => {
-                            onRemove(index);
-                          }}
-                          danger
-                        />}
-                      </Card>
-                    );
-                  })}
-                  {!defaultValue.contractDetailList && <Button
-                    type="dashed"
-                    style={{marginTop: 8}}
-                    icon={<PlusOutlined />}
-                    onClick={onAdd}>增加物料</Button>}
                 </div>
               );
             }}

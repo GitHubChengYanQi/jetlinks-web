@@ -60,7 +60,7 @@ const SelectSku = ({
         ...params
       }
     });
-  }, [params, value, ids]);
+  }, [params, value, ids && ids.length]);
 
 
   const options = !loading ? data && data.map((items) => {

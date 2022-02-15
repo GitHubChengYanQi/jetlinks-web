@@ -61,7 +61,7 @@ const PurchaseListingList = ({value}) => {
           <Descriptions.Item label="采购申请编号"> {data.coding}</Descriptions.Item>
           <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
-          <Descriptions.Item label="备注"> <Note width='100%' value={data.note || '无'} /></Descriptions.Item>
+          <Descriptions.Item label="备注"> <Note width="100%" value={data.note || '无'} /></Descriptions.Item>
           <Descriptions.Item label="状态">{status(data.status)}</Descriptions.Item>
         </Descriptions>
       </ProCard>
@@ -76,12 +76,13 @@ const PurchaseListingList = ({value}) => {
           }}
           />
           <Column title="品牌" dataIndex="brandResult" render={(value) => {
-            return <>{value ? value.brandName : '任意品牌'}</>;
+            return <>{value ? value.brandName : '无指定品牌'}</>;
           }}
           />
           <Column title="申请数量" dataIndex="applyNumber" />
-          {/* <Column title="可用数量" dataIndex="availableNumber" /> */}
-          <Column title="交付日期" dataIndex="deliveryDate" />
+          <Column title="交付日期" dataIndex="deliveryDate" render={(value) => {
+            return <>{value && value.split(' ')[0]}</>;
+          }} />
           <Column title="备注" dataIndex="note" render={(value) => {
             return <Note value={value || '无'} />;
           }} />

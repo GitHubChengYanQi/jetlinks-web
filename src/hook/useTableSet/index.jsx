@@ -64,7 +64,7 @@ const useTableSet = (column, tableKey) => {
     {
       manual: true,
       onSuccess: (res) => {
-        if (res){
+        if (res) {
           setDetail(res);
         }
 

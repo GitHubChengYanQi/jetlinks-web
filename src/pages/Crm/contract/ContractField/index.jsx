@@ -65,7 +65,7 @@ export const ContractClassId = (props) => {
 };
 
 export const Time = (props) => {
-  return (<DatePicker  {...props} />);
+  return (<DatePicker showTime  {...props} />);
 };
 export const Audit = (props) => {
   props.onChange(props.value || 0);
