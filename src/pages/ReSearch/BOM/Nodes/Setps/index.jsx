@@ -50,6 +50,9 @@ const Setps = ({value, onClose, onChange}) => {
             state.visible = true;
             state.value = [{}];
           });
+          setFieldState('skuShow', state => {
+            state.value = '';
+          });
         });
 
         FormEffectHooks.onFieldValueChange$('goodsList').subscribe(({value}) => {

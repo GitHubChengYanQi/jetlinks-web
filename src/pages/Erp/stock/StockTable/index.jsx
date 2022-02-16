@@ -125,7 +125,7 @@ const StockTable = (props) => {
             setFilelist(fileList);
             if (file.status === 'done') {
               setFilelist([]);
-              if (file.response.data && file.response.data.length > 0) {
+              if (file.response.data) {
                 importErrData(file.response && file.response.data);
               }
               message.success({
