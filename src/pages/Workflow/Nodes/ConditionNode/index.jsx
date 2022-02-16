@@ -31,7 +31,6 @@ const BranchNode = (props) => {
           {!first && <div className="sort-left" onClick={props.sortLeft} />}
           <div className="title-wrapper">
             <span className="editable-title">{props.nodeName}</span>
-            {/*<span className="priority-title">优先级{props.priorityLevel}</span>*/}
             <Icon type="icon-close" className="close" onClick={props.delBranch} />
           </div>
           {!last && <div className="sort-right" onClick={props.sortRight} />}
@@ -65,7 +64,6 @@ function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
       onDeleteNode(restProps.pRef, restProps.objRef);
       return;
     }
-    console.log('delBranch(i)', (i));
     onDeleteNode(restProps.pRef, restProps.objRef, NodeTypes.BRANCH, i);
   }
 

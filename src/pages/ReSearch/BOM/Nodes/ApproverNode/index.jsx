@@ -27,7 +27,7 @@ function ApproverNode(props) {
 
   // TODO: 这里读取props数据
   const TitleEl = <TitleElement
-    delNode={delNode}
+    delNode={props.type === '3' ? props.delBranch : delNode}
     placeholder="生产过程"
     nodeName="生产过程"
     onTitleChange={onChange}
@@ -66,7 +66,7 @@ function ApproverNode(props) {
     title={TitleEl}
     objRef={props.objRef}>
     <div>
-      {content(props.data)}
+      {content(props.setpSetParam)}
     </div>
     <Icon type="icon-arrow-right" />
 

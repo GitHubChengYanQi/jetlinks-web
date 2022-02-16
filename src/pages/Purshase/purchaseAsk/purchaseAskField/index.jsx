@@ -21,7 +21,22 @@ export const Codings = (props) => {
   return (<Coding {...props} />);
 };
 export const Type = (props) => {
-  return (<Input {...props} />);
+  return (<AntSelect options={[{
+    label:'生产采购',
+    value:'0',
+  },{
+    label:'库存采购',
+    value:'1',
+  },{
+    label:'行政采购',
+    value:'2',
+  },{
+    label:'销售采购',
+    value:'3',
+  },{
+    label:'销售采购',
+    value:'4',
+  },]} {...props} />);
 };
 
 export const BrandId = (props) => {

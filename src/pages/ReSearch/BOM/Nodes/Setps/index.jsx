@@ -24,9 +24,22 @@ import {productionStationListSelect} from '@/pages/BaseSystem/productionStation/
 const actions = createFormActions();
 
 
-const Setps = ({value: defaultValue, onClose, onChange}) => {
+const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
 
   const [equals, setEquals] = useState();
+
+  const [displaySkuIds, setDisplaySkuIds] = useState([]);
+
+  const skuIds = bomSkuIds && bomSkuIds.filter((item) => {
+    if (displaySkuIds.includes(item.skuId)) {
+      return false;
+    }
+    if (equals) {
+      return true;
+    } else {
+      return item.next === true;
+    }
+  });
 
   useEffect(() => {
     defaultValue = null;
@@ -39,6 +52,7 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
       actions={actions}
       defaultValue={defaultValue}
       effects={($, {setFieldState}) => {
+
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
           const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
@@ -51,16 +65,21 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
 
         FormEffectHooks.onFieldValueChange$('equals').subscribe(({value}) => {
           setEquals(value);
-          setFieldState('goodsList', state => {
+          setFieldState('setpSetDetailParam', state => {
             state.visible = true;
-            state.value = defaultValue ? defaultValue.goodsList : [{}];
+            state.value = defaultValue ? defaultValue.setpSetDetailParam : [{}];
           });
           setFieldState('skuShow', state => {
             state.props.skus = '';
           });
         });
 
-        FormEffectHooks.onFieldValueChange$('goodsList').subscribe(({value}) => {
+        FormEffectHooks.onFieldValueChange$('setpSetDetailParam').subscribe(({value}) => {
+          if (value) {
+            setDisplaySkuIds(value.map((item) => {
+              return item && item.skuId;
+            }));
+          }
           setFieldState('skuShow', state => {
             state.props.skus = value;
           });
@@ -117,7 +136,7 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
         />
 
         <FieldList
-          name="goodsList"
+          name="setpSetDetailParam"
           visible={false}
           initialValue={[
             {},
@@ -132,7 +151,8 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
                   <div style={{width: 200, paddingBottom: 16}}><span
                     style={{color: 'red'}}>* </span>{equals ? '投入物料' : '产出物料'}</div>
                   <div style={{width: 90, paddingBottom: 16}}><span
-                    style={{color: 'red'}}>* </span>数量</div>
+                    style={{color: 'red'}}>* </span>数量
+                  </div>
                   <div style={{width: 200, paddingBottom: 16}}>自检方案</div>
                   <div style={{width: 200, paddingBottom: 16}}>质检方案</div>
                 </Space>
@@ -142,10 +162,13 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
                     <Space key={index} align="start">
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`goodsList.${index}.skuId`}
+                          name={`setpSetDetailParam.${index}.skuId`}
                           component={SelectSku}
                           placeholder="选择物料"
                           width="100%"
+                          ids={skuIds.map((item) => {
+                            return item.skuId;
+                          })}
                           rules={[{
                             required: true,
                             message: equals ? '请选择投入物料' : '请选择产出物料！'
@@ -154,7 +177,7 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
                       </div>
                       <div style={{width: 90, paddingBottom: 16}}>
                         <FormItem
-                          name={`goodsList.${index}.number`}
+                          name={`setpSetDetailParam.${index}.number`}
                           component={InputNumber}
                           placeholder="数量"
                           rules={[{
@@ -165,7 +188,7 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
                       </div>
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`goodsList.${index}.myQuality`}
+                          name={`setpSetDetailParam.${index}.myQuality`}
                           component={Select}
                           placeholder="自己检查的方案"
                           api={qualityCheckListSelect}
@@ -174,7 +197,7 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
 
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`goodsList.${index}.quality`}
+                          name={`setpSetDetailParam.${index}.quality`}
                           component={Select}
                           placeholder="质量检查的方案"
                           api={qualityCheckListSelect}
@@ -183,6 +206,7 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
 
                       <Button
                         type="link"
+                        disabled={state.value.length === 1}
                         style={{float: 'right', padding: 0}}
                         icon={<DeleteOutlined />}
                         onClick={() => {
@@ -260,7 +284,9 @@ const Setps = ({value: defaultValue, onClose, onChange}) => {
             </Tabs.TabPane>
             <Tabs.TabPane tab={equals ? '产出物料' : '投入物料'} key="2" forceRender>
               <FormItem
+                equals={equals}
                 name="skuShow"
+                nextSkus={bomSkuIds}
                 component={SkuShow}
               />
             </Tabs.TabPane>

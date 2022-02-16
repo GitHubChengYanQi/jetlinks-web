@@ -44,7 +44,7 @@ export const ShipNote = (props) => {
 };
 
 export const SkuShow = (props) => {
-  const {skus,onChange} = props;
+  const {skus, nextSkus, onChange,equals} = props;
 
   const skuIds = [];
 
@@ -57,7 +57,7 @@ export const SkuShow = (props) => {
     });
   }
 
-  const {loading, data, run} = useRequest(skuList, {manual: true,onSuccess:onChange});
+  const {loading, data, run} = useRequest(skuList, {manual: true, onSuccess: onChange});
 
   useEffect(() => {
     if (skuIds.length > 0) {
@@ -84,6 +84,9 @@ export const SkuShow = (props) => {
       const sku = skus && skus.filter((items) => {
         return items && (items.skuId === item.skuId);
       });
+      const nextSku = nextSkus && nextSkus.filter((items) => {
+        return items && items.next && (items.skuId === item.skuId);
+      });
       let number = 0;
       if (sku.length > 0) {
         number = sku[0].number;
@@ -94,6 +97,22 @@ export const SkuShow = (props) => {
           <div>
             数量：{number}
           </div>
+          {!equals && nextSku && nextSku.length > 0 && <div>
+            投入物料：
+            <Space direction="vertical">
+              {
+                nextSku[0].skus.map((item, index) => {
+                  return <Space key={index}>
+                    <SkuResultSkuJsons key={index} skuResult={item.skuResult} />
+                    <strong>
+                      ×
+                      {item.number * (number || 1)}
+                    </strong>
+                  </Space>;
+                })
+              }
+            </Space>
+          </div>}
         </Space>
       </List.Item>;
     }}

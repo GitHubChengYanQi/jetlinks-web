@@ -1,14 +1,30 @@
-import React, {useState} from 'react';
-import {Button, Form, Input, Space} from 'antd';
-import {request} from '@/util/Request';
-import {partsDetail, partsListSelect} from '@/pages/Erp/parts/PartsUrl';
+import React, {useEffect} from 'react';
+import {Button, Form, Input, Space, Spin} from 'antd';
+import {useRequest} from '@/util/Request';
+import {partsListSelect} from '@/pages/Erp/parts/PartsUrl';
 import Select from '@/components/Select';
 import FileUpload from '@/components/FileUpload';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const AddProcess = ({value, onChange,onClose}) => {
 
-  const [skuResult, setSkuResult] = useState(value && value.skuResult);
+  const {loading,data,run: getBom} = useRequest({
+    url: '/parts/getBOM',
+    method: 'GET'
+  }, {
+    manual: true,
+  });
+
+  useEffect(()=>{
+    if (value && value.partsId){
+      getBom({
+        params: {
+          partId: value.partsId,
+          type: 2,
+        }
+      });
+    }
+  },[]);
 
   return <>
     <Form
@@ -17,15 +33,16 @@ const AddProcess = ({value, onChange,onClose}) => {
       wrapperCol={{span: 15}}
       onValuesChange={async (value) => {
         if (value.partsId) {
-          const res = await request({
-            ...partsDetail,
-            data: {partsId: value.partsId}
+          getBom({
+            params: {
+              partId: value.partsId,
+              type: 2,
+            }
           });
-          setSkuResult(res.skuResult);
         }
       }}
       onFinish={(value) => {
-        onChange({...value,skuResult});
+        onChange({...value,data,skuResult:data.skuResult});
       }}
     >
 
@@ -42,7 +59,7 @@ const AddProcess = ({value, onChange,onClose}) => {
       </Form.Item>
 
       <Form.Item label="产品">
-        {skuResult ? <SkuResultSkuJsons skuResult={skuResult} /> : '请选择工艺物料清单'}
+        {loading ? <Spin /> : (data ? <SkuResultSkuJsons skuResult={data.skuResult} /> : '请选择工艺物料清单')}
       </Form.Item>
 
       <Form.Item name="file" label="附件">

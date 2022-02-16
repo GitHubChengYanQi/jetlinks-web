@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Form, Input, Modal, Space} from 'antd';
+import {Modal} from 'antd';
+import {useSetState} from 'ahooks';
 import Drawer from '@/components/Drawer';
 import EndNode from './Nodes/EndNode';
 import Render from './Nodes/Render';
@@ -16,6 +17,54 @@ const WorkFlow = ({value, onChange, type, module}) => {
   const ref = useRef();
 
   const refStart = useRef();
+
+  const [bomSkuIds, setBomSkuIds] = useSetState({skus:[]});
+
+  const getParts = (data, skus) => {
+    if (!Array.isArray(data)) {
+      return null;
+    }
+    data.map((item) => {
+      skus.push({
+        skuId: item.skuId,
+        skuResult: item.skuResult,
+        next: typeof item.partsResult === 'object',
+        skus: item.partsResult && item.partsResult.parts && item.partsResult.parts.map((item) => {
+          return {
+            skuId: item.skuId,
+            skuResult: item.skuResult,
+            number:item.number
+          };
+        }),
+      });
+      if (item.partsResult) {
+        return getParts(item.partsResult.parts, skus);
+      }
+      return null;
+    });
+  };
+
+  const getBom = (data) => {
+    const skus = [];
+    skus.push({
+      skuId: data.skuId,
+      skuResult: data.skuResult,
+      next: true,
+      skus: data.parts && data.parts.map((item) => {
+        return {
+          skuId: item.skuId,
+          skuResult: item.skuResult,
+          number:item.number
+        };
+      }),
+    });
+    if (data.parts) {
+      getParts(data.parts, skus);
+    }
+
+    setBomSkuIds({skus});
+  };
+
 
   const defaultConfig = {
     'pkId': 'start',
@@ -72,6 +121,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   // 删除节点
   function onDeleteNode(pRef, objRef, type, index) {
+    console.log(pRef);
     Modal.confirm({
       centered: true,
       title: '是否删除节点?',
@@ -125,13 +175,18 @@ const WorkFlow = ({value, onChange, type, module}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer title="步骤设置" ref={ref} width={800}>
+      <Drawer headTitle="步骤设置" ref={ref} width={800}>
         <Setps
+          bomSkuIds={bomSkuIds.skus}
           type={type}
           module={module}
+          setBomSkuIds={(value)=>{
+            setBomSkuIds({skus:value});
+          }}
           value={currentNode.current && currentNode.current.data}
           onChange={(value) => {
-            currentNode.current.data = value;
+            currentNode.current.setpSetParam = value;
+            currentNode.current.stepType = value.type;
             ref.current.close();
             updateNode();
           }}
@@ -141,15 +196,19 @@ const WorkFlow = ({value, onChange, type, module}) => {
         />
       </Drawer>
 
-      <Drawer title="生产产品" ref={refStart} width={800}>
+      <Drawer headTitle="生产产品" ref={refStart} width={800}>
         <AddProcess
           onClose={() => {
             refStart.current.close();
           }}
           value={currentNode.current && currentNode.current.data}
           onChange={(value) => {
-            currentNode.current.data = value;
+            currentNode.current.processRouteParam = value;
+            currentNode.current.stepType = 'shipStart';
             refStart.current.close();
+            if (value.data) {
+              getBom(value.data);
+            }
           }}
         />
       </Drawer>

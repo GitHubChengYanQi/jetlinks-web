@@ -5,8 +5,8 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useImperativeHandle, useRef} from 'react';
-import {Avatar, Button, Card,  message, Popover, Space} from 'antd';
+import React, {useImperativeHandle, useRef, useState} from 'react';
+import {Avatar, Button, Card, message, Popover, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
   FormEffectHooks,
@@ -14,7 +14,6 @@ import {
   InternalFieldList as FieldList
 } from '@formily/antd';
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import Form from '@/components/Form';
 import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
@@ -32,6 +31,16 @@ const ApiConfig = {
 const PurchaseAskEdit = ({...props}, ref) => {
 
   const formRef = useRef();
+
+  const [details, setDetails] = useState([]);
+
+  let number = 0;
+  details.map((item) => {
+    if (item && item.applyNumber) {
+      number += item.applyNumber;
+    }
+    return null;
+  });
 
   useImperativeHandle(ref, () => ({
     formRef,
@@ -60,8 +69,8 @@ const PurchaseAskEdit = ({...props}, ref) => {
             return `${items.skuId}${items.brandId}`;
           });
 
-          const sname = skuBrands.filter((item)=>{
-            const array = skuBrands.filter((value)=>{
+          const sname = skuBrands.filter((item) => {
+            const array = skuBrands.filter((value) => {
               return value === item;
             });
             return array.length > 1;
@@ -70,22 +79,16 @@ const PurchaseAskEdit = ({...props}, ref) => {
           if (required.length > 0) {
             message.warning('物料、申请数量为必填项！');
             return false;
-          }else if (sname.length > 0){
+          } else if (sname.length > 0) {
             message.warning('物料和品牌不能重复！');
             return false;
-          }else {
+          } else {
             return value;
           }
         }}
         effects={({setFieldState}) => {
-          FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(async ({name, value}) => {
-            // const array = skuIds.data;
-            // if (value !== undefined)
-            //   array[name.match(/\d/g)[0]] = value;
-            // else
-            //   array.splice(name.match(/\d/g)[0], 1);
-            // setSkuIds({data: array});
 
+          FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(async ({name, value}) => {
             if (value) {
               const sku = await request({...skuDetail, data: {skuId: value}});
 
@@ -99,6 +102,11 @@ const PurchaseAskEdit = ({...props}, ref) => {
               );
             }
           });
+
+          FormEffectHooks.onFieldValueChange$('purchaseListingParams').subscribe(({value}) => {
+            setDetails(value);
+          });
+
         }}
       >
         <ProCard title="基础信息" className="h2Card" headerBordered>
@@ -106,10 +114,22 @@ const PurchaseAskEdit = ({...props}, ref) => {
             <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="备注" name="note" component={SysField.Note} />
+            <FormItem label="采购申请类型" name="type" component={SysField.Type} module={5} required />
+          </div>
+          <div style={{display: 'inline-block', width: '30%'}}>
+            <FormItem label="备注说明" name="note" component={SysField.Note} />
           </div>
         </ProCard>
-        <ProCard title="物料列表" className="h2Card" headerBordered>
+        <ProCard title="物料列表" className="h2Card" headerBordered extra={
+          <Space>
+            <div>
+              申请品类:{details.length}
+            </div>
+            <div>
+              申请数量:{number}
+            </div>
+          </Space>
+        }>
           <FieldList
             name="purchaseListingParams"
             initialValue={[
