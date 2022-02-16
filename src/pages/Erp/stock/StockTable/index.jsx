@@ -59,8 +59,8 @@ const StockTable = (props) => {
           <Table.Column title="错误行" dataIndex="line" />
           <Table.Column title="分类" dataIndex="spuClass" />
           <Table.Column title="编码" dataIndex="strand" />
-          <Table.Column title="产品" dataIndex="Item" />
-          <Table.Column title="型号" dataIndex="SpuName" />
+          <Table.Column title="产品" dataIndex="item" />
+          <Table.Column title="型号" dataIndex="spuName" />
           <Table.Column title="库存数量" dataIndex="stockNumber" />
           <Table.Column title="上级库位" dataIndex="supperPosition" />
           <Table.Column title="库位" dataIndex="position" />

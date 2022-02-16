@@ -1,7 +1,9 @@
-import React, {useRef} from 'react';
-import {Button, Space, Tag} from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {Button, Space, Spin, Tag} from 'antd';
 import Drawer from '@/components/Drawer';
 import SopDetailList from '@/pages/ReSearch/sop/sopDetail/sopDetailList';
+import {useRequest} from '@/util/Request';
+import {skuList} from '@/pages/Erp/sku/skuUrl';
 
 
 export const Tool = (props) => {
@@ -38,3 +40,36 @@ export const Sop = (props) => {
 export const ShipNote = (props) => {
   return props.value ? props.value : '无';
 };
+
+export const SkuShow = (props) => {
+  const {value} = props;
+
+  const skuIds = [];
+
+  if (value.length > 0) {
+    value.map((item) => {
+      if (item) {
+        skuIds.push(item.skuId);
+      }
+      return null;
+    });
+  }
+
+  const {loading, data, run} = useRequest(skuList, {manual: true});
+
+  useEffect(() => {
+    if (skuIds.length > 0) {
+      run({
+        skuIds,
+      });
+    }
+  }, [skuIds.length]);
+
+  if (loading) {
+    return <Spin />;
+  }
+
+  return '无';
+};
+
+

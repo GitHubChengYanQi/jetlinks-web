@@ -17,8 +17,9 @@ import {qualityCheckListSelect} from '@/pages/Erp/qualityCheck/components/qualit
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {shipSetpDetail, shipSetpListSelect} from '@/pages/ReSearch/shipSetp/shipSetpUrl';
 import {request} from '@/util/Request';
-import {ShipNote, Sop, Tool} from '@/pages/ReSearch/BOM/Nodes/Setps/components/SetpsField';
+import {ShipNote, SkuShow, Sop, Tool} from '@/pages/ReSearch/BOM/Nodes/Setps/components/SetpsField';
 import FileUpload from '@/components/FileUpload';
+import {productionStationListSelect} from '@/pages/BaseSystem/productionStation/productionStationUrl';
 
 const actions = createFormActions();
 
@@ -51,8 +52,14 @@ const Setps = ({value, onClose, onChange}) => {
           });
         });
 
+        FormEffectHooks.onFieldValueChange$('goodsList').subscribe(({value}) => {
+          setFieldState('skuShow', state => {
+            state.value = value;
+          });
+        });
+
         FormEffectHooks.onFieldValueChange$('shipSetp').subscribe(async ({value}) => {
-          if (value){
+          if (value) {
             const res = await request({
               ...shipSetpDetail,
               data: {
@@ -204,7 +211,8 @@ const Setps = ({value, onClose, onChange}) => {
               <FormItem
                 label="工位"
                 name="productionStation"
-                component={Input}
+                component={Select}
+                api={productionStationListSelect}
                 placeholder="工位"
                 rules={[{
                   required: true,
@@ -243,10 +251,10 @@ const Setps = ({value, onClose, onChange}) => {
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab={equals ? '产出物料' : '投入物料'} key="2">
-              产出物料
-              产出物料
-              产出物料
-              产出物料
+              <FormItem
+                name="skuShow"
+                component={SkuShow}
+              />
             </Tabs.TabPane>
           </Tabs>
         </div>

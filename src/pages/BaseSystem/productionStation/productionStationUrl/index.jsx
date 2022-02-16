@@ -35,3 +35,9 @@ export const productionStationList = {
   rowKey:'productionStationId'
 };
 
+export const productionStationListSelect = {
+  url: '/productionStation/listSelect',
+  method: 'POST',
+  rowKey:'productionStationId'
+};
+
