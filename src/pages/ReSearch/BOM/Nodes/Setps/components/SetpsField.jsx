@@ -1,9 +1,11 @@
 import React, {useEffect, useRef} from 'react';
-import {Button, Space, Spin, Tag} from 'antd';
+import {Button, List, Space, Spin, Tag} from 'antd';
 import Drawer from '@/components/Drawer';
 import SopDetailList from '@/pages/ReSearch/sop/sopDetail/sopDetailList';
 import {useRequest} from '@/util/Request';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
+import Empty from '@/components/Empty';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
 export const Tool = (props) => {
@@ -48,7 +50,7 @@ export const SkuShow = (props) => {
 
   if (value.length > 0) {
     value.map((item) => {
-      if (item) {
+      if (item && item.skuId) {
         skuIds.push(item.skuId);
       }
       return null;
@@ -60,7 +62,9 @@ export const SkuShow = (props) => {
   useEffect(() => {
     if (skuIds.length > 0) {
       run({
-        skuIds,
+        data: {
+          skuIds
+        },
       });
     }
   }, [skuIds.length]);
@@ -69,7 +73,31 @@ export const SkuShow = (props) => {
     return <Spin />;
   }
 
-  return '无';
+  if (!data) {
+    return <Empty />;
+  }
+
+  return <List
+    bordered
+    dataSource={data}
+    renderItem={(item) => {
+      const skus = value.filter((items) => {
+        return items && (items.skuId === item.skuId);
+      });
+      let number = 0;
+      if (skus.length > 0) {
+        number = skus[0].number;
+      }
+      return <List.Item>
+        <Space direction="vertical">
+          <SkuResultSkuJsons skuResult={item} />
+          <div>
+            数量：{number}
+          </div>
+        </Space>
+      </List.Item>;
+    }}
+  />;
 };
 
 

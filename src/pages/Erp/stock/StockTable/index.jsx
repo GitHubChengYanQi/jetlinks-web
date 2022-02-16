@@ -34,8 +34,23 @@ const StockTable = (props) => {
 
   const [filelist, setFilelist] = useState([]);
 
-  const importErrData = (errData) => {
-    const data = errData && errData.map((item, index) => {
+  const dataTable = (dataSource) => {
+    return <AntTable rowKey="key" dataSource={dataSource || []} pagination={false} scroll={{y: '50vh'}}>
+      <Table.Column title="错误行" dataIndex="line" />
+      <Table.Column title="分类" dataIndex="spuClass" />
+      <Table.Column title="编码" dataIndex="strand" />
+      <Table.Column title="产品" dataIndex="item" />
+      <Table.Column title="型号" dataIndex="spuName" />
+      <Table.Column title="库存数量" dataIndex="stockNumber" />
+      <Table.Column title="上级库位" dataIndex="supperPosition" />
+      <Table.Column title="库位" dataIndex="position" />
+      <Table.Column title="品牌" dataIndex="brand" />
+      <Table.Column title="问题原因" dataIndex="error" />
+    </AntTable>;
+  };
+
+  const importErrData = (data) => {
+    const errorDataSource = data && data.errorList && data.errorList.map((item, index) => {
       return {
         key: index,
         line: item.line,
@@ -46,27 +61,42 @@ const StockTable = (props) => {
         specifications: item.specifications,
         stockNumber: item.stockNumber,
         supperPosition: item.supperPosition,
-        position:item.position,
-        brand:item.brand,
-        error:item.error,
+        position: item.position,
+        brand: item.brand,
+        error: item.error,
       };
     });
+
+    const successDataSource = data && data.successList && data.successList.map((item, index) => {
+      return {
+        key: index,
+        line: item.line,
+        spuClass: item.spuClass,
+        strand: item.strand,
+        Item: item.Item,
+        SpuName: item.SpuName,
+        specifications: item.specifications,
+        stockNumber: item.stockNumber,
+        supperPosition: item.supperPosition,
+        position: item.position,
+        brand: item.brand,
+        error: item.error,
+      };
+    });
+
     AntModal.error({
       width: 1200,
-      title: `异常数据 / ${data.length}`,
+      title: '导入数据',
       content: <div style={{padding: 8}}>
-        <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh'}}>
-          <Table.Column title="错误行" dataIndex="line" />
-          <Table.Column title="分类" dataIndex="spuClass" />
-          <Table.Column title="编码" dataIndex="strand" />
-          <Table.Column title="产品" dataIndex="item" />
-          <Table.Column title="型号" dataIndex="spuName" />
-          <Table.Column title="库存数量" dataIndex="stockNumber" />
-          <Table.Column title="上级库位" dataIndex="supperPosition" />
-          <Table.Column title="库位" dataIndex="position" />
-          <Table.Column title="品牌" dataIndex="brand" />
-          <Table.Column title="问题原因" dataIndex="error" />
-        </AntTable>
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab={`异常数据 / ${errorDataSource ? errorDataSource.length : '0'}`} key="1">
+            {dataTable(errorDataSource)}
+          </Tabs.TabPane>
+          <Tabs.TabPane tab={`成功数据 / ${successDataSource ? successDataSource.length : '0'}`} key="2">
+            {dataTable(successDataSource)}
+          </Tabs.TabPane>
+        </Tabs>
+
       </div>
     });
   };
