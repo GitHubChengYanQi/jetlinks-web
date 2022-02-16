@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Form,
   FormItem,
@@ -24,15 +24,20 @@ import {productionStationListSelect} from '@/pages/BaseSystem/productionStation/
 const actions = createFormActions();
 
 
-const Setps = ({value, onClose, onChange}) => {
+const Setps = ({value: defaultValue, onClose, onChange}) => {
 
   const [equals, setEquals] = useState();
+
+  useEffect(() => {
+    defaultValue = null;
+  }, []);
 
   return (
     <Form
       labelCol={5}
       wrapperCol={12}
       actions={actions}
+      defaultValue={defaultValue}
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
           const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
@@ -48,16 +53,16 @@ const Setps = ({value, onClose, onChange}) => {
           setEquals(value);
           setFieldState('goodsList', state => {
             state.visible = true;
-            state.value = [{}];
+            state.value = defaultValue ? defaultValue.goodsList : [{}];
           });
           setFieldState('skuShow', state => {
-            state.value = '';
+            state.props.skus = '';
           });
         });
 
         FormEffectHooks.onFieldValueChange$('goodsList').subscribe(({value}) => {
           setFieldState('skuShow', state => {
-            state.value = value;
+            state.props.skus = value;
           });
         });
 
@@ -69,7 +74,6 @@ const Setps = ({value, onClose, onChange}) => {
                 shipSetpId: value
               }
             });
-            console.log(res);
             setFieldState('tool', state => {
               state.value = res.binds;
             });
@@ -92,7 +96,7 @@ const Setps = ({value, onClose, onChange}) => {
     >
       <FormItem
         required
-        label="类型"
+        label="配置生产过程"
         name="type"
         component={Radio.Group}
         dataSource={[
@@ -127,7 +131,8 @@ const Setps = ({value, onClose, onChange}) => {
                 <Space>
                   <div style={{width: 200, paddingBottom: 16}}><span
                     style={{color: 'red'}}>* </span>{equals ? '投入物料' : '产出物料'}</div>
-                  <div style={{width: 90, paddingBottom: 16}}>数量</div>
+                  <div style={{width: 90, paddingBottom: 16}}><span
+                    style={{color: 'red'}}>* </span>数量</div>
                   <div style={{width: 200, paddingBottom: 16}}>自检方案</div>
                   <div style={{width: 200, paddingBottom: 16}}>质检方案</div>
                 </Space>
@@ -199,7 +204,7 @@ const Setps = ({value, onClose, onChange}) => {
 
         <div style={{display: equals === undefined && 'none'}}>
           <Tabs defaultActiveKey="2" type="card" style={{marginTop: 16}}>
-            <Tabs.TabPane tab="工序信息" key="1">
+            <Tabs.TabPane tab="工序信息" key="1" forceRender>
               <FormItem
                 label="工序"
                 name="shipSetp"
@@ -253,7 +258,7 @@ const Setps = ({value, onClose, onChange}) => {
                 placeholder="请输入生产过程的备注内容"
               />
             </Tabs.TabPane>
-            <Tabs.TabPane tab={equals ? '产出物料' : '投入物料'} key="2">
+            <Tabs.TabPane tab={equals ? '产出物料' : '投入物料'} key="2" forceRender>
               <FormItem
                 name="skuShow"
                 component={SkuShow}

@@ -8,12 +8,7 @@ import WFC from './OperatorContext';
 import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
-import Select from '@/components/Select';
-import {partsDetail, partsListSelect} from '@/pages/Erp/parts/PartsUrl';
-import FileUpload from '@/components/FileUpload';
-import {request} from '@/util/Request';
 import AddProcess from '@/pages/ReSearch/BOM/components/AddProcess';
-import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
 const WorkFlow = ({value, onChange, type, module}) => {
@@ -32,9 +27,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   const [config, setConfig] = useState(value || defaultConfig);
 
-  const [currentNode, setCurrentNode] = useState();
-
-  const [startData, setStartData] = useState();
+  const [currentNode, setCurrentNode] = useState({});
 
   function updateNode() {
     typeof onChange === 'function' && onChange({...config});
@@ -103,6 +96,9 @@ const WorkFlow = ({value, onChange, type, module}) => {
     });
 
     switch (objRef.type) {
+      case '0':
+        refStart.current.open(false);
+        break;
       case '1':
       case '3':
         ref.current.open(true);
@@ -125,10 +121,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
         <ZoomLayout>
           <Render
             config={config}
-            data={currentNode}
-            onContentClick={() => {
-              refStart.current.open(false);
-            }} />
+          />
           <EndNode />
         </ZoomLayout>
       </section>
@@ -136,7 +129,9 @@ const WorkFlow = ({value, onChange, type, module}) => {
         <Setps
           type={type}
           module={module}
+          value={currentNode.current && currentNode.current.data}
           onChange={(value) => {
+            currentNode.current.data = value;
             ref.current.close();
             updateNode();
           }}
@@ -148,15 +143,12 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
       <Drawer title="生产产品" ref={refStart} width={800}>
         <AddProcess
-          onClose={()=>{
+          onClose={() => {
             refStart.current.close();
           }}
-          value={startData}
+          value={currentNode.current && currentNode.current.data}
           onChange={(value) => {
-            setStartData(value);
-            setCurrentNode({
-              name:  <SkuResultSkuJsons skuResult={value.skuResult} />,
-            });
+            currentNode.current.data = value;
             refStart.current.close();
           }}
         />

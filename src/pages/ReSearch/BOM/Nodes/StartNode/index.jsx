@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
+import WFC from '@/pages/ReSearch/BOM/OperatorContext';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
 function StartNode(props) {
+
+  const {onSelectNode} = useContext(WFC);
+
   function onContentClick() {
-    props.onContentClick && props.onContentClick();
+    onSelectNode(props.pRef, props.objRef);
   }
 
   return (
@@ -17,7 +22,7 @@ function StartNode(props) {
       }}
       title={<span>{props.nodeName || '发起人'}</span>}>
       <div>
-        {props.data && props.data.name || '请选择'}
+        {props.data && props.data.skuResult && <SkuResultSkuJsons skuResult={props.data.skuResult} /> || '请选择'}
       </div>
       <Icon type="icon-arrow-right" />
     </NodeWrap>);

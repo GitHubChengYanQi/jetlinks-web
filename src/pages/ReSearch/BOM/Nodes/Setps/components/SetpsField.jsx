@@ -44,12 +44,12 @@ export const ShipNote = (props) => {
 };
 
 export const SkuShow = (props) => {
-  const {value} = props;
+  const {skus,onChange} = props;
 
   const skuIds = [];
 
-  if (value && value.length > 0) {
-    value.map((item) => {
+  if (skus && skus.length > 0) {
+    skus.map((item) => {
       if (item && item.skuId) {
         skuIds.push(item.skuId);
       }
@@ -57,7 +57,7 @@ export const SkuShow = (props) => {
     });
   }
 
-  const {loading, data, run} = useRequest(skuList, {manual: true});
+  const {loading, data, run} = useRequest(skuList, {manual: true,onSuccess:onChange});
 
   useEffect(() => {
     if (skuIds.length > 0) {
@@ -73,7 +73,7 @@ export const SkuShow = (props) => {
     return <Spin />;
   }
 
-  if (!value || !data) {
+  if (!skus || !data) {
     return <Empty />;
   }
 
@@ -81,12 +81,12 @@ export const SkuShow = (props) => {
     bordered
     dataSource={data}
     renderItem={(item) => {
-      const skus = value && value.filter((items) => {
+      const sku = skus && skus.filter((items) => {
         return items && (items.skuId === item.skuId);
       });
       let number = 0;
-      if (skus.length > 0) {
-        number = skus[0].number;
+      if (sku.length > 0) {
+        number = sku[0].number;
       }
       return <List.Item>
         <Space direction="vertical">
