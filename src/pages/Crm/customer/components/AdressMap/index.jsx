@@ -4,12 +4,13 @@ import Amap from '@/components/Amap';
 
 const AdressMap = (props) => {
 
-  const [location, setLocation] = useState(props.value  && props.value);
+  const [location, setLocation] = useState(props.value || {});
 
   return (
     <>
-      <Input value={location && location.address} style={{width:'60%',marginRight:20,display:'inline-block'}} onChange={(value)=>{
-        props.onChange({address:value.target.value});
+      <Input {...props} value={location && location.address} style={{width:'60%',marginRight:20,display:'inline-block'}} onChange={(value)=>{
+        setLocation({...location,address:value.target.value});
+        props.onChange({address:value.target.value,map:location.location,city:location.city});
       }} />
       <div style={{textAlign: 'center',display:'inline-block'}}>
         <InputNumber min={0}

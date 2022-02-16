@@ -6,23 +6,17 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, Popover, AutoComplete, Spin} from 'antd';
+import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space} from 'antd';
+import moment from 'moment';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
-import TreeSelect from '@/components/TreeSelect';
 import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
-import {commonArea, CompanyRoleIdSelect, CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {commonArea, CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import Cascader from '@/components/Cascader';
-import Amap from '@/components/Amap';
-import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
-import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
 import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
 import AdressMap from '@/pages/Crm/customer/components/AdressMap';
-import moment from 'moment';
-
-const {Option} = Select;
-
+import FileUpload from '@/components/FileUpload';
 
 export const ContactsName = (props) => {
   return (<Input  {...props} />);
@@ -52,6 +46,10 @@ export const value = (props) => {
   return <Input {...props} />;
 };
 
+export const File = (props) => {
+  return <FileUpload {...props} />;
+};
+
 export const Name = (props) => {
   return (<Input {...props} />);
 };
@@ -72,11 +70,22 @@ export const CustomerName = (props) => {
     debounceInterval: 300,
   });
 
-  const options = !loading ? data && data.map((value) => {
+  const options = (!loading && data) ? data.map((value) => {
     return {
+      disabled: true,
       value: value.customerName,
-      label: value.customerName,
-      id: value.customerId,
+      label: <div
+        style={{
+          color: '#000',
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}>
+        {value.customerName}
+        <a
+          onClick={() => {
+            onSuccess(value.customerId);
+          }}>查看详情</a>
+      </div>,
     };
   }) : [];
 
@@ -84,14 +93,18 @@ export const CustomerName = (props) => {
   return <>
     <AutoComplete
       dropdownMatchSelectWidth={100}
-      options={options}
-      placeholder={supply ? '搜索供应商' : '搜索客户'}
+      notFoundContent={loading && <Spin />}
+      options={[{
+        label: '已存在供应商',
+        options
+      }]}
+      placeholder={supply ? '请输入供应商名称' : '请输入客户名称'}
       value={value}
-      onSelect={(value, option) => {
-        onSuccess(option.id);
+      onSelect={() => {
+
       }}
     >
-      <Input.Search
+      <Input
         onChange={(value) => {
           onChange(value);
           run({
@@ -117,25 +130,19 @@ export const Setup = (props) => {
   }}  {...props} />);
 };
 export const Legal = (props) => {
-  const [visi, setVist] = useState();
-  useEffect(() => {
-    setVist(props.value);
-  }, []);
+  return (<Input {...props} />);
+};
 
-  return (<Input disabled={visi} {...props} />);
+export const Money = (props) => {
+  return (<Space><InputNumber min={0} style={{width:200}} {...props} />万元</Space>);
 };
 export const Utscc = (props) => {
-  const [visi, setVist] = useState();
-  useEffect(() => {
-    setVist(props.value);
-  }, []);
-
-  return (<Input disabled={visi}  {...props} />);
+  return (<Input {...props} />);
 };
 export const CompanyType = (props) => {
   return (<AntdSelect
     showSearch
-    style={{maxWidth: 120}}
+    style={{maxWidth: 200}}
     allowClear
     filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {
@@ -205,19 +212,23 @@ export const Supply = (props) => {
 };
 
 export const Note = (props) => {
-  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100}  {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={1}  {...props} />);
+};
+
+export const RowsNote = (props) => {
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={2}  {...props} />);
 };
 
 export const CustomerLevelId = (props) => {
-  const {loading,data} = useRequest(CustomerLevelIdSelect);
+  const {loading, data} = useRequest(CustomerLevelIdSelect);
 
-  useEffect(()=>{
-    if (data && data[data.length-1]){
-      props.onChange(data && data[data.length-1].value);
+  useEffect(() => {
+    if (data && data[data.length - 1]) {
+      props.onChange(data && data[data.length - 1].value);
     }
-  },[data]);
+  }, [data]);
 
-  if (loading){
+  if (loading) {
     return <Spin />;
   }
 
@@ -229,7 +240,7 @@ export const OriginId = (props) => {
 };
 
 export const UserName = (props) => {
-  return (<Select width={120} api={apiUrl.UserIdSelect}  {...props} />);
+  return (<Select width='100%' api={apiUrl.UserIdSelect}  {...props} />);
 };
 
 export const Emall = (props) => {
