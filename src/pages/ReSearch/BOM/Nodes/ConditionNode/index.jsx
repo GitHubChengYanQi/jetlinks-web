@@ -8,6 +8,7 @@ import WFC from '../../OperatorContext';
 import styles from './index.module.scss';
 import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 import EndNode from '@/pages/ReSearch/BOM/Nodes/EndNode';
+import ApproverNode from '@/pages/ReSearch/BOM/Nodes/ApproverNode';
 
 
 const CoverLine = ({first = false, last = false}) => {
@@ -28,22 +29,7 @@ const BranchNode = (props) => {
   return (
     <div className="condition-node">
       <div className="condition-node-box">
-        <div className="auto-judge">
-          {!first && <div className="sort-left" onClick={props.sortLeft} />}
-          <div className="title-wrapper">
-            {/*<span className="editable-title">{props.nodeName}</span>*/}
-            {/*<span className="priority-title">优先级{props.priorityLevel}</span>*/}
-            <Icon type="icon-close" className="close" onClick={props.delBranch} />
-          </div>
-          {!last && <div className="sort-right" onClick={props.sortRight} />}
-          <div className="content" onClick={() => props.onBranchClick(props.objRef)}>
-            <div className="text">
-              {props.sku || '请选择物料'}
-            </div>
-            {/* <i className="anticon anticon-right arrow"></i> */}
-          </div>
-        </div>
-        <AddNode objRef={props.objRef} />
+        <ApproverNode {...props} />
       </div>
     </div>
   );
@@ -63,16 +49,7 @@ function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
       onDeleteNode(restProps.pRef, restProps.objRef);
       return;
     }
-    console.log('delBranch(i)', (i));
     onDeleteNode(restProps.pRef, restProps.objRef, NodeTypes.BRANCH, i);
-  }
-
-  function sortLeft() {
-
-  }
-
-  function sortRight() {
-
   }
 
   function onBranchClick(objRef) {
@@ -95,7 +72,7 @@ function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
             </div>);
           })}
         </div>
-        {/*<AddNode objRef={restProps.objRef} />*/}
+        <AddNode objRef={restProps.objRef} />
       </div>
     </div>
   );

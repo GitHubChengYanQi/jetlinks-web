@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import Form from '@/components/Form';
-import {Card, Input, Radio} from 'antd';
+import {Card, Input, message, Radio} from 'antd';
 import {DataBaseInfo, execute} from '@/pages/BaseSystem/gen/GenUrl';
 import Select from '@/components/Select';
 import GenDataBaseInfo from '@/pages/BaseSystem/gen/GenDataBaseInfo';
@@ -9,6 +9,7 @@ import cookie from 'js-cookie';
 import qs from 'qs';
 import {config} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
+import {request} from '@/util/Request';
 
 const {FormItem} = Form;
 
@@ -57,7 +58,11 @@ const GenEdit = () => {
             ]
           };
           result.tables = result.tables.join('CAT');
-          console.log(qs.stringify(result));
+          // const res = request( {
+          //   url:`${config.baseURI}${execute.url}?${qs.stringify(result)}`,
+          //   method: 'GET',
+          //   headers: {Authorization: cookie.get('tianpeng-token')},
+          // });
           window.open(`${config.baseURI}${execute.url}?${qs.stringify(result)}`);
           return false;
         }}

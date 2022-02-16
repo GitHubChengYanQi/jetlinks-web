@@ -8,9 +8,8 @@ export const OptionTypes = {
 export const NodeTypes = {...OptionTypes, START: '0'};
 // 节点类型默认标题名
 export const OptionNames = {
-  [OptionTypes.APPROVER]: '单个物料',
-  // [OptionTypes.NOTIFIER]: '抄送',
-  [OptionTypes.CONDITION]: '多个物料'
+  [OptionTypes.APPROVER]: '工序',
+  [OptionTypes.CONDITION]: '子工序'
 };
 // 节点模板
 export const NodeTemplates = {

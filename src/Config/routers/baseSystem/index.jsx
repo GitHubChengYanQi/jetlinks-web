@@ -6,6 +6,7 @@ import { SysDeptRouter } from '@/pages/BaseSystem/sysDept/sysDeptRouter';
 import {ConfigRouter} from '@/pages/BaseSystem/config/configRouter';
 import {CodingRulesRouter} from '@/pages/BaseSystem/codingRules/codingRulesRouter';
 import {OperationLogRouter} from '@/pages/BaseSystem/operationLog/operationLogRouter';
+import {ProductionStationRouter} from '@/pages/BaseSystem/productionStation/productionStationRouter';
 
 const systemConfig = [
 
@@ -20,6 +21,7 @@ const systemConfig = [
       ...ConfigRouter,
       ...CodingRulesRouter,
       ...OperationLogRouter,
+      ...ProductionStationRouter,
       {
         path: '/enterprise',
         name: '企业信息',

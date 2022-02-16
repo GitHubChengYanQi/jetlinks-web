@@ -87,7 +87,7 @@ const SelectSku = ({
         }} />
       <Select
         style={{width: 200}}
-        placeholder={spu ? '名称/型号' : '名称/型号/成品码'}
+        placeholder={spu ? '名称/型号' : '名称/型号/物料编码'}
         showSearch
         allowClear
         onClear={() => {

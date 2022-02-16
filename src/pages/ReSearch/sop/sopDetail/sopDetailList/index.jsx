@@ -23,7 +23,7 @@ const SopDetailList = ({id}) => {
   const {loading, data, run} = useRequest(sopDetail, {
     defaultParams: {
       data: {
-        sopId: params.cid || id,
+        sopId: id || params.cid,
       }
     }
   });

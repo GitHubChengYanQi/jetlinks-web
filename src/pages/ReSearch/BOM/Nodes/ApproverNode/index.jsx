@@ -3,7 +3,6 @@ import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
-import {Owner} from '@/pages/Workflow/Nodes/MatchNode';
 
 
 function ApproverNode(props) {
@@ -27,17 +26,18 @@ function ApproverNode(props) {
   // TODO: 这里读取props数据
   const TitleEl = <TitleElement
     delNode={delNode}
-    // placeholder={props.nodeName || '过程'} nodeName={props.nodeName || '过程'}
+    placeholder='生产过程'
+    nodeName='生产过程'
     onTitleChange={onChange}
   />;
 
   return (<NodeWrap
-    // titleStyle={{backgroundColor: '#fff',}}
+    titleStyle={{backgroundColor: props.objRef.type === '3' ? '#15bc83' :'rgb(255, 148, 62)'}}
     onContentClick={onContentClick}
-    // title={TitleEl}
+    title={TitleEl}
     objRef={props.objRef}>
     <div>
-      {props.sku || '请选择物料'}
+      {props.sku || '请配置'}
     </div>
     <Icon type="icon-arrow-right" />
 

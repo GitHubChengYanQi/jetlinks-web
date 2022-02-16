@@ -4,11 +4,7 @@ import NodeWrap from '../NodeWrap';
 
 
 function StartNode(props) {
-
-  // const {onDeleteNode, onSelectNode} = useContext(WFC);
-
   function onContentClick() {
-    // onSelectNode(props.pRef, props.objRef);
     props.onContentClick && props.onContentClick();
   }
 
@@ -16,12 +12,14 @@ function StartNode(props) {
     <NodeWrap
       type={0}
       objRef={props.objRef}
-      // onContentClick={()=>{onContentClick();}}
+      onContentClick={() => {
+        onContentClick();
+      }}
       title={<span>{props.nodeName || '发起人'}</span>}>
       <div>
-        {props.stratSku || '设计主体'}
+        {props.data && props.data.name || '请选择'}
       </div>
-      {/* <Icon type="icon-arrow-right" /> */}
+      <Icon type="icon-arrow-right" />
     </NodeWrap>);
 }
 

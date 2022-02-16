@@ -21,7 +21,7 @@ import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const {Column} = Table;
 
-const PartsList = ({spuId, type = 2}) => {
+const PartsList = ({spuId, type = 1}) => {
 
   const refAdd = useRef();
   const formRef = useRef();

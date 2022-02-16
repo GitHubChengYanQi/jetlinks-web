@@ -73,7 +73,7 @@ const Import = ({
             return message.error('导入失败!');
           }
           message.success('导入成功!');
-          importErrData(response.data);
+          response.data && response.data.length > 0 && importErrData(response.data);
         });
       })
       .then(() => {

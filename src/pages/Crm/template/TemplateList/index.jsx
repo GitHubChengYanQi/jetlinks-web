@@ -78,14 +78,14 @@ const TemplateList = () => {
         <Column title="合同分类" dataIndex="classResult" render={(value)=>{
           return <>{value && value.name}</>;
         }} />
-        {/*<Column title="合同类型" width={120} dataIndex="module" render={(value) => {*/}
-        {/*  switch (value) {*/}
-        {/*    case 'procurement':*/}
-        {/*      return <>采购</>;*/}
-        {/*    default:*/}
-        {/*      break;*/}
-        {/*  }*/}
-        {/*}} />*/}
+        {/* <Column title="合同类型" width={120} dataIndex="module" render={(value) => { */}
+        {/*   switch (value) { */}
+        {/*     case 'procurement': */}
+        {/*       return <>采购</>; */}
+        {/*     default: */}
+        {/*       break; */}
+        {/*  } */}
+        {/* }} /> */}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>

@@ -1,7 +1,4 @@
 import ReSeachLayout from '@/pages/ReSearch';
-import {ResearchBomRouter} from '@/pages/ReSearch/ResearchBom/route';
-import {SopRouter} from '@/pages/ReSearch/sop/sopRouter';
-import {ShipSetpRouter} from '@/pages/ReSearch/shipSetp/shipSetpRouter';
 
 const ResearchRouterConfig = [
   {

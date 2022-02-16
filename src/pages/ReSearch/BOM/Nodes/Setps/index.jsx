@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Form,
   FormItem,
@@ -9,81 +9,31 @@ import {
   Submit,
   FormButtonGroup,
 } from '@formily/antd';
-import {Radio, Select, Input} from '@formily/antd-components';
-import {Button, Divider, InputNumber} from 'antd';
+import {Radio} from '@formily/antd-components';
+import {Button, Input, InputNumber, Space, Tabs} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {SkuId} from '@/pages/Workflow/Process/processField';
-import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
+import Select from '@/components/Select';
+import {qualityCheckListSelect} from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import {shipSetpDetail, shipSetpListSelect} from '@/pages/ReSearch/shipSetp/shipSetpUrl';
+import {request} from '@/util/Request';
+import {ShipNote, Sop, Tool} from '@/pages/ReSearch/BOM/Nodes/Setps/components/SetpsField';
+import FileUpload from '@/components/FileUpload';
 
 const actions = createFormActions();
 
 
-const Setps = ({value, onClose, onChange, type, module}) => {
+const Setps = ({value, onClose, onChange}) => {
 
-  const types = () => {
-    switch (type) {
-      case 'quality':
-        return [
-          {label: '审批', value: 'audit'},
-          {label: '质检', value: 'quality'},
-        ];
-      case 'purchase':
-        return [
-          {label: '审批', value: 'audit'},
-          {label: '采购', value: 'purchase'},
-        ];
-      default:
-        return [
-          {label: '工序', value: 'setp',},
-          {label: '工艺', value: 'ship',},
-          {label: '审批', value: 'audit'},
-          {label: '质检', value: 'quality'},
-          {label: '采购', value: 'purchase'},
-          {label: '流程', value: 'audit_process',}
-        ];
-    }
-  };
-
-  const modules = () => {
-    switch (type) {
-      case 'quality':
-        switch (module) {
-          case 'inQuality':
-          case 'purchaseQuality':
-            return [
-              {label: '分派任务', value: 'quality_dispatch'},
-              {label: '执行任务', value: 'quality_perform'},
-              {label: '完成任务', value: 'quality_complete'},
-            ];
-          default:
-            return [];
-        }
-      case 'purchase':
-        switch (module) {
-          case 'purchaseAsk':
-            return [
-              {label: '采购申请完成', value: 'purchase_complete'},
-            ];
-          case 'purchasePlan':
-            return [];
-          case 'purchaseOrder':
-            return [];
-          default:
-            return [];
-        }
-      default:
-        return [];
-    }
-  };
+  const [equals, setEquals] = useState();
 
   return (
     <Form
-      labelCol={4}
+      labelCol={5}
       wrapperCol={12}
       actions={actions}
       effects={($, {setFieldState}) => {
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
-
           const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
             const field = item[i];
@@ -93,25 +43,38 @@ const Setps = ({value, onClose, onChange, type, module}) => {
           }
         });
 
-        FormEffectHooks.onFieldValueChange$('quality_action').subscribe(({value}) => {
-
-          setFieldState('actionRule', state => {
-            if (value === 'quality_dispatch') {
-              state.visible = true;
-            } else {
-              state.visible = false;
-            }
+        FormEffectHooks.onFieldValueChange$('equals').subscribe(({value}) => {
+          setEquals(value);
+          setFieldState('goodsList', state => {
+            state.visible = true;
+            state.value = [{}];
           });
-
         });
 
-      }}
-      defaultValue={{
-        type: value && value.type || 'audit',
-        auditRule: value && value.auditRule,
-        actionRule: value && value.auditRule,
-        quality_action: value && value.action,
-        purchase_action: value && value.action
+        FormEffectHooks.onFieldValueChange$('shipSetp').subscribe(async ({value}) => {
+          if (value){
+            const res = await request({
+              ...shipSetpDetail,
+              data: {
+                shipSetpId: value
+              }
+            });
+            console.log(res);
+            setFieldState('tool', state => {
+              state.value = res.binds;
+            });
+
+            setFieldState('sop', state => {
+              state.value = res.sopResult;
+              state.props.sopId = res.sopId;
+            });
+
+            setFieldState('shipNote', state => {
+              state.value = res.remark;
+            });
+          }
+        });
+
       }}
       onSubmit={(values) => {
         typeof onChange === 'function' && onChange(values);
@@ -122,182 +85,214 @@ const Setps = ({value, onClose, onChange, type, module}) => {
         label="类型"
         name="type"
         component={Radio.Group}
-        dataSource={types()} />
-      <VirtualField name="setp">
+        dataSource={[
+          {label: '工序', value: 'setp',},
+          {label: '工艺路线', value: 'ship',},
+        ]} />
+      <VirtualField name="setp" visible={false}>
         <FormItem
           wrapperCol={10}
           required
-          label="工序"
-          name="setpId"
-          component={Select}
+          label="投入与产出是否相同"
+          name="equals"
+          component={Radio.Group}
           dataSource={[
-            {label: '工序1', value: '1'},
-            {label: '工序2', value: '2'},
-            {label: '工序3', value: '3'},
-            {label: '工序4', value: '4'}
+            {label: '是', value: 1,},
+            {label: '否', value: 0,},
           ]}
         />
+
+        <FieldList
+          name="goodsList"
+          visible={false}
+          initialValue={[
+            {},
+          ]}
+        >
+
+          {({state, mutators}) => {
+            const onAdd = () => mutators.push();
+            return (
+              <Space direction="vertical">
+                <Space>
+                  <div style={{width: 200, paddingBottom: 16}}><span
+                    style={{color: 'red'}}>* </span>{equals ? '投入物料' : '产出物料'}</div>
+                  <div style={{width: 90, paddingBottom: 16}}>数量</div>
+                  <div style={{width: 200, paddingBottom: 16}}>自检方案</div>
+                  <div style={{width: 200, paddingBottom: 16}}>质检方案</div>
+                </Space>
+                {state.value.map((item, index) => {
+                  const onRemove = index => mutators.remove(index);
+                  return (
+                    <Space key={index} align="start">
+                      <div style={{width: 200}}>
+                        <FormItem
+                          name={`goodsList.${index}.skuId`}
+                          component={SelectSku}
+                          placeholder="选择物料"
+                          width="100%"
+                          rules={[{
+                            required: true,
+                            message: equals ? '请选择投入物料' : '请选择产出物料！'
+                          }]}
+                        />
+                      </div>
+                      <div style={{width: 90, paddingBottom: 16}}>
+                        <FormItem
+                          name={`goodsList.${index}.number`}
+                          component={InputNumber}
+                          placeholder="数量"
+                          rules={[{
+                            required: true,
+                            message: '请输入数量!'
+                          }]}
+                        />
+                      </div>
+                      <div style={{width: 200}}>
+                        <FormItem
+                          name={`goodsList.${index}.myQuality`}
+                          component={Select}
+                          placeholder="自己检查的方案"
+                          api={qualityCheckListSelect}
+                        />
+                      </div>
+
+                      <div style={{width: 200}}>
+                        <FormItem
+                          name={`goodsList.${index}.quality`}
+                          component={Select}
+                          placeholder="质量检查的方案"
+                          api={qualityCheckListSelect}
+                        />
+                      </div>
+
+                      <Button
+                        type="link"
+                        style={{float: 'right', padding: 0}}
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          onRemove(index);
+                        }}
+                        danger
+                      />
+                    </Space>
+                  );
+                })}
+                <Button
+                  type="dashed"
+                  icon={<PlusOutlined />}
+                  onClick={onAdd}>{equals ? '增加投入物料' : '增加产出物料'}</Button>
+              </Space>
+            );
+          }}
+        </FieldList>
+
+        <div style={{display: equals === undefined && 'none'}}>
+          <Tabs defaultActiveKey="2" type="card" style={{marginTop: 16}}>
+            <Tabs.TabPane tab="工序信息" key="1">
+              <FormItem
+                label="工序"
+                name="shipSetp"
+                component={Select}
+                api={shipSetpListSelect}
+                placeholder="工序"
+                rules={[{
+                  required: true,
+                  message: '请选择工序!'
+                }]}
+              />
+              <FormItem
+                label="工位"
+                name="productionStation"
+                component={Input}
+                placeholder="工位"
+                rules={[{
+                  required: true,
+                  message: '请选择工位!'
+                }]}
+              />
+              <FormItem
+                label="使用工具"
+                name="tool"
+                component={Tool}
+                placeholder="使用工具"
+              />
+              <FormItem
+                label="SOP作业指导"
+                name="sop"
+                component={Sop}
+                placeholder="SOP作业指导"
+              />
+              <FormItem
+                label="附件"
+                name="file"
+                component={FileUpload}
+                placeholder="附件"
+              />
+              <FormItem
+                label="工序备注"
+                name="shipNote"
+                component={ShipNote}
+                placeholder="工序备注"
+              />
+              <FormItem
+                name="note"
+                label="备注"
+                component={Input.TextArea}
+                placeholder="请输入生产过程的备注内容"
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab={equals ? '产出物料' : '投入物料'} key="2">
+              产出物料
+              产出物料
+              产出物料
+              产出物料
+            </Tabs.TabPane>
+          </Tabs>
+        </div>
+
+
+      </VirtualField>
+      <VirtualField name="ship" visible={false}>
         <FormItem
-          wrapperCol={10}
           required
-          label="工时"
-          name="length"
+          label="产出物料"
+          name="shipSkuId"
+          component={SelectSku}
+        />
+        <FormItem
+          required
+          label="工艺BOM"
+          name="bom"
+          disabled
           component={Input}
         />
-        <Divider orientation="left">投入物料：</Divider>
-        <FieldList
-          name="inGoodsList"
-        >
-          {({state, mutators}) => {
-            const onAdd = () => mutators.push();
-            return (
-              <div>
-                {state.value.map((item, index) => {
-                  const onRemove = index => mutators.remove(index);
-                  return (
-                    <div key={index}>
-
-                      <div style={{display: 'inline-block', width: '40%'}}>
-                        <FormItem
-                          label="物料"
-                          name={`inGoodsList.${index}.skuId`}
-                          component={SkuId}
-                          required
-                        />
-                      </div>
-                      <div style={{display: 'inline-block', width: '40%'}}>
-                        <FormItem
-                          name={`inGoodsList.${index}.num`}
-                          component={InputNumber}
-                          title="数量"
-                        />
-                      </div>
-                      <Button
-                        type="link"
-                        style={{float: 'right'}}
-                        icon={<DeleteOutlined />}
-                        onClick={() => {
-                          onRemove(index);
-                        }}
-                        danger
-                      />
-                    </div>
-                  );
-                })}
-                <Button
-                  type="dashed"
-                  icon={<PlusOutlined />}
-                  onClick={onAdd}>增加物料</Button>
-              </div>
-            );
-          }}
-        </FieldList>
-        <Divider orientation="left">产出：</Divider>
-        <FieldList
-          name="outGoodsList"
-        >
-          {({state, mutators}) => {
-            const onAdd = () => mutators.push();
-            return (
-              <div>
-                {state.value.map((item, index) => {
-                  const onRemove = index => mutators.remove(index);
-                  return (
-                    <div key={index}>
-
-                      <div style={{display: 'inline-block', width: '40%'}}>
-                        <FormItem
-                          label="物料"
-                          name={`outGoodsList.${index}.skuId`}
-                          component={SkuId}
-                          required
-                        />
-                      </div>
-
-                      <div style={{display: 'inline-block', width: '20%'}}>
-                        <FormItem
-                          name={`outGoodsList.${index}.num`}
-                          component={InputNumber}
-                          title="数量"
-                        />
-                      </div>
-
-                      <div style={{display: 'inline-block', width: '30%'}}>
-                        <FormItem
-                          name={`outGoodsList.${index}.qualityCheck`}
-                          component={Select}
-                          title="质检方案"
-                        />
-                      </div>
-
-                      <Button
-                        type="link"
-                        style={{float: 'right'}}
-                        icon={<DeleteOutlined />}
-                        onClick={() => {
-                          onRemove(index);
-                        }}
-                        danger
-                      />
-                    </div>
-                  );
-                })}
-                <Button
-                  type="dashed"
-                  icon={<PlusOutlined />}
-                  onClick={onAdd}>增加产出</Button>
-              </div>
-            );
-          }}
-        </FieldList>
-      </VirtualField>
-      <VirtualField name="ship">
         <FormItem
           required
-          label="工艺"
-          name="setpsId"
-          component={Select}
-          dataSource={[
-            {label: '工艺1', value: '1'},
-            {label: '工艺2', value: '2'},
-            {label: '工艺3', value: '3'},
-            {label: '工艺4', value: '4'}
-          ]}
-        />
-      </VirtualField>
-      <VirtualField name="audit">
-        <FormItem
-          required
-          name="auditRule"
-          component={Rule}
-        />
-      </VirtualField>
-      <VirtualField name="quality">
-        <FormItem
-          required
-          label="质检动作"
-          name="quality_action"
-          component={Select}
-          dataSource={modules()}
+          label="工艺路线"
+          name="shipRoute"
+          disabled
+          component={Input}
         />
         <FormItem
           required
-          visible={false}
-          label="设置规则"
-          name="actionRule"
-          component={Rule}
+          label="产出数量"
+          name="shipNumber"
+          component={InputNumber}
         />
-      </VirtualField>
-      <VirtualField name="purchase">
         <FormItem
           required
-          label="采购动作"
-          name="purchase_action"
-          component={Select}
-          dataSource={modules()}
+          label="附件"
+          name="shipFile"
+          component={InputNumber}
+        />
+        <FormItem
+          required
+          label="备注"
+          name="shipNote"
+          component={Input.TextArea}
         />
       </VirtualField>
-      <VirtualField name="audit_process">暂未开放</VirtualField>
 
       <div style={{marginTop: 16}}>
         <FormButtonGroup offset={8} sticky>
