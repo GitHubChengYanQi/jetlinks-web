@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {Button, Form, Input, Modal, Space} from 'antd';
 import Drawer from '@/components/Drawer';
 import EndNode from './Nodes/EndNode';
 import Render from './Nodes/Render';
@@ -7,30 +8,33 @@ import WFC from './OperatorContext';
 import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
-import UserTree from '@/pages/Workflow/Nodes/UserTree';
-import Originator from '@/pages/Workflow/Nodes/Originator';
-import {Modal} from 'antd';
-import Branchs from '@/pages/Workflow/Nodes/Branchs';
+import Select from '@/components/Select';
+import {partsDetail, partsListSelect} from '@/pages/Erp/parts/PartsUrl';
+import FileUpload from '@/components/FileUpload';
+import {request} from '@/util/Request';
+import AddProcess from '@/pages/ReSearch/BOM/components/AddProcess';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
-const WorkFlow = ({config: _config, value, onChange, type, module}) => {
+const WorkFlow = ({value, onChange, type, module}) => {
 
   const ref = useRef();
+
   const refStart = useRef();
-  const refBranch = useRef();
 
   const defaultConfig = {
     'pkId': 'start',
-    'nodeName': '设计主体',
+    'nodeName': '生产产品',
     'type': '0',
     'childNode': null,  // 下级步骤
     'conditionNodeList': [] // 分支
   };
 
   const [config, setConfig] = useState(value || defaultConfig);
-  console.log(config);
 
   const [currentNode, setCurrentNode] = useState();
+
+  const [startData, setStartData] = useState();
 
   function updateNode() {
     typeof onChange === 'function' && onChange({...config});
@@ -98,26 +102,15 @@ const WorkFlow = ({config: _config, value, onChange, type, module}) => {
       prev: pRef
     });
 
-    if (objRef.type === '0' || objRef.type === '2')
-      refStart.current.open(true);
-    else if (objRef.type === '3') {
-      switch (type) {
-        case 'purchase':
-          switch (module) {
-            case 'purchaseAsk':
-              refBranch.current.open(true);
-              break;
-            case 'purchasePlan':
-              break;
-            default:
-              break;
-          }
-          break;
-        default:
-          break;
-      }
-    } else
-      ref.current.open(true);
+    switch (objRef.type) {
+      case '1':
+      case '3':
+        ref.current.open(true);
+        break;
+      default:
+        break;
+    }
+
   }
 
   useEffect(() => {
@@ -130,37 +123,20 @@ const WorkFlow = ({config: _config, value, onChange, type, module}) => {
     <WFC.Provider value={{config, updateNode, onAddNode, onDeleteNode, onSelectNode}}>
       <section className={styles.dingflowDesign}>
         <ZoomLayout>
-          <Render config={config} onContentClick={() => {
-            console.log(1111);
-          }} />
-          {/*<EndNode />*/}
+          <Render
+            config={config}
+            data={currentNode}
+            onContentClick={() => {
+              refStart.current.open(false);
+            }} />
+          <EndNode />
         </ZoomLayout>
       </section>
       <Drawer title="步骤设置" ref={ref} width={800}>
         <Setps
           type={type}
           module={module}
-          value={currentNode && currentNode.current && {
-            type: currentNode.current.stepType,
-            auditRule: currentNode.current.auditRule && currentNode.current.auditRule.rules,
-            action: currentNode.current.auditRule && currentNode.current.auditRule.type,
-          }}
           onChange={(value) => {
-            switch (value.type) {
-              case 'audit':
-                currentNode.current.auditRule = {type: 'audit', rules: value.auditRule};
-                break;
-              case 'quality':
-                currentNode.current.auditRule = {type: value.quality_action, rules: value.actionRule};
-                break;
-              case 'purchase':
-                currentNode.current.auditRule = {type: value.purchase_action};
-                break;
-              default:
-                break;
-            }
-            currentNode.current.stepType = value.type;
-            currentNode.current.auditType = 'process';
             ref.current.close();
             updateNode();
           }}
@@ -169,38 +145,21 @@ const WorkFlow = ({config: _config, value, onChange, type, module}) => {
           }}
         />
       </Drawer>
-      <Drawer title="发起人设置" ref={refStart} width={800}>
-        <Originator
-          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.rules}
-          onChange={(value) => {
-            switch (currentNode.current.type) {
-              case '0':
-                currentNode.current.auditRule = {type: 'start', rules: value};
-                currentNode.current.stepType = 'start';
-                currentNode.current.auditType = 'start';
-                break;
-              case '2':
-                currentNode.current.auditRule = {type: 'send', rules: value};
-                currentNode.current.stepType = 'send';
-                currentNode.current.auditType = 'send';
-                break;
-              default:
-                break;
-            }
-            updateNode();
+
+      <Drawer title="生产产品" ref={refStart} width={800}>
+        <AddProcess
+          onClose={()=>{
             refStart.current.close();
-          }} />
-      </Drawer>
-      <Drawer title="条件设置" ref={refBranch} width={800}>
-        <Branchs
-          value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.rules}
+          }}
+          value={startData}
           onChange={(value) => {
-            currentNode.current.auditRule = {type: 'purchaseAsk', rules: value};
-            currentNode.current.stepType = 'branch';
-            currentNode.current.auditType = 'branch';
-            updateNode();
-            refBranch.current.close();
-          }} />
+            setStartData(value);
+            setCurrentNode({
+              name:  <SkuResultSkuJsons skuResult={value.skuResult} />,
+            });
+            refStart.current.close();
+          }}
+        />
       </Drawer>
     </WFC.Provider>
   );

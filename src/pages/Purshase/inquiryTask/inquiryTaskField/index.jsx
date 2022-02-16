@@ -27,7 +27,7 @@ export const SkuId = (props) => {
 };
 
 export const BrandResult = (props) => {
-  return (<>{props.value ? props.value.brandName : '任意品牌'}</>);
+  return (<>{props.value ? props.value.brandName : '无指定品牌'}</>);
 };
 
 export const Remark = (props) => {

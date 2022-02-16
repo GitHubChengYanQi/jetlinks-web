@@ -34,36 +34,69 @@ const StockTable = (props) => {
 
   const [filelist, setFilelist] = useState([]);
 
-  const importErrData = (errData) => {
-    const data = errData && errData.map((item, index) => {
+  const dataTable = (dataSource) => {
+    return <AntTable rowKey="key" dataSource={dataSource || []} pagination={false} scroll={{y: '50vh'}}>
+      <Table.Column title="错误行" dataIndex="line" />
+      <Table.Column title="分类" dataIndex="spuClass" />
+      <Table.Column title="编码" dataIndex="strand" />
+      <Table.Column title="产品" dataIndex="item" />
+      <Table.Column title="型号" dataIndex="spuName" />
+      <Table.Column title="库存数量" dataIndex="stockNumber" />
+      <Table.Column title="上级库位" dataIndex="supperPosition" />
+      <Table.Column title="库位" dataIndex="position" />
+      <Table.Column title="品牌" dataIndex="brand" />
+      <Table.Column title="问题原因" dataIndex="error" />
+    </AntTable>;
+  };
+
+  const importErrData = (data) => {
+    const errorDataSource = data && data.errorList && data.errorList.map((item, index) => {
       return {
         key: index,
         line: item.line,
-        sku: item.classItem,
-        class: item.spuClass,
-        unit: item.unit,
-        name: item.spuName,
-        coding: item.standard,
-        batch: item.isNotBatch,
-        attributes: item.attributes && item.attributes.map((item) => {
-          return item;
-        }).toString()
+        spuClass: item.spuClass,
+        strand: item.strand,
+        Item: item.Item,
+        SpuName: item.SpuName,
+        specifications: item.specifications,
+        stockNumber: item.stockNumber,
+        supperPosition: item.supperPosition,
+        position: item.position,
+        brand: item.brand,
+        error: item.error,
       };
     });
+
+    const successDataSource = data && data.successList && data.successList.map((item, index) => {
+      return {
+        key: index,
+        line: item.line,
+        spuClass: item.spuClass,
+        strand: item.strand,
+        Item: item.Item,
+        SpuName: item.SpuName,
+        specifications: item.specifications,
+        stockNumber: item.stockNumber,
+        supperPosition: item.supperPosition,
+        position: item.position,
+        brand: item.brand,
+        error: item.error,
+      };
+    });
+
     AntModal.error({
       width: 1200,
-      title: `异常数据 / ${data.length}`,
+      title: '导入数据',
       content: <div style={{padding: 8}}>
-        <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh'}}>
-          <Table.Column title="错误行" dataIndex="line" />
-          <Table.Column title="分类" dataIndex="class" />
-          <Table.Column title="产品" dataIndex="sku" />
-          <Table.Column title="型号" dataIndex="name" />
-          <Table.Column title="成品码" dataIndex="coding" />
-          <Table.Column title="单位" dataIndex="unit" />
-          <Table.Column title="是否批量" dataIndex="batch" />
-          <Table.Column title="参数配置" dataIndex="attributes" />
-        </AntTable>
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab={`异常数据 / ${errorDataSource ? errorDataSource.length : '0'}`} key="1">
+            {dataTable(errorDataSource)}
+          </Tabs.TabPane>
+          <Tabs.TabPane tab={`成功数据 / ${successDataSource ? successDataSource.length : '0'}`} key="2">
+            {dataTable(successDataSource)}
+          </Tabs.TabPane>
+        </Tabs>
+
       </div>
     });
   };
@@ -73,7 +106,7 @@ const StockTable = (props) => {
       <Space>
         <Upload
           fileList={filelist}
-          action={`${baseURI}Excel/importInstock`}
+          action={`${baseURI}Excel/importPositionBind`}
           headers={
             {Authorization: cookie.get('tianpeng-token')}
           }

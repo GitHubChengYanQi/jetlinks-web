@@ -255,7 +255,7 @@ const ToBuyPlanList = () => {
           return value && <SkuResultSkuJsons skuResult={value} />;
         }} />
         <Column title="品牌" dataIndex="brandResult" render={(value) => {
-          return value ? value.brandName : '任意品牌';
+          return value ? value.brandName : '无指定品牌';
         }} />
         <Column title="数量" dataIndex="applyNumber" />
         <Column title="申请人" dataIndex="user" render={(value) => {

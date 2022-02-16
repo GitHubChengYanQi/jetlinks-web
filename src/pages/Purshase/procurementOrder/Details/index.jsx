@@ -1,7 +1,7 @@
 import {useHistory, useParams} from 'ice';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {Badge, Button, Card, Descriptions, Empty, Modal, Space} from 'antd';
+import {Badge, Button, Card, Descriptions, Empty, Modal, Space, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -9,10 +9,15 @@ import {procurementOrderDetail} from '@/pages/Purshase/procurementOrder/procurem
 import ProcurementOrderDetailList
   from '@/pages/Purshase/procurementOrder/components/procurementOrderDetail/procurementOrderDetailList';
 import {contractList} from '@/pages/Crm/contract/ContractUrl';
+import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 
 const Detail = () => {
 
   const params = useParams();
+
+  const contactRef = useRef();
+
+  const addContract = useRef();
 
   const history = useHistory();
 
@@ -29,17 +34,25 @@ const Detail = () => {
   const gridStyle = {
     width: '100%',
     textAlign: 'center',
-    cursor:'pointer',
+    cursor: 'pointer',
   };
 
-  const {run} = useRequest(contractList, {
+  const {loading: contractsLoading, data: contractsData, run} = useRequest(contractList, {
     manual: true,
-    onSuccess: (res) => {
-      if (res && res.length > 0) {
-        setContracts(res);
-      }
-    }
   });
+
+  console.log(contractsData);
+
+  useEffect(() => {
+    if (data) {
+      run({
+        data: {
+          source: '采购单',
+          sourceId: data.procurementOrderId
+        }
+      });
+    }
+  }, [data]);
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -67,14 +80,21 @@ const Detail = () => {
   return (
     <div className={styles.detail} style={{overflowX: 'hidden'}}>
       <Card title={<Breadcrumb />} extra={<Space>
-        <Button onClick={() => {
-          run({
-            data: {
-              source: '采购单',
-              sourceId: data.procurementOrderId
-            }
-          });
-        }}>查看合同</Button>
+        {contractsLoading ?
+          <Spin />
+          :
+          <Button
+            onClick={() => {
+              if (contractsData && contractsData.length > 0) {
+                setContracts(contractsData);
+              } else {
+                contactRef.current.open(false);
+              }
+            }}>
+            {contractsData && contractsData.length > 0
+              ?
+              '查看合同' : '创建合同'}
+          </Button>}
         <Button onClick={() => {
           history.push('/purchase/procurementOrder');
         }}>返回</Button>
@@ -98,12 +118,12 @@ const Detail = () => {
       </div>
 
       <Modal
-        title={<div style={{textAlign:'center'}}>选择合同</div>}
+        title={<div style={{textAlign: 'center'}}>选择合同</div>}
         visible={contracts}
         footer={null}
         closable={false}
         centered
-        onCancel={()=>setContracts(false)}
+        onCancel={() => setContracts(false)}
       >
         <Card>
           {
@@ -111,7 +131,7 @@ const Detail = () => {
               return <Card.Grid
                 key={index}
                 style={gridStyle}
-                onClick={()=>{
+                onClick={() => {
                   history.push(`/CRM/contract/${item.contractId}`);
                 }}
               >
@@ -121,6 +141,33 @@ const Detail = () => {
           }
         </Card>
       </Modal>
+
+
+      <Modal
+        headTitle="创建采购单"
+        width={1000}
+        supplyB
+        component={AddContractEdit}
+        enterpriseA
+        ref={contactRef}
+        compoentRef={addContract}
+        footer={<Button type="primary" onClick={() => {
+          addContract.current.submit();
+        }}>保存</Button>}
+        response={(res) => {
+          if (res.contractId){
+            run({
+              data: {
+                contractId: res.contractId
+              }
+            });
+          }
+        }}
+        onSuccess={() => {
+          contactRef.current.close();
+        }}
+      />
+
     </div>
   );
 };

@@ -5,26 +5,20 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, Input, message, Popover, Row, Space} from 'antd';
-import Form from '@/components/Form';
-import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
-import * as SysField from '../purchaseAskField';
+import React, {useImperativeHandle, useRef} from 'react';
+import {Avatar, Button, Card,  message, Popover, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
-  createAsyncFormActions,
-  createFormActions,
   FormEffectHooks,
   FormPath,
   InternalFieldList as FieldList
 } from '@formily/antd';
 import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {Codings, LisingNote} from '../purchaseAskField';
-import {request, useRequest} from '@/util/Request';
-import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {createActions} from 'react-eva';
-import {useBoolean, useSetState} from 'ahooks';
+import Form from '@/components/Form';
+import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
+import * as SysField from '../purchaseAskField';
+import {request} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
@@ -42,20 +36,6 @@ const PurchaseAskEdit = ({...props}, ref) => {
   useImperativeHandle(ref, () => ({
     formRef,
   }));
-
-  const {loading, data} = useRequest(codingRulesList, {
-    defaultParams: {
-      data: {
-        module: 5,
-        state: 1
-      }
-    }
-  });
-
-  if (loading) {
-    return (<ProSkeleton type="descriptions" />);
-  }
-
   return (
     <div
       style={{padding: 16, width: 1700, overflow: 'auto'}}
@@ -123,7 +103,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
       >
         <ProCard title="基础信息" className="h2Card" headerBordered>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="编号" name="coding" component={SysField.Codings} module={5} codingId={data} required />
+            <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="备注" name="note" component={SysField.Note} />

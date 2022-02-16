@@ -35,3 +35,9 @@ export const shipSetpList = {
   rowKey:'shipSetpId'
 };
 
+export const shipSetpListSelect = {
+  url: '/shipSetp/listSelect',
+  method: 'POST',
+  rowKey:'shipSetpId'
+};
+

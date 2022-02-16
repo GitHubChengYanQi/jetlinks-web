@@ -60,7 +60,7 @@ const SelectSku = ({
         ...params
       }
     });
-  }, [params, value, ids]);
+  }, [params, value, ids && ids.length]);
 
 
   const options = !loading ? data && data.map((items) => {
@@ -87,7 +87,7 @@ const SelectSku = ({
         }} />
       <Select
         style={{width: 200}}
-        placeholder={spu ? '名称/型号' : '名称/型号/成品码'}
+        placeholder={spu ? '名称/型号' : '名称/型号/物料编码'}
         showSearch
         allowClear
         onClear={() => {

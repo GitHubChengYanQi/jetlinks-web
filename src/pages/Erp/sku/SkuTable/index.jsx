@@ -148,7 +148,7 @@ const SkuTable = (props) => {
         {...other}
       >
 
-        <Column title="物料编码" key={3} dataIndex="standard" render={(value, record) => {
+        <Column title="物料编码" key={1} dataIndex="standard" render={(value, record) => {
           return (
             <>
               <Code source="sku" id={record.skuId} />
@@ -161,7 +161,7 @@ const SkuTable = (props) => {
           );
         }} />
 
-        <Column title="名称 / 型号" key={1} dataIndex="spuId" render={(value, record) => {
+        <Column title="名称 / 型号" key={2} dataIndex="spuId" render={(value, record) => {
           if (record.spuResult)
             return (
               <>
@@ -176,7 +176,7 @@ const SkuTable = (props) => {
             );
         }} sorter />
 
-        <Column title="名称" key={1} dataIndex="spuId" render={(value, record) => {
+        <Column title="名称" key={3} dataIndex="spuId" hidden render={(value, record) => {
           return (
             <>
               {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
@@ -184,7 +184,7 @@ const SkuTable = (props) => {
           );
         }} sorter />
 
-        <Column title="型号" key={1} dataIndex="spuId" render={(value, record) => {
+        <Column title="型号" key={4} dataIndex="spuId" hidden render={(value, record) => {
           return (
             <>
               {record.spuResult && record.spuResult.name}
@@ -192,7 +192,7 @@ const SkuTable = (props) => {
           );
         }} sorter />
 
-        <Column title="物料描述" key={2} render={(value, record) => {
+        <Column title="物料描述" key={5} render={(value, record) => {
           return (
             <>
               {
@@ -213,10 +213,10 @@ const SkuTable = (props) => {
           );
         }} />
 
-        <Column title="规格" key={4} dataIndex="specifications" />
+        <Column title="规格" key={6} dataIndex="specifications" />
 
         <Column
-          key={5}
+          key={7}
           title="添加人 / 时间"
           sorter
           width={250}
@@ -230,7 +230,7 @@ const SkuTable = (props) => {
 
         <Column />
 
-        <Column title="操作" key={6} dataIndex="isBan" width={100} render={(value, record) => {
+        <Column title="操作" key={8} dataIndex="isBan" width={100} render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {

@@ -8,10 +8,10 @@ function NodeWrap(props) {
   return (
     <div>
       <div className={styles.nodeWrap}>
-        <div className={'node-wrap-box '+ (props.type === NodeTypes.START ? 'start-node' : '')} >
-          {props.type === 0 && <div className="title" style={props.titleStyle}>
+        <div className={'node-wrap-box ' + (props.type === NodeTypes.START ? 'start-node' : '')}>
+          <div className="title" style={props.titleStyle}>
             {props.title}
-          </div>}
+          </div>
           <div className="content" onClick={props.onContentClick}>
             {props.children}
           </div>
@@ -21,4 +21,5 @@ function NodeWrap(props) {
     </div>
   );
 }
+
 export default NodeWrap;

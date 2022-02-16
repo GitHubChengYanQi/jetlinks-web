@@ -129,7 +129,7 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
       <Table.Column title="品牌" dataIndex="brandResult" render={(value) => {
-        return <>{value ? value.brandName : '任意品牌'}</>;
+        return <>{value ? value.brandName : '无指定品牌'}</>;
       }} />
       <Table.Column title="数量" dataIndex="total" />
       <Table.Column title="状态" dataIndex="status" width={100} align="center" render={(value) => {
@@ -141,7 +141,6 @@ const CreatePurchaseOrder = ({data, palnId, onChange}) => {
     <Modal
       width={1100}
       visible={visible}
-      closable={closable}
       destroyOnClose
       keyboard={false}
       onCancel={() => {
