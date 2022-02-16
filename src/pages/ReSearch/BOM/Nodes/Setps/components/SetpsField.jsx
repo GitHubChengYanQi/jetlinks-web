@@ -48,7 +48,7 @@ export const SkuShow = (props) => {
 
   const skuIds = [];
 
-  if (value.length > 0) {
+  if (value && value.length > 0) {
     value.map((item) => {
       if (item && item.skuId) {
         skuIds.push(item.skuId);
@@ -73,7 +73,7 @@ export const SkuShow = (props) => {
     return <Spin />;
   }
 
-  if (!data) {
+  if (!value || !data) {
     return <Empty />;
   }
 
@@ -81,7 +81,7 @@ export const SkuShow = (props) => {
     bordered
     dataSource={data}
     renderItem={(item) => {
-      const skus = value.filter((items) => {
+      const skus = value && value.filter((items) => {
         return items && (items.skuId === item.skuId);
       });
       let number = 0;
