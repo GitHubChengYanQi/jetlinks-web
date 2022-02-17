@@ -24,22 +24,31 @@ import {productionStationListSelect} from '@/pages/BaseSystem/productionStation/
 const actions = createFormActions();
 
 
-const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
+const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}) => {
 
-  const [equals, setEquals] = useState();
+  const [equals, setEquals] = useState(defaultValue && defaultValue.equals);
 
   const [displaySkuIds, setDisplaySkuIds] = useState([]);
 
-  const skuIds = bomSkuIds && bomSkuIds.filter((item) => {
-    if (displaySkuIds.includes(item.skuId)) {
-      return false;
-    }
-    if (equals) {
-      return true;
-    } else {
-      return item.next === true;
-    }
-  });
+  const skuIds = (index) => {
+    return bomSkuIds && bomSkuIds.filter((item) => {
+      const skuIds = [];
+      displaySkuIds.map((sku) => {
+        if (index !== sku.index) {
+          skuIds.push(sku.skuId);
+        }
+        return null;
+      });
+      if (skuIds.includes(item.skuId)) {
+        return false;
+      }
+      if (equals) {
+        return true;
+      } else {
+        return item.next === true && item.display !== true;
+      }
+    });
+  };
 
   useEffect(() => {
     defaultValue = null;
@@ -74,10 +83,13 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           });
         });
 
-        FormEffectHooks.onFieldValueChange$('setpSetDetailParam').subscribe(({value}) => {
+        FormEffectHooks.onFieldValueChange$('setpSetDetailParam').subscribe(({value, name}) => {
           if (value) {
-            setDisplaySkuIds(value.map((item) => {
-              return item && item.skuId;
+            setDisplaySkuIds(value.map((item, index) => {
+              return {
+                skuId: item && item.skuId,
+                index,
+              };
             }));
           }
           setFieldState('skuShow', state => {
@@ -110,6 +122,18 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
 
       }}
       onSubmit={(values) => {
+        // if (!equals){
+        //   const array = bomSkuIds && bomSkuIds.map((item) => {
+        //     if (displaySkuIds.includes(item.skuId)) {
+        //       return {
+        //         ...item,
+        //         display: true,
+        //       };
+        //     }
+        //     return item;
+        //   });
+        //   setBomSkuIds(array);
+        // }
         typeof onChange === 'function' && onChange(values);
       }}
     >
@@ -166,7 +190,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
                           component={SelectSku}
                           placeholder="选择物料"
                           width="100%"
-                          ids={skuIds.map((item) => {
+                          ids={skuIds(index).map((item) => {
                             return item.skuId;
                           })}
                           rules={[{

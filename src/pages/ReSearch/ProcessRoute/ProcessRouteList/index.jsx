@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Switch, Table as AntTable} from 'antd';
 import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
@@ -56,7 +56,9 @@ const ProcessRouteList = () => {
         <Column title="工艺路线名称" dataIndex="processRoteName" />
         <Column title="关联工艺物料清单" dataIndex="partsId" />
         <Column title="版本号" dataIndex="version" />
-        <Column title="状态" dataIndex="status" />
+        <Column title="状态" dataIndex="status" render={(value)=>{
+          return <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={value} />;
+        }} />
         <Column />
         <Column title="操作" align="right" dataIndex="processRouteId" render={(value, record) => {
           return (

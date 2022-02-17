@@ -46,11 +46,11 @@ const AddProcess = ({value, onChange,onClose}) => {
       }}
     >
 
-      <Form.Item name="coding" label="路线编号" rules={[{required: true, message: '请输入路线编号！'}]}>
+      <Form.Item name="processRouteCoding" label="路线编号" rules={[{required: true, message: '请输入路线编号！'}]}>
         <Input />
       </Form.Item>
 
-      <Form.Item name="name" label="路线名称" rules={[{required: true, message: '请输入路线名称！'}]}>
+      <Form.Item name="processRoteName" label="路线名称" rules={[{required: true, message: '请输入路线名称！'}]}>
         <Input />
       </Form.Item>
 

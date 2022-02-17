@@ -26,7 +26,6 @@ const ToBuyPlanList = () => {
         brandId:item.brandId,
       };
     });
-    console.log(value);
 
     const oneSkus = [];
     let sname = [];
