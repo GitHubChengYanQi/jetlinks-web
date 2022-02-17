@@ -134,7 +134,7 @@ export const Legal = (props) => {
 };
 
 export const Money = (props) => {
-  return (<Space><InputNumber min={0} style={{width:200}} {...props} />万元</Space>);
+  return (<Space><InputNumber min={0} {...props} />万元</Space>);
 };
 export const Utscc = (props) => {
   return (<Input {...props} />);
