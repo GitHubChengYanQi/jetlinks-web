@@ -26,20 +26,25 @@ const actions = createFormActions();
 
 const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
 
-  const [equals, setEquals] = useState(defaultValue && defaultValue.equals);
+  const [equals, setEquals] = useState(defaultValue && defaultValue.productionType);
+
+  const [type, setType] = useState();
 
   const [displaySkuIds, setDisplaySkuIds] = useState([]);
 
   const skuIds = (index) => {
+    if (type === 'ship') {
+      return bomSkuIds;
+    }
     return bomSkuIds && bomSkuIds.filter((item) => {
-      const skuIds = [];
+      const ids = [];
       displaySkuIds.map((sku) => {
         if (index !== sku.index) {
-          skuIds.push(sku.skuId);
+          ids.push(sku.skuId);
         }
         return null;
       });
-      if (skuIds.includes(item.skuId)) {
+      if (ids.includes(item.skuId)) {
         return false;
       }
       if (equals) {
@@ -60,9 +65,10 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
       wrapperCol={12}
       actions={actions}
       defaultValue={defaultValue}
-      effects={($, {setFieldState}) => {
+      effects={({setFieldState}) => {
 
         FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
+          setType(value);
           const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
           for (let i = 0; i < item.length; i++) {
             const field = item[i];
@@ -72,7 +78,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           }
         });
 
-        FormEffectHooks.onFieldValueChange$('equals').subscribe(({value}) => {
+        FormEffectHooks.onFieldValueChange$('productionType').subscribe(({value}) => {
           setEquals(value);
           setFieldState('setpSetDetails', state => {
             state.visible = true;
@@ -97,7 +103,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           });
         });
 
-        FormEffectHooks.onFieldValueChange$('shipSetp').subscribe(async ({value}) => {
+        FormEffectHooks.onFieldValueChange$('shipSetpId').subscribe(async ({value}) => {
           if (value) {
             const res = await request({
               ...shipSetpDetail,
@@ -151,7 +157,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           wrapperCol={10}
           required
           label="投入与产出是否相同"
-          name="equals"
+          name="productionType"
           component={Radio.Group}
           dataSource={[
             {label: '是', value: 1,},
@@ -201,7 +207,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
                       </div>
                       <div style={{width: 90, paddingBottom: 16}}>
                         <FormItem
-                          name={`setpSetDetails.${index}.number`}
+                          name={`setpSetDetails.${index}.num`}
                           component={InputNumber}
                           placeholder="数量"
                           rules={[{
@@ -212,7 +218,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
                       </div>
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`setpSetDetails.${index}.myQuality`}
+                          name={`setpSetDetails.${index}.MyQualityId`}
                           component={Select}
                           placeholder="自己检查的方案"
                           api={qualityCheckListSelect}
@@ -221,7 +227,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
 
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`setpSetDetails.${index}.quality`}
+                          name={`setpSetDetails.${index}.qualityId`}
                           component={Select}
                           placeholder="质量检查的方案"
                           api={qualityCheckListSelect}
@@ -255,7 +261,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
             <Tabs.TabPane tab="工序信息" key="1" forceRender>
               <FormItem
                 label="工序"
-                name="shipSetp"
+                name="shipSetpId"
                 component={Select}
                 api={shipSetpListSelect}
                 placeholder="工序"
@@ -324,6 +330,9 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           required
           label="产出物料"
           name="shipSkuId"
+          ids={skuIds().map((item) => {
+            return item.skuId;
+          })}
           component={SelectSku}
         />
         <FormItem

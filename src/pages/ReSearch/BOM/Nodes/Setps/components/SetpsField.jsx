@@ -89,7 +89,7 @@ export const SkuShow = (props) => {
       });
       let number = 0;
       if (sku.length > 0) {
-        number = sku[0].number;
+        number = sku[0].num;
       }
       return <List.Item>
         <Space direction="vertical">

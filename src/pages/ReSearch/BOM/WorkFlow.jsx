@@ -10,6 +10,7 @@ import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
 import AddProcess from '@/pages/ReSearch/BOM/components/AddProcess';
+import {request} from '@/util/Service';
 
 
 const WorkFlow = ({value, onChange, type, module}) => {
@@ -18,7 +19,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   const refStart = useRef();
 
-  const [bomSkuIds, setBomSkuIds] = useSetState({skus:[]});
+  const [bomSkuIds, setBomSkuIds] = useSetState({skus: []});
 
   const getParts = (data, skus) => {
     if (!Array.isArray(data)) {
@@ -33,7 +34,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
           return {
             skuId: item.skuId,
             skuResult: item.skuResult,
-            number:item.number
+            number: item.number
           };
         }),
       });
@@ -54,7 +55,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
         return {
           skuId: item.skuId,
           skuResult: item.skuResult,
-          number:item.number
+          number: item.number
         };
       }),
     });
@@ -158,9 +159,24 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   }
 
+  const partsIdBom = async (partId) => {
+    const res = await request({
+      url: '/parts/getBOM',
+      method: 'GET',
+      params: {
+        partId,
+        type: 2,
+      }
+    });
+    getBom(res.data);
+  };
+
   useEffect(() => {
     if (value) {
       setConfig({...value});
+      if (value.processRoute && value.processRoute.partsId) {
+        partsIdBom(value.processRoute.partsId);
+      }
     }
   }, [value]);
 
@@ -179,8 +195,8 @@ const WorkFlow = ({value, onChange, type, module}) => {
           bomSkuIds={bomSkuIds.skus}
           type={type}
           module={module}
-          setBomSkuIds={(value)=>{
-            setBomSkuIds({skus:value});
+          setBomSkuIds={(value) => {
+            setBomSkuIds({skus: value});
           }}
           value={currentNode.current && currentNode.current.setpSet}
           onChange={(value) => {
