@@ -51,11 +51,20 @@ function ApproverNode(props) {
     return <Space direction="vertical">
       <strong>{type}</strong>
       {
-        data.skuShow && data.skuShow.map((item,index) => {
-          return <div key={index} style={{borderBottom:'solid 1px #eee'}}>
-            <SkuResultSkuJsons skuResult={item} />
-          </div>;
-        })
+        data.skuShow
+          ?
+          data.skuShow && data.skuShow.map((item, index) => {
+            return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
+              <SkuResultSkuJsons skuResult={item} />
+            </div>;
+          })
+          :
+          data.setpSetDetails && data.setpSetDetails.map((item, index) => {
+            return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
+              <SkuResultSkuJsons skuResult={item.skuResult} />
+            </div>;
+          })
+
       }
     </Space>;
   };
