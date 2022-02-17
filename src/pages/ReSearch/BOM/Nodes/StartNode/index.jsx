@@ -22,7 +22,7 @@ function StartNode(props) {
       }}
       title={<span>{props.nodeName || '发起人'}</span>}>
       <div>
-        {props.processRouteParam && props.processRouteParam.skuResult && <SkuResultSkuJsons skuResult={props.processRouteParam.skuResult} /> || '请选择'}
+        {props.processRoute && props.processRoute.skuResult && <SkuResultSkuJsons skuResult={props.processRoute.skuResult} /> || '请选择'}
       </div>
       <Icon type="icon-arrow-right" />
     </NodeWrap>);

@@ -121,7 +121,6 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   // 删除节点
   function onDeleteNode(pRef, objRef, type, index) {
-    console.log(pRef);
     Modal.confirm({
       centered: true,
       title: '是否删除节点?',

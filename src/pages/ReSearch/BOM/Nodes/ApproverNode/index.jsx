@@ -66,7 +66,7 @@ function ApproverNode(props) {
     title={TitleEl}
     objRef={props.objRef}>
     <div>
-      {content(props.setpSetParam)}
+      {content(props.setpSet)}
     </div>
     <Icon type="icon-arrow-right" />
 

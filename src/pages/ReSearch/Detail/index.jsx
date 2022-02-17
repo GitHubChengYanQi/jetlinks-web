@@ -19,6 +19,7 @@ const Detail = () => {
     manual: true,
     onSuccess: (res) => {
       console.log(res);
+      onChange(res);
     }
   });
 

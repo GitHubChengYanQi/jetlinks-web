@@ -2,7 +2,6 @@ import React from 'react';
 
 
 import StartNode from '../StartNode';
-// eslint-disable-next-line import/no-cycle
 import ConditionNode from '../ConditionNode';
 import ApproverNode from '../ApproverNode';
 
