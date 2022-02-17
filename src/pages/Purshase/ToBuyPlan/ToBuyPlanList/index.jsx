@@ -22,8 +22,8 @@ const ToBuyPlanList = () => {
 
     const skuBrand = value.map((item) => {
       return {
-        skuId:item.skuId,
-        brandId:item.brandId,
+        skuId: item.skuId,
+        brandId: item.brandId,
       };
     });
 
@@ -100,13 +100,17 @@ const ToBuyPlanList = () => {
       }
     });
 
-  const dataSource = data && data.map((items) => {
-    return {
-      ...items,
-      purchaseListingId: `mainKey:${items.children && items.children.map((items) => {
-        return items.purchaseListingId;
-      }).toString()}`,
-    };
+  const dataSource = [];
+  data && data.map((items) => {
+    if (items.applyNumber > 0 && items.skuResult) {
+      dataSource.push({
+        ...items,
+        purchaseListingId: `mainKey:${items.children && items.children.map((items) => {
+          return items.purchaseListingId;
+        }).toString()}`,
+      });
+    }
+    return null;
   });
 
   const [keys, setKeys] = useState([]);
