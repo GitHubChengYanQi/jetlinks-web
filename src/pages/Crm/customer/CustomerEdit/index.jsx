@@ -6,10 +6,10 @@
  */
 
 import React, {useRef,} from 'react';
-import {Button, Row, Col, Card, Affix} from 'antd';
+import {Button, Row, Col, Card, Affix, message} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {getSearchParams, useHistory} from 'ice';
-import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
@@ -18,10 +18,11 @@ import {
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
 
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {commonArea} from '@/pages/Crm/adress/AdressUrl';
+import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -29,6 +30,8 @@ const formActions = createFormActions();
 const span = 4;
 
 const CustomerEdit = ({onChange, ...props}) => {
+
+  const formActionsPublic = createFormActions();
 
   const ApiConfig = {
     view: customerDetail,
@@ -60,6 +63,7 @@ const CustomerEdit = ({onChange, ...props}) => {
       <Card title="创建供应商">
         <Form
           {...other}
+          formatResult={formActionsPublic}
           value={params.id || false}
           ref={formRef}
           defaultValue={{...paramData}}
@@ -70,9 +74,164 @@ const CustomerEdit = ({onChange, ...props}) => {
           wrapperCol={16}
           fieldKey="customerId"
           onSubmit={(value) => {
-            console.log(value);
+            // 供应商物料
+            const supplyParams = [];
+            let brands = true;
+            value.supplyParams.map((item) => {
+              if (Array.isArray(item.brandIds)) {
+                item.brandIds.map((brandItem) => {
+                  return supplyParams.push({
+                    skuId: item.skuId,
+                    brandId: brandItem
+                  });
+                });
+              } else {
+                brands = false;
+              }
+              return null;
+            });
+            if (!brands) {
+              message.warn('请选择物料的品牌！');
+              return false;
+            }
+
+            // 联系人
+            const contactsParams = [];
+            contactsParams.push({
+              contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
+              phoneParams: [value.phoneNumber],
+              deptName: value.deptName,
+              companyRole: value.companyRole,
+              contractNote: value.contractNote
+            });
+            value.contactsParams.map((item) => {
+              if (item.customerName) {
+                contactsParams.push({
+                  contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
+                  phoneParams: [value.phoneNumber],
+                  deptName: value.deptName,
+                  companyRole: value.companyRole,
+                  contractNote: value.contractNote
+                });
+              }
+              return null;
+            });
+
+            // 地址
+            let adressParams = [];
+            adressParams.push({
+              map: value.map,
+              adressNote: value.adressNote,
+              region: value.region,
+            });
+            adressParams = adressParams.concat(value.contactsParams.filter((item) => {
+              return item.region || item.map;
+            }));
+
+            // 开户信息
+            let invoiceParams = [];
+            invoiceParams.push({
+              bank: value.bank,
+              bankNo: value.bankNo,
+              bankAccount: value.bankAccount,
+              invoiceNote: value.invoiceNote,
+            });
+            invoiceParams = invoiceParams.concat(value.invoiceParams.filter((item) => {
+              return item.bankNo || item.bankAccount || item.invoiceNote || item.bank;
+            }));
+
+
+            console.log({...value, supplyParams, contactsParams, adressParams, invoiceParams});
             return false;
             return {...value, supply, ...paramData};
+          }}
+          effects={({setFieldState}) => {
+            FormEffectHooks.onFieldValueChange$('contactsName').subscribe(async ({value}) => {
+              let res;
+              if (value && value.id) {
+                res = await request({
+                  ...contactsDetail,
+                  data: {
+                    contactsId: value.id
+                  }
+                });
+              }
+              setFieldState('phoneNumber', state => {
+                if (res) {
+                  const phoneNumber = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].phoneNumber;
+                  state.value = phoneNumber;
+                  state.props.disabled = phoneNumber;
+                } else {
+                  state.value = null;
+                  state.props.disabled = false;
+                }
+              });
+              setFieldState('deptName', state => {
+                state.props.disabled = res;
+              });
+              setFieldState('companyRole', state => {
+                if (res) {
+                  state.value = res.companyRole;
+                  state.props.disabled = res.companyRole;
+                } else {
+                  state.value = null;
+                  state.props.disabled = false;
+                }
+              });
+              setFieldState('contractNote', state => {
+                state.props.disabled = res;
+              });
+            });
+
+            FormEffectHooks.onFieldValueChange$('contactsParams.*.contactsName').subscribe(async ({name, value}) => {
+              let res;
+              if (value && value.id) {
+                res = await request({
+                  ...contactsDetail,
+                  data: {
+                    contactsId: value.id
+                  }
+                });
+              }
+
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `contactsParams.${$1}.phoneNumber`;
+                }), state => {
+                  if (res) {
+                    const phoneNumber = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].phoneNumber;
+                    state.value = phoneNumber;
+                    state.props.disabled = phoneNumber;
+                  } else {
+                    state.value = null;
+                    state.props.disabled = false;
+                  }
+                });
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `contactsParams.${$1}.deptName`;
+                }), state => {
+                  state.props.disabled = res;
+                });
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `contactsParams.${$1}.companyRole`;
+                }), state => {
+                  if (res) {
+                    state.value = res.companyRole;
+                    state.props.disabled = res.companyRole;
+                  } else {
+                    state.value = null;
+                    state.props.disabled = false;
+                  }
+                });
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `contactsParams.${$1}.contractNote`;
+                }), state => {
+                  state.props.disabled = res;
+                });
+            });
           }}
           onSuccess={(res) => {
             if (res && typeof onChange === 'function') {
@@ -142,7 +301,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                 <FormItem
                   label="部门"
                   placeholder="请选择部门"
-                  name="contractDept"
+                  name="deptName"
                   component={SysField.CompanyRoleId}
                 />
               </Col>
@@ -195,7 +354,7 @@ const CustomerEdit = ({onChange, ...props}) => {
               <Col span={span}>
                 <FormItem
                   label="开户银行"
-                  name="k1"
+                  name="bank"
                   placeholder="请输入开户银行"
                   component={SysField.PhoneNumber}
                 />
@@ -204,7 +363,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                 <FormItem
                   label="开户行号"
                   placeholder="请输入开户行号"
-                  name="k2"
+                  name="bankNo"
                   component={SysField.PhoneNumber}
                 />
               </Col>
@@ -212,7 +371,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                 <FormItem
                   label="开户账号"
                   placeholder="请输入开户账号"
-                  name="k3"
+                  name="bankAccount"
                   component={SysField.PhoneNumber}
                 />
               </Col>
@@ -220,7 +379,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                 <FormItem
                   label="备注"
                   placeholder="请输入开户行备注"
-                  name="k4"
+                  name="invoiceNote"
                   component={SysField.Note}
                 />
               </Col>
@@ -239,14 +398,12 @@ const CustomerEdit = ({onChange, ...props}) => {
               </Col>
             </Row>
           </ProCard>
-
           <div title="添加物料">
             <FormItem
-              name="skus"
+              name="supplyParams"
               component={SysField.AddSku}
             />
           </div>
-
           <ProCard title="企业其他信息" className="h2Card" headerBordered bodyStyle={{padding: 16}}>
             <Row gutter={24}>
               <Col span={span}>
@@ -377,7 +534,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                             <FormItem
                               label="部门"
                               placeholder="请选择部门"
-                              name={`contactsParams.${index}.contractDept`}
+                              name={`contactsParams.${index}.deptName`}
                               component={SysField.CompanyRoleId}
                             />
                           </Col>
@@ -485,7 +642,7 @@ const CustomerEdit = ({onChange, ...props}) => {
             </FieldList>
           </div>
           <div title="其他开户信息">
-            <FieldList name="kaihu" initialValue={[{}]}>
+            <FieldList name="invoiceParams" initialValue={[{}]}>
               {({state, mutators}) => {
                 const onAdd = () => mutators.push();
                 return <ProCard
@@ -510,7 +667,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                           <Col span={span}>
                             <FormItem
                               label="开户银行"
-                              name={`kaihu.${index}.k1`}
+                              name={`invoiceParams.${index}.bank`}
                               placeholder="请输入开户银行"
                               component={SysField.PhoneNumber}
                             />
@@ -519,7 +676,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                             <FormItem
                               label="开户行号"
                               placeholder="请输入开户行号"
-                              name={`kaihu.${index}.k2`}
+                              name={`invoiceParams.${index}.bankNo`}
                               component={SysField.PhoneNumber}
                             />
                           </Col>
@@ -527,7 +684,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                             <FormItem
                               label="开户账号"
                               placeholder="请输入开户账号"
-                              name={`kaihu.${index}.k23`}
+                              name={`invoiceParams.${index}.bankAccount`}
                               component={SysField.PhoneNumber}
                             />
                           </Col>
@@ -535,7 +692,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                             <FormItem
                               label="备注"
                               placeholder="请输入开户行备注"
-                              name={`kaihu.${index}.k4`}
+                              name={`invoiceParams.${index}.invoiceNote`}
                               component={SysField.Note}
                             />
                           </Col>
@@ -558,13 +715,11 @@ const CustomerEdit = ({onChange, ...props}) => {
               }}
             </FieldList>
           </div>
-
-
         </Form>
       </Card>
 
       <Affix offsetBottom={16}>
-        <Button onClick={() => {
+        <Button type="primary" style={{marginLeft: 16}} onClick={() => {
           formRef.current.submit();
         }}>保存</Button>
       </Affix>

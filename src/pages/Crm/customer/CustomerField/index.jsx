@@ -5,24 +5,71 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal, Button} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal, Button, Tag} from 'antd';
 import moment from 'moment';
+import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
-import {commonArea, CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import Cascader from '@/components/Cascader';
 import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
 import AdressMap from '@/pages/Crm/customer/components/AdressMap';
 import FileUpload from '@/components/FileUpload';
 import AddSkuTable from '@/pages/Crm/customer/components/AddSkuTable';
 import CheckSku from '@/pages/Erp/sku/components/CheckSku';
-import ProCard from '@ant-design/pro-card';
 
 export const ContactsName = (props) => {
-  return (<Input  {...props} />);
+
+  const {value, onChange} = props;
+
+  const {loading, data, run} = useRequest({url: '/contacts/list?limit=5&page=1', method: 'POST'}, {
+    debounceInterval: 300,
+  });
+
+  const options = (!loading && data) ? data.map((value) => {
+    return {
+      title: value.contactsName,
+      value: value.contactsId,
+      label: <>
+        {value.contactsName}
+        <div style={{float: 'right'}}>
+          <Tag
+            color="blue"
+            style={{marginRight: 3}}
+          >
+            {value.phoneParams ? value.phoneParams[0] && value.phoneParams[0].phoneNumber : ''}
+          </Tag>
+        </div>
+      </>
+    };
+  }) : [];
+
+  return <>
+    <AutoComplete
+      dropdownMatchSelectWidth={100}
+      notFoundContent={loading && <Spin />}
+      options={options}
+      value={typeof value === 'object' && value.name}
+      onSelect={(value, option) => {
+        onChange({id: value, name: option.title});
+      }}
+    >
+      <Input
+        placeholder="请输入联系人名称"
+        onChange={(value) => {
+          onChange({name: value.target.value});
+          run({
+            data: {
+              contactsName: value.target.value,
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
 };
 
 export const Location = (props) => {

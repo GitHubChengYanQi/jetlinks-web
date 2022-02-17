@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {Submit} from '@formily/antd';
+import {createFormActions, Submit} from '@formily/antd';
 import {useSetState} from 'ahooks';
 import * as SysField from '@/pages/Erp/sku/skuField';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
@@ -14,6 +14,8 @@ import SkuDetail from '@/pages/Erp/sku/SkuDetail';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const CheckSku = ({onChange=()=>{}}) => {
 
@@ -66,6 +68,7 @@ const CheckSku = ({onChange=()=>{}}) => {
         title={<h2>添加物料</h2>}
         api={skuList}
         contentHeight
+        formActions={formActionsPublic}
         SearchButton={<Space>
           <Submit><SearchOutlined />查询</Submit>
           <Button onClick={() => {
