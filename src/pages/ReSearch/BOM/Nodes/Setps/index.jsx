@@ -74,16 +74,16 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}
 
         FormEffectHooks.onFieldValueChange$('equals').subscribe(({value}) => {
           setEquals(value);
-          setFieldState('setpSetDetailParam', state => {
+          setFieldState('setpSetDetail', state => {
             state.visible = true;
-            state.value = defaultValue ? defaultValue.setpSetDetailParam : [{}];
+            state.value = defaultValue ? defaultValue.setpSetDetail : [{}];
           });
           setFieldState('skuShow', state => {
             state.props.skus = '';
           });
         });
 
-        FormEffectHooks.onFieldValueChange$('setpSetDetailParam').subscribe(({value, name}) => {
+        FormEffectHooks.onFieldValueChange$('setpSetDetail').subscribe(({value, name}) => {
           if (value) {
             setDisplaySkuIds(value.map((item, index) => {
               return {
@@ -160,7 +160,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}
         />
 
         <FieldList
-          name="setpSetDetailParam"
+          name="setpSetDetail"
           visible={false}
           initialValue={[
             {},
@@ -186,7 +186,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}
                     <Space key={index} align="start">
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`setpSetDetailParam.${index}.skuId`}
+                          name={`setpSetDetail.${index}.skuId`}
                           component={SelectSku}
                           placeholder="选择物料"
                           width="100%"
@@ -201,7 +201,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}
                       </div>
                       <div style={{width: 90, paddingBottom: 16}}>
                         <FormItem
-                          name={`setpSetDetailParam.${index}.number`}
+                          name={`setpSetDetail.${index}.number`}
                           component={InputNumber}
                           placeholder="数量"
                           rules={[{
@@ -212,7 +212,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}
                       </div>
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`setpSetDetailParam.${index}.myQuality`}
+                          name={`setpSetDetail.${index}.myQuality`}
                           component={Select}
                           placeholder="自己检查的方案"
                           api={qualityCheckListSelect}
@@ -221,7 +221,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds, setBomSkuIds}
 
                       <div style={{width: 200}}>
                         <FormItem
-                          name={`setpSetDetailParam.${index}.quality`}
+                          name={`setpSetDetail.${index}.quality`}
                           component={Select}
                           placeholder="质量检查的方案"
                           api={qualityCheckListSelect}

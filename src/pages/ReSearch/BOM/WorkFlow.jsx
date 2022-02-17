@@ -183,9 +183,9 @@ const WorkFlow = ({value, onChange, type, module}) => {
           setBomSkuIds={(value)=>{
             setBomSkuIds({skus:value});
           }}
-          value={currentNode.current && currentNode.current.setpSetParam}
+          value={currentNode.current && currentNode.current.setpSet}
           onChange={(value) => {
-            currentNode.current.setpSetParam = value;
+            currentNode.current.setpSet = value;
             currentNode.current.stepType = value.type;
             ref.current.close();
             updateNode();
@@ -201,9 +201,9 @@ const WorkFlow = ({value, onChange, type, module}) => {
           onClose={() => {
             refStart.current.close();
           }}
-          value={currentNode.current && currentNode.current.processRouteParam}
+          value={currentNode.current && currentNode.current.processRoute}
           onChange={(value) => {
-            currentNode.current.processRouteParam = value;
+            currentNode.current.processRoute = value;
             currentNode.current.stepType = 'shipStart';
             refStart.current.close();
             if (value.data) {
