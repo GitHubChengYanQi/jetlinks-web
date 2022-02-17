@@ -6,7 +6,7 @@
  */
 
 import React, {useRef,} from 'react';
-import {Button, Row, Col, Card, Affix, message} from 'antd';
+import {Button, Row, Col, Card, Affix, message, Space, notification} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {getSearchParams, useHistory} from 'ice';
 import {createFormActions, FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
@@ -23,6 +23,7 @@ import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {commonArea} from '@/pages/Crm/adress/AdressUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
+import {BankAccount} from '@/pages/Crm/customer/CustomerField';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -99,19 +100,19 @@ const CustomerEdit = ({onChange, ...props}) => {
             const contactsParams = [];
             contactsParams.push({
               contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
-              phoneParams: [value.phoneNumber],
+              phoneParams: [{phoneNumber: value.phoneNumber}],
               deptName: value.deptName,
-              companyRole: value.companyRole,
+              companyRole: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
               contractNote: value.contractNote
             });
-            value.contactsParams.map((item) => {
-              if (item.customerName) {
+            value.contactsParams && value.contactsParams.map((item) => {
+              if (item && item.contactsName) {
                 contactsParams.push({
-                  contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
-                  phoneParams: [value.phoneNumber],
-                  deptName: value.deptName,
-                  companyRole: value.companyRole,
-                  contractNote: value.contractNote
+                  contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
+                  phoneParams: [{phoneNumber: value.phoneNumber}],
+                  deptName: item.deptName,
+                  companyRole: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
+                  contractNote: item.contractNote
                 });
               }
               return null;
@@ -124,26 +125,29 @@ const CustomerEdit = ({onChange, ...props}) => {
               adressNote: value.adressNote,
               region: value.region,
             });
-            adressParams = adressParams.concat(value.contactsParams.filter((item) => {
-              return item.region || item.map;
-            }));
+            if (value.adressParams) {
+              adressParams = adressParams.concat(value.adressParams.filter((item) => {
+                return item && (item.region || item.map);
+              }));
+            }
 
             // 开户信息
             let invoiceParams = [];
-            invoiceParams.push({
-              bank: value.bank,
-              bankNo: value.bankNo,
-              bankAccount: value.bankAccount,
-              invoiceNote: value.invoiceNote,
-            });
-            invoiceParams = invoiceParams.concat(value.invoiceParams.filter((item) => {
-              return item.bankNo || item.bankAccount || item.invoiceNote || item.bank;
-            }));
+            if (value.bankNo || value.bankAccount || value.invoiceNote || value.bank) {
+              invoiceParams.push({
+                bank: value.bank,
+                bankNo: value.bankNo,
+                bankAccount: value.bankAccount,
+                invoiceNote: value.invoiceNote,
+              });
+            }
+            if (value.invoiceParams) {
+              invoiceParams = invoiceParams.concat(value.invoiceParams.filter((item) => {
+                return item && (item.bankNo || item.bankAccount || item.invoiceNote || item.bank);
+              }));
+            }
 
-
-            console.log({...value, supplyParams, contactsParams, adressParams, invoiceParams});
-            return false;
-            return {...value, supply, ...paramData};
+            return {...value, supply, supplyParams, contactsParams, adressParams, invoiceParams};
           }}
           effects={({setFieldState}) => {
             FormEffectHooks.onFieldValueChange$('contactsName').subscribe(async ({value}) => {
@@ -237,7 +241,10 @@ const CustomerEdit = ({onChange, ...props}) => {
             if (res && typeof onChange === 'function') {
               onChange(res);
             }
-            props.onSuccess();
+            history.push('/purchase/supply');
+            notification.success({
+              message: '创建供应商成功！',
+            });
           }}
           formActions={formActions}
         >
@@ -372,7 +379,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                   label="开户账号"
                   placeholder="请输入开户账号"
                   name="bankAccount"
-                  component={SysField.PhoneNumber}
+                  component={SysField.BankAccount}
                 />
               </Col>
               <Col span={span}>
@@ -484,10 +491,7 @@ const CustomerEdit = ({onChange, ...props}) => {
           <div title="其他联系人">
             <FieldList
               name="contactsParams"
-              initialValue={[{
-                contactsName: wxUser && wxUser.openUserInfo && wxUser.openUserInfo.username,
-                companyRole: ''
-              },]}>
+            >
               {({state, mutators}) => {
                 const onAdd = () => mutators.push();
                 return <ProCard
@@ -535,7 +539,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                               label="部门"
                               placeholder="请选择部门"
                               name={`contactsParams.${index}.deptName`}
-                              component={SysField.CompanyRoleId}
+                              component={SysField.DeptName}
                             />
                           </Col>
                           <Col span={span}>
@@ -557,7 +561,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                           <Col span={1}>
                             <Button
                               type="link"
-                              style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                              style={{float: 'right'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
@@ -574,7 +578,7 @@ const CustomerEdit = ({onChange, ...props}) => {
             </FieldList>
           </div>
           <div title="其他地址">
-            <FieldList name="adressParams" initialValue={[{}]}>
+            <FieldList name="adressParams">
               {({state, mutators}) => {
                 const onAdd = () => mutators.push();
                 return <ProCard
@@ -625,7 +629,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                           <Col span={1}>
                             <Button
                               type="link"
-                              style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                              style={{float: 'right'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
@@ -642,7 +646,7 @@ const CustomerEdit = ({onChange, ...props}) => {
             </FieldList>
           </div>
           <div title="其他开户信息">
-            <FieldList name="invoiceParams" initialValue={[{}]}>
+            <FieldList name="invoiceParams">
               {({state, mutators}) => {
                 const onAdd = () => mutators.push();
                 return <ProCard
@@ -685,7 +689,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                               label="开户账号"
                               placeholder="请输入开户账号"
                               name={`invoiceParams.${index}.bankAccount`}
-                              component={SysField.PhoneNumber}
+                              component={SysField.BankAccount}
                             />
                           </Col>
                           <Col span={span}>
@@ -699,7 +703,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                           <Col span={1}>
                             <Button
                               type="link"
-                              style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                              style={{float: 'right'}}
                               icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
@@ -718,10 +722,18 @@ const CustomerEdit = ({onChange, ...props}) => {
         </Form>
       </Card>
 
-      <Affix offsetBottom={16}>
-        <Button type="primary" style={{marginLeft: 16}} onClick={() => {
-          formRef.current.submit();
-        }}>保存</Button>
+      <Affix offsetBottom={0}>
+        <div
+          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
+          <Space>
+            <Button type="primary" onClick={() => {
+              formRef.current.submit();
+            }}>保存</Button>
+            <Button onClick={() => {
+              history.push('/purchase/supply');
+            }}>取消</Button>
+          </Space>
+        </div>
       </Affix>
 
     </div>

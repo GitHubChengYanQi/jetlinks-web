@@ -20,6 +20,7 @@ import AdressMap from '@/pages/Crm/customer/components/AdressMap';
 import FileUpload from '@/components/FileUpload';
 import AddSkuTable from '@/pages/Crm/customer/components/AddSkuTable';
 import CheckSku from '@/pages/Erp/sku/components/CheckSku';
+import {companyRoleList} from '@/pages/Crm/companyRole/companyRoleUrl';
 
 export const ContactsName = (props) => {
 
@@ -72,6 +73,50 @@ export const ContactsName = (props) => {
   </>;
 };
 
+export const CompanyRoleId = (props) => {
+
+  const {value, onChange,placeholder} = props;
+
+  const {loading, data, run} = useRequest(companyRoleList, {
+    debounceInterval: 300,
+  });
+
+  const options = (!loading && data) ? data.map((value) => {
+    return {
+      label: value.position,
+      value: value.companyRoleId,
+    };
+  }) : [];
+
+  return <>
+    <AutoComplete
+      dropdownMatchSelectWidth={100}
+      notFoundContent={loading && <Spin />}
+      options={options}
+      value={typeof value === 'object' && value.name}
+      onSelect={(value, option) => {
+        onChange({id: value, name: option.label});
+      }}
+    >
+      <Input
+        placeholder={placeholder}
+        onChange={(value) => {
+          onChange({name: value.target.value});
+          run({
+            data: {
+              position: value.target.value,
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
+};
+
+export const DeptName = (props) => {
+  return <Input {...props} />;
+};
+
 export const Location = (props) => {
   return (<Input  {...props} />);
 };
@@ -108,10 +153,6 @@ export const Abbreviation = (props) => {
 };
 export const Region = (props) => {
   return (<Cascader {...props} />);
-};
-
-export const CompanyRoleId = (props) => {
-  return (<Select width="100%" api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
 
 export const AddSku = ({onChange}) => {
@@ -343,6 +384,11 @@ export const Emall = (props) => {
 
 export const Url = (props) => {
   return (<Input   {...props} />);
+};
+
+
+export const BankAccount = (props) => {
+  return (<InputNumber style={{width:200}}   {...props} />);
 };
 
 

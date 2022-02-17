@@ -17,7 +17,10 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const CheckSku = ({onChange=()=>{}}) => {
+const CheckSku = ({
+  onChange = () => {
+  }
+}) => {
 
   const [loading, setLoading] = useState();
 
@@ -56,6 +59,7 @@ const CheckSku = ({onChange=()=>{}}) => {
       <>
         <Button onClick={() => {
           onChange(skus.data);
+          setSkus({data: []});
         }}>选择</Button>
       </>
     );
@@ -100,7 +104,7 @@ const CheckSku = ({onChange=()=>{}}) => {
               setSkus({data: array});
             }
           },
-          onSelectAll: (selected, selectedRows,changeRows) => {
+          onSelectAll: (selected, selectedRows, changeRows) => {
             if (selected) {
               const ids = skus.data.map((item) => {
                 return item.skuId;
