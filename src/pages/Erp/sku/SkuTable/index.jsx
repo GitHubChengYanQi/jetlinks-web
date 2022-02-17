@@ -78,16 +78,16 @@ const SkuTable = (props) => {
     return (
       <>
         <FormItem
+          placeholder="编码"
+          name="standard"
+          component={SysField.SelectSkuName} />
+        <FormItem
           placeholder="名称"
           name="spuClassName"
           component={SysField.SelectSkuName} />
         <FormItem
           placeholder="型号"
           name="spuName"
-          component={SysField.SelectSkuName} />
-        <FormItem
-          placeholder="编码"
-          name="standard"
           component={SysField.SelectSkuName} />
         <FormItem
           style={{display: 'none'}}

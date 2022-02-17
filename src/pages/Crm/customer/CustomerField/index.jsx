@@ -5,8 +5,8 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space} from 'antd';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
+import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal} from 'antd';
 import moment from 'moment';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
@@ -17,6 +17,8 @@ import Cascader from '@/components/Cascader';
 import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
 import AdressMap from '@/pages/Crm/customer/components/AdressMap';
 import FileUpload from '@/components/FileUpload';
+import AddSkuTable from '@/pages/Crm/customer/components/AddSkuTable';
+import CheckSku from '@/pages/Erp/sku/components/CheckSku';
 
 export const ContactsName = (props) => {
   return (<Input  {...props} />);
@@ -57,11 +59,39 @@ export const Abbreviation = (props) => {
   return (<Input {...props} />);
 };
 export const Region = (props) => {
-  return (<Cascader api={commonArea} {...props} />);
+  return (<Cascader {...props} />);
 };
+
 export const CompanyRoleId = (props) => {
   return (<Select width="100%" api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
+
+export const AddSku = ({modalVisible, onChange,setModalVisible}) => {
+
+  const skuTableRef = useRef();
+
+  return (<>
+    <AddSkuTable
+      ref={skuTableRef}
+      onChange={onChange}
+    />
+
+    <Modal
+      visible={modalVisible}
+      width={800}
+      footer={[]}
+      onCancel={() => {
+        setModalVisible(false);
+      }}>
+      <CheckSku onChange={(value) => {
+        skuTableRef.current.addDataSource(value);
+        setModalVisible(false);
+      }} />
+    </Modal>
+  </>);
+};
+
+
 export const CustomerName = (props) => {
 
   const {value, onChange, supply, onSuccess} = props;
@@ -240,7 +270,7 @@ export const OriginId = (props) => {
 };
 
 export const UserName = (props) => {
-  return (<Select width='100%' api={apiUrl.UserIdSelect}  {...props} />);
+  return (<Select width="100%" api={apiUrl.UserIdSelect}  {...props} />);
 };
 
 export const Emall = (props) => {

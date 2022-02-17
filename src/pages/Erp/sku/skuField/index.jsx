@@ -119,7 +119,7 @@ export const Standard = (props) => {
 };
 
 export const SelectSpuClass = (props) => {
-  return (<Cascader api={spuClassificationTreeVrew} {...props} />);
+  return (<Cascader api={spuClassificationTreeVrew} width={200}  {...props} />);
 };
 
 export const SpuClass = (props) => {

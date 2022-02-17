@@ -1,5 +1,5 @@
 import React from 'react';
-import Cascader from '@/components/Cascader';
+import {useRequest} from '@/util/Request';
 
 const commonArea = {
   url: '/commonArea/treeView',
@@ -7,11 +7,7 @@ const commonArea = {
 };
 
 
-const CascaderAdress = (props) => {
-
-  return (
-    <Cascader api={commonArea} {...props} />
-  );
+const CascaderAdressOptions = () => {
 };
 
-export default CascaderAdress;
+export default CascaderAdressOptions;

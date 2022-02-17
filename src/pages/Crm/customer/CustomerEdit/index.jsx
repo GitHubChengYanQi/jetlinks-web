@@ -5,65 +5,53 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {forwardRef, useImperativeHandle, useRef,} from 'react';
-import {Button, Divider, Row, Col, Space, Card} from 'antd';
+import React, {forwardRef, useImperativeHandle, useRef, useState,} from 'react';
+import {Button, Row, Col, Card, Table, Affix} from 'antd';
 import ProCard from '@ant-design/pro-card';
-import {getSearchParams, useHistory, useParams, useSearchParams} from 'ice';
-import {MegaLayout} from '@formily/antd-components';
+import {getSearchParams, useHistory} from 'ice';
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
-import styled from 'styled-components';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {useBoolean} from 'ahooks';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {
   customerAdd,
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
-import Title from '@/components/Title';
 
-import style from './index.module.scss';
 import {useRequest} from '@/util/Request';
 import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
-import {Money, Name} from '@/pages/Crm/customer/CustomerField';
+import {commonArea} from '@/pages/Crm/adress/AdressUrl';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
 
-const ApiConfig = {
-  view: customerDetail,
-  add: customerAdd,
-  save: customerEdit
-};
-
 const span = 4;
 
-const CustomerEdit = ({onChange, ...props}, ref) => {
+const CustomerEdit = ({onChange, ...props}) => {
+
+  const ApiConfig = {
+    view: customerDetail,
+    add: customerAdd,
+    save: customerEdit
+  };
 
   const [userInfo] = store.useModel('user');
 
   const params = getSearchParams();
 
+  const [visible, setVisible] = useState();
+
+  const {data: adressData} = useRequest(commonArea);
+
   const {wxUser, supply, data: paramData, ...other} = props;
-
-  const city = wxUser && wxUser.openUserInfo && wxUser.openUserInfo.rawUserInfo && (JSON.parse(wxUser.openUserInfo.rawUserInfo).city || JSON.parse(wxUser.openUserInfo.rawUserInfo).province || JSON.parse(wxUser.openUserInfo.rawUserInfo).country);
-
-  const {loading, data} = useRequest({
-    url: '/commonArea/list',
-    method: 'POST',
-    data: {title: city}
-  }, {manual: !props.wxUser});
-
 
   const formRef = useRef();
 
   const history = useHistory();
 
-  useImperativeHandle(ref, () => ({
-    formRef,
-  }));
-
-  if (wxUser && loading) {
+  if (wxUser) {
     return null;
   }
 
@@ -81,10 +69,12 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
           NoButton={false}
           api={ApiConfig}
           labelCol={8}
-          labelAlign='right'
+          labelAlign="right"
           wrapperCol={16}
           fieldKey="customerId"
           onSubmit={(value) => {
+            console.log(value);
+            return false;
             return {...value, supply, ...paramData};
           }}
           onSuccess={(res) => {
@@ -182,6 +172,7 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
                   label="所属区域"
                   placeholder="请选择省市区地址"
                   name="region"
+                  options={adressData}
                   component={SysField.Region}
                 />
 
@@ -251,6 +242,25 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
               </Col>
             </Row>
           </ProCard>
+
+          <ProCard
+            style={{marginTop: 24}}
+            bodyStyle={{padding: 16}}
+            className="h2Card"
+            title="供应物料"
+            headerBordered
+            extra={<Button onClick={() => {
+              setVisible(true);
+            }}>添加物料</Button>}
+          >
+            <FormItem
+              name="skus"
+              modalVisible={visible}
+              component={SysField.AddSku}
+              setModalVisible={setVisible}
+            />
+          </ProCard>
+
           <ProCard title="企业其他信息" className="h2Card" headerBordered bodyStyle={{padding: 16}}>
             <Row gutter={24}>
               <Col span={span}>
@@ -258,8 +268,8 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
               </Col>
               <Col span={span}>
                 <FormItem
-                  style={{whiteSpace:'normal'}}
-                  label='统一社会信用代码'
+                  style={{whiteSpace: 'normal'}}
+                  label="统一社会信用代码"
                   labelCol={10}
                   placeholder="请输入企业社会信用代码"
                   name="utscc"
@@ -328,165 +338,253 @@ const CustomerEdit = ({onChange, ...props}, ref) => {
               </Col>
             </Row>
           </ProCard>
-          <FieldList
-            name="contactsParams"
-            initialValue={[
-              {
+          <div title="其他联系人">
+            <FieldList
+              name="contactsParams"
+              initialValue={[{
                 contactsName: wxUser && wxUser.openUserInfo && wxUser.openUserInfo.username,
                 companyRole: ''
-              },
-            ]}
-          >
-            {({state, mutators}) => {
-              const onAdd = () => mutators.push();
-              return <ProCard
-                extra={
-                  <Button
-                    type="dashed"
-                    icon={<PlusOutlined />}
-                    style={{width: '100%', display: state.value.length >= 5 && 'none'}}
-                    onClick={onAdd}>增加联系人</Button>
-                }
-                style={{marginTop: 24}}
-                bodyStyle={{padding: 16}}
-                title="其他联系人"
-                className="h2Card"
-                headerBordered
-              >
-                <div>
-                  {state.value.map((item, index) => {
-                    const onRemove = index => mutators.remove(index);
-                    return <div key={index}>
-                      <Row gutter={24}>
-                        <Col span={span}>
-                          <FormItem
-                            label="联系人"
-                            name={`contactsParams.${index}.contactsName`}
-                            placeholder="请输入联系人姓名"
-                            component={SysField.ContactsName}
-                            required
-                          />
-                        </Col>
-                        <Col span={span}>
-                          <FormItem
-                            label="联系电话"
-                            // name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
-                            placeholder="请输入联系电话"
-                            name={`contactsParams.${index}.phoneNumber`}
-                            component={SysField.PhoneNumber}
-                            rules={[{
-                              required: true,
-                              message: '请输入正确的手机号码!',
-                              pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
-                            }]}
-                          />
-                        </Col>
-                        <Col span={span}>
-                          <FormItem
-                            label="部门"
-                            placeholder="请选择部门"
-                            name={`contactsParams.${index}.contractDept`}
-                            component={SysField.CompanyRoleId}
-                          />
-                        </Col>
-                        <Col span={span}>
-                          <FormItem
-                            label="职务"
-                            name={`contactsParams.${index}.companyRole`}
-                            placeholder="请选择职务"
-                            component={SysField.CompanyRoleId}
-                          />
-                        </Col>
-                        <Col span={span}>
-                          <FormItem
-                            label="备注"
-                            name={`contactsParams.${index}.contractNote`}
-                            placeholder="请输入联系人备注"
-                            component={SysField.Note}
-                          />
-                        </Col>
-                        <Col span={1}>
-                          <Button
-                            type="link"
-                            style={{float: 'right', display: state.value.length === 1 && 'none'}}
-                            icon={<DeleteOutlined />}
-                            onClick={() => {
-                              onRemove(index);
-                            }}
-                            danger
-                          />
-                        </Col>
-                      </Row>
-                    </div>;
-                  })}
-                </div>
-              </ProCard>;
-            }}
-          </FieldList>
+              },]}>
+              {({state, mutators}) => {
+                const onAdd = () => mutators.push();
+                return <ProCard
+                  extra={
+                    <Button
+                      type="dashed"
+                      icon={<PlusOutlined />}
+                      style={{width: '100%', display: state.value.length >= 5 && 'none'}}
+                      onClick={onAdd}>添加联系人</Button>
+                  }
+                  style={{marginTop: 24}}
+                  bodyStyle={{padding: 16}}
+                  title="其他联系人"
+                  className="h2Card"
+                  headerBordered
+                >
+                  <div>
+                    {state.value.map((item, index) => {
+                      const onRemove = index => mutators.remove(index);
+                      return <div key={index}>
+                        <Row gutter={24}>
+                          <Col span={span}>
+                            <FormItem
+                              label="联系人"
+                              name={`contactsParams.${index}.contactsName`}
+                              placeholder="请输入联系人姓名"
+                              component={SysField.ContactsName}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="联系电话"
+                              // name={`contactsParams.${index}.phoneParams.${indexs}.phoneNumber`}
+                              placeholder="请输入联系电话"
+                              name={`contactsParams.${index}.phoneNumber`}
+                              component={SysField.PhoneNumber}
+                              rules={[{
+                                message: '请输入正确的手机号码!',
+                                pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+                              }]}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="部门"
+                              placeholder="请选择部门"
+                              name={`contactsParams.${index}.contractDept`}
+                              component={SysField.CompanyRoleId}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="职务"
+                              name={`contactsParams.${index}.companyRole`}
+                              placeholder="请选择职务"
+                              component={SysField.CompanyRoleId}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="备注"
+                              name={`contactsParams.${index}.contractNote`}
+                              placeholder="请输入联系人备注"
+                              component={SysField.Note}
+                            />
+                          </Col>
+                          <Col span={1}>
+                            <Button
+                              type="link"
+                              style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                onRemove(index);
+                              }}
+                              danger
+                            />
+                          </Col>
+                        </Row>
+                      </div>;
+                    })}
+                  </div>
+                </ProCard>;
+              }}
+            </FieldList>
+          </div>
+          <div title="其他地址">
+            <FieldList name="adressParams" initialValue={[{}]}>
+              {({state, mutators}) => {
+                const onAdd = () => mutators.push();
+                return <ProCard
+                  extra={
+                    <Button
+                      type="dashed"
+                      icon={<PlusOutlined />}
+                      style={{width: '100%', display: state.value.length >= 5 && 'none'}}
+                      onClick={onAdd}>添加地址</Button>
+                  }
+                  style={{marginTop: 24}}
+                  bodyStyle={{padding: 16}}
+                  title="其他地址"
+                  className="h2Card"
+                  headerBordered
+                >
+                  <div>
+                    {state.value.map((item, index) => {
+                      const onRemove = index => mutators.remove(index);
+                      return <div key={index}>
+                        <Row gutter={24}>
+                          <Col span={span}>
+                            <FormItem
+                              label="所属区域"
+                              placeholder="请选择省市区地址"
+                              name={`adressParams.${index}.region`}
+                              component={SysField.Region}
+                              options={adressData}
+                            />
 
-          {/*<ProCard*/}
-          {/*  style={{marginTop: 8}}*/}
-          {/*  bodyStyle={{padding: 16}}*/}
-          {/*  title={supply ? '供应商地址' : '客户地址'}*/}
-          {/*  className="h2Card" headerBordered>*/}
-          {/*  <FieldList*/}
-          {/*    name="adressParams"*/}
-          {/*    initialValue={[*/}
-          {/*      {region: data && data.length > 0 && data[0].id, location: ''},*/}
-          {/*    ]}*/}
-          {/*  >*/}
-          {/*    {({state, mutators}) => {*/}
-          {/*      const onAdd = () => mutators.push();*/}
-          {/*      return (*/}
-          {/*        <div>*/}
-          {/*          {state.value.map((item, index) => {*/}
-          {/*            const onRemove = index => mutators.remove(index);*/}
-          {/*            return (*/}
-          {/*              <ProCard*/}
-          {/*                headStyle={{borderLeft: 'none', padding: '8px 16px'}}*/}
-          {/*                title={<Title title={`地址明细 ${index + 1}`} level={6} />}*/}
-          {/*                headerBordered*/}
-          {/*                extra={*/}
-          {/*                  <Button*/}
-          {/*                    type="link"*/}
-          {/*                    style={{float: 'right', display: state.value.length === 1 && 'none'}}*/}
-          {/*                    icon={<DeleteOutlined />}*/}
-          {/*                    onClick={() => {*/}
-          {/*                      onRemove(index);*/}
-          {/*                    }}*/}
-          {/*                    danger*/}
-          {/*                  />}*/}
-          {/*                key={index}>*/}
-          {/*                <FormItem*/}
-          {/*                  label="省市区地址"*/}
-          {/*                  name={`adressParams.${index}.region`}*/}
-          {/*                  component={SysField.Region}*/}
-          {/*                />*/}
-          {/*                <AdressRowStyleLayout key={index}>*/}
-          {/*                  <FormItem*/}
-          {/*                    label="&nbsp;&nbsp;&nbsp;&nbsp;详细地址"*/}
-          {/*                    name={`adressParams.${index}.map`}*/}
-          {/*                    component={SysField.Map}*/}
-          {/*                  />*/}
-          {/*                </AdressRowStyleLayout>*/}
-          {/*                <Divider style={{margin: '8px 0'}} />*/}
-          {/*              </ProCard>*/}
-          {/*            );*/}
-          {/*          })}*/}
-          {/*          <Button*/}
-          {/*            type="dashed"*/}
-          {/*            style={{width: '100%'}}*/}
-          {/*            icon={<PlusOutlined />}*/}
-          {/*            onClick={onAdd}>增加客户地址</Button>*/}
-          {/*        </div>*/}
-          {/*      );*/}
-          {/*    }}*/}
-          {/*  </FieldList>*/}
-          {/*</ProCard>*/}
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="详细地址"
+                              placeholder="请输入供应商地址"
+                              name={`adressParams.${index}.map`}
+                              component={SysField.Map}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="备注"
+                              placeholder="请输入地址备注"
+                              name="adressNote"
+                              component={SysField.Note}
+                            />
+                          </Col>
+                          <Col span={1}>
+                            <Button
+                              type="link"
+                              style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                onRemove(index);
+                              }}
+                              danger
+                            />
+                          </Col>
+                        </Row>
+                      </div>;
+                    })}
+                  </div>
+                </ProCard>;
+              }}
+            </FieldList>
+          </div>
+          <div title="其他开户信息">
+            <FieldList name="kaihu" initialValue={[{}]}>
+              {({state, mutators}) => {
+                const onAdd = () => mutators.push();
+                return <ProCard
+                  extra={
+                    <Button
+                      type="dashed"
+                      icon={<PlusOutlined />}
+                      style={{width: '100%', display: state.value.length >= 5 && 'none'}}
+                      onClick={onAdd}>添加开户信息</Button>
+                  }
+                  style={{marginTop: 24}}
+                  bodyStyle={{padding: 16}}
+                  title="其他开户信息"
+                  className="h2Card"
+                  headerBordered
+                >
+                  <div>
+                    {state.value.map((item, index) => {
+                      const onRemove = index => mutators.remove(index);
+                      return <div key={index}>
+                        <Row gutter={24}>
+                          <Col span={span}>
+                            <FormItem
+                              label="开户银行"
+                              name={`kaihu.${index}.k1`}
+                              placeholder="请输入开户银行"
+                              component={SysField.PhoneNumber}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="开户行号"
+                              placeholder="请输入开户行号"
+                              name={`kaihu.${index}.k2`}
+                              component={SysField.PhoneNumber}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="开户账号"
+                              placeholder="请输入开户账号"
+                              name={`kaihu.${index}.k23`}
+                              component={SysField.PhoneNumber}
+                            />
+                          </Col>
+                          <Col span={span}>
+                            <FormItem
+                              label="备注"
+                              placeholder="请输入开户行备注"
+                              name={`kaihu.${index}.k4`}
+                              component={SysField.Note}
+                            />
+                          </Col>
+                          <Col span={1}>
+                            <Button
+                              type="link"
+                              style={{float: 'right', display: state.value.length === 1 && 'none'}}
+                              icon={<DeleteOutlined />}
+                              onClick={() => {
+                                onRemove(index);
+                              }}
+                              danger
+                            />
+                          </Col>
+                        </Row>
+                      </div>;
+                    })}
+                  </div>
+                </ProCard>;
+              }}
+            </FieldList>
+          </div>
+
+
         </Form>
       </Card>
+
+      <Affix offsetBottom={16}>
+        <Button onClick={() => {
+          formRef.current.submit();
+        }}>保存</Button>
+      </Affix>
+
     </div>
   );
 };
 
-export default forwardRef(CustomerEdit);
+export default CustomerEdit;

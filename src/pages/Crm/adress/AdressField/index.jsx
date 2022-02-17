@@ -5,12 +5,12 @@
  * @Date 2021-07-23 10:06:11
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Input, InputNumber} from 'antd';
-import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
 import AdressMap from '@/pages/Crm/customer/components/AdressMap';
 import {useRequest} from '@/util/Request';
 import {commonAreaList} from '@/pages/Crm/adress/AdressUrl';
+import Cascader from '@/components/Cascader';
 
 
 export const Location = (props) => {
@@ -45,9 +45,10 @@ export const Region = (props) => {
     }
   }, [city]);
 
-  return (<CascaderAdress onChange={(value) => {
-    onChange(value);
-  }}  value={value} />);
+  return (<Cascader api={{
+    url: '/commonArea/treeView',
+    method: 'POST',
+  }} {...props} />);
 };
 export const CustomerId = (props) => {
 
