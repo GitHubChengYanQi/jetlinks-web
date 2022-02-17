@@ -93,6 +93,7 @@ const AddSkuTable = ({
             }} />
         </>;
       }} />
+      <Table.Column />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
         return <><Button
           type="link"
@@ -106,7 +107,6 @@ const AddSkuTable = ({
           danger
         /></>;
       }} />
-      <Table.Column />
 
     </Table>
   </>;

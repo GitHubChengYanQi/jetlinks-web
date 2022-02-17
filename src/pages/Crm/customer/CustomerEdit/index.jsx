@@ -5,13 +5,12 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {forwardRef, useImperativeHandle, useRef, useState,} from 'react';
-import {Button, Row, Col, Card, Table, Affix} from 'antd';
+import React, {useRef,} from 'react';
+import {Button, Row, Col, Card, Affix} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {getSearchParams, useHistory} from 'ice';
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {useBoolean} from 'ahooks';
 import Form from '@/components/Form';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import {
@@ -40,8 +39,6 @@ const CustomerEdit = ({onChange, ...props}) => {
   const [userInfo] = store.useModel('user');
 
   const params = getSearchParams();
-
-  const [visible, setVisible] = useState();
 
   const {data: adressData} = useRequest(commonArea);
 
@@ -243,23 +240,12 @@ const CustomerEdit = ({onChange, ...props}) => {
             </Row>
           </ProCard>
 
-          <ProCard
-            style={{marginTop: 24}}
-            bodyStyle={{padding: 16}}
-            className="h2Card"
-            title="供应物料"
-            headerBordered
-            extra={<Button onClick={() => {
-              setVisible(true);
-            }}>添加物料</Button>}
-          >
+          <div title="添加物料">
             <FormItem
               name="skus"
-              modalVisible={visible}
               component={SysField.AddSku}
-              setModalVisible={setVisible}
             />
-          </ProCard>
+          </div>
 
           <ProCard title="企业其他信息" className="h2Card" headerBordered bodyStyle={{padding: 16}}>
             <Row gutter={24}>

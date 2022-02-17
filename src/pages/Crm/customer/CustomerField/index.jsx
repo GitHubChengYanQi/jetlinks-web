@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal} from 'antd';
+import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal, Button} from 'antd';
 import moment from 'moment';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
@@ -19,6 +19,7 @@ import AdressMap from '@/pages/Crm/customer/components/AdressMap';
 import FileUpload from '@/components/FileUpload';
 import AddSkuTable from '@/pages/Crm/customer/components/AddSkuTable';
 import CheckSku from '@/pages/Erp/sku/components/CheckSku';
+import ProCard from '@ant-design/pro-card';
 
 export const ContactsName = (props) => {
   return (<Input  {...props} />);
@@ -66,26 +67,42 @@ export const CompanyRoleId = (props) => {
   return (<Select width="100%" api={apiUrl.CompanyRoleIdSelect} {...props} />);
 };
 
-export const AddSku = ({modalVisible, onChange,setModalVisible}) => {
+export const AddSku = ({onChange}) => {
 
   const skuTableRef = useRef();
 
+  const [visible, setVisible] = useState();
+
   return (<>
-    <AddSkuTable
-      ref={skuTableRef}
-      onChange={onChange}
-    />
+    <ProCard
+      style={{marginTop: 24}}
+      bodyStyle={{padding: 16}}
+      className="h2Card"
+      title="供应物料"
+      headerBordered
+      extra={<Button onClick={() => {
+        setVisible(true);
+      }}>添加物料</Button>}
+    >
+
+      <AddSkuTable
+        ref={skuTableRef}
+        onChange={onChange}
+      />
+    </ProCard>
 
     <Modal
-      visible={modalVisible}
+      visible={visible}
       width={800}
-      footer={[]}
+      centered
+      bodyStyle={{padding: 0}}
+      footer={false}
       onCancel={() => {
-        setModalVisible(false);
+        setVisible(false);
       }}>
       <CheckSku onChange={(value) => {
         skuTableRef.current.addDataSource(value);
-        setModalVisible(false);
+        setVisible(false);
       }} />
     </Modal>
   </>);
