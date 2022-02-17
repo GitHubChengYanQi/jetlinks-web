@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'ice';
 import {Button, Card, notification, Space} from 'antd';
 import WorkFlow from '@/pages/ReSearch/BOM/WorkFlow';
 import {useRequest} from '@/util/Request';
 
-const Detail = (props) => {
+const Detail = () => {
 
   const params = useParams();
 
@@ -12,23 +12,44 @@ const Detail = (props) => {
 
   const [value, onChange] = useState();
 
-  const {loading,run} = useRequest({
-    url:'/shipRoute/add',
-    method:'POST',
-  },{
-    manual:true,
-    onSuccess:()=>{
+  const {run: detailRun} = useRequest({
+    url: '/shipRoute/shipDetail',
+    method: 'GET'
+  }, {
+    manual: true,
+    onSuccess: (res) => {
+      console.log(res);
+    }
+  });
+
+  const {loading, run} = useRequest({
+    url: '/shipRoute/add',
+    method: 'POST',
+  }, {
+    manual: true,
+    onSuccess: () => {
       history.push('/SPU/processRoute');
       notification.success({
         message: '保存成功！',
       });
     },
-    onError:()=>{
+    onError: () => {
       notification.success({
         message: '保存失败！',
       });
     }
   });
+
+  useEffect(() => {
+    if (params.id && params.id !== 'add') {
+      detailRun({
+        params: {
+          id: params.id,
+        }
+      });
+    }
+  }, []);
+
 
   return <>
     <Card
@@ -36,7 +57,7 @@ const Detail = (props) => {
       extra={<Space>
         <Button loading={loading} type="primary" onClick={() => {
           run({
-            data:value
+            data: value
           });
         }}>保存</Button>
         <Button onClick={() => {

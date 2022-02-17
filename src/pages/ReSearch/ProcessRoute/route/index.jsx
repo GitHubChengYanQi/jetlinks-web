@@ -15,7 +15,7 @@ export const ProcessRouteRouter = [
     fallback: <div>loading...</div>,
     exact: true,
   },{
-    path: '/processRoute/:cid',
+    path: '/processRoute/:id',
     name:'工艺管理',
     component: lazy(() => import('../../Detail/index')),
     fallback: <div>loading...</div>,
