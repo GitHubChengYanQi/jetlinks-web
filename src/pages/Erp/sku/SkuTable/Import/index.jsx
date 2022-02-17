@@ -30,7 +30,7 @@ const Import = ({
         name: item.spuName,
         coding: item.standard,
         batch: item.isNotBatch,
-        error:item.error,
+        error: item.error,
         attributes: item.attributes && item.attributes.map((item) => {
           return item;
         }).toString()
@@ -106,7 +106,9 @@ const Import = ({
           onClick={() => {
             handleUpload();
           }}>开始导入</Button>,
-        <Button key={2}>取消</Button>
+        <Button key={2} onClick={() => {
+          setVisible(false);
+        }}>取消</Button>
       ]}
       width={800}>
       <Space direction="vertical">
