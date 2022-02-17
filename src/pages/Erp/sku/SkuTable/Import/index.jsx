@@ -128,9 +128,10 @@ const Import = ({
           4、点击【开始导入】
         </div>
 
-        <Space>
+        <Space align='start'>
           <Upload
             maxCount={1}
+            listType="picture"
             fileList={filelist}
             onRemove={() => {
               setFilelist([]);
