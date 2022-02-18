@@ -17,17 +17,16 @@ import {
   customerAdd,
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
-import {request, useRequest} from '@/util/Request';
+import {request} from '@/util/Request';
 import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
-import {commonArea} from '@/pages/Crm/adress/AdressUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
 
 const span = 6;
-const labelWidth = 150;
+const labelWidth = 128;
 
 const formActionsPublic = createFormActions();
 
@@ -39,11 +38,9 @@ const CustomerEdit = ({onChange, ...props}) => {
     save: customerEdit
   };
 
-  const [userInfo] = store.useModel('user');
+  const [data] = store.useModel('dataSource');
 
   const params = getSearchParams();
-
-  const {data: adressData} = useRequest(commonArea);
 
   const {wxUser, supply, data: paramData, ...other} = props;
 
@@ -101,7 +98,6 @@ const CustomerEdit = ({onChange, ...props}) => {
               phoneParams: [{phoneNumber: value.phoneNumber}],
               deptName: value.deptName && (value.deptName.id ? value.deptName.id : value.deptName.name),
               positionName: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
-              contractNote: value.contractNote
             });
             value.contactsParams && value.contactsParams.map((item) => {
               if (item && item.contactsName) {
@@ -110,7 +106,6 @@ const CustomerEdit = ({onChange, ...props}) => {
                   phoneParams: [{phoneNumber: item.phoneNumber}],
                   deptName: item.deptName && (item.deptName.id ? item.deptName.id : item.deptName.name),
                   positionName: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
-                  contractNote: item.contractNote
                 });
               }
               return null;
@@ -120,12 +115,12 @@ const CustomerEdit = ({onChange, ...props}) => {
             let adressParams = [];
             adressParams.push({
               map: value.map,
-              adressNote: value.adressNote,
+              detailLocation: value.detailLocation,
               region: value.region,
             });
             if (value.adressParams) {
               adressParams = adressParams.concat(value.adressParams.filter((item) => {
-                return item && (item.region || item.map);
+                return item && (item.region || item.detailLocation || item.map);
               }));
             }
 
@@ -136,12 +131,11 @@ const CustomerEdit = ({onChange, ...props}) => {
                 bank: value.bank,
                 bankNo: value.bankNo,
                 bankAccount: value.bankAccount,
-                invoiceNote: value.invoiceNote,
               });
             }
             if (value.invoiceParams) {
               invoiceParams = invoiceParams.concat(value.invoiceParams.filter((item) => {
-                return item && (item.bankNo || item.bankAccount || item.invoiceNote || item.bank);
+                return item && (item.bankNo || item.bankAccount || item.bank);
               }));
             }
 
@@ -168,6 +162,11 @@ const CustomerEdit = ({onChange, ...props}) => {
                 state.props.disabled = res;
               });
               setFieldState('deptName', state => {
+                if (res) {
+                  state.value = {name: res.deptResult && res.deptResult.fullName};
+                } else {
+                  state.value = null;
+                }
                 state.props.disabled = res;
               });
               setFieldState('companyRole', state => {
@@ -176,9 +175,6 @@ const CustomerEdit = ({onChange, ...props}) => {
                 } else {
                   state.value = null;
                 }
-                state.props.disabled = res;
-              });
-              setFieldState('contractNote', state => {
                 state.props.disabled = res;
               });
             });
@@ -210,14 +206,8 @@ const CustomerEdit = ({onChange, ...props}) => {
                 FormPath.transform(name, /\d/, ($1) => {
                   return `contactsParams.${$1}.deptName`;
                 }), state => {
-                  state.props.disabled = res;
-                });
-              setFieldState(
-                FormPath.transform(name, /\d/, ($1) => {
-                  return `contactsParams.${$1}.companyRole`;
-                }), state => {
                   if (res) {
-                    state.value = {name: res.companyRoleResult.position};
+                    state.value = {name: res.deptResult && res.deptResult.fullName};
                   } else {
                     state.value = null;
                   }
@@ -225,8 +215,13 @@ const CustomerEdit = ({onChange, ...props}) => {
                 });
               setFieldState(
                 FormPath.transform(name, /\d/, ($1) => {
-                  return `contactsParams.${$1}.contractNote`;
+                  return `contactsParams.${$1}.companyRole`;
                 }), state => {
+                  if (res) {
+                    state.value = {name: res.companyRoleResult && res.companyRoleResult.position};
+                  } else {
+                    state.value = null;
+                  }
                   state.props.disabled = res;
                 });
             });
@@ -245,7 +240,7 @@ const CustomerEdit = ({onChange, ...props}) => {
           <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="基本信息" headerBordered>
             <MegaLayout labelWidth={labelWidth}>
               <Row gutter={24}>
-                <Col span={span}>
+                <Col span={12}>
                   <FormItem
                     label={supply ? '供应商名称' : '客户名称'}
                     name="customerName"
@@ -317,14 +312,6 @@ const CustomerEdit = ({onChange, ...props}) => {
                     component={SysField.CompanyRoleId}
                   />
                 </Col>
-                <Col span={span}>
-                  <FormItem
-                    label="备注"
-                    placeholder="请输入联系人备注"
-                    name="contractNote"
-                    component={SysField.Note}
-                  />
-                </Col>
               </Row>
               <Row gutter={24}>
                 <Col span={span}>
@@ -332,26 +319,26 @@ const CustomerEdit = ({onChange, ...props}) => {
                     label="所属区域"
                     placeholder="请选择省市区地址"
                     name="region"
-                    options={adressData}
+                    options={data && data.area}
                     component={SysField.Region}
                   />
 
                 </Col>
-                <Col span={12}>
+                <Col span={span}>
                   <FormItem
                     label="详细地址"
                     placeholder="请输入供应商地址"
-                    name="map"
-                    width={400}
-                    component={SysField.Map}
+                    name="detailLocation"
+                    component={SysField.Url}
                   />
                 </Col>
                 <Col span={span}>
                   <FormItem
-                    label="备注"
-                    placeholder="请输入地址备注"
-                    name="adressNote"
-                    component={SysField.Note}
+                    label="定位地址"
+                    disabled
+                    placeholder="请选择地址"
+                    name="map"
+                    component={SysField.Map}
                   />
                 </Col>
               </Row>
@@ -380,25 +367,9 @@ const CustomerEdit = ({onChange, ...props}) => {
                     component={SysField.BankAccount}
                   />
                 </Col>
-                <Col span={span}>
-                  <FormItem
-                    label="备注"
-                    placeholder="请输入开户行备注"
-                    name="invoiceNote"
-                    component={SysField.Note}
-                  />
-                </Col>
               </Row>
               <Row gutter={24}>
-                <Col span={span}>
-                  <FormItem label="采购负责人" name="userId" component={SysField.UserName} value={userInfo.id} />
-                </Col>
-                <Col span={span}>
-                  注：供应商的负责人用于与供应商签订合同的指定负责人
-                </Col>
-              </Row>
-              <Row gutter={24}>
-                <Col span={24}>
+                <Col span={12}>
                   <FormItem label="备注说明" name="note" placeholder="请输入备注内容" component={SysField.RowsNote} />
                 </Col>
               </Row>
@@ -426,32 +397,30 @@ const CustomerEdit = ({onChange, ...props}) => {
                 <Col span={span}>
                   <FormItem label="企业类型" name="companyType" placeholder="请选择企业类型" component={SysField.CompanyType} />
                 </Col>
+                <Col span={span}>
+                  <FormItem label="注册资本" name="registeredCapital" style={{width:200}} placeholder="请输入注册资本" component={SysField.Money} />
+                </Col>
               </Row>
               <Row gutter={24}>
-                <Col span={span}>
-                  <FormItem label="注册资本" name="money" placeholder="请输入注册资本" component={SysField.Money} />
-                </Col>
                 <Col span={span}>
                   <FormItem label="所属行业" placeholder="请选择企业行业" name="industryId" component={SysField.IndustryOne} />
                 </Col>
                 <Col span={span}>
                   <FormItem label="成立日期" name="setup" placeholder="请选择企业类型" component={SysField.Setup} />
                 </Col>
-              </Row>
-              <Row gutter={24}>
                 <Col span={span}>
-                  <FormItem label="企业电话" name="phone" placeholder="请输入企业电话" component={SysField.Name} />
+                  <FormItem label="企业电话" name="telephone" placeholder="请输入企业电话" component={SysField.Name} />
                 </Col>
                 <Col span={span}>
-                  <FormItem label="企业传真" placeholder="请输入企业传真" name="cz" component={SysField.Name} />
-                </Col>
-                <Col span={span}>
-                  <FormItem label="企业邮编" name="yb" placeholder="请输入企业邮编" component={SysField.Name} />
+                  <FormItem label="企业传真" placeholder="请输入企业传真" name="fax" component={SysField.Name} />
                 </Col>
               </Row>
               <Row gutter={24}>
                 <Col span={span}>
-                  <FormItem label="邮箱" placeholder="请输入邮箱地址" name="emall" component={SysField.Emall} rules={[{
+                  <FormItem label="企业邮编" name="zipCode" placeholder="请输入企业邮编" component={SysField.Name} />
+                </Col>
+                <Col span={span}>
+                  <FormItem label="企业邮箱" placeholder="请输入邮箱地址" name="emall" component={SysField.Emall} rules={[{
                     message: '请输入正确的邮箱',
                     pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'
                   }]} />
@@ -462,22 +431,15 @@ const CustomerEdit = ({onChange, ...props}) => {
                     pattern: '^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'
                   }]} />
                 </Col>
-              </Row>
-              <Row gutter={24}>
-                <Col span={24}>
-                  <FormItem label="注册地址" name="signIn" width={400} placeholder="请输入注册地址" component={SysField.Map} />
+                <Col span={span}>
+                  <FormItem label="注册地址" name="signIn" placeholder="请输入注册地址" component={SysField.SignIn} />
                 </Col>
               </Row>
               <Row gutter={24}>
-                <Col span={span}>
-                  <FormItem label="附件" name="file" component={SysField.File} />
+                <Col span={12}>
+                  <FormItem label="附件" name="file" component={SysField.File} />仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
                 </Col>
-                <Col span={span}>
-                  仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
-                </Col>
-              </Row>
-              <Row gutter={24}>
-                <Col span={span}>
+                <Col span={12}>
                   <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction} />
                 </Col>
               </Row>
@@ -537,7 +499,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                               component={SysField.DeptName}
                             />
                           </Col>
-                          <Col span={span}>
+                          <Col span={4}>
                             <FormItem
                               label="职务"
                               name={`contactsParams.${index}.companyRole`}
@@ -545,15 +507,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                               component={SysField.CompanyRoleId}
                             />
                           </Col>
-                          <Col span={span}>
-                            <FormItem
-                              label="备注"
-                              name={`contactsParams.${index}.contractNote`}
-                              placeholder="请输入联系人备注"
-                              component={SysField.Note}
-                            />
-                          </Col>
-                          <Col span={18}>
+                          <Col span={1}>
                             <Button
                               type="link"
                               style={{float: 'right'}}
@@ -601,7 +555,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                               placeholder="请选择省市区地址"
                               name={`adressParams.${index}.region`}
                               component={SysField.Region}
-                              options={adressData}
+                              options={data && data.area}
                             />
 
                           </Col>
@@ -609,16 +563,17 @@ const CustomerEdit = ({onChange, ...props}) => {
                             <FormItem
                               label="详细地址"
                               placeholder="请输入供应商地址"
-                              name={`adressParams.${index}.map`}
-                              component={SysField.Map}
+                              name={`adressParams.${index}.detailLocation`}
+                              component={SysField.Url}
                             />
                           </Col>
-                          <Col span={span}>
+                          <Col span={11}>
                             <FormItem
-                              label="备注"
-                              placeholder="请输入地址备注"
-                              name="adressNote"
-                              component={SysField.Note}
+                              label="定位地址"
+                              placeholder="请选择地址"
+                              disabled
+                              name={`adressParams.${index}.map`}
+                              component={SysField.Map}
                             />
                           </Col>
                           <Col span={1}>
@@ -679,20 +634,12 @@ const CustomerEdit = ({onChange, ...props}) => {
                               component={SysField.PhoneNumber}
                             />
                           </Col>
-                          <Col span={span}>
+                          <Col span={4}>
                             <FormItem
                               label="开户账号"
                               placeholder="请输入开户账号"
                               name={`invoiceParams.${index}.bankAccount`}
                               component={SysField.BankAccount}
-                            />
-                          </Col>
-                          <Col span={span}>
-                            <FormItem
-                              label="备注"
-                              placeholder="请输入开户行备注"
-                              name={`invoiceParams.${index}.invoiceNote`}
-                              component={SysField.Note}
                             />
                           </Col>
                           <Col span={1}>

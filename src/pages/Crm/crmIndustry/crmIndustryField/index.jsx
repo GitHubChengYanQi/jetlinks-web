@@ -17,5 +17,5 @@ export const IndustryName = (props) =>{
   return (<Input {...props}/>);
 };
 export const ParentId = (props) =>{
-  return (<Cascader api={apiUrl.crmIndustryTreeView} {...props}/>);
+  return (<Cascader api={apiUrl.crmIndustryTreeView} top {...props}/>);
 };

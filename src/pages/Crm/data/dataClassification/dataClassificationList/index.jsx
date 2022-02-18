@@ -6,8 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -16,7 +17,8 @@ import Form from '@/components/Form';
 import {dataClassificationDelete, dataClassificationList} from '../dataClassificationUrl';
 import DataClassificationEdit from '../dataClassificationEdit';
 import * as SysField from '../dataClassificationField';
-import {createFormActions} from '@formily/antd';
+import Breadcrumb from '@/components/Breadcrumb';
+import store from '@/store';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -24,6 +26,9 @@ const formActions = createFormActions();
 const DataClassificationList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  const dataDispatchers = store.useModel('dataSource')[1];
+
   const actions = () => {
     return (
       <>
@@ -47,7 +52,7 @@ const DataClassificationList = () => {
     <>
       <Table
         contentHeight
-        title={<h2>列表</h2>}
+        title={<Breadcrumb />}
         api={dataClassificationList}
         rowKey="dataClassificationId"
         searchForm={searchForm}
@@ -65,6 +70,7 @@ const DataClassificationList = () => {
                 ref.current.open(record.dataClassificationId);
               }} />
               <DelButton api={dataClassificationDelete} value={record.dataClassificationId} onSuccess={() => {
+                dataDispatchers.getDataClass();
                 tableRef.current.refresh();
               }} />
             </>
@@ -72,6 +78,7 @@ const DataClassificationList = () => {
         }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={DataClassificationEdit} onSuccess={() => {
+        dataDispatchers.getDataClass();
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

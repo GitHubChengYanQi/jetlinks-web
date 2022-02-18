@@ -288,13 +288,7 @@ export const ImgUrl = (props) => {
   return (<UpLoadImg {...props} />);
 };
 export const Province = (props) => {
-  return (<Cascader api={apiUrl.commonArea} {...props} placeholder="请选择地区" />);
-};
-export const City = (props) => {
-  return (<TreeSelect api={apiUrl.commonArea} {...props} />);
-};
-export const Area = (props) => {
-  return (<TreeSelect api={apiUrl.commonArea} {...props} />);
+  return (<Cascader {...props} placeholder="请选择地区" />);
 };
 export const Address = (props) => {
   return (<Input {...props} />);

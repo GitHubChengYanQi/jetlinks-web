@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {createFormActions, Submit} from '@formily/antd';
@@ -18,21 +18,31 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const CheckSku = ({
+  value,
   onChange = () => {
   }
-}) => {
+}, ref) => {
 
   const [loading, setLoading] = useState();
 
-  const [skus, setSkus] = useSetState({data: []});
+  const [skus, setSkus] = useSetState({data: value || []});
 
-  const ref = useRef(null);
+  const refAdd = useRef(null);
 
   const detailRef = useRef(null);
 
   const formRef = useRef(null);
 
   const tableRef = useRef(null);
+
+  const change = () => {
+    onChange(skus.data);
+    setSkus({data: []});
+  };
+
+  useImperativeHandle(ref, () => ({
+    change
+  }));
 
   const searchForm = () => {
 
@@ -54,18 +64,6 @@ const CheckSku = ({
   };
 
 
-  const footer = () => {
-    return (
-      <>
-        <Button onClick={() => {
-          onChange(skus.data);
-          setSkus({data: []});
-        }}>选择</Button>
-      </>
-    );
-  };
-
-
   return (
     <>
       <Table
@@ -76,7 +74,7 @@ const CheckSku = ({
         SearchButton={<Space>
           <Submit><SearchOutlined />查询</Submit>
           <Button onClick={() => {
-            ref.current.open(false);
+            refAdd.current.open(false);
           }}>创建物料</Button>
         </Space>}
         rowKey="skuId"
@@ -84,7 +82,6 @@ const CheckSku = ({
         noSort
         searchForm={searchForm}
         ref={tableRef}
-        footer={footer}
         rowSelection={{
           selectedRowKeys: skus.data.map((item) => {
             return item.skuId;
@@ -94,6 +91,7 @@ const CheckSku = ({
               const array = skus.data;
               array.push({
                 skuId: record.skuId,
+                coding: record.standard,
                 skuResult: <SkuResultSkuJsons skuResult={record} />
               });
               setSkus({data: array});
@@ -114,6 +112,7 @@ const CheckSku = ({
               }).map((item) => {
                 return {
                   skuId: item.skuId,
+                  coding: item.standard,
                   skuResult: <SkuResultSkuJsons skuResult={item} />
                 };
               });
@@ -131,10 +130,22 @@ const CheckSku = ({
         }
         }
       >
-
-        < Column title="物料" key={2} dataIndex="skuId" render={(value, record) => {
-          return <SkuResultSkuJsons skuResult={record} />;
+        <Column title="序号" width={70} align="center" render={(value, record, index) => {
+          return <>{index + 1}</>;
         }} />
+        <Column title="物料编号" dataIndex="standard" />
+        <Column
+          title="物料"
+          key={2}
+          sorter={(a, b) => {
+            const aSort = a.spuResult && a.spuResult.spuClassificationResult && a.spuResult.spuClassificationResult.name;
+            const bSort = b.spuResult && b.spuResult.spuClassificationResult && b.spuResult.spuClassificationResult.name;
+            return aSort.length - bSort.length;
+          }}
+          dataIndex="skuId"
+          render={(value, record) => {
+            return <SkuResultSkuJsons skuResult={record} />;
+          }} />
 
         <Column title="操作" key={8} dataIndex="skuId" width={100} align="center" render={(value, record) => {
           return <Button type="link" onClick={() => {
@@ -148,6 +159,11 @@ const CheckSku = ({
 
       <Modal
         title="物料"
+        addUrl={{
+          url:'/sku/indirectAdd',
+          method:'POST',
+          rowKey:'skuId'
+        }}
         compoentRef={formRef}
         loading={(load) => {
           setLoading(load);
@@ -155,9 +171,9 @@ const CheckSku = ({
         component={SkuEdit}
         onSuccess={() => {
           tableRef.current.submit();
-          ref.current.close();
+          refAdd.current.close();
         }}
-        ref={ref}
+        ref={refAdd}
         footer={<>
           <Button
             loading={loading}
@@ -179,4 +195,4 @@ const CheckSku = ({
   );
 };
 
-export default CheckSku;
+export default React.forwardRef(CheckSku);

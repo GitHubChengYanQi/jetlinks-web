@@ -6,6 +6,9 @@ import SupplierBlacklistList from '@/pages/Crm/supplierBlacklist/supplierBlackli
 import Modal from '@/components/Modal';
 import TaxRateList from '@/pages/Purshase/taxRate/taxRateList';
 import BrandList from '@/pages/Erp/brand/BrandList';
+import ContractClassList from '@/pages/Crm/contract/components/contractClass/contractClassList';
+import TemplateList from '@/pages/Crm/template/TemplateList';
+import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -22,6 +25,12 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <TaxRateList />;
       case 'ppgl':
         return <BrandList />;
+      case 'htfl':
+        return <ContractClassList />;
+      case 'htmb':
+        return <TemplateList />;
+      case 'khjb':
+        return <CrmCustomerLevelList />;
       default:
         return null;
     }
@@ -51,6 +60,18 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           </Menu.Item>
           <Menu.Item key="hmd">
             <span>黑名单管理</span>
+          </Menu.Item>
+          <Menu.Item key="htfl">
+            <span>合同分类管理</span>
+          </Menu.Item>
+          <Menu.Item key="htmb">
+            <span>合同模板管理</span>
+          </Menu.Item>
+          <Menu.Item key="khjb">
+            <span>供应商级别管理</span>
+          </Menu.Item>
+          <Menu.Item key="hygl">
+            <span>行业管理</span>
           </Menu.Item>
         </Menu>} />
       <Modal footer={[]} width={1200} ref={ref}>{RenderComponent()}</Modal>

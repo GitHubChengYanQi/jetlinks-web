@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import cookie from 'js-cookie';
-import { logger, useHistory, APP_MODE } from 'ice';
+import {logger, useHistory} from 'ice';
+import {Alert, Spin, Layout} from 'antd';
 import Header from '@/layouts/BasicLayout/components/Header';
-import { Alert, Spin, Layout } from 'antd';
 import store from '@/store';
-import Footer from '@/layouts/BasicLayout/components/Footer';
 
-const { Header: AntHeader, Content, Footer: AntFooter } = Layout;
+const {Content} = Layout;
 
-export default function BasicLayout({ children }) {
+export default function BasicLayout({children}) {
 
   const history = useHistory();
   const [state, dispatchers] = store.useModel('user');
+  const dataDispatchers = store.useModel('dataSource')[1];
 
   useEffect(() => {
     window.document.title = '道昕智造（沈阳）网络科技有限公司';
@@ -25,6 +25,14 @@ export default function BasicLayout({ children }) {
         throw new Error('本地登录信息错误');
       }
       dispatchers.getUserInfo();
+      dataDispatchers.getSkuClass();
+      dataDispatchers.getCustomerLevel();
+      dataDispatchers.getCommonArea();
+      dataDispatchers.getBusinessSale();
+      dataDispatchers.getOrigin();
+      dataDispatchers.getDataClass();
+      dataDispatchers.getSpeechcraftClass();
+
     } catch (e) {
       logger.error(e.message);
       cookie.remove('tianpeng-token');
@@ -42,11 +50,11 @@ export default function BasicLayout({ children }) {
             description="系统正在初始化个人信息，请稍后..."
             type="info"
             showIcon
-            style={{ width: 500, margin: '100px auto' }}
+            style={{width: 500, margin: '100px auto'}}
           />
         </Spin> :
         <>
-          <Header/>
+          <Header />
           <Content className="web-content">
             {children}
           </Content>

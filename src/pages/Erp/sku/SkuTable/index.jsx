@@ -91,12 +91,18 @@ const SkuTable = (props) => {
           component={SysField.SelectSkuName} />
         <FormItem
           style={{display: 'none'}}
-          hidden value={0}
+          hidden
+          value={0}
           component={SysField.Type} />
         <FormItem
           name="spuClass"
           hidden
           component={SysField.SelectSpuClass} />
+        <FormItem
+          name="addMethod"
+          hidden
+          value={1}
+          component={SysField.AddMethod} />
       </>
     );
   };

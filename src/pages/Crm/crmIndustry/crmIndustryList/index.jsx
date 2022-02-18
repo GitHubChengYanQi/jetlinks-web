@@ -13,7 +13,7 @@ import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {crmIndustryDelete, crmIndustryList} from '../crmIndustryUrl';
+import {crmIndustryDelete, crmIndustryList, crmIndustryTreeView} from '../crmIndustryUrl';
 import CrmIndustryEdit from '../crmIndustryEdit';
 import * as SysField from '../crmIndustryField';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -38,7 +38,6 @@ const CrmIndustryList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="行业名称" name="industryName" component={SysField.IndustryName}/>
         <FormItem label="上级" name="parentId" component={SysField.ParentId}/>
       </>
     );
@@ -58,7 +57,7 @@ const CrmIndustryList = () => {
   };
 
   return (
-    <>
+    <div style={{padding:16}}>
       <Table
         contentHeight
         footer={footer}
@@ -66,22 +65,21 @@ const CrmIndustryList = () => {
           setIds(keys);
         }}
         title={<Breadcrumb title="行业管理" />}
-        api={crmIndustryList}
-        rowKey="industryId"
-        searchForm={searchForm}
+        api={crmIndustryTreeView}
+        noSort
+        rowKey="key"
         actions={actions()}
         ref={tableRef}
         formActions={formActions}
       >
-        <Column title="行业名称" dataIndex="industryName" />
-        <Column title="上级" dataIndex="parentName" />
+        <Column title="行业名称" dataIndex="title" />
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
-                ref.current.open(record.industryId);
+                ref.current.open(record.key);
               }} />
-              <DelButton api={crmIndustryDelete} value={record.industryId} onSuccess={() => {
+              <DelButton api={crmIndustryDelete} value={record.key} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>
@@ -92,7 +90,7 @@ const CrmIndustryList = () => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
-    </>
+    </div>
   );
 };
 export default CrmIndustryList;

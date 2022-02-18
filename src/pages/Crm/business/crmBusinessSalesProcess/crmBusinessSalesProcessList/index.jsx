@@ -94,6 +94,7 @@ const CrmBusinessSalesProcessList = (props) => {
         formActions={formActions}
         searchForm={searchForm}
         actions={actions()}
+        contentHeight
         ref={tableRef}
       >
         <Column title="流程名称" dataIndex="name" width={100} align="center" render={(value, record) => {

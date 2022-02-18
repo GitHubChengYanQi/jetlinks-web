@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
-import {Spin, Tree} from 'antd';
+import {Tree} from 'antd';
 import ListLayout from '@/layouts/ListLayout';
-import {useRequest} from '@/util/Request';
-import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import SkuTable from '@/pages/Erp/sku/SkuTable';
+import store from '@/store';
 
 
 const SkuList = () => {
 
-  const {loading, data} = useRequest({
-    ...spuClassificationTreeVrew, data: {
-      isNotproduct: 1
-    }
-  });
+  const [data] = store.useModel('dataSource');
 
   const dataResult = (items) => {
     if (!Array.isArray(items)) {
@@ -27,14 +22,11 @@ const SkuList = () => {
     });
   };
 
-  const dataSource = dataResult(data);
+  const dataSource = dataResult(data && data.skuClass);
 
   const [spuClass, setSpuClass] = useState();
 
   const Left = () => {
-    if (loading) {
-      return (<div style={{textAlign: 'center', marginTop: 50}}><Spin size="large" /></div>);
-    }
     return (
       <>
         <Tree

@@ -12,6 +12,7 @@ import Form from '@/components/Form';
 import {repairDetail, repairAdd, repairEdit} from '../repairUrl';
 import * as SysField from '../repairField';
 import {useRequest} from '@/util/Request';
+import store from '@/store';
 
 const {FormItem} = Form;
 
@@ -26,6 +27,8 @@ const RepairEdit = ({...props}) => {
   const {value} = props;
 
   const [state,setState] = useState();
+
+  const [areaData] = store.useModel('dataSource');
 
   const formRef = useRef();
 
@@ -60,7 +63,7 @@ const RepairEdit = ({...props}) => {
 
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
-            <FormItem label="省/市/区" name="area" component={SysField.Province} required />
+            <FormItem label="省/市/区" name="area" component={SysField.Province} options={areaData && areaData.area} required />
           </MegaLayout>
           <MegaLayout labelWidth={120} grid>
             <FormItem label="详细地址" name="address" component={SysField.Address} required />

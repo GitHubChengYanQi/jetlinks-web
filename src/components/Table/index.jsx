@@ -20,6 +20,7 @@ const TableWarp = ({
   actions,
   title,
   NoSortAction,
+  maxHeight,
   selectedRowKeys,
   api,
   tableData,
@@ -234,7 +235,7 @@ const TableWarp = ({
               }}
               footer={footer}
               layout
-              scroll={{x: 'max-content'}}
+              scroll={{x: 'max-content',y:maxHeight}}
               sticky={{
                 getContainer: () => {
                   return document.getElementById('tableContent');

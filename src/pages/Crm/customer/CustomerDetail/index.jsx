@@ -1,11 +1,11 @@
 import React, {useRef, useState} from 'react';
-import {Button, Card, Col, Row, Tabs, Empty, Typography} from 'antd';
+import {Button, Card, Col, Row, Tabs, Empty, Typography, Tag, Space} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {EditOutlined} from '@ant-design/icons';
 import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import {customerDelete, customerDetail, customerEdit} from '@/pages/Crm/customer/CustomerUrl';
 import Description from '@/pages/Crm/customer/CustomerDetail/compontents/Description';
 import Desc from '@/pages/Crm/customer/CustomerDetail/compontents/Desc';
@@ -92,19 +92,35 @@ const CustomerDetail = ({id, status}) => {
               />
             </Col>
             <Col>
-              <Typography.Paragraph
-                strong
-                copyable
-                editable={{
-                  onChange: (value) => {
-                    runCustomer({
+              <Space align='start'>
+                <Typography.Paragraph
+                  strong
+                  copyable
+                  editable={{
+                    onChange: (value) => {
+                      runCustomer({
+                        data: {
+                          customerId: data.customerId,
+                          customerName: value
+                        }
+                      });
+                    }
+                  }}>{data && data.customerName}</Typography.Paragraph>
+                <Tag
+                  style={{padding:'0 8px'}}
+                >
+                  简称：
+                  <InputEdit value={data.abbreviation} onChange={async (value) => {
+                    await request({
+                      ...customerEdit,
                       data: {
                         customerId: data.customerId,
-                        customerName: value
+                        abbreviation: value
                       }
                     });
-                  }
-                }}>{data && data.customerName}</Typography.Paragraph>
+                  }} />
+                </Tag>
+              </Space>
               <div>
                 <em>
                   {data.supply === 1 && <>供应商&nbsp;&nbsp;/&nbsp;&nbsp;</>}

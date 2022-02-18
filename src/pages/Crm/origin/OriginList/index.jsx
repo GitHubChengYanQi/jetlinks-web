@@ -6,6 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
@@ -14,11 +15,11 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import {createFormActions} from '@formily/antd';
 import {originDelete, originList} from '../OriginUrl';
 import * as SysField from '../OriginField';
 
 import OriginEdit from '../OriginEdit';
+import store from '@/store';
 
 
 const {Column} = AntTable;
@@ -29,6 +30,9 @@ const formActions = createFormActions();
 const OriginList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  const dataDispatchers = store.useModel('dataSource')[1];
+
   const actions = () => {
     return (
       <>
@@ -85,6 +89,7 @@ const OriginList = () => {
                 ref.current.open(record.originId);
               }} />
               <DelButton api={originDelete} value={record.originId} onSuccess={() => {
+                dataDispatchers.getOrigin();
                 tableRef.current.refresh();
               }} />
             </>
@@ -92,6 +97,7 @@ const OriginList = () => {
         }} width={300} />
       </Table>
       <Drawer width={800} title="项目来源" component={OriginEdit} onSuccess={() => {
+        dataDispatchers.getOrigin();
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

@@ -5,32 +5,30 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
+import {createFormActions, FormEffectHooks} from '@formily/antd';
+import {notification} from 'antd';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
-import {createAsyncFormActions, createFormActions, FormEffectHooks} from '@formily/antd';
-import {notification} from 'antd';
 import {request, useRequest} from '@/util/Request';
-import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
-import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import {Batch} from '../skuField';
 import {Spu} from '@/pages/Erp/Spus/spuField';
 import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
 
 const {FormItem} = Form;
 
-const ApiConfig = {
-  view: skuDetail,
-  add: skuAdd,
-  save: skuEdit
-};
 
 const SkuEdit = ({...props}, ref) => {
 
-  const {value} = props;
+  const {value, addUrl, ...other} = props;
+
+  const ApiConfig = {
+    view: skuDetail,
+    add: addUrl || skuAdd,
+    save: skuEdit
+  };
+  console.log(ApiConfig);
 
   const formRef = useRef();
 
@@ -63,15 +61,17 @@ const SkuEdit = ({...props}, ref) => {
   });
 
 
-
   return (
     <div style={{padding: 16}}>
       <Form
-        {...props}
+        {...other}
         value={value.skuId || false}
         ref={formRef}
         defaultValue={{
-          'spuClassification': value.spuResult && {name:value.spuResult.spuClassificationResult.name,id:value.spuResult.spuClassificationId},
+          'spuClassification': value.spuResult && {
+            name: value.spuResult.spuClassificationResult.name,
+            id: value.spuResult.spuClassificationId
+          },
           'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,
           'standard': value.standard,
@@ -114,7 +114,7 @@ const SkuEdit = ({...props}, ref) => {
                 }
               );
 
-              if (spu.spuClassificationResult.type === 2){
+              if (spu.spuClassificationResult.type === 2) {
                 setFieldState(
                   'spuClass',
                   state => {
@@ -125,7 +125,7 @@ const SkuEdit = ({...props}, ref) => {
                 setFieldState(
                   'spuClassification',
                   state => {
-                    state.value = {name:spu.spuClassificationResult.name,id:spu.spuClassificationId};
+                    state.value = {name: spu.spuClassificationResult.name, id: spu.spuClassificationId};
                   }
                 );
               }
@@ -154,7 +154,7 @@ const SkuEdit = ({...props}, ref) => {
           });
 
           FormEffectHooks.onFieldValueChange$('spuClassification').subscribe(({value}) => {
-            if (value){
+            if (value) {
               setFieldState(
                 'spu',
                 state => {
@@ -170,7 +170,7 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="物料编码"
           name="standard"
-          placeholder='请输入自定义物料编码'
+          placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
           required
@@ -178,7 +178,7 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="物料分类"
           name="spuClass"
-          placeholder='请选择所属分类'
+          placeholder="请选择所属分类"
           defaultParams={{data: {isNotproduct: 1}}}
           component={SysField.SpuClass}
           required />
@@ -209,7 +209,7 @@ const SkuEdit = ({...props}, ref) => {
         />
         <FormItem
           label="规格"
-          placeholder='无规格内容可填写“型号”'
+          placeholder="无规格内容可填写“型号”"
           name="specifications"
           component={SysField.Specs}
         />

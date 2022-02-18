@@ -23,7 +23,7 @@ export const Latitude = (props) => {
   return (<InputNumber min={0}   {...props} />);
 };
 export const Region = (props) => {
-  const {city, onChange, value} = props;
+  const {city, onChange} = props;
 
 
   const {run} = useRequest(commonAreaList, {
@@ -45,10 +45,7 @@ export const Region = (props) => {
     }
   }, [city]);
 
-  return (<Cascader api={{
-    url: '/commonArea/treeView',
-    method: 'POST',
-  }} {...props} />);
+  return (<Cascader {...props} />);
 };
 export const CustomerId = (props) => {
 

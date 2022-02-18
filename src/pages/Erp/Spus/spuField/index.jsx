@@ -55,7 +55,7 @@ export const SpuClass = (props) => {
   return (<SetSelectOrCascader
     api={spuClassificationTreeVrew}
     width={200}
-    cascader
+    moduleType='cascader'
     title="设置分类"
     component={SpuClassificationList} {...props} />);
 };
@@ -81,7 +81,7 @@ export const UnitId = (props) => {
 export const CategoryId = (props) => {
 
   return (
-    <SetSelectOrCascader api={categoryTree} width={200} cascader title="设置配置" component={CategoryList} {...props} />);
+    <SetSelectOrCascader api={categoryTree} width={200} moduleType='cascader' title="设置配置" component={CategoryList} {...props} />);
 };
 export const Type = (props) => {
   return (

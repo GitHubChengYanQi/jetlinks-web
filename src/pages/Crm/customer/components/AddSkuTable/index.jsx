@@ -22,7 +22,7 @@ const AddSkuTable = ({
   onChange(dataSources);
 
   const addDataSource = (data) => {
-    setDataSource([...dataSource, ...data]);
+    setDataSource(data);
   };
 
   const getDataSource = () => {
@@ -71,6 +71,8 @@ const AddSkuTable = ({
         }
       }}
     >
+      <Table.Column title="序号" width={70} align='center' dataIndex="key" />
+      <Table.Column title="物料编号" width={200} dataIndex="coding" />
       <Table.Column title="物料" width={800} dataIndex="skuResult" />
       <Table.Column title="品牌" width={400} dataIndex="skuId" render={(skuId, record, index) => {
         return <>

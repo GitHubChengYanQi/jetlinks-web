@@ -41,7 +41,7 @@ export const Ownership = (props) =>{
   return (<AntdSelect options={[{label:'有限责任公司',value:0},{label:'个人独资企业',value:1},{label:'合伙企业',value:2},{label:'全民所有制企业',value:3},{label:'农民专业合作社',value:4}]} {...props}/>);
 };
 export const Region = (props) =>{
-  return (<Cascader api={apiUrl.commonArea} {...props}/>);
+  return (<Cascader {...props}/>);
 };
 export const CompetitionLevel = (props) =>{
   return (<AntdSelect options={[{label:'低',value:1},{label:'中',value:2},{label:'高',value:3}]} {...props}/>);

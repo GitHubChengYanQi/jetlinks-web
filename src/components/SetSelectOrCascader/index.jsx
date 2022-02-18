@@ -4,25 +4,34 @@ import {Button, Space} from 'antd';
 import Cascader from '@/components/Cascader';
 import Modal from '@/components/Modal';
 import Select from '@/components/Select';
+import TreeSelect from '@/components/TreeSelect';
 
 
-const SetSelectOrCascader = ({disabled, component, title, cascader, width, api, ...props}) => {
+const SetSelectOrCascader = ({disabled, component, title, moduleType, width, api, ...props}) => {
 
   const ref = useRef();
 
   const [state, {setTrue, setFalse}] = useBoolean();
 
+  const getModule = () => {
+    switch (moduleType) {
+      case 'cascader':
+        return <Cascader resh={state} disabled={disabled} width={width} api={api} {...props} />;
+      case 'tree':
+        return <TreeSelect disabled={disabled} resh={state} width={width} api={api}  {...props} />;
+      default:
+        return <Select resh={state} disabled={disabled} width={width} api={api} {...props} />;
+    }
+  };
+
   return (
     <Space>
-      {cascader ?
-        <Cascader resh={state} disabled={disabled} width={width} api={api} {...props} />
-        :
-        <Select resh={state} disabled={disabled} width={width} api={api} {...props} />}
+      {getModule()}
       <Button onClick={() => {
         ref.current.open(false);
         setFalse();
       }}>{title || '设置分类'}</Button>
-      <Modal width={800} component={component} ref={ref} onClose={() => {
+      <Modal width={800} {...props} component={component} ref={ref} onClose={() => {
         ref.current.close();
         setTrue();
       }} />

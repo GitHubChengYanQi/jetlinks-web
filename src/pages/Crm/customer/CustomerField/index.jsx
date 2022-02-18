@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal, Button, Tag} from 'antd';
+import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Button, Tag} from 'antd';
 import moment from 'moment';
 import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
@@ -21,6 +21,9 @@ import FileUpload from '@/components/FileUpload';
 import AddSkuTable from '@/pages/Crm/customer/components/AddSkuTable';
 import CheckSku from '@/pages/Erp/sku/components/CheckSku';
 import {companyRoleList} from '@/pages/Crm/companyRole/companyRoleUrl';
+import Modal from '@/components/Modal';
+import SetSelectOrCascader from '@/components/SetSelectOrCascader';
+import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 
 export const ContactsName = (props) => {
 
@@ -200,11 +203,13 @@ export const Region = (props) => {
   return (<Cascader {...props} />);
 };
 
-export const AddSku = ({onChange}) => {
+export const AddSku = ({value,onChange}) => {
 
   const skuTableRef = useRef();
 
-  const [visible, setVisible] = useState();
+  const ref = useRef();
+
+  const addSkuRef = useRef();
 
   return (<>
     <ProCard
@@ -214,7 +219,7 @@ export const AddSku = ({onChange}) => {
       title="供应物料"
       headerBordered
       extra={<Button onClick={() => {
-        setVisible(true);
+        ref.current.open(true);
       }}>添加物料</Button>}
     >
 
@@ -225,17 +230,15 @@ export const AddSku = ({onChange}) => {
     </ProCard>
 
     <Modal
-      visible={visible}
-      width={800}
-      centered
-      bodyStyle={{padding: 0}}
-      footer={false}
-      onCancel={() => {
-        setVisible(false);
-      }}>
-      <CheckSku onChange={(value) => {
+      ref={ref}
+      width={1000}
+      footer={<Button type="primary" onClick={() => {
+        addSkuRef.current.change();
+      }}>选中并关闭</Button>}
+    >
+      <CheckSku value={value} ref={addSkuRef} onChange={(value) => {
         skuTableRef.current.addDataSource(value);
-        setVisible(false);
+        ref.current.close();
       }} />
     </Modal>
   </>);
@@ -431,12 +434,18 @@ export const Url = (props) => {
 
 
 export const BankAccount = (props) => {
-  return (<InputNumber style={{width: 200}}   {...props} />);
+  return (<InputNumber style={{width: 200}} controls={false}  {...props} />);
 };
 
 
 export const IndustryOne = (props) => {
-  return (<Cascader api={apiUrl.crmIndustryTreeView}  {...props} />);
+  return (<SetSelectOrCascader
+    type='tree'
+    api={apiUrl.crmIndustryTreeView}
+    width='200'
+    component={CrmIndustryList}
+    title='新增行业'
+    {...props} />);
 };
 
 

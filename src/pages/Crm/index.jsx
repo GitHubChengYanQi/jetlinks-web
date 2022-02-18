@@ -26,20 +26,18 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <OriginList />;
       case 'sslc':
         return <CrmBusinessSalesList />;
+      case 'htfl':
+        return <ContractClassList />;
       case 'htmb':
         return <TemplateList />;
       case 'khjb':
         return <CrmCustomerLevelList />;
       case 'hygl':
         return <CrmIndustryList />;
-      case 'jsgl':
-        return <CompanyRoleList />;
       case 'cpzl':
         return <DataClassificationList />;
       case 'hsfl':
         return <SpeechcraftTypeList />;
-      case 'htfl':
-        return <ContractClassList />;
       default:
         return null;
     }
@@ -67,6 +65,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="sslc">
             <span>销售分类管理</span>
           </Menu.Item>
+          <Menu.Item key="htfl">
+            <span>合同分类管理</span>
+          </Menu.Item>
           <Menu.Item key="htmb">
             <span>合同模板管理</span>
           </Menu.Item>
@@ -76,17 +77,11 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           <Menu.Item key="hygl">
             <span>行业管理</span>
           </Menu.Item>
-          <Menu.Item key="jsgl">
-            <span>职位管理</span>
-          </Menu.Item>
           <Menu.Item key="cpzl">
             <span>产品资料分类管理</span>
           </Menu.Item>
           <Menu.Item key="hsfl">
             <span>话术分类管理</span>
-          </Menu.Item>
-          <Menu.Item key="htfl">
-            <span>合同分类管理</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />

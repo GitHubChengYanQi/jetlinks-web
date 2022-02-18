@@ -7,6 +7,7 @@
 
 import React, {useRef, useState} from 'react';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -15,15 +16,13 @@ import Form from '@/components/Form';
 import {
   spuClassificationDelete,
   spuClassificationdeleteBatch,
-  spuClassificationList,
   spuClassificationTreeVrew
 } from '../spuClassificationUrl';
 import SpuClassificationEdit from '../spuClassificationEdit';
 import * as SysField from '../spuClassificationField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Table from '@/components/Table';
-import {useRequest} from '@/util/Request';
-import {createFormActions} from '@formily/antd';
+import store from '@/store';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,6 +34,8 @@ const SpuClassificationList = ({type}) => {
   const tableRef = useRef(null);
 
   const [ids, setIds] = useState([]);
+
+  const [state, dispatchers] = store.useModel('dataSource');
 
   const actions = () => {
     return (
@@ -80,7 +81,7 @@ const SpuClassificationList = ({type}) => {
         }}
         footer={footer}
       >
-        <Column title="分类名称" dataIndex="label" render={(value, record) => {
+        <Column title="分类名称" dataIndex="label" render={(value) => {
           return (
             <>
               {
@@ -96,6 +97,7 @@ const SpuClassificationList = ({type}) => {
                 ref.current.open(record.key);
               }} />
               <DelButton api={spuClassificationDelete} value={record.key} onSuccess={() => {
+                dispatchers.getSkuClass();
                 tableRef.current.refresh();
               }} />
             </>
@@ -103,6 +105,7 @@ const SpuClassificationList = ({type}) => {
         }} width={100} />
       </Table>
       <Drawer width={800} title="分类" type={type} component={SpuClassificationEdit} onSuccess={() => {
+        dispatchers.getSkuClass();
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

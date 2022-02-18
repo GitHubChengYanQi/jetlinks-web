@@ -26,6 +26,7 @@ import {competitorDelete, competitorList, deleteByIds} from '../../competitorUrl
 import CompetitorEdit from '../../competitorEdit';
 import * as SysField from '../../competitorField';
 import {customerBatchDelete} from '@/pages/Crm/customer/CustomerUrl';
+import store from '@/store';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,6 +36,8 @@ const formActionsPublic = createFormActions();
 const CompetitorTable = (props) => {
 
   const {competitionLevel, businessId, ...other} = props;
+
+  const [data] = store.useModel('dataSource');
 
   const history = useHistory();
   const {run: getList} = useRequest({
@@ -77,7 +80,7 @@ const CompetitorTable = (props) => {
           <FormItem mega-props={{span: 1}} placeholder="联系电话" name="phone" component={SysField.Phone} />
           <FormItem mega-props={{span: 1}} placeholder="员工规模" name="staffSize" component={SysField.StaffSize} />
           <FormItem mega-props={{span: 1}} placeholder="公司所有制" name="ownership" component={SysField.Ownership} />
-          <FormItem mega-props={{span: 1}} placeholder="地区" name="region" component={SysField.Region} />
+          <FormItem mega-props={{span: 1}} placeholder="地区" name="region" options={data && data.area} component={SysField.Region} />
           <FormItem mega-props={{span: 1}} placeholder="年销售" name="annualSales" component={SysField.AnnualSales} />
         </>
       );

@@ -21,6 +21,8 @@ import CrmBusinessSalesProcessList from '@/pages/Crm/business/crmBusinessSalesPr
 import {Name} from '../crmBusinessSalesField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {createFormActions} from '@formily/antd';
+import store from '@/store';
+import Modal from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -31,6 +33,9 @@ const CrmBusinessSalesList = () => {
   const ref = useRef(null);
   const refCrmBusinessSalesProcessList = useRef(null);
   const tableRef = useRef(null);
+
+  const dataDispatchers = store.useModel('dataSource')[1];
+
   const actions = () => {
     return (
       <>
@@ -93,18 +98,20 @@ const CrmBusinessSalesList = () => {
                 ref.current.open(record.salesId);
               }} />
               <DelButton api={crmBusinessSalesDelete} value={record.salesId} onSuccess={() => {
+                dataDispatchers.getBusinessSale();
                 tableRef.current.refresh();
               }} />
             </>
           );
         }} width={300} />
       </Table>
-      <Modal2 width={800} title="流程" component={CrmBusinessSalesEdit} onSuccess={() => {
+      <Modal width={800} title="流程" component={CrmBusinessSalesEdit} onSuccess={() => {
+        dataDispatchers.getBusinessSale();
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />
 
-      <Modal2 width={900} title="流程" component={CrmBusinessSalesProcessList} onSuccess={() => {
+      <Modal width={900} title="流程" component={CrmBusinessSalesProcessList} onSuccess={() => {
         refCrmBusinessSalesProcessList.current.close();
       }} ref={refCrmBusinessSalesProcessList} />
     </>

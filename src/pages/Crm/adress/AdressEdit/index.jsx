@@ -11,6 +11,7 @@ import Form from '@/components/Form';
 import * as SysField from '../AdressField';
 import {adressAdd, adressDetail, adressEdit} from '@/pages/Crm/adress/AdressUrl';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
+import store from '@/store';
 
 const {FormItem} = Form;
 
@@ -29,6 +30,8 @@ const AdressEdit = ({...props}) => {
   const [city, setCity] = useState();
 
   const {onFieldChange$} = FormEffectHooks;
+
+  const [data] = store.useModel('dataSource');
 
   const formActionsPublic = createFormActions();
 
@@ -52,7 +55,7 @@ const AdressEdit = ({...props}) => {
         onError={() => {
         }}
       >
-        <FormItem label="省市区地址" name="region" component={SysField.Region} city={city} required />
+        <FormItem label="省市区地址" name="region" component={SysField.Region} city={city} options={data && data.area} required />
         <FormItem label="详细地址" name="map" component={SysField.Map} />
         <FormItem hidden customer={customer} name="customerId" component={SysField.CustomerId} required />
       </Form>

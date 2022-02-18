@@ -128,34 +128,32 @@ const Import = ({
           4、点击【开始导入】
         </div>
 
-        <Space align='start'>
-          <Upload
-            maxCount={1}
-            listType="picture"
-            fileList={filelist}
-            onRemove={() => {
-              setFilelist([]);
-            }}
-            action={`${baseURI}Excel/importSku`}
-            headers={
-              {Authorization: cookie.get('tianpeng-token')}
-            }
-            name="file"
-            beforeUpload={(file) => {
-              if (file.name.indexOf('xlsx') === -1) {
-                message.warn('请上传xlsx类型的文件!');
-                return false;
-              }
-              setFilelist([file]);
+        <Upload
+          maxCount={1}
+          listType="picture"
+          fileList={filelist}
+          onRemove={() => {
+            setFilelist([]);
+          }}
+          action={`${baseURI}Excel/importSku`}
+          headers={
+            {Authorization: cookie.get('tianpeng-token')}
+          }
+          name="file"
+          beforeUpload={(file) => {
+            if (file.name.indexOf('xlsx') === -1) {
+              message.warn('请上传xlsx类型的文件!');
               return false;
-            }}
-          >
+            }
+            setFilelist([file]);
+            return false;
+          }}
+        >
+          <Space>
             <Button icon={<Icon type="icon-daoru" />} ghost type="primary">上传文件</Button>
-          </Upload>
-          <div>
             附件支持类型：XLSX，最大不超过10M
-          </div>
-        </Space>
+          </Space>
+        </Upload>
       </Space>
     </Modal>
   </>;

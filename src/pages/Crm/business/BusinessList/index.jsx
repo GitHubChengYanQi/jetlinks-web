@@ -1,41 +1,25 @@
 import React, {useState} from 'react';
-import {Divider, Layout, Spin, Tree} from 'antd';
+import {Divider, Tree} from 'antd';
 import BusinessTable from '@/pages/Crm/business/components/BusinessTable';
-import styles from '@/pages/Crm/business/BusinessList/index.module.scss';
-import {useRequest} from '@/util/Request';
-import Select from '@/components/Select';
-import {crmBusinessSalesListSelect, OrgNameListSelect} from '@/pages/Crm/business/BusinessUrl';
 import ListLayout from '@/layouts/ListLayout';
-
-const {Sider, Content} = Layout;
+import store from '@/store';
 
 const BusinessList = () => {
 
-  const {loading, data, run: crmBusinessSalesRun} = useRequest({
-    url: '/crmBusinessSales/list',
-    method: 'POST',
-    rowKey: 'salesId'
-  });
-  const {loading: log, data: da, run: originRun} = useRequest({
-    url: '/origin/list',
-    method: 'POST',
-    rowKey: 'originId'
-  });
+  const [dataState] = store.useModel('dataSource');
+  console.log(dataState);
 
-  const [value, setValue] = useState();
-  const [originValue, setOriginValue] = useState();
-
-  const crmBusinessSales = data ? data.map((values) => {
-    return {
-      title: values.name,
-      key: values.salesId,
-    };
-  }) : [];
-
-  const origin = da ? da.map((values) => {
+  const origin = (dataState && dataState.origin) ? dataState.origin.map((values) => {
     return {
       title: values.originName,
       key: values.originId,
+    };
+  }) : [];
+
+  const businessSale = (dataState && dataState.businessSale) ? dataState && dataState.businessSale.map((values) => {
+    return {
+      title: values.label,
+      key: values.value,
     };
   }) : [];
 
@@ -44,9 +28,6 @@ const BusinessList = () => {
   const [statement, setStatement] = useState();
 
   const Left = () => {
-    if (loading && log){
-      return (<div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>);
-    }
     return (
       <div>
         <Tree
@@ -63,36 +44,17 @@ const BusinessList = () => {
               key: '',
               children: [
                 {
-                  title:'赢单',
-                  key:'赢单'
-                },{
-                  title:'输单',
-                  key:'输单'
+                  title: '赢单',
+                  key: '赢单'
+                }, {
+                  title: '输单',
+                  key: '输单'
                 },
               ],
             },
           ]}
         />
         <Divider />
-        <div>
-          <Select
-            api={crmBusinessSalesListSelect}
-            placeholder="搜索流程"
-            value={value}
-            bordered={false}
-            notFoundContent={null}
-            defaultActiveFirstOption={false}
-            onChange={async (value) => {
-              await crmBusinessSalesRun(
-                {
-                  data: {
-                    salesId: value
-                  }
-                }
-              );
-              setValue(value);
-            }} />
-        </div>
         <Tree
           showLine
           onSelect={(value) => {
@@ -105,30 +67,11 @@ const BusinessList = () => {
             {
               title: '所有流程',
               key: '',
-              children: crmBusinessSales,
+              children: businessSale,
             },
           ]}
         />
         <Divider />
-        <div>
-          <Select
-            api={OrgNameListSelect}
-            placeholder="搜索来源"
-            value={originValue}
-            bordered={false}
-            notFoundContent={null}
-            defaultActiveFirstOption={false}
-            onChange={async (value) => {
-              await originRun(
-                {
-                  data: {
-                    originId: value
-                  }
-                }
-              );
-              setOriginValue(value);
-            }} />
-        </div>
         <Tree
           showLine
           onSelect={(value) => {
@@ -153,7 +96,7 @@ const BusinessList = () => {
 
   return (
     <ListLayout>
-      <BusinessTable left={Left()} status={status} state={state} statement={statement}  />
+      <BusinessTable left={Left()} status={status} state={state} statement={statement} />
     </ListLayout>
   );
 };

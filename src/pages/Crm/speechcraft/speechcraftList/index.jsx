@@ -3,8 +3,7 @@ import {Divider, Spin, Tree} from 'antd';
 import SpeechcraftTable from '@/pages/Crm/speechcraft/components/SpeechcraftTable';
 import SpeechcraftSelect from '@/pages/Crm/speechcraft/components/SpeechcraftSelect';
 import ListLayout from '@/layouts/ListLayout';
-import {useRequest} from '@/util/Request';
-import {speechcraftType} from '@/pages/Crm/speechcraft/speechcraftUrl';
+import store from '@/store';
 
 
 const SpeechcraftList = () => {
@@ -13,10 +12,9 @@ const SpeechcraftList = () => {
   const [state, setState] = useState('0');
   const [type, setType] = useState();
 
+  const [data] = store.useModel('dataSource');
 
-  const {loading,data} = useRequest(speechcraftType);
-
-  const speechcraftTypes = data ? data.length > 0 && data.map((items, index) => {
+  const speechcraftTypes = (data && data.speechcraftClass) ? data.speechcraftClass.map((items) => {
     return {
       title: items.label,
       key: items.value
@@ -25,9 +23,6 @@ const SpeechcraftList = () => {
 
 
   const Left = () => {
-    if (loading){
-      return (<div style={{textAlign:'center',marginTop:50}}> <Spin size="large" /></div>);
-    }
     return (
       <>
         <Tree
@@ -37,11 +32,7 @@ const SpeechcraftList = () => {
               setType(value[0]);
           }}
           showLine
-          // switcherIcon={<DownOutlined />}
-          // defaultExpandedKeys={['1']}
           defaultSelectedKeys={[state]}
-          // defaultCheckedKeys={['1']}
-          // onSelect={this.onSelect}
           defaultExpandAll
           treeData={[
             {

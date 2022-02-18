@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDraggable, useDroppable} from '@dnd-kit/core';
-import {Button, List, Menu} from 'antd';
+import {Menu} from 'antd';
 
 export function Draggable(props) {
 

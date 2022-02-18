@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Divider, Modal as AntModal, Table as AntTable, Tag} from 'antd';
+import {Button, Divider, Input, Modal as AntModal, Table as AntTable, Tag} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
@@ -29,6 +29,8 @@ const {FormItem} = Form;
 const ContactsTable = (props) => {
 
   const {customer, refresh} = props;
+
+  const [newCustomerId, setNewCustomerId] = useState();
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -138,18 +140,23 @@ const ContactsTable = (props) => {
     AntModal.confirm({
       title: '联系人离职',
       centered: true,
-      content: '请确认离职操作',
-      style: {margin: 'auto'},
+      content: <>
+        请确认离职操作
+        <Input onChange={(value)=>{
+          setNewCustomerId(value.target.value);
+        }} />
+      </>,
       cancelText: '取消',
       onOk: async () => {
-        await run({
-          data: {
-            customerId: record.customerResults && record.customerResults.length > 0 && record.customerResults[0].customerId,
-            contactsId: record.contactsId,
-            display: 0,
-          }
-        });
-        tableRef.current.submit();
+        console.log(newCustomerId);
+        // await run({
+        //   data: {
+        //     customerId: record.customerResults && record.customerResults.length > 0 && record.customerResults[0].customerId,
+        //     contactsId: record.contactsId,
+        //     display: 0,
+        //   }
+        // });
+        // tableRef.current.submit();
       },
       onCancel: () => {
         tableRef.current.submit();
@@ -181,10 +188,10 @@ const ContactsTable = (props) => {
         ref={tableRef}
       >
         <Column key={1} title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
-        <Column key={2} title="部门" align="center" width={200} render={(value, record) => {
+        <Column key={2} title="部门" align="center" dataIndex="deptResult" width={200} render={(value) => {
           return (
             <>
-             暂无
+              {value && value.fullName}
             </>
           );
         }} />

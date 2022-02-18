@@ -30,8 +30,8 @@ const CrmIndustryEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="industryId"
     >
-      <FormItem label="行业名称" name="industryName" component={SysField.IndustryName} required/>
       <FormItem label="上级" name="parentId" component={SysField.ParentId} />
+      <FormItem label="行业名称" name="industryName" component={SysField.IndustryName} required/>
     </Form>
   );
 };

@@ -22,21 +22,12 @@ const SelectSku = ({
   const [change, setChange] = useState();
 
   const object = (items) => {
-    let values = '';
-    items.skuJsons && items.skuJsons.map((item, index) => {
-      if (index === items.skuJsons.length - 1) {
-        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}` : '';
-      } else {
-        return values += (item.values && item.values.attributeValues) ? `${item.attribute && item.attribute.attribute}：${item.values && item.values.attributeValues}，` : '';
-      }
-    });
     return {
       disabled: skuIds && skuIds.filter((value) => {
         return value === items.skuId;
       }).length > 0,
-      label: items.spuResult && `${items.spuResult.spuClassificationResult && items.spuResult.spuClassificationResult.name} / ${items.spuResult.name}`,
+      label: items.spuResult && `${items.spuResult.spuClassificationResult && items.spuResult.spuClassificationResult.name} / ${items.spuResult.name} ${items.specifications ? `/ ${items.specifications}` : ''}`,
       value: items.skuId,
-      attribute: `${(values === '' ? '' : `( ${values} )`)}`,
       spu: items.spuResult,
       standard: items.standard
     };
@@ -46,7 +37,7 @@ const SelectSku = ({
     debounceInterval: 1000, onSuccess: (res) => {
       if (res.length === 1) {
         onChange(spu ? res[0].spuId : res[0].skuId);
-        setChange(object(res[0]).label + object(res[0]).attribute);
+        setChange(object(res[0]).label);
         setSpuClass(res[0].spuResult.spuClassificationResult.pid);
       }
     }
@@ -93,7 +84,7 @@ const SelectSku = ({
         onClear={() => {
           onChange(null);
         }}
-        value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
+        value={value && (change || (options && options[0] && options[0].label))}
         notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
         onSearch={(value) => {
@@ -132,10 +123,10 @@ const SelectSku = ({
               key={items.value}
               spu={items.spu}
               disabled={items.disabled}
-              title={items.label + (!spu && items.attribute)}
+              title={items.label}
               standard={items.standard}
-              value={`${items.label + items.attribute}standard:${items.standard}`}>
-              {items.label} {!spu && <em style={{color: '#c9c8c8', fontSize: 10}}>{items.attribute}</em>}
+              value={`${items.label}standard:${items.standard}`}>
+              {items.label}
             </Select.Option>
           );
         })}
@@ -150,7 +141,7 @@ const SelectSku = ({
           placeholder={placeholder}
           open={false}
           style={{width: width || 180}}
-          value={value && (change || (options && options[0] && options[0].label + options[0].attribute))}
+          value={value && (change || (options && options[0] && options[0].label))}
         />
       </Popover>
     </>);

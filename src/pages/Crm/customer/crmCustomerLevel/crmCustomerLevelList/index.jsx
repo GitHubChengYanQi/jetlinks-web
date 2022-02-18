@@ -6,8 +6,9 @@
  */
 
 import React, {useRef, useState} from 'react';
+import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,7 +18,7 @@ import {crmCustomerLevelDelete, crmCustomerLevelList} from '../crmCustomerLevelU
 import CrmCustomerLevelEdit from '../crmCustomerLevelEdit';
 import * as SysField from '../crmCustomerLevelField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {createFormActions} from '@formily/antd';
+import store from '@/store';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,6 +26,9 @@ const formActions = createFormActions();
 const CrmCustomerLevelList = () => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+
+  const [data, action] = store.useModel('dataSource');
+
   const actions = () => {
     return (
       <>
@@ -63,7 +67,7 @@ const CrmCustomerLevelList = () => {
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title='客户级别管理' />}
+        title={<Breadcrumb title="客户级别管理" />}
         api={crmCustomerLevelList}
         rowKey="customerLevelId"
         searchForm={searchForm}
@@ -81,6 +85,7 @@ const CrmCustomerLevelList = () => {
                 ref.current.open(record.customerLevelId);
               }} />
               <DelButton api={crmCustomerLevelDelete} value={record.customerLevelId} onSuccess={() => {
+                action.getCustomerLevel();
                 tableRef.current.refresh();
               }} />
             </>
@@ -88,6 +93,7 @@ const CrmCustomerLevelList = () => {
         }} width={300} />
       </Table>
       <Drawer width={800} title="客户级别" component={CrmCustomerLevelEdit} onSuccess={() => {
+        action.getCustomerLevel();
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

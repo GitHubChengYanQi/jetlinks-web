@@ -36,9 +36,8 @@ export const DeptId = (props) =>{
 };
 
 export const Sort = (props) =>{
-  return (<InputNumber min={0} {...props}/>);
+  return (<InputNumber {...props}/>);
 };
-
 
 export const CodingClass = (props) =>{
   return (<Input placeholder='大写字母或数字' {...props}/>);

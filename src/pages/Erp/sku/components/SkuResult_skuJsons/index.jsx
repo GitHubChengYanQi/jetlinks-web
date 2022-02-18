@@ -9,26 +9,7 @@ const SkuResultSkuJsons = ({skuResult}) => {
     {skuResult.spuResult.spuClassificationResult && skuResult.spuResult.spuClassificationResult.name}
     &nbsp;/&nbsp;
     {skuResult.spuResult.name}
-    &nbsp;&nbsp;
-    {
-      skuResult.skuJsons
-      &&
-      skuResult.skuJsons.length > 0
-      &&
-      skuResult.skuJsons[0].values.attributeValues
-      &&
-      <em style={{color: '#949292', fontSize: 10}}>
-        (
-        {
-          skuResult.skuJsons.map((items, index) => {
-            return (
-              <span key={index}>{items.attribute.attribute}：{items.values.attributeValues}</span>
-            );
-          })
-        }
-        )
-      </em>
-    }
+    {skuResult.specifications && <> &nbsp;/&nbsp; {skuResult.specifications}</>}
   </>;
 };
 

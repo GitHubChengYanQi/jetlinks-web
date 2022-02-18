@@ -31,13 +31,12 @@ const PartsEdit = ({...props}, ref) => {
   const [skuId, setSkuId] = useState();
 
   const [action, setAction] = useState((bomType === 2 && !value) ? 'researchBom' : 'productionBom');
-  console.log(action);
 
   useImperativeHandle(ref, () => ({
     submit: formRef.current.submit,
   }));
 
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(spuId ? 0 : 1);
 
   return (
     <>
@@ -138,7 +137,7 @@ const PartsEdit = ({...props}, ref) => {
                           </div>
                           <div style={{display: 'inline-block', width: '20%'}}>
                             <FormItem
-                              labelCol={7}
+                              labelCol={9}
                               initialValue={1}
                               label="数量"
                               name={`parts.${index}.number`}

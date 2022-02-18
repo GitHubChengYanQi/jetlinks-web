@@ -11,6 +11,7 @@ import {
   InputNumber,
   Radio, AutoComplete, Spin, Space, Select as AntdSelect, Button, Popover
 } from 'antd';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import {useRequest} from '@/util/Request';
@@ -25,9 +26,6 @@ import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import UnitList from '@/pages/Erp/unit/unitList';
 import FileUpload from '@/components/FileUpload';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
-import Modal from '@/components/Modal';
-import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
-import {QuestionCircleOutlined} from '@ant-design/icons';
 
 export const Type = (props) => {
 
@@ -129,14 +127,21 @@ export const SpuClass = (props) => {
 
   return (<SetSelectOrCascader
     api={spuClassificationTreeVrew}
-    cascader
+    moduleType='cascader'
     width={200}
     title="设置分类"
-    component={SpuClassificationList} {...other} />);
+    type={1}
+    component={SpuClassificationList}
+    {...other}
+  />);
 };
 
 export const Note = (props) => {
   return (<Input.TextArea {...props} />);
+};
+
+export const AddMethod = (props) => {
+  return (<Input {...props} />);
 };
 
 export const Specs = (props) => {

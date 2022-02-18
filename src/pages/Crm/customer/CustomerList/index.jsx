@@ -2,17 +2,16 @@ import React, {useState} from 'react';
 import {Divider, Spin, Tree} from 'antd';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ListLayout from '@/layouts/ListLayout';
-import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
 import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import store from '@/store';
 
 
 const CustomerList = ({supply}) => {
 
+  const [data] = store.useModel('dataSource');
 
-  const {loading, data, run} = useRequest({url: '/crmCustomerLevel/list', method: 'POST', rowKey: 'customerLevelId'});
-
-  const crmCustomerLevel = data ? data.map((values) => {
+  const crmCustomerLevel = (data && data.customerLevel) ? data.customerLevel.map((values) => {
     return {
       title: values.level,
       key: values.customerLevelId,
@@ -28,9 +27,6 @@ const CustomerList = ({supply}) => {
 
 
   const Left = () => {
-    if (loading) {
-      return (<div style={{textAlign: 'center', marginTop: 50}}><Spin size="large" /></div>);
-    }
     return (
       <>
         {!supply &&
@@ -89,25 +85,6 @@ const CustomerList = ({supply}) => {
           <Divider />
         </>
         }
-        <div>
-          <Select
-            api={CustomerLevelIdSelect}
-            placeholder="搜索级别"
-            value={value}
-            bordered={false}
-            notFoundContent={null}
-            defaultActiveFirstOption={false}
-            onChange={async (value) => {
-              await run(
-                {
-                  data: {
-                    customerLevelId: value
-                  }
-                }
-              );
-              setValue(value);
-            }} />
-        </div>
         <Tree
           showLine
           onSelect={(value) => {

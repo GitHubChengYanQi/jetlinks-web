@@ -29,14 +29,6 @@ const Desc = (props) => {
               }
             });
           }} /></Descriptions.Item>
-          <Descriptions.Item label="企业简称"><InputEdit value={data.abbreviation} onChange={async (value) => {
-            await run({
-              data: {
-                customerId: data.customerId,
-                abbreviation: value
-              }
-            });
-          }} /></Descriptions.Item>
           {!enterprise && <>
             <Descriptions.Item label={supply ? '供应商级别' : '客户级别'}>
               <SelectEdit
