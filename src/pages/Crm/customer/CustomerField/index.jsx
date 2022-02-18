@@ -394,7 +394,7 @@ export const Note = (props) => {
 };
 
 export const RowsNote = (props) => {
-  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={2}  {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={200} rows={4}  {...props} />);
 };
 
 export const CustomerLevelId = (props) => {

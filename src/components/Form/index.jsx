@@ -18,6 +18,7 @@ const FormWrapper = (
     labelCol,
     wrapperCol,
     api,
+    formStyle,
     fieldKey,
     value,
     defaultValue,
@@ -136,7 +137,7 @@ const FormWrapper = (
 
 
   return findData && <FormilyForm
-    style={{margin: 'auto',height:'100%'}}
+    style={{margin: 'auto',height:'100%',...formStyle}}
     actions={formActions}
     labelAlign={labelAlign}
     // defaultValue={defaultValue}

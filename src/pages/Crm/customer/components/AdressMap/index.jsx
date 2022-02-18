@@ -2,15 +2,15 @@ import React, {useState} from 'react';
 import {Input, InputNumber, Space} from 'antd';
 import Amap from '@/components/Amap';
 
-const AdressMap = (props) => {
+const AdressMap = ({width,value,onChange,...props}) => {
 
-  const [location, setLocation] = useState(props.value || {});
+  const [location, setLocation] = useState(value || {});
 
   return (
     <Space>
-      <Input {...props} value={location && location.address} style={{}} onChange={(value)=>{
+      <Input {...props} value={location && location.address} style={{width}} onChange={(value)=>{
         setLocation({...location,address:value.target.value});
-        props.onChange({address:value.target.value,map:location.location,city:location.city});
+        onChange({address:value.target.value,map:location.location,city:location.city});
       }} />
       <div>
         <InputNumber min={0}
@@ -25,7 +25,7 @@ const AdressMap = (props) => {
         />
         <Amap onChange={(value) => {
           setLocation(value);
-          props.onChange({address:value.address,map:value.location,city:value.city});
+          onChange({address:value.address,map:value.location,city:value.city});
         }} />
       </div>
     </Space>

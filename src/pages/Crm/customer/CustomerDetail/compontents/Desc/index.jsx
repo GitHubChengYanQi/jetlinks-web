@@ -20,7 +20,7 @@ const Desc = (props) => {
 
     return (
       <>
-        <Descriptions title="基础数据">
+        <Descriptions title='基本信息'>
           <Descriptions.Item label="法定代表人"><InputEdit value={data.legal} onChange={async (value) => {
             await run({
               data: {
