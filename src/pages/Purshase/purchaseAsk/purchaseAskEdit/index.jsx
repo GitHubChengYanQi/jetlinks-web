@@ -6,7 +6,7 @@
  */
 
 import React, {useImperativeHandle, useRef} from 'react';
-import {Avatar, Button, Card,  message, Popover, Space} from 'antd';
+import {Avatar, Button, Card, message, Popover, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
   FormEffectHooks,
@@ -60,8 +60,8 @@ const PurchaseAskEdit = ({...props}, ref) => {
             return `${items.skuId}${items.brandId}`;
           });
 
-          const sname = skuBrands.filter((item)=>{
-            const array = skuBrands.filter((value)=>{
+          const sname = skuBrands.filter((item) => {
+            const array = skuBrands.filter((value) => {
               return value === item;
             });
             return array.length > 1;
@@ -70,21 +70,15 @@ const PurchaseAskEdit = ({...props}, ref) => {
           if (required.length > 0) {
             message.warning('物料、申请数量为必填项！');
             return false;
-          }else if (sname.length > 0){
+          } else if (sname.length > 0) {
             message.warning('物料和品牌不能重复！');
             return false;
-          }else {
+          } else {
             return value;
           }
         }}
         effects={({setFieldState}) => {
           FormEffectHooks.onFieldValueChange$('purchaseListingParams.*.skuId').subscribe(async ({name, value}) => {
-            // const array = skuIds.data;
-            // if (value !== undefined)
-            //   array[name.match(/\d/g)[0]] = value;
-            // else
-            //   array.splice(name.match(/\d/g)[0], 1);
-            // setSkuIds({data: array});
 
             if (value) {
               const sku = await request({...skuDetail, data: {skuId: value}});
@@ -150,26 +144,26 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             component={SysField.BrandId}
                           />
                         </div>
-                        <div style={{width: '18%', display: 'inline-block'}}>
-                          <Space>
-                            <FormItem
-                              labelCol={10}
-                              itemStyle={{margin: 0}}
-                              label="申请数量"
-                              name={`purchaseListingParams.${index}.applyNumber`}
-                              component={SysField.ApplyNumber}
-                            />
-                            <FormItem
-                              labelCol={10}
-                              itemStyle={{margin: 0}}
-                              name={`purchaseListingParams.${index}.unitId`}
-                              component={SysField.UnitId}
-                            />
-                          </Space>
+                        <div style={{width: '12%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={12}
+                            itemStyle={{margin: 0}}
+                            label="申请数量"
+                            name={`purchaseListingParams.${index}.applyNumber`}
+                            component={SysField.ApplyNumber}
+                          />
+                        </div>
+                        <div style={{width: '3%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={10}
+                            itemStyle={{margin: 0}}
+                            name={`purchaseListingParams.${index}.unitId`}
+                            component={SysField.UnitId}
+                          />
                         </div>
                         <div style={{width: '13%', display: 'inline-block'}}>
                           <FormItem
-                            labelCol={10}
+                            labelCol={12}
                             itemStyle={{margin: 0}}
                             label={<>可用数量&nbsp;&nbsp;
                               <Popover content="您当前可使用此物料的数量=库存数量+采购数量-其他生产订单预定数量">
@@ -182,7 +176,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                         </div>
                         <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
-                            labelCol={7}
+                            labelCol={10}
                             itemStyle={{margin: 0}}
                             label="交付日期"
                             name={`purchaseListingParams.${index}.deliveryDate`}
