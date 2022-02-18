@@ -48,7 +48,7 @@ const ProcurementPlanDetalList = ({value}) => {
         headStyle={{display: 'none'}}
         api={procurementPlanDetalList}
         rowKey="detailId"
-        rowSelection
+        noRowSelection
         formActions={formActionsPublic}
         searchForm={searchForm}
         actions={actions()}

@@ -61,7 +61,7 @@ const PurchaseAskList = () => {
       <Table
         api={purchaseAskList}
         rowKey="purchaseAskId"
-        rowSelection
+        noRowSelection
         title={<Breadcrumb />}
         searchForm={searchForm}
         actions={actions()}

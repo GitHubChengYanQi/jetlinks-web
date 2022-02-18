@@ -6,11 +6,7 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
-import * as apiUrl from '../invoiceUrl';
+import {Input,InputNumber,Radio} from 'antd';
 
 export const CustomerId = (props) =>{
   return (<Input {...props}/>);
@@ -19,7 +15,7 @@ export const Bank = (props) =>{
   return (<Input {...props}/>);
 };
 export const BankAccount = (props) =>{
-  return (<Input {...props}/>);
+  return (<InputNumber style={{width:'100%'}} {...props}/>);
 };
 export const CreditCode = (props) =>{
   return (<Input {...props}/>);

@@ -97,7 +97,7 @@ const TableDetail = (props) => {
         api={contractId ? contractList : crmBusinessDetailedList}
         rowKey="id"
         contentHeight
-        rowSelection
+        noRowSelection
         formActions={formActionsPublic}
         searchForm={searchForm}
         ref={tableRef}

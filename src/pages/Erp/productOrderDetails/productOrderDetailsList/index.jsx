@@ -74,7 +74,7 @@ const ProductOrderDetailsList = ({value}) => {
           bodyStyle={{padding:0}}
           contentHeight
           bordered={false}
-          rowSelection
+          noRowSelection
           rowKey="productOrderDetailsId"
           searchForm={searchForm}
           actions={actions()}

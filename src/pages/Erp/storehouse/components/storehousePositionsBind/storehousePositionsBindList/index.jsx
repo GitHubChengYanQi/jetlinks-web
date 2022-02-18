@@ -63,7 +63,7 @@ const StorehousePositionsBindList = ({value}) => {
         headStyle={{display: 'none'}}
         formActions={formActionsPublic}
         rowKey="bindId"
-        rowSelection
+        noRowSelection
         bordered={false}
         bodyStyle={{padding: 0}}
         searchForm={searchForm}

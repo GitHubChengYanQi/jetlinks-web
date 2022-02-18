@@ -118,7 +118,7 @@ const InstockList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
-        rowSelection
+        noRowSelection
       >
         <Column key={1} title="入库单号" dataIndex="coding" render={(text, record) => {
           return (

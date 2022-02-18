@@ -210,12 +210,20 @@ const CustomerDetail = ({id, status}) => {
         <Row gutter={24}>
           <Col span={!enterprise ? 16 : 24}>
             <Card>
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="详细信息" key="1">
-                  <Description data={data} />
+              <Tabs defaultActiveKey="9">
+                <TabPane tab="物料信息" key="9">
+                  <SupplyList customer={data} />
                 </TabPane>
-                <TabPane tab="联系人" key="2">
+                <TabPane tab="联系信息" key="2">
                   <ContactsTable customer={data} refresh={() => {
+                    refresh();
+                  }} />
+                </TabPane>
+                <TabPane tab="合同记录" key="4">
+                  <ContractTable customerId={data && data.customerId} />
+                </TabPane>
+                <TabPane tab="财务信息" key="8">
+                  <InvoiceList customer={data} refresh={() => {
                     refresh();
                   }} />
                 </TabPane>
@@ -223,9 +231,6 @@ const CustomerDetail = ({id, status}) => {
                   <AdressList customer={data} refresh={() => {
                     refresh();
                   }} />
-                </TabPane>
-                <TabPane tab="合同" key="4">
-                  <ContractTable customerId={data && data.customerId} />
                 </TabPane>
                 <TabPane tab="货单" key="5">
                   <OrderList customerId={data && data.customerId} />
@@ -236,13 +241,8 @@ const CustomerDetail = ({id, status}) => {
                 <TabPane tab="附件" key="7">
                   <Upload customerId={data && data.customerId} />
                 </TabPane>
-                <TabPane tab="开票信息" key="8">
-                  <InvoiceList customer={data} refresh={() => {
-                    refresh();
-                  }} />
-                </TabPane>
-                <TabPane tab="物料信息" key="9">
-                  <SupplyList customer={data} />
+                <TabPane tab="企业信息" key="1">
+                  <Description data={data} />
                 </TabPane>
               </Tabs>
             </Card>

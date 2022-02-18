@@ -47,7 +47,7 @@ const InstockListTable = ({...props}, ref) => {
       rowKey="instockId"
       formActions={formActionsPublic}
       contentHeight
-      rowSelection
+      noRowSelection
       isModal={false}
       getCheckboxProps={(record) => ({
         disabled: record.state === 1, // Column configuration not to be checked

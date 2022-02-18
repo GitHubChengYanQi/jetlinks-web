@@ -35,11 +35,9 @@ const InvoiceEdit = ({...props}) => {
         return {...value,customerId};
       }}
     >
-      <FormItem label="开户行名称" name="bank" component={SysField.Bank} required/>
-      <FormItem label="开户行账号" name="bankAccount" component={SysField.BankAccount} required/>
-      <FormItem label="统一社会信用代码" name="creditCode" component={SysField.CreditCode} required/>
-      <FormItem label="邮箱" name="email" component={SysField.Email} required/>
-      <FormItem label="是否默认" name="isDefault" value={0} component={SysField.IsDefault} required/>
+      <FormItem label="开户名称" name="bank" component={SysField.Bank} required/>
+      <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} required/>
+      <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} required/>
     </Form>
   );
 };

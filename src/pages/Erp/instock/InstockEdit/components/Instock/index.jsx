@@ -75,7 +75,7 @@ const Instock = (props) => {
           headStyle={{display: 'none'}}
           rowKey="instockListId"
           contentHeight
-          rowSelection
+          noRowSelection
           isModal={false}
           searchForm={searchForm}
           ref={tableRef}

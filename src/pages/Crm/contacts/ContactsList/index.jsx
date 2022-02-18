@@ -145,7 +145,8 @@ const ContactsTable = (props) => {
         await run({
           data: {
             customerId: record.customerResults && record.customerResults.length > 0 && record.customerResults[0].customerId,
-            contactsId: record.contactsId
+            contactsId: record.contactsId,
+            display: 0,
           }
         });
         tableRef.current.submit();
@@ -180,6 +181,13 @@ const ContactsTable = (props) => {
         ref={tableRef}
       >
         <Column key={1} title="联系人姓名" fixed align="center" width={120} dataIndex="contactsName" />
+        <Column key={2} title="部门" align="center" width={200} render={(value, record) => {
+          return (
+            <>
+             暂无
+            </>
+          );
+        }} />
         <Column key={2} title="职务" align="center" width={200} render={(value, record) => {
           return (
             <>
@@ -187,11 +195,13 @@ const ContactsTable = (props) => {
             </>
           );
         }} />
-        <Column key={3} title="客户名称" width={300} dataIndex="clientId" render={(value, record) => {
+        {!customer && <Column key={3} title="关联客户" width={300} dataIndex="clientId" render={(value, record) => {
           return (
-            record.customerResults && record.customerResults.length > 0 && record.customerResults[0].customerName
+            record.customerResults && record.customerResults.map((item) => {
+              return item.customerName;
+            }).toString()
           );
-        }} />
+        }} />}
 
         <Column key={4} title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
           return (

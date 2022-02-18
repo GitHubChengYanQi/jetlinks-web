@@ -49,7 +49,7 @@ const PurchaseQuotationList = ({
     <>
       {name && <Card title={name} bordered={false} bodyStyle={{padding: 0}} />}
       <Table
-        rowSelection
+        noRowSelection
         formActions={formActionsPublic}
         contentHeight={check}
         title={<Breadcrumb />}

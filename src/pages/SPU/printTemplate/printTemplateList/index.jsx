@@ -54,7 +54,7 @@ const PrintTemplateList = () => {
         api={printTemplateList}
         rowKey="printTemplateId"
         searchForm={searchForm}
-        rowSelection
+        noRowSelection
         formActions={formActionsPublic}
         actions={actions()}
         ref={tableRef}

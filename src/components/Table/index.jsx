@@ -35,7 +35,7 @@ const TableWarp = ({
   configPagination,
   tableKey,
   branch,
-  rowSelection,
+  noRowSelection,
   bodyStyle,
   bordered,
   defaultSelectedRowKeys,
@@ -138,10 +138,10 @@ const TableWarp = ({
     }
   };
 
-  const {form, table: tableProps} = useFormTableQuery(requestMethod,null,{
-    pagination:{
+  const {form, table: tableProps} = useFormTableQuery(requestMethod, null, {
+    pagination: {
       pageSize,
-      pageSizeOptions:[5,10,20,50,100]
+      pageSizeOptions: [5, 10, 20, 50, 100]
     }
   });
 
@@ -222,7 +222,7 @@ const TableWarp = ({
                   position: ['bottomRight']
                 }
               }
-              rowSelection={rowSelection || {
+              rowSelection={!noRowSelection && {
                 type: selectionType || 'checkbox',
                 defaultSelectedRowKeys,
                 selectedRowKeys,

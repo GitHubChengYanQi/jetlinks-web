@@ -95,7 +95,7 @@ const StockTableList = (props) => {
         listHeader={TcDisabled}
         api={stockList}
         isModal={false}
-        rowSelection={TcDisabled}
+        noRowSelection={TcDisabled}
         formActions={formActionsPublic}
         // SearchButton={Search()}
         layout={search}

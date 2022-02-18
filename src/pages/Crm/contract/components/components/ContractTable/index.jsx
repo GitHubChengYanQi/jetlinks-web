@@ -75,9 +75,9 @@ const ContractTable = (props) => {
               :
               <FormItem
                 mega-props={{span: 1}}
-                placeholder="甲方"
+                placeholder="乙方"
                 value={customerId || null}
-                name="partyA"
+                name="partyB"
                 component={SysField.CustomerNameListSelect} />
           }
         </>

@@ -58,7 +58,7 @@ const ApplyDetailsList = (props) => {
         headStyle={{display:'none'}}
         title="发货申请明细"
         api={applyDetailsList}
-        rowSelection
+        noRowSelection
         rowKey="outstockApplyDetailsId"
         searchForm={searchForm}
         // actions={actions()}

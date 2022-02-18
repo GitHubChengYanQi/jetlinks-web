@@ -31,7 +31,7 @@ const TableDetail = (props) => {
     <>
       <Table
         contentHeight
-        rowSelection
+        noRowSelection
         headStyle={{display: 'none'}}
         api={contractDetailList}
         formActions={formActionsPublic}

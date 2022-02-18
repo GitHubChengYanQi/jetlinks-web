@@ -47,7 +47,7 @@ const DispatchingList = (props) => {
         formActions={formActionsPublic}
         rowKey="dispatchingId"
         showSearchButton={false}
-        rowSelection
+        noRowSelection
         searchForm={searchForm}
         isModal={false}
         ref={tableRef}

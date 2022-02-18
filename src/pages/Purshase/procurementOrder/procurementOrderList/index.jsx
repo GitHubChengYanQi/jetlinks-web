@@ -49,7 +49,7 @@ const ProcurementOrderList = () => {
   return (
     <>
       <Table
-        rowSelection
+        noRowSelection
         title={<Breadcrumb />}
         api={procurementOrderList}
         rowKey="procurementOrderId"

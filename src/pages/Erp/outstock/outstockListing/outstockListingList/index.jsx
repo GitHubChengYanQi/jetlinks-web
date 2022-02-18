@@ -101,7 +101,7 @@ const OutstockListingList = (props) => {
             </>;
           },
         }}
-        rowSelection
+        noRowSelection
         formActions={formActionsPublic}
         bodyStyle={{padding: 0}}
         bordered={false}

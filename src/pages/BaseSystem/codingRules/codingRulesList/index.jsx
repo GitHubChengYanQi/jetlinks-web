@@ -85,7 +85,7 @@ const CodingRulesList = () => {
         isModal
         formActions={formActionsPublic}
         api={codingRulesList}
-        rowSelection
+        noRowSelection
         rowKey="codingRulesId"
         searchForm={searchForm}
         actions={actions()}

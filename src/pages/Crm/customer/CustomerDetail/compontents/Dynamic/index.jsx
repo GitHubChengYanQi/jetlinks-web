@@ -62,7 +62,7 @@ const Dynamic = (props) => {
         headStyle={{display: 'none'}}
         searchForm={searchForm}
         selectionType
-        rowSelection
+        noRowSelection
         noSort
         bodyStyle={{padding: 0}}
         bordered={false}

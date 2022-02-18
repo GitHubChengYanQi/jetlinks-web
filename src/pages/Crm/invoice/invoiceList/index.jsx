@@ -89,10 +89,9 @@ const InvoiceList = ({customer,refresh}) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="开户行名称" dataIndex="bank" />
-        <Column title="开户行账号" dataIndex="bankAccount" />
-        <Column title="统一社会信用代码" dataIndex="creditCode" />
-        <Column title="邮箱" dataIndex="email" />
+        <Column title="开户名称" dataIndex="bank" />
+        <Column title="开户行号" dataIndex="bankNo" />
+        <Column title="开户账号" dataIndex="bankAccount" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           const isDefaultInvoiceId = customer && (record.invoiceId === customer.invoiceId);

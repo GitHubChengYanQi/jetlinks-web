@@ -67,7 +67,7 @@ const Track = (props) => {
       <Table
         searchForm={searchForm}
         headStyle={{display: 'none'}}
-        rowSelection
+        noRowSelection
         noSort
         bordered={false}
         bodyStyle={{padding: 0}}

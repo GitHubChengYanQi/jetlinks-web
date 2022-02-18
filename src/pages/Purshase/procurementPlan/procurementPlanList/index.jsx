@@ -38,7 +38,7 @@ const ProcurementPlanList = () => {
     <>
       <Table
         title={<Breadcrumb />}
-        rowSelection
+        noRowSelection
         api={procurementPlanList}
         rowKey="procurementPlanId"
         searchForm={searchForm}

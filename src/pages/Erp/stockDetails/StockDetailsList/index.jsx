@@ -85,7 +85,7 @@ const StockDetailsList = (props) => {
         headStyle={{display: 'none'}}
         rowKey="stockItemId"
         searchForm={searchForm}
-        rowSelection
+        noRowSelection
         footer={value ? footer : false}
         onChange={(keys, all) => {
           setIds(all);

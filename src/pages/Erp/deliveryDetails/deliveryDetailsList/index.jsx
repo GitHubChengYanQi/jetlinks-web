@@ -48,7 +48,7 @@ const DeliveryDetailsList = () => {
         isModal={false}
         searchForm={searchForm}
         // actions={actions()}
-        rowSelection
+        noRowSelection
         contentHeight
         headStyle={{display:'none'}}
         ref={tableRef}

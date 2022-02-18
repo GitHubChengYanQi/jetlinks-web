@@ -50,7 +50,7 @@ const ShipSetpClassList = () => {
       <Table
         title={<Breadcrumb title='工序分类' />}
         contentHeight
-        rowSelection
+        noRowSelection
         formActions={formActionsPublic}
         api={shipSetpClassList}
         rowKey="shipSetpClassId"

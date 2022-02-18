@@ -6,7 +6,8 @@
  */
 
 import React, {useRef} from 'react';
-import {Divider, Table as AntTable} from 'antd';
+import {Button, Divider, Space, Table as AntTable} from 'antd';
+import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -23,6 +24,7 @@ const {FormItem} = Form;
 const SupplyList = ({customer}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
+  const history = useHistory(null);
   const actions = () => {
     return (
       <>
@@ -59,7 +61,12 @@ const SupplyList = ({customer}) => {
         ref={tableRef}
       >
         <Column title="物料" dataIndex="skuId" render={(value,record)=>{
-          return <SkuResultSkuJsons skuResult={record.skuResult} />;
+          return <Space>
+            <SkuResultSkuJsons skuResult={record.skuResult} />
+            <Button type='link' onClick={()=>{
+              history.push(`/SPU/sku/${value}`);
+            }}>详情</Button>
+          </Space>;
         }} />
         <Column title="品牌" dataIndex="brandResult" render={(value)=>{
           return <>{value && value.brandName}</>;

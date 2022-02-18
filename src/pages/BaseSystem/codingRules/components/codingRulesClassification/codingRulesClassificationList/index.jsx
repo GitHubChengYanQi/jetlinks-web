@@ -53,7 +53,7 @@ const CodingRulesClassificationList = ({toggle}) => {
       <Table
         title={<Breadcrumb title='编码分类管理' />}
         api={codingRulesClassificationList}
-        rowSelection
+        noRowSelection
         rowKey="codingRulesClassificationId"
         searchForm={searchForm}
         formActions={formActionsPublic}

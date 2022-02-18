@@ -45,7 +45,7 @@ const Dynamic = (props) => {
       <Table
         headStyle={{display: 'none'}}
         bordered={false}
-        rowSelection
+        noRowSelection
         searchForm={searchForm}
         bodyStyle={{padding: 0}}
         selectionType

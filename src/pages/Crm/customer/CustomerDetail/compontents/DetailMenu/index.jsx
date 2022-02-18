@@ -7,7 +7,6 @@ import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import {supplierBlacklistAdd} from '@/pages/Crm/supplierBlacklist/supplierBlacklistUrl';
 
 const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
-  const ref = useRef(null);
   const history = useHistory();
 
   const [visible, setVisible] = useState();
@@ -74,10 +73,7 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
     switch (type) {
       case 'customer':
         return <>
-          <Menu.Item key="1" onClick={() => {
-            ref.current.open(data.customerId);
-          }}>编辑</Menu.Item>
-          {supply && <Menu.Item key="1" onClick={() => {
+          {supply && <Menu.Item key="2" onClick={() => {
             setVisible(true);
           }}>加入黑名单</Menu.Item>}
           <Menu.Item danger key="delete" onClick={() => {
@@ -106,11 +102,6 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
           管理
         </Button>
       </Dropdown>
-      <CreateNewCustomer title="客户" model={CustomerEdit} widths={800} onSuccess={() => {
-        if (typeof refresh === 'function')
-          refresh();
-        ref.current.close();
-      }} ref={ref} />
 
       <Modal
         title={`确定要将【 ${data.customerName} 】拉入黑名单吗？`}
@@ -124,7 +115,7 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
               supplierBlack({
                 data: {
                   supplierId: data.customerId,
-                  remark:note
+                  remark: note
                 }
               });
             }}>拉入黑名单</Button>
