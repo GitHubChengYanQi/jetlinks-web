@@ -27,6 +27,7 @@ export const ContactsName = (props) => {
   const {value, onChange} = props;
 
   const {loading, data, run} = useRequest({url: '/contacts/list?limit=5&page=1', method: 'POST'}, {
+    manual: true,
     debounceInterval: 300,
   });
 
@@ -41,7 +42,7 @@ export const ContactsName = (props) => {
             color="blue"
             style={{marginRight: 3}}
           >
-            {value.phoneParams ? value.phoneParams[0] && value.phoneParams[0].phoneNumber : ''}
+            {value.phoneParams ? value.phoneParams[0] && value.phoneParams[0].phone : ''}
           </Tag>
         </div>
       </>
@@ -52,8 +53,8 @@ export const ContactsName = (props) => {
     <AutoComplete
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={options}
-      value={typeof value === 'object' && value.name}
+      options={value && typeof value === 'object' && value.name && options}
+      value={value && typeof value === 'object' && value.name}
       onSelect={(value, option) => {
         onChange({id: value, name: option.title});
       }}
@@ -75,10 +76,11 @@ export const ContactsName = (props) => {
 
 export const CompanyRoleId = (props) => {
 
-  const {value, onChange,placeholder} = props;
+  const {value, onChange, disabled, placeholder} = props;
 
   const {loading, data, run} = useRequest(companyRoleList, {
     debounceInterval: 300,
+    manual: true,
   });
 
   const options = (!loading && data) ? data.map((value) => {
@@ -90,10 +92,11 @@ export const CompanyRoleId = (props) => {
 
   return <>
     <AutoComplete
+      disabled={disabled}
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={options}
-      value={typeof value === 'object' && value.name}
+      options={value && typeof value === 'object' && value.name && options}
+      value={value && typeof value === 'object' && value.name}
       onSelect={(value, option) => {
         onChange({id: value, name: option.label});
       }}
@@ -114,7 +117,49 @@ export const CompanyRoleId = (props) => {
 };
 
 export const DeptName = (props) => {
-  return <Input {...props} />;
+
+  const {value, onChange, disabled, placeholder} = props;
+
+  const {loading, data, run} = useRequest({
+    url: '/daoxinDept/list',
+    method: 'POST'
+  }, {
+    debounceInterval: 300,
+    manual: true,
+  });
+
+  const options = (!loading && data) ? data.map((value) => {
+    return {
+      label: value.fullName,
+      value: value.deptId,
+    };
+  }) : [];
+
+
+  return <>
+    <AutoComplete
+      disabled={disabled}
+      dropdownMatchSelectWidth={100}
+      notFoundContent={loading && <Spin />}
+      options={value && typeof value === 'object' && value.name && options}
+      value={value && typeof value === 'object' && value.name}
+      onSelect={(value, option) => {
+        onChange({id: value, name: option.label});
+      }}
+    >
+      <Input
+        placeholder={placeholder}
+        onChange={(value) => {
+          onChange({name: value.target.value});
+          run({
+            data: {
+              fullName: value.target.value,
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
 };
 
 export const Location = (props) => {
@@ -202,6 +247,7 @@ export const CustomerName = (props) => {
   const {value, onChange, supply, onSuccess} = props;
 
   const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST'}, {
+    manual: true,
     debounceInterval: 300,
   });
 
@@ -229,15 +275,12 @@ export const CustomerName = (props) => {
     <AutoComplete
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={[{
+      options={value && [{
         label: '已存在供应商',
         options
       }]}
       placeholder={supply ? '请输入供应商名称' : '请输入客户名称'}
       value={value}
-      onSelect={() => {
-
-      }}
     >
       <Input
         onChange={(value) => {
@@ -388,7 +431,7 @@ export const Url = (props) => {
 
 
 export const BankAccount = (props) => {
-  return (<InputNumber style={{width:200}}   {...props} />);
+  return (<InputNumber style={{width: 200}}   {...props} />);
 };
 
 

@@ -17,22 +17,20 @@ import {
   customerAdd,
   customerDetail, customerEdit
 } from '@/pages/Crm/customer/CustomerUrl';
-
 import {request, useRequest} from '@/util/Request';
 import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {commonArea} from '@/pages/Crm/adress/AdressUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
-import {BankAccount} from '@/pages/Crm/customer/CustomerField';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
 
 const span = 4;
 
-const CustomerEdit = ({onChange, ...props}) => {
+const formActionsPublic = createFormActions();
 
-  const formActionsPublic = createFormActions();
+const CustomerEdit = ({onChange, ...props}) => {
 
   const ApiConfig = {
     view: customerDetail,
@@ -109,7 +107,7 @@ const CustomerEdit = ({onChange, ...props}) => {
               if (item && item.contactsName) {
                 contactsParams.push({
                   contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
-                  phoneParams: [{phoneNumber: value.phoneNumber}],
+                  phoneParams: [{phoneNumber: item.phoneNumber}],
                   deptName: item.deptName,
                   companyRole: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
                   contractNote: item.contractNote
@@ -164,23 +162,21 @@ const CustomerEdit = ({onChange, ...props}) => {
                 if (res) {
                   const phoneNumber = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].phoneNumber;
                   state.value = phoneNumber;
-                  state.props.disabled = phoneNumber;
                 } else {
                   state.value = null;
-                  state.props.disabled = false;
                 }
+                state.props.disabled = res;
               });
               setFieldState('deptName', state => {
                 state.props.disabled = res;
               });
               setFieldState('companyRole', state => {
                 if (res) {
-                  state.value = res.companyRole;
-                  state.props.disabled = res.companyRole;
+                  state.value = {name: res.companyRoleResult.position};
                 } else {
                   state.value = null;
-                  state.props.disabled = false;
                 }
+                state.props.disabled = res;
               });
               setFieldState('contractNote', state => {
                 state.props.disabled = res;
@@ -205,11 +201,10 @@ const CustomerEdit = ({onChange, ...props}) => {
                   if (res) {
                     const phoneNumber = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].phoneNumber;
                     state.value = phoneNumber;
-                    state.props.disabled = phoneNumber;
                   } else {
                     state.value = null;
-                    state.props.disabled = false;
                   }
+                  state.props.disabled = res;
                 });
               setFieldState(
                 FormPath.transform(name, /\d/, ($1) => {
@@ -222,12 +217,11 @@ const CustomerEdit = ({onChange, ...props}) => {
                   return `contactsParams.${$1}.companyRole`;
                 }), state => {
                   if (res) {
-                    state.value = res.companyRole;
-                    state.props.disabled = res.companyRole;
+                    state.value = {name: res.companyRoleResult.position};
                   } else {
                     state.value = null;
-                    state.props.disabled = false;
                   }
+                  state.props.disabled = res;
                 });
               setFieldState(
                 FormPath.transform(name, /\d/, ($1) => {
@@ -309,7 +303,7 @@ const CustomerEdit = ({onChange, ...props}) => {
                   label="部门"
                   placeholder="请选择部门"
                   name="deptName"
-                  component={SysField.CompanyRoleId}
+                  component={SysField.DeptName}
                 />
               </Col>
               <Col span={span}>
