@@ -5,27 +5,161 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, Popover, AutoComplete, Spin} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Modal, Button, Tag} from 'antd';
+import moment from 'moment';
+import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
-import TreeSelect from '@/components/TreeSelect';
 import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
-import {commonArea, CompanyRoleIdSelect, CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
+import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import Cascader from '@/components/Cascader';
-import Amap from '@/components/Amap';
-import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
-import CascaderAdress from '@/pages/Crm/customer/components/CascaderAdress';
 import OriginSelect from '@/pages/Crm/customer/components/OriginSelect';
 import AdressMap from '@/pages/Crm/customer/components/AdressMap';
-import moment from 'moment';
-
-const {Option} = Select;
-
+import FileUpload from '@/components/FileUpload';
+import AddSkuTable from '@/pages/Crm/customer/components/AddSkuTable';
+import CheckSku from '@/pages/Erp/sku/components/CheckSku';
+import {companyRoleList} from '@/pages/Crm/companyRole/companyRoleUrl';
 
 export const ContactsName = (props) => {
-  return (<Input  {...props} />);
+
+  const {value, onChange} = props;
+
+  const {loading, data, run} = useRequest({url: '/contacts/list?limit=5&page=1', method: 'POST'}, {
+    manual: true,
+    debounceInterval: 300,
+  });
+
+  const options = (!loading && data) ? data.map((value) => {
+    return {
+      title: value.contactsName,
+      value: value.contactsId,
+      label: <>
+        {value.contactsName}
+        <div style={{float: 'right'}}>
+          <Tag
+            color="blue"
+            style={{marginRight: 3}}
+          >
+            {value.phoneParams ? value.phoneParams[0] && value.phoneParams[0].phone : ''}
+          </Tag>
+        </div>
+      </>
+    };
+  }) : [];
+
+  return <>
+    <AutoComplete
+      dropdownMatchSelectWidth={100}
+      notFoundContent={loading && <Spin />}
+      options={value && typeof value === 'object' && value.name && options}
+      value={value && typeof value === 'object' && value.name}
+      onSelect={(value, option) => {
+        onChange({id: value, name: option.title});
+      }}
+    >
+      <Input
+        placeholder="请输入联系人名称"
+        onChange={(value) => {
+          onChange({name: value.target.value});
+          run({
+            data: {
+              contactsName: value.target.value,
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
+};
+
+export const CompanyRoleId = (props) => {
+
+  const {value, onChange, disabled, placeholder} = props;
+
+  const {loading, data, run} = useRequest(companyRoleList, {
+    debounceInterval: 300,
+    manual: true,
+  });
+
+  const options = (!loading && data) ? data.map((value) => {
+    return {
+      label: value.position,
+      value: value.companyRoleId,
+    };
+  }) : [];
+
+  return <>
+    <AutoComplete
+      disabled={disabled}
+      dropdownMatchSelectWidth={100}
+      notFoundContent={loading && <Spin />}
+      options={value && typeof value === 'object' && value.name && options}
+      value={value && typeof value === 'object' && value.name}
+      onSelect={(value, option) => {
+        onChange({id: value, name: option.label});
+      }}
+    >
+      <Input
+        placeholder={placeholder}
+        onChange={(value) => {
+          onChange({name: value.target.value});
+          run({
+            data: {
+              position: value.target.value,
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
+};
+
+export const DeptName = (props) => {
+
+  const {value, onChange, disabled, placeholder} = props;
+
+  const {loading, data, run} = useRequest({
+    url: '/daoxinDept/list',
+    method: 'POST'
+  }, {
+    debounceInterval: 300,
+    manual: true,
+  });
+
+  const options = (!loading && data) ? data.map((value) => {
+    return {
+      label: value.fullName,
+      value: value.deptId,
+    };
+  }) : [];
+
+
+  return <>
+    <AutoComplete
+      disabled={disabled}
+      dropdownMatchSelectWidth={100}
+      notFoundContent={loading && <Spin />}
+      options={value && typeof value === 'object' && value.name && options}
+      value={value && typeof value === 'object' && value.name}
+      onSelect={(value, option) => {
+        onChange({id: value, name: option.label});
+      }}
+    >
+      <Input
+        placeholder={placeholder}
+        onChange={(value) => {
+          onChange({name: value.target.value});
+          run({
+            data: {
+              fullName: value.target.value,
+            }
+          });
+        }}
+      />
+    </AutoComplete>
+  </>;
 };
 
 export const Location = (props) => {
@@ -52,6 +186,10 @@ export const value = (props) => {
   return <Input {...props} />;
 };
 
+export const File = (props) => {
+  return <FileUpload {...props} />;
+};
+
 export const Name = (props) => {
   return (<Input {...props} />);
 };
@@ -59,24 +197,76 @@ export const Abbreviation = (props) => {
   return (<Input {...props} />);
 };
 export const Region = (props) => {
-  return (<Cascader api={commonArea} {...props} />);
+  return (<Cascader {...props} />);
 };
-export const CompanyRoleId = (props) => {
-  return (<Select width="100%" api={apiUrl.CompanyRoleIdSelect} {...props} />);
+
+export const AddSku = ({onChange}) => {
+
+  const skuTableRef = useRef();
+
+  const [visible, setVisible] = useState();
+
+  return (<>
+    <ProCard
+      style={{marginTop: 24}}
+      bodyStyle={{padding: 16}}
+      className="h2Card"
+      title="供应物料"
+      headerBordered
+      extra={<Button onClick={() => {
+        setVisible(true);
+      }}>添加物料</Button>}
+    >
+
+      <AddSkuTable
+        ref={skuTableRef}
+        onChange={onChange}
+      />
+    </ProCard>
+
+    <Modal
+      visible={visible}
+      width={800}
+      centered
+      bodyStyle={{padding: 0}}
+      footer={false}
+      onCancel={() => {
+        setVisible(false);
+      }}>
+      <CheckSku onChange={(value) => {
+        skuTableRef.current.addDataSource(value);
+        setVisible(false);
+      }} />
+    </Modal>
+  </>);
 };
+
+
 export const CustomerName = (props) => {
 
   const {value, onChange, supply, onSuccess} = props;
 
   const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST'}, {
+    manual: true,
     debounceInterval: 300,
   });
 
-  const options = !loading ? data && data.map((value) => {
+  const options = (!loading && data) ? data.map((value) => {
     return {
+      disabled: true,
       value: value.customerName,
-      label: value.customerName,
-      id: value.customerId,
+      label: <div
+        style={{
+          color: '#000',
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}>
+        {value.customerName}
+        <a
+          onClick={() => {
+            onSuccess(value.customerId);
+          }}>查看详情</a>
+      </div>,
     };
   }) : [];
 
@@ -84,14 +274,15 @@ export const CustomerName = (props) => {
   return <>
     <AutoComplete
       dropdownMatchSelectWidth={100}
-      options={options}
-      placeholder={supply ? '搜索供应商' : '搜索客户'}
+      notFoundContent={loading && <Spin />}
+      options={value && [{
+        label: '已存在供应商',
+        options
+      }]}
+      placeholder={supply ? '请输入供应商名称' : '请输入客户名称'}
       value={value}
-      onSelect={(value, option) => {
-        onSuccess(option.id);
-      }}
     >
-      <Input.Search
+      <Input
         onChange={(value) => {
           onChange(value);
           run({
@@ -117,25 +308,19 @@ export const Setup = (props) => {
   }}  {...props} />);
 };
 export const Legal = (props) => {
-  const [visi, setVist] = useState();
-  useEffect(() => {
-    setVist(props.value);
-  }, []);
+  return (<Input {...props} />);
+};
 
-  return (<Input disabled={visi} {...props} />);
+export const Money = (props) => {
+  return (<Space><InputNumber min={0} {...props} />万元</Space>);
 };
 export const Utscc = (props) => {
-  const [visi, setVist] = useState();
-  useEffect(() => {
-    setVist(props.value);
-  }, []);
-
-  return (<Input disabled={visi}  {...props} />);
+  return (<Input {...props} />);
 };
 export const CompanyType = (props) => {
   return (<AntdSelect
     showSearch
-    style={{maxWidth: 120}}
+    style={{maxWidth: 200}}
     allowClear
     filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
     options={[{value: '有限责任公司（自然人独资）', label: '有限责任公司（自然人独资）'}, {value: '股份有限公司', label: '股份有限公司'}, {
@@ -205,19 +390,23 @@ export const Supply = (props) => {
 };
 
 export const Note = (props) => {
-  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100}  {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={1}  {...props} />);
+};
+
+export const RowsNote = (props) => {
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={2}  {...props} />);
 };
 
 export const CustomerLevelId = (props) => {
-  const {loading,data} = useRequest(CustomerLevelIdSelect);
+  const {loading, data} = useRequest(CustomerLevelIdSelect);
 
-  useEffect(()=>{
-    if (data && data[data.length-1]){
-      props.onChange(data && data[data.length-1].value);
+  useEffect(() => {
+    if (data && data[data.length - 1]) {
+      props.onChange(data && data[data.length - 1].value);
     }
-  },[data]);
+  }, [data]);
 
-  if (loading){
+  if (loading) {
     return <Spin />;
   }
 
@@ -229,7 +418,7 @@ export const OriginId = (props) => {
 };
 
 export const UserName = (props) => {
-  return (<Select width={120} api={apiUrl.UserIdSelect}  {...props} />);
+  return (<Select width="100%" api={apiUrl.UserIdSelect}  {...props} />);
 };
 
 export const Emall = (props) => {
@@ -238,6 +427,11 @@ export const Emall = (props) => {
 
 export const Url = (props) => {
   return (<Input   {...props} />);
+};
+
+
+export const BankAccount = (props) => {
+  return (<InputNumber style={{width: 200}}   {...props} />);
 };
 
 

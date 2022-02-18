@@ -1,4 +1,4 @@
-import {CompanyRoleId, OriginId} from '@/pages/Crm/customer/CustomerField';
+
 
 /**
  * 客户管理表接口配置

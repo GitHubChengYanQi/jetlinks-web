@@ -60,8 +60,8 @@ const SopList = () => {
         ref={tableRef}
       >
         <Column title="编号" dataIndex="coding" />
-        <Column title="关联工序" dataIndex="shipSetpResult" render={(value) => {
-          return value.shipSetpName || '暂无';
+        <Column title="关联工序" dataIndex="shipSetpResults" render={(value) => {
+          return '暂无';
         }} />
         <Column title="名称" dataIndex="name" />
         <Column title="版本号" dataIndex="versionNumber" />

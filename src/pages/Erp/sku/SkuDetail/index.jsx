@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {Button, Card, Col, Descriptions, Empty, Row, Space, Tabs} from 'antd';
+import {Button, Card, Descriptions, Empty, Space, Tabs} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -12,7 +12,7 @@ import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQu
 
 const {TabPane} = Tabs;
 
-const SkuDetail = () => {
+const SkuDetail = ({value}) => {
 
   const params = useParams();
 
@@ -25,7 +25,7 @@ const SkuDetail = () => {
   const {loading, data, refresh} = useRequest(skuDetail, {
     defaultParams: {
       data: {
-        skuId: params.cid
+        skuId: value || params.cid
       }
     }
   });
@@ -40,21 +40,27 @@ const SkuDetail = () => {
 
   return (
     <div className={styles.detail}>
-      <Card title={<Breadcrumb />}  bodyStyle={{padding:0}} bordered={false} >
-        <Card title='物料详情' headStyle={{border:'none'}} style={{padding:0}} bordered={false} bodyStyle={{padding:0}} extra={<Space>
-          <Button onClick={() => {
-            quoteRef.current.open(
-              {
-                skuId: data.skuId,
-                sourceId: data.skuId,
-                source: 'sku'
-              }
-            );
-          }}>添加报价</Button>
-          <Button onClick={() => {
-            history.push('/SPU/sku');
-          }}>返回</Button>
-        </Space>} />
+      <Card title={!value && <Breadcrumb />} bodyStyle={{padding: 0}} bordered={false}>
+        <Card
+          title="物料详情"
+          headStyle={{border: 'none'}}
+          style={{padding: 0}}
+          bordered={false}
+          bodyStyle={{padding: 0}}
+          extra={!value && <Space>
+            <Button onClick={() => {
+              quoteRef.current.open(
+                {
+                  skuId: data.skuId,
+                  sourceId: data.skuId,
+                  source: 'sku'
+                }
+              );
+            }}>添加报价</Button>
+            <Button onClick={() => {
+              history.push('/SPU/sku');
+            }}>返回</Button>
+          </Space>} />
       </Card>
       <Card title="基本信息">
         <div className={styles.title}>
@@ -110,7 +116,7 @@ const SkuDetail = () => {
           </div>
         </Space>
       </Card>
-      <div
+      {!value && <div
         className={styles.main}>
         <Card>
           <Tabs defaultActiveKey="1">
@@ -131,7 +137,7 @@ const SkuDetail = () => {
             </TabPane>
           </Tabs>
         </Card>
-      </div>
+      </div>}
 
 
       <Modal

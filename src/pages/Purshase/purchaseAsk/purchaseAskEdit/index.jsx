@@ -5,7 +5,7 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useImperativeHandle, useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {Avatar, Button, Card, message, Popover, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
@@ -170,26 +170,26 @@ const PurchaseAskEdit = ({...props}, ref) => {
                             component={SysField.BrandId}
                           />
                         </div>
-                        <div style={{width: '18%', display: 'inline-block'}}>
-                          <Space>
-                            <FormItem
-                              labelCol={10}
-                              itemStyle={{margin: 0}}
-                              label="申请数量"
-                              name={`purchaseListingParams.${index}.applyNumber`}
-                              component={SysField.ApplyNumber}
-                            />
-                            <FormItem
-                              labelCol={10}
-                              itemStyle={{margin: 0}}
-                              name={`purchaseListingParams.${index}.unitId`}
-                              component={SysField.UnitId}
-                            />
-                          </Space>
+                        <div style={{width: '12%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={12}
+                            itemStyle={{margin: 0}}
+                            label="申请数量"
+                            name={`purchaseListingParams.${index}.applyNumber`}
+                            component={SysField.ApplyNumber}
+                          />
+                        </div>
+                        <div style={{width: '3%', display: 'inline-block'}}>
+                          <FormItem
+                            labelCol={10}
+                            itemStyle={{margin: 0}}
+                            name={`purchaseListingParams.${index}.unitId`}
+                            component={SysField.UnitId}
+                          />
                         </div>
                         <div style={{width: '13%', display: 'inline-block'}}>
                           <FormItem
-                            labelCol={10}
+                            labelCol={12}
                             itemStyle={{margin: 0}}
                             label={<>可用数量&nbsp;&nbsp;
                               <Popover content="您当前可使用此物料的数量=库存数量+采购数量-其他生产订单预定数量">
@@ -202,7 +202,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
                         </div>
                         <div style={{width: '14%', display: 'inline-block'}}>
                           <FormItem
-                            labelCol={7}
+                            labelCol={10}
                             itemStyle={{margin: 0}}
                             label="交付日期"
                             name={`purchaseListingParams.${index}.deliveryDate`}

@@ -19,8 +19,11 @@ const TableWarp = ({
   columns,
   actions,
   title,
+  NoSortAction,
+  selectedRowKeys,
   api,
   tableData,
+  pageSize,
   noPagination,
   contentHeight,
   searchForm,
@@ -29,6 +32,7 @@ const TableWarp = ({
   headStyle,
   tab,
   noSort,
+  configPagination,
   tableKey,
   branch,
   rowSelection,
@@ -134,7 +138,12 @@ const TableWarp = ({
     }
   };
 
-  const {form, table: tableProps} = useFormTableQuery(requestMethod);
+  const {form, table: tableProps} = useFormTableQuery(requestMethod,null,{
+    pagination:{
+      pageSize,
+      pageSizeOptions:[5,10,20,50,100]
+    }
+  });
 
   useImperativeHandle(ref, () => ({
     refresh: formActions.submit,
@@ -213,10 +222,12 @@ const TableWarp = ({
                   position: ['bottomRight']
                 }
               }
-              rowSelection={!rowSelection && {
+              rowSelection={rowSelection || {
                 type: selectionType || 'checkbox',
                 defaultSelectedRowKeys,
+                selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => {
+                  console.log(selectedRowKeys);
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
                 },
                 getCheckboxProps,
@@ -239,7 +250,7 @@ const TableWarp = ({
                 width={80}
                 align="center"
                 render={(text, item, index) => {
-                  if (text || text === 0) {
+                  if (!NoSortAction && (text || text === 0)) {
                     return <TableSort
                       rowKey={item[rowKey]}
                       sorts={sorts}

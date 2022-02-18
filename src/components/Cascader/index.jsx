@@ -22,14 +22,19 @@ const getParentValue = (value, data) => {
 
 const Cascader = (props) => {
   const {
-    value, width, defaultParams, placeholder, resh, top, api, onChange = () => {
+    value,
+    width,
+    defaultParams,
+    placeholder,
+    resh,
+    top,
+    api,
+    options,
+    onChange = () => {
     }, ...other
   } = props;
 
-  if (!api) {
-    throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
-  }
-  const {loading, data, refresh} = useRequest(api, {defaultParams});
+  const {loading, data, refresh} = useRequest(api, {defaultParams, manual: !api});
 
   useEffect(() => {
     if (resh) {
@@ -40,13 +45,13 @@ const Cascader = (props) => {
   if (loading)
     return <Spin />;
 
-  const dataSources = top ? [
+  const dataSources = options || (top ? [
     {
       value: '0',
       label: '顶级',
       children: data || [],
     }
-  ] : (data || []);
+  ] : (data || []));
 
   let valueArray = [];
   if ((value || value === 0) && typeof `${value}` === 'string') {
@@ -89,6 +94,7 @@ const Cascader = (props) => {
   const filter = (inputValue, path) => {
     return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
   };
+
 
   return (<AntCascader
     showSearch={{
