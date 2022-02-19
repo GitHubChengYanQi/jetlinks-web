@@ -121,6 +121,9 @@ const TableWarp = ({
         ...other,
         params: page
       });
+      if (typeof branch === 'function') {
+        response.data = branch(response.data);
+      }
       return new Promise((resolve) => {
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
@@ -235,7 +238,7 @@ const TableWarp = ({
               }}
               footer={footer}
               layout
-              scroll={{x: 'max-content',y:maxHeight}}
+              scroll={{x: 'max-content', y: maxHeight}}
               sticky={{
                 getContainer: () => {
                   return document.getElementById('tableContent');

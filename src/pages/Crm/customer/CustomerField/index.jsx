@@ -203,7 +203,7 @@ export const Region = (props) => {
   return (<Cascader {...props} />);
 };
 
-export const AddSku = ({value,onChange}) => {
+export const AddSku = ({value, onChange}) => {
 
   const skuTableRef = useRef();
 
@@ -232,14 +232,26 @@ export const AddSku = ({value,onChange}) => {
     <Modal
       ref={ref}
       width={1000}
-      footer={<Button type="primary" onClick={() => {
-        addSkuRef.current.change();
-      }}>选中并关闭</Button>}
+      footer={<Space>
+        <Button onClick={() => {
+          addSkuRef.current.check();
+        }}>选中</Button>
+        <Button type="primary" onClick={() => {
+          addSkuRef.current.change();
+        }}>选中并关闭</Button>
+      </Space>}
     >
-      <CheckSku value={value} ref={addSkuRef} onChange={(value) => {
-        skuTableRef.current.addDataSource(value);
-        ref.current.close();
-      }} />
+      <CheckSku
+        value={value}
+        ref={addSkuRef}
+        onCheck={(value) => {
+          skuTableRef.current.addDataSource(value);
+        }}
+        onChange={(value) => {
+          skuTableRef.current.addDataSource(value);
+          ref.current.close();
+        }}
+      />
     </Modal>
   </>);
 };
@@ -440,11 +452,11 @@ export const BankAccount = (props) => {
 
 export const IndustryOne = (props) => {
   return (<SetSelectOrCascader
-    type='tree'
+    type="tree"
     api={apiUrl.crmIndustryTreeView}
-    width='200'
+    width="200"
     component={CrmIndustryList}
-    title='新增行业'
+    title="新增行业"
     {...props} />);
 };
 

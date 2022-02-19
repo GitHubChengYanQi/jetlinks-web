@@ -18,14 +18,16 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const CheckSku = ({
-  value,
+  value = [],
+  onCheck = () => {
+  },
   onChange = () => {
   }
 }, ref) => {
 
   const [loading, setLoading] = useState();
 
-  const [skus, setSkus] = useSetState({data: value || []});
+  const [skus, setSkus] = useSetState({data: []});
 
   const refAdd = useRef(null);
 
@@ -40,8 +42,23 @@ const CheckSku = ({
     setSkus({data: []});
   };
 
+  const check = () => {
+    onCheck(skus.data);
+    setSkus({data: []});
+    const array = [];
+    skus.data.map((item) => {
+      return array.push(item.skuId);
+    });
+    value.map((item) => {
+      return array.push(item.skuId);
+    });
+    tableRef.current.formActions.setFieldValue('noSkuIds',array);
+    tableRef.current.submit();
+  };
+
   useImperativeHandle(ref, () => ({
-    change
+    change,
+    check
   }));
 
   const searchForm = () => {
@@ -58,7 +75,13 @@ const CheckSku = ({
           placeholder="搜索 名称 / 型号 / 编码"
           name="skuName"
           component={SysField.SelectSkuName} />
-
+        <FormItem
+          hidden
+          name="noSkuIds"
+          value={value && value.map((item) => {
+            return item.skuId;
+          })}
+          component={SysField.SelectSkuName} />
       </>
     );
   };
@@ -160,9 +183,9 @@ const CheckSku = ({
       <Modal
         title="物料"
         addUrl={{
-          url:'/sku/indirectAdd',
-          method:'POST',
-          rowKey:'skuId'
+          url: '/sku/indirectAdd',
+          method: 'POST',
+          rowKey: 'skuId'
         }}
         compoentRef={formRef}
         loading={(load) => {
