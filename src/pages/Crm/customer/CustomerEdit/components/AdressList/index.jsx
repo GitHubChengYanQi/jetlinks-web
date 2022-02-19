@@ -89,7 +89,8 @@ const AdressList = (props) => {
             </>
           );
         }} />
-        <Column title="地址" dataIndex="location" />
+        <Column title="详细地址" dataIndex="detailLocation" />
+        <Column title="定位地址" dataIndex="location" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           const isDefaultAddress = customer && record.adressId === customer.defaultAddress;

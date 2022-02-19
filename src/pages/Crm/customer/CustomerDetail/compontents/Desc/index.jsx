@@ -84,9 +84,9 @@ const Desc = (props) => {
                   });
                 }} /></Descriptions.Item>
           </>}
-          <Descriptions.Item label="默认联系人">{data.contact ? data.contact.contactsName : '暂无'}</Descriptions.Item>
-          <Descriptions.Item label="默认地址">{data.address ? data.address.location : '暂无'}</Descriptions.Item>
-          <Descriptions.Item label="默认开票信息">{data.invoiceResult ? data.invoiceResult.bank : '暂无'}</Descriptions.Item>
+          <Descriptions.Item label="开户行">{data.invoiceResult ? data.invoiceResult.bank : '暂无'}</Descriptions.Item>
+          <Descriptions.Item label="开户行号">{data.invoiceResult ? data.invoiceResult.bankNo : '暂无'}</Descriptions.Item>
+          <Descriptions.Item label="开户账号">{data.invoiceResult ? data.invoiceResult.bankAccount : '暂无'}</Descriptions.Item>
         </Descriptions>
       </>
     );

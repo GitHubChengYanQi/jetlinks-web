@@ -92,7 +92,7 @@ const CustomerDetail = ({id, status}) => {
               />
             </Col>
             <Col>
-              <Space align='start'>
+              <Space style={{height:30}} align='start'>
                 <Typography.Paragraph
                   strong
                   copyable
@@ -107,7 +107,7 @@ const CustomerDetail = ({id, status}) => {
                     }
                   }}>{data && data.customerName}</Typography.Paragraph>
                 <Tag
-                  style={{padding:'0 8px'}}
+                  style={{padding: '0 8px'}}
                 >
                   简称：
                   <InputEdit value={data.abbreviation} onChange={async (value) => {
@@ -123,32 +123,17 @@ const CustomerDetail = ({id, status}) => {
               </Space>
               <div>
                 <em>
-                  {data.supply === 1 && <>供应商&nbsp;&nbsp;/&nbsp;&nbsp;</>}
-                  公司地址：
-                  <InputEdit value={data && data.signIn} onChange={async (value) => {
-                    await runCustomer({
-                      data: {
-                        customerId: data.customerId,
-                        signIn: value
-                      }
-                    });
-                  }}
-                  />
+                  {data.defaultContactsResult && data.defaultContactsResult.contactsName || '--'}
                   &nbsp;&nbsp;/&nbsp;&nbsp;
-                  行业：
-                  <TreeEdit
-                    values={data && data.industryId}
-                    val={data.crmIndustryResult && data.crmIndustryResult.industryName}
-                    onChange={async (value) => {
-                      await runCustomer({
-                        data: {
-                          customerId: data.customerId,
-                          industryId: value
-                        }
-                      });
-                    }}
-                  />
+                  {data.defaultContactsResult && data.defaultContactsResult.phoneParams && data.defaultContactsResult.phoneParams[0] && data.defaultContactsResult.phoneParams[0].phoneNumber || '--'}
+                  &nbsp;&nbsp;/&nbsp;&nbsp;
+                  {data.defaultContactsResult && data.defaultContactsResult.companyRoleResult && data.defaultContactsResult.companyRoleResult.position || '--'}
+                  &nbsp;&nbsp;/&nbsp;&nbsp;
+                  {data.defaultContactsResult && data.defaultContactsResult.deptResult && data.defaultContactsResult.deptResult.fullName || '--'}
                 </em>
+                <div>
+                  <em>详细地址：{data.address && data.address.detailLocation || '--'}</em>
+                </div>
               </div>
             </Col>
           </Row>
