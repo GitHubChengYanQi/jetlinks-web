@@ -297,7 +297,7 @@ const CustomerTable = (props) => {
             <CustomerLevel
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
-        <Column key={5} title="创建人" width={200} align="center" dataIndex="createTime" sorter />
+        {/*<Column key={5} title="创建人" width={200} align="center" dataIndex="createTime" sorter />*/}
         <Column key={6} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
       <CreateNewCustomer
