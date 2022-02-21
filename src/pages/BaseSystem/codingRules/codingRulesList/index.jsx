@@ -76,6 +76,8 @@ const CodingRulesList = () => {
         return '作业指导编码';
       case 9:
         return '作业指导版本';
+      case 10:
+        return '工序编码';
       default:
         break;
     }

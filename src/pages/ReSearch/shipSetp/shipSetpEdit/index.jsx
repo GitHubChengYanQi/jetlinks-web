@@ -13,6 +13,7 @@ import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import * as SysField from '../shipSetpField';
 import {shipSetpDetail, shipSetpAdd, shipSetpEdit} from '../shipSetpUrl';
 import Form from '@/components/Form';
+import {Codings} from '../shipSetpField';
 
 const {FormItem} = Form;
 
@@ -46,7 +47,7 @@ const ShipSetpEdit = ({...props}, ref) => {
         fieldKey="shipSetpId"
       >
         <ProCard title="基本信息" className="h2Card" headerBordered>
-          <FormItem label="工序编码" name="coding" component={SysField.ShipSetpName} required />
+          <FormItem label="工序编码" name="coding" component={SysField.Codings} module={10} required />
           <FormItem label="工序名称" name="shipSetpName" component={SysField.ShipSetpName} required />
           <FormItem label="工序分类" name="shipSetpClassId" component={SysField.ShipSetpClassId} required />
           <FormItem label="作业指导" name="sopId" component={SysField.SopId} required />

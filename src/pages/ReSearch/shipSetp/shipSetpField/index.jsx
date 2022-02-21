@@ -15,9 +15,14 @@ import ShipSetpClassList from '@/pages/ReSearch/shipSetp/shipSetpClass/shipSetpC
 import {shipSetpClasslistSelect} from '@/pages/ReSearch/shipSetp/shipSetpClass/shipSetpClassUrl';
 import Drawer from '@/components/Drawer';
 import SopDetailList from '@/pages/ReSearch/sop/sopDetail/sopDetailList';
+import Coding from '@/pages/Erp/tool/components/Coding';
 
 export const ShipSetpName = (props) => {
   return (<Input {...props} />);
+};
+
+export const Codings = (props) => {
+  return (<Coding {...props} />);
 };
 export const Remark = (props) => {
   return (<Input.TextArea rows={2} {...props} />);

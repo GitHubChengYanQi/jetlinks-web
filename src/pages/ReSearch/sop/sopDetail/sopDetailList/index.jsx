@@ -152,7 +152,7 @@ const SopDetailList = ({id}) => {
                     }} />
                   </Table>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="浏览记录" key="2" />
+                <Tabs.TabPane tab="学习记录" key="2" />
               </Tabs>
             </Space>
           </Col>}

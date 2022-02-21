@@ -149,10 +149,10 @@ const Import = ({
             return false;
           }}
         >
-          <Space>
+          {filelist.length === 0 && <Space>
             <Button icon={<Icon type="icon-daoru" />} ghost type="primary">上传文件</Button>
             附件支持类型：XLSX，最大不超过10M
-          </Space>
+          </Space>}
         </Upload>
       </Space>
     </Modal>
