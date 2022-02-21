@@ -33,7 +33,7 @@ export const Sop = (props) => {
       }}>查看</Button>
       <Drawer ref={ref} onSuccess={() => {
         ref.current.close();
-      }} headTitle="SOP作业指导" component={SopDetailList} id={sopId} />
+      }} headTitle="作业指导" component={SopDetailList} id={sopId} />
     </Space>
     :
     '请选择工序';

@@ -210,6 +210,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
                           name={`setpSetDetails.${index}.num`}
                           component={InputNumber}
                           placeholder="数量"
+                          min={1}
                           rules={[{
                             required: true,
                             message: '请输入数量!'
@@ -288,10 +289,10 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
                 placeholder="使用工具"
               />
               <FormItem
-                label="SOP作业指导"
+                label="作业指导"
                 name="sop"
                 component={Sop}
-                placeholder="SOP作业指导"
+                placeholder="作业指导"
               />
               <FormItem
                 label="附件"

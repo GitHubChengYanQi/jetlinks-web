@@ -28,7 +28,7 @@ const SopList = () => {
   const history = useHistory();
   const tableRef = useRef(null);
 
-  const [loading,setLoading] = useState();
+  const [loading, setLoading] = useState();
 
   const actions = () => {
     return (
@@ -65,7 +65,9 @@ const SopList = () => {
         }} />
         <Column title="名称" dataIndex="name" />
         <Column title="版本号" dataIndex="versionNumber" />
-        <Column title="创建人" dataIndex="createUser" />
+        <Column title="创建人" dataIndex="user" render={(value) => {
+          return <>{value && value.name}</>;
+        }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
@@ -83,7 +85,7 @@ const SopList = () => {
       </Table>
       <Modal
         width={700}
-        title="编辑SOP"
+        title="编辑作业指导"
         component={SopEdit}
         loading={setLoading}
         compoentRef={addRef}

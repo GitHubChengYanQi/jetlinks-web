@@ -5,8 +5,8 @@
  * @Date 2022-02-10 09:21:35
  */
 
-import React from 'react';
-import {Button, Card, Col, Descriptions, Image, Row, Space, Steps, Table, Tabs,} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Button, Card, Col, Descriptions, Dropdown, Image, Menu, Row, Space, Steps, Table, Tabs,} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProCard from '@ant-design/pro-card';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -15,12 +15,20 @@ import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
 import {sopDetail} from '@/pages/ReSearch/sop/sopUrl';
 import Empty from '@/components/Empty';
+import SopEdit from '@/pages/ReSearch/sop/sopEdit';
+import Modal from '@/components/Modal';
 
 const SopDetailList = ({id}) => {
   const params = useParams();
   const history = useHistory();
 
-  const {loading, data, run} = useRequest(sopDetail, {
+  const ref = useRef();
+
+  const addRef = useRef();
+
+  const [editLoading, setEditLoading] = useState();
+
+  const {loading, data, run, refresh} = useRequest(sopDetail, {
     defaultParams: {
       data: {
         sopId: id || params.cid,
@@ -38,17 +46,32 @@ const SopDetailList = ({id}) => {
 
   return (
     <div className={styles.detail}>
-      {!id && <Card title={<Breadcrumb title="SOP详情" />} extra={<Button onClick={() => {
-        if (data.display === 0) {
-          run({
-            data: {
-              sopId: data.pid,
+      {!id && <Card title={<Breadcrumb title="SOP详情" />} extra={
+        <Space>
+          <Dropdown trigger="click" placement="bottomCenter" overlay={
+            <Menu>
+              <Menu.Item key="edit" onClick={() => {
+                ref.current.open(data.sopId);
+              }}>编辑</Menu.Item>
+            </Menu>
+          }>
+            <Button type="text">
+              管理
+            </Button>
+          </Dropdown>
+          <Button onClick={() => {
+            if (data.display === 0) {
+              run({
+                data: {
+                  sopId: data.pid,
+                }
+              });
+            } else {
+              history.push('/SPU/sop');
             }
-          });
-        } else {
-          history.push('/SPU/sop');
-        }
-      }}>{data.display === 0 ? '返回正在使用的SOP' : '返回'}</Button>} />}
+          }}>{data.display === 0 ? '返回正在使用的SOP' : '返回'}</Button>
+        </Space>
+      } />}
       <div
         className={styles.main}>
         <Row gutter={24}>
@@ -99,7 +122,7 @@ const SopDetailList = ({id}) => {
                   <Descriptions.Item label="SOP编号">{data.coding}</Descriptions.Item>
                   <Descriptions.Item label="SOP名称">{data.name}</Descriptions.Item>
                   <Descriptions.Item label="SOP版本号">{data.versionNumber}</Descriptions.Item>
-                  <Descriptions.Item label="创建人">{}</Descriptions.Item>
+                  <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
                   <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
                   <Descriptions.Item label="关联工序">{data.shipSetpId || '暂无'}</Descriptions.Item>
                 </Descriptions>
@@ -129,14 +152,30 @@ const SopDetailList = ({id}) => {
                     }} />
                   </Table>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="浏览记录" key="2">
-
-                </Tabs.TabPane>
+                <Tabs.TabPane tab="浏览记录" key="2" />
               </Tabs>
             </Space>
           </Col>}
         </Row>
       </div>
+
+      <Modal
+        width={700}
+        title="编辑作业指导"
+        component={SopEdit}
+        loading={setEditLoading}
+        compoentRef={addRef}
+        footer={<Button loading={editLoading} type="primary" onClick={() => {
+          addRef.current.submit();
+        }}>
+          保存
+        </Button>}
+        onSuccess={() => {
+          refresh();
+          ref.current.close();
+        }}
+        ref={ref}
+      />
 
     </div>
 
