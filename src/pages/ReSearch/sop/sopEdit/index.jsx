@@ -52,16 +52,16 @@ const SopEdit = ({...props}, ref) => {
         <ProCard title="基本信息" className="h2Card" headerBordered>
 
           <MegaLayout labelWidth={100} grid>
-            <FormItem label="编号" name="coding" component={SysField.Coding} required />
+            <FormItem label="编号" name="coding" component={SysField.Codings} module={8} required />
             <FormItem label="名称" name="name" component={SysField.Name} required />
           </MegaLayout>
 
           <MegaLayout labelWidth={100} grid>
-            <FormItem label="版本号" name="versionNumber" component={SysField.VersionNumber} required />
+            <FormItem label="版本号" name="versionNumber" module={9}  component={SysField.Codings} required />
           </MegaLayout>
 
           <MegaLayout labelWidth={100} grid>
-            <FormItem label="成品图" name="finishedPicture" component={SysField.FinishedPicture} required />
+            <FormItem label="成品图" name="finishedPicture" component={SysField.FinishedPicture} />
           </MegaLayout>
           <MegaLayout labelWidth={100} grid>
             <FormItem label="作业要求" name="note" component={SysField.Note} />

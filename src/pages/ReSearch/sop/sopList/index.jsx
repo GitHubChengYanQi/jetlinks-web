@@ -17,6 +17,7 @@ import SopEdit from '../sopEdit';
 import * as SysField from '../sopField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
+import {Name} from '../sopField';
 
 
 const {Column} = AntTable;
@@ -43,7 +44,7 @@ const SopList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="编号" name="coding" component={SysField.Coding} />
+        <FormItem label="编号" name="coding" component={SysField.Name} />
         <FormItem label="名称" name="name" component={SysField.Name} />
       </>
     );

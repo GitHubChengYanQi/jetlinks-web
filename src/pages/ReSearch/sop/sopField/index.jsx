@@ -8,9 +8,10 @@
 import React from 'react';
 import {Input} from 'antd';
 import FileUpload from '@/components/FileUpload';
+import Coding from '@/pages/Erp/tool/components/Coding';
 
-export const Coding = (props) =>{
-  return (<Input {...props}/>);
+export const Codings = (props) =>{
+  return (<Coding {...props}/>);
 };
 export const ShipSetpId = (props) =>{
   return (<Input {...props}/>);
@@ -19,7 +20,7 @@ export const Name = (props) =>{
   return (<Input {...props}/>);
 };
 export const VersionNumber = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:200}} {...props}/>);
 };
 export const CreateUser = (props) =>{
   return (<Input {...props}/>);

@@ -72,6 +72,10 @@ const CodingRulesList = () => {
         return '盘点任务';
       case 7:
         return '采购询价';
+      case 8:
+        return '作业指导编码';
+      case 9:
+        return '作业指导版本';
       default:
         break;
     }
