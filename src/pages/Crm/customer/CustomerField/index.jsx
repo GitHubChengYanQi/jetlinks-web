@@ -355,7 +355,7 @@ export const SignIn = (props) => {
   return (<Input  {...props} />);
 };
 export const Introduction = (props) => {
-  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={4} {...props} />);
 };
 
 export const DeptId = (props) => {

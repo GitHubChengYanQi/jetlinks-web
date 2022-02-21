@@ -26,6 +26,7 @@ import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import UnitList from '@/pages/Erp/unit/unitList';
 import FileUpload from '@/components/FileUpload';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
+import store from '@/store';
 
 export const Type = (props) => {
 
@@ -80,7 +81,7 @@ export const SpuId = (props) => {
       value={value && value.name ? value.name : null}
       notFoundContent={loading && <Spin />}
       options={options || []}
-      disabled={skuId}
+      // disabled={skuId}
       style={{width: 300}}
       onSelect={(value, option) => {
         onChange({name: value, spuId: option.id});
@@ -122,11 +123,12 @@ export const SelectSpuClass = (props) => {
 
 export const SpuClass = (props) => {
 
+  const [state] = store.useModel('dataSource');
 
   const {...other} = props;
 
   return (<SetSelectOrCascader
-    api={spuClassificationTreeVrew}
+    options={state.skuClass}
     moduleType='cascader'
     width={200}
     title="设置分类"

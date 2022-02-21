@@ -181,115 +181,49 @@ const CustomerTable = (props) => {
         }}
         {...other}
       >
-        {
-          supply
-            ?
-            <>
-              <Column
-                key={1}
-                title="供应商信息"
-                fixed
-                dataIndex="customerName"
-                render={(value, record) => {
-                  return (
-                    <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
-                      history.push(`${supply === 1 ? '/purchase/supply/detail/' : '/CRM/customer/detail/'}${record.customerId}`);
-                    }}>
-                      <Col>
-                        <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>
-                      </Col>
-                      <Col>
-                        <strong>{value}</strong>
-                        <div>
-                          <em>
-                            {record.defaultContactsResult && record.defaultContactsResult.contactsName || '--'}
-                            &nbsp;&nbsp;/&nbsp;&nbsp;
-                            {record.defaultContactsResult && record.defaultContactsResult.phoneParams && record.defaultContactsResult.phoneParams[0] && record.defaultContactsResult.phoneParams[0].phoneNumber || '--'}
-                            &nbsp;&nbsp;/&nbsp;&nbsp;
-                            {record.defaultContactsResult && record.defaultContactsResult.companyRoleResult && record.defaultContactsResult.companyRoleResult.position || '--'}
-                            &nbsp;&nbsp;/&nbsp;&nbsp;
-                            {record.defaultContactsResult && record.defaultContactsResult.deptResult && record.defaultContactsResult.deptResult.fullName || '--'}
-                          </em>
-                        </div>
-                        <div>
-                          <em>详细地址：{record.address && record.address.detailLocation || '--'}</em>
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                }} />
-              <Column
-                key={2}
-                title="开户信息"
-                dataIndex="invoiceResult"
-                render={(value) => {
-                  if (value) {
-                    return (
-                      <>
-                        <Space direction="vertical">
-                          <strong>{value.bank || '无'}</strong>
-                          <div>
-                            开户行号：{value.bankNo || '--'}
-                          </div>
-                          <div>
-                            开户账号：{value.bankAccount || '--'}
-                          </div>
-                        </Space>
-                      </>
-                    );
-                  } else {
-                    return '暂无';
-                  }
-
-                }} />
-            </>
-            :
-            <>
-              <Column
-                key={1}
-                title={supply ? '供应商信息' : '客户信息'}
-                fixed
-                dataIndex="customerName"
-                render={(value, record) => {
-                  return (
-                    <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
-                      history.push(`${supply === 1 ? '/purchase/supply/detail/' : '/CRM/customer/detail/'}${record.customerId}`);
-                    }}>
-                      <Col>
-                        <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>
-                      </Col>
-                      <Col>
-                        <strong>{value}</strong>
-                        <div>
-                          <em>{record.classificationName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</em>
-                        </div>
-                        <div>
-                          <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                }} />
-              {supply === 0 && <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
-                return (
-                  <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
-                );
-              }} />}
-              <Column
-                key={3}
-                title={supply ? '供应商来源' : '客户来源'}
-                width={300}
-                align="center"
-                dataIndex="customerName"
-                render={(text, record) => {
-                  return (
-                    <div>
-                      {record.originResult ? record.originResult.originName : '未填写'}
-                    </div>
-                  );
-                }} />
-            </>
-        }
+        <Column
+          key={1}
+          title={supply ? '供应商信息' : '客户信息'}
+          fixed
+          dataIndex="customerName"
+          render={(value, record) => {
+            return (
+              <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
+                history.push(`${supply === 1 ? '/purchase/supply/detail/' : '/CRM/customer/detail/'}${record.customerId}`);
+              }}>
+                <Col>
+                  <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>
+                </Col>
+                <Col>
+                  <strong>{value}</strong>
+                  <div>
+                    <em>{record.classificationName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.crmIndustryResult && record.crmIndustryResult.industryName || '--'}&nbsp;&nbsp;/&nbsp;&nbsp;{record.companyType || '--'}</em>
+                  </div>
+                  <div>
+                    <em>负责人：{record.userResult && record.userResult.name || '未填写'}</em>
+                  </div>
+                </Col>
+              </Row>
+            );
+          }} />
+        {supply === 0 && <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
+          return (
+            <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
+          );
+        }} />}
+        <Column
+          key={3}
+          title={supply ? '供应商来源' : '客户来源'}
+          width={300}
+          align="center"
+          dataIndex="customerName"
+          render={(text, record) => {
+            return (
+              <div>
+                {record.originResult ? record.originResult.originName : '未填写'}
+              </div>
+            );
+          }} />
 
         <Column key={4} title={supply ? '供应商级别' : '客户级别'} width={120} align="center" render={(text, record) => {
           const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
@@ -297,7 +231,7 @@ const CustomerTable = (props) => {
             <CustomerLevel
               level={level.rank}>{level.level}</CustomerLevel>);
         }} />
-        {/*<Column key={5} title="创建人" width={200} align="center" dataIndex="createTime" sorter />*/}
+        <Column key={5} title="创建人" width={200} align="center" dataIndex="createTime" sorter />
         <Column key={6} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
       <CreateNewCustomer

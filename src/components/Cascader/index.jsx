@@ -97,6 +97,7 @@ const Cascader = (props) => {
 
 
   return (<AntCascader
+    {...other}
     showSearch={{
       filter,
     }}
@@ -107,7 +108,6 @@ const Cascader = (props) => {
     value={valueArray}
     placeholder={placeholder}
     onChange={change}
-    {...other}
   />);
 
 

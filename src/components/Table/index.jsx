@@ -270,7 +270,9 @@ const TableWarp = ({
                   }
 
                 }} />}
-              {tableColumn}
+              {tableColumn.filter((items) => {
+                return !(items.checked === false);
+              })}
             </AntdTable>
           </Card>
         </Content>

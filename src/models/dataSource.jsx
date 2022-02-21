@@ -2,7 +2,6 @@ import {request} from '@/util/Request';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import {crmCustomerLevelList} from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelUrl';
 import {commonArea} from '@/pages/Crm/adress/AdressUrl';
-import {crmBusinessSalesList} from '@/pages/Crm/business/crmBusinessSales/crmBusinessSalesUrl';
 import {crmBusinessSalesListSelect} from '@/pages/Crm/business/BusinessUrl';
 import {originList} from '@/pages/Crm/origin/OriginUrl';
 import {dataClassificationSelect} from '@/pages/Crm/data/dataUrl';
