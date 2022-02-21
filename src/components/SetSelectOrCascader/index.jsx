@@ -7,7 +7,7 @@ import Select from '@/components/Select';
 import TreeSelect from '@/components/TreeSelect';
 
 
-const SetSelectOrCascader = ({disabled, component, title, moduleType, width, api, ...props}) => {
+const SetSelectOrCascader = ({disabled,options, component, title, moduleType, width, api, ...props}) => {
 
   const ref = useRef();
 
@@ -16,11 +16,11 @@ const SetSelectOrCascader = ({disabled, component, title, moduleType, width, api
   const getModule = () => {
     switch (moduleType) {
       case 'cascader':
-        return <Cascader resh={state} disabled={disabled} width={width} api={api} {...props} />;
+        return <Cascader resh={state} options={options} disabled={disabled} width={width} api={api} {...props} />;
       case 'tree':
-        return <TreeSelect disabled={disabled} resh={state} width={width} api={api}  {...props} />;
+        return <TreeSelect disabled={disabled} options={options} resh={state} width={width} api={api}  {...props} />;
       default:
-        return <Select resh={state} disabled={disabled} width={width} api={api} {...props} />;
+        return <Select resh={state} options={options} disabled={disabled} width={width} api={api} {...props} />;
     }
   };
 

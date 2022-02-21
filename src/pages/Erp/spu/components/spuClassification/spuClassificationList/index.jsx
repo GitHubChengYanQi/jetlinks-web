@@ -35,7 +35,7 @@ const SpuClassificationList = ({type}) => {
 
   const [ids, setIds] = useState([]);
 
-  const [state, dispatchers] = store.useModel('dataSource');
+  const dispatchers = store.useModel('dataSource')[1];
 
   const actions = () => {
     return (

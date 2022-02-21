@@ -332,12 +332,13 @@ const CustomerEdit = ({onChange, ...props}) => {
                     component={SysField.Url}
                   />
                 </Col>
-                <Col span={span}>
+                <Col span={12}>
                   <FormItem
                     label="定位地址"
                     disabled
                     placeholder="请选择地址"
                     name="map"
+                    width={400}
                     component={SysField.Map}
                   />
                 </Col>
@@ -440,16 +441,10 @@ const CustomerEdit = ({onChange, ...props}) => {
                   <FormItem label="注册地址" name="signIn" placeholder="请输入注册地址" component={SysField.SignIn} />
                 </Col>
               </Row>
-              <Row gutter={24}>
-                <Col span={12}>
-                  <Space align='start'>
-                    <FormItem label="附件" name="file" component={SysField.File} />仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
-                  </Space>
-                </Col>
-                <Col span={12}>
-                  <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction} />
-                </Col>
-              </Row>
+              <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction} />
+              <Space align="start">
+                <FormItem label="附件" name="file" component={SysField.File} />仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
+              </Space>
             </MegaLayout>
           </ProCard>
           <div title="其他联系人">

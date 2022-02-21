@@ -1,10 +1,9 @@
 import {Button, Dropdown, Input, Menu, Modal, Modal as AntModal, notification, Space} from 'antd';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import {supplierBlacklistAdd} from '@/pages/Crm/supplierBlacklist/supplierBlacklistUrl';
+import SopEdit from '@/pages/ReSearch/sop/sopEdit';
 
 const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
   const history = useHistory();
@@ -86,6 +85,12 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
             deleteCustomer();
           }}>删除项目</Menu.Item>
         </>;
+      case 'sop':
+        return <>
+          <Menu.Item danger key="edit" onClick={() => {
+
+          }}>编辑</Menu.Item>
+        </>;
       default:
         break;
     }
@@ -102,6 +107,7 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
           管理
         </Button>
       </Dropdown>
+
 
       <Modal
         title={`确定要将【 ${data.customerName} 】拉入黑名单吗？`}

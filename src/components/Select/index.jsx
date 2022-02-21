@@ -9,6 +9,7 @@ const Select = (props) => {
     border,
     data: param,
     resh,
+    options,
     showArrow,
     placeholder,
     disabled,
@@ -16,10 +17,8 @@ const Select = (props) => {
     width: wid,
     ...other
   } = props;
-  if (!api) {
-    throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
-  }
-  const {loading, data, refresh} = useRequest({...api, data: param});
+
+  const {loading, data, refresh} = useRequest({...api, data: param}, {manual: !api});
 
   useEffect(() => {
     if (resh) {
@@ -61,7 +60,6 @@ const Select = (props) => {
     valueArray = null;
   }
 
-
   if (data) {
     return (
       <>
@@ -69,8 +67,9 @@ const Select = (props) => {
           !loading
           &&
           <AntSelect
+            {...other}
             bordered={border}
-            options={data.map((items) => {
+            options={options || data.map((items) => {
               return {
                 label: items.label,
                 value: items.value
@@ -82,7 +81,6 @@ const Select = (props) => {
             placeholder={placeholder}
             style={{width: wid}}
             value={valueArray}
-            {...other}
             allowClear
             showSearch
             filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}

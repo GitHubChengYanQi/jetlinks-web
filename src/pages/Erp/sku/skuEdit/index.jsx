@@ -28,7 +28,6 @@ const SkuEdit = ({...props}, ref) => {
     add: addUrl || skuAdd,
     save: skuEdit
   };
-  console.log(ApiConfig);
 
   const formRef = useRef();
 

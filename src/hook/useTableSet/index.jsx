@@ -1,15 +1,17 @@
-import Icon from '@/components/Icon';
-import {Button, Col, Dropdown, Input, Menu, message, Modal, notification, Row, Select, Space, Spin} from 'antd';
+import {Button, Card, Dropdown, Input, Menu, message, Modal, notification, Select, Space, Spin} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {useBoolean} from 'ahooks';
+import {CloseOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
+import Icon from '@/components/Icon';
 import {
   tableViewAdd,
   tableViewDetail,
   tableViewEdit,
   tableViewListSelect
 } from '@/hook/useTableSet/components/TableViewUrl';
-import {CheckOutlined, ExclamationCircleOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {Sortable} from '@/components/Table/components/DndKit/Sortable';
+import styles from './index.module.less';
 
 const md5 = require('md5');
 
@@ -20,6 +22,27 @@ const md5 = require('md5');
  */
 
 const useTableSet = (column, tableKey) => {
+
+  const [tableColumn, setTableColumn] = useState(column && column.map((item) => {
+    return {
+      ...item,
+      checked: !item.props.hidden,
+    };
+  }) || []);
+
+  const itemsData = [];
+
+  tableKey && Array.isArray(tableColumn) && tableColumn.map((items) => {
+    if (items.key) {
+      return itemsData.push({
+        title: items.props.title,
+        key: items.key,
+        visible: items.props.fixed,
+        checked: items.checked,
+      });
+    }
+    return null;
+  });
 
   const md5TableKey = () => {
     let keys = '';
@@ -41,8 +64,9 @@ const useTableSet = (column, tableKey) => {
 
   const [state, {setTrue, setFalse}] = useBoolean();
 
-  const [showModal, setShowModal] = useState();
+  const [dndRefresh, {toggle}] = useBoolean();
 
+  const [showModal, setShowModal] = useState();
 
   const openNotificationWithIcon = type => {
     notification[type]({
@@ -81,22 +105,6 @@ const useTableSet = (column, tableKey) => {
       }
     });
 
-  const [tableColumn, setTableColumn] = useState(column);
-
-  const select = (selectedKeys) => {
-    const selectView = column.filter((value) => {
-      let column = false;
-      selectedKeys.map((items) => {
-        if (items === value.key) {
-          return column = true;
-        } else {
-          return null;
-        }
-      });
-      return column;
-    });
-    setTableColumn(selectView);
-  };
 
   const {run: viewDetail} = useRequest(tableViewDetail,
     {
@@ -106,7 +114,21 @@ const useTableSet = (column, tableKey) => {
           setDetail(res);
           if (res.field) {
             if (res.tableKey === md5TableKey()) {
-              select(JSON.parse(res.field));
+              const tableColumns = [];
+              JSON.parse(res.field).map((items) => {
+                const columns = column.filter((columns) => {
+                  return items.key === columns.key;
+                });
+                if (columns && columns[0]) {
+                  tableColumns.push({
+                    ...columns[0],
+                    checked: items.checked
+                  });
+                }
+                return null;
+              });
+              setTableColumn(tableColumns);
+              toggle();
             }
           }
         }
@@ -115,14 +137,6 @@ const useTableSet = (column, tableKey) => {
 
 
   const [visible, setVisible] = useState();
-
-  const checks = (items) => {
-    const checked = tableColumn && tableColumn.length > 0 && tableColumn.filter((value) => {
-      return value.key === items.key;
-    });
-    return checked.length > 0 && <CheckOutlined />;
-  };
-
 
   const cover = async () => {
     if (detail) {
@@ -133,8 +147,11 @@ const useTableSet = (column, tableKey) => {
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
-          const columnKeys = tableColumn && tableColumn.map((items) => {
-            return items.key;
+          const columnKeys = itemsData && itemsData.map((items) => {
+            return {
+              key: items.key,
+              checked: items.checked,
+            };
           });
           run({
             data: {
@@ -151,39 +168,47 @@ const useTableSet = (column, tableKey) => {
   };
 
   const menu = (
-    <Menu
-      style={{minWidth: 220}}
-      multiple
-      selectedKeys={tableColumn && tableColumn.length > 0 && tableColumn.map((items) => {
-        return items && items.key;
-      })}
-      selectable
-      onDeselect={(value) => {
-        setTrue();
-        select(value.selectedKeys);
-      }}
-      onSelect={(value) => {
-        setTrue();
-        select(value.selectedKeys);
-      }}
-    >
-      {
-        tableKey && column && column.length > 0 && column.map((items) => {
-          if (items.props && !items.props.fixed && items.key) {
-            return (
-              <Menu.Item style={{background: '#fff', color: '#000'}} key={items.key}>
-                <UnorderedListOutlined />
-                &nbsp;
-                {items.props.title}
-                <span style={{float: 'right'}}>{checks(items)}</span>
-              </Menu.Item>
-            );
-          } else {
-            return null;
-          }
-        })
-      }
-    </Menu>
+    <div>
+      <Card
+        className={styles.cardTitle}
+        title="表头设置"
+        headStyle={{textAlign: 'center', padding: 0}}
+        bodyStyle={{maxWidth: 300, padding: 0, borderTop: 'solid 1px #eee'}}
+        extra={<Button icon={<CloseOutlined />} style={{marginRight: 16}} type="text" onClick={() => {
+          setVisible(false);
+        }} />}
+      >
+        <Sortable
+          handle
+          items={itemsData}
+          refresh={dndRefresh}
+          onDragEnd={(allIems) => {
+            setTrue();
+            const array = [];
+            allIems.map((items) => {
+              const columns = tableColumn.filter((columns) => {
+                return items.key === columns.key;
+              });
+              return array.push(columns[0]);
+            });
+            setTableColumn(array);
+          }}
+          onChecked={(value) => {
+            setTrue();
+            const array = tableColumn.map((item) => {
+              if (item.key === value) {
+                return {
+                  ...item,
+                  checked: !item.checked,
+                };
+              }
+              return item;
+            });
+            setTableColumn(array);
+          }}
+        />
+      </Card>
+    </div>
   );
 
   const save = (
@@ -247,12 +272,20 @@ const useTableSet = (column, tableKey) => {
             }}
             value={detail && detail.tableViewId} />}
 
-        <Dropdown overlay={menu} onVisibleChange={(value) => {
-          setVisible(value);
-        }} visible={visible} placement="bottomRight" trigger={['click']}>
-          <Button type="text" onClick={() => {
-            setVisible(true);
-          }}><Icon type="icon-xitongpeizhi" />列设置</Button>
+        <Dropdown
+          overlay={menu}
+          overlayStyle={{backgroundColor: '#fff', zIndex: 99}}
+          onVisibleChange={(value) => {
+            setVisible(value);
+          }}
+          visible={visible}
+          placement="bottomRight"
+          trigger={['click']}>
+          <Button
+            type="text"
+            onClick={() => {
+              setVisible(true);
+            }}><Icon type="icon-xitongpeizhi" />列设置</Button>
         </Dropdown>
 
         <Modal
@@ -264,7 +297,10 @@ const useTableSet = (column, tableKey) => {
               key={1}
               onClick={() => {
                 const columnKeys = tableColumn && tableColumn.map((items) => {
-                  return items.key;
+                  return {
+                    key: items.key,
+                    checked: items.checked,
+                  };
                 });
                 viewAdd({
                   data: {
