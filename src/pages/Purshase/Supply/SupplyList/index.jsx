@@ -189,7 +189,7 @@ const SupplyList = (props) => {
           render={(value, record) => {
             return (
               <Row gutter={24} wrap={false} style={{cursor: 'pointer'}} onClick={() => {
-                history.push(`${supply === 1 ? '/purchase/supply/detail/' : '/CRM/customer/detail/'}${record.customerId}`);
+                history.push(`/purchase/supply/detail/${record.customerId}`);
               }}>
                 <Col>
                   <Avatar size={64} src={record.avatar}>{!record.avatar && value.substring(0, 1)}</Avatar>

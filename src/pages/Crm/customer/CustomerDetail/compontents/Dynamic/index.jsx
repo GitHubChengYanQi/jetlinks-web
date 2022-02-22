@@ -72,6 +72,7 @@ const Dynamic = (props) => {
         api={api}
         rowKey="dynamicId"
       >
+        <Column />
         <Column render={(text, record) => {
           return (
             <Comment

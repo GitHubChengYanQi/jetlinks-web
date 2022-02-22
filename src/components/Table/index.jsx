@@ -271,7 +271,7 @@ const TableWarp = ({
 
                 }} />}
               {tableColumn.filter((items) => {
-                return !(items.checked === false);
+                return !(items && (items.checked === false));
               })}
             </AntdTable>
           </Card>

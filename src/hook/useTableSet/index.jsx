@@ -23,10 +23,13 @@ const md5 = require('md5');
 
 const useTableSet = (column, tableKey) => {
 
-  const [tableColumn, setTableColumn] = useState(column && column.map((item) => {
+  const [tableColumn, setTableColumn] = useState(Array.isArray(column) && column.map((item) => {
+    if (!item) {
+      return null;
+    }
     return {
       ...item,
-      checked: !item.props.hidden,
+      checked: !(item.props && item.props.hidden),
     };
   }) || []);
 
@@ -47,6 +50,9 @@ const useTableSet = (column, tableKey) => {
   const md5TableKey = () => {
     let keys = '';
     tableKey && column && column.length > 0 && column.map((items, index) => {
+      if (!items) {
+        return null;
+      }
       if (index === column.length - 1) {
         return keys += `${items.key}`;
       } else {
@@ -117,6 +123,9 @@ const useTableSet = (column, tableKey) => {
               const tableColumns = [];
               JSON.parse(res.field).map((items) => {
                 const columns = column.filter((columns) => {
+                  if (!columns) {
+                    return false;
+                  }
                   return items.key === columns.key;
                 });
                 if (columns && columns[0]) {
@@ -173,7 +182,7 @@ const useTableSet = (column, tableKey) => {
         className={styles.cardTitle}
         title="表头设置"
         headStyle={{textAlign: 'center', padding: 0}}
-        bodyStyle={{maxWidth: 300, padding: 0, borderTop: 'solid 1px #eee'}}
+        bodyStyle={{maxWidth: 300, padding: 0, borderTop: 'solid 1px #eee', height: 'auto'}}
         extra={<Button icon={<CloseOutlined />} style={{marginRight: 16}} type="text" onClick={() => {
           setVisible(false);
         }} />}

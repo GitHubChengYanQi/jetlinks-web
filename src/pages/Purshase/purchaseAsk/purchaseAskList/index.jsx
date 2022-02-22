@@ -88,7 +88,7 @@ const PurchaseAskList = () => {
             case 2:
               return <Badge text="已通过" color="green" />;
             case 1:
-              return <Badge text="已拒绝" color="red" />;
+              return <Badge text="已通过" color="red" />;
             default:
               break;
           }

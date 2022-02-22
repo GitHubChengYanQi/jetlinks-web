@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Input, Select as AntdSelect, Space, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
-import {codingRulesListSelect} from '@/pages/Erp/tool/toolUrl';
 
 
 const Coding = ({value, width, onChange, module, placeholder}) => {
 
-  const [state, setState] = useState('sys');
+  const [state, setState] = useState(value ? 'defined' : 'sys');
 
   const {loading, run} = useRequest({
     url: '/codingRules/defaultEncoding',
@@ -30,7 +29,7 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
   ];
 
   useEffect(() => {
-    if (module !== undefined) {
+    if (!value && module !== undefined) {
       run({
         params: {
           type: module

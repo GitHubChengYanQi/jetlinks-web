@@ -114,7 +114,7 @@ const PurchaseAskEdit = ({...props}, ref) => {
             <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
-            <FormItem label="采购申请类型" name="type" component={SysField.Type} module={5} required />
+            <FormItem label="采购申请类型" name="type" component={SysField.Type} required />
           </div>
           <div style={{display: 'inline-block', width: '30%'}}>
             <FormItem label="备注说明" name="note" component={SysField.Note} />

@@ -19,7 +19,6 @@ import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusin
 import Modal from '@/components/Modal';
 import ContactsTable from '@/pages/Crm/contacts/ContactsList';
 import InputEdit from '@/pages/Crm/customer/components/Edit/InputEdit';
-import TreeEdit from '@/pages/Crm/customer/components/Edit/TreeEdit';
 import AvatarEdit from '@/pages/Crm/customer/components/Edit/AvatarEdit';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import DetailMenu from '@/pages/Crm/customer/CustomerDetail/compontents/DetailMenu';

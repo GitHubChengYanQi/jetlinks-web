@@ -1,5 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Drawer as AntDrawer, message} from 'antd';
+import {Drawer as AntDrawer} from 'antd';
 
 const Drawer = (
   {

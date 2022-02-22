@@ -34,7 +34,7 @@ export const Type = (props) => {
     label:'销售采购',
     value:'3',
   },{
-    label:'销售采购',
+    label:'紧急采购',
     value:'4',
   },]} {...props} />);
 };
