@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Input, Select as AntdSelect, Space, Spin} from 'antd';
+import cookie from 'js-cookie';
 import {useRequest} from '@/util/Request';
 
 
 const Coding = ({value, width, onChange, module, placeholder}) => {
 
-  const [state, setState] = useState(value ? 'defined' : 'sys');
+  const [state, setState] = useState(value ? 'defined' : (cookie.get('codingType') || 'sys'));
 
   const {loading, run} = useRequest({
     url: '/codingRules/defaultEncoding',
@@ -29,7 +30,7 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
   ];
 
   useEffect(() => {
-    if (!value && module !== undefined) {
+    if (!value && module !== undefined && cookie.get('codingType') === 'sys') {
       run({
         params: {
           type: module
@@ -50,6 +51,7 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
         dropdownMatchSelectWidth={200}
         options={options}
         onSelect={(value) => {
+          cookie.set('codingType', value);
           setState(value);
           if (value === 'sys') {
             run({
