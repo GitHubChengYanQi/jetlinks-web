@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Row, Col, Card, Layout, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {useFormTableQuery, createFormActions, Form, Submit, FormButtonGroup} from '@formily/antd';
+import {useFormTableQuery, createFormActions, Form, Submit,Reset, FormButtonGroup} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
@@ -177,7 +177,7 @@ const TableWarp = ({
           {title && <div className="title">{title}</div>}
           <div className="actions">
             {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
-            <div className="button">{actions}</div>
+            {/*<div className="button">{actions}</div>*/}
           </div>
         </div> : null}
       </div>
@@ -198,11 +198,11 @@ const TableWarp = ({
                   actions={formActions}
                 >
                   {typeof searchForm === 'function' && searchForm()}
-                  {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit> </FormButtonGroup>}
+                  {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit><Reset>重置</Reset> </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
-                {setButton}
+                {/*{setButton}*/}
               </Col>
             </Row>
 
@@ -211,7 +211,7 @@ const TableWarp = ({
             {...form}
             actions={formActions}
           />}
-          <Card bordered={bordered} title={cardTitle} bodyStyle={bodyStyle}>
+          <Card bordered={bordered || false} title={actions} bodyStyle={bodyStyle} extra={setButton}>
             <AntdTable
               showTotal
               expandable={expandable}
