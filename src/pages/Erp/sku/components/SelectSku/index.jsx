@@ -26,7 +26,7 @@ const SelectSku = ({
       disabled: skuIds && skuIds.filter((value) => {
         return value === items.skuId;
       }).length > 0,
-      label: items.spuResult && `${items.spuResult.spuClassificationResult && items.spuResult.spuClassificationResult.name} / ${items.spuResult.name} ${items.specifications ? `/ ${items.specifications}` : ''}`,
+      label: items.spuResult && `${items.spuResult.name} / ${items.skuName} ${items.specifications ? `/ ${items.specifications}` : ''}`,
       value: items.skuId,
       spu: items.spuResult,
       standard: items.standard

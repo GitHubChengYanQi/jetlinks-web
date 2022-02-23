@@ -174,9 +174,9 @@ const SkuTable = (props) => {
                 <Button type="link" onClick={() => {
                   history.push(`/SPU/sku/${record.skuId}`);
                 }}>
-                  {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
-                  &nbsp;/&nbsp;
                   {record.spuResult.name}
+                  &nbsp;/&nbsp;
+                  {record.skuName}
                 </Button>
               </>
             );

@@ -66,12 +66,14 @@ const SkuDetail = ({value}) => {
         <div className={styles.title}>
           <Descriptions>
             <Descriptions.Item label="物料编码">{data.standard}</Descriptions.Item>
-            <Descriptions.Item label="物料分类">{data.skuClass && data.skuClass.name}</Descriptions.Item>
-            <Descriptions.Item
-              label="名称">
+            <Descriptions.Item label="物料分类">
               {data.spuResult && data.spuResult.spuClassificationResult && data.spuResult.spuClassificationResult.name}
             </Descriptions.Item>
-            <Descriptions.Item label="型号">{data.spuResult && data.spuResult.name}</Descriptions.Item>
+            <Descriptions.Item
+              label="产品名称">
+              {data.spuResult && data.spuResult.name}
+            </Descriptions.Item>
+            <Descriptions.Item label="型号">{data.skuName}</Descriptions.Item>
             <Descriptions.Item label="物料描述">
               <Space>
                 (
