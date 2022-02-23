@@ -104,6 +104,11 @@ export const ClassCode = (props) => {
   return (<Input {...props} />);
 };
 
+
+export const SkuName = (props) => {
+  return (<Input {...props} />);
+};
+
 export const Codings = (props) => {
   return (<Coding {...props} />);
 };

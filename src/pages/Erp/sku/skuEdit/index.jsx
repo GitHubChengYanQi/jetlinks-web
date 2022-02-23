@@ -182,18 +182,15 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.SpuClass}
           required />
         <FormItem
-          label="物料名称"
-          visible={false}
-          name="spuClassification"
-          component={Spu}
-          required
-          options={spus}
-        />
-        <FormItem
-          label="型号"
+          label="产品名称"
           skuId={value.skuId}
           name="spu"
           component={SysField.SpuId}
+          required />
+        <FormItem
+          label="型号"
+          name="skuName"
+          component={SysField.SkuName}
           required />
         <FormItem
           label="单位"

@@ -34,8 +34,6 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <ToolClassificationList />;
       case 'wlfl':
         return <SpuClassificationList type={1} />;
-      case 'cpgl':
-        return <SpuTable />;
       default:
         return null;
     }
@@ -71,9 +69,6 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
           </Menu.Item>
           <Menu.Item key="wlfl">
             <span>物料分类管理</span>
-          </Menu.Item>
-          <Menu.Item key="cpgl">
-            <span>产品管理</span>
           </Menu.Item>
           <Menu.Item key="dymb">
             <span>打印模板</span>
