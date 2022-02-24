@@ -11,10 +11,8 @@ import {notification} from 'antd';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
-import {request, useRequest} from '@/util/Request';
+import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import {Spu} from '@/pages/Erp/Spus/spuField';
-import {spuClassificationListSelect} from '@/pages/Erp/Spus/spuUrl';
 
 const {FormItem} = Form;
 
@@ -50,16 +48,6 @@ const SkuEdit = ({...props}, ref) => {
     await formRef.current.submit();
   };
 
-  const [spus, setSpus] = useState([]);
-
-  const {run: spuClass} = useRequest(spuClassificationListSelect, {
-    manual: true,
-    onSuccess: (res) => {
-      setSpus(res);
-    }
-  });
-
-
   return (
     <div style={{padding: 16}}>
       <Form
@@ -67,10 +55,6 @@ const SkuEdit = ({...props}, ref) => {
         value={value.skuId || false}
         ref={formRef}
         defaultValue={{
-          'spuClassification': value.spuResult && {
-            name: value.spuResult.spuClassificationResult.name,
-            id: value.spuResult.spuClassificationId
-          },
           'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,
           'standard': value.standard,
@@ -112,52 +96,16 @@ const SkuEdit = ({...props}, ref) => {
                   state.value = spu.unitId;
                 }
               );
-
-              if (spu.spuClassificationResult.type === 2) {
-                setFieldState(
-                  'spuClass',
-                  state => {
-                    state.value = spu.spuClassificationResult.pid;
-                  }
-                );
-
-                setFieldState(
-                  'spuClassification',
-                  state => {
-                    state.value = {name: spu.spuClassificationResult.name, id: spu.spuClassificationId};
-                  }
-                );
-              }
-
             }
           });
 
-          FormEffectHooks.onFieldValueChange$('spuClass').subscribe(async ({value}) => {
-            if (value) {
-              spuClass({
-                data: {
-                  spuClassificationId: value,
-                  type: 2,
-                }
-              });
-            } else {
-              setSpus([]);
-            }
-            setFieldState(
-              'spuClassification',
-              state => {
-                state.visible = value;
-                state.value = null;
-              }
-            );
-          });
 
-          FormEffectHooks.onFieldValueChange$('spuClassification').subscribe(({value}) => {
+          FormEffectHooks.onFieldValueChange$('spuClass').subscribe(({value}) => {
             if (value) {
               setFieldState(
                 'spu',
                 state => {
-                  state.props.classId = value.id;
+                  state.props.classId = value;
                 }
               );
             }
@@ -178,7 +126,6 @@ const SkuEdit = ({...props}, ref) => {
           label="物料分类"
           name="spuClass"
           placeholder="请选择所属分类"
-          defaultParams={{data: {isNotproduct: 1}}}
           component={SysField.SpuClass}
           required />
         <FormItem

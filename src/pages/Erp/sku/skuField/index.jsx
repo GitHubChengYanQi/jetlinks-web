@@ -50,17 +50,19 @@ export const SelectSpu = (props) => {
 
 export const SpuId = (props) => {
 
-  const {classId, value, onChange, skuId} = props;
+  const {classId, value, onChange} = props;
 
-  const {loading, data, run} = useRequest(spuListSelect);
+  const {loading, data, run} = useRequest(spuListSelect, {manual: true});
 
   const action = (name) => {
-    run({
-      data: {
-        name,
-        spuClassificationId: classId,
-      }
-    });
+    if (name || classId) {
+      run({
+        data: {
+          name,
+          spuClassificationId: classId,
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -68,7 +70,7 @@ export const SpuId = (props) => {
   }, [classId]);
 
 
-  const options = !classId || loading ? [] : data && data.map((items) => {
+  const options = (!classId || loading) ? [] : data && data.map((items) => {
     return {
       label: items.label,
       value: items.label,
@@ -134,7 +136,7 @@ export const SpuClass = (props) => {
 
   return (<SetSelectOrCascader
     options={state.skuClass}
-    moduleType='cascader'
+    moduleType="cascader"
     width={200}
     title="设置分类"
     type={1}
@@ -168,13 +170,13 @@ export const FileId = (props) => {
 
 export const Img = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title='物料图片' />
+    <FileUpload {...props} maxCount={1} title="物料图片" />
   </div>);
 };
 
 export const Bind = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title='关联图纸' />
+    <FileUpload {...props} maxCount={1} title="关联图纸" />
   </div>);
 };
 
