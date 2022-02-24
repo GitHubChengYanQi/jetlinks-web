@@ -6,7 +6,7 @@ import {useRequest} from '@/util/Request';
 
 const Coding = ({value, width, onChange, module, placeholder}) => {
 
-  const [state, setState] = useState(value ? 'defined' : (cookie.get('codingType') || 'sys'));
+  const [state, setState] = useState(value ? 'defined' : (cookie.get('codingType') || 'defined'));
 
   const {loading, run} = useRequest({
     url: '/codingRules/defaultEncoding',
@@ -30,7 +30,6 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
   ];
 
   useEffect(() => {
-    console.log(cookie.get('codingType'));
     if (!value && module !== undefined && cookie.get('codingType') === 'sys') {
       run({
         params: {
