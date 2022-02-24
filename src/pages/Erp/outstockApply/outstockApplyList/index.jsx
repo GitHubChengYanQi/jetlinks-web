@@ -56,9 +56,9 @@ const OutstockApplyList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserId} />
-          <FormItem mega-props={{span: 1}} placeholder="仓库" name="stockId" component={SysField.StoreHouse} />
-          <FormItem mega-props={{span: 1}} placeholder="客户" name="customerId" component={SysField.CustomerId} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择负责人" name="userId" component={SysField.UserId} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择仓库" name="stockId" component={SysField.StoreHouse} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择客户" name="customerId" component={SysField.CustomerId} />
         </>
       );
     };
@@ -69,7 +69,7 @@ const OutstockApplyList = () => {
         <MegaLayout
           responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="发货申请单号" name="outstockApplyId" component={SysField.ApplyState} />
+          <FormItem mega-props={{span: 1}} placeholder="请输入发货申请单号" name="outstockApplyId" component={SysField.ApplyState} />
           {search ? formItem() : null}
         </MegaLayout>
 

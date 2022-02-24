@@ -53,7 +53,7 @@ const CustomerSelect = (props) => {
     <Select
       value={name}
       notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
-      placeholder={supply ? '搜索供应商' : '搜索客户'}
+      placeholder={supply ? '请选择供应商' : '请选择客户'}
       style={style}
       showSearch
       allowClear

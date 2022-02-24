@@ -31,18 +31,6 @@ const InquiryTaskEdit = ({...props}) => {
 
   const formRef = useRef();
 
-  const {loading, data} = useRequest(codingRulesList, {
-    defaultParams: {
-      data: {
-        module: 7,
-        state: 1
-      }
-    }
-  });
-
-  if (loading) {
-    return (<ProSkeleton type="descriptions" />);
-  }
 
   return (
     <div style={{padding: 16}}>
@@ -59,7 +47,6 @@ const InquiryTaskEdit = ({...props}) => {
             <FormItem
               label="任务编码"
               name="inquiryTaskCode"
-              codingId={data}
               module={7}
               component={SysField.Codings}
               required />

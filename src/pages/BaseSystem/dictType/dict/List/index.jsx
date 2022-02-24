@@ -42,7 +42,7 @@ const DictList = () => {
         label=""
         component={Input}
         initialValue={dictTypeId}
-        placeholder="父级Id"
+        placeholder="请选择父级Id"
         type="hidden"
       />
     );

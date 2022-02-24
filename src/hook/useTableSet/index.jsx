@@ -254,10 +254,13 @@ const useTableSet = (column, tableKey) => {
     tableColumn,
     setButton: tableKey &&
       <>
-        {state &&
-        <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
-          <Button style={{marginRight: 8}}>保存视图</Button>
-        </Dropdown>}
+        {
+          state
+          &&
+          <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
+            <Button style={{marginRight: 8}}>保存视图</Button>
+          </Dropdown>
+        }
 
         {loading ?
           <Spin />
@@ -266,7 +269,7 @@ const useTableSet = (column, tableKey) => {
             options={data}
             style={{minWidth: 200}}
             loading={loading}
-            placeholder="选择视图"
+            placeholder="请选择视图"
             bordered={false}
             onSelect={(value) => {
 

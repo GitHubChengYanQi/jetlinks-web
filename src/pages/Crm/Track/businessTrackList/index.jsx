@@ -51,9 +51,9 @@ const BusinessTrackList = () => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="消息提醒内容" name="tixing" component={SysField.Tixing} />
-          <FormItem mega-props={{span: 1}} placeholder="跟踪类型" name="type" component={SysField.Type} />
-          <FormItem mega-props={{span: 1}} placeholder="提醒内容" name="note" component={SysField.Note} />
+          <FormItem mega-props={{span: 1}} placeholder="请输入消息提醒内容" name="tixing" component={SysField.Tixing} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择跟踪类型" name="type" component={SysField.Type} />
+          <FormItem mega-props={{span: 1}} placeholder="请输入提醒内容" name="note" component={SysField.Note} />
         </>
       );
     };
@@ -64,7 +64,7 @@ const BusinessTrackList = () => {
         <MegaLayout
           responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} style={{width:'100%'}} placeholder="客户" name="customerId" component={SysField.Customer} />
+          <FormItem mega-props={{span: 1}} style={{width:'100%'}} placeholder="请选择客户" name="customerId" component={SysField.Customer} />
           {search ? formItem() : null}
         </MegaLayout>
 

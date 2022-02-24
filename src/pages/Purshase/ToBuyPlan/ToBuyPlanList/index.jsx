@@ -1,5 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Card, Divider, Input, message, Modal as AntModal, notification, Space, Table as AntTable} from 'antd';
+import {
+  Button,
+  Card,
+  Input,
+  message,
+  Modal as AntModal,
+  notification, Select,
+  Space,
+  Statistic,
+  Table as AntTable
+} from 'antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
@@ -8,14 +19,26 @@ import Modal from '@/components/Modal';
 import Quote from '@/pages/Purshase/Quote';
 import PurchaseQuotationList from '@/pages/Purshase/purchaseQuotation/purchaseQuotationList';
 import InquiryTaskEdit from '@/pages/Purshase/inquiryTask/inquiryTaskEdit';
+import Table from '@/components/Table';
+import Form from '@/components/Form';
+import {Type} from '@/pages/Purshase/purchaseAsk/purchaseAskField';
+import DatePicker from '@/components/DatePicker';
+import {useHistory} from 'ice';
 
 const {Column} = AntTable;
+const {FormItem} = Form;
 
 const ToBuyPlanList = () => {
 
   const [skus, setSkus] = useState([]);
 
+  const [showType, setShowType] = useState('sku');
+
+  const [keys, setKeys] = useState([]);
+
   const addQuoteRef = useRef();
+
+  const history = useHistory();
 
   const snameSkus = (value) => {
     let array = [];
@@ -59,6 +82,12 @@ const ToBuyPlanList = () => {
     return array;
   };
 
+  const selectedSanme = () => {
+    const array = skus.filter((item) => {
+      return keys.includes(item.purchaseListingId);
+    });
+    return snameSkus(array);
+  };
 
   const {loading, data, run, refresh} = useRequest(
     toBuyPlanList,
@@ -113,7 +142,6 @@ const ToBuyPlanList = () => {
     return null;
   });
 
-  const [keys, setKeys] = useState([]);
 
   const getMainKey = (key) => {
     return key.replace('mainKey:', '').split(',');
@@ -176,17 +204,30 @@ const ToBuyPlanList = () => {
     }
   };
 
+  const showCard = () => {
+    return <Card style={{margin: 16, marginTop: 0}}>
+      <Space size="large">
+        <Statistic title="勾选预购金额" value={112893} suffix="元" precision={2} />
+        <Statistic title="筛选金额合计" value={112893} suffix="元" precision={2} />
+        <Statistic title="预购金额合计" value={112893} suffix="元" precision={2} />
+      </Space>
+    </Card>;
+  };
 
-  useEffect(() => {
-    run();
-  }, []);
-
-  return <div>
-    <div style={{padding: 16}}>
-      <Breadcrumb />
-    </div>
-    <Divider style={{width: '100%', margin: 0}} />
-    <Space style={{padding: 16}}>
+  const actions = () => {
+    return <Space>
+      <Button
+        type="default"
+        onClick={() => {
+          // console.log(selectedSanme());
+          history.push('/purchase/toBuyPlan/createOrder');
+        }}>批量采购</Button>
+      <Button
+        disabled={keys.length === 0}
+        type="default"
+        onClick={() => {
+          setVisible(true);
+        }}>批量指派</Button>
       <Button
         disabled={keys.length === 0}
         type="default"
@@ -230,59 +271,114 @@ const ToBuyPlanList = () => {
               source: 'toBuyPlan'
             });
         }}>添加报价</Button>
-      <Divider style={{margin: '16px 0 0 0'}} />
-    </Space>
-    <Card bordered style={{margin: '0 16px'}}>
-      <AntTable
-        pagination={false}
-        rowSelection={{
-          selectedRowKeys: keys,
-          onSelectAll: (selected, selectedRows) => {
-            if (selected) {
-              setKeys(selectedRows.map((items) => {
-                return items && items.purchaseListingId;
-              }));
-            } else {
-              setKeys([]);
-            }
-          },
-          onSelect: (record, selected) => {
-            selectKeys(record.purchaseListingId, selected);
+      <div style={{marginLeft: 8}}>
+        查看维度:
+      </div>
+      <Select
+        value={showType}
+        onChange={setShowType}
+        style={{width: 150}}
+        options={[{label: '合并物料维度', value: 'sku'}, {label: '采购申请维度', value: 'ask'}]} />
+      <span style={{color: 'red'}}>说明：点击切换维度查看</span>
+    </Space>;
+  };
+
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="采购申请类型" name="type" component={Type} />
+        <FormItem label="交货日期" name="date" component={DatePicker} />
+        <FormItem label="采购申请编号" name="coding" component={Input} />
+        <FormItem label="更多搜索" name="all" component={Input} />
+      </>
+    );
+  };
+
+
+  useEffect(() => {
+    run();
+  }, []);
+
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
+  return <div>
+    <Table
+      title={<Breadcrumb />}
+      actions={actions()}
+      tableKey="toByPlan"
+      showCard={showCard()}
+      noSort
+      searchForm={searchForm}
+      pagination={false}
+      rowSelection={{
+        selectedRowKeys: keys,
+        onSelectAll: (selected, selectedRows) => {
+          if (selected) {
+            setKeys(selectedRows.map((items) => {
+              return items && items.purchaseListingId;
+            }));
+          } else {
+            setKeys([]);
           }
-        }}
-        dataSource={dataSource || []}
-        loading={loading}
-        rowKey="purchaseListingId"
-      >
-        <Column title="物料" dataIndex="skuResult" render={(value) => {
-          return value && <SkuResultSkuJsons skuResult={value} />;
-        }} />
-        <Column title="品牌" dataIndex="brandResult" render={(value) => {
-          return value ? value.brandName : '无指定品牌';
-        }} />
-        <Column title="数量" dataIndex="applyNumber" />
-        <Column title="申请人" dataIndex="user" render={(value) => {
-          return <>{value && value.name}</>;
-        }} />
-        <Column title="申请时间" dataIndex="createTime" />
-        <Column title="历史报价" dataIndex="skuId" render={(value, record) => {
-          if (record.purchaseListingId.indexOf('mainKey:') !== -1) {
-            return <Button type="link" onClick={() => {
-              quotationRef.current.open({
-                skuId: record.skuId,
-                check: true,
-                name: <SkuResultSkuJsons skuResult={record.skuResult} />
-              });
-            }}>
-              查看
-            </Button>;
-          }
-        }} />
-        <Column title="历史交货周期" />
-        <Column title="交付日期" dataIndex="deliveryDate" />
-        <Column title="操作" />
-      </AntTable>
-    </Card>
+        },
+        onSelect: (record, selected) => {
+          selectKeys(record.purchaseListingId, selected);
+        }
+      }}
+      dataSource={dataSource}
+      rowKey="purchaseListingId"
+    >
+      <Column key={1} title="物料" fixed="left" dataIndex="skuResult" render={(value) => {
+        return value && <SkuResultSkuJsons skuResult={value} />;
+      }} />
+      <Column key={2} title="品牌 / 厂家" dataIndex="brandResult" render={(value) => {
+        return value ? value.brandName : '无指定品牌';
+      }} />
+      <Column key={3} title="预购数量" width={100} dataIndex="applyNumber" />
+      <Column key={4} title="单位" width={100} dataIndex="skuResult" render={(value) => {
+        return value && value.spuResult && value.spuResult.unitResult && value.spuResult.unitResult.unitName;
+      }} />
+      <Column key={5} title="期望交货时间" width={150} dataIndex="deliveryDate" render={(value, record) => {
+        return <Space>
+          {value && value.split(' ')[0]}
+          {record && record.deliveryTime}
+        </Space>;
+      }} />
+      <Column key={6} title="历史交期" width={150} dataIndex="lishi" />
+      <Column key={7} title="交期预计" width={150} dataIndex="lishi" />
+      <Column key={8} title="历史单价" width={150} dataIndex="money" render={(value, record) => {
+        return <Space>
+          {value}
+          <Button type="link" style={{padding: 0}} onClick={() => {
+            quotationRef.current.open({
+              skuId: record.skuId,
+              check: true,
+              name: <SkuResultSkuJsons skuResult={record.skuResult} />
+            });
+          }}>
+            详情
+          </Button>
+        </Space>;
+      }} />
+      <Column key={9} title="预购总价" width={150} dataIndex="money" />
+      <Column key={10} title="询价状态" width={150} dataIndex="money" />
+      <Column key={11} title="申请人" width={150} dataIndex="user" render={(value) => {
+        return <>{value && value.name}</>;
+      }} />
+      <Column key={12} title="申请类型" width={150} dataIndex="user" render={(value) => {
+        return <>{value && value.name}</>;
+      }} />
+      <Column key={13} title="申请时间" width={150} dataIndex="createTime" />
+      <Column key={14} title="操作" fixed="right" align="center" render={(value, record) => {
+        return <>
+          <Button type="link">采购</Button>
+          <Button type="link">指派</Button>
+          <Button type="link">详情</Button>
+        </>;
+      }} />
+    </Table>
 
     <AntModal
       visible={visible}

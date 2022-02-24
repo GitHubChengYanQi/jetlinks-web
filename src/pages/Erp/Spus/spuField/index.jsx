@@ -128,7 +128,7 @@ export const Spu = (props) => {
       onChange={async (value) => {
         onChange({name: value});
       }}
-      placeholder="输入产品名称"
+      placeholder="请输入产品名称"
     />
   );
 };

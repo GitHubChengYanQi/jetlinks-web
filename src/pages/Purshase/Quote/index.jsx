@@ -167,7 +167,7 @@ const Quote = ({...props}, ref) => {
           <Descriptions.Item label="供应商" style={{width: isSupplySku && 500}}>
             <Space>
               <Select
-                placeholder="选择供应商"
+                placeholder="请选择供应商"
                 disabled={customer}
                 showSearch
                 value={supply.customerId}
@@ -597,7 +597,7 @@ const Quote = ({...props}, ref) => {
                             <div style={{width: 200}}>
                               <FormItem
                                 itemStyle={{margin: 0}}
-                                placeholder="物料"
+                                placeholder="请选择物料"
                                 name={`quotationParams.${index}.skuResult`}
                                 component={SysField.SkuId}
                                 ids={skuIds}
@@ -606,7 +606,7 @@ const Quote = ({...props}, ref) => {
                             :
                             <FormItem
                               itemStyle={{margin: 0}}
-                              placeholder="供应商"
+                              placeholder="请选择供应商"
                               width={200}
                               supply={1}
                               name={`quotationParams.${index}.customerId`}
@@ -620,7 +620,7 @@ const Quote = ({...props}, ref) => {
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="品牌"
+                            placeholder="请选择品牌"
                             isSupplySku={isSupplySku}
                             data={brandData}
                             refresh={() => {
@@ -644,7 +644,7 @@ const Quote = ({...props}, ref) => {
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="采购数量"
+                            placeholder="请输入采购数量"
                             name={`quotationParams.${index}.total`}
                             component={SysField.Total}
                             rules={[{
@@ -655,7 +655,7 @@ const Quote = ({...props}, ref) => {
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="单价"
+                            placeholder="请输入单价"
                             name={`quotationParams.${index}.price`}
                             component={SysField.Price}
                             rules={[{
@@ -666,21 +666,21 @@ const Quote = ({...props}, ref) => {
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="总价"
+                            placeholder="请输入总价"
                             name={`quotationParams.${index}.allPrice`}
                             component={SysField.Money}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="票据类型"
+                            placeholder="请选择票据类型"
                             name={`quotationParams.${index}.InvoiceType`}
                             component={SysField.InvoiceType}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="税率"
+                            placeholder="请输入税率"
                             data={taxRateData}
                             name={`quotationParams.${index}.taxRateId`}
                             component={SysField.TaxRateId}
@@ -688,56 +688,56 @@ const Quote = ({...props}, ref) => {
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="含税单价"
+                            placeholder="请输入含税单价"
                             name={`quotationParams.${index}.afterTax`}
                             component={SysField.Money}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="含税总价"
+                            placeholder="请输入含税总价"
                             name={`quotationParams.${index}.allAfterTax`}
                             component={SysField.Money}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="不含税单价"
+                            placeholder="请输入不含税单价"
                             name={`quotationParams.${index}.preTax`}
                             component={SysField.Money}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="不含税总价"
+                            placeholder="请输入不含税总价"
                             name={`quotationParams.${index}.allPreTax`}
                             component={SysField.Money}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="税额"
+                            placeholder="请选择税额"
                             name={`quotationParams.${index}.taxPrice`}
                             component={SysField.Money}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="付款方式"
+                            placeholder="请选择付款方式"
                             name={`quotationParams.${index}.paymentMethod`}
                             component={SysField.PaymentMethod}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="交货时间"
+                            placeholder="请选择交货时间"
                             name={`quotationParams.${index}.deliveryDate`}
                             component={SysField.DeliveryDate}
                           />
 
                           <FormItem
                             itemStyle={{margin: 0}}
-                            placeholder="价格有效期"
+                            placeholder="请输入价格有效期"
                             name={`quotationParams.${index}.periodOfValidity`}
                             component={SysField.PeriodOfValidity}
                           />
@@ -745,7 +745,7 @@ const Quote = ({...props}, ref) => {
                             <FormItem
                               itemStyle={{margin: 0}}
                               value={1}
-                              placeholder="是否含运"
+                              placeholder="请选择是否含运"
                               name={`quotationParams.${index}.isFreight`}
                               component={SysField.IsFreight}
                             />

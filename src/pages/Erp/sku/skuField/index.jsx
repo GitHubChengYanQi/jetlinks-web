@@ -90,7 +90,7 @@ export const SpuId = (props) => {
         onChange({name: value});
         action(value);
       }}
-      placeholder="输入物料名称"
+      placeholder="请输入物料名称"
     />
   );
 };

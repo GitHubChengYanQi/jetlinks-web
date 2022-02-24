@@ -47,7 +47,6 @@ const Action = () => {
     },
   );
 
-  console.log(data);
 
   // 任务评论
   const {loading: commentsLoading, run: taskComments} = useRequest(

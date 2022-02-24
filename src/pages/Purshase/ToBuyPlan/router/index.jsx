@@ -3,8 +3,15 @@ import React, {lazy} from 'react';
 export const ToBuyPlanRouter = [
   {
     path: '/toBuyPlan',
-    name:'待采购清单',
+    name: '预购管理',
     component: lazy(() => import('../ToBuyPlanList/index')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
+  {
+    path: '/toBuyPlan/createOrder',
+    name: '预购管理',
+    component: lazy(() => import('../../CreateOrder/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }

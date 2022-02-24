@@ -68,7 +68,7 @@ const PurchaseListingList = ({value}) => {
       <ProCard headerBordered className="h2Card" title="采购申请详情">
         <AntTable
           pagination={false}
-          dataSource={data.purchaseListingResults}
+          dataSource={data.purchaseListings}
           rowKey="purchaseListingId"
         >
           <Column title="物料" dataIndex="skuId" render={(value, record) => {

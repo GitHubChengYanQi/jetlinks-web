@@ -26,7 +26,7 @@ const NavigationList = () => {
     return (
       <>
         <div>
-          <Select api={Difference} placeholder='搜索分类' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
+          <Select api={Difference} placeholder='请选择分类' value={value} bordered={false} notFoundContent={null} defaultActiveFirstOption={false} onChange={async (value)=>{
             await run(
               {
                 data:{

@@ -64,7 +64,7 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
           }
         }}
       />
-      <Input value={value} placeholder={placeholder || '输入自定义编码'} onChange={(value) => {
+      <Input value={value} placeholder={placeholder || '请输入自定义编码'} onChange={(value) => {
         onChange(value.target.value);
       }} />
     </Space>

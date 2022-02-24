@@ -5,54 +5,102 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React from 'react';
-import {Input, InputNumber, Select as AntSelect, Spin} from 'antd';
+import React, {useRef} from 'react';
+import {Button, Input, InputNumber, Select as AntSelect, Space} from 'antd';
 import moment from 'moment';
+import ProCard from '@ant-design/pro-card';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import DatePicker from '@/components/DatePicker';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import Select from '@/components/Select';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
-import {useRequest} from '@/util/Request';
-import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
+import Modal from '@/components/Modal';
+import CheckSku from '@/pages/Erp/sku/components/CheckSku';
+import AddSkuTable from '@/pages/Purshase/purchaseAsk/components/AddSkuTable';
+import TimePicker from '@/components/TimePicker';
+
+export const AddSku = ({value, onChange}) => {
+
+  const skuTableRef = useRef();
+
+  const ref = useRef();
+
+  const addSkuRef = useRef();
+
+  return (<>
+    <ProCard
+      style={{marginTop: 24}}
+      bodyStyle={{padding: 16}}
+      className="h2Card"
+      title="采购申请明细"
+      headerBordered
+      extra={<Button onClick={() => {
+        ref.current.open(true);
+      }}>添加物料</Button>}
+    >
+
+      <AddSkuTable
+        ref={skuTableRef}
+        value={value}
+        onChange={onChange}
+      />
+    </ProCard>
+
+    <Modal
+      ref={ref}
+      width={1000}
+      footer={<Space>
+        <Button onClick={() => {
+          addSkuRef.current.check();
+        }}>选中</Button>
+        <Button type="primary" onClick={() => {
+          addSkuRef.current.change();
+        }}>选中并关闭</Button>
+      </Space>}
+    >
+      <CheckSku
+        value={value}
+        ref={addSkuRef}
+        onCheck={(value) => {
+          skuTableRef.current.addDataSource(value);
+        }}
+        onChange={(value) => {
+          skuTableRef.current.addDataSource(value);
+          ref.current.close();
+        }}
+      />
+    </Modal>
+  </>);
+};
 
 export const Codings = (props) => {
 
   return (<Coding {...props} />);
 };
 export const Type = (props) => {
-  return (<AntSelect options={[{
-    label:'生产采购',
-    value:'0',
-  },{
-    label:'库存采购',
-    value:'1',
-  },{
-    label:'行政采购',
-    value:'2',
-  },{
-    label:'销售采购',
-    value:'3',
-  },{
-    label:'紧急采购',
-    value:'4',
+  return (<AntSelect style={{width: 200}} placeholder="请选择类型" options={[{
+    label: '生产采购',
+    value: '0',
+  }, {
+    label: '库存采购',
+    value: '1',
+  }, {
+    label: '行政采购',
+    value: '2',
+  }, {
+    label: '销售采购',
+    value: '3',
+  }, {
+    label: '紧急采购',
+    value: '4',
   },]} {...props} />);
 };
 
-export const BrandId = (props) => {
-  const {loading, data} = useRequest(brandIdSelect);
-
-  if (loading) {
-    return <Spin />;
-  }
-
-  if (!data) {
-    return <></>;
-  }
+export const BrandId = ({data, ...props}) => {
 
   const options = [
-    {label:'无指定品牌',value:0},
-    ...data,
+    {label: '无指定品牌', value: 0},
+    ...(data || []),
   ];
 
   return (<AntSelect
@@ -64,13 +112,38 @@ export const BrandId = (props) => {
   />);
 };
 export const Note = (props) => {
-  return (<Input.TextArea  {...props} />);
+  return (<Input.TextArea placeholder="请输入对此次采购申请的备注说明内容" {...props} />);
 };
 export const SkuId = (props) => {
   return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
 };
 export const Status = (props) => {
-  return (<Input {...props} />);
+  return (<AntSelect style={{width: 200}} options={[
+    {
+      value: -1,
+      label: '未审批',
+    },
+    {
+      value: 0,
+      label: '审批中',
+    },
+    {
+      value: 2,
+      label: '已通过',
+    },
+    {
+      value: 1,
+      label: '已拒绝',
+    },
+    {
+      value: 4,
+      label: '采购中',
+    },
+    {
+      value: 5,
+      label: '已完成',
+    },
+  ]} {...props} />);
 };
 export const Money = (props) => {
   return (<Input {...props} />);
@@ -103,6 +176,9 @@ export const Date = (props) => {
   return (<DatePicker disabledDate={(currentDate) => {
     return currentDate && currentDate < moment().subtract(1, 'days');
   }} {...props} />);
+};
+export const Time = (props) => {
+  return (<TimePicker {...props}/>);
 };
 export const Display = (props) => {
   return (<Input {...props} />);

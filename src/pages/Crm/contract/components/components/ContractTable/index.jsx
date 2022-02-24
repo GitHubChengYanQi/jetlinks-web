@@ -68,14 +68,14 @@ const ContractTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="乙方" name="partyB" component={SysField.CustomerNameListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择乙方" name="partyB" component={SysField.CustomerNameListSelect} />
           {
             customerId ?
               null
               :
               <FormItem
                 mega-props={{span: 1}}
-                placeholder="乙方"
+                placeholder="请选择乙方"
                 value={customerId || null}
                 name="partyB"
                 component={SysField.CustomerNameListSelect} />
@@ -91,7 +91,7 @@ const ContractTable = (props) => {
           layoutProps={{wrapperWidth: 200}}
           grid={search}
           columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="合同名称" name="name" component={SysField.Name} />
+          <FormItem mega-props={{span: 1}} placeholder="请输入合同名称" name="name" component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
       </div>
@@ -114,7 +114,7 @@ const ContractTable = (props) => {
                 customerId ?
                   <FormItem
                     mega-props={{span: 1}}
-                    placeholder="甲方"
+                    placeholder="请选择甲方"
                     hidden
                     value={customerId || ' '}
                     name="partyA"

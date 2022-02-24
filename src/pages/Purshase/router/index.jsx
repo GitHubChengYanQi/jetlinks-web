@@ -12,7 +12,7 @@ const PurshaseRouterConfig = [
     path: '/purchase',
     name: '采购管理',
     component: PurshaseLayout,
-    children:[
+    children: [
       ...PurchaseAskRouter,
       ...SupplyListingRouter,
       ...ToBuyPlanRouter,
@@ -22,7 +22,7 @@ const PurshaseRouterConfig = [
       ...InquiryTaskRouter,
       {
         redirect: '/purchase/supply',
-      }
+      },
     ]
   }
 ];

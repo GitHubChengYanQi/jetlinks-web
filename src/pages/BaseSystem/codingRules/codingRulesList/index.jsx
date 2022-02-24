@@ -78,6 +78,8 @@ const CodingRulesList = () => {
         return '作业指导版本';
       case 10:
         return '工序编码';
+      case 11:
+        return '采购单';
       default:
         break;
     }

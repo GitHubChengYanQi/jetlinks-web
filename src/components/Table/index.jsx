@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Row, Col, Card, Layout, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {useFormTableQuery, createFormActions, Form, Submit,Reset, FormButtonGroup} from '@formily/antd';
+import {useFormTableQuery, createFormActions, Form, Submit, Reset, FormButtonGroup} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
@@ -21,6 +21,7 @@ const TableWarp = ({
   title,
   NoSortAction,
   maxHeight,
+  showCard,
   selectedRowKeys,
   api,
   tableData,
@@ -32,6 +33,7 @@ const TableWarp = ({
   rowKey,
   headStyle,
   tab,
+  dataSource: dataSources,
   noSort,
   configPagination,
   tableKey,
@@ -55,11 +57,6 @@ const TableWarp = ({
   left,
   ...props
 }, ref) => {
-
-  if (!api) {
-    throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
-  }
-
 
   if (!rowKey) {
     rowKey = api.rowKey;
@@ -112,15 +109,24 @@ const TableWarp = ({
       });
     }
     let response;
+
     try {
-      response = await ajaxService({
-        ...api,
-        data: {
-          ...values,
-        },
-        ...other,
-        params: page
-      });
+
+      if (dataSources) {
+        response = {
+          data: dataSources
+        };
+      }else {
+        response = await ajaxService({
+          ...api,
+          data: {
+            ...values,
+          },
+          ...other,
+          params: page
+        });
+      }
+
       if (typeof branch === 'function') {
         response.data = branch(response.data);
       }
@@ -198,7 +204,8 @@ const TableWarp = ({
                   actions={formActions}
                 >
                   {typeof searchForm === 'function' && searchForm()}
-                  {SearchButton || <FormButtonGroup><Submit><SearchOutlined />查询</Submit><Reset>重置</Reset> </FormButtonGroup>}
+                  {SearchButton ||
+                  <FormButtonGroup><Submit><SearchOutlined />查询</Submit><Reset>重置</Reset> </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -211,6 +218,7 @@ const TableWarp = ({
             {...form}
             actions={formActions}
           />}
+          {showCard}
           <Card bordered={bordered || false} title={actions} bodyStyle={bodyStyle} extra={setButton}>
             <AntdTable
               showTotal

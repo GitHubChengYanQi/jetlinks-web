@@ -21,6 +21,7 @@ import {request} from '@/util/Request';
 import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
+import Overflow from '@/components/Overflow';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -383,7 +384,7 @@ const CustomerEdit = ({onChange, ...props}) => {
             />
           </div>
           <ProCard title="企业其他信息" className="h2Card" headerBordered bodyStyle={{padding: 16}}>
-            <MegaLayout labelWidth={labelWidth}>
+            <Overflow><MegaLayout labelWidth={labelWidth}>
               <Row gutter={24}>
                 <Col span={span}>
                   <FormItem label="法人" name="legal" placeholder="请输入法人姓名" component={SysField.Legal} />
@@ -445,7 +446,7 @@ const CustomerEdit = ({onChange, ...props}) => {
               <Space align="start">
                 <FormItem label="附件" name="file" component={SysField.File} />仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
               </Space>
-            </MegaLayout>
+            </MegaLayout></Overflow>
           </ProCard>
           <div title="其他联系人">
             <MegaLayout labelWidth={labelWidth}>

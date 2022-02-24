@@ -37,7 +37,7 @@ export const DeptId = (props) => {
 };
 
 export const Note = (props) => {
-  return (<Input.TextArea placeholder='请填写该编码规则的编制原则，如每个字段代表何种意思' {...props} />);
+  return (<Input.TextArea placeholder="请填写该编码规则的编制原则，如每个字段代表何种意思" {...props} />);
 };
 export const State = (props) => {
   return (<Radio.Group {...props} >
@@ -117,13 +117,6 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           value: '${type}'
         }];
-      case 5:
-      case 6:
-      case 7:
-        // 5.采购申请
-        // 6.盘点任务
-        // 7.采购询价
-        return [];
       default:
         return [];
     }
@@ -279,6 +272,7 @@ export const Module = (props) => {
     {label: '作业指导编码', value: 8},
     {label: '作业指导版本', value: 9},
     {label: '工序编码', value: 10},
+    {label: '采购单', value: 11},
   ];
 
   return (<AntdSelect options={options} {...props} />);

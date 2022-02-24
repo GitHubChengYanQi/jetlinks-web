@@ -19,7 +19,7 @@ const UserList = () => {
     return (
       <>
         <Form.Item name="name" label="名称">
-          <Input placeholder="按名称搜索"/>
+          <Input placeholder="请输入名称"/>
         </Form.Item>
       </>
     );

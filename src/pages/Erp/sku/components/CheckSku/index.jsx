@@ -68,11 +68,11 @@ const CheckSku = ({
         <FormItem
           label="分类"
           name="spuClass"
-          placeholder="搜索分类"
+          placeholder="请选择分类"
           component={SysField.SelectSpuClass}
         />
         <FormItem
-          placeholder="搜索 名称 / 型号 / 编码"
+          placeholder="请输入 名称 / 型号 / 编码"
           name="skuName"
           component={SysField.SelectSkuName} />
         <FormItem

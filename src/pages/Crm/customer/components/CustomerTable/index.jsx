@@ -86,11 +86,11 @@ const CustomerTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择公司类型" name="companyType" component={SysField.CompanyType} />
           {supply === 0 &&
-          <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />}
-          <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserName} />
-          <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择客户来源" name="originId" component={SysField.OriginId} />}
+          <FormItem mega-props={{span: 1}} placeholder="请选择负责人" name="userId" component={SysField.UserName} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择行业" name="industryId" component={SysField.IndustryOne} />
         </>
       );
     };
@@ -103,7 +103,7 @@ const CustomerTable = (props) => {
           columns={4} full autoRow>
           <FormItem
             mega-props={{span: 1}}
-            placeholder={supply ? '供应商名称' : '客户名称'} name="customerName"
+            placeholder={supply ? '请输入供应商名称' : '请输入客户名称'} name="customerName"
             component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
