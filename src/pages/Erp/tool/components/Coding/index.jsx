@@ -30,6 +30,7 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
   ];
 
   useEffect(() => {
+    console.log(cookie.get('codingType'));
     if (!value && module !== undefined && cookie.get('codingType') === 'sys') {
       run({
         params: {

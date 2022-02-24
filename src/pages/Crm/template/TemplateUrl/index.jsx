@@ -35,7 +35,7 @@ export const templateList = {
   rowKey:'templateId'
 };
 export const templateListSelect = {
-  url: '/template/list',
+  url: '/template/listSelect',
   method: 'POST',
   rowKey:'templateId'
 };

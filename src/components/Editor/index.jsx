@@ -203,6 +203,10 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         return <Card>
           <Card.Grid style={CardGridStyle()} onClick={() =>
             // eslint-disable-next-line no-template-curly-in-string
+            editorRef.current.editor.cmd.do('insertHTML', '$(parent)')
+          }>上级库位</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() =>
+            // eslint-disable-next-line no-template-curly-in-string
             editorRef.current.editor.cmd.do('insertHTML', '${name}')
           }>库位名称</Card.Grid>
           <Card.Grid style={CardGridStyle()} onClick={() =>
