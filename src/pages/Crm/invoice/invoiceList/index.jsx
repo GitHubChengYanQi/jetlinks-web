@@ -89,7 +89,7 @@ const InvoiceList = ({customer,refresh}) => {
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="开户名称" dataIndex="bank" />
+        <Column title="开户银行" dataIndex="bankId" />
         <Column title="开户行号" dataIndex="bankNo" />
         <Column title="开户账号" dataIndex="bankAccount" />
         <Column />

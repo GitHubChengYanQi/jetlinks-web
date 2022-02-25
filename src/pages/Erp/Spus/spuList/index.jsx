@@ -148,7 +148,7 @@ const SpuList = () => {
       </Table>
       <Modal
         width={1000}
-        title="型号"
+        title="产品"
         compoentRef={formRef}
         component={SpuEdit}
         footer={<>

@@ -30,6 +30,8 @@ const labelWidth = 128;
 
 const CreateOrder = ({...props}) => {
 
+  const state = props.location.state;
+
   const ref = useRef();
 
   const {loading, data, refresh} = useRequest({...paymentTemplateListSelect, data: {oftenUser: 1}},);
@@ -368,6 +370,16 @@ const CreateOrder = ({...props}) => {
       <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="采购申请明细" headerBordered>
         <FormItem
           name="skus"
+          value={state && state.map((item) => {
+            return {
+              skuId: item.skuId,
+              skuResult: item.skuResult,
+              brandId: item.brandId,
+              defaultBrandResult: item.brandResult && item.brandResult.brandName,
+              preordeNumber: item.applyNumber,
+              unitId: item.skuResult && item.skuResult.spuResult && item.skuResult.spuResult.unitId,
+            };
+          })}
           component={SysField.AddSku}
         />
       </ProCard>
@@ -558,7 +570,7 @@ const CreateOrder = ({...props}) => {
               />
             </Col>
           </Row>
-          <MegaLayout labelWidth={200} labelAlign='top'>
+          <MegaLayout labelWidth={200} labelAlign="top">
             <FormItem
               visible={false}
               label="合同模板中的其他字段"

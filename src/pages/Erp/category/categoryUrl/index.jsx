@@ -6,6 +6,12 @@
  */
 
 export const categoryAdd = {
+  url: '/category/add',
+  method: 'POST',
+  rowKey:'categoryId'
+};
+
+export const categoryAddList = {
   url: '/category/addList',
   method: 'POST',
   rowKey:'categoryId'

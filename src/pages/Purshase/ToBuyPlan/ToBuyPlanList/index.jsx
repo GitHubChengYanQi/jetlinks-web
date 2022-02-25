@@ -10,8 +10,9 @@ import {
   Statistic,
   Table as AntTable
 } from 'antd';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import {useHistory} from 'ice';
+import {createFormActions, FormButtonGroup, Reset} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
 import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
@@ -25,11 +26,14 @@ import Form from '@/components/Form';
 import {Type} from '@/pages/Purshase/purchaseAsk/purchaseAskField';
 import DatePicker from '@/components/DatePicker';
 import PurchaseAskList from '@/pages/Purshase/purchaseAsk/purchaseAskList';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ToBuyPlanList = () => {
+const formActionsPublic = createFormActions();
+
+const ToBuyPlanList = (props) => {
 
   const [skus, setSkus] = useState([]);
 
@@ -38,6 +42,8 @@ const ToBuyPlanList = () => {
   const [keys, setKeys] = useState([]);
 
   const addQuoteRef = useRef();
+
+  const tableRef = useRef();
 
   const history = useHistory();
 
@@ -220,58 +226,59 @@ const ToBuyPlanList = () => {
       <Button
         type="default"
         onClick={() => {
-          // console.log(selectedSanme());
-          history.push('/purchase/toBuyPlan/createOrder');
+          history.push({pathname:'/purchase/toBuyPlan/createOrder',state:selectedSanme()});
         }}>批量采购</Button>
-      <Button
-        disabled={keys.length === 0}
-        type="default"
-        onClick={() => {
-          setVisible(true);
-        }}>批量指派</Button>
-      <Button
-        disabled={keys.length === 0}
-        type="default"
-        onClick={() => {
-          setVisible(true);
-        }}>创建采购计划</Button>
-      <Button
-        type="default"
-        disabled={keys.length === 0}
-        onClick={() => {
-          const array = skus.filter((item) => {
-            return keys.includes(item.purchaseListingId);
-          });
-          inquiryRef.current.open(snameSkus(array));
-        }}>指派询价任务</Button>
-      <Button
-        type="default"
-        onClick={() => {
-          let array = [];
-          if (keys.length > 0) {
-            array = skus.filter((item) => {
+      {props.ggg && <>
+        <Button
+          disabled={keys.length === 0}
+          type="default"
+          onClick={() => {
+            setVisible(true);
+          }}>批量指派</Button>
+        <Button
+          disabled={keys.length === 0}
+          type="default"
+          onClick={() => {
+            setVisible(true);
+          }}>创建采购计划</Button>
+        <Button
+          type="default"
+          disabled={keys.length === 0}
+          onClick={() => {
+            const array = skus.filter((item) => {
               return keys.includes(item.purchaseListingId);
             });
-          } else {
-            array = skus;
-          }
-          const skuArray = snameSkus(array);
+            inquiryRef.current.open(snameSkus(array));
+          }}>指派询价任务</Button>
+        <Button
+          type="default"
+          onClick={() => {
+            let array = [];
+            if (keys.length > 0) {
+              array = skus.filter((item) => {
+                return keys.includes(item.purchaseListingId);
+              });
+            } else {
+              array = skus;
+            }
+            const skuArray = snameSkus(array);
 
-          quoteRef.current.open(
-            {
-              skus: skuArray.map((item) => {
-                return {
-                  skuId: item.skuId,
-                  skuResult: item.skuResult,
-                  number: item.applyNumber,
-                  brandId: item.brandId,
-                  brandResult: item.brandResult,
-                };
-              }),
-              sourceId: 0,
-              source: 'toBuyPlan'
-            });
-        }}>添加报价</Button>
+            quoteRef.current.open(
+              {
+                skus: skuArray.map((item) => {
+                  return {
+                    skuId: item.skuId,
+                    skuResult: item.skuResult,
+                    number: item.applyNumber,
+                    brandId: item.brandId,
+                    brandResult: item.brandResult,
+                  };
+                }),
+                sourceId: 0,
+                source: 'toBuyPlan'
+              });
+          }}>添加报价</Button>
+      </>}
       <div style={{marginLeft: 8}}>
         查看维度:
       </div>
@@ -320,7 +327,29 @@ const ToBuyPlanList = () => {
         :
         <>
           <Table
+            ref={tableRef}
+            loading={loading}
+            SearchButton={
+              <FormButtonGroup>
+                <Button type="primary" onClick={() => {
+                  const type = tableRef.current.formActions.getFieldValue('type');
+                  const date = tableRef.current.formActions.getFieldValue('date');
+                  const coding = tableRef.current.formActions.getFieldValue('coding');
+                  const all = tableRef.current.formActions.getFieldValue('all');
+                  run({
+                    data: {
+                      type,
+                      date,
+                      coding,
+                      all,
+                    }
+                  });
+                }}><SearchOutlined />查询</Button>
+                <Reset>重置</Reset>
+              </FormButtonGroup>
+            }
             title={<Breadcrumb />}
+            formActions={formActionsPublic}
             actions={actions()}
             tableKey="toByPlan"
             showCard={showCard()}

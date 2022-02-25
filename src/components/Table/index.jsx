@@ -22,6 +22,7 @@ const TableWarp = ({
   title,
   NoSortAction,
   maxHeight,
+  loading:getLoading,
   showCard,
   selectedRowKeys,
   api,
@@ -228,7 +229,7 @@ const TableWarp = ({
             <AntdTable
               showTotal
               expandable={expandable}
-              loading={loading}
+              loading={getLoading || loading}
               dataSource={dataSource || []}
               rowKey={rowKey}
               columns={columns}

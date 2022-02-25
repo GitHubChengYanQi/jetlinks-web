@@ -16,9 +16,12 @@ import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const PurchaseAskList = ({status, ...props}) => {
   const history = useHistory();
@@ -60,6 +63,7 @@ const PurchaseAskList = ({status, ...props}) => {
         rowKey="purchaseAskId"
         noRowSelection
         tableKey="purchaseAsk"
+        formActions={formActionsPublic}
         title={<Breadcrumb />}
         searchForm={searchForm}
         actions={actions()}

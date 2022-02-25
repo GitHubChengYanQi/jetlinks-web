@@ -35,7 +35,7 @@ const InvoiceEdit = ({...props}) => {
         return {...value,customerId};
       }}
     >
-      <FormItem label="开户名称" name="bank" component={SysField.Bank} required/>
+      <FormItem label="开户银行" name="bankId" component={SysField.Bank} required/>
       <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} required/>
       <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} required/>
     </Form>

@@ -70,6 +70,7 @@ export const customerBAction = (setFieldState) => {
   FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value}) => {
     if (value) {
       const customer = await request({...customerDetail, data: {customerId: value}});
+      console.log(customer);
       setFieldState('partyBAdressId', (state) => {
         state.props.customerId = value;
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {

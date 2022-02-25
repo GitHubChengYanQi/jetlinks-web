@@ -21,6 +21,7 @@ import Modal from '@/components/Modal';
 import ItemAttributeList from '@/pages/Erp/itemAttribute/itemAttributeList';
 import Breadcrumb from '@/components/Breadcrumb';
 import {categoryTree} from '@/pages/Erp/spu/spuUrl';
+import ConfigEdit from '@/pages/Erp/category/ConfigEdit';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -28,6 +29,7 @@ const formActionsPublic = createFormActions();
 
 const CategoryList = () => {
   const ref = useRef(null);
+  const configRef = useRef(null);
   const refAttribute = useRef(null);
   const tableRef = useRef(null);
 
@@ -94,6 +96,9 @@ const CategoryList = () => {
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
+              <Button type='link' onClick={()=>{
+                configRef.current.open(record.key);
+              }}>配置属性</Button>
               <EditButton onClick={() => {
                 ref.current.open(record.key);
               }} />
@@ -104,6 +109,10 @@ const CategoryList = () => {
           );
         }} width={300} />
       </Table>
+      <Drawer width={800} title="配置属性" component={ConfigEdit} onSuccess={() => {
+        tableRef.current.submit();
+        configRef.current.close();
+      }} ref={configRef} />
       <Drawer width={800} title="配置" component={CategoryEdit} onSuccess={() => {
         tableRef.current.submit();
         ref.current.close();
