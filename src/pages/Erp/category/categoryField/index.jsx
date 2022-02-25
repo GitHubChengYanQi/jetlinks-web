@@ -19,7 +19,7 @@ export const Pid = (props) =>{
   return (<Cascader top api={categoryTree} {...props}/>);
 };
 export const CategoryName = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input style={{width:200}} {...props}/>);
 };
 export const CreateUser = (props) =>{
   return (<Input {...props}/>);

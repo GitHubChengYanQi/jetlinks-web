@@ -70,6 +70,7 @@ const SpuClassificationList = ({type}) => {
         title={<Breadcrumb title="物料分类管理" />}
         api={spuClassificationTreeVrew}
         rowKey="key"
+        listHeader={false}
         searchForm={searchForm}
         noSort
         contentHeight

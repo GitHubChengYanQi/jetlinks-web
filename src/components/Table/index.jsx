@@ -210,7 +210,7 @@ const TableWarp = ({
                 </Form>
               </Col>
               <Col className={style.setTing}>
-                {!listHeader && !headStyle && actions}
+                {!listHeader && actions}
               </Col>
             </Row>
 
@@ -222,9 +222,9 @@ const TableWarp = ({
           {showCard}
           <Card
             bordered={bordered || false}
-            title={listHeader ? actions : null}
+            title={(listHeader && !headStyle) ? actions : null}
             bodyStyle={bodyStyle}
-            extra={setButton}>
+            extra={!headStyle && setButton}>
             <AntdTable
               showTotal
               expandable={expandable}

@@ -6,11 +6,9 @@ import MaterialList from '@/pages/Erp/material/MaterialList';
 import UnitList from '@/pages/Erp/unit/unitList';
 import SetView from '@/layouts/SetView';
 import CategoryList from '@/pages/Erp/category/categoryList';
-import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
 import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import Modal from '@/components/Modal';
 import PrintTemplateList from '@/pages/SPU/printTemplate/printTemplateList';
-import SpuTable from '@/pages/Erp/spu/components/spuClassification/spuTable';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -20,19 +18,17 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const RenderComponent = () => {
     switch (type) {
-      case 'lmgl':
+      case '配置管理':
         return <CategoryList />;
-      case 'ppgl':
+      case '品牌管理':
         return <BrandList />;
-      case 'czgl':
+      case '材质管理':
         return <MaterialList />;
-      case 'dymb':
+      case '单位管理':
         return <PrintTemplateList />;
-      case 'dwgl':
+      case '打印模板':
         return <UnitList />;
-      case 'gjflgl':
-        return <ToolClassificationList />;
-      case 'wlfl':
+      case '物料分类管理':
         return <SpuClassificationList type={1} />;
       default:
         return null;
@@ -55,27 +51,27 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             setType(item.key);
           }}
         >
-          <Menu.Item key="lmgl">
+          <Menu.Item key="配置管理">
             <span>配置管理</span>
           </Menu.Item>
-          <Menu.Item key="ppgl">
+          <Menu.Item key="品牌管理">
             <span>品牌管理</span>
           </Menu.Item>
-          <Menu.Item key="czgl">
+          <Menu.Item key="材质管理">
             <span>材质管理</span>
           </Menu.Item>
-          <Menu.Item key="dwgl">
+          <Menu.Item key="单位管理">
             <span>单位管理</span>
           </Menu.Item>
-          <Menu.Item key="wlfl">
+          <Menu.Item key="物料分类管理">
             <span>物料分类管理</span>
           </Menu.Item>
-          <Menu.Item key="dymb">
+          <Menu.Item key="打印模板">
             <span>打印模板</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal width={1000} title="设置" footer={[]} ref={ref}>{RenderComponent()}</Modal>
+      <Modal width={1000} headTitle={type} footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };

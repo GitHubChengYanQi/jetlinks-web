@@ -68,6 +68,7 @@ const MaterialList = () => {
         rowKey="materialId"
         searchForm={searchForm}
         actions={actions()}
+        listHeader={false}
         ref={tableRef}
         footer={footer}
         onChange={(value)=>{

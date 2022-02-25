@@ -56,6 +56,7 @@ const AttributeValuesList = (props) => {
         contentHeight
         title={<Breadcrumb title='属性值管理' />}
         api={attributeValuesList}
+        listHeader={false}
         formActions={formActionsPublic}
         rowKey="attributeValuesId"
         searchForm={searchForm}

@@ -6,7 +6,7 @@
  */
 
 export const categoryAdd = {
-  url: '/category/add',
+  url: '/category/addList',
   method: 'POST',
   rowKey:'categoryId'
 };

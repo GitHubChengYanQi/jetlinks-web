@@ -68,6 +68,7 @@ const UnitList = () => {
         api={unitList}
         rowKey="unitId"
         searchForm={searchForm}
+        listHeader={false}
         actions={actions()}
         ref={tableRef}
         footer={footer}

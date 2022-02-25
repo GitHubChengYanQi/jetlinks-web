@@ -195,14 +195,14 @@ const ContactsTable = (props) => {
             </>
           );
         }} />
-        <Column key={2} title="职务" align="center" width={200} render={(value, record) => {
+        <Column key={3} title="职务" align="center" width={200} render={(value, record) => {
           return (
             <>
               {record.companyRoleResult && record.companyRoleResult.position}
             </>
           );
         }} />
-        {!customer && <Column key={3} title="关联客户" width={300} dataIndex="clientId" render={(value, record) => {
+        {!customer && <Column key={4} title="关联客户" width={300} dataIndex="clientId" render={(value, record) => {
           return (
             record.customerResults && record.customerResults.map((item) => {
               return item.customerName;
@@ -210,7 +210,7 @@ const ContactsTable = (props) => {
           );
         }} />}
 
-        <Column key={4} title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
+        <Column key={5} title="联系电话" width={300} dataIndex="phone" render={(value, record) => {
           return (
             <>
               {
@@ -231,7 +231,7 @@ const ContactsTable = (props) => {
 
         }} />
         <Column />
-        <Column key={5} title="操作" fixed="right" width={customer ? 260 : 150} align="right" render={(value, record) => {
+        <Column key={6} title="操作" fixed="right" width={customer ? 260 : 150} align="right" render={(value, record) => {
           const isDefaultContacts = customer && record.contactsId === customer.defaultContacts;
           return (
             <>

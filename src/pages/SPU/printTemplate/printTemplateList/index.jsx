@@ -53,6 +53,7 @@ const PrintTemplateList = () => {
         title={<Breadcrumb title='模板' />}
         api={printTemplateList}
         rowKey="printTemplateId"
+        listHeader={false}
         searchForm={searchForm}
         noRowSelection
         formActions={formActionsPublic}
