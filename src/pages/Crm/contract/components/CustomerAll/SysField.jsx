@@ -101,7 +101,7 @@ export const Module = (props) => {
           ref={submitRef}
           customerId={customerId}
           onSuccess={(value) => {
-            other.onChange(value);
+            other.onChange(value.contactsId);
             refresh();
             ref.current.close();
           }}
@@ -111,7 +111,7 @@ export const Module = (props) => {
           value={false}
           customer={customerId}
           onSuccess={(value) => {
-            other.onChange(value);
+            other.onChange(value.adressId);
             refresh();
             ref.current.close();
           }}
@@ -121,7 +121,7 @@ export const Module = (props) => {
           value={false}
           contactsId={contactsId}
           onSuccess={(value) => {
-            other.onChange(value);
+            other.onChange(value.phoneId);
             refresh();
             ref.current.close();
           }}

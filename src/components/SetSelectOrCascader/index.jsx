@@ -34,6 +34,9 @@ const SetSelectOrCascader = ({disabled,options, component, title, moduleType, wi
       <Modal width={800} {...props} component={component} ref={ref} onClose={() => {
         ref.current.close();
         setTrue();
+      }} onSuccess={()=>{
+        ref.current.close();
+        setTrue();
       }} />
     </Space>);
 };

@@ -31,7 +31,15 @@ const labelWidth = 128;
 
 const formActionsPublic = createFormActions();
 
-const CustomerEdit = ({onChange, ...props}) => {
+const CustomerEdit = ({
+  onChange = () => {
+  },
+  add,
+  onClose = () => {
+  },
+  onSuccess,
+  ...props
+}) => {
 
   const ApiConfig = {
     view: customerDetail,
@@ -55,9 +63,9 @@ const CustomerEdit = ({onChange, ...props}) => {
 
   return (
     <div>
-      <div style={{padding: 8}}>
+      {!add && <div style={{padding: 8}}>
         <Breadcrumb title="创建供应商" />
-      </div>
+      </div>}
       <Card title="创建供应商">
         <Form
           {...other}
@@ -228,9 +236,7 @@ const CustomerEdit = ({onChange, ...props}) => {
             });
           }}
           onSuccess={(res) => {
-            if (res && typeof onChange === 'function') {
-              onChange(res);
-            }
+            onChange(res);
             history.push('/purchase/supply');
             notification.success({
               message: '创建供应商成功！',
@@ -348,9 +354,9 @@ const CustomerEdit = ({onChange, ...props}) => {
                 <Col span={span}>
                   <FormItem
                     label="开户银行"
-                    name="bank"
+                    name="bankId"
                     placeholder="请输入开户银行"
-                    component={SysField.PhoneNumber}
+                    component={SysField.Bank}
                   />
                 </Col>
                 <Col span={span}>
@@ -680,6 +686,9 @@ const CustomerEdit = ({onChange, ...props}) => {
               formRef.current.submit();
             }}>保存</Button>
             <Button onClick={() => {
+              if (add) {
+                return onClose();
+              }
               history.push('/purchase/supply');
             }}>取消</Button>
           </Space>

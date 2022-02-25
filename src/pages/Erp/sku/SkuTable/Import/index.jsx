@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import {Button, message, Modal, Modal as AntModal, Space, Table as AntTable, Upload} from 'antd';
 import cookie from 'js-cookie';
-import {config} from 'ice';
-import Icon from '@/components/Icon';
-import Table from '@/components/Table';
 
-const {baseURI} = config;
+import Icon from '@/components/Icon';
 
 const Import = ({
   onOk = () => {
   },
   templateUrl,
+  url,
+  title,
+  module,
 }) => {
 
   const [filelist, setFilelist] = useState([]);
@@ -20,37 +20,78 @@ const Import = ({
   const [visible, setVisible] = useState();
 
   const importErrData = (errData) => {
-    const data = errData && errData.map((item, index) => {
-      return {
-        key: index,
-        line: item.line,
-        sku: item.classItem,
-        class: item.spuClass,
-        unit: item.unit,
-        name: item.spuName,
-        coding: item.standard,
-        batch: item.isNotBatch,
-        error: item.error,
-        attributes: item.attributes && item.attributes.map((item) => {
-          return item;
-        }).toString()
-      };
-    });
+
+    const columns = [];
+
+    switch (module) {
+      case 'sku':
+        columns.push({
+          title: '错误行',
+          dataIndex: 'line',
+        }, {
+          title: '物料分类',
+          dataIndex: 'spuClass'
+        }, {
+          title: '产品',
+          dataIndex: 'classItem'
+        }, {
+          title: '型号',
+          dataIndex: 'spuName'
+        }, {
+          title: '物料编码',
+          dataIndex: 'standard'
+        }, {
+          title: '单位',
+          dataIndex: 'unit'
+        }, {
+          title: '是否批量',
+          dataIndex: 'isNotBatch'
+        }, {
+          title: '参数配置',
+          dataIndex: 'attributes',
+          render: (value) => {
+            return value && value.map((item) => {
+              return item;
+            }).toString();
+          }
+        }, {
+          title: '问题原因',
+          dataIndex: 'error'
+        },);
+        break;
+      case 'customer':
+        columns.push({
+          title:'物料编码',
+          dataIndex:'coding',
+        },{
+          title:'品牌',
+          dataIndex:'brand',
+        },{
+          title:'供应商',
+          dataIndex:'supplier',
+        },{
+          title:'行',
+          dataIndex:'line',
+        },{
+          title:'错误信息',
+          dataIndex:'error',
+        },);
+        break;
+      default:
+        break;
+    }
+
+
     AntModal.error({
       width: 1200,
-      title: `异常数据 / ${data.length}`,
+      title: `异常数据 / ${errData.length}`,
       content: <div style={{padding: 8}}>
-        <AntTable rowKey="key" dataSource={data || []} pagination={false} scroll={{y: '50vh'}}>
-          <Table.Column title="错误行" dataIndex="line" />
-          <Table.Column title="物料分类" dataIndex="class" />
-          <Table.Column title="产品" dataIndex="sku" />
-          <Table.Column title="型号" dataIndex="name" />
-          <Table.Column title="物料编码" dataIndex="coding" />
-          <Table.Column title="单位" dataIndex="unit" />
-          <Table.Column title="是否批量" dataIndex="batch" />
-          <Table.Column title="参数配置" dataIndex="attributes" />
-          <Table.Column title="问题原因" dataIndex="error" />
-        </AntTable>
+        <AntTable rowKey="key" dataSource={errData && errData.map((item, index) => {
+          return {
+            key: index,
+            ...item
+          };
+        }) || []} columns={columns} pagination={false} scroll={{y: '50vh'}} />
       </div>
     });
   };
@@ -62,7 +103,7 @@ const Import = ({
     });
     setLoading(true);
 
-    fetch(`${baseURI}Excel/importSku`, {
+    fetch(url, {
       method: 'POST',
       headers: {Authorization: cookie.get('tianpeng-token')},
       body: formData,
@@ -90,9 +131,9 @@ const Import = ({
   return <>
     <Button icon={<Icon type="icon-daoru" />} onClick={() => {
       setVisible(true);
-    }}>导入物料</Button>
+    }}>{title}</Button>
     <Modal
-      title="导入基础物料"
+      title={title}
       visible={visible}
       onCancel={() => {
         setVisible(false);
@@ -135,7 +176,7 @@ const Import = ({
           onRemove={() => {
             setFilelist([]);
           }}
-          action={`${baseURI}Excel/importSku`}
+          action={url}
           headers={
             {Authorization: cookie.get('tianpeng-token')}
           }

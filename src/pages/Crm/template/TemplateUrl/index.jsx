@@ -40,5 +40,11 @@ export const templateListSelect = {
   rowKey:'templateId'
 };
 
+export const templateGetLabel = {
+  url: '/template/getLabel',
+  method: 'GET',
+  rowKey:'templateId'
+};
+
 
 

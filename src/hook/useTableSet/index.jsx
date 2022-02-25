@@ -36,7 +36,7 @@ const useTableSet = (column, tableKey) => {
   const itemsData = [];
 
   tableKey && Array.isArray(tableColumn) && tableColumn.map((items) => {
-    if (items.key) {
+    if (items && items.key) {
       return itemsData.push({
         title: items.props.title,
         key: items.key,
@@ -196,7 +196,7 @@ const useTableSet = (column, tableKey) => {
             const array = [];
             allIems.map((items) => {
               const columns = tableColumn.filter((columns) => {
-                return items.key === columns.key;
+                return columns && items.key === columns.key;
               });
               return array.push(columns[0]);
             });

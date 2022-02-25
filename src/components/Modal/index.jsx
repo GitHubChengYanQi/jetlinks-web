@@ -9,7 +9,6 @@ const Modal = (
     width,
     headTitle,
     loading = () => {
-
     },
     footer,
     padding,

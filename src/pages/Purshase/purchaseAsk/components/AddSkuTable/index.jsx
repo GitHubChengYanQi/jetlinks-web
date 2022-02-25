@@ -121,7 +121,7 @@ const AddSkuTable = ({
       }} />
       <Table.Column title="申请数量" width={100} dataIndex="applyNumber" render={(value, record, index) => {
         return <ApplyNumber
-          value={getValue(index).applyNumber}
+          value={value}
           onChange={(value) => {
             setValue({applyNumber: value}, index);
           }}
@@ -129,7 +129,7 @@ const AddSkuTable = ({
       }} />
       <Table.Column title="交付日期" width={200} dataIndex="deliveryDate" render={(value, record, index) => {
         return <Date
-          value={getValue(index).deliveryDate}
+          value={value}
           onChange={(value) => {
             setValue({deliveryDate: value}, index);
           }}
@@ -137,7 +137,7 @@ const AddSkuTable = ({
       }} />
       <Table.Column title="交付时间" width={200} dataIndex="deliveryTime" render={(value, record, index) => {
         return <Time
-          value={getValue(index).deliveryTime}
+          value={value}
           onChange={(value) => {
             setValue({deliveryTime: value}, index);
           }}

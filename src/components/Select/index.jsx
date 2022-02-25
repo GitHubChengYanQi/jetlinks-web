@@ -14,6 +14,8 @@ const Select = (props) => {
     placeholder,
     disabled,
     defaultValue,
+    onChange = () => {
+    },
     width: wid,
     ...other
   } = props;
@@ -32,7 +34,7 @@ const Select = (props) => {
         return `${items.value}` === `${value}`;
       });
       if (items && items.length <= 0) {
-        other.onChange(null);
+        onChange(null);
       }
     }
   }, [data, value]);
@@ -60,36 +62,35 @@ const Select = (props) => {
     valueArray = null;
   }
 
-  if (data) {
-    return (
-      <>
-        {
-          !loading
-          &&
-          <AntSelect
-            {...other}
-            bordered={border}
-            options={options || data.map((items) => {
-              return {
-                label: items.label,
-                value: items.value
-              };
-            })}
-            defaultValue={defaultValue}
-            showArrow={showArrow}
-            disabled={disabled}
-            placeholder={placeholder}
-            style={{width: wid}}
-            value={valueArray}
-            allowClear
-            showSearch
-            filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          />}
-      </>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <>
+      {
+        !loading
+        &&
+        <AntSelect
+          {...other}
+          bordered={border}
+          options={options || data.map((items) => {
+            return {
+              label: items.label || items.title,
+              value: items.value
+            };
+          })}
+          defaultValue={defaultValue}
+          showArrow={showArrow}
+          disabled={disabled}
+          placeholder={placeholder}
+          style={{width: wid}}
+          value={valueArray}
+          onChange={(value, option) => {
+            onChange(value, option);
+          }}
+          allowClear
+          showSearch
+          filterOption={(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        />}
+    </>
+  );
 };
 
 export default Select;

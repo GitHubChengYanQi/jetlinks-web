@@ -1,0 +1,256 @@
+import {FormEffectHooks, FormPath} from '@formily/antd';
+import {request} from '@/util/Request';
+import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
+import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
+import {message} from 'antd';
+import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
+
+
+export const customerAAction = (setFieldState) => {
+  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value}) => {
+    if (value) {
+      const customer = await request({...customerDetail, data: {customerId: value}});
+      setFieldState('partyAAdressId', (state) => {
+        state.props.customerId = value;
+        state.props.options = customer.adressParams && customer.adressParams.map((item) => {
+          return {
+            label: item.detailLocation || item.location,
+            value: item.adressId,
+          };
+        });
+      });
+
+      setFieldState('partyAContactsId', (state) => {
+        state.props.customerId = value;
+        state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
+          return {
+            label: item.contactsName,
+            value: item.contactsId,
+          };
+        });
+      });
+
+      setFieldState('partyALegalPerson', (state) => {
+        state.value = customer.legal;
+      });
+      setFieldState('partyACompanyPhone', (state) => {
+        state.value = customer.telephone;
+      });
+      setFieldState('partyAFax', (state) => {
+        state.value = customer.fax;
+      });
+      setFieldState('partyAZipCode', (state) => {
+        state.value = customer.zipCode;
+      });
+
+      setFieldState('adressId', (state) => {
+        state.props.customerId = value;
+      });
+
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('partyAContactsId').subscribe(async ({value}) => {
+    if (value) {
+      const res = await request({...contactsDetail, data: {contactsId: value}});
+      setFieldState('partyAPhone', (state) => {
+        state.props.contactsId = value;
+        state.props.options = res.phoneParams && res.phoneParams.map((item) => {
+          return {
+            label: item.phone,
+            value: item.phoneId,
+          };
+        });
+      });
+    }
+  });
+};
+
+export const customerBAction = (setFieldState) => {
+  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value}) => {
+    if (value) {
+      const customer = await request({...customerDetail, data: {customerId: value}});
+      setFieldState('partyBAdressId', (state) => {
+        state.props.customerId = value;
+        state.props.options = customer.adressParams && customer.adressParams.map((item) => {
+          return {
+            label: item.detailLocation || item.location,
+            value: item.adressId,
+          };
+        });
+      });
+
+      setFieldState('partyBContactsId', (state) => {
+        state.props.customerId = value;
+        state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
+          return {
+            label: item.contactsName,
+            value: item.contactsId,
+          };
+        });
+      });
+
+      setFieldState('partyBLegalPerson', (state) => {
+        state.value = customer.legal;
+      });
+      setFieldState('partyBCompanyPhone', (state) => {
+        state.value = customer.telephone;
+      });
+      setFieldState('partyBFax', (state) => {
+        state.value = customer.fax;
+      });
+      setFieldState('partyBZipCode', (state) => {
+        state.value = customer.zipCode;
+      });
+
+      setFieldState('skus', (state) => {
+        state.props.customerId = value;
+      });
+
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('partyBContactsId').subscribe(async ({value}) => {
+    if (value) {
+      const res = await request({...contactsDetail, data: {contactsId: value}});
+      setFieldState('partyBPhone', (state) => {
+        state.props.contactsId = value;
+        state.props.options = res.phoneParams && res.phoneParams.map((item) => {
+          return {
+            label: item.phone,
+            value: item.phoneId,
+          };
+        });
+      });
+    }
+  });
+};
+
+const paymentAction = (setFieldState, getFieldState) => {
+  FormEffectHooks.onFieldValueChange$('skus').subscribe(({value}) => {
+    let money = 0;
+    if (value) {
+      value.map((item) => {
+        if (item && item.totalPrice) {
+          money += item.totalPrice;
+        }
+        return null;
+      });
+      setFieldState('money', (state) => {
+        state.value = money;
+      });
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('money').subscribe(({value}) => {
+    if (value) {
+      setFieldState('paymentDetail', (state) => {
+        state.value = [{}];
+      });
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({name, value}) => {
+    const money = getFieldState('money');
+    const paymentDetail = getFieldState('paymentDetail');
+    if (!money || !money.value) {
+      setFieldState(FormPath.transform(name, /\d/, ($1) => {
+        return `paymentDetail.${$1}.percentum`;
+      }), (state) => {
+        state.value = null;
+      });
+      return message.warn('请输入采购总价！');
+    }
+    if (paymentDetail && paymentDetail.value) {
+      let percentum = 0;
+      paymentDetail.value.map((item) => {
+        if (item) {
+          return percentum += item.percentum;
+        }
+        return true;
+      });
+      if (percentum > 100) {
+        setFieldState(FormPath.transform(name, /\d/, ($1) => {
+          return `paymentDetail.${$1}.percentum`;
+        }), (state) => {
+          state.value = null;
+        });
+        return message.warn('总比例不能超过百分之百！');
+      }
+    }
+    setFieldState(FormPath.transform(name, /\d/, ($1) => {
+      return `paymentDetail.${$1}.number`;
+    }), (state) => {
+      state.value = money.value * (value / 100);
+    });
+  });
+
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.number').subscribe(({name, value}) => {
+    const money = getFieldState('money');
+    const paymentDetail = getFieldState('paymentDetail');
+    if (!money || !money.value) {
+      setFieldState(FormPath.transform(name, /\d/, ($1) => {
+        return `paymentDetail.${$1}.number`;
+      }), (state) => {
+        state.value = null;
+      });
+      return message.warn('请输入采购总价！');
+    }
+    if (paymentDetail && paymentDetail.value) {
+      let number = 0;
+      paymentDetail.value.map((item) => {
+        if (item) {
+          return number += item.number;
+        }
+        return true;
+      });
+      if (number > money.value) {
+        setFieldState(FormPath.transform(name, /\d/, ($1) => {
+          return `paymentDetail.${$1}.percentum`;
+        }), (state) => {
+          state.value = null;
+        });
+        return message.warn('不能超过总金额！');
+      }
+    }
+    setFieldState(FormPath.transform(name, /\d/, ($1) => {
+      return `paymentDetail.${$1}.percentum`;
+    }), (state) => {
+      state.value = (value / money.value) * 100;
+    });
+  });
+};
+
+const contractAction = (setFieldState) => {
+  FormEffectHooks.onFieldValueChange$('generateContract').subscribe(({value}) => {
+    setFieldState('templateId', (state) => {
+      state.visible = value;
+    });
+    setFieldState('contractCoding', (state) => {
+      state.visible = value;
+    });
+    setFieldState('allField', (state) => {
+      state.visible = value;
+    });
+  });
+
+
+  FormEffectHooks.onFieldValueChange$('templateId').subscribe(async ({value}) => {
+    if (value){
+      const res = await request({...templateGetLabel,params:{id:value}});
+      setFieldState('allField', (state) => {
+        state.props.array = res;
+      });
+    }
+
+  });
+
+
+};
+
+export const EffectsAction = (setFieldState, getFieldState) => {
+  customerAAction(setFieldState);
+  customerBAction(setFieldState);
+  paymentAction(setFieldState, getFieldState);
+  contractAction(setFieldState);
+};

@@ -1,8 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {Map} from 'react-amap';
 import {config} from 'ice';
-import AmapSearch from '@/components/Amap/search';
 import {Button, Drawer} from 'antd';
+import AmapSearch from '@/components/Amap/search';
 import Icon from '@/components/Icon';
 
 const {AMAP_KEY, AMAP_VERSION} = config;

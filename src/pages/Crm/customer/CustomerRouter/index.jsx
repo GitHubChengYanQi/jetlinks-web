@@ -23,7 +23,7 @@ export const  CustomerRouter = [
     exact: true,
   },
   {
-    path: '/customer/:cid',
+    path: '/customer/detail/:cid',
     name: '客户管理',
     component: lazy(() => import('../CustomerDetail')),
     fallback: <div>loading...</div>,

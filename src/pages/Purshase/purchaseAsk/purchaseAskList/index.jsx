@@ -20,7 +20,7 @@ import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListin
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const PurchaseAskList = () => {
+const PurchaseAskList = ({status, ...props}) => {
   const history = useHistory();
   const detailRef = useRef(null);
   const tableRef = useRef(null);
@@ -48,7 +48,7 @@ const PurchaseAskList = () => {
       <>
         <FormItem label="采购编号" name="coding" component={SysField.SelectCoding} />
         <FormItem label="采购类型" name="type" component={SysField.Type} />
-        <FormItem label="采购状态" name="status" component={SysField.Status} />
+        <FormItem label="采购状态" name="status" value={status} component={SysField.Status} />
       </>
     );
   };
@@ -64,6 +64,7 @@ const PurchaseAskList = () => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
+        {...props}
       >
         <Column title="编号" key={1} dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
@@ -86,7 +87,7 @@ const PurchaseAskList = () => {
               break;
           }
         }} />
-        <Column key={3} title="申请状态" dataIndex="status" render={(value) => {
+        {!status && <Column key={3} title="申请状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:
               return <Badge text="待审核" color="yellow" />;
@@ -99,15 +100,15 @@ const PurchaseAskList = () => {
             default:
               break;
           }
-        }} />
+        }} />}
         <Column key={4} title="申请品类" width={100} align="center" dataIndex="applyType" />
         <Column key={5} title="申请数量" width={100} align="center" dataIndex="applyNumber" />
-        <Column key={6} title="最后审批人" dataIndex="viewUpdate" render={(value) => {
+        {!status && <Column key={6} title="最后审批人" dataIndex="viewUpdate" render={(value) => {
           return <>{value && value.updateUser && value.updateUser.name}</>;
-        }} />
-        <Column key={7} title="最后审批时间" dataIndex="viewUpdate" render={(value) => {
+        }} />}
+        {!status && <Column key={7} title="最后审批时间" dataIndex="viewUpdate" render={(value) => {
           return <>{value && value.updateTime}</>;
-        }} />
+        }} />}
         <Column key={8} title="申请人" render={(value, record) => {
           return <>
             {record.createUserName}
@@ -115,17 +116,18 @@ const PurchaseAskList = () => {
         }} />
         <Column key={9} title="申请时间" dataIndex="createTime" />
         <Column />
-        <Column key={10} title="操作" width={230} align="center" dataIndex='purchaseAskId' render={(value,record) => {
+        {!status &&
+        <Column key={10} title="操作" width={230} align="center" dataIndex="purchaseAskId" render={(value, record) => {
           return <>
             <Button type="link">撤回</Button>
-            <Button type="link" onClick={()=>{
+            <Button type="link" onClick={() => {
               history.push(`/purchase/purchaseAsk/add?id=${value}`);
             }}>编辑</Button>
             <Button type="link" onClick={() => {
               detailRef.current.open(value);
             }}>查看</Button>
           </>;
-        }} />
+        }} />}
       </Table>
 
       <Modal

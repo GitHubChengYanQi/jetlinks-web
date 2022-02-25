@@ -29,6 +29,7 @@ import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import Icon from '@/components/Icon';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import UpdateSort from '@/components/Table/components/UpdateSort';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -59,18 +60,15 @@ const SupplyList = (props) => {
   const actions = () => {
     return (
       <>
-        <div style={{display: 'inline-block'}}>
-          <Upload
-            action={`${baseURI}Excel/crm/excel/importAdress`}
-            headers={
-              {Authorization: cookie.get('tianpeng-token')}
-            }
-            name="file"
-            fileList={null}
-          >
-            <Button icon={<Icon type="icon-daoru" />}>{supply ? '导入供应商' : '导入客户'}</Button>
-          </Upload>
-        </div>
+        <Import
+          url={`${baseURI}Excel/importSupplierBind`}
+          title='导入供应商'
+          module='customer'
+          onOk={() => {
+            tableRef.current.submit();
+          }}
+          // templateUrl={`${baseURI}api/SkuExcel`}
+        />
         <AddButton onClick={() => {
           history.push('/purchase/supply/add');
         }} />

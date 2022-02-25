@@ -5,12 +5,12 @@
  * @Date 2021-07-23 10:06:11
  */
 
-import React, {useRef, useState} from 'react';
-import {Input} from 'antd';
+import React, {useImperativeHandle, useRef, useState} from 'react';
+import {createFormActions, FormEffectHooks} from '@formily/antd';
+import {message} from 'antd';
 import Form from '@/components/Form';
 import * as SysField from '../AdressField';
 import {adressAdd, adressDetail, adressEdit} from '@/pages/Crm/adress/AdressUrl';
-import {createFormActions, FormEffectHooks} from '@formily/antd';
 import store from '@/store';
 
 const {FormItem} = Form;
@@ -21,11 +21,19 @@ const ApiConfig = {
   save: adressEdit
 };
 
-const AdressEdit = ({...props}) => {
+const formActionsPublic = createFormActions();
 
-  const {customer, ...other} = props;
+const AdressEdit = ({...props}, ref) => {
+
+  const {customer, NoButton, ...other} = props;
 
   const formRef = useRef();
+
+  useImperativeHandle(ref, () => (
+    {
+      submit: formRef.current.submit,
+    }
+  ));
 
   const [city, setCity] = useState();
 
@@ -33,19 +41,24 @@ const AdressEdit = ({...props}) => {
 
   const [data] = store.useModel('dataSource');
 
-  const formActionsPublic = createFormActions();
-
   return (
-    <div style={{padding:16}}>
+    <div style={{padding: 16}}>
       <Form
         {...other}
         ref={formRef}
         formActions={formActionsPublic}
         api={ApiConfig}
+        NoButton={NoButton}
         fieldKey="adressId"
+        onSubmit={(value) => {
+          if (!customer) {
+            message.warn('请选择客户！');
+            return false;
+          }
+          return {...value, customerId: customer};
+        }}
         onSuccess={(res) => {
-          console.log(res);
-          props.onSuccess(res.data.adressId);
+          props.onSuccess(res.data);
         }}
         effects={() => {
           onFieldChange$('map').subscribe(({value}) => {
@@ -55,12 +68,18 @@ const AdressEdit = ({...props}) => {
         onError={() => {
         }}
       >
-        <FormItem label="省市区地址" name="region" component={SysField.Region} city={city} options={data && data.area} required />
-        <FormItem label="详细地址" name="map" component={SysField.Map} />
-        <FormItem hidden customer={customer} name="customerId" component={SysField.CustomerId} required />
+        <FormItem
+          label="省市区地址"
+          name="region"
+          component={SysField.Region}
+          city={city}
+          options={data && data.area}
+          required />
+        <FormItem label="详细地址" name="detailLocation" component={SysField.Location} />
+        <FormItem label="定位地址" name="map" component={SysField.Map} disabled />
       </Form>
     </div>
   );
 };
 
-export default AdressEdit;
+export default React.forwardRef(AdressEdit);

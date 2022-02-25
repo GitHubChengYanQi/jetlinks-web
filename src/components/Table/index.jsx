@@ -18,6 +18,7 @@ const TableWarp = ({
   children,
   columns,
   actions,
+  NoChildren,
   title,
   NoSortAction,
   maxHeight,
@@ -82,7 +83,7 @@ const TableWarp = ({
   // const [formActions,setFormActions] = useState(formActionsPublic);
 
   const dataSourcedChildren = (data) => {
-    if (!Array.isArray(data.children) || data.children.length === 0) {
+    if (NoChildren || !Array.isArray(data.children) || data.children.length === 0) {
       return {...data, children: null};
     }
     return {
@@ -116,7 +117,7 @@ const TableWarp = ({
         response = {
           data: dataSources
         };
-      }else {
+      } else {
         response = await ajaxService({
           ...api,
           data: {
@@ -209,7 +210,7 @@ const TableWarp = ({
                 </Form>
               </Col>
               <Col className={style.setTing}>
-                {/*{setButton}*/}
+                {!listHeader && !headStyle && actions}
               </Col>
             </Row>
 
@@ -219,7 +220,11 @@ const TableWarp = ({
             actions={formActions}
           />}
           {showCard}
-          <Card bordered={bordered || false} title={actions} bodyStyle={bodyStyle} extra={setButton}>
+          <Card
+            bordered={bordered || false}
+            title={listHeader ? actions : null}
+            bodyStyle={bodyStyle}
+            extra={setButton}>
             <AntdTable
               showTotal
               expandable={expandable}
@@ -228,7 +233,7 @@ const TableWarp = ({
               rowKey={rowKey}
               columns={columns}
               pagination={
-                noPagination ? false : {
+                noPagination || {
                   ...pagination,
                   showQuickJumper: true,
                   position: ['bottomRight']

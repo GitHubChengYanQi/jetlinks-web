@@ -24,6 +24,7 @@ import {companyRoleList} from '@/pages/Crm/companyRole/companyRoleUrl';
 import Modal from '@/components/Modal';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
+import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
 
 export const ContactsName = (props) => {
 
@@ -447,6 +448,10 @@ export const Url = (props) => {
 
 export const BankAccount = (props) => {
   return (<InputNumber style={{width: 200}} controls={false}  {...props} />);
+}
+
+;export const Bank = (props) => {
+  return (<Select api={bankListSelect} style={{width: 200}}  {...props} />);
 };
 
 

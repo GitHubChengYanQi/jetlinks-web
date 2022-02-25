@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Button, Card, Col, Divider, List, Row} from 'antd';
+import {Card, Col, Row} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import Nav from '@/pages/Overview/components/Nav';
 import Header  from '@/pages/Overview/components/Head';

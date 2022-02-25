@@ -60,18 +60,18 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
       });
   }, []);
 
-  const insertHtml = (type, number) => {
+  const insertHtml = (type) => {
     switch (type) {
       case 'inp':
-        return `<input class='inp' key=${number} placeholder="文本框" disabled />`;
+        return '<input class=\'inp\' placeholder="文本框" disabled />';
       case 'number':
-        return `<input class="number" key=${number} placeholder="数字框" disabled />`;
+        return '<input class="number" placeholder="数字框" disabled />';
       case 'date':
-        return `<input class="date" key=${number} placeholder="时间框" disabled/>`;
+        return '<input class="date" placeholder="时间框" disabled/>';
       case 'customer':
-        return `<input class="customer" key=${number} placeholder="客户" disabled/>`;
+        return '<input class="customer" placeholder="客户" disabled/>';
       case 'sku':
-        return `<input class="sku" key=${number} placeholder="物料"  disabled/>`;
+        return '<input class="sku" placeholder="物料"  disabled/>';
       case 'Acontacts':
         // eslint-disable-next-line no-template-curly-in-string
         return '${{Acontacts}}';
@@ -97,78 +97,16 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         // eslint-disable-next-line no-template-curly-in-string
         return '${{BCustomer}}';
       case 'package':
-        return `<input class="package" key=${number} placeholder="套餐"  disabled/>`;
+        return '<input class="package" placeholder="套餐"  disabled/>';
       default:
         break;
     }
   };
 
-  const editorCmd = (type, number) => {
-    editorRef.current.editor.cmd.do('insertHTML', insertHtml(type, number));
+  const editorCmd = (type) => {
+    editorRef.current.editor.cmd.do('insertHTML', insertHtml(type));
   };
 
-  const tagClick = (type) => {
-    let number = 0;
-    switch (type) {
-      case 'inp':
-        if (tagNumber.inp !== undefined) {
-          number = tagNumber.inp + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          inp: number,
-        });
-        break;
-      case 'number':
-        if (tagNumber.number !== undefined) {
-          number = tagNumber.number + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          number,
-        });
-        break;
-      case 'date':
-        if (tagNumber.date !== undefined) {
-          number = tagNumber.date + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          date: number,
-        });
-        break;
-      case 'customer':
-        if (tagNumber.customer !== undefined) {
-          number = tagNumber.customer + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          customer: number,
-        });
-        break;
-      case 'sku':
-        if (tagNumber.sku !== undefined) {
-          number = tagNumber.sku + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          sku: number,
-        });
-        break;
-      case 'package':
-        if (tagNumber.package !== undefined) {
-          number = tagNumber.package + 1;
-        }
-        setTagNumber({
-          ...tagNumber,
-          package: number,
-        });
-        break;
-      default:
-        break;
-    }
-    editorCmd(type, number);
-  };
 
   const templateType = () => {
     switch (type) {
@@ -216,18 +154,18 @@ const Editor = ({onChange, onBlur, value, template, placeholder, imgUploadProps,
         </Card>;
       case 'contacts':
         return <Card>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('inp')}>文本框</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('number')}>数字框</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('date')}>时间框</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('customer')}>客户</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Acontacts')}>甲方联系人</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('Bcontacts')}>乙方联系人</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('AAddress')}>甲方地址</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BAddress')}>乙方地址</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('APhone')}>甲方电话</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BPhone')}>乙方电话</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('ACustomer')}>甲方客户</Card.Grid>
-          <Card.Grid style={CardGridStyle()} onClick={() => tagClick('BCustomer')}>乙方客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('inp')}>文本框</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('number')}>数字框</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('date')}>时间框</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('customer')}>客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('Acontacts')}>甲方联系人</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('Bcontacts')}>乙方联系人</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('AAddress')}>甲方地址</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('BAddress')}>乙方地址</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('APhone')}>甲方电话</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('BPhone')}>乙方电话</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('ACustomer')}>甲方客户</Card.Grid>
+          <Card.Grid style={CardGridStyle()} onClick={() => editorCmd('BCustomer')}>乙方客户</Card.Grid>
         </Card>;
       default:
         return null;

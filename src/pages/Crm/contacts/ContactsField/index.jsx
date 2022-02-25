@@ -70,18 +70,8 @@ export const CompanyRole = (props) => {
 
 export const SelectCustomers = (props) => {
 
-  const {customer, ...other} = props;
-
-  useEffect(() => {
-    if (customer)
-      props.onChange(customer.customerId);
-  }, []);
-
-
   return (
-    <SelectCustomer {...other} value={customer && customer.customerName} onChange={(value) => {
-      props.onChange(value && value.customerId);
-    }} />
+    <SelectCustomer width={200} {...props} />
   );
 };
 

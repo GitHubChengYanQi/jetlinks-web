@@ -2,7 +2,17 @@ import React from 'react';
 import moment from 'moment';
 import {DatePicker as AntDatePicker} from 'antd';
 
-const DatePicker = ({value, onChange, disabled, disabledDate, showTime, width}) => {
+const DatePicker = (
+  {
+    value,
+    onChange = () => {
+    },
+    disabled,
+    disabledDate,
+    showTime,
+    width,
+    style
+  }) => {
 
   // currentDate && currentDate < moment().subtract(1, 'days') 禁用今天之前的时间
   // currentDate && currentDate < moment().endOf(1, 'days') 只能选择今天之后的时间
@@ -10,7 +20,7 @@ const DatePicker = ({value, onChange, disabled, disabledDate, showTime, width}) 
   return <AntDatePicker
     disabled={disabled}
     disabledDate={disabledDate}
-    style={{width: width || null}}
+    style={{...style, width: width || null}}
     value={value && moment(value)}
     showTime={showTime}
     onChange={(date, dateString) => {

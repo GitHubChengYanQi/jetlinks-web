@@ -20,7 +20,7 @@ export default {
         if (!res) {
           res = {};
         }
-        dispatch.user.update({...response, abbreviation: res.abbreviation, customerName: res.customerName});
+        dispatch.user.update({...response, abbreviation: res.abbreviation, customerName: res.customerName,customerId:res.customerId});
       } catch (e) {
         console.log(e);
       }

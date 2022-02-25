@@ -57,6 +57,9 @@ const SkuTable = (props) => {
       <Space>
         <Button type="link">查看日志</Button>
         <Import
+          url={`${baseURI}Excel/importSku`}
+          title='导入物料'
+          module='sku'
           onOk={() => {
             tableRef.current.submit();
           }}

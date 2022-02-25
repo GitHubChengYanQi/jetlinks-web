@@ -239,7 +239,7 @@ const ContactsTable = (props) => {
                 defaultContacts(record.contactsName, record.contactsId);
               }}>{isDefaultContacts ? '已设为默认联系人' : '设为默认联系人'}</Button>}
               <EditButton onClick={() => {
-                ref.current.open(record);
+                ref.current.open(record.contactsId);
               }} />
               <Button size="small" type="link" danger onClick={() => {
                 confirmOutStock(record);

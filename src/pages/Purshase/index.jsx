@@ -9,6 +9,9 @@ import BrandList from '@/pages/Erp/brand/BrandList';
 import ContractClassList from '@/pages/Crm/contract/components/contractClass/contractClassList';
 import TemplateList from '@/pages/Crm/template/TemplateList';
 import CrmCustomerLevelList from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelList';
+import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplateList';
+import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
+import BankList from '@/pages/Purshase/bank/bankList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -19,18 +22,24 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const RenderComponent = () => {
     switch (type) {
-      case 'hmd':
+      case '黑名单管理':
         return <SupplierBlacklistList />;
-      case 'slgl':
+      case '税率管理':
         return <TaxRateList />;
-      case 'ppgl':
+      case '品牌管理':
         return <BrandList />;
-      case 'htfl':
+      case '合同分类管理':
         return <ContractClassList />;
-      case 'htmb':
+      case '合同模板管理':
         return <TemplateList />;
-      case 'khjb':
+      case '供应商级别管理':
         return <CrmCustomerLevelList />;
+      case '付款计划模板':
+        return <PaymentTemplateList />;
+      case '行业管理':
+        return <CrmIndustryList />;
+      case '银行管理':
+        return <BankList />;
       default:
         return null;
     }
@@ -52,29 +61,35 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             ref.current.open(true);
           }}
         >
-          <Menu.Item key="ppgl">
+          <Menu.Item key="品牌管理">
             <span>品牌管理</span>
           </Menu.Item>
-          <Menu.Item key="slgl">
+          <Menu.Item key="税率管理">
             <span>税率管理</span>
           </Menu.Item>
-          <Menu.Item key="hmd">
+          <Menu.Item key="黑名单管理">
             <span>黑名单管理</span>
           </Menu.Item>
-          <Menu.Item key="htfl">
+          <Menu.Item key="合同分类管理">
             <span>合同分类管理</span>
           </Menu.Item>
-          <Menu.Item key="htmb">
+          <Menu.Item key="合同模板管理">
             <span>合同模板管理</span>
           </Menu.Item>
-          <Menu.Item key="khjb">
+          <Menu.Item key="供应商级别管理">
             <span>供应商级别管理</span>
           </Menu.Item>
-          <Menu.Item key="hygl">
+          <Menu.Item key="行业管理">
             <span>行业管理</span>
           </Menu.Item>
+          <Menu.Item key="付款计划模板">
+            <span>付款计划模板</span>
+          </Menu.Item>
+          <Menu.Item key="银行管理">
+            <span>银行管理</span>
+          </Menu.Item>
         </Menu>} />
-      <Modal footer={[]} width={1200} ref={ref}>{RenderComponent()}</Modal>
+      <Modal headTitle={type} footer={[]} width={1200} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };
