@@ -71,12 +71,14 @@ const CreateOrder = ({...props}) => {
       wrapperCol={24}
       fieldKey="customerId"
       onSubmit={(value) => {
+        console.log(value);
 
         if (value.paymentDetail) {
-          let percentum = value.paymentDetail.map((item) => {
+          let percentum = 0;
+          value.paymentDetail.map((item) => {
             return percentum += item.percentum;
           });
-          if (percentum !== 100){
+          if (percentum !== 100) {
             message.warn('请检查付款批次！');
             return false;
           }
@@ -102,7 +104,6 @@ const CreateOrder = ({...props}) => {
             coding: value.contractCoding,
           }
         };
-        console.log(value);
         return value;
       }}
       effects={({setFieldState, getFieldState}) => {
@@ -199,6 +200,7 @@ const CreateOrder = ({...props}) => {
                       placeholder="请选择甲方公司"
                       name="buyerId"
                       component={CustomerSysField.Customer}
+                      required
                     />
                   </Col>
                   <Col span={12}>
@@ -309,6 +311,7 @@ const CreateOrder = ({...props}) => {
                       placeholder="请选择甲方公司"
                       name="sellerId"
                       component={CustomerSysField.Customer}
+                      required
                     />
                   </Col>
                   <Col span={12}>

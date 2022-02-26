@@ -211,13 +211,13 @@ const paymentAction = (setFieldState, getFieldState) => {
   FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({active, name, value}) => {
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
-    if (!money || !money.value || active) {
+    if (!money || !money.value) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
         return `paymentDetail.${$1}.percentum`;
       }), (state) => {
         state.value = null;
       });
-      return message.warn('请输入采购总价！');
+      return active && message.warn('请输入采购总价！');
     }
     if (paymentDetail && paymentDetail.value) {
       let percentum = 0;
@@ -246,13 +246,13 @@ const paymentAction = (setFieldState, getFieldState) => {
   FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(({active, name, value}) => {
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
-    if (!money || !money.value || active) {
+    if (!money || !money.value) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
         return `paymentDetail.${$1}.money`;
       }), (state) => {
         state.value = null;
       });
-      return message.warn('请输入采购总价！');
+      return active && message.warn('请输入采购总价！');
     }
     if (paymentDetail && paymentDetail.value) {
       let number = 0;
