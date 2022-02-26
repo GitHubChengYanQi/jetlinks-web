@@ -1,8 +1,8 @@
 import {FormEffectHooks, FormPath} from '@formily/antd';
+import {message} from 'antd';
 import {request} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
-import {message} from 'antd';
 import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
 
 
@@ -91,6 +91,10 @@ export const customerBAction = (setFieldState) => {
         });
       });
 
+      setFieldState('partyBBankAccount', (state) => {
+        state.props.customerId = value;
+      });
+
       setFieldState('partyBLegalPerson', (state) => {
         state.value = customer.legal;
       });
@@ -104,7 +108,7 @@ export const customerBAction = (setFieldState) => {
         state.value = customer.zipCode;
       });
 
-      setFieldState('skus', (state) => {
+      setFieldState('detailParams', (state) => {
         state.props.customerId = value;
       });
 
@@ -125,10 +129,18 @@ export const customerBAction = (setFieldState) => {
       });
     }
   });
+
+  FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(async ({value}) => {
+    if (value) {
+      setFieldState('partyBBankAccount', (state) => {
+        state.props.bankId = value;
+      });
+    }
+  });
 };
 
 const paymentAction = (setFieldState, getFieldState) => {
-  FormEffectHooks.onFieldValueChange$('skus').subscribe(({value}) => {
+  FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value}) => {
     let money = 0;
     if (value) {
       value.map((item) => {
@@ -180,18 +192,18 @@ const paymentAction = (setFieldState, getFieldState) => {
       }
     }
     setFieldState(FormPath.transform(name, /\d/, ($1) => {
-      return `paymentDetail.${$1}.number`;
+      return `paymentDetail.${$1}.money`;
     }), (state) => {
       state.value = money.value * (value / 100);
     });
   });
 
-  FormEffectHooks.onFieldValueChange$('paymentDetail.*.number').subscribe(({name, value}) => {
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(({name, value}) => {
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
     if (!money || !money.value) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
-        return `paymentDetail.${$1}.number`;
+        return `paymentDetail.${$1}.money`;
       }), (state) => {
         state.value = null;
       });
@@ -201,7 +213,7 @@ const paymentAction = (setFieldState, getFieldState) => {
       let number = 0;
       paymentDetail.value.map((item) => {
         if (item) {
-          return number += item.number;
+          return number += item.money;
         }
         return true;
       });

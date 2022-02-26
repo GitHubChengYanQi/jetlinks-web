@@ -13,7 +13,7 @@ import Select from '@/components/Select';
 import * as apiUrl from '../bankUrl';
 
 export const BankName = (props) =>{
-  return (<Input {...props}/>);
+  return (<Input placeholder='请输入银行名称' {...props}/>);
 };
 export const CreateUser = (props) =>{
   return (<Input {...props}/>);

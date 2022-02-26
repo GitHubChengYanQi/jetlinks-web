@@ -122,7 +122,7 @@ export const Currency = (props) => {
 };
 
 export const Money = (props) => {
-  return (<InputNumber min={1} precision={2} {...props} />);
+  return (<InputNumber min={0} precision={2} {...props} />);
 };
 
 export const Index = (props) => {

@@ -21,7 +21,10 @@ const {FormItem} = Form;
 
 const ApiConfig = {
   view: {},
-  add: {},
+  add: {
+    url: '/order/add',
+    method: 'POST'
+  },
   save: {}
 };
 
@@ -65,8 +68,25 @@ const CreateOrder = ({...props}) => {
       wrapperCol={24}
       fieldKey="customerId"
       onSubmit={(value) => {
+        value = {
+          ...value,
+          paymentParam: {
+            detailParams: value.paymentDetail,
+            payMethod: value.payMethod,
+            freight: value.freight,
+            deliveryWay: value.deliveryWay,
+            adressId: value.adressId,
+            payPlan: value.payPlan,
+            remark: value.remark,
+          },
+          contractParam: {
+            contractReplaces: value.allField,
+            templateId: value.templateId,
+            coding: value.contractCoding,
+          }
+        };
         console.log(value);
-        return false;
+        return value;
       }}
       effects={({setFieldState, getFieldState}) => {
         EffectsAction(setFieldState, getFieldState);
@@ -307,15 +327,15 @@ const CreateOrder = ({...props}) => {
                       label="开户银行"
                       placeholder="请选择甲方开户银行"
                       name="partyBBankId"
-                      component={SysField.Name}
+                      component={CustomerSysField.Bank}
                     />
                   </Col>
                   <Col span={12}>
                     <FormItem
                       label="开户账号"
-                      placeholder="请选择甲方开户账号"
+                      placeholder="请选择乙方开户账号"
                       name="partyBBankAccount"
-                      component={SysField.Name}
+                      component={CustomerSysField.BankAccount}
                     />
                   </Col>
                 </Row>
@@ -369,8 +389,8 @@ const CreateOrder = ({...props}) => {
 
       <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="采购申请明细" headerBordered>
         <FormItem
-          name="skus"
-          value={state && state.map((item) => {
+          name="detailParams"
+          value={Array.isArray(state) && state.map((item) => {
             return {
               skuId: item.skuId,
               skuResult: item.skuResult,
@@ -493,7 +513,7 @@ const CreateOrder = ({...props}) => {
                         <FormItem
                           itemStyle={{margin: 0}}
                           label="付款金额"
-                          name={`paymentDetail.${index}.number`}
+                          name={`paymentDetail.${index}.money`}
                           component={SysField.Money}
                         />
                       </Col>

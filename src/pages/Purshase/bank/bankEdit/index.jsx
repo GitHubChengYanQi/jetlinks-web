@@ -5,8 +5,7 @@
  * @Date 2022-02-24 14:55:10
  */
 
-import React, {useRef} from 'react';
-import {Input} from 'antd';
+import React, {useImperativeHandle, useRef} from 'react';
 import Form from '@/components/Form';
 import {bankDetail, bankAdd, bankEdit} from '../bankUrl';
 import * as SysField from '../bankField';
@@ -19,20 +18,25 @@ const ApiConfig = {
   save: bankEdit
 };
 
-const BankEdit = ({...props}) => {
+const BankEdit = ({NoButton,...props}, ref) => {
 
   const formRef = useRef();
+
+  useImperativeHandle(ref, () => ({
+    submit: formRef.current.submit,
+  }));
 
   return (
     <Form
       {...props}
       ref={formRef}
+      NoButton={NoButton}
       api={ApiConfig}
       fieldKey="bankId"
     >
-      <FormItem label="银行名称" name="bankName" component={SysField.BankName} required/>
+      <FormItem label="银行名称" name="bankName" component={SysField.BankName} required />
     </Form>
   );
 };
 
-export default BankEdit;
+export default React.forwardRef(BankEdit);
