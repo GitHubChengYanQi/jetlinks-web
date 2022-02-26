@@ -183,7 +183,7 @@ const AddSkuTable = ({
         return <AntSelect
           placeholder="请选择票据类型"
           value={value}
-          options={[{label: '普票', value: '普票'}, {label: '专票', value: '专票'}]}
+          options={[{label: '0', value: '普票'}, {label: '1', value: '专票'}]}
           onChange={(value) => {
             setValue({paperType: value,}, index);
           }}

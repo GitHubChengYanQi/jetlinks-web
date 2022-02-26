@@ -217,7 +217,7 @@ const CreateOrder = ({...props}) => {
                       label="开户银行"
                       placeholder="请选择甲方开户银行"
                       name="partyABankId"
-                      component={SysField.Name}
+                      component={CustomerSysField.Bank}
                     />
                   </Col>
                   <Col span={12}>
@@ -225,7 +225,7 @@ const CreateOrder = ({...props}) => {
                       label="开户账号"
                       placeholder="请选择甲方开户账号"
                       name="partyABankAccount"
-                      component={SysField.Name}
+                      component={CustomerSysField.BankAccount}
                     />
                   </Col>
                 </Row>
@@ -241,7 +241,7 @@ const CreateOrder = ({...props}) => {
                     <FormItem
                       label="开户行号"
                       placeholder="请选择甲方开户行号"
-                      name="A8"
+                      name="partyABankNo"
                       component={SysField.Name}
                     />
                   </Col>
@@ -351,8 +351,8 @@ const CreateOrder = ({...props}) => {
                     <FormItem
                       label="开户行号"
                       placeholder="请选择甲方开户行号"
-                      name="B8"
-                      component={SysField.Name}
+                      name="partyBBankNo"
+                      component={SysField.Show}
                     />
                   </Col>
                 </Row>

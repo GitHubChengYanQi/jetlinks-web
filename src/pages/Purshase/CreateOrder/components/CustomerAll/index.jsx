@@ -11,6 +11,7 @@ import {useRequest} from '@/util/Request';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
 import BankList from '@/pages/Purshase/bank/bankList';
 import BankEdit from '@/pages/Purshase/bank/bankEdit';
+import InvoiceEdit from '@/pages/Crm/invoice/invoiceEdit';
 
 export const Customer = (props) => {
   return (<SelectCustomer width="100%" supply={null} noAdd {...props} />);
@@ -205,10 +206,10 @@ export const BankAccount = (props) => {
   const [option, setOption] = useState();
 
   useEffect(() => {
-    if (customerId){
+    if (customerId && options){
       let array = options;
       if (bankId) {
-        array = option.filter((item) => {
+        array = options.filter((item) => {
           return item.bankId === bankId;
         });
       }
@@ -250,6 +251,10 @@ export const BankAccount = (props) => {
         </Button>
       </>}
     >
+
+      <InvoiceEdit value={false} NoButton={false} customerId={customerId} onSuccess={()=>{
+        ref.current.close();
+      }} />
 
     </Modal>
   </>;

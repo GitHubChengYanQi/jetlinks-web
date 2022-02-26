@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {templateDetail, templateAdd, templateEdit} from '../TemplateUrl';
 import * as SysField from '../TemplateField';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -18,6 +19,8 @@ const ApiConfig = {
   add: templateAdd,
   save: templateEdit
 };
+
+const formActionsPublic = createFormActions();
 
 const TemplateEdit = ({...props}) => {
 
@@ -28,6 +31,7 @@ const TemplateEdit = ({...props}) => {
       <Form
         {...props}
         ref={formRef}
+        formActions={formActionsPublic}
         api={ApiConfig}
         fieldKey="templateId"
       >

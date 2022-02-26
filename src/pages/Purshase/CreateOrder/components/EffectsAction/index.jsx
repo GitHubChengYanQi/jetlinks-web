@@ -4,6 +4,7 @@ import {request} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
+import {invoiceDetail} from '@/pages/Crm/invoice/invoiceUrl';
 
 
 export const customerAAction = (setFieldState) => {
@@ -30,6 +31,17 @@ export const customerAAction = (setFieldState) => {
         });
       });
 
+      setFieldState('partyABankAccount', (state) => {
+        state.props.customerId = value;
+        state.props.options = customer.invoiceResults && customer.invoiceResults.map((item) => {
+          return {
+            label: item.bankAccount,
+            value: item.invoiceId,
+            bankId:item.bankId,
+          };
+        });
+      });
+
       setFieldState('partyALegalPerson', (state) => {
         state.value = customer.legal;
       });
@@ -47,6 +59,23 @@ export const customerAAction = (setFieldState) => {
         state.props.customerId = value;
       });
 
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('partyABankId').subscribe(async ({value}) => {
+    if (value) {
+      setFieldState('partyABankAccount', (state) => {
+        state.props.bankId = value;
+      });
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('partyABankAccount').subscribe(async ({value}) => {
+    if (value) {
+      const res = await request({...invoiceDetail,data:{invoiceId:value}});
+      setFieldState('partyABankNo', (state) => {
+        state.value = res.bankNo;
+      });
     }
   });
 
@@ -70,7 +99,6 @@ export const customerBAction = (setFieldState) => {
   FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value}) => {
     if (value) {
       const customer = await request({...customerDetail, data: {customerId: value}});
-      console.log(customer);
       setFieldState('partyBAdressId', (state) => {
         state.props.customerId = value;
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {
@@ -93,6 +121,13 @@ export const customerBAction = (setFieldState) => {
 
       setFieldState('partyBBankAccount', (state) => {
         state.props.customerId = value;
+        state.props.options = customer.invoiceResults && customer.invoiceResults.map((item) => {
+          return {
+            label: item.bankAccount,
+            value: item.invoiceId,
+            bankId:item.bankId,
+          };
+        });
       });
 
       setFieldState('partyBLegalPerson', (state) => {
@@ -130,6 +165,15 @@ export const customerBAction = (setFieldState) => {
     }
   });
 
+  FormEffectHooks.onFieldValueChange$('partyBBankAccount').subscribe(async ({value}) => {
+    if (value) {
+      const res = await request({...invoiceDetail,data:{invoiceId:value}});
+      setFieldState('partyBBankNo', (state) => {
+        state.value = res.bankNo;
+      });
+    }
+  });
+
   FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(async ({value}) => {
     if (value) {
       setFieldState('partyBBankAccount', (state) => {
@@ -137,6 +181,7 @@ export const customerBAction = (setFieldState) => {
       });
     }
   });
+
 };
 
 const paymentAction = (setFieldState, getFieldState) => {
