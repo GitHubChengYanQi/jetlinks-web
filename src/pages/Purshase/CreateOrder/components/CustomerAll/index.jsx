@@ -252,7 +252,7 @@ export const BankAccount = (props) => {
       </>}
     >
 
-      <InvoiceEdit value={false} NoButton={false} customerId={customerId} onSuccess={()=>{
+      <InvoiceEdit submitRef={submitRef} value={false} NoButton={false} customerId={customerId} onSuccess={()=>{
         ref.current.close();
       }} />
 
@@ -294,7 +294,7 @@ export const Bank = (props) => {
         </Button>
       </>}
     >
-      <BankEdit value={false} NoButton={false} onSuccess={() => {
+      <BankEdit ref={ref} value={false} NoButton={false} onSuccess={() => {
         refresh();
       }} />
     </Modal>

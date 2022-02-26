@@ -11,7 +11,7 @@ import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
-import {Button, notification, Modal as AntModal, Table as AntTable,Divider} from 'antd';
+import {Button, notification, Modal as AntModal, Table as AntTable, Divider} from 'antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -68,7 +68,8 @@ const ContractTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="请选择乙方" name="partyB" component={SysField.CustomerNameListSelect} />
+          <FormItem mega-props={{span: 1}} placeholder="请选择乙方" name="partyB"
+                    component={SysField.CustomerNameListSelect} />
           {
             customerId ?
               null
@@ -263,17 +264,21 @@ const ContractTable = (props) => {
                     <Icon type="icon-shenhe" />
                     审核
                   </Button>
-                  <EditButton
+                  <Button type="link" onClick={() => {
+                    history.push(`/CRM/contract/${record.contractId}`);
+                  }}>详情</Button>
+                  <Button
+                    type="link"
                     onClick={() => {
                       ref.current.open(record);
-                    }} />
+                    }}>查看</Button>
                   <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
                     tableRef.current.submit();
                   }} />
                 </> : null}
             </>
           );
-        }} width={200} />
+        }} width={300} />
       </Table>
       <Modal
         width={1250}
@@ -285,7 +290,7 @@ const ContractTable = (props) => {
             compoentRef.current.submit();
           }}>保存</Button>}
         component={AddContractEdit}
-        partyB='1416605276529807486'
+        partyB="1416605276529807486"
         customerId={customerId}
         onSuccess={() => {
           tableRef.current.submit();

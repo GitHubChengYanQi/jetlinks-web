@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProCard from '@ant-design/pro-card';
-import {Affix, Button, Col, Divider, Drawer, List, notification, Row, Space} from 'antd';
+import {Affix, Button, Col, Divider, Drawer, List, message, notification, Row, Space} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
@@ -16,6 +16,7 @@ import Modal from '@/components/Modal';
 import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplateList';
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
+import {useHistory} from 'ice';
 
 const {FormItem} = Form;
 
@@ -36,6 +37,8 @@ const CreateOrder = ({...props}) => {
   const state = props.location.state;
 
   const ref = useRef();
+
+  const history = useHistory();
 
   const {loading, data, refresh} = useRequest({...paymentTemplateListSelect, data: {oftenUser: 1}},);
 
@@ -68,6 +71,20 @@ const CreateOrder = ({...props}) => {
       wrapperCol={24}
       fieldKey="customerId"
       onSubmit={(value) => {
+
+        if (value.paymentDetail) {
+          let percentum = value.paymentDetail.map((item) => {
+            return percentum += item.percentum;
+          });
+          if (percentum !== 100){
+            message.warn('请检查付款批次！');
+            return false;
+          }
+        } else {
+          message.warn('请输入付款批次！');
+          return false;
+        }
+
         value = {
           ...value,
           paymentParam: {

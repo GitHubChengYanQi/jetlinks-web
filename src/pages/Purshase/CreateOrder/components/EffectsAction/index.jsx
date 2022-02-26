@@ -37,7 +37,7 @@ export const customerAAction = (setFieldState) => {
           return {
             label: item.bankAccount,
             value: item.invoiceId,
-            bankId:item.bankId,
+            bankId: item.bankId,
           };
         });
       });
@@ -72,7 +72,7 @@ export const customerAAction = (setFieldState) => {
 
   FormEffectHooks.onFieldValueChange$('partyABankAccount').subscribe(async ({value}) => {
     if (value) {
-      const res = await request({...invoiceDetail,data:{invoiceId:value}});
+      const res = await request({...invoiceDetail, data: {invoiceId: value}});
       setFieldState('partyABankNo', (state) => {
         state.value = res.bankNo;
       });
@@ -125,7 +125,7 @@ export const customerBAction = (setFieldState) => {
           return {
             label: item.bankAccount,
             value: item.invoiceId,
-            bankId:item.bankId,
+            bankId: item.bankId,
           };
         });
       });
@@ -167,7 +167,7 @@ export const customerBAction = (setFieldState) => {
 
   FormEffectHooks.onFieldValueChange$('partyBBankAccount').subscribe(async ({value}) => {
     if (value) {
-      const res = await request({...invoiceDetail,data:{invoiceId:value}});
+      const res = await request({...invoiceDetail, data: {invoiceId: value}});
       setFieldState('partyBBankNo', (state) => {
         state.value = res.bankNo;
       });
@@ -208,10 +208,10 @@ const paymentAction = (setFieldState, getFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({name, value}) => {
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({active, name, value}) => {
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
-    if (!money || !money.value) {
+    if (!money || !money.value || active) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
         return `paymentDetail.${$1}.percentum`;
       }), (state) => {
@@ -243,10 +243,10 @@ const paymentAction = (setFieldState, getFieldState) => {
     });
   });
 
-  FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(({name, value}) => {
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(({active, name, value}) => {
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
-    if (!money || !money.value) {
+    if (!money || !money.value || active) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
         return `paymentDetail.${$1}.money`;
       }), (state) => {
@@ -294,8 +294,8 @@ const contractAction = (setFieldState) => {
 
 
   FormEffectHooks.onFieldValueChange$('templateId').subscribe(async ({value}) => {
-    if (value){
-      const res = await request({...templateGetLabel,params:{id:value}});
+    if (value) {
+      const res = await request({...templateGetLabel, params: {id: value}});
       setFieldState('allField', (state) => {
         state.props.array = res;
       });
