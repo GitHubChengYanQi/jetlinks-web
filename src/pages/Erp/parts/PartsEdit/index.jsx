@@ -105,7 +105,7 @@ const PartsEdit = ({...props}, ref) => {
 
                   {!type && <>
                     <FormItem label="编码" name="standard" module={0} component={Codings} required />
-                    <FormItem label="物料描述" name="skuRequests" component={SysField.Attributes} category={category} required />
+                    <FormItem label="物料描述" name="sku" component={SysField.Attributes} category={category} required />
                     <FormItem
                       label="批量"
                       name="batch"
