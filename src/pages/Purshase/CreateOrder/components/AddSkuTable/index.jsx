@@ -7,6 +7,7 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Select from '@/components/Select';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 import InputNumber from '@/components/InputNumber';
+import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
 
 const AddSkuTable = ({
   onChange = () => {
@@ -27,6 +28,8 @@ const AddSkuTable = ({
   }) || []);
 
   const {data: brandData} = useRequest(brandIdSelect);
+
+  const {data: taxData} = useRequest(taxRateListSelect);
 
   const dataSources = dataSource.map((item, index) => {
     return {
@@ -191,12 +194,10 @@ const AddSkuTable = ({
         />;
       }} />
       <Table.Column title="税率" width={120} dataIndex="rate" render={(value, record, index) => {
-        return <InputNumber
-          min={1}
-          addonAfter="%"
-          placeholder="请输入税率"
-          max={100}
+        return <AntSelect
+          placeholder="请选择税率"
           value={value}
+          options={taxData || []}
           onChange={(value) => {
             setValue({rate: value}, index);
           }}

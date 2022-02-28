@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input, Radio, Spin, Select as AntSelect, Button, Space, InputNumber, message, List} from 'antd';
+import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List} from 'antd';
 import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
@@ -20,6 +20,8 @@ import {templateListSelect} from '@/pages/Crm/template/TemplateUrl';
 import Editor from '@/components/Editor';
 import AddSkuTable from '@/pages/Purshase/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Purshase/CreateOrder/components/CheckSku';
+import InputNumber from '@/components/InputNumber';
+
 
 
 export const AddSku = ({value, customerId, onChange}) => {
@@ -313,6 +315,7 @@ export const AllField = ({value, onChange, array}) => {
         if (domNode.name === 'input') {
           switch (domNode.attribs.class) {
             case 'inp':
+              // eslint-disable-next-line no-case-declarations
               const inp = i;
               i++;
               return <Input
@@ -323,6 +326,7 @@ export const AllField = ({value, onChange, array}) => {
                 }}
               />;
             case 'number':
+              // eslint-disable-next-line no-case-declarations
               const number = i;
               i++;
               return <InputNumber
@@ -333,6 +337,7 @@ export const AllField = ({value, onChange, array}) => {
                 }}
               />;
             case 'date':
+              // eslint-disable-next-line no-case-declarations
               const date = i;
               i++;
               return <DatePicker

@@ -620,7 +620,9 @@ const CreateOrder = ({...props}) => {
           </MegaLayout>
         </MegaLayout>
       </ProCard>
+
       <Divider />
+
       <MegaLayout labelWidth={labelWidth}>
         <FormItem
           label="其他约定项"

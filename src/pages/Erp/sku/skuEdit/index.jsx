@@ -16,6 +16,7 @@ import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 
 const {FormItem} = Form;
 
+const formActionsPublic = createFormActions();
 
 const SkuEdit = ({...props}, ref) => {
 
@@ -54,6 +55,7 @@ const SkuEdit = ({...props}, ref) => {
         {...other}
         value={value.skuId || false}
         ref={formRef}
+        formActions={formActionsPublic}
         defaultValue={{
           'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,

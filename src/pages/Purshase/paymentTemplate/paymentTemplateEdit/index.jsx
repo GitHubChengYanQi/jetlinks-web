@@ -8,8 +8,8 @@
 import React, {useRef} from 'react';
 import ProCard from '@ant-design/pro-card';
 import {MegaLayout} from '@formily/antd-components';
-import {InternalFieldList as FieldList} from '@formily/antd';
-import {Button, Col, Row, Space} from 'antd';
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
+import {Button, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
 import {paymentTemplateDetail, paymentTemplateAdd, paymentTemplateEdit} from '../paymentTemplateUrl';
@@ -23,6 +23,8 @@ const ApiConfig = {
   save: paymentTemplateEdit
 };
 
+const formActionsPublic = createFormActions();
+
 const PaymentTemplateEdit = ({...props}) => {
 
   const formRef = useRef();
@@ -33,6 +35,7 @@ const PaymentTemplateEdit = ({...props}) => {
         {...props}
         ref={formRef}
         api={ApiConfig}
+        formActions={formActionsPublic}
         wrapperCol={24}
         fieldKey="templateId"
       >

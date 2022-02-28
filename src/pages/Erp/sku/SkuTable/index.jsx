@@ -239,9 +239,12 @@ const SkuTable = (props) => {
 
         <Column />
 
-        <Column title="操作" key={8} dataIndex="isBan" width={100} render={(value, record) => {
+        <Column title="操作" key={8} dataIndex="isBan" width={200} align='center' render={(value, record) => {
           return (
             <>
+              <Button type='link' color={record.bom ? 'green' : 'blue'} onClick={()=>{
+
+              }}>bom</Button>
               <EditButton onClick={() => {
                 ref.current.open(record);
                 setEdit(true);
