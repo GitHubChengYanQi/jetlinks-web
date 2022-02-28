@@ -6,10 +6,11 @@
  */
 
 import React, {useRef} from 'react';
-import {Input, InputNumber, DatePicker, Button} from 'antd';
+import {Input, DatePicker, Button} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../StockDetailsUrl/index';
 import {skuListSelect} from '@/pages/Erp/spu/spuUrl';
+import InputNumber from '@/components/InputNumber';
 
 export const Stock = (props) =>{
   return (<Input {...props} />);

@@ -6,7 +6,8 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,Radio} from 'antd';
+import {Input,Radio} from 'antd';
+import InputNumber from '@/components/InputNumber';
 
 export const Version = (props) =>{
   return (<Input {...props}/>);

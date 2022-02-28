@@ -13,6 +13,7 @@ import {
 import {useHistory} from 'ice';
 import {createFormActions, FormButtonGroup, Reset} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
@@ -26,7 +27,6 @@ import Form from '@/components/Form';
 import {Type} from '@/pages/Purshase/purchaseAsk/purchaseAskField';
 import DatePicker from '@/components/DatePicker';
 import PurchaseAskList from '@/pages/Purshase/purchaseAsk/purchaseAskList';
-import ProSkeleton from '@ant-design/pro-skeleton';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -226,7 +226,7 @@ const ToBuyPlanList = (props) => {
       <Button
         type="default"
         onClick={() => {
-          history.push({pathname:'/purchase/toBuyPlan/createOrder',state:selectedSanme()});
+          history.push({pathname: '/purchase/toBuyPlan/createOrder', state: selectedSanme()});
         }}>批量采购</Button>
       {props.ggg && <>
         <Button
@@ -416,7 +416,18 @@ const ToBuyPlanList = (props) => {
             <Column key={13} title="申请时间" width={150} dataIndex="createTime" />
             <Column key={14} title="操作" fixed="right" align="center" render={(value, record) => {
               return <>
-                <Button type="link">采购</Button>
+                <Button type="link" onClick={() => {
+                  history.push({
+                    pathname: '/purchase/toBuyPlan/createOrder', state: [{
+                      skuId: record.skuId,
+                      skuResult: record.skuResult,
+                      brandId: record.brandId,
+                      defaultBrandResult: record.brandResult && record.brandResult.brandName,
+                      preordeNumber: record.applyNumber,
+                      unitId: record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.unitId,
+                    }]
+                  });
+                }}>采购</Button>
                 <Button type="link">指派</Button>
                 <Button type="link">详情</Button>
               </>;

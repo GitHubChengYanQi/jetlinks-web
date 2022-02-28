@@ -6,12 +6,13 @@
  */
 
 import React, {useEffect} from 'react';
-import {Input, InputNumber, Select as AntSelect, Select as AntdSelect, Tag} from 'antd';
+import {Input,  Select as AntSelect, Select as AntdSelect, Tag} from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../ItemsUrl';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
-import {brandList, brandListSelect} from '@/pages/Erp/brand/BrandUrl';
+import {brandListSelect} from '@/pages/Erp/brand/BrandUrl';
+import InputNumber from '@/components/InputNumber';
 
 
 const w = 200;

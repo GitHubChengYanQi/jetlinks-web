@@ -6,9 +6,10 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,Radio} from 'antd';
+import {Input,Radio} from 'antd';
 import Select from '@/components/Select';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
+import InputNumber from '@/components/InputNumber';
 
 export const CustomerId = (props) =>{
   return (<Input {...props}/>);

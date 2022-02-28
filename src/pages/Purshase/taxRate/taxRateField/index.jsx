@@ -6,7 +6,8 @@
  */
 
 import React from 'react';
-import {Input,InputNumber} from 'antd';
+import {Input} from 'antd';
+import InputNumber from '@/components/InputNumber';
 
 export const TaxRateName = (props) =>{
   return (<Input {...props}/>);

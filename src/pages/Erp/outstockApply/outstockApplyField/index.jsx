@@ -8,12 +8,12 @@
 import React, {useEffect} from 'react';
 import {
   Input,
-  InputNumber,
   Select as AntSelect
 } from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../outstockApplyUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
+import InputNumber from '@/components/InputNumber';
 
 export const ApplyState = (props) =>{
   return (<Input style={{width:200}} {...props}/>);

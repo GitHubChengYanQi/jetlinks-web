@@ -6,8 +6,9 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Checkbox, Radio, Space, Popover} from 'antd';
+import {Input,  Select as AntdSelect, Checkbox, Radio, Space, Popover} from 'antd';
 import Select from '@/components/Select';
+import InputNumber from '@/components/InputNumber';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import FileUpload from '@/pages/Crm/data/components/FileUpload';
 import {qualityCheckClassificationListSelect} from '@/pages/Erp/qualityCheck/qualityCheckUrl';

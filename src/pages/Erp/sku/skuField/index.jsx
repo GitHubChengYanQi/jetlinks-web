@@ -8,7 +8,6 @@
 import React, {useEffect, useRef} from 'react';
 import {
   Input,
-  InputNumber,
   Radio, AutoComplete, Spin, Space, Select as AntdSelect, Button, Popover
 } from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
@@ -27,6 +26,7 @@ import UnitList from '@/pages/Erp/unit/unitList';
 import FileUpload from '@/components/FileUpload';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
 import store from '@/store';
+import InputNumber from '@/components/InputNumber';
 
 export const Type = (props) => {
 

@@ -1,8 +1,8 @@
 import React, {useImperativeHandle, useRef} from 'react';
-import {Input, InputNumber, Table as AntTable} from 'antd';
+import {Input,  Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import {useSetState} from 'ahooks';
-import * as SysField from '@/pages/Erp/sku/skuField';
+import InputNumber from '@/components/InputNumber';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';

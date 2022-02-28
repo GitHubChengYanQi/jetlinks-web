@@ -5,14 +5,11 @@ import {
   FormEffectHooks,
   createFormActions,
   VirtualField,
-  FieldList,
   Submit,
   FormButtonGroup,
 } from '@formily/antd';
-import {Radio, Select, Input} from '@formily/antd-components';
-import {Button, Divider, InputNumber} from 'antd';
-import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {SkuId} from '@/pages/Workflow/Process/processField';
+import {Radio, Select} from '@formily/antd-components';
+import {Button} from 'antd';
 import {Rule} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 
 const actions = createFormActions();

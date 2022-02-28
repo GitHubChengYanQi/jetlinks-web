@@ -6,14 +6,13 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, Input, InputNumber, Select as AntdSelect} from 'antd';
+import {Button, Input,  Select as AntdSelect} from 'antd';
 import * as apiUrl from '../competitorQuoteUrl';
 import Select from '@/components/Select';
-import {competitorListSelect} from '../competitorQuoteUrl';
 import {useRequest} from '@/util/Request';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
 import Modal from '@/components/Modal';
+import InputNumber from '@/components/InputNumber';
 
 export const CompetitorsQuote = (props) =>{
   return (<InputNumber min={0} step={10000} max={1000000000}  {...props}/>);

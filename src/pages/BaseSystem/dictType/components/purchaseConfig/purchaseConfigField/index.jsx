@@ -6,11 +6,8 @@
  */
 
 import React from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Spin} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import {Input,Radio, Spin} from 'antd';
 import Select from '@/components/Select';
-import * as apiUrl from '../purchaseConfigUrl';
 import {customerLevelIdSelect} from '@/pages/Crm/customer/crmCustomerLevel/crmCustomerLevelUrl';
 import {useRequest} from '@/util/Request';
 import {purchaseConfigList} from '../purchaseConfigUrl';

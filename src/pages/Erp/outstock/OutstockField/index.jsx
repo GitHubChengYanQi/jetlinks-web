@@ -6,11 +6,12 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, Select as AntSelect, InputNumber} from 'antd';
+import {Input, Select as AntSelect} from 'antd';
 import Drawer from '@/components/Drawer';
 import StockList from '@/pages/Erp/stock/StockList';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Erp/outstock/OutstockUrl';
+import InputNumber from '@/components/InputNumber';
 
 
 const {Search} = Input;

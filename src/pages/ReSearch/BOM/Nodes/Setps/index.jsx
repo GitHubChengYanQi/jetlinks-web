@@ -10,7 +10,8 @@ import {
   FormButtonGroup,
 } from '@formily/antd';
 import {Radio} from '@formily/antd-components';
-import {Button, Input, InputNumber, Space, Tabs} from 'antd';
+import {Button, Input,  Space, Tabs} from 'antd';
+import InputNumber from '@/components/InputNumber';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import Select from '@/components/Select';
 import {qualityCheckListSelect} from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';

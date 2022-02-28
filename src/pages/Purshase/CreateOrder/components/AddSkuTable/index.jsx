@@ -1,11 +1,12 @@
 import React, {useImperativeHandle, useState} from 'react';
-import {Button, InputNumber, Table, Select as AntSelect, Space} from 'antd';
+import {Button, Table, Select as AntSelect, Space} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Select from '@/components/Select';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
+import InputNumber from '@/components/InputNumber';
 
 const AddSkuTable = ({
   onChange = () => {

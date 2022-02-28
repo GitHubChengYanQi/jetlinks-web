@@ -7,7 +7,8 @@
 
 
 import React, {useEffect} from 'react';
-import {Input, InputNumber, Select as AntSelect} from 'antd';
+import {Input,  Select as AntSelect} from 'antd';
+import InputNumber from '@/components/InputNumber';
 import parse from 'html-react-parser';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/contract/ContractUrl';

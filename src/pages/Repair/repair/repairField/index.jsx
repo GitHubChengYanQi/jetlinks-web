@@ -6,16 +6,16 @@
  */
 
 import React, {useEffect, useState} from 'react';
+import { Input, Modal, Select as AntSelect, Upload} from 'antd';
+import {PlusOutlined} from '@ant-design/icons';
 import UpLoadImg from '@/components/Upload';
-import {Image, Input, InputNumber, Modal, Select as AntSelect, Upload} from 'antd';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
-import {PlusOutlined} from '@ant-design/icons';
-import TreeSelect from '@/components/TreeSelect';
+import InputNumber from '@/components/InputNumber';
 import Cascader from '@/components/Cascader';
 import * as apiUrl from '../repairUrl';
-import {bannerList, companyIdSelect} from '../repairUrl';
+import {bannerList} from '../repairUrl';
 
 export const CompanyId = (props) => {
   return (<Select api={apiUrl.companyIdSelect} {...props} />);

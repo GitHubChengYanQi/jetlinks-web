@@ -6,11 +6,11 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Checkbox, Space} from 'antd';
+import {Input,  Select as AntdSelect, Checkbox, Space} from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
-import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
+import InputNumber from '@/components/InputNumber';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {customerIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';

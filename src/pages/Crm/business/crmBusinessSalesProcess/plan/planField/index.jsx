@@ -6,7 +6,8 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Descriptions, Input, InputNumber, message} from 'antd';
+import {Descriptions, Input, message} from 'antd';
+import InputNumber from '@/components/InputNumber';
 
 export const SalesProcessId = (props) => {
   const {salesProcessId} = props;

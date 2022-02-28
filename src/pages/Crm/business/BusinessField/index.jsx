@@ -6,7 +6,9 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Button} from 'antd';
+import {Input, Select as AntdSelect, Button} from 'antd';
+import moment from 'moment';
+import InputNumber from '@/components/InputNumber';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
 import Index from '@/pages/Crm/business/BusinessEdit/index';
@@ -16,7 +18,6 @@ import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
-import moment from 'moment';
 import {competitorListSelect} from '@/pages/Crm/competitorQuote/competitorQuoteUrl';
 
 // 项目Id

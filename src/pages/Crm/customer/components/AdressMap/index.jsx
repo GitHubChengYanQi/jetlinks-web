@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Input, InputNumber, Space} from 'antd';
+import {Input,  Space} from 'antd';
 import Amap from '@/components/Amap';
+import InputNumber from '@/components/InputNumber';
 
 const AdressMap = ({width,value,onChange,disabled,...props}) => {
 

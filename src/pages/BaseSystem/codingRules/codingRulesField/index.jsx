@@ -8,11 +8,11 @@
 import React, {useEffect, useState} from 'react';
 import {
   Input,
-  InputNumber,
   Select as AntdSelect,
   Radio,
   Space
 } from 'antd';
+import InputNumber from '@/components/InputNumber';
 
 export const Name = (props) => {
   return (<Input {...props} />);

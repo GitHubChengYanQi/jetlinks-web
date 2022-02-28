@@ -5,16 +5,13 @@
  * @Date 2021-09-07 09:50:09
  */
 
-import React, {useEffect, useRef} from 'react';
-import {Input, InputNumber, TimePicker, Select as AntdSelect, Checkbox, Radio, Button} from 'antd';
+import React from 'react';
+import {Input,   Select as AntdSelect,} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import Cascader from '@/components/Cascader';
 import * as apiUrl from '../competitorUrl';
 import Select from '@/components/Select';
-import {useRequest} from '@/util/Request';
-import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import CompetitorEdit from '@/pages/Crm/competitor/competitorEdit';
-import BusinessEdit from '@/pages/Crm/business/BusinessEdit';
+import InputNumber from '@/components/InputNumber';
 
 export const CompetitorsQuoteId = (props) =>{
   return (<Input {...props}/>);
