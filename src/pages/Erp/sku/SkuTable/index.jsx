@@ -47,27 +47,16 @@ const SkuTable = (props) => {
   const history = useHistory(null);
 
   useEffect(() => {
-    tableRef.current.formActions.setFieldValue('spuClass', spuClass ? spuClass[0] : null);
-    tableRef.current.submit();
+    if (spuClass) {
+      tableRef.current.formActions.setFieldValue('spuClass', spuClass ? spuClass[0] : null);
+      tableRef.current.submit();
+    }
   }, [spuClass]);
 
 
   const actions = () => {
     return (
       <Space>
-        <Button type="link">查看日志</Button>
-        <Import
-          url={`${baseURI}Excel/importSku`}
-          title='导入物料'
-          module='sku'
-          onOk={() => {
-            tableRef.current.submit();
-          }}
-          templateUrl={`${baseURI}api/SkuExcel`}
-        />
-        <Button icon={<Icon type="icon-daoru" />} onClick={() => {
-
-        }}>导出物料</Button>
         <AddButton onClick={() => {
           ref.current.open(false);
           setEdit(false);
@@ -81,22 +70,20 @@ const SkuTable = (props) => {
     return (
       <>
         <FormItem
-          placeholder="编码"
+          label="编码"
+          placeholder="请输入编码"
           name="standard"
           component={SysField.SelectSkuName} />
         <FormItem
-          placeholder="名称"
+          label="名称"
+          placeholder="请输入名称"
           name="spuClassName"
           component={SysField.SelectSkuName} />
         <FormItem
-          placeholder="型号"
+          label="型号"
+          placeholder="请输入型号"
           name="spuName"
           component={SysField.SelectSkuName} />
-        <FormItem
-          style={{display: 'none'}}
-          hidden
-          value={0}
-          component={SysField.Type} />
         <FormItem
           name="spuClass"
           hidden
@@ -144,6 +131,21 @@ const SkuTable = (props) => {
         title={<Breadcrumb />}
         api={skuList}
         tableKey="sku"
+        actionButton={<Space>
+          <Button type="link">查看日志</Button>
+          <Import
+            url={`${baseURI}Excel/importSku`}
+            title="导入物料"
+            module="sku"
+            onOk={() => {
+              tableRef.current.submit();
+            }}
+            templateUrl={`${baseURI}api/SkuExcel`}
+          />
+          <Button icon={<Icon type="icon-daoru" />} onClick={() => {
+
+          }}>导出物料</Button>
+        </Space>}
         rowKey="skuId"
         isModal={false}
         searchForm={searchForm}
@@ -174,13 +176,9 @@ const SkuTable = (props) => {
           if (record.spuResult)
             return (
               <>
-                <Button type="link" onClick={() => {
-                  history.push(`/SPU/sku/${record.skuId}`);
-                }}>
-                  {record.spuResult.name}
-                  &nbsp;/&nbsp;
-                  {record.skuName}
-                </Button>
+                {record.spuResult.name}
+                &nbsp;/&nbsp;
+                {record.skuName}
               </>
             );
         }} sorter />
@@ -239,10 +237,10 @@ const SkuTable = (props) => {
 
         <Column />
 
-        <Column title="操作" key={8} dataIndex="isBan" width={200} align='center' render={(value, record) => {
+        <Column title="操作" key={8} dataIndex="isBan" width={200} align="center" render={(value, record) => {
           return (
             <>
-              <Button type='link' color={record.bom ? 'green' : 'blue'} onClick={()=>{
+              <Button type="link" color={record.bom ? 'green' : 'blue'} onClick={() => {
 
               }}>bom</Button>
               <EditButton onClick={() => {

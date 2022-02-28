@@ -11,8 +11,13 @@ export const customerAAction = (setFieldState) => {
   FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value}) => {
     if (value) {
       const customer = await request({...customerDetail, data: {customerId: value}});
+      if (!customer) {
+        return message.warn('请检查供应商！');
+      }
+
       setFieldState('partyAAdressId', (state) => {
         state.props.customerId = value;
+        state.props.defaultValue = customer.defaultAddress;
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {
           return {
             label: item.detailLocation || item.location,
@@ -23,6 +28,7 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('partyAContactsId', (state) => {
         state.props.customerId = value;
+        state.props.defaultValue = customer.defaultContacts;
         state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
           return {
             label: item.contactsName,
@@ -31,8 +37,14 @@ export const customerAAction = (setFieldState) => {
         });
       });
 
+      setFieldState('partyABankId', (state) => {
+        state.props.customerId = value;
+        state.props.defaultValue = customer.invoiceResult && customer.invoiceResult.bankId;
+      });
+
       setFieldState('partyABankAccount', (state) => {
         state.props.customerId = value;
+        state.props.defaultValue = customer.invoiceId;
         state.props.options = customer.invoiceResults && customer.invoiceResults.map((item) => {
           return {
             label: item.bankAccount,
@@ -59,6 +71,12 @@ export const customerAAction = (setFieldState) => {
         state.props.customerId = value;
       });
 
+    } else {
+      setFieldState('partyABankId', (state) => {
+        state.props.customerId = value;
+        state.props.defaultValue = null;
+        state.value = null;
+      });
     }
   });
 
@@ -84,12 +102,17 @@ export const customerAAction = (setFieldState) => {
       const res = await request({...contactsDetail, data: {contactsId: value}});
       setFieldState('partyAPhone', (state) => {
         state.props.contactsId = value;
+        state.props.defaultValue = res.phoneParams && res.phoneParams[0].phoneId;
         state.props.options = res.phoneParams && res.phoneParams.map((item) => {
           return {
             label: item.phone,
             value: item.phoneId,
           };
         });
+      });
+    } else {
+      setFieldState('partyAPhone', (state) => {
+        state.value = null;
       });
     }
   });
@@ -101,6 +124,7 @@ export const customerBAction = (setFieldState) => {
       const customer = await request({...customerDetail, data: {customerId: value}});
       setFieldState('partyBAdressId', (state) => {
         state.props.customerId = value;
+        state.props.defaultValue = customer.defaultAddress;
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {
           return {
             label: item.detailLocation || item.location,
@@ -111,6 +135,7 @@ export const customerBAction = (setFieldState) => {
 
       setFieldState('partyBContactsId', (state) => {
         state.props.customerId = value;
+        state.props.defaultValue = customer.defaultContacts;
         state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
           return {
             label: item.contactsName,
@@ -119,8 +144,14 @@ export const customerBAction = (setFieldState) => {
         });
       });
 
+      setFieldState('partyBBankId', (state) => {
+        state.props.customerId = value;
+        state.props.defaultValue = customer.invoiceResult && customer.invoiceResult.bankId;
+      });
+
       setFieldState('partyBBankAccount', (state) => {
         state.props.customerId = value;
+        state.props.defaultValue = customer.invoiceId;
         state.props.options = customer.invoiceResults && customer.invoiceResults.map((item) => {
           return {
             label: item.bankAccount,
@@ -147,6 +178,12 @@ export const customerBAction = (setFieldState) => {
         state.props.customerId = value;
       });
 
+    } else {
+      setFieldState('partyBBankId', (state) => {
+        state.props.customerId = value;
+        state.props.defaultValue = null;
+        state.value = null;
+      });
     }
   });
 
@@ -155,12 +192,19 @@ export const customerBAction = (setFieldState) => {
       const res = await request({...contactsDetail, data: {contactsId: value}});
       setFieldState('partyBPhone', (state) => {
         state.props.contactsId = value;
+        state.props.defaultValue = res.phoneParams && res.phoneParams[0].phoneId;
         state.props.options = res.phoneParams && res.phoneParams.map((item) => {
           return {
             label: item.phone,
             value: item.phoneId,
           };
         });
+      });
+    } else {
+      setFieldState('partyBPhone', (state) => {
+        state.props.contactsId = value;
+        state.props.defaultValue = null;
+        state.value = null;
       });
     }
   });

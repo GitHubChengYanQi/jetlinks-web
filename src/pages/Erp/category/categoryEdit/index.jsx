@@ -9,6 +9,7 @@ import React, {useRef} from 'react';
 import * as SysField from '../categoryField';
 import {categoryDetail, categoryAdd, categoryEdit} from '../categoryUrl';
 import Form from '@/components/Form';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -17,6 +18,7 @@ const ApiConfig = {
   add: categoryAdd,
   save: categoryEdit
 };
+const formActionsPublic = createFormActions();
 
 const CategoryEdit = ({...props}) => {
 
@@ -25,6 +27,7 @@ const CategoryEdit = ({...props}) => {
   return (
     <Form
       {...props}
+      formActions={formActionsPublic}
       ref={formRef}
       api={ApiConfig}
       fieldKey="categoryId"

@@ -1,5 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Row, Col, Card, Layout, Table as AntdTable} from 'antd';
+import {Row, Col, Card, Layout, Table as AntdTable, Space} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {useFormTableQuery, createFormActions, Form, Submit, Reset, FormButtonGroup} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
@@ -22,11 +22,12 @@ const TableWarp = ({
   title,
   NoSortAction,
   maxHeight,
-  loading:getLoading,
+  loading: getLoading,
   showCard,
   selectedRowKeys,
   api,
   tableData,
+  actionButton,
   pageSize,
   noPagination,
   contentHeight,
@@ -113,7 +114,6 @@ const TableWarp = ({
     let response;
 
     try {
-
       if (dataSources) {
         response = {
           data: dataSources
@@ -183,10 +183,7 @@ const TableWarp = ({
       <div style={headStyle}>
         {listHeader ? <div className={style.listHeader}>
           {title && <div className="title">{title}</div>}
-          <div className="actions">
-            {/* <div className="search" style={{ textAlign: title ? 'right' : 'left' }}/> */}
-            {/*<div className="button">{actions}</div>*/}
-          </div>
+          <div className="actions" />
         </div> : null}
       </div>
       <Layout>
@@ -224,8 +221,13 @@ const TableWarp = ({
           <Card
             bordered={bordered || false}
             title={(listHeader && !headStyle) ? actions : null}
+            headStyle={headStyle}
             bodyStyle={bodyStyle}
-            extra={!headStyle && setButton}>
+            extra={<Space>
+              {actionButton}
+              {!headStyle && setButton}
+            </Space>}
+          >
             <AntdTable
               showTotal
               expandable={expandable}
@@ -245,7 +247,6 @@ const TableWarp = ({
                 defaultSelectedRowKeys,
                 selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => {
-                  console.log(selectedRowKeys);
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
                 },
                 getCheckboxProps,

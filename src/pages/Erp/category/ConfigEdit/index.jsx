@@ -7,7 +7,7 @@
 
 import React, {useRef} from 'react';
 import ProCard from '@ant-design/pro-card';
-import {InternalFieldList as FieldList} from '@formily/antd';
+import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import {Button, Card, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import * as SysField from '../categoryField';
@@ -22,6 +22,8 @@ const ApiConfig = {
   save: categoryAddList
 };
 
+const formActionsPublic = createFormActions();
+
 const ConfigEdit = ({...props}) => {
 
   const formRef = useRef();
@@ -29,6 +31,7 @@ const ConfigEdit = ({...props}) => {
   return (
     <Form
       {...props}
+      formActions={formActionsPublic}
       ref={formRef}
       api={ApiConfig}
       fieldKey="categoryId"

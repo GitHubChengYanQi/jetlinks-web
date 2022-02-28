@@ -5,18 +5,14 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Input,
   InputNumber,
-  TimePicker,
-  DatePicker,
   Select as AntdSelect,
-  Checkbox,
   Radio,
-  Button,
   Card,
-  Select as AntSelect, Spin, Switch
+  Spin,
 } from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
@@ -27,10 +23,8 @@ import Attribute from '@/pages/Erp/instock/components/Attribute';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
 
-export const ItemId = (props) => {
-  return (<Select api={apiUrl.itemIdSelect} {...props} />);
-};
 export const BrandId = (props) => {
   return (<Select api={apiUrl.brandIdSelect} {...props} />);
 };
@@ -82,37 +76,41 @@ export const Note = (props) => {
 };
 
 export const Attributes = (props) => {
-  const {spuId, onChange, value} = props;
-
-  const [sku, setSku] = useState();
-
-  const {run: spu} = useRequest(spuDetail, {
-    manual: true,
-    onSuccess: (res) => {
-      if (res.sku) {
-        setSku(res.sku);
-      }
-    }
-  });
-
-  useEffect(() => {
-    if (spuId) {
-      spu({
-        data: {
-          spuId,
-        }
-      });
-    }
-  }, [spuId]);
-
-  return (
-    <Card bodyStyle={{padding: 0}}>
-      <Attribute sku={sku} onChange={(value) => {
-        onChange(value);
-      }} value={value} />
-    </Card>
-  );
+  return (<SkuConfiguration {...props} />);
 };
+
+// export const Attributes = (props) => {
+//   const {spuId, onChange, value} = props;
+//
+//   const [sku, setSku] = useState();
+//
+//   const {run: spu} = useRequest(spuDetail, {
+//     manual: true,
+//     onSuccess: (res) => {
+//       if (res.sku) {
+//         setSku(res.sku);
+//       }
+//     }
+//   });
+//
+//   useEffect(() => {
+//     if (spuId) {
+//       spu({
+//         data: {
+//           spuId,
+//         }
+//       });
+//     }
+//   }, [spuId]);
+//
+//   return (
+//     <Card bodyStyle={{padding: 0}}>
+//       <Attribute sku={sku} onChange={(value) => {
+//         onChange(value);
+//       }} value={value} />
+//     </Card>
+//   );
+// };
 
 export const Spu = (props) => {
 
@@ -175,7 +173,7 @@ export const Pid = (props) => {
   }) : [];
 
   useEffect(() => {
-    run({data:{type: 1}});
+    run({data: {type: 1}});
   }, []);
 
   return (<AntdSelect
@@ -199,9 +197,9 @@ export const Pid = (props) => {
 };
 
 export const Action = (props) => {
-  return <Radio.Group value={props.value} onChange={(value)=>{
+  return <Radio.Group value={props.value} onChange={(value) => {
     props.onChange(value.target.value);
-  }} >
+  }}>
     <Radio.Button value="researchBom">增加设计BOM</Radio.Button>
     <Radio.Button value="productionBom">增加子物料BOM</Radio.Button>
   </Radio.Group>;

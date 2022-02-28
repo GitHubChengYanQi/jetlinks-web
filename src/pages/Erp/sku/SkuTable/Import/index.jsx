@@ -61,20 +61,20 @@ const Import = ({
         break;
       case 'customer':
         columns.push({
-          title:'物料编码',
-          dataIndex:'coding',
-        },{
-          title:'品牌',
-          dataIndex:'brand',
-        },{
-          title:'供应商',
-          dataIndex:'supplier',
-        },{
-          title:'行',
-          dataIndex:'line',
-        },{
-          title:'错误信息',
-          dataIndex:'error',
+          title: '物料编码',
+          dataIndex: 'coding',
+        }, {
+          title: '品牌',
+          dataIndex: 'brand',
+        }, {
+          title: '供应商',
+          dataIndex: 'supplier',
+        }, {
+          title: '行',
+          dataIndex: 'line',
+        }, {
+          title: '错误信息',
+          dataIndex: 'error',
         },);
         break;
       default:
@@ -127,6 +127,17 @@ const Import = ({
       });
   };
 
+  const templateName = () => {
+    switch (module) {
+      case 'customer':
+        return '《供应商模板》';
+      case 'sku':
+        return '《基础物料模板》';
+      default:
+        break;
+    }
+  };
+
 
   return <>
     <Button icon={<Icon type="icon-daoru" />} onClick={() => {
@@ -157,7 +168,7 @@ const Import = ({
           操作步骤：
         </div>
         <div>
-          1、下载 <a href={templateUrl}>《基础物料模板》</a>
+          1、下载 <a href={templateUrl}>{templateName()}</a>
         </div>
         <div>
           2、打开下载表，将对应信息填入或粘贴至表内，为保证导入成功，请使用纯文本或数字

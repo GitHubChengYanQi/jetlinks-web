@@ -5,16 +5,17 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Card, Descriptions} from 'antd';
 import {useHistory, useParams} from 'ice';
-import {useRequest} from '@/util/Request';
 import {ScanOutlined} from '@ant-design/icons';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import ProCard from '@ant-design/pro-card';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {useRequest} from '@/util/Request';
 import Code from '@/pages/Erp/spu/components/Code';
 import PartsList from '@/pages/Erp/parts/PartsList';
+import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
 
 
 const SpuDetail = () => {
@@ -23,11 +24,31 @@ const SpuDetail = () => {
 
   const history = useHistory();
 
+  const [category, setCategory] = useState();
+
+  const {run} = useRequest(categoryDetail,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        setCategory(res.categoryRequests);
+      }
+    }
+  );
+
   const {loading, data} = useRequest(spuDetail, {
     manual: !params.cid,
     defaultParams: {
       data: {
         spuId: params.cid
+      }
+    },
+    onSuccess: (res) => {
+      if (res.categoryId) {
+        run({
+          data: {
+            categoryId: res.categoryId
+          }
+        });
       }
     }
   });
@@ -65,7 +86,7 @@ const SpuDetail = () => {
               <Descriptions.Item label="产品名称">
                 {data.name}
               </Descriptions.Item>
-              <Descriptions.Item label="类目">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
+              <Descriptions.Item label="配置">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
               <Descriptions.Item
                 label="分类"> {data.spuClassificationResult ? data.spuClassificationResult.name : '--'}</Descriptions.Item>
               <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>
@@ -80,7 +101,7 @@ const SpuDetail = () => {
           </ProCard>
         </div>
         <div style={{maxWidth: 1220, margin: 'auto'}}>
-          <PartsList spuId={data.spuId} />
+          <PartsList spuId={data.spuId} category={category} />
         </div>
       </Card>
     </>

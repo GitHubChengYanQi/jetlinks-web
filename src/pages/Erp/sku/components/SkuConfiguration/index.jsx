@@ -3,32 +3,46 @@ import {AutoComplete, Button, Input, Space} from 'antd';
 import {useSetState} from 'ahooks';
 import {DeleteOutlined} from '@ant-design/icons';
 
-const SkuConfiguration = ({value, onChange, details}) => {
+const SkuConfiguration = ({value, onChange, category, details}) => {
 
   const [datas, setDatas] = useSetState({data: value || []});
-  onChange(datas.data);
 
   const [visible, setVisible] = useState(-1);
 
   const optionsValue = (items) => {
-    if (!(details && details.tree))
-      return [];
 
-    const values = details.tree.filter((item) => {
-      return item.k === items.label;
-    });
-    if (values && values.length > 0) {
-      return details.tree && details.tree.filter((item) => {
+    if (details && details.tree) {
+      const values = details.tree.filter((item) => {
         return item.k === items.label;
-      })[0].v.map((item) => {
-        return {
-          label: item.name,
-          value: item.name,
-        };
       });
+      if (values && values.length > 0) {
+        return details.tree && details.tree.filter((item) => {
+          return item.k === items.label;
+        })[0].v.map((item) => {
+          return {
+            label: item.name,
+            value: item.name,
+          };
+        });
+      } else {
+        return [];
+      }
+    } else if (category) {
+      const values = category.filter((item) => {
+        return item.attribute && (item.attribute.attribute === items.label);
+      });
+      if (values && values.length > 0) {
+        return values[0].value.map((item) => {
+          return {
+            label: item.attributeValues,
+            value: item.attributeValues,
+          };
+        });
+      }
     } else {
       return [];
     }
+
   };
 
   return <>
@@ -56,58 +70,73 @@ const SkuConfiguration = ({value, onChange, details}) => {
                 filterOption={(inputValue, option) =>
                   option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }
-                options={[
-                  {
-                    label: '材质',
-                    value: '材质',
-                    disabled: datas.data.filter((item) => {
-                      return item.label === '材质';
-                    }).length > 0
-                  },
-                  {
-                    label: '长',
-                    value: '长',
-                    disabled: datas.data.filter((item) => {
-                      return item.label === '长';
-                    }).length > 0
-                  },
-                  {
-                    label: '宽',
-                    value: '宽',
-                    disabled: datas.data.filter((item) => {
-                      return item.label === '宽';
-                    }).length > 0
-                  },
-                  {
-                    label: '高',
-                    value: '高',
-                    disabled: datas.data.filter((item) => {
-                      return item.label === '高';
-                    }).length > 0
-                  },
-                  {
-                    label: '重量',
-                    value: '重量',
-                    disabled: datas.data.filter((item) => {
-                      return item.label === '重量';
-                    }).length > 0
-                  },
-                  {
-                    label: '体积',
-                    value: '体积',
-                    disabled: datas.data.filter((item) => {
-                      return item.label === '体积';
-                    }).length > 0
-                  },
-                ]}
+                options={
+                  category
+                    ?
+                    category.map((item) => {
+                      const attribute = item.attribute && item.attribute.attribute;
+                      return {
+                        label: attribute,
+                        value: attribute,
+                        disabled: datas.data.filter((item) => {
+                          return item.label === attribute;
+                        }).length > 0
+                      };
+                    })
+                    : [
+                      {
+                        label: '材质',
+                        value: '材质',
+                        disabled: datas.data.filter((item) => {
+                          return item.label === '材质';
+                        }).length > 0
+                      },
+                      {
+                        label: '长',
+                        value: '长',
+                        disabled: datas.data.filter((item) => {
+                          return item.label === '长';
+                        }).length > 0
+                      },
+                      {
+                        label: '宽',
+                        value: '宽',
+                        disabled: datas.data.filter((item) => {
+                          return item.label === '宽';
+                        }).length > 0
+                      },
+                      {
+                        label: '高',
+                        value: '高',
+                        disabled: datas.data.filter((item) => {
+                          return item.label === '高';
+                        }).length > 0
+                      },
+                      {
+                        label: '重量',
+                        value: '重量',
+                        disabled: datas.data.filter((item) => {
+                          return item.label === '重量';
+                        }).length > 0
+                      },
+                      {
+                        label: '体积',
+                        value: '体积',
+                        disabled: datas.data.filter((item) => {
+                          return item.label === '体积';
+                        }).length > 0
+                      },
+                    ]}
                 onChange={(value) => {
                   if (value) {
                     const array = datas.data;
                     array[index] = {...array[index], label: value};
+                    onChange(array);
                     setDatas({data: array});
                   } else {
                     const array = datas.data;
                     array[index] = {label: null, value: null};
+                    onChange(array);
                     setDatas({data: array});
                   }
                 }}
@@ -117,6 +146,7 @@ const SkuConfiguration = ({value, onChange, details}) => {
 
               <Button type="link" hidden={visible === -1 || visible !== index} style={{padding: 0}} onClick={() => {
                 datas.data.splice(index, 1);
+                onChange(datas.data);
                 setDatas({data: datas.data});
               }}>
                 <DeleteOutlined />
@@ -133,6 +163,7 @@ const SkuConfiguration = ({value, onChange, details}) => {
                 onChange={(value) => {
                   const array = datas.data;
                   array[index] = {...array[index], value};
+                  onChange(array);
                   setDatas({data: array});
                 }}
               >

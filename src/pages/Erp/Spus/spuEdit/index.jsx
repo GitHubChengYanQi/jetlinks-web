@@ -5,22 +5,17 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useImperativeHandle, useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {
   Col,
   notification,
   Row,
-  Spin,
 } from 'antd';
 import ProCard from '@ant-design/pro-card';
-import {createAsyncFormActions, createFormActions, FormEffectHooks,} from '@formily/antd';
+import {createFormActions,} from '@formily/antd';
 import Form from '@/components/Form';
-import {spuDetail, spuAdd, spuEdit, spuClassificationListSelect} from '../spuUrl';
+import {spuDetail, spuAdd, spuEdit} from '../spuUrl';
 import * as SysField from '../spuField';
-import {request, useRequest} from '@/util/Request';
-import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
-import {spuClassificationList} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
-import {useBoolean} from 'ahooks';
 
 const {FormItem} = Form;
 
@@ -34,14 +29,9 @@ const formActionsPublic = createFormActions();
 
 const SpuEdit = ({...props}, ref) => {
 
+  const {value,...other} = props;
+
   const formRef = useRef();
-
-
-  const {onFieldValueChange$} = FormEffectHooks;
-
-  const [attribute, setAttribute] = useState();
-
-  const [spus, setSpus] = useState([]);
 
   const openNotificationWithIcon = type => {
     notification[type]({
@@ -49,64 +39,23 @@ const SpuEdit = ({...props}, ref) => {
     });
   };
 
-  const {loading, run} = useRequest(categoryDetail, {
-    manual: true, onSuccess: (res) => {
-      setAttribute(res.categoryRequests);
-    }
-  });
-
-  const {loading: spuClassLoading, run: spuClass} = useRequest(spuClassificationListSelect, {
-    manual: true,
-    onSuccess: (res) => {
-      setSpus(res);
-    }
-  });
-
   useImperativeHandle(ref, () => ({
     formRef,
   }));
-
-  const [details, setDetails] = useState();
-
 
 
   return (
     <div style={{padding: 16}}>
       <Form
         NoButton={false}
-        {...props}
+        {...other}
+        value={value && value.spuId}
         ref={formRef}
         api={ApiConfig}
         formActions={formActionsPublic}
         fieldKey="spuId"
-        details={(value) => {
-          setDetails(value);
-        }}
-        effects={({setFieldState}) => {
-          onFieldValueChange$('categoryId').subscribe(({value}) => {
-            if (value !== undefined && value !== '0') {
-              run({
-                data: {
-                  categoryId: value
-                }
-              });
-            }
-          });
-
-          onFieldValueChange$('spuClass').subscribe(async ({value}) => {
-            if (value) {
-              spuClass({
-                data: {
-                  spuClassificationId: value,
-                  type: 2,
-                }
-              });
-            }
-          });
-        }}
         onSuccess={() => {
           openNotificationWithIcon('success');
-          // history.goBack();
           props.onSuccess();
         }}
         onSubmit={(value) => {
@@ -117,23 +66,13 @@ const SpuEdit = ({...props}, ref) => {
           <Col span={12}>
             <ProCard title="基础信息" className="h2Card" headerBordered>
               <FormItem label="配置" name="categoryId" component={SysField.CategoryId} required />
-              <FormItem label="名字" name="name" component={SysField.Name} required />
               <FormItem
                 label="分类"
-                name="spuClass"
+                name="spuClassificationId"
                 component={SysField.SpuClass}
-                defaultParams={{data: {isNotproduct: 1}}}
-                value={details && details.spuClassificationResult && details.spuClassificationResult.pid}
                 required />
-              <FormItem
-                label="产品"
-                name="spuClassification"
-                component={SysField.Spu}
-                value={{name:details && details.spuClassificationResult && details.spuClassificationResult.name,id:details && details.spuClassificationId}}
-                required
-                options={spus}
-              />
-              <FormItem label="单位" name="unitId" value={details && details.unitId} component={SysField.UnitId} required />
+              <FormItem label="名字" name="name" component={SysField.Name} required />
+              <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
               <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
             </ProCard>
           </Col>
@@ -148,14 +87,6 @@ const SpuEdit = ({...props}, ref) => {
             </ProCard>
           </Col>
         </Row>
-
-
-        <ProCard title="属性信息" className="h2Card" headerBordered>
-          {loading ?
-            <div style={{textAlign: 'center'}}><Spin size="large" /></div>
-            :
-            <FormItem name="spuAttributes" component={SysField.Atts} spuId={props.value} attribute={attribute} />}
-        </ProCard>
       </Form>
     </div>
   );

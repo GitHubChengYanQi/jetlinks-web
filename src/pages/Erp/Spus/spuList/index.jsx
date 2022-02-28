@@ -136,8 +136,7 @@ const SpuList = () => {
           return (
             <>
               <EditButton onClick={() => {
-                // history.push(`/SPU/spu/add?id=${record.spuId}`);
-                ref.current.open(record.spuId);
+                ref.current.open(record);
               }} />
               <DelButton api={spuDelete} value={record.spuId} onSuccess={() => {
                 tableRef.current.refresh();

@@ -89,6 +89,7 @@ const CreateOrder = ({...props}) => {
 
         value = {
           ...value,
+          type:1,
           paymentParam: {
             detailParams: value.paymentDetail,
             payMethod: value.payMethod,
@@ -199,6 +200,7 @@ const CreateOrder = ({...props}) => {
                       label="公司名称"
                       placeholder="请选择甲方公司"
                       name="buyerId"
+                      dataParams={{status:99}}
                       component={CustomerSysField.Customer}
                       required
                     />

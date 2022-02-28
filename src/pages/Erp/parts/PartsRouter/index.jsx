@@ -10,13 +10,12 @@ import React, {lazy} from 'react';
 export const PartsRouter = [
   {
     path: '/parts',
-    name: '清单管理',
     component: lazy(() => import('../PartsList')),
     fallback: <div>loading...</div>,
     exact: true,
   },{
-    path: '/parts/:id',
-    component: lazy(() => import('../PartsList')),
+    path: '/parts/show',
+    component: lazy(() => import('../components/ShowBOM/index')),
     fallback: <div>loading...</div>,
     exact: true,
   }

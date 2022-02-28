@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
+import {Space} from 'antd';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
-import {Space} from 'antd';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 

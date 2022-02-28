@@ -11,6 +11,7 @@ import {QuestionCircleOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
 import {spuClassificationDetail, spuClassificationAdd, spuClassificationEdit} from '../spuClassificationUrl';
 import * as SysField from '../spuClassificationField';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -19,6 +20,8 @@ const ApiConfig = {
   add: spuClassificationAdd,
   save: spuClassificationEdit
 };
+
+const formActionsPublic = createFormActions();
 
 const SpuClassificationEdit = ({...props}) => {
 
@@ -31,6 +34,7 @@ const SpuClassificationEdit = ({...props}) => {
       {...other}
       ref={formRef}
       api={ApiConfig}
+      formActions={formActionsPublic}
       fieldKey="spuClassificationId"
       onSubmit={(value) => {
         return {...value, type: type ? 1 : 2};

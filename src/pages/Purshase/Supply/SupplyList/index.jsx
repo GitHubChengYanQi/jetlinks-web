@@ -6,13 +6,12 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Col, Row, Space, Table as AntTable, Upload} from 'antd';
+import {Avatar, Button, Col, Row, Space, Table as AntTable} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {config, useHistory} from 'ice';
 import {SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {useBoolean} from 'ahooks';
-import cookie from 'js-cookie';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
@@ -24,7 +23,6 @@ import {
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
-import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import Icon from '@/components/Icon';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
@@ -60,15 +58,6 @@ const SupplyList = (props) => {
   const actions = () => {
     return (
       <>
-        <Import
-          url={`${baseURI}Excel/importSupplierBind`}
-          title='导入供应商'
-          module='customer'
-          onOk={() => {
-            tableRef.current.submit();
-          }}
-          // templateUrl={`${baseURI}api/SkuExcel`}
-        />
         <AddButton onClick={() => {
           history.push('/purchase/supply/add');
         }} />
@@ -165,7 +154,18 @@ const SupplyList = (props) => {
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
-        tableKey={supply ? 'supply' : 'customer'}
+        actionButton={<>
+          <Import
+            url={`${baseURI}Excel/importSupplierBind`}
+            title="导入供应商"
+            module="customer"
+            onOk={() => {
+              tableRef.current.submit();
+            }}
+            // templateUrl={`${baseURI}api/SkuExcel`}
+          />
+        </>}
+        tableKey="supply"
         sortList={(value) => {
           setSorts(value);
         }}
@@ -236,7 +236,7 @@ const SupplyList = (props) => {
             }
 
           }} />
-        <Column key={4} title='供应商级别' width={120} align="center" render={(text, record) => {
+        <Column key={4} title="供应商级别" width={120} align="center" render={(text, record) => {
           const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
           return (
             <CustomerLevel

@@ -9,6 +9,7 @@ import React, {useRef} from 'react';
 import Form from '@/components/Form';
 import {itemAttributeDetail, itemAttributeAdd, itemAttributeEdit} from '../itemAttributeUrl';
 import * as SysField from '../itemAttributeField';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -17,6 +18,8 @@ const ApiConfig = {
   add: itemAttributeAdd,
   save: itemAttributeEdit
 };
+
+const formActionsPublic = createFormActions();
 
 const ItemAttributeEdit = ({...props}) => {
 
@@ -28,6 +31,7 @@ const ItemAttributeEdit = ({...props}) => {
     <Form
       {...other}
       ref={formRef}
+      formActions={formActionsPublic}
       api={ApiConfig}
       fieldKey="attributeId"
       onSubmit={(value)=>{

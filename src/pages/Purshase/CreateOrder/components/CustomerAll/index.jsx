@@ -9,7 +9,6 @@ import ContactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import PhoneEdit from '@/pages/Crm/phone/phoneEdit';
 import {useRequest} from '@/util/Request';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
-import BankList from '@/pages/Purshase/bank/bankList';
 import BankEdit from '@/pages/Purshase/bank/bankEdit';
 import InvoiceEdit from '@/pages/Crm/invoice/invoiceEdit';
 
@@ -19,13 +18,13 @@ export const Customer = (props) => {
 
 export const Adress = (props) => {
 
-  const {customerId, options, ...other} = props;
+  const {customerId, options, defaultValue, ...other} = props;
 
   const [option, setOption] = useState();
 
   useEffect(() => {
     setOption(options || []);
-    props.onChange(null);
+    props.onChange(defaultValue || null);
   }, [customerId]);
 
   const ref = useRef();
@@ -78,13 +77,13 @@ export const Adress = (props) => {
 
 export const Contacts = (props) => {
 
-  const {customerId, options, ...other} = props;
+  const {customerId, options, defaultValue, ...other} = props;
 
   const [option, setOption] = useState();
 
   useEffect(() => {
     setOption(options || []);
-    props.onChange(null);
+    props.onChange(defaultValue || null);
   }, [customerId]);
 
   const ref = useRef();
@@ -136,13 +135,13 @@ export const Contacts = (props) => {
 
 export const Phone = (props) => {
 
-  const {contactsId, options, ...other} = props;
+  const {contactsId, options, defaultValue, ...other} = props;
 
   const [option, setOption] = useState();
 
   useEffect(() => {
     setOption(options || []);
-    props.onChange(null);
+    props.onChange(defaultValue || null);
   }, [contactsId]);
 
   const ref = useRef();
@@ -201,12 +200,12 @@ export const Phone = (props) => {
 
 export const BankAccount = (props) => {
 
-  const {customerId, bankId, options, ...other} = props;
+  const {customerId, bankId, options, defaultValue, ...other} = props;
 
   const [option, setOption] = useState();
 
   useEffect(() => {
-    if (customerId && options){
+    if (customerId && options) {
       let array = options;
       if (bankId) {
         array = options.filter((item) => {
@@ -214,7 +213,7 @@ export const BankAccount = (props) => {
         });
       }
       setOption(array || []);
-      props.onChange(null);
+      props.onChange(defaultValue || null);
     }
   }, [customerId, bankId]);
 
@@ -252,7 +251,7 @@ export const BankAccount = (props) => {
       </>}
     >
 
-      <InvoiceEdit submitRef={submitRef} value={false} NoButton={false} customerId={customerId} onSuccess={()=>{
+      <InvoiceEdit submitRef={submitRef} value={false} NoButton={false} customerId={customerId} onSuccess={() => {
         ref.current.close();
       }} />
 
@@ -262,7 +261,11 @@ export const BankAccount = (props) => {
 
 export const Bank = (props) => {
 
-  const {customerId, ...other} = props;
+  const {customerId, defaultValue, ...other} = props;
+
+  useEffect(() => {
+    props.onChange(defaultValue || null);
+  }, [customerId]);
 
   const {loading, data, refresh} = useRequest(bankListSelect);
 

@@ -1,63 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Divider, Input, Radio, Table} from 'antd';
-import {useRequest} from '@/util/Request';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import model from '../../../../../../.ice/auth/model';
-import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
-
-const {Column} = Table;
+import React, {useState} from 'react';
+import {Button, Checkbox} from 'antd';
 
 
-const Attribute = ({attribute, spuId, ...props}) => {
+const Attribute = ({spuAttribute,attribute, spuId, ...props}) => {
   const {onChange} = props;
 
-  const [array, setArray] = useState([]);
-
-  const [model, setModel] = useState([]);
-
-  const [state, setState] = useState([]);
-
-  const {run} = useRequest(spuDetail, {
-    manual: true,
-    onSuccess: (res) => {
-      if (res.attribute) {
-        const attribute = JSON.parse(res.attribute);
-        if (attribute) {
-          setArray(attribute);
-        }
-      }
-    }
-  });
-
-  const {run:sku} = useRequest(skuList, {
-    manual: true,
-    onSuccess: (res) => {
-      const model = res.map((items)=>{
-        return items.skuName;
-      });
-      const state = res.map((items)=>{
-        return items.isBan;
-      });
-      setModel(model);
-      setState(state);
-    }
-  });
-
-  useEffect(() => {
-    if (spuId) {
-      run({
-        data: {
-          spuId
-        }
-      });
-
-      sku({
-        data: {
-          spuId
-        }
-      });
-    }
-  }, []);
+  const [array, setArray] = useState(spuAttribute || []);
 
   const dataSource = [];
   const title = [];
@@ -84,8 +32,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
           return {
             key:index,
             attributeValues:[items],
-            skuName:model[index],
-            isBan:state[index],
           };
         });
         onChange({spuRequests: values, values:value});
@@ -115,8 +61,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
         return {
           key:index,
           attributeValues:items,
-          skuName:model[index],
-          isBan:state[index],
         };
       });
 
@@ -137,7 +81,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
 
   return (
     <>
-      <Divider orientation="center">配置属性</Divider>
       {attribute && attribute.map((items, index) => {
 
         const values = items.value && items.value.map((items) => {
@@ -191,47 +134,6 @@ const Attribute = ({attribute, spuId, ...props}) => {
           </div>
         );
       })}
-      {/*<Divider orientation="center">属性列表</Divider>*/}
-
-      {/*<div style={{overflow: 'auto'}}>*/}
-      {/*  <Table*/}
-      {/*    pagination={false}*/}
-      {/*    dataSource={attributes(dataSource)}*/}
-      {/*  >*/}
-      {/*    {title && title.map((items, index) => {*/}
-      {/*      return (*/}
-      {/*        <Column*/}
-      {/*          key={index}*/}
-      {/*          title={items && items.attribute}*/}
-      {/*          render={(value, record) => {*/}
-      {/*            return record.attributeValues && record.attributeValues[index].attributeValues;*/}
-      {/*          }}*/}
-      {/*        />*/}
-      {/*      );*/}
-      {/*    })}*/}
-      {/*    <Column title="型号(零件号)" dataIndex='skuName' width={200} render={(value, record, index) => {*/}
-      {/*      return (*/}
-      {/*        <Input placeholder="输入型号(零件号)" value={value} onChange={(value) => {*/}
-      {/*          model[index] = value.target.value;*/}
-      {/*          setModel([...model]);*/}
-      {/*        }} />*/}
-      {/*      );*/}
-      {/*    }} />*/}
-      {/*    <Column title="操作" dataIndex='isBan' render={(value, record, index) => {*/}
-      {/*      return (*/}
-      {/*        <Radio.Group value={value || '0'} onChange={(value) => {*/}
-      {/*          state[index] = value.target.value;*/}
-      {/*          setState([...state]);*/}
-      {/*        }}>*/}
-      {/*          <Radio value='0'>启用</Radio>*/}
-      {/*          <Radio value='1'>禁用</Radio>*/}
-      {/*        </Radio.Group>*/}
-      {/*      );*/}
-      {/*    }} />*/}
-
-
-      {/*  </Table>*/}
-      {/*</div>*/}
     </>
   );
 

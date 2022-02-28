@@ -28,7 +28,6 @@ import BadgeState from '@/pages/Crm/customer/components/BadgeState';
 import CustomerLevel from '@/pages/Crm/customer/components/CustomerLevel';
 import Icon from '@/components/Icon';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
-import UpdateSort from '@/components/Table/components/UpdateSort';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -39,8 +38,6 @@ const CustomerTable = (props) => {
 
   const {status, state, level, choose, supply, ...other} = props;
   const history = useHistory();
-
-  const [sorts, setSorts] = useState([]);
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -59,18 +56,6 @@ const CustomerTable = (props) => {
   const actions = () => {
     return (
       <>
-        <div style={{display: 'inline-block'}}>
-          <Upload
-            action={`${baseURI}Excel/crm/excel/importAdress`}
-            headers={
-              {Authorization: cookie.get('tianpeng-token')}
-            }
-            name="file"
-            fileList={null}
-          >
-            <Button icon={<Icon type="icon-daoru" />}>{supply ? '导入供应商' : '导入客户'}</Button>
-          </Upload>
-        </div>
         <AddButton onClick={() => {
           history.push('/purchase/supply/add');
         }} />
@@ -142,14 +127,6 @@ const CustomerTable = (props) => {
      * 批量删除例子，根据实际情况修改接口地址
      */
     return (<Space>
-      <UpdateSort
-        disabled={sorts.length === 0}
-        type="customer"
-        sorts={sorts}
-        success={() => {
-          tableRef.current.submit();
-          setSorts([]);
-        }} />
       <DelButton api={{
         ...customerBatchDelete
       }} onSuccess={() => {
@@ -167,10 +144,19 @@ const CustomerTable = (props) => {
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
+        actionButton={<>
+          <Upload
+            action={`${baseURI}Excel/crm/excel/importAdress`}
+            headers={
+              {Authorization: cookie.get('tianpeng-token')}
+            }
+            name="file"
+            fileList={null}
+          >
+            <Button icon={<Icon type="icon-daoru" />}>导入客户</Button>
+          </Upload>
+        </>}
         tableKey={supply ? 'supply' : 'customer'}
-        sortList={(value) => {
-          setSorts(value);
-        }}
         isModal={false}
         ref={tableRef}
         footer={footer}

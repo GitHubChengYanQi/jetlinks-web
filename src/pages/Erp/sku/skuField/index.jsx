@@ -5,10 +5,10 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {
   Input,
-  Radio, AutoComplete, Spin, Space, Select as AntdSelect, Button, Popover
+  Radio, AutoComplete, Spin, Space, Popover
 } from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
 import Cascader from '@/components/Cascader';

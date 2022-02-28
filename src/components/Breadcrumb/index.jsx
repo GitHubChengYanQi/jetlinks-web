@@ -62,7 +62,7 @@ const Breadcrumb = ({title}) => {
               }}>{userInfo.abbreviation || 'Home'}</a>
             </AntBreadcrumb.Item>;
           }
-          return (<AntBreadcrumb.Item key={index}>
+          return (item.name && <AntBreadcrumb.Item key={index}>
             <a onClick={() => {
               history.push(item.path);
             }}>{item.name}</a>

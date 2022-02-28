@@ -8,6 +8,7 @@ const CustomerSelect = (props) => {
   const {
     value,
     placeholder,
+    dataParams,
     onChange = () => {
     },
     style,
@@ -18,7 +19,7 @@ const CustomerSelect = (props) => {
 
   const [name, setName] = useState();
 
-  const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST'}, {
+  const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST',data:{...dataParams}}, {
     debounceInterval: 300,
   });
 
@@ -67,7 +68,8 @@ const CustomerSelect = (props) => {
         run({
           data: {
             customerName: value,
-            supply
+            supply,
+            ...dataParams
           }
         });
       }}

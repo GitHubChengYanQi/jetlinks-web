@@ -188,9 +188,6 @@ const StockTable = (props) => {
                 });
               }}
             >
-              <Tabs.TabPane tab="产品" key="className">
-                <DataList loading={loading} data={data} type="className" />
-              </Tabs.TabPane>
               <Tabs.TabPane tab="型号" key="spu">
                 <DataList loading={loading} data={data} type="spu" />
               </Tabs.TabPane>

@@ -29,6 +29,12 @@ export const partsDetail = {
   rowKey:'partsId'
 };
 
+export const partsGetBom = {
+  url: '/parts/getBOM',
+  method: 'GET',
+  rowKey:'partsId'
+};
+
 export const partsList = {
   url: '/parts/list',
   method: 'POST',

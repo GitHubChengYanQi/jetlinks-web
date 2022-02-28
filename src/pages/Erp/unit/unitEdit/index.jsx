@@ -10,6 +10,7 @@ import {Input} from 'antd';
 import Form from '@/components/Form';
 import {unitDetail, unitAdd, unitEdit} from '../unitUrl';
 import * as SysField from '../unitField';
+import {createFormActions} from '@formily/antd';
 
 const {FormItem} = Form;
 
@@ -19,6 +20,8 @@ const ApiConfig = {
   save: unitEdit
 };
 
+const formActionsPublic = createFormActions();
+
 const UnitEdit = ({...props}) => {
 
   const formRef = useRef();
@@ -27,6 +30,7 @@ const UnitEdit = ({...props}) => {
     <Form
       {...props}
       ref={formRef}
+      formActions={formActionsPublic}
       api={ApiConfig}
       fieldKey="unitId"
     >
