@@ -36,7 +36,6 @@ const PartsList = ({spuId, type = 1,category}) => {
   const refOldList = useRef();
 
   const action = () => {
-
     return (
       <AddButton onClick={() => {
         refAdd.current.open(false);
@@ -71,7 +70,6 @@ const PartsList = ({spuId, type = 1,category}) => {
 
   const table = () => {
     return <Table
-      listHeader={spuId && false}
       headStyle={{display:spuId && 'none'}}
       title={<Breadcrumb title="物料清单" />}
       actions={action()}

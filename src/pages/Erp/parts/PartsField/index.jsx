@@ -79,39 +79,6 @@ export const Attributes = (props) => {
   return (<SkuConfiguration {...props} />);
 };
 
-// export const Attributes = (props) => {
-//   const {spuId, onChange, value} = props;
-//
-//   const [sku, setSku] = useState();
-//
-//   const {run: spu} = useRequest(spuDetail, {
-//     manual: true,
-//     onSuccess: (res) => {
-//       if (res.sku) {
-//         setSku(res.sku);
-//       }
-//     }
-//   });
-//
-//   useEffect(() => {
-//     if (spuId) {
-//       spu({
-//         data: {
-//           spuId,
-//         }
-//       });
-//     }
-//   }, [spuId]);
-//
-//   return (
-//     <Card bodyStyle={{padding: 0}}>
-//       <Attribute sku={sku} onChange={(value) => {
-//         onChange(value);
-//       }} value={value} />
-//     </Card>
-//   );
-// };
-
 export const Spu = (props) => {
 
   useEffect(() => {

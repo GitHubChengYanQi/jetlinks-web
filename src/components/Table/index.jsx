@@ -220,7 +220,7 @@ const TableWarp = ({
           {showCard}
           <Card
             bordered={bordered || false}
-            title={(listHeader && !headStyle) ? actions : null}
+            title={(listHeader && headStyle.display !== 'none') ? actions : null}
             headStyle={headStyle}
             bodyStyle={bodyStyle}
             extra={<Space>
