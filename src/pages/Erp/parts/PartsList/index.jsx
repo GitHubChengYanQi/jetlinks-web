@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Dropdown, Menu, Space} from 'antd';
+import {Badge, Button, Dropdown, Menu, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {DownOutlined} from '@ant-design/icons';
 import {partsList, partsRelease} from '../PartsUrl';
@@ -136,9 +136,9 @@ const PartsList = ({spuId, value, type = 1, category}) => {
       <Column title="类型" key={4} dataIndex="type" render={(value) => {
         switch (parseInt(value, 0)) {
           case 1:
-            return '设计BOM';
+            return <Badge color="green" text="设计BOM" />;
           case 2:
-            return '生产BOM';
+            return <Badge color="green" text="生产BOM" />;
           default:
             break;
         }
@@ -158,7 +158,7 @@ const PartsList = ({spuId, value, type = 1, category}) => {
         dataIndex="partsId"
         width={200}
         render={(value, record) => {
-          return <Space>
+          return record.display === 0 ? '历史数据' : <Space>
             <>
               {record.status !== 99 ?
                 <Button type="link" onClick={() => {
@@ -169,7 +169,7 @@ const PartsList = ({spuId, value, type = 1, category}) => {
                   });
                 }}>发布</Button>
                 :
-                parseInt(record.type,0) === 1 && <Dropdown overlay={menu(record)}>
+                parseInt(record.type, 0) === 1 && <Dropdown overlay={menu(record)}>
                   <Button type="link">
                     新建生产BOM<DownOutlined />
                   </Button>
