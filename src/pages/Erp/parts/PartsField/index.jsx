@@ -15,7 +15,7 @@ import {
 } from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
-import {partsList, spuListSelect} from '../PartsUrl';
+import {partsList, partsListSelect, spuListSelect} from '../PartsUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 import {useRequest} from '@/util/Request';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
@@ -126,18 +126,12 @@ export const Pid = (props) => {
 
   const {value, onChange, getSkuId} = props;
 
-  const {loading, data, run} = useRequest(partsList, {manual: true});
+  const {loading, data, run} = useRequest(partsListSelect, {manual: true});
 
-  const options = !loading ? data && data.map((item) => {
-    return {
-      label: item.partName,
-      value: item.partsId,
-      key: item.skuId,
-    };
-  }) : [];
+  const options = !loading ? data : [];
 
   useEffect(() => {
-    run({data: {type: 1}});
+    run({data: {status:99,type:1}});
   }, []);
 
   return (<AntdSelect
@@ -155,7 +149,7 @@ export const Pid = (props) => {
     value={value}
     onChange={(value, option) => {
       onChange(value);
-      getSkuId(option.key);
+      getSkuId(option.id);
     }}
   />);
 };

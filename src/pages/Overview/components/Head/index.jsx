@@ -1,6 +1,5 @@
 import React from 'react';
-import {Avatar, Col, Empty, Row} from 'antd';
-import ProSkeleton from '@ant-design/pro-skeleton';
+import {Avatar, Col, Empty, Row, Spin} from 'antd';
 import moment from 'moment';
 import styles from '@/pages/Overview/index.module.scss';
 import {useRequest} from '@/util/Request';
@@ -96,7 +95,7 @@ const Head = () => {
   }
 
   if (loading) {
-    return (<ProSkeleton type="descriptions" />);
+    return (<Spin />);
   }
 
 

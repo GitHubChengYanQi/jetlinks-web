@@ -9,12 +9,12 @@ import React, {useRef, useState} from 'react';
 import {Badge, Button, Dropdown, Menu, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {DownOutlined} from '@ant-design/icons';
+import {createFormActions} from '@formily/antd';
 import {partsList, partsRelease} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import EditButton from '@/components/EditButton';
 import AddButton from '@/components/AddButton';
-import PartsOldList from '@/pages/Erp/parts/components/PartsOldList';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import Table from '@/components/Table';
 import * as SysField from '../PartsField';
@@ -23,7 +23,6 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
 import ShowBOM from '@/pages/Erp/parts/components/ShowBOM';
 import Drawer from '@/components/Drawer';
-import {createFormActions} from '@formily/antd';
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -38,8 +37,6 @@ const PartsList = ({spuId, value, type = 1, category}) => {
   const showRef = useRef();
 
   const [bom, setBom] = useState();
-
-  const refOldList = useRef();
 
   const {run} = useRequest(partsRelease, {
     manual: true, onSuccess: () => {
@@ -87,10 +84,10 @@ const PartsList = ({spuId, value, type = 1, category}) => {
       onClick={({key}) => {
         switch (key) {
           case '1':
-            setBom({add: true, copy: false,type:2});
+            setBom({copy: false,type:2});
             break;
           case '2':
-            setBom({add: false, copy: true,type:2});
+            setBom({copy: true,type:2});
             break;
           default:
             break;
@@ -126,33 +123,32 @@ const PartsList = ({spuId, value, type = 1, category}) => {
     >
       <Column title="物料" key={1} dataIndex="skuId" render={(value, record) => {
         return (<Button type="link" onClick={async () => {
-          // history.push(`/SPU/parts/show?id=${record.partsId}&type=${type}`);
           showRef.current.open(record.partsId);
         }}>
           <SkuResultSkuJsons skuResult={record.skuResult} />
         </Button>);
       }} />
       <Column title="名称" key={4} dataIndex="partName" />
-      <Column title="类型" key={4} dataIndex="type" render={(value) => {
+      <Column title="类型" key={5} dataIndex="type" render={(value,record) => {
         switch (parseInt(value, 0)) {
           case 1:
-            return <Badge color="green" text="设计BOM" />;
+            return <Badge color={record.display === 0 ? '#eee' : 'green'} text="设计BOM" />;
           case 2:
-            return <Badge color="blue" text="生产BOM" />;
+            return <Badge color={record.display === 0 ? '#eee' : 'blue'} text="生产BOM" />;
           default:
             break;
         }
       }} />
-      <Column title="创建时间" key={5} dataIndex="createTime" render={(value, record) => {
+      <Column title="创建时间" key={6} dataIndex="createTime" render={(value, record) => {
         return !record.partsDetailId && <>{value}</>;
       }} />
-      <Column title="创建人" key={6} dataIndex="userResult" render={(value) => {
+      <Column title="创建人" key={7} dataIndex="userResult" render={(value) => {
         return <>{value && value.name}</>;
       }} />
 
       <Column
         title="操作"
-        key={7}
+        key={99}
         fixed="right"
         align="center"
         dataIndex="partsId"
@@ -176,12 +172,9 @@ const PartsList = ({spuId, value, type = 1, category}) => {
                 </Dropdown>
               }
               <EditButton onClick={() => {
-                setBom({type:record.type});
+                setBom({type:record.type,copy:true});
                 refAdd.current.open(value);
               }} />
-              {/*<Button icon={<ClockCircleOutlined />} type="link" onClick={() => {*/}
-              {/*  refOldList.current.open(record.skuId);*/}
-              {/*}} />*/}
             </>
           </Space>;
         }} />
@@ -199,7 +192,7 @@ const PartsList = ({spuId, value, type = 1, category}) => {
       }
       <Modal
         width={900}
-        type={bom ? 2 : 1}
+        type={type}
         title="清单"
         bom={bom}
         category={category}
@@ -221,10 +214,6 @@ const PartsList = ({spuId, value, type = 1, category}) => {
           }}>保存</Button>
         </>}
       />
-
-      <Modal width={1200} title="清单" type={type} component={PartsOldList} onSuccess={() => {
-        refOldList.current.close();
-      }} ref={refOldList} spuId={spuId} />
 
       <Drawer
         extra

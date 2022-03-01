@@ -55,7 +55,7 @@ const SkuTable = (props) => {
 
   useEffect(() => {
     if (spuClass) {
-      tableRef.current.formActions.setFieldValue('spuClass', spuClass ? spuClass[0] : null);
+      tableRef.current.formActions.setFieldValue('spuClass', spuClass[0]);
       tableRef.current.submit();
     }
   }, [spuClass]);

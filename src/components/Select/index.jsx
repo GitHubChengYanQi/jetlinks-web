@@ -70,7 +70,7 @@ const Select = (props) => {
         <AntSelect
           {...other}
           bordered={border}
-          options={options || data.map((items) => {
+          options={options || data && data.map((items) => {
             return {
               label: items.label || items.title,
               value: items.value

@@ -1,14 +1,13 @@
 import React from 'react';
-import {Divider, Space, Statistic} from 'antd';
+import {Divider, Space, Spin, Statistic} from 'antd';
 import {useRequest} from '@/util/Request';
-import ProSkeleton from '@ant-design/pro-skeleton';
 
 const BusinessNumber = () => {
 
-  const {loading,data} = useRequest({url: '/crmBusiness/listAll', method: 'POST'});
+  const {loading, data} = useRequest({url: '/crmBusiness/listAll', method: 'POST'});
 
-  if (loading){
-    return (<ProSkeleton type="descriptions" />);
+  if (loading) {
+    return (<Spin />);
   }
 
   return (

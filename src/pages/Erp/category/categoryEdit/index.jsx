@@ -34,7 +34,7 @@ const CategoryEdit = ({...props}) => {
     >
       <FormItem label="上级配置" name="pid" component={SysField.Pid} required />
       <FormItem label="配置名称" name="categoryName" component={SysField.CategoryName} required />
-      <FormItem label="排序" name="sort" component={SysField.Scort} required />
+      <FormItem label="排序" name="sort" component={SysField.Scort} />
     </Form>
   );
 };

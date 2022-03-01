@@ -209,7 +209,7 @@ export const BankAccount = (props) => {
       let array = options;
       if (bankId) {
         array = options.filter((item) => {
-          return item.bankId === bankId;
+          return item.id === bankId;
         });
       }
       setOption(array || []);

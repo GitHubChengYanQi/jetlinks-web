@@ -134,20 +134,18 @@ const StorehousePositionsList = (props) => {
               return (
                 <>
                   {
-                    !record.children && <Space>
-                      <Button type="link" onClick={() => {
-                        bindRef.current.open(record.value);
-                      }}>绑定物料</Button>
-                      <Button type="link" onClick={async () => {
-                        await getDeptRun({
-                          params: {
-                            positionId: record.value
-                          }
-                        });
-                        setDeptVisible(record.value);
-                      }}>设置权限</Button>
-                    </Space>
+                    !record.children && <Button type="link" onClick={() => {
+                      bindRef.current.open(record.value);
+                    }}>绑定物料</Button>
                   }
+                  <Button type="link" onClick={async () => {
+                    await getDeptRun({
+                      params: {
+                        positionId: record.value
+                      }
+                    });
+                    setDeptVisible(record.value);
+                  }}>设置权限</Button>
                   <EditButton onClick={() => {
                     ref.current.open(record.value);
                   }} />
@@ -157,7 +155,7 @@ const StorehousePositionsList = (props) => {
                 </>
               );
             }
-          }} width={100} />
+          }} />
         </AntTable>
       </Card>
       <Drawer width={800} title="编辑" component={StorehousePositionsEdit} onSuccess={() => {

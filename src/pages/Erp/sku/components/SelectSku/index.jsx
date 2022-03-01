@@ -1,7 +1,7 @@
 import {Popover, Select, Space, Spin} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {useRequest} from '@/util/Request';
-import {skuList} from '@/pages/Erp/sku/skuUrl';
+import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
 import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 
@@ -22,7 +22,7 @@ const SelectSku = ({
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
 
-  const [visible,setVisible] = useState();
+  const [visible, setVisible] = useState();
 
   const object = (items) => {
     return {
@@ -37,24 +37,38 @@ const SelectSku = ({
   };
 
   const {loading, data, run} = useRequest({...skuList, data: {skuIds: ids, ...params}}, {
-    debounceInterval: 1000, onSuccess: (res) => {
-      if (res.length === 1) {
-        onChange(spu ? res[0].spuId : res[0].skuId);
-        setChange(object(res[0]).label);
-        setSpuClass(res[0].spuResult.spuClassificationResult.pid);
-      }
+    debounceInterval: 1000,
+  });
+
+  const {run: detail} = useRequest(skuDetail, {
+    manual: true, onSuccess: (res) => {
+      onChange(spu ? res.spuId : res.skuId);
+      setChange(object(res).label);
+      setSpuClass(res.spuResult.spuClassificationId);
     }
   });
+
+  useEffect(() => {
+    if (value) {
+      detail({
+        data: {
+          skuId: value
+        }
+      });
+    } else {
+      setChange(null);
+      setSpuClass(null);
+    }
+  }, [value]);
 
   useEffect(() => {
     run({
       data: {
         skuIds: ids,
-        skuId: value,
         ...params
       }
     });
-  }, [params, value, ids && ids.length]);
+  }, [params, ids && ids.length]);
 
 
   const options = !loading ? data && data.map((items) => {
@@ -139,7 +153,12 @@ const SelectSku = ({
 
   return (
     <>
-      <Popover visible={disabled ? false : visible} placement="bottomLeft" content={content} trigger="click" onVisibleChange={setVisible}>
+      <Popover
+        visible={disabled ? false : visible}
+        placement="bottomLeft"
+        content={content}
+        trigger="click"
+        onVisibleChange={setVisible}>
         <Select
           disabled={disabled}
           placeholder={placeholder}

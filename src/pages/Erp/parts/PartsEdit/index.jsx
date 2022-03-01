@@ -7,7 +7,7 @@
 
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Button, Select} from 'antd';
-import {createFormActions, FieldList} from '@formily/antd';
+import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import * as SysField from '../PartsField';
@@ -23,6 +23,8 @@ const formActionsPublic = createFormActions();
 const PartsEdit = ({...props}, ref) => {
 
   const {spuId, type: bomType, value, category, bom, onSuccess, sku, ...other} = props;
+
+  const [bomAction, setBomAction] = useState(bom || {});
 
   const ApiConfig = {
     view: partsDetail,
@@ -58,15 +60,36 @@ const PartsEdit = ({...props}, ref) => {
           onSuccess={() => {
             onSuccess();
           }}
-          initialValues={bom && bom.add && {parts: [{}]}}
+          effects={({setFieldState}) => {
+            FormEffectHooks.onFieldValueChange$('parts').subscribe(({value}) => {
+              const skuIds = [];
+              value && value.map((item) => {
+                if (item) {
+                  skuIds.push(item.skuId);
+                }
+                return null;
+              });
+
+              setFieldState('parts.*.skuId', state => {
+                state.props.skuIds = skuIds;
+              });
+
+            });
+          }
+          }
+          initialValues={!bomAction.copy && {parts: [{}]}}
           onSubmit={(value) => {
-            return {skuId, ...value, type: bom && bom.type || bomType, batch: 0, status: 0};
+            return {skuId, ...value, type: bomAction.type || bomType, batch: 0, status: 0};
           }}
         >
           <ProCard
             className="h2Card"
             headerBordered
             title="基本信息"
+            extra={bomAction.type === 2 && <Button onClick={() => {
+              setBomAction({...bomAction, copy: true});
+              formRef.current.refresh();
+            }}>拷贝</Button>}
           >
             <FormItem label="清单名称" name="partName" component={SysField.PartName} required />
             {bomType === 2 && !value &&

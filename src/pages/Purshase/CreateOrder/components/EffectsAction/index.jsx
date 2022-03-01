@@ -49,7 +49,7 @@ export const customerAAction = (setFieldState) => {
           return {
             label: item.bankAccount,
             value: item.invoiceId,
-            bankId: item.bankId,
+            id: item.bankId,
           };
         });
       });
@@ -156,7 +156,7 @@ export const customerBAction = (setFieldState) => {
           return {
             label: item.bankAccount,
             value: item.invoiceId,
-            bankId: item.bankId,
+            id: item.bankId,
           };
         });
       });
