@@ -68,7 +68,9 @@
     "react-dom": "^16.14.0",
     "react-eva": "^1.1.12",
     "react-json-view": "^1.19.1",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "wangeditor": "4.7.12",
+    "wangeditor-for-react": "^1.5.4"
   },
   "devDependencies": {
     "@dnd-kit/core": "^4.0.1",
