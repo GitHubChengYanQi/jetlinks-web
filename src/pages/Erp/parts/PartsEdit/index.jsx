@@ -5,9 +5,9 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Button, Select} from 'antd';
-import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
+import {createFormActions, FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import * as SysField from '../PartsField';
@@ -19,15 +19,16 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const ApiConfig = {
-  view: partsDetail,
-  add: partsAdd,
-  save: partsEdit
-};
 
 const PartsEdit = ({...props}, ref) => {
 
   const {spuId, type: bomType, value, category, bom, onSuccess, sku, ...other} = props;
+
+  const ApiConfig = {
+    view: partsDetail,
+    add: partsAdd,
+    save: partsEdit
+  };
 
   const formRef = useRef(null);
 
@@ -59,7 +60,7 @@ const PartsEdit = ({...props}, ref) => {
           }}
           initialValues={bom && bom.add && {parts: [{}]}}
           onSubmit={(value) => {
-            return {skuId, ...value, type: bomType, batch: 0, status: 0};
+            return {skuId, ...value, type: bom && bom.type || bomType, batch: 0, status: 0};
           }}
         >
           <ProCard

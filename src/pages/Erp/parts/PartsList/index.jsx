@@ -87,10 +87,10 @@ const PartsList = ({spuId, value, type = 1, category}) => {
       onClick={({key}) => {
         switch (key) {
           case '1':
-            setBom({add: true, copy: false});
+            setBom({add: true, copy: false,type:2});
             break;
           case '2':
-            setBom({add: false, copy: true});
+            setBom({add: false, copy: true,type:2});
             break;
           default:
             break;
@@ -138,7 +138,7 @@ const PartsList = ({spuId, value, type = 1, category}) => {
           case 1:
             return <Badge color="green" text="设计BOM" />;
           case 2:
-            return <Badge color="green" text="生产BOM" />;
+            return <Badge color="blue" text="生产BOM" />;
           default:
             break;
         }
@@ -176,6 +176,7 @@ const PartsList = ({spuId, value, type = 1, category}) => {
                 </Dropdown>
               }
               <EditButton onClick={() => {
+                setBom({type:record.type});
                 refAdd.current.open(value);
               }} />
               {/*<Button icon={<ClockCircleOutlined />} type="link" onClick={() => {*/}
