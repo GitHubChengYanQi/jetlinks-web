@@ -307,7 +307,6 @@ const SkuTable = (props) => {
 
       <Modal
         width={1200}
-        type={null}
         title="清单"
         component={PartsList}
         onSuccess={() => {

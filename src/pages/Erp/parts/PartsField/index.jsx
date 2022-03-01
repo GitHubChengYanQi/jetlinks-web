@@ -68,6 +68,7 @@ export const SkuName = (props) => {
   return (<Input   {...props} />);
 };
 
+
 export const Note = (props) => {
   return (<Input.TextArea   {...props} />);
 };
