@@ -29,7 +29,7 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const PartsList = ({spuId, value, type = 1, category}) => {
+const PartsList = ({spuId, value, type = 1}) => {
 
   const refAdd = useRef();
   const formRef = useRef();
@@ -128,7 +128,6 @@ const PartsList = ({spuId, value, type = 1, category}) => {
           <SkuResultSkuJsons skuResult={record.skuResult} />
         </Button>);
       }} />
-      <Column title="名称" key={4} dataIndex="partName" />
       <Column title="类型" key={5} dataIndex="type" render={(value,record) => {
         switch (parseInt(value, 0)) {
           case 1:
@@ -195,7 +194,6 @@ const PartsList = ({spuId, value, type = 1, category}) => {
         type={type}
         title="清单"
         bom={bom}
-        category={category}
         compoentRef={formRef}
         component={PartsEdit}
         onClose={() => {

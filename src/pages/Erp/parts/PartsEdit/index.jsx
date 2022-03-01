@@ -14,6 +14,10 @@ import * as SysField from '../PartsField';
 import Form from '@/components/Form';
 import {partsDetail, partsAdd, partsEdit} from '../PartsUrl';
 import {Codings} from '@/pages/Erp/sku/skuField';
+import {request} from '@/util/Request';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
 
 const {FormItem} = Form;
 
@@ -22,7 +26,7 @@ const formActionsPublic = createFormActions();
 
 const PartsEdit = ({...props}, ref) => {
 
-  const {spuId, type: bomType, value, category, bom, onSuccess, sku, ...other} = props;
+  const {spuId, type: bomType, value, bom, onSuccess, sku, ...other} = props;
 
   const [bomAction, setBomAction] = useState(bom || {});
 
@@ -61,6 +65,7 @@ const PartsEdit = ({...props}, ref) => {
             onSuccess();
           }}
           effects={({setFieldState}) => {
+
             FormEffectHooks.onFieldValueChange$('parts').subscribe(({value}) => {
               const skuIds = [];
               value && value.map((item) => {
@@ -73,7 +78,32 @@ const PartsEdit = ({...props}, ref) => {
               setFieldState('parts.*.skuId', state => {
                 state.props.skuIds = skuIds;
               });
+            });
 
+            FormEffectHooks.onFieldValueChange$('item').subscribe(async ({value}) => {
+              if (value && value.skuId) {
+                const res = await request({...skuDetail, data: {skuId: value.skuId}});
+                const array = res && res.list && res.list.map((item) => {
+                  return {
+                    label: item.itemAttributeResult.attribute,
+                    value: item.attributeValues
+                  };
+                });
+                if (Array.isArray(array) && array.length > 0) {
+                  setFieldState('showSku', state => {
+                    state.value = array;
+                    state.visible = value;
+                  });
+                }
+              } else if (value && value.spuId) {
+                const res = await request({...spuDetail, data: {spuId: value.spuId}});
+                if (res && res.categoryId) {
+                  const category = await request({...categoryDetail, data: {categoryId: res.categoryId}});
+                  setFieldState('sku', state => {
+                    state.props.category = category && category.categoryRequests;
+                  });
+                }
+              }
             });
           }
           }
@@ -91,7 +121,6 @@ const PartsEdit = ({...props}, ref) => {
               formRef.current.refresh();
             }}>拷贝</Button>}
           >
-            <FormItem label="清单名称" name="partName" component={SysField.PartName} required />
             {bomType === 2 && !value &&
             <FormItem label="操作类型" name="action" component={SysField.Action} value={action} onChange={setAction} />}
             {
@@ -119,19 +148,26 @@ const PartsEdit = ({...props}, ref) => {
                     required
                   />
 
+                  <FormItem
+                    visible={false}
+                    label="物料描述"
+                    name="showSku"
+                    component={SysField.ShowSku}
+                  />
+
                   {!type && <>
                     <FormItem label="编码" name="standard" module={0} component={Codings} required />
+                    <FormItem
+                      label="型号"
+                      name="skuName"
+                      component={SysField.SkuName}
+                      required
+                    />
                     <FormItem
                       label="配置"
                       name="sku"
                       title="配置项"
                       component={SysField.Attributes}
-                      category={category}
-                      required />
-                    <FormItem
-                      label="型号"
-                      name="skuName"
-                      component={SysField.SkuName}
                       required
                     />
                     <FormItem

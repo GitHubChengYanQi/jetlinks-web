@@ -15,7 +15,7 @@ import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {useRequest} from '@/util/Request';
 import Code from '@/pages/Erp/spu/components/Code';
 import PartsList from '@/pages/Erp/parts/PartsList';
-import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
+import Empty from '@/components/Empty';
 
 
 const SpuDetail = () => {
@@ -24,17 +24,6 @@ const SpuDetail = () => {
 
   const history = useHistory();
 
-  const [category, setCategory] = useState();
-
-  const {run} = useRequest(categoryDetail,
-    {
-      manual: true,
-      onSuccess: (res) => {
-        setCategory(res.categoryRequests);
-      }
-    }
-  );
-
   const {loading, data} = useRequest(spuDetail, {
     manual: !params.cid,
     defaultParams: {
@@ -42,16 +31,11 @@ const SpuDetail = () => {
         spuId: params.cid
       }
     },
-    onSuccess: (res) => {
-      if (res.categoryId) {
-        run({
-          data: {
-            categoryId: res.categoryId
-          }
-        });
-      }
-    }
   });
+
+  if (!data) {
+    return <Empty />;
+  }
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
@@ -101,7 +85,7 @@ const SpuDetail = () => {
           </ProCard>
         </div>
         <div style={{maxWidth: 1220, margin: 'auto'}}>
-          <PartsList spuId={data.spuId} category={category} />
+          <PartsList spuId={data.spuId} />
         </div>
       </Card>
     </>

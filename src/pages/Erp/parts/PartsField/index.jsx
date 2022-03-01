@@ -11,7 +11,7 @@ import {
   InputNumber,
   Select as AntdSelect,
   Radio,
-  Spin,
+  Spin, Descriptions,
 } from 'antd';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
@@ -131,7 +131,7 @@ export const Pid = (props) => {
   const options = !loading ? data : [];
 
   useEffect(() => {
-    run({data: {status:99,type:1}});
+    run({data: {status: 99, type: 1}});
   }, []);
 
   return (<AntdSelect
@@ -163,4 +163,18 @@ export const Action = (props) => {
   </Radio.Group>;
 };
 
+export const ShowSku = ({value}) => {
+  if (!Array.isArray(value)) {
+    return null;
+  }
+  return <>
+    <Descriptions column={1} bordered>
+      {
+        value.map((item, index) => {
+          return <Descriptions.Item key={index} label={item.label}>{item.value}</Descriptions.Item>;
+        })
+      }
+    </Descriptions>
+  </>;
+};
 
