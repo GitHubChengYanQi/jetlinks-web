@@ -1,5 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Drawer as AntDrawer} from 'antd';
+import {Button, Drawer as AntDrawer} from 'antd';
 
 const Drawer = (
   {
@@ -8,8 +8,11 @@ const Drawer = (
     headTitle,
     component: Component,
     width = 600,
+    placement,
+    extra,
     onSuccess = () => {
     },
+    height,
     onClose = () => {
     },
     ...props
@@ -34,7 +37,11 @@ const Drawer = (
 
   return (
     <AntDrawer
+      height={height}
       visible={visible}
+      extra={extra && <Button type='link' onClick={() => {
+        show(null);
+      }}>关闭</Button>}
       onClose={() => {
         show(null);
         onClose();
@@ -45,6 +52,7 @@ const Drawer = (
       afterVisibleChange={(v) => {
         // setShow(v);
       }}
+      placement={placement}
     >
       {Component ? <Component
         {...props}

@@ -14,12 +14,15 @@ const SelectSku = ({
   placeholder,
   params,
   skuIds,
+  disabled,
   ids,
   spu
 }) => {
 
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
+
+  const [visible,setVisible] = useState();
 
   const object = (items) => {
     return {
@@ -136,8 +139,9 @@ const SelectSku = ({
 
   return (
     <>
-      <Popover placement="bottomLeft" content={content} trigger="click">
+      <Popover visible={disabled ? false : visible} placement="bottomLeft" content={content} trigger="click" onVisibleChange={setVisible}>
         <Select
+          disabled={disabled}
           placeholder={placeholder}
           open={false}
           style={{width: width || 180}}

@@ -22,6 +22,8 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
 import Icon from '@/components/Icon';
+import PartsEdit from '@/pages/Erp/parts/PartsEdit';
+import PartsList from '@/pages/Erp/parts/PartsList';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -41,10 +43,15 @@ const SkuTable = (props) => {
 
   const [edit, setEdit] = useState([]);
 
+  const [skuId, setSkuId] = useState();
+
   const ref = useRef(null);
+  const showParts = useRef(null);
   const formRef = useRef(null);
+  const addParts = useRef(null);
   const tableRef = useRef(null);
   const history = useHistory(null);
+  const editParts = useRef(null);
 
   useEffect(() => {
     if (spuClass) {
@@ -52,6 +59,13 @@ const SkuTable = (props) => {
       tableRef.current.submit();
     }
   }, [spuClass]);
+
+
+  useEffect(() => {
+    if (skuId) {
+      editParts.current.open(false);
+    }
+  }, [skuId]);
 
 
   const actions = () => {
@@ -240,9 +254,13 @@ const SkuTable = (props) => {
         <Column title="操作" key={8} dataIndex="isBan" width={200} align="center" render={(value, record) => {
           return (
             <>
-              <Button type="link" color={record.bom ? 'green' : 'blue'} onClick={() => {
-
-              }}>bom</Button>
+              <Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {
+                if (record.inBom) {
+                  showParts.current.open(record.skuId);
+                } else {
+                  setSkuId(record.skuId);
+                }
+              }}>{record.inBom ? '有' : '无'}BOM</Button>
               <EditButton onClick={() => {
                 ref.current.open(record);
                 setEdit(true);
@@ -285,6 +303,47 @@ const SkuTable = (props) => {
             }}
           >完成</Button>
         </>} />
+
+
+      <Modal
+        width={1200}
+        type={null}
+        title="清单"
+        component={PartsList}
+        onSuccess={() => {
+          tableRef.current.submit();
+          showParts.current.close();
+        }}
+        ref={showParts}
+      />
+
+      <Modal
+        width={900}
+        type={1}
+        headTitle="物料清单"
+        sku
+        defaultValue={{
+          item: {skuId}
+        }}
+        compoentRef={addParts}
+        component={PartsEdit}
+        onClose={()=>{
+          setSkuId(null);
+        }}
+        onSuccess={() => {
+          setSkuId(null);
+          tableRef.current.submit();
+          editParts.current.close();
+        }}
+        ref={editParts}
+        footer={<>
+          <Button type="primary" onClick={() => {
+            addParts.current.submit();
+          }}>保存</Button>
+        </>}
+      />
+
+
     </>
   );
 };

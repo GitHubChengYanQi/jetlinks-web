@@ -6,7 +6,7 @@ import {useRequest} from '@/util/Request';
 import {partsGetBom} from '@/pages/Erp/parts/PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 
-const ShowBOM = () => {
+const ShowBOM = ({value:partsId}) => {
 
   const params = getSearchParams();
 
@@ -73,10 +73,10 @@ const ShowBOM = () => {
   });
 
   useEffect(() => {
-    if (params.id) {
+    if (params.id || partsId) {
       run({
         params: {
-          partId: params.id,
+          partId: params.id || partsId,
           type:params.type,
         }
       });
@@ -86,6 +86,7 @@ const ShowBOM = () => {
   return <>
     <Card
       title={<Breadcrumb title='物料BOM' />}
+      headStyle={{display:partsId && 'none'}}
       bodyStyle={{padding: 0}}
       extra={<Space>
         <Button onClick={() => {

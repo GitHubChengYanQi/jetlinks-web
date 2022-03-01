@@ -11,6 +11,12 @@ export const partsAdd = {
   rowKey:'partsId'
 };
 
+export const partsRelease= {
+  url: '/parts/release',
+  method: 'POST',
+  rowKey:'partsId'
+};
+
 export const partsEdit = {
   url: '/parts/edit',
   method: 'POST',

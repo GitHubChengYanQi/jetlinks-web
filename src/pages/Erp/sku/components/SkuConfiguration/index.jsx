@@ -3,7 +3,7 @@ import {AutoComplete, Button, Input, Space} from 'antd';
 import {useSetState} from 'ahooks';
 import {DeleteOutlined} from '@ant-design/icons';
 
-const SkuConfiguration = ({value, onChange, category, details}) => {
+const SkuConfiguration = ({value, onChange,title, category, details}) => {
 
   const [datas, setDatas] = useSetState({data: value || []});
 
@@ -184,7 +184,7 @@ const SkuConfiguration = ({value, onChange, category, details}) => {
       setDatas({
         data: array
       });
-    }}>添加描述</Button>
+    }}>{title || '添加描述'}</Button>
   </>;
 };
 

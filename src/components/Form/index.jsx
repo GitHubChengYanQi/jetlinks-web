@@ -25,6 +25,7 @@ const FormWrapper = (
     details,
     labelAlign,
     formatResult,
+    initialValues,
     NoButton = true,
     formActions = null,
     onSubmit = (values) => {
@@ -93,7 +94,6 @@ const FormWrapper = (
       return response;
     },
     onSuccess: (result) => {
-      console.log(1111);
       onSuccess(result);
     },
     onError: (error) => {
@@ -141,7 +141,6 @@ const FormWrapper = (
     style={{margin: 'auto',height:'100%',...formStyle}}
     actions={formActions}
     labelAlign={labelAlign}
-    // defaultValue={defaultValue}
     layout='horizontal'
     value={defaultValue}
     className={style.formWarp}
@@ -161,7 +160,7 @@ const FormWrapper = (
         }
       );
     }}
-    initialValues={findData}
+    initialValues={{...findData,...initialValues}}
     {...props}
   >
     {children}

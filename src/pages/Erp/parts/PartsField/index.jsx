@@ -5,13 +5,12 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   Input,
   InputNumber,
   Select as AntdSelect,
   Radio,
-  Card,
   Spin,
 } from 'antd';
 import Select from '@/components/Select';
@@ -19,8 +18,6 @@ import * as apiUrl from '../PartsUrl';
 import {partsList, spuListSelect} from '../PartsUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 import {useRequest} from '@/util/Request';
-import Attribute from '@/pages/Erp/instock/components/Attribute';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
@@ -34,7 +31,7 @@ export const Item = (props) => {
 };
 
 export const Name = (props) => {
-  return (<Input.TextArea   {...props} />);
+  return (<Input.TextArea rows={1}  {...props} />);
 };
 
 export const SpuId = (props) => {
@@ -115,7 +112,7 @@ export const Sku = (props) => {
     }
   }, [props.type]);
 
-  return (<SelectSku value={props.value && props.value.skuId} onChange={(value) => {
+  return (<SelectSku value={props.value && props.value.skuId} disabled={props.disabled} onChange={(value) => {
     props.onChange({skuId: value});
   }} />);
 };
