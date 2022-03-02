@@ -176,11 +176,7 @@ const PartsList = ({spuId, value, type = 1}) => {
         ref={tableRef}
       >
         {!value && <Column title="物料" key={1} dataIndex="skuId" render={(value, record) => {
-          return (<Button type="link" onClick={async () => {
-            showRef.current.open(record.partsId);
-          }}>
-            <SkuResultSkuJsons skuResult={record.skuResult} />
-          </Button>);
+          return (<SkuResultSkuJsons skuResult={record.skuResult} />);
         }} />}
         <Column title="类型" key={5} dataIndex="type" render={(value, record) => {
           switch (parseInt(value, 0)) {
@@ -205,31 +201,38 @@ const PartsList = ({spuId, value, type = 1}) => {
           fixed="right"
           align="center"
           dataIndex="partsId"
-          width={200}
+          width={300}
           render={(value, record) => {
-            return record.display === 0 ? '历史数据' : <Space>
-              <>
-                {record.status !== 99 ?
-                  <Button type="link" onClick={() => {
-                    run({
-                      data: {
-                        partsId: value,
-                      }
-                    });
-                  }}>发布</Button>
-                  :
-                  parseInt(record.type, 0) === 1 && <Dropdown overlay={menu(record)}>
-                    <Button type="link">
-                      新建生产BOM<DownOutlined />
-                    </Button>
-                  </Dropdown>
-                }
-                <EditButton onClick={() => {
-                  setBom({type: record.type, copy: true});
-                  refAdd.current.open(value);
-                }} />
-              </>
-            </Space>;
+            return <>
+              {
+                record.display === 0 ? '历史数据' : <Space>
+                  <>
+                    {record.status !== 99 ?
+                      <Button type="link" onClick={() => {
+                        run({
+                          data: {
+                            partsId: value,
+                          }
+                        });
+                      }}>发布</Button>
+                      :
+                      parseInt(record.type, 0) === 1 && <Dropdown overlay={menu(record)}>
+                        <Button type="link">
+                          新建生产BOM<DownOutlined />
+                        </Button>
+                      </Dropdown>
+                    }
+                    <EditButton onClick={() => {
+                      setBom({type: record.type, copy: true});
+                      refAdd.current.open(value);
+                    }} />
+                  </>
+                </Space>
+              }
+              <Button type="link" onClick={() => {
+                showRef.current.open(record.partsId);
+              }}>详情</Button>
+            </>;
           }} />
       </Table>
     </>;
