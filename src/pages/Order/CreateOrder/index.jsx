@@ -335,6 +335,7 @@ const CreateOrder = ({...props}) => {
           <Col span={12}>
             <ProCard
               bodyStyle={{padding: 16}}
+              headStyle={{height: 49}}
               className="h2Card"
               title="乙方信息"
               extra={params.module === 'PO' && <Button onClick={() => {
