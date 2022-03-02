@@ -1,9 +1,11 @@
-import {Popover, Select, Space, Spin} from 'antd';
-import React, {useEffect, useState} from 'react';
+import {Button, Popover, Select, Space, Spin} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
 import Cascader from '@/components/Cascader';
-import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
+import store from '@/store';
+import Modal from '@/components/Modal';
+import SkuEdit from '@/pages/Erp/sku/skuEdit';
 
 
 const SelectSku = ({
@@ -19,10 +21,17 @@ const SelectSku = ({
   spu
 }) => {
 
+  const [state] = store.useModel('dataSource');
+
+  const formRef = useRef();
+  const ref = useRef();
+
   const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
 
   const [visible, setVisible] = useState();
+
+  const [addLoading, setAddLoading] = useState();
 
   const object = (items) => {
     return {
@@ -81,7 +90,7 @@ const SelectSku = ({
         width={200}
         placeholder="请选择物料分类"
         value={spuClass}
-        api={{...spuClassificationTreeVrew, data: {isNotproduct: 1}}}
+        options={state.skuClass}
         onChange={(value) => {
           setSpuClass(value);
           setChange(null);
@@ -116,6 +125,11 @@ const SelectSku = ({
           });
         }}
         onChange={(value, option) => {
+          if (value === 'add') {
+            setVisible(false);
+            ref.current.open(false);
+            return;
+          }
           setVisible(false);
           setChange(value && value.replace(`standard:${option.standard}`, ''));
           if (option) {
@@ -135,6 +149,14 @@ const SelectSku = ({
           }
 
         }}>
+        <Select.Option
+          key="add"
+          title="新增物料"
+          value="add">
+          <a>
+            新增物料
+          </a>
+        </Select.Option>
         {options && options.map((items) => {
           return (
             <Select.Option
@@ -168,6 +190,28 @@ const SelectSku = ({
           value={value && (change || (options && options[0] && options[0].label))}
         />
       </Popover>
+
+
+      <Modal
+        title="物料"
+        compoentRef={formRef}
+        loading={setAddLoading}
+        component={SkuEdit}
+        onSuccess={(res) => {
+          onChange(res);
+          ref.current.close();
+        }}
+        ref={ref}
+        footer={<>
+          <Button
+            loading={addLoading}
+            type="primary"
+            onClick={() => {
+              formRef.current.nextAdd(false);
+            }}
+          >完成</Button>
+        </>} />
+
     </>);
 };
 

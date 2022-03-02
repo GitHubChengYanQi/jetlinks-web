@@ -10,55 +10,29 @@ import {
   FormButtonGroup,
 } from '@formily/antd';
 import {Radio} from '@formily/antd-components';
-import {Button, Input,  Space, Tabs} from 'antd';
-import InputNumber from '@/components/InputNumber';
+import {Button, Input, Space, Tabs} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import InputNumber from '@/components/InputNumber';
 import Select from '@/components/Select';
 import {qualityCheckListSelect} from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
-import {shipSetpDetail, shipSetpListSelect} from '@/pages/ReSearch/shipSetp/shipSetpUrl';
-import {request} from '@/util/Request';
-import {ShipNote, SkuShow, Sop, Tool} from '@/pages/ReSearch/BOM/Nodes/Setps/components/SetpsField';
+import {shipSetpListSelect} from '@/pages/ReSearch/shipSetp/shipSetpUrl';
+import {Bom, ShipNote, SkuShow, Sop, Tool} from '@/pages/ReSearch/BOM/Nodes/Setps/components/SetpsField';
 import FileUpload from '@/components/FileUpload';
 import {productionStationListSelect} from '@/pages/BaseSystem/productionStation/productionStationUrl';
+import Effects from '@/pages/ReSearch/BOM/Nodes/Setps/components/Effects';
 
 const actions = createFormActions();
 
 
-const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
+const Setps = ({
+  value: defaultValue,
+  onClose,
+  onChange = () => {
+  }
+}) => {
 
-  const [equals, setEquals] = useState(defaultValue && defaultValue.productionType);
-
-  const [type, setType] = useState();
-
-  const [displaySkuIds, setDisplaySkuIds] = useState([]);
-
-  const skuIds = (index) => {
-    if (type === 'ship') {
-      return bomSkuIds;
-    }
-    return bomSkuIds && bomSkuIds.filter((item) => {
-      const ids = [];
-      displaySkuIds.map((sku) => {
-        if (index !== sku.index) {
-          ids.push(sku.skuId);
-        }
-        return null;
-      });
-      if (ids.includes(item.skuId)) {
-        return false;
-      }
-      if (equals) {
-        return true;
-      } else {
-        return item.next === true && item.display !== true;
-      }
-    });
-  };
-
-  useEffect(() => {
-    defaultValue = null;
-  }, []);
+  const [equals, setEquals] = useState();
 
   return (
     <Form
@@ -67,81 +41,10 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
       actions={actions}
       defaultValue={defaultValue}
       effects={({setFieldState}) => {
-
-        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
-          setType(value);
-          const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
-          for (let i = 0; i < item.length; i++) {
-            const field = item[i];
-            setFieldState(field, state => {
-              state.visible = value === field;
-            });
-          }
-        });
-
-        FormEffectHooks.onFieldValueChange$('productionType').subscribe(({value}) => {
-          setEquals(value);
-          setFieldState('setpSetDetails', state => {
-            state.visible = true;
-            state.value = defaultValue ? defaultValue.setpSetDetails : [{}];
-          });
-          setFieldState('skuShow', state => {
-            state.props.skus = '';
-          });
-        });
-
-        FormEffectHooks.onFieldValueChange$('setpSetDetails').subscribe(({value, name}) => {
-          if (value) {
-            setDisplaySkuIds(value.map((item, index) => {
-              return {
-                skuId: item && item.skuId,
-                index,
-              };
-            }));
-          }
-          setFieldState('skuShow', state => {
-            state.props.skus = value;
-          });
-        });
-
-        FormEffectHooks.onFieldValueChange$('shipSetpId').subscribe(async ({value}) => {
-          if (value) {
-            const res = await request({
-              ...shipSetpDetail,
-              data: {
-                shipSetpId: value
-              }
-            });
-            setFieldState('tool', state => {
-              state.value = res.binds;
-            });
-
-            setFieldState('sop', state => {
-              state.value = res.sopResult;
-              state.props.sopId = res.sopId;
-            });
-
-            setFieldState('shipNote', state => {
-              state.value = res.remark;
-            });
-          }
-        });
-
+        Effects(setFieldState, setEquals, defaultValue);
       }}
       onSubmit={(values) => {
-        // if (!equals){
-        //   const array = bomSkuIds && bomSkuIds.map((item) => {
-        //     if (displaySkuIds.includes(item.skuId)) {
-        //       return {
-        //         ...item,
-        //         display: true,
-        //       };
-        //     }
-        //     return item;
-        //   });
-        //   setBomSkuIds(array);
-        // }
-        typeof onChange === 'function' && onChange(values);
+        onChange(values);
       }}
     >
       <FormItem
@@ -173,12 +76,12 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
             {},
           ]}
         >
-
           {({state, mutators}) => {
             const onAdd = () => mutators.push();
             return (
               <Space direction="vertical">
                 <Space>
+                  <div style={{width: 50, paddingBottom: 16}} />
                   <div style={{width: 200, paddingBottom: 16}}><span
                     style={{color: 'red'}}>* </span>{equals ? '投入物料' : '产出物料'}</div>
                   <div style={{width: 90, paddingBottom: 16}}><span
@@ -191,15 +94,19 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
                   const onRemove = index => mutators.remove(index);
                   return (
                     <Space key={index} align="start">
+                      <div style={{width: 50}}>
+                        <FormItem
+                          equals={equals}
+                          name={`setpSetDetails.${index}.partsId`}
+                          component={Bom}
+                        />
+                      </div>
                       <div style={{width: 200}}>
                         <FormItem
                           name={`setpSetDetails.${index}.skuId`}
                           component={SelectSku}
                           placeholder="选择物料"
                           width="100%"
-                          ids={skuIds(index).map((item) => {
-                            return item.skuId;
-                          })}
                           rules={[{
                             required: true,
                             message: equals ? '请选择投入物料' : '请选择产出物料！'
@@ -318,7 +225,6 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
               <FormItem
                 equals={equals}
                 name="skuShow"
-                nextSkus={bomSkuIds}
                 component={SkuShow}
               />
             </Tabs.TabPane>
@@ -332,9 +238,6 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           required
           label="产出物料"
           name="shipSkuId"
-          ids={skuIds().map((item) => {
-            return item.skuId;
-          })}
           component={SelectSku}
         />
         <FormItem

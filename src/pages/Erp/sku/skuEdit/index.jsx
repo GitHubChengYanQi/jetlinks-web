@@ -40,14 +40,15 @@ const SkuEdit = ({...props}, ref) => {
     });
   };
 
-  useImperativeHandle(ref, () => ({
-    nextAdd
-  }));
-
   const nextAdd = async (next) => {
     await setNext(next);
     await formRef.current.submit();
   };
+
+  useImperativeHandle(ref, () => ({
+    nextAdd
+  }));
+
 
   return (
     <div style={{padding: 16}}>
@@ -72,10 +73,10 @@ const SkuEdit = ({...props}, ref) => {
         onError={() => {
           openNotificationWithIcon('error');
         }}
-        onSuccess={() => {
+        onSuccess={(res) => {
           openNotificationWithIcon('success');
           if (!next) {
-            props.onSuccess();
+            props.onSuccess(res.data);
           } else {
             formRef.current.reset();
           }

@@ -6,6 +6,7 @@ const Drawer = (
     title,
     children,
     headTitle,
+    push,
     component: Component,
     width = 600,
     placement,
@@ -37,6 +38,7 @@ const Drawer = (
 
   return (
     <AntDrawer
+      push={push}
       height={height}
       visible={visible}
       extra={extra && <Button type='link' onClick={() => {

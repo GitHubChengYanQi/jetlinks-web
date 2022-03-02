@@ -53,9 +53,9 @@ function ApproverNode(props) {
       {
         data.skuShow
           ?
-          data.skuShow && data.skuShow.map((item, index) => {
+          data.skuShow.map((item, index) => {
             return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
-              <SkuResultSkuJsons skuResult={item} />
+              <SkuResultSkuJsons skuResult={item.skuResult} />
             </div>;
           })
           :

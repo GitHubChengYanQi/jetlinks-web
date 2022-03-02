@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Modal} from 'antd';
-import {useSetState} from 'ahooks';
 import Drawer from '@/components/Drawer';
 import EndNode from './Nodes/EndNode';
 import Render from './Nodes/Render';
@@ -10,7 +9,6 @@ import ZoomLayout from './Nodes/ZoomLayout';
 import Setps from './Nodes/Setps';
 import styles from './index.module.scss';
 import AddProcess from '@/pages/ReSearch/BOM/components/AddProcess';
-import {request} from '@/util/Service';
 
 
 const WorkFlow = ({value, onChange, type, module}) => {
@@ -18,54 +16,6 @@ const WorkFlow = ({value, onChange, type, module}) => {
   const ref = useRef();
 
   const refStart = useRef();
-
-  const [bomSkuIds, setBomSkuIds] = useSetState({skus: []});
-
-  const getParts = (data, skus) => {
-    if (!Array.isArray(data)) {
-      return null;
-    }
-    data.map((item) => {
-      skus.push({
-        skuId: item.skuId,
-        skuResult: item.skuResult,
-        next: typeof item.partsResult === 'object',
-        skus: item.partsResult && item.partsResult.parts && item.partsResult.parts.map((item) => {
-          return {
-            skuId: item.skuId,
-            skuResult: item.skuResult,
-            number: item.number
-          };
-        }),
-      });
-      if (item.partsResult) {
-        return getParts(item.partsResult.parts, skus);
-      }
-      return null;
-    });
-  };
-
-  const getBom = (data) => {
-    const skus = [];
-    skus.push({
-      skuId: data.skuId,
-      skuResult: data.skuResult,
-      next: true,
-      skus: data.parts && data.parts.map((item) => {
-        return {
-          skuId: item.skuId,
-          skuResult: item.skuResult,
-          number: item.number
-        };
-      }),
-    });
-    if (data.parts) {
-      getParts(data.parts, skus);
-    }
-
-    setBomSkuIds({skus});
-  };
-
 
   const defaultConfig = {
     'pkId': 'start',
@@ -159,24 +109,9 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   }
 
-  const partsIdBom = async (partId) => {
-    const res = await request({
-      url: '/parts/getBOM',
-      method: 'GET',
-      params: {
-        partId,
-        type: 2,
-      }
-    });
-    getBom(res.data);
-  };
-
   useEffect(() => {
     if (value) {
       setConfig({...value});
-      if (value.processRoute && value.processRoute.partsId) {
-        partsIdBom(value.processRoute.partsId);
-      }
     }
   }, [value]);
 
@@ -190,14 +125,10 @@ const WorkFlow = ({value, onChange, type, module}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer headTitle="步骤设置" ref={ref} width={800}>
+      <Drawer headTitle="步骤设置" ref={ref} width={850}>
         <Setps
-          bomSkuIds={bomSkuIds.skus}
           type={type}
           module={module}
-          setBomSkuIds={(value) => {
-            setBomSkuIds({skus: value});
-          }}
           value={currentNode.current && currentNode.current.setpSet}
           onChange={(value) => {
             currentNode.current.setpSet = value;
@@ -221,9 +152,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
             currentNode.current.processRoute = value;
             currentNode.current.stepType = 'shipStart';
             refStart.current.close();
-            if (value.data) {
-              getBom(value.data);
-            }
+            updateNode();
           }}
         />
       </Drawer>
