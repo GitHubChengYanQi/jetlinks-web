@@ -91,12 +91,12 @@ const SkuTable = (props) => {
         <FormItem
           label="名称"
           placeholder="请输入名称"
-          name="spuClassName"
+          name="spuName"
           component={SysField.SelectSkuName} />
         <FormItem
           label="型号"
           placeholder="请输入型号"
-          name="spuName"
+          name="name"
           component={SysField.SelectSkuName} />
         <FormItem
           name="spuClass"

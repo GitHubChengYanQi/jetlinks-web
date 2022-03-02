@@ -41,6 +41,8 @@ const PartsList = ({spuId, value, type = 1}) => {
 
   const [radio, setRadio] = useState('1');
 
+  const [loading, setLoading] = useState();
+
   const {loading: skuLoading, data: skuData, run: sku} = useRequest(skuDetail, {manual: true});
 
   useEffect(() => {
@@ -252,6 +254,7 @@ const PartsList = ({spuId, value, type = 1}) => {
         type={type}
         title="清单"
         bom={bom}
+        loading={setLoading}
         compoentRef={formRef}
         component={PartsEdit}
         onClose={() => {
@@ -269,7 +272,7 @@ const PartsList = ({spuId, value, type = 1}) => {
         ref={refAdd}
         spuId={spuId}
         footer={<>
-          <Button type="primary" onClick={() => {
+          <Button type="primary" loading={loading} onClick={() => {
             formRef.current.submit();
           }}>保存</Button>
         </>}
