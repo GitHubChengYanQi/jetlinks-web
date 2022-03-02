@@ -1,7 +1,6 @@
-import React, {useContext} from 'react';
-import Icon from '@/components/Icon';
+import React from 'react';
+import {Space} from 'antd';
 import NodeWrap from '../NodeWrap';
-import WFC from '@/pages/ReSearch/BOM/OperatorContext';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
@@ -21,9 +20,12 @@ function StartNode(props) {
         onContentClick();
       }}
       title={<span>{props.nodeName || '发起人'}</span>}>
-      <div>
+      <Space direction='vertical'>
         <SkuResultSkuJsons skuResult={props.startSku && props.startSku.skuResult} />
-      </div>
+        <div>
+          描述：{props.startSku && props.startSku.config || '无'}
+        </div>
+      </Space>
       {/*<Icon type="icon-arrow-right" />*/}
     </NodeWrap>);
 }

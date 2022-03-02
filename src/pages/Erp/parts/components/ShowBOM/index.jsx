@@ -6,7 +6,7 @@ import {useRequest} from '@/util/Request';
 import {partsGetBom} from '@/pages/Erp/parts/PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 
-const ShowBOM = ({value:partsId}) => {
+const ShowBOM = ({value: partsId}) => {
 
   const params = getSearchParams();
 
@@ -27,8 +27,8 @@ const ShowBOM = ({value:partsId}) => {
               type: '3',
               sku: {
                 skuResult: item.skuResult,
-                number:item.number,
-                note:item.note,
+                number: item.number,
+                note: item.note,
               },
               ...getParts(item.partsResult.parts)
             };
@@ -41,8 +41,8 @@ const ShowBOM = ({value:partsId}) => {
           type: '1',
           sku: {
             skuResult: data[0].skuResult,
-            number:data[0].number,
-            note:data[0].note,
+            number: data[0].number,
+            note: data[0].note,
           },
           ...getParts(data[0].partsResult.parts)
         }
@@ -55,7 +55,24 @@ const ShowBOM = ({value:partsId}) => {
       'pkId': 'start',
       nodeName: '物料主体',
       'startSku': {
-        skuResult: data.skuResult
+        skuResult: data.skuResult,
+        config: data.skuResult && data.skuResult.skuJsons
+          &&
+          data.skuResult.skuJsons.length > 0
+          &&
+          data.skuResult.skuJsons[0].values.attributeValues
+          &&
+          <em style={{color: '#949292', fontSize: 10}}>
+            (
+            {
+              data.skuResult.skuJsons.map((items, index) => {
+                return (
+                  <span key={index}>{items.attribute.attribute}：{items.values.attributeValues}</span>
+                );
+              })
+            }
+            )
+          </em>
       },
       'type': '0',
       ...getParts(data.parts),
@@ -77,7 +94,7 @@ const ShowBOM = ({value:partsId}) => {
       run({
         params: {
           partId: params.id || partsId,
-          type:params.type,
+          type: params.type,
         }
       });
     }
@@ -85,8 +102,8 @@ const ShowBOM = ({value:partsId}) => {
 
   return <>
     <Card
-      title={<Breadcrumb title='物料BOM' />}
-      headStyle={{display:partsId && 'none'}}
+      title={<Breadcrumb title="物料BOM" />}
+      headStyle={{display: partsId && 'none'}}
       bodyStyle={{padding: 0}}
       extra={<Space>
         <Button onClick={() => {
