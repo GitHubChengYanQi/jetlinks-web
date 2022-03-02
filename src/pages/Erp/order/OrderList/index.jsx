@@ -5,14 +5,13 @@
  * @Date 2021-07-20 16:22:28
  */
 
-import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
+import React, {useRef} from 'react';
 import {Button, Table as AntTable} from 'antd';
+import Table from '@/components/Table';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import './index.scss';
-import OrderDetailsList from "@/pages/Erp/orderDetails/orderDetailsList";
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';

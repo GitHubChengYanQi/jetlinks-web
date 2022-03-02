@@ -1,11 +1,12 @@
+import React, {lazy} from 'react';
 import {PurchaseAskRouter} from '@/pages/Purshase/purchaseAsk/purchaseAskRouter';
 import PurshaseLayout from '@/pages/Purshase';
 import {SupplyListingRouter} from '@/pages/Purshase/Supply/router';
 import {ToBuyPlanRouter} from '@/pages/Purshase/ToBuyPlan/router';
 import {ProcurementPlanRouter} from '@/pages/Purshase/procurementPlan/procurementPlanRouter';
 import {PurchaseQuotationRouter} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationRouter';
-import {ProcurementOrderRouter} from '@/pages/Purshase/procurementOrder/procurementOrderRouter';
 import {InquiryTaskRouter} from '@/pages/Purshase/inquiryTask/inquiryTaskRouter';
+import {OrderRouter} from '@/pages/Order/router';
 
 const PurshaseRouterConfig = [
   {
@@ -18,8 +19,14 @@ const PurshaseRouterConfig = [
       ...ToBuyPlanRouter,
       ...ProcurementPlanRouter,
       ...PurchaseQuotationRouter,
-      ...ProcurementOrderRouter,
+      ...OrderRouter,
       ...InquiryTaskRouter,
+      {
+        path: '/order',
+        component: lazy(() => import('../../Order/Table/index')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },
       {
         redirect: '/purchase/supply',
       },

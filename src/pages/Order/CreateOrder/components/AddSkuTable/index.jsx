@@ -13,9 +13,12 @@ const AddSkuTable = ({
   onChange = () => {
   },
   value,
+  module,
   onAddSku = () => {
   }
 }, ref) => {
+
+  const SO = module === 'SO';
 
   const [keys, setKeys] = useState([]);
 
@@ -52,12 +55,6 @@ const AddSkuTable = ({
     getDataSource,
   }));
 
-  const getValue = (index) => {
-    return dataSources.filter((item) => {
-      return item.key === index;
-    })[0];
-  };
-
   const setValue = (data, index) => {
     const array = dataSources.map((item) => {
       if (item.key === index) {
@@ -84,12 +81,13 @@ const AddSkuTable = ({
         return <Space>
           <Button
             onClick={() => {
-              onAddSku('sku');
+              onAddSku(SO ? 'spu' : 'sku');
             }}
           >
-            添加物料
+            {SO ? '添加产品' : '添加物料'}
           </Button>
           <Button
+            hidden={SO}
             onClick={() => {
               onAddSku('supplySku');
             }}

@@ -30,7 +30,7 @@ const StockTable = (props) => {
 
   const {state, left} = props;
 
-  const [key, setKey] = useState('className');
+  const [key, setKey] = useState('spu');
 
   const [filelist, setFilelist] = useState([]);
 

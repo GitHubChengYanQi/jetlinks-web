@@ -73,7 +73,7 @@ const PartsList = ({spuId, value, type = 1}) => {
           placeholder="请选择物料"
           name="type"
           value={type}
-          component={SysField.Type} />
+          component={SysField.PartName} />
       </>
     );
   };
@@ -110,13 +110,13 @@ const PartsList = ({spuId, value, type = 1}) => {
   const table = () => {
     return <>
 
-      <Radio.Group defaultValue='1' style={{padding: '16px 0 8px 24px'}} onChange={(value) => {
+      {value && <Radio.Group defaultValue="1" style={{padding: '16px 0 8px 24px'}} onChange={(value) => {
         tableRef.current.formActions.setFieldValue('type', value.target.value);
         tableRef.current.submit();
       }}>
         <Radio value="1">设计BOM</Radio>
         <Radio value="2">生产BOM</Radio>
-      </Radio.Group>
+      </Radio.Group>}
 
       <Table
         formActions={formActionsPublic}

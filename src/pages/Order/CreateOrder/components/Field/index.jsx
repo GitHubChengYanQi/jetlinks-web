@@ -18,17 +18,19 @@ import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import TemplateList from '@/pages/Crm/template/TemplateList';
 import {templateListSelect} from '@/pages/Crm/template/TemplateUrl';
 import Editor from '@/components/Editor';
-import AddSkuTable from '@/pages/Purshase/CreateOrder/components/AddSkuTable';
-import CheckSku from '@/pages/Purshase/CreateOrder/components/CheckSku';
+import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
+import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
+import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 
 
-
-export const AddSku = ({value, customerId, onChange}) => {
+export const AddSku = ({value, customerId, onChange, module}) => {
 
   const skuTableRef = useRef();
 
-  const ref = useRef();
+  const addSku = useRef();
+
+  const addSpu = useRef();
 
   const addSkuRef = useRef();
 
@@ -36,21 +38,47 @@ export const AddSku = ({value, customerId, onChange}) => {
 
   return (<>
     <AddSkuTable
+      module={module}
       ref={skuTableRef}
       value={value}
       onChange={onChange}
       onAddSku={(type) => {
         setType(type);
-        if (type === 'supplySku' && !customerId) {
-          message.warn('请选择供应商！');
-          return false;
+        switch (type) {
+          case 'spu':
+            addSpu.current.open(true);
+            break;
+          case 'sku':
+            addSku.current.open(true);
+            break;
+          case 'supplySku':
+            if (!customerId) {
+              message.warn('请选择供应商！');
+              return false;
+            }
+            addSku.current.open(true);
+            break;
+          default:
+            break;
         }
-        ref.current.open(true);
       }}
     />
 
     <Modal
-      ref={ref}
+      headTitle='添加产品'
+      ref={addSpu}
+      width={1000}
+      footer={<Space>
+        <Button type='primary' onClick={() => {
+          addSpu.current.close();
+        }}>选择</Button>
+      </Space>}
+    >
+      <AddSpu />
+    </Modal>
+
+    <Modal
+      ref={addSku}
       width={1000}
       footer={<Space>
         <Button onClick={() => {
@@ -71,7 +99,7 @@ export const AddSku = ({value, customerId, onChange}) => {
         }}
         onChange={(value) => {
           skuTableRef.current.addDataSource(value);
-          ref.current.close();
+          addSku.current.close();
         }}
       />
     </Modal>

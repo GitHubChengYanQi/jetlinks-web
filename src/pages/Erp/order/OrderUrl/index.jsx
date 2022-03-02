@@ -9,31 +9,31 @@ import React from "react";
  */
 
 export const orderAdd = {
-  url: '/erpOrder/add',
+  url: '/order/add',
   method: 'POST',
   rowKey:'id'
 };
 
 export const orderEdit = {
-  url: '/erpOrder/edit',
+  url: '/order/edit',
   method: 'POST',
   rowKey:'orderId'
 };
 
 export const orderDelete = {
-  url: '/erpOrder/delete',
+  url: '/order/delete',
   method: 'POST',
   rowKey:'orderId'
 };
 
 export const orderDetail = {
-  url: '/erpOrder/detail',
+  url: '/order/detail',
   method: 'POST',
   rowKey:'order_id'
 };
 
 export const orderList = {
-  url: '/erpOrder/list',
+  url: '/order/list',
   method: 'POST',
   rowKey:'orderId'
 };

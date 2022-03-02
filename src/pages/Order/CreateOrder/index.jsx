@@ -4,19 +4,20 @@ import {Affix, Button, Col, Divider, Drawer, List, message, notification, Row, S
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {getSearchParams, useHistory} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
 import * as SysField from './components/Field';
 import * as CustomerSysField from './components/CustomerAll';
 import Overflow from '@/components/Overflow';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
-import {EffectsAction} from '@/pages/Purshase/CreateOrder/components/EffectsAction';
+import {EffectsAction} from '@/pages/Order/CreateOrder/components/EffectsAction';
 import store from '@/store';
 import Modal from '@/components/Modal';
 import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplateList';
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
-import {useHistory} from 'ice';
+import Empty from '@/components/Empty';
 
 const {FormItem} = Form;
 
@@ -33,6 +34,36 @@ const span = 6;
 const labelWidth = 128;
 
 const CreateOrder = ({...props}) => {
+
+  const params = getSearchParams();
+
+
+  const module = () => {
+    switch (params.module) {
+      case 'SO':
+        return {
+          title: '创建销售单',
+          success: '创建销售单成功!',
+          coding: '销售单编号',
+          dateTitle: '销售日期',
+          noteTitle: '销售单备注',
+          moneyTitle: '销售总价',
+          detailTitle: '销售明细',
+        };
+      case 'PO':
+        return {
+          title: '创建采购单',
+          success: '创建采购单成功!',
+          coding: '采购单编号',
+          dateTitle: '采购日期',
+          noteTitle: '采购单备注',
+          moneyTitle: '采购总价',
+          detailTitle: '采购明细',
+        };
+      default:
+        break;
+    }
+  };
 
   const state = props.location.state;
 
@@ -57,9 +88,13 @@ const CreateOrder = ({...props}) => {
     }
   }, [payPlan]);
 
+  if (!module) {
+    return <Empty />;
+  }
+
   return <div style={{padding: 16}}>
     <div style={{padding: '16px 0'}}>
-      <Breadcrumb title="创建采购单" />
+      <Breadcrumb title={module().title} />
     </div>
 
     <Form
@@ -89,7 +124,7 @@ const CreateOrder = ({...props}) => {
 
         value = {
           ...value,
-          type:1,
+          type: 1,
           paymentParam: {
             detailParams: value.paymentDetail,
             payMethod: value.payMethod,
@@ -134,9 +169,9 @@ const CreateOrder = ({...props}) => {
         });
       }}
       onSuccess={() => {
-        history.push('/purchase/toBuyPlan');
+        history.goBack();
         notification.success({
-          message: '创建采购单成功！',
+          message: module().success,
         });
       }}
     >
@@ -147,7 +182,7 @@ const CreateOrder = ({...props}) => {
             <Col span={span}>
               <FormItem
                 module={11}
-                label="采购编号"
+                label={module().coding}
                 name="coding"
                 component={SysField.Codings}
               />
@@ -156,7 +191,7 @@ const CreateOrder = ({...props}) => {
           <Row gutter={24}>
             <Col span={span}>
               <FormItem
-                label="采购日期"
+                label={module().dateTitle}
                 name="date"
                 component={SysField.Date}
               />
@@ -172,7 +207,7 @@ const CreateOrder = ({...props}) => {
           <Row gutter={24}>
             <Col span={span}>
               <FormItem
-                label="采购单备注"
+                label={module().noteTitle}
                 name="remark"
                 component={SysField.Remark}
               />
@@ -185,22 +220,24 @@ const CreateOrder = ({...props}) => {
         <Row gutter={24}>
           <Col span={12}>
             <ProCard
-              style={{marginTop: 24}}
               bodyStyle={{padding: 16}}
               className="h2Card"
               title="甲方信息"
               headerBordered
+              extra={params.module === 'SO' && <Button onClick={() => {
+                setVisible(true);
+              }}>新建客户</Button>}
               headStyle={{height: 49}}
             >
               <MegaLayout labelWidth={labelWidth}>
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={userInfo.customerId}
+                      value={params.module === 'PO' && userInfo.customerId}
+                      dataParams={params.module === 'PO' && {status: 99}}
                       label="公司名称"
                       placeholder="请选择甲方公司"
                       name="buyerId"
-                      dataParams={{status:99}}
                       component={CustomerSysField.Customer}
                       required
                     />
@@ -263,7 +300,7 @@ const CreateOrder = ({...props}) => {
                       label="开户行号"
                       placeholder="请选择甲方开户行号"
                       name="partyABankNo"
-                      component={SysField.Name}
+                      component={SysField.Show}
                     />
                   </Col>
                 </Row>
@@ -297,11 +334,10 @@ const CreateOrder = ({...props}) => {
           </Col>
           <Col span={12}>
             <ProCard
-              style={{marginTop: 24}}
               bodyStyle={{padding: 16}}
               className="h2Card"
               title="乙方信息"
-              extra={<Button onClick={() => {
+              extra={params.module === 'PO' && <Button onClick={() => {
                 setVisible(true);
               }}>新建供应商</Button>}
               headerBordered>
@@ -309,6 +345,8 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
+                      value={params.module === 'SO' && userInfo.customerId}
+                      dataParams={params.module === 'SO' && {status: 99}}
                       label="公司名称"
                       placeholder="请选择甲方公司"
                       name="sellerId"
@@ -409,8 +447,9 @@ const CreateOrder = ({...props}) => {
         </Row>
       </Overflow>
 
-      <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="采购申请明细" headerBordered>
+      <ProCard bodyStyle={{padding: 16}} className="h2Card" title={module().detailTitle} headerBordered>
         <FormItem
+          module={params.module}
           name="detailParams"
           value={Array.isArray(state) && state.map((item) => {
             return {
@@ -426,12 +465,12 @@ const CreateOrder = ({...props}) => {
         />
       </ProCard>
 
-      <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="财务信息" headerBordered>
+      <ProCard bodyStyle={{padding: 16}} className="h2Card" title="财务信息" headerBordered>
         <MegaLayout labelWidth={labelWidth}>
           <Row gutter={24}>
             <Col span={span}>
               <FormItem
-                label="采购总价"
+                label={module().moneyTitle}
                 name="money"
                 component={SysField.Money}
               />
@@ -584,7 +623,7 @@ const CreateOrder = ({...props}) => {
         </MegaLayout>
       </ProCard>
 
-      <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="合同关联信息" headerBordered>
+      <ProCard bodyStyle={{padding: 16}} className="h2Card" title="合同关联信息" headerBordered>
         <MegaLayout labelWidth={labelWidth}>
           <Row gutter={24}>
             <Col span={span}>

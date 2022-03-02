@@ -16,6 +16,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import AddContractEdit from '@/pages/Crm/contract/ContractEdit';
 import {useRequest} from '@/util/Request';
+import {orderList} from '@/pages/Erp/order/OrderUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -51,8 +52,8 @@ const ProcurementOrderList = () => {
       <Table
         noRowSelection
         title={<Breadcrumb />}
-        api={procurementOrderList}
-        rowKey="procurementOrderId"
+        api={orderList}
+        rowKey="orderId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
