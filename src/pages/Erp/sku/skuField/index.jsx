@@ -141,6 +141,7 @@ export const SpuClass = (props) => {
     title="设置分类"
     type={1}
     component={SpuClassificationList}
+    changeOnSelect={false}
     {...other}
   />);
 };

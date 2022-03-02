@@ -123,6 +123,11 @@ export const SkuId = (props) => {
   return (<SelectSku {...props} />);
 };
 
+export const SkuIdInput = (props) => {
+
+  return (<Input {...props} />);
+};
+
 export const Pid = (props) => {
 
   const {value, onChange, getSkuId} = props;

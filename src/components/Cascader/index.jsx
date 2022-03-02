@@ -24,6 +24,7 @@ const Cascader = (props) => {
   const {
     value,
     width,
+    changeOnSelect = true,
     defaultParams,
     placeholder,
     resh,
@@ -95,7 +96,6 @@ const Cascader = (props) => {
     return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
   };
 
-
   return (<AntCascader
     {...other}
     showSearch={{
@@ -103,7 +103,7 @@ const Cascader = (props) => {
     }}
     loading={loading}
     style={{width}}
-    changeOnSelect
+    changeOnSelect={changeOnSelect}
     options={childrenData(dataSources)}
     value={valueArray}
     placeholder={placeholder}

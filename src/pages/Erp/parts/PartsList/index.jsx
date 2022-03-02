@@ -5,11 +5,12 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef, useState} from 'react';
-import {Badge, Button, Dropdown, Menu, Radio, Space} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Badge, Button, Descriptions, Dropdown, Menu, Radio, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {DownOutlined} from '@ant-design/icons';
 import {createFormActions} from '@formily/antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import {partsList, partsRelease} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
@@ -23,6 +24,8 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
 import ShowBOM from '@/pages/Erp/parts/components/ShowBOM';
 import Drawer from '@/components/Drawer';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -36,6 +39,20 @@ const PartsList = ({spuId, value, type = 1}) => {
   const tableRef = useRef();
   const showRef = useRef();
 
+  const [radio, setRadio] = useState('1');
+
+  const {loading: skuLoading, data: skuData, run: sku} = useRequest(skuDetail, {manual: true});
+
+  useEffect(() => {
+    if (value) {
+      sku({
+        data: {
+          skuId: value
+        }
+      });
+    }
+  }, []);
+
   const [bom, setBom] = useState();
 
   const {run} = useRequest(partsRelease, {
@@ -43,6 +60,10 @@ const PartsList = ({spuId, value, type = 1}) => {
       tableRef.current.submit();
     }
   });
+
+  if (skuLoading) {
+    return <ProSkeleton type="descriptions" />;
+  }
 
   const action = () => {
     return (
@@ -61,7 +82,7 @@ const PartsList = ({spuId, value, type = 1}) => {
           placeholder="请选择物料"
           name="skuId"
           value={value}
-          component={SysField.SkuId} />
+          component={SysField.SkuIdInput} />
         <FormItem
           hidden
           placeholder="请选择物料"
@@ -109,14 +130,37 @@ const PartsList = ({spuId, value, type = 1}) => {
 
   const table = () => {
     return <>
-
-      {value && <Radio.Group defaultValue="1" style={{padding: '16px 0 8px 24px'}} onChange={(value) => {
-        tableRef.current.formActions.setFieldValue('type', value.target.value);
-        tableRef.current.submit();
-      }}>
-        <Radio value="1">设计BOM</Radio>
-        <Radio value="2">生产BOM</Radio>
-      </Radio.Group>}
+      {value && skuData && <>
+        <Descriptions style={{margin: 24, marginBottom: 0}} column={2} contentStyle={{fontWeight: 700}}>
+          <Descriptions.Item label="编号">{skuData.standard}</Descriptions.Item>
+          <Descriptions.Item label="物料"><BackSkus record={skuData} /></Descriptions.Item>
+          <Descriptions.Item label="描述">
+            {
+              skuData.list
+              &&
+              skuData.list.length > 0
+              &&
+              skuData.list[0].attributeValues
+                ?
+                <em>({skuData.list.map((items) => {
+                  return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
+                }).toString()})</em>
+                :
+                '无'
+            }
+          </Descriptions.Item>
+          <Descriptions.Item>
+            <Radio.Group value={`${radio}`} onChange={(value) => {
+              setRadio(value.target.value);
+              tableRef.current.formActions.setFieldValue('type', value.target.value);
+              tableRef.current.submit();
+            }}>
+              <Radio value="1">设计BOM</Radio>
+              <Radio value="2">生产BOM</Radio>
+            </Radio.Group>
+          </Descriptions.Item>
+        </Descriptions>
+      </>}
 
       <Table
         formActions={formActionsPublic}
@@ -131,13 +175,13 @@ const PartsList = ({spuId, value, type = 1}) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="物料" key={1} dataIndex="skuId" render={(value, record) => {
+        {!value && <Column title="物料" key={1} dataIndex="skuId" render={(value, record) => {
           return (<Button type="link" onClick={async () => {
             showRef.current.open(record.partsId);
           }}>
             <SkuResultSkuJsons skuResult={record.skuResult} />
           </Button>);
-        }} />
+        }} />}
         <Column title="类型" key={5} dataIndex="type" render={(value, record) => {
           switch (parseInt(value, 0)) {
             case 1:
@@ -211,6 +255,10 @@ const PartsList = ({spuId, value, type = 1}) => {
           setBom(null);
         }}
         onSuccess={() => {
+          if (bom && bom.type) {
+            setRadio(bom.type);
+            tableRef.current.formActions.setFieldValue('type', bom.type);
+          }
           setBom(null);
           tableRef.current.submit();
           refAdd.current.close();

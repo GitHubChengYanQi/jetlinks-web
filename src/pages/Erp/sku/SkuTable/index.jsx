@@ -307,7 +307,7 @@ const SkuTable = (props) => {
 
       <Modal
         width={1200}
-        title="清单"
+        headTitle="物料清单"
         component={PartsList}
         onSuccess={() => {
           tableRef.current.submit();
@@ -319,6 +319,7 @@ const SkuTable = (props) => {
       <Modal
         width={900}
         type={1}
+        loading={setLoading}
         headTitle="物料清单"
         sku
         defaultValue={{
@@ -326,17 +327,20 @@ const SkuTable = (props) => {
         }}
         compoentRef={addParts}
         component={PartsEdit}
-        onClose={()=>{
+        onClose={() => {
           setSkuId(null);
         }}
-        onSuccess={() => {
+        onSuccess={(res) => {
           setSkuId(null);
           tableRef.current.submit();
+          if (res) {
+            showParts.current.open(res.skuId);
+          }
           editParts.current.close();
         }}
         ref={editParts}
         footer={<>
-          <Button type="primary" onClick={() => {
+          <Button type="primary" loading={loading} onClick={() => {
             addParts.current.submit();
           }}>保存</Button>
         </>}

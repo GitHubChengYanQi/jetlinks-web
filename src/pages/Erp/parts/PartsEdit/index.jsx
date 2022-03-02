@@ -61,22 +61,22 @@ const PartsEdit = ({...props}, ref) => {
           fieldKey="partsId"
           onError={() => {
           }}
-          onSuccess={() => {
-            onSuccess();
+          onSuccess={(res) => {
+            onSuccess(res.data);
           }}
           effects={({setFieldState}) => {
 
             FormEffectHooks.onFieldValueChange$('parts').subscribe(({value}) => {
               const skuIds = [];
               value && value.map((item) => {
-                if (item) {
+                if (item && item.skuId) {
                   skuIds.push(item.skuId);
                 }
                 return null;
               });
 
               setFieldState('parts.*.skuId', state => {
-                state.props.skuIds = skuIds;
+                state.props.params = {noSkuIds:skuIds};
               });
             });
 
@@ -116,10 +116,6 @@ const PartsEdit = ({...props}, ref) => {
             className="h2Card"
             headerBordered
             title="基本信息"
-            extra={bomAction.type === 2 && <Button onClick={() => {
-              setBomAction({...bomAction, copy: true});
-              formRef.current.refresh();
-            }}>拷贝</Button>}
           >
             {bomType === 2 && !value &&
             <FormItem label="操作类型" name="action" component={SysField.Action} value={action} onChange={setAction} />}
@@ -182,7 +178,14 @@ const PartsEdit = ({...props}, ref) => {
             }
           </ProCard>
 
-          <ProCard className="h2Card" headerBordered title="清单列表">
+          <ProCard
+            className="h2Card"
+            headerBordered
+            title="清单列表"
+            extra={bomAction.type === 2 && <Button onClick={() => {
+              setBomAction({...bomAction, copy: true});
+              formRef.current.refresh();
+            }}>拷贝设计BOM</Button>}>
             <FieldList
               name="parts"
               initialValue={[{}]}

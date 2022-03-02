@@ -116,6 +116,7 @@ const SelectSku = ({
           });
         }}
         onChange={(value, option) => {
+          setVisible(false);
           setChange(value && value.replace(`standard:${option.standard}`, ''));
           if (option) {
             setSpuClass(option.spu && option.spu.spuClassificationResult && option.spu.spuClassificationResult.pid);
