@@ -24,6 +24,8 @@ import Import from '@/pages/Erp/sku/SkuTable/Import';
 import Icon from '@/components/Icon';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import PartsList from '@/pages/Erp/parts/PartsList';
+import Drawer from '@/components/Drawer';
+import Detail from '@/pages/ReSearch/Detail';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -47,6 +49,7 @@ const SkuTable = (props) => {
 
   const ref = useRef(null);
   const showParts = useRef(null);
+  const showShip = useRef(null);
   const formRef = useRef(null);
   const addParts = useRef(null);
   const tableRef = useRef(null);
@@ -254,13 +257,20 @@ const SkuTable = (props) => {
         <Column title="操作" key={8} dataIndex="isBan" width={200} align="center" render={(value, record) => {
           return (
             <>
-              <Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {
-                if (record.inBom) {
-                  showParts.current.open(record.skuId);
+              {/*<Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {*/}
+              {/*  if (record.inBom) {*/}
+              {/*    showParts.current.open(record.skuId);*/}
+              {/*  } else {*/}
+              {/*    setSkuId(record.skuId);*/}
+              {/*  }*/}
+              {/*}}>{record.inBom ? '有' : '无'}BOM</Button>*/}
+              <Button type="link" style={{color: record.processRouteResult ? 'green' : 'blue'}} onClick={() => {
+                if (record.processRouteResult) {
+                  showShip.current.open(record.processRouteResult.processRouteId);
                 } else {
-                  setSkuId(record.skuId);
+                  showShip.current.open(false);
                 }
-              }}>{record.inBom ? '有' : '无'}BOM</Button>
+              }}>{record.processRouteResult ? '有' : '无'}工艺</Button>
               <EditButton onClick={() => {
                 ref.current.open(record);
                 setEdit(true);
@@ -344,6 +354,24 @@ const SkuTable = (props) => {
             addParts.current.submit();
           }}>保存</Button>
         </>}
+      />
+
+      <Drawer
+        bodyStyle={{padding: 0}}
+        push={false}
+        headTitle="添加子工艺路线"
+        height="100%"
+        placement="top"
+        addChildren
+        skuId={skuId}
+        component={Detail}
+        ref={showShip}
+        onSuccess={() => {
+
+        }}
+        onBack={() => {
+          showShip.current.close();
+        }}
       />
 
 

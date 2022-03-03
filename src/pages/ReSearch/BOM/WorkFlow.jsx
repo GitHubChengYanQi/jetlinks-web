@@ -11,7 +11,7 @@ import styles from './index.module.scss';
 import AddProcess from '@/pages/ReSearch/BOM/components/AddProcess';
 
 
-const WorkFlow = ({value, onChange, type, module}) => {
+const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   const ref = useRef();
 
@@ -19,10 +19,13 @@ const WorkFlow = ({value, onChange, type, module}) => {
 
   const defaultConfig = {
     'pkId': 'start',
-    'nodeName': '生产产品',
+    'nodeName': '生产产品1',
     'type': '0',
     'childNode': null,  // 下级步骤
-    'conditionNodeList': [] // 分支
+    'conditionNodeList': [], // 分支
+    processRoute: {
+      skuId
+    }
   };
 
   const [config, setConfig] = useState(value || defaultConfig);
@@ -125,7 +128,7 @@ const WorkFlow = ({value, onChange, type, module}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer headTitle="步骤设置" ref={ref} width={850}>
+      <Drawer push={false} headTitle="步骤设置" ref={ref} width={850}>
         <Setps
           type={type}
           module={module}

@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Descriptions, List, Space, Spin, Tag} from 'antd';
-import {useSetState} from 'ahooks';
 import Drawer from '@/components/Drawer';
 import SopDetailList from '@/pages/ReSearch/sop/sopDetail/sopDetailList';
 import {useRequest} from '@/util/Request';
@@ -9,7 +8,8 @@ import Empty from '@/components/Empty';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Modal from '@/components/Modal';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
-import {partsDetail, partsGetBom, partsGetDetails} from '@/pages/Erp/parts/PartsUrl';
+import {partsGetDetails} from '@/pages/Erp/parts/PartsUrl';
+import Detail from '@/pages/ReSearch/Detail';
 
 
 export const Tool = (props) => {
@@ -48,7 +48,7 @@ export const ShipNote = (props) => {
 };
 
 export const SkuShow = (props) => {
-  const {skus = [], onChange, equals,} = props;
+  const {skus = [], onChange, productionType} = props;
 
   const skuIds = [];
   const partIds = [];
@@ -76,13 +76,14 @@ export const SkuShow = (props) => {
   });
 
   useEffect(() => {
-    if (equals && skuIds.length > 0) {
+    console.log(111);
+    if (productionType === 'in' && skuIds.length > 0) {
       run({
         data: {
           skuIds
         },
       });
-    } else if (partIds.length > 0) {
+    } else if (productionType === 'out' && partIds.length > 0) {
       partsRun({
         data: {
           partIds
@@ -90,19 +91,19 @@ export const SkuShow = (props) => {
       });
     }
 
-  }, [skuIds.length, partIds.length]);
+  }, [skuIds.length, partIds.length, productionType]);
 
   if (loading || partsLoading) {
     return <Spin />;
   }
 
-  if (equals ? !data : !partsData) {
+  if (productionType === 'in' ? !data : !partsData) {
     return <Empty />;
   }
 
   return <List
     bordered
-    dataSource={equals ? data : partsData}
+    dataSource={productionType === 'in' ? data : partsData}
     renderItem={(item) => {
       const sku = skus && skus.filter((items) => {
         return items && (items.skuId === item.skuId);
@@ -112,7 +113,7 @@ export const SkuShow = (props) => {
         number = sku[0].num;
       }
 
-      return equals ?
+      return productionType === 'in' ?
         <List.Item>
           <Space direction="vertical">
             <SkuResultSkuJsons skuResult={item} />
@@ -217,6 +218,44 @@ export const Bom = ({value, equals, type, skuId, onChange}) => {
   </>;
 
 };
-;
+
+export const ShowShip = ({ship,skuId}) => {
+
+  const ref = useRef();
+
+  const type = () => {
+    if (ship) {
+      return <Button style={{color: 'green', padding: 0}} type="link" onClick={() => {
+
+      }}>有工艺</Button>;
+    } else {
+      return <Button style={{color: 'blue', padding: 0}} type="link" onClick={() => {
+        ref.current.open(true);
+      }}>无工艺</Button>;
+    }
+  };
+
+  return <>
+    {type()}
+
+    <Drawer
+      bodyStyle={{padding: 0}}
+      push={false}
+      headTitle="添加子工艺路线"
+      height="100%"
+      placement="top"
+      addChildren
+      skuId={skuId}
+      component={Detail}
+      ref={ref}
+      onSuccess={() => {
+
+      }}
+      onBack={() => {
+        ref.current.close();
+      }}
+    />
+  </>;
+};
 
 

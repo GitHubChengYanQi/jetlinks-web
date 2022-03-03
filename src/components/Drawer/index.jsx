@@ -7,6 +7,7 @@ const Drawer = (
     children,
     headTitle,
     push,
+    bodyStyle,
     component: Component,
     width = 600,
     placement,
@@ -38,6 +39,7 @@ const Drawer = (
 
   return (
     <AntDrawer
+      bodyStyle={bodyStyle}
       push={push}
       height={height}
       visible={visible}

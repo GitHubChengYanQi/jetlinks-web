@@ -4,7 +4,7 @@ import {shipSetpDetail} from '@/pages/ReSearch/shipSetp/shipSetpUrl';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 
-const Effects = (setFieldState, setEquals, defaultValue) => {
+const Effects = (setFieldState, defaultValue) => {
 
   FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
     const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
@@ -17,7 +17,6 @@ const Effects = (setFieldState, setEquals, defaultValue) => {
   });
 
   FormEffectHooks.onFieldValueChange$('productionType').subscribe(({value}) => {
-    setEquals(value);
     setFieldState('setpSetDetails', state => {
       state.visible = true;
       state.value = defaultValue ? defaultValue.setpSetDetails : [{}];
@@ -84,6 +83,15 @@ const Effects = (setFieldState, setEquals, defaultValue) => {
       setFieldState('shipNote', state => {
         state.value = res.remark;
       });
+    }
+  });
+
+  FormEffectHooks.onFieldValueChange$('shipSkuId').subscribe(async ({value}) => {
+    if (value) {
+      setFieldState('processRouteId', state => {
+        state.props.skuId = value;
+      });
+
     }
   });
 };

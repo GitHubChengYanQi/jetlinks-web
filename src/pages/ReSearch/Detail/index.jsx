@@ -4,7 +4,15 @@ import {Button, Card, notification, Space} from 'antd';
 import WorkFlow from '@/pages/ReSearch/BOM/WorkFlow';
 import {useRequest} from '@/util/Request';
 
-const Detail = () => {
+const Detail = ({
+  addChildren,
+  skuId,
+  value:id,
+  onSuccess = () => {
+  },
+  onBack = () => {
+  }
+}) => {
 
   const params = useParams();
 
@@ -42,10 +50,10 @@ const Detail = () => {
   });
 
   useEffect(() => {
-    if (params.id && params.id !== 'add') {
+    if (id || params.id && params.id !== 'add') {
       detailRun({
         params: {
-          id: params.id,
+          id: id || params.id,
         }
       });
     }
@@ -57,11 +65,19 @@ const Detail = () => {
       bodyStyle={{padding: 0}}
       extra={<Space>
         <Button loading={loading} type="primary" onClick={() => {
+          if (addChildren) {
+            onSuccess();
+            return;
+          }
           run({
             data: value
           });
         }}>保存</Button>
         <Button onClick={() => {
+          if (addChildren) {
+            onBack();
+            return;
+          }
           history.push('/SPU/processRoute');
         }}>返回</Button>
       </Space>}
@@ -69,7 +85,7 @@ const Detail = () => {
     <Card
       style={{height: '90vh', overflowY: 'auto'}}
     >
-      <WorkFlow value={value} onChange={onChange} />
+      <WorkFlow value={value} skuId={skuId} onChange={onChange} />
     </Card>
   </>;
 };
