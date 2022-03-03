@@ -16,7 +16,7 @@ const Effects = (setFieldState, defaultValue) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('productionType').subscribe(({value}) => {
+  FormEffectHooks.onFieldValueChange$('productionType').subscribe(() => {
     setFieldState('setpSetDetails', state => {
       state.visible = true;
       state.value = defaultValue ? defaultValue.setpSetDetails : [{}];
@@ -88,7 +88,7 @@ const Effects = (setFieldState, defaultValue) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('shipSkuId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('skuId').subscribe(async ({value}) => {
     let res = {};
     if (value) {
       res = await request({...skuDetail, data: {skuId: value}});

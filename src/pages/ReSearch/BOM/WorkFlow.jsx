@@ -19,10 +19,11 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   const defaultConfig = {
     'pkId': 'start',
-    'nodeName': '生产产品1',
+    'nodeName': '生产产品',
     'type': '0',
     'childNode': null,  // 下级步骤
     'conditionNodeList': [], // 分支
+    disabled: skuId,
     stepType: 'shipStart',
     processRoute: {
       skuId
@@ -115,7 +116,10 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   useEffect(() => {
     if (value) {
-      setConfig({...value});
+      setConfig({
+        disabled: true,
+        ...value
+      });
     }
   }, [value]);
 

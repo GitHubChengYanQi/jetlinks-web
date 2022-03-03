@@ -77,6 +77,17 @@ export const Attributes = (props) => {
   return (<SkuConfiguration {...props} />);
 };
 
+export const SelectSpuId = (props) => {
+
+  return (<Select
+    width="100%"
+    data={{type: 1}}
+    placeholder="型号"
+    api={spuListSelect}
+    {...props}
+  />);
+};
+
 export const Spu = (props) => {
 
   useEffect(() => {

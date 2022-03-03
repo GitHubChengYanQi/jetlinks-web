@@ -66,7 +66,8 @@ const SkuTable = (props) => {
 
   useEffect(() => {
     if (skuId) {
-      editParts.current.open(false);
+      // editParts.current.open(false);
+      showShip.current.open(false);
     }
   }, [skuId]);
 
@@ -254,7 +255,7 @@ const SkuTable = (props) => {
 
         <Column />
 
-        <Column title="操作" key={8} dataIndex="isBan" width={200} align="center" render={(value, record) => {
+        <Column title="操作" key={8} dataIndex="skuId" width={200} align="center" render={(value, record) => {
           return (
             <>
               {/*<Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {*/}
@@ -268,14 +269,14 @@ const SkuTable = (props) => {
                 if (record.processRouteResult) {
                   showShip.current.open(record.processRouteResult.processRouteId);
                 } else {
-                  showShip.current.open(false);
+                  setSkuId(value);
                 }
               }}>{record.processRouteResult ? '有' : '无'}工艺</Button>
               <EditButton onClick={() => {
                 ref.current.open(record);
                 setEdit(true);
               }} />
-              <DelButton api={skuDelete} value={record.skuId} onSuccess={() => {
+              <DelButton api={skuDelete} value={value} onSuccess={() => {
                 tableRef.current.refresh();
               }} />
             </>
@@ -367,9 +368,12 @@ const SkuTable = (props) => {
         component={Detail}
         ref={showShip}
         onSuccess={(res) => {
-
+          setSkuId(null);
+          showShip.current.close();
+          tableRef.current.submit();
         }}
         onBack={() => {
+          setSkuId(null);
           showShip.current.close();
         }}
       />

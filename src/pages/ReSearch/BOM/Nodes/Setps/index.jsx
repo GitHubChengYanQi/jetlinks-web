@@ -38,16 +38,42 @@ const Setps = ({
   }
 }) => {
 
-  const [productionType, setProductionType] = useState(defaultValue && defaultValue.productionType);
+  const [disabled, setDisabled] = useState([]);
 
-  const formRef = useRef();
+  const [productionType, setProductionType] = useState(defaultValue && defaultValue.productionType);
 
   return (
     <Form
       labelCol={5}
       wrapperCol={12}
       actions={actions}
-      ref={formRef}
+      onChange={(value) => {
+        let valueDisabled = false;
+        let details;
+        if (value.setpSetDetails) {
+          details = value.setpSetDetails.filter((item) => {
+            if (productionType === 'out') {
+              return !(item && item.partsId && item.skuId && item.num);
+            }
+            return !(item && item.skuId && item.num);
+          }).length === 0;
+        } else {
+          details = false;
+        }
+
+        switch (value.type) {
+          case 'ship':
+            valueDisabled = value.type && value.skuId && value.processRouteId && value.shipNumber;
+            break;
+          case 'setp':
+            valueDisabled = value.type && value.productionType && value.productionStationId && value.shipSetpId && details;
+            break;
+          default:
+            break;
+        }
+
+        setDisabled(!valueDisabled);
+      }}
       defaultValue={defaultValue}
       effects={({setFieldState}) => {
         Effects(setFieldState, defaultValue);
@@ -290,7 +316,7 @@ const Setps = ({
         <div
           style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
           <Space>
-            <Submit>确定</Submit>
+            <Submit disabled={disabled}>确定</Submit>
             <Button onClick={() => {
               onClose();
             }}>取消</Button>

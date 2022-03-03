@@ -5,7 +5,7 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {Button, Card, Descriptions} from 'antd';
 import {useHistory, useParams} from 'ice';
 import {ScanOutlined} from '@ant-design/icons';
@@ -14,8 +14,10 @@ import ProCard from '@ant-design/pro-card';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import {useRequest} from '@/util/Request';
 import Code from '@/pages/Erp/spu/components/Code';
-import PartsList from '@/pages/Erp/parts/PartsList';
 import Empty from '@/components/Empty';
+import ProcessRouteList from '@/pages/ReSearch/ProcessRoute/ProcessRouteList';
+import Modal from '@/components/Modal';
+import AddSku from '@/pages/Erp/Spus/components/AddSku';
 
 
 const SpuDetail = () => {
@@ -23,6 +25,12 @@ const SpuDetail = () => {
   const params = useParams();
 
   const history = useHistory();
+
+  const shipAddRef = useRef();
+
+  const skuSubmit = useRef();
+
+  const addSku = useRef();
 
   const {loading, data} = useRequest(spuDetail, {
     manual: !params.cid,
@@ -33,12 +41,12 @@ const SpuDetail = () => {
     },
   });
 
-  if (!data) {
-    return <Empty />;
-  }
-
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
+  }
+
+  if (!data) {
+    return <Empty />;
   }
 
 
@@ -83,11 +91,32 @@ const SpuDetail = () => {
               <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
             </Descriptions>
           </ProCard>
+          <ProCard className="h2Card" title="工艺列表" headerBordered extra={<Button onClick={() => {
+            addSku.current.open(false);
+          }}>添加工艺路线</Button>}>
+            <ProcessRouteList spuId={params.cid} ref={shipAddRef} />
+          </ProCard>
         </div>
-        <div style={{maxWidth: 1220, margin: 'auto'}}>
-          <PartsList spuId={data.spuId} />
-        </div>
+        {/*<div style={{maxWidth: 1220, margin: 'auto'}}>*/}
+        {/*  <PartsList spuId={data.spuId} />*/}
+        {/*</div>*/}
       </Card>
+
+
+      <Modal
+        component={AddSku}
+        spuId={params.cid}
+        headTitle="添加物料"
+        ref={addSku}
+        compoentRef={skuSubmit}
+        footer={<Button type="primary" onClick={() => {
+          skuSubmit.current.submit();
+        }}>下一步</Button>}
+        onSuccess={(res) => {
+          shipAddRef.current.add(res.data);
+          addSku.current.close();
+        }}
+      />
     </>
   );
 };

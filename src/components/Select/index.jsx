@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Select as AntSelect} from 'antd';
+import {Select as AntSelect, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const Select = (props) => {
@@ -65,30 +65,32 @@ const Select = (props) => {
   return (
     <>
       {
-        !loading
-        &&
-        <AntSelect
-          {...other}
-          bordered={border}
-          options={options || data && data.map((items) => {
-            return {
-              label: items.label || items.title,
-              value: items.value
-            };
-          })}
-          defaultValue={defaultValue}
-          showArrow={showArrow}
-          disabled={disabled}
-          placeholder={placeholder}
-          style={{width: wid}}
-          value={valueArray}
-          onChange={(value, option) => {
-            onChange(value, option);
-          }}
-          allowClear
-          showSearch
-          filterOption={(input, option) => option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        />}
+        loading
+          ?
+          <Spin />
+          :
+          <AntSelect
+            {...other}
+            bordered={border}
+            options={options || data && data.map((items) => {
+              return {
+                label: items.label || items.title,
+                value: items.value
+              };
+            })}
+            defaultValue={defaultValue}
+            showArrow={showArrow}
+            disabled={disabled}
+            placeholder={placeholder}
+            style={{width: wid}}
+            value={valueArray}
+            onChange={(value, option) => {
+              onChange(value, option);
+            }}
+            allowClear
+            showSearch
+            filterOption={(input, option) => option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          />}
     </>
   );
 };

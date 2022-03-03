@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'ice';
 import {Button, Card, notification, Space} from 'antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import WorkFlow from '@/pages/ReSearch/BOM/WorkFlow';
 import {useRequest} from '@/util/Request';
 
@@ -20,7 +21,7 @@ const Detail = ({
 
   const [value, onChange] = useState();
 
-  const {run: detailRun} = useRequest({
+  const {loading: detailLoading, run: detailRun} = useRequest({
     url: '/shipRoute/shipDetail',
     method: 'GET'
   }, {
@@ -62,6 +63,10 @@ const Detail = ({
       });
     }
   }, []);
+
+  if (detailLoading) {
+    return <ProSkeleton type="descriptions" />;
+  }
 
 
   return <>

@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Space} from 'antd';
+import React, {useContext, useEffect} from 'react';
+import {Space, Spin} from 'antd';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import WFC from '@/pages/ReSearch/BOM/OperatorContext';
@@ -14,7 +14,7 @@ function StartNode(props) {
 
   const skuId = props.objRef && props.objRef.processRoute && props.objRef.processRoute.skuId;
 
-  const {data, run} = useRequest(skuDetail, {
+  const {loading, data, run} = useRequest(skuDetail, {
     manual: true,
   });
 
@@ -37,32 +37,37 @@ function StartNode(props) {
       type={0}
       objRef={props.objRef}
       onContentClick={() => {
-        onContentClick();
-      }}
-      title={<span>{props.nodeName || '发起人'}</span>}>
-      <div>
-        {data ?
-          <Space direction="vertical">
-            <BackSkus record={data} />
-            <div>
-              描述:
-              {data.list
-              &&
-              data.list.length > 0
-              &&
-              data.list[0].attributeValues
-                ?
-                <em>({data.list.map((items) => {
-                  return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
-                }).toString()})</em>
-                :
-                '无'}
-            </div>
-          </Space>
-          :
-          '请选择生产物料'
+        if (!props.objRef.disabled) {
+          onContentClick();
         }
-      </div>
+      }}
+      title={<span>{props.nodeName || '生产产品'}</span>}>
+      {loading ?
+        <Spin />
+        :
+        <div>
+          {data ?
+            <Space direction="vertical">
+              <BackSkus record={data} />
+              <div>
+                描述:
+                {data.list
+                &&
+                data.list.length > 0
+                &&
+                data.list[0].attributeValues
+                  ?
+                  <em>({data.list.map((items) => {
+                    return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
+                  }).toString()})</em>
+                  :
+                  '无'}
+              </div>
+            </Space>
+            :
+            '请选择生产物料'
+          }
+        </div>}
       <Icon type="icon-arrow-right" />
     </NodeWrap>);
 }
