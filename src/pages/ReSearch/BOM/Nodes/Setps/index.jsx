@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Form,
   FormItem,
@@ -40,11 +40,14 @@ const Setps = ({
 
   const [productionType, setProductionType] = useState(defaultValue && defaultValue.productionType);
 
+  const formRef = useRef();
+
   return (
     <Form
       labelCol={5}
       wrapperCol={12}
       actions={actions}
+      ref={formRef}
       defaultValue={defaultValue}
       effects={({setFieldState}) => {
         Effects(setFieldState, defaultValue);
@@ -63,7 +66,7 @@ const Setps = ({
             message.warn('请选择物料！');
           }
 
-        } else {
+        } else if (values.type === 'ship') {
           onChange({...values});
         }
 
@@ -121,6 +124,7 @@ const Setps = ({
                     <Space key={index} align="start">
                       <div style={{width: 50}}>
                         <FormItem
+                          visible={false}
                           equals={productionType === 'in'}
                           name={`setpSetDetails.${index}.partsId`}
                           component={Bom}
@@ -260,11 +264,12 @@ const Setps = ({
         <FormItem
           required
           label="产出物料"
-          name="shipSkuId"
+          name="skuId"
           component={SelectSku}
         />
         <FormItem
-          label='工艺路线'
+          visible={false}
+          label="工艺路线"
           name="processRouteId"
           component={ShowShip}
         />

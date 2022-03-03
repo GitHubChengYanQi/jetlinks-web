@@ -46,7 +46,7 @@ const SelectSku = ({
   };
 
   const {loading, data, run} = useRequest({...skuList, data: {skuIds: ids, ...params}}, {
-    debounceInterval: 1000,
+    debounceInterval: 300,
   });
 
   const {run: detail} = useRequest(skuDetail, {

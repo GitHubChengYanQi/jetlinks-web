@@ -1,15 +1,30 @@
-import React, {useContext} from 'react';
-import {Space} from 'antd';
+import React, {useContext, useEffect} from 'react';
+import {Space, Spin} from 'antd';
 import Icon from '@/components/Icon';
 import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import {request, useRequest} from '@/util/Request';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 
 function ApproverNode(props) {
 
   const {onDeleteNode, onSelectNode} = useContext(WFC);
+
+  const {loading, data: skuData, run} = useRequest(skuDetail, {manual: true});
+
+  useEffect(() => {
+    if (props.processRoute && props.processRoute.skuId) {
+      run({
+        data: {
+          skuId: props.processRoute.skuId
+        }
+      });
+    }
+  }, [props.processRoute]);
 
   function delNode() {
     onDeleteNode(props.pRef, props.objRef);
@@ -33,40 +48,41 @@ function ApproverNode(props) {
     onTitleChange={onChange}
   />;
 
-  const content = (data) => {
-    if (!data) {
-      return '请配置';
-    }
-    let type = '';
-    switch (data.type) {
-      case 'setp':
-        type = '工序';
-        break;
-      case 'ship':
-        type = '工艺';
-        break;
-      default:
-        break;
-    }
-    return <Space direction="vertical">
-      <strong>{type}</strong>
-      {
-        data.skuShow
-          ?
-          data.skuShow.map((item, index) => {
-            return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
-              <SkuResultSkuJsons skuResult={item.skuResult} />
-            </div>;
-          })
-          :
-          data.setpSetDetails && data.setpSetDetails.map((item, index) => {
-            return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
-              <SkuResultSkuJsons skuResult={item.skuResult} />
-            </div>;
-          })
+  const content = () => {
 
-      }
-    </Space>;
+    if (!(props.setpSet || props.processRoute)) {
+      return <>请配置</>;
+    }
+
+    switch (props.stepType) {
+      case 'setp':
+        return <Space direction="vertical">
+          <strong>工序</strong>
+          {
+            props.setpSet.skuShow
+              ?
+              props.setpSet.skuShow.map((item, index) => {
+                return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
+                  <SkuResultSkuJsons skuResult={item.skuResult} />
+                </div>;
+              })
+              :
+              props.setpSet.setpSetDetails && props.setpSet.setpSetDetails.map((item, index) => {
+                return <div key={index} style={{borderBottom: 'solid 1px #eee'}}>
+                  <SkuResultSkuJsons skuResult={item.skuResult} />
+                </div>;
+              })
+
+          }
+        </Space>;
+      case 'ship':
+        return <Space direction="vertical">
+          <strong>工艺</strong>
+          {loading ? <Spin /> : <SkuResultSkuJsons skuResult={skuData} />}
+        </Space>;
+      default:
+        return null;
+    }
   };
 
   return (<NodeWrap
@@ -75,7 +91,7 @@ function ApproverNode(props) {
     title={TitleEl}
     objRef={props.objRef}>
     <div>
-      {content(props.setpSet)}
+      {content()}
     </div>
     <Icon type="icon-arrow-right" />
 

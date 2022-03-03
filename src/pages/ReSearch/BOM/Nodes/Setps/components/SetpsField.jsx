@@ -76,7 +76,6 @@ export const SkuShow = (props) => {
   });
 
   useEffect(() => {
-    console.log(111);
     if (productionType === 'in' && skuIds.length > 0) {
       run({
         data: {
@@ -151,42 +150,27 @@ export const SkuShow = (props) => {
   />;
 };
 
-export const Bom = ({value, equals, type, skuId, onChange}) => {
+export const Bom = ({value, equals, skuId, onChange}) => {
 
   const [loading, setLoading] = useState();
-
-  const [bom, setBom] = useState();
-
-  useEffect(() => {
-    if (type) {
-      setBom(type);
-    }
-  }, [type]);
-
-  useEffect(() => {
-    onChange(value);
-  }, [value]);
 
   const refAdd = useRef();
 
   const formRef = useRef();
 
-  if (equals || !skuId) {
+  if (equals) {
     return null;
   }
 
   const bomType = () => {
-    switch (bom) {
-      case 'bom':
-        return <Button style={{color: 'green', padding: 0}} type="link" onClick={() => {
-          refAdd.current.open(false);
-        }}>有BOM</Button>;
-      case 'noBom':
-        return <Button style={{color: 'red', padding: 0}} type="link" onClick={() => {
-          refAdd.current.open(false);
-        }}>无BOM</Button>;
-      default:
-        return null;
+    if (value){
+      return <Button style={{color: 'green', padding: 0}} type="link" onClick={() => {
+        // refAdd.current.open(value);
+      }}>有BOM</Button>;
+    }else {
+      return <Button style={{color: 'red', padding: 0}} type="link" onClick={() => {
+        refAdd.current.open(false);
+      }}>无BOM</Button>;
     }
   };
 
@@ -194,8 +178,9 @@ export const Bom = ({value, equals, type, skuId, onChange}) => {
     {bomType()}
     <Modal
       width={900}
-      type={type}
+      type={1}
       title="清单"
+      bom={{copy:true}}
       defaultValue={{
         item: {skuId}
       }}
@@ -205,7 +190,6 @@ export const Bom = ({value, equals, type, skuId, onChange}) => {
       component={PartsEdit}
       onSuccess={(res) => {
         onChange(res && res.partsId);
-        setBom('bom');
         refAdd.current.close();
       }}
       ref={refAdd}
@@ -219,23 +203,24 @@ export const Bom = ({value, equals, type, skuId, onChange}) => {
 
 };
 
-export const ShowShip = ({ship,skuId}) => {
+export const ShowShip = ({value, skuId,onChange}) => {
 
   const ref = useRef();
 
   const type = () => {
-    if (ship) {
+    if (value) {
       return <Button style={{color: 'green', padding: 0}} type="link" onClick={() => {
-
+        ref.current.open(value);
       }}>有工艺</Button>;
     } else {
       return <Button style={{color: 'blue', padding: 0}} type="link" onClick={() => {
-        ref.current.open(true);
+        ref.current.open(false);
       }}>无工艺</Button>;
     }
   };
 
   return <>
+
     {type()}
 
     <Drawer
@@ -248,8 +233,9 @@ export const ShowShip = ({ship,skuId}) => {
       skuId={skuId}
       component={Detail}
       ref={ref}
-      onSuccess={() => {
-
+      onSuccess={(res) => {
+        onChange(res);
+        ref.current.close();
       }}
       onBack={() => {
         ref.current.close();

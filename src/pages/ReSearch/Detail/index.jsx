@@ -7,7 +7,7 @@ import {useRequest} from '@/util/Request';
 const Detail = ({
   addChildren,
   skuId,
-  value:id,
+  value: id,
   onSuccess = () => {
   },
   onBack = () => {
@@ -36,11 +36,15 @@ const Detail = ({
     method: 'POST',
   }, {
     manual: true,
-    onSuccess: () => {
-      history.push('/SPU/processRoute');
+    onSuccess: (res) => {
       notification.success({
         message: '保存成功！',
       });
+      if (addChildren) {
+        onSuccess(res);
+        return;
+      }
+      history.push('/SPU/processRoute');
     },
     onError: () => {
       notification.success({
@@ -65,10 +69,6 @@ const Detail = ({
       bodyStyle={{padding: 0}}
       extra={<Space>
         <Button loading={loading} type="primary" onClick={() => {
-          if (addChildren) {
-            onSuccess();
-            return;
-          }
           run({
             data: value
           });

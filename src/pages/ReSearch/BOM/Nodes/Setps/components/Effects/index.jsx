@@ -54,9 +54,9 @@ const Effects = (setFieldState, defaultValue) => {
         return `setpSetDetails.${$1}.partsId`;
       }), (state) => {
         if (res) {
-          state.props.type = res.inBom ? 'bom' : 'noBom';
           state.value = res.partsId;
         }
+        state.visible = value;
         state.props.skuId = value;
       }
     );
@@ -65,12 +65,14 @@ const Effects = (setFieldState, defaultValue) => {
 
   FormEffectHooks.onFieldValueChange$('shipSetpId').subscribe(async ({value}) => {
     if (value) {
+
       const res = await request({
         ...shipSetpDetail,
         data: {
           shipSetpId: value
         }
       });
+
       setFieldState('tool', state => {
         state.value = res.binds;
       });
@@ -87,12 +89,15 @@ const Effects = (setFieldState, defaultValue) => {
   });
 
   FormEffectHooks.onFieldValueChange$('shipSkuId').subscribe(async ({value}) => {
+    let res = {};
     if (value) {
-      setFieldState('processRouteId', state => {
-        state.props.skuId = value;
-      });
-
+      res = await request({...skuDetail, data: {skuId: value}});
     }
+    setFieldState('processRouteId', state => {
+      state.props.skuId = value;
+      state.visible = value;
+      state.value = res && res.processRouteResult && res.processRouteResult.processRouteId;
+    });
   });
 };
 

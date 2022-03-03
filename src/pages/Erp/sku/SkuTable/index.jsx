@@ -366,7 +366,7 @@ const SkuTable = (props) => {
         skuId={skuId}
         component={Detail}
         ref={showShip}
-        onSuccess={() => {
+        onSuccess={(res) => {
 
         }}
         onBack={() => {

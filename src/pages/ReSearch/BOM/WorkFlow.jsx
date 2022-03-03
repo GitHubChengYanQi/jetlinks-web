@@ -23,6 +23,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
     'type': '0',
     'childNode': null,  // 下级步骤
     'conditionNodeList': [], // 分支
+    stepType: 'shipStart',
     processRoute: {
       skuId
     }
@@ -132,9 +133,22 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
         <Setps
           type={type}
           module={module}
-          value={currentNode.current && currentNode.current.setpSet}
+          value={currentNode.current && (currentNode.current.stepType === 'setp' ? currentNode.current.setpSet : currentNode.current.processRoute)}
           onChange={(value) => {
-            currentNode.current.setpSet = value;
+            switch (value.type) {
+              case 'ship':
+                currentNode.current.processRoute = {
+                  ...value,
+                  processRouteId: value.processRouteId,
+                };
+                break;
+              case 'setp':
+                currentNode.current.setpSet = value;
+                break;
+              default:
+                break;
+            }
+
             currentNode.current.stepType = value.type;
             ref.current.close();
             updateNode();
