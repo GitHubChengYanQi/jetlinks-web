@@ -58,7 +58,7 @@ ajaxService.interceptors.response.use((response) => {
   }
   return response;
 }, (error) => {
-  message.error('请求超时！');
+  // message.error('请求超时！');
   // if (error.errCode !== 0) {
   throw new Error(error.message);
   // }

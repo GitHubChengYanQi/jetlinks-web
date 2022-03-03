@@ -5,7 +5,7 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Card, Descriptions} from 'antd';
 import {useHistory, useParams} from 'ice';
 import {ScanOutlined} from '@ant-design/icons';
@@ -17,7 +17,8 @@ import Code from '@/pages/Erp/spu/components/Code';
 import Empty from '@/components/Empty';
 import ProcessRouteList from '@/pages/ReSearch/ProcessRoute/ProcessRouteList';
 import Modal from '@/components/Modal';
-import AddSku from '@/pages/Erp/Spus/components/AddSku';
+import PartsEdit from '@/pages/Erp/parts/PartsEdit';
+import SkuTable from '@/pages/Erp/sku/SkuTable';
 
 
 const SpuDetail = () => {
@@ -26,11 +27,11 @@ const SpuDetail = () => {
 
   const history = useHistory();
 
-  const shipAddRef = useRef();
+  const [bomLoading, setBomLoading] = useState();
 
-  const skuSubmit = useRef();
+  const partsAddRef = useRef();
 
-  const addSku = useRef();
+  const formRef = useRef();
 
   const {loading, data} = useRequest(spuDetail, {
     manual: !params.cid,
@@ -41,12 +42,12 @@ const SpuDetail = () => {
     },
   });
 
-  if (loading) {
-    return (<ProSkeleton type="descriptions" />);
-  }
-
   if (!data) {
     return <Empty />;
+  }
+
+  if (loading) {
+    return (<ProSkeleton type="descriptions" />);
   }
 
 
@@ -69,9 +70,9 @@ const SpuDetail = () => {
       <Card title="产品详情" extra={<Button onClick={() => {
         history.goBack();
       }}>返回</Button>}>
-        <div style={{maxWidth: 1220, margin: 'auto'}}>
+        <div style={{margin: 'auto'}}>
           <ProCard className="h2Card" title="详细信息" headerBordered>
-            <Descriptions column={1} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
+            <Descriptions column={4} bordered labelStyle={{width: 170, textAlign: 'right', backgroundColor: '#fff'}}>
               <Descriptions.Item label={<ScanOutlined />}>
                 <Code source="spu" id={data.spuId} />
               </Descriptions.Item>
@@ -91,31 +92,31 @@ const SpuDetail = () => {
               <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
             </Descriptions>
           </ProCard>
-          <ProCard className="h2Card" title="工艺列表" headerBordered extra={<Button onClick={() => {
-            addSku.current.open(false);
-          }}>添加工艺路线</Button>}>
-            <ProcessRouteList spuId={params.cid} ref={shipAddRef} />
+          <ProCard className="h2Card" title="物料列表" headerBordered extra={<Button onClick={() => {
+            partsAddRef.current.open(false);
+          }}>添加BOM</Button>}>
+            <SkuTable spuId={params.cid} />
           </ProCard>
         </div>
-        {/*<div style={{maxWidth: 1220, margin: 'auto'}}>*/}
-        {/*  <PartsList spuId={data.spuId} />*/}
-        {/*</div>*/}
       </Card>
 
 
       <Modal
-        component={AddSku}
-        spuId={params.cid}
-        headTitle="添加物料"
-        ref={addSku}
-        compoentRef={skuSubmit}
-        footer={<Button type="primary" onClick={() => {
-          skuSubmit.current.submit();
-        }}>下一步</Button>}
-        onSuccess={(res) => {
-          shipAddRef.current.add(res.data);
-          addSku.current.close();
+        width={900}
+        title="清单"
+        loading={setBomLoading}
+        compoentRef={formRef}
+        component={PartsEdit}
+        onSuccess={() => {
+          partsAddRef.current.close();
         }}
+        ref={partsAddRef}
+        spuId={params.cid}
+        footer={<>
+          <Button type="primary" loading={bomLoading} onClick={() => {
+            formRef.current.submit();
+          }}>保存</Button>
+        </>}
       />
     </>
   );

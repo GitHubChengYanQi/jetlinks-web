@@ -6,12 +6,10 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Badge, Button, Descriptions, Dropdown, Menu, Radio, Space} from 'antd';
-import ProCard from '@ant-design/pro-card';
-import {DownOutlined} from '@ant-design/icons';
+import {Button, Descriptions, Radio} from 'antd';
 import {createFormActions} from '@formily/antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {partsList, partsRelease} from '../PartsUrl';
+import {backDetails, partsList} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import EditButton from '@/components/EditButton';
@@ -21,7 +19,7 @@ import Table from '@/components/Table';
 import * as SysField from '../PartsField';
 import Form from '@/components/Form';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import {useRequest} from '@/util/Request';
+import {request, useRequest} from '@/util/Request';
 import ShowBOM from '@/pages/Erp/parts/components/ShowBOM';
 import Drawer from '@/components/Drawer';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
@@ -32,7 +30,14 @@ const {FormItem} = Form;
 
 const formActionsPublic = createFormActions();
 
-const PartsList = ({spuId, value, type = 1}) => {
+const PartsList = ({
+  spuId,
+  spuSkuId,
+  value,
+  getPartsId = () => {
+  },
+  type = 1
+}) => {
 
   const refAdd = useRef();
   const formRef = useRef();
@@ -42,6 +47,8 @@ const PartsList = ({spuId, value, type = 1}) => {
   const [radio, setRadio] = useState('1');
 
   const [loading, setLoading] = useState();
+
+  const [key, setKey] = useState([]);
 
   const {loading: skuLoading, data: skuData, run: sku} = useRequest(skuDetail, {manual: true});
 
@@ -56,12 +63,6 @@ const PartsList = ({spuId, value, type = 1}) => {
   }, []);
 
   const [bom, setBom] = useState();
-
-  const {run} = useRequest(partsRelease, {
-    manual: true, onSuccess: () => {
-      tableRef.current.submit();
-    }
-  });
 
   if (skuLoading) {
     return <ProSkeleton type="descriptions" />;
@@ -93,162 +94,138 @@ const PartsList = ({spuId, value, type = 1}) => {
           component={SysField.PartName} />
         <FormItem
           hidden
-          placeholder="请选择物料"
           name="type"
           value={type}
+          component={SysField.PartName} />
+        <FormItem
+          hidden
+          name="status"
+          value={99}
           component={SysField.PartName} />
       </>
     );
   };
 
-  const menu = (record) => {
-
-    return <Menu
-      onClick={({key}) => {
-        switch (key) {
-          case '1':
-            setBom({copy: false, type: 2});
-            break;
-          case '2':
-            setBom({copy: true, type: 2});
-            break;
-          default:
-            break;
-        }
-        refAdd.current.open(record.partsId);
-      }}>
-      <Menu.Item key={1}>
-        <Button type="link">
-          新建
-        </Button>
-      </Menu.Item>
-      <Menu.Item key={2}>
-        <Button type="link">
-          拷贝
-        </Button>
-      </Menu.Item>
-    </Menu>;
-  };
-
-  const table = () => {
-    return <>
-      {value && skuData && <>
-        <Descriptions style={{margin: 24, marginBottom: 0}} column={2} contentStyle={{fontWeight: 700}}>
-          <Descriptions.Item label="编号">{skuData.standard}</Descriptions.Item>
-          <Descriptions.Item label="物料"><BackSkus record={skuData} /></Descriptions.Item>
-          <Descriptions.Item label="描述">
-            {
-              skuData.list
-              &&
-              skuData.list.length > 0
-              &&
-              skuData.list[0].attributeValues
-                ?
-                <em>({skuData.list.map((items) => {
-                  return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
-                }).toString()})</em>
-                :
-                '无'
-            }
-          </Descriptions.Item>
-          <Descriptions.Item>
-            <Radio.Group value={`${radio}`} onChange={(value) => {
-              setRadio(value.target.value);
-              tableRef.current.formActions.setFieldValue('type', value.target.value);
-              tableRef.current.submit();
-            }}>
-              <Radio value="1">设计BOM</Radio>
-              <Radio value="2">生产BOM</Radio>
-            </Radio.Group>
-          </Descriptions.Item>
-        </Descriptions>
-      </>}
-
-      <Table
-        formActions={formActionsPublic}
-        headStyle={{display: (spuId || value) && 'none'}}
-        title={<Breadcrumb title="物料清单" />}
-        actions={action()}
-        contentHeight
-        noRowSelection
-        api={partsList}
-        rowKey="partsId"
-        tableKey="parts"
-        searchForm={searchForm}
-        ref={tableRef}
-      >
-        {!value && <Column title="物料" key={1} dataIndex="skuId" render={(value, record) => {
-          return (<SkuResultSkuJsons skuResult={record.skuResult} />);
-        }} />}
-        <Column title="类型" key={5} dataIndex="type" render={(value, record) => {
-          switch (parseInt(value, 0)) {
-            case 1:
-              return <Badge color={record.display === 0 ? '#eee' : 'green'} text="设计BOM" />;
-            case 2:
-              return <Badge color={record.display === 0 ? '#eee' : 'blue'} text="生产BOM" />;
-            default:
-              break;
-          }
-        }} />
-        <Column title="创建时间" key={6} dataIndex="createTime" render={(value, record) => {
-          return !record.partsDetailId && <>{value}</>;
-        }} />
-        <Column title="创建人" key={7} dataIndex="userResult" render={(value) => {
-          return <>{value && value.name}</>;
-        }} />
-
-        <Column
-          title="操作"
-          key={99}
-          fixed="right"
-          align="center"
-          dataIndex="partsId"
-          width={300}
-          render={(value, record) => {
-            return <>
-              {
-                record.display === 0 ? '历史数据' : <Space>
-                  <>
-                    {record.status !== 99 ?
-                      <Button type="link" onClick={() => {
-                        run({
-                          data: {
-                            partsId: value,
-                          }
-                        });
-                      }}>发布</Button>
-                      :
-                      parseInt(record.type, 0) === 1 && <Dropdown overlay={menu(record)}>
-                        <Button type="link">
-                          新建生产BOM<DownOutlined />
-                        </Button>
-                      </Dropdown>
-                    }
-                    <EditButton onClick={() => {
-                      setBom({type: record.type, copy: true});
-                      refAdd.current.open(value);
-                    }} />
-                  </>
-                </Space>
-              }
-              <Button type="link" onClick={() => {
-                showRef.current.open(record.partsId);
-              }}>详情</Button>
-            </>;
-          }} />
-      </Table>
-    </>;
-  };
-
   return (
     <>
-      {spuId ?
-        <ProCard className="h2Card" title="清单列表" headerBordered extra={action()}>
-          {table()}
-        </ProCard>
-        :
-        table()
-      }
+      <>
+        {value && skuData && <>
+          <Descriptions style={{margin: 24, marginBottom: 0}} column={2} contentStyle={{fontWeight: 700}}>
+            <Descriptions.Item label="编号">{skuData.standard}</Descriptions.Item>
+            <Descriptions.Item label="物料"><BackSkus record={skuData} /></Descriptions.Item>
+            <Descriptions.Item label="描述">
+              {
+                skuData.list
+                &&
+                skuData.list.length > 0
+                &&
+                skuData.list[0].attributeValues
+                  ?
+                  <em>({skuData.list.map((items) => {
+                    return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
+                  }).toString()})</em>
+                  :
+                  '无'
+              }
+            </Descriptions.Item>
+          </Descriptions>
+        </>}
+
+        <Table
+          formActions={formActionsPublic}
+          headStyle={(spuId || value) && {display: 'none'}}
+          title={<Breadcrumb title="物料清单" />}
+          actions={action()}
+          searchForm={searchForm}
+          ref={tableRef}
+          noSort
+          contentHeight
+          noRowSelection
+          api={partsList}
+          rowKey="key"
+          tableKey="parts"
+          isChildren
+          branch={(data) => {
+            return data.map((items) => {
+              return {
+                key: items.partsId,
+                ...items,
+                children: []
+              };
+            });
+          }}
+          expandable={{
+            expandedRowKeys: key,
+            onExpand: async (expand, record) => {
+              if (expand) {
+                const res = await request({...backDetails, params: {id: record.skuId, type}});
+
+                record.children = res && res.length > 0 && res.map((items) => {
+                  return {
+                    key: `${record.key}_${items.skuId}`,
+                    ...items,
+                    children: items.isNull && [],
+                  };
+                });
+
+                setKey([...key, record.key]);
+
+              } else {
+                const array = key.filter((item) => {
+                  return item !== record.key;
+                });
+                setKey(array);
+              }
+            }
+          }}
+        >
+          <Column title="物料" key={1} dataIndex="skuResult" render={(value) => {
+            return (<SkuResultSkuJsons skuResult={value} />);
+          }} />
+          <Column title="数量" key={2} dataIndex="number" render={(value) => {
+            return <>{value || null}</>;
+          }} />
+          <Column title="备注" key={3} visible={spuSkuId && false} dataIndex="note" />
+          <Column title="创建人" key={4} visible={spuSkuId && false} dataIndex="userResult" render={(value) => {
+            return <>{value && value.name}</>;
+          }} />
+          <Column title="创建时间" key={5} visible={spuSkuId && false} dataIndex="createTime" render={(value, record) => {
+            return !record.partsDetailId && <>{value}</>;
+          }} />
+
+          <Column
+            title="操作"
+            key={99}
+            fixed="right"
+            align="center"
+            dataIndex="partsId"
+            width={150}
+            render={(value, record) => {
+              return record.children && <>
+                {
+                  spuSkuId
+                    ?
+                    <Button type="link" onClick={() => {
+                      getPartsId(record.id || value);
+                    }}>拷贝</Button>
+                    :
+                    <>
+                      <EditButton onClick={() => {
+                        refAdd.current.open(record.id || value);
+                      }} />
+                      <Button type="link" onClick={() => {
+                        showRef.current.open(record.id || value);
+                      }}>详情</Button>
+                    </>
+                }
+
+              </>;
+            }} />
+        </Table>
+
+
+      </>
+
       <Modal
         width={900}
         type={type}

@@ -94,7 +94,7 @@ const ShowBOM = ({value: partsId}) => {
       run({
         params: {
           partId: params.id || partsId,
-          type: params.type,
+          type: 1,
         }
       });
     }

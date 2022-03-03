@@ -150,7 +150,7 @@ export const SkuShow = (props) => {
   />;
 };
 
-export const Bom = ({value, equals, skuId, onChange}) => {
+export const Bom = ({value, equals,spuSkuId, skuId, onChange}) => {
 
   const [loading, setLoading] = useState();
 
@@ -165,7 +165,7 @@ export const Bom = ({value, equals, skuId, onChange}) => {
   const bomType = () => {
     if (value){
       return <Button style={{color: 'green', padding: 0}} type="link" onClick={() => {
-        // refAdd.current.open(value);
+        refAdd.current.open(value);
       }}>有BOM</Button>;
     }else {
       return <Button style={{color: 'red', padding: 0}} type="link" onClick={() => {
@@ -187,6 +187,7 @@ export const Bom = ({value, equals, skuId, onChange}) => {
       sku
       loading={setLoading}
       compoentRef={formRef}
+      spuSkuId={spuSkuId}
       component={PartsEdit}
       onSuccess={(res) => {
         onChange(res && res.partsId);

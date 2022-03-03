@@ -32,6 +32,7 @@ const actions = createFormActions();
 
 const Setps = ({
   value: defaultValue,
+  spuSkuId,
   onClose = () => {
   },
   onChange = () => {
@@ -151,6 +152,7 @@ const Setps = ({
                       <div style={{width: 50}}>
                         <FormItem
                           visible={false}
+                          spuSkuId={spuSkuId}
                           equals={productionType === 'in'}
                           name={`setpSetDetails.${index}.partsId`}
                           component={Bom}

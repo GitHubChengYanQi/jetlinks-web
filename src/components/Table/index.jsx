@@ -30,6 +30,7 @@ const TableWarp = ({
   actionButton,
   pageSize,
   noPagination,
+  isChildren,
   contentHeight,
   searchForm,
   cardTitle,
@@ -135,7 +136,7 @@ const TableWarp = ({
       return new Promise((resolve) => {
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
-            return dataSourcedChildren(items);
+            return isChildren ? items : dataSourcedChildren(items);
           }) : [],
           total: response.count,
           current: response.current,
@@ -286,6 +287,9 @@ const TableWarp = ({
 
                 }} />}
               {tableColumn.filter((items) => {
+                if (items && items.props && items.props.visible === false) {
+                  return false;
+                }
                 return !(items && (items.checked === false));
               })}
             </AntdTable>

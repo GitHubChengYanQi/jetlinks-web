@@ -35,7 +35,7 @@ const {baseURI} = config;
 
 const SkuTable = (props) => {
 
-  const {spuClass, ...other} = props;
+  const {spuClass, spuId, ...other} = props;
 
   const [loading, setLoading] = useState();
 
@@ -62,14 +62,6 @@ const SkuTable = (props) => {
       tableRef.current.submit();
     }
   }, [spuClass]);
-
-
-  useEffect(() => {
-    if (skuId) {
-      // editParts.current.open(false);
-      showShip.current.open(false);
-    }
-  }, [skuId]);
 
 
   const actions = () => {
@@ -106,6 +98,11 @@ const SkuTable = (props) => {
           name="spuClass"
           hidden
           component={SysField.SelectSpuClass} />
+        <FormItem
+          name="spuId"
+          hidden
+          value={spuId}
+          component={SysField.SkuName} />
         <FormItem
           name="addMethod"
           hidden
@@ -146,7 +143,10 @@ const SkuTable = (props) => {
   return (
     <>
       <Table
+        pageSize={spuId && 5}
         title={<Breadcrumb />}
+        headStyle={spuId && {display: 'none'}}
+        noRowSelection={spuId}
         api={skuList}
         tableKey="sku"
         actionButton={<Space>
@@ -169,7 +169,7 @@ const SkuTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
-        footer={footer}
+        footer={!spuId && footer}
         onChange={(value, record) => {
           setIds(value);
           setSku(record);
@@ -255,20 +255,22 @@ const SkuTable = (props) => {
 
         <Column />
 
-        <Column title="操作" key={8} dataIndex="skuId" width={200} align="center" render={(value, record) => {
+        <Column title="操作" key={8} dataIndex="skuId" width={300} align="center" render={(value, record) => {
           return (
             <>
-              {/*<Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {*/}
-              {/*  if (record.inBom) {*/}
-              {/*    showParts.current.open(record.skuId);*/}
-              {/*  } else {*/}
-              {/*    setSkuId(record.skuId);*/}
-              {/*  }*/}
-              {/*}}>{record.inBom ? '有' : '无'}BOM</Button>*/}
+              <Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {
+                if (record.inBom) {
+                  editParts.current.open(record.partsId);
+                } else {
+                  editParts.current.open(false);
+                  setSkuId(record.skuId);
+                }
+              }}>{record.inBom ? '有' : '无'}BOM</Button>
               <Button type="link" style={{color: record.processRouteResult ? 'green' : 'blue'}} onClick={() => {
                 if (record.processRouteResult) {
                   showShip.current.open(record.processRouteResult.processRouteId);
                 } else {
+                  showShip.current.open(false);
                   setSkuId(value);
                 }
               }}>{record.processRouteResult ? '有' : '无'}工艺</Button>
@@ -315,17 +317,6 @@ const SkuTable = (props) => {
           >完成</Button>
         </>} />
 
-
-      <Modal
-        width={1200}
-        headTitle="物料清单"
-        component={PartsList}
-        onSuccess={() => {
-          tableRef.current.submit();
-          showParts.current.close();
-        }}
-        ref={showParts}
-      />
 
       <Modal
         width={900}
@@ -377,7 +368,6 @@ const SkuTable = (props) => {
           showShip.current.close();
         }}
       />
-
 
     </>
   );

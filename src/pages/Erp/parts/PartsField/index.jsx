@@ -116,6 +116,10 @@ export const Standard = (props) => {
   return (<Input {...props} />);
 };
 
+export const Bom = (props) => {
+  return (<SelectSku {...props} />);
+};
+
 export const Sku = (props) => {
 
   useEffect(() => {
@@ -124,7 +128,7 @@ export const Sku = (props) => {
     }
   }, [props.type]);
 
-  return (<SelectSku value={props.value && props.value.skuId} disabled={props.disabled} onChange={(value) => {
+  return (<SelectSku width={400} value={props.value && props.value.skuId} disabled={props.disabled} onChange={(value) => {
     props.onChange({skuId: value});
   }} />);
 };
@@ -193,5 +197,9 @@ export const ShowSku = ({value}) => {
       }
     </Descriptions>
   </>;
+};
+
+export const Show = ({value}) => {
+  return <>{value}</>;
 };
 

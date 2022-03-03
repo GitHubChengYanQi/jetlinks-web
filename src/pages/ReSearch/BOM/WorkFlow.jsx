@@ -17,6 +17,9 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   const refStart = useRef();
 
+  // 整机Id
+  const [spuSkuId, setSpuSkuId] = useState();
+
   const defaultConfig = {
     'pkId': 'start',
     'nodeName': '生产产品',
@@ -137,6 +140,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
         <Setps
           type={type}
           module={module}
+          spuSkuId={spuSkuId}
           value={currentNode.current && (currentNode.current.stepType === 'setp' ? currentNode.current.setpSet : currentNode.current.processRoute)}
           onChange={(value) => {
             switch (value.type) {
@@ -170,6 +174,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
           }}
           value={currentNode.current && currentNode.current.processRoute}
           onChange={(value) => {
+            setSpuSkuId(value.skuId);
             currentNode.current.processRoute = value;
             currentNode.current.stepType = 'shipStart';
             refStart.current.close();
