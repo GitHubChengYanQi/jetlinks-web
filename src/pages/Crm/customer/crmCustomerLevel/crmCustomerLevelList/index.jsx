@@ -39,13 +39,6 @@ const CrmCustomerLevelList = () => {
     );
   };
 
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="客户级别" name="level" component={SysField.Level} />
-      </>
-    );
-  };
   const [ids, setIds] = useState([]);
 
   const footer = () => {
@@ -70,13 +63,13 @@ const CrmCustomerLevelList = () => {
         title={<Breadcrumb title="客户级别管理" />}
         api={crmCustomerLevelList}
         rowKey="customerLevelId"
-        searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
         formActions={formActions}
       >
-        <Column title="级别" dataIndex="level" />
+        <Column title="级别名称" dataIndex="level" />
         <Column title="数字级别" dataIndex="rank" />
+        <Column title="级别描述" dataIndex="remake" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           return (

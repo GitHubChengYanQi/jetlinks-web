@@ -13,6 +13,10 @@ import {customerLevelIdSelect} from '../crmCustomerLevelUrl';
 export const CustomerLevelId = (props) => {
   return (<Input {...props} />);
 };
+
+export const Remake = (props) => {
+  return (<Input.TextArea rows={2} {...props} />);
+};
 export const Level = (props) => {
   return (<Input {...props} />);
 };

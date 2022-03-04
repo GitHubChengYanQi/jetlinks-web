@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {crmCustomerLevelDetail, crmCustomerLevelAdd, crmCustomerLevelEdit} from '../crmCustomerLevelUrl';
 import * as SysField from '../crmCustomerLevelField';
@@ -32,6 +31,7 @@ const CrmCustomerLevelEdit = ({...props}) => {
     >
       <FormItem label="级别" name="level" component={SysField.Level} required/>
       <FormItem label="数字级别" name="rank" component={SysField.Rank} required/>
+      <FormItem label="级别描述" name="remake" component={SysField.Remake}/>
     </Form>
   );
 };
