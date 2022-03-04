@@ -5,7 +5,7 @@
  * @Date 2021-10-18 14:14:21
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {CopyOutlined} from '@ant-design/icons';
 import {config, useHistory} from 'ice';
@@ -23,7 +23,6 @@ import Code from '@/pages/Erp/spu/components/Code';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
 import Icon from '@/components/Icon';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
-import PartsList from '@/pages/Erp/parts/PartsList';
 import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
 
@@ -33,7 +32,7 @@ const {FormItem} = Form;
 const {baseURI} = config;
 
 
-const SkuTable = (props) => {
+const SkuTable = ({...props}, ref) => {
 
   const {spuClass, spuId, ...other} = props;
 
@@ -47,14 +46,28 @@ const SkuTable = (props) => {
 
   const [skuId, setSkuId] = useState();
 
-  const ref = useRef(null);
-  const showParts = useRef(null);
+  const addRef = useRef(null);
   const showShip = useRef(null);
   const formRef = useRef(null);
   const addParts = useRef(null);
   const tableRef = useRef(null);
   const history = useHistory(null);
   const editParts = useRef(null);
+
+  const addBom = (id) => {
+    setSkuId(id);
+    editParts.current.open(false);
+  };
+  const addShip = (id) => {
+    setSkuId(id);
+    showShip.current.open(false);
+  };
+
+  useImperativeHandle(ref, () => ({
+    addBom,
+    addShip,
+    refresh: tableRef.current.submit,
+  }));
 
   useEffect(() => {
     if (spuClass) {
@@ -68,7 +81,7 @@ const SkuTable = (props) => {
     return (
       <Space>
         <AddButton onClick={() => {
-          ref.current.open(false);
+          addRef.current.open(false);
           setEdit(false);
         }} />
       </Space>
@@ -143,7 +156,6 @@ const SkuTable = (props) => {
   return (
     <>
       <Table
-        pageSize={spuId && 5}
         title={<Breadcrumb />}
         headStyle={spuId && {display: 'none'}}
         noRowSelection={spuId}
@@ -275,7 +287,7 @@ const SkuTable = (props) => {
                 }
               }}>{record.processRouteResult ? '有' : '无'}工艺</Button>
               <EditButton onClick={() => {
-                ref.current.open(record);
+                addRef.current.open(record);
                 setEdit(true);
               }} />
               <DelButton api={skuDelete} value={value} onSuccess={() => {
@@ -290,15 +302,13 @@ const SkuTable = (props) => {
       <Modal
         title="物料"
         compoentRef={formRef}
-        loading={(load) => {
-          setLoading(load);
-        }}
+        loading={setLoading}
         component={SkuEdit}
         onSuccess={() => {
           tableRef.current.submit();
-          ref.current.close();
+          addRef.current.close();
         }}
-        ref={ref}
+        ref={addRef}
         footer={<>
           {!edit && <Button
             loading={loading}
@@ -335,9 +345,6 @@ const SkuTable = (props) => {
         onSuccess={(res) => {
           setSkuId(null);
           tableRef.current.submit();
-          if (res) {
-            showParts.current.open(res.skuId);
-          }
           editParts.current.close();
         }}
         ref={editParts}
@@ -373,4 +380,4 @@ const SkuTable = (props) => {
   );
 };
 
-export default SkuTable;
+export default React.forwardRef(SkuTable);

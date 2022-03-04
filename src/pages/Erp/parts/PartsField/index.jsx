@@ -5,22 +5,26 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Input,
   InputNumber,
   Select as AntdSelect,
   Radio,
-  Spin, Descriptions,
+  Spin, Descriptions, Button, Space,
 } from 'antd';
+import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
 import * as apiUrl from '../PartsUrl';
-import {partsList, partsListSelect, spuListSelect} from '../PartsUrl';
+import {partsListSelect, spuListSelect} from '../PartsUrl';
 import SelectSpu from '@/pages/Erp/spu/components/SelectSpu';
 import {useRequest} from '@/util/Request';
 import SpuAttribute from '@/pages/Erp/instock/components/SpuAttribute';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
+import Modal from '@/components/Modal';
+import CheckSku from '@/pages/Erp/sku/components/CheckSku';
+import AddSkuTable from '@/pages/Erp/parts/components/AddSkuTable';
 
 export const BrandId = (props) => {
   return (<Select api={apiUrl.brandIdSelect} {...props} />);
@@ -128,9 +132,10 @@ export const Sku = (props) => {
     }
   }, [props.type]);
 
-  return (<SelectSku width={400} value={props.value && props.value.skuId} disabled={props.disabled} onChange={(value) => {
-    props.onChange({skuId: value});
-  }} />);
+  return (
+    <SelectSku width={400} value={props.value && props.value.skuId} disabled={props.disabled} onChange={(value) => {
+      props.onChange({skuId: value});
+    }} />);
 };
 
 export const SkuId = (props) => {
@@ -202,4 +207,66 @@ export const ShowSku = ({value}) => {
 export const Show = ({value}) => {
   return <>{value}</>;
 };
+
+export const AddSku = ({value, onChange, loading, extraButton}) => {
+
+  const skuTableRef = useRef();
+
+  const ref = useRef();
+
+  const addSkuRef = useRef();
+
+  return (<>
+    <ProCard
+      style={{marginTop: 24}}
+      bodyStyle={{padding: 16}}
+      className="h2Card"
+      title="清单列表"
+      headerBordered
+      extra={<Space>
+        {extraButton}
+        <Button onClick={() => {
+          ref.current.open(true);
+        }}>添加物料</Button>
+      </Space>}
+    >
+
+      {
+        loading
+          ?
+          <div style={{textAlign: 'center'}}>
+            <Spin />
+          </div>
+          :
+          <AddSkuTable
+            value={value}
+            ref={skuTableRef}
+            onChange={onChange}
+          />
+      }
+    </ProCard>
+
+    <Modal
+      ref={ref}
+      width={1000}
+      footer={<Space>
+        <Button onClick={() => {
+          const res = addSkuRef.current.check();
+          skuTableRef.current.addDataSource(res);
+        }}>选中</Button>
+        <Button type="primary" onClick={() => {
+          const res = addSkuRef.current.change();
+          skuTableRef.current.addDataSource(res);
+          ref.current.close();
+        }}>选中并关闭</Button>
+      </Space>}
+    >
+      <CheckSku
+        value={value}
+        ref={addSkuRef}
+      />
+    </Modal>
+  </>);
+};
+
 

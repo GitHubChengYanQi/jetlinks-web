@@ -5,9 +5,8 @@ import NodeWrap from '../NodeWrap';
 import TitleElement from '../TitleElement';
 import WFC from '../../OperatorContext';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import {request, useRequest} from '@/util/Request';
+import {useRequest} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
-import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 
 function ApproverNode(props) {
@@ -40,11 +39,22 @@ function ApproverNode(props) {
     props.onContentClick && props.onContentClick();
   }
 
+  const nodeName = () => {
+    switch (props.stepType) {
+      case 'setp':
+        return <>工序</>;
+      case 'ship':
+        return '工艺';
+      default:
+        return null;
+    }
+  };
+
   // TODO: 这里读取props数据
   const TitleEl = <TitleElement
     delNode={props.type === '3' ? props.delBranch : delNode}
-    placeholder="生产过程"
-    nodeName="生产过程"
+    placeholder={nodeName() || '生产过程'}
+    nodeName={nodeName() || '生产过程'}
     onTitleChange={onChange}
   />;
 
@@ -57,7 +67,6 @@ function ApproverNode(props) {
     switch (props.stepType) {
       case 'setp':
         return <Space direction="vertical">
-          <strong>工序</strong>
           {
             props.setpSet.skuShow
               ?
@@ -77,7 +86,6 @@ function ApproverNode(props) {
         </Space>;
       case 'ship':
         return <Space direction="vertical">
-          <strong>工艺</strong>
           {loading ? <Spin /> : <SkuResultSkuJsons skuResult={skuData} />}
         </Space>;
       default:

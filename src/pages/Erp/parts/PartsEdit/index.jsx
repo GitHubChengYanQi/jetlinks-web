@@ -6,13 +6,12 @@
  */
 
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Button, Select, Spin} from 'antd';
-import {createFormActions, FieldList, FormEffectHooks} from '@formily/antd';
-import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import {Button, message, Select} from 'antd';
+import {createFormActions, FormEffectHooks} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import * as SysField from '../PartsField';
 import Form from '@/components/Form';
-import {partsDetail, partsAdd, partsEdit} from '../PartsUrl';
+import {partsDetail, partsAdd} from '../PartsUrl';
 import {Codings} from '@/pages/Erp/sku/skuField';
 import {request, useRequest} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
@@ -70,20 +69,6 @@ const PartsEdit = ({...props}, ref) => {
           }}
           effects={({setFieldState}) => {
 
-            FormEffectHooks.onFieldValueChange$('parts').subscribe(({value}) => {
-              const skuIds = [];
-              value && value.map((item) => {
-                if (item && item.skuId) {
-                  skuIds.push(item.skuId);
-                }
-                return null;
-              });
-
-              setFieldState('parts.*.skuId', state => {
-                state.props.params = {noSkuIds: skuIds};
-              });
-            });
-
             FormEffectHooks.onFieldValueChange$('item').subscribe(async ({value}) => {
               if (value && value.skuId) {
                 const res = await request({...skuDetail, data: {skuId: value.skuId}});
@@ -123,15 +108,14 @@ const PartsEdit = ({...props}, ref) => {
           }
           }
           onSubmit={(value) => {
+            if (value.parts.length === 0) {
+              message.warn('请添加物料清单！');
+              return false;
+            }
             return {...value, type: 1, batch: 0, status: 0};
           }}
         >
-          <ProCard
-            className="h2Card"
-            headerBordered
-            title="基本信息"
-          >
-
+          <ProCard className="h2Card" headerBordered title="基本信息">
             <FormItem
               visible={false}
               label="物料编码"
@@ -197,85 +181,14 @@ const PartsEdit = ({...props}, ref) => {
             </>}
           </ProCard>
 
-          <ProCard
-            className="h2Card"
-            headerBordered
-            title="清单列表"
-            extra={spuSkuId && <Button onClick={() => {
+          <FormItem
+            name="parts"
+            loading={partsLoading}
+            component={SysField.AddSku}
+            extraButton={spuSkuId && <Button onClick={() => {
               partsRef.current.open(spuSkuId);
-            }}>拷贝整机</Button>}
-          >
-            {
-              partsLoading
-                ?
-                <div style={{textAlign:'center'}}>
-                  <Spin />
-                </div>
-                :
-                <FieldList
-                  name="parts"
-                  initialValue={[{}]}
-                >
-                  {({state, mutators}) => {
-                    const onAdd = () => {
-                      mutators.push();
-                    };
-                    return (
-                      <div>
-                        {state.value.map((item, index) => {
-                          const onRemove = index => mutators.remove(index);
-                          return (
-                            <div key={index}>
-                              <div style={{display: 'inline-block', width: '45%'}}>
-                                <FormItem
-                                  labelCol={7}
-                                  label="物料"
-                                  name={`parts.${index}.skuId`}
-                                  component={SysField.SkuId}
-                                  required
-                                />
-                              </div>
-                              <div style={{display: 'inline-block', width: '20%'}}>
-                                <FormItem
-                                  labelCol={9}
-                                  initialValue={1}
-                                  label="数量"
-                                  name={`parts.${index}.number`}
-                                  component={SysField.Number}
-                                  required
-                                />
-                              </div>
-                              <div style={{display: 'inline-block', width: '30%'}}>
-                                <FormItem
-                                  labelCol={7}
-                                  label="备注"
-                                  name={`parts.${index}.note`}
-                                  component={SysField.Name}
-                                />
-                              </div>
-                              <Button
-                                type="link"
-                                disabled={state.value.length === 1}
-                                style={{float: 'right'}}
-                                icon={<DeleteOutlined />}
-                                onClick={() => {
-                                  onRemove(index);
-                                }}
-                                danger
-                              />
-                            </div>
-                          );
-                        })}
-                        <Button
-                          type="dashed"
-                          icon={<PlusOutlined />}
-                          onClick={onAdd}>增加物料</Button>
-                      </div>
-                    );
-                  }}
-                </FieldList>
-            }
-          </ProCard>
+            }}>拷贝BOM</Button>}
+          />
         </Form>
       </div>
 

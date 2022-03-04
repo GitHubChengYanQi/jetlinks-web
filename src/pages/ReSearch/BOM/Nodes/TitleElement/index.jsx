@@ -7,7 +7,7 @@ function TitleElement(props) {
   const input = useRef(null);
   useEffect(() => {
     setTitle(props.nodeName);
-  }, []);
+  }, [props.nodeName]);
 
   function onFocus(e) {
     e.currentTarget.select();

@@ -20,6 +20,12 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
   // 整机Id
   const [spuSkuId, setSpuSkuId] = useState();
 
+  useEffect(() => {
+    if (skuId) {
+      setSpuSkuId(skuId);
+    }
+  }, [skuId]);
+
   const defaultConfig = {
     'pkId': 'start',
     'nodeName': '生产产品',
@@ -119,6 +125,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   useEffect(() => {
     if (value) {
+      setSpuSkuId(value.processRoute.skuId);
       setConfig({
         disabled: true,
         ...value

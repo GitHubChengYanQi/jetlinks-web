@@ -9,8 +9,8 @@ import Table from '@/components/Table';
 import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
 import Form from '@/components/Form';
-import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import SkuDetail from '@/pages/Erp/sku/SkuDetail';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,12 +38,11 @@ const CheckSku = ({
   const tableRef = useRef(null);
 
   const change = () => {
-    onChange(skus.data);
     setSkus({data: []});
+    return skus.data;
   };
 
   const check = () => {
-    onCheck(skus.data);
     setSkus({data: []});
     const array = [];
     skus.data.map((item) => {
@@ -52,8 +51,9 @@ const CheckSku = ({
     value.map((item) => {
       return array.push(item.skuId);
     });
-    tableRef.current.formActions.setFieldValue('noSkuIds',array);
+    tableRef.current.formActions.setFieldValue('noSkuIds', array);
     tableRef.current.submit();
+    return skus.data;
   };
 
   useImperativeHandle(ref, () => ({
@@ -115,7 +115,7 @@ const CheckSku = ({
               array.push({
                 skuId: record.skuId,
                 coding: record.standard,
-                skuResult: <SkuResultSkuJsons skuResult={record} />
+                skuResult: record,
               });
               setSkus({data: array});
             } else {
@@ -136,7 +136,7 @@ const CheckSku = ({
                 return {
                   skuId: item.skuId,
                   coding: item.standard,
-                  skuResult: <SkuResultSkuJsons skuResult={item} />
+                  skuResult: item
                 };
               });
               setSkus({data: skus.data.concat(array)});
@@ -170,7 +170,7 @@ const CheckSku = ({
             return <SkuResultSkuJsons skuResult={record} />;
           }} />
 
-        <Column title="操作" key={8} dataIndex="skuId" width={100} align="center" render={(value, record) => {
+        <Column title="操作" key={8} dataIndex="skuId" width={100} align="center" render={(value) => {
           return <Button type="link" onClick={() => {
             detailRef.current.open(value);
           }}>详情</Button>;

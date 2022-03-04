@@ -204,7 +204,7 @@ export const Region = (props) => {
   return (<Cascader {...props} />);
 };
 
-export const AddSku = ({value, onChange}) => {
+export const AddSku = ({value, onChange,title}) => {
 
   const skuTableRef = useRef();
 
@@ -217,7 +217,7 @@ export const AddSku = ({value, onChange}) => {
       style={{marginTop: 24}}
       bodyStyle={{padding: 16}}
       className="h2Card"
-      title="供应物料"
+      title={title || '供应物料'}
       headerBordered
       extra={<Button onClick={() => {
         ref.current.open(true);

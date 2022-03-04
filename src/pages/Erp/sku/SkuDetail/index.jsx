@@ -58,7 +58,7 @@ const SkuDetail = ({value}) => {
               );
             }}>添加报价</Button>
             <Button onClick={() => {
-              history.push('/SPU/sku');
+              history.goBack();
             }}>返回</Button>
           </Space>} />
       </Card>
