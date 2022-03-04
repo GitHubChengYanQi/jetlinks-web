@@ -4,6 +4,7 @@ import Amap from '@/components/Amap';
 import InputNumber from '@/components/InputNumber';
 
 const AdressMap = ({width,value,onChange,disabled,...props}) => {
+  console.log(value);
 
   const [location, setLocation] = useState(value || {});
 
@@ -24,7 +25,7 @@ const AdressMap = ({width,value,onChange,disabled,...props}) => {
           hidden
           value={location && location.location && location.length > 0 && location[1]}
         />
-        <Amap onChange={(value) => {
+        <Amap value={value} onChange={(value) => {
           setLocation(value);
           onChange({address:value.address,map:value.location,city:value.city});
         }} />

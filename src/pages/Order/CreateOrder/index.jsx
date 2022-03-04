@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProCard from '@ant-design/pro-card';
-import {Affix, Button, Col, Divider, Drawer, message, notification, Row, Space} from 'antd';
+import {Affix, Button, Col, Divider, Drawer, message, notification, Row, Space, Spin} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {getSearchParams, useHistory, useLocation} from 'ice';
+import {getSearchParams, useHistory} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
 import * as SysField from './components/Field';
@@ -18,6 +18,7 @@ import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplat
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
+import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 
 const {FormItem} = Form;
 
@@ -36,7 +37,89 @@ const labelWidth = 128;
 const CreateOrder = ({...props}) => {
 
   const params = getSearchParams();
-  const location = useLocation();
+
+  const formRef = useRef();
+
+  const keys = params.skus && Array.isArray(JSON.parse(params.skus)) && JSON.parse(params.skus);
+
+  const snameSkus = (value) => {
+    let array = [];
+
+    const skuBrand = value.map((item) => {
+      return {
+        skuId: item.skuId,
+        brandId: item.brandId,
+      };
+    });
+
+    const oneSkus = [];
+    let sname = [];
+
+    value.map((item) => {
+      if (
+        skuBrand.filter((value) => {
+          return item.skuId === value.skuId && item.brandId === value.brandId;
+        }).length === 1
+      ) {
+        oneSkus.push(item);
+      } else {
+        let snameSku = null;
+        const sku = [];
+        sname.map((value) => {
+          if (value.skuId === item.skuId && value.brandId === item.brandId) {
+            snameSku = value;
+          } else {
+            sku.push(value);
+          }
+          return null;
+        });
+        if (snameSku) {
+          sname = [...sku, {...snameSku, applyNumber: snameSku.applyNumber + item.applyNumber}];
+        } else {
+          sname.push(item);
+        }
+      }
+      return array = [...oneSkus, ...sname];
+    });
+    return array;
+  };
+
+  const {run: toBuy} = useRequest(toBuyPlanList, {
+    manual: true,
+    onSuccess: (res) => {
+      if (Array.isArray(res)) {
+        const allSku = [];
+        res.map((item) => {
+          return item.children.map((value) => {
+            return allSku.push(value);
+          });
+        });
+
+        const array = allSku.filter((item) => {
+          return keys.includes(item.purchaseListingId);
+        });
+
+        const detail = snameSkus(array.map((item) => {
+          return {
+            skuId: item.skuId,
+            brandId: item.brandId,
+            preordeNumber: item.applyNumber,
+            skuResult: item.skuResult,
+            unitId: item.skuResult && item.skuResult.spuResult && item.skuResult.spuResult.unitId,
+            defaultBrandResult: item.brandResult && item.brandResult.brandName
+          };
+        }));
+        formRef.current.setFieldValue('detailParams', detail);
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (Array.isArray(keys)) {
+      toBuy();
+    }
+  }, []);
+
 
   const module = () => {
     switch (params.module) {
@@ -72,8 +155,6 @@ const CreateOrder = ({...props}) => {
   const {loading, data, refresh} = useRequest({...paymentTemplateListSelect, data: {oftenUser: 1}},);
 
   const [userInfo] = store.useModel('user');
-
-  const formRef = useRef();
 
   const [payPlan, setPayPlan] = useState();
 
@@ -450,7 +531,6 @@ const CreateOrder = ({...props}) => {
         <FormItem
           module={params.module}
           name="detailParams"
-          value={params.state && Array.isArray(JSON.parse(params.state)) && JSON.parse(params.state)}
           component={SysField.AddSku}
         />
       </ProCard>

@@ -1,5 +1,5 @@
 import React, {useImperativeHandle, useRef} from 'react';
-import {Input,  Table as AntTable} from 'antd';
+import {Input, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import {useSetState} from 'ahooks';
 import InputNumber from '@/components/InputNumber';
@@ -17,12 +17,8 @@ const formActionsPublic = createFormActions();
 
 const CheckSku = ({
   value = [],
-  onCheck = () => {
-  },
   type,
   customerId,
-  onChange = () => {
-  }
 }, ref) => {
 
   const [skus, setSkus] = useSetState({
@@ -37,11 +33,11 @@ const CheckSku = ({
   const tableRef = useRef(null);
 
   const change = () => {
-    onChange(skus.data);
+    return skus.data;
   };
 
   const check = () => {
-    onCheck(skus.data);
+    return skus.data;
   };
 
   useImperativeHandle(ref, () => ({
@@ -79,7 +75,7 @@ const CheckSku = ({
       key: record.key,
       skuId: record.skuId,
       coding: record.skuResult.standard,
-      skuResult: <SkuResultSkuJsons skuResult={record.skuResult} />,
+      skuResult: record.skuResult,
       brandId: record.brandId,
       defaultBrandResult: record.brandResult && record.brandResult.brandName,
       preordeNumber: record.applyNumber,

@@ -24,11 +24,6 @@ const Amap = ({title, value, onClose, onChange}) => {
 
   return (
     <>
-      {value &&
-      <div style={{display:'inline-block'}}>
-        <div style={{fontSize: 14, fontWeight: 900}}>{value.name}</div>
-        {value.address}
-      </div>}
       <Button type="text" onClick={() => {
         setVisible(true);
       }}><Icon type='icon-dingwei' />{title || '定位'}</Button>
@@ -43,7 +38,7 @@ const Amap = ({title, value, onClose, onChange}) => {
         title={title}>
         <div style={{height: 'calc(100vh - 90px)'}}>
           <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
-            <AmapSearch ref={mapRef} center={(value)=>{
+            <AmapSearch value={value} ref={mapRef} center={(value)=>{
               setCenter({longitude: value.lgn, latitude: value.lat});
             }} onChange={(value) => {
               setVisible(false);

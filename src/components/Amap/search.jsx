@@ -8,6 +8,7 @@ let MSearch = null;
 let Geocoder = null;
 
 const AmapSearch = ({
+  value: defaultValue,
   __ele__, __map__, onChange = () => {
   }, center
 }, ref) => {
@@ -85,37 +86,46 @@ const AmapSearch = ({
 
 
   useEffect(() => {
-    window.AMap.plugin('AMap.CitySearch', function () {
-      const citySearch = new window.AMap.CitySearch();
-      citySearch.getLocalCity(function (status, result) {
-        if (status === 'complete' && result.info === 'OK') {
-          Geocoder.getLocation(result.city, function (status, result) {
-            if (status === 'complete' && result.info === 'OK') {
-              setadinfo({
-                address: result.geocodes[0].formattedAddress,
-                location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
-                city: result.geocodes[0].addressComponent.city || result.geocodes[0].addressComponent.province
-              });
-              center(
-                {
+
+    if (defaultValue) {
+      const m = {
+        ...defaultValue,
+        location: Array.isArray(defaultValue.map) && defaultValue.map.length > 1 && [defaultValue.map[0], defaultValue.map[1]],
+      };
+      setadinfo(m);
+      setData(m);
+      setCity(defaultValue);
+    } else {
+      window.AMap.plugin('AMap.CitySearch', function () {
+        const citySearch = new window.AMap.CitySearch();
+        citySearch.getLocalCity(function (status, result) {
+          if (status === 'complete' && result.info === 'OK') {
+            Geocoder.getLocation(result.city, function (status, result) {
+              if (status === 'complete' && result.info === 'OK') {
+                setadinfo({
+                  address: result.geocodes[0].formattedAddress,
+                  location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+                  city: result.geocodes[0].addressComponent.city || result.geocodes[0].addressComponent.province
+                });
+                center(
+                  {
+                    lat: result.geocodes[0].location.lat,
+                    lgn: result.geocodes[0].location.lng
+                  }
+                );
+                setMarkerPosition({
                   lat: result.geocodes[0].location.lat,
-                  lgn: result.geocodes[0].location.lng
-                }
-              );
-              setMarkerPosition({
-                lat: result.geocodes[0].location.lat,
-                lng: result.geocodes[0].location.lng
-              });
-              // result中对应详细地理坐标信息
-            }
-          });
-          // 查询成功，result即为当前所在城市信息
-          setCity(result);
-        }
+                  lng: result.geocodes[0].location.lng
+                });
+                // result中对应详细地理坐标信息
+              }
+            });
+            // 查询成功，result即为当前所在城市信息
+            setCity(result);
+          }
+        });
       });
-    });
-
-
+    }
   }, []);
 
   const children = (data) => {
@@ -224,7 +234,7 @@ const AmapSearch = ({
           }}
           onSearch={(e) => {
             MSearch.search(e);
-            if (reslut && reslut.pois && reslut.pois.length > 0){
+            if (reslut && reslut.pois && reslut.pois.length > 0) {
               const m = {
                 address: reslut.pois[0].address,
                 location: [reslut.pois[0].location.lng, reslut.pois[0].location.lat],

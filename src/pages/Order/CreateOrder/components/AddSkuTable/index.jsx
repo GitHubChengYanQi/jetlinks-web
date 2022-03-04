@@ -16,44 +16,22 @@ const AddSkuTable = ({
   module,
   onAddSku = () => {
   }
-}, ref) => {
+}) => {
 
   const SO = module === 'SO';
 
   const [keys, setKeys] = useState([]);
 
-  const [dataSource, setDataSource] = useState(value && value.map((item) => {
-    return {
-      ...item,
-      skuResult: <SkuResultSkuJsons skuResult={item.skuResult} />,
-      coding: item.skuResult && item.skuResult.standard
-    };
-  }) || []);
-
   const {data: brandData} = useRequest(brandIdSelect);
 
   const {data: taxData} = useRequest(taxRateListSelect);
 
-  const dataSources = dataSource.map((item, index) => {
+  const dataSources = value.map((item, index) => {
     return {
       ...item,
       key: index
     };
   });
-
-  const addDataSource = (data) => {
-    onChange([...data]);
-    setDataSource([...data]);
-  };
-
-  const getDataSource = () => {
-    return dataSource;
-  };
-
-  useImperativeHandle(ref, () => ({
-    addDataSource,
-    getDataSource,
-  }));
 
   const setValue = (data, index) => {
     const array = dataSources.map((item) => {
@@ -67,7 +45,6 @@ const AddSkuTable = ({
       }
     });
     onChange(array);
-    setDataSource(array);
   };
 
 
@@ -102,11 +79,10 @@ const AddSkuTable = ({
               const ids = keys.map((item) => {
                 return item.skuId;
               });
-              const array = dataSource.filter((item) => {
+              const array = value.filter((item) => {
                 return !ids.includes(item.skuId);
               });
               onChange(array);
-              setDataSource(array);
               setKeys([]);
             }}
             danger
@@ -127,8 +103,12 @@ const AddSkuTable = ({
       <Table.Column title="序号" width={100} fixed="left" align="center" dataIndex="key" render={(value) => {
         return value + 1;
       }} />
-      <Table.Column title="物料编码" width={200} dataIndex="coding" />
-      <Table.Column title="物料" dataIndex="skuResult" />
+      <Table.Column title="物料编码" width={200} dataIndex="coding" render={(value,record)=>{
+        return value || (record.skuResult && record.skuResult.standard);
+      }} />
+      <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
+        return <SkuResultSkuJsons skuResult={value} />;
+      }} />
       <Table.Column title="品牌 / 厂家" width={400} dataIndex="defaultBrandResult" render={(value, record, index) => {
         return value
           ||

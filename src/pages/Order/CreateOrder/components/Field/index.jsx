@@ -24,7 +24,7 @@ import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 
 
-export const AddSku = ({value, customerId, onChange, module}) => {
+export const AddSku = ({value = [], customerId, onChange, module}) => {
 
   const skuTableRef = useRef();
 
@@ -65,11 +65,11 @@ export const AddSku = ({value, customerId, onChange, module}) => {
     />
 
     <Modal
-      headTitle='添加产品'
+      headTitle="添加产品"
       ref={addSpu}
       width={1000}
       footer={<Space>
-        <Button type='primary' onClick={() => {
+        <Button type="primary" onClick={() => {
           addSpu.current.close();
         }}>选择</Button>
       </Space>}
@@ -82,10 +82,11 @@ export const AddSku = ({value, customerId, onChange, module}) => {
       width={1000}
       footer={<Space>
         <Button onClick={() => {
-          addSkuRef.current.check();
+          onChange(addSkuRef.current.check());
         }}>选中</Button>
         <Button type="primary" onClick={() => {
-          addSkuRef.current.change();
+          onChange(addSkuRef.current.change());
+          addSku.current.close();
         }}>选中并关闭</Button>
       </Space>}
     >
@@ -94,13 +95,6 @@ export const AddSku = ({value, customerId, onChange, module}) => {
         value={value}
         ref={addSkuRef}
         customerId={customerId}
-        onCheck={(value) => {
-          skuTableRef.current.addDataSource(value);
-        }}
-        onChange={(value) => {
-          skuTableRef.current.addDataSource(value);
-          addSku.current.close();
-        }}
       />
     </Modal>
   </>);

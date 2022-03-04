@@ -11,9 +11,7 @@ import {
   Table as AntTable
 } from 'antd';
 import {useHistory} from 'ice';
-import {createFormActions, FormButtonGroup, Reset} from '@formily/antd';
-import {SearchOutlined} from '@ant-design/icons';
-import ProSkeleton from '@ant-design/pro-skeleton';
+import {createFormActions} from '@formily/antd';
 import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
@@ -40,6 +38,8 @@ const ToBuyPlanList = (props) => {
   const [showType, setShowType] = useState('sku');
 
   const [keys, setKeys] = useState([]);
+
+  const [dataSource, setDataSource] = useState([]);
 
   const addQuoteRef = useRef();
 
@@ -99,27 +99,10 @@ const ToBuyPlanList = (props) => {
         brandId: item.brandId,
         preordeNumber: item.applyNumber,
         unitId: item.skuResult && item.skuResult.spuResult && item.skuResult.spuResult.unitId,
-        skuResult: item.skuResult,
         defaultBrandResult: item.brandResult && item.brandResult.brandName
       };
     }));
   };
-
-  const {loading, data, run, refresh} = useRequest(
-    toBuyPlanList,
-    {
-      onSuccess: (res) => {
-        const allSku = [];
-        if (Array.isArray(res)) {
-          res.map((item) => {
-            return item.children.map((value) => {
-              return allSku.push(value);
-            });
-          });
-        }
-        setSkus(allSku);
-      }
-    });
 
   const [visible, setVisible] = useState();
 
@@ -137,31 +120,17 @@ const ToBuyPlanList = (props) => {
       manual: true,
       onSuccess: () => {
         setVisible(false);
-        refresh();
+        tableRef.current.refresh();
         notification.success({
           message: '创建采购计划成功！',
         });
       }
     });
 
-  const dataSource = [];
-  data && data.map((items) => {
-    if (items.applyNumber > 0 && items.skuResult) {
-      dataSource.push({
-        ...items,
-        purchaseListingId: `mainKey:${items.children && items.children.map((items) => {
-          return items.purchaseListingId;
-        }).toString()}`,
-      });
-    }
-    return null;
-  });
-
 
   const getMainKey = (key) => {
     return key.replace('mainKey:', '').split(',');
   };
-
 
   // 操作key
   const selectKeys = (key, checked) => {
@@ -234,7 +203,7 @@ const ToBuyPlanList = (props) => {
       <Button
         type="default"
         onClick={() => {
-          history.push(`/purchase/toBuyPlan/createOrder?module=PO&state=${JSON.stringify(selectedSanme())}`);
+          history.push(`/purchase/toBuyPlan/createOrder?module=PO&skus=${JSON.stringify(keys)}`);
         }}>批量采购</Button>
       {props.ggg && <>
         <Button
@@ -310,10 +279,6 @@ const ToBuyPlanList = (props) => {
   };
 
 
-  if (loading) {
-    return <ProSkeleton type="descriptions" />;
-  }
-
   return <div>
     {
       showType !== 'sku'
@@ -331,27 +296,36 @@ const ToBuyPlanList = (props) => {
         :
         <>
           <Table
-            ref={tableRef}
-            loading={loading}
-            SearchButton={
-              <FormButtonGroup>
-                <Button type="primary" onClick={() => {
-                  const type = tableRef.current.formActions.getFieldValue('type');
-                  const date = tableRef.current.formActions.getFieldValue('date');
-                  const coding = tableRef.current.formActions.getFieldValue('coding');
-                  const all = tableRef.current.formActions.getFieldValue('all');
-                  run({
-                    data: {
-                      type,
-                      date,
-                      coding,
-                      all,
-                    }
+            api={toBuyPlanList}
+            branch={(value) => {
+              if (Array.isArray(value)) {
+                const allSku = [];
+                value.map((item) => {
+                  return item.children.map((value) => {
+                    return allSku.push(value);
                   });
-                }}><SearchOutlined />查询</Button>
-                <Reset>重置</Reset>
-              </FormButtonGroup>
-            }
+                });
+
+                setSkus(allSku);
+
+                const data = [];
+                value.map((items) => {
+                  if (items.applyNumber > 0 && items.skuResult) {
+                    data.push({
+                      ...items,
+                      purchaseListingId: `mainKey:${items.children && items.children.map((items) => {
+                        return items.purchaseListingId;
+                      }).toString()}`,
+                    });
+                  }
+                  return null;
+                });
+                setDataSource(data);
+                return data;
+              }
+              return [];
+            }}
+            ref={tableRef}
             title={<Breadcrumb />}
             formActions={formActionsPublic}
             actions={actions()}
@@ -374,7 +348,6 @@ const ToBuyPlanList = (props) => {
                 selectKeys(record.purchaseListingId, selected);
               }
             }}
-            dataSource={dataSource}
             rowKey="purchaseListingId"
           >
             <Column key={1} title="物料" fixed="left" dataIndex="skuResult" render={(value) => {
