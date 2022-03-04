@@ -1,4 +1,4 @@
-import React, {useImperativeHandle, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
@@ -8,9 +8,7 @@ const AddSkuTable = ({
   value = [],
   onChange = () => {
   }
-}, ref) => {
-
-  console.log(value);
+}) => {
 
   const [keys, setKeys] = useState([]);
 
@@ -35,14 +33,6 @@ const AddSkuTable = ({
     });
     onChange(array);
   };
-
-  const addDataSource = (data) => {
-    onChange([...value, ...data]);
-  };
-
-  useImperativeHandle(ref, () => ({
-    addDataSource,
-  }));
 
 
   return <>
@@ -89,7 +79,7 @@ const AddSkuTable = ({
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
       <Table.Column title="数量" width={100} dataIndex="number" render={(value,record,index) => {
-        return <InputNumber value={value} onChange={(value) => {
+        return <InputNumber value={value} min={1} onChange={(value) => {
           setValue({number:value},index);
         }} />;
       }} />
@@ -111,4 +101,4 @@ const AddSkuTable = ({
   </>;
 };
 
-export default React.forwardRef(AddSkuTable);
+export default AddSkuTable;

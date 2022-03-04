@@ -66,18 +66,19 @@ const AddSku = ({spuId,...props}, ref) => {
         required
       />
 
-      <FormItem label="编码" name="standard" module={0} component={Codings} required />
-      <FormItem
-        label="型号"
-        name="skuName"
-        component={SysField.SkuName}
-        required
-      />
       <FormItem
         label="配置"
         name="sku"
         title="配置项"
         component={SysField.Attributes}
+        required
+      />
+
+      <FormItem label="编码" name="standard" module={0} component={Codings} required />
+      <FormItem
+        label="型号"
+        name="skuName"
+        component={SysField.SkuName}
         required
       />
       <FormItem

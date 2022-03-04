@@ -208,9 +208,7 @@ export const Show = ({value}) => {
   return <>{value}</>;
 };
 
-export const AddSku = ({value, onChange, loading, extraButton}) => {
-
-  const skuTableRef = useRef();
+export const AddSku = ({value = [], onChange, loading, extraButton}) => {
 
   const ref = useRef();
 
@@ -240,7 +238,6 @@ export const AddSku = ({value, onChange, loading, extraButton}) => {
           :
           <AddSkuTable
             value={value}
-            ref={skuTableRef}
             onChange={onChange}
           />
       }
@@ -252,11 +249,11 @@ export const AddSku = ({value, onChange, loading, extraButton}) => {
       footer={<Space>
         <Button onClick={() => {
           const res = addSkuRef.current.check();
-          skuTableRef.current.addDataSource(res);
+          onChange([...value, ...res]);
         }}>选中</Button>
         <Button type="primary" onClick={() => {
           const res = addSkuRef.current.change();
-          skuTableRef.current.addDataSource(res);
+          onChange([...value, ...res]);
           ref.current.close();
         }}>选中并关闭</Button>
       </Space>}

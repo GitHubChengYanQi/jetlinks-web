@@ -447,7 +447,7 @@ export const Url = (props) => {
 
 
 export const BankAccount = (props) => {
-  return (<InputNumber style={{width: 200}} controls={false}  {...props} />);
+  return (<InputNumber style={{width: '100%'}} controls={false}  {...props} />);
 }
 
 ;export const Bank = (props) => {

@@ -112,9 +112,17 @@ const PartsEdit = ({...props}, ref) => {
               message.warn('请添加物料清单！');
               return false;
             }
+            const partsArray = value.parts.filter((item) => {
+              return item.number && item.skuId;
+            });
+            if (partsArray.length !== value.parts.length){
+              message.warn('请添加物料数量！');
+              return false;
+            }
             return {...value, type: 1, batch: 0, status: 0};
           }}
         >
+
           <ProCard className="h2Card" headerBordered title="基本信息">
             <FormItem
               visible={false}

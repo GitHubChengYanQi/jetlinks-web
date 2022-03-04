@@ -306,7 +306,7 @@ const CustomerEdit = ({
                 <Col span={span}>
                   <FormItem
                     label="部门"
-                    placeholder="请选择部门"
+                    placeholder="请输入部门"
                     name="deptName"
                     component={SysField.DeptName}
                   />
@@ -314,7 +314,7 @@ const CustomerEdit = ({
                 <Col span={span}>
                   <FormItem
                     label="职务"
-                    placeholder="请选择职务"
+                    placeholder="请输入职务"
                     name="companyRole"
                     component={SysField.CompanyRoleId}
                   />
@@ -369,8 +369,8 @@ const CustomerEdit = ({
                 </Col>
                 <Col span={span}>
                   <FormItem
-                    label="开户账号"
-                    placeholder="请输入开户账号"
+                    label="银行账号"
+                    placeholder="请输入银行账号"
                     name="bankAccount"
                     component={SysField.BankAccount}
                   />
