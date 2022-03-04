@@ -450,7 +450,7 @@ const CreateOrder = ({...props}) => {
         <FormItem
           module={params.module}
           name="detailParams"
-          value={Array.isArray(JSON.parse(params.state)) && JSON.parse(params.state)}
+          value={params.state && Array.isArray(JSON.parse(params.state)) && JSON.parse(params.state)}
           component={SysField.AddSku}
         />
       </ProCard>
