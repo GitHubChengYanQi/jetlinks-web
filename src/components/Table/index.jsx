@@ -51,6 +51,7 @@ const TableWarp = ({
   onChange,
   getCheckboxProps,
   layout,
+  cardHeaderStyle,
   expandable,
   listHeader = true,
   labelAlign,
@@ -222,7 +223,7 @@ const TableWarp = ({
           <Card
             bordered={bordered || false}
             title={listHeader ? actions : null}
-            headStyle={headStyle}
+            headStyle={headStyle || cardHeaderStyle}
             bodyStyle={bodyStyle}
             extra={<Space>
               {actionButton}

@@ -26,6 +26,7 @@ import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
 import InputNumber from '@/components/InputNumber';
+import BankList from '@/pages/Purshase/bank/bankList';
 
 export const ContactsName = (props) => {
 
@@ -452,7 +453,12 @@ export const BankAccount = (props) => {
 };
 
 export const Bank = (props) => {
-  return (<Select api={bankListSelect} style={{width: 200}}  {...props} />);
+  return (<SetSelectOrCascader
+    api={bankListSelect}
+    width="300"
+    component={BankList}
+    title="新增银行"
+    {...props} />);
 };
 
 export const Industry = (props) => {

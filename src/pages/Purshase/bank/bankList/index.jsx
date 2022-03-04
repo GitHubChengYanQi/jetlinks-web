@@ -6,19 +6,20 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
 import {bankDelete, bankList} from '../bankUrl';
 import BankEdit from '../bankEdit';
-import * as SysField from '../bankField';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const BankList = () => {
   const ref = useRef(null);
@@ -33,22 +34,15 @@ const BankList = () => {
     );
   };
 
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="银行名称" name="bankName" component={SysField.BankName} />
-      </>
-    );
-  };
 
   return (
     <>
       <Table
-        listHeader={false}
+        title={<Breadcrumb />}
+        formActions={formActionsPublic}
         api={bankList}
         rowKey="bankId"
         contentHeight
-        searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >

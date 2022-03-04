@@ -6,11 +6,14 @@
  */
 
 import React, {useImperativeHandle, useRef} from 'react';
+import {createFormActions} from '@formily/antd';
 import Form from '@/components/Form';
 import {bankDetail, bankAdd, bankEdit} from '../bankUrl';
 import * as SysField from '../bankField';
 
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ApiConfig = {
   view: bankDetail,
@@ -30,6 +33,7 @@ const BankEdit = ({NoButton,...props}, ref) => {
     <Form
       {...props}
       ref={formRef}
+      formActions={formActionsPublic}
       NoButton={NoButton}
       api={ApiConfig}
       fieldKey="bankId"
