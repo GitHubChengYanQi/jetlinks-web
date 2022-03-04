@@ -44,7 +44,7 @@ const AmapSearch = ({
   window.AMap.plugin(['AMap.Geocoder'], function () {
     Geocoder = new window.AMap.Geocoder({
       // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-      city: ''
+      city: '',
     });
   });
 
@@ -223,7 +223,16 @@ const AmapSearch = ({
             setVisiable(true);
           }}
           onSearch={(e) => {
-            MSearch.search(e); // 关键字查询
+            MSearch.search(e);
+            if (reslut && reslut.pois && reslut.pois.length > 0){
+              const m = {
+                address: reslut.pois[0].address,
+                location: [reslut.pois[0].location.lng, reslut.pois[0].location.lat],
+                city: reslut.pois[0].cityname
+              };
+              setadinfo(m);
+              setData(reslut.pois[0]);
+            }
           }}
           style={{width: 500, marginRight: 20}}
         />

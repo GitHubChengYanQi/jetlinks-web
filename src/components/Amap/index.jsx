@@ -33,6 +33,7 @@ const Amap = ({title, value, onClose, onChange}) => {
         setVisible(true);
       }}><Icon type='icon-dingwei' />{title || '定位'}</Button>
       <Drawer
+        destroyOnClose
         visible={visible}
         onClose={() => {
           setVisible(false);
