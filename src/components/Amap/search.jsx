@@ -144,7 +144,7 @@ const AmapSearch = ({
         }}
         options={children(data && data.area)}
         defaultValue={[city.city]}
-        onChange={async (value) => {
+        onChange={async (value, options) => {
           let cityId = null;
           value.length > 0 && value.map((items, index) => {
             return cityId = items;
@@ -153,6 +153,9 @@ const AmapSearch = ({
             data: {
               id: cityId
             }
+          });
+          setCity({
+            city: options && options[options.length - 1] && options[options.length - 1].label
           });
           Geocoder.getLocation(city.length > 0 && city[0].title, function (status, result) {
             if (status === 'complete' && result.info === 'OK') {
