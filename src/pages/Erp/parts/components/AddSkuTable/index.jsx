@@ -2,6 +2,7 @@ import React, {useImperativeHandle, useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import InputNumber from '@/components/InputNumber';
 
 const AddSkuTable = ({
   value = [],
@@ -19,6 +20,21 @@ const AddSkuTable = ({
       key: index
     };
   });
+
+
+  const setValue = (data, index) => {
+    const array = dataSources.map((item) => {
+      if (item.key === index) {
+        return {
+          ...item,
+          ...data
+        };
+      } else {
+        return item;
+      }
+    });
+    onChange(array);
+  };
 
   const addDataSource = (data) => {
     onChange([...value, ...data]);
@@ -71,6 +87,11 @@ const AddSkuTable = ({
       <Table.Column title="物料编号" width={200} dataIndex="coding" />
       <Table.Column title="物料" width={800} dataIndex="skuResult" render={(value) => {
         return <SkuResultSkuJsons skuResult={value} />;
+      }} />
+      <Table.Column title="数量" width={800} dataIndex="number" render={(value,record,index) => {
+        return <InputNumber value={value} onChange={(value) => {
+          setValue({number:value},index);
+        }} />;
       }} />
       <Table.Column />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
