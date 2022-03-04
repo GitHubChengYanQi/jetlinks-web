@@ -5,8 +5,8 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Button, Tag} from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {Input, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Button, Tag} from 'antd';
 import moment from 'moment';
 import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
@@ -25,6 +25,7 @@ import Modal from '@/components/Modal';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
+import InputNumber from '@/components/InputNumber';
 
 export const ContactsName = (props) => {
 
@@ -447,7 +448,7 @@ export const Url = (props) => {
 
 
 export const BankAccount = (props) => {
-  return (<InputNumber style={{width: '100%'}} controls={false}  {...props} />);
+  return (<InputNumber style={{width: '100%'}}  {...props} />);
 }
 
 ;export const Bank = (props) => {
