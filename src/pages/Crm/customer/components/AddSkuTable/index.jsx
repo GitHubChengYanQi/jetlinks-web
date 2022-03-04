@@ -1,38 +1,23 @@
-import React, {useImperativeHandle, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {BrandId} from '@/pages/Crm/supply/supplyField';
 
 const AddSkuTable = ({
+  value = [],
   onChange = () => {
   }
-}, ref) => {
+}) => {
 
   const [keys, setKeys] = useState([]);
 
-  const [dataSource, setDataSource] = useState([]);
 
-  const dataSources = dataSource.map((item, index) => {
+  const dataSources = value.map((item, index) => {
     return {
       ...item,
       key: index
     };
   });
-
-  onChange(dataSources);
-
-  const addDataSource = (data) => {
-    setDataSource([...dataSource, ...data]);
-  };
-
-  const getDataSource = () => {
-    return dataSource;
-  };
-
-  useImperativeHandle(ref, () => ({
-    addDataSource,
-    getDataSource,
-  }));
 
 
   return <>
@@ -50,10 +35,10 @@ const AddSkuTable = ({
               const ids = keys.map((item) => {
                 return item.skuId;
               });
-              const array = dataSource.filter((item) => {
+              const array = value.filter((item) => {
                 return !ids.includes(item.skuId);
               });
-              setDataSource(array);
+              onChange(array);
               setKeys([]);
             }}
             danger
@@ -93,7 +78,7 @@ const AddSkuTable = ({
                   return item;
                 }
               });
-              setDataSource(array);
+              onChange(array);
             }} />
         </>;
       }} />
@@ -106,7 +91,7 @@ const AddSkuTable = ({
             const array = dataSources.filter((item) => {
               return item.key !== index;
             });
-            setDataSource(array);
+            onChange(array);
           }}
           danger
         /></>;
@@ -116,4 +101,4 @@ const AddSkuTable = ({
   </>;
 };
 
-export default React.forwardRef(AddSkuTable);
+export default AddSkuTable;

@@ -8,13 +8,11 @@
 import React, {useEffect} from 'react';
 import {
   Input,
-  Spin,
   Tag,
   Select as AntSelect
 } from 'antd';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {useRequest} from '@/util/Request';
-import {supplyListSelect} from '../supplyUrl';
 import {brandListSelect} from '@/pages/Erp/brand/BrandUrl';
 
 export const SkuId = (props) => {
@@ -82,6 +80,9 @@ export const BrandId = (props) => {
     <AntSelect
       mode="multiple"
       showArrow
+      allowClear
+      showSearch
+      filterOption={(input, option) => option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       value={brandBindResults}
       tagRender={tagRender}
       style={{width: '100%',display:displays || null}}

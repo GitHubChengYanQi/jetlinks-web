@@ -636,7 +636,7 @@ const CustomerEdit = ({
                                 label="开户银行"
                                 name={`invoiceParams.${index}.bank`}
                                 placeholder="请输入开户银行"
-                                component={SysField.PhoneNumber}
+                                component={SysField.Bank}
                               />
                             </Col>
                             <Col span={span}>
