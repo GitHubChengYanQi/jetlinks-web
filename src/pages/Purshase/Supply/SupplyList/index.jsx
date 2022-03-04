@@ -28,6 +28,7 @@ import Icon from '@/components/Icon';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import UpdateSort from '@/components/Table/components/UpdateSort';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
+import {Industry} from '@/pages/Crm/customer/CustomerField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -77,7 +78,7 @@ const SupplyList = (props) => {
           {supply === 0 &&
           <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />}
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserName} />
-          <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.IndustryOne} />
+          <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.Industry} />
         </>
       );
     };

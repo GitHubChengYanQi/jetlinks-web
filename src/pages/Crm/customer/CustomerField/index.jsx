@@ -449,11 +449,16 @@ export const Url = (props) => {
 
 export const BankAccount = (props) => {
   return (<InputNumber style={{width: '100%'}}  {...props} />);
-}
+};
 
-;export const Bank = (props) => {
+export const Bank = (props) => {
   return (<Select api={bankListSelect} style={{width: 200}}  {...props} />);
 };
+
+export const Industry = (props) => {
+  return (<Cascader api={apiUrl.crmIndustryTreeView} style={{width: 200}}  {...props} />);
+};
+
 
 
 export const IndustryOne = (props) => {
