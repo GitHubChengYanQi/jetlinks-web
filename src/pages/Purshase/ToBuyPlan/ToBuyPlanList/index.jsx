@@ -226,7 +226,7 @@ const ToBuyPlanList = (props) => {
       <Button
         type="default"
         onClick={() => {
-          history.push({pathname: '/purchase/toBuyPlan/createOrder', state: selectedSanme()});
+          history.push({pathname: '/purchase/order/createOrder?module=PO', state: selectedSanme()});
         }}>批量采购</Button>
       {props.ggg && <>
         <Button

@@ -66,8 +66,8 @@ function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
               <BranchNode
                 {...item} first={index === 0} onBranchClick={onBranchClick} delBranch={() => delBranch(index)}
                 last={index === branches.length - 1} objRef={item} />
-              {item.childNode && <Render pRef={item} config={item.childNode} />}
-              {item.luYou && <Render pRef={item} config={item.luYou} />}
+              {item && item.childNode && <Render pRef={item} config={item.childNode} />}
+              {item && item.luYou && <Render pRef={item} config={item.luYou} />}
               <CoverLine first={index === 0} last={index === branches.length - 1} />
             </div>);
           })}

@@ -1,4 +1,4 @@
-import React, {useImperativeHandle, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {ApplyNumber, BrandId, Date, Note, Time} from '@/pages/Purshase/purchaseAsk/purchaseAskField';
@@ -9,41 +9,20 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 const AddSkuTable = ({
   onChange = () => {
   },
-  value
-}, ref) => {
+  value = [],
+}) => {
 
   const [keys, setKeys] = useState([]);
 
-  const [dataSource, setDataSource] = useState(value && value.map((item) => {
-    return {
-      ...item,
-      skuResult: <SkuResultSkuJsons skuResult={item.skuResult} />,
-      coding: item.skuResult && item.skuResult.standard
-    };
-  }) || []);
-
   const {data} = useRequest(brandIdSelect);
 
-  const dataSources = dataSource.map((item, index) => {
+  const dataSources = value.map((item, index) => {
     return {
       ...item,
       key: index
     };
   });
 
-  const addDataSource = (data) => {
-    onChange([...dataSource, ...data]);
-    setDataSource([...dataSource, ...data]);
-  };
-
-  const getDataSource = () => {
-    return dataSource;
-  };
-
-  useImperativeHandle(ref, () => ({
-    addDataSource,
-    getDataSource,
-  }));
 
   const getValue = (index) => {
     return dataSources.filter((item) => {
@@ -63,7 +42,6 @@ const AddSkuTable = ({
       }
     });
     onChange(array);
-    setDataSource(array);
   };
 
 
@@ -82,11 +60,10 @@ const AddSkuTable = ({
               const ids = keys.map((item) => {
                 return item.skuId;
               });
-              const array = dataSource.filter((item) => {
+              const array = value.filter((item) => {
                 return !ids.includes(item.skuId);
               });
               onChange(array);
-              setDataSource(array);
               setKeys([]);
             }}
             danger
@@ -108,7 +85,9 @@ const AddSkuTable = ({
         return value + 1;
       }} />
       <Table.Column title="物料编号" width={200} dataIndex="coding" />
-      <Table.Column title="物料" width={600} dataIndex="skuResult" />
+      <Table.Column title="物料" width={600} dataIndex="skuResult" render={(value) => {
+        return <SkuResultSkuJsons skuResult={value} />;
+      }} />
       <Table.Column title="品牌" width={300} dataIndex="skuId" render={(skuId, record, index) => {
         return <>
           <BrandId
@@ -162,7 +141,6 @@ const AddSkuTable = ({
               return item.key !== index;
             });
             onChange(array);
-            setDataSource(array);
           }}
           danger
         /></>;
@@ -172,4 +150,4 @@ const AddSkuTable = ({
   </>;
 };
 
-export default React.forwardRef(AddSkuTable);
+export default AddSkuTable;

@@ -95,6 +95,7 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 };
 
 const PurshaseLayout = ({children}) => {
+  console.log(children);
   return (
     <TopLayout
       rightMenu={RightMenu}

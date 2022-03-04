@@ -11,7 +11,7 @@ export const ToBuyPlanRouter = [
   {
     path: '/toBuyPlan/createOrder',
     name: '预购管理',
-    component: lazy(() => import('../../../Order/CreateOrder/index')),
+    component: lazy(() => import('../CreateOrder')),
     fallback: <div>loading...</div>,
     exact: true,
   }

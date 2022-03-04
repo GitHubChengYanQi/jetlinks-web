@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProCard from '@ant-design/pro-card';
-import {Affix, Button, Col, Divider, Drawer, List, message, notification, Row, Space} from 'antd';
+import {Affix, Button, Col, Divider, Drawer, message, notification, Row, Space} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
@@ -36,7 +36,6 @@ const labelWidth = 128;
 const CreateOrder = ({...props}) => {
 
   const params = getSearchParams();
-
 
   const module = () => {
     switch (params.module) {

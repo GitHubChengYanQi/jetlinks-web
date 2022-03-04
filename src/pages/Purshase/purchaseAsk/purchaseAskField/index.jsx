@@ -19,7 +19,7 @@ import CheckSku from '@/pages/Erp/sku/components/CheckSku';
 import AddSkuTable from '@/pages/Purshase/purchaseAsk/components/AddSkuTable';
 import TimePicker from '@/components/TimePicker';
 
-export const AddSku = ({value, onChange}) => {
+export const AddSku = ({value = [], onChange}) => {
 
   const skuTableRef = useRef();
 
@@ -40,7 +40,6 @@ export const AddSku = ({value, onChange}) => {
     >
 
       <AddSkuTable
-        ref={skuTableRef}
         value={value}
         onChange={onChange}
       />
@@ -51,23 +50,17 @@ export const AddSku = ({value, onChange}) => {
       width={1000}
       footer={<Space>
         <Button onClick={() => {
-          addSkuRef.current.check();
+          onChange([...value, ...addSkuRef.current.check()]);
         }}>选中</Button>
         <Button type="primary" onClick={() => {
-          addSkuRef.current.change();
+          onChange([...value, ...addSkuRef.current.change()]);
+          ref.current.close();
         }}>选中并关闭</Button>
       </Space>}
     >
       <CheckSku
         value={value}
         ref={addSkuRef}
-        onCheck={(value) => {
-          skuTableRef.current.addDataSource(value);
-        }}
-        onChange={(value) => {
-          skuTableRef.current.addDataSource(value);
-          ref.current.close();
-        }}
       />
     </Modal>
   </>);
@@ -178,7 +171,7 @@ export const Date = (props) => {
   }} {...props} />);
 };
 export const Time = (props) => {
-  return (<TimePicker {...props}/>);
+  return (<TimePicker {...props} />);
 };
 export const Display = (props) => {
   return (<Input {...props} />);

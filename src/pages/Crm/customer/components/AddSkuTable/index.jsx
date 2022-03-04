@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {BrandId} from '@/pages/Crm/supply/supplyField';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const AddSkuTable = ({
   value = [],
@@ -60,7 +61,9 @@ const AddSkuTable = ({
         return value + 1;
       }} />
       <Table.Column title="物料编号" width={200} dataIndex="coding" />
-      <Table.Column title="物料" width={800} dataIndex="skuResult" />
+      <Table.Column title="物料" width={800} dataIndex="skuResult" render={(value) => {
+        return <SkuResultSkuJsons skuResult={value} />;
+      }} />
       <Table.Column title="品牌" width={400} dataIndex="skuId" render={(skuId, record, index) => {
         return <>
           <BrandId

@@ -94,7 +94,7 @@ function ApproverNode(props) {
   };
 
   return (<NodeWrap
-    titleStyle={{backgroundColor: props.objRef.type === '3' ? '#15bc83' : 'rgb(255, 148, 62)'}}
+    titleStyle={{backgroundColor: props.objRef && props.objRef.type === '3' ? '#15bc83' : 'rgb(255, 148, 62)'}}
     onContentClick={onContentClick}
     title={TitleEl}
     objRef={props.objRef}>
