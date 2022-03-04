@@ -109,7 +109,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
       prev: pRef
     });
 
-    switch (objRef.type) {
+    switch (objRef && objRef.type) {
       case '0':
         refStart.current.open(false);
         break;
@@ -118,6 +118,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
         ref.current.open(true);
         break;
       default:
+        ref.current.open(true);
         break;
     }
 

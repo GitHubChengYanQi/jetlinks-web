@@ -7,7 +7,7 @@ import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 const Effects = (setFieldState, defaultValue) => {
 
   FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
-    const item = ['setp', 'ship', 'audit', 'quality', 'purchase', 'audit_process'];
+    const item = ['setp', 'ship'];
     for (let i = 0; i < item.length; i++) {
       const field = item[i];
       setFieldState(field, state => {

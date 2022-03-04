@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Form,
   FormItem,
@@ -75,7 +75,7 @@ const Setps = ({
 
         setDisabled(!valueDisabled);
       }}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue || {}}
       effects={({setFieldState}) => {
         Effects(setFieldState, defaultValue);
       }}
