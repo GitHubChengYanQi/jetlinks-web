@@ -7,7 +7,7 @@ import Select from '@/components/Select';
 import TreeSelect from '@/components/TreeSelect';
 
 
-const SetSelectOrCascader = ({disabled,options, component, title, moduleType, width, api, ...props}) => {
+const SetSelectOrCascader = ({disabled, options, component, title, moduleType, width, api, tableTitle, ...props}) => {
 
   const ref = useRef();
 
@@ -31,10 +31,13 @@ const SetSelectOrCascader = ({disabled,options, component, title, moduleType, wi
         ref.current.open(false);
         setFalse();
       }}>{title || '设置分类'}</Button>
-      <Modal width={800} {...props} component={component} ref={ref} onClose={() => {
+      <Modal width={800} tableTitle={<strong style={{
+        fontWeight: 500,
+        fontSize: 16
+      }}>{tableTitle}</strong>} {...props} component={component} ref={ref} onClose={() => {
         ref.current.close();
         setTrue();
-      }} onSuccess={()=>{
+      }} onSuccess={() => {
         ref.current.close();
         setTrue();
       }} />

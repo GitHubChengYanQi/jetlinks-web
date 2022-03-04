@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import {Input, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Button, Tag} from 'antd';
+import {Input, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Button, Tag, Popover} from 'antd';
 import moment from 'moment';
 import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
@@ -24,9 +24,12 @@ import {companyRoleList} from '@/pages/Crm/companyRole/companyRoleUrl';
 import Modal from '@/components/Modal';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
-import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
+import {bankAdd, bankListSelect} from '@/pages/Purshase/bank/bankUrl';
 import InputNumber from '@/components/InputNumber';
 import BankList from '@/pages/Purshase/bank/bankList';
+import Drawer from '@/components/Drawer';
+import BankEdit from '@/pages/Purshase/bank/bankEdit';
+import {useBoolean} from 'ahooks';
 
 export const ContactsName = (props) => {
 
@@ -440,16 +443,31 @@ export const Url = (props) => {
 
 
 export const BankAccount = (props) => {
-  return (<InputNumber style={{width: '100%'}}  {...props} />);
+  return (<InputNumber style={{width:'100%'}}  {...props} />);
 };
 
 export const Bank = (props) => {
-  return (<SetSelectOrCascader
-    api={bankListSelect}
-    width="300"
-    component={BankList}
-    title="新增银行"
-    {...props} />);
+
+  const [state, {setTrue, setFalse}] = useBoolean();
+
+  const ref = useRef();
+
+  return (<Space>
+    <Select api={bankListSelect} width='300' resh={state} {...props} />
+    <Button onClick={() => {
+      setFalse();
+      ref.current.open(false);
+    }}>新增银行</Button>
+    <Drawer
+      headTitle="创建银行名称"
+      component={BankEdit}
+      ref={ref}
+      onSuccess={() => {
+        ref.current.close();
+        setTrue();
+      }}
+    />
+  </Space>);
 };
 
 export const Industry = (props) => {

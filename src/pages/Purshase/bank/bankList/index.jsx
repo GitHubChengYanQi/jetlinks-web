@@ -21,7 +21,7 @@ const {Column} = AntTable;
 
 const formActionsPublic = createFormActions();
 
-const BankList = () => {
+const BankList = (props) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -38,10 +38,11 @@ const BankList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb />}
+        title={props.tableTitle || <Breadcrumb />}
         formActions={formActionsPublic}
         api={bankList}
         rowKey="bankId"
+        noRowSelection
         contentHeight
         actions={actions()}
         ref={tableRef}
