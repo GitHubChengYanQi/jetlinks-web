@@ -329,7 +329,7 @@ const SkuTable = ({...props}, ref) => {
 
 
       <Modal
-        width={900}
+        width={1200}
         type={1}
         loading={setLoading}
         headTitle="物料清单"

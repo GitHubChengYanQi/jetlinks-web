@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Card, message, notification, Space} from 'antd';
+import {Affix, Button, Card, message, notification, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
   FormEffectHooks,
@@ -45,21 +45,6 @@ const PurchaseAskEdit = () => {
       </div>
       <Card
         title="创建采购申请"
-        extra={
-          <Space>
-            <Button
-              loading={loading}
-              type="primary"
-              onClick={() => {
-                formRef.current.submit();
-              }}
-            >提交</Button>
-            <Button
-              onClick={() => {
-                history.push('/purchase/purchaseAsk');
-              }}>取消</Button>
-          </Space>
-        }
       >
         <Form
           value={params.id || false}
@@ -140,6 +125,25 @@ const PurchaseAskEdit = () => {
           <FormItem name="purchaseListings" component={SysField.AddSku} />
         </Form>
       </Card>
+
+      <Affix offsetBottom={0}>
+        <div
+          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
+          <Space>
+            <Button
+              loading={loading}
+              type="primary"
+              onClick={() => {
+                formRef.current.submit();
+              }}
+            >提交</Button>
+            <Button
+              onClick={() => {
+                history.push('/purchase/purchaseAsk');
+              }}>取消</Button>
+          </Space>
+        </div>
+      </Affix>
     </>
   );
 };

@@ -177,7 +177,7 @@ export const Bom = ({value, equals,spuSkuId, skuId, onChange}) => {
   return <>
     {bomType()}
     <Modal
-      width={900}
+      width={1200}
       type={1}
       title="清单"
       bom={{copy:true}}

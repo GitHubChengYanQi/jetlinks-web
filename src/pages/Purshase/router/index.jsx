@@ -27,9 +27,9 @@ const PurshaseRouterConfig = [
         fallback: <div>loading...</div>,
         exact: true,
       },
-      // {
-      //   redirect: '/purchase/supply',
-      // },
+      {
+        redirect: '/purchase/supply',
+      },
     ]
   }
 ];

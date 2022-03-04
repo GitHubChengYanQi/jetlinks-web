@@ -49,8 +49,15 @@ const AddSku = ({spuId,...props}, ref) => {
               });
             }
           }
+        });
+
+        FormEffectHooks.onFieldValueChange$('sku').subscribe(async ({value}) => {
+          if (value) {
+            console.log(value);
+          }
 
         });
+
       }}
       onSubmit={(value) => {
         return value;

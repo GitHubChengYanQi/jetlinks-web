@@ -4,7 +4,7 @@ import {Affix, Button, Col, Divider, Drawer, message, notification, Row, Space} 
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {getSearchParams, useHistory} from 'ice';
+import {getSearchParams, useHistory, useLocation} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
 import * as SysField from './components/Field';
@@ -36,6 +36,7 @@ const labelWidth = 128;
 const CreateOrder = ({...props}) => {
 
   const params = getSearchParams();
+  const location = useLocation();
 
   const module = () => {
     switch (params.module) {
@@ -63,8 +64,6 @@ const CreateOrder = ({...props}) => {
         break;
     }
   };
-
-  const state = props.location.state;
 
   const ref = useRef();
 
@@ -451,16 +450,7 @@ const CreateOrder = ({...props}) => {
         <FormItem
           module={params.module}
           name="detailParams"
-          value={Array.isArray(state) && state.map((item) => {
-            return {
-              skuId: item.skuId,
-              skuResult: item.skuResult,
-              brandId: item.brandId,
-              defaultBrandResult: item.brandResult && item.brandResult.brandName,
-              preordeNumber: item.applyNumber,
-              unitId: item.skuResult && item.skuResult.spuResult && item.skuResult.spuResult.unitId,
-            };
-          })}
+          value={Array.isArray(JSON.parse(params.state)) && JSON.parse(params.state)}
           component={SysField.AddSku}
         />
       </ProCard>

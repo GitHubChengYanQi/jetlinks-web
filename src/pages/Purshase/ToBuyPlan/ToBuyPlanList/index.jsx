@@ -93,13 +93,21 @@ const ToBuyPlanList = (props) => {
     const array = skus.filter((item) => {
       return keys.includes(item.purchaseListingId);
     });
-    return snameSkus(array);
+    return snameSkus(array.map((item) => {
+      return {
+        skuId: item.skuId,
+        brandId: item.brandId,
+        preordeNumber: item.applyNumber,
+        unitId: item.skuResult && item.skuResult.spuResult && item.skuResult.spuResult.unitId,
+        skuResult: item.skuResult,
+        defaultBrandResult: item.brandResult && item.brandResult.brandName
+      };
+    }));
   };
 
   const {loading, data, run, refresh} = useRequest(
     toBuyPlanList,
     {
-      manual: true,
       onSuccess: (res) => {
         const allSku = [];
         if (Array.isArray(res)) {
@@ -226,7 +234,7 @@ const ToBuyPlanList = (props) => {
       <Button
         type="default"
         onClick={() => {
-          history.push({pathname: '/purchase/order/createOrder?module=PO', state: selectedSanme()});
+          history.push(`/purchase/toBuyPlan/createOrder?module=PO&state=${JSON.stringify(selectedSanme())}`);
         }}>批量采购</Button>
       {props.ggg && <>
         <Button
@@ -301,10 +309,6 @@ const ToBuyPlanList = (props) => {
     );
   };
 
-
-  useEffect(() => {
-    run();
-  }, []);
 
   if (loading) {
     return <ProSkeleton type="descriptions" />;

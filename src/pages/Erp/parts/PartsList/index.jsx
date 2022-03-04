@@ -227,7 +227,7 @@ const PartsList = ({
       </>
 
       <Modal
-        width={900}
+        width={1200}
         type={type}
         title="清单"
         bom={bom}

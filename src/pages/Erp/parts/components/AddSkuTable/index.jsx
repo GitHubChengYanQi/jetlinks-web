@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Table} from 'antd';
+import {Button, Input, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import InputNumber from '@/components/InputNumber';
@@ -81,6 +81,11 @@ const AddSkuTable = ({
       <Table.Column title="数量" width={100} dataIndex="number" render={(value,record,index) => {
         return <InputNumber value={value} min={1} onChange={(value) => {
           setValue({number:value},index);
+        }} />;
+      }} />
+      <Table.Column title="备注" dataIndex="note" render={(value,record,index) => {
+        return <Input.TextArea rows={1} value={value}  onChange={(value) => {
+          setValue({note:value.target.value},index);
         }} />;
       }} />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
