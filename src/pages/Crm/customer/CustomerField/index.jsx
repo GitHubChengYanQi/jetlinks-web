@@ -205,7 +205,7 @@ export const Region = (props) => {
   return (<Cascader {...props} />);
 };
 
-export const AddSku = ({value, onChange,title}) => {
+export const AddSku = ({value, onChange, title}) => {
 
   const skuTableRef = useRef();
 
@@ -292,7 +292,7 @@ export const CustomerName = (props) => {
     <AutoComplete
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={value && [{
+      options={value && options.length > 0 && [{
         label: '已存在供应商',
         options
       }]}
@@ -458,7 +458,6 @@ export const Bank = (props) => {
 export const Industry = (props) => {
   return (<Cascader api={apiUrl.crmIndustryTreeView} style={{width: 200}}  {...props} />);
 };
-
 
 
 export const IndustryOne = (props) => {
