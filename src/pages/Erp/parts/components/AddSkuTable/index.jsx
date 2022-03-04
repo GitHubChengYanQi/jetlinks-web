@@ -81,19 +81,18 @@ const AddSkuTable = ({
         }
       }}
     >
-      <Table.Column title="序号" width={100} align="center" dataIndex="key" render={(value) => {
+      <Table.Column title="序号" width={70} align="center" dataIndex="key" render={(value) => {
         return value + 1;
       }} />
       <Table.Column title="物料编号" width={200} dataIndex="coding" />
-      <Table.Column title="物料" width={800} dataIndex="skuResult" render={(value) => {
+      <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
-      <Table.Column title="数量" width={800} dataIndex="number" render={(value,record,index) => {
+      <Table.Column title="数量" width={100} dataIndex="number" render={(value,record,index) => {
         return <InputNumber value={value} onChange={(value) => {
           setValue({number:value},index);
         }} />;
       }} />
-      <Table.Column />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
         return <><Button
           type="link"
