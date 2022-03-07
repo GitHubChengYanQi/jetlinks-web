@@ -15,7 +15,7 @@ const AddProcess = ({value, onChange, onClose}) => {
     >
 
 
-      <Form.Item name="skuId" label="生产物料" rules={[{required: true, message: '请选择生产物料！'}]}>
+      <Form.Item name="skuId" label="适用物料" rules={[{required: true, message: '请选择适用物料'}]}>
         <SelectSku />
       </Form.Item>
 
