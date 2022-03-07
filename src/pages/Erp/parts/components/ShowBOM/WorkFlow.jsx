@@ -13,7 +13,7 @@ const WorkFlow = ({value, onChange}) => {
 
   const defaultConfig = {
     'pkId': 'start',
-    'nodeName': '生产产品',
+    'nodeName': '适用物料',
     'type': '0',
     'childNode': null,  // 下级步骤
     'conditionNodeList': [] // 分支

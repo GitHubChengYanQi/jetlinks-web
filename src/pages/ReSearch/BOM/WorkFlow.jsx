@@ -28,7 +28,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   const defaultConfig = {
     'pkId': 'start',
-    'nodeName': '生产产品',
+    'nodeName': '适用物料',
     'type': '0',
     'childNode': null,  // 下级步骤
     'conditionNodeList': [], // 分支
@@ -175,7 +175,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
         />
       </Drawer>
 
-      <Drawer headTitle="生产产品" ref={refStart} width={800}>
+      <Drawer headTitle="适用物料" ref={refStart} width={800}>
         <AddProcess
           onClose={() => {
             refStart.current.close();

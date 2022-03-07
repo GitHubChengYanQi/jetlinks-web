@@ -41,7 +41,7 @@ function StartNode(props) {
           onContentClick();
         }
       }}
-      title={<span>{props.nodeName || '生产产品'}</span>}>
+      title={<span>{props.nodeName || '适用物料'}</span>}>
       {loading ?
         <Spin />
         :
@@ -65,7 +65,7 @@ function StartNode(props) {
               </div>
             </Space>
             :
-            '请选择生产物料'
+            '请选择适用物料'
           }
         </div>}
       <Icon type="icon-arrow-right" />
