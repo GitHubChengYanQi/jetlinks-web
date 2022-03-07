@@ -41,7 +41,7 @@ function StartNode(props) {
           onContentClick();
         }
       }}
-      title={<span>{props.nodeName || '生产产品'}</span>}>
+      title={<span>{props.nodeName || '适用物料'}</span>}>
       {loading ?
         <Spin />
         :
