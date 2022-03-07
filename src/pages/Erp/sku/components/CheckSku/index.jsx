@@ -18,16 +18,13 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const CheckSku = ({
+  noCreate,
   value = [],
-  onCheck = () => {
-  },
-  onChange = () => {
-  }
 }, ref) => {
 
   const [loading, setLoading] = useState();
 
-  const [skus, setSkus] = useSetState({data: []});
+  const [skus, setSkus] = useSetState({data: value || []});
 
   const refAdd = useRef(null);
 
@@ -38,21 +35,10 @@ const CheckSku = ({
   const tableRef = useRef(null);
 
   const change = () => {
-    setSkus({data: []});
     return skus.data;
   };
 
   const check = () => {
-    setSkus({data: []});
-    const array = [];
-    skus.data.map((item) => {
-      return array.push(item.skuId);
-    });
-    value.map((item) => {
-      return array.push(item.skuId);
-    });
-    tableRef.current.formActions.setFieldValue('noSkuIds', array);
-    tableRef.current.submit();
     return skus.data;
   };
 
@@ -75,13 +61,6 @@ const CheckSku = ({
           placeholder="请输入 名称 / 型号 / 编码"
           name="skuName"
           component={SysField.SelectSkuName} />
-        <FormItem
-          hidden
-          name="noSkuIds"
-          value={value && value.map((item) => {
-            return item.skuId;
-          })}
-          component={SysField.SelectSkuName} />
       </>
     );
   };
@@ -96,9 +75,9 @@ const CheckSku = ({
         formActions={formActionsPublic}
         SearchButton={<Space>
           <Submit><SearchOutlined />查询</Submit>
-          <Button onClick={() => {
+          {!noCreate && <Button onClick={() => {
             refAdd.current.open(false);
-          }}>创建物料</Button>
+          }}>创建物料</Button>}
         </Space>}
         rowKey="skuId"
         pageSize={5}

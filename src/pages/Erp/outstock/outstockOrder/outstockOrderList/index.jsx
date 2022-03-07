@@ -6,8 +6,8 @@
  */
 
 import React, {useRef} from 'react';
+import {Badge, Button, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
-import {Badge, Button, Descriptions, Table as AntTable} from 'antd';
 import AddButton from '@/components/AddButton';
 import Breadcrumb from '@/components/Breadcrumb';
 import OutstockList from '@/pages/Erp/outstock/OutstockList';
@@ -15,7 +15,6 @@ import Modal from '@/components/Modal';
 import {outstockOrderList} from '../outstockOrderUrl';
 import OutstockOrderEdit from '../outstockOrderEdit';
 import Code from '@/pages/Erp/spu/components/Code';
-import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 
@@ -81,7 +80,7 @@ const OutstockOrderList = () => {
         <Column title="备注" dataIndex="note" />
         <Column />
       </Table>
-      <Modal width={1000} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
+      <Modal width={1500} title="出库单" component={OutstockOrderEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

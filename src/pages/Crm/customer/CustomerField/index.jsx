@@ -30,6 +30,9 @@ import BankList from '@/pages/Purshase/bank/bankList';
 import Drawer from '@/components/Drawer';
 import BankEdit from '@/pages/Purshase/bank/bankEdit';
 import {useBoolean} from 'ahooks';
+import NumberText from '@/components/NumberText';
+import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
+import UpLoadImg from '@/components/Upload';
 
 export const ContactsName = (props) => {
 
@@ -230,6 +233,7 @@ export const AddSku = ({value = [], onChange, title}) => {
         value={value}
         onChange={onChange}
       />
+
     </ProCard>
 
     <Modal
@@ -237,10 +241,10 @@ export const AddSku = ({value = [], onChange, title}) => {
       width={1000}
       footer={<Space>
         <Button onClick={() => {
-          onChange([...value, ...addSkuRef.current.check()]);
+          onChange(addSkuRef.current.check());
         }}>选中</Button>
         <Button type="primary" onClick={() => {
-          onChange([...value, ...addSkuRef.current.change()]);
+          onChange(addSkuRef.current.change());
           ref.current.close();
         }}>选中并关闭</Button>
       </Space>}
@@ -441,9 +445,13 @@ export const Url = (props) => {
   return (<Input   {...props} />);
 };
 
+export const Avatar = (props) => {
+  return (<UpLoadImg text='格式支持：JPG/PNG格式，单个文件不能超过20MB' imageType={['JPG','PNG','jpg','png']}  {...props} />);
+};
+
 
 export const BankAccount = (props) => {
-  return (<InputNumber style={{width:'100%'}}  {...props} />);
+  return (<Input style={{width: '100%'}}  {...props} />);
 };
 
 export const Bank = (props) => {
@@ -453,7 +461,7 @@ export const Bank = (props) => {
   const ref = useRef();
 
   return (<Space>
-    <Select api={bankListSelect} width='300' resh={state} {...props} />
+    <Select api={bankListSelect} width="300" resh={state} {...props} />
     <Button onClick={() => {
       setFalse();
       ref.current.open(false);

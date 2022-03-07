@@ -249,11 +249,11 @@ export const AddSku = ({value = [], onChange, loading, extraButton}) => {
       footer={<Space>
         <Button onClick={() => {
           const res = addSkuRef.current.check();
-          onChange([...value, ...res]);
+          onChange(res);
         }}>选中</Button>
         <Button type="primary" onClick={() => {
           const res = addSkuRef.current.change();
-          onChange([...value, ...res]);
+          onChange(res);
           ref.current.close();
         }}>选中并关闭</Button>
       </Space>}

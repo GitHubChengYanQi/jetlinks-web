@@ -50,10 +50,10 @@ export const AddSku = ({value = [], onChange}) => {
       width={1000}
       footer={<Space>
         <Button onClick={() => {
-          onChange([...value, ...addSkuRef.current.check()]);
+          onChange(addSkuRef.current.check());
         }}>选中</Button>
         <Button type="primary" onClick={() => {
-          onChange([...value, ...addSkuRef.current.change()]);
+          onChange(addSkuRef.current.change());
           ref.current.close();
         }}>选中并关闭</Button>
       </Space>}

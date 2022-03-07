@@ -80,8 +80,8 @@ const Cascader = (props) => {
   };
 
   const childrenData = (dataSources) => {
-    if (!Array.isArray(dataSources)) {
-      return [];
+    if (!Array.isArray(dataSources) || dataSources.length === 0) {
+      return null;
     }
     return dataSources.map((item) => {
       return {
@@ -104,7 +104,7 @@ const Cascader = (props) => {
     loading={loading}
     style={{width}}
     changeOnSelect={changeOnSelect}
-    options={childrenData(dataSources)}
+    options={childrenData(dataSources) || []}
     value={valueArray}
     placeholder={placeholder}
     onChange={change}

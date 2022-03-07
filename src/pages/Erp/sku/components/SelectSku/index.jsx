@@ -16,6 +16,7 @@ const SelectSku = ({
   placeholder,
   params,
   skuIds,
+  noAdd,
   disabled,
   ids,
   spu
@@ -149,14 +150,14 @@ const SelectSku = ({
           }
 
         }}>
-        <Select.Option
+        {!noAdd && <Select.Option
           key="add"
           title="新增物料"
           value="add">
           <a>
             新增物料
           </a>
-        </Select.Option>
+        </Select.Option>}
         {options && options.map((items) => {
           return (
             <Select.Option

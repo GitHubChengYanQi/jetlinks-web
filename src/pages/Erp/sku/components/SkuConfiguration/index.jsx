@@ -2,12 +2,57 @@ import React, {useState} from 'react';
 import {AutoComplete, Button, Input, Space} from 'antd';
 import {useSetState} from 'ahooks';
 import {DeleteOutlined} from '@ant-design/icons';
+import {useRequest} from '@/util/Request';
 
-const SkuConfiguration = ({value, onChange,title, category, details}) => {
+const SkuConfiguration = ({
+  value,
+  onChange = () => {
+  },
+  title,
+  spuId,
+  category,
+  details,
+  onGetSku = () => {
+  }
+}) => {
 
   const [datas, setDatas] = useSetState({data: value || []});
 
   const [visible, setVisible] = useState(-1);
+
+  const {run} = useRequest({
+    url: '/sku/skuByMd5',
+    method: 'POST',
+  }, {
+    manual: true,
+    onSuccess: (res) => {
+      if (Array.isArray(res) && res.length > 0) {
+        onGetSku(res[0]);
+      } else {
+        onGetSku(null);
+      }
+    }
+  });
+
+  const change = (array) => {
+    if (spuId){
+      const sku = array.filter((item) => {
+        return item.label && item.value;
+      });
+
+      if (sku.length > 0) {
+        run({
+          data: {
+            spuId,
+            sku
+          }
+        });
+      }
+    }
+
+    onChange(array);
+    setDatas({data: array});
+  };
 
   const optionsValue = (items) => {
 
@@ -131,13 +176,11 @@ const SkuConfiguration = ({value, onChange,title, category, details}) => {
                   if (value) {
                     const array = datas.data;
                     array[index] = {...array[index], label: value};
-                    onChange(array);
-                    setDatas({data: array});
+                    change(array);
                   } else {
                     const array = datas.data;
                     array[index] = {label: null, value: null};
-                    onChange(array);
-                    setDatas({data: array});
+                    change(array);
                   }
                 }}
               >
@@ -146,8 +189,7 @@ const SkuConfiguration = ({value, onChange,title, category, details}) => {
 
               <Button type="link" hidden={visible === -1 || visible !== index} style={{padding: 0}} onClick={() => {
                 datas.data.splice(index, 1);
-                onChange(datas.data);
-                setDatas({data: datas.data});
+                change(datas.data);
               }}>
                 <DeleteOutlined />
               </Button>
@@ -163,8 +205,7 @@ const SkuConfiguration = ({value, onChange,title, category, details}) => {
                 onChange={(value) => {
                   const array = datas.data;
                   array[index] = {...array[index], value};
-                  onChange(array);
-                  setDatas({data: array});
+                  change(array);
                 }}
               >
                 <Input />

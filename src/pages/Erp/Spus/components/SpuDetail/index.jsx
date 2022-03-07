@@ -5,7 +5,7 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Card, Descriptions} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -45,12 +45,14 @@ const SpuDetail = () => {
     },
   });
 
-  if (!data) {
-    return <Empty />;
-  }
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
+  }
+
+
+  if (!data) {
+    return <Empty />;
   }
 
 

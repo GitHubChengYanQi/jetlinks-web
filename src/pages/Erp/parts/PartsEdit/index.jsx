@@ -115,7 +115,7 @@ const PartsEdit = ({...props}, ref) => {
             const partsArray = value.parts.filter((item) => {
               return item.number && item.skuId;
             });
-            if (partsArray.length !== value.parts.length){
+            if (partsArray.length !== value.parts.length) {
               message.warn('请添加物料数量！');
               return false;
             }
@@ -201,7 +201,7 @@ const PartsEdit = ({...props}, ref) => {
       </div>
 
       <Modal
-        headTitle="拷贝整机"
+        headTitle="拷贝BOM"
         width={800}
         spuSkuId
         component={PartsList}

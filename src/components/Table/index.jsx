@@ -55,6 +55,7 @@ const TableWarp = ({
   expandable,
   listHeader = true,
   labelAlign,
+  noTableColumn,
   sortList,
   footer: parentFooter,
   isModal = true,
@@ -227,7 +228,7 @@ const TableWarp = ({
             bodyStyle={bodyStyle}
             extra={<Space>
               {actionButton}
-              {!headStyle && setButton}
+              {!headStyle && !noTableColumn && setButton}
             </Space>}
           >
             <AntdTable

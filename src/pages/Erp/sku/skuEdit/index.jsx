@@ -148,7 +148,7 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.UnitId}
           required />
         <FormItem
-          label="批量"
+          label="二维码生成方式"
           name="batch"
           component={SysField.Batch}
           required

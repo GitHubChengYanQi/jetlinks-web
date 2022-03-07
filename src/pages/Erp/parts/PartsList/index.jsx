@@ -84,8 +84,9 @@ const PartsList = ({
           label="物料"
           placeholder="请选择物料"
           name="skuId"
-          value={value}
-          component={SysField.SkuIdInput} />
+          value={value || null}
+          noAdd
+          component={SysField.SkuId} />
         <FormItem
           hidden
           placeholder="请选择物料"
@@ -132,9 +133,11 @@ const PartsList = ({
         </>}
 
         <Table
+          cardHeaderStyle={!value && {display: 'none'}}
+          listHeader={false}
           formActions={formActionsPublic}
-          headStyle={(spuId || value) && {display: 'none'}}
-          title={<Breadcrumb title="物料清单" />}
+          headStyle={spuId && {display: 'none'}}
+          title={value && <Breadcrumb title="物料清单" />}
           actions={action()}
           searchForm={searchForm}
           ref={tableRef}

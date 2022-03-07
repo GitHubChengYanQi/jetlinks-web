@@ -1,4 +1,4 @@
-import React, {useImperativeHandle, useRef} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
 import Form from '@/components/Form';
 import {request} from '@/util/Request';
@@ -20,9 +20,11 @@ const ApiConfig = {
 
 const formActionsPublic = createFormActions();
 
-const AddSku = ({spuId,...props}, ref) => {
+const AddSku = ({spuId, ...props}, ref) => {
 
   const formRef = useRef();
+
+  const [skuId, setSkuId] = useState();
 
   useImperativeHandle(ref, () => ({
     submit: formRef.current.submit,
@@ -46,21 +48,15 @@ const AddSku = ({spuId,...props}, ref) => {
               const category = await request({...categoryDetail, data: {categoryId: res.categoryId}});
               setFieldState('sku', state => {
                 state.props.category = category && category.categoryRequests;
+                state.props.spuId = value;
               });
             }
           }
-        });
-
-        FormEffectHooks.onFieldValueChange$('sku').subscribe(async ({value}) => {
-          if (value) {
-            console.log(value);
-          }
 
         });
-
       }}
       onSubmit={(value) => {
-        return value;
+        return {...value,skuId};
       }}
     >
 
@@ -77,6 +73,13 @@ const AddSku = ({spuId,...props}, ref) => {
         label="配置"
         name="sku"
         title="配置项"
+        onGetSku={(value) => {
+          setSkuId(value && value.skuId);
+          formRef.current.setFieldValue('skuId', value && value.skuId);
+          formRef.current.setFieldValue('standard', value && value.standard);
+          formRef.current.setFieldValue('skuName', value && value.skuName);
+          formRef.current.setFieldValue('specifications', value && value.specifications);
+        }}
         component={SysField.Attributes}
         required
       />

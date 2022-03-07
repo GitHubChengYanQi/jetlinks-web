@@ -262,6 +262,9 @@ const CustomerEdit = ({
                 <Col span={span}>
                   <FormItem label="企业简称" name="abbreviation" placeholder="请输入供应商简称" component={SysField.Abbreviation} />
                 </Col>
+                <Col span={span}>
+                  <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                </Col>
               </Row>
               <Row gutter={24}>
                 <Col span={span}>
@@ -373,6 +376,10 @@ const CustomerEdit = ({
                     placeholder="请输入银行账号"
                     name="bankAccount"
                     component={SysField.BankAccount}
+                    rules={[{
+                      message:'请输入数字!',
+                      pattern:'^\\d+$'
+                    }]}
                   />
                 </Col>
               </Row>
