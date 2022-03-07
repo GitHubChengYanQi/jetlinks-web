@@ -133,11 +133,11 @@ const PartsList = ({
         </>}
 
         <Table
-          cardHeaderStyle={!value && {display: 'none'}}
-          listHeader={false}
+          cardHeaderStyle={{display: value === false && 'none'}}
+          listHeader={value}
           formActions={formActionsPublic}
           headStyle={spuId && {display: 'none'}}
-          title={value && <Breadcrumb title="物料清单" />}
+          title={value !== false  && <Breadcrumb title="物料清单" />}
           actions={action()}
           searchForm={searchForm}
           ref={tableRef}

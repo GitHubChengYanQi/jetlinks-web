@@ -12,6 +12,8 @@ import StockList from '@/pages/Erp/stock/StockList';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Erp/outstock/OutstockUrl';
 import InputNumber from '@/components/InputNumber';
+import {useRequest} from '@/util/Request';
+import {brandIdSelect} from '@/pages/Erp/parts/PartsUrl';
 
 
 const {Search} = Input;
@@ -52,28 +54,32 @@ export const Number = (props) => {
   }} />);
 };
 
-export const BrandId = (props) => {
-  const {storehouseid, state, brandid} = props;
+export const BrandId = ({
+  value,
+  onChange,
+  skuId,
+}) => {
 
-  if (state) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      props.onChange(null);
-    }, [storehouseid]);
-  }
+  const {loading, data, run} = useRequest(brandIdSelect, {manual: true});
 
+  useEffect(() => {
+    if (skuId) {
+      run({
+        data: {
+          skuId
+        }
+      });
+    }
+  }, [skuId]);
 
-  const data = storehouseid ? storehouseid.map((value, index) => {
+  const options = (loading || !data) ? [] : data.map((value) => {
     return {
       label: value.brandResult ? value.brandResult.brandName : null,
       value: value.brandId,
     };
-  }) : null;
+  });
 
-  return (<AntSelect options={data} style={{width: 200}}  {...props} onChange={(value) => {
-    props.onChange(value);
-    brandid ? brandid(value) : null;
-  }} />);
+  return (<AntSelect options={options} style={{width: 200}} value={value} onChange={onChange} />);
 };
 export const ItemIdSelect = (props) => {
   const {storehouseid, itemid, state} = props;

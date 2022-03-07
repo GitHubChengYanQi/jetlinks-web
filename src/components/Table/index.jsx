@@ -1,8 +1,9 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Row, Col, Card, Layout, Table as AntdTable, Space} from 'antd';
+import {Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {useFormTableQuery, createFormActions, Form, Submit, Reset, FormButtonGroup} from '@formily/antd';
+import {createFormActions, Form, FormButtonGroup, Reset, Submit, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
+import {useBoolean} from 'ahooks';
 import Service from '@/util/Service';
 import style from './index.module.less';
 import useTableSet from '@/hook/useTableSet';
@@ -153,16 +154,21 @@ const TableWarp = ({
     }
   };
 
-  const {form, table: tableProps} = useFormTableQuery(requestMethod, null, {
+  const {setPagination, form, table: tableProps} = useFormTableQuery(requestMethod, null, {
     pagination: {
       pageSize,
       pageSizeOptions: [5, 10, 20, 50, 100]
     }
   });
 
+  const submit = () => {
+    setPagination({});
+    formActions.submit();
+  };
+
   useImperativeHandle(ref, () => ({
-    refresh: formActions.submit,
-    submit: formActions.submit,
+    refresh: submit,
+    submit,
     reset: formActions.reset,
     formActions,
   }));

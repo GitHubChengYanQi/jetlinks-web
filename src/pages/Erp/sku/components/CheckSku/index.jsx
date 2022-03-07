@@ -74,7 +74,9 @@ const CheckSku = ({
         contentHeight
         formActions={formActionsPublic}
         SearchButton={<Space>
-          <Submit><SearchOutlined />查询</Submit>
+          <Button onClick={()=>{
+            tableRef.current.submit();
+          }}><SearchOutlined />查询</Button>
           {!noCreate && <Button onClick={() => {
             refAdd.current.open(false);
           }}>创建物料</Button>}
@@ -90,7 +92,7 @@ const CheckSku = ({
           }),
           onSelect: (record, selected) => {
             if (selected) {
-              const array = skus.data;
+              const array = skus.data.filter(() => true);
               array.push({
                 skuId: record.skuId,
                 coding: record.standard,

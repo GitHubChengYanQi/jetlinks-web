@@ -64,14 +64,6 @@ const OutstockOrderEdit = ({...props}) => {
           }
           return {...value, url: `${wxCp}OrCode?id=codeId`};
         }}
-        effects={({setFieldState}) => {
-
-          onFieldValueChange$('bom').subscribe(async ({value}) => {
-            setFieldState('applyDetails', state => {
-              state.props.skuId = value;
-            });
-          });
-        }}
       >
         <MegaLayout labelWidth={120}>
           <ProCard title="出库信息" className="h2Card" headerBordered>

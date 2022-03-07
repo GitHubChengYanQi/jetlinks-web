@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
-import {Button, Spin, Table} from 'antd';
+import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import InputNumber from '@/components/InputNumber';
-import Select from '@/components/Select';
-import {brandIdSelect} from '@/pages/Erp/parts/PartsUrl';
-import {useRequest} from '@/util/Request';
-import {customerIdSelect} from '@/pages/Erp/order/OrderUrl';
+import BrandBind from '@/pages/Erp/brand/components/BrandBind';
 
 const AddSkuTable = ({
   value = [],
@@ -15,10 +12,6 @@ const AddSkuTable = ({
 }) => {
 
   const [keys, setKeys] = useState([]);
-
-  const {loading: brandLoading, data: brandData} = useRequest(brandIdSelect);
-
-  const {loading: supplyLoading, data: supplyData} = useRequest({...customerIdSelect, data: {supply: 1}});
 
   const dataSources = value.map((item, index) => {
     return {
@@ -87,15 +80,15 @@ const AddSkuTable = ({
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
       <Table.Column title="品牌" dataIndex="brandId" render={(value, record, index) => {
-        return brandLoading ? <Spin /> : <Select options={brandData} value={value} onChange={(value) => {
+        return <BrandBind skuId={record.skuId} value={value} onChange={(value) => {
           setValue({brandId: value}, index);
         }} />;
       }} />
-      <Table.Column title="供应商" dataIndex="customertId" render={(value, record, index) => {
-        return supplyLoading ? <Spin /> : <Select options={supplyData} value={value} onChange={(value) => {
-          setValue({customertId: value}, index);
-        }} />;
-      }} />
+      {/* <Table.Column title="供应商" dataIndex="customertId" render={(value, record, index) => { */}
+      {/*  return supplyLoading ? <Spin /> : <Select options={supplyData} value={value} onChange={(value) => { */}
+      {/*    setValue({customertId: value}, index); */}
+      {/*  }} />; */}
+      {/* }} /> */}
       <Table.Column title="数量" width={100} dataIndex="number" render={(value, record, index) => {
         return <InputNumber value={value} min={1} onChange={(value) => {
           setValue({number: value}, index);

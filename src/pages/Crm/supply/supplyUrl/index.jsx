@@ -36,6 +36,13 @@ export const supplyList = {
 };
 
 
+export const supplyBind = {
+  url: '/supply/conditionList',
+  method: 'POST',
+  rowKey:'supplyId'
+};
+
+
 export const supplyListSelect = {
   url: '/supply/listSelect',
   method: 'POST',
