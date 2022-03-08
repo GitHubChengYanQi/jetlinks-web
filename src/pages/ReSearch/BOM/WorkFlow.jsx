@@ -144,7 +144,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
           <EndNode />
         </ZoomLayout>
       </section>
-      <Drawer push={false} headTitle="步骤设置" ref={ref} width={850}>
+      <Drawer push={false} headTitle="工序设置" ref={ref} width={850}>
         <Setps
           type={type}
           module={module}

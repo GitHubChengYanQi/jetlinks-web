@@ -110,6 +110,17 @@ const Setps = ({
         ]} />
       <VirtualField name="setp" visible={false}>
         <FormItem
+          label="工序名称"
+          name="shipSetpId"
+          component={Select}
+          api={shipSetpListSelect}
+          placeholder="工序"
+          rules={[{
+            required: true,
+            message: '请选择工序!'
+          }]}
+        />
+        <FormItem
           wrapperCol={10}
           required
           label="投入与产出是否相同"
@@ -138,7 +149,7 @@ const Setps = ({
                 <Space>
                   <div style={{width: 50, paddingBottom: 16}} />
                   <div style={{width: 200, paddingBottom: 16}}><span
-                    style={{color: 'red'}}>* </span>{productionType === 'in' ? '投入物料' : '产出物料'}</div>
+                    style={{color: 'red'}}>* </span>产出物料</div>
                   <div style={{width: 90, paddingBottom: 16}}><span
                     style={{color: 'red'}}>* </span>数量
                   </div>
@@ -166,7 +177,7 @@ const Setps = ({
                           width="100%"
                           rules={[{
                             required: true,
-                            message: productionType === 'in' ? '请选择投入物料' : '请选择产出物料！'
+                            message: '请选择产出物料！'
                           }]}
                         />
                       </div>
@@ -216,25 +227,14 @@ const Setps = ({
                 <Button
                   type="dashed"
                   icon={<PlusOutlined />}
-                  onClick={onAdd}>{productionType === 'in' ? '增加投入物料' : '增加产出物料'}</Button>
+                  onClick={onAdd}>增加产出物料</Button>
               </Space>
             );
           }}
         </FieldList>
 
         <div style={{display: productionType === undefined && 'none'}}>
-          <Divider orientation="left">工位信息</Divider>
-          <FormItem
-            label="工序"
-            name="shipSetpId"
-            component={Select}
-            api={shipSetpListSelect}
-            placeholder="工序"
-            rules={[{
-              required: true,
-              message: '请选择工序!'
-            }]}
-          />
+          <Divider orientation="left">关联信息</Divider>
           <FormItem
             label="工位"
             name="productionStationId"

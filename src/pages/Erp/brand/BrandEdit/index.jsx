@@ -27,7 +27,6 @@ const BrandEdit = ({...props}) => {
   const formRef = useRef();
 
 
-
   return (
     <>
       <Form
@@ -36,10 +35,26 @@ const BrandEdit = ({...props}) => {
         formActions={formActionsPublic}
         api={ApiConfig}
         fieldKey="brandId"
+        onSubmit={(value) => {
+          if (value.skuIds) {
+            value.skuIds = value.skuIds.map((item) => {
+              return item.skuId;
+            });
+          }
+          return value;
+
+        }}
       >
-        <FormItem label="品牌名称" name="brandName" component={SysField.BrandName}
-          rules={[{ required: true, message: '请输入品牌名称!' }]}
-          required/>
+        <FormItem
+          label="品牌名称"
+          name="brandName"
+          component={SysField.BrandName}
+          rules={[{required: true, message: '请输入品牌名称!'}]}
+          required />
+        <FormItem
+          name="skuIds"
+          component={SysField.AddSku}
+          required />
       </Form>
 
     </>

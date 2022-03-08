@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import BrandIds from '@/pages/Erp/brand/components/BrandIds';
 
 const AddSkuTable = ({
   value = [],
@@ -12,14 +11,12 @@ const AddSkuTable = ({
 
   const [keys, setKeys] = useState([]);
 
-
   const dataSources = value.map((item, index) => {
     return {
       ...item,
       key: index
     };
   });
-
 
   return <>
     <Table
@@ -61,29 +58,9 @@ const AddSkuTable = ({
         return value + 1;
       }} />
       <Table.Column title="物料编号" width={200} dataIndex="coding" />
-      <Table.Column title="物料" width={800} dataIndex="skuResult" render={(value) => {
+      <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
-      <Table.Column title="品牌" width={400} dataIndex="brandIds" render={(value, record, index) => {
-        return <>
-          <BrandIds
-            value={value}
-            onChange={(value) => {
-              const array = dataSources.map((item) => {
-                if (item.key === index) {
-                  return {
-                    ...item,
-                    brandIds: value
-                  };
-                } else {
-                  return item;
-                }
-              });
-              onChange(array);
-            }} />
-        </>;
-      }} />
-      <Table.Column />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
         return <><Button
           type="link"
