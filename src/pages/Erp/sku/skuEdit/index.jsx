@@ -7,13 +7,14 @@
 
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
-import {notification} from 'antd';
+import {notification, Popover, Space} from 'antd';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import BrandIds from '@/pages/Erp/brand/components/BrandIds';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 
 const {FormItem} = Form;
 
@@ -175,8 +176,8 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.Specifications}
         />
         <FormItem
-          label='品牌'
-          name='brandIds'
+          label="品牌"
+          name="brandIds"
           component={BrandIds}
         />
         <FormItem
@@ -184,15 +185,30 @@ const SkuEdit = ({...props}, ref) => {
           name="remarks"
           component={SysField.Note} />
         <FormItem
-          label="附件"
+          label={<Space>
+            附件
+            <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+            </Popover>
+          </Space>}
           name="fileId"
           component={SysField.FileId} />
         <FormItem
-          label="物料图片"
+          label={<Space>
+            物料图片
+            <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+            </Popover>
+          </Space>}
           name="img"
           component={SysField.Img} />
         <FormItem
-          label="关联图纸"
+          label={<Space>
+            关联图纸
+            <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+            </Popover>
+          </Space>}
           name="bind"
           component={SysField.Bind} />
       </Form>

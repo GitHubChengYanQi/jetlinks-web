@@ -4,10 +4,12 @@ import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
 import {useRequest} from '@/util/Request';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
+const formActionsPublic = createFormActions();
 
 const Track = (props) => {
 
@@ -17,7 +19,7 @@ const Track = (props) => {
 
   const {loading,data} = useRequest({url: '/trackMessage/list', method: 'POST', data: {customerId: trackMessageId}});
 
-  const trackMessageIds = data && data.map((items, index) => {
+  const trackMessageIds = data && data.map((items) => {
     return items.trackMessageId;
   });
 
@@ -69,6 +71,7 @@ const Track = (props) => {
         headStyle={{display: 'none'}}
         noRowSelection
         noSort
+        formActions={formActionsPublic}
         bordered={false}
         bodyStyle={{padding: 0}}
         selectionType

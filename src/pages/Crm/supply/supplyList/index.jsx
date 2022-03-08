@@ -8,6 +8,7 @@
 import React, {useRef} from 'react';
 import {Button, Divider, Space, Table as AntTable} from 'antd';
 import {useHistory} from 'ice';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -20,6 +21,8 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const SupplyList = ({customer}) => {
   const ref = useRef(null);
@@ -51,6 +54,7 @@ const SupplyList = ({customer}) => {
         }} />
       </Divider>}
       <Table
+        formActions={formActionsPublic}
         bodyStyle={{padding: customer && 0}}
         bordered={!customer}
         headStyle={{display:'none'}}

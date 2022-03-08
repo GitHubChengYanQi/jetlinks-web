@@ -482,7 +482,7 @@ export const Industry = (props) => {
 
 export const IndustryOne = (props) => {
   return (<SetSelectOrCascader
-    type="tree"
+    moduleType="tree"
     api={apiUrl.crmIndustryTreeView}
     width="200"
     component={CrmIndustryList}

@@ -3,8 +3,11 @@ import {Avatar, Comment, Table as AntTable} from 'antd';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import Form from '@/components/Form';
 import Table from '@/components/Table';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
+
+const formActionsPublic = createFormActions();
 
 const Dynamic = (props) => {
 
@@ -59,6 +62,7 @@ const Dynamic = (props) => {
   return (
     <div>
       <Table
+        formActions={formActionsPublic}
         headStyle={{display: 'none'}}
         searchForm={searchForm}
         selectionType

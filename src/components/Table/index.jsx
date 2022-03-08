@@ -3,7 +3,6 @@ import {Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {createFormActions, Form, FormButtonGroup, Reset, Submit, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
-import {useBoolean} from 'ahooks';
 import Service from '@/util/Service';
 import style from './index.module.less';
 import useTableSet from '@/hook/useTableSet';

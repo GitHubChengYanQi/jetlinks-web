@@ -437,7 +437,7 @@ const CustomerEdit = ({
               </Row>
               <Row gutter={24}>
                 <Col span={span}>
-                  <FormItem label="企业邮编" name="zipCode" placeholder="请输入企业邮编" component={SysField.Name} />
+                  <FormItem label="邮政编码" name="zipCode" placeholder="请输入邮政编码" component={SysField.Name} />
                 </Col>
                 <Col span={span}>
                   <FormItem label="企业邮箱" placeholder="请输入邮箱地址" name="emall" component={SysField.Emall} rules={[{

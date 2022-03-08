@@ -161,14 +161,7 @@ export const Specs = (props) => {
 };
 
 export const FileId = (props) => {
-  return (<Space>
-    <div style={{maxWidth: 300}}>
-      <FileUpload {...props} maxCount={1} />
-    </div>
-    <Popover content="附件支持类型：">
-      <QuestionCircleOutlined style={{cursor: 'pointer'}} />
-    </Popover>
-  </Space>);
+  return (<FileUpload {...props} maxCount={1} />);
 };
 
 export const Img = (props) => {
