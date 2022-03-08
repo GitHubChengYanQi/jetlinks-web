@@ -219,7 +219,7 @@ export const AddSku = ({value = [], onChange, loading, extraButton}) => {
       style={{marginTop: 24}}
       bodyStyle={{padding: 16}}
       className="h2Card"
-      title="清单列表"
+      title="子件信息"
       headerBordered
       extra={<Space>
         {extraButton}

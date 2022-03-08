@@ -123,7 +123,7 @@ const PartsEdit = ({...props}, ref) => {
           }}
         >
 
-          <ProCard className="h2Card" headerBordered title="基本信息">
+          <ProCard className="h2Card" headerBordered title="父件信息">
             <FormItem
               visible={false}
               label="物料编码"

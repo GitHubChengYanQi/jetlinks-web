@@ -70,7 +70,7 @@ const PartsList = ({
 
   const action = () => {
     return (
-      <AddButton onClick={() => {
+      <AddButton name='创建物料清单' onClick={() => {
         refAdd.current.open(false);
       }} />
     );
@@ -232,7 +232,7 @@ const PartsList = ({
       <Modal
         width={1200}
         type={type}
-        title="清单"
+        headTitle="创建物料清单"
         bom={bom}
         loading={setLoading}
         compoentRef={formRef}
