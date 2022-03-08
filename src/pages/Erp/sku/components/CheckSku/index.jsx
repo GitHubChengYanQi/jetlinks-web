@@ -11,6 +11,7 @@ import SkuEdit from '@/pages/Erp/sku/skuEdit';
 import Form from '@/components/Form';
 import SkuDetail from '@/pages/Erp/sku/SkuDetail';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import Note from '@/components/Note';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -52,7 +53,7 @@ const CheckSku = ({
     return (
       <>
         <FormItem
-          label="分类"
+          label="物料分类"
           name="spuClass"
           placeholder="请选择分类"
           component={SysField.SelectSpuClass}
@@ -74,7 +75,7 @@ const CheckSku = ({
         contentHeight
         formActions={formActionsPublic}
         SearchButton={<Space>
-          <Button onClick={()=>{
+          <Button onClick={() => {
             tableRef.current.submit();
           }}><SearchOutlined />查询</Button>
           {!noCreate && <Button onClick={() => {
@@ -137,18 +138,46 @@ const CheckSku = ({
         <Column title="序号" width={70} align="center" render={(value, record, index) => {
           return <>{index + 1}</>;
         }} />
-        <Column title="物料编号" dataIndex="standard" />
+        <Column title="物料编码" dataIndex="standard" />
         <Column
-          title="物料"
+          title="物料名称"
           key={2}
           sorter={(a, b) => {
             const aSort = a.spuResult && a.spuResult.spuClassificationResult && a.spuResult.spuClassificationResult.name;
             const bSort = b.spuResult && b.spuResult.spuClassificationResult && b.spuResult.spuClassificationResult.name;
             return aSort.length - bSort.length;
           }}
-          dataIndex="skuId"
+          dataIndex="spuResult"
+          render={(value) => {
+            return value && value.name;
+          }} />
+        <Column
+          title="型号 / 规格"
+          key={2}
+          dataIndex="skuName"
           render={(value, record) => {
-            return <SkuResultSkuJsons skuResult={record} />;
+            return `${value} / ${record.specifications || '无'}`;
+          }} />
+
+        <Column
+          title="物料描述"
+          key={2}
+          dataIndex="skuId"
+          width={200}
+          render={(value, record) => {
+            return <Note value={
+              record.skuJsons
+              &&
+              record.skuJsons.length > 0
+              &&
+              record.skuJsons[0].values.attributeValues
+                ?
+                record.skuJsons.map((items) => {
+                  return `${items.attribute.attribute} : ${items.values.attributeValues}`;
+                }).toString()
+                :
+                '无'
+            } />;
           }} />
 
         <Column title="操作" key={8} dataIndex="skuId" width={100} align="center" render={(value) => {
