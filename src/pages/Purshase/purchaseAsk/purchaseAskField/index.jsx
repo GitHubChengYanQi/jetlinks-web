@@ -36,7 +36,7 @@ export const AddSku = ({value = [], onChange}) => {
       headerBordered
       extra={<Button onClick={() => {
         ref.current.open(true);
-      }}>添加物料</Button>}
+      }}>批量添加物料</Button>}
     >
 
       <AddSkuTable
