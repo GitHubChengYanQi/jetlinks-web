@@ -20,11 +20,9 @@ const ApiConfig = {
 
 const formActionsPublic = createFormActions();
 
-const AddSku = ({spuId, ...props}, ref) => {
+const AddSku = ({spuId,skuId,setSkuId, ...props}, ref) => {
 
   const formRef = useRef();
-
-  const [skuId, setSkuId] = useState();
 
   useImperativeHandle(ref, () => ({
     submit: formRef.current.submit,

@@ -30,6 +30,8 @@ const SpuDetail = () => {
 
   const [state, setState] = useState();
 
+  const [skuId, setSkuId] = useState();
+
   const partsAddRef = useRef();
 
   const formRef = useRef();
@@ -119,7 +121,13 @@ const SpuDetail = () => {
         loading={setBomLoading}
         compoentRef={formRef}
         component={AddSku}
+        skuId={skuId}
+        setSkuId={setSkuId}
+        onClose={() => {
+          setSkuId();
+        }}
         onSuccess={(res) => {
+          setSkuId();
           skuRef.current.refresh();
           switch (state) {
             case 'addBom':
@@ -137,14 +145,14 @@ const SpuDetail = () => {
         spuId={params.cid}
         footer={<>
           <Button loading={bomLoading} onClick={() => {
-            setState('addBom');
             formRef.current.submit();
+            setState('addBom');
           }}>保存并添加BOM</Button>
           <Button loading={bomLoading} onClick={() => {
-            setState('addShip');
             formRef.current.submit();
+            setState('addShip');
           }}>保存并添加工艺路线</Button>
-          <Button type="primary" loading={bomLoading} onClick={() => {
+          <Button hidden={skuId} type="primary" loading={bomLoading} onClick={() => {
             formRef.current.submit();
           }}>保存</Button>
         </>}

@@ -108,7 +108,7 @@ const PartsEdit = ({...props}, ref) => {
           }
           }
           onSubmit={(value) => {
-            if (value.parts.length === 0) {
+            if (!value.parts || value.parts.length === 0) {
               message.warn('请添加物料清单！');
               return false;
             }
