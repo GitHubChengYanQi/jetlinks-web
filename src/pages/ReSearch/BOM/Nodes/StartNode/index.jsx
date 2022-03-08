@@ -32,6 +32,8 @@ function StartNode(props) {
     }
   }, [skuId]);
 
+  console.log(data);
+
   return (
     <NodeWrap
       type={0}
@@ -48,20 +50,11 @@ function StartNode(props) {
         <div>
           {data ?
             <Space direction="vertical">
-              <BackSkus record={data} />
+              <div>编码：{data.standard}</div>
+              <div>名称：{data.spuResult.name}</div>
               <div>
-                描述:
-                {data.list
-                &&
-                data.list.length > 0
-                &&
-                data.list[0].attributeValues
-                  ?
-                  <em>({data.list.map((items) => {
-                    return `${items.itemAttributeResult.attribute} ： ${items.attributeValues}`;
-                  }).toString()})</em>
-                  :
-                  '无'}
+                型号 / 规格：
+                <div>{data.skuName} / {data.specifications || '无'}</div>
               </div>
             </Space>
             :

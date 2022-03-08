@@ -8,8 +8,8 @@ export const OptionTypes = {
 export const NodeTypes = {...OptionTypes, START: '0'};
 // 节点类型默认标题名
 export const OptionNames = {
-  [OptionTypes.APPROVER]: '工序',
-  [OptionTypes.CONDITION]: '子工序'
+  [OptionTypes.APPROVER]: '串行工序',
+  [OptionTypes.CONDITION]: '并行工序'
 };
 // 节点模板
 export const NodeTemplates = {

@@ -42,9 +42,9 @@ function ApproverNode(props) {
   const nodeName = () => {
     switch (props.stepType) {
       case 'setp':
-        return <>工序</>;
+        return '工序';
       case 'ship':
-        return '工艺';
+        return '工艺路线';
       default:
         return null;
     }
@@ -53,8 +53,8 @@ function ApproverNode(props) {
   // TODO: 这里读取props数据
   const TitleEl = <TitleElement
     delNode={props.type === '3' ? props.delBranch : delNode}
-    placeholder={nodeName() || '生产过程'}
-    nodeName={nodeName() || '生产过程'}
+    placeholder={nodeName() || (props.type === '3' ? '并行工序' : '串行工序')}
+    nodeName={nodeName() || (props.type === '3' ? '并行工序' : '串行工序')}
     onTitleChange={onChange}
   />;
 

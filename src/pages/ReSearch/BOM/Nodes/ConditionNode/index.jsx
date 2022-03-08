@@ -60,7 +60,7 @@ function ConditionNode({conditionNodeList: branches = [], ...restProps}) {
     branches && branches.length > 0 && <div className={styles.branchWrap}>
       <div className="branch-box-wrap">
         <div className="branch-box">
-          <div className="add-branch" onClick={addBranch}>添加物料</div>
+          <div className="add-branch" onClick={addBranch}>增加并行工序</div>
           {branches.map((item, index) => {
             return (<div className="col-box" key={index.toString()}>
               <BranchNode
