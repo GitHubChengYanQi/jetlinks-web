@@ -5,13 +5,14 @@
  * @Date 2021-12-28 13:24:55
  */
 
-import React, {useRef} from 'react';
-import {Input} from 'antd';
+import React, {useRef, useState} from 'react';
+import {FormEffectHooks} from '@formily/antd';
 import Form from '@/components/Form';
 import {printTemplateDetail, printTemplateAdd, printTemplateEdit} from '../printTemplateUrl';
 import * as SysField from '../printTemplateField';
-import {FormEffectHooks} from '@formily/antd';
+import Editor from '@/components/Editor';
 
+const {onFieldValueChange$} = FormEffectHooks;
 const {FormItem} = Form;
 
 const ApiConfig = {
@@ -24,23 +25,36 @@ const PrintTemplateEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const editorRef = useRef();
+
+  const [type, setType] = useState();
+
+  const [detail, setDetail] = useState({});
+
   return (
     <Form
       {...props}
       ref={formRef}
+      details={setDetail}
       api={ApiConfig}
       fieldKey="printTemplateId"
-      effects={({setFieldState}) => {
-        FormEffectHooks.onFieldValueChange$('type').subscribe(({value})=>{
-          setFieldState('templete',(state)=>{
-            state.props.type = value;
-          });
+      onSubmit={(value) => {
+        const templete = editorRef.current.editorSave();
+        value = {
+          ...value,
+          templete,
+        };
+        return value;
+      }}
+      effects={() => {
+        onFieldValueChange$('type').subscribe(({value}) => {
+          setType(value);
         });
       }}
     >
-      <FormItem label="类型" name="type" component={SysField.Type} required/>
-      <FormItem label="名称" name="name" component={SysField.Name} required/>
-      <FormItem label="模板" name="templete" component={SysField.Templete} required/>
+      <FormItem label="类型" name="type" component={SysField.Type} required />
+      <FormItem label="名称" name="name" component={SysField.Name} required />
+      {type && <Editor module={type} ref={editorRef} value={detail.templete} />}
     </Form>
   );
 };

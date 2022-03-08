@@ -201,6 +201,11 @@ const CreateOrder = ({...props}) => {
           return false;
         }
 
+        if (value.generateContract && !value.allField){
+          message.warn('请完善合同信息！');
+          return false;
+        }
+
         value = {
           ...value,
           type: 1,

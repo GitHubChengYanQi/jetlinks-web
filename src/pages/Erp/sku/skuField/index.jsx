@@ -33,6 +33,8 @@ export const Type = (props) => {
   return (<InputNumber {...props} />);
 };
 
+
+
 export const SelectSkuName = (props) => {
 
   return (<Input {...props} />);

@@ -13,6 +13,7 @@ import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
+import BrandIds from '@/pages/Erp/brand/components/BrandIds';
 
 const {FormItem} = Form;
 
@@ -172,6 +173,11 @@ const SkuEdit = ({...props}, ref) => {
           }) : []}
           details={details && details.skuTree}
           component={SysField.Specifications}
+        />
+        <FormItem
+          label='品牌'
+          name='brandIds'
+          component={BrandIds}
         />
         <FormItem
           label="备注"

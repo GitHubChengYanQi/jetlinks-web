@@ -17,7 +17,7 @@ import {templateDelete, templateList} from '../TemplateUrl';
 import TemplateEdit from '../TemplateEdit';
 import * as SysField from '../TemplateField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal from '@/components/Modal';
+import Drawer from '@/components/Drawer';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -75,17 +75,9 @@ const TemplateList = () => {
         formActions={formActions}
       >
         <Column title="合同模板" dataIndex="name" />
-        <Column title="合同分类" dataIndex="classResult" render={(value)=>{
+        <Column title="合同分类" dataIndex="classResult" render={(value) => {
           return <>{value && value.name}</>;
         }} />
-        {/* <Column title="合同类型" width={120} dataIndex="module" render={(value) => { */}
-        {/*   switch (value) { */}
-        {/*     case 'procurement': */}
-        {/*       return <>采购</>; */}
-        {/*     default: */}
-        {/*       break; */}
-        {/*  } */}
-        {/* }} /> */}
         <Column title="操作" align="right" render={(value, record) => {
           return (
             <>
@@ -99,7 +91,7 @@ const TemplateList = () => {
           );
         }} width={100} />
       </Table>
-      <Modal width={1000} title="合同模板" component={TemplateEdit} onSuccess={() => {
+      <Drawer extra placement="top" height='100vh' title="合同模板" component={TemplateEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

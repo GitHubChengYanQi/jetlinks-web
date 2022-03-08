@@ -9,6 +9,7 @@ import React, {useEffect, useRef} from 'react';
 import {Input, Select as AntdSelect, Radio, AutoComplete, Spin, Space, Button, Tag, Popover} from 'antd';
 import moment from 'moment';
 import ProCard from '@ant-design/pro-card';
+import {useBoolean} from 'ahooks';
 import Select from '@/components/Select';
 import * as apiUrl from '@/pages/Crm/customer/CustomerUrl';
 import {useRequest} from '@/util/Request';
@@ -24,14 +25,10 @@ import {companyRoleList} from '@/pages/Crm/companyRole/companyRoleUrl';
 import Modal from '@/components/Modal';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import CrmIndustryList from '@/pages/Crm/crmIndustry/crmIndustryList';
-import {bankAdd, bankListSelect} from '@/pages/Purshase/bank/bankUrl';
+import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
 import InputNumber from '@/components/InputNumber';
-import BankList from '@/pages/Purshase/bank/bankList';
 import Drawer from '@/components/Drawer';
 import BankEdit from '@/pages/Purshase/bank/bankEdit';
-import {useBoolean} from 'ahooks';
-import NumberText from '@/components/NumberText';
-import Upload from '@/pages/Crm/customer/CustomerDetail/compontents/Upload';
 import UpLoadImg from '@/components/Upload';
 
 export const ContactsName = (props) => {

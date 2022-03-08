@@ -3,6 +3,7 @@ import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {BrandId} from '@/pages/Crm/supply/supplyField';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import BrandIds from '@/pages/Erp/brand/components/BrandIds';
 
 const AddSkuTable = ({
   value = [],
@@ -64,12 +65,10 @@ const AddSkuTable = ({
       <Table.Column title="物料" width={800} dataIndex="skuResult" render={(value) => {
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
-      <Table.Column title="品牌" width={400} dataIndex="skuId" render={(skuId, record, index) => {
+      <Table.Column title="品牌" width={400} dataIndex="brandIds" render={(value, record, index) => {
         return <>
-          <BrandId
-            value={dataSources.filter((item) => {
-              return item.key === index;
-            })[0].brandIds}
+          <BrandIds
+            value={value}
             onChange={(value) => {
               const array = dataSources.map((item) => {
                 if (item.key === index) {

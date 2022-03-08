@@ -256,120 +256,57 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({value, onChange, array}) => {
+export const AllField = ({onChange, array}) => {
 
   const [values, setValues] = useState([]);
 
-  const replaceString = (stringArray, index, valueArray, valueIndex, lineIndex) => {
-    if (stringArray[index].indexOf('<input class="inp" placeholder="文本框" disabled=""/>') !== -1) {
-      let string = '';
-      try {
-        string = valueArray[valueIndex][lineIndex];
-      } catch (e) {
-        string = '';
-      }
-      stringArray[index] = stringArray[index].replace('<input class="inp" placeholder="文本框" disabled=""/>', string);
-      return replaceString(stringArray, index, valueArray, valueIndex, lineIndex + 1);
-    } else if (stringArray[index].indexOf('<input class="number" placeholder="数字框" disabled=""/>') !== -1) {
-      let string = '';
-      try {
-        string = valueArray[valueIndex][lineIndex];
-      } catch (e) {
-        string = '';
-      }
-      stringArray[index] = stringArray[index].replace('<input class="number" placeholder="数字框" disabled=""/>', string);
-      return replaceString(stringArray, index, valueArray, valueIndex, lineIndex + 1);
-    } else if (stringArray[index].indexOf('<input class="date" placeholder="时间框" disabled=""/>') !== -1) {
-      let string = '';
-      try {
-        string = valueArray[valueIndex][lineIndex];
-      } catch (e) {
-        string = '';
-      }
-      stringArray[index] = stringArray[index].replace('<input class="date" placeholder="时间框" disabled=""/>', string);
-      return replaceString(stringArray, index, valueArray, valueIndex, lineIndex + 1);
-    } else if (stringArray[index + 1]) {
-      return replaceString(stringArray, index + 1, valueArray, valueIndex + 1, 0);
-    } else {
-      return stringArray;
+  const change = (index, value) => {
+    const newString = [];
+    for (let i = 0; i < array.length; i++) {
+      newString.push(values[i]);
     }
-  };
-
-  const change = (i, j, index, value) => {
-
-    const allValues = [];
-
-    for (let k = 0; k < array.length; k++) {
-      allValues.push(values[k]);
+    newString[index] = value;
+    if (!newString.includes(undefined)) {
+      onChange(newString.map((item, index) => {
+        return {
+          oldText: array[index],
+          newText: item
+        };
+      }));
     }
-
-    allValues[index] = [];
-
-    for (let k = 0; k < i; k++) {
-      try {
-        allValues[index].push(values[index][k]);
-      } catch (e) {
-        allValues[index].push(null);
-      }
-    }
-    allValues[index][j] = value;
-
-    const arr = array.filter(() => true);
-
-    const allString = replaceString(arr, 0, allValues, 0, 0);
-
-    const newTexts = allString.map((item, index) => {
-      return {
-        oldText: array[index],
-        newText: item
-      };
-    });
-
-    onChange(newTexts);
-
-    setValues(allValues);
+    setValues(newString);
   };
 
   const replaceDom = (string, index) => {
-    let i = 0;
     return parse(string, {
       replace: domNode => {
         if (domNode.name === 'input') {
-          switch (domNode.attribs.class) {
-            case 'inp':
-              // eslint-disable-next-line no-case-declarations
-              const inp = i;
-              i++;
-              return <Input
+          switch (domNode.attribs.type) {
+            case 'text':
+              return <Space>{domNode.attribs['data-title']}<Input
                 placeholder="输入文本"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  change(i, inp, index, value.target.value);
+                  change(index, value.target.value);
                 }}
-              />;
+              /></Space>;
             case 'number':
-              // eslint-disable-next-line no-case-declarations
-              const number = i;
-              i++;
-              return <InputNumber
+              return <Space>{domNode.attribs['data-title']}<InputNumber
                 placeholder="输入数值"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  change(i, number, index, value);
+                  change(index, value);
                 }}
-              />;
+              /></Space>;
             case 'date':
-              // eslint-disable-next-line no-case-declarations
-              const date = i;
-              i++;
-              return <DatePicker
+              return <Space>{domNode.attribs['data-title']}<DatePicker
                 showTime
                 placeholder="输入时间"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  change(i, date, index, value);
+                  change(index, value);
                 }}
-              />;
+              /></Space>;
             default:
               break;
           }

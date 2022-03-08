@@ -5,28 +5,16 @@
  * @Date 2021-10-23 10:40:17
  */
 
-import React, {useEffect, useRef, useState} from 'react';
-import {Input, InputNumber, TimePicker, DatePicker, Select as AntdSelect, Checkbox, Radio, Space, Button} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
+import React, {useRef} from 'react';
+import {Input, Radio, Space, Button} from 'antd';
+import {useBoolean} from 'ahooks';
 import Select from '@/components/Select';
 import * as apiUrl from '../toolUrl';
 import FileUpload from '@/pages/Crm/data/components/FileUpload';
-import Editor from '@/components/Editor';
-import {
-  codingRulesDetail,
-  codingRulesList,
-  codingRulesListSelect,
-  toolClassificationListSelect,
-  unitListSelect
-} from '../toolUrl';
-import {useRequest} from '@/util/Request';
 import Coding from '@/pages/Erp/tool/components/Coding';
-import {useBoolean} from 'ahooks';
 import Modal from '@/components/Modal';
-import QualityCheckClassificationList
-  from '@/pages/Erp/qualityCheck/components/qualityCheckClassification/qualityCheckClassificationList';
 import ToolClassificationList from '@/pages/Erp/tool/components/toolClassification/toolClassificationList';
+import Editor from '@/components/Editor';
 
 export const Name = (props) => {
   return (<Input {...props} />);

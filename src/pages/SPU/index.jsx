@@ -24,9 +24,9 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
         return <BrandList />;
       case '材质管理':
         return <MaterialList />;
-      case '单位管理':
-        return <PrintTemplateList />;
       case '打印模板':
+        return <PrintTemplateList />;
+      case '单位管理':
         return <UnitList />;
       case '物料分类管理':
         return <SpuClassificationList type={1} />;

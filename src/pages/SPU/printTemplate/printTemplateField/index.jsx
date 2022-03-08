@@ -6,12 +6,7 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
-import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
-import * as apiUrl from '../printTemplateUrl';
-import Editor from '@/components/Editor';
+import {Input,Select as AntdSelect} from 'antd';
 
 export const Type = (props) =>{
   return (<AntdSelect style={{width:200}} options={[{label:'实物详情',value:'PHYSICALDETAIL'},{label:'库位详情',value:'POSITIONS'},]} {...props}/>);
@@ -19,10 +14,7 @@ export const Type = (props) =>{
 export const Name = (props) =>{
   return (<Input {...props}/>);
 };
-export const Templete = (props) =>{
-  const {type,...other} = props;
-  return (<Editor type={type} {...other} />);
-};
+
 export const CreateTime = (props) =>{
   return (<Input {...props}/>);
 };

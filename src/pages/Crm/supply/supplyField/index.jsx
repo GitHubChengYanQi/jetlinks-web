@@ -30,7 +30,6 @@ export const BrandId = (props) => {
 
   const {value,displays} = props;
 
-
   const brandBindResults = [];
 
   if (value && value.length > 0){
