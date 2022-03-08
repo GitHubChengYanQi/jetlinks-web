@@ -234,6 +234,13 @@ const Setps = ({
         </FieldList>
 
         <div style={{display: productionType === undefined && 'none'}}>
+          <Divider orientation="left">投入物料信息</Divider>
+
+          <FormItem
+            productionType={productionType}
+            name="skuShow"
+            component={SkuShow}
+          />
           <Divider orientation="left">关联信息</Divider>
           <FormItem
             label="工位"
@@ -277,13 +284,6 @@ const Setps = ({
             placeholder="请输入生产过程的备注内容"
           />
 
-          <Divider orientation="left">物料信息</Divider>
-
-          <FormItem
-            productionType={productionType}
-            name="skuShow"
-            component={SkuShow}
-          />
         </div>
 
 
