@@ -264,6 +264,8 @@ export const Note = (props) => {
 
 export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) => {
 
+  const input = '\\<input (.*?)\\>';
+
   const [values, setValues] = useState([]);
 
   const [skus, setSkus] = useState([]);
@@ -291,7 +293,6 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
 
   const newSkuTable = (item, stringItem, oldString, value, oldItem) => {
     if (oldString === oldItem) {
-      const input = '\\<input (.*?)\\>';
       const replaceString = oldString.match(input)[0];
       return oldString.replace(replaceString, value);
     } else {
@@ -316,9 +317,14 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
       cycleReplaces: newList.map((item) => {
         return {
           cycles: item.map((stringItem, index) => {
+            let newText = stringItem;
+            if (newText.search(input) !== -1) {
+              const replaceString = newText.match(input)[0];
+              newText = newText.replace(replaceString, '');
+            }
             return {
               oldText: array.inputs[index],
-              newText: stringItem,
+              newText,
             };
           })
         };
@@ -451,8 +457,6 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
         }
       });
 
-      const input = '\\<input (.*?)\\>';
-
       return {
         title,
         render: (value, record, index) => {
@@ -480,7 +484,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
       size="large"
       bordered
       dataSource={array.strings || []}
-      renderItem={(item, index) => <List.Item>{replaceDom(item, index)}</List.Item>}
+      renderItem={(item, index) => <List.Item key={index}>{replaceDom(item, index)}</List.Item>}
     />
     <div style={{marginTop: 16}}>
       {
