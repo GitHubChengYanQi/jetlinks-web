@@ -10,6 +10,7 @@ const FileUpload = ({
   title,
   maxCount,
   refresh,
+  filterFileType,
 }) => {
 
   const [fileList, setFileList] = useState([]);
@@ -20,7 +21,9 @@ const FileUpload = ({
   }, {
     manual: true,
     onSuccess: (res) => {
-      setFileList(res.map((item,index)=>{return {url:item,id:value.split(',')[index]};}));
+      setFileList(res.map((item, index) => {
+        return {url: item, id: value.split(',')[index]};
+      }));
     }
   });
 
@@ -28,10 +31,10 @@ const FileUpload = ({
     if (value) {
       getUrl({
         data: {
-          imgs:value.split(',')
+          imgs: value.split(',')
         }
       });
-    }else {
+    } else {
       setFileList([]);
     }
   }, [refresh]);
@@ -114,6 +117,10 @@ const FileUpload = ({
         }}
         beforeUpload={async (file) => {
           const type = file.type.split('/')[1];
+          // if (filterFileType && !filterFileType.includes(type)) {
+          //   alert('附件类型不正确！');
+          //   return false;
+          // }
           if (type) {
             const data = await run(
               {

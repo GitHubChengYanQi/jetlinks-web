@@ -202,7 +202,7 @@ const SkuTable = ({...props}, ref) => {
           );
         }} />
 
-        <Column title="名称 / 型号" key={2} dataIndex="spuId" render={(value, record) => {
+        <Column title="名称 / 型号" key={2} dataIndex="skuName" render={(value, record) => {
           if (record.spuResult)
             return (
               <>
@@ -258,10 +258,10 @@ const SkuTable = ({...props}, ref) => {
           sorter
           width={250}
           align="center"
-          dataIndex="user"
+          dataIndex="createUser"
           render={(value, record) => {
             return <>
-              {value && value.name} / {record.createTime}
+              {record.user && record.user.name} / {record.createTime}
             </>;
           }} />
 

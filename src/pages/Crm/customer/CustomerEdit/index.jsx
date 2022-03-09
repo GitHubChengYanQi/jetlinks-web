@@ -457,7 +457,12 @@ const CustomerEdit = ({
               </Row>
               <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction} />
               <Space align="start">
-                <FormItem label="附件" name="file" component={SysField.File} />仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
+                <FormItem
+                  label="附件"
+                  name="file"
+                  prompt='仅支持上传一张格式为JPG/PNG/PDF/DOCX格式的图片，建议上传企业营业执照'
+                  filterFileType={['JPG','PNG','PDF','DOCX']}
+                  component={SysField.File} />
               </Space>
             </MegaLayout></Overflow>
           </ProCard>
