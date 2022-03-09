@@ -58,6 +58,15 @@ const AddSpu = () => {
 
   return <div style={{padding: '24px 20%'}}>
     <Form>
+      <Form.Item name="coding" label="物料编码">
+        <Cascader api={spuClassificationTreeVrew} onChange={(value) => {
+          spuRun({
+            data: {
+              spuClassificationId: value,
+            }
+          });
+        }} />
+      </Form.Item>
       <Form.Item name="class" label="选择分类">
         <Cascader api={spuClassificationTreeVrew} onChange={(value) => {
           spuRun({
