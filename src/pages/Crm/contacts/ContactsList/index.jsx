@@ -252,7 +252,7 @@ const ContactsTable = (props) => {
         }} />
       </Table>
       <Modal
-        width={1000}
+        width={500}
         title="联系人"
         component={ContactsEdit}
         customerId={customer && customer.customerId}
@@ -264,7 +264,7 @@ const ContactsTable = (props) => {
         footer={
           <>
             <Button type="primary" onClick={() => {
-              submitRef.current.formRef.current.submit();
+              submitRef.current.submit();
             }}>
               保存
             </Button>

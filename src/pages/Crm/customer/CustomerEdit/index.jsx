@@ -79,6 +79,11 @@ const CustomerEdit = ({
           wrapperCol={24}
           fieldKey="customerId"
           onSubmit={(value) => {
+
+            if (!value.supplyParams || value.supplyParams.length === 0) {
+              message.warn('请选择物料！');
+              return false;
+            }
             // 供应商物料
             const supplyParams = [];
             let brands = true;
@@ -377,8 +382,8 @@ const CustomerEdit = ({
                     name="bankAccount"
                     component={SysField.BankAccount}
                     rules={[{
-                      message:'请输入数字!',
-                      pattern:'^\\d+$'
+                      message: '请输入数字!',
+                      pattern: '^\\d+$'
                     }]}
                   />
                 </Col>

@@ -22,7 +22,6 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
-import {Tab} from '@alifd/next';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
@@ -264,7 +263,6 @@ export const Note = (props) => {
 };
 
 export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) => {
-  console.log(defaultValue);
 
   const [values, setValues] = useState([]);
 
@@ -438,7 +436,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
         dataIndex: 'onePrice'
       };
       // eslint-disable-next-line no-template-curly-in-string
-    }else if (item.indexOf('${{deliveryDate}}}') !== -1) {
+    } else if (item.indexOf('${{deliveryDate}}}') !== -1) {
       return {
         title: '交货日期',
         dataIndex: 'deliveryDate'
@@ -487,7 +485,13 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
     <div style={{marginTop: 16}}>
       {
         array.inputs && array.inputs.length > 0 && <>
-          <Table columns={columns} pagination={false} rowKey="skuId" dataSource={skuList || []} />
+          <Table
+            columns={columns}
+            pagination={false}
+            rowKey="index"
+            dataSource={skuList && skuList.map((item, index) => {
+              return {...item, key: index};
+            }) || []} />
         </>
       }
     </div>

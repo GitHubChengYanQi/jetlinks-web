@@ -15,6 +15,7 @@ import Title from '@/components/Title';
 import * as SysField from '@/pages/Crm/contacts/ContactsField';
 import {contactsDetail, contactsAdd, contactsEdit} from '../contactsUrl';
 import Form from '@/components/Form';
+import {CompanyRoleId, DeptName} from '@/pages/Crm/customer/CustomerField';
 
 const {FormItem} = Form;
 
@@ -25,22 +26,11 @@ const ApiConfig = {
 };
 
 
-const RowStyleLayout = styled(props => <div {...props} />)`
-  .ant-btn {
-    margin-right: 16px;
-  }
-
-  .ant-form-item {
-    display: inline-flex;
-    width: 80%;
-  }
-`;
 const formActionsPublic = createFormActions();
 const ContactsEdit = ({...props}, ref) => {
 
   const {customerId, ...other} = props;
   const formRef = useRef(null);
-
 
 
   useImperativeHandle(ref, () => ({
@@ -59,6 +49,18 @@ const ContactsEdit = ({...props}, ref) => {
           api={ApiConfig}
           fieldKey="contactsId"
           onSubmit={(value) => {
+
+            if (value.positionName) {
+              value = {...value, positionName: value.positionName.id ? value.positionName.id : value.positionName.name};
+            }
+
+            if (value.deptName) {
+              value = {
+                ...value,
+                deptName: value.deptName.id ? value.deptName.id : value.deptName.name
+              };
+            }
+
             if (!customerId) {
               message.warn('请选择客户！');
               return false;
@@ -77,14 +79,8 @@ const ContactsEdit = ({...props}, ref) => {
             title={<Title title="联系人信息" level={4} />}
             headerBordered>
             <FormItem label="联系人姓名" name="contactsName" component={SysField.ContactsName} required />
-            <FormItem label="职务" name="companyRole" component={SysField.CompanyRole} />
-            {!(customerId || other.value) && <FormItem
-              label="客户"
-              name="customerId"
-              component={SysField.SelectCustomers}
-              required
-              noAdd
-            />}
+            <FormItem label="职务" name="positionName" component={CompanyRoleId} />
+            <FormItem label="部门" name="deptName" component={DeptName} />
           </ProCard>
           <FieldList
             name="phoneParams"
@@ -110,17 +106,19 @@ const ContactsEdit = ({...props}, ref) => {
                     {state.value.map((item, index) => {
                       const onRemove = index => mutators.remove(index);
                       return (
-                        <RowStyleLayout key={index}>
-                          <FormItem
-                            label="电话号码"
-                            name={`phoneParams.${index}.phoneNumber`}
-                            component={SysField.PhoneNumber}
-                            rules={[{
-                              required: true,
-                              message: '请输入正确的手机号码!',
-                              pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
-                            }]}
-                          />
+                        <div key={index}>
+                          <div style={{display:'inline-block',width:'90%'}}>
+                            <FormItem
+                              label="电话号码"
+                              name={`phoneParams.${index}.phoneNumber`}
+                              component={SysField.PhoneNumber}
+                              rules={[{
+                                required: true,
+                                message: '请输入正确的手机号码!',
+                                pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+                              }]}
+                            />
+                          </div>
                           <Button
                             type="link"
                             style={{float: 'right', display: state.value.length === 1 && 'none'}}
@@ -129,7 +127,7 @@ const ContactsEdit = ({...props}, ref) => {
                             onClick={() => {
                               onRemove(index);
                             }} />
-                        </RowStyleLayout>
+                        </div>
                       );
                     })}
                   </ProCard>

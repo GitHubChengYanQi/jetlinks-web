@@ -78,10 +78,10 @@ const AddSkuTable = ({
             icon={<DeleteOutlined />}
             onClick={() => {
               const ids = keys.map((item) => {
-                return item.skuId;
+                return item.key;
               });
-              const array = value.filter((item) => {
-                return !ids.includes(item.skuId);
+              const array = dataSources.filter((item) => {
+                return !ids.includes(item.key);
               });
               onChange(array);
               setKeys([]);
