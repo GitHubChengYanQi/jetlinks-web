@@ -23,8 +23,8 @@ export const Contacts = ({
 
   const [skuTable, setSkuTable] = useSetState({
     table: [{
-      label: '物料名',
-      value: 'sku'
+      label: '物料名称',
+      value: 'spuName'
     }]
   });
 
@@ -37,9 +37,24 @@ export const Contacts = ({
 
   const skuTableOptions = [
     {
-      label: '物料名',
-      value: 'sku',
-      disabled: disabled('sku'),
+      label: '物料编码',
+      value: 'coding',
+      disabled: disabled('coding'),
+    },
+    {
+      label: '物料名称',
+      value: 'spuName',
+      disabled: disabled('spuName'),
+    },
+    {
+      label: '规格 / 型号',
+      value: 'skuName',
+      disabled: disabled('skuName'),
+    },
+    {
+      label: '分类',
+      value: 'skuClass',
+      disabled: disabled('skuClass'),
     },
     {
       label: '品牌',
@@ -103,44 +118,46 @@ export const Contacts = ({
 
     {showSkuTable && <>
       <Divider>设置物料清单</Divider>
-      <Space>
+      <div>
         {
           skuTable.table.map((item, index) => {
-            return <Tooltip
-              placement="top"
-              color="#fff"
-              title={<Button
-                type="link"
-                disabled={skuTable.table.length === 1}
-                icon={<DeleteOutlined />}
-                onClick={() => {
-                  const array = skuTable.table.filter((item, itemIndex) => {
-                    return itemIndex !== index;
-                  });
-                  setTable(array);
-                  setSkuTable({table: array});
-                }}
-                danger
-              />} key={index}>
-              <Select
-                key={index}
-                style={{minWidth: 100}}
-                value={item.value}
-                options={skuTableOptions}
-                onChange={(value, option) => {
-                  const array = skuTable.table;
-                  array[index] = option;
-                  setTable(array);
-                  setSkuTable({table: array});
-                }} />
-            </Tooltip>;
+            return <div key={index} style={{display:'inline-block',margin:'0 8px 8px 0'}}>
+              <Tooltip
+                placement="top"
+                color="#fff"
+                title={<Button
+                  type="link"
+                  disabled={skuTable.table.length === 1}
+                  icon={<DeleteOutlined />}
+                  onClick={() => {
+                    const array = skuTable.table.filter((item, itemIndex) => {
+                      return itemIndex !== index;
+                    });
+                    setTable(array);
+                    setSkuTable({table: array});
+                  }}
+                  danger
+                />} key={index}>
+                <Select
+                  key={index}
+                  style={{minWidth: 100}}
+                  value={item.value}
+                  options={skuTableOptions}
+                  onChange={(value, option) => {
+                    const array = skuTable.table;
+                    array[index] = option;
+                    setTable(array);
+                    setSkuTable({table: array});
+                  }} />
+              </Tooltip>
+            </div>;
           })
         }
         <Button onClick={() => {
           skuTable.table.push({});
           setSkuTable({...skuTable});
         }}><PlusOutlined /></Button>
-      </Space>
+      </div>
     </>}
   </>;
 };

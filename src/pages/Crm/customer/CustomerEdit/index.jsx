@@ -41,6 +41,9 @@ const CustomerEdit = ({
   ...props
 }) => {
 
+  const module = props.location;
+  console.log(module);
+
   const ApiConfig = {
     view: customerDetail,
     add: customerAdd,
@@ -79,6 +82,11 @@ const CustomerEdit = ({
           wrapperCol={24}
           fieldKey="customerId"
           onSubmit={(value) => {
+
+            if (!value.supplyParams || value.supplyParams.length === 0) {
+              message.warn('请选择物料！');
+              return false;
+            }
             // 供应商物料
             const supplyParams = [];
             let brands = true;
@@ -105,16 +113,16 @@ const CustomerEdit = ({
             contactsParams.push({
               contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
               phoneParams: [{phoneNumber: value.phoneNumber}],
-              deptName: value.deptName && (value.deptName.id ? value.deptName.id : value.deptName.name),
-              positionName: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
+              deptName: value.deptName,
+              positionName: value.companyRole,
             });
             value.contactsParams && value.contactsParams.map((item) => {
               if (item && item.contactsName) {
                 contactsParams.push({
                   contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
                   phoneParams: [{phoneNumber: item.phoneNumber}],
-                  deptName: item.deptName && (item.deptName.id ? item.deptName.id : item.deptName.name),
-                  positionName: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
+                  deptName: item.deptName,
+                  positionName: value.companyRole,
                 });
               }
               return null;
@@ -126,6 +134,7 @@ const CustomerEdit = ({
               map: value.map,
               detailLocation: value.detailLocation,
               region: value.region,
+              addressName: value.addressName
             });
             if (value.adressParams) {
               adressParams = adressParams.concat(value.adressParams.filter((item) => {
@@ -263,7 +272,9 @@ const CustomerEdit = ({
                   <FormItem label="企业简称" name="abbreviation" placeholder="请输入供应商简称" component={SysField.Abbreviation} />
                 </Col>
                 <Col span={span}>
-                  <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                  <div style={{position: 'absolute'}}>
+                    <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                  </div>
                 </Col>
               </Row>
               <Row gutter={24}>
@@ -342,7 +353,7 @@ const CustomerEdit = ({
                     component={SysField.Url}
                   />
                 </Col>
-                <Col span={12}>
+                <Col span={span}>
                   <FormItem
                     label="定位地址"
                     disabled
@@ -350,6 +361,14 @@ const CustomerEdit = ({
                     name="map"
                     width={400}
                     component={SysField.Map}
+                  />
+                </Col>
+                <Col span={span}>
+                  <FormItem
+                    label="地址名称"
+                    placeholder="请输入地址"
+                    name="addressName"
+                    component={SysField.Url}
                   />
                 </Col>
               </Row>
@@ -377,8 +396,8 @@ const CustomerEdit = ({
                     name="bankAccount"
                     component={SysField.BankAccount}
                     rules={[{
-                      message:'请输入数字!',
-                      pattern:'^\\d+$'
+                      message: '请输入数字!',
+                      pattern: '^\\d+$'
                     }]}
                   />
                 </Col>
@@ -418,7 +437,8 @@ const CustomerEdit = ({
                     name="registeredCapital"
                     style={{width: 200}}
                     placeholder="请输入注册资本"
-                    component={SysField.Money} />
+                    component={SysField.Money}
+                  />
                 </Col>
               </Row>
               <Row gutter={24}>
@@ -600,6 +620,14 @@ const CustomerEdit = ({
                               />
                             </Col>
                             <Col span={span}>
+                              <div style={{display: 'inline-block'}}>
+                                <FormItem
+                                  label="地址名称"
+                                  placeholder="请输入地址"
+                                  name="addressName"
+                                  component={SysField.Url}
+                                />
+                              </div>
                               <Button
                                 type="link"
                                 style={{float: 'right'}}
@@ -665,6 +693,10 @@ const CustomerEdit = ({
                                 placeholder="请输入开户账号"
                                 name={`invoiceParams.${index}.bankAccount`}
                                 component={SysField.BankAccount}
+                                rules={[{
+                                  message: '请输入数字!',
+                                  pattern: '^\\d+$'
+                                }]}
                               />
                             </Col>
                             <Col span={span}>

@@ -5,20 +5,19 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {Button, Input, Select as AntSelect, InputNumber} from 'antd';
+import {PlusOutlined} from '@ant-design/icons';
 import Select from '@/components/Select';
 import Drawer from '@/components/Drawer';
-import {PlusOutlined} from '@ant-design/icons';
 import CompanyRoleEdit from '@/pages/Crm/companyRole/companyRoleEdit';
 import * as apiUrl from '../contactsUrl';
 import {useRequest} from '@/util/Request';
-import {value} from '@/pages/Portal/remind/remindField';
 import SelectCustomer from '@/pages/Crm/customer/components/SelectCustomer';
 
 
 export const ContactsName = (props) => {
-  return (<Input style={{width: 200}} {...props} />);
+  return (<Input {...props} />);
 };
 export const Job = (props) => {
   return (<Select api={apiUrl.companyRoleSelect} {...props} />);
@@ -83,11 +82,6 @@ export const CustomerId = (props) => {
   }
   return (<Select disabled={customer} width={200} api={apiUrl.customerIdSelect} {...other} />);
 };
-
-export const CustomerIds = (props) => {
-  return (<Select api={apiUrl.customerIdSelect} {...props} />);
-};
-
 
 export const PhoneNumber = (props) => {
   return (<Input  {...props} />);

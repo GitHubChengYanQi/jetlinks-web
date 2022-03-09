@@ -200,7 +200,7 @@ const SkuEdit = ({...props}, ref) => {
               <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
-          name="img"
+          name="images"
           component={SysField.Img} />
         <FormItem
           label={<Space>
@@ -209,7 +209,7 @@ const SkuEdit = ({...props}, ref) => {
               <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
-          name="bind"
+          name="drawing"
           component={SysField.Bind} />
       </Form>
     </div>

@@ -60,7 +60,7 @@ export const SpuClass = (props) =>{
       <Select resh={state} width={365} api={apiUrl.spuClassificationListSelect} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
-      }}>设置分类</Button>
+      }}>新增分类</Button>
       <Modal width={800} component={SpuClassificationList} ref={ref} onClose={() => {
         ref.current.close();
         toggle();

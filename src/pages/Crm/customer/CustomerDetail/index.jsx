@@ -25,10 +25,12 @@ import DetailMenu from '@/pages/Crm/customer/CustomerDetail/compontents/DetailMe
 import styles from './index.module.scss';
 import InvoiceList from '@/pages/Crm/invoice/invoiceList';
 import SupplyList from '@/pages/Crm/supply/supplyList';
+import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
+import store from '@/store';
 
 const {TabPane} = Tabs;
 
-const CustomerDetail = ({id, status}) => {
+const CustomerDetail = ({id, status, ...props}) => {
 
   const params = useParams();
 
@@ -36,6 +38,8 @@ const CustomerDetail = ({id, status}) => {
   const refTrack = useRef(null);
   const submitRef = useRef(null);
   const history = useHistory();
+
+  const [areaData] = store.useModel('dataSource');
 
   const {loading, data, refresh} = useRequest(customerDetail, {
     defaultParams: {
@@ -70,7 +74,7 @@ const CustomerDetail = ({id, status}) => {
   return (
     <div className={styles.detail}>
       <Card>
-        <Breadcrumb />
+        <Breadcrumb title="供应商详情" />
       </Card>
       <Card>
         <div className={styles.title}>
@@ -91,7 +95,7 @@ const CustomerDetail = ({id, status}) => {
               />
             </Col>
             <Col>
-              <Space style={{height:30}} align='start'>
+              <Space style={{height: 30}} align="start">
                 <Typography.Paragraph
                   strong
                   copyable
@@ -131,7 +135,10 @@ const CustomerDetail = ({id, status}) => {
                   {data.defaultContactsResult && data.defaultContactsResult.deptResult && data.defaultContactsResult.deptResult.fullName || '--'}
                 </em>
                 <div>
-                  <em>详细地址：{data.address && data.address.detailLocation || '--'}</em>
+                  <em>联系地址：<TreeSelectSee
+                    data={areaData.area}
+                    value={data.address.region} />&nbsp;&nbsp;{data.address && data.address.detailLocation || '--'}
+                  </em>
                 </div>
               </div>
             </Col>
@@ -147,27 +154,30 @@ const CustomerDetail = ({id, status}) => {
             refresh={() => {
               refresh();
             }} />
-          <Button
-            style={params.state === 'false' ? {'display': 'none'} : null}
-            onClick={() => {
-              addRef.current.open(false);
-            }} icon={<EditOutlined />}>创建商机</Button>
-          <BusinessAdd
-            ref={addRef}
-            customerId={data.customerId}
-            userId={data.userId}
-            onClose={() => {
-              addRef.current.close();
-              refTrack.current.close();
-              refresh();
-            }}
-          />
-          <Button
-            type="primary"
-            style={params.state === 'false' ? {'display': 'none'} : null}
-            onClick={() => {
-              refTrack.current.open(false);
-            }} icon={<EditOutlined />}>添加跟进</Button>
+          {props.hidden && <>
+            <Button
+              style={params.state === 'false' ? {'display': 'none'} : null}
+              onClick={() => {
+                addRef.current.open(false);
+              }} icon={<EditOutlined />}>创建商机</Button>
+            <BusinessAdd
+              ref={addRef}
+              customerId={data.customerId}
+              userId={data.userId}
+              onClose={() => {
+                addRef.current.close();
+                refTrack.current.close();
+                refresh();
+              }}
+            />
+            <Button
+              type="primary"
+              style={params.state === 'false' ? {'display': 'none'} : null}
+              onClick={() => {
+                refTrack.current.open(false);
+              }} icon={<EditOutlined />}>添加跟进</Button>
+          </>}
+
           <Modal
             width={width === 1 ? 1400 : 800}
             title="跟进"
@@ -208,7 +218,7 @@ const CustomerDetail = ({id, status}) => {
       <div
         className={styles.main}>
         <Row gutter={24}>
-          <Col span={!enterprise ? 16 : 24}>
+          <Col span={!enterprise && props.hidden ? 16 : 24}>
             <Card>
               <Tabs defaultActiveKey="9">
                 <TabPane tab="物料信息" key="9">
@@ -247,7 +257,7 @@ const CustomerDetail = ({id, status}) => {
               </Tabs>
             </Card>
           </Col>
-          {!enterprise && <Col span={8}>
+          {!enterprise && props.hidden && <Col span={8}>
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="跟进" key="1">
