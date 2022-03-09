@@ -77,13 +77,13 @@ const DetailMenu = ({data, deletaApi, url, refresh, type, supply,}) => {
           }}>加入黑名单</Menu.Item>}
           <Menu.Item danger key="delete" onClick={() => {
             deleteCustomer();
-          }}>删除客户</Menu.Item>
+          }}>删除</Menu.Item>
         </>;
       case 'bussiness':
         return <>
           <Menu.Item danger key="delete" onClick={() => {
             deleteCustomer();
-          }}>删除项目</Menu.Item>
+          }}>删除</Menu.Item>
         </>;
       case 'sop':
         return <>

@@ -35,17 +35,18 @@ const RowStyleLayout = styled(props => <div {...props} />)`
     width: 80%;
   }
 `;
-
+const formActionsPublic = createFormActions();
 const ContactsEdit = ({...props}, ref) => {
 
   const {customerId, ...other} = props;
   const formRef = useRef(null);
 
-  const formActionsPublic = createFormActions();
+
 
   useImperativeHandle(ref, () => ({
     submit: formRef.current.submit,
   }));
+
 
   return (
     <>

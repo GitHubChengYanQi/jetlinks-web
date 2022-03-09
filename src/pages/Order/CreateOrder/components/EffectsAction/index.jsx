@@ -230,6 +230,9 @@ export const customerBAction = (setFieldState) => {
 
 const paymentAction = (setFieldState, getFieldState) => {
   FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value}) => {
+    setFieldState('allField', (state) => {
+      state.props.skuList = value;
+    });
     let money = 0;
     if (value) {
       value.map((item) => {

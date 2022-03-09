@@ -28,7 +28,7 @@ import SupplyList from '@/pages/Crm/supply/supplyList';
 
 const {TabPane} = Tabs;
 
-const CustomerDetail = ({id, status}) => {
+const CustomerDetail = ({id, status, ...props}) => {
 
   const params = useParams();
 
@@ -70,7 +70,7 @@ const CustomerDetail = ({id, status}) => {
   return (
     <div className={styles.detail}>
       <Card>
-        <Breadcrumb />
+        <Breadcrumb title="供应商详情" />
       </Card>
       <Card>
         <div className={styles.title}>
@@ -91,7 +91,7 @@ const CustomerDetail = ({id, status}) => {
               />
             </Col>
             <Col>
-              <Space style={{height:30}} align='start'>
+              <Space style={{height: 30}} align="start">
                 <Typography.Paragraph
                   strong
                   copyable
@@ -208,7 +208,7 @@ const CustomerDetail = ({id, status}) => {
       <div
         className={styles.main}>
         <Row gutter={24}>
-          <Col span={!enterprise ? 16 : 24}>
+          <Col span={!enterprise && props.hidden ? 16 : 24}>
             <Card>
               <Tabs defaultActiveKey="9">
                 <TabPane tab="物料信息" key="9">
@@ -247,7 +247,7 @@ const CustomerDetail = ({id, status}) => {
               </Tabs>
             </Card>
           </Col>
-          {!enterprise && <Col span={8}>
+          {!enterprise && props.hidden && <Col span={8}>
             <Card>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="跟进" key="1">

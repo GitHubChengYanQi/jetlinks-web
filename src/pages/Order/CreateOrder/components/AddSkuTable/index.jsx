@@ -19,8 +19,6 @@ const AddSkuTable = ({
   }
 }) => {
 
-  console.log(currency);
-
   const SO = module === 'SO';
 
   const [keys, setKeys] = useState([]);
@@ -142,7 +140,7 @@ const AddSkuTable = ({
           }}
         />;
       }} />
-      <Table.Column title="单价" width={120} dataIndex="onePrice" render={(value, record, index) => {
+      <Table.Column title="单价" width={180} dataIndex="onePrice" render={(value, record, index) => {
         return <Space>
           <InputNumber
             placeholder="请输入单价"
@@ -156,16 +154,19 @@ const AddSkuTable = ({
           {currency}
         </Space>;
       }} />
-      <Table.Column title="总价" width={120} dataIndex="totalPrice" render={(value, record, index) => {
-        return <InputNumber
-          placeholder="请输入总价"
-          precision={2}
-          min={1}
-          value={value}
-          onChange={(value) => {
-            setValue({totalPrice: value, onePrice: record.purchaseNumber && (value / record.purchaseNumber)}, index);
-          }}
-        />;
+      <Table.Column title="总价" width={180} dataIndex="totalPrice" render={(value, record, index) => {
+        return <Space>
+          <InputNumber
+            placeholder="请输入总价"
+            precision={2}
+            min={1}
+            value={value}
+            onChange={(value) => {
+              setValue({totalPrice: value, onePrice: record.purchaseNumber && (value / record.purchaseNumber)}, index);
+            }}
+          />
+          {currency}
+        </Space>;
       }} />
       <Table.Column title="票据类型" width={120} dataIndex="paperType" render={(value, record, index) => {
         return <AntSelect

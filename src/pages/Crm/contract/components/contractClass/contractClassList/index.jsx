@@ -6,8 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -20,6 +21,8 @@ import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ContractClassList = () => {
   const ref = useRef(null);
@@ -48,6 +51,7 @@ const ContractClassList = () => {
         title={<Breadcrumb title='合同分类' />}
         api={contractClassList}
         rowKey="contractClassId"
+        formActions={formActionsPublic}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

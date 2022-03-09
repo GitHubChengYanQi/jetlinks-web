@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List} from 'antd';
+import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table} from 'antd';
 import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
@@ -22,9 +22,11 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
+import {Tab} from '@alifd/next';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
-export const AddSku = ({value = [], customerId, onChange, module,currency}) => {
+export const AddSku = ({value = [], customerId, onChange, module, currency}) => {
 
   const skuTableRef = useRef();
 
@@ -131,6 +133,10 @@ export const Currency = (props) => {
   const {loading, data} = useRequest({
     url: '/Enum/money',
     method: 'GET'
+  }, {
+    onSuccess: () => {
+      props.onChange('人民币');
+    }
   });
 
   if (loading) {
@@ -143,7 +149,7 @@ export const Currency = (props) => {
     };
   }) : [];
 
-  return (<AntSelect style={{width: 100}} defaultValue="人民币" options={options} {...props} />);
+  return (<AntSelect style={{width: 100}} options={options} {...props} />);
 };
 
 export const Money = (props) => {
@@ -257,9 +263,12 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({onChange, array}) => {
+export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) => {
+  console.log(defaultValue);
 
   const [values, setValues] = useState([]);
+
+  const [skus, setSkus] = useState([]);
 
   const change = (index, value) => {
     const newString = [];
@@ -268,14 +277,56 @@ export const AllField = ({onChange, array}) => {
     }
     newString[index] = value;
     if (!newString.includes(undefined)) {
-      onChange(newString.map((item, index) => {
-        return {
-          oldText: array[index],
-          newText: item
-        };
-      }));
+      onChange({
+        ...defaultValue,
+        contractReplaces: newString.map((item, index) => {
+          return {
+            oldText: array[index],
+            newText: item
+          };
+        })
+      });
     }
     setValues(newString);
+  };
+
+
+  const newSkuTable = (item, stringItem, oldString, value, oldItem) => {
+    if (oldString === oldItem) {
+      const input = '\\<input (.*?)\\>';
+      const replaceString = oldString.match(input)[0];
+      return oldString.replace(replaceString, value);
+    } else {
+      return stringItem;
+    }
+  };
+
+  const tableChange = (value, oldItem, changeIndex) => {
+    const newList = skuList.map((item, index) => {
+      if (changeIndex === index) {
+        return array.inputs.map((stringItem, stringIndex) => {
+          return newSkuTable(item, skus[index] && skus[index][stringIndex] || stringItem, stringItem, value, oldItem);
+        });
+      } else {
+        return array.inputs.map((stringItem, stringIndex) => {
+          return skus[index] && skus[index][stringIndex] || stringItem;
+        });
+      }
+    });
+    onChange({
+      ...defaultValue,
+      cycleReplaces: newList.map((item) => {
+        return {
+          cycles: item.map((stringItem, index) => {
+            return {
+              oldText: array.inputs[index],
+              newText: stringItem,
+            };
+          })
+        };
+      }),
+    });
+    setSkus(newList);
   };
 
   const replaceDom = (string, index) => {
@@ -316,16 +367,129 @@ export const AllField = ({onChange, array}) => {
     });
   };
 
-  if (!Array.isArray(array)) {
+  const skuTableReplaceDom = (string, item, index) => {
+    return parse(string, {
+      replace: domNode => {
+        if (domNode.name === 'input') {
+          switch (domNode.attribs.type) {
+            case 'text':
+              return <Input
+                placeholder="输入文本"
+                style={{width: 200, margin: '0 10px'}}
+                onChange={(value) => {
+                  tableChange(value.target.value, item, index);
+                }}
+              />;
+            case 'number':
+              return <InputNumber
+                placeholder="输入数值"
+                style={{width: 200, margin: '0 10px'}}
+                onChange={(value) => {
+                  tableChange(value, item, index);
+                }}
+              />;
+            case 'date':
+              return <DatePicker
+                showTime
+                placeholder="输入时间"
+                style={{width: 200, margin: '0 10px'}}
+                onChange={(value) => {
+                  tableChange(value, item, index);
+                }}
+              />;
+            default:
+              break;
+          }
+        }
+      }
+    });
+  };
+
+  if (!array) {
     return <></>;
   }
 
-  return (<>
+  const skuTableTitle = (item) => {
+    // eslint-disable-next-line no-template-curly-in-string
+    if (item.indexOf('${{sku}}') !== -1) {
+      return {
+        title: '物料名称',
+        dataIndex: 'skuResult',
+        render: (value) => {
+          return <SkuResultSkuJsons skuResult={value} />;
+        },
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{brand}}') !== -1) {
+      return {
+        title: '品牌',
+        dataIndex: 'defaultBrandResult'
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{skuNumber}}') !== -1) {
+      return {
+        title: '数量',
+        dataIndex: 'purchaseNumber'
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{price}}') !== -1) {
+      return {
+        title: '单价',
+        dataIndex: 'onePrice'
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    }else if (item.indexOf('${{deliveryDate}}}') !== -1) {
+      return {
+        title: '交货日期',
+        dataIndex: 'deliveryDate'
+      };
+    } else if (item.indexOf('<input') !== -1 && item.indexOf('data-title') !== -1) {
+      let title = '';
+      parse(item, {
+        replace: domNode => {
+          if (domNode.name === 'input') {
+            title = domNode.attribs['data-title'];
+          }
+        }
+      });
+
+      const input = '\\<input (.*?)\\>';
+
+      return {
+        title,
+        render: (value, record, index) => {
+          return skuTableReplaceDom(item.match(input)[0], item, index);
+        }
+      };
+    } else {
+      return {};
+    }
+
+  };
+
+  const columns = array.inputs ?
+    array.inputs.map((item) => {
+      return {
+        ...skuTableTitle(item),
+        width: 200
+      };
+    })
+    : [];
+
+
+  return (<div>
     <List
       size="large"
       bordered
-      dataSource={array || []}
+      dataSource={array.strings || []}
       renderItem={(item, index) => <List.Item>{replaceDom(item, index)}</List.Item>}
     />
-  </>);
+    <div style={{marginTop: 16}}>
+      {
+        array.inputs && array.inputs.length > 0 && <>
+          <Table columns={columns} pagination={false} rowKey="skuId" dataSource={skuList || []} />
+        </>
+      }
+    </div>
+  </div>);
 };
