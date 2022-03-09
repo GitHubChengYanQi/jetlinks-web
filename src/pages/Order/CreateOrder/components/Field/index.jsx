@@ -272,7 +272,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
 
   const change = (index, value) => {
     const newString = [];
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.strings.length; i++) {
       newString.push(values[i]);
     }
     newString[index] = value;
@@ -281,7 +281,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
         ...defaultValue,
         contractReplaces: newString.map((item, index) => {
           return {
-            oldText: array[index],
+            oldText: array.strings[index],
             newText: item
           };
         })
