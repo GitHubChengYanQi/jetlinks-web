@@ -355,4 +355,10 @@ export const EffectsAction = (setFieldState, getFieldState) => {
   customerBAction(setFieldState);
   paymentAction(setFieldState, getFieldState);
   contractAction(setFieldState);
+
+  FormEffectHooks.onFieldValueChange$(' currency').subscribe(({value}) => {
+    setFieldState('detailParams', (state) => {
+      state.props.currency = value;
+    });
+  });
 };
