@@ -54,7 +54,7 @@ export const ToolClassificationId = (props) => {
       <Select resh={state} width={200} api={apiUrl.toolClassificationListSelect} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
-      }}>设置分类</Button>
+      }}>新增分类</Button>
       <Modal width={800} component={ToolClassificationList} ref={ref} onClose={() => {
         ref.current.close();
         toggle();

@@ -22,12 +22,9 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
-import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency}) => {
-
-  const skuTableRef = useRef();
 
   const addSku = useRef();
 
@@ -41,7 +38,6 @@ export const AddSku = ({value = [], customerId, onChange, module, currency}) => 
     <AddSkuTable
       currency={currency}
       module={module}
-      ref={skuTableRef}
       value={value}
       onChange={onChange}
       onAddSku={(type) => {

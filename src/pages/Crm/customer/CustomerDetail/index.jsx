@@ -25,6 +25,8 @@ import DetailMenu from '@/pages/Crm/customer/CustomerDetail/compontents/DetailMe
 import styles from './index.module.scss';
 import InvoiceList from '@/pages/Crm/invoice/invoiceList';
 import SupplyList from '@/pages/Crm/supply/supplyList';
+import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
+import store from '@/store';
 
 const {TabPane} = Tabs;
 
@@ -36,6 +38,8 @@ const CustomerDetail = ({id, status, ...props}) => {
   const refTrack = useRef(null);
   const submitRef = useRef(null);
   const history = useHistory();
+
+  const [areaData] = store.useModel('dataSource');
 
   const {loading, data, refresh} = useRequest(customerDetail, {
     defaultParams: {
@@ -131,7 +135,10 @@ const CustomerDetail = ({id, status, ...props}) => {
                   {data.defaultContactsResult && data.defaultContactsResult.deptResult && data.defaultContactsResult.deptResult.fullName || '--'}
                 </em>
                 <div>
-                  <em>详细地址：{data.address && data.address.detailLocation || '--'}</em>
+                  <em>联系地址：<TreeSelectSee
+                    data={areaData.area}
+                    value={data.address.region} />&nbsp;&nbsp;{data.address && data.address.detailLocation || '--'}
+                  </em>
                 </div>
               </div>
             </Col>
@@ -147,27 +154,30 @@ const CustomerDetail = ({id, status, ...props}) => {
             refresh={() => {
               refresh();
             }} />
-          <Button
-            style={params.state === 'false' ? {'display': 'none'} : null}
-            onClick={() => {
-              addRef.current.open(false);
-            }} icon={<EditOutlined />}>创建商机</Button>
-          <BusinessAdd
-            ref={addRef}
-            customerId={data.customerId}
-            userId={data.userId}
-            onClose={() => {
-              addRef.current.close();
-              refTrack.current.close();
-              refresh();
-            }}
-          />
-          <Button
-            type="primary"
-            style={params.state === 'false' ? {'display': 'none'} : null}
-            onClick={() => {
-              refTrack.current.open(false);
-            }} icon={<EditOutlined />}>添加跟进</Button>
+          {props.hidden && <>
+            <Button
+              style={params.state === 'false' ? {'display': 'none'} : null}
+              onClick={() => {
+                addRef.current.open(false);
+              }} icon={<EditOutlined />}>创建商机</Button>
+            <BusinessAdd
+              ref={addRef}
+              customerId={data.customerId}
+              userId={data.userId}
+              onClose={() => {
+                addRef.current.close();
+                refTrack.current.close();
+                refresh();
+              }}
+            />
+            <Button
+              type="primary"
+              style={params.state === 'false' ? {'display': 'none'} : null}
+              onClick={() => {
+                refTrack.current.open(false);
+              }} icon={<EditOutlined />}>添加跟进</Button>
+          </>}
+
           <Modal
             width={width === 1 ? 1400 : 800}
             title="跟进"

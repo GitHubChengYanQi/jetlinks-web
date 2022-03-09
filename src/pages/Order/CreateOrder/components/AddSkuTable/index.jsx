@@ -223,4 +223,4 @@ const AddSkuTable = ({
   </>;
 };
 
-export default React.forwardRef(AddSkuTable);
+export default AddSkuTable;

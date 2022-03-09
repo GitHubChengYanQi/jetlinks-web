@@ -353,7 +353,7 @@ export const SignIn = (props) => {
   return (<Input  {...props} />);
 };
 export const Introduction = (props) => {
-  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={4} {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={1000} rows={4} {...props} />);
 };
 
 export const DeptId = (props) => {
@@ -443,7 +443,11 @@ export const Url = (props) => {
 };
 
 export const Avatar = (props) => {
-  return (<UpLoadImg text='格式支持：JPG/PNG格式，单个文件不能超过20MB' imageType={['JPG','PNG','jpg','png']}  {...props} />);
+  return (
+    <div>
+      <UpLoadImg text="格式支持：JPG/PNG格式，单个文件不能超过20MB" imageType={['JPG', 'PNG', 'jpg', 'png']}  {...props} />
+    </div>
+  );
 };
 
 

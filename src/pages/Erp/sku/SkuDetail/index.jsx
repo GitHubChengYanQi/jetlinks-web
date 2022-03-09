@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {Button, Card, Descriptions, Empty, Space, Tabs} from 'antd';
+import {Button, Card, Descriptions, Empty, Image, Space, Tabs} from 'antd';
 import {useRequest} from '@/util/Request';
 import styles from '@/pages/Crm/customer/CustomerDetail/index.module.scss';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -108,14 +108,19 @@ const SkuDetail = ({value}) => {
       <Card title="物料描述">
         <Space direction="vertical">
           <div>
+            附件：
+            <Button
+              onClick={() => {
+                window.location.href = data.filedUrls && data.filedUrls.length > 0 && data.filedUrls[0];
+              }}>点击下载</Button>
+          </div>
+          <div>
             图片：
           </div>
           <div>
             图纸：
           </div>
-          <div>
-            附件：
-          </div>
+
         </Space>
       </Card>
       {!value && <div

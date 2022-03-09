@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Button, message, Popover, Space, Spin, Upload} from 'antd';
-import {QuestionCircleOutlined, UploadOutlined} from '@ant-design/icons';
+import {Button, message, Space, Spin, Upload} from 'antd';
+import {UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 
 const FileUpload = ({
@@ -8,6 +8,7 @@ const FileUpload = ({
   onChange = () => {
   },
   title,
+  prompt,
   maxCount,
   refresh,
 }) => {
@@ -129,7 +130,7 @@ const FileUpload = ({
         }}
       >
         <div>
-          <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>
+          <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>{prompt}
         </div>
       </Upload>
     </Space>

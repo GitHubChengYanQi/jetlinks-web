@@ -84,7 +84,7 @@ const Desc = (props) => {
                   });
                 }} /></Descriptions.Item>
           </>}
-          <Descriptions.Item label="开户行">
+          <Descriptions.Item label="开户银行">
             {(data.invoiceResult && data.invoiceResult.bankResult) ? data.invoiceResult.bankResult.bankName : '暂无'}
           </Descriptions.Item>
           <Descriptions.Item label="开户行号">{data.invoiceResult ? data.invoiceResult.bankNo : '暂无'}</Descriptions.Item>
