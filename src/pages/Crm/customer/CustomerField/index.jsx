@@ -95,7 +95,7 @@ export const CompanyRoleId = (props) => {
   const options = (!loading && data) ? data.map((value) => {
     return {
       label: value.position,
-      value: value.companyRoleId,
+      value: value.position,
     };
   }) : [];
 
@@ -104,16 +104,16 @@ export const CompanyRoleId = (props) => {
       disabled={disabled}
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={value && typeof value === 'object' && value.name && options}
-      value={value && typeof value === 'object' && value.name}
-      onSelect={(value, option) => {
-        onChange({id: value, name: option.label});
+      options={options}
+      value={value}
+      onSelect={(value) => {
+        onChange(value);
       }}
     >
       <Input
         placeholder={placeholder}
         onChange={(value) => {
-          onChange({name: value.target.value});
+          onChange(value.target.value);
           run({
             data: {
               position: value.target.value,
@@ -140,7 +140,7 @@ export const DeptName = (props) => {
   const options = (!loading && data) ? data.map((value) => {
     return {
       label: value.fullName,
-      value: value.deptId,
+      value: value.fullName,
     };
   }) : [];
 
@@ -150,16 +150,16 @@ export const DeptName = (props) => {
       disabled={disabled}
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={value && typeof value === 'object' && value.name && options}
-      value={value && typeof value === 'object' && value.name}
-      onSelect={(value, option) => {
-        onChange({id: value, name: option.label});
+      options={options}
+      value={value}
+      onSelect={(value,) => {
+        onChange(value);
       }}
     >
       <Input
         placeholder={placeholder}
         onChange={(value) => {
-          onChange({name: value.target.value});
+          onChange(value.target.value);
           run({
             data: {
               fullName: value.target.value,

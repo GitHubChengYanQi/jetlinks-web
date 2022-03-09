@@ -263,6 +263,7 @@ export const Note = (props) => {
 };
 
 export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) => {
+  console.log(skuList);
 
   const input = '\\<input (.*?)\\>';
 
@@ -276,17 +277,15 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
       newString.push(values[i]);
     }
     newString[index] = value;
-    if (!newString.includes(undefined)) {
-      onChange({
-        ...defaultValue,
-        contractReplaces: newString.map((item, index) => {
-          return {
-            oldText: array.strings[index],
-            newText: item
-          };
-        })
-      });
-    }
+    onChange({
+      ...defaultValue,
+      contractReplaces: newString.map((item, index) => {
+        return {
+          oldText: array.strings[index],
+          newText: item || ''
+        };
+      })
+    });
     setValues(newString);
   };
 
@@ -415,19 +414,49 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
 
   const skuTableTitle = (item) => {
     // eslint-disable-next-line no-template-curly-in-string
-    if (item.indexOf('${{sku}}') !== -1) {
+    if (item.indexOf('${{coding}}') !== -1) {
+      return {
+        title: '物料编码',
+        dataIndex: 'coding',
+        render: (value, record) => {
+          return value || (record.skuResult && record.skuResult.standard);
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{spuName}}') !== -1) {
       return {
         title: '物料名称',
         dataIndex: 'skuResult',
         render: (value) => {
-          return <SkuResultSkuJsons skuResult={value} />;
-        },
+          return value && value.spuResult.name;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{skuName}}') !== -1) {
+      return {
+        title: '规格 / 型号',
+        dataIndex: 'skuResult',
+        render: (value) => {
+          return `${value.skuName} / ${value.specifications || '无'}`;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{skuClass}}') !== -1) {
+      return {
+        title: '分类',
+        dataIndex: 'skuResult',
+        render: (value) => {
+          return value.spuResult && value.spuResult.spuClassificationResult && value.spuResult.spuClassificationResult.name;
+        }
       };
       // eslint-disable-next-line no-template-curly-in-string
     } else if (item.indexOf('${{brand}}') !== -1) {
       return {
         title: '品牌',
-        dataIndex: 'defaultBrandResult'
+        dataIndex: 'brand',
+        render: (value, record) => {
+          return record.brandResult || record.defaultBrandResult;
+        }
       };
       // eslint-disable-next-line no-template-curly-in-string
     } else if (item.indexOf('${{skuNumber}}') !== -1) {
@@ -442,7 +471,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
         dataIndex: 'onePrice'
       };
       // eslint-disable-next-line no-template-curly-in-string
-    } else if (item.indexOf('${{deliveryDate}}}') !== -1) {
+    } else if (item.indexOf('${{deliveryDate}}') !== -1) {
       return {
         title: '交货日期',
         dataIndex: 'deliveryDate'

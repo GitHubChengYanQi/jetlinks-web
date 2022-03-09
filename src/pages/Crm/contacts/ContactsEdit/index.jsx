@@ -49,18 +49,7 @@ const ContactsEdit = ({...props}, ref) => {
           api={ApiConfig}
           fieldKey="contactsId"
           onSubmit={(value) => {
-
-            if (value.positionName) {
-              value = {...value, positionName: value.positionName.id ? value.positionName.id : value.positionName.name};
-            }
-
-            if (value.deptName) {
-              value = {
-                ...value,
-                deptName: value.deptName.id ? value.deptName.id : value.deptName.name
-              };
-            }
-
+            
             if (!customerId) {
               message.warn('请选择客户！');
               return false;

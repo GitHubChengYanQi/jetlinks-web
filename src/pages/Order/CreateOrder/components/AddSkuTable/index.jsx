@@ -214,7 +214,6 @@ const AddSkuTable = ({
                 return item.key !== index;
               });
               onChange(array);
-              setDataSource(array);
             }}
             danger
           /></>;

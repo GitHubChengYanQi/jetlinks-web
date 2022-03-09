@@ -21,7 +21,7 @@ const ApiConfig = {
 
 const InvoiceEdit = ({...props}, ref) => {
 
-  const {customerId,NoButton, ...other} = props;
+  const {customerId, NoButton, ...other} = props;
 
   const formRef = useRef();
 
@@ -42,7 +42,11 @@ const InvoiceEdit = ({...props}, ref) => {
     >
       <FormItem label="开户银行" name="bankId" component={SysField.Bank} required />
       <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} required />
-      <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} required />
+      <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} rules={[{
+        required: true,
+        message: '请输入数字!',
+        pattern: '^\\d+$'
+      }]} />
     </Form>
   );
 };

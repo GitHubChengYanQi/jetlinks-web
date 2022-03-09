@@ -174,7 +174,7 @@ const Editor = ({
       <Modal
         title="设置变量"
         destroyOnClose
-        width={800}
+        width={700}
         visible={visible}
         onOk={() => {
           if (!button) {

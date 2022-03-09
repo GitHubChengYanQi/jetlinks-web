@@ -9,7 +9,6 @@ import React from 'react';
 import {Input,Radio} from 'antd';
 import Select from '@/components/Select';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
-import InputNumber from '@/components/InputNumber';
 
 export const CustomerId = (props) =>{
   return (<Input {...props}/>);
@@ -18,7 +17,7 @@ export const Bank = (props) =>{
   return (<Select api={bankListSelect} {...props}/>);
 };
 export const BankAccount = (props) =>{
-  return (<InputNumber style={{width:'100%'}} {...props}/>);
+  return (<Input {...props}/>);
 };
 export const CreditCode = (props) =>{
   return (<Input {...props}/>);
