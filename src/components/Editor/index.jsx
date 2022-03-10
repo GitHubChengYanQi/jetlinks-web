@@ -36,6 +36,14 @@ const Editor = ({
 
   const moduleOnoK = () => {
     let content = '';
+    let labeltds = '';
+    table.map((item) => {
+      return labeltds += `<td>${item.label}</td>`;
+    });
+    let valuetds = '';
+    table.map((item) => {
+      return valuetds += `<td>$\{{${item.value}}}</td>`;
+    });
     switch (module) {
       case 'PHYSICALDETAIL':
         insertContent(`$\{${button}}`);
@@ -64,20 +72,7 @@ const Editor = ({
             insertContent(`<input type='date' data-title=${title || '时间框'} />`);
             break;
           case 'skuTable':
-            content = `
-            <table style="border-collapse: collapse;" border="1">
-            <tr>
-            ${table.map((item) => {
-              return `<td>${item.label}</td>`;
-            })}
-            </tr>
-             <tr data-group='物料'>
-            ${table.map((item) => {
-              return `<td>$\{{${item.value}}}</td>`;
-            })}
-            </tr>
-            </table>
-            `;
+            content = `<table style="border-collapse: collapse;" border="1"><tr data-group="sku">${labeltds}</tr><tr>${valuetds}</tr></table>`;
             insertContent(content);
             break;
           default:
@@ -131,7 +126,7 @@ const Editor = ({
           plugins: ['advlist', 'autolink', 'autolink'
             , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount',...plugins],
+            'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', ...plugins],
           toolbar: 'undo redo | actions | formatselect | ' +
             'bold italic backcolor | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | table | ' +

@@ -96,6 +96,10 @@ export const Contacts = ({
           break;
         case 'skuTable':
           showSku();
+          setTable([{
+            label: '物料名称',
+            value: 'spuName'
+          }]);
           break;
         default:
           closeSku();
