@@ -30,6 +30,7 @@ import InputNumber from '@/components/InputNumber';
 import Drawer from '@/components/Drawer';
 import BankEdit from '@/pages/Purshase/bank/bankEdit';
 import UpLoadImg from '@/components/Upload';
+import CrmIndustryEdit from '@/pages/Crm/crmIndustry/crmIndustryEdit';
 
 export const ContactsName = (props) => {
 
@@ -485,7 +486,7 @@ export const IndustryOne = (props) => {
     moduleType="tree"
     api={apiUrl.crmIndustryTreeView}
     width="200"
-    component={CrmIndustryList}
+    component={CrmIndustryEdit}
     title="新增行业"
     {...props} />);
 };

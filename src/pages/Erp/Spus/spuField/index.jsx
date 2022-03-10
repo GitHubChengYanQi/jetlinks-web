@@ -23,6 +23,9 @@ import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/
 import UnitList from '@/pages/Erp/unit/unitList';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
+import SpuClassificationEdit from '@/pages/Erp/spu/components/spuClassification/spuClassificationEdit';
+import UnitEdit from '@/pages/Erp/unit/unitEdit';
+import CategoryEdit from '@/pages/Erp/category/categoryEdit';
 
 export const Name = (props) => {
   return (<Input {...props} />);
@@ -56,7 +59,9 @@ export const SpuClass = (props) => {
     width={200}
     moduleType='cascader'
     title="设置分类"
-    component={SpuClassificationList} {...props} />);
+    component={SpuClassificationEdit}
+    changeOnSelect={false}
+    {...props} />);
 };
 export const Vulnerability = (props) => {
   return (<AntdSelect
@@ -75,12 +80,12 @@ export const ClassId = (props) => {
   return (<Input {...props} />);
 };
 export const UnitId = (props) => {
-  return (<SetSelectOrCascader api={apiUrl.unitListSelect} width={200} title="设置单位" component={UnitList} {...props} />);
+  return (<SetSelectOrCascader api={apiUrl.unitListSelect} width={200} title="设置单位" component={UnitEdit} {...props} />);
 };
 export const CategoryId = (props) => {
 
   return (
-    <SetSelectOrCascader api={categoryTree} width={200} moduleType='cascader' title="设置配置" component={CategoryList} {...props} />);
+    <SetSelectOrCascader api={categoryTree} width={200} moduleType='cascader' title="设置配置" component={CategoryEdit} {...props} />);
 };
 export const Type = (props) => {
   return (

@@ -11,6 +11,7 @@ import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import TemplateList from '@/pages/Crm/template/TemplateList';
 import {templateListSelect} from '@/pages/Crm/template/TemplateUrl';
 import Editor from '@/components/Editor';
+import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 
 export const Name = (props) => {
   return (<Input placeholder="请输入付款计划模板名称" {...props} />);
@@ -58,7 +59,7 @@ export const Percentum = (props) => {
 
 export const TemplateId = (props) => {
   return (
-    <SetSelectOrCascader component={TemplateList} api={templateListSelect} title="添加合同模板" width={200} {...props} />);
+    <SetSelectOrCascader component={TemplateEdit} api={templateListSelect} title="添加合同模板" width={200} {...props} />);
 };
 
 export const Freight = (props) => {
