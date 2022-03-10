@@ -22,6 +22,7 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
+import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency}) => {
@@ -221,7 +222,7 @@ export const Percentum = (props) => {
 
 export const TemplateId = (props) => {
   return (
-    <SetSelectOrCascader component={TemplateList} api={templateListSelect} title="添加合同模板" width={200} {...props} />);
+    <SetSelectOrCascader height='100%' component={TemplateEdit} placement='top'  api={templateListSelect} title="添加合同模板" width={200} {...props} />);
 };
 
 export const Freight = (props) => {

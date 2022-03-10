@@ -106,7 +106,6 @@ const SpuClassificationList = ({type}) => {
         }} width={100} />
       </Table>
       <Drawer width={800} title="分类" type={type} component={SpuClassificationEdit} onSuccess={() => {
-        dispatchers.getSkuClass();
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref} />

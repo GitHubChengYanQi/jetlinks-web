@@ -8,25 +8,24 @@
 import React, {useEffect} from 'react';
 import {
   Input,
-  Radio, AutoComplete, Spin, Space, Popover
+  Radio, AutoComplete, Spin,
 } from 'antd';
-import {QuestionCircleOutlined} from '@ant-design/icons';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
 import {useRequest} from '@/util/Request';
 import {spuListSelect} from '@/pages/Erp/parts/PartsUrl';
-import SpuClassificationList from '@/pages/Erp/spu/components/spuClassification/spuClassificationList';
 import {unitListSelect} from '@/pages/Erp/Spus/spuUrl';
 import {
   spuClassificationTreeVrew
 } from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
-import UnitList from '@/pages/Erp/unit/unitList';
 import FileUpload from '@/components/FileUpload';
 import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
 import store from '@/store';
 import InputNumber from '@/components/InputNumber';
+import SpuClassificationEdit from '@/pages/Erp/spu/components/spuClassification/spuClassificationEdit';
+import UnitEdit from '@/pages/Erp/unit/unitEdit';
 
 export const Type = (props) => {
 
@@ -117,7 +116,7 @@ export const Codings = (props) => {
   return (<Coding {...props} />);
 };
 export const UnitId = (props) => {
-  return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitList} {...props} />);
+  return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitEdit} {...props} />);
 };
 
 export const Standard = (props) => {
@@ -142,7 +141,7 @@ export const SpuClass = (props) => {
     width={200}
     title="新增分类"
     type={1}
-    component={SpuClassificationList}
+    component={SpuClassificationEdit}
     changeOnSelect={false}
     {...other}
   />);

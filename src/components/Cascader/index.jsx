@@ -38,7 +38,7 @@ const Cascader = (props) => {
   const {loading, data, refresh} = useRequest(api, {defaultParams, manual: !api});
 
   useEffect(() => {
-    if (resh) {
+    if (resh && api) {
       refresh();
     }
   }, [resh]);
