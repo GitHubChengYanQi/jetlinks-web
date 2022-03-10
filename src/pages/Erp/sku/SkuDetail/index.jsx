@@ -109,10 +109,10 @@ const SkuDetail = ({value}) => {
         <Space direction="vertical">
           <div>
             附件：
-            <Button
+            {data.filedUrls && data.filedUrls.length > 0 && <Button
               onClick={() => {
-                window.location.href = data.filedUrls && data.filedUrls.length > 0 && data.filedUrls[0];
-              }}>点击下载</Button>
+                window.location.href = data.filedUrls[0];
+              }}>点击下载</Button>}
           </div>
           <div>
             图片：

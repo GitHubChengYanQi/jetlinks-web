@@ -178,7 +178,6 @@ const TableWarp = ({
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {pagination && <div className={style.right}>共{pagination.total || dataSource.length}条</div>}
         <br style={{clear: 'both'}} />
       </div>
     );
@@ -236,6 +235,7 @@ const TableWarp = ({
               {!headStyle && !noTableColumn && setButton}
             </Space>}
           >
+            {pagination && <div className={style.right}>共{pagination.total || dataSource.length}条</div>}
             <AntdTable
               showTotal
               expandable={expandable}
@@ -246,6 +246,9 @@ const TableWarp = ({
               pagination={
                 noPagination || {
                   ...pagination,
+                  showTotal:(total)=>{
+                    return `共${total || dataSource.length}条`;
+                  },
                   showQuickJumper: true,
                   position: ['bottomRight']
                 }
