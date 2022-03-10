@@ -24,7 +24,9 @@ import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 
 
-export const AddSku = ({value = [], customerId, onChange, module}) => {
+export const AddSku = ({value = [], customerId, onChange, module, ...props}) => {
+
+
 
   const skuTableRef = useRef();
 
@@ -91,6 +93,7 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
       </Space>}
     >
       <CheckSku
+        {...props}
         type={type}
         value={value}
         ref={addSkuRef}

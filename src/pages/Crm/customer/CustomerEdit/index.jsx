@@ -22,6 +22,7 @@ import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import Overflow from '@/components/Overflow';
+import {supplierAdd, supplierDetail, supplierEdit, supplierrEdit} from '@/pages/Purshase/Supply/SupplyUrl';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -41,17 +42,22 @@ const CustomerEdit = ({
   ...props
 }) => {
 
-  const ApiConfig = {
-    view: customerDetail,
-    add: customerAdd,
-    save: customerEdit
-  };
 
   const [data] = store.useModel('dataSource');
 
   const params = getSearchParams();
 
   const {wxUser, supply, data: paramData, ...other} = props;
+
+  const ApiConfig = supply ? {
+    view: supplierDetail,
+    add: supplierAdd,
+    save: supplierEdit
+  } : {
+    view: customerDetail,
+    add: customerAdd,
+    save: customerEdit
+  };
 
   const formRef = useRef();
 
@@ -377,8 +383,8 @@ const CustomerEdit = ({
                     name="bankAccount"
                     component={SysField.BankAccount}
                     rules={[{
-                      message:'请输入数字!',
-                      pattern:'^\\d+$'
+                      message: '请输入数字!',
+                      pattern: '^\\d+$'
                     }]}
                   />
                 </Col>
@@ -687,7 +693,7 @@ const CustomerEdit = ({
 
       <Affix offsetBottom={0}>
         <div
-          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
+          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8,boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'}}>
           <Space>
             <Button type="primary" onClick={() => {
               formRef.current.submit();

@@ -36,7 +36,7 @@ const {baseURI} = config;
 
 const CustomerTable = (props) => {
 
-  const {status, state, level, choose, supply, ...other} = props;
+  const {status, state, level, choose, ...other} = props;
   const history = useHistory();
 
   const ref = useRef(null);
@@ -72,8 +72,7 @@ const CustomerTable = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="请选择公司类型" name="companyType" component={SysField.CompanyType} />
-          {supply === 0 &&
-          <FormItem mega-props={{span: 1}} placeholder="请选择客户来源" name="originId" component={SysField.OriginId} />}
+          <FormItem mega-props={{span: 1}} placeholder="请选择客户来源" name="originId" component={SysField.OriginId} />
           <FormItem mega-props={{span: 1}} placeholder="请选择负责人" name="userId" component={SysField.UserName} />
           <FormItem mega-props={{span: 1}} placeholder="请选择行业" name="industryId" component={SysField.IndustryOne} />
         </>
@@ -88,7 +87,8 @@ const CustomerTable = (props) => {
           columns={4} full autoRow>
           <FormItem
             mega-props={{span: 1}}
-            placeholder={supply ? '请输入供应商名称' : '请输入客户名称'} name="customerName"
+            placeholder="请输入客户名称"
+            name="customerName"
             component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -112,7 +112,6 @@ const CustomerTable = (props) => {
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
               <FormItem hidden name="customerLevelId" component={SysField.Name} />
-              <FormItem hidden name="supply" value={supply} component={SysField.Name} />
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -156,7 +155,7 @@ const CustomerTable = (props) => {
             <Button icon={<Icon type="icon-daoru" />}>导入客户</Button>
           </Upload>
         </>}
-        tableKey={supply ? 'supply' : 'customer'}
+        tableKey="customer"
         isModal={false}
         ref={tableRef}
         footer={footer}
@@ -169,7 +168,7 @@ const CustomerTable = (props) => {
       >
         <Column
           key={1}
-          title={supply ? '供应商信息' : '客户信息'}
+          title="客户信息"
           fixed
           dataIndex="customerName"
           render={(value, record) => {
@@ -192,14 +191,14 @@ const CustomerTable = (props) => {
               </Row>
             );
           }} />
-        {supply === 0 && <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
+        <Column key={2} title="客户状态" width={140} align="center" render={(text, record) => {
           return (
             <BadgeState state={record.status} text={['潜在客户', '正式客户']} color={['red', 'green']} />
           );
-        }} />}
+        }} />
         <Column
           key={3}
-          title={supply ? '供应商来源' : '客户来源'}
+          title="客户来源"
           width={300}
           align="center"
           dataIndex="customerName"
@@ -211,7 +210,7 @@ const CustomerTable = (props) => {
             );
           }} />
 
-        <Column key={4} title={supply ? '供应商级别' : '客户级别'} width={120} align="center" render={(text, record) => {
+        <Column key={4} title="客户级别" width={120} align="center" render={(text, record) => {
           const level = typeof record.crmCustomerLevelResult === 'object' ? record.crmCustomerLevelResult : {};
           return (
             <CustomerLevel
@@ -221,9 +220,9 @@ const CustomerTable = (props) => {
         <Column key={6} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
       <CreateNewCustomer
-        title={supply ? '供应商' : '客户'}
+        title="客户"
         model={CustomerEdit}
-        supply={supply}
+        supply={0}
         widths={1200}
         onSuccess={() => {
           tableRef.current.refresh();
