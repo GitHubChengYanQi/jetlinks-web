@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Button, message, Popover, Space, Spin, Upload} from 'antd';
-import {QuestionCircleOutlined, UploadOutlined} from '@ant-design/icons';
+import {Button, message, Space, Spin, Upload} from 'antd';
+import {UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 
 const FileUpload = ({
@@ -116,23 +116,21 @@ const FileUpload = ({
           }
         }}
         beforeUpload={async (file) => {
-          const type = file.type.split('/')[1];
-          // if (filterFileType && !filterFileType.includes(type)) {
-          //   alert('附件类型不正确！');
-          //   return false;
-          // }
-          if (type) {
-            const data = await run(
-              {
-                params: {
-                  type
-                }
-              }
-            );
-            setOss({...data});
-          } else {
+          const type = file.name.split('.')[file.name.split('.').length-1];
+          console.log(type);
+          if (!type || (filterFileType && !filterFileType.includes(type))) {
             alert('附件类型不正确！');
+            return Upload.LIST_IGNORE;
           }
+          const data = await run(
+            {
+              params: {
+                type
+              }
+            }
+          );
+          setOss({...data});
+
         }}
       >
         <div>
