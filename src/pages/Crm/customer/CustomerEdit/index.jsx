@@ -480,8 +480,9 @@ const CustomerEdit = ({
                 <FormItem
                   label="附件"
                   name="file"
-                  prompt='仅支持上传一张格式为JPG/PNG/PDF/DOCX格式的图片，建议上传企业营业执照'
-                  filterFileType={['JPG','PNG','PDF','DOCX']}
+                  maxCount={5}
+                  prompt='支持格式：jpg/png/pdf/docx，单一文件不超过10M，最多上传5份，建议上传营业执照、开户许可证、资质奖项证书等'
+                  filterFileType={['JPG','PNG','PDF','DOCX','jpg','png','pdf','docx',]}
                   component={SysField.File} />
               </Space>
             </MegaLayout></Overflow>
