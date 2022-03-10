@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Divider, Input, Radio, Select, Space, Tooltip} from 'antd';
+import {Button, Divider, Input, Radio, Select, Tooltip} from 'antd';
 import {useBoolean, useSetState} from 'ahooks';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 
@@ -60,6 +60,14 @@ export const Contacts = ({
       label: '品牌',
       value: 'brand',
       disabled: disabled('brand'),
+    },{
+      label: '单位',
+      value: 'unit',
+      disabled: disabled('unit'),
+    },{
+      label: '总价',
+      value: 'totalPrice',
+      disabled: disabled('totalPrice'),
     },
     {
       label: '数量',
@@ -107,7 +115,13 @@ export const Contacts = ({
       <Radio.Button value="BPhone" style={style}>乙方电话</Radio.Button>
       <Radio.Button value="AAddress" style={style}>甲方地址</Radio.Button>
       <Radio.Button value="BAddress" style={style}>乙方地址</Radio.Button>
+      <Radio.Button value="ABank" style={style}>甲方银行</Radio.Button>
+      <Radio.Button value="BBank" style={style}>乙方银行</Radio.Button>
+      <Radio.Button value="AAccount" style={style}>甲方银行账号</Radio.Button>
+      <Radio.Button value="BAccount" style={style}>乙方银行账号</Radio.Button>
       <Radio.Button value="skuTable" style={style}>物料清单</Radio.Button>
+      <Radio.Button value="amount" style={style}>总计</Radio.Button>
+      <Radio.Button value="amountStr" style={style}>总计汉字</Radio.Button>
     </Radio.Group>
     {showTitle && <>
       <Divider>设置标题</Divider>
