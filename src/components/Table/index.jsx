@@ -235,7 +235,6 @@ const TableWarp = ({
               {!headStyle && !noTableColumn && setButton}
             </Space>}
           >
-            {pagination && <div className={style.right}>共{pagination.total || dataSource.length}条</div>}
             <AntdTable
               showTotal
               expandable={expandable}
