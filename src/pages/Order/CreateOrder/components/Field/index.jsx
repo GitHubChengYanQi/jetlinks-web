@@ -65,13 +65,16 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
     />
 
     <Modal
-      headTitle="添加产品"
+      headTitle="物料选择"
       ref={addSpu}
-      width={1000}
+      width={600}
       footer={<Space>
+        <Button onClick={() => {
+          addSpu.current.close();
+        }}>取消</Button>
         <Button type="primary" onClick={() => {
           addSpu.current.close();
-        }}>选择</Button>
+        }}>确定</Button>
       </Space>}
     >
       <AddSpu />

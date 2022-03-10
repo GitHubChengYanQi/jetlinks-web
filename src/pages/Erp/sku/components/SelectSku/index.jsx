@@ -1,8 +1,7 @@
-import {Button, Popover, Select, Space, Spin} from 'antd';
+import {Button, Select, Spin} from 'antd';
 import React, {useEffect, useRef, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
-import Cascader from '@/components/Cascader';
 import store from '@/store';
 import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
@@ -18,6 +17,7 @@ const SelectSku = ({
   skuIds,
   noAdd,
   disabled,
+  spuClassId,
   ids,
   spu
 }) => {
@@ -27,7 +27,6 @@ const SelectSku = ({
   const formRef = useRef();
   const ref = useRef();
 
-  const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
 
   const [visible, setVisible] = useState();
@@ -54,7 +53,6 @@ const SelectSku = ({
     manual: true, onSuccess: (res) => {
       onChange(spu ? res.spuId : res.skuId);
       setChange(object(res).label);
-      setSpuClass(res.spuResult.spuClassificationId);
     }
   });
 
@@ -67,7 +65,6 @@ const SelectSku = ({
       });
     } else {
       setChange(null);
-      setSpuClass(null);
     }
   }, [value]);
 
@@ -75,34 +72,19 @@ const SelectSku = ({
     run({
       data: {
         skuIds: ids,
-        ...params
+        ...params,
+        spuClass: spuClassId,
       }
     });
-  }, [params, ids && ids.length]);
+  }, [params, ids && ids.length, spuClassId]);
 
 
   const options = !loading ? data && data.map((items) => {
     return object(items);
   }) : [];
 
-  const content = () => {
-    return <Space direction="horizontal">
-      <Cascader
-        width={200}
-        placeholder="请选择物料分类"
-        value={spuClass}
-        options={state.skuClass}
-        onChange={(value) => {
-          setSpuClass(value);
-          setChange(null);
-          run({
-            data: {
-              skuIds: ids,
-              spuClass: value,
-              ...params
-            }
-          });
-        }} />
+  return (
+    <>
       <Select
         style={{width: 200}}
         placeholder={spu ? '名称/型号' : '名称/型号/物料编码'}
@@ -119,7 +101,6 @@ const SelectSku = ({
           run({
             data: {
               skuIds: ids,
-              spuClass,
               skuName: value,
               ...params
             }
@@ -134,12 +115,10 @@ const SelectSku = ({
           setVisible(false);
           setChange(value && value.replace(`standard:${option.standard}`, ''));
           if (option) {
-            setSpuClass(option.spu && option.spu.spuClassificationResult && option.spu.spuClassificationResult.pid);
             if (option && option.key) {
               onChange(spu ? option.spu.spuId : option.key);
             }
           } else {
-            setSpuClass(null);
             onChange(null);
             run({
               data: {
@@ -171,26 +150,7 @@ const SelectSku = ({
             </Select.Option>
           );
         })}
-      </Select>
-    </Space>;
-  };
-
-  return (
-    <>
-      <Popover
-        visible={disabled ? false : visible}
-        placement="bottomLeft"
-        content={content}
-        trigger="click"
-        onVisibleChange={setVisible}>
-        <Select
-          disabled={disabled}
-          placeholder={placeholder}
-          open={false}
-          style={{width: width || 180}}
-          value={value && (change || (options && options[0] && options[0].label))}
-        />
-      </Popover>
+      </Select>;
 
 
       <Modal

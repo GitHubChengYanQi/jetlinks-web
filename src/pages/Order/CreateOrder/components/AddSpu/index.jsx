@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Radio, Space, Spin} from 'antd';
+import {Col, Form, Input, Radio, Row, Space, Spin} from 'antd';
 import {useSetState} from 'ahooks';
 import Cascader from '@/components/Cascader';
 import {spuClassificationTreeVrew} from '@/pages/Erp/spu/components/spuClassification/spuClassificationUrl';
@@ -16,7 +16,7 @@ const AddSpu = () => {
   });
   console.log(config);
 
-  const {loading: spuLoading, data: spuData, run: spuRun} = useRequest(spuListSelect, {manual: true});
+  const {loading: spuLoading, data: spuData, run: spuRun} = useRequest(spuListSelect);
 
   const {loading: detailLoading, data: detailData, run: detailRun} = useRequest(spuDetail,
     {
@@ -56,27 +56,27 @@ const AddSpu = () => {
     setConfig({...config, tree: newConfigTree});
   };
 
-  return <div style={{padding: '24px 20%'}}>
+  return <div style={{padding: '24px 10%'}}>
     <Form>
-      <Form.Item name="coding" label="物料编码">
-        <Cascader api={spuClassificationTreeVrew} onChange={(value) => {
-          spuRun({
-            data: {
-              spuClassificationId: value,
-            }
-          });
-        }} />
-      </Form.Item>
-      <Form.Item name="class" label="选择分类">
-        <Cascader api={spuClassificationTreeVrew} onChange={(value) => {
-          spuRun({
-            data: {
-              spuClassificationId: value,
-            }
-          });
-        }} />
-      </Form.Item>
-      <Form.Item label="选择产品">
+      <Row gutter={24}>
+        <Col span={12}>
+          <Form.Item name="class" label="物料分类">
+            <Cascader api={spuClassificationTreeVrew} onChange={(value) => {
+              spuRun({
+                data: {
+                  spuClassificationId: value,
+                }
+              });
+            }} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item name="skuName" label="物料">
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Form.Item label="物料名称">
         {spuLoading ?
           <Spin />
           :
@@ -88,7 +88,7 @@ const AddSpu = () => {
             });
           }} />}
       </Form.Item>
-      <Form.Item>
+      <Form.Item label="物料描述">
         {
           detailLoading
             ?
