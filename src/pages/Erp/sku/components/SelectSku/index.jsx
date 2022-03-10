@@ -2,7 +2,6 @@ import {Button, Select, Spin} from 'antd';
 import React, {useEffect, useRef, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
-import store from '@/store';
 import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
 
@@ -16,20 +15,15 @@ const SelectSku = ({
   params,
   skuIds,
   noAdd,
-  disabled,
   spuClassId,
   ids,
   spu
 }) => {
 
-  const [state] = store.useModel('dataSource');
-
   const formRef = useRef();
   const ref = useRef();
 
   const [change, setChange] = useState();
-
-  const [visible, setVisible] = useState();
 
   const [addLoading, setAddLoading] = useState();
 
@@ -48,6 +42,16 @@ const SelectSku = ({
   const {loading, data, run} = useRequest({...skuList, data: {skuIds: ids, ...params}}, {
     debounceInterval: 300,
   });
+
+  const getSkuList = (data) => {
+    run({
+      data: {
+        skuIds: ids,
+        spuClass: spuClassId,
+        ...data
+      }
+    });
+  };
 
   const {run: detail} = useRequest(skuDetail, {
     manual: true, onSuccess: (res) => {
@@ -69,14 +73,8 @@ const SelectSku = ({
   }, [value]);
 
   useEffect(() => {
-    run({
-      data: {
-        skuIds: ids,
-        ...params,
-        spuClass: spuClassId,
-      }
-    });
-  }, [params, ids && ids.length, spuClassId]);
+    getSkuList();
+  }, [spuClassId]);
 
 
   const options = !loading ? data && data.map((items) => {
@@ -87,32 +85,24 @@ const SelectSku = ({
     <>
       <Select
         style={{width: 200}}
-        placeholder={spu ? '名称/型号' : '名称/型号/物料编码'}
+        placeholder={placeholder || '搜索物料'}
         showSearch
         allowClear
         onClear={() => {
           onChange(null);
         }}
-        value={value && (change || (options && options[0] && options[0].label))}
+        value={value && change}
         notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
         onSearch={(value) => {
           setChange(value);
-          run({
-            data: {
-              skuIds: ids,
-              skuName: value,
-              ...params
-            }
-          });
+          getSkuList({skuName: value,});
         }}
         onChange={(value, option) => {
           if (value === 'add') {
-            setVisible(false);
             ref.current.open(false);
             return;
           }
-          setVisible(false);
           setChange(value && value.replace(`standard:${option.standard}`, ''));
           if (option) {
             if (option && option.key) {
@@ -120,12 +110,7 @@ const SelectSku = ({
             }
           } else {
             onChange(null);
-            run({
-              data: {
-                skuIds: ids,
-                ...params
-              }
-            });
+            getSkuList();
           }
 
         }}>
@@ -150,7 +135,7 @@ const SelectSku = ({
             </Select.Option>
           );
         })}
-      </Select>;
+      </Select>
 
 
       <Modal

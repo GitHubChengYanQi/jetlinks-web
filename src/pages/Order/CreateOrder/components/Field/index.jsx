@@ -22,6 +22,7 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 
 export const AddSku = ({value = [], customerId, onChange, module}) => {
@@ -32,9 +33,20 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
 
   const addSpu = useRef();
 
+  const checkSku = useRef();
+
   const addSkuRef = useRef();
 
+  const [skuId, setSkuId] = useState();
+
   const [type, setType] = useState();
+
+  const {loading: skuLoading, run: skuRun} = useRequest(skuDetail, {
+    manual: true,
+    onSuccess: (res) => {
+
+    }
+  });
 
   return (<>
     <AddSkuTable
@@ -46,6 +58,7 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
         setType(type);
         switch (type) {
           case 'spu':
+            setSkuId(null);
             addSpu.current.open(true);
             break;
           case 'sku':
@@ -72,12 +85,17 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
         <Button onClick={() => {
           addSpu.current.close();
         }}>取消</Button>
-        <Button type="primary" onClick={() => {
+        <Button type="primary" disabled={!skuId} onClick={() => {
+          skuRun({
+            data: {
+              skuId
+            }
+          });
           addSpu.current.close();
         }}>确定</Button>
       </Space>}
     >
-      <AddSpu />
+      <AddSpu onChange={setSkuId} value={skuId} />
     </Modal>
 
     <Modal
@@ -331,3 +349,8 @@ export const AllField = ({onChange, array}) => {
     />
   </>);
 };
+
+
+
+
+
