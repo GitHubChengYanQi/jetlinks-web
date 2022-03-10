@@ -218,10 +218,10 @@ const CustomerDetail = ({id, status, ...props}) => {
       <div
         className={styles.main}>
         <Row gutter={24}>
-          <Col span={!enterprise && props.hidden ? 16 : 24}>
+          <Col span={!enterprise ? 18 : 24}>
             <Card>
               <Tabs defaultActiveKey="9">
-                <TabPane tab="物料信息" key="9">
+                <TabPane tab="可供物料" key="9">
                   <SupplyList customer={data} />
                 </TabPane>
                 <TabPane tab="联系信息" key="2">
@@ -257,12 +257,12 @@ const CustomerDetail = ({id, status, ...props}) => {
               </Tabs>
             </Card>
           </Col>
-          {!enterprise && props.hidden && <Col span={8}>
+          {!enterprise && <Col span={6}>
             <Card>
               <Tabs defaultActiveKey="1">
-                <TabPane tab="跟进" key="1">
+                {props.hidden && <TabPane tab="跟进" key="1">
                   <Track value={null} number={null} trackMessageId={data.customerId} />
-                </TabPane>
+                </TabPane>}
                 <TabPane tab="动态" key="2">
                   <Dynamic value={data} api={{
                     url: '/customerDynamic/list', method: 'POST'

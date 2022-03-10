@@ -205,6 +205,7 @@ const CreateOrder = ({...props}) => {
           ...value,
           type: 1,
           paymentParam: {
+            money: value.money,
             detailParams: value.paymentDetail,
             payMethod: value.payMethod,
             freight: value.freight,
@@ -699,6 +700,7 @@ const CreateOrder = ({...props}) => {
             <Col span={span}>
               <FormItem
                 label="是否需要生成合同"
+                required
                 name="generateContract"
                 component={SysField.Freight}
               />

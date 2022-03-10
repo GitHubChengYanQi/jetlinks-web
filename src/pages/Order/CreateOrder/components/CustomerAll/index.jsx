@@ -235,7 +235,7 @@ export const BankAccount = (props) => {
 
     <Modal
       width={500}
-      headTitle="添加联系人电话"
+      headTitle="添加银行账户"
       ref={ref}
       footer={<>
         <Button type="primary" onClick={() => {
@@ -251,7 +251,7 @@ export const BankAccount = (props) => {
       </>}
     >
 
-      <InvoiceEdit submitRef={submitRef} value={false} NoButton={false} customerId={customerId} onSuccess={() => {
+      <InvoiceEdit ref={submitRef} bankId={bankId} value={false} NoButton={false} customerId={customerId} onSuccess={() => {
         ref.current.close();
       }} />
 
