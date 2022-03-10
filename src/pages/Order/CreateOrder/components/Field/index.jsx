@@ -22,6 +22,7 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
+import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 
 
@@ -260,7 +261,15 @@ export const Note = (props) => {
 };
 
 export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) => {
-  console.log(skuList);
+
+  const {data} = useRequest(unitListSelect);
+
+  const unitResult = (id) => {
+    const units = data ? data.filter((item) => {
+      return item.value === id;
+    }) : [];
+    return units[0] && units[0].label;
+  };
 
   const input = '\\<input (.*?)\\>';
 
@@ -454,6 +463,21 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
         render: (value, record) => {
           return record.brandResult || record.defaultBrandResult;
         }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{unit}}') !== -1) {
+      return {
+        title: '单位',
+        dataIndex: 'unitId',
+        render: (value) => {
+          return unitResult(value);
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{totalPrice}}') !== -1) {
+      return {
+        title: '总价',
+        dataIndex: 'totalPrice',
       };
       // eslint-disable-next-line no-template-curly-in-string
     } else if (item.indexOf('${{skuNumber}}') !== -1) {
