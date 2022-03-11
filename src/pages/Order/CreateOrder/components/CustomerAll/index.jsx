@@ -200,7 +200,6 @@ export const Phone = (props) => {
 export const BankAccount = (props) => {
 
   const {customerId, bankId, options, defaultValue, ...other} = props;
-  console.log(defaultValue,options);
 
   const [option, setOption] = useState([]);
 

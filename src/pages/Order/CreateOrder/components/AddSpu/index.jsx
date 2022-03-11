@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Checkbox, Col, Form, Row, Space, Spin} from 'antd';
+import {Checkbox, Descriptions, Space, Spin} from 'antd';
 import {useSetState} from 'ahooks';
 import Cascader from '@/components/Cascader';
 import {useRequest} from '@/util/Request';
@@ -27,6 +27,10 @@ const AddSpu = ({
     list: [],
     tree: []
   });
+
+  const change = (value) => {
+    onChange(value);
+  };
 
   const onConfig = (k, v, config) => {
 
@@ -63,7 +67,7 @@ const AddSpu = ({
     });
 
     if (onSku) {
-      onChange(onSku.id);
+      change(onSku.id);
     } else if (newConfigList.length === 1) {
 
       if (v) {
@@ -80,9 +84,9 @@ const AddSpu = ({
         setCheckConfig(check);
         newCheckConfig = check;
       }
-      onChange(newConfigList[0].id);
+      change(newConfigList[0].id);
     } else if (config.list.length > 0) {
-      onChange(null);
+      change(null);
     }
 
     const newConfigTree = config.tree.map((itemK) => {
@@ -142,50 +146,45 @@ const AddSpu = ({
 
 
   return <div style={{padding: '24px 10%'}}>
-    <Form>
-      <Row gutter={24}>
-        <Col span={12}>
-          <Form.Item name="class" label="物料分类">
-            <Cascader
-              value={skuClassId}
-              changeOnSelect={false}
-              placeholder="请选择物料分类"
-              options={state.skuClass}
-              onChange={(value) => {
-                setSpuId(null);
-                setConfig({
-                  list: [],
-                  tree: []
-                });
-                setSkuClassId(value);
-                spuRun({
-                  data: {
-                    spuClassificationId: value,
-                  }
-                });
-              }} />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item name="skuName" label="物料">
-            <SelectSku value={value} spuClassId={skuClassId} onChange={(skuId) => {
-              if (skuId) {
-                skuRun({
-                  data: {
-                    skuId
-                  }
-                });
+    <Descriptions column={2}>
+      <Descriptions.Item label="物料分类">
+        <Cascader
+          width={200}
+          value={skuClassId}
+          changeOnSelect={false}
+          placeholder="请选择物料分类"
+          options={state.skuClass}
+          onChange={(value) => {
+            setSpuId(null);
+            setConfig({
+              list: [],
+              tree: []
+            });
+            setSkuClassId(value);
+            spuRun({
+              data: {
+                spuClassificationId: value,
               }
-              onChange(skuId);
-            }} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Form.Item label="物料名称">
+            });
+          }} />
+      </Descriptions.Item>
+      <Descriptions.Item label="物料">
+        <SelectSku value={value} spuClassId={skuClassId} onChange={(skuId) => {
+          if (skuId) {
+            skuRun({
+              data: {
+                skuId
+              }
+            });
+          }
+          change(skuId);
+        }} />
+      </Descriptions.Item>
+      <Descriptions.Item label="物料名称" span={2}>
         {(spuLoading || skuLoading) ?
           <Spin />
           :
-          <Select value={spuId} options={spuData || []} onChange={(value) => {
+          <Select value={spuId} placeholder="请选择物料名称" width={200} options={spuData || []} onChange={(value) => {
             setSpuId(value);
             detailRun({
               data: {
@@ -193,41 +192,44 @@ const AddSpu = ({
               }
             });
           }} />}
-      </Form.Item>
-      <Form.Item label="物料描述">
-        {
-          detailLoading
-            ?
-            <div style={{textAlign: 'center'}}>
-              <Spin />
-            </div>
-            :
-            config.tree && config.tree.map((item, index) => {
-              return <div key={index} style={{padding: 8}}>
-                <Space>
-                  <div>
-                    {item.k}：
-                  </div>
-                  {
-                    item.v.map((itemV, indexV) => {
-                      return <Checkbox
-                        checked={itemV.checked}
-                        onChange={(value) => {
-                          onConfig(item.k_s, value.target.checked && value.target.id, config);
-                        }}
-                        key={indexV}
-                        disabled={itemV.disabled}
-                        id={itemV.id}>
-                        {itemV.name}
-                      </Checkbox>;
-                    })
-                  }
-                </Space>
-              </div>;
-            })
-        }
-      </Form.Item>
-    </Form>
+      </Descriptions.Item>
+      <Descriptions.Item label="物料描述" span={2}>
+        <Space direction="vertical">
+          {
+            detailLoading
+              ?
+              <div style={{textAlign: 'center'}}>
+                <Spin />
+              </div>
+              :
+              config.tree && config.tree.map((item, index) => {
+                return <div key={index} style={{padding: 8}}>
+                  <Space>
+                    <div>
+                      {item.k}：
+                    </div>
+                    {
+                      item.v.map((itemV, indexV) => {
+                        return <Checkbox
+                          checked={itemV.checked}
+                          onChange={(value) => {
+                            onConfig(item.k_s, value.target.checked && value.target.id, config);
+                          }}
+                          key={indexV}
+                          disabled={itemV.disabled}
+                          id={itemV.id}>
+                          {itemV.name}
+                        </Checkbox>;
+                      })
+                    }
+                  </Space>
+                </div>;
+              })
+          }
+        </Space>
+      </Descriptions.Item>
+    </Descriptions>
+
   </div>;
 };
 

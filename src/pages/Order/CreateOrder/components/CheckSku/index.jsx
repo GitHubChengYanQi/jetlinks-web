@@ -27,7 +27,7 @@ const CheckSku = ({
 
   const module = (record) => {
     const skuResult = record.skuResult || {};
-    if (type === 'supplySku'){
+    if (type === 'supplySku') {
       return {
         api: toBuyPlanList,
         coding: skuResult.standard,
@@ -110,7 +110,7 @@ const CheckSku = ({
   };
 
   const result = (record) => {
-    if (type === 'supplySku'){
+    if (type === 'supplySku') {
       return {
         key: record.key,
         skuId: record.skuId,
@@ -160,12 +160,6 @@ const CheckSku = ({
         NoChildren
         contentHeight
         branch={(data) => {
-          console.log(data && data.map((item) => {
-            return {
-              ...item,
-              key: key(item),
-            };
-          }));
           return data && data.map((item) => {
             return {
               ...item,
@@ -185,7 +179,7 @@ const CheckSku = ({
           }),
           onSelect: (record, selected) => {
             if (selected) {
-              const array = skus.data;
+              const array = skus.data.filter(() => true);
               array.push(result(record));
               setSkus({data: array});
             } else {
@@ -240,7 +234,7 @@ const CheckSku = ({
           title="品牌 / 厂家"
           dataIndex="brandResult"
           render={(value, record) => {
-            return module(record).brandResult;
+            return <div style={{minWidth:100}}>{module(record).brandResult}</div>;
           }} />
         <Column title="库存数量" width={100} dataIndex="stockNumber" />
         {/* <Column title="在途数量" width={100} dataIndex="stockNumber" /> */}

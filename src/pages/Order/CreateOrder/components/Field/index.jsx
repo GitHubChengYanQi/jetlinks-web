@@ -23,14 +23,14 @@ import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 
-export const AddSku = ({value = [], customerId, onChange, module, currency,...props}) => {
+export const AddSku = ({value = [], customerId, onChange, module, currency, ...props}) => {
+
   const addSku = useRef();
 
   const addSpu = useRef();
-
-  const checkSku = useRef();
 
   const addSkuRef = useRef();
 
@@ -41,12 +41,20 @@ export const AddSku = ({value = [], customerId, onChange, module, currency,...pr
   const {loading: skuLoading, run: skuRun} = useRequest(skuDetail, {
     manual: true,
     onSuccess: (res) => {
-
+      onChange([...value, {
+        skuId: res.skuId,
+        coding: res.standard,
+        skuResult: res,
+        preordeNumber: 0,
+        unitId: res.spuResult && res.spuResult.unitId,
+        brandIds: res.brandIds
+      }]);
     }
   });
 
   return (<>
     <AddSkuTable
+      addSkuLoading={skuLoading}
       currency={currency}
       module={module}
       value={value}
@@ -77,7 +85,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency,...pr
     <Modal
       headTitle="物料选择"
       ref={addSpu}
-      width={600}
+      width={800}
       footer={<Space>
         <Button onClick={() => {
           addSpu.current.close();
@@ -280,7 +288,6 @@ export const Note = (props) => {
 };
 
 export const AllField = ({value: defaultValue = {}, onChange, array, skuList, payList}) => {
-  console.log(payList);
 
   const {data} = useRequest(unitListSelect);
 
@@ -327,7 +334,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
     }
   };
 
-  const tableChange = (value, oldItem, changeIndex,type) => {
+  const tableChange = (value, oldItem, changeIndex, type) => {
     let newList;
     switch (type) {
       case 'sku':
@@ -437,7 +444,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
     });
   };
 
-  const skuTableReplaceDom = (string, item, index,type) => {
+  const skuTableReplaceDom = (string, item, index, type) => {
     return parse(string, {
       replace: domNode => {
         if (domNode.name === 'input') {
@@ -447,7 +454,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                 placeholder="输入文本"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value.target.value, item, index,type);
+                  tableChange(value.target.value, item, index, type);
                 }}
               />;
             case 'number':
@@ -455,7 +462,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                 placeholder="输入数值"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value, item, index,type);
+                  tableChange(value, item, index, type);
                 }}
               />;
             case 'date':
@@ -464,7 +471,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                 placeholder="输入时间"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value, item, index,type);
+                  tableChange(value, item, index, type);
                 }}
               />;
             default:
@@ -571,7 +578,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
       return {
         title,
         render: (value, record, index) => {
-          return skuTableReplaceDom(item.match(input)[0], item, index,'sku');
+          return skuTableReplaceDom(item.match(input)[0], item, index, 'sku');
         }
       };
     } else {
@@ -639,7 +646,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
       return {
         title,
         render: (value, record, index) => {
-          return skuTableReplaceDom(item.match(input)[0], item, index,'pay');
+          return skuTableReplaceDom(item.match(input)[0], item, index, 'pay');
         }
       };
     } else {
@@ -680,7 +687,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         <Table
           columns={skuColumns}
           pagination={false}
-          rowKey="index"
+          rowKey="key"
           dataSource={skuList && skuList.map((item, index) => {
             return {...item, key: index};
           }) || []} />
@@ -693,7 +700,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         <Table
           columns={payColumns}
           pagination={false}
-          rowKey="index"
+          rowKey="key"
           dataSource={payList && payList.map((item, index) => {
             return {...item, key: index};
           }) || []} />

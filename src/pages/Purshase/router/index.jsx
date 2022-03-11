@@ -6,7 +6,6 @@ import {ToBuyPlanRouter} from '@/pages/Purshase/ToBuyPlan/router';
 import {ProcurementPlanRouter} from '@/pages/Purshase/procurementPlan/procurementPlanRouter';
 import {PurchaseQuotationRouter} from '@/pages/Purshase/purchaseQuotation/purchaseQuotationRouter';
 import {InquiryTaskRouter} from '@/pages/Purshase/inquiryTask/inquiryTaskRouter';
-import {OrderRouter} from '@/pages/Order/router';
 
 const PurshaseRouterConfig = [
   {
@@ -19,15 +18,23 @@ const PurshaseRouterConfig = [
       ...ToBuyPlanRouter,
       ...ProcurementPlanRouter,
       ...PurchaseQuotationRouter,
-      ...OrderRouter,
       ...InquiryTaskRouter,
       {
         path: '/order',
         component: lazy(() => import('../../Order/Table/index')),
         fallback: <div>loading...</div>,
         exact: true,
-      },
-      {
+      }, {
+        path: '/order/createOrder',
+        component: lazy(() => import('../../Order/CreateOrder/index')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      }, {
+        path: '/order/detail',
+        component: lazy(() => import('../../Order/Detail')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },{
         redirect: '/purchase/supply',
       },
     ]
