@@ -65,7 +65,7 @@ const SpuEdit = ({...props}, ref) => {
         <Row gutter={24}>
           <Col span={12}>
             <ProCard title="基础信息" className="h2Card" headerBordered>
-              <FormItem label="配置" name="categoryId" component={SysField.CategoryId} required />
+              <FormItem label="系列" name="categoryId" component={SysField.CategoryId} required />
               <FormItem
                 label="分类"
                 name="spuClassificationId"
