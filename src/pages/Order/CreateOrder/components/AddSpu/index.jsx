@@ -81,7 +81,7 @@ const AddSpu = ({
         newCheckConfig = check;
       }
       onChange(newConfigList[0].id);
-    } else {
+    } else if (config.list.length > 0) {
       onChange(null);
     }
 
@@ -119,7 +119,7 @@ const AddSpu = ({
       }
     });
 
-  const {loading:skuLoading,run: skuRun} = useRequest(skuDetail, {
+  const {loading: skuLoading, run: skuRun} = useRequest(skuDetail, {
     manual: true,
     onSuccess: (res) => {
       const array = [];
@@ -169,7 +169,7 @@ const AddSpu = ({
         <Col span={12}>
           <Form.Item name="skuName" label="物料">
             <SelectSku value={value} spuClassId={skuClassId} onChange={(skuId) => {
-              if (skuId){
+              if (skuId) {
                 skuRun({
                   data: {
                     skuId
