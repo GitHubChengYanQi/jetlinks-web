@@ -75,6 +75,10 @@ const Editor = ({
             content = `<table style="border-collapse: collapse;" border="1"><tr data-group="sku">${labeltds}</tr><tr>${valuetds}</tr></table>`;
             insertContent(content);
             break;
+          case 'payTable':
+            content = `<table style="border-collapse: collapse;" border="1"><tr data-group="pay">${labeltds}</tr><tr>${valuetds}</tr></table>`;
+            insertContent(content);
+            break;
           default:
             insertContent(`$\{{${button}}}`);
             break;

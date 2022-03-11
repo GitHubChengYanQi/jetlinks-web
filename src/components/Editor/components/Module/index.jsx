@@ -58,65 +58,65 @@ export const Contacts = ({
     {
       label: '物料编码',
       value: 'coding',
-      disabled: disabled('coding','sku'),
+      disabled: disabled('coding', 'sku'),
     },
     {
       label: '物料名称',
       value: 'spuName',
-      disabled: disabled('spuName','sku'),
+      disabled: disabled('spuName', 'sku'),
     },
     {
       label: '规格 / 型号',
       value: 'skuName',
-      disabled: disabled('skuName','sku'),
+      disabled: disabled('skuName', 'sku'),
     },
     {
       label: '分类',
       value: 'skuClass',
-      disabled: disabled('skuClass','sku'),
+      disabled: disabled('skuClass', 'sku'),
     },
     {
       label: '品牌',
       value: 'brand',
-      disabled: disabled('brand','sku'),
+      disabled: disabled('brand', 'sku'),
     }, {
       label: '单位',
       value: 'unit',
-      disabled: disabled('unit','sku'),
+      disabled: disabled('unit', 'sku'),
     }, {
       label: '总价',
       value: 'totalPrice',
-      disabled: disabled('totalPrice','sku'),
+      disabled: disabled('totalPrice', 'sku'),
     },
     {
       label: '数量',
       value: 'skuNumber',
-      disabled: disabled('skuNumber','sku'),
+      disabled: disabled('skuNumber', 'sku'),
     },
     {
       label: '单价',
       value: 'price',
-      disabled: disabled('price','sku'),
+      disabled: disabled('price', 'sku'),
     },
     {
       label: '交货日期',
       value: 'deliveryDate',
-      disabled: disabled('deliveryDate','sku'),
+      disabled: disabled('deliveryDate', 'sku'),
     },
     {
       label: '预购数量',
       value: 'preOrder',
-      disabled: disabled('preOrder','sku'),
+      disabled: disabled('preOrder', 'sku'),
     },
     {
       label: '税率',
       value: 'rate',
-      disabled: disabled('rate','sku'),
+      disabled: disabled('rate', 'sku'),
     },
     {
       label: '票据类型',
       value: 'paperType',
-      disabled: disabled('rate','sku'),
+      disabled: disabled('rate', 'sku'),
     },
   ];
 
@@ -124,23 +124,23 @@ export const Contacts = ({
     {
       label: '付款金额',
       value: 'detailMoney',
-      disabled: disabled('detailMoney','pay'),
+      disabled: disabled('detailMoney', 'pay'),
     }, {
       label: '日期方式',
       value: 'detailDateWay',
-      disabled: disabled('detailDateWay','pay'),
-    },{
+      disabled: disabled('detailDateWay', 'pay'),
+    }, {
       label: '付款比例',
       value: 'percentum',
-      disabled: disabled('percentum','pay'),
-    },{
+      disabled: disabled('percentum', 'pay'),
+    }, {
       label: '款项说明',
       value: 'DetailPayRemark',
-      disabled: disabled('DetailPayRemark','pay'),
-    },{
+      disabled: disabled('DetailPayRemark', 'pay'),
+    }, {
       label: '付款时间',
       value: 'DetailPayDate',
-      disabled: disabled('detailMoney','pay'),
+      disabled: disabled('DetailPayDate', 'pay'),
     },
   ];
 
@@ -150,17 +150,24 @@ export const Contacts = ({
         case 'input':
         case 'number':
         case 'date':
+          closeSku();
+          setFalse();
+          closePay();
           setTrue();
           break;
         case 'skuTable':
           showSku();
+          closePay();
+          setFalse();
           setTable([{
             label: '物料名称',
             value: 'spuName'
           }]);
           break;
         case 'payTable':
-          showSku();
+          showPay();
+          closeSku();
+          setFalse();
           setTable([{
             label: '付款金额',
             value: 'detailMoney'
@@ -169,6 +176,7 @@ export const Contacts = ({
         default:
           closeSku();
           setFalse();
+          closePay();
           break;
       }
       setButton(value.target.value);
@@ -267,7 +275,7 @@ export const Contacts = ({
       <Divider>设置付款详情</Divider>
       <div>
         {
-          skuTable.table.map((item, index) => {
+          payTable.table.map((item, index) => {
             return <div key={index} style={{display: 'inline-block', margin: '0 8px 8px 0'}}>
               <Tooltip
                 placement="top"
@@ -302,7 +310,7 @@ export const Contacts = ({
         }
         <Button onClick={() => {
           payTable.table.push({});
-          setSkuTable({...payTable});
+          setPayTable({...payTable});
         }}><PlusOutlined /></Button>
       </div>
     </>}
