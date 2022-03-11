@@ -247,6 +247,12 @@ const paymentAction = (setFieldState, getFieldState) => {
     }
   });
 
+  FormEffectHooks.onFieldValueChange$('paymentDetail').subscribe(({value}) => {
+    setFieldState('allField', (state) => {
+      state.props.payList = value;
+    });
+  });
+
   FormEffectHooks.onFieldValueChange$('money').subscribe(({value}) => {
     if (value) {
       setFieldState('paymentDetail', (state) => {

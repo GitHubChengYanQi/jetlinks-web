@@ -259,7 +259,8 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) => {
+export const AllField = ({value: defaultValue = {}, onChange, array, skuList, payList}) => {
+  console.log(payList);
 
   const {data} = useRequest(unitListSelect);
 
@@ -275,6 +276,8 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
   const [values, setValues] = useState([]);
 
   const [skus, setSkus] = useState([]);
+
+  const [pays, setpPays] = useState([]);
 
   const change = (index, value) => {
     const newString = [];
@@ -304,37 +307,76 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
     }
   };
 
-  const tableChange = (value, oldItem, changeIndex) => {
-    const newList = skuList.map((item, index) => {
-      if (changeIndex === index) {
-        return array.inputs.map((stringItem, stringIndex) => {
-          return newSkuTable(item, skus[index] && skus[index][stringIndex] || stringItem, stringItem, value, oldItem);
+  const tableChange = (value, oldItem, changeIndex,type) => {
+    let newList;
+    switch (type) {
+      case 'sku':
+        newList = skuList.map((item, index) => {
+          if (changeIndex === index) {
+            return array.inputs.map((stringItem, stringIndex) => {
+              return newSkuTable(item, skus[index] && skus[index][stringIndex] || stringItem, stringItem, value, oldItem);
+            });
+          } else {
+            return array.inputs.map((stringItem, stringIndex) => {
+              return skus[index] && skus[index][stringIndex] || stringItem;
+            });
+          }
         });
-      } else {
-        return array.inputs.map((stringItem, stringIndex) => {
-          return skus[index] && skus[index][stringIndex] || stringItem;
-        });
-      }
-    });
-    onChange({
-      ...defaultValue,
-      cycleReplaces: newList.map((item) => {
-        return {
-          cycles: item.map((stringItem, index) => {
-            let newText = stringItem;
-            if (newText.search(input) !== -1) {
-              const replaceString = newText.match(input)[0];
-              newText = newText.replace(replaceString, '');
-            }
+        onChange({
+          ...defaultValue,
+          cycleReplaces: newList.map((item) => {
             return {
-              oldText: array.inputs[index],
-              newText,
+              cycles: item.map((stringItem, index) => {
+                let newText = stringItem;
+                if (newText.search(input) !== -1) {
+                  const replaceString = newText.match(input)[0];
+                  newText = newText.replace(replaceString, '');
+                }
+                return {
+                  oldText: array.inputs[index],
+                  newText,
+                };
+              })
             };
-          })
-        };
-      }),
-    });
-    setSkus(newList);
+          }),
+        });
+        setSkus(newList);
+        break;
+      case 'pay':
+        newList = payList.map((item, index) => {
+          if (changeIndex === index) {
+            return array.pays.map((stringItem, stringIndex) => {
+              return newSkuTable(item, pays[index] && pays[index][stringIndex] || stringItem, stringItem, value, oldItem);
+            });
+          } else {
+            return array.pays.map((stringItem, stringIndex) => {
+              return pays[index] && pays[index][stringIndex] || stringItem;
+            });
+          }
+        });
+        onChange({
+          ...defaultValue,
+          payReplaces: newList.map((item) => {
+            return {
+              cycles: item.map((stringItem, index) => {
+                let newText = stringItem;
+                if (newText.search(input) !== -1) {
+                  const replaceString = newText.match(input)[0];
+                  newText = newText.replace(replaceString, '');
+                }
+                return {
+                  oldText: array.pays[index],
+                  newText,
+                };
+              })
+            };
+          }),
+        });
+        setpPays(newList);
+        break;
+      default:
+        break;
+    }
   };
 
   const replaceDom = (string, index) => {
@@ -375,7 +417,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
     });
   };
 
-  const skuTableReplaceDom = (string, item, index) => {
+  const skuTableReplaceDom = (string, item, index,type) => {
     return parse(string, {
       replace: domNode => {
         if (domNode.name === 'input') {
@@ -385,7 +427,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
                 placeholder="输入文本"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value.target.value, item, index);
+                  tableChange(value.target.value, item, index,type);
                 }}
               />;
             case 'number':
@@ -393,7 +435,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
                 placeholder="输入数值"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value, item, index);
+                  tableChange(value, item, index,type);
                 }}
               />;
             case 'date':
@@ -402,7 +444,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
                 placeholder="输入时间"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value, item, index);
+                  tableChange(value, item, index,type);
                 }}
               />;
             default:
@@ -509,7 +551,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
       return {
         title,
         render: (value, record, index) => {
-          return skuTableReplaceDom(item.match(input)[0], item, index);
+          return skuTableReplaceDom(item.match(input)[0], item, index,'sku');
         }
       };
     } else {
@@ -518,10 +560,87 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
 
   };
 
-  const columns = array.inputs ?
+  const payTableTitle = (item) => {
+    // eslint-disable-next-line no-template-curly-in-string
+    if (item.indexOf('${{detailMoney}}') !== -1) {
+      return {
+        title: '付款金额',
+        dataIndex: 'money',
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{detailDateWay}}') !== -1) {
+      return {
+        title: '日期方式',
+        dataIndex: 'payType',
+        render: (value) => {
+          switch (value) {
+            case 0:
+              return '天';
+            case 1:
+              return '月';
+            case 2:
+              return '年';
+            default:
+              return '';
+          }
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{percentum}}') !== -1) {
+      return {
+        title: '付款比例',
+        dataIndex: 'percentum',
+        render: (value) => {
+          return `${value} %`;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{DetailPayDate}}') !== -1) {
+      return {
+        title: '付款日期',
+        dataIndex: 'payTime',
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{DetailPayRemark}}') !== -1) {
+      return {
+        title: '款项说明',
+        dataIndex: 'remark',
+      };
+    } else if (item.indexOf('<input') !== -1 && item.indexOf('data-title') !== -1) {
+      let title = '';
+      parse(item, {
+        replace: domNode => {
+          if (domNode.name === 'input') {
+            title = domNode.attribs['data-title'];
+          }
+        }
+      });
+
+      return {
+        title,
+        render: (value, record, index) => {
+          return skuTableReplaceDom(item.match(input)[0], item, index,'pay');
+        }
+      };
+    } else {
+      return {};
+    }
+
+  };
+
+  const skuColumns = array.inputs ?
     array.inputs.map((item) => {
       return {
         ...skuTableTitle(item),
+        width: 200
+      };
+    })
+    : [];
+
+  const payColumns = array.pays ?
+    array.pays.map((item) => {
+      return {
+        ...payTableTitle(item),
         width: 200
       };
     })
@@ -535,18 +654,30 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList}) =
       dataSource={array.strings || []}
       renderItem={(item, index) => <List.Item key={index}>{replaceDom(item, index)}</List.Item>}
     />
-    <div style={{marginTop: 16}}>
-      {
-        array.inputs && array.inputs.length > 0 && <>
-          <Table
-            columns={columns}
-            pagination={false}
-            rowKey="index"
-            dataSource={skuList && skuList.map((item, index) => {
-              return {...item, key: index};
-            }) || []} />
-        </>
-      }
-    </div>
+    {
+      array.inputs && array.inputs.length > 0 &&
+      <div style={{marginTop: 16}}>
+        <Table
+          columns={skuColumns}
+          pagination={false}
+          rowKey="index"
+          dataSource={skuList && skuList.map((item, index) => {
+            return {...item, key: index};
+          }) || []} />
+      </div>
+    }
+
+    {
+      array.pays && array.pays.length > 0 &&
+      <div style={{marginTop: 16}}>
+        <Table
+          columns={payColumns}
+          pagination={false}
+          rowKey="index"
+          dataSource={payList && payList.map((item, index) => {
+            return {...item, key: index};
+          }) || []} />
+      </div>
+    }
   </div>);
 };

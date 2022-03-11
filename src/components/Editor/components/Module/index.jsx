@@ -138,7 +138,7 @@ export const Contacts = ({
       value: 'DetailPayRemark',
       disabled: disabled('DetailPayRemark', 'pay'),
     }, {
-      label: '付款时间',
+      label: '付款日期',
       value: 'DetailPayDate',
       disabled: disabled('DetailPayDate', 'pay'),
     },
