@@ -85,7 +85,7 @@ export const UnitId = (props) => {
 export const CategoryId = (props) => {
 
   return (
-    <SetSelectOrCascader api={categoryTree} width={200} moduleType='cascader' title="设置配置" component={CategoryEdit} {...props} />);
+    <SetSelectOrCascader api={categoryTree} width={200} moduleType='cascader' title="设置系列" component={CategoryEdit} {...props} />);
 };
 export const Type = (props) => {
   return (
