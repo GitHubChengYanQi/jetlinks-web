@@ -38,17 +38,19 @@ export const Contacts = ({
   });
 
   const disabled = (value, type) => {
+    const skuTableValue = skuTable.table.map((item) => {
+      return item.value;
+    });
+    const payTableValue = payTable.table.map((item) => {
+      return item.value;
+    });
     switch (type) {
       case 'sku':
-        const skuTableValue1 = skuTable.table.map((item) => {
-          return item.value;
-        });
         return skuTableValue.includes(value);
       case 'pay':
-        const skuTableValue = skuTable.table.map((item) => {
-          return item.value;
-        });
-        return skuTableValue.includes(value);
+        return payTableValue.includes(value);
+      default:
+        return false;
     }
   };
 
@@ -56,65 +58,65 @@ export const Contacts = ({
     {
       label: '物料编码',
       value: 'coding',
-      disabled: disabled('coding'),
+      disabled: disabled('coding','sku'),
     },
     {
       label: '物料名称',
       value: 'spuName',
-      disabled: disabled('spuName'),
+      disabled: disabled('spuName','sku'),
     },
     {
       label: '规格 / 型号',
       value: 'skuName',
-      disabled: disabled('skuName'),
+      disabled: disabled('skuName','sku'),
     },
     {
       label: '分类',
       value: 'skuClass',
-      disabled: disabled('skuClass'),
+      disabled: disabled('skuClass','sku'),
     },
     {
       label: '品牌',
       value: 'brand',
-      disabled: disabled('brand'),
+      disabled: disabled('brand','sku'),
     }, {
       label: '单位',
       value: 'unit',
-      disabled: disabled('unit'),
+      disabled: disabled('unit','sku'),
     }, {
       label: '总价',
       value: 'totalPrice',
-      disabled: disabled('totalPrice'),
+      disabled: disabled('totalPrice','sku'),
     },
     {
       label: '数量',
       value: 'skuNumber',
-      disabled: disabled('skuNumber'),
+      disabled: disabled('skuNumber','sku'),
     },
     {
       label: '单价',
       value: 'price',
-      disabled: disabled('price'),
+      disabled: disabled('price','sku'),
     },
     {
       label: '交货日期',
       value: 'deliveryDate',
-      disabled: disabled('deliveryDate'),
+      disabled: disabled('deliveryDate','sku'),
     },
     {
       label: '预购数量',
       value: 'preOrder',
-      disabled: disabled('preOrder'),
+      disabled: disabled('preOrder','sku'),
     },
     {
       label: '税率',
       value: 'rate',
-      disabled: disabled('rate'),
+      disabled: disabled('rate','sku'),
     },
     {
       label: '票据类型',
       value: 'paperType',
-      disabled: disabled('rate'),
+      disabled: disabled('rate','sku'),
     },
   ];
 
@@ -122,65 +124,23 @@ export const Contacts = ({
     {
       label: '付款金额',
       value: 'detailMoney',
-      disabled: disabled('detailMoney'),
-    },
-    {
-      label: '物料名称',
-      value: 'spuName',
-      disabled: disabled('spuName'),
-    },
-    {
-      label: '规格 / 型号',
-      value: 'skuName',
-      disabled: disabled('skuName'),
-    },
-    {
-      label: '分类',
-      value: 'skuClass',
-      disabled: disabled('skuClass'),
-    },
-    {
-      label: '品牌',
-      value: 'brand',
-      disabled: disabled('brand'),
+      disabled: disabled('detailMoney','pay'),
     }, {
-      label: '单位',
-      value: 'unit',
-      disabled: disabled('unit'),
-    }, {
-      label: '总价',
-      value: 'totalPrice',
-      disabled: disabled('totalPrice'),
-    },
-    {
-      label: '数量',
-      value: 'skuNumber',
-      disabled: disabled('skuNumber'),
-    },
-    {
-      label: '单价',
-      value: 'price',
-      disabled: disabled('price'),
-    },
-    {
-      label: '交货日期',
-      value: 'deliveryDate',
-      disabled: disabled('deliveryDate'),
-    },
-    {
-      label: '预购数量',
-      value: 'preOrder',
-      disabled: disabled('preOrder'),
-    },
-    {
-      label: '税率',
-      value: 'rate',
-      disabled: disabled('rate'),
-    },
-    {
-      label: '票据类型',
-      value: 'paperType',
-      disabled: disabled('rate'),
+      label: '日期方式',
+      value: 'detailDateWay',
+      disabled: disabled('detailDateWay','pay'),
+    },{
+      label: '付款比例',
+      value: 'percentum',
+      disabled: disabled('percentum','pay'),
+    },{
+      label: '款项说明',
+      value: 'DetailPayRemark',
+      disabled: disabled('DetailPayRemark','pay'),
+    },{
+      label: '付款时间',
+      value: 'DetailPayDate',
+      disabled: disabled('detailMoney','pay'),
     },
   ];
 
