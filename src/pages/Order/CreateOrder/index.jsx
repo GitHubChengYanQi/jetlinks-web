@@ -201,15 +201,11 @@ const CreateOrder = ({...props}) => {
           return false;
         }
 
-        if (value.generateContract && !value.allField){
-          message.warn('请完善合同信息！');
-          return false;
-        }
-
         value = {
           ...value,
           type: 1,
           paymentParam: {
+            money: value.money,
             detailParams: value.paymentDetail,
             payMethod: value.payMethod,
             freight: value.freight,
@@ -219,7 +215,7 @@ const CreateOrder = ({...props}) => {
             remark: value.remark,
           },
           contractParam: {
-            contractReplaces: value.allField,
+            ...value.allField,
             templateId: value.templateId,
             coding: value.contractCoding,
           }
@@ -705,6 +701,7 @@ const CreateOrder = ({...props}) => {
             <Col span={span}>
               <FormItem
                 label="是否需要生成合同"
+                required
                 name="generateContract"
                 component={SysField.Freight}
               />
@@ -727,14 +724,18 @@ const CreateOrder = ({...props}) => {
               />
             </Col>
           </Row>
-          <MegaLayout labelWidth={200} labelAlign="top">
-            <FormItem
-              visible={false}
-              label="合同模板中的其他字段"
-              name="allField"
-              component={SysField.AllField}
-            />
-          </MegaLayout>
+          <Row gutter={24}>
+            <Col span={24}>
+              <MegaLayout labelWidth={200} labelAlign="top">
+                <FormItem
+                  visible={false}
+                  label="合同模板中的其他字段"
+                  name="allField"
+                  component={SysField.AllField}
+                />
+              </MegaLayout>
+            </Col>
+          </Row>
         </MegaLayout>
       </ProCard>
 

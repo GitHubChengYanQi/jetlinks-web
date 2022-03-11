@@ -49,7 +49,7 @@ export const QualityCheckClassificationId = (props) => {
       <Select resh={state} width={200} api={apiUrl.qualityCheckClassificationListSelect} {...props} />
       <Button onClick={() => {
         ref.current.open(false);
-      }}>设置分类</Button>
+      }}>新增分类</Button>
       <Modal width={800} component={QualityCheckClassificationList} ref={ref} onClose={() => {
         ref.current.close();
         toggle();

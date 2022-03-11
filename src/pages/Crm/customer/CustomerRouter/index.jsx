@@ -7,7 +7,7 @@
 
 import React, {lazy} from 'react';
 
-export const  CustomerRouter = [
+export const CustomerRouter = [
   {
     path: '/customer',
     name: '客户管理',
@@ -16,7 +16,7 @@ export const  CustomerRouter = [
     exact: true,
   },
   {
-    path: '/customer/add/:cid',
+    path: '/customer/add',
     name: '客户管理',
     component: lazy(() => import('../CustomerEdit')),
     fallback: <div>loading...</div>,

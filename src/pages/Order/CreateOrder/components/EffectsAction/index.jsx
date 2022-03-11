@@ -230,6 +230,9 @@ export const customerBAction = (setFieldState) => {
 
 const paymentAction = (setFieldState, getFieldState) => {
   FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value}) => {
+    setFieldState('allField', (state) => {
+      state.props.skuList = value;
+    });
     let money = 0;
     if (value) {
       value.map((item) => {
@@ -242,6 +245,12 @@ const paymentAction = (setFieldState, getFieldState) => {
         state.value = money;
       });
     }
+  });
+
+  FormEffectHooks.onFieldValueChange$('paymentDetail').subscribe(({value}) => {
+    setFieldState('allField', (state) => {
+      state.props.payList = value;
+    });
   });
 
   FormEffectHooks.onFieldValueChange$('money').subscribe(({value}) => {
@@ -355,4 +364,10 @@ export const EffectsAction = (setFieldState, getFieldState) => {
   customerBAction(setFieldState);
   paymentAction(setFieldState, getFieldState);
   contractAction(setFieldState);
+
+  FormEffectHooks.onFieldValueChange$(' currency').subscribe(({value}) => {
+    setFieldState('detailParams', (state) => {
+      state.props.currency = value;
+    });
+  });
 };

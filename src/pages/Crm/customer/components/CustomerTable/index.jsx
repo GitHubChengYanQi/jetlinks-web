@@ -57,7 +57,7 @@ const CustomerTable = (props) => {
     return (
       <>
         <AddButton onClick={() => {
-          history.push('/purchase/supply/add');
+          history.push('/CRM/customer/add');
         }} />
       </>
     );

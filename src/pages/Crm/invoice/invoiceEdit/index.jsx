@@ -6,7 +6,6 @@
  */
 
 import React, {useImperativeHandle, useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {invoiceDetail, invoiceAdd, invoiceEdit} from '../invoiceUrl';
 import * as SysField from '../invoiceField';
@@ -21,7 +20,7 @@ const ApiConfig = {
 
 const InvoiceEdit = ({...props}, ref) => {
 
-  const {customerId,NoButton, ...other} = props;
+  const {customerId, NoButton, bankId, ...other} = props;
 
   const formRef = useRef();
 
@@ -30,20 +29,26 @@ const InvoiceEdit = ({...props}, ref) => {
   }));
 
   return (
-    <Form
-      {...other}
-      ref={formRef}
-      api={ApiConfig}
-      NoButton={NoButton}
-      fieldKey="invoiceId"
-      onSubmit={(value) => {
-        return {...value, customerId};
-      }}
-    >
-      <FormItem label="开户银行" name="bankId" component={SysField.Bank} required />
-      <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} required />
-      <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} required />
-    </Form>
+    <div style={{padding:16}}>
+      <Form
+        {...other}
+        ref={formRef}
+        api={ApiConfig}
+        NoButton={NoButton}
+        fieldKey="invoiceId"
+        onSubmit={(value) => {
+          return {...value, customerId};
+        }}
+      >
+        <FormItem label="开户银行" name="bankId" value={bankId} component={SysField.Bank} required />
+        <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} required />
+        <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} rules={[{
+          required: true,
+          message: '请输入数字!',
+          pattern: '^\\d+$'
+        }]} />
+      </Form>
+    </div>
   );
 };
 

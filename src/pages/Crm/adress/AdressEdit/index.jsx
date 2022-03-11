@@ -77,6 +77,7 @@ const AdressEdit = ({...props}, ref) => {
           required />
         <FormItem label="详细地址" name="detailLocation" component={SysField.Location} />
         <FormItem label="定位地址" name="map" component={SysField.Map} disabled />
+        <FormItem label="定位名称" name="addressName" component={SysField.Location} />
       </Form>
     </div>
   );

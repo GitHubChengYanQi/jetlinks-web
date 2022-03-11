@@ -30,7 +30,7 @@ const SetSelectOrCascader = ({disabled, options, component, title, moduleType, w
       <Button onClick={() => {
         ref.current.open(false);
         setFalse();
-      }}>{title || '设置分类'}</Button>
+      }}>{title || '新增分类'}</Button>
       <Modal width={800} tableTitle={<strong style={{
         fontWeight: 500,
         fontSize: 16

@@ -6,16 +6,18 @@
  */
 
 import React from 'react';
-import {Input,InputNumber,TimePicker,DatePicker,Select as AntdSelect,Checkbox,Radio} from 'antd';
-import Tree from '@/components/Tree';
+import {Input} from 'antd';
 import Cascader from '@/components/Cascader';
-import Select from '@/components/Select';
 import * as apiUrl from '../crmIndustryUrl';
-import {crmIndustryListSelect, crmIndustryTreeView} from '../crmIndustryUrl';
+import InputNumber from '@/components/InputNumber';
 
 export const IndustryName = (props) =>{
   return (<Input {...props}/>);
 };
 export const ParentId = (props) =>{
   return (<Cascader api={apiUrl.crmIndustryTreeView} top {...props}/>);
+};
+
+export const Sort = (props) =>{
+  return (<InputNumber {...props}/>);
 };

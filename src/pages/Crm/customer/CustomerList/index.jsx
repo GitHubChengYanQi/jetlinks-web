@@ -21,8 +21,6 @@ const CustomerList = ({supply}) => {
   const [state, setState] = useState();
   const [level, setLevel] = useState();
 
-  const [value, setValue] = useState();
-
 
   const Left = () => {
     return (
