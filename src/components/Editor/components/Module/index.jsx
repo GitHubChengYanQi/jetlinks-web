@@ -21,6 +21,8 @@ export const Contacts = ({
 
   const [showSkuTable, {setTrue: showSku, setFalse: closeSku}] = useBoolean();
 
+  const [showPayTable, {setTrue: showPay, setFalse: closePay}] = useBoolean();
+
   const [skuTable, setSkuTable] = useSetState({
     table: [{
       label: '物料名称',
@@ -28,11 +30,26 @@ export const Contacts = ({
     }]
   });
 
-  const disabled = (value) => {
-    const skuTableValue = skuTable.table.map((item) => {
-      return item.value;
-    });
-    return skuTableValue.includes(value);
+  const [payTable, setPayTable] = useSetState({
+    table: [{
+      label: '付款金额',
+      value: 'detailMoney'
+    }]
+  });
+
+  const disabled = (value, type) => {
+    switch (type) {
+      case 'sku':
+        const skuTableValue1 = skuTable.table.map((item) => {
+          return item.value;
+        });
+        return skuTableValue.includes(value);
+      case 'pay':
+        const skuTableValue = skuTable.table.map((item) => {
+          return item.value;
+        });
+        return skuTableValue.includes(value);
+    }
   };
 
   const skuTableOptions = [
@@ -40,6 +57,72 @@ export const Contacts = ({
       label: '物料编码',
       value: 'coding',
       disabled: disabled('coding'),
+    },
+    {
+      label: '物料名称',
+      value: 'spuName',
+      disabled: disabled('spuName'),
+    },
+    {
+      label: '规格 / 型号',
+      value: 'skuName',
+      disabled: disabled('skuName'),
+    },
+    {
+      label: '分类',
+      value: 'skuClass',
+      disabled: disabled('skuClass'),
+    },
+    {
+      label: '品牌',
+      value: 'brand',
+      disabled: disabled('brand'),
+    }, {
+      label: '单位',
+      value: 'unit',
+      disabled: disabled('unit'),
+    }, {
+      label: '总价',
+      value: 'totalPrice',
+      disabled: disabled('totalPrice'),
+    },
+    {
+      label: '数量',
+      value: 'skuNumber',
+      disabled: disabled('skuNumber'),
+    },
+    {
+      label: '单价',
+      value: 'price',
+      disabled: disabled('price'),
+    },
+    {
+      label: '交货日期',
+      value: 'deliveryDate',
+      disabled: disabled('deliveryDate'),
+    },
+    {
+      label: '预购数量',
+      value: 'preOrder',
+      disabled: disabled('preOrder'),
+    },
+    {
+      label: '税率',
+      value: 'rate',
+      disabled: disabled('rate'),
+    },
+    {
+      label: '票据类型',
+      value: 'paperType',
+      disabled: disabled('rate'),
+    },
+  ];
+
+  const payTableOptions = [
+    {
+      label: '付款金额',
+      value: 'detailMoney',
+      disabled: disabled('detailMoney'),
     },
     {
       label: '物料名称',
@@ -116,6 +199,13 @@ export const Contacts = ({
             value: 'spuName'
           }]);
           break;
+        case 'payTable':
+          showSku();
+          setTable([{
+            label: '付款金额',
+            value: 'detailMoney'
+          }]);
+          break;
         default:
           closeSku();
           setFalse();
@@ -155,11 +245,12 @@ export const Contacts = ({
       <Radio.Button value="payMethod" style={style}>结算方式</Radio.Button>
       <Radio.Button value="deliveryWay" style={style}>交货方式</Radio.Button>
       <Radio.Button value="deliveryAddress" style={style}>交货地址</Radio.Button>
-      <Radio.Button value="payPlan" style={style}>付款计划</Radio.Button>
+      {/* <Radio.Button value="payPlan" style={style}>付款计划</Radio.Button> */}
       <Radio.Button value="PaymentRemark" style={style}>财务备注</Radio.Button>
       <Radio.Button value="skuTable" style={style}>物料清单</Radio.Button>
       <Radio.Button value="amount" style={style}>总计</Radio.Button>
       <Radio.Button value="amountStr" style={style}>总计汉字</Radio.Button>
+      <Radio.Button value="payTable" style={style}>付款详情</Radio.Button>
     </Radio.Group>
     {showTitle && <>
       <Divider>设置标题</Divider>
@@ -208,6 +299,50 @@ export const Contacts = ({
         <Button onClick={() => {
           skuTable.table.push({});
           setSkuTable({...skuTable});
+        }}><PlusOutlined /></Button>
+      </div>
+    </>}
+
+    {showPayTable && <>
+      <Divider>设置付款详情</Divider>
+      <div>
+        {
+          skuTable.table.map((item, index) => {
+            return <div key={index} style={{display: 'inline-block', margin: '0 8px 8px 0'}}>
+              <Tooltip
+                placement="top"
+                color="#fff"
+                title={<Button
+                  type="link"
+                  disabled={payTable.table.length === 1}
+                  icon={<DeleteOutlined />}
+                  onClick={() => {
+                    const array = payTable.table.filter((item, itemIndex) => {
+                      return itemIndex !== index;
+                    });
+                    setTable(array);
+                    setPayTable({table: array});
+                  }}
+                  danger
+                />} key={index}>
+                <Select
+                  key={index}
+                  style={{minWidth: 100}}
+                  value={item.value}
+                  options={payTableOptions}
+                  onChange={(value, option) => {
+                    const array = payTable.table;
+                    array[index] = option;
+                    setTable(array);
+                    setPayTable({table: array});
+                  }} />
+              </Tooltip>
+            </div>;
+          })
+        }
+        <Button onClick={() => {
+          payTable.table.push({});
+          setSkuTable({...payTable});
         }}><PlusOutlined /></Button>
       </div>
     </>}
