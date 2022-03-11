@@ -9,6 +9,7 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {supplyList} from '@/pages/Crm/supply/supplyUrl';
+import {skuList} from '@/pages/Erp/sku/skuUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -19,13 +20,44 @@ const CheckSku = ({
   value = [],
   type,
   customerId,
+  ...props
 }, ref) => {
+
+  const {pathname} = props.location;
+
+  const module = (record) => {
+    const skuResult = record.skuResult || {};
+    switch (pathname) {
+      case '/purchase/toBuyPlan/createOrder':
+        return {
+          api: toBuyPlanList,
+          coding: skuResult.standard,
+          skuResult: <SkuResultSkuJsons skuResult={record.skuResult} />,
+          brandResult: record.brandResult && record.brandResult.brandName || '无指定品牌',
+          stockNumber: record.stockNumber,
+          applyNumber: null,
+          unitResult: skuResult.spuResult && skuResult.spuResult.unitResult && skuResult.spuResult.unitResult.unitName,
+        };
+      case '/purchase/order/createOrder':
+        return {
+          api: skuList,
+          coding: record.standard,
+          skuResult: <SkuResultSkuJsons skuResult={record} />,
+          brandResult: '无指定品牌',
+          stockNumber: null,
+          applyNumber: null,
+          unitResult: record.spuResult && record.spuResult.unitResult && record.spuResult.unitResult.unitName,
+        };
+      default:
+        return <></>;
+    }
+  };
 
   const [skus, setSkus] = useSetState({
     data: value && value.map((item) => {
       return {
         ...item,
-        key: item.skuId + item.brandId
+        key: item.skuId + (item.brandId || '')
       };
     }) || []
   });
@@ -71,31 +103,41 @@ const CheckSku = ({
   };
 
   const result = (record) => {
-    return {
-      key: record.key,
-      skuId: record.skuId,
-      coding: record.skuResult.standard,
-      skuResult: record.skuResult,
-      brandId: record.brandId,
-      defaultBrandResult: record.brandResult && record.brandResult.brandName,
-      preordeNumber: record.applyNumber,
-      unitId: record.unitId,
-    };
+    switch (pathname) {
+      case '/purchase/toBuyPlan/createOrder':
+        return {
+          key: record.key,
+          skuId: record.skuId,
+          coding: record.skuResult.standard,
+          skuResult: record.skuResult,
+          brandId: record.brandId,
+          defaultBrandResult: record.brandResult && record.brandResult.brandName,
+          preordeNumber: record.applyNumber,
+          unitId: record.unitId,
+        };
+      case '/purchase/order/createOrder':
+        return {
+          key: record.key,
+          skuId: record.skuId,
+          coding: record.standard,
+          skuResult: record,
+          preordeNumber: 0,
+          unitId: record.spuResult && record.spuResult.unitId,
+        };
+      default:
+        return <></>;
+    }
   };
 
   const key = (item) => {
-    return item.skuId + item.brandId;
+    return item.skuId + item.brandId || '';
   };
 
   return (
     <>
       <Table
-        noPagination={type === 'sku' && {
-          defaultCurrent: 1,
-          defaultPageSize: 5,
-        }}
         title={<h2>添加物料</h2>}
-        api={type === 'sku' ? toBuyPlanList : supplyList}
+        api={type === 'sku' ? module({}).api : supplyList}
         NoChildren
         contentHeight
         branch={(data) => {
@@ -155,8 +197,8 @@ const CheckSku = ({
         <Column title="序号" width={70} align="center" render={(value, record, index) => {
           return <>{index + 1}</>;
         }} />
-        <Column title="物料编号" width={120} dataIndex="skuResult" render={(value) => {
-          return value && value.standard;
+        <Column title="物料编号" width={120} dataIndex="skuResult" render={(value, record) => {
+          return module(record).coding;
         }} />
         <Column
           title="物料"
@@ -166,24 +208,24 @@ const CheckSku = ({
             return aSort.length - bSort.length;
           }}
           dataIndex="skuResult"
-          render={(value) => {
-            return <SkuResultSkuJsons skuResult={value} />;
+          render={(value, record) => {
+            return module(record).skuResult;
           }} />
         <Column
           title="品牌 / 厂家"
           dataIndex="brandResult"
-          render={(value) => {
-            return value ? value.brandName : '无指定品牌';
+          render={(value, record) => {
+            return module(record).brandResult;
           }} />
         <Column title="库存数量" width={100} dataIndex="stockNumber" />
-        <Column title="在途数量" width={100} dataIndex="stockNumber" />
+        {/* <Column title="在途数量" width={100} dataIndex="stockNumber" /> */}
         <Column title="预购数量" width={100} dataIndex="applyNumber" />
         <Column
           title="单位"
           width={100}
           dataIndex="skuResult"
-          render={(value) => {
-            return value && value.spuResult && value.spuResult.unitResult && value.spuResult.unitResult.unitName;
+          render={(value, record) => {
+            return module(record).unitResult;
           }} />
 
       </Table>

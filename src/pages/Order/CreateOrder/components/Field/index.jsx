@@ -15,7 +15,6 @@ import Modal from '@/components/Modal';
 import {adressIdSelect} from '@/pages/Crm/adress/AdressUrl';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
 import AdressEdit from '@/pages/Crm/adress/AdressEdit';
-import TemplateList from '@/pages/Crm/template/TemplateList';
 import {templateListSelect} from '@/pages/Crm/template/TemplateUrl';
 import Editor from '@/components/Editor';
 import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
@@ -26,7 +25,11 @@ import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 
 
-export const AddSku = ({value = [], customerId, onChange, module, currency}) => {
+export const AddSku = ({value = [], customerId, onChange, module,currency, ...props}) => {
+
+
+
+  const skuTableRef = useRef();
 
   const addSku = useRef();
 
@@ -91,6 +94,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency}) => 
       </Space>}
     >
       <CheckSku
+        {...props}
         type={type}
         value={value}
         ref={addSkuRef}

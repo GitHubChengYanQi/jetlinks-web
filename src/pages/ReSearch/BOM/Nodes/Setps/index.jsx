@@ -316,7 +316,7 @@ const Setps = ({
 
       <Affix offsetBottom={0}>
         <div
-          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
+          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8,boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'}}>
           <Space>
             <Submit disabled={disabled}>确定</Submit>
             <Button onClick={() => {

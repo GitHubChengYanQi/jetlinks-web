@@ -532,6 +532,7 @@ const CreateOrder = ({...props}) => {
         <FormItem
           module={params.module}
           name="detailParams"
+          {...props}
           component={SysField.AddSku}
         />
       </ProCard>

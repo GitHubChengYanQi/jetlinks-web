@@ -99,7 +99,7 @@ const CustomerList = ({supply}) => {
   };
   return (
     <ListLayout>
-      <CustomerTable left={Left()} status={status} state={state} supply={supply || 0} level={level} />
+      <CustomerTable left={Left()} status={status} state={state} level={level} />
     </ListLayout>
   );
 };
