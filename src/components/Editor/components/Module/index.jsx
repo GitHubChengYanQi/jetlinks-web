@@ -60,11 +60,11 @@ export const Contacts = ({
       label: '品牌',
       value: 'brand',
       disabled: disabled('brand'),
-    },{
+    }, {
       label: '单位',
       value: 'unit',
       disabled: disabled('unit'),
-    },{
+    }, {
       label: '总价',
       value: 'totalPrice',
       disabled: disabled('totalPrice'),
@@ -83,6 +83,21 @@ export const Contacts = ({
       label: '交货日期',
       value: 'deliveryDate',
       disabled: disabled('deliveryDate'),
+    },
+    {
+      label: '预购数量',
+      value: 'preOrder',
+      disabled: disabled('preOrder'),
+    },
+    {
+      label: '税率',
+      value: 'rate',
+      disabled: disabled('rate'),
+    },
+    {
+      label: '票据类型',
+      value: 'paperType',
+      disabled: disabled('rate'),
     },
   ];
 
@@ -123,6 +138,25 @@ export const Contacts = ({
       <Radio.Button value="BBank" style={style}>乙方银行</Radio.Button>
       <Radio.Button value="AAccount" style={style}>甲方银行账号</Radio.Button>
       <Radio.Button value="BAccount" style={style}>乙方银行账号</Radio.Button>
+      <Radio.Button value="askCoding" style={style}>采购编号</Radio.Button>
+      <Radio.Button value="askDate" style={style}>采购日期</Radio.Button>
+      <Radio.Button value="askRemake" style={style}>采购备注</Radio.Button>
+      <Radio.Button value="Alegal" style={style}>甲方法定代表人</Radio.Button>
+      <Radio.Button value="Blegal" style={style}>乙方法定代表人</Radio.Button>
+      <Radio.Button value="ABankNo" style={style}>甲方开户行号</Radio.Button>
+      <Radio.Button value="BBankNo" style={style}>乙方开户行号</Radio.Button>
+      <Radio.Button value="AFax" style={style}>甲方传真</Radio.Button>
+      <Radio.Button value="BFax" style={style}>乙方传真</Radio.Button>
+      <Radio.Button value="AZipCOde" style={style}>甲方邮编</Radio.Button>
+      <Radio.Button value="BZipCOde" style={style}>乙方传真</Radio.Button>
+      <Radio.Button value="ACompanyPhone" style={style}>甲方公司电话</Radio.Button>
+      <Radio.Button value="BCompanyPhone" style={style}>乙方公司电话</Radio.Button>
+      <Radio.Button value="freight" style={style}>是否含运费</Radio.Button>
+      <Radio.Button value="payMethod" style={style}>结算方式</Radio.Button>
+      <Radio.Button value="deliveryWay" style={style}>交货方式</Radio.Button>
+      <Radio.Button value="deliveryAddress" style={style}>交货地址</Radio.Button>
+      <Radio.Button value="payPlan" style={style}>付款计划</Radio.Button>
+      <Radio.Button value="PaymentRemark" style={style}>财务备注</Radio.Button>
       <Radio.Button value="skuTable" style={style}>物料清单</Radio.Button>
       <Radio.Button value="amount" style={style}>总计</Radio.Button>
       <Radio.Button value="amountStr" style={style}>总计汉字</Radio.Button>
@@ -139,7 +173,7 @@ export const Contacts = ({
       <div>
         {
           skuTable.table.map((item, index) => {
-            return <div key={index} style={{display:'inline-block',margin:'0 8px 8px 0'}}>
+            return <div key={index} style={{display: 'inline-block', margin: '0 8px 8px 0'}}>
               <Tooltip
                 placement="top"
                 color="#fff"
