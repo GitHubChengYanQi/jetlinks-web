@@ -26,7 +26,6 @@ import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency,...props}) => {
-
   const addSku = useRef();
 
   const addSpu = useRef();

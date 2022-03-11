@@ -72,11 +72,11 @@ const Editor = ({
             insertContent(`<input type='date' data-title=${title || '时间框'} />`);
             break;
           case 'skuTable':
-            content = `<table style="border-collapse: collapse;" border="1"><tr data-group="sku">${labeltds}</tr><tr>${valuetds}</tr></table>`;
+            content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
             insertContent(content);
             break;
           case 'payTable':
-            content = `<table style="border-collapse: collapse;" border="1"><tr data-group="pay">${labeltds}</tr><tr>${valuetds}</tr></table>`;
+            content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="pay">${valuetds}</tr></table>`;
             insertContent(content);
             break;
           default:

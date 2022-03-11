@@ -30,13 +30,13 @@ const AddSkuTable = ({
   const dataSources = value.map((item, index) => {
     return {
       ...item,
-      key: index
+      index
     };
   });
 
   const setValue = (data, index) => {
     const array = dataSources.map((item) => {
-      if (item.key === index) {
+      if (item.index === index) {
         return {
           ...item,
           ...data
@@ -53,7 +53,7 @@ const AddSkuTable = ({
     <Table
       dataSource={dataSources}
       pagination={false}
-      rowKey="key"
+      rowKey="index"
       scroll={{x: 'max-content'}}
       footer={() => {
         return <Space>
@@ -78,10 +78,10 @@ const AddSkuTable = ({
             icon={<DeleteOutlined />}
             onClick={() => {
               const ids = keys.map((item) => {
-                return item.key;
+                return item.index;
               });
               const array = dataSources.filter((item) => {
-                return !ids.includes(item.key);
+                return !ids.includes(item.index);
               });
               onChange(array);
               setKeys([]);
@@ -94,14 +94,14 @@ const AddSkuTable = ({
       }}
       rowSelection={{
         selectedRowKeys: keys.map((item) => {
-          return item.key;
+          return item.index;
         }),
         onChange: (keys, record) => {
           setKeys(record);
         }
       }}
     >
-      <Table.Column title="序号" width={100} fixed="left" align="center" dataIndex="key" render={(value) => {
+      <Table.Column title="序号" width={100} fixed="left" align="center" dataIndex="index" render={(value) => {
         return value + 1;
       }} />
       <Table.Column title="物料编码" width={200} dataIndex="coding" render={(value, record) => {

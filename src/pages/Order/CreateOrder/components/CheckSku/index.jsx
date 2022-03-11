@@ -27,6 +27,17 @@ const CheckSku = ({
 
   const module = (record) => {
     const skuResult = record.skuResult || {};
+    if (type === 'supplySku'){
+      return {
+        api: toBuyPlanList,
+        coding: skuResult.standard,
+        skuResult: <SkuResultSkuJsons skuResult={record.skuResult} />,
+        brandResult: record.brandResult && record.brandResult.brandName || '无指定品牌',
+        stockNumber: record.stockNumber,
+        applyNumber: null,
+        unitResult: skuResult.spuResult && skuResult.spuResult.unitResult && skuResult.spuResult.unitResult.unitName,
+      };
+    }
     switch (pathname) {
       case '/purchase/toBuyPlan/createOrder':
         return {
@@ -54,13 +65,9 @@ const CheckSku = ({
   };
 
   const [skus, setSkus] = useSetState({
-    data: value && value.map((item) => {
-      return {
-        ...item,
-        key: item.skuId + (item.brandId || '')
-      };
-    }) || []
+    data: value || []
   });
+
 
   const tableRef = useRef(null);
 
@@ -103,6 +110,18 @@ const CheckSku = ({
   };
 
   const result = (record) => {
+    if (type === 'supplySku'){
+      return {
+        key: record.key,
+        skuId: record.skuId,
+        coding: record.skuResult.standard,
+        skuResult: record.skuResult,
+        brandId: record.brandId,
+        defaultBrandResult: record.brandResult && record.brandResult.brandName,
+        preordeNumber: record.applyNumber,
+        unitId: record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.unitId,
+      };
+    }
     switch (pathname) {
       case '/purchase/toBuyPlan/createOrder':
         return {
@@ -113,7 +132,7 @@ const CheckSku = ({
           brandId: record.brandId,
           defaultBrandResult: record.brandResult && record.brandResult.brandName,
           preordeNumber: record.applyNumber,
-          unitId: record.unitId,
+          unitId: record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.unitId,
         };
       case '/purchase/order/createOrder':
         return {
@@ -130,7 +149,7 @@ const CheckSku = ({
   };
 
   const key = (item) => {
-    return item.skuId + item.brandId || '';
+    return item.skuId + (item.brandId || '');
   };
 
   return (
@@ -141,6 +160,12 @@ const CheckSku = ({
         NoChildren
         contentHeight
         branch={(data) => {
+          console.log(data && data.map((item) => {
+            return {
+              ...item,
+              key: key(item),
+            };
+          }));
           return data && data.map((item) => {
             return {
               ...item,

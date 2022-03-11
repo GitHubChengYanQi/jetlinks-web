@@ -185,8 +185,6 @@ const CreateOrder = ({...props}) => {
       wrapperCol={24}
       fieldKey="customerId"
       onSubmit={(value) => {
-        console.log(value);
-
         if (value.paymentDetail) {
           let percentum = 0;
           value.paymentDetail.map((item) => {
@@ -429,7 +427,7 @@ const CreateOrder = ({...props}) => {
                       value={params.module === 'SO' && userInfo.customerId}
                       dataParams={params.module === 'SO' && {status: 99}}
                       label="公司名称"
-                      placeholder="请选择甲方公司"
+                      placeholder="请选择乙方公司"
                       name="sellerId"
                       component={CustomerSysField.Customer}
                       required
@@ -438,7 +436,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="公司地址"
-                      placeholder="请选择甲方公司地址"
+                      placeholder="请选择乙方公司地址"
                       name="partyBAdressId"
                       component={CustomerSysField.Adress}
                     />
@@ -448,7 +446,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="委托代理"
-                      placeholder="请选择甲方公司委托代理"
+                      placeholder="请选择乙方公司委托代理"
                       name="partyBContactsId"
                       component={CustomerSysField.Contacts}
                     />
@@ -456,7 +454,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="联系电话"
-                      placeholder="请选择甲方公司联系电话"
+                      placeholder="请选择乙方公司联系电话"
                       name="partyBPhone"
                       component={CustomerSysField.Phone}
                     />
@@ -466,7 +464,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="开户银行"
-                      placeholder="请选择甲方开户银行"
+                      placeholder="请选择乙方开户银行"
                       name="partyBBankId"
                       component={CustomerSysField.Bank}
                     />
