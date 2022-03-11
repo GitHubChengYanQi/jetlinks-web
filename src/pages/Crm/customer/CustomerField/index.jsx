@@ -95,7 +95,7 @@ export const CompanyRoleId = (props) => {
   const options = (!loading && data) ? data.map((value) => {
     return {
       label: value.position,
-      value: value.companyRoleId,
+      value: value.position,
     };
   }) : [];
 
@@ -104,16 +104,16 @@ export const CompanyRoleId = (props) => {
       disabled={disabled}
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={value && typeof value === 'object' && value.name && options}
-      value={value && typeof value === 'object' && value.name}
-      onSelect={(value, option) => {
-        onChange({id: value, name: option.label});
+      options={options}
+      value={value}
+      onSelect={(value) => {
+        onChange(value);
       }}
     >
       <Input
         placeholder={placeholder}
         onChange={(value) => {
-          onChange({name: value.target.value});
+          onChange(value.target.value);
           run({
             data: {
               position: value.target.value,
@@ -140,7 +140,7 @@ export const DeptName = (props) => {
   const options = (!loading && data) ? data.map((value) => {
     return {
       label: value.fullName,
-      value: value.deptId,
+      value: value.fullName,
     };
   }) : [];
 
@@ -150,16 +150,16 @@ export const DeptName = (props) => {
       disabled={disabled}
       dropdownMatchSelectWidth={100}
       notFoundContent={loading && <Spin />}
-      options={value && typeof value === 'object' && value.name && options}
-      value={value && typeof value === 'object' && value.name}
-      onSelect={(value, option) => {
-        onChange({id: value, name: option.label});
+      options={options}
+      value={value}
+      onSelect={(value,) => {
+        onChange(value);
       }}
     >
       <Input
         placeholder={placeholder}
         onChange={(value) => {
-          onChange({name: value.target.value});
+          onChange(value.target.value);
           run({
             data: {
               fullName: value.target.value,
@@ -353,7 +353,7 @@ export const SignIn = (props) => {
   return (<Input  {...props} />);
 };
 export const Introduction = (props) => {
-  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={100} rows={4} {...props} />);
+  return (<Input.TextArea style={{width: '100%'}} showCount maxLength={1000} rows={4} {...props} />);
 };
 
 export const DeptId = (props) => {
@@ -443,7 +443,11 @@ export const Url = (props) => {
 };
 
 export const Avatar = (props) => {
-  return (<UpLoadImg text='格式支持：JPG/PNG格式，单个文件不能超过20MB' imageType={['JPG','PNG','jpg','png']}  {...props} />);
+  return (
+    <div>
+      <UpLoadImg text="格式支持：JPG/PNG格式，单个文件不能超过20MB" imageType={['JPG', 'PNG', 'jpg', 'png']}  {...props} />
+    </div>
+  );
 };
 
 

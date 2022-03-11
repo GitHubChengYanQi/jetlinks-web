@@ -88,7 +88,7 @@ const SpuDetail = () => {
                   <Descriptions.Item label="产品名称">
                     <Code source="spu" id={data.spuId} /> {data.name}
                   </Descriptions.Item>
-                  <Descriptions.Item label="配置">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
+                  <Descriptions.Item label="系列">{data.category ? data.category.categoryName : '--'}</Descriptions.Item>
                   <Descriptions.Item
                     label="分类"> {data.spuClassificationResult ? data.spuClassificationResult.name : '--'}</Descriptions.Item>
                   <Descriptions.Item label="单位"> {data.unitResult ? data.unitResult.unitName : '--'}</Descriptions.Item>

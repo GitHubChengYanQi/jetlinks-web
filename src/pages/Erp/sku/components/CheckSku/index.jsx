@@ -57,6 +57,9 @@ const CheckSku = ({
           name="spuClass"
           placeholder="请选择分类"
           component={SysField.SelectSpuClass}
+          onChange={()=>{
+            tableRef.current.submit();
+          }}
         />
         <FormItem
           placeholder="请输入 名称 / 型号 / 编码"
@@ -74,13 +77,13 @@ const CheckSku = ({
         api={skuList}
         contentHeight
         formActions={formActionsPublic}
+        actions= {!noCreate && <Button type='primary' onClick={() => {
+          refAdd.current.open(false);
+        }}>创建物料</Button>}
         SearchButton={<Space>
-          <Button onClick={() => {
+          <Button type='primary' onClick={() => {
             tableRef.current.submit();
           }}><SearchOutlined />查询</Button>
-          {!noCreate && <Button onClick={() => {
-            refAdd.current.open(false);
-          }}>创建物料</Button>}
         </Space>}
         rowKey="skuId"
         pageSize={5}

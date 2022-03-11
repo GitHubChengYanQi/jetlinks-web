@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import {Divider, Spin, Tree} from 'antd';
+import {Divider, Tree} from 'antd';
 import CustomerTable from '@/pages/Crm/customer/components/CustomerTable';
 import ListLayout from '@/layouts/ListLayout';
-import Select from '@/components/Select';
-import {CustomerLevelIdSelect} from '@/pages/Crm/customer/CustomerUrl';
 import store from '@/store';
 
 
@@ -22,8 +20,6 @@ const CustomerList = ({supply}) => {
   const [status, setStatus] = useState();
   const [state, setState] = useState();
   const [level, setLevel] = useState();
-
-  const [value, setValue] = useState();
 
 
   const Left = () => {
@@ -103,7 +99,7 @@ const CustomerList = ({supply}) => {
   };
   return (
     <ListLayout>
-      <CustomerTable left={Left()} status={status} state={state} supply={supply || 0} level={level} />
+      <CustomerTable left={Left()} status={status} state={state} level={level} />
     </ListLayout>
   );
 };

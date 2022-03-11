@@ -141,20 +141,7 @@ const Detail = () => {
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="合同内容" key="1">
                     {
-                      parse(data.content, {
-                        replace: domNode => {
-                          if (domNode.name === 'input' && domNode.attribs && domNode.attribs.placeholder)
-                            switch (domNode.attribs.class) {
-                              case 'inp':
-                              case 'number':
-                              case 'date':
-                              case 'customer':
-                                return <>{domNode.attribs.placeholder}</>;
-                              default:
-                                break;
-                            }
-                        }
-                      })
+                      parse(data.content)
                     }
                   </TabPane>
                   <TabPane tab="付款信息" key="2">

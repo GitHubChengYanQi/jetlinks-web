@@ -88,7 +88,7 @@ const SpuList = () => {
           );
         }} sorter />
 
-        <Column title="配置" key={2} dataIndex="categoryId" render={(value, record) => {
+        <Column title="系列" key={2} dataIndex="categoryId" render={(value, record) => {
           return (
             <>
               {record.category && record.category.categoryName}

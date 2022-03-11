@@ -6,12 +6,14 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Form from '@/components/Form';
 import {crmIndustryDetail, crmIndustryAdd, crmIndustryEdit} from '../crmIndustryUrl';
 import * as SysField from '../crmIndustryField';
 
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ApiConfig = {
   view: crmIndustryDetail,
@@ -27,11 +29,13 @@ const CrmIndustryEdit = ({...props}) => {
     <Form
       {...props}
       ref={formRef}
+      formActions={formActionsPublic}
       api={ApiConfig}
       fieldKey="industryId"
     >
       <FormItem label="上级" name="parentId" component={SysField.ParentId} />
       <FormItem label="行业名称" name="industryName" component={SysField.IndustryName} required/>
+      <FormItem label="排序" name="sotr" component={SysField.Sort}/>
     </Form>
   );
 };

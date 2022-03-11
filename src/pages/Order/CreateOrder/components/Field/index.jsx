@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List} from 'antd';
+import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table} from 'antd';
 import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
@@ -22,13 +22,10 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
-import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
-export const AddSku = ({value = [], customerId, onChange, module}) => {
-
-  const skuTableRef = useRef();
-
+export const AddSku = ({value = [], customerId, onChange, module, currency,...props}) => {
   const addSku = useRef();
 
   const addSpu = useRef();
@@ -50,8 +47,8 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
 
   return (<>
     <AddSkuTable
+      currency={currency}
       module={module}
-      ref={skuTableRef}
       value={value}
       onChange={onChange}
       onAddSku={(type) => {
@@ -112,6 +109,7 @@ export const AddSku = ({value = [], customerId, onChange, module}) => {
       </Space>}
     >
       <CheckSku
+        {...props}
         type={type}
         value={value}
         ref={addSkuRef}
@@ -151,6 +149,10 @@ export const Currency = (props) => {
   const {loading, data} = useRequest({
     url: '/Enum/money',
     method: 'GET'
+  }, {
+    onSuccess: () => {
+      props.onChange('人民币');
+    }
   });
 
   if (loading) {
@@ -163,7 +165,7 @@ export const Currency = (props) => {
     };
   }) : [];
 
-  return (<AntSelect style={{width: 100}} defaultValue="人民币" options={options} {...props} />);
+  return (<AntSelect style={{width: 100}} options={options} {...props} />);
 };
 
 export const Money = (props) => {
@@ -277,25 +279,124 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({onChange, array}) => {
+export const AllField = ({value: defaultValue = {}, onChange, array, skuList, payList}) => {
+  console.log(payList);
+
+  const {data} = useRequest(unitListSelect);
+
+  const unitResult = (id) => {
+    const units = data ? data.filter((item) => {
+      return item.value === id;
+    }) : [];
+    return units[0] && units[0].label;
+  };
+
+  const input = '\\<input (.*?)\\>';
 
   const [values, setValues] = useState([]);
 
+  const [skus, setSkus] = useState([]);
+
+  const [pays, setpPays] = useState([]);
+
   const change = (index, value) => {
     const newString = [];
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.strings.length; i++) {
       newString.push(values[i]);
     }
     newString[index] = value;
-    if (!newString.includes(undefined)) {
-      onChange(newString.map((item, index) => {
+    onChange({
+      ...defaultValue,
+      contractReplaces: newString.map((item, index) => {
         return {
-          oldText: array[index],
-          newText: item
+          oldText: array.strings[index],
+          newText: item || ''
         };
-      }));
-    }
+      })
+    });
     setValues(newString);
+  };
+
+
+  const newSkuTable = (item, stringItem, oldString, value, oldItem) => {
+    if (oldString === oldItem) {
+      const replaceString = oldString.match(input)[0];
+      return oldString.replace(replaceString, value);
+    } else {
+      return stringItem;
+    }
+  };
+
+  const tableChange = (value, oldItem, changeIndex,type) => {
+    let newList;
+    switch (type) {
+      case 'sku':
+        newList = skuList.map((item, index) => {
+          if (changeIndex === index) {
+            return array.inputs.map((stringItem, stringIndex) => {
+              return newSkuTable(item, skus[index] && skus[index][stringIndex] || stringItem, stringItem, value, oldItem);
+            });
+          } else {
+            return array.inputs.map((stringItem, stringIndex) => {
+              return skus[index] && skus[index][stringIndex] || stringItem;
+            });
+          }
+        });
+        onChange({
+          ...defaultValue,
+          cycleReplaces: newList.map((item) => {
+            return {
+              cycles: item.map((stringItem, index) => {
+                let newText = stringItem;
+                if (newText.search(input) !== -1) {
+                  const replaceString = newText.match(input)[0];
+                  newText = newText.replace(replaceString, '');
+                }
+                return {
+                  oldText: array.inputs[index],
+                  newText,
+                };
+              })
+            };
+          }),
+        });
+        setSkus(newList);
+        break;
+      case 'pay':
+        newList = payList.map((item, index) => {
+          if (changeIndex === index) {
+            return array.pays.map((stringItem, stringIndex) => {
+              return newSkuTable(item, pays[index] && pays[index][stringIndex] || stringItem, stringItem, value, oldItem);
+            });
+          } else {
+            return array.pays.map((stringItem, stringIndex) => {
+              return pays[index] && pays[index][stringIndex] || stringItem;
+            });
+          }
+        });
+        onChange({
+          ...defaultValue,
+          payReplaces: newList.map((item) => {
+            return {
+              cycles: item.map((stringItem, index) => {
+                let newText = stringItem;
+                if (newText.search(input) !== -1) {
+                  const replaceString = newText.match(input)[0];
+                  newText = newText.replace(replaceString, '');
+                }
+                return {
+                  oldText: array.pays[index],
+                  newText,
+                };
+              })
+            };
+          }),
+        });
+        setpPays(newList);
+        break;
+      default:
+        break;
+    }
   };
 
   const replaceDom = (string, index) => {
@@ -336,18 +437,269 @@ export const AllField = ({onChange, array}) => {
     });
   };
 
-  if (!Array.isArray(array)) {
+  const skuTableReplaceDom = (string, item, index,type) => {
+    return parse(string, {
+      replace: domNode => {
+        if (domNode.name === 'input') {
+          switch (domNode.attribs.type) {
+            case 'text':
+              return <Input
+                placeholder="输入文本"
+                style={{width: 200, margin: '0 10px'}}
+                onChange={(value) => {
+                  tableChange(value.target.value, item, index,type);
+                }}
+              />;
+            case 'number':
+              return <InputNumber
+                placeholder="输入数值"
+                style={{width: 200, margin: '0 10px'}}
+                onChange={(value) => {
+                  tableChange(value, item, index,type);
+                }}
+              />;
+            case 'date':
+              return <DatePicker
+                showTime
+                placeholder="输入时间"
+                style={{width: 200, margin: '0 10px'}}
+                onChange={(value) => {
+                  tableChange(value, item, index,type);
+                }}
+              />;
+            default:
+              break;
+          }
+        }
+      }
+    });
+  };
+
+  if (!array) {
     return <></>;
   }
 
-  return (<>
+  const skuTableTitle = (item) => {
+    // eslint-disable-next-line no-template-curly-in-string
+    if (item.indexOf('${{coding}}') !== -1) {
+      return {
+        title: '物料编码',
+        dataIndex: 'coding',
+        render: (value, record) => {
+          return value || (record.skuResult && record.skuResult.standard);
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{spuName}}') !== -1) {
+      return {
+        title: '物料名称',
+        dataIndex: 'skuResult',
+        render: (value) => {
+          return value && value.spuResult.name;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{skuName}}') !== -1) {
+      return {
+        title: '规格 / 型号',
+        dataIndex: 'skuResult',
+        render: (value) => {
+          return `${value.skuName} / ${value.specifications || '无'}`;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{skuClass}}') !== -1) {
+      return {
+        title: '分类',
+        dataIndex: 'skuResult',
+        render: (value) => {
+          return value.spuResult && value.spuResult.spuClassificationResult && value.spuResult.spuClassificationResult.name;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{brand}}') !== -1) {
+      return {
+        title: '品牌',
+        dataIndex: 'brand',
+        render: (value, record) => {
+          return record.brandResult || record.defaultBrandResult;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{unit}}') !== -1) {
+      return {
+        title: '单位',
+        dataIndex: 'unitId',
+        render: (value) => {
+          return unitResult(value);
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{totalPrice}}') !== -1) {
+      return {
+        title: '总价',
+        dataIndex: 'totalPrice',
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{skuNumber}}') !== -1) {
+      return {
+        title: '数量',
+        dataIndex: 'purchaseNumber'
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{price}}') !== -1) {
+      return {
+        title: '单价',
+        dataIndex: 'onePrice'
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{deliveryDate}}') !== -1) {
+      return {
+        title: '交货日期',
+        dataIndex: 'deliveryDate'
+      };
+    } else if (item.indexOf('<input') !== -1 && item.indexOf('data-title') !== -1) {
+      let title = '';
+      parse(item, {
+        replace: domNode => {
+          if (domNode.name === 'input') {
+            title = domNode.attribs['data-title'];
+          }
+        }
+      });
+
+      return {
+        title,
+        render: (value, record, index) => {
+          return skuTableReplaceDom(item.match(input)[0], item, index,'sku');
+        }
+      };
+    } else {
+      return {};
+    }
+
+  };
+
+  const payTableTitle = (item) => {
+    // eslint-disable-next-line no-template-curly-in-string
+    if (item.indexOf('${{detailMoney}}') !== -1) {
+      return {
+        title: '付款金额',
+        dataIndex: 'money',
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{detailDateWay}}') !== -1) {
+      return {
+        title: '日期方式',
+        dataIndex: 'payType',
+        render: (value) => {
+          switch (value) {
+            case 0:
+              return '天';
+            case 1:
+              return '月';
+            case 2:
+              return '年';
+            default:
+              return '';
+          }
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{percentum}}') !== -1) {
+      return {
+        title: '付款比例',
+        dataIndex: 'percentum',
+        render: (value) => {
+          return `${value} %`;
+        }
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{DetailPayDate}}') !== -1) {
+      return {
+        title: '付款日期',
+        dataIndex: 'payTime',
+      };
+      // eslint-disable-next-line no-template-curly-in-string
+    } else if (item.indexOf('${{DetailPayRemark}}') !== -1) {
+      return {
+        title: '款项说明',
+        dataIndex: 'remark',
+      };
+    } else if (item.indexOf('<input') !== -1 && item.indexOf('data-title') !== -1) {
+      let title = '';
+      parse(item, {
+        replace: domNode => {
+          if (domNode.name === 'input') {
+            title = domNode.attribs['data-title'];
+          }
+        }
+      });
+
+      return {
+        title,
+        render: (value, record, index) => {
+          return skuTableReplaceDom(item.match(input)[0], item, index,'pay');
+        }
+      };
+    } else {
+      return {};
+    }
+
+  };
+
+  const skuColumns = array.inputs ?
+    array.inputs.map((item) => {
+      return {
+        ...skuTableTitle(item),
+        width: 200
+      };
+    })
+    : [];
+
+  const payColumns = array.pays ?
+    array.pays.map((item) => {
+      return {
+        ...payTableTitle(item),
+        width: 200
+      };
+    })
+    : [];
+
+
+  return (<div>
     <List
       size="large"
       bordered
-      dataSource={array || []}
-      renderItem={(item, index) => <List.Item>{replaceDom(item, index)}</List.Item>}
+      dataSource={array.strings || []}
+      renderItem={(item, index) => <List.Item key={index}>{replaceDom(item, index)}</List.Item>}
     />
-  </>);
+    {
+      array.inputs && array.inputs.length > 0 &&
+      <div style={{marginTop: 16}}>
+        <Table
+          columns={skuColumns}
+          pagination={false}
+          rowKey="index"
+          dataSource={skuList && skuList.map((item, index) => {
+            return {...item, key: index};
+          }) || []} />
+      </div>
+    }
+
+    {
+      array.pays && array.pays.length > 0 &&
+      <div style={{marginTop: 16}}>
+        <Table
+          columns={payColumns}
+          pagination={false}
+          rowKey="index"
+          dataSource={payList && payList.map((item, index) => {
+            return {...item, key: index};
+          }) || []} />
+      </div>
+    }
+  </div>);
 };
 
 

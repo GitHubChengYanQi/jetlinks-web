@@ -185,8 +185,6 @@ const CreateOrder = ({...props}) => {
       wrapperCol={24}
       fieldKey="customerId"
       onSubmit={(value) => {
-        console.log(value);
-
         if (value.paymentDetail) {
           let percentum = 0;
           value.paymentDetail.map((item) => {
@@ -201,15 +199,11 @@ const CreateOrder = ({...props}) => {
           return false;
         }
 
-        if (value.generateContract && !value.allField){
-          message.warn('请完善合同信息！');
-          return false;
-        }
-
         value = {
           ...value,
           type: 1,
           paymentParam: {
+            money: value.money,
             detailParams: value.paymentDetail,
             payMethod: value.payMethod,
             freight: value.freight,
@@ -219,7 +213,7 @@ const CreateOrder = ({...props}) => {
             remark: value.remark,
           },
           contractParam: {
-            contractReplaces: value.allField,
+            ...value.allField,
             templateId: value.templateId,
             coding: value.contractCoding,
           }
@@ -433,7 +427,7 @@ const CreateOrder = ({...props}) => {
                       value={params.module === 'SO' && userInfo.customerId}
                       dataParams={params.module === 'SO' && {status: 99}}
                       label="公司名称"
-                      placeholder="请选择甲方公司"
+                      placeholder="请选择乙方公司"
                       name="sellerId"
                       component={CustomerSysField.Customer}
                       required
@@ -442,7 +436,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="公司地址"
-                      placeholder="请选择甲方公司地址"
+                      placeholder="请选择乙方公司地址"
                       name="partyBAdressId"
                       component={CustomerSysField.Adress}
                     />
@@ -452,7 +446,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="委托代理"
-                      placeholder="请选择甲方公司委托代理"
+                      placeholder="请选择乙方公司委托代理"
                       name="partyBContactsId"
                       component={CustomerSysField.Contacts}
                     />
@@ -460,7 +454,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="联系电话"
-                      placeholder="请选择甲方公司联系电话"
+                      placeholder="请选择乙方公司联系电话"
                       name="partyBPhone"
                       component={CustomerSysField.Phone}
                     />
@@ -470,7 +464,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="开户银行"
-                      placeholder="请选择甲方开户银行"
+                      placeholder="请选择乙方开户银行"
                       name="partyBBankId"
                       component={CustomerSysField.Bank}
                     />
@@ -536,6 +530,7 @@ const CreateOrder = ({...props}) => {
         <FormItem
           module={params.module}
           name="detailParams"
+          {...props}
           component={SysField.AddSku}
         />
       </ProCard>
@@ -704,6 +699,7 @@ const CreateOrder = ({...props}) => {
             <Col span={span}>
               <FormItem
                 label="是否需要生成合同"
+                required
                 name="generateContract"
                 component={SysField.Freight}
               />
@@ -726,14 +722,18 @@ const CreateOrder = ({...props}) => {
               />
             </Col>
           </Row>
-          <MegaLayout labelWidth={200} labelAlign="top">
-            <FormItem
-              visible={false}
-              label="合同模板中的其他字段"
-              name="allField"
-              component={SysField.AllField}
-            />
-          </MegaLayout>
+          <Row gutter={24}>
+            <Col span={24}>
+              <MegaLayout labelWidth={200} labelAlign="top">
+                <FormItem
+                  visible={false}
+                  label="合同模板中的其他字段"
+                  name="allField"
+                  component={SysField.AllField}
+                />
+              </MegaLayout>
+            </Col>
+          </Row>
         </MegaLayout>
       </ProCard>
 
