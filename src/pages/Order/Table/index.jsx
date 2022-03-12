@@ -75,7 +75,16 @@ const OrderTable = (props) => {
       >
         <Column title="采购单编号" dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            history.push(`/CRM/order/detail?id=${record.orderId}`);
+            switch (props.location.pathname) {
+              case '/CRM/order':
+                history.push(`/CRM/order/detail?id=${record.orderId}`);
+                break;
+              case '/purchase/order':
+                history.push(`/purchase/order/detail?id=${record.orderId}`);
+                break;
+              default:
+                break;
+            }
           }}>{value}</Button>;
         }} />
         <Column title="甲方" dataIndex="acustomer" render={(value) => {

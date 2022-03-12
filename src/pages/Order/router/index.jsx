@@ -19,9 +19,9 @@ export const OrderRouter = [
     component: lazy(() => import('../CreateOrder/index')),
     fallback: <div>loading...</div>,
     exact: true,
-  },{
+  }, {
     path: '/order/detail',
-    component: lazy(() => import('../Detail')),
+    component: lazy(() => import('../Detail/index')),
     fallback: <div>loading...</div>,
     exact: true,
   },
