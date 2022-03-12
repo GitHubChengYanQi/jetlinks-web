@@ -12,6 +12,7 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const PayTable = ({payment}) => {
+
   const tableRef = useRef(null);
 
   if (!payment) {
@@ -43,7 +44,10 @@ const PayTable = ({payment}) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="付款类型" dataIndex="payType" render={(value) => {
+        {
+          payment.payPlan === 2 && <Column title="日期" dataIndex="payTime" />
+        }
+        {payment.payPlan !== 2 && <Column title="付款类型" dataIndex="payType" render={(value) => {
           switch (value) {
             case 0:
               return '订单创建后';
@@ -58,9 +62,9 @@ const PayTable = ({payment}) => {
             default:
               return '';
           }
-        }} />
-        <Column title="日期" dataIndex="dateNumber" />
-        <Column title="日期方式" dataIndex="dateWay" render={(value) => {
+        }} />}
+        {payment.payPlan !== 2 && <Column title="日期" dataIndex="dateNumber" />}
+        {payment.payPlan !== 2 && <Column title="日期方式" dataIndex="dateWay" render={(value) => {
           switch (value) {
             case 0:
               return '天';
@@ -71,7 +75,7 @@ const PayTable = ({payment}) => {
             default:
               return '';
           }
-        }} />
+        }} />}
         <Column title="百分比" dataIndex="percentum" />
         <Column title="付款金额" dataIndex="money" />
         <Column />
