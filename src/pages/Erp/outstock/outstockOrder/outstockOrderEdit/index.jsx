@@ -5,9 +5,9 @@
  * @Date 2021-08-16 10:51:46
  */
 
-import React, {useRef} from 'react';
-import {Button, Col, message, Row} from 'antd';
-import {FormEffectHooks, MegaLayout} from '@formily/antd';
+import React, {useRef, useState} from 'react';
+import {Button, Col, message, Row, Modal as AntModal, Space} from 'antd';
+import {MegaLayout} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import {config} from 'ice';
 import Form from '@/components/Form';
@@ -17,6 +17,7 @@ import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import PartsList from '@/pages/Erp/parts/PartsList';
 import {partsDetail} from '@/pages/Erp/parts/PartsUrl';
+import InputNumber from '@/components/InputNumber';
 
 const {FormItem} = Form;
 
@@ -26,7 +27,6 @@ const ApiConfig = {
   save: outstockOrderEdit
 };
 
-const {onFieldValueChange$} = FormEffectHooks;
 
 const {wxCp} = config;
 
@@ -36,10 +36,20 @@ const OutstockOrderEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const [visible, setVisible] = useState();
+
+  const [number, setNumber] = useState(1);
+
   const {loading: partsLoading, run: parts} = useRequest(partsDetail, {
     manual: true,
     onSuccess: (res) => {
-      formRef.current.setFieldValue('applyDetails', res.parts);
+      formRef.current.setFieldValue('applyDetails', res.parts.map((item) => {
+        return {
+          ...item,
+          number: (item.number || 0) * number
+        };
+      }));
+      setNumber(1);
     }
   });
 
@@ -91,26 +101,47 @@ const OutstockOrderEdit = ({...props}) => {
           component={SysField.AddSku}
           cardExtra={<Button onClick={() => {
             partsRef.current.open(false);
-          }}>拷贝BOM</Button>}
+          }}>根据BOM添加</Button>}
         />
 
       </Form>
 
       <Modal
-        headTitle="拷贝BOM"
+        headTitle="根据BOM添加"
         width={800}
         spuSkuId
         component={PartsList}
         getPartsId={(id) => {
-          partsRef.current.close();
-          parts({
-            data: {
-              partsId: id,
-            }
-          });
+          setVisible(id);
         }}
         ref={partsRef}
       />
+
+      <AntModal
+        zIndex={9999}
+        centered
+        title="出库BOM套数"
+        visible={visible}
+        onCancel={() => {
+          setNumber(1);
+          setVisible(false);
+        }}
+        onOk={() => {
+          setVisible(false);
+          partsRef.current.close();
+          parts({
+            data: {
+              partsId: visible,
+            }
+          });
+        }}>
+        <Space>
+          请输入BOM套数:
+          <InputNumber style={{width: '100%'}} placeholder="请输入BOM套数" value={number} onChange={(value) => {
+            setNumber(value);
+          }} />
+        </Space>
+      </AntModal>
 
     </div>
 
