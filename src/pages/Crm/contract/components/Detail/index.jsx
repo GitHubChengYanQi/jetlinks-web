@@ -56,7 +56,7 @@ const Detail = ({id, noContent}) => {
   return <div className={styles.detail}>
     <Card title={<Breadcrumb />} bodyStyle={{padding: 0}} />
     <div className={styles.main}>
-      <Card title="合同信息" extra={<Button
+      <Card title="基本信息" extra={<Button
         onClick={() => {
           history.back();
         }}><Icon type="icon-back" />返回</Button>}>
@@ -65,7 +65,8 @@ const Detail = ({id, noContent}) => {
     </div>
 
     <div
-      className={styles.main}>
+      className={styles.main}
+    >
       <Card>
         <Tabs defaultActiveKey="1">
           {!noContent && <TabPane tab="合同内容" key="1">

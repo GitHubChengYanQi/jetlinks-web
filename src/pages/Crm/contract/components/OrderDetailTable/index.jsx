@@ -52,7 +52,7 @@ const OrderDetailTable = ({orderId}) => {
         }} />
         <Column title="数量" dataIndex="purchaseNumber" />
         <Column title="单位" dataIndex="unit" render={(value) => {
-          return value && value.name;
+          return value && value.unitName;
         }} />
         <Column title="单价" dataIndex="onePrice" />
         <Column title="总价" dataIndex="totalPrice" />
