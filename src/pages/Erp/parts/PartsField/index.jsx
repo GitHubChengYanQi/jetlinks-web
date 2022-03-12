@@ -38,6 +38,10 @@ export const Name = (props) => {
   return (<Input.TextArea rows={1}  {...props} />);
 };
 
+export const SkuInput = (props) => {
+  return (<Input  {...props} />);
+};
+
 export const SpuId = (props) => {
 
   const {onChange, ...other} = props;
@@ -142,6 +146,7 @@ export const SkuId = (props) => {
 
   return (<SelectSku {...props} />);
 };
+
 
 export const SkuIdInput = (props) => {
 
