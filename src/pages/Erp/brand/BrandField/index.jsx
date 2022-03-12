@@ -34,7 +34,7 @@ export const AddSku = ({
       extra={<Space>
         <Button onClick={() => {
           ref.current.open(true);
-        }}>添加出库物料</Button>
+        }}>添加关联物料</Button>
       </Space>}
     >
 

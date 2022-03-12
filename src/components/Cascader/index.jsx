@@ -34,7 +34,6 @@ const Cascader = (props) => {
     onChange = () => {
     }, ...other
   } = props;
-
   const {loading, data, refresh} = useRequest(api, {defaultParams, manual: !api});
 
   useEffect(() => {
