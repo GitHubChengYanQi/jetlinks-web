@@ -24,6 +24,7 @@ import ShowBOM from '@/pages/Erp/parts/components/ShowBOM';
 import Drawer from '@/components/Drawer';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
+import {SkuInput, SkuName} from '../PartsField';
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -81,12 +82,15 @@ const PartsList = ({
     return (
       <>
         <FormItem
-          label="物料"
-          placeholder="请选择物料"
+          label="物料名称"
+          placeholder="搜索物料"
+          name="skuName"
+          component={SysField.SkuInput} />
+        <FormItem
+          hidden
           name="skuId"
           value={value || null}
-          noAdd
-          component={SysField.SkuId} />
+          component={SysField.SkuInput} />
         <FormItem
           hidden
           placeholder="请选择物料"
