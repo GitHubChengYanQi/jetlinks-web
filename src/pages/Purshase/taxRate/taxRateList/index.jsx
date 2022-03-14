@@ -52,6 +52,8 @@ const TaxRateList = () => {
         title={<Breadcrumb title='税率管理' />}
         api={taxRateList}
         contentHeight
+        listHeader={false}
+        cardHeaderStyle={{display:'none'}}
         rowKey="taxRateId"
         formActions={formActionsPublic}
         searchForm={searchForm}

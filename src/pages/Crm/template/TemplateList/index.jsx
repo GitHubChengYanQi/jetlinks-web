@@ -63,6 +63,8 @@ const TemplateList = () => {
       <Table
         footer={footer}
         contentHeight
+        listHeader={false}
+        cardHeaderStyle={{display:'none'}}
         onChange={(keys) => {
           setIds(keys);
         }}
