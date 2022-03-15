@@ -77,7 +77,6 @@ const Audit = ({
               break;
           }
           currentNode.current.stepType = value.type;
-          currentNode.current.auditType = 'process';
           refAudit.current.close();
           updateNode();
         }}
@@ -93,13 +92,9 @@ const Audit = ({
           switch (currentNode.current.type) {
             case '0':
               currentNode.current.auditRule = {type: 'start', rules: value};
-              currentNode.current.stepType = 'start';
-              currentNode.current.auditType = 'start';
               break;
             case '2':
               currentNode.current.auditRule = {type: 'send', rules: value};
-              currentNode.current.stepType = 'send';
-              currentNode.current.auditType = 'send';
               break;
             default:
               break;
@@ -113,8 +108,6 @@ const Audit = ({
         value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.rules}
         onChange={(value) => {
           currentNode.current.auditRule = {type: 'purchaseAsk', rules: value};
-          currentNode.current.stepType = 'branch';
-          currentNode.current.auditType = 'branch';
           updateNode();
           refBranch.current.close();
         }} />

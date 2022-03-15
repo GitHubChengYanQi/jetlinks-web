@@ -16,6 +16,8 @@ const WorkFlow = ({configs, value, onChange, type, module}) => {
   const defaultConfig = {
     'pkId': 'start',
     'nodeName': '发起人',
+    'stepType': 'start',
+    'auditType': 'start',
     'type': '0',
     'childNode': null,  // 下级步骤
     'conditionNodeList': [] // 分支
@@ -40,10 +42,15 @@ const WorkFlow = ({configs, value, onChange, type, module}) => {
     const o = objRef.childNode;
 
     if (type === OptionTypes.APPROVER) {
-      objRef.childNode = {...NodeTemplates[OptionTypes.APPROVER], childNode: o};
+      objRef.childNode = {...NodeTemplates[OptionTypes.APPROVER], childNode: o,auditType: 'process',};
     }
     if (type === OptionTypes.NOTIFIER) {
-      objRef.childNode = {...NodeTemplates[OptionTypes.NOTIFIER], childNode: o};
+      objRef.childNode = {
+        ...NodeTemplates[OptionTypes.NOTIFIER],
+        childNode: o,
+        stepType: 'send',
+        auditType: 'send',
+      };
     }
     if (type === OptionTypes.CONDITION) {
       objRef.childNode = {
