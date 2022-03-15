@@ -304,7 +304,7 @@ const Setps = ({
         <FormItem
           required
           label="产出数量"
-          name="shipNumber"
+          name="num"
           component={InputNumber}
         />
         <FormItem

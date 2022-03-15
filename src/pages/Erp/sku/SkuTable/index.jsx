@@ -278,14 +278,14 @@ const SkuTable = ({...props}, ref) => {
                   setSkuId(record.skuId);
                 }
               }}>{record.inBom ? '有' : '无'}BOM</Button>
-              <Button type="link" style={{color: record.processRouteResult ? 'green' : 'blue'}} onClick={() => {
-                if (record.processRouteResult) {
-                  showShip.current.open(record.processRouteResult.processRouteId);
+              <Button type="link" style={{color: record.processResult ? 'green' : 'blue'}} onClick={() => {
+                if (record.processResult) {
+                  showShip.current.open(record.processResult.processId);
                 } else {
                   showShip.current.open(false);
                   setSkuId(value);
                 }
-              }}>{record.processRouteResult ? '有' : '无'}工艺</Button>
+              }}>{record.processResult ? '有' : '无'}工艺</Button>
               <EditButton onClick={() => {
                 addRef.current.open(record);
                 setEdit(true);

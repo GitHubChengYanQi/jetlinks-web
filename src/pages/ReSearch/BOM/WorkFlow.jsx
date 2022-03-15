@@ -126,7 +126,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   useEffect(() => {
     if (value) {
-      setSpuSkuId(value.process.skuId);
+      setSpuSkuId(value.process && value.process.skuId);
       setConfig({
         disabled: true,
         ...value
