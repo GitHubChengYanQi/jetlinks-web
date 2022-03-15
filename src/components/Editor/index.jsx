@@ -1,8 +1,5 @@
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import tinymce from 'tinymce';
-import {message, Modal} from 'antd';
+import React, {useImperativeHandle, useRef} from 'react';
 import {Editor as TinymceEditor} from '@tinymce/tinymce-react';
-import {Contacts, PHYSICALDETAIL, POSITIONS} from '@/components/Editor/components/Module';
 
 
 const Editor = ({
@@ -14,14 +11,6 @@ const Editor = ({
 
   const editorRef = useRef(null);
 
-  const [visible, setVisible] = useState();
-
-  const [title, setTitle] = useState('');
-
-  const [button, setButton] = useState('');
-
-  const [table, setTable] = useState([]);
-
   const editorSave = () => {
     return editorRef.current.getContent();
   };
@@ -30,91 +19,18 @@ const Editor = ({
     editorSave,
   }));
 
-  const insertContent = (content) => {
-    editorRef.current.insertContent(content);
-  };
-
-  const moduleOnoK = () => {
-    let content = '';
-    let labeltds = '';
-    table.map((item) => {
-      return labeltds += `<td>${item.label}</td>`;
-    });
-    let valuetds = '';
-    table.map((item) => {
-      return valuetds += `<td>$\{{${item.value}}}</td>`;
-    });
+  const toobar = () => {
     switch (module) {
       case 'PHYSICALDETAIL':
-        insertContent(`$\{${button}}`);
-        break;
+        return ['actionsSku'];
       case 'POSITIONS':
-        insertContent(`$\{${button}}`);
-        break;
+        return ['actionsPosition'];
       case 'contacts':
-        switch (button) {
-          case 'input':
-            if (!title) {
-              return message.warn('请输入标题！');
-            }
-            insertContent(`<input type='text' data-title=${title || '文本框'} />`);
-            break;
-          case 'number':
-            if (!title) {
-              return message.warn('请输入标题！');
-            }
-            insertContent(`<input type='number' data-title=${title || '数字框'} />`);
-            break;
-          case 'date':
-            if (!title) {
-              return message.warn('请输入标题！');
-            }
-            insertContent(`<input type='date' data-title=${title || '时间框'} />`);
-            break;
-          case 'skuTable':
-            content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
-            insertContent(content);
-            break;
-          case 'payTable':
-            content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="pay">${valuetds}</tr></table>`;
-            insertContent(content);
-            break;
-          default:
-            insertContent(`$\{{${button}}}`);
-            break;
-        }
-        break;
+        return ['actions'];
       default:
-        break;
+        return [];
     }
   };
-
-  const moduleModalContent = () => {
-    switch (module) {
-      case 'PHYSICALDETAIL':
-        return <PHYSICALDETAIL button={button} setButton={setButton} />;
-      case 'POSITIONS':
-        return <POSITIONS button={button} setButton={setButton} />;
-      case 'contacts':
-        return <Contacts title={title} setButton={setButton} button={button} setTitle={setTitle} setTable={setTable} />;
-      default:
-        break;
-    }
-  };
-
-  const refresh = () => {
-    setVisible(false);
-    setButton(null);
-    setTitle(null);
-  };
-
-  useEffect(() => {
-    window.editOpen = () => {
-      setVisible(true);
-    };
-  }, []);
-
-  const plugins = module ? ['editorPlugins'] : [];
 
   return (
     <div>
@@ -130,12 +46,8 @@ const Editor = ({
           plugins: ['advlist', 'autolink', 'autolink'
             , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', ...plugins],
-          toolbar: 'undo redo | actions | formatselect | ' +
-            'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | table | ' +
-            'removeformat | help | item',
-          // content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }' +
+            'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', 'editorPlugins'],
+          toolbar: ['undo redo',...toobar(), 'formatselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'removeformat', 'help', 'actionsImg'].join(' | ')
         }}
         onBlur={() => {
           if (!module) {
@@ -144,25 +56,6 @@ const Editor = ({
         }}
       />
 
-
-      <Modal
-        title="设置变量"
-        destroyOnClose
-        width={700}
-        visible={visible}
-        onOk={() => {
-          if (!button) {
-            return message.warn('请选择变量！');
-          }
-          moduleOnoK();
-          refresh();
-        }}
-        onCancel={() => {
-          refresh();
-        }}>
-
-        {moduleModalContent()}
-      </Modal>
 
     </div>
   );

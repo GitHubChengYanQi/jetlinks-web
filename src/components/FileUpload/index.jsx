@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, message, Space, Spin, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
@@ -15,13 +15,17 @@ const FileUpload = ({
 
   const [fileList, setFileList] = useState([]);
 
+  const ref = useRef();
+
   const {loading, run: getUrl} = useRequest({
     url: '/sop/getImgUrls',
     method: 'POST',
   }, {
     manual: true,
     onSuccess: (res) => {
-      setFileList(res.map((item,index)=>{return {url:item,id:value.split(',')[index]};}));
+      setFileList(res.map((item, index) => {
+        return {url: item, id: value.split(',')[index]};
+      }));
     }
   });
 
@@ -29,10 +33,10 @@ const FileUpload = ({
     if (value) {
       getUrl({
         data: {
-          imgs:value.split(',')
+          imgs: value.split(',')
         }
       });
-    }else {
+    } else {
       setFileList([]);
     }
   }, [refresh]);
@@ -65,9 +69,11 @@ const FileUpload = ({
   return (
     <Space direction="vertical" style={{width: '100%'}} size="large">
       <Upload
+        ref={ref}
         action={oss && oss.host}
         data={oss}
         fileList={fileList}
+        openFileDialogOnClick={false}
         maxCount={maxCount || 5}
         listType="picture"
         onChange={(file) => {
@@ -133,6 +139,7 @@ const FileUpload = ({
           <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>{prompt}
         </div>
       </Upload>
+
     </Space>
   );
 };

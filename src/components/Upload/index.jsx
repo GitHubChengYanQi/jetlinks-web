@@ -21,7 +21,7 @@ const UpLoadImg = (props) => {
 
   // 上传前获取上传OSS所需参数 - 传入上传文件类型："png", "jpg", "gif", "mp4", "mp3","flac"
   const beforUpLoad = (imgType) => {
-    if (imageType && imageType.includes(imgType)) {
+    if (!imageType || imageType.includes(imgType)) {
       setLoading(true);
       return new Promise((resolve) => {
         getOssObj({params: {type: imgType}}).then(res => {

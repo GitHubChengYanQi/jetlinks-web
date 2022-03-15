@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table} from 'antd';
+import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table, AutoComplete} from 'antd';
 import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
@@ -24,6 +24,7 @@ import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import UpLoadImg from '@/components/Upload';
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency, ...props}) => {
@@ -412,13 +413,26 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         if (domNode.name === 'input') {
           switch (domNode.attribs.type) {
             case 'text':
-              return <Space>{domNode.attribs['data-title']}<Input
-                placeholder="输入文本"
-                style={{width: 200, margin: '0 10px'}}
-                onChange={(value) => {
-                  change(index, value.target.value);
-                }}
-              /></Space>;
+              console.log(domNode.attribs.placeholder.split(','));
+              return <Space>{domNode.attribs['data-title']}
+                <AutoComplete
+                  defaultValue={domNode.attribs.value}
+                  onChange={(value) => {
+                    change(index, value);
+                  }}
+                  options={Array.isArray(domNode.attribs.placeholder.split(',')) && domNode.attribs.placeholder.split(',').map((item) => {
+                    return {
+                      label: item,
+                      value: item,
+                    };
+                  })}
+                >
+                  <Input
+                    placeholder="输入文本"
+                    // style={{width: 200, margin: '0 10px'}}
+                  />
+                </AutoComplete>
+              </Space>;
             case 'number':
               return <Space>{domNode.attribs['data-title']}<InputNumber
                 placeholder="输入数值"
@@ -436,9 +450,20 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                   change(index, value);
                 }}
               /></Space>;
+            case 'file':
+              return <Space>{domNode.attribs['data-title']}
+                <UpLoadImg onChange={(value) => {
+                  change(index, `<image src=${value} width="100" />`);
+                }} />
+              </Space>;
             default:
               break;
           }
+        } else if (domNode.name === 'textarea') {
+          return <Space>{domNode.attribs['data-title']}
+            <Editor onChange={(value) => {
+              change(index, value);
+            }} /></Space>;
         }
       }
     });
