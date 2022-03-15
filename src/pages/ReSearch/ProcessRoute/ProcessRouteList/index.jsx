@@ -19,6 +19,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import {processList} from '@/pages/Workflow/Process/processUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -53,9 +54,9 @@ const ProcessRouteList = ({spuId, value}, ref) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="工艺路线编号" name="processRouteCoding" component={SysField.ProcessRouteCoding} />
-        <FormItem label="工艺路线名称" name="processRoteName" component={SysField.ProcessRoteName} />
+        <FormItem label="物料名称" name="skuName" component={SysField.ProcessRouteCoding} />
         <FormItem hidden value={spuId} name="spuId" component={SysField.ProcessRoteName} />
+        <FormItem hidden value='ship' name="type" component={SysField.ProcessRoteName} />
       </>
     );
   };
@@ -65,9 +66,9 @@ const ProcessRouteList = ({spuId, value}, ref) => {
       <Table
         title={<Breadcrumb />}
         headStyle={spuId && {display: 'none'}}
-        api={processRouteList}
+        api={processList}
         noRowSelection
-        rowKey="processRouteId"
+        rowKey="processId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
