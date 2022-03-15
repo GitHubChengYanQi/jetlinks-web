@@ -76,14 +76,8 @@ const ProcessRouteList = ({spuId, value}, ref) => {
         <Column title="物料" dataIndex="skuResult" render={(value) => {
           return <SkuResultSkuJsons skuResult={value} />;
         }} />
-        {/*<Column title="工艺路线名称" dataIndex="processRoteName" />*/}
-        {/*<Column title="关联工艺物料清单" dataIndex="partsId" />*/}
-        {/*<Column title="版本号" dataIndex="version" />*/}
-        {/*<Column title="状态" dataIndex="status" render={(value) => {*/}
-        {/*  return <Switch checkedChildren="开启" unCheckedChildren="关闭" checked={value} />;*/}
-        {/*}} />*/}
         <Column />
-        <Column title="操作" align="right" dataIndex="processRouteId" render={(value, record) => {
+        <Column title="操作" align="right" dataIndex="processId" render={(value, record) => {
           return (
             <>
               <EditButton onClick={() => {
