@@ -64,7 +64,7 @@ const Setps = ({
 
         switch (value.type) {
           case 'ship':
-            valueDisabled = value.type && value.skuId && value.processRouteId && value.shipNumber;
+            valueDisabled = value.type && value.skuId && value.processParamId && value.shipNumber;
             break;
           case 'setp':
             valueDisabled = value.type && value.productionType && value.productionStationId && value.shipSetpId && details;
@@ -298,7 +298,7 @@ const Setps = ({
         <FormItem
           visible={false}
           label="工艺路线"
-          name="processRouteId"
+          name="processParamId"
           component={ShowShip}
         />
         <FormItem
