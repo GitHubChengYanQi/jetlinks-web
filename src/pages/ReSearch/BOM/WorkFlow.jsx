@@ -34,7 +34,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
     'conditionNodeList': [], // 分支
     disabled: skuId,
     stepType: 'shipStart',
-    processParam: {
+    process: {
       skuId
     }
   };
@@ -126,7 +126,7 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
 
   useEffect(() => {
     if (value) {
-      setSpuSkuId(value.processParam.skuId);
+      setSpuSkuId(value.process.skuId);
       setConfig({
         disabled: true,
         ...value
@@ -149,13 +149,13 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
           type={type}
           module={module}
           spuSkuId={spuSkuId}
-          value={currentNode.current && (currentNode.current.stepType === 'setp' ? currentNode.current.setpSet : currentNode.current.processParam)}
+          value={currentNode.current && (currentNode.current.stepType === 'setp' ? currentNode.current.setpSet : currentNode.current.process)}
           onChange={(value) => {
             switch (value.type) {
               case 'ship':
-                currentNode.current.processParam = {
+                currentNode.current.process = {
                   ...value,
-                  processParamId: value.processParamId,
+                  processId: value.processId,
                 };
                 break;
               case 'setp':
@@ -180,10 +180,10 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
           onClose={() => {
             refStart.current.close();
           }}
-          value={currentNode.current && currentNode.current.processParam}
+          value={currentNode.current && currentNode.current.process}
           onChange={(value) => {
             setSpuSkuId(value.skuId);
-            currentNode.current.processParam = value;
+            currentNode.current.process = value;
             currentNode.current.stepType = 'shipStart';
             refStart.current.close();
             updateNode();

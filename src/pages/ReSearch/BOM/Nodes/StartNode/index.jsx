@@ -12,7 +12,7 @@ function StartNode(props) {
 
   const {onSelectNode} = useContext(WFC);
 
-  const skuId = props.objRef && props.objRef.processParam && props.objRef.processParam.skuId;
+  const skuId = props.objRef && props.objRef.process && props.objRef.process.skuId;
 
   const {loading, data, run} = useRequest(skuDetail, {
     manual: true,
