@@ -5,7 +5,7 @@ import {useRequest} from '@/util/Request';
 
 
 const UpLoadImg = (props) => {
-  const {value, onChange, button, type, text, imageType} = props;
+  const {value, onChange, button, type,onlyButton, text, imageType} = props;
   const [loading, setLoading] = useState(false); // loading 状态
   const [imageUrl, setImageUrl] = useState(''); // 图片地址
   const [oss, setOss] = useState({}); // OSS上传所需参数
@@ -80,7 +80,7 @@ const UpLoadImg = (props) => {
         data={oss}
         action={oss.host}
         beforeUpload={(file) => {
-          return beforUpLoad(file.type.split('/')[1]);
+          return beforUpLoad(file.name);
         }}
         onChange={({event}) => {
           if (event && event.percent >= 100) {
@@ -90,7 +90,7 @@ const UpLoadImg = (props) => {
         }
         }
       >
-        {button || (imageUrl ? <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
+        {button || ((imageUrl && !onlyButton) ? <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
       </Upload>
       {text}
     </Space>

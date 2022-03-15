@@ -30,7 +30,7 @@ export const commonMediaDetail = {
 };
 
 export const commonMediaList = {
-  url: '/commonMedia/list',
+  url: '/media/sortPagelist',
   method: 'POST',
   rowKey:'mediaId'
 };

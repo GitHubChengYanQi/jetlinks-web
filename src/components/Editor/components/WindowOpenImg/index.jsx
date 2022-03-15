@@ -17,20 +17,26 @@ const WindowOpenImg = () => {
   const insertContent = (content) => {
     editorRef.insertContent(content);
   };
+
   return <>
     <Modal
-      title="插入变量"
+      title="插入图片"
       destroyOnClose
-      width={800}
+      width={630}
       visible={visible}
+      footer={null}
       onOk={() => {
         setVisible(false);
       }}
       onCancel={() => {
         setVisible(false);
       }}>
-
-      <CommonMediaList />
+      <div style={{margin: 'auto'}}>
+        <CommonMediaList getImg={(id, url) => {
+          insertContent(`<img src=${url} height="200"  alt=""/>`);
+          setVisible(false);
+        }} />
+      </div>
     </Modal>
   </>;
 };

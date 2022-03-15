@@ -52,6 +52,9 @@ const WindowOpenVar = () => {
       case 'defined':
         insertContent(defindInput);
         break;
+      case 'defindSelect':
+        insertContent(defindInput);
+        break;
       case 'skuTable':
         content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
         insertContent(content);
@@ -84,8 +87,9 @@ const WindowOpenVar = () => {
       onCancel={() => {
         refresh();
       }}>
-
-      <Contacts setButton={setButton} button={button} setDefinedInput={setDefinedInput} setTable={setTable} />
+      <div style={{maxHeight: 'calc(100vh - 110px)', overflowY: 'auto', overflowX: 'hidden'}}>
+        <Contacts setButton={setButton} button={button} setDefinedInput={setDefinedInput} setTable={setTable} />
+      </div>
     </Modal>
   </>;
 

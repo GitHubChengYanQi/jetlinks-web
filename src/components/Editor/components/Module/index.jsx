@@ -158,7 +158,7 @@ export const Contacts = ({
       setDefinedInput={setDefinedInput}
     />;
   } else {
-    return <>
+    return <div style={{height:'100%'}}>
       <Radio.Group value={button} onChange={(value) => {
         switch (value.target.value) {
           case 'skuTable':
@@ -279,8 +279,7 @@ export const Contacts = ({
               setButton('defined');
               setDefined(true);
             }}><PlusOutlined />添加自定义变量</Button>}>
-
-            <DefindSelect setButton={setButton} button={button} />
+            <DefindSelect setButton={setButton} setDefinedInput={setDefinedInput} button={button} />
           </ProCard>
           <ProCard
             className="h2Card"
@@ -333,7 +332,7 @@ export const Contacts = ({
           </ProCard>
         </Space>
       </Radio.Group>
-    </>;
+    </div>;
   }
 };
 

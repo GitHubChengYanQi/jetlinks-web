@@ -15,7 +15,6 @@ const FileUpload = ({
 
   const [fileList, setFileList] = useState([]);
 
-  const ref = useRef();
 
   const {loading, run: getUrl} = useRequest({
     url: '/sop/getImgUrls',
@@ -69,11 +68,9 @@ const FileUpload = ({
   return (
     <Space direction="vertical" style={{width: '100%'}} size="large">
       <Upload
-        ref={ref}
         action={oss && oss.host}
         data={oss}
         fileList={fileList}
-        openFileDialogOnClick={false}
         maxCount={maxCount || 5}
         listType="picture"
         onChange={(file) => {
@@ -120,7 +117,7 @@ const FileUpload = ({
           }
         }}
         beforeUpload={async (file) => {
-          const type = file.type.split('/')[1];
+          const type = file.name;
           if (type) {
             const data = await run(
               {
@@ -135,9 +132,9 @@ const FileUpload = ({
           }
         }}
       >
-        <div>
+        <Space>
           <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>{prompt}
-        </div>
+        </Space>
       </Upload>
 
     </Space>

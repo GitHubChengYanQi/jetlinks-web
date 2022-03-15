@@ -413,14 +413,13 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         if (domNode.name === 'input') {
           switch (domNode.attribs.type) {
             case 'text':
-              console.log(domNode.attribs.placeholder.split(','));
               return <Space>{domNode.attribs['data-title']}
                 <AutoComplete
                   defaultValue={domNode.attribs.value}
                   onChange={(value) => {
                     change(index, value);
                   }}
-                  options={Array.isArray(domNode.attribs.placeholder.split(',')) && domNode.attribs.placeholder.split(',').map((item) => {
+                  options={domNode.attribs.placeholder && Array.isArray(domNode.attribs.placeholder.split(',')) && domNode.attribs.placeholder.split(',').map((item) => {
                     return {
                       label: item,
                       value: item,
@@ -643,7 +642,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         title: '付款比例',
         dataIndex: 'percentum',
         render: (value) => {
-          return `${value} %`;
+          return `${value || ''} %`;
         }
       };
       // eslint-disable-next-line no-template-curly-in-string
