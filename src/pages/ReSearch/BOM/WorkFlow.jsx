@@ -149,13 +149,13 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
           type={type}
           module={module}
           spuSkuId={spuSkuId}
-          value={currentNode.current && (currentNode.current.stepType === 'setp' ? currentNode.current.setpSet : currentNode.current.processRoute)}
+          value={currentNode.current && (currentNode.current.stepType === 'setp' ? currentNode.current.setpSet : currentNode.current.processParam)}
           onChange={(value) => {
             switch (value.type) {
               case 'ship':
-                currentNode.current.processRoute = {
+                currentNode.current.processParam = {
                   ...value,
-                  processRouteId: value.processRouteId,
+                  processId: value.processId,
                 };
                 break;
               case 'setp':
@@ -180,10 +180,10 @@ const WorkFlow = ({value, onChange, skuId, type, module}) => {
           onClose={() => {
             refStart.current.close();
           }}
-          value={currentNode.current && currentNode.current.processRoute}
+          value={currentNode.current && currentNode.current.processParam}
           onChange={(value) => {
             setSpuSkuId(value.skuId);
-            currentNode.current.processRoute = value;
+            currentNode.current.processParam = value;
             currentNode.current.stepType = 'shipStart';
             refStart.current.close();
             updateNode();

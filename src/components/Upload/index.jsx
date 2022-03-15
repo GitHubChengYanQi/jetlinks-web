@@ -5,7 +5,7 @@ import {useRequest} from '@/util/Request';
 
 
 const UpLoadImg = (props) => {
-  const {value, onChange, button, type,onlyButton, text, imageType} = props;
+  const {value, onChange, button, type, onlyButton, text, imageType} = props;
   const [loading, setLoading] = useState(false); // loading 状态
   const [imageUrl, setImageUrl] = useState(''); // 图片地址
   const [oss, setOss] = useState({}); // OSS上传所需参数
@@ -20,14 +20,10 @@ const UpLoadImg = (props) => {
   }, [value]);
 
   // 上传前获取上传OSS所需参数 - 传入上传文件类型："png", "jpg", "gif", "mp4", "mp3","flac"
-  const beforUpLoad = (imgType) => {
+  const beforUpLoad = async (imgType) => {
     if (!imageType || imageType.includes(imgType)) {
       setLoading(true);
-      return new Promise((resolve) => {
-        getOssObj({params: {type: imgType}}).then(res => {
-          resolve();
-        });
-      });
+      await getOssObj({params: {type: imgType}});
     } else {
       message.warn('请上传正确格式的文件！');
       return false;
@@ -74,15 +70,23 @@ const UpLoadImg = (props) => {
     // name 为发送到后台的文件名
     <Space align="start">
       <Upload
+        maxCount={5}
+        // multiple
         listType={type || 'picture-card'}
         className="avatar-uploader"
         showUploadList={false}
         data={oss}
         action={oss.host}
         beforeUpload={(file) => {
-          return beforUpLoad(file.name);
+          return new Promise((resolve, reject) => {
+            getOssObj({params: {type: file.name}}).then(()=>{
+              resolve();
+            }).catch(()=>{
+              reject();
+            });
+          });
         }}
-        onChange={({event}) => {
+        onChange={({file,fileList,event}) => {
           if (event && event.percent >= 100) {
             setImageUrl(`${oss.host}/${oss.key}`);
             typeof onChange === 'function' && onChange(`${oss.host}/${oss.key}`);
@@ -90,7 +94,8 @@ const UpLoadImg = (props) => {
         }
         }
       >
-        {button || ((imageUrl && !onlyButton) ? <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
+        {button || ((imageUrl && !onlyButton) ?
+          <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
       </Upload>
       {text}
     </Space>

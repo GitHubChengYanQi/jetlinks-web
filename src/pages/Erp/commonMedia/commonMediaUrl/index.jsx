@@ -29,6 +29,11 @@ export const commonMediaDetail = {
   rowKey:'mediaId'
 };
 
+export const getMediaPath = {
+  url: '/media/getMediaPathById',
+  method: 'GET',
+};
+
 export const commonMediaList = {
   url: '/media/sortPagelist',
   method: 'POST',

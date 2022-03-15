@@ -16,14 +16,14 @@ function ApproverNode(props) {
   const {loading, data: skuData, run} = useRequest(skuDetail, {manual: true});
 
   useEffect(() => {
-    if (props.processRoute && props.processRoute.skuId) {
+    if (props.processParam && props.processParam.skuId) {
       run({
         data: {
-          skuId: props.processRoute.skuId
+          skuId: props.processParam.skuId
         }
       });
     }
-  }, [props.processRoute]);
+  }, [props.processParam]);
 
   function delNode() {
     onDeleteNode(props.pRef, props.objRef);
@@ -60,7 +60,7 @@ function ApproverNode(props) {
 
   const content = () => {
 
-    if (!(props.setpSet || props.processRoute)) {
+    if (!(props.setpSet || props.processParam)) {
       return <>请配置</>;
     }
 

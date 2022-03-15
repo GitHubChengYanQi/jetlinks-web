@@ -6,25 +6,50 @@
  */
 
 import React, {useState} from 'react';
-import {Button, Divider, Image, Input, Space, Spin} from 'antd';
-import {commonMediaList} from '../commonMediaUrl';
+import {Button, Divider, Image, Input, Pagination, Space, Spin} from 'antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
+import {commonMediaList, getMediaPath} from '../commonMediaUrl';
 import {useRequest} from '@/util/Request';
-import Empty from '@/components/Empty';
 import UpLoadImg from '@/components/Upload';
+import styles from './index.module.less';
+
 
 const CommonMediaList = ({
   getImg = () => {
   },
 }) => {
 
+  const token = cookie.get('tianpeng-token');
+
   const [name, setName] = useState();
+
+  const [current, setCurrent] = useState(1);
 
   const {loading, data, refresh, run} = useRequest({
     ...commonMediaList,
-    params: {limit: 19, page: 1},
+    response: true,
+    params: {limit: 10, page: 1},
     data: {types: ['png', 'PNG', 'jpeg', 'JPEG', 'jpg', 'JPG', 'gif', 'GIF']}
   });
 
+  const {loading: insertLoading, run: insertRun} = useRequest(getMediaPath,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        getImg(res);
+      }
+    });
+
+  const runList = (pageSize, number, name) => {
+    run({
+      params: {limit: pageSize, page: number},
+      data: {
+        fieldName: name,
+        types: ['png', 'PNG', 'jpeg', 'JPEG', 'jpg', 'JPG', 'gif', 'GIF']
+      }
+    });
+  };
 
   return (
     <>
@@ -37,37 +62,45 @@ const CommonMediaList = ({
             setName(value.target.value);
           }} />
         <Button type="primary" onClick={() => {
-          run({
-            params: {limit: 19, page: 1},
-            data: {
-              fieldName: name,
-              types: ['png', 'PNG', 'jpeg', 'JPEG', 'jpg', 'JPG', 'gif', 'GIF']
-            }
-          });
+          runList(10, 1, name);
         }}>查询</Button>
       </Space>
       <Divider />
-      <Spin spinning={loading}>
+      <Spin spinning={loading || insertLoading}>
         <Space wrap size={16}>
           <UpLoadImg
             onlyButton
             onChange={() => {
               refresh();
             }} />
-          {data && data.map((item, index) => {
+          {data && data.data && data.data.map((item, index) => {
+            const url = `${config.baseURI}media/getUrlByMediaId?mediaId=${item.mediaId}`;
             return <Image
-              alt={item.fieldName}
+              alt={item.filedName}
+              title={item.filedName}
               style={{cursor: 'pointer'}}
               preview={false}
               key={index}
-              src={item.url}
+              src={`${url}&xOssProcess=image/resize,m_fill,h_100,w_100&authorization=${token}`}
+              className={styles.img}
               height={100}
               width={100}
               onClick={() => {
-                getImg(item.mediaId, item.url);
+                insertRun({
+                  params: {
+                    mediaId: item.mediaId
+                  }
+                });
               }} />;
           })}
         </Space>
+        <Divider />
+        <div style={{textAlign: 'center'}}>
+          <Pagination current={current} size="small" total={data && data.count} onChange={(number, pageSize) => {
+            setCurrent(number);
+            runList(pageSize, number, name);
+          }} showSizeChanger showQuickJumper />
+        </div>
       </Spin>
     </>
   );

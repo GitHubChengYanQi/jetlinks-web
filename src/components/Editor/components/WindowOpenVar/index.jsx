@@ -71,7 +71,6 @@ const WindowOpenVar = () => {
   };
 
   return <>
-
     <Modal
       title="插入变量"
       destroyOnClose

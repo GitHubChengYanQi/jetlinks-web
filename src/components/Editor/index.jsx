@@ -47,7 +47,7 @@ const Editor = ({
             , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', 'editorPlugins'],
-          toolbar: ['undo redo',...toobar(), 'formatselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'removeformat', 'help', 'actionsImg'].join(' | ')
+          toolbar: ['undo redo', ...toobar(), 'formatselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'removeformat', 'help', 'actionsImg'].join(' | ')
         }}
         onBlur={() => {
           if (!module) {

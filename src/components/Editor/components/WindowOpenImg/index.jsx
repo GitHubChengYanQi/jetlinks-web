@@ -32,8 +32,8 @@ const WindowOpenImg = () => {
         setVisible(false);
       }}>
       <div style={{margin: 'auto'}}>
-        <CommonMediaList getImg={(id, url) => {
-          insertContent(`<img src=${url} height="200"  alt=""/>`);
+        <CommonMediaList getImg={(url) => {
+          insertContent(`<img src=${url} height="100" alt=""/>`);
           setVisible(false);
         }} />
       </div>

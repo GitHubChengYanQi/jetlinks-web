@@ -5,14 +5,13 @@ import NodeWrap from '../NodeWrap';
 import WFC from '@/pages/ReSearch/BOM/OperatorContext';
 import {useRequest} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
-import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 
 function StartNode(props) {
 
   const {onSelectNode} = useContext(WFC);
 
-  const skuId = props.objRef && props.objRef.processRoute && props.objRef.processRoute.skuId;
+  const skuId = props.objRef && props.objRef.processParam && props.objRef.processParam.skuId;
 
   const {loading, data, run} = useRequest(skuDetail, {
     manual: true,
