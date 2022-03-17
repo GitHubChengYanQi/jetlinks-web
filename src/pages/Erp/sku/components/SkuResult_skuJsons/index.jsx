@@ -1,9 +1,27 @@
 import React from 'react';
 
-const SkuResultSkuJsons = ({skuResult}) => {
+const SkuResultSkuJsons = ({skuResult, describe}) => {
 
-  if (!(skuResult && skuResult.spuResult))
+  if (!(skuResult && skuResult.spuResult)) {
     return null;
+  }
+
+  if (describe) {
+    return <>
+      {
+        skuResult.skuJsons
+        &&
+        skuResult.skuJsons.length > 0
+        &&
+        skuResult.skuJsons[0].values.attributeValues
+        &&
+        skuResult.skuJsons.map((items) => {
+          return `${items.attribute.attribute}:${items.values.attributeValues}`;
+        }).join(' , ')
+      }
+    </>;
+  }
+
 
   return <>
     {skuResult.spuResult.name}

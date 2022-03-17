@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Descriptions, List, Progress, Space, Statistic} from 'antd';
+import {Card, Progress, Space, Statistic, Table} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Empty from '@/components/Empty';
@@ -29,26 +29,53 @@ const DataList = ({
 
   const titleType = (item = {}) => {
     switch (type) {
-      case 'sku':
-        return {
-          countTitle: '物料种类',
-          cardTitle: '物料列表',
-          nameTitle: '物料名称',
-          name: <SkuResultSkuJsons skuResult={item.skuResult} />,
-        };
-      case 'className':
-        return {
-          countTitle: '产品种类',
-          cardTitle: '产品列表',
-          nameTitle: '产品名称',
-          name: item.className,
-        };
       case 'spu':
         return {
+          key: 'spuId',
+          countTitle: '产品种类',
+          cardTitle: '产品列表',
+          table: <Table
+            rowKey="spuId"
+            dataSource={data || []}
+          >
+            <Table.Column title="产品分类" dataIndex="skuResult" render={(value) => {
+              return value && value.spuResult && value.spuResult.spuClassificationResult && value.spuResult.spuClassificationResult.name;
+            }} />
+            <Table.Column title="产品名称" dataIndex="skuResult" render={(value) => {
+              return value && value.spuResult && value.spuResult.name;
+            }} />
+            <Table.Column title="库存数量" dataIndex="number" />
+          </Table>
+        };
+      case 'sku':
+        return {
+          key: 'skuId',
           countTitle: '型号种类',
           cardTitle: '型号列表',
-          nameTitle: '型号名称',
-          name: `${item.className} / ${item.spuName}`,
+          table: <Table
+            rowKey="skuId"
+            dataSource={data || []}
+          >
+            <Table.Column title="物料编码" dataIndex="skuResult" render={(value) => {
+              return value && value.standard;
+            }} />
+            <Table.Column title="物料分类" dataIndex="skuResult" render={(value) => {
+              return value && value.spuResult && value.spuResult.spuClassificationResult && value.spuResult.spuClassificationResult.name;
+            }} />
+            <Table.Column title="物料名称" dataIndex="skuResult" render={(value) => {
+              return value && value.spuResult && value.spuResult.name;
+            }} />
+            <Table.Column title="物料型号" dataIndex="skuResult" render={(value) => {
+              return value && value.skuName;
+            }} />
+            <Table.Column title="物料规格" dataIndex="skuResult" render={(value) => {
+              return value && value.specifications;
+            }} />
+            <Table.Column title="物料描述" dataIndex="skuResult" render={(value) => {
+              return <SkuResultSkuJsons skuResult={value} describe />;
+            }} />
+            <Table.Column title="库存数量" dataIndex="number" />
+          </Table>
         };
       default:
         return {};
@@ -81,19 +108,7 @@ const DataList = ({
       </Space>
     </Card>
     <Card title={titleType().cardTitle} bordered={false}>
-      <List
-        size="large"
-        bordered={false}
-        dataSource={data || []}
-        renderItem={item => <List.Item
-          extra={<Button type="link">查看</Button>}
-        >
-          <Descriptions column={2} >
-            <Descriptions.Item label={titleType().nameTitle}><strong>{titleType(item).name}</strong></Descriptions.Item>
-            <Descriptions.Item label="库存数量"><strong>{item.number}</strong></Descriptions.Item>
-          </Descriptions>
-        </List.Item>}
-      />
+      {titleType().table}
     </Card>
   </>;
 };

@@ -104,6 +104,7 @@ const StockTable = (props) => {
   const actions = () => {
     return (
       <Space>
+        <Button icon={<Icon type="icon-daoru" />}>导出库存</Button>
         <Upload
           fileList={filelist}
           action={`${baseURI}Excel/importPositionBind`}
@@ -188,10 +189,10 @@ const StockTable = (props) => {
                 });
               }}
             >
-              <Tabs.TabPane tab="型号" key="spu">
+              <Tabs.TabPane tab="产品" key="spu">
                 <DataList loading={loading} data={data} type="spu" />
               </Tabs.TabPane>
-              <Tabs.TabPane tab="物料" key="sku">
+              <Tabs.TabPane tab="型号" key="sku">
                 <DataList loading={loading} data={data} type="sku" />
               </Tabs.TabPane>
             </Tabs>
