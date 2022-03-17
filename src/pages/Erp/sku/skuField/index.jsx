@@ -185,10 +185,10 @@ export const State = (props) => {
 export const Batch = (props) => {
   return (<Radio.Group {...props}>
     <Radio value={1}>
-      一件一码
+      一批一码
     </Radio>
     <Radio value={0}>
-      一批一码
+      一件一码
     </Radio>
   </Radio.Group>);
 };

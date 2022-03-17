@@ -67,8 +67,8 @@ const Modal = (
           loading={(load) => {
             loading(load);
           }}
-          onSuccess={(response) => {
-            onSuccess(response);
+          onSuccess={(response,action) => {
+            onSuccess(response,action);
           }}
           onError={() => {
           }}

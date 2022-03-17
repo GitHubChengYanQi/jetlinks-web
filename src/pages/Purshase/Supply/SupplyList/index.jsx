@@ -146,7 +146,6 @@ const SupplyList = (props) => {
       <Table
         title={<Breadcrumb />}
         api={supplierList}
-        NoSortAction
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}

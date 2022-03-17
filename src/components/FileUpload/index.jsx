@@ -120,6 +120,10 @@ const FileUpload = ({
         beforeUpload={async (file) => {
           const type = file.name;
           if (type) {
+            if (filterFileType && filterFileType.includes(type)) {
+              alert('附件类型不正确！');
+              return Upload.LIST_IGNORE;
+            }
             const data = await run(
               {
                 params: {

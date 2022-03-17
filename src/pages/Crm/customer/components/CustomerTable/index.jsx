@@ -139,7 +139,6 @@ const CustomerTable = (props) => {
       <Table
         title={<Breadcrumb />}
         api={customerList}
-        NoSortAction
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}

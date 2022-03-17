@@ -13,6 +13,7 @@ import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
+import Form from '@/components/Form';
 import {crmIndustryDelete, crmIndustryTreeView} from '../crmIndustryUrl';
 import CrmIndustryEdit from '../crmIndustryEdit';
 import Breadcrumb from '@/components/Breadcrumb';
