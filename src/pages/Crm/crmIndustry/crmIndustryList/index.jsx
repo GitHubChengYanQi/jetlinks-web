@@ -16,11 +16,9 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {crmIndustryDelete, crmIndustryTreeView} from '../crmIndustryUrl';
 import CrmIndustryEdit from '../crmIndustryEdit';
-import * as SysField from '../crmIndustryField';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
 const formActions = createFormActions();
 const CrmIndustryList = () => {
   const ref = useRef(null);
@@ -52,11 +50,14 @@ const CrmIndustryList = () => {
     <div style={{padding:16}}>
       <Table
         contentHeight
+        listHeader={false}
+        cardHeaderStyle={{display:'none'}}
+        SearchButton
+        searchForm
         footer={footer}
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title="行业管理" />}
         api={crmIndustryTreeView}
         noSort
         rowKey="key"
