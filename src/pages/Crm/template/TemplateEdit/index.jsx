@@ -5,7 +5,7 @@
  * @Date 2021-07-21 08:22:02
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Col, Row} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Form from '@/components/Form';
@@ -23,7 +23,7 @@ const ApiConfig = {
 
 const formActionsPublic = createFormActions();
 
-const TemplateEdit = ({...props}) => {
+const TemplateEdit = ({...props}, ref) => {
 
   const formRef = useRef();
 
@@ -31,10 +31,15 @@ const TemplateEdit = ({...props}) => {
 
   const [detail, setDetail] = useState({});
 
+  useImperativeHandle(ref, () => ({
+    submit: formRef.current.submit,
+  }));
+
   return (
     <div style={{padding: 16}}>
       <Form
         {...props}
+        NoButton={false}
         ref={formRef}
         details={(value) => {
           setDetail(value);
@@ -65,4 +70,4 @@ const TemplateEdit = ({...props}) => {
   );
 };
 
-export default TemplateEdit;
+export default React.forwardRef(TemplateEdit);
