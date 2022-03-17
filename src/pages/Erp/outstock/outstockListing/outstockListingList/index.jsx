@@ -42,8 +42,11 @@ const OutstockListingList = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="出库单号" name="outstockOrderId" value={value && value.outstockOrderId || ' '}
-                  component={SysField.OutstockOrderId} />
+        <FormItem
+          label="出库单号"
+          name="outstockOrderId"
+          value={value && value.outstockOrderId || ' '}
+          component={SysField.OutstockOrderId} />
       </>
     );
   };
@@ -111,7 +114,7 @@ const OutstockListingList = (props) => {
         ref={tableRef}
       >
         <Column title="产品" render={(text, record) => {
-          return <BackSkus record={record} />;
+          return `${record.spuResult.name } / ${record.skuResult.skuName}`;
         }} sorter />
         <Column title="品牌" dataIndex="brandId" render={(value, record) => {
           return (
