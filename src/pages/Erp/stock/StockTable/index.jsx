@@ -24,6 +24,7 @@ import Table from '@/components/Table';
 import Icon from '@/components/Icon';
 import {useRequest} from '@/util/Request';
 import DataList from '@/pages/Erp/stock/StockTable/components/DataList';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 const {baseURI} = config;
 const StockTable = (props) => {
@@ -162,6 +163,10 @@ const StockTable = (props) => {
       }
     });
   }, [state]);
+
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
 
   return (
     <Card title={<Breadcrumb />}>
