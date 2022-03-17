@@ -1,23 +1,27 @@
-import React from 'react';
-import {Button, Divider, Input, Radio, Select, Tooltip} from 'antd';
+import React, {useState} from 'react';
+import {Button, Radio, Select, Space, Tooltip} from 'antd';
 import {useBoolean, useSetState} from 'ahooks';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import ProCard from '@ant-design/pro-card';
+import Defined from '@/components/Editor/components/Defined';
+import DefindSelect from '@/components/Editor/components/DefindSelect';
 
 
 const style = {
-  margin: 8
+  margin: 8,
+  width: '17%',
+  textAlign: 'center'
 };
+
 
 export const Contacts = ({
   button,
-  title,
-  setTitle,
+  setDefinedInput,
   setButton,
   setTable,
 }) => {
 
-
-  const [showTitle, {setTrue, setFalse}] = useBoolean();
+  const [defined, setDefined] = useState(false);
 
   const [showSkuTable, {setTrue: showSku, setFalse: closeSku}] = useBoolean();
 
@@ -25,15 +29,15 @@ export const Contacts = ({
 
   const [skuTable, setSkuTable] = useSetState({
     table: [{
-      label: '物料名称',
-      value: 'spuName'
+      label: '序号',
+      value: '序号'
     }]
   });
 
   const [payTable, setPayTable] = useSetState({
     table: [{
       label: '付款金额',
-      value: 'detailMoney'
+      value: '付款金额'
     }]
   });
 
@@ -56,265 +60,280 @@ export const Contacts = ({
 
   const skuTableOptions = [
     {
+      label: '序号',
+      value: '序号',
+      disabled: disabled('序号', 'sku'),
+    },
+    {
       label: '物料编码',
-      value: 'coding',
-      disabled: disabled('coding', 'sku'),
+      value: '物料编码',
+      disabled: disabled('物料编码', 'sku'),
     },
     {
-      label: '物料名称',
-      value: 'spuName',
-      disabled: disabled('spuName', 'sku'),
+      label: '产品名称',
+      value: '产品名称',
+      disabled: disabled('产品名称', 'sku'),
     },
     {
-      label: '规格 / 型号',
-      value: 'skuName',
-      disabled: disabled('skuName', 'sku'),
+      label: '型号规格',
+      value: '型号规格',
+      disabled: disabled('型号规格', 'sku'),
     },
     {
-      label: '分类',
-      value: 'skuClass',
-      disabled: disabled('skuClass', 'sku'),
-    },
-    {
-      label: '品牌',
-      value: 'brand',
-      disabled: disabled('brand', 'sku'),
+      label: '品牌厂家',
+      value: '品牌厂家',
+      disabled: disabled('品牌厂家', 'sku'),
     }, {
       label: '单位',
-      value: 'unit',
-      disabled: disabled('unit', 'sku'),
+      value: '单位',
+      disabled: disabled('单位', 'sku'),
     }, {
       label: '总价',
-      value: 'totalPrice',
-      disabled: disabled('totalPrice', 'sku'),
+      value: '总价',
+      disabled: disabled('总价', 'sku'),
     },
     {
       label: '数量',
-      value: 'skuNumber',
-      disabled: disabled('skuNumber', 'sku'),
+      value: '数量',
+      disabled: disabled('数量', 'sku'),
     },
     {
       label: '单价',
-      value: 'price',
-      disabled: disabled('price', 'sku'),
+      value: '单价',
+      disabled: disabled('单价', 'sku'),
     },
     {
       label: '交货日期',
-      value: 'deliveryDate',
-      disabled: disabled('deliveryDate', 'sku'),
+      value: '交货日期',
+      disabled: disabled('交货日期', 'sku'),
+    }, {
+      label: '交货周期',
+      value: '交货周期',
+      disabled: disabled('交货周期', 'sku'),
     },
     {
-      label: '预购数量',
-      value: 'preOrder',
-      disabled: disabled('preOrder', 'sku'),
+      label: '合计金额小写',
+      value: '合计金额小写',
+      disabled: disabled('合计金额小写', 'sku'),
     },
     {
-      label: '税率',
-      value: 'rate',
-      disabled: disabled('rate', 'sku'),
+      label: '合计金额大写',
+      value: '合计金额大写',
+      disabled: disabled('合计金额大写', 'sku'),
     },
     {
-      label: '票据类型',
-      value: 'paperType',
-      disabled: disabled('rate', 'sku'),
+      label: '产品备注',
+      value: '产品备注',
+      disabled: disabled('产品备注', 'sku'),
+    },
+    {
+      label: '发票类型',
+      value: '发票类型',
+      disabled: disabled('发票类型', 'sku'),
     },
   ];
 
   const payTableOptions = [
     {
       label: '付款金额',
-      value: 'detailMoney',
-      disabled: disabled('detailMoney', 'pay'),
+      value: '付款金额',
+      disabled: disabled('付款金额', 'pay'),
     }, {
       label: '日期方式',
-      value: 'detailDateWay',
-      disabled: disabled('detailDateWay', 'pay'),
+      value: '日期方式',
+      disabled: disabled('日期方式', 'pay'),
     }, {
       label: '付款比例',
-      value: 'percentum',
-      disabled: disabled('percentum', 'pay'),
-    }, {
-      label: '款项说明',
-      value: 'DetailPayRemark',
-      disabled: disabled('DetailPayRemark', 'pay'),
+      value: '付款比例',
+      disabled: disabled('付款比例', 'pay'),
     }, {
       label: '付款日期',
-      value: 'DetailPayDate',
-      disabled: disabled('DetailPayDate', 'pay'),
+      value: '付款日期',
+      disabled: disabled('付款日期', 'pay'),
     },
   ];
 
-  return <>
-    <Radio.Group value={button} onChange={(value) => {
-      switch (value.target.value) {
-        case 'input':
-        case 'number':
-        case 'date':
-          closeSku();
-          setFalse();
-          closePay();
-          setTrue();
-          break;
-        case 'skuTable':
-          showSku();
-          closePay();
-          setFalse();
-          setTable([{
-            label: '物料名称',
-            value: 'spuName'
-          }]);
-          break;
-        case 'payTable':
-          showPay();
-          closeSku();
-          setFalse();
-          setTable([{
-            label: '付款金额',
-            value: 'detailMoney'
-          }]);
-          break;
-        default:
-          closeSku();
-          setFalse();
-          closePay();
-          break;
-      }
-      setButton(value.target.value);
-    }}>
-      <Radio.Button value="input" style={style}>文本框</Radio.Button>
-      <Radio.Button value="number" style={style}>数字框</Radio.Button>
-      <Radio.Button value="date" style={style}>时间框</Radio.Button>
-      <Radio.Button value="ACustomer" style={style}>甲方客户</Radio.Button>
-      <Radio.Button value="BCustomer" style={style}>乙方客户</Radio.Button>
-      <Radio.Button value="Acontacts" style={style}>甲方联系人</Radio.Button>
-      <Radio.Button value="Bcontacts" style={style}>乙方联系人</Radio.Button>
-      <Radio.Button value="APhone" style={style}>甲方电话</Radio.Button>
-      <Radio.Button value="BPhone" style={style}>乙方电话</Radio.Button>
-      <Radio.Button value="AAddress" style={style}>甲方地址</Radio.Button>
-      <Radio.Button value="BAddress" style={style}>乙方地址</Radio.Button>
-      <Radio.Button value="ABank" style={style}>甲方银行</Radio.Button>
-      <Radio.Button value="BBank" style={style}>乙方银行</Radio.Button>
-      <Radio.Button value="AAccount" style={style}>甲方银行账号</Radio.Button>
-      <Radio.Button value="BAccount" style={style}>乙方银行账号</Radio.Button>
-      <Radio.Button value="askCoding" style={style}>采购编号</Radio.Button>
-      <Radio.Button value="askDate" style={style}>采购日期</Radio.Button>
-      <Radio.Button value="askRemake" style={style}>采购备注</Radio.Button>
-      <Radio.Button value="Alegal" style={style}>甲方法定代表人</Radio.Button>
-      <Radio.Button value="Blegal" style={style}>乙方法定代表人</Radio.Button>
-      <Radio.Button value="ABankNo" style={style}>甲方开户行号</Radio.Button>
-      <Radio.Button value="BBankNo" style={style}>乙方开户行号</Radio.Button>
-      <Radio.Button value="AFax" style={style}>甲方传真</Radio.Button>
-      <Radio.Button value="BFax" style={style}>乙方传真</Radio.Button>
-      <Radio.Button value="AZipCOde" style={style}>甲方邮编</Radio.Button>
-      <Radio.Button value="BZipCOde" style={style}>乙方传真</Radio.Button>
-      <Radio.Button value="ACompanyPhone" style={style}>甲方公司电话</Radio.Button>
-      <Radio.Button value="BCompanyPhone" style={style}>乙方公司电话</Radio.Button>
-      <Radio.Button value="freight" style={style}>是否含运费</Radio.Button>
-      <Radio.Button value="payMethod" style={style}>结算方式</Radio.Button>
-      <Radio.Button value="deliveryWay" style={style}>交货方式</Radio.Button>
-      <Radio.Button value="deliveryAddress" style={style}>交货地址</Radio.Button>
-      {/* <Radio.Button value="payPlan" style={style}>付款计划</Radio.Button> */}
-      <Radio.Button value="PaymentRemark" style={style}>财务备注</Radio.Button>
-      <Radio.Button value="skuTable" style={style}>物料清单</Radio.Button>
-      <Radio.Button value="amount" style={style}>总计</Radio.Button>
-      <Radio.Button value="amountStr" style={style}>总计汉字</Radio.Button>
-      <Radio.Button value="payTable" style={style}>付款详情</Radio.Button>
-    </Radio.Group>
-    {showTitle && <>
-      <Divider>设置标题</Divider>
-      <Input placeholder="请输入标题" value={title} onChange={(value) => {
-        setTitle(value.target.value);
-      }} />
-    </>}
-
-    {showSkuTable && <>
-      <Divider>设置物料清单</Divider>
-      <div>
-        {
-          skuTable.table.map((item, index) => {
-            return <div key={index} style={{display: 'inline-block', margin: '0 8px 8px 0'}}>
-              <Tooltip
-                placement="top"
-                color="#fff"
-                title={<Button
-                  type="link"
-                  disabled={skuTable.table.length === 1}
-                  icon={<DeleteOutlined />}
-                  onClick={() => {
-                    const array = skuTable.table.filter((item, itemIndex) => {
-                      return itemIndex !== index;
-                    });
-                    setTable(array);
-                    setSkuTable({table: array});
-                  }}
-                  danger
-                />} key={index}>
-                <Select
-                  key={index}
-                  style={{minWidth: 100}}
-                  value={item.value}
-                  options={skuTableOptions}
-                  onChange={(value, option) => {
-                    const array = skuTable.table;
-                    array[index] = option;
-                    setTable(array);
-                    setSkuTable({table: array});
-                  }} />
-              </Tooltip>
-            </div>;
-          })
+  if (defined) {
+    return <Defined
+      setDefinedInput={setDefinedInput}
+    />;
+  } else {
+    return <div style={{height:'100%'}}>
+      <Radio.Group value={button} onChange={(value) => {
+        switch (value.target.value) {
+          case 'skuTable':
+            showSku();
+            closePay();
+            setTable([{
+              label: '物料名称',
+              value: 'spuName'
+            }]);
+            break;
+          case 'payTable':
+            showPay();
+            closeSku();
+            setTable([{
+              label: '付款金额',
+              value: 'detailMoney'
+            }]);
+            break;
+          default:
+            closeSku();
+            closePay();
+            break;
         }
-        <Button onClick={() => {
-          skuTable.table.push({});
-          setSkuTable({...skuTable});
-        }}><PlusOutlined /></Button>
-      </div>
-    </>}
-
-    {showPayTable && <>
-      <Divider>设置付款详情</Divider>
-      <div>
-        {
-          payTable.table.map((item, index) => {
-            return <div key={index} style={{display: 'inline-block', margin: '0 8px 8px 0'}}>
-              <Tooltip
-                placement="top"
-                color="#fff"
-                title={<Button
-                  type="link"
-                  disabled={payTable.table.length === 1}
-                  icon={<DeleteOutlined />}
-                  onClick={() => {
-                    const array = payTable.table.filter((item, itemIndex) => {
-                      return itemIndex !== index;
-                    });
-                    setTable(array);
-                    setPayTable({table: array});
-                  }}
-                  danger
-                />} key={index}>
-                <Select
-                  key={index}
-                  style={{minWidth: 100}}
-                  value={item.value}
-                  options={payTableOptions}
-                  onChange={(value, option) => {
-                    const array = payTable.table;
-                    array[index] = option;
-                    setTable(array);
-                    setPayTable({table: array});
-                  }} />
-              </Tooltip>
-            </div>;
-          })
-        }
-        <Button onClick={() => {
-          payTable.table.push({});
-          setPayTable({...payTable});
-        }}><PlusOutlined /></Button>
-      </div>
-    </>}
-  </>;
+        setButton(value.target.value);
+      }}>
+        <Space direction="vertical">
+          <ProCard className="h2Card" title="合同关联变量" bodyStyle={{padding: 0}}>
+            <Radio.Button value="采购合同编号" style={style}>采购合同编号</Radio.Button>
+            <Radio.Button value="合同签订地点" style={style}>合同签订地点</Radio.Button>
+            <Radio.Button value="合同签订时间" style={style}>合同签订时间</Radio.Button>
+            <Radio.Button value="需方公司名称" style={style}>需方公司名称</Radio.Button>
+            <Radio.Button value="供方公司名称" style={style}>供方公司名称</Radio.Button>
+          </ProCard>
+          <ProCard
+            className="h2Card"
+            title="合同标的物变量"
+            bodyStyle={{padding: 0}}
+            extra={<Radio.Button value="skuTable"><Space><PlusOutlined />编辑标的物项目</Space></Radio.Button>}
+          >
+            {showSkuTable && <div>
+              {
+                skuTable.table.map((item, index) => {
+                  return <div key={index} style={{display: 'inline-block', ...style}}>
+                    <Tooltip
+                      placement="top"
+                      color="#fff"
+                      title={<Button
+                        type="link"
+                        disabled={skuTable.table.length === 1}
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          const array = skuTable.table.filter((item, itemIndex) => {
+                            return itemIndex !== index;
+                          });
+                          setTable(array);
+                          setSkuTable({table: array});
+                        }}
+                        danger
+                      />} key={index}>
+                      <Select
+                        key={index}
+                        style={{width: '100%'}}
+                        value={item.value}
+                        options={skuTableOptions}
+                        onChange={(value, option) => {
+                          const array = skuTable.table;
+                          array[index] = option;
+                          setTable(array);
+                          setSkuTable({table: array});
+                        }} />
+                    </Tooltip>
+                  </div>;
+                })
+              }
+              <Button style={{marginLeft: 8}} onClick={() => {
+                skuTable.table.push({});
+                setSkuTable({...skuTable});
+              }}><PlusOutlined /></Button>
+            </div>}
+          </ProCard>
+          <ProCard className="h2Card" title="需方基础变量" bodyStyle={{padding: 0}}>
+            <Radio.Button value="需方公司地址" style={style}>需方公司地址</Radio.Button>
+            <Radio.Button value="需方公司电话" style={style}>需方公司电话</Radio.Button>
+            <Radio.Button value="需方公司传真" style={style}>需方公司传真</Radio.Button>
+            <Radio.Button value="需方法人代表" style={style}>需方法人代表</Radio.Button>
+            <Radio.Button value="需方法人电话" style={style}>需方法人电话</Radio.Button>
+            <Radio.Button value="需方委托代表" style={style}>需方委托代表</Radio.Button>
+            <Radio.Button value="需方代表电话" style={style}>需方代表电话</Radio.Button>
+            <Radio.Button value="需方开户银行" style={style}>需方开户银行</Radio.Button>
+            <Radio.Button value="需方银行账号" style={style}>需方银行账号</Radio.Button>
+            <Radio.Button value="需方开户行号" style={style}>需方开户行号</Radio.Button>
+            <Radio.Button value="需方邮政编码" style={style}>需方邮政编码</Radio.Button>
+            <Radio.Button value="需方公司电邮" style={style}>需方公司电邮</Radio.Button>
+            <Radio.Button value="需方税号" style={style}>需方税号</Radio.Button>
+            <Radio.Button value="交货地址" style={style}>交货地址</Radio.Button>
+            <Radio.Button value="供货人及电话" style={style}>供货人及电话</Radio.Button>
+          </ProCard>
+          <ProCard className="h2Card" title="供方基础变量" bodyStyle={{padding: 0}}>
+            <Radio.Button value="供方公司地址" style={style}>供方公司地址</Radio.Button>
+            <Radio.Button value="供方公司电话" style={style}>供方公司电话</Radio.Button>
+            <Radio.Button value="供方公司传真" style={style}>供方公司传真</Radio.Button>
+            <Radio.Button value="供方法人代表" style={style}>供方法人代表</Radio.Button>
+            <Radio.Button value="供方法人电话" style={style}>供方法人电话</Radio.Button>
+            <Radio.Button value="供方委托代表" style={style}>供方委托代表</Radio.Button>
+            <Radio.Button value="供方代表电话" style={style}>供方代表电话</Radio.Button>
+            <Radio.Button value="供方开户银行" style={style}>供方开户银行</Radio.Button>
+            <Radio.Button value="供方银行账号" style={style}>供方银行账号</Radio.Button>
+            <Radio.Button value="供方开户行号" style={style}>供方开户行号</Radio.Button>
+            <Radio.Button value="供方邮政编码" style={style}>供方邮政编码</Radio.Button>
+            <Radio.Button value="供方公司电邮" style={style}>供方公司电邮</Radio.Button>
+            <Radio.Button value="供方税号" style={style}>供方税号</Radio.Button>
+          </ProCard>
+          <ProCard
+            className="h2Card"
+            title="合同约定条款变量"
+            bodyStyle={{padding: 0}}
+            extra={<Button onClick={() => {
+              setButton('defined');
+              setDefined(true);
+            }}><PlusOutlined />添加自定义变量</Button>}>
+            <DefindSelect setButton={setButton} setDefinedInput={setDefinedInput} button={button} />
+          </ProCard>
+          <ProCard
+            className="h2Card"
+            title="付款计划"
+            bodyStyle={{padding: 0}}
+            extra={<Radio.Button value="payTable"><Space><PlusOutlined />编辑付款项目</Space></Radio.Button>}
+          >
+            {showPayTable && <div>
+              {
+                payTable.table.map((item, index) => {
+                  return <div key={index} style={{display: 'inline-block', ...style}}>
+                    <Tooltip
+                      placement="top"
+                      color="#fff"
+                      title={<Button
+                        type="link"
+                        disabled={payTable.table.length === 1}
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          const array = payTable.table.filter((item, itemIndex) => {
+                            return itemIndex !== index;
+                          });
+                          setTable(array);
+                          setPayTable({table: array});
+                        }}
+                        danger
+                      />}
+                      key={index}
+                    >
+                      <Select
+                        key={index}
+                        style={{width: '100%'}}
+                        value={item.value}
+                        options={payTableOptions}
+                        onChange={(value, option) => {
+                          const array = payTable.table;
+                          array[index] = option;
+                          setTable(array);
+                          setPayTable({table: array});
+                        }} />
+                    </Tooltip>
+                  </div>;
+                })
+              }
+              <Button onClick={() => {
+                payTable.table.push({});
+                setPayTable({...payTable});
+              }}><PlusOutlined /></Button>
+            </div>}
+          </ProCard>
+        </Space>
+      </Radio.Group>
+    </div>;
+  }
 };
 
 export const POSITIONS = ({
@@ -322,7 +341,7 @@ export const POSITIONS = ({
   setButton
 }) => {
   return <>
-    <Radio.Group value={button} onChange={(value) => {
+    <Radio.Group style={{width: '100%'}} value={button} onChange={(value) => {
       setButton(value.target.value);
     }}>
       <Radio.Button value="parent" style={style}>上级库位</Radio.Button>
@@ -337,7 +356,7 @@ export const PHYSICALDETAIL = ({
   setButton
 }) => {
   return <>
-    <Radio.Group value={button} onChange={(value) => {
+    <Radio.Group style={{width: '100%'}} value={button} onChange={(value) => {
       setButton(value.target.value);
     }}>
       <Radio.Button style={style} value="name">物料名称</Radio.Button>

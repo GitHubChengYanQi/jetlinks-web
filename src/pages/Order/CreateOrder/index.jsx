@@ -745,7 +745,7 @@ const CreateOrder = ({...props}) => {
           <Row gutter={24}>
             <Col span={span}>
               <FormItem
-                label="是否需要生成合同"
+                label="是否需要合同"
                 required
                 name="generateContract"
                 component={SysField.Freight}
