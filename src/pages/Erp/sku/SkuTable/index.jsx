@@ -116,11 +116,6 @@ const SkuTable = ({...props}, ref) => {
           hidden
           value={spuId}
           component={SysField.SkuName} />
-        <FormItem
-          name="addMethod"
-          hidden
-          value={1}
-          component={SysField.AddMethod} />
       </>
     );
   };
