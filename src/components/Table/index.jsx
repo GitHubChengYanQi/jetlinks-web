@@ -20,7 +20,7 @@ const TableWarp = ({
   actions,
   NoChildren,
   title,
-  NoSortAction,
+  sortAction,
   maxHeight,
   loading: getLoading,
   showCard,
@@ -279,7 +279,7 @@ const TableWarp = ({
                 width={80}
                 align="center"
                 render={(text, item, index) => {
-                  if (!NoSortAction && (text || text === 0)) {
+                  if (sortAction && (text || text === 0)) {
                     return <TableSort
                       rowKey={item[rowKey]}
                       sorts={sorts}

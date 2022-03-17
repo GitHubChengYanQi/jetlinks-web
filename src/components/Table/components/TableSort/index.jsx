@@ -1,6 +1,6 @@
 import React from 'react';
-import {InputNumber} from 'antd';
 import style from '@/components/Table/index.module.less';
+import InputNumber from '@/components/InputNumber';
 
 const TableSort = ({rowKey, sorts, value = [], onChange}) => {
 
