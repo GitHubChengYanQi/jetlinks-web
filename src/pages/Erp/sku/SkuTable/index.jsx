@@ -270,7 +270,7 @@ const SkuTable = ({...props}, ref) => {
         <Column title="操作" key={8} dataIndex="skuId" width={300} align="center" render={(value, record) => {
           return (
             <>
-              <Button type="link" style={{color: record.inBom ? 'green' : 'blue'}} onClick={() => {
+              <Button type="link" style={{color: record.inBom && 'green'}} onClick={() => {
                 if (record.inBom) {
                   editParts.current.open(record.partsId);
                 } else {
@@ -278,7 +278,7 @@ const SkuTable = ({...props}, ref) => {
                   setSkuId(record.skuId);
                 }
               }}>{record.inBom ? '有' : '无'}BOM</Button>
-              <Button type="link" style={{color: record.processResult ? 'green' : 'blue'}} onClick={() => {
+              <Button type="link" style={{color: record.processResult && 'green'}} onClick={() => {
                 if (record.processResult) {
                   showShip.current.open(record.processResult.processId);
                 } else {

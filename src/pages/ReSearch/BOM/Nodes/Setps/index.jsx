@@ -64,7 +64,7 @@ const Setps = ({
 
         switch (value.type) {
           case 'ship':
-            valueDisabled = value.type && value.skuId && value.processId && value.shipNumber;
+            valueDisabled = value.type && value.skuId && value.processId && value.num;
             break;
           case 'setp':
             valueDisabled = value.type && value.productionType && value.productionStationId && value.shipSetpId && details;
