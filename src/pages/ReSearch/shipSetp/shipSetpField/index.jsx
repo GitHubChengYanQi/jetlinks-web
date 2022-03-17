@@ -16,6 +16,7 @@ import {shipSetpClasslistSelect} from '@/pages/ReSearch/shipSetp/shipSetpClass/s
 import Drawer from '@/components/Drawer';
 import SopDetailList from '@/pages/ReSearch/sop/sopDetail/sopDetailList';
 import Coding from '@/pages/Erp/tool/components/Coding';
+import ShipSetpClassEdit from '@/pages/ReSearch/shipSetp/shipSetpClass/shipSetpClassEdit';
 
 export const ShipSetpName = (props) => {
   return (<Input {...props} />);
@@ -88,5 +89,5 @@ export const Type = (props) => {
 };
 
 export const ShipSetpClassId = (props) => {
-  return (<SetSelectOrCascader api={shipSetpClasslistSelect} width={200} title="设置工序分类" component={ShipSetpClassList} {...props} />);
+  return (<SetSelectOrCascader api={shipSetpClasslistSelect} width={200} title="设置工序分类" component={ShipSetpClassEdit} {...props} />);
 };
