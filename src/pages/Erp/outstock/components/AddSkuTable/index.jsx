@@ -4,6 +4,8 @@ import {DeleteOutlined} from '@ant-design/icons';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import InputNumber from '@/components/InputNumber';
 import BrandBind from '@/pages/Erp/brand/components/BrandBind';
+import {stockDetailsList} from '@/pages/Erp/stockDetails/StockDetailsUrl';
+import {request} from '@/util/Request';
 
 const AddSkuTable = ({
   value = [],
@@ -80,8 +82,15 @@ const AddSkuTable = ({
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
       <Table.Column title="品牌" dataIndex="brandId" render={(value, record, index) => {
-        return <BrandBind skuId={record.skuId} value={value} onChange={(value) => {
-          setValue({brandId: value}, index);
+        return <BrandBind skuId={record.skuId} value={value} onChange={async (value) => {
+          let number = 0;
+          const res = await request({...stockDetailsList, data: {skuId: record.skuId, brandId: value || null}});
+          if (res && res.length > 0) {
+            res.map((item) => {
+              return number += item.number;
+            });
+          }
+          setValue({brandId: value, maxNumber: number}, index);
         }} />;
       }} />
       {/* <Table.Column title="供应商" dataIndex="customertId" render={(value, record, index) => { */}
@@ -90,9 +99,14 @@ const AddSkuTable = ({
       {/*  }} />; */}
       {/* }} /> */}
       <Table.Column title="数量" width={100} dataIndex="number" render={(value, record, index) => {
-        return <InputNumber value={value} min={1} onChange={(value) => {
-          setValue({number: value}, index);
-        }} />;
+        return <InputNumber
+          placeholder={`库存 ${record.maxNumber || 0}`}
+          value={value}
+          min={1}
+          max={record.maxNumber}
+          onChange={(value) => {
+            setValue({number: value}, index);
+          }} />;
       }} />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
         return <><Button

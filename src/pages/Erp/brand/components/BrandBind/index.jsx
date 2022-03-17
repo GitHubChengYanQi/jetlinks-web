@@ -33,7 +33,7 @@ const BrandBind = ({
   });
 
   return (<Select
-    options={options}
+    options={[{label:'无指定品牌',value:0},...options]}
     showSearch
     style={{width: 200}}
     value={value}
