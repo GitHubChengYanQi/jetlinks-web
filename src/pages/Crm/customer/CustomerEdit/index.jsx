@@ -149,14 +149,14 @@ const CustomerEdit = ({
             let invoiceParams = [];
             if (value.bankNo || value.bankAccount || value.invoiceNote || value.bank) {
               invoiceParams.push({
-                bank: value.bank,
+                bankId: value.bankId,
                 bankNo: value.bankNo,
                 bankAccount: value.bankAccount,
               });
             }
             if (value.invoiceParams) {
               invoiceParams = invoiceParams.concat(value.invoiceParams.filter((item) => {
-                return item && (item.bankNo || item.bankAccount || item.bank);
+                return item && (item.bankNo || item.bankAccount || item.bankId);
               }));
             }
 
@@ -678,7 +678,7 @@ const CustomerEdit = ({
                             <Col span={span}>
                               <FormItem
                                 label="开户银行"
-                                name={`invoiceParams.${index}.bank`}
+                                name={`invoiceParams.${index}.bankId`}
                                 placeholder="请输入开户银行"
                                 component={SysField.Bank}
                               />

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, Image, Popover} from 'antd';
-import {FormOutlined} from '@ant-design/icons';
+import {Avatar} from 'antd';
 import UpLoadImg from '@/components/Upload';
 
 const AvatarEdit = ({value, onChange, name}) => {

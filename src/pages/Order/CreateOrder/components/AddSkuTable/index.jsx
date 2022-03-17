@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Table, Select as AntSelect, Space} from 'antd';
+import {Button, Table, Select as AntSelect, Space, Spin} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
@@ -15,6 +15,7 @@ const AddSkuTable = ({
   value,
   module,
   currency,
+  addSkuLoading,
   onAddSku = () => {
   }
 }) => {
@@ -23,20 +24,32 @@ const AddSkuTable = ({
 
   const [keys, setKeys] = useState([]);
 
-  const {data: brandData} = useRequest(brandIdSelect);
-
   const {data: taxData} = useRequest(taxRateListSelect);
 
-  const dataSources = value.map((item, index) => {
+  const {data: unitData} = useRequest(unitListSelect);
+
+  const dataSources = addSkuLoading ? [...value.map((item, index) => {
     return {
       ...item,
-      key: index
+      index
+    };
+  }), {index: value.length}] : value.map((item, index) => {
+    return {
+      ...item,
+      index
     };
   });
 
+
+  const sharedOnCell = (data) => {
+    if (!data.skuId) {
+      return {colSpan: 0};
+    }
+  };
+
   const setValue = (data, index) => {
     const array = dataSources.map((item) => {
-      if (item.key === index) {
+      if (item.index === index) {
         return {
           ...item,
           ...data
@@ -53,7 +66,7 @@ const AddSkuTable = ({
     <Table
       dataSource={dataSources}
       pagination={false}
-      rowKey="key"
+      rowKey="index"
       scroll={{x: 'max-content'}}
       footer={() => {
         return <Space>
@@ -78,10 +91,10 @@ const AddSkuTable = ({
             icon={<DeleteOutlined />}
             onClick={() => {
               const ids = keys.map((item) => {
-                return item.key;
+                return item.index;
               });
               const array = dataSources.filter((item) => {
-                return !ids.includes(item.key);
+                return !ids.includes(item.index);
               });
               onChange(array);
               setKeys([]);
@@ -94,113 +107,188 @@ const AddSkuTable = ({
       }}
       rowSelection={{
         selectedRowKeys: keys.map((item) => {
-          return item.key;
+          return item.index;
         }),
         onChange: (keys, record) => {
           setKeys(record);
         }
       }}
     >
-      <Table.Column title="序号" width={100} fixed="left" align="center" dataIndex="key" render={(value) => {
-        return value + 1;
-      }} />
-      <Table.Column title="物料编码" width={200} dataIndex="coding" render={(value, record) => {
-        return value || (record.skuResult && record.skuResult.standard);
-      }} />
-      <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
-        return <SkuResultSkuJsons skuResult={value} />;
-      }} />
-      <Table.Column title="品牌 / 厂家" width={400} dataIndex="defaultBrandResult" render={(value, record, index) => {
-        return value
-          ||
-          <Select placeholder="请选择品牌/厂家" options={brandData || []} value={record.brandId} onChange={(value, option) => {
-            setValue({brandId: value, brandResult: option.label}, index);
-          }} />;
-      }} />
-      <Table.Column title="预购数量" width={100} dataIndex="preordeNumber" render={(value) => {
-        return value || 0;
-      }} />
-      <Table.Column title="采购数量" width={120} dataIndex="purchaseNumber" render={(value, record, index) => {
-        return <InputNumber
-          placeholder="请输入采购数量"
-          value={value}
-          min={0}
-          onChange={(value) => {
-            setValue({purchaseNumber: value}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="单位" width={120} dataIndex="unitId" render={(value, record, index) => {
-        return <Select
-          placeholder="请选择单位"
-          api={unitListSelect}
-          value={value}
-          onChange={(value) => {
-            setValue({unitId: value}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="单价" width={180} dataIndex="onePrice" render={(value, record, index) => {
-        return <Space>
-          <InputNumber
+      <Table.Column
+        title="序号"
+        onCell={sharedOnCell}
+        width={100}
+        fixed="left"
+        align="center"
+        dataIndex="index"
+        render={(value) => {
+          return value + 1;
+        }} />
+      <Table.Column
+        title="物料编码"
+        onCell={sharedOnCell}
+        width={200}
+        dataIndex="coding"
+        render={(value, record) => {
+          return value || (record.skuResult && record.skuResult.standard);
+        }} />
+      <Table.Column
+        title="物料"
+        onCell={sharedOnCell}
+        dataIndex="skuResult"
+        render={(value) => {
+          return <SkuResultSkuJsons skuResult={value} />;
+        }} />
+      <Table.Column
+        title="品牌 / 厂家"
+        onCell={sharedOnCell}
+        width={400}
+        dataIndex="defaultBrandResult"
+        render={(value, record, index) => {
+          return value
+            ||
+            <Select
+              placeholder="请选择品牌/厂家"
+              api={brandIdSelect}
+              // data={{ids: record.brandIds || []}}
+              value={record.brandId}
+              onChange={(value, option) => {
+                setValue({brandId: value, brandResult: option.label}, index);
+              }} />;
+        }} />
+      {!SO && <Table.Column
+        title="预购数量"
+        width={100}
+        dataIndex="preordeNumber"
+        onCell={sharedOnCell}
+        render={(value) => {
+          return value || 0;
+        }} />}
+      <Table.Column
+        onCell={sharedOnCell}
+        title={SO ? '销售数量' : '采购数量'}
+        width={120}
+        dataIndex="purchaseNumber"
+        render={(value, record, index) => {
+          return <InputNumber
+            placeholder="请输入采购数量"
+            value={value}
+            min={0}
+            onChange={(value) => {
+              setValue({purchaseNumber: value}, index);
+            }}
+          />;
+        }} />
+      <Table.Column
+        title="单位"
+        onCell={sharedOnCell}
+        width={120}
+        dataIndex="unitId"
+        render={(value, record, index) => {
+          return <Select
+            placeholder="请选择单位"
+            options={unitData}
+            value={value}
+            onChange={(value) => {
+              setValue({unitId: value}, index);
+            }}
+          />;
+        }} />
+      <Table.Column
+        title={`单价 (${currency})`}
+        width={130}
+        onCell={sharedOnCell}
+        dataIndex="onePrice"
+        render={(value, record, index) => {
+          return <InputNumber
             placeholder="请输入单价"
             precision={2}
             min={0}
             value={value}
             onChange={(value) => {
-              setValue({onePrice: value, totalPrice: record.purchaseNumber && (value * record.purchaseNumber)}, index);
+              setValue({
+                onePrice: value,
+                totalPrice: record.purchaseNumber && (value * record.purchaseNumber)
+              }, index);
             }}
-          />
-          {currency}
-        </Space>;
-      }} />
-      <Table.Column title="总价" width={180} dataIndex="totalPrice" render={(value, record, index) => {
-        return <Space>
-          <InputNumber
+          />;
+        }} />
+      <Table.Column
+        title={`总价 (${currency})`}
+        width={130}
+        onCell={sharedOnCell}
+        dataIndex="totalPrice"
+        render={(value, record, index) => {
+          return <InputNumber
             placeholder="请输入总价"
             precision={2}
             min={1}
             value={value}
             onChange={(value) => {
-              setValue({totalPrice: value, onePrice: record.purchaseNumber && (value / record.purchaseNumber)}, index);
+              setValue({
+                totalPrice: value,
+                onePrice: record.purchaseNumber && (value / record.purchaseNumber)
+              }, index);
             }}
-          />
-          {currency}
-        </Space>;
-      }} />
-      <Table.Column title="票据类型" width={120} dataIndex="paperType" render={(value, record, index) => {
-        return <AntSelect
-          placeholder="请选择票据类型"
-          value={value}
-          options={[{label: '普票', value: 0}, {label: '专票', value: 1}]}
-          onChange={(value) => {
-            setValue({paperType: value,}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="税率" width={120} dataIndex="rate" render={(value, record, index) => {
-        return <AntSelect
-          placeholder="请选择税率"
-          value={value}
-          options={taxData || []}
-          onChange={(value) => {
-            setValue({rate: value}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="交货期" width={100} dataIndex="deliveryDate" render={(value, record, index) => {
-        return <InputNumber
-          min={1}
-          value={value}
-          onChange={(value) => {
-            setValue({deliveryDate: value}, index);
-          }}
-        />;
-      }} />
+          />;
+        }} />
+      <Table.Column
+        title="票据类型"
+        width={120}
+        dataIndex="paperType"
+        onCell={sharedOnCell}
+        render={(value, record, index) => {
+          return <AntSelect
+            placeholder="请选择票据类型"
+            value={value}
+            options={[{label: '普票', value: 0}, {label: '专票', value: 1}]}
+            onChange={(value) => {
+              setValue({paperType: value,}, index);
+            }}
+          />;
+        }} />
+      <Table.Column
+        title="税率"
+        width={120}
+        dataIndex="rate"
+        onCell={sharedOnCell}
+        render={(value, record, index) => {
+          return <AntSelect
+            placeholder="请选择税率"
+            value={value}
+            options={taxData || []}
+            onChange={(value) => {
+              setValue({rate: value}, index);
+            }}
+          />;
+        }} />
+      <Table.Column
+        title="交货期"
+        width={100}
+        onCell={sharedOnCell}
+        dataIndex="deliveryDate"
+        render={(value, record, index) => {
+          return <InputNumber
+            min={1}
+            value={value}
+            onChange={(value) => {
+              setValue({deliveryDate: value}, index);
+            }}
+          />;
+        }} />
 
-      <Table.Column />
+      <Table.Column
+        onCell={(data, index) => {
+          return !data.skuId && {
+            colSpan: 12,
+          };
+        }}
+        render={(value, record) => {
+          return !record.skuId && <div style={{marginLeft: 16}}><Spin /></div>;
+        }} />
       <Table.Column
         title="操作"
+        onCell={sharedOnCell}
         fixed="right"
         dataIndex="skuId"
         align="center"
@@ -211,7 +299,7 @@ const AddSkuTable = ({
             icon={<DeleteOutlined />}
             onClick={() => {
               const array = dataSources.filter((item) => {
-                return item.key !== index;
+                return item.index !== index;
               });
               onChange(array);
             }}

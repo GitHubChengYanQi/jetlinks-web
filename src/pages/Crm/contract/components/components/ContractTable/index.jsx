@@ -15,7 +15,6 @@ import {Button, notification, Modal as AntModal, Table as AntTable, Divider} fro
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {contractBatchDelete, contractDelete, contractEdit, contractList,} from '../../../ContractUrl';
 import * as SysField from '../../../ContractField';
@@ -68,8 +67,11 @@ const ContractTable = (props) => {
     const formItem = () => {
       return (
         <>
-          <FormItem mega-props={{span: 1}} placeholder="请选择乙方" name="partyB"
-                    component={SysField.CustomerNameListSelect} />
+          <FormItem
+            mega-props={{span: 1}}
+            placeholder="请选择乙方"
+            name="partyB"
+            component={SysField.CustomerNameListSelect} />
           {
             customerId ?
               null
@@ -186,10 +188,10 @@ const ContractTable = (props) => {
         }} />
       </Divider>}
       <Table
-        headStyle={{display: customerId && 'none'}}
+        headStyle={customerId && {display: 'none'}}
         title={<Breadcrumb />}
         api={contractList}
-        actions={actions()}
+        // actions={actions()}
         rowKey="contractId"
         tableKey="contract"
         isModal={false}
@@ -204,17 +206,6 @@ const ContractTable = (props) => {
         }}
         {...other}
       >
-        <Column key={1} title="合同名称" dataIndex="name" render={(text, record) => {
-          return (
-            <Button
-              style={{width: '100%', textAlign: 'left', cursor: 'pointer', height: '100%'}}
-              title="点击进入合同详情"
-              type="link"
-              onClick={() => {
-                history.push(`/CRM/contract/${record.contractId}`);
-              }}>{text}</Button>
-          );
-        }} />
         <Column key={2} title="甲方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <div title="点击进入甲方详情" style={{cursor: 'pointer'}} onClick={() => {
@@ -245,7 +236,7 @@ const ContractTable = (props) => {
             </div>
           );
         }} />
-        <Column title="总金额" dataIndex="allMoney" />
+        {/* <Column title="总金额" dataIndex="allMoney" /> */}
         <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
@@ -258,7 +249,7 @@ const ContractTable = (props) => {
             <>
               {record.audit === 0 ?
                 <>
-                  <Button style={{margin: '0 10px'}} onClick={() => {
+                  <Button type='link' onClick={() => {
                     confirmOk(record);
                   }}>
                     <Icon type="icon-shenhe" />
@@ -267,11 +258,6 @@ const ContractTable = (props) => {
                   <Button type="link" onClick={() => {
                     history.push(`/CRM/contract/${record.contractId}`);
                   }}>详情</Button>
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      ref.current.open(record);
-                    }}>查看</Button>
                   <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
                     tableRef.current.submit();
                   }} />
@@ -280,24 +266,6 @@ const ContractTable = (props) => {
           );
         }} width={300} />
       </Table>
-      <Modal
-        width={1250}
-        title="合同"
-        compoentRef={compoentRef}
-        footer={<Button
-          type="primary"
-          onClick={() => {
-            compoentRef.current.submit();
-          }}>保存</Button>}
-        component={AddContractEdit}
-        partyB="1416605276529807486"
-        customerId={customerId}
-        onSuccess={() => {
-          tableRef.current.submit();
-          ref.current.close();
-        }}
-        ref={ref}
-      />
 
 
       <Modal

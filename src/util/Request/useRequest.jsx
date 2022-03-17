@@ -10,7 +10,7 @@ const useRequest = (config, options) => {
   };
 
   const formatResult = (response) => {
-    if (typeof response.data === 'undefined') {
+    if (typeof response.data === 'undefined' || config.response) {
       return response;
     }
     return response.data;

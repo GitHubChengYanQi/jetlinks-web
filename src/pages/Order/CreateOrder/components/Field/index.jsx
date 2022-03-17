@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table} from 'antd';
+import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table, AutoComplete} from 'antd';
 import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
@@ -24,9 +24,11 @@ import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import UpLoadImg from '@/components/Upload';
 
 
-export const AddSku = ({value = [], customerId, onChange, module, currency,...props}) => {
+export const AddSku = ({value = [], customerId, onChange, module, currency, ...props}) => {
 
   const addSku = useRef();
 
@@ -34,10 +36,27 @@ export const AddSku = ({value = [], customerId, onChange, module, currency,...pr
 
   const addSkuRef = useRef();
 
+  const [skuId, setSkuId] = useState();
+
   const [type, setType] = useState();
+
+  const {loading: skuLoading, run: skuRun} = useRequest(skuDetail, {
+    manual: true,
+    onSuccess: (res) => {
+      onChange([...value, {
+        skuId: res.skuId,
+        coding: res.standard,
+        skuResult: res,
+        preordeNumber: 0,
+        unitId: res.spuResult && res.spuResult.unitId,
+        brandIds: res.brandIds
+      }]);
+    }
+  });
 
   return (<>
     <AddSkuTable
+      addSkuLoading={skuLoading}
       currency={currency}
       module={module}
       value={value}
@@ -46,6 +65,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency,...pr
         setType(type);
         switch (type) {
           case 'spu':
+            setSkuId(null);
             addSpu.current.open(true);
             break;
           case 'sku':
@@ -65,16 +85,24 @@ export const AddSku = ({value = [], customerId, onChange, module, currency,...pr
     />
 
     <Modal
-      headTitle="添加产品"
+      headTitle="物料选择"
       ref={addSpu}
-      width={1000}
+      width={800}
       footer={<Space>
-        <Button type="primary" onClick={() => {
+        <Button onClick={() => {
           addSpu.current.close();
-        }}>选择</Button>
+        }}>取消</Button>
+        <Button type="primary" disabled={!skuId} onClick={() => {
+          skuRun({
+            data: {
+              skuId
+            }
+          });
+          addSpu.current.close();
+        }}>确定</Button>
       </Space>}
     >
-      <AddSpu />
+      <AddSpu onChange={setSkuId} value={skuId} />
     </Modal>
 
     <Modal
@@ -262,7 +290,6 @@ export const Note = (props) => {
 };
 
 export const AllField = ({value: defaultValue = {}, onChange, array, skuList, payList}) => {
-  console.log(payList);
 
   const {data} = useRequest(unitListSelect);
 
@@ -309,7 +336,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
     }
   };
 
-  const tableChange = (value, oldItem, changeIndex,type) => {
+  const tableChange = (value, oldItem, changeIndex, type) => {
     let newList;
     switch (type) {
       case 'sku':
@@ -387,13 +414,25 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         if (domNode.name === 'input') {
           switch (domNode.attribs.type) {
             case 'text':
-              return <Space>{domNode.attribs['data-title']}<Input
-                placeholder="输入文本"
-                style={{width: 200, margin: '0 10px'}}
-                onChange={(value) => {
-                  change(index, value.target.value);
-                }}
-              /></Space>;
+              return <Space>{domNode.attribs['data-title']}
+                <AutoComplete
+                  defaultValue={domNode.attribs.value}
+                  onChange={(value) => {
+                    change(index, value);
+                  }}
+                  options={domNode.attribs.placeholder && Array.isArray(domNode.attribs.placeholder.split(',')) && domNode.attribs.placeholder.split(',').map((item) => {
+                    return {
+                      label: item,
+                      value: item,
+                    };
+                  })}
+                >
+                  <Input
+                    placeholder="输入文本"
+                    // style={{width: 200, margin: '0 10px'}}
+                  />
+                </AutoComplete>
+              </Space>;
             case 'number':
               return <Space>{domNode.attribs['data-title']}<InputNumber
                 placeholder="输入数值"
@@ -411,15 +450,26 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                   change(index, value);
                 }}
               /></Space>;
+            case 'file':
+              return <Space>{domNode.attribs['data-title']}
+                <UpLoadImg onChange={(value) => {
+                  change(index, `<image src=${value} width="100" />`);
+                }} />
+              </Space>;
             default:
               break;
           }
+        } else if (domNode.name === 'textarea') {
+          return <Space>{domNode.attribs['data-title']}
+            <Editor onChange={(value) => {
+              change(index, value);
+            }} /></Space>;
         }
       }
     });
   };
 
-  const skuTableReplaceDom = (string, item, index,type) => {
+  const skuTableReplaceDom = (string, item, index, type) => {
     return parse(string, {
       replace: domNode => {
         if (domNode.name === 'input') {
@@ -429,7 +479,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                 placeholder="输入文本"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value.target.value, item, index,type);
+                  tableChange(value.target.value, item, index, type);
                 }}
               />;
             case 'number':
@@ -437,7 +487,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                 placeholder="输入数值"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value, item, index,type);
+                  tableChange(value, item, index, type);
                 }}
               />;
             case 'date':
@@ -446,7 +496,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
                 placeholder="输入时间"
                 style={{width: 200, margin: '0 10px'}}
                 onChange={(value) => {
-                  tableChange(value, item, index,type);
+                  tableChange(value, item, index, type);
                 }}
               />;
             default:
@@ -553,7 +603,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
       return {
         title,
         render: (value, record, index) => {
-          return skuTableReplaceDom(item.match(input)[0], item, index,'sku');
+          return skuTableReplaceDom(item.match(input)[0], item, index, 'sku');
         }
       };
     } else {
@@ -593,7 +643,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         title: '付款比例',
         dataIndex: 'percentum',
         render: (value) => {
-          return `${value} %`;
+          return `${value || ''} %`;
         }
       };
       // eslint-disable-next-line no-template-curly-in-string
@@ -621,7 +671,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
       return {
         title,
         render: (value, record, index) => {
-          return skuTableReplaceDom(item.match(input)[0], item, index,'pay');
+          return skuTableReplaceDom(item.match(input)[0], item, index, 'pay');
         }
       };
     } else {
@@ -662,7 +712,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         <Table
           columns={skuColumns}
           pagination={false}
-          rowKey="index"
+          rowKey="key"
           dataSource={skuList && skuList.map((item, index) => {
             return {...item, key: index};
           }) || []} />
@@ -675,7 +725,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
         <Table
           columns={payColumns}
           pagination={false}
-          rowKey="index"
+          rowKey="key"
           dataSource={payList && payList.map((item, index) => {
             return {...item, key: index};
           }) || []} />
@@ -683,3 +733,8 @@ export const AllField = ({value: defaultValue = {}, onChange, array, skuList, pa
     }
   </div>);
 };
+
+
+
+
+
