@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import WorkFlow from '@/pages/Workflow/WorkFlow';
-import {Affix, Button, Card, Col, Empty, Row, Space} from 'antd';
-import {useRequest} from '@/util/Request';
+import {Button, Card, Empty, notification, Space} from 'antd';
 import {useHistory, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {useRequest} from '@/util/Request';
+import WorkFlow from '@/pages/Workflow/WorkFlow';
 import {processDetail} from '@/pages/Workflow/Process/processUrl';
 
 const WorkflowAdd = () => {
@@ -12,12 +12,8 @@ const WorkflowAdd = () => {
 
   const [value, setValue] = useState(false);
 
-  const {loading: processLoading, data} = useRequest(processDetail, {
-    defaultParams: {
-      data: {
-        processId: params.cid
-      }
-    }
+  const {loading: processLoading, data, run: detailRun} = useRequest(processDetail, {
+    manual: true,
   });
 
 
@@ -33,6 +29,12 @@ const WorkflowAdd = () => {
   useEffect(() => {
     if (params.cid) {
       detail({
+        data: {
+          processId: params.cid
+        }
+      });
+
+      detailRun({
         data: {
           processId: params.cid
         }
@@ -55,7 +57,7 @@ const WorkflowAdd = () => {
   }
 
   if (!data)
-    return <Empty style={{padding:64}} />;
+    return <Empty style={{padding: 64}} />;
 
 
   return <>
@@ -64,6 +66,10 @@ const WorkflowAdd = () => {
       <div style={{display: 'inline-block', textAlign: 'right', width: '50%'}}>
         <Space>
           <Button type="primary" disabled={data && data.status !== 0} onClick={() => {
+            if (!value) {
+              return notification.warn({message: '请配置正确流程！'});
+            }
+            console.log(value);
             run({
               data: {
                 ...value,
