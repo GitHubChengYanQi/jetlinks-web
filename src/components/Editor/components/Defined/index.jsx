@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
-import {Button, Checkbox, Col, Divider, Input, Radio, Row, Space} from 'antd';
+import {Button, Checkbox, Col, Divider, Image, Input, Radio, Row, Space} from 'antd';
 import {DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {useSetState} from 'ahooks';
+import number from '@/asseset/imgs/number.png';
+import date from '@/asseset/imgs/date.png';
+import img from '@/asseset/imgs/img.png';
+import editor from '@/asseset/imgs/editor.png';
 
 
 const definedStyle = {
@@ -109,18 +113,30 @@ const Defined = ({
       case 'number':
         return <>
           <Divider orientation="center">样式示例</Divider>
+          <div style={{textAlign:'center'}}>
+            <Image src={number} />
+          </div>
         </>;
       case 'date':
         return <>
           <Divider orientation="center">样式示例</Divider>
+          <div style={{textAlign:'center'}}>
+            <Image src={date} />
+          </div>
         </>;
       case 'img':
         return <>
           <Divider orientation="center">样式示例</Divider>
+          <div style={{textAlign:'center'}}>
+            <Image src={img} />
+          </div>
         </>;
       case 'editor':
         return <>
           <Divider orientation="center">样式示例</Divider>
+          <div style={{textAlign:'center'}}>
+            <Image src={editor} />
+          </div>
         </>;
       default:
         break;
