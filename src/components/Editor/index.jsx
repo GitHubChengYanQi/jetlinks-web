@@ -1,5 +1,6 @@
-import React, {useImperativeHandle, useRef} from 'react';
+import React, {useEffect, useImperativeHandle, useRef} from 'react';
 import {Editor as TinymceEditor} from '@tinymce/tinymce-react';
+import tinymce from 'tinymce';
 
 
 const Editor = ({
@@ -32,22 +33,29 @@ const Editor = ({
     }
   };
 
+  useEffect(() => {
+
+  }, []);
+
   return (
     <div>
       <TinymceEditor
+        // id='editor'
         apiKey="no-api-key"
-        onInit={(evt, editor) => editorRef.current = editor}
+        onInit={(evt, editor) => {
+          editorRef.current = editor;
+        }}
         initialValue={value}
         init={{
           language: 'zh_CN',
-          // skin: 'oxide-dark',
-          height: 500,
+          branding:false,
+          height: '76vh',
           menubar: false,
           plugins: ['advlist', 'autolink', 'autolink'
             , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', 'editorPlugins'],
-          toolbar: ['undo redo', ...toobar(), 'formatselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'removeformat', 'help', 'actionsImg'].join(' | ')
+          toolbar: ['undo redo', ...toobar(), 'formatselect','fontsizeselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'actionsImg', 'removeformat', 'help'].join(' | ')
         }}
         onBlur={() => {
           if (!module) {
