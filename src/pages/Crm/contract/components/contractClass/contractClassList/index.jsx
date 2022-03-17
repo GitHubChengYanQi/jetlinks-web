@@ -49,6 +49,9 @@ const ContractClassList = () => {
     <>
       <Table
         title={<Breadcrumb title='合同分类' />}
+        listHeader={false}
+        cardHeaderStyle={{display:'none'}}
+        contentHeight
         api={contractClassList}
         rowKey="contractClassId"
         formActions={formActionsPublic}
