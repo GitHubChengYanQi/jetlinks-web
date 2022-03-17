@@ -1,11 +1,27 @@
 import React from 'react';
-import {Empty} from 'antd';
 
-const SkuResult = ({skuResult}) => {
+const SkuResult = ({skuResult, describe}) => {
 
-  if (!(skuResult && skuResult.spuResult))
+  if (!(skuResult && skuResult.spuResult)) {
     return null;
+  }
 
+
+  if (describe) {
+    return <>
+      {
+        skuResult.list
+        &&
+        skuResult.list.length > 0
+        &&
+        skuResult.list[0].attributeValues
+        &&
+        skuResult.list.map((items) => {
+          return `${items.itemAttributeResult.attribute}:${items.attributeValues}`;
+        }).join(' , ')
+      }
+    </>;
+  }
 
   return <>
     {skuResult.spuResult.name}

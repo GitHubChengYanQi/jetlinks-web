@@ -1,4 +1,4 @@
-import React, {useImperativeHandle, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Table, Select as AntSelect, Space} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
@@ -14,6 +14,7 @@ const AddSkuTable = ({
   },
   value,
   module,
+  currency,
   onAddSku = () => {
   }
 }) => {
@@ -77,10 +78,10 @@ const AddSkuTable = ({
             icon={<DeleteOutlined />}
             onClick={() => {
               const ids = keys.map((item) => {
-                return item.skuId;
+                return item.key;
               });
-              const array = value.filter((item) => {
-                return !ids.includes(item.skuId);
+              const array = dataSources.filter((item) => {
+                return !ids.includes(item.key);
               });
               onChange(array);
               setKeys([]);
@@ -103,7 +104,7 @@ const AddSkuTable = ({
       <Table.Column title="序号" width={100} fixed="left" align="center" dataIndex="key" render={(value) => {
         return value + 1;
       }} />
-      <Table.Column title="物料编码" width={200} dataIndex="coding" render={(value,record)=>{
+      <Table.Column title="物料编码" width={200} dataIndex="coding" render={(value, record) => {
         return value || (record.skuResult && record.skuResult.standard);
       }} />
       <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
@@ -139,27 +140,33 @@ const AddSkuTable = ({
           }}
         />;
       }} />
-      <Table.Column title="单价" width={120} dataIndex="onePrice" render={(value, record, index) => {
-        return <InputNumber
-          placeholder="请输入单价"
-          precision={2}
-          min={0}
-          value={value}
-          onChange={(value) => {
-            setValue({onePrice: value, totalPrice: record.purchaseNumber && (value * record.purchaseNumber)}, index);
-          }}
-        />;
+      <Table.Column title="单价" width={180} dataIndex="onePrice" render={(value, record, index) => {
+        return <Space>
+          <InputNumber
+            placeholder="请输入单价"
+            precision={2}
+            min={0}
+            value={value}
+            onChange={(value) => {
+              setValue({onePrice: value, totalPrice: record.purchaseNumber && (value * record.purchaseNumber)}, index);
+            }}
+          />
+          {currency}
+        </Space>;
       }} />
-      <Table.Column title="总价" width={120} dataIndex="totalPrice" render={(value, record, index) => {
-        return <InputNumber
-          placeholder="请输入总价"
-          precision={2}
-          min={1}
-          value={value}
-          onChange={(value) => {
-            setValue({totalPrice: value, onePrice: record.purchaseNumber && (value / record.purchaseNumber)}, index);
-          }}
-        />;
+      <Table.Column title="总价" width={180} dataIndex="totalPrice" render={(value, record, index) => {
+        return <Space>
+          <InputNumber
+            placeholder="请输入总价"
+            precision={2}
+            min={1}
+            value={value}
+            onChange={(value) => {
+              setValue({totalPrice: value, onePrice: record.purchaseNumber && (value / record.purchaseNumber)}, index);
+            }}
+          />
+          {currency}
+        </Space>;
       }} />
       <Table.Column title="票据类型" width={120} dataIndex="paperType" render={(value, record, index) => {
         return <AntSelect
@@ -207,7 +214,6 @@ const AddSkuTable = ({
                 return item.key !== index;
               });
               onChange(array);
-              setDataSource(array);
             }}
             danger
           /></>;
@@ -217,4 +223,4 @@ const AddSkuTable = ({
   </>;
 };
 
-export default React.forwardRef(AddSkuTable);
+export default AddSkuTable;

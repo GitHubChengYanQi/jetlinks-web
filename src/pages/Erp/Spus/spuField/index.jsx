@@ -55,7 +55,7 @@ export const SpuClass = (props) => {
     api={spuClassificationTreeVrew}
     width={200}
     moduleType='cascader'
-    title="设置分类"
+    title="新增分类"
     component={SpuClassificationList} {...props} />);
 };
 export const Vulnerability = (props) => {
