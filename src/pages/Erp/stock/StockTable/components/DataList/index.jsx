@@ -1,13 +1,14 @@
 import React from 'react';
-import {Card, Progress, Space, Statistic} from 'antd';
+import {Card, Progress, Space, Statistic, Table} from 'antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Empty from '@/components/Empty';
-import Table from '@/components/Table';
 
 
 const DataList = ({
   data,
   type,
+  loading,
 }) => {
 
   const count = (array) => {
@@ -17,6 +18,10 @@ const DataList = ({
     });
     return number;
   };
+
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
 
   if (!data) {
     return <Empty />;
@@ -30,8 +35,6 @@ const DataList = ({
           countTitle: '产品种类',
           cardTitle: '产品列表',
           table: <Table
-            noRowSelection
-            listHeader={false}
             tableKey="stockSpu"
             rowKey="spuId"
             dataSource={data || []}
@@ -49,7 +52,6 @@ const DataList = ({
           countTitle: '型号种类',
           cardTitle: '型号列表',
           table: <Table
-            noRowSelection
             tableKey="stockSku"
             rowKey="skuId"
             dataSource={data || []}

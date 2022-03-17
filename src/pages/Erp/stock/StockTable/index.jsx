@@ -164,9 +164,6 @@ const StockTable = (props) => {
     });
   }, [state]);
 
-  if (loading) {
-    return <ProSkeleton type="descriptions" />;
-  }
 
   return (
     <Card title={<Breadcrumb />}>
