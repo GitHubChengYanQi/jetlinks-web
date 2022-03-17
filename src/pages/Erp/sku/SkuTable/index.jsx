@@ -304,8 +304,12 @@ const SkuTable = ({...props}, ref) => {
         compoentRef={formRef}
         loading={setLoading}
         component={SkuEdit}
-        onSuccess={() => {
-          tableRef.current.submit();
+        onSuccess={(res, action) => {
+          if (action) {
+            tableRef.current.refresh();
+          } else {
+            tableRef.current.submit();
+          }
           addRef.current.close();
         }}
         ref={addRef}

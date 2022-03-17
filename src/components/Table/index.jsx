@@ -165,8 +165,12 @@ const TableWarp = ({
     formActions.submit();
   };
 
+  const refresh = () => {
+    formActions.submit();
+  };
+
   useImperativeHandle(ref, () => ({
-    refresh: submit,
+    refresh,
     submit,
     reset: formActions.reset,
     formActions,

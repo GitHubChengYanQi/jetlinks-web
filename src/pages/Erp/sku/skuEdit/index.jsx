@@ -72,13 +72,13 @@ const SkuEdit = ({...props}, ref) => {
         details={(res) => {
           setDetails(res);
         }}
-        onError={() => {
+        onError={(error) => {
           openNotificationWithIcon('error');
         }}
         onSuccess={(res) => {
           openNotificationWithIcon('success');
           if (!next) {
-            props.onSuccess(res.data);
+            props.onSuccess(res.data,value);
           } else {
             formRef.current.reset();
           }
