@@ -9,7 +9,6 @@ import SkuEdit from '@/pages/Erp/sku/skuEdit';
 const SelectSku = ({
   value,
   onChange,
-  width,
   dropdownMatchSelectWidth,
   placeholder,
   params,
