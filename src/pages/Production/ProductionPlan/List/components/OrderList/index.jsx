@@ -1,5 +1,5 @@
-import React from 'react';
-import {Button, Table as AntTable} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import {pendingProductionByOrder} from '@/pages/Production/Url';
@@ -7,15 +7,17 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 
-const OrderList = ({searchForm}) => {
+const OrderList = ({searchForm, actions, checkedSkus, setCheckedSkus}) => {
 
   const formActionsPublic = createFormActions();
 
-  const actions = () => {
-    return <>
-      <Button type="primary">创建生产计划</Button>
-    </>;
-  };
+  const [orderKeys, setOrderKeys] = useState([]);
+
+  useEffect(() => {
+    if (checkedSkus.length === 0) {
+      setOrderKeys([]);
+    }
+  }, [checkedSkus]);
 
   return <>
     <Table
@@ -36,14 +38,69 @@ const OrderList = ({searchForm}) => {
       }}
       api={pendingProductionByOrder}
       rowKey="orderId"
+      rowSelection={{
+        selectedRowKeys: orderKeys,
+        onSelect: (record, selected) => {
+          if (selected) {
+            setOrderKeys([...orderKeys, record.orderId]);
+            setCheckedSkus([...checkedSkus, ...record.detailResults]);
+          } else {
+            const array = orderKeys.filter((item) => {
+              return item !== record.orderId;
+            });
+            setOrderKeys(array);
+            const skus = checkedSkus.filter((item) => {
+              return array.includes(item.orderId);
+            });
+            setCheckedSkus(skus);
+          }
+        },
+        onSelectAll: (selected, rows) => {
+          if (selected) {
+            const skus = [];
+            setOrderKeys(rows.map((item) => {
+              item.detailResults.map(item => skus.push(item));
+              return item.orderId;
+            }));
+            setCheckedSkus(skus);
+          } else {
+            setOrderKeys([]);
+            setCheckedSkus([]);
+          }
+        },
+      }}
       expandable={{
-        expandedRowRender: record => {
-          return <div style={{border:'1px solid rgb(233 227 227)'}}>
+        expandedRowRender: orderRecord => {
+          return <div style={{border: '1px solid rgb(233 227 227)'}}>
             <AntTable
               style={{margin: 16}}
               pagination={false}
-              dataSource={record.detailResults}
+              dataSource={orderRecord.detailResults}
               rowKey="detailId"
+              rowSelection={{
+                hideSelectAll: true,
+                selectedRowKeys: checkedSkus.map(item => item.detailId),
+                onSelect: (record, selected) => {
+                  if (selected) {
+                    const orderDetails = checkedSkus.filter((item) => {
+                      return item.orderId === record.orderId;
+                    });
+                    if (orderDetails.length + 1 === orderRecord.detailResults.length) {
+                      setOrderKeys([...orderKeys, record.orderId]);
+                    }
+                    setCheckedSkus([...checkedSkus, record]);
+                  } else {
+                    const array = checkedSkus.filter((item) => {
+                      return item.detailId !== record.detailId;
+                    });
+                    setCheckedSkus(array);
+                    const orders = orderKeys.filter((item) => {
+                      return item !== record.orderId;
+                    });
+                    setOrderKeys(orders);
+                  }
+                },
+              }}
             >
               <Column title="物料编码" dataIndex="skuResult" render={(value) => {
                 return value && value.standard;
@@ -52,7 +109,7 @@ const OrderList = ({searchForm}) => {
                 return value && value.spuResult && value.spuResult.name;
               }} />
               <Column title="规格 / 型号" dataIndex="skuResult" render={(value) => {
-                return `${value.skuName} / ${value.specifications}`;
+                return `${value.skuName}${value.specifications ? ` / ${value.specifications}` : ''}`;
               }} />
               <Column title="物料描述" dataIndex="skuResult" render={(value) => {
                 return <SkuResultSkuJsons describe skuResult={value} />;
