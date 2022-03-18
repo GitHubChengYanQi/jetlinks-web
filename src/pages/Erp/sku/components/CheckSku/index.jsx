@@ -1,7 +1,7 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {createFormActions, Submit} from '@formily/antd';
+import {createFormActions} from '@formily/antd';
 import {useSetState} from 'ahooks';
 import * as SysField from '@/pages/Erp/sku/skuField';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
@@ -10,7 +10,6 @@ import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
 import Form from '@/components/Form';
 import SkuDetail from '@/pages/Erp/sku/SkuDetail';
-import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Note from '@/components/Note';
 
 const {Column} = AntTable;

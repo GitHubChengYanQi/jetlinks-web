@@ -192,9 +192,8 @@ const TableWarp = ({
   return (
     <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
       <div style={headStyle}>
-        {listHeader ? <div className={style.listHeader}>
-          {title && <div className="title">{title}</div>}
-          <div className="actions" />
+        {title ? <div className={style.listHeader}>
+          <div className="title">{title}</div>
         </div> : null}
       </div>
       <Layout>
@@ -249,7 +248,7 @@ const TableWarp = ({
               pagination={
                 noPagination || {
                   ...pagination,
-                  showTotal:(total)=>{
+                  showTotal: (total) => {
                     return `共${total || dataSource.length}条`;
                   },
                   showQuickJumper: true,
