@@ -5,7 +5,7 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useState,} from 'react';
+import React, {useEffect, useRef, useState,} from 'react';
 import {
   Button, Input,
   message,
@@ -28,6 +28,10 @@ const {baseURI} = config;
 const {FormItem} = Form;
 
 const StockTable = (props) => {
+
+  const {state} = props;
+
+  const tableRef = useRef();
 
   const [filelist, setFilelist] = useState([]);
 
@@ -145,6 +149,11 @@ const StockTable = (props) => {
     );
   };
 
+  useEffect(() => {
+    tableRef.current.formActions.setFieldValue('storehouseId', state);
+    tableRef.current.submit();
+  }, [state]);
+
   const searchForm = () => {
 
     return (
@@ -160,6 +169,10 @@ const StockTable = (props) => {
           name="type"
           value="sku"
           component={Input} />
+        <FormItem
+          hidden
+          name="storehouseId"
+          component={Input} />
       </>
     );
   };
@@ -174,6 +187,7 @@ const StockTable = (props) => {
 
   return (
     <Table
+      ref={tableRef}
       noRowSelection
       actionButton={actions()}
       actions={<>
