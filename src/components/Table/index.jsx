@@ -190,7 +190,7 @@ const TableWarp = ({
   const {tableColumn, setButton} = useTableSet(children, tableKey);
 
   return (
-    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
+    <div className={style.tableWarp} id="listLayout" style={{height: '100%',  overflowX: 'hidden'}}>
       <div style={headStyle}>
         {title ? <div className={style.listHeader}>
           <div className="title">{title}</div>
