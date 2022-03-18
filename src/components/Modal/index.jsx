@@ -49,11 +49,7 @@ const Modal = (
     .toString(36)
     .substring(2));
 
-  const handleMove = (event) => {
-    deltaX = event.pageX - mouseDownX;
-    deltaY = event.pageY - mouseDownY;
-    modalContent.style.transform = `translate(${deltaX + sumX}px, ${deltaY + sumY}px)`;
-  };
+console.log(1);
 
   let modalContent;
   let sumX = 0;
@@ -62,6 +58,8 @@ const Modal = (
   let deltaY = 0;
   let mouseDownX = 0;
   let mouseDownY = 0;
+  // const [sumX,setSumX] = useState(0);
+
   const initialEvent = (visible) => {
       setTimeout(() => {
         window.removeEventListener('mouseup', removeUp, false);
@@ -78,8 +76,14 @@ const Modal = (
           window.addEventListener('mousemove', handleMove, false);
         };
 
-        window.addEventListener('mouseup', removeUp, false);
+        header.addEventListener('mouseup', removeUp, false);
       }, 0);
+  };
+
+  const handleMove = (event) => {
+    deltaX = event.pageX - mouseDownX;
+    deltaY = event.pageY - mouseDownY;
+    modalContent.style.transform = `translate(${deltaX+sumX}px, ${deltaY + sumY}px)`;
   };
 
   const removeMove = () => {
