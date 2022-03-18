@@ -343,7 +343,7 @@ const SkuTable = ({...props}, ref) => {
         }}
         onSuccess={(res) => {
           setSkuId(null);
-          tableRef.current.submit();
+          tableRef.current.refresh();
           editParts.current.close();
         }}
         ref={editParts}
@@ -367,7 +367,7 @@ const SkuTable = ({...props}, ref) => {
         onSuccess={(res) => {
           setSkuId(null);
           showShip.current.close();
-          tableRef.current.submit();
+          tableRef.current.refresh();
         }}
         onBack={() => {
           setSkuId(null);
