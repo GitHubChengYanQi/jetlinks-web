@@ -128,7 +128,11 @@ const SkuEdit = ({...props}, ref) => {
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
-          required
+          rules={[{
+            required:true,
+            pattern: '^[a-zA-Z0-9]+$',
+            message: '只能输入字母或数字！'
+          }]}
         />
         <FormItem
           label="物料分类"
