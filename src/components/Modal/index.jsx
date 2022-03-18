@@ -76,7 +76,7 @@ console.log(1);
           window.addEventListener('mousemove', handleMove, false);
         };
 
-        header.addEventListener('mouseup', removeUp, false);
+        window.addEventListener('mouseup', removeUp, false);
       }, 0);
   };
 
@@ -95,6 +95,8 @@ console.log(1);
 
     sumX = sumX + deltaX;
     sumY = sumY + deltaY;
+    deltaX = 0;
+    deltaY = 0;
 
     removeMove();
   };
