@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
@@ -7,20 +7,26 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 
-const OrderList = ({searchForm, actions, checkedSkus, setCheckedSkus}) => {
 
-  const formActionsPublic = createFormActions();
+const formActionsPublic = createFormActions();
+
+const OrderList = ({searchForm, actions, checkedSkus, setCheckedSkus, refresh}) => {
 
   const [orderKeys, setOrderKeys] = useState([]);
 
+  const tableRef = useRef();
+
   useEffect(() => {
-    if (checkedSkus.length === 0) {
+    if (refresh) {
+      console.log(111);
       setOrderKeys([]);
+      tableRef.current.submit();
     }
-  }, [checkedSkus]);
+  }, [refresh]);
 
   return <>
     <Table
+      ref={tableRef}
       tableKey="orderList"
       formActions={formActionsPublic}
       searchForm={searchForm}
