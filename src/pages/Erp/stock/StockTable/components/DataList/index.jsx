@@ -59,9 +59,6 @@ const DataList = ({
             <Table.Column key={1} title="物料编码" dataIndex="skuResult" render={(value) => {
               return value && value.standard;
             }} />
-            <Table.Column key={21} title="物料分类" dataIndex="skuResult" render={(value) => {
-              return value && value.spuResult && value.spuResult.spuClassificationResult && value.spuResult.spuClassificationResult.name;
-            }} />
             <Table.Column key={3} title="物料名称" dataIndex="skuResult" render={(value) => {
               return value && value.spuResult && value.spuResult.name;
             }} />
