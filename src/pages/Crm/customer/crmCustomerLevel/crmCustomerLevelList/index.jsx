@@ -53,6 +53,10 @@ const CrmCustomerLevelList = () => {
     <>
       <Table
         contentHeight
+        listHeader={false}
+        searchForm
+        SearchButton
+        cardHeaderStyle={{display:'none'}}
         footer={footer}
         onChange={(keys) => {
           setIds(keys);

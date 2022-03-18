@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Descriptions, Row} from 'antd';
+import {Descriptions} from 'antd';
 import {useHistory} from 'ice';
 
 const Desc = (props) => {

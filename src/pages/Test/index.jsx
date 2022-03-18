@@ -55,6 +55,7 @@ const App = () => {
   return (
     <div>
       <Editor
+        // id='editor'
         apiKey="no-api-key"
         onInit={(evt, editor) => editorRef.current = editor}
         initialValue="<p>This is the initial content of the editor.</p>"

@@ -116,11 +116,6 @@ const SkuTable = ({...props}, ref) => {
           hidden
           value={spuId}
           component={SysField.SkuName} />
-        <FormItem
-          name="addMethod"
-          hidden
-          value={1}
-          component={SysField.AddMethod} />
       </>
     );
   };
@@ -304,8 +299,12 @@ const SkuTable = ({...props}, ref) => {
         compoentRef={formRef}
         loading={setLoading}
         component={SkuEdit}
-        onSuccess={() => {
-          tableRef.current.submit();
+        onSuccess={(res, action) => {
+          if (action) {
+            tableRef.current.refresh();
+          } else {
+            tableRef.current.submit();
+          }
           addRef.current.close();
         }}
         ref={addRef}
@@ -344,7 +343,7 @@ const SkuTable = ({...props}, ref) => {
         }}
         onSuccess={(res) => {
           setSkuId(null);
-          tableRef.current.submit();
+          tableRef.current.refresh();
           editParts.current.close();
         }}
         ref={editParts}
@@ -368,7 +367,7 @@ const SkuTable = ({...props}, ref) => {
         onSuccess={(res) => {
           setSkuId(null);
           showShip.current.close();
-          tableRef.current.submit();
+          tableRef.current.refresh();
         }}
         onBack={() => {
           setSkuId(null);

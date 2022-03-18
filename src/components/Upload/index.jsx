@@ -5,10 +5,11 @@ import {useRequest} from '@/util/Request';
 
 
 const UpLoadImg = (props) => {
-  const {value, onChange, button, type, text, imageType} = props;
+  const {value, onChange, button, type, onlyButton, text, imageType} = props;
   const [loading, setLoading] = useState(false); // loading 状态
   const [imageUrl, setImageUrl] = useState(''); // 图片地址
   const [oss, setOss] = useState({}); // OSS上传所需参数
+  console.log(loading);
 
   useEffect(() => {
     if (value) {
@@ -18,22 +19,6 @@ const UpLoadImg = (props) => {
       setImageUrl('');
     }
   }, [value]);
-
-  // 上传前获取上传OSS所需参数 - 传入上传文件类型："png", "jpg", "gif", "mp4", "mp3","flac"
-  const beforUpLoad = (imgType) => {
-    if (imageType && imageType.includes(imgType)) {
-      setLoading(true);
-      return new Promise((resolve) => {
-        getOssObj({params: {type: imgType}}).then(res => {
-          resolve();
-        });
-      });
-    } else {
-      message.warn('请上传正确格式的文件！');
-      return false;
-    }
-
-  };
 
   const getSTSToken = {
     url: '/media/getToken', // 获取OSS凭证接口
@@ -56,7 +41,6 @@ const UpLoadImg = (props) => {
         oss.OSSAccessKeyId = res.data.OSSAccessKeyId;
         setOss({...oss});
       }
-      setLoading(false);
     }
   });
 
@@ -65,7 +49,7 @@ const UpLoadImg = (props) => {
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{marginTop: 8}}>上传图片</div>
+      <div style={{marginTop: 8}}>{!loading ? '上传图片' : '上传中'}</div>
     </div>
   );
 
@@ -74,23 +58,40 @@ const UpLoadImg = (props) => {
     // name 为发送到后台的文件名
     <Space align="start">
       <Upload
+        maxCount={5}
+        // multiple
         listType={type || 'picture-card'}
         className="avatar-uploader"
         showUploadList={false}
         data={oss}
         action={oss.host}
         beforeUpload={(file) => {
-          return beforUpLoad(file.type.split('/')[1]);
+          if (!imageType || imageType.includes(file.type && file.type.split(','))) {
+            setLoading(true);
+            return new Promise((resolve, reject) => {
+              getOssObj({params: {type: file.name}}).then(() => {
+                resolve();
+              }).catch(() => {
+                reject();
+              });
+            });
+          } else {
+            message.warn('请上传正确格式的文件！');
+            return false;
+          }
         }}
-        onChange={({event}) => {
+        onChange={({file, fileList, event}) => {
           if (event && event.percent >= 100) {
+            setLoading(false);
+            message.success('上传成功！');
             setImageUrl(`${oss.host}/${oss.key}`);
             typeof onChange === 'function' && onChange(`${oss.host}/${oss.key}`);
           }
         }
         }
       >
-        {button || (imageUrl ? <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
+        {button || ((imageUrl && !onlyButton) ?
+          <img src={imageUrl} alt="" style={{width: '100%', height: '100%'}} /> : uploadButton)}
       </Upload>
       {text}
     </Space>

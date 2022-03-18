@@ -38,6 +38,10 @@ const BankList = (props) => {
   return (
     <>
       <Table
+        listHeader={false}
+        cardHeaderStyle={{display:'none'}}
+        SearchButton
+        searchForm
         title={props.tableTitle || <Breadcrumb />}
         formActions={formActionsPublic}
         api={bankList}

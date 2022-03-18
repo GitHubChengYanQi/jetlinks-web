@@ -48,6 +48,7 @@ const PaymentTemplateList = () => {
     <>
       <Table
         listHeader={false}
+        cardHeaderStyle={{display:'none'}}
         api={paymentTemplateList}
         formActions={formActionsPublic}
         contentHeight

@@ -1,6 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import ProCard from '@ant-design/pro-card';
-import {Affix, Button, Col, Divider, Drawer, message, notification, Row, Space, Spin} from 'antd';
+import {
+  Affix,
+  Button,
+  Col,
+  Divider,
+  Drawer,
+  notification,
+  Result,
+  Row,
+  Space,
+  Spin,
+  Modal as AntModal, Alert
+} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
@@ -114,6 +126,7 @@ const CreateOrder = ({...props}) => {
     }
   });
 
+
   useEffect(() => {
     if (Array.isArray(keys)) {
       toBuy();
@@ -125,8 +138,10 @@ const CreateOrder = ({...props}) => {
     switch (params.module) {
       case 'SO':
         return {
+          type: 2,
           title: '创建销售单',
           success: '创建销售单成功!',
+          error: '创建销售单失败!',
           coding: '销售单编号',
           dateTitle: '销售日期',
           noteTitle: '销售单备注',
@@ -135,7 +150,9 @@ const CreateOrder = ({...props}) => {
         };
       case 'PO':
         return {
+          type: 1,
           title: '创建采购单',
+          error: '创建采购单失败!',
           success: '创建采购单成功!',
           coding: '采购单编号',
           dateTitle: '采购日期',
@@ -152,13 +169,19 @@ const CreateOrder = ({...props}) => {
 
   const history = useHistory();
 
-  const {loading, data, refresh} = useRequest({...paymentTemplateListSelect, data: {oftenUser: 1}},);
+  const {loading: templateLoading, data, refresh} = useRequest({...paymentTemplateListSelect, data: {oftenUser: 1}},);
 
   const [userInfo] = store.useModel('user');
 
   const [payPlan, setPayPlan] = useState();
 
   const [visible, setVisible] = useState();
+
+  const [resultVisible, setResultVisible] = useState();
+
+  const [loading, setLoading] = useState();
+
+  const [success, setOrder] = useState();
 
   useEffect(() => {
     if (payPlan === 4) {
@@ -185,25 +208,44 @@ const CreateOrder = ({...props}) => {
       wrapperCol={24}
       fieldKey="customerId"
       onSubmit={(value) => {
-        console.log(value);
-
         if (value.paymentDetail) {
           let percentum = 0;
           value.paymentDetail.map((item) => {
             return percentum += item.percentum;
           });
           if (percentum !== 100) {
-            message.warn('请检查付款批次！');
+            notification.warn({
+              message: '请检查付款批次',
+            });
             return false;
           }
         } else {
-          message.warn('请输入付款批次！');
+          notification.warn({
+            message: '请输入付款批次',
+          });
+          return false;
+        }
+
+        if (value.detailParams) {
+          const detailParams = value.detailParams.filter((item) => {
+            return item.skuId && item.brandId && item.purchaseNumber && item.onePrice;
+          });
+          if (detailParams.length !== value.detailParams.length) {
+            notification.warn({
+              message:'请检查物料清单信息！，品牌、数量、单价为必填信息!',
+            });
+            return false;
+          }
+        } else {
+          notification.warn({
+            message:'请添加物料清单!',
+          });
           return false;
         }
 
         value = {
           ...value,
-          type: 1,
+          type: module().type,
           paymentParam: {
             money: value.money,
             detailParams: value.paymentDetail,
@@ -220,6 +262,8 @@ const CreateOrder = ({...props}) => {
             coding: value.contractCoding,
           }
         };
+        setLoading(true);
+        setResultVisible(true);
         return value;
       }}
       effects={({setFieldState, getFieldState}) => {
@@ -248,11 +292,12 @@ const CreateOrder = ({...props}) => {
 
         });
       }}
-      onSuccess={() => {
-        history.goBack();
-        notification.success({
-          message: module().success,
-        });
+      onSuccess={(res) => {
+        setOrder(res.data);
+        setLoading(false);
+      }}
+      onError={() => {
+        setLoading(false);
       }}
     >
 
@@ -429,7 +474,7 @@ const CreateOrder = ({...props}) => {
                       value={params.module === 'SO' && userInfo.customerId}
                       dataParams={params.module === 'SO' && {status: 99}}
                       label="公司名称"
-                      placeholder="请选择甲方公司"
+                      placeholder="请选择乙方公司"
                       name="sellerId"
                       component={CustomerSysField.Customer}
                       required
@@ -438,7 +483,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="公司地址"
-                      placeholder="请选择甲方公司地址"
+                      placeholder="请选择乙方公司地址"
                       name="partyBAdressId"
                       component={CustomerSysField.Adress}
                     />
@@ -448,7 +493,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="委托代理"
-                      placeholder="请选择甲方公司委托代理"
+                      placeholder="请选择乙方公司委托代理"
                       name="partyBContactsId"
                       component={CustomerSysField.Contacts}
                     />
@@ -456,7 +501,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="联系电话"
-                      placeholder="请选择甲方公司联系电话"
+                      placeholder="请选择乙方公司联系电话"
                       name="partyBPhone"
                       component={CustomerSysField.Phone}
                     />
@@ -466,7 +511,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       label="开户银行"
-                      placeholder="请选择甲方开户银行"
+                      placeholder="请选择乙方开户银行"
                       name="partyBBankId"
                       component={CustomerSysField.Bank}
                     />
@@ -532,6 +577,7 @@ const CreateOrder = ({...props}) => {
         <FormItem
           module={params.module}
           name="detailParams"
+          {...props}
           component={SysField.AddSku}
         />
       </ProCard>
@@ -584,7 +630,7 @@ const CreateOrder = ({...props}) => {
                 label="付款计划"
                 name="payPlan"
                 data={data}
-                loading={loading}
+                loading={templateLoading}
                 component={SysField.PayPlan}
               />
             </Col>
@@ -699,7 +745,7 @@ const CreateOrder = ({...props}) => {
           <Row gutter={24}>
             <Col span={span}>
               <FormItem
-                label="是否需要生成合同"
+                label="是否需要合同"
                 required
                 name="generateContract"
                 component={SysField.Freight}
@@ -775,6 +821,43 @@ const CreateOrder = ({...props}) => {
         refresh();
       }}
     />
+
+    <AntModal centered maskClosable={false} visible={resultVisible} closable={false} footer={null}>
+      {
+        loading
+          ?
+          <Spin spinning={loading}>
+            <Alert
+              message="提交中..."
+              description="正在创建订单，请稍后..."
+              type="info"
+            />
+          </Spin>
+          :
+          <Result
+            status={success ? 'success' : 'error'}
+            title={success ? '创建订单成功！' : '创建订单失败！'}
+            // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+            extra={[
+              !success && <Button key="buy" onClick={() => {
+                setResultVisible(false);
+              }}>
+                取消
+              </Button>,
+              <Button type="primary" key="console" onClick={() => {
+                history.goBack();
+              }}>
+                返回订单列表
+              </Button>,
+              success && success.contractId && <Button key="buy" onClick={() => {
+                history.push(`/CRM/contract/${success.contractId}`);
+              }}>
+                查看合同
+              </Button>
+            ]}
+          />
+      }
+    </AntModal>
 
     <Affix offsetBottom={0}>
       <div

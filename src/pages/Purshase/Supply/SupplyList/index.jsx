@@ -16,10 +16,6 @@ import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import {
-  customerBatchDelete,
-  customerList,
-} from '@/pages/Crm/customer/CustomerUrl';
 import * as SysField from '@/pages/Crm/customer/CustomerField';
 import CustomerEdit from '@/pages/Crm/customer/CustomerEdit';
 import Table from '@/components/Table';
@@ -28,7 +24,7 @@ import Icon from '@/components/Icon';
 import CreateNewCustomer from '@/pages/Crm/customer/components/CreateNewCustomer';
 import UpdateSort from '@/components/Table/components/UpdateSort';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
-import {Industry} from '@/pages/Crm/customer/CustomerField';
+import {supplierBatchDelete, supplierList} from '@/pages/Purshase/Supply/SupplyUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -37,7 +33,7 @@ const {baseURI} = config;
 
 const SupplyList = (props) => {
 
-  const {status, state, level, choose, supply, ...other} = props;
+  const {status, state, level, choose, ...other} = props;
   const history = useHistory();
 
   const [sorts, setSorts] = useState([]);
@@ -75,8 +71,6 @@ const SupplyList = (props) => {
       return (
         <>
           <FormItem mega-props={{span: 1}} placeholder="公司类型" name="companyType" component={SysField.CompanyType} />
-          {supply === 0 &&
-          <FormItem mega-props={{span: 1}} placeholder="客户来源" name="originId" component={SysField.OriginId} />}
           <FormItem mega-props={{span: 1}} placeholder="负责人" name="userId" component={SysField.UserName} />
           <FormItem mega-props={{span: 1}} placeholder="行业" name="industryId" component={SysField.Industry} />
         </>
@@ -91,7 +85,8 @@ const SupplyList = (props) => {
           columns={4} full autoRow>
           <FormItem
             mega-props={{span: 1}}
-            placeholder={supply ? '供应商名称' : '客户名称'} name="customerName"
+            placeholder='供应商名称'
+            name="customerName"
             component={SysField.Name} />
           {search ? formItem() : null}
         </MegaLayout>
@@ -115,7 +110,7 @@ const SupplyList = (props) => {
               <FormItem hidden name="status" component={SysField.Name} />
               <FormItem hidden name="classification" component={SysField.Name} />
               <FormItem hidden name="customerLevelId" component={SysField.Name} />
-              <FormItem hidden name="supply" value={supply} component={SysField.Name} />
+              <FormItem hidden name="supply" value={1} component={SysField.Name} />
             </MegaLayout>
           </FormButtonGroup>
         </MegaLayout>
@@ -139,7 +134,7 @@ const SupplyList = (props) => {
           setSorts([]);
         }} />
       <DelButton api={{
-        ...customerBatchDelete
+        ...supplierBatchDelete
       }} onSuccess={() => {
         tableRef.current.refresh();
       }} value={ids}>删除</DelButton>
@@ -150,8 +145,7 @@ const SupplyList = (props) => {
     <>
       <Table
         title={<Breadcrumb />}
-        api={customerList}
-        NoSortAction
+        api={supplierList}
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
@@ -247,9 +241,9 @@ const SupplyList = (props) => {
         <Column key={6} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
       <CreateNewCustomer
-        title={supply ? '供应商' : '客户'}
+        title='供应商'
         model={CustomerEdit}
-        supply={supply}
+        supply={1}
         widths={1200}
         onSuccess={() => {
           tableRef.current.refresh();
