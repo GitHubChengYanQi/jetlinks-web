@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Layout, Menu, Space} from 'antd';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
+import {RightOutlined} from '@ant-design/icons';
 import store from '@/store';
 import Icon from '@/components/Icon';
 import styles from './index.module.less';
 import Empty from '@/components/Empty';
-import {RightOutlined} from '@ant-design/icons';
 
 const {Header, Sider, Content} = Layout;
 const {Item: MenuItem} = Menu;
@@ -114,8 +114,8 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
       {mode === 'vertical' && <Sider className={styles.sider} width={200}>
         <div style={{height: '100%'}}>
           <div className={styles.leftLogo}>
-            <Space>
-              <div style={{backgroundColor: 'rgb(199 196 196)',width:4,height:18}} />
+            <Space align='center'>
+              <div style={{backgroundColor: 'rgb(199 196 196)',width:4,height:16}} />
               {subMenu.name}
             </Space>
           </div>
