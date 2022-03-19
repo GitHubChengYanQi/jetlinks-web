@@ -317,7 +317,7 @@ const CreateOrder = ({...props}) => {
             <Col span={span}>
               <FormItem
                 label={module().dateTitle}
-                name="date"
+                name="deliveryDate"
                 component={SysField.Date}
               />
             </Col>

@@ -7,19 +7,15 @@ const SkuResultSkuJsons = ({skuResult, describe}) => {
   }
 
   if (describe) {
-    return <>
-      {
-        skuResult.skuJsons
-        &&
-        skuResult.skuJsons.length > 0
-        &&
-        skuResult.skuJsons[0].values.attributeValues
-        &&
-        skuResult.skuJsons.map((items) => {
-          return `${items.attribute.attribute}:${items.values.attributeValues}`;
-        }).join(' , ')
-      }
-    </>;
+    return skuResult.skuJsons
+      &&
+      skuResult.skuJsons.length > 0
+      &&
+      skuResult.skuJsons[0].values.attributeValues
+      &&
+      skuResult.skuJsons.map((items) => {
+        return `${items.attribute.attribute}:${items.values.attributeValues}`;
+      }).join(' , ');
   }
 
 
