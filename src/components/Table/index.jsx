@@ -1,5 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
+import {Button, Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {createFormActions, Form, FormButtonGroup, Reset, Submit, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
@@ -165,6 +165,11 @@ const TableWarp = ({
     formActions.submit();
   };
 
+  const reset = () => {
+    setPagination({});
+    formActions.reset();
+  };
+
   const refresh = () => {
     formActions.submit();
   };
@@ -190,7 +195,7 @@ const TableWarp = ({
   const {tableColumn, setButton} = useTableSet(children, tableKey);
 
   return (
-    <div className={style.tableWarp} id="listLayout" style={{height: '100%',  overflowX: 'hidden'}}>
+    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
       <div style={headStyle}>
         {title ? <div className={style.listHeader}>
           <div className="title">{title}</div>
@@ -214,7 +219,20 @@ const TableWarp = ({
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup><Submit><SearchOutlined />查询</Submit><Reset>重置</Reset> </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
