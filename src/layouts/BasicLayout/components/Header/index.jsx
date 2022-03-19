@@ -59,17 +59,16 @@ const Header = () => {
         <div className={`row-flex ${styles.inner}`}>
           <div className={`${styles.systemBar}`}>
             <div className={styles.left}>
-              <div style={{width:200,paddingLeft:16,backgroundColor:'#2e3c56',height:'100%',paddingTop:8}}>
+              <div style={{width: 200, paddingLeft: 16, backgroundColor: '#2e3c56', height: '100%', paddingTop: 8}}>
                 <img src={daoxinyun} alt="" />
               </div>
-              <Button
-                type='link'
-                style={{color: '#fff'}}
-                onClick={() => {
+              <Menu selectedKeys={[]} mode="horizontal" theme='dark' style={{backgroundColor:'#222e44',color:'#fff',height:'100%',lineHeight:'60px'}} >
+                <Menu.Item className={styles.allMenu} key="mail" onClick={() => {
                   setVisible(true);
                 }}>
-                更多功能
-              </Button>
+                  所有功能
+                </Menu.Item>
+              </Menu>
             </div>
             <div className={styles.middle} />
             <div className={styles.right}>
