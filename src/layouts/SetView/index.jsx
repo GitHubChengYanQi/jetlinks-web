@@ -30,7 +30,7 @@ const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMe
         title={<span>设置</span>}
         style={{
           height: mode === 'vertical' ? 'calc(100vh - 63px)' : 'calc(100vh - 112px)',
-          top: mode === 'vertical' ? 63 : 112
+          top: mode === 'vertical' ? 62 : 112
         }}
         visible={drawerIsShow}
         getContainer={false}

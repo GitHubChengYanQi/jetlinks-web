@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {
-  FullscreenOutlined
+  FullscreenOutlined, UnorderedListOutlined
 } from '@ant-design/icons';
-import {Menu, Drawer, Avatar, Button, Dropdown} from 'antd';
+import {Menu, Drawer, Avatar, Button, Dropdown, Space} from 'antd';
 import {useHistory, config} from 'ice';
 import Icon from '@/components/Icon';
 import store from '@/store';
@@ -59,14 +59,29 @@ const Header = () => {
         <div className={`row-flex ${styles.inner}`}>
           <div className={`${styles.systemBar}`}>
             <div className={styles.left}>
-              <div style={{width: 200, paddingLeft: 16, backgroundColor: '#2e3c56', height: '100%', paddingTop: 8}}>
+              <div onClick={() => {
+                history.push('/');
+              }} style={{
+                width: 200,
+                cursor: 'pointer',
+                paddingLeft: 16,
+                backgroundColor: '#2e3c56',
+                height: '100%',
+                paddingTop: 8
+              }}>
                 <img src={daoxinyun} alt="" />
               </div>
-              <Menu selectedKeys={[]} mode="horizontal" theme='dark' style={{backgroundColor:'#222e44',color:'#fff',height:'100%',lineHeight:'60px'}} >
+              <Menu
+                selectedKeys={[]}
+                mode="horizontal"
+                theme="dark"
+                style={{backgroundColor: '#222e44', color: '#fff', height: '100%', lineHeight: '60px'}}>
                 <Menu.Item className={styles.allMenu} key="mail" onClick={() => {
                   setVisible(true);
                 }}>
-                  所有功能
+                  <Space>
+                    所有功能<UnorderedListOutlined />
+                  </Space>
                 </Menu.Item>
               </Menu>
             </div>
