@@ -169,7 +169,7 @@ const SkuTable = ({...props}, ref) => {
             }}
             templateUrl={`${baseURI}api/SkuExcel`}
           />
-          <Button icon={<Icon type="icon-daoru" />} onClick={() => {
+          <Button type='link' icon={<Icon type="icon-daoru" />} onClick={() => {
 
           }}>导出物料</Button>
         </Space>}

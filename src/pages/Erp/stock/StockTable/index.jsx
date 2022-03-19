@@ -104,10 +104,14 @@ const StockTable = (props) => {
     });
   };
 
+  const token = cookie.get('tianpeng-token');
+
   const actions = () => {
     return (
       <Space>
-        <Button icon={<Icon type="icon-daoru" />}>导出库存</Button>
+        <Button type='link' icon={<Icon type="icon-daoru" />} onClick={()=>{
+          window.location.href = `${baseURI}stockExcel/stockExport?authorization=${token}`;
+        }}>导出库存</Button>
         <Upload
           fileList={filelist}
           action={`${baseURI}Excel/importPositionBind`}
@@ -143,7 +147,7 @@ const StockTable = (props) => {
             }
           }}
         >
-          <Button icon={<Icon type="icon-daoru" />}>导入库存</Button>
+          <Button type='link' icon={<Icon type="icon-daoru" />}>导入库存</Button>
         </Upload>
       </Space>
     );
