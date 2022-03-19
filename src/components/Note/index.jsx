@@ -8,7 +8,7 @@ const Note = ({
 
   return <Typography.Paragraph
     ellipsis={{rows: 1, tooltip: true}}
-    style={{width}}>
+    style={{width: width,margin:0}}>
     {value}
   </Typography.Paragraph>;
 };

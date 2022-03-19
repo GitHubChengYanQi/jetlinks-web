@@ -22,7 +22,7 @@ import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import Overflow from '@/components/Overflow';
-import {supplierAdd, supplierDetail, supplierEdit, supplierrEdit} from '@/pages/Purshase/Supply/SupplyUrl';
+import {supplierAdd, supplierDetail, supplierEdit} from '@/pages/Purshase/Supply/SupplyUrl';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -47,7 +47,7 @@ const CustomerEdit = ({
 
   const params = getSearchParams();
 
-  const {wxUser, supply, data: paramData, ...other} = props;
+  const {wxUser, supply, data: paramData} = props;
 
   const ApiConfig = supply ? {
     view: supplierDetail,
@@ -74,7 +74,6 @@ const CustomerEdit = ({
       </div>}
       <Card title="创建供应商">
         <Form
-          {...other}
           formatResult={formActionsPublic}
           value={params.id || false}
           ref={formRef}
