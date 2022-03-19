@@ -6,10 +6,10 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
@@ -20,6 +20,8 @@ import Modal from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const PaymentTemplateList = () => {
   const ref = useRef(null);
@@ -46,7 +48,9 @@ const PaymentTemplateList = () => {
     <>
       <Table
         listHeader={false}
+        cardHeaderStyle={{display:'none'}}
         api={paymentTemplateList}
+        formActions={formActionsPublic}
         contentHeight
         rowKey="templateId"
         searchForm={searchForm}

@@ -12,6 +12,7 @@ import Form from '@/components/Form';
 import {spuClassificationDetail, spuClassificationAdd, spuClassificationEdit} from '../spuClassificationUrl';
 import * as SysField from '../spuClassificationField';
 import {createFormActions} from '@formily/antd';
+import store from '@/store';
 
 const {FormItem} = Form;
 
@@ -29,6 +30,8 @@ const SpuClassificationEdit = ({...props}) => {
 
   const formRef = useRef();
 
+  const dispatchers = store.useModel('dataSource')[1];
+
   return (
     <Form
       {...other}
@@ -36,6 +39,10 @@ const SpuClassificationEdit = ({...props}) => {
       api={ApiConfig}
       formActions={formActionsPublic}
       fieldKey="spuClassificationId"
+      onSuccess={() => {
+        dispatchers.getSkuClass();
+        props.onSuccess();
+      }}
       onSubmit={(value) => {
         return {...value, type: type ? 1 : 2};
       }}

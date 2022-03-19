@@ -8,7 +8,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Divider, Input, Modal as AntModal, Table as AntTable, Tag} from 'antd';
 import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
+import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
@@ -25,6 +25,8 @@ import {customerEdit} from '@/pages/Crm/customer/CustomerUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+
+const formActionsPublic = createFormActions();
 
 const ContactsTable = (props) => {
 
@@ -177,6 +179,7 @@ const ContactsTable = (props) => {
         bodyStyle={{padding: customer && 0}}
         bordered={!customer}
         title={<Breadcrumb />}
+        formActions={formActionsPublic}
         api={contactsList}
         rowKey="contactsId"
         searchForm={searchForm}
@@ -249,7 +252,7 @@ const ContactsTable = (props) => {
         }} />
       </Table>
       <Modal
-        width={1000}
+        width={500}
         title="联系人"
         component={ContactsEdit}
         customerId={customer && customer.customerId}
@@ -261,7 +264,7 @@ const ContactsTable = (props) => {
         footer={
           <>
             <Button type="primary" onClick={() => {
-              submitRef.current.formRef.current.submit();
+              submitRef.current.submit();
             }}>
               保存
             </Button>

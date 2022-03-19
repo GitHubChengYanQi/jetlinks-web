@@ -22,7 +22,7 @@ import store from '@/store';
 import Breadcrumb from '@/components/Breadcrumb';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import Overflow from '@/components/Overflow';
-import {supplierAdd, supplierDetail, supplierEdit, supplierrEdit} from '@/pages/Purshase/Supply/SupplyUrl';
+import {supplierAdd, supplierDetail, supplierEdit} from '@/pages/Purshase/Supply/SupplyUrl';
 
 const {FormItem} = Form;
 const formActions = createFormActions();
@@ -47,7 +47,7 @@ const CustomerEdit = ({
 
   const params = getSearchParams();
 
-  const {wxUser, supply, data: paramData, ...other} = props;
+  const {wxUser, supply, data: paramData} = props;
 
   const ApiConfig = supply ? {
     view: supplierDetail,
@@ -74,7 +74,6 @@ const CustomerEdit = ({
       </div>}
       <Card title="创建供应商">
         <Form
-          {...other}
           formatResult={formActionsPublic}
           value={params.id || false}
           ref={formRef}
@@ -85,6 +84,11 @@ const CustomerEdit = ({
           wrapperCol={24}
           fieldKey="customerId"
           onSubmit={(value) => {
+
+            if (!value.supplyParams || value.supplyParams.length === 0) {
+              message.warn('请选择物料！');
+              return false;
+            }
             // 供应商物料
             const supplyParams = [];
             let brands = true;
@@ -111,16 +115,16 @@ const CustomerEdit = ({
             contactsParams.push({
               contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
               phoneParams: [{phoneNumber: value.phoneNumber}],
-              deptName: value.deptName && (value.deptName.id ? value.deptName.id : value.deptName.name),
-              positionName: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
+              deptName: value.deptName,
+              positionName: value.companyRole,
             });
             value.contactsParams && value.contactsParams.map((item) => {
               if (item && item.contactsName) {
                 contactsParams.push({
                   contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
                   phoneParams: [{phoneNumber: item.phoneNumber}],
-                  deptName: item.deptName && (item.deptName.id ? item.deptName.id : item.deptName.name),
-                  positionName: value.companyRole && (value.companyRole.id ? value.companyRole.id : value.companyRole.name),
+                  deptName: item.deptName,
+                  positionName: value.companyRole,
                 });
               }
               return null;
@@ -132,6 +136,7 @@ const CustomerEdit = ({
               map: value.map,
               detailLocation: value.detailLocation,
               region: value.region,
+              addressName: value.addressName
             });
             if (value.adressParams) {
               adressParams = adressParams.concat(value.adressParams.filter((item) => {
@@ -143,14 +148,14 @@ const CustomerEdit = ({
             let invoiceParams = [];
             if (value.bankNo || value.bankAccount || value.invoiceNote || value.bank) {
               invoiceParams.push({
-                bank: value.bank,
+                bankId: value.bankId,
                 bankNo: value.bankNo,
                 bankAccount: value.bankAccount,
               });
             }
             if (value.invoiceParams) {
               invoiceParams = invoiceParams.concat(value.invoiceParams.filter((item) => {
-                return item && (item.bankNo || item.bankAccount || item.bank);
+                return item && (item.bankNo || item.bankAccount || item.bankId);
               }));
             }
 
@@ -269,7 +274,9 @@ const CustomerEdit = ({
                   <FormItem label="企业简称" name="abbreviation" placeholder="请输入供应商简称" component={SysField.Abbreviation} />
                 </Col>
                 <Col span={span}>
-                  <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                  <div style={{position: 'absolute'}}>
+                    <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                  </div>
                 </Col>
               </Row>
               <Row gutter={24}>
@@ -348,7 +355,7 @@ const CustomerEdit = ({
                     component={SysField.Url}
                   />
                 </Col>
-                <Col span={12}>
+                <Col span={span}>
                   <FormItem
                     label="定位地址"
                     disabled
@@ -356,6 +363,14 @@ const CustomerEdit = ({
                     name="map"
                     width={400}
                     component={SysField.Map}
+                  />
+                </Col>
+                <Col span={span}>
+                  <FormItem
+                    label="地址名称"
+                    placeholder="请输入地址"
+                    name="addressName"
+                    component={SysField.Url}
                   />
                 </Col>
               </Row>
@@ -424,7 +439,8 @@ const CustomerEdit = ({
                     name="registeredCapital"
                     style={{width: 200}}
                     placeholder="请输入注册资本"
-                    component={SysField.Money} />
+                    component={SysField.Money}
+                  />
                 </Col>
               </Row>
               <Row gutter={24}>
@@ -463,7 +479,13 @@ const CustomerEdit = ({
               </Row>
               <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction} />
               <Space align="start">
-                <FormItem label="附件" name="file" component={SysField.File} />仅支持上传一张格式为JPG、PNG、PDF格式的图片，建议上传企业营业执照
+                <FormItem
+                  label="附件"
+                  name="file"
+                  maxCount={5}
+                  prompt='支持格式：jpg/png/pdf/docx，单一文件不超过10M，最多上传5份，建议上传营业执照、开户许可证、资质奖项证书等'
+                  filterFileType={['JPG','PNG','PDF','DOCX','jpg','png','pdf','docx',]}
+                  component={SysField.File} />
               </Space>
             </MegaLayout></Overflow>
           </ProCard>
@@ -601,6 +623,14 @@ const CustomerEdit = ({
                               />
                             </Col>
                             <Col span={span}>
+                              <div style={{display: 'inline-block'}}>
+                                <FormItem
+                                  label="地址名称"
+                                  placeholder="请输入地址"
+                                  name="addressName"
+                                  component={SysField.Url}
+                                />
+                              </div>
                               <Button
                                 type="link"
                                 style={{float: 'right'}}
@@ -647,7 +677,7 @@ const CustomerEdit = ({
                             <Col span={span}>
                               <FormItem
                                 label="开户银行"
-                                name={`invoiceParams.${index}.bank`}
+                                name={`invoiceParams.${index}.bankId`}
                                 placeholder="请输入开户银行"
                                 component={SysField.Bank}
                               />
@@ -666,6 +696,10 @@ const CustomerEdit = ({
                                 placeholder="请输入开户账号"
                                 name={`invoiceParams.${index}.bankAccount`}
                                 component={SysField.BankAccount}
+                                rules={[{
+                                  message: '请输入数字!',
+                                  pattern: '^\\d+$'
+                                }]}
                               />
                             </Col>
                             <Col span={span}>

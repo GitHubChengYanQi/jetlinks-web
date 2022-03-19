@@ -20,7 +20,7 @@ const TableWarp = ({
   actions,
   NoChildren,
   title,
-  NoSortAction,
+  sortAction,
   maxHeight,
   loading: getLoading,
   showCard,
@@ -165,8 +165,12 @@ const TableWarp = ({
     formActions.submit();
   };
 
+  const refresh = () => {
+    formActions.submit();
+  };
+
   useImperativeHandle(ref, () => ({
-    refresh: submit,
+    refresh,
     submit,
     reset: formActions.reset,
     formActions,
@@ -178,7 +182,6 @@ const TableWarp = ({
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        {pagination && <div className={style.right}>共{pagination.total || dataSource.length}条</div>}
         <br style={{clear: 'both'}} />
       </div>
     );
@@ -187,11 +190,10 @@ const TableWarp = ({
   const {tableColumn, setButton} = useTableSet(children, tableKey);
 
   return (
-    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowY: 'auto', overflowX: 'hidden'}}>
+    <div className={style.tableWarp} id="listLayout" style={{height: '100%',  overflowX: 'hidden'}}>
       <div style={headStyle}>
-        {listHeader ? <div className={style.listHeader}>
-          {title && <div className="title">{title}</div>}
-          <div className="actions" />
+        {title ? <div className={style.listHeader}>
+          <div className="title">{title}</div>
         </div> : null}
       </div>
       <Layout>
@@ -246,6 +248,9 @@ const TableWarp = ({
               pagination={
                 noPagination || {
                   ...pagination,
+                  showTotal: (total) => {
+                    return `共${total || dataSource.length}条`;
+                  },
                   showQuickJumper: true,
                   position: ['bottomRight']
                 }
@@ -277,7 +282,7 @@ const TableWarp = ({
                 width={80}
                 align="center"
                 render={(text, item, index) => {
-                  if (!NoSortAction && (text || text === 0)) {
+                  if (sortAction && (text || text === 0)) {
                     return <TableSort
                       rowKey={item[rowKey]}
                       sorts={sorts}

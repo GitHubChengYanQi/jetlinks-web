@@ -16,9 +16,13 @@ export const OrderRouter = [
   },
   {
     path: '/order/createOrder',
-    name: '预购管理',
     component: lazy(() => import('../CreateOrder/index')),
     fallback: <div>loading...</div>,
     exact: true,
-  }
+  }, {
+    path: '/order/detail',
+    component: lazy(() => import('../Detail/index')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
 ];

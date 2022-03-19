@@ -6,8 +6,9 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
 import {Button, Divider, Modal as AntModal, Table as AntTable} from 'antd';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -18,12 +19,11 @@ import InvoiceEdit from '../invoiceEdit';
 import * as SysField from '../invoiceField';
 import {useRequest} from '@/util/Request';
 import {customerEdit} from '@/pages/Crm/customer/CustomerUrl';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {FormItem} = Form;
 const {Column} = AntTable;
 
-const InvoiceList = ({customer,refresh}) => {
+const InvoiceList = ({customer, refresh}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
@@ -82,14 +82,16 @@ const InvoiceList = ({customer,refresh}) => {
       <Table
         bodyStyle={{padding: customer && 0}}
         bordered={!customer}
-        headStyle={{display:'none'}}
+        headStyle={{display: 'none'}}
         api={invoiceList}
         rowKey="invoiceId"
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
       >
-        <Column title="开户银行" dataIndex="bankId" />
+        <Column title="开户银行" dataIndex="bankResult" render={(value) => {
+          return value && value.bankName;
+        }} />
         <Column title="开户行号" dataIndex="bankNo" />
         <Column title="开户账号" dataIndex="bankAccount" />
         <Column />
@@ -110,10 +112,11 @@ const InvoiceList = ({customer,refresh}) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="开票信息" customerId={customer && customer.customerId} component={InvoiceEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Drawer width={800} title="开票信息" customerId={customer && customer.customerId} component={InvoiceEdit}
+              onSuccess={() => {
+                tableRef.current.refresh();
+                ref.current.close();
+              }} ref={ref} />
     </>
   );
 };

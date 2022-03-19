@@ -146,7 +146,6 @@ const SupplyList = (props) => {
       <Table
         title={<Breadcrumb />}
         api={supplierList}
-        NoSortAction
         rowKey="customerId"
         searchForm={searchForm}
         actions={actions()}
@@ -217,7 +216,7 @@ const SupplyList = (props) => {
               return (
                 <>
                   <Space direction="vertical">
-                    <strong>{value.bank || '无'}</strong>
+                    <strong>{value.bankResult && value.bankResult.bankName || '无'}</strong>
                     <div>
                       开户行号：{value.bankNo || '--'}
                     </div>

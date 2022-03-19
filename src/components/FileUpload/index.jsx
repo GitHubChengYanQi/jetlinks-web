@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {Button, message, Popover, Space, Spin, Upload} from 'antd';
-import {QuestionCircleOutlined, UploadOutlined} from '@ant-design/icons';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, message, Space, Spin, Upload} from 'antd';
+import {UploadOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 
 const FileUpload = ({
@@ -8,11 +8,14 @@ const FileUpload = ({
   onChange = () => {
   },
   title,
+  prompt,
   maxCount,
   refresh,
+  filterFileType,
 }) => {
 
   const [fileList, setFileList] = useState([]);
+
 
   const {loading, run: getUrl} = useRequest({
     url: '/sop/getImgUrls',
@@ -20,7 +23,9 @@ const FileUpload = ({
   }, {
     manual: true,
     onSuccess: (res) => {
-      setFileList(res.map((item,index)=>{return {url:item,id:value.split(',')[index]};}));
+      setFileList(res.map((item, index) => {
+        return {url: item, id: value.split(',')[index]};
+      }));
     }
   });
 
@@ -28,10 +33,10 @@ const FileUpload = ({
     if (value) {
       getUrl({
         data: {
-          imgs:value.split(',')
+          imgs: value.split(',')
         }
       });
-    }else {
+    } else {
       setFileList([]);
     }
   }, [refresh]);
@@ -113,8 +118,12 @@ const FileUpload = ({
           }
         }}
         beforeUpload={async (file) => {
-          const type = file.type.split('/')[1];
+          const type = file.name;
           if (type) {
+            if (filterFileType && filterFileType.includes(type)) {
+              alert('附件类型不正确！');
+              return Upload.LIST_IGNORE;
+            }
             const data = await run(
               {
                 params: {
@@ -125,13 +134,24 @@ const FileUpload = ({
             setOss({...data});
           } else {
             alert('附件类型不正确！');
+            return Upload.LIST_IGNORE;
           }
+          const data = await run(
+            {
+              params: {
+                type
+              }
+            }
+          );
+          setOss({...data});
+
         }}
       >
-        <div>
-          <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>
-        </div>
+        <Space>
+          <Button icon={<UploadOutlined />}>{title || '上传附件'}</Button>{prompt}
+        </Space>
       </Upload>
+
     </Space>
   );
 };

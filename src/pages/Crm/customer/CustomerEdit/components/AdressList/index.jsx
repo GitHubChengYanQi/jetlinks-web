@@ -8,6 +8,7 @@
 import React, { useRef} from 'react';
 import {Button, Divider, Modal as AntModal, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -15,12 +16,10 @@ import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {adressDelete, adressList} from '@/pages/Crm/adress/AdressUrl';
 import * as SysField from '@/pages/Crm/business/crmBusinessSalesProcess/crmBusinessSalesProcessField';
-import CheckButton from '@/components/CheckButton';
 import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import Table from '@/components/Table';
 import {useRequest} from '@/util/Request';
 import {customerEdit} from '@/pages/Crm/customer/CustomerUrl';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -91,6 +90,7 @@ const AdressList = (props) => {
         }} />
         <Column title="详细地址" dataIndex="detailLocation" />
         <Column title="定位地址" dataIndex="location" />
+        <Column title="地址名称" dataIndex="addressName" />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {
           const isDefaultAddress = customer && record.adressId === customer.defaultAddress;

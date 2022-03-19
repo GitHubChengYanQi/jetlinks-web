@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
@@ -17,13 +17,14 @@ import {templateDelete, templateList} from '../TemplateUrl';
 import TemplateEdit from '../TemplateEdit';
 import * as SysField from '../TemplateField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Drawer from '@/components/Drawer';
+import Modal from '@/components/Modal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 const formActions = createFormActions();
 const TemplateList = () => {
   const ref = useRef(null);
+  const compoentRef = useRef(null);
   const tableRef = useRef(null);
   const actions = () => {
     return (
@@ -63,6 +64,8 @@ const TemplateList = () => {
       <Table
         footer={footer}
         contentHeight
+        listHeader={false}
+        cardHeaderStyle={{display: 'none'}}
         onChange={(keys) => {
           setIds(keys);
         }}
@@ -91,10 +94,23 @@ const TemplateList = () => {
           );
         }} width={100} />
       </Table>
-      <Drawer extra placement="top" height='100vh' title="合同模板" component={TemplateEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Modal
+        width="100vw"
+        title="合同模板"
+        compoentRef={compoentRef}
+        component={TemplateEdit}
+        footer={<Space>
+          <Button type="primary" onClick={() => {
+            compoentRef.current.submit();
+          }}>保存</Button>
+          <Button onClick={() => {
+            ref.current.close();
+          }}>取消</Button>
+        </Space>}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref} />
     </>
   );
 };

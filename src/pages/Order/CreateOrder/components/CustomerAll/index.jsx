@@ -20,7 +20,7 @@ export const Adress = (props) => {
 
   const {customerId, options, defaultValue, ...other} = props;
 
-  const [option, setOption] = useState();
+  const [option, setOption] = useState([]);
 
   useEffect(() => {
     setOption(options || []);
@@ -79,7 +79,7 @@ export const Contacts = (props) => {
 
   const {customerId, options, defaultValue, ...other} = props;
 
-  const [option, setOption] = useState();
+  const [option, setOption] = useState([]);
 
   useEffect(() => {
     setOption(options || []);
@@ -137,7 +137,7 @@ export const Phone = (props) => {
 
   const {contactsId, options, defaultValue, ...other} = props;
 
-  const [option, setOption] = useState();
+  const [option, setOption] = useState([]);
 
   useEffect(() => {
     setOption(options || []);
@@ -181,7 +181,6 @@ export const Phone = (props) => {
         NoButton={false}
         ref={submitRef}
         onSuccess={(res) => {
-          console.log(res);
           ref.current.close();
           const array = option.filter(() => true);
           array.push({
@@ -202,7 +201,7 @@ export const BankAccount = (props) => {
 
   const {customerId, bankId, options, defaultValue, ...other} = props;
 
-  const [option, setOption] = useState();
+  const [option, setOption] = useState([]);
 
   useEffect(() => {
     if (customerId && options) {
@@ -212,8 +211,11 @@ export const BankAccount = (props) => {
           return item.id === bankId;
         });
       }
-      setOption(array || []);
       props.onChange(defaultValue || null);
+      setOption(array || []);
+    }else {
+      setOption([]);
+      props.onChange(null);
     }
   }, [customerId, bankId]);
 
@@ -235,7 +237,7 @@ export const BankAccount = (props) => {
 
     <Modal
       width={500}
-      headTitle="添加联系人电话"
+      headTitle="添加银行账户"
       ref={ref}
       footer={<>
         <Button type="primary" onClick={() => {
@@ -251,9 +253,25 @@ export const BankAccount = (props) => {
       </>}
     >
 
-      <InvoiceEdit submitRef={submitRef} value={false} NoButton={false} customerId={customerId} onSuccess={() => {
-        ref.current.close();
-      }} />
+      <InvoiceEdit
+        ref={submitRef}
+        bankId={bankId}
+        value={false}
+        NoButton={false}
+        customerId={customerId}
+        onSuccess={(res) => {
+          ref.current.close();
+          if (res.data) {
+            const array = option.filter(() => true);
+            array.push({
+              label: res.data.bankAccount,
+              value: res.data.invoiceId,
+            });
+            setOption(array);
+            props.onChange(res.data.invoiceId);
+          }
+
+        }} />
 
     </Modal>
   </>;
@@ -297,8 +315,11 @@ export const Bank = (props) => {
         </Button>
       </>}
     >
-      <BankEdit ref={ref} value={false} NoButton={false} onSuccess={() => {
+      <BankEdit ref={submitRef} value={false} NoButton={false} onSuccess={(res) => {
         refresh();
+        if (res && res.data) {
+          props.onChange(res.data.bankId);
+        }
       }} />
     </Modal>
   </>;

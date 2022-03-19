@@ -392,18 +392,15 @@ const ToBuyPlanList = (props) => {
             }} />
             <Column key={13} title="申请时间" width={150} dataIndex="createTime" />
             <Column key={14} title="操作" fixed="right" align="center" render={(value, record) => {
+              const childrenKeys = [];
+              if (record.children) {
+                record.children.map((item) => {
+                  return childrenKeys.push(item.purchaseListingId);
+                });
+              }
               return <>
                 <Button type="link" onClick={() => {
-                  history.push({
-                    pathname: '/purchase/toBuyPlan/createOrder', state: [{
-                      skuId: record.skuId,
-                      skuResult: record.skuResult,
-                      brandId: record.brandId,
-                      defaultBrandResult: record.brandResult && record.brandResult.brandName,
-                      preordeNumber: record.applyNumber,
-                      unitId: record.skuResult && record.skuResult.spuResult && record.skuResult.spuResult.unitId,
-                    }]
-                  });
+                  history.push(`/purchase/toBuyPlan/createOrder?module=PO&skus=${JSON.stringify([record.purchaseListingId,...childrenKeys])}`);
                 }}>采购</Button>
                 <Button type="link">指派</Button>
                 <Button type="link">详情</Button>

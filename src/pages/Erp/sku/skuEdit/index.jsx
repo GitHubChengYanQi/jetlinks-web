@@ -72,13 +72,13 @@ const SkuEdit = ({...props}, ref) => {
         details={(res) => {
           setDetails(res);
         }}
-        onError={() => {
+        onError={(error) => {
           openNotificationWithIcon('error');
         }}
         onSuccess={(res) => {
           openNotificationWithIcon('success');
           if (!next) {
-            props.onSuccess(res.data);
+            props.onSuccess(res.data,value);
           } else {
             formRef.current.reset();
           }
@@ -88,11 +88,10 @@ const SkuEdit = ({...props}, ref) => {
         }}
         effects={async () => {
 
-          const {setFieldState} = createFormActions();
+          const {setFieldState, getFieldState} = createFormActions();
 
           FormEffectHooks.onFieldValueChange$('spu').subscribe(async ({value}) => {
             if (value && value.spuId) {
-
               const spu = await request({...spuDetail, data: {spuId: value.spuId}});
 
               setFieldState(
@@ -105,12 +104,16 @@ const SkuEdit = ({...props}, ref) => {
           });
 
 
-          FormEffectHooks.onFieldValueChange$('spuClass').subscribe(({value}) => {
-            if (value) {
+          FormEffectHooks.onFieldValueChange$('spuClass').subscribe(({value:spuClassId}) => {
+            const spu = getFieldState('spu');
+            if (spuClassId) {
               setFieldState(
                 'spu',
                 state => {
-                  state.props.classId = value;
+                  state.props.classId = spuClassId;
+                  if (!value && spu && spu.value && spu.value.spuId) {
+                    state.value = {name: spu.value.name};
+                  }
                 }
               );
             }
@@ -125,7 +128,11 @@ const SkuEdit = ({...props}, ref) => {
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
-          required
+          rules={[{
+            required:true,
+            pattern: '^[a-zA-Z0-9]+$',
+            message: '只能输入字母或数字！'
+          }]}
         />
         <FormItem
           label="物料分类"
@@ -200,7 +207,7 @@ const SkuEdit = ({...props}, ref) => {
               <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
-          name="img"
+          name="images"
           component={SysField.Img} />
         <FormItem
           label={<Space>
@@ -209,7 +216,7 @@ const SkuEdit = ({...props}, ref) => {
               <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
-          name="bind"
+          name="drawing"
           component={SysField.Bind} />
       </Form>
     </div>

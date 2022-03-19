@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Form from '@/components/Form';
 import {companyRoleDetail, companyRoleAdd, companyRoleEdit} from '../companyRoleUrl';
 import * as SysField from '../companyRoleField';
@@ -19,6 +19,8 @@ const ApiConfig = {
   save: companyRoleEdit
 };
 
+const formActionsPublic = createFormActions();
+
 const CompanyRoleEdit = ({...props}) => {
 
   const formRef = useRef();
@@ -26,6 +28,7 @@ const CompanyRoleEdit = ({...props}) => {
   return (
     <Form
       {...props}
+      formActions={formActionsPublic}
       ref={formRef}
       api={ApiConfig}
       fieldKey="companyRoleId"

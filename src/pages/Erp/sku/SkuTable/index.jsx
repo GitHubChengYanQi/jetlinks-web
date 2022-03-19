@@ -25,6 +25,8 @@ import Icon from '@/components/Icon';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
+import Note from '@/components/Note';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -116,11 +118,6 @@ const SkuTable = ({...props}, ref) => {
           hidden
           value={spuId}
           component={SysField.SkuName} />
-        <FormItem
-          name="addMethod"
-          hidden
-          value={1}
-          component={SysField.AddMethod} />
       </>
     );
   };
@@ -172,7 +169,7 @@ const SkuTable = ({...props}, ref) => {
             }}
             templateUrl={`${baseURI}api/SkuExcel`}
           />
-          <Button icon={<Icon type="icon-daoru" />} onClick={() => {
+          <Button type='link' icon={<Icon type="icon-daoru" />} onClick={() => {
 
           }}>导出物料</Button>
         </Space>}
@@ -202,7 +199,7 @@ const SkuTable = ({...props}, ref) => {
           );
         }} />
 
-        <Column title="名称 / 型号" key={2} dataIndex="spuId" render={(value, record) => {
+        <Column title="名称 / 型号" key={2} dataIndex="skuName" render={(value, record) => {
           if (record.spuResult)
             return (
               <>
@@ -231,26 +228,15 @@ const SkuTable = ({...props}, ref) => {
 
         <Column title="物料描述" key={5} render={(value, record) => {
           return (
-            <>
-              {
-                record.skuJsons
-                &&
-                record.skuJsons.map((items, index) => {
-                  if (items.values && items.values.attributeValues && items.attribute && items.values) {
-                    if (index === record.skuJsons.length - 1) {
-                      return `${items.attribute.attribute} : ${items.values.attributeValues}`;
-                    }
-                    return `${items.attribute.attribute} : ${items.values.attributeValues} / `;
-                  } else {
-                    return null;
-                  }
-                })
-              }
-            </>
+            <div style={{minWidth: 100}}>
+              <Note value={<SkuResultSkuJsons describe skuResult={record} />} />
+            </div>
           );
         }} />
 
-        <Column title="规格" key={6} dataIndex="specifications" />
+        <Column title="规格" key={6} dataIndex="specifications" render={(value) => {
+          return <div style={{minWidth: 50}}>{value}</div>;
+        }} />
 
         <Column
           key={7}
@@ -258,10 +244,10 @@ const SkuTable = ({...props}, ref) => {
           sorter
           width={250}
           align="center"
-          dataIndex="user"
+          dataIndex="createUser"
           render={(value, record) => {
             return <>
-              {value && value.name} / {record.createTime}
+              {record.user && record.user.name} / {record.createTime}
             </>;
           }} />
 
@@ -304,8 +290,12 @@ const SkuTable = ({...props}, ref) => {
         compoentRef={formRef}
         loading={setLoading}
         component={SkuEdit}
-        onSuccess={() => {
-          tableRef.current.submit();
+        onSuccess={(res, action) => {
+          if (action) {
+            tableRef.current.refresh();
+          } else {
+            tableRef.current.submit();
+          }
           addRef.current.close();
         }}
         ref={addRef}
@@ -344,7 +334,7 @@ const SkuTable = ({...props}, ref) => {
         }}
         onSuccess={(res) => {
           setSkuId(null);
-          tableRef.current.submit();
+          tableRef.current.refresh();
           editParts.current.close();
         }}
         ref={editParts}
@@ -368,7 +358,7 @@ const SkuTable = ({...props}, ref) => {
         onSuccess={(res) => {
           setSkuId(null);
           showShip.current.close();
-          tableRef.current.submit();
+          tableRef.current.refresh();
         }}
         onBack={() => {
           setSkuId(null);

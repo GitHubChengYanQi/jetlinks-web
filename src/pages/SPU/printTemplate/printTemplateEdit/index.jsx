@@ -6,7 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {FormEffectHooks} from '@formily/antd';
+import {FormEffectHooks, FormPath} from '@formily/antd';
 import Form from '@/components/Form';
 import {printTemplateDetail, printTemplateAdd, printTemplateEdit} from '../printTemplateUrl';
 import * as SysField from '../printTemplateField';
@@ -46,7 +46,7 @@ const PrintTemplateEdit = ({...props}) => {
         };
         return value;
       }}
-      effects={() => {
+      effects={({setFieldState}) => {
         onFieldValueChange$('type').subscribe(({value}) => {
           setType(value);
         });

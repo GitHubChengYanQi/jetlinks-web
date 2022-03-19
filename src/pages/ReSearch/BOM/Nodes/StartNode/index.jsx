@@ -5,7 +5,6 @@ import NodeWrap from '../NodeWrap';
 import WFC from '@/pages/ReSearch/BOM/OperatorContext';
 import {useRequest} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
-import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 
 
 function StartNode(props) {

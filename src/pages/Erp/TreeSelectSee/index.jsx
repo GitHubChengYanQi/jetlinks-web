@@ -18,20 +18,24 @@ const getParentValue = (value, data) => {
   return [];
 };
 
-const TreeSelectSee = ({value,data}) => {
+const TreeSelectSee = ({value, data}) => {
 
   const values = getParentValue(value, data || []);
+
+  if (!value) {
+    return null;
+  }
 
   return (
     <>
       {values && values.map((items, index) => {
-        if (items.value !== '0'){
-          if (index === values.length -1 ){
+        if (items.value !== '0') {
+          if (index === values.length - 1) {
             return <span key={index}>{items.label}</span>;
-          }else {
+          } else {
             return <span key={index}>{items.label} -</span>;
           }
-        }else {
+        } else {
           return null;
         }
 

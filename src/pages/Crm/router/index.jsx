@@ -48,6 +48,11 @@ const CrmRouterConfig = [
         fallback: <div>loading...</div>,
         exact: true,
       }, {
+        path: '/order/detail',
+        component: lazy(() => import('../../Order/Detail')),
+        fallback: <div>loading...</div>,
+        exact: true,
+      },{
         redirect: '/CRM/customer',
       },
     ]

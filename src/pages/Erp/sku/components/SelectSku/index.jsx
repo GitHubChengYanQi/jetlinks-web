@@ -1,9 +1,7 @@
-import {Button, Popover, Select, Space, Spin} from 'antd';
+import {Button, Select, Spin} from 'antd';
 import React, {useEffect, useRef, useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
-import Cascader from '@/components/Cascader';
-import store from '@/store';
 import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
 
@@ -11,26 +9,20 @@ import SkuEdit from '@/pages/Erp/sku/skuEdit';
 const SelectSku = ({
   value,
   onChange,
-  width,
   dropdownMatchSelectWidth,
   placeholder,
   params,
   skuIds,
   noAdd,
-  disabled,
+  spuClassId,
   ids,
   spu
 }) => {
 
-  const [state] = store.useModel('dataSource');
-
   const formRef = useRef();
   const ref = useRef();
 
-  const [spuClass, setSpuClass] = useState();
   const [change, setChange] = useState();
-
-  const [visible, setVisible] = useState();
 
   const [addLoading, setAddLoading] = useState();
 
@@ -50,11 +42,20 @@ const SelectSku = ({
     debounceInterval: 300,
   });
 
+  const getSkuList = (data) => {
+    run({
+      data: {
+        skuIds: ids,
+        spuClass: spuClassId,
+        ...data
+      }
+    });
+  };
+
   const {run: detail} = useRequest(skuDetail, {
     manual: true, onSuccess: (res) => {
       onChange(spu ? res.spuId : res.skuId);
       setChange(object(res).label);
-      setSpuClass(res.spuResult.spuClassificationId);
     }
   });
 
@@ -67,86 +68,48 @@ const SelectSku = ({
       });
     } else {
       setChange(null);
-      setSpuClass(null);
     }
   }, [value]);
 
   useEffect(() => {
-    run({
-      data: {
-        skuIds: ids,
-        ...params
-      }
-    });
-  }, [params, ids && ids.length]);
+    getSkuList();
+  }, [spuClassId]);
 
 
   const options = !loading ? data && data.map((items) => {
     return object(items);
   }) : [];
 
-  const content = () => {
-    return <Space direction="horizontal">
-      <Cascader
-        width={200}
-        placeholder="请选择物料分类"
-        value={spuClass}
-        options={state.skuClass}
-        onChange={(value) => {
-          setSpuClass(value);
-          setChange(null);
-          run({
-            data: {
-              skuIds: ids,
-              spuClass: value,
-              ...params
-            }
-          });
-        }} />
+  return (
+    <>
       <Select
         style={{width: 200}}
-        placeholder={spu ? '名称/型号' : '名称/型号/物料编码'}
+        placeholder={placeholder || '搜索物料'}
         showSearch
         allowClear
         onClear={() => {
           onChange(null);
         }}
-        value={value && (change || (options && options[0] && options[0].label))}
+        value={value && change}
         notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
         onSearch={(value) => {
           setChange(value);
-          run({
-            data: {
-              skuIds: ids,
-              spuClass,
-              skuName: value,
-              ...params
-            }
-          });
+          getSkuList({skuName: value,});
         }}
         onChange={(value, option) => {
           if (value === 'add') {
-            setVisible(false);
             ref.current.open(false);
             return;
           }
-          setVisible(false);
           setChange(value && value.replace(`standard:${option.standard}`, ''));
           if (option) {
-            setSpuClass(option.spu && option.spu.spuClassificationResult && option.spu.spuClassificationResult.pid);
             if (option && option.key) {
               onChange(spu ? option.spu.spuId : option.key);
             }
           } else {
-            setSpuClass(null);
             onChange(null);
-            run({
-              data: {
-                skuIds: ids,
-                ...params
-              }
-            });
+            getSkuList();
           }
 
         }}>
@@ -172,25 +135,6 @@ const SelectSku = ({
           );
         })}
       </Select>
-    </Space>;
-  };
-
-  return (
-    <>
-      <Popover
-        visible={disabled ? false : visible}
-        placement="bottomLeft"
-        content={content}
-        trigger="click"
-        onVisibleChange={setVisible}>
-        <Select
-          disabled={disabled}
-          placeholder={placeholder}
-          open={false}
-          style={{width: width || 180}}
-          value={value && (change || (options && options[0] && options[0].label))}
-        />
-      </Popover>
 
 
       <Modal

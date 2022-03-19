@@ -6,21 +6,19 @@
  */
 
 import React, {useRef, useState} from 'react';
-import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {crmIndustryDelete, crmIndustryList, crmIndustryTreeView} from '../crmIndustryUrl';
+import {crmIndustryDelete, crmIndustryTreeView} from '../crmIndustryUrl';
 import CrmIndustryEdit from '../crmIndustryEdit';
-import * as SysField from '../crmIndustryField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
 const formActions = createFormActions();
 const CrmIndustryList = () => {
   const ref = useRef(null);
@@ -31,14 +29,6 @@ const CrmIndustryList = () => {
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
-      </>
-    );
-  };
-
-  const searchForm = () => {
-    return (
-      <>
-        <FormItem label="上级" name="parentId" component={SysField.ParentId}/>
       </>
     );
   };
@@ -60,11 +50,14 @@ const CrmIndustryList = () => {
     <div style={{padding:16}}>
       <Table
         contentHeight
+        listHeader={false}
+        cardHeaderStyle={{display:'none'}}
+        SearchButton
+        searchForm
         footer={footer}
         onChange={(keys) => {
           setIds(keys);
         }}
-        title={<Breadcrumb title="行业管理" />}
         api={crmIndustryTreeView}
         noSort
         rowKey="key"

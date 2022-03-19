@@ -43,9 +43,9 @@
 .navbar {
   min-height: 62px;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: #222e44;
   background-repeat: no-repeat;
-  background-image: url("../../../../asseset/imgs/topRightbg.png");
+  background-image: url("../../../../asseset/imgs/newTopRightbg.png");
   background-position: right center;
   position: fixed;
   z-index: 1;
@@ -55,7 +55,6 @@
 
   border-bottom: 1px solid transparent;
   //border-top: 0 solid transparent;
-
 
   .inner {
     z-index: 100;
@@ -68,7 +67,7 @@
       -webkit-box-pack: justify;
       -ms-flex-pack: justify;
       justify-content: space-between;
-      padding: 0 16px;
+      //padding: 0 16px;
       -webkit-box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
       box-shadow: 0 0 8px 0 rgba(0, 0, 0, .1);
       -webkit-box-flex: 1;
@@ -101,7 +100,7 @@
         }
 
         #navigation-title {
-          color: @heading-color;
+          //color: @heading-color;
           font-weight: 700;
           line-height: 32px;
           font-size: 22px;
@@ -123,7 +122,8 @@
         align-items: center;
         height: 100%;
 
-        .navigationTitle{
+        .navigationTitle {
+          color: #fff;
           cursor: pointer;
         }
       }
@@ -243,12 +243,13 @@
   opacity: 1
 }
 
-.message{
+.message {
   background-color: #FFF;
   width: 340px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
-  :global{
-    .noMessage{
+
+  :global {
+    .noMessage {
       color: #8d8d8d;
       text-align: center;
       padding: 32px;

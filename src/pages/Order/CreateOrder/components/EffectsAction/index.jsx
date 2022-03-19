@@ -218,18 +218,19 @@ export const customerBAction = (setFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(async ({value}) => {
-    if (value) {
-      setFieldState('partyBBankAccount', (state) => {
-        state.props.bankId = value;
-      });
-    }
+  FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(({value}) => {
+    setFieldState('partyBBankAccount', (state) => {
+      state.props.bankId = value;
+    });
   });
 
 };
 
 const paymentAction = (setFieldState, getFieldState) => {
   FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value}) => {
+    setFieldState('allField', (state) => {
+      state.props.skuList = value;
+    });
     let money = 0;
     if (value) {
       value.map((item) => {
@@ -244,6 +245,12 @@ const paymentAction = (setFieldState, getFieldState) => {
     }
   });
 
+  FormEffectHooks.onFieldValueChange$('paymentDetail').subscribe(({value}) => {
+    setFieldState('allField', (state) => {
+      state.props.payList = value;
+    });
+  });
+
   FormEffectHooks.onFieldValueChange$('money').subscribe(({value}) => {
     if (value) {
       setFieldState('paymentDetail', (state) => {
@@ -253,6 +260,7 @@ const paymentAction = (setFieldState, getFieldState) => {
   });
 
   FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({active, name, value}) => {
+    console.log(value);
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
     if (!money || !money.value) {
@@ -281,13 +289,31 @@ const paymentAction = (setFieldState, getFieldState) => {
       }
     }
     setFieldState(FormPath.transform(name, /\d/, ($1) => {
-      return `paymentDetail.${$1}.money`;
+      return paymentDetail.value[$1] && `paymentDetail.${$1}.money`;
     }), (state) => {
       state.value = money.value * (value / 100);
     });
+    if (paymentDetail.value) {
+      let percentum = 0;
+      paymentDetail.value.map((item, index) => {
+        if (item && item.percentum) {
+          percentum += item.percentum;
+        } else if (index !== paymentDetail.value.length - 1) {
+          percentum = 0;
+        }
+        return null;
+      });
+
+      if (percentum && !(paymentDetail.value[paymentDetail.value.length - 1] && paymentDetail.value[paymentDetail.value.length - 1].percentum)) {
+        setFieldState(`paymentDetail.${paymentDetail.value.length - 1}.percentum`, (state) => {
+          state.value = 100 - percentum;
+        });
+      }
+    }
   });
 
   FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(({active, name, value}) => {
+
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
     if (!money || !money.value) {
@@ -316,7 +342,7 @@ const paymentAction = (setFieldState, getFieldState) => {
       }
     }
     setFieldState(FormPath.transform(name, /\d/, ($1) => {
-      return `paymentDetail.${$1}.percentum`;
+      return paymentDetail.value[$1] && `paymentDetail.${$1}.percentum`;
     }), (state) => {
       state.value = (value / money.value) * 100;
     });
@@ -355,4 +381,10 @@ export const EffectsAction = (setFieldState, getFieldState) => {
   customerBAction(setFieldState);
   paymentAction(setFieldState, getFieldState);
   contractAction(setFieldState);
+
+  FormEffectHooks.onFieldValueChange$(' currency').subscribe(({value}) => {
+    setFieldState('detailParams', (state) => {
+      state.props.currency = value;
+    });
+  });
 };

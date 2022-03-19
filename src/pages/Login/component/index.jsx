@@ -71,7 +71,7 @@ export default function Login({ submitText }) {
       </FormItem>
       <FormItem>
         <Button size="large" type="primary" htmlType="submit" block loading={loading}>
-          {submitText || `登 录`}
+          {submitText || '登 录'}
         </Button>
       </FormItem>
       {error && <Alert message={error.message} type="error"/>}

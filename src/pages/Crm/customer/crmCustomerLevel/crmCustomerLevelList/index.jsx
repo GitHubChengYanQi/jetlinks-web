@@ -13,15 +13,12 @@ import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
 import {crmCustomerLevelDelete, crmCustomerLevelList} from '../crmCustomerLevelUrl';
 import CrmCustomerLevelEdit from '../crmCustomerLevelEdit';
-import * as SysField from '../crmCustomerLevelField';
 import Breadcrumb from '@/components/Breadcrumb';
 import store from '@/store';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
 const formActions = createFormActions();
 const CrmCustomerLevelList = () => {
   const ref = useRef(null);
@@ -56,6 +53,10 @@ const CrmCustomerLevelList = () => {
     <>
       <Table
         contentHeight
+        listHeader={false}
+        searchForm
+        SearchButton
+        cardHeaderStyle={{display:'none'}}
         footer={footer}
         onChange={(keys) => {
           setIds(keys);

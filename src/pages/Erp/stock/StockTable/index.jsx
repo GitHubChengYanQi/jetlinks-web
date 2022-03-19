@@ -5,34 +5,37 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useEffect, useState,} from 'react';
+import React, {useEffect, useRef, useState,} from 'react';
 import {
-  Button,
-  Card,
-  Layout,
+  Button, Input,
   message,
-  Modal as AntModal,
-  Space,
+  Modal as AntModal, Progress,
+  Space, Statistic,
   Table as AntTable,
   Tabs,
   Upload
 } from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
-import Breadcrumb from '@/components/Breadcrumb';
 import Table from '@/components/Table';
 import Icon from '@/components/Icon';
-import {useRequest} from '@/util/Request';
-import DataList from '@/pages/Erp/stock/StockTable/components/DataList';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import Breadcrumb from '@/components/Breadcrumb';
+import Form from '@/components/Form';
+import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 const {baseURI} = config;
+const {FormItem} = Form;
+
 const StockTable = (props) => {
 
-  const {state, left} = props;
+  const {state} = props;
 
-  const [key, setKey] = useState('spu');
+  const tableRef = useRef();
 
   const [filelist, setFilelist] = useState([]);
+
+  const [data, setData] = useState([]);
 
   const dataTable = (dataSource) => {
     return <AntTable rowKey="key" dataSource={dataSource || []} pagination={false} scroll={{y: '50vh'}}>
@@ -101,9 +104,14 @@ const StockTable = (props) => {
     });
   };
 
+  const token = cookie.get('tianpeng-token');
+
   const actions = () => {
     return (
       <Space>
+        <Button type='link' icon={<Icon type="icon-daoru" />} onClick={()=>{
+          window.location.href = `${baseURI}stockExcel/stockExport?authorization=${token}`;
+        }}>导出库存</Button>
         <Upload
           fileList={filelist}
           action={`${baseURI}Excel/importPositionBind`}
@@ -139,66 +147,109 @@ const StockTable = (props) => {
             }
           }}
         >
-          <Button icon={<Icon type="icon-daoru" />}>导入库存</Button>
+          <Button type='link' icon={<Icon type="icon-daoru" />}>导入库存</Button>
         </Upload>
       </Space>
     );
   };
 
-
-  const {loading, data, run} = useRequest({
-    url: '/viewStockDetails/list',
-    method: 'POST',
-  }, {
-    manual: true
-  });
-
   useEffect(() => {
-    run({
-      data: {
-        type: key,
-        storehouseId: state,
-      }
-    });
+    tableRef.current.formActions.setFieldValue('storehouseId', state);
+    tableRef.current.submit();
   }, [state]);
 
+  const searchForm = () => {
+
+    return (
+      <>
+        <FormItem
+          label="物料名称"
+          placeholder="搜索物料"
+          name="skuId"
+          noAdd
+          component={SelectSku} />
+        <FormItem
+          hidden
+          name="type"
+          value="sku"
+          component={Input} />
+        <FormItem
+          hidden
+          name="storehouseId"
+          component={Input} />
+      </>
+    );
+  };
+
+  const count = (array) => {
+    let number = 0;
+    array.map((item) => {
+      return number += item.number;
+    });
+    return number;
+  };
+
   return (
-    <Card title={<Breadcrumb />}>
-      <Layout>
-        <Layout.Sider style={{
-          left: 0,
-          height: '100vh',
-          overflow: 'auto',
-          backgroundColor: '#fff',
-          borderRight: '1px solid #f0f0f0',
-        }} width={180}>
-          {left}
-        </Layout.Sider>
-        <Layout>
-          <Layout.Content style={{paddingLeft: 16}}>
-            <Tabs
-              tabBarExtraContent={actions()}
-              onChange={(value) => {
-                setKey(value);
-                run({
-                  data: {
-                    type: value,
-                    storehouseId: state,
-                  }
-                });
-              }}
-            >
-              <Tabs.TabPane tab="型号" key="spu">
-                <DataList loading={loading} data={data} type="spu" />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="物料" key="sku">
-                <DataList loading={loading} data={data} type="sku" />
-              </Tabs.TabPane>
-            </Tabs>
-          </Layout.Content>
-        </Layout>
-      </Layout>
-    </Card>
+    <Table
+      ref={tableRef}
+      noRowSelection
+      actionButton={actions()}
+      actions={<>
+        <Space style={{padding: 16}}>
+          <Progress
+            type="circle"
+            percent={100}
+            strokeColor={{
+              '0%': '#108ee9',
+              '100%': '#87d068',
+            }}
+            format={() =>
+              <Statistic title="物料种类" value={data.length} />
+            } />
+          <Progress
+            type="circle"
+            percent={100}
+            strokeColor={{
+              '0%': '#108ee9',
+              '100%': '#87d068',
+            }}
+            format={() =>
+              <Statistic title="总数量" value={count(data)} />
+            } />
+        </Space>
+      </>}
+      title={<Breadcrumb />}
+      searchForm={searchForm}
+      branch={(data) => {
+        setData(data);
+        return data;
+      }}
+      api={{
+        url: '/viewStockDetails/list',
+        method: 'POST',
+      }}
+      tableKey="stockSku"
+      rowKey="skuId"
+      {...props}
+    >
+      <Table.Column key={1} title="物料编码" dataIndex="skuResult" render={(value) => {
+        return value && value.standard;
+      }} />
+      <Table.Column key={2} title="物料名称" dataIndex="skuResult" render={(value) => {
+        return value && value.spuResult && value.spuResult.name;
+      }} />
+      <Table.Column key={3} title="物料型号" dataIndex="skuResult" render={(value) => {
+        return value && value.skuName;
+      }} />
+      <Table.Column key={4} title="物料规格" dataIndex="skuResult" render={(value) => {
+        return <div style={{minWidth: 50}}>{value && value.specifications}</div>;
+      }} />
+      <Table.Column key={5} title="物料描述" dataIndex="skuResult" render={(value) => {
+        return <SkuResultSkuJsons skuResult={value} describe />;
+      }} />
+      <Table.Column key={6} title="库存数量" dataIndex="number" />
+      <Table.Column />
+    </Table>
   );
 };
 
