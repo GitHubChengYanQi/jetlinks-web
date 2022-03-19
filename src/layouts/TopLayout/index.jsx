@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Layout, Menu} from 'antd';
-import store from '@/store';
+import {Layout, Menu} from 'antd';
 import {useHistory, useLocation, useRouteMatch} from 'ice';
+import store from '@/store';
 import Icon from '@/components/Icon';
 import styles from './index.module.less';
 import Empty from '@/components/Empty';
@@ -61,7 +61,7 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
           }}
           mode={mode}
           defaultSelectedKeys={[]}
-          // style={{ borderRight: 'none' }}
+          style={{ backgroundColor: '#2e3c56' }}
           theme={mode === 'vertical' ? 'dark' : 'light'}
         >{loopMenu(subMenu.subMenus)}</Menu>
       );
@@ -76,9 +76,11 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
         theme={mode === 'vertical' ? 'dark' : 'light'}
         buttons={[
           <MenuItem
+            disabled
             style={{
               width: '50%',
-              textAlign: 'center'
+              textAlign: 'center',
+              backgroundColor:'#2e3c56',
             }}
             key="layout"
             onClick={() => {
@@ -97,14 +99,14 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
   }
 
   return (
-    <Layout style={{height: '100%'}}>
+    <Layout style={{height: '100%',backgroundColor:'#fff'}}>
       {mode === 'horizontal' && <Header theme="light" className={styles.header}>
         <div className={styles.leftMenu}>{renderLeftMenu()}</div>
         <div className={styles.rightMenu}>
           {renderRightMenu()}
         </div>
       </Header>}
-      {mode === 'vertical' && <Sider theme="dark" width={200}>
+      {mode === 'vertical' && <Sider className={styles.sider} width={200}>
         <div style={{height: '100%'}}>
           <div className={styles.leftLogo}>
             {subMenu.name}

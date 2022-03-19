@@ -13,6 +13,7 @@ const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMe
         selectable={false}
         mode="horizontal"
         theme={theme}
+        style={{backgroundColor: '#2e3c56'}}
       >
         <Menu.Item
           style={{width, textAlign: 'center'}}

@@ -20,6 +20,8 @@ import production from '@/asseset/imgs/production.png';
 import workflow from '@/asseset/imgs/workflow.png';
 import purchase from '@/asseset/imgs/purchase.png';
 
+import daoxinyun from '@/asseset/imgs/daoxinyun.png';
+
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
 import {toggleFullScreen} from '@/layouts/BasicLayout/components/Header/components/FullScreen';
@@ -57,21 +59,17 @@ const Header = () => {
         <div className={`row-flex ${styles.inner}`}>
           <div className={`${styles.systemBar}`}>
             <div className={styles.left}>
-              <div id="navigation-dock">
-                <div id="mainMenu" onClick={() => {
+              <div style={{width:200,paddingLeft:16,backgroundColor:'#2e3c56',height:'100%',paddingTop:8}}>
+                <img src={daoxinyun} alt="" />
+              </div>
+              <Button
+                type='link'
+                style={{color: '#fff'}}
+                onClick={() => {
                   setVisible(true);
                 }}>
-                  <Icon type="icon-fenlei1" />
-                </div>
-              </div>
-              <div
-                onClick={() => {
-                  history.push('/');
-                }}
-                id="navigation-title"
-                className={styles.navigationTitle}>
-                {userInfo.abbreviation || '道昕云'}
-              </div>
+                更多功能
+              </Button>
             </div>
             <div className={styles.middle} />
             <div className={styles.right}>
@@ -110,9 +108,9 @@ const Header = () => {
                 </Button>
               </Dropdown>
               <Message />
-              <Button type="text" size="large" style={{height: 60, color: '#FFF'}} onClick={(event)=>{
+              <Button type="text" size="large" style={{height: 60, color: '#FFF'}} onClick={(event) => {
                 toggleFullScreen(event);
-              }} ><FullscreenOutlined /></Button>
+              }}><FullscreenOutlined /></Button>
             </div>
           </div>
         </div>
