@@ -9,7 +9,7 @@ const {Column} = AntTable;
 const formActionsPublic = createFormActions();
 
 
-const PlanList = ({searchForm, actions, checkedSkus, setCheckedSkus, refresh}) => {
+const PlanList = ({searchForm, checkedSkus, setCheckedSkus, refresh}) => {
 
   const [skuKeys, setSkuKeys] = useState([]);
 
@@ -28,7 +28,6 @@ const PlanList = ({searchForm, actions, checkedSkus, setCheckedSkus, refresh}) =
       ref={tableRef}
       formActions={formActionsPublic}
       noSort
-      actions={actions()}
       tableKey="planList"
       searchForm={searchForm}
       noPagination={{

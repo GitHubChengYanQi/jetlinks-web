@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react';
-import {Alert, Button, Card, Descriptions, Input, notification, Result, Space, Spin, Table, Tabs} from 'antd';
+import {Affix, Alert, Button, Card, Descriptions, Input, notification, Result, Space, Spin, Table, Tabs} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {useBoolean} from 'ahooks';
+import moment from 'moment';
 import Breadcrumb from '@/components/Breadcrumb';
 import PlanList from '@/pages/Production/ProductionPlan/List/components/PlanList';
 import OrderList from '@/pages/Production/ProductionPlan/List/components/OrderList';
@@ -15,7 +16,6 @@ import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
-import moment from 'moment';
 
 const {FormItem} = Form;
 const {Column} = Table;
@@ -27,6 +27,8 @@ const List = () => {
   const [checkedSkus, setCheckedSkus] = useState([]);
 
   const [value, onChange] = useState({});
+
+  const [type, setType] = useState('order');
 
   const [loading, setLoading] = useState();
 
@@ -51,20 +53,6 @@ const List = () => {
       setResult('error');
     }
   });
-
-  const actions = () => {
-    return <>
-      <Button
-        type="primary"
-        disabled={checkedSkus.length === 0}
-        onClick={() => {
-          setFalse();
-          onChange({});
-          ref.current.open(true);
-          setResult(null);
-        }}>创建生产计划</Button>
-    </>;
-  };
 
   const searchForm = () => {
 
@@ -186,33 +174,45 @@ const List = () => {
     }
   };
 
+  const module = () => {
+    switch (type) {
+      case 'order':
+        return <OrderList
+          searchForm={searchForm}
+          setCheckedSkus={setCheckedSkus}
+          checkedSkus={checkedSkus}
+          refresh={refresh}
+        />;
+      case 'plan':
+        return <PlanList
+          searchForm={searchForm}
+          setCheckedSkus={setCheckedSkus}
+          checkedSkus={checkedSkus}
+          refresh={refresh}
+        />;
+      default:
+        return <></>;
+    }
+  };
+
   return <>
     <Card title={<Breadcrumb />}>
-      <Tabs
-        destroyInactiveTabPane
-        onTabClick={() => {
-          setCheckedSkus([]);
-        }}
-      >
-        <Tabs.TabPane tab="订单式生产" key="order">
-          <OrderList
-            searchForm={searchForm}
-            actions={actions}
-            setCheckedSkus={setCheckedSkus}
-            checkedSkus={checkedSkus}
-            refresh={refresh}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="计划式生产" key="plan">
-          <PlanList
-            searchForm={searchForm}
-            actions={actions}
-            setCheckedSkus={setCheckedSkus}
-            checkedSkus={checkedSkus}
-            refresh={refresh}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+      <div style={{position:'sticky',top:0,zIndex:999,backgroundColor:'#fff',}}>
+        <Tabs
+          centered
+          activeKey={type}
+          destroyInactiveTabPane
+          onTabClick={(key) => {
+            setType(key);
+            setCheckedSkus([]);
+          }}
+        >
+          <Tabs.TabPane tab="订单式生产" key="order" />
+          <Tabs.TabPane tab="计划式生产" key="plan" />
+        </Tabs>
+      </div>
+
+      {module()}
     </Card>
 
     <Modal ref={ref} width={800} headTitle="创建生产计划" footer={!loading && <Space>
@@ -236,6 +236,30 @@ const List = () => {
         }
       </div>
     </Modal>
+
+    <Affix offsetBottom={0}>
+      <div
+        style={{
+          height: 47,
+          borderTop: '1px solid #e7e7e7',
+          background: '#fff',
+          textAlign: 'right',
+          paddingTop: 8,
+          paddingRight: 16
+        }}>
+        <Space>
+          <Button
+            type="primary"
+            disabled={checkedSkus.length === 0}
+            onClick={() => {
+              setFalse();
+              onChange({});
+              ref.current.open(true);
+              setResult(null);
+            }}>创建生产计划</Button>
+        </Space>
+      </div>
+    </Affix>
   </>;
 };
 

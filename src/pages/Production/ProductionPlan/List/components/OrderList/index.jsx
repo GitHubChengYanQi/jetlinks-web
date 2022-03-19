@@ -1,137 +1,130 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Table as AntTable} from 'antd';
-import {createFormActions} from '@formily/antd';
-import Table from '@/components/Table';
+import {Button, Card, Checkbox, Col, Descriptions, List, Row, Space, Table as AntTable} from 'antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import {pendingProductionByOrder} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import Note from '@/components/Note';
+import {useRequest} from '@/util/Request';
+import Coding from '@/pages/Erp/tool/components/Coding';
 
 const {Column} = AntTable;
 
-
-const formActionsPublic = createFormActions();
-
-const OrderList = ({searchForm, actions, checkedSkus, setCheckedSkus, refresh}) => {
+const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
 
   const [orderKeys, setOrderKeys] = useState([]);
 
   const tableRef = useRef();
 
+  const {loading, data} = useRequest(pendingProductionByOrder);
+
   useEffect(() => {
     if (refresh) {
-      console.log(111);
       setOrderKeys([]);
       tableRef.current.submit();
     }
   }, [refresh]);
 
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
+  const onChecked = (checked, rowItem, orderItem) => {
+    if (checked) {
+      const orderDetails = checkedSkus.filter((item) => {
+        return item.orderId === rowItem.orderId;
+      });
+      if (orderDetails.length + 1 === orderItem.detailResults.length) {
+        setOrderKeys([...orderKeys, rowItem.orderId]);
+      }
+      setCheckedSkus([...checkedSkus, rowItem]);
+    } else {
+      const array = checkedSkus.filter((item) => {
+        return item.detailId !== rowItem.detailId;
+      });
+      setCheckedSkus(array);
+      const orders = orderKeys.filter((item) => {
+        return item !== rowItem.orderId;
+      });
+      setOrderKeys(orders);
+    }
+  };
+
   return <>
-    <Table
-      ref={tableRef}
-      tableKey="orderList"
-      formActions={formActionsPublic}
-      searchForm={searchForm}
-      noSort
-      actions={actions()}
-      noPagination={{
-        defaultPageSize: 20,
-        showTotal: (total) => {
-          return `共${total}条`;
-        },
-        showSizeChanger: true,
-        showQuickJumper: true,
-        pageSizeOptions: [5, 10, 20, 50, 100],
-        position: ['bottomRight']
-      }}
-      api={pendingProductionByOrder}
-      rowKey="orderId"
-      rowSelection={{
-        selectedRowKeys: orderKeys,
-        onSelect: (record, selected) => {
-          if (selected) {
-            setOrderKeys([...orderKeys, record.orderId]);
-            setCheckedSkus([...checkedSkus, ...record.detailResults]);
-          } else {
-            const array = orderKeys.filter((item) => {
-              return item !== record.orderId;
-            });
-            setOrderKeys(array);
-            const skus = checkedSkus.filter((item) => {
-              return array.includes(item.orderId);
-            });
-            setCheckedSkus(skus);
-          }
-        },
-        onSelectAll: (selected, rows) => {
-          if (selected) {
-            const skus = [];
-            setOrderKeys(rows.map((item) => {
-              item.detailResults.map(item => skus.push(item));
-              return item.orderId;
-            }));
-            setCheckedSkus(skus);
-          } else {
-            setOrderKeys([]);
-            setCheckedSkus([]);
-          }
-        },
-      }}
-      expandable={{
-        expandedRowRender: orderRecord => {
-          return <div style={{border: '1px solid rgb(233 227 227)'}}>
-            <AntTable
-              style={{margin: 16}}
-              pagination={false}
-              dataSource={orderRecord.detailResults}
-              rowKey="detailId"
-              rowSelection={{
-                hideSelectAll: true,
-                selectedRowKeys: checkedSkus.map(item => item.detailId),
-                onSelect: (record, selected) => {
-                  if (selected) {
-                    const orderDetails = checkedSkus.filter((item) => {
-                      return item.orderId === record.orderId;
-                    });
-                    if (orderDetails.length + 1 === orderRecord.detailResults.length) {
-                      setOrderKeys([...orderKeys, record.orderId]);
+    <div style={{maxWidth: 1250, margin: 'auto'}}>
+      <List
+        bordered={false}
+        dataSource={data}
+        renderItem={(orderItem) => (
+          <div style={{margin: '16px 0'}}>
+            <Card
+              type="inner"
+              title={<Space size={24}>
+                <div>
+                  <Checkbox checked={orderKeys.includes(orderItem.orderId)} onChange={(value) => {
+                    if (value.target.checked) {
+                      setOrderKeys([...orderKeys, orderItem.orderId]);
+                      setCheckedSkus([...checkedSkus, ...orderItem.detailResults]);
+                    } else {
+                      const array = orderKeys.filter((item) => {
+                        return item !== orderItem.orderId;
+                      });
+                      setOrderKeys(array);
+                      const skus = checkedSkus.filter((item) => {
+                        return array.includes(item.orderId);
+                      });
+                      setCheckedSkus(skus);
                     }
-                    setCheckedSkus([...checkedSkus, record]);
-                  } else {
-                    const array = checkedSkus.filter((item) => {
-                      return item.detailId !== record.detailId;
-                    });
-                    setCheckedSkus(array);
-                    const orders = orderKeys.filter((item) => {
-                      return item !== record.orderId;
-                    });
-                    setOrderKeys(orders);
-                  }
-                },
-              }}
+                  }} />
+                </div>
+                <div>订单号 / {orderItem.coding}</div>
+                <div>客户 / {orderItem && orderItem.acustomer && orderItem.acustomer.customerName}</div>
+              </Space>}
+              bodyStyle={{padding: 0}}
+              extra={<Space size={24}>
+                <div>
+                  创建时间 / {orderItem.createTime}
+                </div>
+                <div>
+                  交货时间 /{orderItem.deliveryDate}
+                </div>
+              </Space>}
             >
-              <Column title="物料编码" dataIndex="skuResult" render={(value) => {
-                return value && value.standard;
-              }} />
-              <Column title="物料名称" dataIndex="skuResult" render={(value) => {
-                return value && value.spuResult && value.spuResult.name;
-              }} />
-              <Column title="规格 / 型号" dataIndex="skuResult" render={(value) => {
-                return `${value.skuName}${value.specifications ? ` / ${value.specifications}` : ''}`;
-              }} />
-              <Column title="物料描述" dataIndex="skuResult" render={(value) => {
-                return <SkuResultSkuJsons describe skuResult={value} />;
-              }} />
-              <Column title="数量" dataIndex="purchaseNumber" />
-            </AntTable>
-          </div>;
-        },
-      }}
-    >
-      <Column title="订单编号" key={1} dataIndex="coding" />
-      <Column title="客户" key={2} dataIndex="acustomer" render={(value) => {
-        return value && value.customerName;
-      }} />
-      <Column title="交货日期" key={3} dataIndex="deliveryDate" />
-    </Table>
+              <List
+                bordered={false}
+                dataSource={orderItem.detailResults}
+                renderItem={(rowItem) => {
+                  const skuResult = rowItem.skuResult || {};
+                  return <div style={{padding: 24,borderBottom:'solid #eee 1px'}}>
+                    <Space size={24}>
+                      <Checkbox
+                        checked={checkedSkus.map(item => item.detailId).includes(rowItem.detailId)}
+                        onChange={(value) => {
+                          onChecked(value.target.checked, rowItem, orderItem);
+                        }} />
+                      <Space direction="vertical" style={{cursor: 'pointer'}} onClick={()=>{
+                        onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, orderItem);
+                      }}>
+                        <div>
+                          物料编码 / {skuResult && skuResult.standard}
+                        </div>
+                        <Button type="link" style={{padding: 0}}>
+                          <SkuResultSkuJsons skuResult={skuResult} />
+                        </Button>
+                      </Space>
+                      <div>
+                        × {rowItem.purchaseNumber}
+                      </div>
+                    </Space>
+                    <div style={{float: 'right', lineHeight: '62px'}}>
+                      <SkuResultSkuJsons describe skuResult={skuResult} />
+                    </div>
+                  </div>;
+                }} />
+            </Card>
+          </div>
+        )}
+      />
+    </div>
   </>;
 };
 
