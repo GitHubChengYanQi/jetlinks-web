@@ -64,7 +64,7 @@ const Setps = ({
 
         switch (value.type) {
           case 'ship':
-            valueDisabled = value.type && value.skuId && value.processId && value.shipNumber;
+            valueDisabled = value.type && value.skuId && value.processId && value.num;
             break;
           case 'setp':
             valueDisabled = value.type && value.productionType && value.productionStationId && value.shipSetpId && details;
@@ -304,7 +304,7 @@ const Setps = ({
         <FormItem
           required
           label="产出数量"
-          name="shipNumber"
+          name="num"
           component={InputNumber}
         />
         <FormItem
@@ -316,7 +316,7 @@ const Setps = ({
 
       <Affix offsetBottom={0}>
         <div
-          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8,boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'}}>
+          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
           <Space>
             <Submit disabled={disabled}>确定</Submit>
             <Button onClick={() => {

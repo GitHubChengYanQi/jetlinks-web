@@ -93,10 +93,10 @@ const Effects = (setFieldState, defaultValue) => {
     if (value) {
       res = await request({...skuDetail, data: {skuId: value}});
     }
-    setFieldState('processRouteId', state => {
+    setFieldState('processId', state => {
       state.props.skuId = value;
       state.visible = value;
-      state.value = res && res.processRouteResult && res.processRouteResult.processRouteId;
+      state.value = res && res.processResult && res.processResult.processId;
     });
   });
 };
