@@ -41,7 +41,7 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     }
     return (
       <Menu.Item
-        style={{borderBottom: '#435067 dotted 1px'}}
+        style={{borderBottom: '#435067 dotted 1px',marginTop:0}}
         key={item.url}
         icon={item.icon &&
         <Icon
