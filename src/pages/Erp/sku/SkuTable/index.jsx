@@ -25,6 +25,8 @@ import Icon from '@/components/Icon';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
+import Note from '@/components/Note';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -226,26 +228,15 @@ const SkuTable = ({...props}, ref) => {
 
         <Column title="物料描述" key={5} render={(value, record) => {
           return (
-            <>
-              {
-                record.skuJsons
-                &&
-                record.skuJsons.map((items, index) => {
-                  if (items.values && items.values.attributeValues && items.attribute && items.values) {
-                    if (index === record.skuJsons.length - 1) {
-                      return `${items.attribute.attribute} : ${items.values.attributeValues}`;
-                    }
-                    return `${items.attribute.attribute} : ${items.values.attributeValues} / `;
-                  } else {
-                    return null;
-                  }
-                })
-              }
-            </>
+            <div style={{minWidth: 100}}>
+              <Note value={<SkuResultSkuJsons describe skuResult={record} />} />
+            </div>
           );
         }} />
 
-        <Column title="规格" key={6} dataIndex="specifications" />
+        <Column title="规格" key={6} dataIndex="specifications" render={(value) => {
+          return <div style={{minWidth: 50}}>{value}</div>;
+        }} />
 
         <Column
           key={7}
