@@ -47,6 +47,7 @@ export const AddSku = ({value = [], onChange}) => {
 
     <Modal
       ref={ref}
+      headTitle='添加物料'
       width={1000}
       footer={<Space>
         <Button onClick={() => {

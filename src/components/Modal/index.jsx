@@ -49,7 +49,6 @@ const Modal = (
     .toString(36)
     .substring(2));
 
-console.log(1);
 
   let modalContent;
   let sumX = 0;

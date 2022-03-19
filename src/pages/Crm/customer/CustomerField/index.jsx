@@ -235,6 +235,7 @@ export const AddSku = ({value = [], onChange, title}) => {
     </ProCard>
 
     <Modal
+      headTitle='添加物料'
       ref={ref}
       width={1000}
       footer={<Space>

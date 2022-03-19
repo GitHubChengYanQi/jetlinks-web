@@ -251,6 +251,7 @@ export const AddSku = ({value = [], onChange, loading, extraButton}) => {
     <Modal
       ref={ref}
       width={1000}
+      headTitle='添加物料'
       footer={<Space>
         <Button onClick={() => {
           const res = addSkuRef.current.check();

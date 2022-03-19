@@ -107,6 +107,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency, ...p
     <Modal
       ref={addSku}
       width={1000}
+      headTitle='添加物料'
       footer={<Space>
         <Button onClick={() => {
           onChange(addSkuRef.current.check());

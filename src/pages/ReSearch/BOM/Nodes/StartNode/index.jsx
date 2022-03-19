@@ -31,7 +31,6 @@ function StartNode(props) {
     }
   }, [skuId]);
 
-  console.log(data);
 
   return (
     <NodeWrap

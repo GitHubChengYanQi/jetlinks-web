@@ -72,7 +72,6 @@ const CheckSku = ({
   return (
     <>
       <Table
-        title={<h2>添加物料</h2>}
         api={skuList}
         contentHeight
         formActions={formActionsPublic}
