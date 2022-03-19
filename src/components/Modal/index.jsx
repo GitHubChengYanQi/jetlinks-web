@@ -66,17 +66,22 @@ console.log(1);
 
         const contain = document.getElementsByClassName(simpleClass)[0];
         const header = contain.getElementsByClassName('ant-modal-header')[0];
-        modalContent = contain.getElementsByClassName('ant-modal-content')[0];
+        if(
+          header
+        ){
+          modalContent = contain.getElementsByClassName('ant-modal-content')[0];
 
-        header.style.cursor = 'all-scroll';
-        header.onmousedown = (e) => {
-          mouseDownX = e.pageX;
-          mouseDownY = e.pageY;
-          document.body.onselectstart = () => false;
-          window.addEventListener('mousemove', handleMove, false);
-        };
+          header.style.cursor = 'all-scroll';
+          header.onmousedown = (e) => {
+            mouseDownX = e.pageX;
+            mouseDownY = e.pageY;
+            document.body.onselectstart = () => false;
+            window.addEventListener('mousemove', handleMove, false);
+          };
 
-        window.addEventListener('mouseup', removeUp, false);
+          window.addEventListener('mouseup', removeUp, false);
+        }
+
       }, 0);
   };
 
@@ -103,7 +108,10 @@ console.log(1);
 
   useEffect(() => {
     if(visible){
-      initialEvent(true);
+      setTimeout(()=>{
+        initialEvent(true);
+      },0)
+
     }
   }, [visible]);
 
