@@ -41,13 +41,13 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
     }
     return (
       <Menu.Item
-        style={{borderBottom: '#435067 dotted 1px',marginTop:0}}
+        style={{borderBottom: '#435067 dotted 1px', marginTop: 0}}
         key={item.url}
         icon={item.icon &&
         <Icon
           style={{fontSize: 16, color: mode === 'vertical' ? '#fff' : '#000'}}
           type={item.icon} />}>{item.name}
-        <div style={{float: 'right'}}><RightOutlined /></div>
+        <div style={{float: 'right'}}><Icon type='icon-next' /></div>
       </Menu.Item>
     );
   };
@@ -114,8 +114,8 @@ const TopLayout = ({children, rightMenu: RightMenu}) => {
       {mode === 'vertical' && <Sider className={styles.sider} width={200}>
         <div style={{height: '100%'}}>
           <div className={styles.leftLogo}>
-            <Space align='center'>
-              <div style={{backgroundColor: 'rgb(199 196 196)',width:4,height:16}} />
+            <Space align="center">
+              <div style={{backgroundColor: 'rgb(199 196 196)', width: 4, height: 16}} />
               {subMenu.name}
             </Space>
           </div>

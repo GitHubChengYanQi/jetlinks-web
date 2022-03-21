@@ -4,6 +4,7 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import {pendingProductionByOrder} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
+import Label from '@/components/Label';
 
 const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
 
@@ -44,7 +45,7 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
   };
 
   return <>
-    <div style={{maxWidth: 1250, margin: 'auto'}}>
+    <div style={{maxWidth: 1200, margin: 'auto'}}>
       <List
         bordered={false}
         dataSource={data}
@@ -70,18 +71,18 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
                   }
                 }}>
                   <Space size={24} style={{paddingLeft: 16}}>
-                    <div>订单号 / {orderItem.coding}</div>
-                    <div>客户 / {orderItem && orderItem.acustomer && orderItem.acustomer.customerName}</div>
+                    <div><Label>订单号：</Label>{orderItem.coding}</div>
+                    <div><Label>客户：</Label>{orderItem && orderItem.acustomer && orderItem.acustomer.customerName}</div>
                   </Space>
                 </Checkbox>
               </Space>}
               bodyStyle={{padding: 0}}
               extra={<Space size={24}>
                 <div>
-                  创建时间 / {orderItem.createTime}
+                  <Label>创建时间：</Label>{orderItem.createTime}
                 </div>
                 <div>
-                  交货时间 /{orderItem.deliveryDate}
+                  <Label>交货时间：</Label>{orderItem.deliveryDate}
                 </div>
               </Space>}
             >
@@ -101,7 +102,7 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
                         onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, orderItem);
                       }}>
                         <div>
-                          物料编码 / {skuResult && skuResult.standard}
+                          <Label>物料编码：</Label>{skuResult && skuResult.standard}
                         </div>
                         <Button type="link" style={{padding: 0}}>
                           <SkuResultSkuJsons skuResult={skuResult} />

@@ -3,6 +3,7 @@ import {Affix, Alert, Button, Card, Descriptions, Input, notification, Result, S
 import ProCard from '@ant-design/pro-card';
 import {useBoolean} from 'ahooks';
 import moment from 'moment';
+import {useHistory} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
@@ -20,6 +21,8 @@ const {Column} = Table;
 const List = () => {
 
   const ref = useRef();
+
+  const history = useHistory();
 
   const [checkedSkus, setCheckedSkus] = useState([]);
 
@@ -55,7 +58,7 @@ const List = () => {
     switch (result) {
       case 'success':
         return <Button type="primary" onClick={() => {
-
+          history.push('/production/productionPlan');
         }}>查看生产计划</Button>;
       case 'error':
         return <></>;
@@ -228,9 +231,9 @@ const List = () => {
           background: '#fff',
           textAlign: 'right',
           paddingTop: 8,
-          paddingRight: 16
+          paddingRight: 16,
         }}>
-        <Space>
+        <div style={{width: 1200, margin: 'auto'}}>
           <Button
             type="primary"
             disabled={checkedSkus.length === 0}
@@ -240,7 +243,7 @@ const List = () => {
               ref.current.open(true);
               setResult(null);
             }}>创建生产计划</Button>
-        </Space>
+        </div>
       </div>
     </Affix>
   </>;

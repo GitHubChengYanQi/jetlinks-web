@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Checkbox, List, Space} from 'antd';
+import {Button, Card, Checkbox, List, Space} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {pendingProductionPlan} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
+import Label from '@/components/Label';
 
 
 const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
@@ -45,7 +46,7 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
   };
 
   return <>
-    <div style={{maxWidth: 1250, margin: 'auto'}}>
+    <div style={{maxWidth: 1200, margin: 'auto'}}>
       <List
         bordered={false}
         dataSource={data}
@@ -72,36 +73,45 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
                   }
                 }}>
                   <Space size={24} style={{paddingLeft: 16}}>
-                    <div>物料编码 / {skuResult.standard}</div>
-                    <div>{skuResult.spuResult && skuResult.spuResult.name} / {skuResult.skuName} / {skuResult.specifications || '无'}</div>
+                    <div><Label>物料编码：</Label> {skuResult.standard}</div>
+                    <Button type='link'>{skuResult.spuResult && skuResult.spuResult.name} / {skuResult.skuName} / {skuResult.specifications || '无'}</Button>
                   </Space>
                 </Checkbox>
               </Space>}
               bodyStyle={{padding: 0}}
-              extra={<div>描述 / <SkuResultSkuJsons describe skuResult={skuResult} /></div>}
+              extra={<div><Label>物料描述：</Label> <SkuResultSkuJsons describe skuResult={skuResult} /></div>}
             >
               <List
                 bordered={false}
                 dataSource={skuItem.children}
                 renderItem={(rowItem) => {
+                  const order = rowItem.orderResult || {};
                   return <div style={{padding: 24, borderBottom: 'solid #eee 1px'}}>
-                    <Space size={24}>
-                      <Checkbox
-                        checked={checkedSkus.map(item => item.detailId).includes(rowItem.detailId)}
-                        onChange={(value) => {
-                          onChecked(value.target.checked, rowItem, skuItem);
-                        }} />
-                      <Space size={24} style={{cursor: 'pointer'}} onClick={() => {
-                        onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, skuItem);
-                      }}>
-                        <div>
-                          数量 / {rowItem.purchaseNumber}
-                        </div>
-                        <div>
-                          交货日期 / {rowItem.deliveryDate}
-                        </div>
+                    <div style={{display: 'inline-block'}}>
+                      <Space size={24}>
+                        <Checkbox
+                          checked={checkedSkus.map(item => item.detailId).includes(rowItem.detailId)}
+                          onChange={(value) => {
+                            onChecked(value.target.checked, rowItem, skuItem);
+                          }} />
+                        <Space size={24} style={{cursor: 'pointer'}} onClick={() => {
+                          onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, skuItem);
+                        }}>
+                          <div>
+                            <Label>订单号：</Label>{order.coding}
+                          </div>
+                          <div>
+                            <Label>客户：</Label>{order.acustomer && order.acustomer.customerName}
+                          </div>
+                          <div>
+                            × {rowItem.purchaseNumber}
+                          </div>
+                        </Space>
                       </Space>
-                    </Space>
+                    </div>
+                    <div style={{float: 'right'}}>
+                      <Label>交货日期：</Label>{order.deliveryDate}
+                    </div>
                   </div>;
                 }} />
             </Card>

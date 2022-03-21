@@ -10,7 +10,7 @@ import React, {lazy} from 'react';
 export const PreProductionRouter = [
   {
     path: '/preProduction',
-    name: '生产计划',
+    name: '待生产',
     component: lazy(() => import('../List/index')),
     fallback: <div>loading...</div>,
     exact: true,

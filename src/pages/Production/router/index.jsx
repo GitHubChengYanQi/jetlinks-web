@@ -4,6 +4,7 @@ import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 import {QrCodeRouter} from '@/pages/Erp/qrCode/qrCodeRouter';
 import ProducttionLayout from '@/pages/Production';
 import {PreProductionRouter} from '@/pages/Production/PreProduction/router';
+import {productionPlanRouter} from '@/pages/Production/ProductionPlan/router';
 
 const ProductionRouterConfig = [
   {
@@ -16,6 +17,7 @@ const ProductionRouterConfig = [
       ...ProductOrderRouter,
       ...QrCodeRouter,
       ...PreProductionRouter,
+      ...productionPlanRouter,
       {
         redirect: '/production/preProduction',
       }
