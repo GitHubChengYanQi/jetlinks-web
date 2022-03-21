@@ -1,26 +1,20 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, Card, Checkbox, Col, Descriptions, List, Row, Space, Table as AntTable} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Checkbox, List, Space} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {pendingProductionByOrder} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import Note from '@/components/Note';
 import {useRequest} from '@/util/Request';
-import Coding from '@/pages/Erp/tool/components/Coding';
-
-const {Column} = AntTable;
 
 const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
 
   const [orderKeys, setOrderKeys] = useState([]);
 
-  const tableRef = useRef();
-
-  const {loading, data} = useRequest(pendingProductionByOrder);
+  const {loading, data, refresh: orderResh} = useRequest(pendingProductionByOrder);
 
   useEffect(() => {
     if (refresh) {
       setOrderKeys([]);
-      tableRef.current.submit();
+      orderResh();
     }
   }, [refresh]);
 
@@ -59,25 +53,27 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
             <Card
               type="inner"
               title={<Space size={24}>
-                <div>
-                  <Checkbox checked={orderKeys.includes(orderItem.orderId)} onChange={(value) => {
-                    if (value.target.checked) {
-                      setOrderKeys([...orderKeys, orderItem.orderId]);
-                      setCheckedSkus([...checkedSkus, ...orderItem.detailResults]);
-                    } else {
-                      const array = orderKeys.filter((item) => {
-                        return item !== orderItem.orderId;
-                      });
-                      setOrderKeys(array);
-                      const skus = checkedSkus.filter((item) => {
-                        return array.includes(item.orderId);
-                      });
-                      setCheckedSkus(skus);
-                    }
-                  }} />
-                </div>
-                <div>订单号 / {orderItem.coding}</div>
-                <div>客户 / {orderItem && orderItem.acustomer && orderItem.acustomer.customerName}</div>
+
+                <Checkbox checked={orderKeys.includes(orderItem.orderId)} onChange={(value) => {
+                  if (value.target.checked) {
+                    setOrderKeys([...orderKeys, orderItem.orderId]);
+                    setCheckedSkus([...checkedSkus, ...orderItem.detailResults]);
+                  } else {
+                    const array = orderKeys.filter((item) => {
+                      return item !== orderItem.orderId;
+                    });
+                    setOrderKeys(array);
+                    const skus = checkedSkus.filter((item) => {
+                      return array.includes(item.orderId);
+                    });
+                    setCheckedSkus(skus);
+                  }
+                }}>
+                  <Space size={24} style={{paddingLeft: 16}}>
+                    <div>订单号 / {orderItem.coding}</div>
+                    <div>客户 / {orderItem && orderItem.acustomer && orderItem.acustomer.customerName}</div>
+                  </Space>
+                </Checkbox>
               </Space>}
               bodyStyle={{padding: 0}}
               extra={<Space size={24}>
@@ -94,14 +90,14 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
                 dataSource={orderItem.detailResults}
                 renderItem={(rowItem) => {
                   const skuResult = rowItem.skuResult || {};
-                  return <div style={{padding: 24,borderBottom:'solid #eee 1px'}}>
+                  return <div style={{padding: 24, borderBottom: 'solid #eee 1px'}}>
                     <Space size={24}>
                       <Checkbox
                         checked={checkedSkus.map(item => item.detailId).includes(rowItem.detailId)}
                         onChange={(value) => {
                           onChecked(value.target.checked, rowItem, orderItem);
                         }} />
-                      <Space direction="vertical" style={{cursor: 'pointer'}} onClick={()=>{
+                      <Space direction="vertical" style={{cursor: 'pointer'}} onClick={() => {
                         onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, orderItem);
                       }}>
                         <div>

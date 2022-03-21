@@ -3,7 +3,7 @@ import {ToolRouter} from '@/pages/Erp/tool/toolRouter';
 import {QualityCheckRouter} from '@/pages/Erp/qualityCheck/qualityCheckRouter';
 import {QrCodeRouter} from '@/pages/Erp/qrCode/qrCodeRouter';
 import ProducttionLayout from '@/pages/Production';
-import {ProductionPlanRouter} from '@/pages/Production/ProductionPlan/router';
+import {PreProductionRouter} from '@/pages/Production/PreProduction/router';
 
 const ProductionRouterConfig = [
   {
@@ -15,9 +15,9 @@ const ProductionRouterConfig = [
       ...QualityCheckRouter,
       ...ProductOrderRouter,
       ...QrCodeRouter,
-      ...ProductionPlanRouter,
+      ...PreProductionRouter,
       {
-        redirect: '/production/productionPlan',
+        redirect: '/production/preProduction',
       }
     ]
   }

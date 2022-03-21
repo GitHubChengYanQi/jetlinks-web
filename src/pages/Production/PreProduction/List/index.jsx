@@ -4,10 +4,6 @@ import ProCard from '@ant-design/pro-card';
 import {useBoolean} from 'ahooks';
 import moment from 'moment';
 import Breadcrumb from '@/components/Breadcrumb';
-import PlanList from '@/pages/Production/ProductionPlan/List/components/PlanList';
-import OrderList from '@/pages/Production/ProductionPlan/List/components/OrderList';
-import SelectSku from '@/pages/Erp/sku/components/SelectSku';
-import Form from '@/components/Form';
 import Modal from '@/components/Modal';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Coding from '@/pages/Erp/tool/components/Coding';
@@ -16,8 +12,9 @@ import {useRequest} from '@/util/Request';
 import DatePicker from '@/components/DatePicker';
 import Select from '@/components/Select';
 import {UserIdSelect} from '@/pages/Erp/instock/InstockUrl';
+import PlanList from '@/pages/Production/PreProduction/List/components/PlanList';
+import OrderList from '@/pages/Production/PreProduction/List/components/OrderList';
 
-const {FormItem} = Form;
 const {Column} = Table;
 
 const List = () => {
@@ -54,26 +51,6 @@ const List = () => {
     }
   });
 
-  const searchForm = () => {
-
-    return (
-      <>
-        <FormItem
-          label="订单编号"
-          name="coding"
-          placeholder="请输入订单编号"
-          component={Input}
-        />
-        <FormItem
-          label="产品"
-          placeholder="请选择产品"
-          name="skuId"
-          noAdd
-          component={SelectSku} />
-      </>
-    );
-  };
-
   const footer = () => {
     switch (result) {
       case 'success':
@@ -87,6 +64,14 @@ const List = () => {
           if (!value.coding) {
             return notification.warn({
               message: '请输入编码！'
+            });
+          } else if (!value.executionTime) {
+            return notification.warn({
+              message: '请选择执行时间！'
+            });
+          } else if (!value.userId) {
+            return notification.warn({
+              message: '请选择负责人！'
             });
           } else {
             setLoading(true);
@@ -132,14 +117,14 @@ const List = () => {
                   disabledDate={(currentDate) => {
                     return currentDate && currentDate < moment().subtract(1, 'days');
                   }}
-                  onChange={(value) => {
-                    onChange({...value, executionTime: value});
+                  onChange={(executionTime) => {
+                    onChange({...value, executionTime});
                   }} />
               </Descriptions.Item>
               <Descriptions.Item
                 label="负责人">
-                <Select api={UserIdSelect} width="100%" value={value.userId} onChange={(value) => {
-                  onChange({...value, userId: value});
+                <Select api={UserIdSelect} width="100%" value={value.userId} onChange={(userId) => {
+                  onChange({...value, userId});
                 }} />
               </Descriptions.Item>
               <Descriptions.Item label="备注">
@@ -178,14 +163,12 @@ const List = () => {
     switch (type) {
       case 'order':
         return <OrderList
-          searchForm={searchForm}
           setCheckedSkus={setCheckedSkus}
           checkedSkus={checkedSkus}
           refresh={refresh}
         />;
       case 'plan':
         return <PlanList
-          searchForm={searchForm}
           setCheckedSkus={setCheckedSkus}
           checkedSkus={checkedSkus}
           refresh={refresh}
@@ -197,7 +180,7 @@ const List = () => {
 
   return <>
     <Card title={<Breadcrumb />}>
-      <div style={{position:'sticky',top:0,zIndex:999,backgroundColor:'#fff',}}>
+      <div style={{position: 'sticky', top: 0, zIndex: 999, backgroundColor: '#fff',}}>
         <Tabs
           centered
           activeKey={type}
