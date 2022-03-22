@@ -403,13 +403,14 @@ export const POSITIONS = ({
       }
       setButton(value.target.value);
     }}>
-      <ProCard className="h2Card" title="基础变量" bodyStyle={{padding: 0}}>
+      <ProCard className="h2Card" title="基础变量" bodyStyle={{padding: 0}} headerBordered>
         <Radio.Button value="name" style={style}>库位名称</Radio.Button>
         <Radio.Button value="qrCode" style={style}>二维码</Radio.Button>
       </ProCard>
       <ProCard
         className="h2Card"
         title="绑定物料"
+        headerBordered
         bodyStyle={{padding: 0}}
         extra={<Radio.Button value="skuTable"><Space><PlusOutlined />编辑绑定物料</Space></Radio.Button>}
       >
