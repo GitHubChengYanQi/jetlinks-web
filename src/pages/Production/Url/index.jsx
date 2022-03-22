@@ -9,6 +9,12 @@ export const productionPlanDetail = {
 };
 
 
+export const productionPlanList = {
+  url: '/productionPlan/list',
+  method: 'POST'
+};
+
+
 export const pendingProductionByOrder = {
   url: '/order/pendingProductionPlanByContracts',
   method: 'POST'

@@ -1,21 +1,27 @@
 import React from 'react';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {Button, Card, List, Space} from 'antd';
+import {Button, Card, List, Pagination, Space} from 'antd';
 import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Breadcrumb from '@/components/Breadcrumb';
 import Label from '@/components/Label';
 import styles from './index.module.less';
+import {productionPlanList} from '@/pages/Production/Url';
+import Empty from '@/components/Empty';
 
 const PlanList = () => {
 
   const history = useHistory();
 
-  const {loading, data} = useRequest({url: '/productionPlan/list', method: 'POST'});
+  const {loading, data, run} = useRequest({...productionPlanList, response: true});
 
   if (loading) {
     return <ProSkeleton type="descriptions" />;
+  }
+
+  if (!data) {
+    return <Empty />;
   }
 
   return <>
@@ -23,7 +29,7 @@ const PlanList = () => {
       <div className="div_center">
         <List
           bordered={false}
-          dataSource={data || []}
+          dataSource={data.data || []}
           renderItem={(planItem) => (
             <div style={{margin: '16px 0'}}>
               <Card
@@ -39,7 +45,7 @@ const PlanList = () => {
                     <Label>创建时间：</Label>{planItem.createTime}
                   </div>
                   <div>
-                    <Label>执行时间：</Label>{planItem.executionTime}
+                    <Label>执行时间：</Label>{planItem.executionTime} - {planItem.endTime}
                   </div>
                 </Space>}
               >
@@ -47,7 +53,7 @@ const PlanList = () => {
                   bordered={false}
                   dataSource={[1]}
                   renderItem={() => {
-                    return (
+                    return planItem.planDetailResults && (
                       <div className={styles.parent}>
                         <div className={styles.leftDiv}>
                           {
@@ -73,9 +79,10 @@ const PlanList = () => {
                               </div>;
                             })
                           }</div>
-                        <div className={styles.rightDiv} onClick={()=>{
+                        <div className={styles.rightDiv} onClick={() => {
                           history.push(`/production/productionPlan/detail?id=${planItem.productionPlanId}`);
-                        }}>详情</div>
+                        }}>详情
+                        </div>
                       </div>
                     );
                   }} />
@@ -85,6 +92,33 @@ const PlanList = () => {
         />
       </div>
     </Card>
+    <div style={{textAlign: 'center', padding: 8}}>
+      <Pagination
+        total={data.count}
+        current={data.current}
+        pageSize={data.pageSize}
+        pageSizeOptions={[5, 10, 15, 20, 50]}
+        onChange={(page, limit) => {
+          run({
+            params: {
+              limit,
+              page
+            }
+          });
+        }}
+        onShowSizeChange={(page, limit) => {
+          run({
+            params: {
+              limit,
+              page
+            }
+          });
+        }}
+        showSizeChanger
+        showQuickJumper
+        showTotal={total => `共${total}条`}
+      />
+    </div>
   </>;
 };
 

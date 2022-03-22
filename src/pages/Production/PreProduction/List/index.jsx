@@ -117,11 +117,12 @@ const List = () => {
                 <DatePicker
                   width="100%"
                   showTime
+                  RangePicker
                   disabledDate={(currentDate) => {
                     return currentDate && currentDate < moment().subtract(1, 'days');
                   }}
-                  onChange={(executionTime) => {
-                    onChange({...value, executionTime});
+                  onChange={(time) => {
+                    onChange({...value, executionTime: time[0], endTime: time[1]});
                   }} />
               </Descriptions.Item>
               <Descriptions.Item
