@@ -404,6 +404,7 @@ export const POSITIONS = ({
       setButton(value.target.value);
     }}>
       <ProCard className="h2Card" title="基础变量" bodyStyle={{padding: 0}} headerBordered>
+        <Radio.Button value="parent" style={style}>上级库位</Radio.Button>
         <Radio.Button value="name" style={style}>库位名称</Radio.Button>
         <Radio.Button value="qrCode" style={style}>二维码</Radio.Button>
       </ProCard>
