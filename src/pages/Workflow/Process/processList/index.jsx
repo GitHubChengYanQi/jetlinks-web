@@ -53,7 +53,7 @@ const ProcessList = () => {
     Modal.confirm({
       title: `是否 [ ${statusType} ]该流程?`,
       icon: <ExclamationCircleOutlined />,
-      content: type === 0 ? '提示：发布之后不能进行修改' : '提示：每种功能模块只能并最少启用一个',
+      content: type === 0 ? '提示：发布之后不能进行修改' : '提示：每个功能模块仅能开启一套审批流程',
       onOk: async () => {
         return await run({
           data: {
