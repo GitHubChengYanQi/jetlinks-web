@@ -17,6 +17,8 @@ const WindowOpenPosition = () => {
 
   const [button, setButton] = useState('');
 
+  const [table, setTable] = useState([]);
+
   const insertContent = (content) => {
     editorRef.insertContent(content);
   };
@@ -24,6 +26,34 @@ const WindowOpenPosition = () => {
   const refresh = () => {
     setVisible(false);
     setButton(null);
+  };
+
+  const moduleOnoK = () => {
+    let content = '';
+    let labeltds = '';
+    table.map((item) => {
+      if (item.value) {
+        labeltds += `<td>${item.label}</td>`;
+      }
+      return null;
+    });
+    let valuetds = '';
+    table.map((item) => {
+      if (item.value) {
+        valuetds += `<td>$\{{${item.value}}}</td>`;
+      }
+      return null;
+    });
+    switch (button) {
+      case 'skuTable':
+        content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
+        insertContent(content);
+        break;
+      default:
+        insertContent(`$\{${button}}`);
+        break;
+    }
+
   };
 
   return <>
@@ -37,14 +67,14 @@ const WindowOpenPosition = () => {
         if (!button) {
           return message.warn('请选择变量！');
         }
-        insertContent(`$\{${button}}`);
+        moduleOnoK();
         refresh();
       }}
       onCancel={() => {
         refresh();
       }}>
 
-      <POSITIONS setButton={setButton} button={button} />
+      <POSITIONS setButton={setButton} button={button} setTable={setTable} />
     </Modal>
   </>;
 
