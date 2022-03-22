@@ -175,7 +175,10 @@ const AddSkuTable = ({
             value={value}
             min={0}
             onChange={(value) => {
-              setValue({purchaseNumber: value}, index);
+              setValue({
+                purchaseNumber: value,
+                totalPrice: record.onePrice && (value * record.onePrice),
+              }, index);
             }}
           />;
         }} />
@@ -248,7 +251,7 @@ const AddSkuTable = ({
           />;
         }} />
       <Table.Column
-        title="税率"
+        title="税率(%)"
         width={120}
         dataIndex="rate"
         onCell={sharedOnCell}
@@ -263,7 +266,7 @@ const AddSkuTable = ({
           />;
         }} />
       <Table.Column
-        title="交货期"
+        title="交货期(天)"
         width={100}
         onCell={sharedOnCell}
         dataIndex="deliveryDate"
