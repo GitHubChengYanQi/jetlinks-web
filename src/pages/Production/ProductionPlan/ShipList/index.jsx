@@ -47,9 +47,9 @@ const ShipList = ({data}) => {
               </div>
               <div>
                 <Label>使用工具：</Label>
-                {shipSetpResult.binds.map((item, index) => {
+                {shipSetpResult.binds ? shipSetpResult.binds.map((item, index) => {
                   return item.toolResult.name;
-                }).join(' | ')}
+                }).join(' | ') : '无'}
               </div>
 
             </Space>}

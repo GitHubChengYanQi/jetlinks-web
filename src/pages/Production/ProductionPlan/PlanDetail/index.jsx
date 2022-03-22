@@ -20,10 +20,11 @@ const PlanDetail = () => {
   const history = useHistory();
 
   const {loading, data, run} = useRequest(productionPlanDetail, {manual: true});
+  console.log(data);
 
   useEffect(() => {
     if (params.id) {
-      run({data: {productionPlanId: '1505822314275401729'}});
+      run({data: {productionPlanId: params.id}});
     }
   }, []);
 
