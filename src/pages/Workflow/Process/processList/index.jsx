@@ -6,8 +6,10 @@
  */
 
 import React, {useRef} from 'react';
-import Table from '@/components/Table';
+import {useHistory} from 'ice';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {Badge, Button, Modal, Table as AntTable} from 'antd';
+import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -17,9 +19,7 @@ import {processDelete, processEdit, processList} from '../processUrl';
 import ProcessEdit from '../processEdit';
 import * as SysField from '../processField';
 import Breadcrumb from '@/components/Breadcrumb';
-import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;

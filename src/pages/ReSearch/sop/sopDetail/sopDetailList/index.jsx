@@ -18,7 +18,8 @@ import Empty from '@/components/Empty';
 import SopEdit from '@/pages/ReSearch/sop/sopEdit';
 import Modal from '@/components/Modal';
 
-const SopDetailList = ({id}) => {
+const SopDetailList = ({id, value}) => {
+
   const params = useParams();
   const history = useHistory();
 
@@ -31,7 +32,7 @@ const SopDetailList = ({id}) => {
   const {loading, data, run, refresh} = useRequest(sopDetail, {
     defaultParams: {
       data: {
-        sopId: id || params.cid,
+        sopId: value || id || params.cid,
       }
     }
   });
@@ -46,7 +47,7 @@ const SopDetailList = ({id}) => {
 
   return (
     <div className={styles.detail}>
-      {!id && <Card title={<Breadcrumb title="SOP详情" />} extra={
+      {!(id || value) && <Card title={<Breadcrumb title="SOP详情" />} extra={
         <Space>
           <Dropdown trigger="click" placement="bottomCenter" overlay={
             <Menu>
@@ -75,7 +76,7 @@ const SopDetailList = ({id}) => {
       <div
         className={styles.main}>
         <Row gutter={24}>
-          <Col span={id ? 24 : 8}>
+          <Col span={(id || value) ? 24 : 8}>
             <ProCard className="h2Card" headerBordered title="作业步骤">
               <Card
                 title="成品图"
@@ -115,7 +116,7 @@ const SopDetailList = ({id}) => {
               </Card>
             </ProCard>
           </Col>
-          {!id && <Col span={16}>
+          {!(id || value) && <Col span={16}>
             <Space direction="vertical">
               <ProCard className="h2Card" headerBordered title="基本信息">
                 <Descriptions>

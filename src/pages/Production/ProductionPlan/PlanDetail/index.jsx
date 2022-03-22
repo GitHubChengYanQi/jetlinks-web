@@ -20,11 +20,10 @@ const PlanDetail = () => {
   const history = useHistory();
 
   const {loading, data, run} = useRequest(productionPlanDetail, {manual: true});
-  console.log(data);
 
   useEffect(() => {
     if (params.id) {
-      run({data: {productionPlanId: params.id}});
+      run({data: {productionPlanId: '1505822314275401729'}});
     }
   }, []);
 
@@ -56,7 +55,6 @@ const PlanDetail = () => {
             dataSource={data.planDetailResults}
             renderItem={(item) => {
               const skuResult = item.skuResult || {};
-
               return <List.Item>
                 <Space size={24}>
                   <Space direction="vertical">
@@ -80,7 +78,7 @@ const PlanDetail = () => {
           />
         </ProCard>
         <ProCard className="h2Card" title="生产工序" headerBordered>
-          <ShipList />
+          <ShipList data={data.workOrderResults} />
         </ProCard>
       </div>
     </Card>
