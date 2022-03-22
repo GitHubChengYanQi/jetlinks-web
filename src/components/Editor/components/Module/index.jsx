@@ -158,7 +158,7 @@ export const Contacts = ({
       setDefinedInput={setDefinedInput}
     />;
   } else {
-    return <div style={{height:'100%'}}>
+    return <div style={{height: '100%'}}>
       <Radio.Group value={button} onChange={(value) => {
         switch (value.target.value) {
           case 'skuTable':
@@ -338,15 +338,124 @@ export const Contacts = ({
 
 export const POSITIONS = ({
   button,
-  setButton
+  setButton,
+  setTable
 }) => {
+
+  const [skuTable, setSkuTable] = useSetState({
+    table: [{
+      label: '序号',
+      value: '序号'
+    }]
+  });
+
+  const [showSkuTable, {setTrue: showSku, setFalse: closeSku}] = useBoolean();
+
+  const disabled = (value, type) => {
+    const skuTableValue = skuTable.table.map((item) => {
+      return item.value;
+    });
+    switch (type) {
+      case 'sku':
+        return skuTableValue.includes(value);
+      default:
+        return false;
+    }
+  };
+
+  const skuTableOptions = [
+    {
+      label: '序号',
+      value: '序号',
+      disabled: disabled('序号', 'sku'),
+    },
+    {
+      label: '物料编码',
+      value: '物料编码',
+      disabled: disabled('物料编码', 'sku'),
+    },
+    {
+      label: '产品名称',
+      value: '产品名称',
+      disabled: disabled('产品名称', 'sku'),
+    },
+    {
+      label: '型号',
+      value: '型号',
+      disabled: disabled('型号', 'sku'),
+    },
+    {
+      label: '规格',
+      value: '规格',
+      disabled: disabled('规格', 'sku'),
+    },
+  ];
+
   return <>
     <Radio.Group style={{width: '100%'}} value={button} onChange={(value) => {
+      switch (value.target.value) {
+        case 'skuTable':
+          showSku();
+          break;
+        default:
+          closeSku();
+          break;
+      }
       setButton(value.target.value);
     }}>
-      <Radio.Button value="parent" style={style}>上级库位</Radio.Button>
-      <Radio.Button value="name" style={style}>库位名称</Radio.Button>
-      <Radio.Button value="qrCode" style={style}>二维码</Radio.Button>
+      <ProCard className="h2Card" title="基础变量" bodyStyle={{padding: 0}} headerBordered>
+        <Radio.Button value="parent" style={style}>上级库位</Radio.Button>
+        <Radio.Button value="name" style={style}>库位名称</Radio.Button>
+        <Radio.Button value="qrCode" style={style}>二维码</Radio.Button>
+      </ProCard>
+      <ProCard
+        className="h2Card"
+        title="绑定物料"
+        headerBordered
+        bodyStyle={{padding: 0}}
+        extra={<Radio.Button value="skuTable"><Space><PlusOutlined />编辑绑定物料</Space></Radio.Button>}
+      >
+        {showSkuTable && <div>
+          {
+            skuTable.table.map((item, index) => {
+              return <div key={index} style={{display: 'inline-block', ...style}}>
+                <Tooltip
+                  placement="top"
+                  color="#fff"
+                  title={<Button
+                    type="link"
+                    disabled={skuTable.table.length === 1}
+                    icon={<DeleteOutlined />}
+                    onClick={() => {
+                      const array = skuTable.table.filter((item, itemIndex) => {
+                        return itemIndex !== index;
+                      });
+                      setTable(array);
+                      setSkuTable({table: array});
+                    }}
+                    danger
+                  />} key={index}>
+                  <Select
+                    key={index}
+                    style={{width: '100%'}}
+                    value={item.value}
+                    options={skuTableOptions}
+                    onChange={(value, option) => {
+                      const array = skuTable.table;
+                      array[index] = option;
+                      setTable(array);
+                      setSkuTable({table: array});
+                    }} />
+                </Tooltip>
+              </div>;
+            })
+          }
+          <Button style={{marginLeft: 8}} onClick={() => {
+            skuTable.table.push({});
+            setSkuTable({...skuTable});
+          }}><PlusOutlined /></Button>
+        </div>}
+      </ProCard>
     </Radio.Group>
   </>;
 };
