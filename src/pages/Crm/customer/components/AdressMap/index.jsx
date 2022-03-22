@@ -1,36 +1,29 @@
 import React, {useState} from 'react';
-import {Input,  Space} from 'antd';
+import {Input} from 'antd';
 import Amap from '@/components/Amap';
-import InputNumber from '@/components/InputNumber';
 
-const AdressMap = ({width,value,onChange,disabled,...props}) => {
-  console.log(value);
+const AdressMap = ({width, value, onChange, disabled, ...props}) => {
 
   const [location, setLocation] = useState(value || {});
 
   return (
-    <Space>
-      <Input {...props} disabled={disabled} value={location && location.address} style={{width}} onChange={(value)=>{
-        setLocation({...location,address:value.target.value});
-        onChange({address:value.target.value,map:location.location,city:location.city});
-      }} />
+    <div style={{flexGrow: 1,display:'flex'}}>
+      <Input
+        {...props}
+        disabled={disabled}
+        value={location && location.address}
+        style={{width,flexGrow: 1}}
+        onChange={(value) => {
+          setLocation({...location, address: value.target.value});
+          onChange({address: value.target.value, map: location.location, city: location.city});
+        }} />
       <div>
-        <InputNumber min={0}
-          style={{display: 'none'}}
-          hidden
-          value={location && location.location && location.length > 0 && location[0]}
-        />
-        <InputNumber min={0}
-          style={{display: 'none'}}
-          hidden
-          value={location && location.location && location.length > 0 && location[1]}
-        />
         <Amap value={value} onChange={(value) => {
           setLocation(value);
-          onChange({address:value.address,map:value.location,city:value.city});
+          onChange({address: value.address, map: value.location, city: value.city});
         }} />
       </div>
-    </Space>
+    </div>
   );
 };
 

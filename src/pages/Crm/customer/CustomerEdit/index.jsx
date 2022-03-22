@@ -361,7 +361,6 @@ const CustomerEdit = ({
                     disabled
                     placeholder="请选择地址"
                     name="map"
-                    width={400}
                     component={SysField.Map}
                   />
                 </Col>
