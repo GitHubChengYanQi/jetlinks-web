@@ -122,9 +122,9 @@ const Header = () => {
                 </Button>
               </Dropdown>
               <Message />
-              <Button type="text" size="large" style={{height: 60, color: '#FFF'}} onClick={(event) => {
-                toggleFullScreen(event);
-              }}><FullscreenOutlined /></Button>
+              {/* <Button type="text" size="large" style={{height: 60, color: '#FFF'}} onClick={(event) => { */}
+              {/*  toggleFullScreen(event); */}
+              {/* }}><FullscreenOutlined /></Button> */}
             </div>
           </div>
         </div>
