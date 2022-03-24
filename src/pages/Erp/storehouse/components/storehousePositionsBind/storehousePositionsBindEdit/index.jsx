@@ -38,10 +38,10 @@ const StorehousePositionsBindEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="bindId"
       onSubmit={(value)=>{
-        return {...value,positionId};
+        return {...value,spuId:value.skuId,positionId};
       }}
     >
-      <FormItem label="物料型号" name="spuId" component={SysField.SpuId} spu required/>
+      <FormItem label="物料型号" name="skuId" component={SysField.SpuId} spu required/>
     </Form>
   );
 };
