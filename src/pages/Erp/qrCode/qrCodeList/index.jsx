@@ -22,7 +22,7 @@ import Code from '@/pages/Erp/spu/components/Code';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const {baseURI} = config;
+const {baseURI,wxCp} = config;
 
 const QrCodeList = () => {
 
@@ -178,8 +178,8 @@ const QrCodeList = () => {
                 <Radio.Button value={2}>查看已使用码</Radio.Button>
               </Radio.Group>
               <Button type="link" onClick={() => {
-                const url = baseURI.replaceAll(':', '%3A').replaceAll('/', '%2F').replaceAll('#', '%23');
-                window.location.href = `${baseURI}api/qrCodetoExcel?type=${exports}&url=${url}%3Fid%3DcodeId`;
+                const url = wxCp.replaceAll(':', '%3A').replaceAll('/', '%2F').replaceAll('#', '%23');
+                window.location.href = `${baseURI}api/qrCodetoExcel?type=${exports}&url=${`${url}OrCode`}%3Fid%3DcodeId`;
               }}>
                 导出当前选中的码
               </Button>
