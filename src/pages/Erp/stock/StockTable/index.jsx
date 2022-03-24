@@ -250,25 +250,25 @@ const StockTable = (props) => {
         return value && value.standard;
       }}/>
       <Table.Column key={2} title="物料名称" dataIndex="skuResult" render={(value) => {
-        return <div style={{minWidth: 50}}>{value && value.spuResult && value.spuResult.name}</div>;
+        return <div style={{minWidth: 60}}>{value && value.spuResult && value.spuResult.name}</div>;
       }}/>
       <Table.Column key={3} title="物料型号" dataIndex="skuResult" render={(value) => {
         return value && value.skuName;
       }}/>
       <Table.Column key={4} title="物料规格" dataIndex="skuResult" render={(value) => {
-        return <div style={{minWidth: 50}}>{value && value.specifications}</div>;
+        return <div style={{minWidth: 60}}>{value && value.specifications}</div>;
       }}/>
       <Table.Column key={5} title="物料描述" dataIndex="skuResult" render={(value) => {
-        return <div style={{minWidth: 50}}><SkuResultSkuJsons skuResult={value} describe/></div>;
+        return <div style={{minWidth: 60}}><SkuResultSkuJsons skuResult={value} describe/></div>;
       }}/>
       <Table.Column key={6} title="库存数量" dataIndex="number" render={(value) => {
-        return <div style={{minWidth: 50}}>{value}</div>
+        return <div style={{minWidth: 60}}>{value}</div>;
       }}/>
       <Table.Column key={7} title="库位" dataIndex="positionsResult" render={(value) => {
-        return <div style={{minWidth: 50}}>{positionResult(value)}</div>;
+        return <div style={{minWidth: 60}}>{positionResult(value)}</div>;
       }}/>
       <Table.Column key={8} title="仓库" dataIndex="storehouseResult" render={(value)=>{
-        return value && value.name;
+        return <div style={{minWidth: 60}}>{value && value.name}</div>;
       }}/>
       <Table.Column/>
     </Table>
