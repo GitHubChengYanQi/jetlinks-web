@@ -6,9 +6,10 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Descriptions, Radio} from 'antd';
+import {Button, Descriptions, Space} from 'antd';
 import {createFormActions} from '@formily/antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
+import {config} from 'ice';
 import {backDetails, partsList} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
@@ -24,10 +25,12 @@ import ShowBOM from '@/pages/Erp/parts/components/ShowBOM';
 import Drawer from '@/components/Drawer';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
-import {SkuInput, SkuName} from '../PartsField';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
 
 const {Column} = Table;
 const {FormItem} = Form;
+
+const {baseURI} = config;
 
 const formActionsPublic = createFormActions();
 
@@ -39,6 +42,7 @@ const PartsList = ({
   },
   type = 1
 }) => {
+
 
   const refAdd = useRef();
   const formRef = useRef();
@@ -137,10 +141,20 @@ const PartsList = ({
         </>}
 
         <Table
+          actionButton={<Space>
+            <Import
+              url={`${baseURI}Excel/importBom`}
+              title="导入BOM"
+              module="bom"
+              onOk={() => {
+                tableRef.current.submit();
+              }}
+            />
+          </Space>}
           cardHeaderStyle={{display: value === false && 'none'}}
           listHeader={value}
           formActions={formActionsPublic}
-          headStyle={spuId && {display: 'none'}}
+          headStyle={(spuId ||spuSkuId) && {display: 'none'}}
           title={value !== false  && <Breadcrumb title="物料清单" />}
           actions={action()}
           searchForm={searchForm}

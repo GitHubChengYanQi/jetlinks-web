@@ -4,14 +4,15 @@ import cookie from 'js-cookie';
 
 import Icon from '@/components/Icon';
 
-const Import = ({
-  onOk = () => {
-  },
-  templateUrl,
-  url,
-  title,
-  module,
-}) => {
+const Import = (
+  {
+    onOk = () => {
+    },
+    templateUrl,
+    url,
+    title,
+    module,
+  }) => {
 
   const [filelist, setFilelist] = useState([]);
 
@@ -20,11 +21,47 @@ const Import = ({
   const [visible, setVisible] = useState();
 
   const importErrData = (errData) => {
+    console.log(errData);
 
     const columns = [];
 
     switch (module) {
       case 'sku':
+        columns.push({
+          title: '错误行',
+          dataIndex: 'line',
+        }, {
+          title: '物料分类',
+          dataIndex: 'spuClass'
+        }, {
+          title: '产品',
+          dataIndex: 'classItem'
+        }, {
+          title: '型号',
+          dataIndex: 'spuName'
+        }, {
+          title: '物料编码',
+          dataIndex: 'standard'
+        }, {
+          title: '单位',
+          dataIndex: 'unit'
+        }, {
+          title: '是否批量',
+          dataIndex: 'isNotBatch'
+        }, {
+          title: '参数配置',
+          dataIndex: 'attributes',
+          render: (value) => {
+            return value && value.map((item) => {
+              return item;
+            }).toString();
+          }
+        }, {
+          title: '问题原因',
+          dataIndex: 'error'
+        },);
+        break;
+      case 'bom':
         columns.push({
           title: '错误行',
           dataIndex: 'line',
@@ -91,7 +128,7 @@ const Import = ({
             key: index,
             ...item
           };
-        }) || []} columns={columns} pagination={false} scroll={{y: '50vh'}} />
+        }) || []} columns={columns} pagination={false} scroll={{y: '50vh'}}/>
       </div>
     });
   };
@@ -133,6 +170,8 @@ const Import = ({
         return '《供应商模板》';
       case 'sku':
         return '《基础物料模板》';
+      case 'bom':
+        return '《BOM模板》';
       default:
         break;
     }
@@ -140,7 +179,7 @@ const Import = ({
 
 
   return <>
-    <Button type='link' icon={<Icon type="icon-daoru" />} onClick={() => {
+    <Button type='link' icon={<Icon type="icon-daoru"/>} onClick={() => {
       setVisible(true);
     }}>{title}</Button>
     <Modal
@@ -202,7 +241,7 @@ const Import = ({
           }}
         >
           {filelist.length === 0 && <Space>
-            <Button icon={<Icon type="icon-daoru" />}  ghost type="primary">上传文件</Button>
+            <Button icon={<Icon type="icon-daoru"/>} ghost type="primary">上传文件</Button>
             附件支持类型：XLSX，最大不超过10M
           </Space>}
         </Upload>
