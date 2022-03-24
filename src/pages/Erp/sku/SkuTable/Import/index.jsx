@@ -21,7 +21,6 @@ const Import = (
   const [visible, setVisible] = useState();
 
   const importErrData = (errData) => {
-    console.log(errData);
 
     const columns = [];
 
@@ -63,38 +62,9 @@ const Import = (
         break;
       case 'bom':
         columns.push({
-          title: '错误行',
-          dataIndex: 'line',
-        }, {
-          title: '物料分类',
-          dataIndex: 'spuClass'
-        }, {
-          title: '产品',
-          dataIndex: 'classItem'
-        }, {
-          title: '型号',
-          dataIndex: 'spuName'
-        }, {
-          title: '物料编码',
-          dataIndex: 'standard'
-        }, {
-          title: '单位',
-          dataIndex: 'unit'
-        }, {
-          title: '是否批量',
-          dataIndex: 'isNotBatch'
-        }, {
-          title: '参数配置',
-          dataIndex: 'attributes',
-          render: (value) => {
-            return value && value.map((item) => {
-              return item;
-            }).toString();
-          }
-        }, {
-          title: '问题原因',
-          dataIndex: 'error'
-        },);
+          title: '错误信息',
+          dataIndex:'string',
+        });
         break;
       case 'customer':
         columns.push({
@@ -124,6 +94,12 @@ const Import = (
       title: `异常数据 / ${errData.length}`,
       content: <div style={{padding: 8}}>
         <AntTable rowKey="key" dataSource={errData && errData.map((item, index) => {
+          if (typeof item === 'string') {
+            return {
+              key: index,
+              string: item,
+            };
+          }
           return {
             key: index,
             ...item
