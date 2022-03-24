@@ -39,16 +39,16 @@ const StockTable = (props) => {
 
   const dataTable = (dataSource) => {
     return <AntTable rowKey="key" dataSource={dataSource || []} pagination={false} scroll={{y: '50vh'}}>
-      <Table.Column title="错误行" dataIndex="line" />
-      <Table.Column title="分类" dataIndex="spuClass" />
-      <Table.Column title="编码" dataIndex="strand" />
-      <Table.Column title="产品" dataIndex="item" />
-      <Table.Column title="型号" dataIndex="spuName" />
-      <Table.Column title="库存数量" dataIndex="stockNumber" />
-      <Table.Column title="上级库位" dataIndex="supperPosition" />
-      <Table.Column title="库位" dataIndex="position" />
-      <Table.Column title="品牌" dataIndex="brand" />
-      <Table.Column title="问题原因" dataIndex="error" />
+      <Table.Column title="错误行" dataIndex="line"/>
+      <Table.Column title="分类" dataIndex="spuClass"/>
+      <Table.Column title="编码" dataIndex="strand"/>
+      <Table.Column title="产品" dataIndex="item"/>
+      <Table.Column title="型号" dataIndex="spuName"/>
+      <Table.Column title="库存数量" dataIndex="stockNumber"/>
+      <Table.Column title="上级库位" dataIndex="supperPosition"/>
+      <Table.Column title="库位" dataIndex="position"/>
+      <Table.Column title="品牌" dataIndex="brand"/>
+      <Table.Column title="问题原因" dataIndex="error"/>
     </AntTable>;
   };
 
@@ -109,7 +109,7 @@ const StockTable = (props) => {
   const actions = () => {
     return (
       <Space>
-        <Button type='link' icon={<Icon type="icon-daoru" />} onClick={()=>{
+        <Button type='link' icon={<Icon type="icon-daoru"/>} onClick={() => {
           window.location.href = `${baseURI}stockExcel/stockExport?authorization=${token}`;
         }}>导出库存</Button>
         <Upload
@@ -147,7 +147,7 @@ const StockTable = (props) => {
             }
           }}
         >
-          <Button type='link' icon={<Icon type="icon-daoru" />}>导入库存</Button>
+          <Button type='link' icon={<Icon type="icon-daoru"/>}>导入库存</Button>
         </Upload>
       </Space>
     );
@@ -167,16 +167,16 @@ const StockTable = (props) => {
           placeholder="搜索物料"
           name="skuId"
           noAdd
-          component={SelectSku} />
+          component={SelectSku}/>
         <FormItem
           hidden
           name="type"
           value="sku"
-          component={Input} />
+          component={Input}/>
         <FormItem
           hidden
           name="storehouseId"
-          component={Input} />
+          component={Input}/>
       </>
     );
   };
@@ -188,6 +188,20 @@ const StockTable = (props) => {
     });
     return number;
   };
+
+  const positionResult = (data) => {
+
+    if (!data) {
+      return '';
+    }
+
+    if (!data.supper) {
+      return data.name;
+    }
+
+    return `${positionResult(data.supper)}-${data.name}`;
+  };
+
 
   return (
     <Table
@@ -204,8 +218,8 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="物料种类" value={data.length} />
-            } />
+              <Statistic title="物料种类" value={data.length}/>
+            }/>
           <Progress
             type="circle"
             percent={100}
@@ -214,11 +228,11 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="总数量" value={count(data)} />
-            } />
+              <Statistic title="总数量" value={count(data)}/>
+            }/>
         </Space>
       </>}
-      title={<Breadcrumb />}
+      title={<Breadcrumb/>}
       searchForm={searchForm}
       branch={(data) => {
         setData(data);
@@ -234,21 +248,29 @@ const StockTable = (props) => {
     >
       <Table.Column key={1} title="物料编码" dataIndex="skuResult" render={(value) => {
         return value && value.standard;
-      }} />
+      }}/>
       <Table.Column key={2} title="物料名称" dataIndex="skuResult" render={(value) => {
-        return value && value.spuResult && value.spuResult.name;
-      }} />
+        return <div style={{minWidth: 50}}>{value && value.spuResult && value.spuResult.name}</div>;
+      }}/>
       <Table.Column key={3} title="物料型号" dataIndex="skuResult" render={(value) => {
         return value && value.skuName;
-      }} />
+      }}/>
       <Table.Column key={4} title="物料规格" dataIndex="skuResult" render={(value) => {
         return <div style={{minWidth: 50}}>{value && value.specifications}</div>;
-      }} />
+      }}/>
       <Table.Column key={5} title="物料描述" dataIndex="skuResult" render={(value) => {
-        return <SkuResultSkuJsons skuResult={value} describe />;
-      }} />
-      <Table.Column key={6} title="库存数量" dataIndex="number" />
-      <Table.Column />
+        return <div style={{minWidth: 50}}><SkuResultSkuJsons skuResult={value} describe/></div>;
+      }}/>
+      <Table.Column key={6} title="库存数量" dataIndex="number" render={(value) => {
+        return <div style={{minWidth: 50}}>{value}</div>
+      }}/>
+      <Table.Column key={7} title="库位" dataIndex="positionsResult" render={(value) => {
+        return <div style={{minWidth: 50}}>{positionResult(value)}</div>;
+      }}/>
+      <Table.Column key={8} title="仓库" dataIndex="storehouseResult" render={(value)=>{
+        return value && value.name;
+      }}/>
+      <Table.Column/>
     </Table>
   );
 };
