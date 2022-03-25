@@ -32,15 +32,16 @@ const labelWidth = 128;
 
 const formActionsPublic = createFormActions();
 
-const CustomerEdit = ({
-  onChange = () => {
-  },
-  add,
-  onClose = () => {
-  },
-  onSuccess,
-  ...props
-}) => {
+const CustomerEdit = (
+  {
+    onChange = () => {
+    },
+    add,
+    onClose = () => {
+    },
+    onSuccess,
+    ...props
+  }) => {
 
 
   const [data] = store.useModel('dataSource');
@@ -70,7 +71,7 @@ const CustomerEdit = ({
   return (
     <div>
       {!add && <div style={{padding: 8}}>
-        <Breadcrumb title="创建供应商" />
+        <Breadcrumb title="创建供应商"/>
       </div>}
       <Card title="创建供应商">
         <Form
@@ -114,7 +115,7 @@ const CustomerEdit = ({
             const contactsParams = [];
             contactsParams.push({
               contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
-              phoneParams: [{phoneNumber: value.phoneNumber}],
+              phoneParams: [{phoneNumber: value.phoneNumber,telephone: value.telePhone}],
               deptName: value.deptName,
               positionName: value.companyRole,
             });
@@ -122,7 +123,7 @@ const CustomerEdit = ({
               if (item && item.contactsName) {
                 contactsParams.push({
                   contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
-                  phoneParams: [{phoneNumber: item.phoneNumber}],
+                  phoneParams: [{phoneNumber: item.phoneNumber,telephone: item.telephone}],
                   deptName: item.deptName,
                   positionName: value.companyRole,
                 });
@@ -181,6 +182,15 @@ const CustomerEdit = ({
                 }
                 state.props.disabled = res;
               });
+              setFieldState('telePhone', state => {
+                if (res) {
+                  const telephone = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].telephone;
+                  state.value = telephone;
+                } else {
+                  state.value = null;
+                }
+                state.props.disabled = res;
+              });
               setFieldState('deptName', state => {
                 if (res) {
                   state.value = {name: res.deptResult && res.deptResult.fullName};
@@ -217,6 +227,18 @@ const CustomerEdit = ({
                   if (res) {
                     const phoneNumber = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].phoneNumber;
                     state.value = phoneNumber;
+                  } else {
+                    state.value = null;
+                  }
+                  state.props.disabled = res;
+                });
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `contactsParams.${$1}.telephone`;
+                }), state => {
+                  if (res) {
+                    const telephone = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].telephone;
+                    state.value = telephone;
                   } else {
                     state.value = null;
                   }
@@ -271,11 +293,11 @@ const CustomerEdit = ({
                   />
                 </Col>
                 <Col span={span}>
-                  <FormItem label="企业简称" name="abbreviation" placeholder="请输入供应商简称" component={SysField.Abbreviation} />
+                  <FormItem label="企业简称" name="abbreviation" placeholder="请输入供应商简称" component={SysField.Abbreviation}/>
                 </Col>
                 <Col span={span}>
-                  <div style={{position: 'absolute',maxHeight:102,overflow:'hidden'}}>
-                    <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                  <div style={{position: 'absolute', maxHeight: 104, overflow: 'hidden'}}>
+                    <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar}/>
                   </div>
                 </Col>
               </Row>
@@ -290,14 +312,14 @@ const CustomerEdit = ({
 
                 </Col>
                 <Col span={span}>
-                  {supply === 0 && <FormItem label="客户状态" name="status" component={SysField.Status} />}
+                  {supply === 0 && <FormItem label="客户状态" name="status" component={SysField.Status}/>}
                 </Col>
                 <Col span={span}>
-                  {supply === 0 && <FormItem label="客户分类" name="classification" component={SysField.Classification} />}
+                  {supply === 0 && <FormItem label="客户分类" name="classification" component={SysField.Classification}/>}
                 </Col>
               </Row>
               <Row gutter={24}>
-                <Col span={span}>
+                <Col span={5}>
                   <FormItem
                     label="联系人"
                     name="contactsName"
@@ -306,34 +328,49 @@ const CustomerEdit = ({
                     required
                   />
                 </Col>
-                <Col span={span}>
-                  <FormItem
-                    label="联系电话"
-                    placeholder="请输入联系电话"
-                    name="phoneNumber"
-                    component={SysField.PhoneNumber}
-                    rules={[{
-                      required: true,
-                      message: '请输入正确的手机号码!',
-                      pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
-                    }]}
-                  />
+                <Col span={5}>
+                  <MegaLayout labelWidth={50}>
+                    <FormItem
+                      label="手机"
+                      placeholder="请输入手机号"
+                      name="phoneNumber"
+                      component={SysField.PhoneNumber}
+                      rules={[{
+                        message: '请输入正确的手机号码!',
+                        pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+                      }]}
+                    />
+                  </MegaLayout>
                 </Col>
-                <Col span={span}>
-                  <FormItem
-                    label="部门"
-                    placeholder="请输入部门"
-                    name="deptName"
-                    component={SysField.DeptName}
-                  />
+                <Col span={5}>
+                  <MegaLayout labelWidth={50}>
+                    <FormItem
+                      label="固话"
+                      placeholder="请输入固话号"
+                      name="telePhone"
+                      component={SysField.PhoneNumber}
+                    />
+                  </MegaLayout>
                 </Col>
-                <Col span={span}>
-                  <FormItem
-                    label="职务"
-                    placeholder="请输入职务"
-                    name="companyRole"
-                    component={SysField.CompanyRoleId}
-                  />
+                <Col span={4}>
+                  <MegaLayout labelWidth={50}>
+                    <FormItem
+                      label="部门"
+                      placeholder="请输入部门"
+                      name="deptName"
+                      component={SysField.DeptName}
+                    />
+                  </MegaLayout>
+                </Col>
+                <Col span={4}>
+                  <MegaLayout labelWidth={50}>
+                    <FormItem
+                      label="职务"
+                      placeholder="请输入职务"
+                      name="companyRole"
+                      component={SysField.CompanyRoleId}
+                    />
+                  </MegaLayout>
                 </Col>
               </Row>
               <Row gutter={24}>
@@ -405,7 +442,7 @@ const CustomerEdit = ({
               </Row>
               <Row gutter={24}>
                 <Col span={12}>
-                  <FormItem label="备注说明" name="note" placeholder="请输入备注内容" component={SysField.RowsNote} />
+                  <FormItem label="备注说明" name="note" placeholder="请输入备注内容" component={SysField.RowsNote}/>
                 </Col>
               </Row>
             </MegaLayout>
@@ -420,17 +457,17 @@ const CustomerEdit = ({
             <Overflow><MegaLayout labelWidth={labelWidth}>
               <Row gutter={24}>
                 <Col span={span}>
-                  <FormItem label="法人" name="legal" placeholder="请输入法人姓名" component={SysField.Legal} />
+                  <FormItem label="法人" name="legal" placeholder="请输入法人姓名" component={SysField.Legal}/>
                 </Col>
                 <Col span={span}>
                   <FormItem
                     label="统一社会信用代码"
                     placeholder="请输入企业社会信用代码"
                     name="utscc"
-                    component={SysField.Utscc} />
+                    component={SysField.Utscc}/>
                 </Col>
                 <Col span={span}>
-                  <FormItem label="企业类型" name="companyType" placeholder="请选择企业类型" component={SysField.CompanyType} />
+                  <FormItem label="企业类型" name="companyType" placeholder="请选择企业类型" component={SysField.CompanyType}/>
                 </Col>
                 <Col span={span}>
                   <FormItem
@@ -444,47 +481,47 @@ const CustomerEdit = ({
               </Row>
               <Row gutter={24}>
                 <Col span={span}>
-                  <FormItem label="所属行业" placeholder="请选择企业行业" name="industryId" component={SysField.IndustryOne} />
+                  <FormItem label="所属行业" placeholder="请选择企业行业" name="industryId" component={SysField.IndustryOne}/>
                 </Col>
                 <Col span={span}>
-                  <FormItem label="成立日期" name="setup" placeholder="请选择企业类型" component={SysField.Setup} />
+                  <FormItem label="成立日期" name="setup" placeholder="请选择企业类型" component={SysField.Setup}/>
                 </Col>
                 <Col span={span}>
-                  <FormItem label="企业电话" name="telephone" placeholder="请输入企业电话" component={SysField.Name} />
+                  <FormItem label="企业电话" name="telephone" placeholder="请输入企业电话" component={SysField.Name}/>
                 </Col>
                 <Col span={span}>
-                  <FormItem label="企业传真" placeholder="请输入企业传真" name="fax" component={SysField.Name} />
+                  <FormItem label="企业传真" placeholder="请输入企业传真" name="fax" component={SysField.Name}/>
                 </Col>
               </Row>
               <Row gutter={24}>
                 <Col span={span}>
-                  <FormItem label="邮政编码" name="zipCode" placeholder="请输入邮政编码" component={SysField.Name} />
+                  <FormItem label="邮政编码" name="zipCode" placeholder="请输入邮政编码" component={SysField.Name}/>
                 </Col>
                 <Col span={span}>
                   <FormItem label="企业邮箱" placeholder="请输入邮箱地址" name="emall" component={SysField.Emall} rules={[{
                     message: '请输入正确的邮箱',
                     pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'
-                  }]} />
+                  }]}/>
                 </Col>
                 <Col span={span}>
                   <FormItem label="网址" name="url" placeholder="请输入供应商网址" component={SysField.Url} rules={[{
                     message: '请输入正确的网址',
                     pattern: '^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'
-                  }]} />
+                  }]}/>
                 </Col>
                 <Col span={span}>
-                  <FormItem label="注册地址" name="signIn" placeholder="请输入注册地址" component={SysField.SignIn} />
+                  <FormItem label="注册地址" name="signIn" placeholder="请输入注册地址" component={SysField.SignIn}/>
                 </Col>
               </Row>
-              <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction} />
+              <FormItem label="企业简介" name="introduction" placeholder="请输入企业简介" component={SysField.Introduction}/>
               <Space align="start">
                 <FormItem
                   label="附件"
                   name="file"
                   maxCount={5}
                   prompt='支持格式：jpg/png/pdf/docx，单一文件不超过10M，最多上传5份，建议上传营业执照、开户许可证、资质奖项证书等'
-                  filterFileType={['JPG','PNG','PDF','DOCX','jpg','png','pdf','docx',]}
-                  component={SysField.File} />
+                  filterFileType={['JPG', 'PNG', 'PDF', 'DOCX', 'jpg', 'png', 'pdf', 'docx',]}
+                  component={SysField.File}/>
               </Space>
             </MegaLayout></Overflow>
           </ProCard>
@@ -499,7 +536,7 @@ const CustomerEdit = ({
                     extra={
                       <Button
                         type="dashed"
-                        icon={<PlusOutlined />}
+                        icon={<PlusOutlined/>}
                         style={{width: '100%', display: state.value.length >= 5 && 'none'}}
                         onClick={onAdd}>添加联系人</Button>
                     }
@@ -514,7 +551,7 @@ const CustomerEdit = ({
                         const onRemove = index => mutators.remove(index);
                         return <div key={index}>
                           <Row gutter={24}>
-                            <Col span={span}>
+                            <Col span={5}>
                               <FormItem
                                 label="联系人"
                                 name={`contactsParams.${index}.contactsName`}
@@ -522,39 +559,55 @@ const CustomerEdit = ({
                                 component={SysField.ContactsName}
                               />
                             </Col>
-                            <Col span={span}>
-                              <FormItem
-                                label="联系电话"
-                                placeholder="请输入联系电话"
-                                name={`contactsParams.${index}.phoneNumber`}
-                                component={SysField.PhoneNumber}
-                                rules={[{
-                                  message: '请输入正确的手机号码!',
-                                  pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
-                                }]}
-                              />
+                            <Col span={5}>
+                              <MegaLayout labelWidth={50}>
+                                <FormItem
+                                  label="手机"
+                                  placeholder="请输入手机号"
+                                  name={`contactsParams.${index}.phoneNumber`}
+                                  component={SysField.PhoneNumber}
+                                  rules={[{
+                                    message: '请输入正确的手机号码!',
+                                    pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+                                  }]}
+                                />
+                              </MegaLayout>
                             </Col>
-                            <Col span={span}>
-                              <FormItem
-                                label="部门"
-                                placeholder="请选择部门"
-                                name={`contactsParams.${index}.deptName`}
-                                component={SysField.DeptName}
-                              />
+                            <Col span={5}>
+                              <MegaLayout labelWidth={50}>
+                                <FormItem
+                                  label="固话"
+                                  placeholder="请输入固话号"
+                                  name={`contactsParams.${index}.telephone`}
+                                  component={SysField.PhoneNumber}
+                                />
+                              </MegaLayout>
                             </Col>
-                            <Col span={span}>
-                              <div style={{display: 'inline-block'}}>
+                            <Col span={4}>
+                              <MegaLayout labelWidth={50}>
+                                <FormItem
+                                  label="部门"
+                                  placeholder="请选择部门"
+                                  name={`contactsParams.${index}.deptName`}
+                                  component={SysField.DeptName}
+                                />
+                              </MegaLayout>
+                            </Col>
+                            <Col span={4}>
+                              <MegaLayout labelWidth={50}>
                                 <FormItem
                                   label="职务"
                                   name={`contactsParams.${index}.companyRole`}
                                   placeholder="请选择职务"
                                   component={SysField.CompanyRoleId}
                                 />
-                              </div>
+                              </MegaLayout>
+                            </Col>
+                            <Col span={1}>
                               <Button
                                 type="link"
                                 style={{float: 'right'}}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                                 onClick={() => {
                                   onRemove(index);
                                 }}
@@ -579,7 +632,7 @@ const CustomerEdit = ({
                     extra={
                       <Button
                         type="dashed"
-                        icon={<PlusOutlined />}
+                        icon={<PlusOutlined/>}
                         style={{width: '100%', display: state.value.length >= 5 && 'none'}}
                         onClick={onAdd}>添加地址</Button>
                     }
@@ -633,7 +686,7 @@ const CustomerEdit = ({
                               <Button
                                 type="link"
                                 style={{float: 'right'}}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                                 onClick={() => {
                                   onRemove(index);
                                 }}
@@ -658,7 +711,7 @@ const CustomerEdit = ({
                     extra={
                       <Button
                         type="dashed"
-                        icon={<PlusOutlined />}
+                        icon={<PlusOutlined/>}
                         style={{width: '100%', display: state.value.length >= 5 && 'none'}}
                         onClick={onAdd}>添加开户信息</Button>
                     }
@@ -705,7 +758,7 @@ const CustomerEdit = ({
                               <Button
                                 type="link"
                                 style={{float: 'right'}}
-                                icon={<DeleteOutlined />}
+                                icon={<DeleteOutlined/>}
                                 onClick={() => {
                                   onRemove(index);
                                 }}
@@ -726,7 +779,14 @@ const CustomerEdit = ({
 
       <Affix offsetBottom={0}>
         <div
-          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8,boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'}}>
+          style={{
+            height: 47,
+            borderTop: '1px solid #e7e7e7',
+            background: '#fff',
+            textAlign: 'center',
+            paddingTop: 8,
+            boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'
+          }}>
           <Space>
             <Button type="primary" onClick={() => {
               formRef.current.submit();

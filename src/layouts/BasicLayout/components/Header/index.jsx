@@ -79,9 +79,11 @@ const Header = () => {
                 <Menu.Item className={styles.allMenu} key="mail" onClick={() => {
                   setVisible(true);
                 }}>
-                  <Space>
-                    所有功能<UnorderedListOutlined />
-                  </Space>
+                  <div style={{minWidth:100}}>
+                    <Space>
+                      所有功能<UnorderedListOutlined />
+                    </Space>
+                  </div>
                 </Menu.Item>
               </Menu>
             </div>
