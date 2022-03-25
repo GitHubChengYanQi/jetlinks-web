@@ -331,7 +331,7 @@ const CustomerEdit = (
                 <Col span={5}>
                   <MegaLayout labelWidth={50}>
                     <FormItem
-                      label="手机号"
+                      label="手机"
                       placeholder="请输入手机号"
                       name="phoneNumber"
                       component={SysField.PhoneNumber}
@@ -345,8 +345,8 @@ const CustomerEdit = (
                 <Col span={5}>
                   <MegaLayout labelWidth={50}>
                     <FormItem
-                      label="电话号"
-                      placeholder="请输入电话号"
+                      label="固话"
+                      placeholder="请输入固话号"
                       name="telePhone"
                       component={SysField.PhoneNumber}
                     />
@@ -562,7 +562,7 @@ const CustomerEdit = (
                             <Col span={5}>
                               <MegaLayout labelWidth={50}>
                                 <FormItem
-                                  label="手机号"
+                                  label="手机"
                                   placeholder="请输入手机号"
                                   name={`contactsParams.${index}.phoneNumber`}
                                   component={SysField.PhoneNumber}
@@ -576,8 +576,8 @@ const CustomerEdit = (
                             <Col span={5}>
                               <MegaLayout labelWidth={50}>
                                 <FormItem
-                                  label="电话号"
-                                  placeholder="请输入电话号"
+                                  label="固话"
+                                  placeholder="请输入固话号"
                                   name={`contactsParams.${index}.telephone`}
                                   component={SysField.PhoneNumber}
                                 />
