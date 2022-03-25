@@ -21,7 +21,7 @@ const {FormItem} = Form;
 
 const ApiConfig = {
   view: storehousePositionsBindDetail,
-  add: storehousePositionsBindSpuAddBind,
+  add: storehousePositionsBindAdd,
   save: storehousePositionsBindEdit
 };
 
@@ -41,7 +41,7 @@ const StorehousePositionsBindEdit = ({...props}) => {
         return {...value,spuId:value.skuId,positionId};
       }}
     >
-      <FormItem label="物料型号" name="skuId" component={SysField.SpuId} spu required/>
+      <FormItem label="物料型号" name="skuId" component={SysField.SpuId} required/>
     </Form>
   );
 };
