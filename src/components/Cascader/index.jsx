@@ -25,7 +25,7 @@ const Cascader = (props) => {
     value,
     width,
     changeOnSelect = true,
-    defaultParams,
+    defaultParams = {},
     placeholder,
     resh,
     top,
@@ -34,16 +34,16 @@ const Cascader = (props) => {
     onChange = () => {
     }, ...other
   } = props;
-  const {loading, data, refresh} = useRequest(api, {defaultParams, manual: !api});
+  const {loading, data, run} = useRequest(api, {defaultParams, manual: !api});
 
   useEffect(() => {
     if (resh && api) {
-      refresh();
+      run(defaultParams);
     }
   }, [resh]);
 
   if (loading)
-    return <Spin />;
+    return <Spin/>;
 
   const dataSources = options || (top ? [
     {
