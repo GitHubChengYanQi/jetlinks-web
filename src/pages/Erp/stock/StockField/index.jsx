@@ -12,11 +12,26 @@ import Items from '@/pages/Erp/stock/StockEdit/components/Items';
 import Drawer from '@/components/Drawer';
 import * as apiUrl from '../StockUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import Cascader from "@/components/Cascader";
+import {
+  storehousePositionsTreeView
+} from "@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl";
 
 const w = 200;
 
 export const Palce = (props) => {
   return <Input {...props} />;
+};
+
+export const Position = (props) => {
+  const {value, onChange, id} = props;
+  return <Cascader
+    width={200}
+    value={value}
+    resh={id}
+    api={storehousePositionsTreeView}
+    defaultParams={{params: {ids: id}}}
+    onChange={onChange}/>;
 };
 
 
@@ -32,7 +47,7 @@ export const Stock = (props) => {
     } else {
       onChange(null);
     }
-  }} />;
+  }}/>;
 };
 
 export const Item = (props) => {
@@ -52,7 +67,7 @@ export const Item = (props) => {
     }} ref={ref} ckeck={(id) => {
       onChange(id);
       ref.current.close();
-    }} />
+    }}/>
   </>);
 };
 
