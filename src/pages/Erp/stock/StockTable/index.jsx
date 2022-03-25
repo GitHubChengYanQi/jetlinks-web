@@ -165,9 +165,9 @@ const StockTable = (props) => {
         <FormItem
           label="物料名称"
           placeholder="搜索物料"
-          name="skuId"
+          name="skuName"
           noAdd
-          component={SelectSku}/>
+          component={Input}/>
         <FormItem
           hidden
           name="type"
