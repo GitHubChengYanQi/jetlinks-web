@@ -107,7 +107,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency, ...p
     <Modal
       ref={addSku}
       width={1000}
-      headTitle='添加物料'
+      headTitle="添加物料"
       footer={<Space>
         <Button onClick={() => {
           onChange(addSkuRef.current.check());
@@ -247,12 +247,34 @@ export const PayType = (props) => {
 };
 
 export const Percentum = (props) => {
-  return (<InputNumber min={1} max={100} addonAfter="%" {...props} />);
+
+  const {value, onChange} = props;
+  console.log(value);
+
+  const [number, setNumber] = useState();
+
+  return (<InputNumber
+    min={1}
+    max={100}
+    addonAfter="%"
+    value={value}
+    onChange={(value) => {
+      setNumber(value);
+    }}
+    onBlur={() => {
+      onChange(number);
+    }} />);
 };
 
 export const TemplateId = (props) => {
   return (
-    <SetSelectOrCascader height='100%' component={TemplateEdit} placement='top'  api={templateListSelect} title="添加合同模板" width={200} {...props} />);
+    <SetSelectOrCascader
+      height="100%"
+      component={TemplateEdit}
+      placement="top"
+      api={templateListSelect}
+      title="添加合同模板"
+      width={200} {...props} />);
 };
 
 export const Freight = (props) => {

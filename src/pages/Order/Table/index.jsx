@@ -56,7 +56,7 @@ const OrderTable = (props) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="单号" name="status" component={SysField.Coding} />
+        <FormItem label="单号" name="coding" component={SysField.Coding} />
         <FormItem hidden name="type" value={module().type} component={SysField.Coding} />
       </>
     );

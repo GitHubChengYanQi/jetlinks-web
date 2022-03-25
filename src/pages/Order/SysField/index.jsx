@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input} from 'antd';
 
-export const Coding = () => {
+export const Coding = (props) => {
 
-  return <Input />;
+  return <Input {...props} />;
 };

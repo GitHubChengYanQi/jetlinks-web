@@ -7,12 +7,18 @@
 
 import React, {lazy} from 'react';
 
-export const ProductionPlanRouter = [
+export const productionPlanRouter = [
   {
     path: '/productionPlan',
     name: '生产计划',
-    component: lazy(() => import('../List/index')),
+    component: lazy(() => import('../PlanList/index')),
     fallback: <div>loading...</div>,
     exact: true,
-  }
+  },{
+    path: '/productionPlan/detail',
+    name: '生产计划',
+    component: lazy(() => import('../PlanDetail/index')),
+    fallback: <div>loading...</div>,
+    exact: true,
+  },
 ];
