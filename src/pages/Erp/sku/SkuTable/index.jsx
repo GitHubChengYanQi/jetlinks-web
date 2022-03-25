@@ -132,7 +132,7 @@ const SkuTable = ({...props}, ref) => {
             ...sku[0],
             skuId: null,
           };
-          ref.current.open(value);
+          addRef.current.open(value);
         }}>
           复制添加
         </Button>
