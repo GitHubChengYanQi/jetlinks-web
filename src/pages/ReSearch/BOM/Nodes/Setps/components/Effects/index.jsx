@@ -79,7 +79,7 @@ const Effects = (setFieldState, defaultValue) => {
 
       setFieldState('sop', state => {
         state.value = res.sopResult;
-        state.props.sopId = res.sopId;
+        state.props.sopId = res.sopResult && res.sopResult.sopId;
       });
 
       setFieldState('shipNote', state => {

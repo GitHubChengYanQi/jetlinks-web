@@ -32,7 +32,7 @@ export const Sop = (props) => {
   return value ?
     <Space>
       {value.name}
-      <Button onClick={() => {
+      <Button disabled={!sopId} onClick={() => {
         ref.current.open(false);
       }}>查看</Button>
       <Drawer ref={ref} onSuccess={() => {
