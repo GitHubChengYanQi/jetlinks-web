@@ -5,11 +5,11 @@ import {config} from 'ice';
 import {QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
 import {useRequest} from '@/util/Request';
-
+import store from '@/store';
 
 const Code = ({source, id, style, value, image,codeWidth}) => {
 
-  const {wxCp} = config;
+  const [state] = store.useModel('user');
 
   const [show, setShow] = useState();
 
@@ -41,7 +41,7 @@ const Code = ({source, id, style, value, image,codeWidth}) => {
   const img = () => {
     return <>
       <div style={{margin: 'auto', maxWidth: 256}}>
-        <Image src={jrQrcode.getQrBase64(`${wxCp}OrCode?id=${value || codes}`)} preview={false} />
+        <Image src={jrQrcode.getQrBase64(`${state.MobileUrl}/cp/#/OrCode?id=${value || codes}`)} preview={false} />
       </div>
       <div style={{textAlign: 'center'}}>
         {(value || codes) && <AcBarcode value={value || codes} />}
