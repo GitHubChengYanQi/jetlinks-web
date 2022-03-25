@@ -7,8 +7,7 @@
 
 import React, {useEffect} from 'react';
 import {
-  Input,
-  Radio, AutoComplete, Spin,
+  Input, Radio, AutoComplete, Spin,
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -31,7 +30,6 @@ export const Type = (props) => {
 
   return (<InputNumber {...props} />);
 };
-
 
 
 export const SelectSkuName = (props) => {
@@ -59,8 +57,7 @@ export const SpuId = (props) => {
     if (name || classId) {
       run({
         data: {
-          name,
-          spuClassificationId: classId,
+          name, spuClassificationId: classId,
         }
       });
     }
@@ -73,16 +70,13 @@ export const SpuId = (props) => {
 
   const options = (!classId || loading) ? [] : data && data.map((items) => {
     return {
-      label: items.label,
-      value: items.label,
-      id: items.value,
+      label: items.label, value: items.label, id: items.value,
     };
   });
 
-  return (
-    <AutoComplete
+  return (<AutoComplete
       value={value && value.name ? value.name : null}
-      notFoundContent={loading && <Spin />}
+      notFoundContent={loading && <Spin/>}
       options={options || []}
       // disabled={skuId}
       style={{width: 300}}
@@ -94,8 +88,7 @@ export const SpuId = (props) => {
         action(value);
       }}
       placeholder="请输入物料名称"
-    />
-  );
+    />);
 };
 
 export const Attributes = (props) => {
@@ -113,6 +106,11 @@ export const SkuName = (props) => {
 };
 
 export const Codings = (props) => {
+  useEffect(() => {
+    if (props.copy) {
+      props.onChange(null);
+    }
+  }, []);
   return (<Coding {...props} />);
 };
 export const UnitId = (props) => {
@@ -160,18 +158,18 @@ export const Specs = (props) => {
 };
 
 export const FileId = (props) => {
-  return (<FileUpload {...props} maxCount={1} />);
+  return (<FileUpload {...props} maxCount={1}/>);
 };
 
 export const Img = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="物料图片" />
+    <FileUpload {...props} maxCount={1} title="物料图片"/>
   </div>);
 };
 
 export const Bind = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="关联图纸" />
+    <FileUpload {...props} maxCount={1} title="关联图纸"/>
   </div>);
 };
 

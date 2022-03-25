@@ -27,7 +27,7 @@ const SkuEdit = ({...props}, ref) => {
   const ApiConfig = {
     view: skuDetail,
     add: addUrl || skuAdd,
-    save: skuEdit
+    save: value.copy ? skuAdd : skuEdit
   };
 
   const formRef = useRef();
@@ -51,7 +51,6 @@ const SkuEdit = ({...props}, ref) => {
     nextAdd
   }));
 
-  console.log(value)
   return (
     <div style={{padding: 16}}>
       <Form
@@ -60,10 +59,7 @@ const SkuEdit = ({...props}, ref) => {
         ref={formRef}
         formActions={formActionsPublic}
         defaultValue={{
-          ...value,
-          'unitId': value.spuResult && value.spuResult.unitId,
-          'spuClass': value.spuResult && value.spuResult.spuClassificationId,
-          'spu': {name: value.spuResult.name, id: value.spuId},
+          'spu': value.spuResult,
         }}
         api={ApiConfig}
         NoButton={false}
@@ -82,8 +78,10 @@ const SkuEdit = ({...props}, ref) => {
             formRef.current.reset();
           }
         }}
-        onSubmit={(value) => {
-          return {...value, type: 0, isHidden: true};
+        onSubmit={(submit) => {
+          const object = {...submit, type: 0, isHidden: true, skuId: value.copy ? null : value.skuId};
+          console.log(object);
+          return object;
         }}
         effects={async () => {
 
@@ -124,6 +122,7 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="物料编码"
           name="standard"
+          copy={value.copy}
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}

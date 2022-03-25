@@ -8,13 +8,11 @@
 export const skuAdd = {
   url: '/sku/add',
   method: 'POST',
-  rowKey:'skuId'
 };
 
 export const skuEdit = {
   url: '/sku/edit',
   method: 'POST',
-  rowKey:'skuId'
 };
 
 export const skuDelete = {
@@ -26,7 +24,6 @@ export const skuDelete = {
 export const skuDetail = {
   url: '/sku/detail',
   method: 'POST',
-  rowKey:'skuId'
 };
 
 export const skuList = {
