@@ -15,9 +15,9 @@ export const ContractRouter = [
     fallback: <div>loading...</div>,
     exact: true,
   },{
-    path: '/contract/:cid',
+    path: '/contract/detail',
     name: '合同详情',
-    component: lazy(() => import('../components/Detail/index')),
+    component: lazy(() => import('../Detail')),
     fallback: <div>loading...</div>,
     exact: true,
   },

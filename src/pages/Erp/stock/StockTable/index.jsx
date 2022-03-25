@@ -22,7 +22,7 @@ import Icon from '@/components/Icon';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
-import SelectSku from '@/pages/Erp/sku/components/SelectSku';
+import {Position} from '@/pages/Erp/stock/StockField';
 
 const {baseURI} = config;
 const {FormItem} = Form;
@@ -30,6 +30,7 @@ const {FormItem} = Form;
 const StockTable = (props) => {
 
   const {state} = props;
+  console.log(state);
 
   const tableRef = useRef();
 
@@ -158,6 +159,7 @@ const StockTable = (props) => {
     tableRef.current.submit();
   }, [state]);
 
+
   const searchForm = () => {
 
     return (
@@ -165,9 +167,15 @@ const StockTable = (props) => {
         <FormItem
           label="物料名称"
           placeholder="搜索物料"
-          name="skuId"
-          noAdd
-          component={SelectSku}/>
+          name="skuName"
+          component={Input}/>
+        <FormItem
+          visible={state || false}
+          label="库位"
+          id={state}
+          placeholder="搜索库位"
+          name="storehousePositionsId"
+          component={Position}/>
         <FormItem
           hidden
           name="type"

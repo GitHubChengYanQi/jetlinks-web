@@ -27,7 +27,7 @@ const SkuEdit = ({...props}, ref) => {
   const ApiConfig = {
     view: skuDetail,
     add: addUrl || skuAdd,
-    save: skuEdit
+    save: value.copy ? skuAdd : skuEdit
   };
 
   const formRef = useRef();
@@ -51,7 +51,6 @@ const SkuEdit = ({...props}, ref) => {
     nextAdd
   }));
 
-
   return (
     <div style={{padding: 16}}>
       <Form
@@ -60,11 +59,7 @@ const SkuEdit = ({...props}, ref) => {
         ref={formRef}
         formActions={formActionsPublic}
         defaultValue={{
-          'unitId': value.spuResult && value.spuResult.unitId,
           'spu': value.spuResult,
-          'standard': value.standard,
-          'specifications': value.specifications,
-          'remarks': value.remarks
         }}
         api={ApiConfig}
         NoButton={false}
@@ -78,13 +73,15 @@ const SkuEdit = ({...props}, ref) => {
         onSuccess={(res) => {
           openNotificationWithIcon('success');
           if (!next) {
-            props.onSuccess(res.data,value);
+            props.onSuccess(res.data, value);
           } else {
             formRef.current.reset();
           }
         }}
-        onSubmit={(value) => {
-          return {...value, type: 0, isHidden: true};
+        onSubmit={(submit) => {
+          const object = {...submit, type: 0, isHidden: true, skuId: value.copy ? null : value.skuId};
+          console.log(object);
+          return object;
         }}
         effects={async () => {
 
@@ -104,7 +101,7 @@ const SkuEdit = ({...props}, ref) => {
           });
 
 
-          FormEffectHooks.onFieldValueChange$('spuClass').subscribe(({value:spuClassId}) => {
+          FormEffectHooks.onFieldValueChange$('spuClass').subscribe(({value: spuClassId}) => {
             const spu = getFieldState('spu');
             if (spuClassId) {
               setFieldState(
@@ -125,11 +122,12 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="物料编码"
           name="standard"
+          copy={value.copy}
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
           rules={[{
-            required:true,
+            required: true,
             pattern: '^[a-zA-Z0-9]+$',
             message: '只能输入字母或数字！'
           }]}
@@ -139,23 +137,23 @@ const SkuEdit = ({...props}, ref) => {
           name="spuClass"
           placeholder="请选择所属分类"
           component={SysField.SpuClass}
-          required />
+          required/>
         <FormItem
           label="产品名称"
           skuId={value.skuId}
           name="spu"
           component={SysField.SpuId}
-          required />
+          required/>
         <FormItem
           label="型号"
           name="skuName"
           component={SysField.SkuName}
-          required />
+          required/>
         <FormItem
           label="单位"
           name="unitId"
           component={SysField.UnitId}
-          required />
+          required/>
         <FormItem
           label="二维码生成方式"
           name="batch"
@@ -190,34 +188,34 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="备注"
           name="remarks"
-          component={SysField.Note} />
+          component={SysField.Note}/>
         <FormItem
           label={<Space>
             附件
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
             </Popover>
           </Space>}
           name="fileId"
-          component={SysField.FileId} />
+          component={SysField.FileId}/>
         <FormItem
           label={<Space>
             物料图片
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
             </Popover>
           </Space>}
           name="images"
-          component={SysField.Img} />
+          component={SysField.Img}/>
         <FormItem
           label={<Space>
             关联图纸
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
+              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
             </Popover>
           </Space>}
           name="drawing"
-          component={SysField.Bind} />
+          component={SysField.Bind}/>
       </Form>
     </div>
   );
