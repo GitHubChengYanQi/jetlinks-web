@@ -115,7 +115,7 @@ const CustomerEdit = (
             const contactsParams = [];
             contactsParams.push({
               contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
-              phoneParams: [{phoneNumber: value.phoneNumber}],
+              phoneParams: [{phoneNumber: value.phoneNumber,telephone: value.telePhone}],
               deptName: value.deptName,
               positionName: value.companyRole,
             });
@@ -123,7 +123,7 @@ const CustomerEdit = (
               if (item && item.contactsName) {
                 contactsParams.push({
                   contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
-                  phoneParams: [{phoneNumber: item.phoneNumber}],
+                  phoneParams: [{phoneNumber: item.phoneNumber,telephone: item.telephone}],
                   deptName: item.deptName,
                   positionName: value.companyRole,
                 });
@@ -182,6 +182,15 @@ const CustomerEdit = (
                 }
                 state.props.disabled = res;
               });
+              setFieldState('telePhone', state => {
+                if (res) {
+                  const telephone = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].telephone;
+                  state.value = telephone;
+                } else {
+                  state.value = null;
+                }
+                state.props.disabled = res;
+              });
               setFieldState('deptName', state => {
                 if (res) {
                   state.value = {name: res.deptResult && res.deptResult.fullName};
@@ -218,6 +227,18 @@ const CustomerEdit = (
                   if (res) {
                     const phoneNumber = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].phoneNumber;
                     state.value = phoneNumber;
+                  } else {
+                    state.value = null;
+                  }
+                  state.props.disabled = res;
+                });
+              setFieldState(
+                FormPath.transform(name, /\d/, ($1) => {
+                  return `contactsParams.${$1}.telephone`;
+                }), state => {
+                  if (res) {
+                    const telephone = res.phoneParams && res.phoneParams[0] && res.phoneParams[0].telephone;
+                    state.value = telephone;
                   } else {
                     state.value = null;
                   }
@@ -326,7 +347,7 @@ const CustomerEdit = (
                     <FormItem
                       label="电话号"
                       placeholder="请输入电话号"
-                      name="phone"
+                      name="telePhone"
                       component={SysField.PhoneNumber}
                     />
                   </MegaLayout>
@@ -557,7 +578,7 @@ const CustomerEdit = (
                                 <FormItem
                                   label="电话号"
                                   placeholder="请输入电话号"
-                                  name={`contactsParams.${index}.phone`}
+                                  name={`contactsParams.${index}.telephone`}
                                   component={SysField.PhoneNumber}
                                 />
                               </MegaLayout>
