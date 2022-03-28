@@ -41,6 +41,12 @@ export const contractDetail = {
   rowKey: 'contractId'
 };
 
+
+export const contractExcel= {
+  url: '/Excel/exportContract',
+  method: 'GET',
+};
+
 export const contractList = {
   url: '/contract/list',
   method: 'POST',

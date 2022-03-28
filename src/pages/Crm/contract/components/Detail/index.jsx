@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Descriptions, Tabs} from 'antd';
+import {Button, Card, Descriptions, Space, Tabs} from 'antd';
 import {useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import parse from 'html-react-parser';
@@ -7,7 +7,7 @@ import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import styles from './index.module.scss';
-import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
+import {contractDetail, contractExcel} from '@/pages/Crm/contract/ContractUrl';
 import OrderDetailTable from '@/pages/Crm/contract/components/OrderDetailTable';
 import PayTable from '@/pages/Crm/contract/components/PayTable';
 import {orderDetail} from '@/pages/Erp/order/OrderUrl';
@@ -15,12 +15,12 @@ import {orderDetail} from '@/pages/Erp/order/OrderUrl';
 const {TabPane} = Tabs;
 
 const Detail = ({id}) => {
-  console.log(id)
 
   const params = useParams();
 
-  const {loading: contractLoading, data: contract, run} = useRequest(contractDetail, {manual:true});
+  const {loading: contractLoading, data: contract, run} = useRequest(contractDetail, {manual: true});
 
+  const {loading: excelLoading, run: excel} = useRequest(contractExcel, {manual: true});
 
   const {loading, data} = useRequest(orderDetail, {
     defaultParams: {
@@ -45,10 +45,21 @@ const Detail = ({id}) => {
   return <div className={styles.detail}>
     <Card title={<Breadcrumb/>} bodyStyle={{padding: 0}}/>
     <div className={styles.main}>
-      <Card title="基本信息" extra={<Button
-        onClick={() => {
-          history.back();
-        }}><Icon type="icon-back"/>返回</Button>}>
+      <Card title="基本信息" extra={<Space>
+        {contract && <Button
+          type='link'
+          onClick={() => {
+            excel({
+              params: {
+                id: contract.contractId
+              }
+            });
+          }}>合同导出word</Button>}
+        <Button
+          onClick={() => {
+            history.back();
+          }}><Icon type="icon-back"/>返回</Button>
+      </Space>}>
         <Descriptions column={2}>
           <Descriptions.Item label="甲方信息">
             <div style={{cursor: 'pointer'}} onClick={() => {
