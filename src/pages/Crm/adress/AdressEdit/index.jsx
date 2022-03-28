@@ -25,7 +25,7 @@ const formActionsPublic = createFormActions();
 
 const AdressEdit = ({...props}, ref) => {
 
-  const {customer, NoButton, ...other} = props;
+  const {customer, NoButton,adressType, ...other} = props;
 
   const formRef = useRef();
 
@@ -55,7 +55,7 @@ const AdressEdit = ({...props}, ref) => {
             message.warn('请选择客户！');
             return false;
           }
-          return {...value, customerId: customer};
+          return {...value, customerId: customer,adressType};
         }}
         onSuccess={(res) => {
           props.onSuccess(res.data);
