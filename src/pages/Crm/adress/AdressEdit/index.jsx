@@ -55,7 +55,7 @@ const AdressEdit = ({...props}, ref) => {
             message.warn('请选择客户！');
             return false;
           }
-          return {...value, customerId: customer,adressType};
+          return {...value, customerId: customer,type:adressType};
         }}
         onSuccess={(res) => {
           props.onSuccess(res.data);

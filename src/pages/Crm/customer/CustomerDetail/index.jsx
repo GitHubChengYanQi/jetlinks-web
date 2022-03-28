@@ -243,7 +243,7 @@ const CustomerDetail = ({id, status, ...props}) => {
                   }} />
                 </TabPane>
                 <TabPane tab="货单" key="5">
-                  <OrderList customerId={data && data.customerId} />
+                  {/* <OrderList customerId={data && data.customerId} /> */}
                 </TabPane>
                 <TabPane tab="回款" key="6">
                   Content of Tab Pane 3

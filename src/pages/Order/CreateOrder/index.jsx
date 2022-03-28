@@ -744,7 +744,7 @@ const CreateOrder = ({...props}) => {
               <FormItem
                 label="交货地址"
                 name="adressId"
-                adressType='good'
+                adressType='goods'
                 component={CustomerSysField.Adress}
               />
             </Col>
