@@ -128,8 +128,6 @@ const SkuEdit = ({...props}, ref) => {
           module={0}
           rules={[{
             required: true,
-            pattern: '^[a-zA-Z0-9]+$',
-            message: '只能输入字母或数字！'
           }]}
         />
         <FormItem
