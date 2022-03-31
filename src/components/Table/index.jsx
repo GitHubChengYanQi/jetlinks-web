@@ -1,7 +1,7 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import {Button, Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {createFormActions, Form, FormButtonGroup, Reset, Submit, useFormTableQuery} from '@formily/antd';
+import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
@@ -15,54 +15,54 @@ const {Sider, Content} = Layout;
 const formActionsPublic = createFormActions();
 
 const TableWarp = ({
-  children,
-  columns,
-  actions,
-  NoChildren,
-  title,
-  sortAction,
-  maxHeight,
-  loading: getLoading,
-  showCard,
-  selectedRowKeys,
-  api,
-  tableData,
-  actionButton,
-  pageSize,
-  noPagination,
-  isChildren,
-  contentHeight,
-  searchForm,
-  cardTitle,
-  rowKey,
-  headStyle,
-  tab,
-  dataSource: dataSources,
-  noSort,
-  configPagination,
-  tableKey,
-  branch,
-  noRowSelection,
-  bodyStyle,
-  bordered,
-  defaultSelectedRowKeys,
-  SearchButton,
-  selectionType,
-  onChange,
-  getCheckboxProps,
-  layout,
-  cardHeaderStyle,
-  expandable,
-  listHeader = true,
-  labelAlign,
-  noTableColumn,
-  sortList,
-  footer: parentFooter,
-  isModal = true,
-  formActions = null,
-  left,
-  ...props
-}, ref) => {
+                     children,
+                     columns,
+                     actions,
+                     NoChildren,
+                     title,
+                     sortAction,
+                     maxHeight,
+                     loading: getLoading,
+                     showCard,
+                     selectedRowKeys,
+                     api,
+                     tableData,
+                     actionButton,
+                     pageSize,
+                     noPagination,
+                     isChildren,
+                     contentHeight,
+                     searchForm,
+                     cardTitle,
+                     rowKey,
+                     headStyle,
+                     tab,
+                     dataSource: dataSources,
+                     noSort,
+                     configPagination,
+                     tableKey,
+                     branch,
+                     noRowSelection,
+                     bodyStyle,
+                     bordered,
+                     defaultSelectedRowKeys,
+                     SearchButton,
+                     selectionType,
+                     onChange,
+                     getCheckboxProps,
+                     layout,
+                     cardHeaderStyle,
+                     expandable,
+                     listHeader = true,
+                     labelAlign,
+                     noTableColumn,
+                     sortList,
+                     footer: parentFooter,
+                     isModal = true,
+                     formActions = null,
+                     left,
+                     ...props
+                   }, ref) => {
 
   if (!rowKey) {
     rowKey = api.rowKey;
@@ -187,7 +187,7 @@ const TableWarp = ({
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}} />
+        <br style={{clear: 'both'}}/>
       </div>
     );
   };
@@ -219,20 +219,21 @@ const TableWarp = ({
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup>
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        submit();
-                      }}><SearchOutlined />查询
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        reset();
-                      }}>
-                      重置
-                    </Button>
-                  </FormButtonGroup>}
+                    <FormButtonGroup>
+                      <Button
+                        id='submit'
+                        type="primary"
+                        onClick={() => {
+                          submit();
+                        }}><SearchOutlined/>查询
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reset();
+                        }}>
+                        重置
+                      </Button>
+                    </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -310,12 +311,12 @@ const TableWarp = ({
                           sortList(value);
                         }
                         setSorts(value);
-                      }} />;
+                      }}/>;
                   } else {
                     return <>{index + 1}</>;
                   }
 
-                }} />}
+                }}/>}
               {tableColumn.filter((items) => {
                 if (items && items.props && items.props.visible === false) {
                   return false;

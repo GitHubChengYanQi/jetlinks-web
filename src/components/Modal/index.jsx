@@ -133,7 +133,7 @@ const Modal = (
       destroyOnClose
       wrapClassName={wrapModalClassName}
     >
-      <div style={{maxHeight: footer ? 'calc(100vh - 110px)' : 'calc(100vh - 55px)', overflow: 'auto'}}>
+      <div style={{maxHeight: footer ? 'calc(100vh - 110px)' : 'calc(100vh - 55px)', overflowY: 'auto',overflowX:'hidden'}}>
         {Component ? <Component
           {...props}
           ref={compoentRef}

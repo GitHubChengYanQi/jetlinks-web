@@ -15,6 +15,8 @@ const {FormItem} = Form;
 
 const GenEdit = () => {
 
+  const token = cookie.get('tianpeng-token');
+
   let javaGenPack = {
     author: '',
     proPackage: 'cn.atsoft.dasheng.app',
@@ -63,7 +65,7 @@ const GenEdit = () => {
           //   method: 'GET',
           //   headers: {Authorization: cookie.get('tianpeng-token')},
           // });
-          window.open(`${config.baseURI}${execute.url}?${qs.stringify(result)}`);
+          window.open(`${config.baseURI}${execute.url}?${qs.stringify(result)}&authorization=${token}`);
           return false;
         }}
         labelCol={3}

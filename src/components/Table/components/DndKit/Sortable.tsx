@@ -47,6 +47,7 @@ export interface Props {
   activationConstraint?: PointerActivationConstraint;
   animateLayoutChanges?: AnimateLayoutChanges;
   adjustScale?: boolean;
+  liBorder?: boolean;
   collisionDetection?: CollisionDetection;
   coordinateGetter?: KeyboardCoordinateGetter;
   Container?: any; // To-do: Fix me
@@ -60,6 +61,7 @@ export interface Props {
   removable?: boolean;
   reorderItems?: typeof arrayMove;
   strategy?: SortingStrategy;
+  DefinedItem?: React.ReactNode,
   style?: React.CSSProperties;
   useDragOverlay?: boolean;
   onDragEnd?: Function;
@@ -112,6 +114,7 @@ export function Sortable(
     items: initialItems,
     isDisabled = () => false,
     measuring,
+    liBorder,
     onDragEnd = () => {
     },
     modifiers,
@@ -123,10 +126,10 @@ export function Sortable(
     reorderItems = arrayMove,
     strategy = rectSortingStrategy,
     style,
+    DefinedItem,
     useDragOverlay = true,
     wrapperStyle = () => ({}),
   }: Props) {
-
   const [items, setItems] = useState<ItemData[]>(initialItems || []);
 
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -248,7 +251,9 @@ export function Sortable(
                 return null;
               }
               return <SortableItem
+                liBorder={liBorder}
                 key={index}
+                DefinedItem={DefinedItem}
                 onChecked={(key) => {
                   const array = items.map((item) => {
                     if (item.key === key) {
@@ -266,6 +271,7 @@ export function Sortable(
                 id={value.key}
                 title={value.title}
                 itemData={items}
+                item={value}
                 handle={handle}
                 index={index}
                 checked={value.checked || false}
@@ -319,8 +325,11 @@ export function Sortable(
 interface SortableItemProps {
   animateLayoutChanges?: AnimateLayoutChanges;
   disabled?: boolean;
+  liBorder?: boolean;
   id: string;
+  item: object,
   index: number;
+  DefinedItem?: React.ReactNode,
   handle: boolean;
   checked: boolean;
   useDragOverlay?: boolean;
@@ -333,26 +342,30 @@ interface SortableItemProps {
   renderItem(args: any): React.ReactElement;
 
   wrapperStyle({
-      isDragging,
-      index,
-      id,}: {
-      index: number;
-      isDragging: boolean;
-      id: string;
-    }): React.CSSProperties;
+                 isDragging,
+                 index,
+                 id,
+               }: {
+    index: number;
+    isDragging: boolean;
+    id: string;
+  }): React.CSSProperties;
 }
 
 export function SortableItem(
   {
     title,
+    item,
     disabled,
     animateLayoutChanges,
     handle,
     id,
     itemData,
+    DefinedItem,
     index,
     style,
     onChecked,
+    liBorder,
     checked,
     renderItem,
     useDragOverlay,
@@ -372,11 +385,13 @@ export function SortableItem(
     animateLayoutChanges,
     disabled,
   });
-
   return (
     <Item
       ref={setNodeRef}
+      liBorder={liBorder}
+      DefinedItem={DefinedItem}
       value={title}
+      item={item}
       onChecked={(value) => {
         onChecked(value);
       }}
