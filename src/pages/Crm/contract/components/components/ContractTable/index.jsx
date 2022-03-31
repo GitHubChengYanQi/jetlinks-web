@@ -180,11 +180,6 @@ const ContractTable = (props) => {
 
   return (
     <>
-      {customerId && <Divider orientation="right">
-        <AddButton ghost onClick={() => {
-          ref.current.open(false);
-        }}/>
-      </Divider>}
       <Table
         headStyle={customerId && {display: 'none'}}
         title={<Breadcrumb/>}
