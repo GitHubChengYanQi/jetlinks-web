@@ -189,14 +189,6 @@ const StockTable = (props) => {
     );
   };
 
-  const count = (array) => {
-    let number = 0;
-    array.map((item) => {
-      return number += item.number;
-    });
-    return number;
-  };
-
   const positionResult = (data) => {
 
     if (!data) {
@@ -226,7 +218,7 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="物料种类" value={data.length}/>
+              <Statistic title="物料种类" value={data[0] ? data[0].skuTypeNum : 0}/>
             }/>
           <Progress
             type="circle"
@@ -236,7 +228,7 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="总数量" value={count(data)}/>
+              <Statistic title="总数量" value={data[0] ? data[0].skuCount : 0}/>
             }/>
         </Space>
       </>}
@@ -275,7 +267,7 @@ const StockTable = (props) => {
       <Table.Column key={7} title="库位" dataIndex="positionsResult" render={(value) => {
         return <div style={{minWidth: 60}}>{positionResult(value)}</div>;
       }}/>
-      <Table.Column key={8} title="仓库" dataIndex="storehouseResult" render={(value)=>{
+      <Table.Column key={8} title="仓库" dataIndex="storehouseResult" render={(value) => {
         return <div style={{minWidth: 60}}>{value && value.name}</div>;
       }}/>
       <Table.Column/>

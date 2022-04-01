@@ -35,3 +35,10 @@ export const processList = {
   rowKey:'processId'
 };
 
+
+export const shipRouteShipList = {
+  url: '/shipRoute/shipList',
+  method: 'POST',
+  rowKey:'processId'
+};
+

@@ -146,7 +146,7 @@ const AddSpu = ({
 
 
   return <div style={{padding: '24px 10%'}}>
-    <Descriptions column={2}>
+    <Descriptions column={2} labelStyle={{display:'flex',alignItems:'center'}}>
       <Descriptions.Item label="物料分类">
         <Cascader
           width={200}

@@ -19,7 +19,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import {processList} from '@/pages/Workflow/Process/processUrl';
+import {processList, shipRouteShipList} from '@/pages/Workflow/Process/processUrl';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -66,7 +66,7 @@ const ProcessRouteList = ({spuId, value}, ref) => {
       <Table
         title={<Breadcrumb />}
         headStyle={spuId && {display: 'none'}}
-        api={processList}
+        api={shipRouteShipList}
         noRowSelection
         rowKey="processId"
         searchForm={searchForm}
@@ -76,6 +76,7 @@ const ProcessRouteList = ({spuId, value}, ref) => {
         <Column title="物料" dataIndex="skuResult" render={(value) => {
           return <SkuResultSkuJsons skuResult={value} />;
         }} />
+        <Column title="创建时间" dataIndex="createTime" width={200} />
         <Column />
         <Column title="操作" align="right" dataIndex="processId" render={(value, record) => {
           return (
