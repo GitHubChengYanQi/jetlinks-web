@@ -147,6 +147,7 @@ const CreateOrder = ({...props}) => {
           noteTitle: '销售单备注',
           moneyTitle: '销售总价',
           detailTitle: '销售明细',
+          goodTitle: '交货信息',
         };
       case 'PO':
         return {
@@ -159,6 +160,7 @@ const CreateOrder = ({...props}) => {
           noteTitle: '采购单备注',
           moneyTitle: '采购总价',
           detailTitle: '采购明细',
+          goodTitle: '收货信息',
         };
       default:
         break;
@@ -191,12 +193,12 @@ const CreateOrder = ({...props}) => {
   }, [payPlan]);
 
   if (!module) {
-    return <Empty />;
+    return <Empty/>;
   }
 
   return <div style={{padding: 16}}>
     <div style={{padding: '16px 0'}}>
-      <Breadcrumb title={module().title} />
+      <Breadcrumb title={module().title}/>
     </div>
 
     <Form
@@ -232,13 +234,13 @@ const CreateOrder = ({...props}) => {
           });
           if (detailParams.length !== value.detailParams.length) {
             notification.warn({
-              message:'请检查物料清单信息！，品牌、数量、单价为必填信息!',
+              message: '请检查物料清单信息！，品牌、数量、单价为必填信息!',
             });
             return false;
           }
         } else {
           notification.warn({
-            message:'请添加物料清单!',
+            message: '请添加物料清单!',
           });
           return false;
         }
@@ -611,25 +613,10 @@ const CreateOrder = ({...props}) => {
           <Row gutter={24}>
             <Col span={span}>
               <FormItem
-                label="交货方式"
-                name="deliveryWay"
-                component={SysField.DeliveryWay}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="交货地址"
-                name="adressId"
-                component={SysField.AdressId}
-              />
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
                 label="付款计划"
                 name="payPlan"
                 data={data}
+                value={3}
                 loading={templateLoading}
                 component={SysField.PayPlan}
               />
@@ -665,14 +652,17 @@ const CreateOrder = ({...props}) => {
                               :
                               <>
                                 <FormItem
+                                  value={0}
                                   name={`paymentDetail.${index}.payType`}
                                   component={SysField.PayType}
                                 />
                                 <FormItem
+                                  value={1}
                                   name={`paymentDetail.${index}.dateNumber`}
                                   component={SysField.dateNumber}
                                 />
                                 <FormItem
+                                  value={0}
                                   name={`paymentDetail.${index}.dateWay`}
                                   component={SysField.DateWay}
                                 />
@@ -708,7 +698,7 @@ const CreateOrder = ({...props}) => {
                             type="link"
                             style={{float: 'right'}}
                             disabled={state.value.length === 1}
-                            icon={<DeleteOutlined />}
+                            icon={<DeleteOutlined/>}
                             onClick={() => {
                               onRemove(index);
                             }}
@@ -721,7 +711,7 @@ const CreateOrder = ({...props}) => {
                   <Button
                     type="dashed"
                     style={{marginTop: 8, marginBottom: 16, marginLeft: labelWidth}}
-                    icon={<PlusOutlined />}
+                    icon={<PlusOutlined/>}
                     onClick={onAdd}>添加付款批次</Button>
                 </div>
               );
@@ -734,6 +724,35 @@ const CreateOrder = ({...props}) => {
                 name="paymentRemark"
                 placeholder="请输入财务备注"
                 component={SysField.Remark}
+              />
+            </Col>
+          </Row>
+        </MegaLayout>
+      </ProCard>
+
+      <ProCard bodyStyle={{padding: 16}} className="h2Card" title={module().goodTitle} headerBordered>
+        <MegaLayout labelWidth={labelWidth}>
+          <Row gutter={24}>
+            <Col span={span}>
+              <FormItem
+                label="交货方式"
+                name="deliveryWay"
+                component={SysField.DeliveryWay}
+              />
+            </Col>
+            <Col span={span}>
+              <FormItem
+                label="交货地址"
+                name="adressId"
+                adressType='goods'
+                component={CustomerSysField.Adress}
+              />
+            </Col>
+            <Col span={span}>
+              <FormItem
+                label="交货人"
+                name="userId"
+                component={CustomerSysField.Contacts}
               />
             </Col>
           </Row>
@@ -784,7 +803,7 @@ const CreateOrder = ({...props}) => {
         </MegaLayout>
       </ProCard>
 
-      <Divider />
+      <Divider/>
 
       <MegaLayout labelWidth={labelWidth}>
         <FormItem
@@ -807,7 +826,7 @@ const CreateOrder = ({...props}) => {
         setVisible(false);
       }}
     >
-      <CustomerEdit add />
+      <CustomerEdit add/>
     </Drawer>
 
     <Modal

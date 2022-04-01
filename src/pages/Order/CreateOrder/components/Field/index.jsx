@@ -25,6 +25,7 @@ import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import UpLoadImg from '@/components/Upload';
 import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
+import contactsEdit from "@/pages/Crm/contacts/ContactsEdit";
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency, ...props}) => {
@@ -197,6 +198,19 @@ export const AdressId = (props) => {
     title="添加其他地址"
     component={AdressEdit} {...other} /> : '请选择甲方公司');
 };
+
+export const userId = (props) => {
+  const {customerId, ...other} = props;
+  return (customerId ? <SetSelectOrCascader
+    placeholder="请选择交货人"
+    width={200}
+    customer={customerId}
+    api={adressIdSelect}
+    data={{customerId}}
+    title="添加其他地址"
+    component={contactsEdit} {...other} /> : '请选择甲方公司');
+};
+
 export const PayPlan = (props) => {
 
   const {loading, data, ...other} = props;
@@ -204,7 +218,6 @@ export const PayPlan = (props) => {
   const style = {borderTop: 'dashed 1px #d9d9d9'};
 
   if (loading) {
-    props.onChange(null);
     return <Spin />;
   }
 
@@ -249,7 +262,6 @@ export const PayType = (props) => {
 export const Percentum = (props) => {
 
   const {value, onChange} = props;
-  console.log(value);
 
   const [number, setNumber] = useState();
 
