@@ -14,12 +14,14 @@ const style = {
 };
 
 
-export const Contacts = ({
-  button,
-  setDefinedInput,
-  setButton,
-  setTable,
-}) => {
+export const Contacts = (
+  {
+    button,
+    setDefinedInput,
+    setButton,
+    setTable,
+    hidden,
+  }) => {
 
   const [defined, setDefined] = useState(false);
 
@@ -191,12 +193,15 @@ export const Contacts = ({
             <Radio.Button value="合同签订时间" style={style}>合同签订时间</Radio.Button>
             <Radio.Button value="需方公司名称" style={style}>需方公司名称</Radio.Button>
             <Radio.Button value="供方公司名称" style={style}>供方公司名称</Radio.Button>
+            <Radio.Button value="提取(交付)地点" style={style}>提取(交付)地点</Radio.Button>
+            <Radio.Button value="接货人员" style={style}>接货人员</Radio.Button>
+            <Radio.Button value="接货人电话" style={style}>接货人电话</Radio.Button>
           </ProCard>
           <ProCard
             className="h2Card"
             title="合同标的物变量"
             bodyStyle={{padding: 0}}
-            extra={<Radio.Button value="skuTable"><Space><PlusOutlined />编辑标的物项目</Space></Radio.Button>}
+            extra={<Radio.Button value="skuTable"><Space><PlusOutlined/>编辑标的物项目</Space></Radio.Button>}
           >
             {showSkuTable && <div>
               {
@@ -208,7 +213,7 @@ export const Contacts = ({
                       title={<Button
                         type="link"
                         disabled={skuTable.table.length === 1}
-                        icon={<DeleteOutlined />}
+                        icon={<DeleteOutlined/>}
                         onClick={() => {
                           const array = skuTable.table.filter((item, itemIndex) => {
                             return itemIndex !== index;
@@ -228,7 +233,7 @@ export const Contacts = ({
                           array[index] = option;
                           setTable(array);
                           setSkuTable({table: array});
-                        }} />
+                        }}/>
                     </Tooltip>
                   </div>;
                 })
@@ -236,7 +241,7 @@ export const Contacts = ({
               <Button style={{marginLeft: 8}} onClick={() => {
                 skuTable.table.push({});
                 setSkuTable({...skuTable});
-              }}><PlusOutlined /></Button>
+              }}><PlusOutlined/></Button>
             </div>}
           </ProCard>
           <ProCard className="h2Card" title="需方基础变量" bodyStyle={{padding: 0}}>
@@ -271,21 +276,21 @@ export const Contacts = ({
             <Radio.Button value="供方公司电邮" style={style}>供方公司电邮</Radio.Button>
             <Radio.Button value="供方税号" style={style}>供方税号</Radio.Button>
           </ProCard>
-          <ProCard
+          {hidden && <ProCard
             className="h2Card"
             title="合同约定条款变量"
             bodyStyle={{padding: 0}}
             extra={<Button onClick={() => {
               setButton('defined');
               setDefined(true);
-            }}><PlusOutlined />添加自定义变量</Button>}>
-            <DefindSelect setButton={setButton} setDefinedInput={setDefinedInput} button={button} />
-          </ProCard>
+            }}><PlusOutlined/>添加自定义变量</Button>}>
+            <DefindSelect setButton={setButton} setDefinedInput={setDefinedInput} button={button}/>
+          </ProCard>}
           <ProCard
             className="h2Card"
             title="付款计划"
             bodyStyle={{padding: 0}}
-            extra={<Radio.Button value="payTable"><Space><PlusOutlined />编辑付款项目</Space></Radio.Button>}
+            extra={<Radio.Button value="payTable"><Space><PlusOutlined/>编辑付款项目</Space></Radio.Button>}
           >
             {showPayTable && <div>
               {
@@ -297,7 +302,7 @@ export const Contacts = ({
                       title={<Button
                         type="link"
                         disabled={payTable.table.length === 1}
-                        icon={<DeleteOutlined />}
+                        icon={<DeleteOutlined/>}
                         onClick={() => {
                           const array = payTable.table.filter((item, itemIndex) => {
                             return itemIndex !== index;
@@ -319,7 +324,7 @@ export const Contacts = ({
                           array[index] = option;
                           setTable(array);
                           setPayTable({table: array});
-                        }} />
+                        }}/>
                     </Tooltip>
                   </div>;
                 })
@@ -327,7 +332,7 @@ export const Contacts = ({
               <Button onClick={() => {
                 payTable.table.push({});
                 setPayTable({...payTable});
-              }}><PlusOutlined /></Button>
+              }}><PlusOutlined/></Button>
             </div>}
           </ProCard>
         </Space>
@@ -337,10 +342,10 @@ export const Contacts = ({
 };
 
 export const POSITIONS = ({
-  button,
-  setButton,
-  setTable
-}) => {
+                            button,
+                            setButton,
+                            setTable
+                          }) => {
 
   const [skuTable, setSkuTable] = useSetState({
     table: [{
@@ -413,7 +418,7 @@ export const POSITIONS = ({
         title="绑定物料"
         headerBordered
         bodyStyle={{padding: 0}}
-        extra={<Radio.Button value="skuTable"><Space><PlusOutlined />编辑绑定物料</Space></Radio.Button>}
+        extra={<Radio.Button value="skuTable"><Space><PlusOutlined/>编辑绑定物料</Space></Radio.Button>}
       >
         {showSkuTable && <div>
           {
@@ -425,7 +430,7 @@ export const POSITIONS = ({
                   title={<Button
                     type="link"
                     disabled={skuTable.table.length === 1}
-                    icon={<DeleteOutlined />}
+                    icon={<DeleteOutlined/>}
                     onClick={() => {
                       const array = skuTable.table.filter((item, itemIndex) => {
                         return itemIndex !== index;
@@ -445,7 +450,7 @@ export const POSITIONS = ({
                       array[index] = option;
                       setTable(array);
                       setSkuTable({table: array});
-                    }} />
+                    }}/>
                 </Tooltip>
               </div>;
             })
@@ -453,7 +458,7 @@ export const POSITIONS = ({
           <Button style={{marginLeft: 8}} onClick={() => {
             skuTable.table.push({});
             setSkuTable({...skuTable});
-          }}><PlusOutlined /></Button>
+          }}><PlusOutlined/></Button>
         </div>}
       </ProCard>
     </Radio.Group>
@@ -461,9 +466,9 @@ export const POSITIONS = ({
 };
 
 export const PHYSICALDETAIL = ({
-  button,
-  setButton
-}) => {
+                                 button,
+                                 setButton
+                               }) => {
   return <>
     <Radio.Group style={{width: '100%'}} value={button} onChange={(value) => {
       setButton(value.target.value);

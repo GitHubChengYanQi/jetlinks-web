@@ -30,14 +30,15 @@ import Effects from '@/pages/ReSearch/BOM/Nodes/Setps/components/Effects';
 const actions = createFormActions();
 
 
-const Setps = ({
-  value: defaultValue,
-  spuSkuId,
-  onClose = () => {
-  },
-  onChange = () => {
-  }
-}) => {
+const Setps = (
+  {
+    value: defaultValue,
+    spuSkuId,
+    onClose = () => {
+    },
+    onChange = () => {
+    }
+  }) => {
 
   const [disabled, setDisabled] = useState([]);
 
@@ -107,7 +108,7 @@ const Setps = ({
         dataSource={[
           {label: '工序', value: 'setp',},
           {label: '工艺路线', value: 'ship',},
-        ]} />
+        ]}/>
       <VirtualField name="setp" visible={false}>
         <FormItem
           label="工序名称"
@@ -146,87 +147,92 @@ const Setps = ({
             const onAdd = () => mutators.push();
             return (
               <Space direction="vertical">
-                <Space>
-                  <div style={{width: 50, paddingBottom: 16}} />
-                  <div style={{width: 200, paddingBottom: 16}}><span
-                    style={{color: 'red'}}>* </span>产出物料</div>
-                  <div style={{width: 90, paddingBottom: 16}}><span
-                    style={{color: 'red'}}>* </span>数量
-                  </div>
-                  <div style={{width: 200, paddingBottom: 16}}>自检方案</div>
-                  <div style={{width: 200, paddingBottom: 16}}>质检方案</div>
-                </Space>
+                <div>
+                  <Space align='center'>
+                    <div style={{width: 50, paddingBottom: 16}}/>
+                    <div style={{width: 200, paddingBottom: 16}}><span
+                      style={{color: 'red'}}>* </span>产出物料
+                    </div>
+                    <div style={{width: 90, paddingBottom: 16}}><span
+                      style={{color: 'red'}}>* </span>数量
+                    </div>
+                    <div style={{width: 200, paddingBottom: 16}}>自检方案</div>
+                    <div style={{width: 200, paddingBottom: 16}}>质检方案</div>
+                  </Space>
+                </div>
+
                 {state.value.map((item, index) => {
                   const onRemove = index => mutators.remove(index);
                   return (
-                    <Space key={index} align="start">
-                      <div style={{width: 50}}>
-                        <FormItem
-                          visible={false}
-                          spuSkuId={spuSkuId}
-                          equals={productionType === 'in'}
-                          name={`setpSetDetails.${index}.partsId`}
-                          component={Bom}
-                        />
-                      </div>
-                      <div style={{width: 200}}>
-                        <FormItem
-                          name={`setpSetDetails.${index}.skuId`}
-                          component={SelectSku}
-                          placeholder="选择物料"
-                          width="100%"
-                          rules={[{
-                            required: true,
-                            message: '请选择产出物料！'
-                          }]}
-                        />
-                      </div>
-                      <div style={{width: 90, paddingBottom: 16}}>
-                        <FormItem
-                          name={`setpSetDetails.${index}.num`}
-                          component={InputNumber}
-                          placeholder="数量"
-                          min={1}
-                          rules={[{
-                            required: true,
-                            message: '请输入数量!'
-                          }]}
-                        />
-                      </div>
-                      <div style={{width: 200}}>
-                        <FormItem
-                          name={`setpSetDetails.${index}.MyQualityId`}
-                          component={Select}
-                          placeholder="自己检查的方案"
-                          api={qualityCheckListSelect}
-                        />
-                      </div>
+                    <div key={index}>
+                      <Space align="start">
+                        <div style={{width: 50}}>
+                          <FormItem
+                            visible={false}
+                            spuSkuId={spuSkuId}
+                            equals={productionType === 'in'}
+                            name={`setpSetDetails.${index}.partsId`}
+                            component={Bom}
+                          />
+                        </div>
+                        <div style={{width: 200}}>
+                          <FormItem
+                            name={`setpSetDetails.${index}.skuId`}
+                            component={SelectSku}
+                            placeholder="选择物料"
+                            width="100%"
+                            rules={[{
+                              required: true,
+                              message: '请选择产出物料！'
+                            }]}
+                          />
+                        </div>
+                        <div style={{width: 90, paddingBottom: 16}}>
+                          <FormItem
+                            name={`setpSetDetails.${index}.num`}
+                            component={InputNumber}
+                            placeholder="数量"
+                            min={1}
+                            rules={[{
+                              required: true,
+                              message: '请输入数量!'
+                            }]}
+                          />
+                        </div>
+                        <div style={{width: 200}}>
+                          <FormItem
+                            name={`setpSetDetails.${index}.MyQualityId`}
+                            component={Select}
+                            placeholder="自己检查的方案"
+                            api={qualityCheckListSelect}
+                          />
+                        </div>
+                        <div style={{width: 200}}>
+                          <FormItem
+                            name={`setpSetDetails.${index}.qualityId`}
+                            component={Select}
+                            placeholder="质量检查的方案"
+                            api={qualityCheckListSelect}
+                          />
+                        </div>
 
-                      <div style={{width: 200}}>
-                        <FormItem
-                          name={`setpSetDetails.${index}.qualityId`}
-                          component={Select}
-                          placeholder="质量检查的方案"
-                          api={qualityCheckListSelect}
+                        <Button
+                          type="link"
+                          disabled={state.value.length === 1}
+                          style={{float: 'right', padding: 0}}
+                          icon={<DeleteOutlined/>}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
                         />
-                      </div>
-
-                      <Button
-                        type="link"
-                        disabled={state.value.length === 1}
-                        style={{float: 'right', padding: 0}}
-                        icon={<DeleteOutlined />}
-                        onClick={() => {
-                          onRemove(index);
-                        }}
-                        danger
-                      />
-                    </Space>
+                      </Space>
+                    </div>
                   );
                 })}
                 <Button
                   type="dashed"
-                  icon={<PlusOutlined />}
+                  icon={<PlusOutlined/>}
                   onClick={onAdd}>增加产出物料</Button>
               </Space>
             );

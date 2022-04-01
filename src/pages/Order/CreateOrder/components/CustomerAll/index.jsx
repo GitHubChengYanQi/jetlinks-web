@@ -18,7 +18,7 @@ export const Customer = (props) => {
 
 export const Adress = (props) => {
 
-  const {customerId, options, defaultValue, ...other} = props;
+  const {customerId, options, defaultValue, adressType,...other} = props;
 
   const [option, setOption] = useState([]);
 
@@ -35,7 +35,11 @@ export const Adress = (props) => {
     <Select options={option || []} {...other} />
 
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
-      ref.current.open(false);
+      if (customerId) {
+        ref.current.open(false);
+      } else {
+        message.warn('请先选择客户！');
+      }
     }} />
 
     <Modal
@@ -56,6 +60,7 @@ export const Adress = (props) => {
       </>}
     >
       <AdressEdit
+        adressType={adressType}
         ref={submitRef}
         onSuccess={(res) => {
           ref.current.close();
@@ -94,7 +99,11 @@ export const Contacts = (props) => {
     <Select options={option || []} {...other} />
 
     <Button type="link" icon={<PlusOutlined />} style={{margin: 0}} onClick={() => {
-      ref.current.open(false);
+      if (customerId) {
+        ref.current.open(false);
+      } else {
+        message.warn('请先选择客户！');
+      }
     }} />
 
     <Modal

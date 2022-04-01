@@ -26,7 +26,29 @@ export const customerAAction = (setFieldState) => {
         });
       });
 
+      setFieldState('adressId', (state) => {
+        state.props.customerId = value;
+        state.props.defaultValue = customer.defaultAddress;
+        state.props.options = customer.adressParams && customer.adressParams.map((item) => {
+          return {
+            label: item.detailLocation || item.location,
+            value: item.adressId,
+          };
+        });
+      });
+
       setFieldState('partyAContactsId', (state) => {
+        state.props.customerId = value;
+        state.props.defaultValue = customer.defaultContacts;
+        state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
+          return {
+            label: item.contactsName,
+            value: item.contactsId,
+          };
+        });
+      });
+
+      setFieldState('userId', (state) => {
         state.props.customerId = value;
         state.props.defaultValue = customer.defaultContacts;
         state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
@@ -65,10 +87,6 @@ export const customerAAction = (setFieldState) => {
       });
       setFieldState('partyAZipCode', (state) => {
         state.value = customer.zipCode;
-      });
-
-      setFieldState('adressId', (state) => {
-        state.props.customerId = value;
       });
 
     } else {
