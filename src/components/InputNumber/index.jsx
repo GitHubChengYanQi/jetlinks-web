@@ -16,6 +16,7 @@ const InputNumber = (
 
   return <AntInputNumber
     controls={false}
+    min={1}
     value={value || number}
     placeholder={placeholder}
     {...props}

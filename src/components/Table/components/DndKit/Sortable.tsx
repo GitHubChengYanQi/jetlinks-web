@@ -230,7 +230,7 @@ export function Sortable(
             const itemData = (items) => {
               return reorderItems(items, activeIndex, overIndex)
             }
-            onDragEnd(itemData(items));
+            onDragEnd(itemData(items),activeIndex,overIndex);
             setItems((items) => reorderItems(items, activeIndex, overIndex));
           }
         }

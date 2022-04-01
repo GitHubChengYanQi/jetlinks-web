@@ -26,6 +26,7 @@ import Drawer from '@/components/Drawer';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
+import cookie from "js-cookie";
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -43,6 +44,7 @@ const PartsList = ({
   type = 1
 }) => {
 
+  const token = cookie.get('tianpeng-token');
 
   const refAdd = useRef();
   const formRef = useRef();
@@ -146,6 +148,7 @@ const PartsList = ({
               url={`${baseURI}Excel/importBom`}
               title="导入BOM"
               module="bom"
+              templateUrl={`${baseURI}importBom/downloadBomTemplate?authorization=${token}`}
               onOk={() => {
                 tableRef.current.submit();
               }}

@@ -15,7 +15,7 @@ export interface Props {
   dragOverlay?: boolean;
   color?: string;
   disabled?: boolean;
-  item?:object;
+  item?: object;
   dragging?: boolean;
   liBorder?: boolean;
   handle?: boolean;
@@ -115,7 +115,7 @@ export const Item = React.memo(
       ) : (
         <li
           onClick={() => {
-            onChecked(keys,item,index);
+            onChecked(keys, item, index);
           }}
           className={classNames(
             styles.Wrapper,
@@ -176,9 +176,9 @@ export const Item = React.memo(
                 :
                 <>
                   <Space>
-               <span className={styles.Actions}>
+                    <span className={styles.Actions}>
                  {handle ? <Handle {...listeners} /> : null}
-            </span>
+                      </span>
                     {value}
                   </Space>
                   <div

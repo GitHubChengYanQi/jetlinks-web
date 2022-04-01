@@ -27,7 +27,7 @@ const OweSku = ({data}) => {
       <Table.Column title='物料规格' dataIndex='specifications' render={(value) => {
         return <div style={{minWidth: 100}}>{value}</div>;
       }}/>
-      <Table.Column title='缺料数量' dataIndex='produceMix' render={(value) => {
+      <Table.Column title='缺料数量' dataIndex='lackNumber' render={(value) => {
         return <div style={{minWidth: 100}}>{value}</div>;
       }}/>
     </Table>

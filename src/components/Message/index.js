@@ -1,4 +1,5 @@
 import {Message as AfdMessage} from '@alifd/next';
+import {notification} from "antd";
 
 const defaultConfig = {
   title: '提示',
@@ -7,33 +8,22 @@ const defaultConfig = {
   duration: 0
 };
 
-const success = (config) => {
-  const content = typeof config === 'object' ? config : {content: config};
-  AfdMessage.success({
-    ...defaultConfig,
-    duration: 1500,
-    hasMask: false,
-    title: '操作成功',
-    ...content,
+const success = (title) => {
+  notification.success({
+    message: title || '成功！',
   });
 };
-const warning = (config) => {
-  const content = typeof config === 'object' ? config : {content: config};
-  AfdMessage.warning({
-    ...defaultConfig,
-    title: '警告：',
-    ...content,
+const warning = (title) => {
+  notification.warning({
+    message: title || '警告！',
   });
-}
-const error = (config) => {
-  const content = typeof config === 'object' ? config : {content: config};
-  AfdMessage.error({
-    ...defaultConfig,
-    title: '错误',
-    ...content,
-    content: content.content || '未知错误，请联系管理员。'
+};
+const error = (title) => {
+  notification.error({
+    message: title || '失败！',
   });
-}
+};
+
 const notice = (config) => {
   const content = typeof config === 'object' ? config : {content: config};
   AfdMessage.notice({

@@ -1,6 +1,6 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Button, Space, Spin} from 'antd';
-import {PlusOutlined, MenuOutlined, VerticalAlignTopOutlined} from '@ant-design/icons';
+import {PlusOutlined, MenuOutlined, VerticalAlignTopOutlined, DeleteOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 import Modal from '@/components/Modal';
@@ -11,6 +11,7 @@ import {Sortable} from '@/components/Table/components/DndKit/Sortable';
 import {Handle} from '@/components/Table/components/DndKit/Item';
 import Note from '@/components/Note';
 import InputNumber from '@/components/InputNumber';
+import styles from './index.module.less';
 
 const SkuList = ({...props}, ref) => {
 
@@ -41,29 +42,44 @@ const SkuList = ({...props}, ref) => {
     }
   });
 
-  const setSku = (data, index) => {
+  const setSku = async (data, index) => {
     const array = skuList.filter(() => true);
     array[index] = {...array[index], ...data};
-    toggle();
-    setSkuList(array);
+    await setSkuList(array);
+    await toggle();
   };
 
   const Item = (props) => {
     const {value, item, index, ...other} = props;
-    return <Space>
+    return <Space size={4}>
       <Handle icon={<MenuOutlined/>} {...other} />
-      <Note width={200}>{value}</Note>
+      <Note width={300}>{value}</Note>
       <InputNumber
-        value={skuList[index].num}
-        style={{border: 'solid 1px #eee', width: 40}}
+        max={999}
+        className={styles.item}
+        value={item.num}
+        style={{border: 'solid 1px #eee', width: 50, textAlign: 'center'}}
         onBlur={(value) => {
           setSku({num: value}, index);
         }}
       />
       <Button type='text' onClick={() => {
-        setSku({fixed: !skuList[index].fixed}, index);
+        setSku({fixed: !item.fixed}, index);
       }}>
-        <VerticalAlignTopOutlined style={{color: skuList[index].fixed ? '#d79418' : '#b3b3b3', fontSize: 24}}/>
+        <VerticalAlignTopOutlined style={{color: item.fixed ? '#d79418' : '#b3b3b3', fontSize: 24}}/>
+      </Button>
+      <Button
+        danger
+        style={{padding: 0}}
+        type='link'
+        onClick={async () => {
+          const array = skuList.filter((item, skuIndex) => {
+            return skuIndex !== index;
+          });
+          await setSkuList(array);
+          await toggle();
+        }}>
+        <DeleteOutlined/>
       </Button>
     </Space>;
   };
@@ -81,17 +97,18 @@ const SkuList = ({...props}, ref) => {
           title: <SkuResultSkuJsons skuResult={item.skuResult}/>,
         };
       })}
-      onDragEnd={(allIems) => {
+      onDragEnd={async (allIems, activeIndex, overIndex) => {
         const newSkuList = allIems.map((item, index) => {
-          const sku = skuList.filter((skuItem) => {
-            return skuItem.skuId === item.skuId;
-          });
-          return {
-            ...item,
-            fixed: sku[0].fixed || item.skuId !== skuList[index].skuId
-          };
+          if (index <= overIndex) {
+            return {
+              ...item,
+              fixed: true,
+            };
+          }
+          return item;
         });
-        setSkuList(newSkuList);
+        await setSkuList(newSkuList);
+        await toggle();
       }}
     />
 

@@ -1,5 +1,4 @@
-import React from "react";
-import styles from "@/pages/Test/MaterialAnalysis/index.module.less";
+import React from 'react';
 
 const CssPennants = ({value, width = 50, color}) => {
 
@@ -10,14 +9,14 @@ const CssPennants = ({value, width = 50, color}) => {
       height
     }}>
       <div
-        className={styles.topBlock}
         style={{
-          textAlign: 'center',
           color: '#fff',
           backgroundColor: color || '#feb042',
           width,
           height,
-          display: 'inline-block',
+          display: 'flex',
+          alignItems:'center',
+          justifyContent:'center'
         }}
       >{value || 1}</div>
     </div>
