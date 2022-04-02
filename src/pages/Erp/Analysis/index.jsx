@@ -18,7 +18,8 @@ const Analysis = ({type}) => {
   }, {
     manual: true,
     onSuccess: () => {
-      Message.success('分析成功，请在任务列表查看！');
+      ref.current.close();
+      Message.success('分析成功！已加入分析队列！');
     },
     onError: () => {
       Message.error('分析失败!');
@@ -46,7 +47,6 @@ const Analysis = ({type}) => {
             type='primary'
             onClick={() => {
               const skuList = skuRef.current.skuList;
-              console.log(skuList);
               run({
                 data: {
                   skuIds: skuList.map((item) => {

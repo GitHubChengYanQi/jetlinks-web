@@ -24,42 +24,41 @@ const TaskList = () => {
   });
 
   const taskList = () => {
-    return <div style={{minWidth: 300, maxHeight: '50vh', overflow: 'auto'}}>
+    return <div style={{minWidth: 500, maxHeight: '50vh', overflow: 'auto'}}>
       <Spin spinning={!List && loading}>
         <AntList
           dataSource={List || []}
           renderItem={item => {
-            if (item.allCount === item.count) {
-              return <AntList.Item
-                extra={
+            return <AntList.Item
+              extra={
+                <Space>
+                  <div style={{width: 200}}>
+                    <Progress
+                      strokeColor={{
+                        '0%': '#108ee9',
+                        '100%': '#87d068',
+                      }}
+                      percent={(Math.floor((item.count / item.allCount) * 100))}
+                    />
+                  </div>
+
                   <Button type='link' onClick={() => {
                     switch (item.type) {
                       case '物料分析':
                         setVisible(false);
-                        seContent(JSON.parse(item.content));
-                        showRef.current.open(JSON.parse(item.content));
+                        showRef.current.open(item.taskId);
                         break;
                       default:
                         break;
                     }
                   }}>查看</Button>
-                }
-              >
-                <AntList.Item.Meta
-                  title={item.type}
-                  description={item.createTime}/>
-              </AntList.Item>;
-            } else {
-              return <AntList.Item>
-                <Progress
-                  strokeColor={{
-                    '0%': '#108ee9',
-                    '100%': '#87d068',
-                  }}
-                  percent={(Math.floor((item.count / item.allCount) * 100))}
-                />
-              </AntList.Item>;
-            }
+                </Space>
+              }
+            >
+              <AntList.Item.Meta
+                title={item.type}
+                description={item.createTime}/>
+            </AntList.Item>;
 
           }}
         />
@@ -84,9 +83,12 @@ const TaskList = () => {
     </Popover>
 
     <Modal
-      width={1100}
+      width='auto'
       headTitle='物料推荐'
       component={AnalysisDetail}
+      onSuccess={(res) => {
+        seContent(res);
+      }}
       footer={<Space>
         <Button onClick={() => {
           showRef.current.close();
