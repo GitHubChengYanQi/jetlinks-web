@@ -149,7 +149,7 @@ const PartsList = ({
               url={`${baseURI}Excel/importBom`}
               title="导入BOM"
               module="bom"
-              templateUrl={`${baseURI}importBom/downloadBomTemplate?authorization=${token}`}
+              templateUrl={`${baseURI}Excel/downloadBomTemplate?authorization=${token}`}
               onOk={() => {
                 tableRef.current.submit();
               }}
