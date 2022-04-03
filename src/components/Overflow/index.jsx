@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Divider} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
 
-const Overflow = ({children,defaultHeight}) => {
+const Overflow = ({children,title,defaultHeight}) => {
 
   const [height, setHeight] = useState(defaultHeight || 100);
+
+  useEffect(()=>{
+    setHeight(defaultHeight);
+  },[defaultHeight]);
 
   return (
     <div style={{height, overflow: 'hidden', position: 'relative',}}>
@@ -20,7 +24,7 @@ const Overflow = ({children,defaultHeight}) => {
           onClick={() => {
 
           }}>
-          <DownOutlined />
+          {title || <DownOutlined/>}
         </Divider>
       </div>
     </div>

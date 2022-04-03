@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {
-  FullscreenOutlined, UnorderedListOutlined
+  UnorderedListOutlined
 } from '@ant-design/icons';
-import {Menu, Drawer, Avatar, Button, Dropdown, Space} from 'antd';
+import {Menu, Drawer, Avatar, Button, Dropdown, Space, Popover} from 'antd';
 import {useHistory, config} from 'ice';
 import Icon from '@/components/Icon';
 import store from '@/store';
@@ -25,6 +25,7 @@ import daoxinyun from '@/asseset/imgs/daoxinyun.png';
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
 import {toggleFullScreen} from '@/layouts/BasicLayout/components/Header/components/FullScreen';
+import TaskList from "@/pages/Erp/Analysis/TaskList";
 
 const AppIcon = {
   ENT_FUNC: menu,
@@ -69,7 +70,7 @@ const Header = () => {
                 height: '100%',
                 paddingTop: 8
               }}>
-                <img src={daoxinyun} alt="" />
+                <img src={daoxinyun} alt=""/>
               </div>
               <Menu
                 selectedKeys={[]}
@@ -79,15 +80,15 @@ const Header = () => {
                 <Menu.Item className={styles.allMenu} key="mail" onClick={() => {
                   setVisible(true);
                 }}>
-                  <div style={{minWidth:100}}>
+                  <div style={{minWidth: 100}}>
                     <Space>
-                      所有功能<UnorderedListOutlined />
+                      所有功能<UnorderedListOutlined/>
                     </Space>
                   </div>
                 </Menu.Item>
               </Menu>
             </div>
-            <div className={styles.middle} />
+            <div className={styles.middle}/>
             <div className={styles.right}>
               <Dropdown trigger={['click']} overlay={
                 <Menu style={{width: 220}} onClick={({key}) => {
@@ -103,14 +104,14 @@ const Header = () => {
                   <Menu.Item key="name" style={{padding: 12, fontSize: 16, color: '#7f7f7f'}}>
                     {userInfo.name}
                   </Menu.Item>
-                  <Menu.Divider />
+                  <Menu.Divider/>
                   <Menu.Item key="/member">
                     <span className={styles.dropdownMenuItem}>个人中心</span>
                   </Menu.Item>
                   <Menu.Item key="/password">
                     <span className={styles.dropdownMenuItem}>修改密码</span>
                   </Menu.Item>
-                  <Menu.Divider />
+                  <Menu.Divider/>
                   <Menu.Item key="/logout">
                     <span className={styles.dropdownMenuItem}>退出登录</span>
                   </Menu.Item>
@@ -123,10 +124,8 @@ const Header = () => {
                   />
                 </Button>
               </Dropdown>
-              <Message />
-              {/* <Button type="text" size="large" style={{height: 60, color: '#FFF'}} onClick={(event) => { */}
-              {/*  toggleFullScreen(event); */}
-              {/* }}><FullscreenOutlined /></Button> */}
+              <Message/>
+              <TaskList/>
             </div>
           </div>
         </div>
@@ -145,7 +144,7 @@ const Header = () => {
         <div className="docker-top-container">
           <div className="docker-top-title">
             <div className="css-1b5qfbo">
-              <Icon type="icon-fenlei1" />
+              <Icon type="icon-fenlei1"/>
             </div>
             <div className="docker-top-text">
               <span
@@ -167,7 +166,7 @@ const Header = () => {
                       <span className="navigation-badge">
                         <img style={{
                           boxShadow: 'none',
-                        }} className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo" />
+                        }} className="app-item-logo" src={AppIcon[item.id] || AppEntFUNC} alt="logo"/>
                       </span>
                     </div>
                     <div className="app-item-name">
@@ -180,7 +179,7 @@ const Header = () => {
           </div>
         </div>
       </Drawer>
-      <PassWord visible={visiblePwd} onClose={() => setVisiblePwd(false)} />
+      <PassWord visible={visiblePwd} onClose={() => setVisiblePwd(false)}/>
     </>
   );
 };

@@ -7,18 +7,17 @@
 
 import React, {useRef, useState} from 'react';
 import {Button, Col, message, Row, Modal as AntModal, Space} from 'antd';
-import {FormEffectHooks, FormPath, MegaLayout} from '@formily/antd';
+import { MegaLayout} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import {config} from 'ice';
 import Form from '@/components/Form';
 import {outstockOrderDetail, outstockOrderAdd, outstockOrderEdit} from '../outstockOrderUrl';
 import * as SysField from '../outstockOrderField';
-import {request, useRequest} from '@/util/Request';
+import { useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import PartsList from '@/pages/Erp/parts/PartsList';
 import {partsDetail} from '@/pages/Erp/parts/PartsUrl';
 import InputNumber from '@/components/InputNumber';
-import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 

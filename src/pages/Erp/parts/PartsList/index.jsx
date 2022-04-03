@@ -44,6 +44,7 @@ const PartsList = ({
   type = 1
 }) => {
 
+  const token = cookie.get('tianpeng-token');
 
   const refAdd = useRef();
   const formRef = useRef();

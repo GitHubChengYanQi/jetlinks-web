@@ -6,18 +6,21 @@ import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
 
 
-const SelectSku = ({
-  value,
-  onChange,
-  dropdownMatchSelectWidth,
-  placeholder,
-  params,
-  skuIds,
-  noAdd,
-  spuClassId,
-  ids,
-  spu
-}) => {
+const SelectSku = (
+  {
+    value,
+    onChange,
+    dropdownMatchSelectWidth,
+    placeholder,
+    getSkuDetail = () => {
+    },
+    params,
+    skuIds,
+    noAdd,
+    spuClassId,
+    ids,
+    spu
+  }) => {
 
   const formRef = useRef();
   const ref = useRef();
@@ -45,9 +48,7 @@ const SelectSku = ({
   const getSkuList = (data) => {
     run({
       data: {
-        skuIds: ids,
-        spuClass: spuClassId,
-        ...data
+        skuIds: ids, spuClass: spuClassId, ...data
       }
     });
   };
@@ -55,6 +56,7 @@ const SelectSku = ({
   const {run: detail} = useRequest(skuDetail, {
     manual: true, onSuccess: (res) => {
       onChange(spu ? res.spuId : res.skuId);
+      getSkuDetail(res);
       setChange(object(res).label);
     }
   });
@@ -80,84 +82,83 @@ const SelectSku = ({
     return object(items);
   }) : [];
 
-  return (
-    <>
-      <Select
-        style={{width: 200}}
-        placeholder={placeholder || '搜索物料'}
-        showSearch
-        allowClear
-        onClear={() => {
+  return (<>
+    <Select
+      style={{width: 200}}
+      placeholder={placeholder || '搜索物料'}
+      showSearch
+      allowClear
+      onClear={() => {
+        onChange(null);
+      }}
+      value={value && change}
+      notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin/></div>}
+      dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
+      onSearch={(value) => {
+        setChange(value);
+        getSkuList({skuName: value,});
+      }}
+      onChange={(value, option) => {
+        if (value === 'add') {
+          ref.current.open(false);
+          return;
+        }
+        setChange(value && value.replace(`standard:${option.standard}`, ''));
+        if (option) {
+          if (option && option.key) {
+            onChange(spu ? option.spu.spuId : option.key);
+          }
+        } else {
           onChange(null);
-        }}
-        value={value && change}
-        notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
-        onSearch={(value) => {
-          setChange(value);
-          getSkuList({skuName: value,});
-        }}
-        onChange={(value, option) => {
-          if (value === 'add') {
-            ref.current.open(false);
-            return;
-          }
-          setChange(value && value.replace(`standard:${option.standard}`, ''));
-          if (option) {
-            if (option && option.key) {
-              onChange(spu ? option.spu.spuId : option.key);
-            }
-          } else {
-            onChange(null);
-            getSkuList();
-          }
+          getSkuList();
+        }
 
-        }}>
-        {!noAdd && <Select.Option
-          key="add"
-          title="新增物料"
-          value="add">
-          <a>
-            新增物料
-          </a>
-        </Select.Option>}
-        {options && options.map((items) => {
-          return (
-            <Select.Option
-              key={items.value}
-              spu={items.spu}
-              disabled={items.disabled}
-              title={items.label}
-              standard={items.standard}
-              value={`${items.label}standard:${items.standard}`}>
-              {items.label}
-            </Select.Option>
-          );
-        })}
-      </Select>
+      }}>
+      {!noAdd && <Select.Option
+        key="add"
+        title="新增物料"
+        value="add"
+      >
+        <a>
+          新增物料
+        </a>
+      </Select.Option>}
+      {options && options.map((items) => {
+        return (<Select.Option
+          key={items.value}
+          spu={items.spu}
+          disabled={items.disabled}
+          title={items.label}
+          standard={items.standard}
+          value={`${items.label}standard:${items.standard}`}
+        >
+          {items.label}
+        </Select.Option>);
+      })}
+    </Select>
 
 
-      <Modal
-        title="物料"
-        compoentRef={formRef}
-        loading={setAddLoading}
-        component={SkuEdit}
-        onSuccess={(res) => {
-          onChange(res);
-          ref.current.close();
-        }}
-        ref={ref}
-        footer={<>
-          <Button
-            loading={addLoading}
-            type="primary"
-            onClick={() => {
-              formRef.current.nextAdd(false);
-            }}
-          >完成</Button>
-        </>} />
+    <Modal
+      title="物料"
+      compoentRef={formRef}
+      loading={setAddLoading}
+      component={SkuEdit}
+      onSuccess={(res) => {
+        onChange(res);
+        ref.current.close();
+      }}
+      ref={ref}
+      footer={<>
+        <Button
+          loading={addLoading}
+          type="primary"
+          onClick={() => {
+            formRef.current.nextAdd(false);
+          }}
+        >完成</Button>
+      </>}/>
 
-    </>);
+  </>);
 };
 
 export default SelectSku;
