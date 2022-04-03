@@ -12,7 +12,10 @@ import {Affix, Button, Divider, Input, message, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import InputNumber from '@/components/InputNumber';
 import Select from '@/components/Select';
-import {qualityCheckListSelect} from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';
+import {
+  qualityCheckListSelect,
+  qualityPlanListSelect
+} from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {shipSetpListSelect} from '@/pages/ReSearch/shipSetp/shipSetpUrl';
 import {
@@ -201,10 +204,10 @@ const Setps = (
                         </div>
                         <div style={{width: 200}}>
                           <FormItem
-                            name={`setpSetDetails.${index}.MyQualityId`}
+                            name={`setpSetDetails.${index}.myQualityId`}
                             component={Select}
                             placeholder="自己检查的方案"
-                            api={qualityCheckListSelect}
+                            api={qualityPlanListSelect}
                           />
                         </div>
                         <div style={{width: 200}}>
@@ -212,7 +215,7 @@ const Setps = (
                             name={`setpSetDetails.${index}.qualityId`}
                             component={Select}
                             placeholder="质量检查的方案"
-                            api={qualityCheckListSelect}
+                            api={qualityPlanListSelect}
                           />
                         </div>
 
