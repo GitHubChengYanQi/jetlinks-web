@@ -4,6 +4,7 @@ import Modal from '@/components/Modal';
 import SkuList from '@/pages/Erp/Analysis/SkuList';
 import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
+import store from "@/store";
 
 const Analysis = ({type}) => {
 
@@ -11,6 +12,7 @@ const Analysis = ({type}) => {
 
   const ref = useRef();
 
+  const [, dataDispatchers] = store.useModel('dataSource');
 
   const {loading, run} = useRequest({
     url: '/mes/analysis',
@@ -18,8 +20,9 @@ const Analysis = ({type}) => {
   }, {
     manual: true,
     onSuccess: () => {
+      Message.success('已加入分析队列！');
       ref.current.close();
-      Message.success('分析成功！已加入分析队列！');
+      dataDispatchers.opentaskList(true);
     },
     onError: () => {
       Message.error('分析失败!');

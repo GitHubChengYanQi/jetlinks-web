@@ -15,11 +15,11 @@ const OweSku = ({data}) => {
       })}
       rowKey='key'
     >
-      <Table.Column title='物料编码' dataIndex='standard' render={(value) => {
+      <Table.Column title='物料编码' dataIndex='strand' render={(value) => {
         return <div style={{minWidth: 100}}>{value}</div>;
       }}/>
-      <Table.Column title='物料名称' dataIndex='spuResult' render={(value) => {
-        return <div style={{minWidth: 100}}>{value && value.name}</div>;
+      <Table.Column title='物料名称' dataIndex='spuName' render={(value) => {
+        return <div style={{minWidth: 100}}>{value}</div>;
       }}/>
       <Table.Column title='物料型号' dataIndex='skuName' render={(value) => {
         return <div style={{minWidth: 100}}>{value}</div>;

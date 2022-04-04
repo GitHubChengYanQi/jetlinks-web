@@ -18,6 +18,13 @@ export default {
     },
   },
   effects: (dispatch) => ({
+    async opentaskList(value) {
+      try {
+        dispatch.dataSource.update({showTaskList: value});
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async getSkuClass() {
       try {
         const skuClass = await request({

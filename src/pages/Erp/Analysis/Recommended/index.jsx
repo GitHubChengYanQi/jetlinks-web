@@ -23,28 +23,33 @@ const Recommended = ({data}) => {
       itemLayout="horizontal"
       dataSource={data}
       renderItem={(item, index) => {
-        let color = '';
+        let startColor = '';
+        let endColor = '';
         switch (index) {
           case 0:
-            color = '#feb042';
+            startColor = '#d18e32';
+            endColor = '#f1dc83';
             break;
           case 1:
-            color = '#dfdcd8';
+            startColor = '#8e9190';
+            endColor = '#d1d4d3';
             break;
           case 2:
-            color = '#fb6c1f';
+            startColor = '#b45a41';
+            endColor = '#ffc194';
             break;
           default:
             break;
         }
         return <List.Item
           id='listItem'
-          extra={<Button type='link'><Typography.Link underline>按此顺序生产</Typography.Link></Button>}
+          // extra={<Button type='link'><Typography.Link underline>按此顺序生产</Typography.Link></Button>}
         >
           <List.Item.Meta
             style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             avatar={<div style={{width: 30, textAlign: 'center'}}>
-              {color ? <CssPennants value={index + 1} width={30} color={color}/> : index + 1}
+              {startColor ?
+                <CssPennants value={index + 1} width={30} startColor={startColor} endColor={endColor}/> : index + 1}
             </div>}
             title={`共可生产 ${item.num || 0} 件`}
             description={
@@ -52,12 +57,12 @@ const Recommended = ({data}) => {
                 <Space wrap>
                   {item.result && item.result.map((item, index) => {
                     return <div style={{display: 'flex'}} key={index}>
-                      <div style={{margin: '0 4px',color:'#000'}}>
+                      <div style={{margin: '0 4px', color: '#000'}}>
                         {index + 1}.
                       </div>
                       <div style={{margin: '0 4px'}}>
-                        <Note key={index} width={200}>
-                          <SkuResultSkuJsons skuResult={item}/>
+                        <Note key={index} width={170}>
+                          {item.spuName} / {item.skuName} {item.specifications ? ` / ${item.specifications}` : ''}
                         </Note>
                       </div>
                       <div style={{color: 'green', margin: '0 4px'}}>
