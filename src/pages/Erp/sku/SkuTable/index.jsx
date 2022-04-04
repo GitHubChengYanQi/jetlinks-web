@@ -309,7 +309,7 @@ const SkuTable = ({...props}, ref) => {
             onClick={() => {
               formRef.current.copyAdd(true);
             }}
-          >复制并拷贝BOM</Button>}
+          >复制并拷贝BOM(工艺路线)</Button>}
           {!edit && <Button
             loading={loading}
             type="primary"
