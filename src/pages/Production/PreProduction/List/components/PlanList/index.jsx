@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Card, Checkbox, List, Space} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {pendingProductionPlan} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
 import Label from '@/components/Label';
+import Drawer from "@/components/Drawer";
+import Detail from "@/pages/ReSearch/Detail";
 
 
 const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
@@ -12,6 +14,16 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
   const [skuKeys, setSkuKeys] = useState([]);
 
   const {loading, data, refresh: planResh} = useRequest(pendingProductionPlan);
+
+  const [skuId, setSkuId] = useState();
+
+  const showShip = useRef();
+
+  useEffect(() => {
+    if (skuId) {
+      showShip.current.open(false);
+    }
+  }, [skuId]);
 
   useEffect(() => {
     if (refresh) {
@@ -21,7 +33,7 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
   }, [refresh]);
 
   if (loading) {
-    return <ProSkeleton type="descriptions" />;
+    return <ProSkeleton type="descriptions"/>;
   }
 
   const onChecked = (checked, rowItem, skuRecord) => {
@@ -57,29 +69,44 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
             <Card
               type="inner"
               title={<Space size={24}>
-                <Checkbox checked={skuKeys.includes(skuItem.skuId)} onChange={(value) => {
-                  if (value.target.checked) {
-                    setSkuKeys([...skuKeys, skuItem.skuId]);
-                    setCheckedSkus([...checkedSkus, ...skuItem.children]);
-                  } else {
-                    const array = skuKeys.filter((item) => {
-                      return item !== skuItem.skuId;
-                    });
-                    setSkuKeys(array);
-                    const skus = checkedSkus.filter((item) => {
-                      return array.includes(item.skuId);
-                    });
-                    setCheckedSkus(skus);
-                  }
-                }}>
+                <Checkbox
+                  disabled={!skuResult.processResult}
+                  checked={skuKeys.includes(skuItem.skuId)}
+                  onChange={(value) => {
+                    if (value.target.checked) {
+                      setSkuKeys([...skuKeys, skuItem.skuId]);
+                      setCheckedSkus([...checkedSkus, ...skuItem.children]);
+                    } else {
+                      const array = skuKeys.filter((item) => {
+                        return item !== skuItem.skuId;
+                      });
+                      setSkuKeys(array);
+                      const skus = checkedSkus.filter((item) => {
+                        return array.includes(item.skuId);
+                      });
+                      setCheckedSkus(skus);
+                    }
+                  }}>
                   <Space size={24} style={{paddingLeft: 16}}>
-                    <div><Label>物料编码：</Label> {skuResult.standard}</div>
-                    <Button type='link'>{skuResult.spuResult && skuResult.spuResult.name} / {skuResult.skuName} / {skuResult.specifications || '无'}</Button>
+                    <div>
+                      <Label>物料编码：</Label> {skuResult.standard}
+                    </div>
+                    <Button
+                      type='link'
+                    >
+                      {skuResult.spuResult && skuResult.spuResult.name} / {skuResult.skuName} / {skuResult.specifications || '无'}
+                    </Button>
+                    {!skuResult.processResult && <Button
+                      type='link'
+                      onClick={() => {
+                        setSkuId(skuItem.skuId);
+                      }}
+                      danger>请先创建工艺路线</Button>}
                   </Space>
                 </Checkbox>
               </Space>}
               bodyStyle={{padding: 0}}
-              extra={<div><Label>物料描述：</Label> <SkuResultSkuJsons describe skuResult={skuResult} /></div>}
+              extra={<div><Label>物料描述：</Label> <SkuResultSkuJsons describe skuResult={skuResult}/></div>}
             >
               <List
                 bordered={false}
@@ -90,12 +117,15 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
                     <div style={{display: 'inline-block'}}>
                       <Space size={24}>
                         <Checkbox
+                          disabled={!skuResult.processResult}
                           checked={checkedSkus.map(item => item.detailId).includes(rowItem.detailId)}
                           onChange={(value) => {
                             onChecked(value.target.checked, rowItem, skuItem);
-                          }} />
+                          }}/>
                         <Space size={24} style={{cursor: 'pointer'}} onClick={() => {
-                          onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, skuItem);
+                          if (skuResult.processResult){
+                            onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, skuItem);
+                          }
                         }}>
                           <div>
                             <Label>订单号：</Label>{order.coding}
@@ -113,12 +143,33 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
                       <Label>交货日期：</Label>{order.deliveryDate}
                     </div>
                   </div>;
-                }} />
+                }}/>
             </Card>
           </div>;
         }}
       />
     </div>
+
+    <Drawer
+      bodyStyle={{padding: 0}}
+      push={false}
+      headTitle="添加工艺路线"
+      height="100%"
+      placement="top"
+      addChildren
+      skuId={skuId}
+      component={Detail}
+      ref={showShip}
+      onSuccess={(res) => {
+        setSkuId(null);
+        showShip.current.close();
+        planResh();
+      }}
+      onBack={() => {
+        setSkuId(null);
+        showShip.current.close();
+      }}
+    />
   </>;
 };
 export default PlanList;
