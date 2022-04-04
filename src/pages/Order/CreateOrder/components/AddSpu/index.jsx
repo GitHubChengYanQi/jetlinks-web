@@ -17,12 +17,6 @@ const AddSpu = (
     noSkuIds,
   }) => {
 
-  const [state] = store.useModel('dataSource');
-
-  const [skuClassId, setSkuClassId] = useState();
-
-  const [spuId, setSpuId] = useState();
-
   const [checkConfig, setCheckConfig] = useState([]);
 
   const [config, setConfig] = useSetState({
@@ -110,13 +104,10 @@ const AddSpu = (
     setConfig({...config, tree: newConfigTree});
   };
 
-  const {loading: spuLoading, data: spuData, run: spuRun} = useRequest(spuListSelect);
-
   const {loading: detailLoading, run: detailRun} = useRequest(spuDetail,
     {
       manual: true,
       onSuccess: (res) => {
-        setSpuId(res.spuId);
         const config = {
           list: res && res.sku && res.sku.list || [],
           tree: res && res.sku && res.sku.tree || [],
@@ -127,33 +118,12 @@ const AddSpu = (
 
 
   return <div style={{padding: '24px 10%'}}>
-    <Descriptions column={2}>
-      <Descriptions.Item label="物料分类">
-        <Cascader
-          width={200}
-          value={skuClassId}
-          changeOnSelect={false}
-          placeholder="请选择物料分类"
-          options={state.skuClass}
-          onChange={(value) => {
-            setSpuId(null);
-            setConfig({
-              list: [],
-              tree: []
-            });
-            setSkuClassId(value);
-            spuRun({
-              data: {
-                spuClassificationId: value,
-              }
-            });
-          }}/>
-      </Descriptions.Item>
-      <Descriptions.Item label="物料">
+    <Descriptions column={1}>
+      <Descriptions.Item label="物料名称">
         <SelectSku
+          width='100%'
           value={value}
           skuIds={noSkuIds}
-          spuClassId={skuClassId}
           getSkuDetail={(res) => {
             const array = [];
             if (res.spuId) {
@@ -172,22 +142,16 @@ const AddSpu = (
             }
           }}
           onChange={change}
-        />
-      </Descriptions.Item>
-      <Descriptions.Item label="物料名称" span={2}>
-        {(spuLoading) ?
-          <Spin/>
-          :
-          <Select value={spuId} placeholder="请选择物料名称" width={200} options={spuData || []} onChange={(value) => {
-            setSpuId(value);
+          onSpuId={(value) => {
             detailRun({
               data: {
                 spuId: value,
               }
             });
-          }}/>}
+          }}
+        />
       </Descriptions.Item>
-      <Descriptions.Item label="物料描述" span={2}>
+      <Descriptions.Item label="物料描述">
         <div style={{display: 'flex', flexDirection: 'column'}}>
           {
             detailLoading
