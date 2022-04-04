@@ -12,7 +12,6 @@ const TaskList = () => {
   const [state, dataDispatchers] = store.useModel('dataSource');
 
   const [content, seContent] = useState({});
-  console.log(content)
 
   const showRef = useRef();
 

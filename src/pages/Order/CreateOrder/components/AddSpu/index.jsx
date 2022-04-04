@@ -51,21 +51,21 @@ const AddSpu = (
       }).length === newCheckConfig.length;
     });
 
-    let onSku = null;
+    const onSku = [];
+
     newConfigList.map((itemList) => {
       const trees = config.tree.filter((itemTree) => {
         return itemList[`s${itemTree.k_s}`];
       });
-      if (trees.length === newCheckConfig.length) {
-        onSku = itemList;
+      if (newCheckConfig.length > 0 && trees.length === newCheckConfig.length) {
+        onSku.push(itemList);
       }
       return null;
     });
 
-    if (onSku) {
-      change(onSku.id);
+    if (onSku.length === 1) {
+      change(onSku[0].id);
     } else if (newConfigList.length === 1) {
-
       if (v) {
         const check = [];
         config.tree.map((itemTree) => {
@@ -81,7 +81,7 @@ const AddSpu = (
         newCheckConfig = check;
       }
       change(newConfigList[0].id);
-    } else if (config.list.length > 0) {
+    } else if (config.list.length > 0 && !newConfigList.map(item=>item.id).includes(value)) {
       change(null);
     }
 

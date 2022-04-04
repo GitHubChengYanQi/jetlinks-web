@@ -194,6 +194,7 @@ const QualityPlanEdit = (props) => {
             <FormItem label="方案名称" name="planName" component={SysField.PlanName} required />
             {/* <FormItem label="质检类型" name="planType" component={SysField.PlanType} required /> */}
             <FormItem
+              value='2'
               label="检查类型"
               name="testingType"
               component={SysField.TestingType}
