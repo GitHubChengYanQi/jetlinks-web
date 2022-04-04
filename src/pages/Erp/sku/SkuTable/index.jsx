@@ -345,7 +345,7 @@ const SkuTable = ({...props}, ref) => {
       <Drawer
         bodyStyle={{padding: 0}}
         push={false}
-        headTitle="添加子工艺路线"
+        headTitle="添加工艺路线"
         height="100%"
         placement="top"
         addChildren
