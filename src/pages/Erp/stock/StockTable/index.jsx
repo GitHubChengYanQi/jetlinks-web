@@ -208,8 +208,8 @@ const StockTable = (props) => {
       ref={tableRef}
       noRowSelection
       actionButton={actions()}
-      showCard={<div style={{borderBottom:'solid 1px #eee'}}>
-        <Space size={24} style={{padding: 16}}>
+      showCard={<div style={{borderBottom:'solid 1px #eee',marginBottom:16}}>
+        <Space size={24} style={{paddingBottom:24}}>
           <Progress
             type="circle"
             percent={100}
