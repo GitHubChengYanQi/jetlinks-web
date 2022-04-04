@@ -246,7 +246,6 @@ const TableWarp = ({
             {...form}
             actions={formActions}
           />}
-          {showCard}
           <Card
             bordered={bordered || false}
             title={listHeader ? actions : null}
@@ -257,6 +256,7 @@ const TableWarp = ({
               {!headStyle && !noTableColumn && setButton}
             </Space>}
           >
+            {showCard}
             <AntdTable
               showTotal
               expandable={expandable}
