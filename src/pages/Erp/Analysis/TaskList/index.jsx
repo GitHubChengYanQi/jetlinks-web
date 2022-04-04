@@ -1,16 +1,18 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
-import {UnorderedListOutlined} from "@ant-design/icons";
+import {UnorderedListOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import AnalysisDetail from '@/pages/Erp/Analysis/AnalysisDetail';
-import PurchaseAsk from "@/pages/Erp/Analysis/TaskList/components/PurchaseAsk";
+import PurchaseAsk from '@/pages/Erp/Analysis/TaskList/components/PurchaseAsk';
+import store from '@/store';
 
 const TaskList = () => {
 
-  const [visible, setVisible] = useState();
+  const [state, dataDispatchers] = store.useModel('dataSource');
 
   const [content, seContent] = useState({});
+  console.log(content)
 
   const showRef = useRef();
 
@@ -22,6 +24,12 @@ const TaskList = () => {
   }, {
     pollingInterval: 5000,
   });
+
+  useEffect(() => {
+    if (state.showTaskList) {
+      dataDispatchers.opentaskList(true);
+    }
+  }, [state.showTaskList]);
 
   const taskList = () => {
     return <div style={{minWidth: 500, maxHeight: '50vh', overflow: 'auto'}}>
@@ -45,7 +53,7 @@ const TaskList = () => {
                   <Button type='link' onClick={() => {
                     switch (item.type) {
                       case '物料分析':
-                        setVisible(false);
+                        dataDispatchers.opentaskList(false);
                         showRef.current.open(item.taskId);
                         break;
                       default:
@@ -68,15 +76,15 @@ const TaskList = () => {
 
   return <>
     <Popover
-      visible={visible}
+      visible={state.showTaskList}
       placement="bottomRight"
-      onVisibleChange={setVisible}
+      onVisibleChange={dataDispatchers.opentaskList}
       title='任务列表'
       content={taskList}
       trigger="click"
     >
       <Button style={{color: '#fff'}} type='text' onClick={() => {
-        setVisible(true);
+        dataDispatchers.opentaskList(true);
       }}>
         <UnorderedListOutlined/>
       </Button>

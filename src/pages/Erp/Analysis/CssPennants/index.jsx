@@ -1,22 +1,22 @@
 import React from 'react';
 
-const CssPennants = ({value, width = 50, color}) => {
+const CssPennants = ({value, width = 50, startColor, endColor,color}) => {
 
   const height = width;
 
-  return <div>
+  return <div style={{backgroundImage: `linear-gradient(${startColor}, ${endColor})`}}>
     <div style={{
-      height
+      height,
     }}>
       <div
         style={{
-          color: '#fff',
-          backgroundColor: color || '#feb042',
+          color: color || '#fff',
+          fontWeight:600,
           width,
           height,
           display: 'flex',
-          alignItems:'center',
-          justifyContent:'center'
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       >{value || 1}</div>
     </div>
@@ -26,8 +26,8 @@ const CssPennants = ({value, width = 50, color}) => {
           height: 0,
           width: 0,
           display: 'inline-block',
-          borderTop: `solid ${width / 2}px ${color || '#feb042'}`,
-          borderRight: `solid ${width / 2}px rgba(0, 0, 0, 0)`,
+          borderTop: `solid ${width / 2}px rgba(0, 0, 0, 0)`,
+          borderRight: `solid ${width / 2}px #fff`,
         }}
       />
       <div
@@ -35,8 +35,8 @@ const CssPennants = ({value, width = 50, color}) => {
           height: 0,
           width: 0,
           display: 'inline-block',
-          borderTop: `solid ${width / 2}px ${color || '#feb042'}`,
-          borderLeft: `solid ${width / 2}px rgba(0, 0, 0, 0)`,
+          borderTop: `solid ${width / 2}px rgba(0, 0, 0, 0)`,
+          borderLeft: `solid ${width / 2}px #fff`,
         }}/>
     </div>
   </div>;

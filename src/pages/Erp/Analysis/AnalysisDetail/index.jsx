@@ -1,9 +1,13 @@
 import React, {useEffect} from 'react';
-import {Alert, Card, Progress, Spin} from 'antd';
+import {Alert, Button, Card, Descriptions, Progress, Space, Spin} from 'antd';
 import Recommended from '@/pages/Erp/Analysis/Recommended';
 import OweSku from '@/pages/Erp/Analysis/OweSku';
 import Empty from '@/components/Empty';
 import {useRequest} from '@/util/Request';
+import Note from "@/components/Note";
+import InputNumber from "@/components/InputNumber";
+import styles from "@/pages/Erp/Analysis/SkuList/index.module.less";
+import {VerticalAlignTopOutlined} from "@ant-design/icons";
 
 const AnalysisDetail = (
   {
@@ -22,7 +26,7 @@ const AnalysisDetail = (
       if (res.allCount === res.count) {
         cancel();
       }
-      onSuccess(res);
+      onSuccess(res.allBomResult);
     }
   });
 
@@ -42,7 +46,7 @@ const AnalysisDetail = (
   }
 
   if (!data) {
-    return <Empty style={{width:500,padding:24}}/>;
+    return <Empty style={{width: 500, padding: 24}}/>;
   }
 
   if (data.allCount !== data.count) {
@@ -70,6 +74,22 @@ const AnalysisDetail = (
 
   return <>
     <div style={{maxHeight: 'calc(100vh - 110px)', overflow: 'auto', width: 1100}}>
+      <Card title='分析物料' bordered={false} bodyStyle={{padding:24}}>
+        <Descriptions column={4} labelStyle={{width:20}}>
+          {
+            data.allBomResult.view && data.allBomResult.view.map((item, index) => {
+              return <Descriptions.Item key={index} label={index + 1}>
+                <Space align='start'>
+                  <Note width={170}>{item.name}</Note>
+                  <div>
+                    × {item.num}
+                  </div>
+                </Space>
+              </Descriptions.Item>;
+            })
+          }
+        </Descriptions>
+      </Card>
       <Card title='生产推荐' bordered={false}>
         <Recommended data={data.allBomResult.result}/>
       </Card>
