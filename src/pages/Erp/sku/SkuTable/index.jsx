@@ -44,7 +44,9 @@ const SkuTable = ({...props}, ref) => {
 
   const [sku, setSku] = useState([]);
 
-  const [edit, setEdit] = useState([]);
+  const [edit, setEdit] = useState();
+
+  const [copy, setCopy] = useState();
 
   const [skuId, setSkuId] = useState();
 
@@ -85,6 +87,7 @@ const SkuTable = ({...props}, ref) => {
         <AddButton onClick={() => {
           addRef.current.open(false);
           setEdit(false);
+          setCopy(false);
         }}/>
       </Space>
     );
@@ -127,7 +130,8 @@ const SkuTable = ({...props}, ref) => {
     return (
       <>
         <Button type="link" disabled={sku.length !== 1} icon={<CopyOutlined/>} onClick={() => {
-          setEdit(false);
+          setEdit(true);
+          setCopy(true);
           const value = {...sku[0], copy: true};
           addRef.current.open(value);
         }}>
@@ -271,6 +275,7 @@ const SkuTable = ({...props}, ref) => {
               }}>{record.processResult ? '有' : '无'}工艺</Button>
               <EditButton onClick={() => {
                 addRef.current.open(record);
+                setCopy(false);
                 setEdit(true);
               }}/>
               <DelButton api={skuDelete} value={value} onSuccess={() => {
@@ -297,6 +302,14 @@ const SkuTable = ({...props}, ref) => {
         }}
         ref={addRef}
         footer={<>
+          {copy && <Button
+            loading={loading}
+            type="primary"
+            ghost
+            onClick={() => {
+              formRef.current.copyAdd(true);
+            }}
+          >复制并拷贝BOM</Button>}
           {!edit && <Button
             loading={loading}
             type="primary"
