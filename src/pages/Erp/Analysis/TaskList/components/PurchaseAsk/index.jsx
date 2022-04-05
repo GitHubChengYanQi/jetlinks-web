@@ -29,7 +29,7 @@ const PurchaseAsk = ({skus, ...porps}, ref) => {
 
   return <>
     <AntModal
-      zIndex={999}
+      zIndex={9999}
       visible={visible}
       title='发起采购'
       onCancel={() => {
