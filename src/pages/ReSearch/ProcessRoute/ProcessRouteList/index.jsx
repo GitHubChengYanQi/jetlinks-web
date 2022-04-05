@@ -84,12 +84,9 @@ const ProcessRouteList = ({spuId, value}, ref) => {
                 refAdd.current.open(value);
                 // history.push(`/SPU/processRoute/${value}`);
               }} />
-              <DelButton api={processRouteDelete} value={record.processRouteId} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
             </>
           );
-        }} width={300} />
+        }} width={100} />
       </Table>
 
 
