@@ -191,9 +191,9 @@ const ToBuyPlanList = (props) => {
   const showCard = () => {
     return <Card style={{margin: 16, marginTop: 0}}>
       <Space size="large">
-        <Statistic title="勾选预购金额" value={112893} suffix="元" precision={2} />
-        <Statistic title="筛选金额合计" value={112893} suffix="元" precision={2} />
-        <Statistic title="预购金额合计" value={112893} suffix="元" precision={2} />
+        <Statistic title="勾选预购金额" value={0} suffix="元" precision={2} />
+        <Statistic title="筛选金额合计" value={0} suffix="元" precision={2} />
+        <Statistic title="预购金额合计" value={0} suffix="元" precision={2} />
       </Space>
     </Card>;
   };
@@ -273,7 +273,6 @@ const ToBuyPlanList = (props) => {
         <FormItem label="采购申请类型" name="type" component={Type} />
         <FormItem label="交货日期" name="date" component={DatePicker} />
         <FormItem label="采购申请编号" name="coding" component={Input} />
-        <FormItem label="更多搜索" name="all" component={Input} />
       </>
     );
   };
@@ -296,6 +295,15 @@ const ToBuyPlanList = (props) => {
         :
         <>
           <Table
+            noPagination={{
+              showTotal: (total) => {
+                return `共${total || dataSource.length}条`;
+              },
+              showQuickJumper: true,
+              position: ['bottomRight'],
+              defaultPageSize:20,
+              pageSizeOptions: [5, 10, 20, 50, 100]
+            }}
             api={toBuyPlanList}
             branch={(value) => {
               if (Array.isArray(value)) {
