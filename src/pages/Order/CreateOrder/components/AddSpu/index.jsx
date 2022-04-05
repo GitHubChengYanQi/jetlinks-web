@@ -19,6 +19,10 @@ const AddSpu = (
 
   const [checkConfig, setCheckConfig] = useState([]);
 
+  const [state] = store.useModel('dataSource');
+
+  const [skuClassId, setSkuClassId] = useState();
+
   const [config, setConfig] = useSetState({
     list: [],
     tree: []
@@ -81,7 +85,7 @@ const AddSpu = (
         newCheckConfig = check;
       }
       change(newConfigList[0].id);
-    } else if (config.list.length > 0 && !newConfigList.map(item=>item.id).includes(value)) {
+    } else if (config.list.length > 0 && !newConfigList.map(item => item.id).includes(value)) {
       change(null);
     }
 
@@ -119,10 +123,27 @@ const AddSpu = (
 
   return <div style={{padding: '24px 10%'}}>
     <Descriptions column={1}>
+      <Descriptions.Item label="物料分类">
+        <Cascader
+          width='100%'
+          value={skuClassId}
+          changeOnSelect={false}
+          placeholder="请选择物料分类"
+          options={state.skuClass}
+          onChange={(value) => {
+            change(null);
+            setConfig({
+              list: [],
+              tree: []
+            });
+            setSkuClassId(value);
+          }}/>
+      </Descriptions.Item>
       <Descriptions.Item label="物料名称">
         <SelectSku
           width='100%'
           value={value}
+          spuClassId={skuClassId}
           skuIds={noSkuIds}
           getSkuDetail={(res) => {
             const array = [];
