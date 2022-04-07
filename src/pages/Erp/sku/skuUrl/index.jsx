@@ -26,6 +26,11 @@ export const skuDetail = {
   method: 'POST',
 };
 
+export const skuResults = {
+  url: '/sku/resultSkuByIds',
+  method: 'POST',
+};
+
 export const skuList = {
   url: '/sku/list',
   method: 'POST',

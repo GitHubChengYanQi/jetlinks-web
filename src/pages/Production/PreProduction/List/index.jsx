@@ -235,15 +235,22 @@ const List = () => {
           paddingRight: 16,
         }}>
         <div style={{width: 1200, margin: 'auto'}}>
-          <Button
-            type="primary"
-            disabled={checkedSkus.length === 0}
-            onClick={() => {
-              setFalse();
-              onChange({});
-              ref.current.open(true);
-              setResult(null);
-            }}>创建生产计划</Button>
+          <Space>
+            <Button
+              type="link"
+              onClick={() => {
+
+              }}>按时间排序</Button>
+            <Button
+              type="primary"
+              disabled={checkedSkus.length === 0}
+              onClick={() => {
+                setFalse();
+                onChange({});
+                ref.current.open(true);
+                setResult(null);
+              }}>创建生产计划</Button>
+          </Space>
         </div>
       </div>
     </Affix>
