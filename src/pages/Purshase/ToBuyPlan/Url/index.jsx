@@ -4,6 +4,11 @@ export const toBuyPlanList = {
   method:'POST',
 };
 
+export const purchaseListingReadyBuy = {
+  url:'/purchaseListing/readyBuy',
+  method:'POST',
+};
+
 
 export const addProcurement = {
   url:'/procurementPlan/add',
