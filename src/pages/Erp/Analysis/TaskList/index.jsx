@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
+import {useHistory} from 'ice';
 import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import AnalysisDetail from '@/pages/Erp/Analysis/AnalysisDetail';
-import PurchaseAsk from '@/pages/Erp/Analysis/TaskList/components/PurchaseAsk';
 import store from '@/store';
 
 const TaskList = () => {
@@ -15,7 +15,7 @@ const TaskList = () => {
 
   const showRef = useRef();
 
-  const purchaskAskRef = useRef();
+  const history = useHistory();
 
   const {loading, data: List} = useRequest({
     url: '/asynTask/list',
@@ -101,13 +101,15 @@ const TaskList = () => {
           showRef.current.close();
         }}>关闭</Button>
         <Button disabled={!Array.isArray(content.owe) || content.owe.length === 0} type='primary' onClick={() => {
-          purchaskAskRef.current.open(true);
+          const skus = content.owe.map((item) => {
+            return {skuId: item.skuId, applyNumber: item.lackNumber};
+          });
+          showRef.current.close();
+          history.push(`/purchase/purchaseAsk/add?skus=${JSON.stringify(skus)}`);
         }}>发起采购</Button>
       </Space>}
       ref={showRef}
     />
-
-    <PurchaseAsk skus={content.owe} ref={purchaskAskRef}/>
 
   </>;
 };

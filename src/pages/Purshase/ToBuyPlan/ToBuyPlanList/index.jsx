@@ -79,7 +79,7 @@ const ToBuyPlanList = (props) => {
           return null;
         });
         if (snameSku) {
-          sname = [...sku, {...snameSku, applyNumber: snameSku.applyNumber + item.applyNumber}];
+          sname = [...sku, {...snameSku, applyNumber: (snameSku.applyNumber || 0) + (item.applyNumber || 0)}];
         } else {
           sname.push(item);
         }
@@ -203,7 +203,7 @@ const ToBuyPlanList = (props) => {
       <Button
         type="default"
         onClick={() => {
-          history.push(`/purchase/toBuyPlan/createOrder?module=PO&skus=${JSON.stringify(keys)}`);
+          history.push(`/purchase/toBuyPlan/createOrder?module=PO&skus=${JSON.stringify(selectedSanme())}`);
         }}>批量采购</Button>
       {props.ggg && <>
         <Button
