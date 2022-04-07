@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import {useHistory} from 'ice';
 import {createFormActions} from '@formily/antd';
-import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
+import {addProcurement, purchaseListingReadyBuy, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
@@ -295,16 +295,7 @@ const ToBuyPlanList = (props) => {
         :
         <>
           <Table
-            noPagination={{
-              showTotal: (total) => {
-                return `共${total || dataSource.length}条`;
-              },
-              showQuickJumper: true,
-              position: ['bottomRight'],
-              defaultPageSize:20,
-              pageSizeOptions: [5, 10, 20, 50, 100]
-            }}
-            api={toBuyPlanList}
+            api={purchaseListingReadyBuy}
             branch={(value) => {
               if (Array.isArray(value)) {
                 const allSku = [];
