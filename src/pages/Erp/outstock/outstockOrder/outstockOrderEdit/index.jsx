@@ -43,12 +43,13 @@ const OutstockOrderEdit = ({...props}) => {
   const {loading: partsLoading, run: parts} = useRequest(partsDetail, {
     manual: true,
     onSuccess: (res) => {
-      formRef.current.setFieldValue('applyDetails', res.parts.map((item) => {
+      const applyDetails = formRef.current.getFieldValue('applyDetails');
+      formRef.current.setFieldValue('applyDetails', [...applyDetails,...res.parts.map((item) => {
         return {
           ...item,
           number: (item.number || 0) * number
         };
-      }));
+      })]);
       setNumber(1);
     }
   });

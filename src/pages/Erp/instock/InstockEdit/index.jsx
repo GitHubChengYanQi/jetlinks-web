@@ -5,22 +5,16 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useRef, useState} from 'react';
-import Form from '@/components/Form';
-import {instockDetail, instockAdd, instockEdit, instockOrderAdd} from '../InstockUrl';
-import * as SysField from '../InstockField';
+import React, {useRef} from 'react';
 import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
-import {Avatar, Button, Card, Row, Space} from 'antd';
-import styled from 'styled-components';
+import {Avatar, Button, Card,  Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
-import {Codings, itemId} from '../InstockField';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {request, useRequest} from '@/util/Request';
-import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import SpuList from '@/pages/Erp/instock/components/SpuList';
-import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import {config} from 'ice';
+import Form from '@/components/Form';
+import {instockDetail,  instockEdit, instockOrderAdd} from '../InstockUrl';
+import * as SysField from '../InstockField';
+import {request} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
