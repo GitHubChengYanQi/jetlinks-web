@@ -29,6 +29,10 @@ const Setps = ({value, onClose, onChange, type, module}) => {
           {label: '审批', value: 'audit'},
           {label: '采购', value: 'purchase'},
         ];
+      case 'instock':
+        return [
+          {label: '审批', value: 'audit'},
+        ];
       default:
         return [
           {label: '工序', value: 'setp',},
