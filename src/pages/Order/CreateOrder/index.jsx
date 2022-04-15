@@ -759,6 +759,7 @@ const CreateOrder = ({...props}) => {
 
     <Drawer
       title="添加供应商"
+      supply={1}
       placement="bottom"
       extra={<Button onClick={() => {
         setVisible(false);
