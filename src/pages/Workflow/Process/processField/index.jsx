@@ -42,7 +42,7 @@ export const Module = (props) => {
           value: 'purchaseOrder'
         }];
       case 'instock':
-        return [{label: '入库异常', value: 'instockError'}];
+        return [{label: '创建入库', value: 'createInstock'}, {label: '入库异常', value: 'instockError'}];
       default:
         return [];
     }

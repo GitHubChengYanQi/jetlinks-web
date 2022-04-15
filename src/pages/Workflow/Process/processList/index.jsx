@@ -118,7 +118,7 @@ const ProcessList = () => {
             case 'purchase':
               return <>采购</>;
             case 'instock':
-              return <></>;
+              return <>入库</>;
             default:
               break;
           }
@@ -129,6 +129,8 @@ const ProcessList = () => {
               return <>入厂检</>;
             case 'instockError':
               return <>入库异常</>;
+            case 'createInstock':
+              return <>创建入库</>;
             case 'productionQuality':
               return <>生产检</>;
             case 'purchaseAsk':
