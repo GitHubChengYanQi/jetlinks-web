@@ -9,7 +9,6 @@ const UpLoadImg = (props) => {
   const [loading, setLoading] = useState(false); // loading 状态
   const [imageUrl, setImageUrl] = useState(''); // 图片地址
   const [oss, setOss] = useState({}); // OSS上传所需参数
-  console.log(loading);
 
   useEffect(() => {
     if (value) {
@@ -66,7 +65,7 @@ const UpLoadImg = (props) => {
         data={oss}
         action={oss.host}
         beforeUpload={(file) => {
-          if (!imageType || imageType.includes(file.type && file.type.split(','))) {
+          if (!imageType || imageType.includes(file.name && file.name.split('.') && file.name.split('.')[file.name.split('.').length-1])) {
             setLoading(true);
             return new Promise((resolve, reject) => {
               getOssObj({params: {type: file.name}}).then(() => {

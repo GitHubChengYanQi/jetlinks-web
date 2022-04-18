@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
-import {Checkbox, Descriptions, Space, Spin} from 'antd';
+import {Checkbox, Descriptions, Spin} from 'antd';
 import {useSetState} from 'ahooks';
 import Cascader from '@/components/Cascader';
 import {useRequest} from '@/util/Request';
-import {spuListSelect} from '@/pages/Erp/parts/PartsUrl';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
-import Select from '@/components/Select';
 import store from '@/store';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
-import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const AddSpu = (
   {

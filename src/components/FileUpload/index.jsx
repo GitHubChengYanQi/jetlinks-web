@@ -11,7 +11,7 @@ const FileUpload = ({
   prompt,
   maxCount,
   refresh,
-  filterFileType,
+  imageType,
 }) => {
 
   const [fileList, setFileList] = useState([]);
@@ -118,32 +118,19 @@ const FileUpload = ({
           }
         }}
         beforeUpload={async (file) => {
-          const type = file.name;
-          if (type) {
-            if (filterFileType && filterFileType.includes(type)) {
-              alert('附件类型不正确！');
-              return Upload.LIST_IGNORE;
-            }
+          if (!imageType || imageType.includes(file.name && file.name.split('.') && file.name.split('.')[file.name.split('.').length-1])) {
             const data = await run(
               {
                 params: {
-                  type
+                  type: file.name
                 }
               }
             );
             setOss({...data});
           } else {
-            alert('附件类型不正确！');
+            message.warn('请上传正确格式的文件！');
             return Upload.LIST_IGNORE;
           }
-          const data = await run(
-            {
-              params: {
-                type
-              }
-            }
-          );
-          setOss({...data});
 
         }}
       >
