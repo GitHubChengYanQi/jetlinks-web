@@ -90,12 +90,12 @@ const Head = () => {
     }
   };
 
-  if (!data) {
-    return <Empty />;
-  }
-
   if (loading) {
     return (<Spin />);
+  }
+
+  if (!data) {
+    return <Empty />;
   }
 
 
