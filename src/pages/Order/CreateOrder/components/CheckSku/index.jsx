@@ -155,7 +155,6 @@ const CheckSku = ({
   return (
     <>
       <Table
-        title={<h2>添加物料</h2>}
         api={type === 'sku' ? module({}).api : supplyList}
         NoChildren
         contentHeight
