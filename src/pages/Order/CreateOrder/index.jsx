@@ -31,6 +31,7 @@ import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
 import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
+import {skuResults} from "@/pages/Erp/sku/skuUrl";
 
 const {FormItem} = Form;
 
@@ -52,84 +53,25 @@ const CreateOrder = ({...props}) => {
 
   const formRef = useRef();
 
-  const keys = params.skus && Array.isArray(JSON.parse(params.skus)) && JSON.parse(params.skus);
+  const skus = params.skus && Array.isArray(JSON.parse(params.skus)) && JSON.parse(params.skus);
 
-  const snameSkus = (value) => {
-    let array = [];
-
-    const skuBrand = value.map((item) => {
-      return {
-        skuId: item.skuId,
-        brandId: item.brandId,
-      };
-    });
-
-    const oneSkus = [];
-    let sname = [];
-
-    value.map((item) => {
-      if (
-        skuBrand.filter((value) => {
-          return item.skuId === value.skuId && item.brandId === value.brandId;
-        }).length === 1
-      ) {
-        oneSkus.push(item);
-      } else {
-        let snameSku = null;
-        const sku = [];
-        sname.map((value) => {
-          if (value.skuId === item.skuId && value.brandId === item.brandId) {
-            snameSku = value;
-          } else {
-            sku.push(value);
-          }
-          return null;
-        });
-        if (snameSku) {
-          sname = [...sku, {...snameSku, applyNumber: snameSku.applyNumber + item.applyNumber}];
-        } else {
-          sname.push(item);
-        }
-      }
-      return array = [...oneSkus, ...sname];
-    });
-    return array;
-  };
-
-  const {run: toBuy} = useRequest(toBuyPlanList, {
+  const {run: getSkus} = useRequest(skuResults, {
     manual: true,
     onSuccess: (res) => {
-      if (Array.isArray(res)) {
-        const allSku = [];
-        res.map((item) => {
-          return item.children.map((value) => {
-            return allSku.push(value);
-          });
-        });
-
-        const array = allSku.filter((item) => {
-          return keys.includes(item.purchaseListingId);
-        });
-
-        const detail = snameSkus(array.map((item) => {
-          return {
-            skuId: item.skuId,
-            brandId: item.brandId,
-            preordeNumber: item.applyNumber,
-            skuResult: item.skuResult,
-            unitId: item.skuResult && item.skuResult.spuResult && item.skuResult.spuResult.unitId,
-            defaultBrandResult: item.brandResult && item.brandResult.brandName
-          };
-        }));
-        formRef.current.setFieldValue('detailParams', detail);
-      }
+      const detail = res.map((item, index) => {
+        return {
+          ...skus[index],
+          skuResult: item,
+        };
+      });
+      formRef.current.setFieldValue('detailParams', detail);
     }
   });
 
 
   useEffect(() => {
-    if (Array.isArray(keys)) {
-      toBuy();
+    if (skus) {
+      getSkus({data: {skuIds: skus.map(item => item.skuId)}});
     }
   }, []);
 
@@ -664,6 +606,7 @@ const CreateOrder = ({...props}) => {
                                 <FormItem
                                   value={0}
                                   name={`paymentDetail.${index}.dateWay`}
+                                  value={0}
                                   component={SysField.DateWay}
                                 />
                               </>

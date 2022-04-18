@@ -5,12 +5,15 @@ import {ApplyNumber, BrandId, Date, Note, Time} from '@/pages/Purshase/purchaseA
 import {useRequest} from '@/util/Request';
 import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import MinWidthDiv from "@/components/MinWidthDiv";
+import MyNote from "@/components/Note";
 
-const AddSkuTable = ({
-  onChange = () => {
-  },
-  value = [],
-}) => {
+const AddSkuTable = (
+  {
+    onChange = () => {
+    },
+    value = [],
+  }) => {
 
   const [keys, setKeys] = useState([]);
 
@@ -47,6 +50,7 @@ const AddSkuTable = ({
 
   return <>
     <Table
+      scroll={{x: 'max-content'}}
       dataSource={dataSources}
       pagination={false}
       rowKey="key"
@@ -55,7 +59,7 @@ const AddSkuTable = ({
           <Button
             type="link"
             disabled={keys.length === 0}
-            icon={<DeleteOutlined />}
+            icon={<DeleteOutlined/>}
             onClick={() => {
               const ids = keys.map((item) => {
                 return item.skuId;
@@ -81,70 +85,88 @@ const AddSkuTable = ({
         }
       }}
     >
-      <Table.Column title="序号" width={80} align="center" dataIndex="key" render={(value) => {
-        return value + 1;
-      }} />
-      <Table.Column title="物料编号" width={200} dataIndex="coding" />
-      <Table.Column title="物料" width={600} dataIndex="skuResult" render={(value) => {
-        return <SkuResultSkuJsons skuResult={value} />;
-      }} />
-      <Table.Column title="品牌" width={300} dataIndex="skuId" render={(skuId, record, index) => {
-        return <>
+      <Table.Column title="序号" align="center" dataIndex="key" render={(value) => {
+        return <MinWidthDiv width={50}>{value + 1}</MinWidthDiv>;
+      }}/>
+      <Table.Column title="物料编号" dataIndex="coding" render={(value) => {
+        return <MinWidthDiv width={100}>{value}</MinWidthDiv>;
+      }}/>
+      <Table.Column title="物料" dataIndex="skuResult" width={200} render={(value) => {
+        return <MyNote>
+          <SkuResultSkuJsons skuResult={value}/>
+        </MyNote>;
+      }}/>
+      <Table.Column title="品牌" dataIndex="skuId" render={(skuId, record, index) => {
+        return <MinWidthDiv width={100}>
           <BrandId
             data={data}
             value={getValue(index).brandId || 0}
             onChange={(value) => {
               setValue({brandId: value}, index);
-            }} />
-        </>;
-      }} />
-      <Table.Column title="申请数量" width={100} dataIndex="applyNumber" render={(value, record, index) => {
-        return <ApplyNumber
-          value={value}
-          onChange={(value) => {
-            setValue({applyNumber: value}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="交付日期" width={200} dataIndex="deliveryDate" render={(value, record, index) => {
-        return <Date
-          value={value}
-          onChange={(value) => {
-            setValue({deliveryDate: value}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="交付时间" width={200} dataIndex="deliveryTime" render={(value, record, index) => {
-        return <Time
-          value={value}
-          onChange={(value) => {
-            setValue({deliveryTime: value}, index);
-          }}
-        />;
-      }} />
-      <Table.Column title="备注" width={500} dataIndex="note" render={(value, record, index) => {
-        return <Note
-          value={getValue(index).note}
-          onChange={(value) => {
-            setValue({note: value.target.value}, index);
-          }}
-        />;
-      }} />
+            }}/>
+        </MinWidthDiv>;
+      }}/>
+      <Table.Column title="申请数量" dataIndex="applyNumber" render={(value, record, index) => {
+        return <MinWidthDiv width={50}>
+          <ApplyNumber
+            value={value}
+            onChange={(value) => {
+              setValue({applyNumber: value}, index);
+            }}
+          />
+        </MinWidthDiv>;
+      }}/>
+      <Table.Column title="交付日期" dataIndex="deliveryDate" render={(value, record, index) => {
+        return <MinWidthDiv width={100}>
+          <Date
+            value={value}
+            onChange={(value) => {
+              setValue({deliveryDate: value}, index);
+            }}
+          />
+        </MinWidthDiv>;
+      }}/>
+      <Table.Column title="交付时间" dataIndex="deliveryTime" render={(value, record, index) => {
+        return <MinWidthDiv width={100}>
+          <Time
+            value={value}
+            onChange={(value) => {
+              setValue({deliveryTime: value}, index);
+            }}
+          />
+        </MinWidthDiv>;
+      }}/>
+      <Table.Column title="备注" dataIndex="note" render={(value, record, index) => {
+        return <MinWidthDiv width={200}>
+          <Note
+            value={getValue(index).note}
+            onChange={(value) => {
+              setValue({note: value.target.value}, index);
+            }}
+          />
+        </MinWidthDiv>;
+      }}/>
 
-      <Table.Column />
-      <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
-        return <><Button
-          type="link"
-          icon={<DeleteOutlined />}
-          onClick={() => {
-            const array = dataSources.filter((item) => {
-              return item.key !== index;
-            });
-            onChange(array);
-          }}
-          danger
-        /></>;
-      }} />
+      <Table.Column/>
+      <Table.Column
+        title="操作"
+        dataIndex="skuId"
+        fixed='right'
+        align="center"
+        width={100}
+        render={(value, record, index) => {
+          return <><Button
+            type="link"
+            icon={<DeleteOutlined/>}
+            onClick={() => {
+              const array = dataSources.filter((item) => {
+                return item.key !== index;
+              });
+              onChange(array);
+            }}
+            danger
+          /></>;
+        }}/>
 
     </Table>
   </>;

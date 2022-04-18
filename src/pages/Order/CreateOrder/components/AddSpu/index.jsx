@@ -10,18 +10,18 @@ import store from '@/store';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
-const AddSpu = ({
-  value,
-  onChange,
-}) => {
+const AddSpu = (
+  {
+    value,
+    onChange,
+    noSkuIds,
+  }) => {
+
+  const [checkConfig, setCheckConfig] = useState([]);
 
   const [state] = store.useModel('dataSource');
 
   const [skuClassId, setSkuClassId] = useState();
-
-  const [spuId, setSpuId] = useState();
-
-  const [checkConfig, setCheckConfig] = useState([]);
 
   const [config, setConfig] = useSetState({
     list: [],
@@ -55,21 +55,21 @@ const AddSpu = ({
       }).length === newCheckConfig.length;
     });
 
-    let onSku = null;
+    const onSku = [];
+
     newConfigList.map((itemList) => {
       const trees = config.tree.filter((itemTree) => {
         return itemList[`s${itemTree.k_s}`];
       });
-      if (trees.length === newCheckConfig.length) {
-        onSku = itemList;
+      if (newCheckConfig.length > 0 && trees.length === newCheckConfig.length) {
+        onSku.push(itemList);
       }
       return null;
     });
 
-    if (onSku) {
-      change(onSku.id);
+    if (onSku.length === 1) {
+      change(onSku[0].id);
     } else if (newConfigList.length === 1) {
-
       if (v) {
         const check = [];
         config.tree.map((itemTree) => {
@@ -85,7 +85,7 @@ const AddSpu = ({
         newCheckConfig = check;
       }
       change(newConfigList[0].id);
-    } else if (config.list.length > 0) {
+    } else if (config.list.length > 0 && !newConfigList.map(item => item.id).includes(value)) {
       change(null);
     }
 
@@ -108,13 +108,10 @@ const AddSpu = ({
     setConfig({...config, tree: newConfigTree});
   };
 
-  const {loading: spuLoading, data: spuData, run: spuRun} = useRequest(spuListSelect);
-
   const {loading: detailLoading, run: detailRun} = useRequest(spuDetail,
     {
       manual: true,
       onSuccess: (res) => {
-        setSpuId(res.spuId);
         const config = {
           list: res && res.sku && res.sku.list || [],
           tree: res && res.sku && res.sku.tree || [],
@@ -123,88 +120,70 @@ const AddSpu = ({
       }
     });
 
-  const {loading: skuLoading, run: skuRun} = useRequest(skuDetail, {
-    manual: true,
-    onSuccess: (res) => {
-      const array = [];
-      if (res.spuId) {
-        detailRun({
-          data: {
-            spuId: res.spuId
-          }
-        });
-        res.list && res.list.map((item) => {
-          return array.push({
-            k: item.attributeId,
-            v: item.attributeValuesId,
-          });
-        });
-        setCheckConfig(array);
-      }
-    }
-  });
-
 
   return <div style={{padding: '24px 10%'}}>
-    <Descriptions column={2} labelStyle={{display:'flex',alignItems:'center'}}>
+    <Descriptions column={1}>
       <Descriptions.Item label="物料分类">
         <Cascader
-          width={200}
+          width='100%'
           value={skuClassId}
           changeOnSelect={false}
           placeholder="请选择物料分类"
           options={state.skuClass}
           onChange={(value) => {
-            setSpuId(null);
+            change(null);
             setConfig({
               list: [],
               tree: []
             });
             setSkuClassId(value);
-            spuRun({
-              data: {
-                spuClassificationId: value,
-              }
-            });
-          }} />
+          }}/>
       </Descriptions.Item>
-      <Descriptions.Item label="物料">
-        <SelectSku value={value} spuClassId={skuClassId} onChange={(skuId) => {
-          if (skuId) {
-            skuRun({
-              data: {
-                skuId
-              }
-            });
-          }
-          change(skuId);
-        }} />
-      </Descriptions.Item>
-      <Descriptions.Item label="物料名称" span={2}>
-        {(spuLoading || skuLoading) ?
-          <Spin />
-          :
-          <Select value={spuId} placeholder="请选择物料名称" width={200} options={spuData || []} onChange={(value) => {
-            setSpuId(value);
+      <Descriptions.Item label="物料名称">
+        <SelectSku
+          width='100%'
+          value={value}
+          spuClassId={skuClassId}
+          skuIds={noSkuIds}
+          getSkuDetail={(res) => {
+            const array = [];
+            if (res.spuId) {
+              detailRun({
+                data: {
+                  spuId: res.spuId
+                }
+              });
+              res.list && res.list.map((item) => {
+                return array.push({
+                  k: item.attributeId,
+                  v: item.attributeValuesId,
+                });
+              });
+              setCheckConfig(array);
+            }
+          }}
+          onChange={change}
+          onSpuId={(value) => {
             detailRun({
               data: {
                 spuId: value,
               }
             });
-          }} />}
+          }}
+        />
       </Descriptions.Item>
-      <Descriptions.Item label="物料描述" span={2}>
-        <Space direction="vertical">
+      <Descriptions.Item label="物料描述">
+        <div style={{display: 'flex', flexDirection: 'column'}}>
           {
             detailLoading
               ?
               <div style={{textAlign: 'center'}}>
-                <Spin />
+                <Spin/>
               </div>
               :
               config.tree && config.tree.map((item, index) => {
                 return <div key={index} style={{padding: 8}}>
-                  <Space>
+                  <div style={{display: 'flex'}}>
                     <div>
                       {item.k}：
                     </div>
@@ -222,11 +201,11 @@ const AddSpu = ({
                         </Checkbox>;
                       })
                     }
-                  </Space>
+                  </div>
                 </div>;
               })
           }
-        </Space>
+        </div>
       </Descriptions.Item>
     </Descriptions>
 

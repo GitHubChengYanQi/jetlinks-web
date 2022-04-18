@@ -15,9 +15,12 @@ export interface Props {
   dragOverlay?: boolean;
   color?: string;
   disabled?: boolean;
+  item?: object;
   dragging?: boolean;
+  liBorder?: boolean;
   handle?: boolean;
   height?: number;
+  DefinedItem?: React.ReactNode,
   index?: number;
   checked?: boolean;
   itemData?: ItemData[];
@@ -55,14 +58,17 @@ export const Item = React.memo(
       {
         keys,
         color,
+        item,
         dragOverlay,
         dragging,
         disabled,
         itemData,
+        liBorder,
         onChecked = () => {
         },
         fadeIn,
         handle,
+        DefinedItem,
         height,
         checked,
         index,
@@ -109,13 +115,14 @@ export const Item = React.memo(
       ) : (
         <li
           onClick={() => {
-            onChecked(keys);
+            onChecked(keys, item, index);
           }}
           className={classNames(
             styles.Wrapper,
             fadeIn && styles.fadeIn,
             sorting && styles.sorting,
-            dragOverlay && styles.dragOverlay
+            dragOverlay && styles.dragOverlay,
+            liBorder && styles.border,
           )}
           style={
             {
@@ -157,23 +164,36 @@ export const Item = React.memo(
             {...props}
             tabIndex={!handle ? 0 : undefined}
           >
-            <Space>
-               <span className={styles.Actions}>
+            {
+              DefinedItem
+                ?
+                <DefinedItem
+                  {...listeners}
+                  value={value}
+                  item={item}
+                  index={index}
+                />
+                :
+                <>
+                  <Space>
+                    <span className={styles.Actions}>
                  {handle ? <Handle {...listeners} /> : null}
-            </span>
-              {value}
-            </Space>
-            <div
-              style={{
-                display: 'flex',
-                alignSelf: 'flexStart',
-                marginLeft: 'auto',
-                marginRight: 10,
-              }}
-            >
-              {checked && <CheckOutlined />}
-            </div>
+                      </span>
+                    {value}
+                  </Space>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignSelf: 'flexStart',
+                      marginLeft: 'auto',
+                      marginRight: 10,
+                    }}
+                  >
+                    {checked && <CheckOutlined/>}
+                  </div>
+                </>
 
+            }
           </div>
         </li>
       );

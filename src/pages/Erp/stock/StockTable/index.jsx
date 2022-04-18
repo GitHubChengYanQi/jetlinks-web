@@ -23,6 +23,7 @@ import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
 import {Position} from '@/pages/Erp/stock/StockField';
+import Analysis from '@/pages/Erp/Analysis';
 
 const {baseURI} = config;
 const {FormItem} = Form;
@@ -30,7 +31,6 @@ const {FormItem} = Form;
 const StockTable = (props) => {
 
   const {state} = props;
-  console.log(state);
 
   const tableRef = useRef();
 
@@ -110,6 +110,7 @@ const StockTable = (props) => {
   const actions = () => {
     return (
       <Space>
+        <Analysis type='link'/>
         <Button type='link' icon={<Icon type="icon-daoru"/>} onClick={() => {
           window.location.href = `${baseURI}stockExcel/stockExport?authorization=${token}`;
         }}>导出库存</Button>

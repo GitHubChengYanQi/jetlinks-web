@@ -8,6 +8,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Badge, Button, Table as AntTable} from 'antd';
 import {getSearchParams, useHistory} from 'ice';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
@@ -16,7 +17,7 @@ import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
-import {createFormActions} from '@formily/antd';
+import MinWidthDiv from '@/components/MinWidthDiv';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -108,10 +109,10 @@ const PurchaseAskList = ({status, ...props}) => {
         <Column key={4} title="申请品类" width={100} align="center" dataIndex="applyType" />
         <Column key={5} title="申请数量" width={100} align="center" dataIndex="applyNumber" />
         {!status && <Column key={6} title="最后审批人" dataIndex="viewUpdate" render={(value) => {
-          return <>{value && value.updateUser && value.updateUser.name}</>;
+          return <MinWidthDiv width={100}>{value && value.updateUser && value.updateUser.name}</MinWidthDiv>;
         }} />}
         {!status && <Column key={7} title="最后审批时间" dataIndex="viewUpdate" render={(value) => {
-          return <>{value && value.updateTime}</>;
+          return <MinWidthDiv width={100}>{value && value.updateTime}</MinWidthDiv>;
         }} />}
         <Column key={8} title="申请人" render={(value, record) => {
           return <>
@@ -121,7 +122,7 @@ const PurchaseAskList = ({status, ...props}) => {
         <Column key={9} title="申请时间" dataIndex="createTime" />
         <Column />
         {!status &&
-        <Column key={10} title="操作" width={230} align="center" dataIndex="purchaseAskId" render={(value, record) => {
+        <Column key={10} title="操作" fixed='right' width={250} align="center" dataIndex="purchaseAskId" render={(value, record) => {
           return <>
             <Button type="link">撤回</Button>
             <Button type="link" onClick={() => {

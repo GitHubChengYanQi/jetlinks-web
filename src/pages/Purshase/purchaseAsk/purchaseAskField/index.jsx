@@ -21,8 +21,6 @@ import TimePicker from '@/components/TimePicker';
 
 export const AddSku = ({value = [], onChange}) => {
 
-  const skuTableRef = useRef();
-
   const ref = useRef();
 
   const addSkuRef = useRef();

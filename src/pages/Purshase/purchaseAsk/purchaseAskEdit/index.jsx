@@ -5,7 +5,7 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Affix, Button, Card, message, notification, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
@@ -16,9 +16,10 @@ import {getSearchParams, useHistory} from 'ice';
 import Form from '@/components/Form';
 import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
-import {request} from '@/util/Request';
-import {skuDetail} from '@/pages/Erp/sku/skuUrl';
+import {request, useRequest} from '@/util/Request';
+import {skuDetail, skuResults} from '@/pages/Erp/sku/skuUrl';
 import Breadcrumb from '@/components/Breadcrumb';
+import store from "@/store";
 
 const {FormItem} = Form;
 
@@ -34,14 +35,35 @@ const PurchaseAskEdit = () => {
 
   const formRef = useRef();
 
+  const skus = params.skus && JSON.parse(params.skus);
+
+  const {run} = useRequest(skuResults, {
+    manual: true,
+    onSuccess: (res) => {
+      formRef.current.setFieldValue('purchaseListings', res.map((item,index) => {
+        return {
+          ...skus[index],
+          skuResult: item,
+          coding:item.standard,
+        };
+      }));
+    }
+  });
+
+  useEffect(() => {
+    if (Array.isArray(skus)) {
+      run({data: {skuIds: skus.map(item => item.skuId)}});
+    }
+  }, []);
+
   const [loading, setLoading] = useState();
 
   const history = useHistory();
 
   return (
     <>
-      <div style={{padding:16}}>
-        <Breadcrumb title={params.id ? '编辑采购申请' : '创建采购申请'} />
+      <div style={{padding: 16}}>
+        <Breadcrumb title={params.id ? '编辑采购申请' : '创建采购申请'}/>
       </div>
       <Card
         title="创建采购申请"
@@ -55,14 +77,14 @@ const PurchaseAskEdit = () => {
           fieldKey="purchaseAskId"
           onSuccess={() => {
             notification.success({
-              message:'提交申请成功！'
+              message: '提交申请成功！'
             });
             history.push('/purchase/purchaseAsk');
           }}
           onError={() => {
           }}
           onSubmit={(value) => {
-            if (!(value.purchaseListings && value.purchaseListings.length > 0)){
+            if (!(value.purchaseListings && value.purchaseListings.length > 0)) {
               message.warning('物料、申请数量为必填项！');
               return false;
             }
@@ -112,23 +134,30 @@ const PurchaseAskEdit = () => {
         >
           <ProCard title="基础信息" className="h2Card" headerBordered>
             <div style={{display: 'inline-block', width: '30%'}}>
-              <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required />
+              <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required/>
             </div>
             <div style={{display: 'inline-block', width: '30%'}}>
-              <FormItem label="采购申请类型" name="type" component={SysField.Type} required />
+              <FormItem label="采购申请类型" name="type" component={SysField.Type} required/>
             </div>
             <div style={{display: 'inline-block', width: '30%'}}>
-              <FormItem label="备注说明" name="note" component={SysField.Note} />
+              <FormItem label="备注说明" name="note" component={SysField.Note}/>
             </div>
           </ProCard>
 
-          <FormItem name="purchaseListings" component={SysField.AddSku} />
+          <FormItem name="purchaseListings" component={SysField.AddSku}/>
         </Form>
       </Card>
 
       <Affix offsetBottom={0}>
         <div
-          style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8,boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'}}>
+          style={{
+            height: 47,
+            borderTop: '1px solid #e7e7e7',
+            background: '#fff',
+            textAlign: 'center',
+            paddingTop: 8,
+            boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'
+          }}>
           <Space>
             <Button
               loading={loading}

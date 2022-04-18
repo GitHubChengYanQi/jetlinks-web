@@ -73,7 +73,7 @@ const CustomerEdit = (
       {!add && <div style={{padding: 8}}>
         <Breadcrumb title="创建供应商"/>
       </div>}
-      <Card title="创建供应商">
+      <Card title={!add && '创建供应商'} bodyStyle={{padding: add ? 0 : 24}} bordered={!add}>
         <Form
           formatResult={formActionsPublic}
           value={params.id || false}
@@ -115,7 +115,7 @@ const CustomerEdit = (
             const contactsParams = [];
             contactsParams.push({
               contactsName: value.contactsName.id ? value.contactsName.id : value.contactsName.name,
-              phoneParams: [{phoneNumber: value.phoneNumber,telephone: value.telePhone}],
+              phoneParams: [{phoneNumber: value.phoneNumber, telephone: value.telePhone}],
               deptName: value.deptName,
               positionName: value.companyRole,
             });
@@ -123,7 +123,7 @@ const CustomerEdit = (
               if (item && item.contactsName) {
                 contactsParams.push({
                   contactsName: item.contactsName.id ? item.contactsName.id : item.contactsName.name,
-                  phoneParams: [{phoneNumber: item.phoneNumber,telephone: item.telephone}],
+                  phoneParams: [{phoneNumber: item.phoneNumber, telephone: item.telephone}],
                   deptName: item.deptName,
                   positionName: value.companyRole,
                 });
@@ -473,7 +473,6 @@ const CustomerEdit = (
                   <FormItem
                     label="注册资本"
                     name="registeredCapital"
-                    style={{width: 200}}
                     placeholder="请输入注册资本"
                     component={SysField.Money}
                   />

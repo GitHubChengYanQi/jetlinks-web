@@ -1,7 +1,7 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Button, Card, Col, Divider, Layout, Row, Space, Table as AntdTable} from 'antd';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import {Button, Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {createFormActions, Form, FormButtonGroup, Reset, Submit, useFormTableQuery} from '@formily/antd';
+import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
@@ -14,55 +14,56 @@ const {Sider, Content} = Layout;
 
 const formActionsPublic = createFormActions();
 
-const TableWarp = ({
-                     children,
-                     columns,
-                     actions,
-                     NoChildren,
-                     title,
-                     sortAction,
-                     maxHeight,
-                     loading: getLoading,
-                     showCard,
-                     selectedRowKeys,
-                     api,
-                     tableData,
-                     actionButton,
-                     pageSize,
-                     noPagination,
-                     isChildren,
-                     contentHeight,
-                     searchForm,
-                     cardTitle,
-                     rowKey,
-                     headStyle,
-                     tab,
-                     dataSource: dataSources,
-                     noSort,
-                     configPagination,
-                     tableKey,
-                     branch,
-                     noRowSelection,
-                     bodyStyle,
-                     bordered,
-                     defaultSelectedRowKeys,
-                     SearchButton,
-                     selectionType,
-                     onChange,
-                     getCheckboxProps,
-                     layout,
-                     cardHeaderStyle,
-                     expandable,
-                     listHeader = true,
-                     labelAlign,
-                     noTableColumn,
-                     sortList,
-                     footer: parentFooter,
-                     isModal = true,
-                     formActions = null,
-                     left,
-                     ...props
-                   }, ref) => {
+const TableWarp = (
+  {
+    children,
+    columns,
+    actions,
+    NoChildren,
+    title,
+    sortAction,
+    maxHeight,
+    loading: getLoading,
+    showCard,
+    selectedRowKeys,
+    api,
+    tableData,
+    actionButton,
+    pageSize,
+    noPagination,
+    isChildren,
+    contentHeight,
+    searchForm,
+    cardTitle,
+    rowKey,
+    headStyle,
+    tab,
+    dataSource: dataSources,
+    noSort,
+    configPagination,
+    tableKey,
+    branch,
+    noRowSelection,
+    bodyStyle,
+    bordered,
+    defaultSelectedRowKeys,
+    SearchButton,
+    selectionType,
+    onChange,
+    getCheckboxProps,
+    layout,
+    cardHeaderStyle,
+    expandable,
+    listHeader = true,
+    labelAlign,
+    noTableColumn,
+    sortList,
+    footer: parentFooter,
+    isModal = true,
+    formActions = null,
+    left,
+    ...props
+  }, ref) => {
 
   if (!rowKey) {
     rowKey = api.rowKey;
@@ -221,6 +222,7 @@ const TableWarp = ({
                   {SearchButton ||
                     <FormButtonGroup>
                       <Button
+                        id='submit'
                         type="primary"
                         onClick={() => {
                           submit();

@@ -9,6 +9,7 @@ export interface Props extends React.HTMLAttributes<HTMLButtonElement> {
     background: string;
   };
   cursor?: CSSProperties['cursor'];
+  icon?:React.ReactNode;
 }
 
 export function Action({active, className, cursor, style, ...props}: Props) {

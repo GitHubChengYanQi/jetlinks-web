@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import {useHistory} from 'ice';
 import {createFormActions} from '@formily/antd';
-import {addProcurement, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
+import {addProcurement, purchaseListingReadyBuy, toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
@@ -79,7 +79,7 @@ const ToBuyPlanList = (props) => {
           return null;
         });
         if (snameSku) {
-          sname = [...sku, {...snameSku, applyNumber: snameSku.applyNumber + item.applyNumber}];
+          sname = [...sku, {...snameSku, applyNumber: (snameSku.applyNumber || 0) + (item.applyNumber || 0)}];
         } else {
           sname.push(item);
         }
@@ -191,9 +191,9 @@ const ToBuyPlanList = (props) => {
   const showCard = () => {
     return <Card style={{margin: 16, marginTop: 0}}>
       <Space size="large">
-        <Statistic title="勾选预购金额" value={112893} suffix="元" precision={2} />
-        <Statistic title="筛选金额合计" value={112893} suffix="元" precision={2} />
-        <Statistic title="预购金额合计" value={112893} suffix="元" precision={2} />
+        <Statistic title="勾选预购金额" value={0} suffix="元" precision={2} />
+        <Statistic title="筛选金额合计" value={0} suffix="元" precision={2} />
+        <Statistic title="预购金额合计" value={0} suffix="元" precision={2} />
       </Space>
     </Card>;
   };
@@ -203,7 +203,7 @@ const ToBuyPlanList = (props) => {
       <Button
         type="default"
         onClick={() => {
-          history.push(`/purchase/toBuyPlan/createOrder?module=PO&skus=${JSON.stringify(keys)}`);
+          history.push(`/purchase/toBuyPlan/createOrder?module=PO&skus=${JSON.stringify(selectedSanme())}`);
         }}>批量采购</Button>
       {props.ggg && <>
         <Button
@@ -273,7 +273,6 @@ const ToBuyPlanList = (props) => {
         <FormItem label="采购申请类型" name="type" component={Type} />
         <FormItem label="交货日期" name="date" component={DatePicker} />
         <FormItem label="采购申请编号" name="coding" component={Input} />
-        <FormItem label="更多搜索" name="all" component={Input} />
       </>
     );
   };
@@ -296,7 +295,7 @@ const ToBuyPlanList = (props) => {
         :
         <>
           <Table
-            api={toBuyPlanList}
+            api={purchaseListingReadyBuy}
             branch={(value) => {
               if (Array.isArray(value)) {
                 const allSku = [];
