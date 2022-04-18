@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect} from 'react';
-import {Input,Select as AntdSelect} from 'antd';
+import {Input, Select as AntdSelect} from 'antd';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
 
 export const ProcessName = (props) => {
@@ -16,10 +16,13 @@ export const CategoryId = (props) => {
   return (<Input {...props} />);
 };
 export const Type = (props) => {
-  return (<AntdSelect options={[{label: '工艺', value: 'ship'}, {label: '质检', value: 'quality'}, {
-    label: '采购',
-    value: 'purchase'
-  },]} {...props} />);
+  return (<AntdSelect
+    options={[
+      {label: '工艺', value: 'ship'},
+      {label: '质检', value: 'quality'},
+      {label: '采购', value: 'purchase'},
+      {label: '入库', value: 'instock'},
+    ]} {...props} />);
 };
 
 export const Module = (props) => {
@@ -29,18 +32,26 @@ export const Module = (props) => {
       case 'ship':
         return [];
       case 'quality':
-        return [{label: '入厂检', value: 'inQuality'},{label: '采购检', value: 'purchaseQuality'},];
+        return [{label: '入厂检', value: 'inQuality'}, {label: '采购检', value: 'purchaseQuality'}, {
+          label: '生产检',
+          value: 'productionQuality'
+        },];
       case 'purchase':
-        return [{label: '采购申请', value: 'purchaseAsk'},{label: '采购计划', value: 'purchasePlan'},{label: '采购单', value: 'purchaseOrder'}];
+        return [{label: '采购申请', value: 'purchaseAsk'}, {label: '采购计划', value: 'purchasePlan'}, {
+          label: '采购单',
+          value: 'purchaseOrder'
+        }];
+      case 'instock':
+        return [{label: '创建入库', value: 'createInstock'}, {label: '入库异常', value: 'instockError'}];
       default:
         return [];
     }
   };
-  useEffect(()=>{
-    if (type){
+  useEffect(() => {
+    if (type) {
       props.onChange(null);
     }
-  },[type]);
+  }, [type]);
   return (<AntdSelect options={options()} {...other} />);
 };
 export const FormId = (props) => {
@@ -48,6 +59,6 @@ export const FormId = (props) => {
 };
 
 export const SkuId = (props) => {
-  return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);
+  return (<SelectSku {...props} dropdownMatchSelectWidth={400}/>);
 };
 
