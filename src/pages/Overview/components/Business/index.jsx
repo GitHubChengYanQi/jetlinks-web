@@ -1,10 +1,10 @@
 import React from 'react';
 import {Avatar, Card} from 'antd';
-import styles from '@/pages/Overview/index.module.scss';
-import {useRequest} from '@/util/Request';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {useHistory} from 'ice';
-import {FundProjectionScreenOutlined, ProfileOutlined} from '@ant-design/icons';
+import {ProfileOutlined} from '@ant-design/icons';
+import styles from '@/pages/Overview/index.module.scss';
+import {useRequest} from '@/util/Request';
 
 const Business = () => {
 
