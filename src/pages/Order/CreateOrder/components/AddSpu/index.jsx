@@ -125,7 +125,7 @@ const AddSpu = (
     <Descriptions column={1}>
       <Descriptions.Item label="物料分类">
         <Cascader
-          width='100%'
+          width="100%"
           value={skuClassId}
           changeOnSelect={false}
           placeholder="请选择物料分类"
@@ -137,11 +137,11 @@ const AddSpu = (
               tree: []
             });
             setSkuClassId(value);
-          }}/>
+          }} />
       </Descriptions.Item>
       <Descriptions.Item label="物料名称">
         <SelectSku
-          width='100%'
+          width="100%"
           value={value}
           spuClassId={skuClassId}
           skuIds={noSkuIds}
@@ -164,6 +164,7 @@ const AddSpu = (
           }}
           onChange={change}
           onSpuId={(value) => {
+            change(null);
             detailRun({
               data: {
                 spuId: value,
@@ -174,11 +175,12 @@ const AddSpu = (
       </Descriptions.Item>
       <Descriptions.Item label="物料描述">
         <div style={{display: 'flex', flexDirection: 'column'}}>
+          {config.tree.length === 0 && '无描述'}
           {
             detailLoading
               ?
               <div style={{textAlign: 'center'}}>
-                <Spin/>
+                <Spin />
               </div>
               :
               config.tree && config.tree.map((item, index) => {
