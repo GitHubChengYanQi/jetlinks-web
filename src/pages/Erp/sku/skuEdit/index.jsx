@@ -8,13 +8,13 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
 import {notification, Popover, Space} from 'antd';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
 import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
 import * as SysField from '../skuField';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
 import BrandIds from '@/pages/Erp/brand/components/BrandIds';
-import {QuestionCircleOutlined} from '@ant-design/icons';
 
 const {FormItem} = Form;
 
@@ -23,6 +23,8 @@ const formActionsPublic = createFormActions();
 const SkuEdit = ({...props}, ref) => {
 
   const {value, addUrl, ...other} = props;
+
+  const [copy, setCopy] = useState();
 
   const ApiConfig = {
     view: skuDetail,
@@ -47,8 +49,14 @@ const SkuEdit = ({...props}, ref) => {
     await formRef.current.submit();
   };
 
+  const copyAdd = async () => {
+    await setCopy(true);
+    await formRef.current.submit();
+  };
+
   useImperativeHandle(ref, () => ({
-    nextAdd
+    nextAdd,
+    copyAdd,
   }));
 
   return (
@@ -78,10 +86,15 @@ const SkuEdit = ({...props}, ref) => {
             formRef.current.reset();
           }
         }}
-        onSubmit={(submit) => {
-          const object = {...submit, type: 0, isHidden: true, skuId: value.copy ? null : value.skuId};
-          console.log(object);
-          return object;
+        onSubmit={(submitValue) => {
+          submitValue = {
+            ...submitValue,
+            type: 0,
+            isHidden: true,
+            skuId: value.copy ? null : value.skuId,
+            oldSkuId: copy ? value.skuId : null
+          };
+          return submitValue;
         }}
         effects={async () => {
 
