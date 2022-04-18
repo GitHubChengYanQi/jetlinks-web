@@ -208,8 +208,8 @@ const StockTable = (props) => {
       ref={tableRef}
       noRowSelection
       actionButton={actions()}
-      actions={<>
-        <Space style={{padding: 16}}>
+      showCard={<div style={{borderBottom:'solid 1px #eee',marginBottom:16}}>
+        <Space size={24} style={{paddingBottom:24}}>
           <Progress
             type="circle"
             percent={100}
@@ -231,7 +231,7 @@ const StockTable = (props) => {
               <Statistic title="总数量" value={data[0] ? data[0].skuCount : 0}/>
             }/>
         </Space>
-      </>}
+      </div>}
       title={<Breadcrumb/>}
       searchForm={searchForm}
       branch={(data) => {
