@@ -92,7 +92,7 @@ const StorehousePositionsList = (props) => {
           <Input placeholder="库位名称" onChange={(value) => {
             setName(value.target.value);
           }}/>
-          <Button type="primary" onClick={() => {
+          <Button htmlType='submit' type="primary" onClick={() => {
             run({
               params: {
                 name,

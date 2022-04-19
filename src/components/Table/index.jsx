@@ -1,7 +1,7 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Button, Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
+import {createFormActions, Form, FormButtonGroup, useFormTableQuery, Submit} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
@@ -188,7 +188,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
@@ -220,21 +220,23 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id='submit'
-                        type="primary"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={getLoading || loading}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -312,12 +314,12 @@ const TableWarp = (
                           sortList(value);
                         }
                         setSorts(value);
-                      }}/>;
+                      }} />;
                   } else {
                     return <>{index + 1}</>;
                   }
 
-                }}/>}
+                }} />}
               {tableColumn.filter((items) => {
                 if (items && items.props && items.props.visible === false) {
                   return false;

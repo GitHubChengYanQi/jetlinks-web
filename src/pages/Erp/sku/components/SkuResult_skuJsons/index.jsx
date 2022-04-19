@@ -18,13 +18,7 @@ const SkuResultSkuJsons = ({skuResult, describe}) => {
       }).join(' , ') || '无';
   }
 
-
-  return <>
-    {skuResult.spuResult.name}
-    &nbsp;/&nbsp;
-    {skuResult.skuName}
-    {skuResult.specifications && <> &nbsp;/&nbsp; {skuResult.specifications}</>}
-  </>;
+  return `${skuResult.spuResult.name} / ${skuResult.skuName}${skuResult.specifications ? ` / ${skuResult.specifications}` : ''}`;
 };
 
 export default SkuResultSkuJsons;

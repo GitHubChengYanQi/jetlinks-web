@@ -5,8 +5,9 @@ import {pendingProductionByOrder} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
 import Label from '@/components/Label';
-import Drawer from "@/components/Drawer";
-import Detail from "@/pages/ReSearch/Detail";
+import Drawer from '@/components/Drawer';
+import Detail from '@/pages/ReSearch/Detail';
+import Note from '@/components/Note';
 
 const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
 
@@ -32,7 +33,7 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
   }, [refresh]);
 
   if (loading) {
-    return <ProSkeleton type="descriptions"/>;
+    return <ProSkeleton type="descriptions" />;
   }
 
   const onChecked = (checked, rowItem, orderItem) => {
@@ -119,7 +120,7 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
                         checked={checkedSkus.map(item => item.detailId).includes(rowItem.detailId)}
                         onChange={(value) => {
                           onChecked(value.target.checked, rowItem, orderItem);
-                        }}/>
+                        }} />
                       <Space direction="vertical" style={{cursor: 'pointer'}} onClick={() => {
                         if (skuResult.processResult) {
                           onChecked(!checkedSkus.map(item => item.detailId).includes(rowItem.detailId), rowItem, orderItem);
@@ -128,25 +129,25 @@ const OrderList = ({checkedSkus, setCheckedSkus, refresh}) => {
                         <div>
                           <Label>物料编码：</Label>{skuResult && skuResult.standard}
                           {!skuResult.processResult && <Button
-                            type='link'
+                            type="link"
                             onClick={() => {
                               setSkuId(rowItem.skuId);
                             }}
                             danger>请先创建工艺路线</Button>}
                         </div>
                         <Button type="link" style={{padding: 0}}>
-                          <SkuResultSkuJsons skuResult={skuResult}/>
+                          <SkuResultSkuJsons skuResult={skuResult} />
                         </Button>
                       </Space>
                       <div>
                         × {rowItem.purchaseNumber}
                       </div>
                     </Space>
-                    <div style={{float: 'right', lineHeight: '62px'}}>
-                      <SkuResultSkuJsons describe skuResult={skuResult}/>
+                    <div style={{float: 'right', lineHeight: '62px', maxWidth: '40%'}}>
+                      <Note><SkuResultSkuJsons describe skuResult={skuResult} /></Note>
                     </div>
                   </div>;
-                }}/>
+                }} />
             </Card>
           </div>
         )}
