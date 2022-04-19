@@ -20,6 +20,7 @@ import request from '../../../../../../util/Request/request';
 import {useHistory} from 'ice';
 import {rulesRelationList} from '@/pages/BaseSystem/codingRules/components/rulesRelation/rulesRelationUrl';
 import {codingRulesList} from '@/pages/Erp/tool/toolUrl';
+import Message from '@/components/Message';
 
 const {FormItem} = Form;
 
@@ -73,9 +74,31 @@ const QualityPlanEdit = (props) => {
           typeof props.onSuccess === 'function' && props.onSuccess();
         }}
         onSubmit={(value) => {
+
+          if (!Array.isArray(value.qualityPlanDetailParams) || value.qualityPlanDetailParams.length === 0) {
+            Message.warning('请添加质检项!');
+            return false;
+          }
+
+          const qualityPlanDetailParams = value.qualityPlanDetailParams.filter((item) => {
+            switch (item.type) {
+              case 1:
+                return item.qualityCheckId && item.standardValue && item.unitId;
+              case 4:
+                return item.qualityCheckId && item.standardValue;
+              default:
+                return item.qualityCheckId;
+            }
+          });
+
+          if (qualityPlanDetailParams.length !== value.qualityPlanDetailParams.length) {
+            Message.warning('请检查质检项!');
+            return false;
+          }
+
           value = {
             ...value,
-            qualityPlanDetailParams: value.qualityPlanDetailParams.map((items, index) => {
+            qualityPlanDetailParams: qualityPlanDetailParams.map((items, index) => {
               return {
                 ...items,
                 sort: index,
@@ -111,7 +134,7 @@ const QualityPlanEdit = (props) => {
                   qualityCheckId: value.value
                 }
               });
-              if (result){
+              if (result) {
                 setFieldState(
                   value.path,
                   state => {
@@ -121,12 +144,20 @@ const QualityPlanEdit = (props) => {
 
                 setFieldState(
                   FormPath.transform(value.name, /\d/, ($1) => {
+                    return `qualityPlanDetailParams.${$1}.type`;
+                  }),
+                  state => {
+                    state.value = result.type;
+                  }
+                );
+
+                setFieldState(
+                  FormPath.transform(value.name, /\d/, ($1) => {
                     return `qualityPlanDetailParams.${$1}.standardValue`;
                   }),
                   state => {
                     state.props.type = result.type;
-                    state.props.active = value.active;
-
+                    state.props.isActive = value.active;
                     switch (result.type) {
                       case 1:
                       case 4:
@@ -144,9 +175,6 @@ const QualityPlanEdit = (props) => {
                     return `qualityPlanDetailParams.${$1}.unitId`;
                   }),
                   state => {
-                    state.props.type = result.type;
-                    state.props.active = value.active;
-
                     switch (result.type) {
                       case 1:
                         state.visible = true;
@@ -194,7 +222,7 @@ const QualityPlanEdit = (props) => {
             <FormItem label="方案名称" name="planName" component={SysField.PlanName} required />
             {/* <FormItem label="质检类型" name="planType" component={SysField.PlanType} required /> */}
             <FormItem
-              value='2'
+              value="2"
               label="检查类型"
               name="testingType"
               component={SysField.TestingType}
@@ -232,28 +260,31 @@ const QualityPlanEdit = (props) => {
                               label="质检项"
                               name={`qualityPlanDetailParams.${index}.qualityCheckId`}
                               component={SysField.QualityCheckId}
-                              required
                             />
                           </div>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
+                              name={`qualityPlanDetailParams.${index}.type`}
+                              component={SysField.Type}
+                            />
+                          </div>
+                          <div style={{display: 'inline-block'}}>
+                            <FormItem
+                              value={1}
                               name={`.qualityPlanDetailParams.${index}.operator`}
                               component={SysField.Operator}
-                              required
                             />
                           </div>
                           <div style={{display: 'inline-block'}}>
                             <FormItem
                               name={`qualityPlanDetailParams.${index}.standardValue`}
                               component={SysField.StandardValue}
-                              required
                             />
                           </div>
-                          <div style={{display: 'inline-block',marginLeft:8}}>
+                          <div style={{display: 'inline-block', marginLeft: 8}}>
                             <FormItem
                               name={`qualityPlanDetailParams.${index}.unitId`}
                               component={SysField.UnitId}
-                              required
                             />
                           </div>
                           <div style={{display: 'inline-block', width: '10%'}}>
