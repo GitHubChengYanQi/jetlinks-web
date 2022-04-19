@@ -49,6 +49,8 @@ const PartsList = ({
   const tableRef = useRef();
   const showRef = useRef();
 
+  const token = cookie.get('tianpeng-token');
+
   const [radio, setRadio] = useState('1');
 
   const [loading, setLoading] = useState();
