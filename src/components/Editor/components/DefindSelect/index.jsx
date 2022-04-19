@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Card, message, Space, Spin, Typography} from 'antd';
+import {Button, Card, Dropdown, Menu, message, Space, Spin, Typography} from 'antd';
 import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import {useRequest} from '@/util/Request';
@@ -8,61 +8,83 @@ import Defined from '@/components/Editor/components/Defined';
 
 const style = {
   margin: 8,
+  width: '22%',
   textAlign: 'center',
   padding: '8px 16px',
-  width: '100%',
 };
 
 
-const DefindSelect = ({
-  button,
-}) => {
-
-  const grid = (text) => {
-    return <Card.Grid style={style}>
-      <Typography.Text copyable={{
-        icon: [<div style={{color: '#000'}}>{text}</div>, <Space>已复制 <CheckOutlined /></Space>],
-        text: `\${{${text}}}`,
-        tooltips: false,
-      }} level={5} style={{margin: 0}} />
-    </Card.Grid>;
-  };
+const DefindSelect = () => {
 
   const definedRef = useRef();
 
-  const addVar = useRef();
-
   const {loading: listLoading, data, refresh} = useRequest({url: '/contractTemplete/list', method: 'POST'});
 
-  const {loading: addLoading, run} = useRequest({url: '/contractTemplete/add', method: 'POST'}, {
+  const {loading: deleteLoading, run: deleteRun} = useRequest({url: '/contractTemplete/delete', method: 'POST'}, {
     manual: true,
-    onSuccess: (res) => {
+    onSuccess: () => {
       refresh();
     }
   });
 
-  if (listLoading) {
-    return <Spin />;
-  }
+  const {loading: addLoading, run} = useRequest({url: '/contractTemplete/add', method: 'POST'}, {
+    manual: true,
+    onSuccess: () => {
+      refresh();
+      definedRef.current.close();
+    }
+  });
 
-  if (!data) {
-    return <></>;
-  }
+  const menu = (item) => {
+    return <Menu>
+      <Menu.Item key="update">
+        <Button type="link" style={{padding: 0, width: '100%'}} onClick={() => {
+          definedRef.current.open(item);
+        }}>修改</Button>
+      </Menu.Item>
+      <Menu.Item key="delete">
+        <Button type="link" style={{padding: 0, width: '100%'}} danger onClick={() => {
+          deleteRun({data: {contractTemplateId: item.contractTemplateId}});
+        }}>删除</Button>
+      </Menu.Item>
+    </Menu>;
+  };
 
-  return <div>
+  const grid = (item, idnex) => {
+    return <Dropdown key={idnex} overlay={menu(item)} placement="bottomLeft">
+      <Card.Grid style={style}>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <Typography.Text
+            copyable={{
+              icon: [<div style={{color: '#000'}}>{item.name}</div>, <Space>已复制 <CheckOutlined /></Space>],
+              text: `\${{${item.name}}}`,
+              tooltips: false,
+            }}
+            level={5}
+            style={{margin: 0, flexGrow: 1}}
+          />
+          {/*<DownOutlined onClick={() => {*/}
+
+          {/*}} />*/}
+        </div>
+      </Card.Grid>
+    </Dropdown>;
+  };
+
+  const addVar = useRef();
+
+  return <Spin spinning={listLoading || deleteLoading}>
     <ProCard
-      className="h2Card"
+      headerBordered
+      className="h3Card"
       title="合同约定条款变量"
       bodyStyle={{padding: 0}}
       extra={<Button onClick={() => {
-        definedRef.current.open(true);
+        definedRef.current.open({});
       }}><PlusOutlined />添加自定义变量</Button>}>
       {
-        data.map((item, index) => {
-          const checked = item.name === button;
-          return <div key={index} style={{width: '22%', display: 'inline-block', margin: 8}}>
-            {grid(item.name)}
-          </div>;
+        data && data.map((item, index) => {
+          return grid(item, index);
         })
       }
     </ProCard>
@@ -71,6 +93,8 @@ const DefindSelect = ({
       width={800}
       ref={definedRef}
       headTitle="添加自定义变量"
+      component={Defined}
+      compoentRef={addVar}
       footer={<Space>
         <Button
           loading={addLoading}
@@ -90,12 +114,8 @@ const DefindSelect = ({
           definedRef.current.close();
         }}>取消</Button>
       </Space>}
-    >
-      <Defined
-        ref={addVar}
-      />
-    </Modal>
-  </div>;
+    />
+  </Spin>;
 };
 
 export default DefindSelect;

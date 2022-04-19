@@ -95,7 +95,7 @@ const TemplateList = () => {
         }} width={100} />
       </Table>
       <Modal
-        width={1300}
+        width={1310}
         title="合同模板"
         compoentRef={compoentRef}
         component={TemplateEdit}

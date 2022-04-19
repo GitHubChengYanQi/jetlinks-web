@@ -109,6 +109,7 @@ export const SkuVar = (
   return <>
     <ProCard
       className="h2Card"
+      headerBordered
       title="基本变量"
       bodyStyle={{padding: 0}}
     >
@@ -122,6 +123,7 @@ export const SkuVar = (
     </ProCard>
     <ProCard
       className="h2Card"
+      headerBordered
       title="标的物变量"
       bodyStyle={{padding: 0}}
     >
@@ -162,7 +164,7 @@ export const SkuVar = (
             </div>;
           })
         }
-        <Button style={{marginLeft: 8}} onClick={() => {
+        <Button style={{margin: 8}} onClick={() => {
           skuTable.table.push({});
           setSkuTable({...skuTable});
         }}><PlusOutlined /></Button>
@@ -175,12 +177,14 @@ export const PayVar = (
   {
     setTable,
     setButton,
-    button,
   }
 ) => {
 
   const [payTable, setPayTable] = useSetState({
-    table: []
+    table: [{
+      label: '付款金额',
+      value: '付款金额',
+    }]
   });
 
   const disabled = (value, type) => {
@@ -219,14 +223,14 @@ export const PayVar = (
   return <>
     <ProCard
       className="h2Card"
+      headerBordered
       title="付款计划"
       bodyStyle={{padding: 0}}
-      extra={<Radio.Button value="payTable"><Space><PlusOutlined />编辑付款项目</Space></Radio.Button>}
     >
       <div>
         {
           payTable.table.map((item, index) => {
-            return <div key={index} style={{display: 'inline-block', ...style}}>
+            return <div key={index} style={{display: 'inline-block', ...buttonStyle}}>
               <Tooltip
                 placement="top"
                 color="#fff"
@@ -262,7 +266,7 @@ export const PayVar = (
             </div>;
           })
         }
-        <Button onClick={() => {
+        <Button style={{margin: 8}} onClick={() => {
           payTable.table.push({});
           setPayTable({...payTable});
         }}><PlusOutlined /></Button>
@@ -291,53 +295,54 @@ export const Contacts = (
   };
 
   return <div style={{height: '100%'}}>
+    <ProCard className="h2Card" title="合同模板变量">
+      <Space direction="vertical">
+        <ProCard className="h3Card" title="合同关联变量" headerBordered bodyStyle={{padding: 0}}>
+          {grid('采购合同编号')}
+          {grid('合同签订地点')}
+          {grid('合同签订时间')}
+          {grid('需方公司名称')}
+          {grid('供方公司名称')}
+          {grid('提取(交付)地点')}
+          {grid('接货人员')}
+          {grid('接货人电话')}
+        </ProCard>
+        <ProCard className="h3Card" title="需方基础变量" headerBordered bodyStyle={{padding: 0}}>
+          {grid('需方公司地址')}
+          {grid('需方公司电话')}
+          {grid('需方公司传真')}
+          {grid('需方法人代表')}
+          {grid('需方法人电话')}
+          {grid('需方委托代表')}
+          {grid('需方代表电话')}
+          {grid('需方银行账号')}
+          {grid('需方开户行号')}
+          {grid('需方邮政编码')}
+          {grid('需方公司电邮')}
+          {grid('需方开户行号')}
+          {grid('需方税号')}
+          {grid('交货地址')}
+          {grid('供货人及电话')}
+        </ProCard>
+        <ProCard className="h3Card" title="供方基础变量" headerBordered bodyStyle={{padding: 0}}>
+          {grid('供方公司地址')}
+          {grid('供方公司电话')}
+          {grid('供方公司传真')}
+          {grid('供方法人代表')}
+          {grid('供方法人电话')}
+          {grid('供方委托代表')}
+          {grid('供方代表电话')}
+          {grid('供方开户银行')}
+          {grid('供方开户行号')}
+          {grid('供方银行账号')}
+          {grid('供方邮政编码')}
+          {grid('供方公司电邮')}
+          {grid('供方税号')}
+        </ProCard>
 
-    <Space direction="vertical">
-      <ProCard className="h2Card" title="合同关联变量" bodyStyle={{padding: 0}}>
-        {grid('采购合同编号')}
-        {grid('合同签订地点')}
-        {grid('合同签订时间')}
-        {grid('需方公司名称')}
-        {grid('供方公司名称')}
-        {grid('提取(交付)地点')}
-        {grid('接货人员')}
-        {grid('接货人电话')}
-      </ProCard>
-      <ProCard className="h2Card" title="需方基础变量" bodyStyle={{padding: 0}}>
-        {grid('需方公司地址')}
-        {grid('需方公司电话')}
-        {grid('需方公司传真')}
-        {grid('需方法人代表')}
-        {grid('需方法人电话')}
-        {grid('需方委托代表')}
-        {grid('需方代表电话')}
-        {grid('需方银行账号')}
-        {grid('需方开户行号')}
-        {grid('需方邮政编码')}
-        {grid('需方公司电邮')}
-        {grid('需方开户行号')}
-        {grid('需方税号')}
-        {grid('交货地址')}
-        {grid('供货人及电话')}
-      </ProCard>
-      <ProCard className="h2Card" title="供方基础变量" bodyStyle={{padding: 0}}>
-        {grid('供方公司地址')}
-        {grid('供方公司电话')}
-        {grid('供方公司传真')}
-        {grid('供方法人代表')}
-        {grid('供方法人电话')}
-        {grid('供方委托代表')}
-        {grid('供方代表电话')}
-        {grid('供方开户银行')}
-        {grid('供方开户行号')}
-        {grid('供方银行账号')}
-        {grid('供方邮政编码')}
-        {grid('供方公司电邮')}
-        {grid('供方税号')}
-      </ProCard>
-
-      <DefindSelect setButton={setButton} button={button} grid={grid} />
-    </Space>
+        <DefindSelect setButton={setButton} button={button} grid={grid} />
+      </Space>
+    </ProCard>
   </div>;
 };
 

@@ -36,9 +36,6 @@ const Editor = ({
     }
   };
 
-  useEffect(() => {
-
-  }, []);
 
   return (
     <div>

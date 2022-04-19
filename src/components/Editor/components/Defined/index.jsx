@@ -1,12 +1,7 @@
 import React, {useImperativeHandle, useState} from 'react';
-import {Button, Checkbox, Col, Divider, Image, Input, Radio, Row, Space} from 'antd';
+import {Button, Checkbox, Col, Divider, Input, Radio, Row, Space} from 'antd';
 import {DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {useSetState} from 'ahooks';
-import number from '@/asseset/imgs/number.png';
-import date from '@/asseset/imgs/date.png';
-import img from '@/asseset/imgs/img.png';
-import editor from '@/asseset/imgs/editor.png';
-import {useRequest} from '@/util/Request';
 import Editor from '@/components/Editor';
 
 
@@ -16,25 +11,33 @@ const definedStyle = {
   textAlign: 'center'
 };
 
-const Defined = ({...props}, ref) => {
+const Defined = ({value}, ref) => {
 
-  const [values, setValues] = useSetState({array: []});
+  const [values, setValues] = useSetState({
+    array: value.detailResults && value.detailResults.map((item) => {
+      return {
+        value: item.value,
+        isDefault: !!item.isDefault
+      };
+    }) || []
+  });
 
-  const [type, setType] = useState('input');
+  const [type, setType] = useState(value.type || 'input');
 
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState(value.name);
 
-  const [showTitle, setShowTitle] = useState(false);
+  const [showTitle, setShowTitle] = useState(!!value.isHidden);
 
   const onChange = () => {
     return {
+      contractTemplateId: value.contractTemplateId,
       type,
       isHidden: showTitle ? 1 : 0,
       name: title,
       detailParams: values.array.map((item) => {
         return {
           value: item.value,
-          isDefault: item.defaultValue ? 1 : 0
+          isDefault: item.isDefault ? 1 : 0
         };
       })
     };
@@ -50,10 +53,6 @@ const Defined = ({...props}, ref) => {
   useImperativeHandle(ref, () => ({
     save: onChange
   }));
-
-  setTimeout(() => {
-    // setDefinedInput(onChange());
-  }, 0);
 
 
   const show = () => {
@@ -71,14 +70,14 @@ const Defined = ({...props}, ref) => {
                 </Col>
                 <Col span={5} style={{padding: 4}}>
                   <Space>
-                    <Checkbox checked={item.defaultValue} onChange={(value) => {
+                    <Checkbox checked={item.isDefault} onChange={(value) => {
                       const array = values.array.map((item) => {
                         return {
                           ...item,
-                          defaultValue: false,
+                          isDefault: false,
                         };
                       });
-                      array[index] = {...array[index], defaultValue: value.target.checked};
+                      array[index] = {...array[index], isDefault: value.target.checked};
                       setValues({array});
                     }}>
                       默认选项
@@ -96,7 +95,7 @@ const Defined = ({...props}, ref) => {
           }
           <Button
             onClick={() => {
-              values.array.push({defaultValue: values.array.length === 0});
+              values.array.push({isDefault: values.array.length === 0});
               setValues(values);
             }}
             type="link"
@@ -105,18 +104,28 @@ const Defined = ({...props}, ref) => {
           </Button>
         </>;
       case 'sku':
-        return <>
-          <Divider orientation="center">设置合同标的物</Divider>
-          <Editor change module="contacts" onChange={(value) => {
-            onValuesChange(0, {value,});
-          }} />
-        </>;
       case 'pay':
         return <>
-          <Divider orientation="center">设置付款计划</Divider>
-          <Editor change module="pay" onChange={(value) => {
-            onValuesChange(0, {value,});
-          }} />
+          {type === 'sku' && <div>
+            <Divider orientation="center">设置合同标的物</Divider>
+            <Editor
+              change
+              value={value.detailResults && value.detailResults[0].value}
+              module="contacts"
+              onChange={(value) => {
+                onValuesChange(0, {value,});
+              }} />
+          </div>}
+          {type === 'pay' && <div>
+            <Divider orientation="center">设置付款计划</Divider>
+            <Editor
+              change
+              module="pay"
+              value={value.detailResults && value.detailResults[0].value}
+              onChange={(value) => {
+                onValuesChange(0, {value,});
+              }} />
+          </div>}
         </>;
       default:
         break;
@@ -145,7 +154,7 @@ const Defined = ({...props}, ref) => {
         </Col>
         <Col span={5} style={{padding: 4}}>
           <Space>
-            <Checkbox onChange={(value) => {
+            <Checkbox checked={showTitle} onChange={(value) => {
               setShowTitle(value.target.checked);
             }}>显示标题</Checkbox>
           </Space>
