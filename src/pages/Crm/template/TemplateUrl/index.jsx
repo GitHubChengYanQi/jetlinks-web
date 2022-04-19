@@ -41,7 +41,7 @@ export const templateListSelect = {
 };
 
 export const templateGetLabel = {
-  url: '/template/getLabel',
+  url: '/contract/getLabel',
   method: 'GET',
   rowKey:'templateId'
 };

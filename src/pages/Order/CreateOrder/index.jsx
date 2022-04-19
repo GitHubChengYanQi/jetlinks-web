@@ -30,8 +30,7 @@ import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplat
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
-import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
-import {skuResults} from "@/pages/Erp/sku/skuUrl";
+import {skuResults} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -129,18 +128,18 @@ const CreateOrder = ({...props}) => {
 
   useEffect(() => {
     if (payPlan === 4) {
-      setPayPlan(null);
+      // setPayPlan(null);
       ref.current.open(true);
     }
   }, [payPlan]);
 
   if (!module) {
-    return <Empty/>;
+    return <Empty />;
   }
 
   return <div style={{padding: 16}}>
     <div style={{padding: '16px 0'}}>
-      <Breadcrumb title={module().title}/>
+      <Breadcrumb title={module().title} />
     </div>
 
     <Form
@@ -201,9 +200,9 @@ const CreateOrder = ({...props}) => {
             remark: value.remark,
           },
           contractParam: {
-            ...value.allField,
             templateId: value.templateId,
             coding: value.contractCoding,
+            labelResults:value.labelResults,
           }
         };
         setLoading(true);
@@ -579,48 +578,52 @@ const CreateOrder = ({...props}) => {
                       const onRemove = index => mutators.remove(index);
                       return <Row gutter={24} key={index}>
                         <Col span={8}>
-                          <Space>
-                            <FormItem
-                              label={`第${index + 1}批`}
-                              name={`paymentDetail.${index}.index`}
-                              component={SysField.Index}
-                            />
-                            {
-                              payPlan === 2 ?
-                                <FormItem
-                                  label="付款日期"
-                                  name={`paymentDetail.${index}.payTime`}
-                                  component={SysField.PayTime}
-                                />
-                                :
-                                <>
+                          <div style={{display: 'flex'}}>
+                            <MegaLayout labelWidth={labelWidth}>
+                              <FormItem
+                                label={`第${index + 1}批`}
+                                name={`paymentDetail.${index}.index`}
+                                component={SysField.Index}
+                              />
+                            </MegaLayout>
+                            <Space>
+                              {
+                                payPlan === 2 ?
                                   <FormItem
-                                    value={0}
-                                    name={`paymentDetail.${index}.payType`}
-                                    component={SysField.PayType}
+                                    label="付款日期"
+                                    name={`paymentDetail.${index}.payTime`}
+                                    component={SysField.PayTime}
                                   />
-                                  <FormItem
-                                    value={1}
-                                    name={`paymentDetail.${index}.dateNumber`}
-                                    component={SysField.dateNumber}
-                                  />
-                                  <FormItem
-                                    value={0}
-                                    name={`paymentDetail.${index}.dateWay`}
-                                    component={SysField.DateWay}
-                                  />
-                                </>
-                            }
-                          </Space>
+                                  :
+                                  <>
+                                    <FormItem
+                                      value={0}
+                                      name={`paymentDetail.${index}.payType`}
+                                      component={SysField.PayType}
+                                    />
+                                    <FormItem
+                                      value={1}
+                                      name={`paymentDetail.${index}.dateNumber`}
+                                      component={SysField.dateNumber}
+                                    />
+                                    <FormItem
+                                      value={0}
+                                      name={`paymentDetail.${index}.dateWay`}
+                                      component={SysField.DateWay}
+                                    />
+                                  </>
+                              }
+                            </Space>
+                          </div>
                         </Col>
-                        <Col span={4}>
+                        <Col span={5}>
                           <FormItem
                             label="付款比例"
                             name={`paymentDetail.${index}.percentum`}
                             component={SysField.Percentum}
                           />
                         </Col>
-                        <Col span={4}>
+                        <Col span={5}>
                           <FormItem
                             itemStyle={{margin: 0}}
                             label="付款金额"
@@ -632,7 +635,7 @@ const CreateOrder = ({...props}) => {
                           <Space align="start">
                             <FormItem
                               label="款项说明"
-                              placeholder="请输入付款的款项说明"
+                              placeholder="请输入款项说明"
                               rows={1}
                               name={`paymentDetail.${index}.remark`}
                               component={SysField.Remark}
@@ -641,7 +644,7 @@ const CreateOrder = ({...props}) => {
                               type="link"
                               style={{float: 'right'}}
                               disabled={state.value.length === 1}
-                              icon={<DeleteOutlined/>}
+                              icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
                               }}
@@ -654,7 +657,7 @@ const CreateOrder = ({...props}) => {
                     <Button
                       type="dashed"
                       style={{marginTop: 8, marginBottom: 16, marginLeft: labelWidth}}
-                      icon={<PlusOutlined/>}
+                      icon={<PlusOutlined />}
                       onClick={onAdd}>添加付款批次</Button>
                   </div>
                 );
@@ -688,7 +691,7 @@ const CreateOrder = ({...props}) => {
               <FormItem
                 label="交货地址"
                 name="adressId"
-                adressType='goods'
+                adressType="goods"
                 component={CustomerSysField.Adress}
               />
             </Col>
@@ -738,7 +741,7 @@ const CreateOrder = ({...props}) => {
                 <FormItem
                   visible={false}
                   label="合同模板中的其他字段"
-                  name="allField"
+                  name="labelResults"
                   component={SysField.AllField}
                 />
               </MegaLayout>
@@ -747,7 +750,7 @@ const CreateOrder = ({...props}) => {
         </MegaLayout>
       </ProCard>
 
-      <Divider/>
+      <Divider />
 
       <MegaLayout labelWidth={labelWidth}>
         <FormItem
@@ -772,7 +775,7 @@ const CreateOrder = ({...props}) => {
         setVisible(false);
       }}
     >
-      <CustomerEdit add/>
+      <CustomerEdit add />
     </Drawer>
 
     <Modal

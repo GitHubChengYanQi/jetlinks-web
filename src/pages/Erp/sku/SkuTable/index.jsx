@@ -229,7 +229,7 @@ const SkuTable = ({...props}, ref) => {
 
         <Column title="物料描述" key={5} render={(value, record) => {
           return (
-            <div style={{minWidth: 100}}>
+            <div style={{minWidth: 100,maxWidth:300}}>
               <Note value={<SkuResultSkuJsons describe skuResult={record}/>}/>
             </div>
           );

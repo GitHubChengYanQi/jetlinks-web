@@ -286,7 +286,7 @@ export const Contacts = (
       <Typography.Text
         copyable={{
           icon: [<div style={{color: '#000'}}>{text}</div>, <Space>已复制 <CheckOutlined /></Space>],
-          text: `\${{${text}}}`,
+          text: `\${${text}}`,
           tooltips: false,
         }}
         level={5}

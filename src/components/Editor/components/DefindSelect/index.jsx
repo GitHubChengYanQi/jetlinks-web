@@ -57,7 +57,7 @@ const DefindSelect = () => {
           <Typography.Text
             copyable={{
               icon: [<div style={{color: '#000'}}>{item.name}</div>, <Space>已复制 <CheckOutlined /></Space>],
-              text: `\${{${item.name}}}`,
+              text: `\${${item.name}}`,
               tooltips: false,
             }}
             level={5}
