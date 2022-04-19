@@ -79,7 +79,7 @@ const CheckSku = ({
           refAdd.current.open(false);
         }}>创建物料</Button>}
         SearchButton={<Space>
-          <Button type='primary' onClick={() => {
+          <Button htmlType='submit' type='primary' onClick={() => {
             tableRef.current.submit();
           }}><SearchOutlined />查询</Button>
         </Space>}

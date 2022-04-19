@@ -7,6 +7,7 @@ import {useRequest} from '@/util/Request';
 import Label from '@/components/Label';
 import Drawer from "@/components/Drawer";
 import Detail from "@/pages/ReSearch/Detail";
+import Note from '@/components/Note';
 
 
 const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
@@ -106,7 +107,7 @@ const PlanList = ({checkedSkus, setCheckedSkus, refresh}) => {
                 </Checkbox>
               </Space>}
               bodyStyle={{padding: 0}}
-              extra={<div><Label>物料描述：</Label> <SkuResultSkuJsons describe skuResult={skuResult}/></div>}
+              extra={<Space><Label>物料描述：</Label> <Note maxWidth={300}><SkuResultSkuJsons describe skuResult={skuResult}/></Note></Space>}
             >
               <List
                 bordered={false}

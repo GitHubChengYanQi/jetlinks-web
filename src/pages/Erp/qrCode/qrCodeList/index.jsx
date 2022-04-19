@@ -143,7 +143,7 @@ const QrCodeList = () => {
         rowKey="orCodeId"
         SearchButton={
           <Space>
-            <Button type="primary" onClick={() => {
+            <Button htmlType='submit' type="primary" onClick={() => {
               setExports(2);
               tableRef.current.formActions.setFieldValue('state', 1);
               tableRef.current.submit();

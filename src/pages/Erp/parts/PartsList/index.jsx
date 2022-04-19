@@ -26,7 +26,7 @@ import Drawer from '@/components/Drawer';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
-import cookie from "js-cookie";
+import cookie from 'js-cookie';
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -77,7 +77,7 @@ const PartsList = ({
 
   const action = () => {
     return (
-      <AddButton name='创建物料清单' onClick={() => {
+      <AddButton name="创建物料清单" onClick={() => {
         refAdd.current.open(false);
       }} />
     );
@@ -157,8 +157,8 @@ const PartsList = ({
           cardHeaderStyle={{display: value === false && 'none'}}
           listHeader={value}
           formActions={formActionsPublic}
-          headStyle={(spuId ||spuSkuId) && {display: 'none'}}
-          title={value !== false  && <Breadcrumb title="物料清单" />}
+          headStyle={(spuId || spuSkuId) && {display: 'none'}}
+          title={value !== false && <Breadcrumb title="物料清单" />}
           actions={action()}
           searchForm={searchForm}
           ref={tableRef}
@@ -203,6 +203,9 @@ const PartsList = ({
             }
           }}
         >
+          <Column title={<div style={{marginLeft:24}}>物料编码</div>} key={1} dataIndex="skuResult" render={(value) => {
+            return <div style={{minWidth: 100}}>{value && value.standard}</div>;
+          }} />
           <Column title="物料" key={1} dataIndex="skuResult" render={(value) => {
             return (<SkuResultSkuJsons skuResult={value} />);
           }} />
