@@ -9,6 +9,7 @@ import WindowOpenVar from '@/components/Editor/components/WindowOpenVar';
 import WindowOpenImg from '@/components/Editor/components/WindowOpenImg';
 import WindowOpenSku from '@/components/Editor/components/WindowOpenSku';
 import WindowOpenPosition from '@/components/Editor/components/WindowOpenPosition';
+import WindowOpenPay from '@/components/Editor/components/WindowOpenPay';
 
 const {Content} = Layout;
 
@@ -73,6 +74,8 @@ export default function BasicLayout({children}) {
       <WindowOpenPosition />
 
       <WindowOpenImg />
+
+      <WindowOpenPay />
     </>
   );
 }

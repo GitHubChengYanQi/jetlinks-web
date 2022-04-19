@@ -5,6 +5,7 @@ import {useRequest} from '@/util/Request';
 
 const FileUpload = ({
   value,
+  fileUpload,
   onChange = () => {
   },
   title,
@@ -15,7 +16,6 @@ const FileUpload = ({
 }) => {
 
   const [fileList, setFileList] = useState([]);
-
 
   const {loading, run: getUrl} = useRequest({
     url: '/sop/getImgUrls',
@@ -58,6 +58,16 @@ const FileUpload = ({
         oss.OSSAccessKeyId = res.data.OSSAccessKeyId;
         setOss({...oss});
       }
+    }
+  });
+
+  const {run: fileRun} = useRequest({
+    url: '/system/upload',
+    method: 'POST'
+  }, {
+    manual: true,
+    onSuccess: (res) => {
+      onChange(res.fileId);
     }
   });
 
@@ -118,15 +128,28 @@ const FileUpload = ({
           }
         }}
         beforeUpload={async (file) => {
-          if (!imageType || imageType.includes(file.name && file.name.split('.') && file.name.split('.')[file.name.split('.').length-1])) {
-            const data = await run(
-              {
-                params: {
-                  type: file.name
+          if (!imageType || imageType.includes(file.name && file.name.split('.') && file.name.split('.')[file.name.split('.').length - 1])) {
+            if (fileUpload) {
+              const formData = new FormData();
+              formData.append('file', file);
+              await fileRun(
+                {
+                  data: formData
                 }
-              }
-            );
-            setOss({...data});
+              );
+              setFileList([file]);
+              return Upload.LIST_IGNORE;
+            } else {
+              const data = await run(
+                {
+                  params: {
+                    type: file.name
+                  }
+                }
+              );
+              setOss({...data});
+            }
+
           } else {
             message.warn('请上传正确格式的文件！');
             return Upload.LIST_IGNORE;

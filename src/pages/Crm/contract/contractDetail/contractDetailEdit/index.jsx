@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {contractDetailDetail, contractDetailAdd, contractDetailEdit} from '../contractDetailUrl';
 import * as SysField from '../contractDetailField';

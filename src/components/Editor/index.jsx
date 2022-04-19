@@ -8,6 +8,7 @@ const Editor = ({
   onChange = () => {
   },
   module,
+  change,
 }, ref) => {
 
   const editorRef = useRef(null);
@@ -28,6 +29,8 @@ const Editor = ({
         return ['actionsPosition'];
       case 'contacts':
         return ['actions'];
+      case 'pay':
+        return ['pay'];
       default:
         return [];
     }
@@ -48,17 +51,17 @@ const Editor = ({
         initialValue={value}
         init={{
           language: 'zh_CN',
-          branding:false,
+          branding: false,
           height: '76vh',
           menubar: false,
           plugins: ['advlist', 'autolink', 'autolink'
             , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', 'editorPlugins'],
-          toolbar: ['undo redo', ...toobar(), 'formatselect','fontsizeselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'actionsImg', 'removeformat', 'help'].join(' | ')
+          toolbar: ['undo redo', ...toobar(), 'formatselect', 'fontsizeselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'actionsImg', 'removeformat', 'help'].join(' | ')
         }}
         onBlur={() => {
-          if (!module) {
+          if (!module || change) {
             onChange(editorRef.current.getContent());
           }
         }}

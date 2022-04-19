@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Modal} from 'antd';
-import {SkuVar} from '@/components/Editor/components/Module';
+import {PayVar, SkuVar} from '@/components/Editor/components/Module';
 
-const WindowOpenVar = () => {
+const WindowOpenPay = () => {
 
   const [visible, setVisible] = useState();
 
@@ -13,7 +13,7 @@ const WindowOpenVar = () => {
   };
 
   useEffect(() => {
-    window.OpenVar = (editorRef) => {
+    window.OpenPay = (editorRef) => {
       setEditorRef(editorRef);
       setVisible(true);
     };
@@ -49,7 +49,7 @@ const WindowOpenVar = () => {
     if (button){
       insertContent(`$\{{${button}}}`);
     }else {
-      content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
+      content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="pay">${valuetds}</tr></table>`;
       insertContent(content);
     }
 
@@ -69,12 +69,12 @@ const WindowOpenVar = () => {
         refresh();
       }}>
       <div style={{maxHeight: 'calc(100vh - 300px)', overflowY: 'auto', overflowX: 'hidden'}}>
-        <SkuVar setButton={setButton} button={button} setTable={setTable} />
+        <PayVar setButton={setButton} setTable={setTable} />
       </div>
     </Modal>
   </>;
 
 };
 
-export default WindowOpenVar;
+export default WindowOpenPay;
 

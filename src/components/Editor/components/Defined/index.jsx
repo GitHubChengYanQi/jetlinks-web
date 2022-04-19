@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useImperativeHandle, useState} from 'react';
 import {Button, Checkbox, Col, Divider, Image, Input, Radio, Row, Space} from 'antd';
 import {DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {useSetState} from 'ahooks';
@@ -6,6 +6,8 @@ import number from '@/asseset/imgs/number.png';
 import date from '@/asseset/imgs/date.png';
 import img from '@/asseset/imgs/img.png';
 import editor from '@/asseset/imgs/editor.png';
+import {useRequest} from '@/util/Request';
+import Editor from '@/components/Editor';
 
 
 const definedStyle = {
@@ -14,10 +16,7 @@ const definedStyle = {
   textAlign: 'center'
 };
 
-const Defined = ({
-  setDefinedInput = () => {
-  },
-}) => {
+const Defined = ({...props}, ref) => {
 
   const [values, setValues] = useSetState({array: []});
 
@@ -28,28 +27,19 @@ const Defined = ({
   const [showTitle, setShowTitle] = useState(false);
 
   const onChange = () => {
-    const array = values.array.filter((item) => {
-      return item.defaultValue;
-    });
-    const defaultValue = array && array[0] && array[0].value;
-    const inputTitle = showTitle ? title : '';
-    switch (type) {
-      case 'input':
-        return `${inputTitle} <input type="text" value='${defaultValue || ''}' placeholder='${values.array.map((item) => {
-          return item.value;
-        }).toString()}' data-title=${title || '文本框'} />`;
-      case 'number':
-        return `${inputTitle} <input type="number" data-title=${title || '数字框'} />`;
-      case 'date':
-        return `${inputTitle} <input type="date" data-title=${title || '时间框'} />`;
-      case 'img':
-        return `${inputTitle} <input type="file" data-title=${title || '图片框'} />`;
-      case 'editor':
-        return `${inputTitle} <textarea data-title=${title || '编辑器'} ></textarea>`;
-      default:
-        break;
-    }
+    return {
+      type,
+      isHidden: showTitle ? 1 : 0,
+      name: title,
+      detailParams: values.array.map((item) => {
+        return {
+          value: item.value,
+          isDefault: item.defaultValue ? 1 : 0
+        };
+      })
+    };
   };
+
 
   const onValuesChange = (index, data) => {
     const array = values.array;
@@ -57,8 +47,12 @@ const Defined = ({
     setValues({array});
   };
 
+  useImperativeHandle(ref, () => ({
+    save: onChange
+  }));
+
   setTimeout(() => {
-    setDefinedInput(onChange());
+    // setDefinedInput(onChange());
   }, 0);
 
 
@@ -110,33 +104,19 @@ const Defined = ({
             增加值
           </Button>
         </>;
-      case 'number':
+      case 'sku':
         return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={number} />
-          </div>
+          <Divider orientation="center">设置合同标的物</Divider>
+          <Editor change module="contacts" onChange={(value) => {
+            onValuesChange(0, {value,});
+          }} />
         </>;
-      case 'date':
+      case 'pay':
         return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={date} />
-          </div>
-        </>;
-      case 'img':
-        return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={img} />
-          </div>
-        </>;
-      case 'editor':
-        return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={editor} />
-          </div>
+          <Divider orientation="center">设置付款计划</Divider>
+          <Editor change module="pay" onChange={(value) => {
+            onValuesChange(0, {value,});
+          }} />
         </>;
       default:
         break;
@@ -144,7 +124,7 @@ const Defined = ({
   };
 
   return <>
-    <div>
+    <div style={{padding: 16}}>
       <Radio.Group value={type} style={{width: '100%'}} onChange={(value) => {
         setType(value.target.value);
       }}>
@@ -153,6 +133,8 @@ const Defined = ({
         <Radio.Button value="date" style={definedStyle}>时间框</Radio.Button>
         <Radio.Button value="img" style={definedStyle}>图片框</Radio.Button>
         <Radio.Button value="editor" style={definedStyle}>编辑器</Radio.Button>
+        <Radio.Button value="sku" style={definedStyle}>合同标的物</Radio.Button>
+        <Radio.Button value="pay" style={definedStyle}>付款计划</Radio.Button>
       </Radio.Group>
       <Divider orientation="center">设置标题</Divider>
       <Row gutter={24}>
@@ -174,4 +156,4 @@ const Defined = ({
   </>;
 };
 
-export default Defined;
+export default React.forwardRef(Defined);
