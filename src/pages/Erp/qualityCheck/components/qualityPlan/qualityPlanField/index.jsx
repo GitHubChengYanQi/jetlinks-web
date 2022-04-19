@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Input,  Select as AntdSelect, Checkbox, Radio, Space, Popover} from 'antd';
+import {Input, Select as AntdSelect, Checkbox, Radio, Space, Popover} from 'antd';
 import Select from '@/components/Select';
 import InputNumber from '@/components/InputNumber';
 import Coding from '@/pages/Erp/tool/components/Coding';
@@ -14,7 +14,7 @@ import FileUpload from '@/pages/Crm/data/components/FileUpload';
 import {qualityCheckClassificationListSelect} from '@/pages/Erp/qualityCheck/qualityCheckUrl';
 import {useRequest} from '@/util/Request';
 import {qualityCheckListSelect} from '../qualityPlanUrl';
-import { unitListSelect} from '@/pages/Erp/spu/spuUrl';
+import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 
 
 export const Codings = (props) => {
@@ -78,12 +78,20 @@ export const TestingType = (props) => {
   </Radio.Group>);
 };
 
-
-export const StandardValue = (props) => {
-  const {type, typeClass, active, ...other} = props;
+export const Type = ({value, onChange}) => {
 
   useEffect(() => {
-    if (active && other.value) {
+    onChange(value);
+  }, [value]);
+
+  return <></>;
+};
+
+export const StandardValue = (props) => {
+  const {type, typeClass, isActive, ...other} = props;
+
+  useEffect(() => {
+    if (isActive && other.value) {
       other.onChange(null);
     }
   }, [type]);
@@ -93,16 +101,29 @@ export const StandardValue = (props) => {
   const types = (bai) => {
     if (typeClass === 6) {
       return <>
-        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && `${other.value}`.split(',')[0]} min={0} max={bai && 100} onChange={(val) => {
-          other.onChange(`${val},${other.value ? other.value.split(',')[1] : ''}`);
-        }} />{bai && '  %'}
+        <InputNumber
+          style={{width: bai ? 71 : 88}}
+          value={other.value && `${other.value}`.split(',')[0]}
+          min={0}
+          max={bai && 100}
+          onChange={(val) => {
+            other.onChange(`${val},${other.value ? other.value.split(',')[1] : ''}`);
+          }} />{bai && '  %'}
         &nbsp;——&nbsp;
-        <InputNumber style={{width: bai ? 71 : 88}} value={other.value && `${other.value}`.split(',')[1]} max={bai && 100} onChange={(val) => {
-          other.onChange(`${other.value ? other.value.split(',')[0] : ''},${val}`);
-        }} />{bai && '  %'}
+        <InputNumber
+          style={{width: bai ? 71 : 88}}
+          value={other.value && `${other.value}`.split(',')[1]}
+          max={bai && 100}
+          onChange={(val) => {
+            other.onChange(`${other.value ? other.value.split(',')[0] : ''},${val}`);
+          }} />{bai && '  %'}
       </>;
     } else {
-      return <><InputNumber style={{width: bai ? 186 : 200}} min={0} max={bai && 100} placeholder={placeholder} {...other} />{bai && '  %'}</> ;
+      return <><InputNumber
+        style={{width: bai ? 186 : 200}}
+        min={0}
+        max={bai && 100}
+        placeholder={placeholder} {...other} />{bai && '  %'}</>;
     }
   };
 
@@ -232,5 +253,5 @@ export const Sort = (props) => {
 };
 
 export const UnitId = (props) => {
-  return <Select placeholder='单位' api={unitListSelect} {...props} />;
+  return <Select placeholder="单位" api={unitListSelect} {...props} />;
 };
