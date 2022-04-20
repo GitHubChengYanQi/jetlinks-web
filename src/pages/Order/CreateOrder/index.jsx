@@ -759,6 +759,7 @@ const CreateOrder = ({...props}) => {
     </Form>
 
     <Drawer
+      destroyOnClose
       push={false}
       title="添加供应商"
       supply={1}
