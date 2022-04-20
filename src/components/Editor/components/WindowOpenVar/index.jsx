@@ -41,14 +41,14 @@ const WindowOpenVar = () => {
     let valuetds = '';
     table.map((item) => {
       if (item.value) {
-        valuetds += `<td>$\{{${item.value}}}</td>`;
+        valuetds += `<td>$\{${item.value}}</td>`;
       }
       return null;
     });
 
-    if (button){
-      insertContent(`$\{{${button}}}`);
-    }else {
+    if (button) {
+      insertContent(`$\{${button}}`);
+    } else {
       content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
       insertContent(content);
     }

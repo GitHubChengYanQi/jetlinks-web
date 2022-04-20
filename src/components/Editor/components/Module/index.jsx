@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Card, Radio, Select, Space, Tooltip, Typography} from 'antd';
 import {useBoolean, useSetState} from 'ahooks';
 import {CheckOutlined, DeleteOutlined, PlusOutlined} from '@ant-design/icons';
@@ -218,6 +218,13 @@ export const PayVar = (
       disabled: disabled('付款日期', 'pay'),
     },
   ];
+
+  useEffect(()=>{
+    setTable([{
+      label: '付款金额',
+      value: '付款金额',
+    }]);
+  },[]);
 
 
   return <>

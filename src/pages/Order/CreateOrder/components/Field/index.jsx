@@ -330,9 +330,14 @@ export const AllField = ({value: defaultValue = {}, onChange, array}) => {
 
   useEffect(() => {
     if (array && Array.isArray(array)) {
-      const newArray = array.filter(item => item.type !== 'sku' && item.type !== 'pay');
-      const newValues = newArray.map((item) => {
+      const newValues = array.map((item) => {
         const detail = item.detail || [];
+        if (item.type === 'sku' || item.type === 'pay') {
+          return {
+            ...item,
+            value: detail[0] && detail[0].name
+          };
+        }
         const defaultVal = detail.filter(detailItem => detailItem.isDefault === 1);
         return {
           ...item,
@@ -430,6 +435,9 @@ export const AllField = ({value: defaultValue = {}, onChange, array}) => {
       bordered
       dataSource={values || []}
       renderItem={(item, index) => {
+        if (item.type === 'sku' || item.type === 'pay') {
+          return null;
+        }
         return <List.Item key={index}>
           <Space key={index}>
             <div>
