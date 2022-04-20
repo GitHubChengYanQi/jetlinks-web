@@ -202,7 +202,7 @@ const CreateOrder = ({...props}) => {
           contractParam: {
             templateId: value.templateId,
             coding: value.contractCoding,
-            labelResults:value.labelResults,
+            labelResults: value.labelResults,
           }
         };
         setLoading(true);
@@ -212,8 +212,8 @@ const CreateOrder = ({...props}) => {
       effects={({setFieldState, getFieldState}) => {
         EffectsAction(setFieldState, getFieldState);
 
-        FormEffectHooks.onFieldValueChange$('payPlan').subscribe(async ({value}) => {
-          if (value) {
+        FormEffectHooks.onFieldValueChange$('payPlan').subscribe(async ({value, active}) => {
+          if (value && active) {
             setPayPlan(value);
             switch (value) {
               case 2:
