@@ -5,10 +5,9 @@
  * @Date 2021-07-23 10:06:12
  */
 
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Col, Divider, message, Row} from 'antd';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
+import {Button, message} from 'antd';
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
-import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import Title from '@/components/Title';
@@ -29,9 +28,8 @@ const ApiConfig = {
 const formActionsPublic = createFormActions();
 const ContactsEdit = ({...props}, ref) => {
 
-  const {customerId, ...other} = props;
+  const {customerId, value,...other} = props;
   const formRef = useRef(null);
-
 
   useImperativeHandle(ref, () => ({
     submit: formRef.current.submit,
@@ -43,10 +41,15 @@ const ContactsEdit = ({...props}, ref) => {
       <div style={{padding: 16}}>
         <Form
           {...other}
+          value={value ? value.contactsId : false}
           NoButton={false}
           formActions={formActionsPublic}
           ref={formRef}
           api={ApiConfig}
+          initialValues={{
+            positionName:value && value.companyRoleResult && value.companyRoleResult.position,
+            deptName:value && value.deptResult && value.deptResult.fullName,
+          }}
           fieldKey="contactsId"
           onSubmit={(value) => {
 
@@ -96,16 +99,22 @@ const ContactsEdit = ({...props}, ref) => {
                       const onRemove = index => mutators.remove(index);
                       return (
                         <div key={index}>
-                          <div style={{display:'inline-block',width:'90%'}}>
+                          <div style={{display:'inline-block',width:'45%'}}>
                             <FormItem
-                              label="电话号码"
+                              label="手机号码"
                               name={`phoneParams.${index}.phoneNumber`}
                               component={SysField.PhoneNumber}
                               rules={[{
-                                required: true,
                                 message: '请输入正确的手机号码!',
                                 pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
                               }]}
+                            />
+                          </div>
+                          <div style={{display:'inline-block',width:'45%'}}>
+                            <FormItem
+                              label="固话号码"
+                              name={`phoneParams.${index}.telephone`}
+                              component={SysField.PhoneNumber}
                             />
                           </div>
                           <Button

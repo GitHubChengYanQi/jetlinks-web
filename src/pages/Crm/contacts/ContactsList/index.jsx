@@ -233,6 +233,26 @@ const ContactsTable = (props) => {
           );
 
         }} />
+        <Column key={5} title="固定电话" width={300} dataIndex="phone" render={(value, record) => {
+          return (
+            <>
+              {
+                record.phoneParams && record.phoneParams.length > 0 ? record.phoneParams.map((value, index) => {
+                  return (
+                    <Tag
+                      key={index}
+                      color="blue"
+                      style={{marginRight: 3}}
+                    >
+                      {value.telephone}
+                    </Tag>
+                  );
+                }) : null
+              }
+            </>
+          );
+
+        }} />
         <Column />
         <Column key={6} title="操作" fixed="right" width={customer ? 260 : 150} align="right" render={(value, record) => {
           const isDefaultContacts = customer && record.contactsId === customer.defaultContacts;
@@ -242,7 +262,7 @@ const ContactsTable = (props) => {
                 defaultContacts(record.contactsName, record.contactsId);
               }}>{isDefaultContacts ? '已设为默认联系人' : '设为默认联系人'}</Button>}
               <EditButton onClick={() => {
-                ref.current.open(record.contactsId);
+                ref.current.open(record);
               }} />
               <Button size="small" type="link" danger onClick={() => {
                 confirmOutStock(record);
@@ -252,7 +272,7 @@ const ContactsTable = (props) => {
         }} />
       </Table>
       <Modal
-        width={500}
+        width={800}
         title="联系人"
         component={ContactsEdit}
         customerId={customer && customer.customerId}
