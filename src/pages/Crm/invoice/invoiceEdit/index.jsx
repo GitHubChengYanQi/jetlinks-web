@@ -41,12 +41,12 @@ const InvoiceEdit = ({...props}, ref) => {
         }}
       >
         <FormItem label="开户银行" name="bankId" value={bankId} component={SysField.Bank} required />
-        <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} />
         <FormItem label="开户账号" name="bankAccount" component={SysField.BankAccount} rules={[{
           required: true,
           message: '请输入数字!',
           pattern: '^\\d+$'
         }]} />
+        <FormItem label="开户行号" name="bankNo" component={SysField.BankAccount} />
       </Form>
     </div>
   );
