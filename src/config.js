@@ -26,8 +26,8 @@ export default {
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
-    wxBind:'http://wx.hh.gf2025.com',
-    wxCp:'http://wx.hh.gf2025.com/cp/',
+    wxBind:'https://wx.zz2025.com/',
+    wxCp:'https://wx.zz2025.com/cp/#/',
   },
   cheng: {
     logLevel: 'info',
@@ -43,7 +43,7 @@ export default {
   ren: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://172.26.187.178/',
+    baseURI: 'http://192.168.1.113/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'
@@ -65,7 +65,7 @@ export default {
   song: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://172.26.187.78/',
+    baseURI: 'http://192.168.1.230/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'

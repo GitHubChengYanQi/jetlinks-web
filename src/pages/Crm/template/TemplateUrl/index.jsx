@@ -11,6 +11,11 @@ export const templateAdd = {
   rowKey:'templateId'
 };
 
+export const excelGetTables = {
+  url: '/contract/getWordTables',
+  method: 'GET',
+};
+
 export const templateEdit = {
   url: '/template/edit',
   method: 'POST',
@@ -41,7 +46,7 @@ export const templateListSelect = {
 };
 
 export const templateGetLabel = {
-  url: '/template/getLabel',
+  url: '/contract/getLabel',
   method: 'GET',
   rowKey:'templateId'
 };
