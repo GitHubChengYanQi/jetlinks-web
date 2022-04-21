@@ -1,14 +1,13 @@
 import React, {useRef, useState} from 'react';
-import * as SysField from '@/pages/Erp/instock/InstockField';
 import {createFormActions} from '@formily/antd';
-import {Button, Col, Descriptions, message, Modal, Row, Space, Table as AntTable} from 'antd';
-import Icon from '@/components/Icon';
+import { Col, Descriptions, message, Modal, Row,  Table as AntTable} from 'antd';
+import ProCard from '@ant-design/pro-card';
+import * as SysField from '@/pages/Erp/instock/InstockField';
 import Table from '@/components/Table';
 import Breadcrumb from '@/components/Breadcrumb';
 import {instock, instockEdit} from '@/pages/Erp/instock/InstockUrl';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
-import ProCard from '@ant-design/pro-card';
 import InstockListTable from '@/pages/Erp/instock/InstockList/components/InstockListTable';
 import Cascader from '@/components/Cascader';
 import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';

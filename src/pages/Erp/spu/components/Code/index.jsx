@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Image, Modal, Space} from 'antd';
 import jrQrcode from 'jr-qrcode';
-import {config} from 'ice';
 import {QrcodeOutlined} from '@ant-design/icons';
 import AcBarcode from 'ac-barcode';
+import {config} from 'ice';
 import {useRequest} from '@/util/Request';
 import store from '@/store';
+
+const {wxCp} = config;
 
 const Code = ({source, id, style, value, image,codeWidth}) => {
 

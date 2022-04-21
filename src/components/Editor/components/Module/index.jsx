@@ -55,11 +55,11 @@ export const Contacts = () => {
             {grid('需方法人电话')}
             {grid('需方委托代表')}
             {grid('需方代表电话')}
+            {grid('需方开户银行')}
             {grid('需方银行账号')}
             {grid('需方开户行号')}
             {grid('需方邮政编码')}
             {grid('需方公司电邮')}
-            {grid('需方开户行号')}
             {grid('需方税号')}
             {grid('交货地址')}
             {grid('供货人及电话')}
@@ -84,7 +84,10 @@ export const Contacts = () => {
         </ProCard>
         <ProCard className="h3Card" title="合同标的物变量" headerBordered bodyStyle={{padding: 0}}>
           <Space wrap>
+            {grid('单价')}
             {grid('总价')}
+            {grid('含税单价')}
+            {grid('含税总价')}
             {grid('合计金额大写')}
             {grid('合计金额小写')}
             {grid('序号')}
@@ -94,7 +97,7 @@ export const Contacts = () => {
             {grid('品牌厂家')}
             {grid('单位')}
             {grid('数量')}
-            {grid('单价')}
+            {grid('合计数量')}
             {grid('交货日期')}
             {grid('产品备注')}
             {grid('发票类型')}
