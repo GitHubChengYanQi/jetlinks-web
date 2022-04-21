@@ -142,8 +142,6 @@ const Defined = ({value}, ref) => {
         <Radio.Button value="date" style={definedStyle}>时间框</Radio.Button>
         <Radio.Button value="img" style={definedStyle}>图片框</Radio.Button>
         <Radio.Button value="editor" style={definedStyle}>编辑器</Radio.Button>
-        <Radio.Button value="sku" style={definedStyle}>合同标的物</Radio.Button>
-        <Radio.Button value="pay" style={definedStyle}>付款计划</Radio.Button>
       </Radio.Group>
       <Divider orientation="center">设置标题</Divider>
       <Row gutter={24}>

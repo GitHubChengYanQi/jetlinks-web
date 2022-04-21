@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {Button, Card, Dropdown, Menu, message, Space, Spin, Typography} from 'antd';
 import {CheckOutlined, PlusOutlined} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
@@ -6,15 +6,7 @@ import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import Defined from '@/components/Editor/components/Defined';
 
-const style = {
-  margin: 8,
-  width: '22%',
-  textAlign: 'center',
-  padding: '8px 16px',
-};
-
-
-const DefindSelect = () => {
+const DefindSelect = ({style,buttonStyle}) => {
 
   const definedRef = useRef();
 
@@ -56,16 +48,13 @@ const DefindSelect = () => {
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Typography.Text
             copyable={{
-              icon: [<div style={{color: '#000'}}>{item.name}</div>, <Space>已复制 <CheckOutlined /></Space>],
+              icon: [<div style={{...buttonStyle,color:'#000'}}>{item.name}</div>, <div style={buttonStyle}><Space>已复制 <CheckOutlined /></Space></div>],
               text: `\${${item.name}}`,
               tooltips: false,
             }}
             level={5}
             style={{margin: 0, flexGrow: 1}}
           />
-          {/*<DownOutlined onClick={() => {*/}
-
-          {/*}} />*/}
         </div>
       </Card.Grid>
     </Dropdown>;
@@ -82,11 +71,13 @@ const DefindSelect = () => {
       extra={<Button onClick={() => {
         definedRef.current.open({});
       }}><PlusOutlined />添加自定义变量</Button>}>
-      {
-        data && data.map((item, index) => {
-          return grid(item, index);
-        })
-      }
+      <Space wrap>
+        {
+          data && data.map((item, index) => {
+            return grid(item, index);
+          })
+        }
+      </Space>
     </ProCard>
 
     <Modal

@@ -6,7 +6,19 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Input, Radio, Spin, Select as AntSelect, Button, Space, message, List, Table, AutoComplete} from 'antd';
+import {
+  Input,
+  Radio,
+  Spin,
+  Select as AntSelect,
+  Button,
+  Space,
+  message,
+  List,
+  Table,
+  AutoComplete,
+  Descriptions
+} from 'antd';
 import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
@@ -324,7 +336,7 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({value: defaultValue = {}, onChange, array}) => {
+export const AllField = ({onChange, array}) => {
 
   const [values, setValues] = useState([]);
 
@@ -372,6 +384,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array}) => {
     switch (item.type) {
       case 'input':
         return <AutoComplete
+          style={{width: '30vw'}}
           defaultValue={defaultVal[0] && defaultVal[0].name}
           onChange={(value) => {
             valuesChange(item.name, value);
@@ -391,7 +404,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array}) => {
         return <div>
           <InputNumber
             placeholder="输入数值"
-            style={{width: 200, margin: '0 10px'}}
+            style={{width: '30vw', margin: '0 10px'}}
             onChange={(value) => {
               valuesChange(item.name, value);
             }}
@@ -402,7 +415,7 @@ export const AllField = ({value: defaultValue = {}, onChange, array}) => {
           <DatePicker
             showTime
             placeholder="输入时间"
-            style={{width: 200, margin: '0 10px'}}
+            style={{width: '30vw', margin: '0 10px'}}
             onChange={(value) => {
               valuesChange(item.name, value);
             }}
@@ -430,24 +443,18 @@ export const AllField = ({value: defaultValue = {}, onChange, array}) => {
   }
 
   return (<div>
-    <List
-      size="large"
-      bordered
-      dataSource={values || []}
-      renderItem={(item, index) => {
-        if (item.type === 'sku' || item.type === 'pay') {
-          return null;
-        }
-        return <List.Item key={index}>
-          <Space key={index}>
-            <div>
-              {item.name}
-            </div>
+    <Descriptions style={{width:'85vw'}} bordered column={2} title='合同模板中的其他字段' >
+      {
+        values.map((item, index) => {
+          if (item.type === 'sku' || item.type === 'pay') {
+            return null;
+          }
+          return <Descriptions.Item key={index} label={item.name}>
             {replaceDom(item, index)}
-          </Space>
-        </List.Item>;
-      }}
-    />
+          </Descriptions.Item>;
+        })
+      }
+    </Descriptions>
   </div>);
 };
 

@@ -27,10 +27,6 @@ const Editor = ({
         return ['actionsSku'];
       case 'POSITIONS':
         return ['actionsPosition'];
-      case 'contacts':
-        return ['actions'];
-      case 'pay':
-        return ['pay'];
       default:
         return [];
     }

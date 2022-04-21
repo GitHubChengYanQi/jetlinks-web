@@ -740,7 +740,7 @@ const CreateOrder = ({...props}) => {
               <MegaLayout labelWidth={200} labelAlign="top">
                 <FormItem
                   visible={false}
-                  label="合同模板中的其他字段"
+                  // label="合同模板中的其他字段"
                   name="labelResults"
                   component={SysField.AllField}
                 />
