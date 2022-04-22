@@ -19,7 +19,7 @@ const CustomerSelect = (props) => {
 
   const [name, setName] = useState();
 
-  const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST',data:{...dataParams}}, {
+  const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST',data:{...dataParams,supply}}, {
     debounceInterval: 300,
   });
 

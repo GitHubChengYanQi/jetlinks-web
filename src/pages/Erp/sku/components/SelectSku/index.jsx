@@ -4,17 +4,17 @@ import {useRequest} from '@/util/Request';
 import {skuDetail, skuList} from '@/pages/Erp/sku/skuUrl';
 import Modal from '@/components/Modal';
 import SkuEdit from '@/pages/Erp/sku/skuEdit';
+import Note from '@/components/Note';
 
 
 const SelectSku = (
   {
+    supply,
     value,
     onChange,
     width,
     dropdownMatchSelectWidth,
     placeholder,
-    getSkuDetail = () => {
-    },
     onSpuId = () => {
     },
     params,
@@ -22,6 +22,7 @@ const SelectSku = (
     noAdd,
     spuClassId,
     ids,
+    style,
   }) => {
 
   const formRef = useRef();
@@ -29,7 +30,7 @@ const SelectSku = (
 
   const [change, setChange] = useState();
 
-  const [open,setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const [addLoading, setAddLoading] = useState();
 
@@ -56,6 +57,7 @@ const SelectSku = (
         spu: item.spuResult,
         standard: item.standard,
         type: 'sku',
+        supply: item.inSupply,
       };
 
       if (spus.map(item => item.value).includes(item.spuId)) {
@@ -90,15 +92,14 @@ const SelectSku = (
   const getSkuList = (data) => {
     run({
       data: {
-        skuIds: ids, spuClass: spuClassId, ...data
+        skuIds: ids, spuClass: spuClassId, ...data, ...params
       }
     });
   };
 
   const {run: detail} = useRequest(skuDetail, {
     manual: true, onSuccess: (res) => {
-      onChange(res.skuId);
-      getSkuDetail(res);
+      onChange(res.skuId, res);
       setChange(`${skuLabel(res)}standard:${res.standard}`);
     }
   });
@@ -124,7 +125,7 @@ const SelectSku = (
 
   return (<>
     <Select
-      style={{width: width || 200}}
+      style={{width: width || 200, ...style}}
       placeholder={placeholder || '搜索物料'}
       showSearch
       open={open}
@@ -134,7 +135,7 @@ const SelectSku = (
       }}
       onDropdownVisibleChange={setOpen}
       value={value && change}
-      notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin/></div>}
+      notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
       dropdownMatchSelectWidth={dropdownMatchSelectWidth || 400}
       onSearch={(value) => {
         getSkuList({skuName: value,});
@@ -155,7 +156,7 @@ const SelectSku = (
         }
 
       }}>
-      {!noAdd && <Select.Option
+      {!noAdd && !loading && <Select.Option
         key="add"
         title="新增物料"
         value="add"
@@ -166,19 +167,32 @@ const SelectSku = (
       </Select.Option>}
       {options && options.map((items) => {
         return (
-          <Select.OptGroup key={items.value} label={<Button type='text' style={{padding: 0}} onClick={() => {
+          <Select.OptGroup key={items.value} label={<Button type="text" style={{padding: 0}} onClick={() => {
             onSpuId(items.value);
             setOpen(false);
           }}>{items.label}</Button>}>
             {items.options.map((item) => {
               return <Select.Option
                 key={item.value}
-                style={{color:'rgb(113 111 111)'}}
+                style={{color: 'rgb(113 111 111)'}}
                 disabled={item.disabled}
                 title={item.label}
                 standard={item.standard}
                 value={`${item.label}standard:${item.standard}`}>
-                {item.label}
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  <div style={{flexGrow: 1, maxWidth: '85%'}}>
+                    <Note>
+                      {item.label}
+                    </Note>
+                  </div>
+                  {supply && params && params.customerId && <div style={{textAlign: 'right', width: 100}}>
+                    <Button
+                      type="link"
+                      danger={!item.supply}
+                      style={{padding: 0}}>{item.supply ? '供应物料' : '非供应物料'}</Button>
+                  </div>}
+                </div>
+
               </Select.Option>;
             })}
           </Select.OptGroup>
@@ -205,7 +219,7 @@ const SelectSku = (
             formRef.current.nextAdd(false);
           }}
         >完成</Button>
-      </>}/>
+      </>} />
 
   </>);
 };
