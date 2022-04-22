@@ -3,6 +3,7 @@ import {Button, Card, Descriptions, Space, Tabs} from 'antd';
 import {config, useParams} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import parse from 'html-react-parser';
+import cookie from 'js-cookie';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -11,7 +12,6 @@ import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
 import OrderDetailTable from '@/pages/Crm/contract/components/OrderDetailTable';
 import PayTable from '@/pages/Crm/contract/components/PayTable';
 import {orderDetail} from '@/pages/Erp/order/OrderUrl';
-import cookie from 'js-cookie';
 import Empty from '@/components/Empty';
 
 const {TabPane} = Tabs;

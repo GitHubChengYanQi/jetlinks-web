@@ -16,7 +16,6 @@ const AddSkuTable = ({
   value,
   module,
   currency,
-  addSkuLoading,
   onAddSku = () => {
   }
 }) => {
@@ -29,12 +28,7 @@ const AddSkuTable = ({
 
   const {data: unitData} = useRequest(unitListSelect);
 
-  const dataSources = addSkuLoading ? [...value.map((item, index) => {
-    return {
-      ...item,
-      index
-    };
-  }), {index: value.length}] : value.map((item, index) => {
+  const dataSources = value.map((item, index) => {
     return {
       ...item,
       index
@@ -251,6 +245,7 @@ const AddSkuTable = ({
         onCell={sharedOnCell}
         render={(value, record, index) => {
           return <AntSelect
+            style={{width:100}}
             placeholder="请选择票据类型"
             value={value}
             options={[{label: '普票', value: 0}, {label: '专票', value: 1}]}
@@ -279,6 +274,7 @@ const AddSkuTable = ({
         onCell={sharedOnCell}
         render={(value, record, index) => {
           return <AntSelect
+            style={{width:100}}
             placeholder="请选择税率"
             value={value}
             options={taxData || []}
