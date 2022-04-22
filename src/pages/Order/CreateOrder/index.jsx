@@ -149,7 +149,7 @@ const CreateOrder = ({...props}) => {
       api={ApiConfig}
       labelAlign="right"
       wrapperCol={24}
-      fieldKey="customerId"
+      fieldKey="orderId"
       onSubmit={(value) => {
         if (value.paymentDetail) {
           let percentum = 0;
@@ -303,6 +303,7 @@ const CreateOrder = ({...props}) => {
                     <FormItem
                       value={params.module === 'PO' && userInfo.customerId}
                       dataParams={params.module === 'PO' && {status: 99}}
+                      supply={params.module === 'PO' ? null : 0}
                       label="公司名称"
                       placeholder="请选择甲方公司"
                       name="buyerId"
@@ -416,6 +417,7 @@ const CreateOrder = ({...props}) => {
                     <FormItem
                       value={params.module === 'SO' && userInfo.customerId}
                       dataParams={params.module === 'SO' && {status: 99}}
+                      supply={params.module === 'SO' ? null : 1}
                       label="公司名称"
                       placeholder="请选择乙方公司"
                       name="sellerId"
@@ -818,10 +820,10 @@ const CreateOrder = ({...props}) => {
               }}>
                 返回订单列表
               </Button>,
-              success && success.contractId && <Button key="buy" onClick={() => {
-                history.push(`/CRM/contract/${success.contractId}`);
+              success && <Button key="buy" onClick={() => {
+                history.push(`/purchase/order/detail?id=${success.orderId}`);
               }}>
-                查看合同
+                查看详情
               </Button>
             ]}
           />

@@ -23,6 +23,7 @@ const ApiConfig = {
 
 const BrandEdit = ({...props}) => {
 
+  const {noSku, ...other} = props;
 
   const formRef = useRef();
 
@@ -30,7 +31,7 @@ const BrandEdit = ({...props}) => {
   return (
     <>
       <Form
-        {...props}
+        {...other}
         ref={formRef}
         formActions={formActionsPublic}
         api={ApiConfig}
@@ -51,10 +52,10 @@ const BrandEdit = ({...props}) => {
           component={SysField.BrandName}
           rules={[{required: true, message: '请输入品牌名称!'}]}
           required />
-        <FormItem
+        {!noSku && <FormItem
           name="skuIds"
           component={SysField.AddSku}
-          required />
+          required />}
       </Form>
 
     </>

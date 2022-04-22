@@ -264,10 +264,14 @@ const CustomerEdit = (
           }}
           onSuccess={(res) => {
             onChange(res);
-            history.push('/purchase/supply');
             notification.success({
               message: '创建供应商成功！',
             });
+            if (add) {
+              onClose();
+              return;
+            }
+            history.push('/purchase/supply');
           }}
           formActions={formActions}
         >

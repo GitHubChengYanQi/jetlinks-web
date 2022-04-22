@@ -30,7 +30,6 @@ import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import {templateListSelect} from '@/pages/Crm/template/TemplateUrl';
 import Editor from '@/components/Editor';
 import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
-import CheckSku from '@/pages/Order/CreateOrder/components/CheckSku';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
@@ -38,61 +37,27 @@ import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import UpLoadImg from '@/components/Upload';
 import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 import contactsEdit from '@/pages/Crm/contacts/ContactsEdit';
+import Select from '@/components/Select';
+import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
+import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
+import CheckBrand from '@/pages/Erp/brand/components/CheckBrand';
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency, ...props}) => {
 
-  const addSku = useRef();
-
   const addSpu = useRef();
 
-  const addSkuRef = useRef();
-
-  const [skuId, setSkuId] = useState();
-
-  const [type, setType] = useState();
-
-  const {loading: skuLoading, run: skuRun} = useRequest(skuDetail, {
-    manual: true,
-    onSuccess: (res) => {
-      onChange([...value, {
-        skuId: res.skuId,
-        coding: res.standard,
-        skuResult: res,
-        preordeNumber: 0,
-        unitId: res.spuResult && res.spuResult.unitId,
-        brandIds: res.brandIds
-      }]);
-    }
-  });
+  const [sku, setSku] = useState();
 
   return (<>
     <AddSkuTable
-      addSkuLoading={skuLoading}
       currency={currency}
       module={module}
       value={value}
       onChange={onChange}
-      onAddSku={(type) => {
-        setType(type);
-        switch (type) {
-          case 'spu':
-            setSkuId(null);
-            addSpu.current.open(true);
-            break;
-          case 'sku':
-            addSku.current.open(true);
-            break;
-          case 'supplySku':
-            if (!customerId) {
-              message.warn('请选择供应商！');
-              return false;
-            }
-            addSku.current.open(true);
-            break;
-          default:
-            break;
-        }
+      onAddSku={() => {
+        setSku(null);
+        addSpu.current.open(true);
       }}
     />
 
@@ -104,40 +69,128 @@ export const AddSku = ({value = [], customerId, onChange, module, currency, ...p
         <Button onClick={() => {
           addSpu.current.close();
         }}>取消</Button>
-        <Button type="primary" disabled={!skuId} onClick={() => {
-          skuRun({
-            data: {
-              skuId
-            }
-          });
+        <Button type="primary" disabled={!sku} onClick={() => {
+          onChange([...value, sku]);
           addSpu.current.close();
         }}>确定</Button>
       </Space>}
     >
-      <AddSpu onChange={setSkuId} value={skuId} />
-    </Modal>
-
-    <Modal
-      ref={addSku}
-      width={1000}
-      headTitle="添加物料"
-      footer={<Space>
-        <Button onClick={() => {
-          onChange(addSkuRef.current.check());
-        }}>选中</Button>
-        <Button type="primary" onClick={() => {
-          onChange(addSkuRef.current.change());
-          addSku.current.close();
-        }}>选中并关闭</Button>
-      </Space>}
-    >
-      <CheckSku
-        {...props}
-        type={type}
-        value={value}
-        ref={addSkuRef}
-        customerId={customerId}
-      />
+      <div style={{padding: '24px 10%'}}>
+        <AddSpu
+          supply={module === 'PO'}
+          customerId={customerId}
+          onChange={(skuId, sku) => {
+            const res = {...sku, skuId};
+            setSku({
+              skuId: res.skuId,
+              coding: res.standard,
+              skuResult: res,
+              preordeNumber: 0,
+              unitId: res.spuResult && res.spuResult.unitId,
+              brandIds: res.brandIds
+            });
+          }}
+          value={sku && sku.skuId}
+        />
+        {sku && <Descriptions column={3} className="descriptionsCenter" labelStyle={{width: 100}}>
+          <Descriptions.Item label="单位" span={3}>
+            <Select
+              width={100}
+              placeholder="请选择单位"
+              api={unitListSelect}
+              value={sku.unitId}
+              onChange={(value) => {
+                setSku({...sku, unitId: value});
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label="品牌 / 厂家" span={3}>
+            <CheckBrand
+              placeholder="请选择品牌/厂家"
+              width={100}
+              value={sku.brandId}
+              onChange={(value, option) => {
+                setSku({...sku, brandId: value, brandResult: option && option.label});
+              }} />
+          </Descriptions.Item>
+          <Descriptions.Item label={module === 'SO' ? '销售数量' : '采购数量'}>
+            <InputNumber
+              width={100}
+              placeholder="请输入数量"
+              value={sku.purchaseNumber}
+              min={0}
+              onChange={(value) => {
+                setSku({
+                  ...sku,
+                  purchaseNumber: value,
+                  totalPrice: (sku.onePrice || 0) * (value || 0),
+                });
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label={`单价(${currency})`}>
+            <InputNumber
+              width={100}
+              placeholder="请输入单价"
+              precision={2}
+              min={0}
+              value={sku.onePrice}
+              onChange={(value) => {
+                setSku({
+                  ...sku,
+                  onePrice: value,
+                  totalPrice: (sku.purchaseNumber || 0) * (value || 0),
+                });
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label={`总价(${currency})`}>
+            <InputNumber
+              width={100}
+              placeholder="请输入总价"
+              precision={2}
+              min={1}
+              value={sku.totalPrice}
+              onChange={(value) => {
+                setSku({...sku, totalPrice: value});
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label="票据类型" span={3}>
+            <AntSelect
+              style={{width: 100}}
+              placeholder="请选择票据类型"
+              value={sku.paperType}
+              options={[{label: '普票', value: 0}, {label: '专票', value: 1}]}
+              onChange={(value) => {
+                setSku({...sku, paperType: value});
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label="税率(%)" span={3}>
+            <Select
+              width={100}
+              placeholder="请选择税率"
+              value={sku.rate}
+              api={taxRateListSelect}
+              onChange={(value) => {
+                setSku({...sku, rate: value});
+              }}
+            />
+          </Descriptions.Item>
+          <Descriptions.Item label="交货期" span={3}>
+            <InputNumber
+              width={100}
+              placeholder="请输入交货期"
+              min={1}
+              value={sku.deliveryDate}
+              onChange={(value) => {
+                setSku({...sku, deliveryDate: value});
+              }}
+            />
+          </Descriptions.Item>
+        </Descriptions>}
+      </div>
     </Modal>
   </>);
 };
