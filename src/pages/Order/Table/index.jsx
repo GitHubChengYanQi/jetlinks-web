@@ -115,6 +115,18 @@ const OrderTable = (props) => {
                 message: 'QAQ努力开发中~'
               });
             }}>创建合同</Button>}
+            <Button type="link" onClick={() => {
+              switch (props.location.pathname) {
+                case '/CRM/order':
+                  history.push(`/CRM/order/detail?id=${record.orderId}`);
+                  break;
+                case '/purchase/order':
+                  history.push(`/purchase/order/detail?id=${record.orderId}`);
+                  break;
+                default:
+                  break;
+              }
+            }}>详情</Button>
           </Space>;
         }} />
       </Table>

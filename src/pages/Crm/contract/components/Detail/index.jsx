@@ -55,8 +55,10 @@ const Detail = ({id}) => {
     <div className={styles.main}>
       <Card title="基本信息" extra={<Space>
         {contract &&
-        <a href={`${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`} target="_blank"
-           rel="noreferrer">合同导出word</a>}
+        <a
+          href={`${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`}
+          target="_blank"
+          rel="noreferrer">合同导出word</a>}
         <Button
           onClick={() => {
             history.back();

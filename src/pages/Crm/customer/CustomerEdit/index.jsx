@@ -295,7 +295,7 @@ const CustomerEdit = (
                 </Col>
                 <Col span={span}>
                   <div style={{position: 'absolute', maxHeight: 104, overflow: 'hidden'}}>
-                    <FormItem label="供应商图标" name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar} />
+                    <FormItem label={supply ? '供应商图标' : '客户图标'} name="avatar" placeholder="请输入供应商简称" component={SysField.Avatar}/>
                   </div>
                 </Col>
               </Row>
