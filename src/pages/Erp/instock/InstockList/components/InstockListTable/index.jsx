@@ -1,12 +1,12 @@
+import React, {useImperativeHandle, useRef} from 'react';
+import {createFormActions} from '@formily/antd';
+import {Spin, Table as AntTable} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import {instockList} from '@/pages/Erp/instock/InstockUrl';
 import Table from '@/components/Table';
-import React, {useImperativeHandle, useRef, useState} from 'react';
-import {createFormActions} from '@formily/antd';
 import * as SysField from '@/pages/Erp/instock/InstockField';
-import {Spin, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
-import {request, useRequest} from '@/util/Request';
+import { useRequest} from '@/util/Request';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 

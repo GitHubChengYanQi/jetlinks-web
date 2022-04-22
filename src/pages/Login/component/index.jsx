@@ -16,6 +16,7 @@ export default function Login({ submitText }) {
 
   const { run, data, error, loading } = useRequest(loginUrl, {
     manual: true,
+    ready:true,
   });
 
   return (

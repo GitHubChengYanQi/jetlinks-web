@@ -22,6 +22,7 @@ import Modal from '@/components/Modal';
 const {Column} = AntTable;
 const {FormItem} = Form;
 const formActions = createFormActions();
+
 const TemplateList = () => {
   const ref = useRef(null);
   const compoentRef = useRef(null);
@@ -95,7 +96,7 @@ const TemplateList = () => {
         }} width={100} />
       </Table>
       <Modal
-        width="100vw"
+        width='100vw'
         title="合同模板"
         compoentRef={compoentRef}
         component={TemplateEdit}

@@ -11,7 +11,8 @@ import {contractDetail} from '@/pages/Crm/contract/ContractUrl';
 import OrderDetailTable from '@/pages/Crm/contract/components/OrderDetailTable';
 import PayTable from '@/pages/Crm/contract/components/PayTable';
 import {orderDetail} from '@/pages/Erp/order/OrderUrl';
-import cookie from "js-cookie";
+import cookie from 'js-cookie';
+import Empty from '@/components/Empty';
 
 const {TabPane} = Tabs;
 
@@ -42,23 +43,26 @@ const Detail = ({id}) => {
 
 
   if (loading || contractLoading) {
-    return (<ProSkeleton type="descriptions"/>);
+    return (<ProSkeleton type="descriptions" />);
+  }
+
+  if (!data) {
+    return <Empty />;
   }
 
   return <div className={styles.detail}>
-    <Card title={<Breadcrumb/>} bodyStyle={{padding: 0}}/>
+    <Card title={<Breadcrumb />} bodyStyle={{padding: 0}} />
     <div className={styles.main}>
       <Card title="基本信息" extra={<Space>
-        {contract && <Button
-          type='link'
-          onClick={() => {
-            window.location.href = `${baseURI}Excel/exportContract?id=${contract.contractId}&authorization=${token}`;
-          }}>合同导出word</Button>
-        }
+        {contract &&
+        <a
+          href={`${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`}
+          target="_blank"
+          rel="noreferrer">合同导出word</a>}
         <Button
           onClick={() => {
             history.back();
-          }}><Icon type="icon-back"/>返回</Button>
+          }}><Icon type="icon-back" />返回</Button>
       </Space>}>
         <Descriptions column={2}>
           <Descriptions.Item label="甲方信息">
@@ -97,15 +101,16 @@ const Detail = ({id}) => {
       <Card>
         <Tabs defaultActiveKey="1">
           {contract && <TabPane tab="合同内容" key="1">
-            {
-              parse(contract.content)
-            }
+            <Empty description="开发中..." />
+            {/*{*/}
+            {/*  parse(contract.content)*/}
+            {/*}*/}
           </TabPane>}
           <TabPane tab="产品明细" key="2">
-            <OrderDetailTable orderId={data.orderId}/>
+            <OrderDetailTable orderId={data.orderId} />
           </TabPane>;
           <TabPane tab="付款信息" key="3">
-            <PayTable payment={data.paymentResult}/>
+            <PayTable payment={data.paymentResult} />
           </TabPane>;
         </Tabs>
       </Card>

@@ -8,6 +8,8 @@ const Editor = ({
   onChange = () => {
   },
   module,
+  width,
+  change,
 }, ref) => {
 
   const editorRef = useRef(null);
@@ -26,19 +28,14 @@ const Editor = ({
         return ['actionsSku'];
       case 'POSITIONS':
         return ['actionsPosition'];
-      case 'contacts':
-        return ['actions'];
       default:
         return [];
     }
   };
 
-  useEffect(() => {
-
-  }, []);
 
   return (
-    <div>
+    <div style={{width}}>
       <TinymceEditor
         // id='editor'
         apiKey="no-api-key"
@@ -48,17 +45,17 @@ const Editor = ({
         initialValue={value}
         init={{
           language: 'zh_CN',
-          branding:false,
+          branding: false,
           height: '76vh',
           menubar: false,
           plugins: ['advlist', 'autolink', 'autolink'
             , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', 'editorPlugins'],
-          toolbar: ['undo redo', ...toobar(), 'formatselect','fontsizeselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'actionsImg', 'removeformat', 'help'].join(' | ')
+          toolbar: ['undo redo', ...toobar(), 'formatselect', 'fontsizeselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'actionsImg', 'removeformat', 'help'].join(' | ')
         }}
         onBlur={() => {
-          if (!module) {
+          if (!module || change) {
             onChange(editorRef.current.getContent());
           }
         }}
