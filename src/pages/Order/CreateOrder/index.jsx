@@ -31,7 +31,8 @@ import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
 import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
-import {skuResults} from "@/pages/Erp/sku/skuUrl";
+import {skuResults} from '@/pages/Erp/sku/skuUrl';
+import Draft from '@/components/Form/components/Draft';
 
 const {FormItem} = Form;
 
@@ -135,12 +136,12 @@ const CreateOrder = ({...props}) => {
   }, [payPlan]);
 
   if (!module) {
-    return <Empty/>;
+    return <Empty />;
   }
 
   return <div style={{padding: 16}}>
     <div style={{padding: '16px 0'}}>
-      <Breadcrumb title={module().title}/>
+      <Breadcrumb title={module().title} />
     </div>
 
     <Form
@@ -302,7 +303,7 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'PO' && userInfo.customerId}
+                      value={params.module === 'PO' ? userInfo.customerId : null}
                       dataParams={params.module === 'PO' && {status: 99}}
                       label="公司名称"
                       placeholder="请选择甲方公司"
@@ -415,7 +416,7 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'SO' && userInfo.customerId}
+                      value={params.module === 'SO' ? userInfo.customerId : null}
                       dataParams={params.module === 'SO' && {status: 99}}
                       label="公司名称"
                       placeholder="请选择乙方公司"
@@ -641,7 +642,7 @@ const CreateOrder = ({...props}) => {
                               type="link"
                               style={{float: 'right'}}
                               disabled={state.value.length === 1}
-                              icon={<DeleteOutlined/>}
+                              icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
                               }}
@@ -654,7 +655,7 @@ const CreateOrder = ({...props}) => {
                     <Button
                       type="dashed"
                       style={{marginTop: 8, marginBottom: 16, marginLeft: labelWidth}}
-                      icon={<PlusOutlined/>}
+                      icon={<PlusOutlined />}
                       onClick={onAdd}>添加付款批次</Button>
                   </div>
                 );
@@ -688,7 +689,7 @@ const CreateOrder = ({...props}) => {
               <FormItem
                 label="交货地址"
                 name="adressId"
-                adressType='goods'
+                adressType="goods"
                 component={CustomerSysField.Adress}
               />
             </Col>
@@ -747,7 +748,7 @@ const CreateOrder = ({...props}) => {
         </MegaLayout>
       </ProCard>
 
-      <Divider/>
+      <Divider />
 
       <MegaLayout labelWidth={labelWidth}>
         <FormItem
@@ -772,7 +773,7 @@ const CreateOrder = ({...props}) => {
         setVisible(false);
       }}
     >
-      <CustomerEdit add/>
+      <CustomerEdit add />
     </Drawer>
 
     <Modal
@@ -834,6 +835,15 @@ const CreateOrder = ({...props}) => {
           <Button onClick={() => {
             history.push('/purchase/toBuyPlan');
           }}>取消</Button>
+          <Draft
+            type="SO"
+            getValues={async () => {
+              return await formRef.current.getFormState();
+            }}
+            onChange={(value) => {
+              formRef.current.setFormState(value);
+            }}
+          />
         </Space>
       </div>
     </Affix>

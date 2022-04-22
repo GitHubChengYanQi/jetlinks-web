@@ -61,7 +61,7 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('partyABankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.invoiceResult && customer.invoiceResult.bankId;
+        state.value = customer.invoiceResult && customer.invoiceResult.bankId;
       });
 
       setFieldState('partyABankAccount', (state) => {
@@ -92,7 +92,6 @@ export const customerAAction = (setFieldState) => {
     } else {
       setFieldState('partyABankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = null;
         state.value = null;
       });
     }
@@ -102,6 +101,7 @@ export const customerAAction = (setFieldState) => {
     if (value) {
       setFieldState('partyABankAccount', (state) => {
         state.props.bankId = value;
+        state.props.defaultValue = null;
       });
     }
   });
@@ -131,6 +131,7 @@ export const customerAAction = (setFieldState) => {
     } else {
       setFieldState('partyAPhone', (state) => {
         state.value = null;
+        state.props.defaultValue = null;
       });
     }
   });
@@ -164,7 +165,7 @@ export const customerBAction = (setFieldState) => {
 
       setFieldState('partyBBankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.invoiceResult && customer.invoiceResult.bankId;
+        state.value = customer.invoiceResult && customer.invoiceResult.bankId;
       });
 
       setFieldState('partyBBankAccount', (state) => {
@@ -199,7 +200,6 @@ export const customerBAction = (setFieldState) => {
     } else {
       setFieldState('partyBBankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = null;
         state.value = null;
       });
     }
@@ -239,6 +239,7 @@ export const customerBAction = (setFieldState) => {
   FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(({value}) => {
     setFieldState('partyBBankAccount', (state) => {
       state.props.bankId = value;
+      state.props.defaultValue = null;
     });
   });
 
