@@ -157,7 +157,7 @@ export const Contacts = (props) => {
 export const Phone = (props) => {
 
   const {contactsId, options, defaultValue, ...other} = props;
-  console.log(other.value);
+
   const [option, setOption] = useState([]);
 
   useEffect(() => {

@@ -30,7 +30,6 @@ import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplat
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
-import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
 import {skuResults} from '@/pages/Erp/sku/skuUrl';
 import Draft from '@/components/Form/components/Draft';
 
@@ -836,7 +835,7 @@ const CreateOrder = ({...props}) => {
             history.push('/purchase/toBuyPlan');
           }}>取消</Button>
           <Draft
-            type="SO"
+            type={params.module}
             getValues={async () => {
               return await formRef.current.getFormState();
             }}

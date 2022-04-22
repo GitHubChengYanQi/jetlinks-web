@@ -6,7 +6,6 @@ import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
 import {invoiceDetail} from '@/pages/Crm/invoice/invoiceUrl';
 
-
 export const customerAAction = (setFieldState) => {
   FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value}) => {
     if (value) {
