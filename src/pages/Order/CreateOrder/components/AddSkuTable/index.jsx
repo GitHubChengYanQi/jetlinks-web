@@ -8,6 +8,7 @@ import Select from '@/components/Select';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
 import InputNumber from '@/components/InputNumber';
 import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
+import CheckBrand from '@/pages/Erp/brand/components/CheckBrand';
 
 const AddSkuTable = ({
   onChange = () => {
@@ -64,6 +65,7 @@ const AddSkuTable = ({
 
   return <>
     <Table
+      sticky
       dataSource={dataSources}
       pagination={false}
       rowKey="index"
@@ -72,18 +74,10 @@ const AddSkuTable = ({
         return <Space>
           <Button
             onClick={() => {
-              onAddSku(SO ? 'spu' : 'sku');
+              onAddSku();
             }}
           >
             {SO ? '添加产品' : '添加物料'}
-          </Button>
-          <Button
-            hidden={SO}
-            onClick={() => {
-              onAddSku('supplySku');
-            }}
-          >
-            添加供应商关联物料
           </Button>
           <Button
             type="link"
@@ -125,14 +119,17 @@ const AddSkuTable = ({
           return value + 1;
         }} />
       <Table.Column
+        fixed="left"
         title="物料编码"
         onCell={sharedOnCell}
-        width={200}
         dataIndex="coding"
         render={(value, record) => {
-          return value || (record.skuResult && record.skuResult.standard);
+          return <div style={{minWidth: 100}}>
+            {value || (record.skuResult && record.skuResult.standard)}
+          </div>;
         }} />
       <Table.Column
+        fixed="left"
         title="物料"
         onCell={sharedOnCell}
         dataIndex="skuResult"
@@ -142,22 +139,21 @@ const AddSkuTable = ({
       <Table.Column
         title="品牌 / 厂家"
         onCell={sharedOnCell}
-        width={400}
         dataIndex="defaultBrandResult"
         render={(value, record, index) => {
           return value
             ||
-            <Select
+            <CheckBrand
               placeholder="请选择品牌/厂家"
-              api={brandIdSelect}
-              // data={{ids: record.brandIds || []}}
+              width={200}
               value={record.brandId}
               onChange={(value, option) => {
-                setValue({brandId: value, brandResult: option.label}, index);
+                setValue({brandId: value, brandResult: option && option.label}, index);
               }} />;
         }} />
       {!SO && <Table.Column
         title="预购数量"
+        align="center"
         width={100}
         dataIndex="preordeNumber"
         onCell={sharedOnCell}
@@ -171,13 +167,13 @@ const AddSkuTable = ({
         dataIndex="purchaseNumber"
         render={(value, record, index) => {
           return <InputNumber
-            placeholder="请输入采购数量"
+            placeholder="请输入数量"
             value={value}
             min={0}
             onChange={(value) => {
               setValue({
                 purchaseNumber: value,
-                totalPrice: record.onePrice && (value * record.onePrice),
+                totalPrice: (record.onePrice || 0) * (value || 0),
               }, index);
             }}
           />;
@@ -199,7 +195,7 @@ const AddSkuTable = ({
         }} />
       <Table.Column
         title={`单价 (${currency})`}
-        width={130}
+        width={150}
         onCell={sharedOnCell}
         dataIndex="onePrice"
         render={(value, record, index) => {
@@ -211,14 +207,14 @@ const AddSkuTable = ({
             onChange={(value) => {
               setValue({
                 onePrice: value,
-                totalPrice: record.purchaseNumber && (value * record.purchaseNumber)
+                totalPrice: (record.purchaseNumber || 0) * (value || 0),
               }, index);
             }}
           />;
         }} />
       <Table.Column
         title={`总价 (${currency})`}
-        width={130}
+        width={150}
         onCell={sharedOnCell}
         dataIndex="totalPrice"
         render={(value, record, index) => {
@@ -230,13 +226,26 @@ const AddSkuTable = ({
             onChange={(value) => {
               setValue({
                 totalPrice: value,
-                onePrice: record.purchaseNumber && (value / record.purchaseNumber)
               }, index);
             }}
           />;
         }} />
       <Table.Column
-        title="票据类型"
+        title={<Space style={{minWidth: 120}}>
+          <AntSelect
+            bordered={false}
+            style={{width: 100}}
+            placeholder="批量操作"
+            value="票据类型"
+            allowClear
+            options={[{label: '普票', value: 0}, {label: '专票', value: 1}]}
+            onChange={(value) => {
+              onChange(dataSources.map((item) => {
+                return {...item, paperType: value};
+              }));
+            }}
+          />
+        </Space>}
         width={120}
         dataIndex="paperType"
         onCell={sharedOnCell}
@@ -251,7 +260,20 @@ const AddSkuTable = ({
           />;
         }} />
       <Table.Column
-        title="税率(%)"
+        title={<Space>
+          <AntSelect
+            bordered={false}
+            placeholder="请选择税率"
+            value="税率(%)"
+            allowClear
+            options={taxData || []}
+            onChange={(value) => {
+              onChange(dataSources.map((item) => {
+                return {...item, rate: value};
+              }));
+            }}
+          />
+        </Space>}
         width={120}
         dataIndex="rate"
         onCell={sharedOnCell}
@@ -273,6 +295,7 @@ const AddSkuTable = ({
         render={(value, record, index) => {
           return <InputNumber
             min={1}
+            placeholder="请输入交货期"
             value={value}
             onChange={(value) => {
               setValue({deliveryDate: value}, index);
@@ -295,7 +318,7 @@ const AddSkuTable = ({
         fixed="right"
         dataIndex="skuId"
         align="center"
-        width={100}
+        width={50}
         render={(value, record, index) => {
           return <><Button
             type="link"

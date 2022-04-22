@@ -12,7 +12,10 @@ const AddSpu = (
     value,
     onChange,
     noSkuIds,
+    customerId,
+    supply,
   }) => {
+  console.log(customerId);
 
   const [checkConfig, setCheckConfig] = useState([]);
 
@@ -25,8 +28,8 @@ const AddSpu = (
     tree: []
   });
 
-  const change = (value) => {
-    onChange(value);
+  const change = (value,sku) => {
+    onChange(value,sku);
   };
 
   const onConfig = (k, v, config) => {
@@ -118,8 +121,8 @@ const AddSpu = (
     });
 
 
-  return <div style={{padding: '24px 10%'}}>
-    <Descriptions column={1}>
+  return <div>
+    <Descriptions column={1} className='descriptionsCenter' labelStyle={{width:100}}>
       <Descriptions.Item label="物料分类">
         <Cascader
           width="100%"
@@ -138,28 +141,33 @@ const AddSpu = (
       </Descriptions.Item>
       <Descriptions.Item label="物料名称">
         <SelectSku
+          style={{maxWidth:538}}
+          supply={supply}
+          params={{customerId}}
           width="100%"
           value={value}
           spuClassId={skuClassId}
           skuIds={noSkuIds}
-          getSkuDetail={(res) => {
-            const array = [];
-            if (res.spuId) {
-              detailRun({
-                data: {
-                  spuId: res.spuId
-                }
-              });
-              res.list && res.list.map((item) => {
-                return array.push({
-                  k: item.attributeId,
-                  v: item.attributeValuesId,
+          onChange={(id,sku)=>{
+            change(id,sku);
+            if (sku){
+              const array = [];
+              if (sku.spuId) {
+                detailRun({
+                  data: {
+                    spuId: sku.spuId
+                  }
                 });
-              });
-              setCheckConfig(array);
+                sku.list && sku.list.map((item) => {
+                  return array.push({
+                    k: item.attributeId,
+                    v: item.attributeValuesId,
+                  });
+                });
+                setCheckConfig(array);
+              }
             }
           }}
-          onChange={change}
           onSpuId={(value) => {
             change(null);
             detailRun({

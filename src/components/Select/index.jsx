@@ -89,7 +89,12 @@ const Select = (props) => {
             }}
             allowClear
             showSearch
-            filterOption={(input, option) => option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            filterOption={(input, option) => {
+              if (typeof option.label !== 'string') {
+                return true;
+              }
+              return option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+            }}
           />}
     </>
   );

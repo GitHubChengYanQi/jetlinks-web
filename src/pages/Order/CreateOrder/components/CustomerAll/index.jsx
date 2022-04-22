@@ -13,7 +13,7 @@ import BankEdit from '@/pages/Purshase/bank/bankEdit';
 import InvoiceEdit from '@/pages/Crm/invoice/invoiceEdit';
 
 export const Customer = (props) => {
-  return (<SelectCustomer width="100%" supply={null} noAdd {...props} />);
+  return (<SelectCustomer width="100%" noAdd {...props} />);
 };
 
 export const Adress = (props) => {

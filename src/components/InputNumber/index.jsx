@@ -7,6 +7,7 @@ const InputNumber = (
     onBlur = () => {
     },
     value,
+    width,
     onChange = () => {
     },
     ...props
@@ -17,6 +18,7 @@ const InputNumber = (
   return <AntInputNumber
     controls={false}
     min={1}
+    style={{width}}
     value={value || number}
     placeholder={placeholder}
     {...props}

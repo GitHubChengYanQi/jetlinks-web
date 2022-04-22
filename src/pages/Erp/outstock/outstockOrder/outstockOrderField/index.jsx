@@ -65,7 +65,7 @@ export const AddSku = ({
 
     <Modal
       ref={ref}
-      headTitle='添加物料'
+      headTitle="添加物料"
       width={1000}
       footer={<Space>
         <Button onClick={() => {
@@ -159,8 +159,11 @@ export const Number = (props) => {
     }
   }, [storehouseId, skuId, brandId]);
 
-  return (<InputNumber min={0} max={number || 0} placeholder={number !== undefined ? `库存${number}` : ''}
-                       style={{width: '100%'}} {...other} />);
+  return (<InputNumber
+    min={0}
+    max={number || 0}
+    placeholder={number !== undefined ? `库存${number}` : ''}
+    style={{width: '100%'}} {...other} />);
 };
 
 

@@ -30,8 +30,7 @@ import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplat
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
-import {toBuyPlanList} from '@/pages/Purshase/ToBuyPlan/Url';
-import {skuResults} from "@/pages/Erp/sku/skuUrl";
+import {skuResults} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -135,12 +134,12 @@ const CreateOrder = ({...props}) => {
   }, [payPlan]);
 
   if (!module) {
-    return <Empty/>;
+    return <Empty />;
   }
 
   return <div style={{padding: 16}}>
     <div style={{padding: '16px 0'}}>
-      <Breadcrumb title={module().title}/>
+      <Breadcrumb title={module().title} />
     </div>
 
     <Form
@@ -150,7 +149,7 @@ const CreateOrder = ({...props}) => {
       api={ApiConfig}
       labelAlign="right"
       wrapperCol={24}
-      fieldKey="customerId"
+      fieldKey="orderId"
       onSubmit={(value) => {
         if (value.paymentDetail) {
           let percentum = 0;
@@ -304,6 +303,7 @@ const CreateOrder = ({...props}) => {
                     <FormItem
                       value={params.module === 'PO' && userInfo.customerId}
                       dataParams={params.module === 'PO' && {status: 99}}
+                      supply={params.module === 'PO' ? null : 0}
                       label="公司名称"
                       placeholder="请选择甲方公司"
                       name="buyerId"
@@ -417,6 +417,7 @@ const CreateOrder = ({...props}) => {
                     <FormItem
                       value={params.module === 'SO' && userInfo.customerId}
                       dataParams={params.module === 'SO' && {status: 99}}
+                      supply={params.module === 'SO' ? null : 1}
                       label="公司名称"
                       placeholder="请选择乙方公司"
                       name="sellerId"
@@ -641,7 +642,7 @@ const CreateOrder = ({...props}) => {
                               type="link"
                               style={{float: 'right'}}
                               disabled={state.value.length === 1}
-                              icon={<DeleteOutlined/>}
+                              icon={<DeleteOutlined />}
                               onClick={() => {
                                 onRemove(index);
                               }}
@@ -654,7 +655,7 @@ const CreateOrder = ({...props}) => {
                     <Button
                       type="dashed"
                       style={{marginTop: 8, marginBottom: 16, marginLeft: labelWidth}}
-                      icon={<PlusOutlined/>}
+                      icon={<PlusOutlined />}
                       onClick={onAdd}>添加付款批次</Button>
                   </div>
                 );
@@ -688,7 +689,7 @@ const CreateOrder = ({...props}) => {
               <FormItem
                 label="交货地址"
                 name="adressId"
-                adressType='goods'
+                adressType="goods"
                 component={CustomerSysField.Adress}
               />
             </Col>
@@ -747,7 +748,7 @@ const CreateOrder = ({...props}) => {
         </MegaLayout>
       </ProCard>
 
-      <Divider/>
+      <Divider />
 
       <MegaLayout labelWidth={labelWidth}>
         <FormItem
@@ -773,7 +774,7 @@ const CreateOrder = ({...props}) => {
         setVisible(false);
       }}
     >
-      <CustomerEdit add/>
+      <CustomerEdit add />
     </Drawer>
 
     <Modal
@@ -815,10 +816,10 @@ const CreateOrder = ({...props}) => {
               }}>
                 返回订单列表
               </Button>,
-              success && success.contractId && <Button key="buy" onClick={() => {
-                history.push(`/CRM/contract/${success.contractId}`);
+              success && <Button key="buy" onClick={() => {
+                history.push(`/purchase/order/detail?id=${success.orderId}`);
               }}>
-                查看合同
+                查看详情
               </Button>
             ]}
           />
