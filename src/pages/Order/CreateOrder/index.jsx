@@ -568,7 +568,7 @@ const CreateOrder = ({...props}) => {
             <FieldList
               name="paymentDetail"
               initialValue={[
-                {},
+                {payType:0,dateNumber:1,dateWay:1},
               ]}
             >
               {({state, mutators}) => {
@@ -598,17 +598,14 @@ const CreateOrder = ({...props}) => {
                                   :
                                   <>
                                     <FormItem
-                                      value={0}
                                       name={`paymentDetail.${index}.payType`}
                                       component={SysField.PayType}
                                     />
                                     <FormItem
-                                      value={1}
                                       name={`paymentDetail.${index}.dateNumber`}
                                       component={SysField.dateNumber}
                                     />
                                     <FormItem
-                                      value={0}
                                       name={`paymentDetail.${index}.dateWay`}
                                       component={SysField.DateWay}
                                     />
