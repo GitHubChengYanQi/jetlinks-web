@@ -89,6 +89,8 @@ const CreateOrder = ({...props}) => {
           moneyTitle: '销售总价',
           detailTitle: '销售明细',
           goodTitle: '交货信息',
+          addCustomer: '创建客户',
+          supply: 0,
         };
       case 'PO':
         return {
@@ -102,6 +104,8 @@ const CreateOrder = ({...props}) => {
           moneyTitle: '采购总价',
           detailTitle: '采购明细',
           goodTitle: '收货信息',
+          addCustomer: '创建供应商',
+          supply: 1
         };
       default:
         break;
@@ -763,7 +767,7 @@ const CreateOrder = ({...props}) => {
 
     <Drawer
       push={false}
-      title="添加供应商"
+      title={module().addCustomer}
       supply={1}
       placement="bottom"
       extra={<Button onClick={() => {
@@ -775,7 +779,9 @@ const CreateOrder = ({...props}) => {
         setVisible(false);
       }}
     >
-      <CustomerEdit add />
+      <CustomerEdit supply={module().supply} add onClose={() => {
+        setVisible(false);
+      }} />
     </Drawer>
 
     <Modal
