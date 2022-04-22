@@ -24,5 +24,11 @@ export const ContractClassId = (props) => {
 };
 
 export const UploadWord = (props) => {
-  return (<FileUpload fileUpload title='上传合同' {...props} imageType={['DOC', 'DOCX', 'doc', 'docx']} prompt='支持格式：DOCX/DOC' />);
+  return (<FileUpload
+    fileUpload
+    title='上传合同'
+    {...props}
+    imageType={['DOCX','docx']}
+    prompt='文档模板仅支持：2007以上版本.docx格式的word文档'
+  />);
 };

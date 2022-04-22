@@ -444,10 +444,11 @@ export const AllField = ({onChange, array}) => {
   }
 
   return (<div>
-    <Descriptions style={{width: '85vw'}} bordered column={2} title="合同模板中的其他字段">
+    <Descriptions style={{width: '85vw'}} bordered column={2} labelStyle={{minWidth: 150}} title="合同模板中的其他字段">
       {
         values.map((item, index) => {
-          return <Descriptions.Item key={index} label={item.name}>
+          const span = item.type === 'editor' ? 2 : 1;
+          return <Descriptions.Item key={index} span={span} label={item.name}>
             {replaceDom(item, index)}
           </Descriptions.Item>;
         })

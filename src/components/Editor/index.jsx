@@ -8,6 +8,7 @@ const Editor = ({
   onChange = () => {
   },
   module,
+  width,
   change,
 }, ref) => {
 
@@ -34,7 +35,7 @@ const Editor = ({
 
 
   return (
-    <div>
+    <div style={{width}}>
       <TinymceEditor
         // id='editor'
         apiKey="no-api-key"
