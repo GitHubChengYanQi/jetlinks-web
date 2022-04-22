@@ -50,12 +50,7 @@ const Detail = ({id}) => {
     <Card title={<Breadcrumb/>} bodyStyle={{padding: 0}}/>
     <div className={styles.main}>
       <Card title="基本信息" extra={<Space>
-        {contract && <Button
-          type='link'
-          onClick={() => {
-            window.location.href = `${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`;
-          }}>合同导出word</Button>
-        }
+        {contract && <a href={`${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`} target='_blank' rel="noreferrer">合同导出word</a>}
         <Button
           onClick={() => {
             history.back();

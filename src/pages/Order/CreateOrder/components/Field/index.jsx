@@ -339,21 +339,22 @@ export const Note = (props) => {
 export const AllField = ({onChange, array}) => {
 
   const [values, setValues] = useState([]);
+  console.log(values);
 
   useEffect(() => {
     if (array && Array.isArray(array)) {
       const newValues = array.map((item) => {
         const detail = item.detail || [];
-        if (item.type === 'sku' || item.type === 'pay') {
-          return {
-            ...item,
-            value: detail[0] && detail[0].name
-          };
-        }
         const defaultVal = detail.filter(detailItem => detailItem.isDefault === 1);
+        let value = '';
+        if (item.isHidden) {
+          value = `${item.name}：${defaultVal[0] ? defaultVal[0].name : ''}`;
+        } else {
+          value = defaultVal[0] ? defaultVal[0].name : '';
+        }
         return {
           ...item,
-          value: defaultVal[0] && defaultVal[0].name
+          value
         };
       });
       onChange(newValues);
@@ -366,7 +367,7 @@ export const AllField = ({onChange, array}) => {
       if (item.name === name) {
         return {
           ...item,
-          value,
+          value: item.isHidden ? `${item.name}：${value || ''}` : value
         };
       }
       return item;
@@ -443,12 +444,9 @@ export const AllField = ({onChange, array}) => {
   }
 
   return (<div>
-    <Descriptions style={{width:'85vw'}} bordered column={2} title='合同模板中的其他字段' >
+    <Descriptions style={{width: '85vw'}} bordered column={2} title="合同模板中的其他字段">
       {
         values.map((item, index) => {
-          if (item.type === 'sku' || item.type === 'pay') {
-            return null;
-          }
           return <Descriptions.Item key={index} label={item.name}>
             {replaceDom(item, index)}
           </Descriptions.Item>;
