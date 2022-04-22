@@ -109,7 +109,7 @@ const OrderTable = (props) => {
         <Column title="创建时间" dataIndex="createTime" />
         <Column />
         <Column title="操作" width={100} render={(value, record) => {
-          return <Space>
+          return <>
             {!record.contractId && <Button type="link" onClick={() => {
               notification.warn({
                 message: 'QAQ努力开发中~'
@@ -127,7 +127,7 @@ const OrderTable = (props) => {
                   break;
               }
             }}>详情</Button>
-          </Space>;
+          </>;
         }} />
       </Table>
 

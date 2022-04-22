@@ -13,13 +13,9 @@ import {
   Select as AntSelect,
   Button,
   Space,
-  message,
-  List,
-  Table,
   AutoComplete,
   Descriptions
 } from 'antd';
-import parse from 'html-react-parser';
 import Coding from '@/pages/Erp/tool/components/Coding';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
@@ -33,17 +29,16 @@ import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';
 import InputNumber from '@/components/InputNumber';
 import AddSpu from '@/pages/Order/CreateOrder/components/AddSpu';
 import {unitListSelect} from '@/pages/Erp/spu/spuUrl';
-import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import UpLoadImg from '@/components/Upload';
 import TemplateEdit from '@/pages/Crm/template/TemplateEdit';
 import contactsEdit from '@/pages/Crm/contacts/ContactsEdit';
 import Select from '@/components/Select';
-import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
 import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
 import CheckBrand from '@/pages/Erp/brand/components/CheckBrand';
+import Message from '@/components/Message';
 
 
-export const AddSku = ({value = [], customerId, onChange, module, currency, ...props}) => {
+export const AddSku = ({value = [], customerId, onChange, module, currency}) => {
 
   const addSpu = useRef();
 
@@ -69,10 +64,20 @@ export const AddSku = ({value = [], customerId, onChange, module, currency, ...p
         <Button onClick={() => {
           addSpu.current.close();
         }}>取消</Button>
-        <Button type="primary" disabled={!sku} onClick={() => {
+        <Button type="primary" ghost disabled={!sku} onClick={() => {
+          if (!(sku.purchaseNumber && sku.onePrice)) {
+            return Message.warning('请输入数量和单价！');
+          }
           onChange([...value, sku]);
           addSpu.current.close();
-        }}>确定</Button>
+        }}>确认并关闭</Button>
+        <Button type="primary" disabled={!sku} onClick={() => {
+          if (!(sku.purchaseNumber && sku.onePrice)) {
+            return Message.warning('请输入数量和单价！');
+          }
+          onChange([...value, sku]);
+          setSku(null);
+        }}>完成并添加下一个</Button>
       </Space>}
     >
       <div style={{padding: '24px 10%'}}>
@@ -178,7 +183,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency, ...p
               }}
             />
           </Descriptions.Item>
-          <Descriptions.Item label="交货期" span={3}>
+          <Descriptions.Item label="交货期(天)" span={3}>
             <InputNumber
               width={100}
               placeholder="请输入交货期"
