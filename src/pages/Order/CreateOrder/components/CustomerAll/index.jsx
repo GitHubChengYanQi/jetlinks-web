@@ -107,7 +107,7 @@ export const Contacts = (props) => {
     }} />
 
     <Modal
-      width={500}
+      width={800}
       headTitle="添加联系人"
       ref={ref}
       footer={<>
