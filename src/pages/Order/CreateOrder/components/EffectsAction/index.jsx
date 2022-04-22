@@ -246,9 +246,6 @@ export const customerBAction = (setFieldState) => {
 
 const paymentAction = (setFieldState, getFieldState) => {
   FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value}) => {
-    setFieldState('allField', (state) => {
-      state.props.skuList = value;
-    });
     let money = 0;
     if (value) {
       value.map((item) => {
@@ -261,12 +258,6 @@ const paymentAction = (setFieldState, getFieldState) => {
         state.value = money;
       });
     }
-  });
-
-  FormEffectHooks.onFieldValueChange$('paymentDetail').subscribe(({value}) => {
-    setFieldState('allField', (state) => {
-      state.props.payList = value;
-    });
   });
 
   FormEffectHooks.onFieldValueChange$('money').subscribe(({value}) => {
@@ -375,7 +366,7 @@ const contractAction = (setFieldState) => {
     setFieldState('contractCoding', (state) => {
       state.visible = value;
     });
-    setFieldState('allField', (state) => {
+    setFieldState('labelResults', (state) => {
       state.visible = value;
     });
   });
@@ -383,8 +374,11 @@ const contractAction = (setFieldState) => {
 
   FormEffectHooks.onFieldValueChange$('templateId').subscribe(async ({value}) => {
     if (value) {
-      const res = await request({...templateGetLabel, params: {id: value}});
-      setFieldState('allField', (state) => {
+      setFieldState('labelResults', (state) => {
+        state.props.array = null;
+      });
+      const res = await request({...templateGetLabel, params: {templateId: value}});
+      setFieldState('labelResults', (state) => {
         state.props.array = res;
       });
     }

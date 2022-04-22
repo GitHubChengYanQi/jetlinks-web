@@ -2,12 +2,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
 import {useHistory} from 'ice';
+import cookie from 'js-cookie';
 import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import AnalysisDetail from '@/pages/Erp/Analysis/AnalysisDetail';
 import store from '@/store';
 
+
 const TaskList = () => {
+  const token = cookie.get('tianpeng-token');
 
   const [state, dataDispatchers] = store.useModel('dataSource');
 
@@ -17,12 +20,18 @@ const TaskList = () => {
 
   const history = useHistory();
 
-  const {loading, data: List} = useRequest({
+  const {loading, cancel, data: List} = useRequest({
     url: '/asynTask/list',
     method: 'POST'
   }, {
     pollingInterval: 5000,
   });
+
+  useEffect(() => {
+    if (!token) {
+      cancel();
+    }
+  }, [token]);
 
   useEffect(() => {
     if (state.showTaskList) {
@@ -49,7 +58,7 @@ const TaskList = () => {
                     />
                   </div>
 
-                  <Button type='link' onClick={() => {
+                  <Button type="link" onClick={() => {
                     switch (item.type) {
                       case '物料分析':
                         dataDispatchers.opentaskList(false);
@@ -64,7 +73,7 @@ const TaskList = () => {
             >
               <AntList.Item.Meta
                 title={item.type}
-                description={item.createTime}/>
+                description={item.createTime} />
             </AntList.Item>;
 
           }}
@@ -78,20 +87,20 @@ const TaskList = () => {
       visible={state.showTaskList}
       placement="bottomRight"
       onVisibleChange={dataDispatchers.opentaskList}
-      title='任务列表'
+      title="任务列表"
       content={taskList}
       trigger="click"
     >
-      <Button style={{color: '#fff'}} type='text' onClick={() => {
+      <Button style={{color: '#fff'}} type="text" onClick={() => {
         dataDispatchers.opentaskList(true);
       }}>
-        <UnorderedListOutlined/>
+        <UnorderedListOutlined />
       </Button>
     </Popover>
 
     <Modal
-      width='auto'
-      headTitle='物料推荐'
+      width="auto"
+      headTitle="物料推荐"
       component={AnalysisDetail}
       onSuccess={(res) => {
         seContent(res);
@@ -100,7 +109,7 @@ const TaskList = () => {
         <Button onClick={() => {
           showRef.current.close();
         }}>关闭</Button>
-        <Button disabled={!Array.isArray(content.owe) || content.owe.length === 0} type='primary' onClick={() => {
+        <Button disabled={!Array.isArray(content.owe) || content.owe.length === 0} type="primary" onClick={() => {
           const skus = content.owe.map((item) => {
             return {skuId: item.skuId, applyNumber: item.lackNumber};
           });

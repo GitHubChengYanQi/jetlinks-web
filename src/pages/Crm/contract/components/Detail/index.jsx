@@ -12,6 +12,7 @@ import OrderDetailTable from '@/pages/Crm/contract/components/OrderDetailTable';
 import PayTable from '@/pages/Crm/contract/components/PayTable';
 import {orderDetail} from '@/pages/Erp/order/OrderUrl';
 import cookie from "js-cookie";
+import Empty from '@/components/Empty';
 
 const {TabPane} = Tabs;
 
@@ -49,12 +50,7 @@ const Detail = ({id}) => {
     <Card title={<Breadcrumb/>} bodyStyle={{padding: 0}}/>
     <div className={styles.main}>
       <Card title="基本信息" extra={<Space>
-        {contract && <Button
-          type='link'
-          onClick={() => {
-            window.location.href = `${baseURI}Excel/exportContract?id=${contract.contractId}&authorization=${token}`;
-          }}>合同导出word</Button>
-        }
+        {contract && <a href={`${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`} target='_blank' rel="noreferrer">合同导出word</a>}
         <Button
           onClick={() => {
             history.back();
@@ -97,9 +93,10 @@ const Detail = ({id}) => {
       <Card>
         <Tabs defaultActiveKey="1">
           {contract && <TabPane tab="合同内容" key="1">
-            {
-              parse(contract.content)
-            }
+            <Empty description='开发中...' />
+            {/*{*/}
+            {/*  parse(contract.content)*/}
+            {/*}*/}
           </TabPane>}
           <TabPane tab="产品明细" key="2">
             <OrderDetailTable orderId={data.orderId}/>

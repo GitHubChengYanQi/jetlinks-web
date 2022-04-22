@@ -111,9 +111,7 @@ const StockTable = (props) => {
     return (
       <Space>
         <Analysis type='link'/>
-        <Button type='link' icon={<Icon type="icon-daoru"/>} onClick={() => {
-          window.location.href = `${baseURI}stockExcel/stockExport?authorization=${token}`;
-        }}>导出库存</Button>
+        <a href={`${baseURI}stockExcel/stockExport?authorization=${token}`} target='_blank' rel="noreferrer">导出库存</a>
         <Upload
           fileList={filelist}
           action={`${baseURI}Excel/importPositionBind`}

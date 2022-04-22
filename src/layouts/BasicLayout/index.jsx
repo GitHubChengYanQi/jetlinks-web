@@ -5,7 +5,6 @@ import {Alert, Spin, Layout} from 'antd';
 import Header from '@/layouts/BasicLayout/components/Header';
 import store from '@/store';
 
-import WindowOpenVar from '@/components/Editor/components/WindowOpenVar';
 import WindowOpenImg from '@/components/Editor/components/WindowOpenImg';
 import WindowOpenSku from '@/components/Editor/components/WindowOpenSku';
 import WindowOpenPosition from '@/components/Editor/components/WindowOpenPosition';
@@ -66,13 +65,13 @@ export default function BasicLayout({children}) {
         </>
       }
 
-      <WindowOpenVar />
 
       <WindowOpenSku />
 
       <WindowOpenPosition />
 
       <WindowOpenImg />
+
     </>
   );
 }

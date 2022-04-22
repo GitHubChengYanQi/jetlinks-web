@@ -1,11 +1,8 @@
-import React, {useState} from 'react';
-import {Button, Checkbox, Col, Divider, Image, Input, Radio, Row, Space} from 'antd';
+import React, {useImperativeHandle, useState} from 'react';
+import {Button, Checkbox, Col, Divider, Input, Radio, Row, Space} from 'antd';
 import {DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {useSetState} from 'ahooks';
-import number from '@/asseset/imgs/number.png';
-import date from '@/asseset/imgs/date.png';
-import img from '@/asseset/imgs/img.png';
-import editor from '@/asseset/imgs/editor.png';
+import Editor from '@/components/Editor';
 
 
 const definedStyle = {
@@ -14,42 +11,38 @@ const definedStyle = {
   textAlign: 'center'
 };
 
-const Defined = ({
-  setDefinedInput = () => {
-  },
-}) => {
+const Defined = ({value}, ref) => {
 
-  const [values, setValues] = useSetState({array: []});
+  const [values, setValues] = useSetState({
+    array: value.detailResults && value.detailResults.map((item) => {
+      return {
+        value: item.value,
+        isDefault: !!item.isDefault
+      };
+    }) || []
+  });
 
-  const [type, setType] = useState('input');
+  const [type, setType] = useState(value.type || 'input');
 
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState(value.name);
 
-  const [showTitle, setShowTitle] = useState(false);
+  const [showTitle, setShowTitle] = useState(!!value.isHidden);
 
   const onChange = () => {
-    const array = values.array.filter((item) => {
-      return item.defaultValue;
-    });
-    const defaultValue = array && array[0] && array[0].value;
-    const inputTitle = showTitle ? title : '';
-    switch (type) {
-      case 'input':
-        return `${inputTitle} <input type="text" value='${defaultValue || ''}' placeholder='${values.array.map((item) => {
-          return item.value;
-        }).toString()}' data-title=${title || '文本框'} />`;
-      case 'number':
-        return `${inputTitle} <input type="number" data-title=${title || '数字框'} />`;
-      case 'date':
-        return `${inputTitle} <input type="date" data-title=${title || '时间框'} />`;
-      case 'img':
-        return `${inputTitle} <input type="file" data-title=${title || '图片框'} />`;
-      case 'editor':
-        return `${inputTitle} <textarea data-title=${title || '编辑器'} ></textarea>`;
-      default:
-        break;
-    }
+    return {
+      contractTemplateId: value.contractTemplateId,
+      type,
+      isHidden: showTitle ? 1 : 0,
+      name: title,
+      detailParams: values.array.map((item) => {
+        return {
+          value: item.value,
+          isDefault: item.isDefault ? 1 : 0
+        };
+      })
+    };
   };
+
 
   const onValuesChange = (index, data) => {
     const array = values.array;
@@ -57,9 +50,9 @@ const Defined = ({
     setValues({array});
   };
 
-  setTimeout(() => {
-    setDefinedInput(onChange());
-  }, 0);
+  useImperativeHandle(ref, () => ({
+    save: onChange
+  }));
 
 
   const show = () => {
@@ -77,14 +70,14 @@ const Defined = ({
                 </Col>
                 <Col span={5} style={{padding: 4}}>
                   <Space>
-                    <Checkbox checked={item.defaultValue} onChange={(value) => {
+                    <Checkbox checked={item.isDefault} onChange={(value) => {
                       const array = values.array.map((item) => {
                         return {
                           ...item,
-                          defaultValue: false,
+                          isDefault: false,
                         };
                       });
-                      array[index] = {...array[index], defaultValue: value.target.checked};
+                      array[index] = {...array[index], isDefault: value.target.checked};
                       setValues({array});
                     }}>
                       默认选项
@@ -102,7 +95,7 @@ const Defined = ({
           }
           <Button
             onClick={() => {
-              values.array.push({defaultValue: values.array.length === 0});
+              values.array.push({isDefault: values.array.length === 0});
               setValues(values);
             }}
             type="link"
@@ -110,33 +103,29 @@ const Defined = ({
             增加值
           </Button>
         </>;
-      case 'number':
+      case 'sku':
+      case 'pay':
         return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={number} />
-          </div>
-        </>;
-      case 'date':
-        return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={date} />
-          </div>
-        </>;
-      case 'img':
-        return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={img} />
-          </div>
-        </>;
-      case 'editor':
-        return <>
-          <Divider orientation="center">样式示例</Divider>
-          <div style={{textAlign:'center'}}>
-            <Image src={editor} />
-          </div>
+          {type === 'sku' && <div>
+            <Divider orientation="center">设置合同标的物</Divider>
+            <Editor
+              change
+              value={value.detailResults && value.detailResults[0].value}
+              module="contacts"
+              onChange={(value) => {
+                onValuesChange(0, {value,});
+              }} />
+          </div>}
+          {type === 'pay' && <div>
+            <Divider orientation="center">设置付款计划</Divider>
+            <Editor
+              change
+              module="pay"
+              value={value.detailResults && value.detailResults[0].value}
+              onChange={(value) => {
+                onValuesChange(0, {value,});
+              }} />
+          </div>}
         </>;
       default:
         break;
@@ -144,7 +133,7 @@ const Defined = ({
   };
 
   return <>
-    <div>
+    <div style={{padding: 16}}>
       <Radio.Group value={type} style={{width: '100%'}} onChange={(value) => {
         setType(value.target.value);
       }}>
@@ -163,7 +152,7 @@ const Defined = ({
         </Col>
         <Col span={5} style={{padding: 4}}>
           <Space>
-            <Checkbox onChange={(value) => {
+            <Checkbox checked={showTitle} onChange={(value) => {
               setShowTitle(value.target.checked);
             }}>显示标题</Checkbox>
           </Space>
@@ -174,4 +163,4 @@ const Defined = ({
   </>;
 };
 
-export default Defined;
+export default React.forwardRef(Defined);

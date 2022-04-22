@@ -84,7 +84,7 @@ const UpLoadImg = (props) => {
             setLoading(false);
             message.success('上传成功！');
             setImageUrl(`${oss.host}/${oss.key}`);
-            typeof onChange === 'function' && onChange(`${oss.host}/${oss.key}`);
+            typeof onChange === 'function' && onChange(`${oss.host}/${oss.key}`,oss.mediaId);
           }
         }
         }
