@@ -7,13 +7,13 @@
 
 import React, {useRef, useState} from 'react';
 import {Button, Col, message, Row, Modal as AntModal, Space} from 'antd';
-import { MegaLayout} from '@formily/antd';
+import {MegaLayout} from '@formily/antd';
 import ProCard from '@ant-design/pro-card';
 import {config} from 'ice';
 import Form from '@/components/Form';
 import {outstockOrderDetail, outstockOrderAdd, outstockOrderEdit} from '../outstockOrderUrl';
 import * as SysField from '../outstockOrderField';
-import { useRequest} from '@/util/Request';
+import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import PartsList from '@/pages/Erp/parts/PartsList';
 import {partsDetail} from '@/pages/Erp/parts/PartsUrl';
@@ -43,8 +43,8 @@ const OutstockOrderEdit = ({...props}) => {
   const {loading: partsLoading, run: parts} = useRequest(partsDetail, {
     manual: true,
     onSuccess: (res) => {
-      const applyDetails = formRef.current.getFieldValue('applyDetails');
-      formRef.current.setFieldValue('applyDetails', [...applyDetails,...res.parts.map((item) => {
+      const applyDetails = formRef.current.getFieldValue('applyDetails') || [];
+      formRef.current.setFieldValue('applyDetails', [...applyDetails, ...res.parts.map((item) => {
         return {
           ...item,
           number: (item.number || 0) * number
@@ -109,7 +109,7 @@ const OutstockOrderEdit = ({...props}) => {
 
       <Modal
         headTitle="根据BOM添加"
-        width={800}
+        width={1000}
         spuSkuId
         component={PartsList}
         getPartsId={(id) => {
