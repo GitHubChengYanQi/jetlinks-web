@@ -1,5 +1,4 @@
 import React from 'react';
-import {Space} from 'antd';
 import CustomerSelect from '@/pages/Crm/customer/CustomerEdit/components/CustomerSelect';
 import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton';
 

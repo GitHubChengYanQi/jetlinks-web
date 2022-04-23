@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Select, Spin} from 'antd';
 import {request, useRequest} from '@/util/Request';
-import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
+import {customerDetail, customerList} from '@/pages/Crm/customer/CustomerUrl';
+import {supplierDetail, supplierList} from '@/pages/Purshase/Supply/SupplyUrl';
+
+const params = {limit: 5, page: 1};
 
 const CustomerSelect = (props) => {
 
@@ -19,7 +22,13 @@ const CustomerSelect = (props) => {
 
   const [name, setName] = useState();
 
-  const {loading, data, run} = useRequest({url: '/customer/list?limit=5&page=1', method: 'POST',data:{...dataParams,supply}}, {
+  const api = supply ? {...supplierList, params} : {...customerList,params};
+  const detailApi = supply ? supplierDetail : customerDetail;
+
+  const {loading, data, run} = useRequest({
+    ...api,
+    data: {...dataParams, supply}
+  }, {
     debounceInterval: 300,
   });
 
@@ -33,7 +42,7 @@ const CustomerSelect = (props) => {
 
   const defaultValue = async () => {
     const res = await request({
-      ...customerDetail,
+      ...detailApi,
       data: {
         customerId: value
       }
@@ -52,39 +61,42 @@ const CustomerSelect = (props) => {
 
 
   return (
-    <Select
-      value={name}
-      notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
-      placeholder={placeholder}
-      style={style}
-      showSearch
-      allowClear
-      onChange={(value, option) => {
-        onSuccess(option && option.key);
-        onChange(option && option.key);
-        setName(value);
-      }}
-      onSearch={(value) => {
-        run({
-          data: {
-            customerName: value,
-            supply,
-            ...dataParams
-          }
-        });
-      }}
-    >
-      {options && options.map((items) => {
-        return (
-          <Select.Option
-            key={items.id}
-            title={items.label}
-            value={items.value}>
-            {items.label}
-          </Select.Option>
-        );
-      })}
-    </Select>
+    <div id="select" style={style}>
+      <Select
+        value={name}
+        notFoundContent={loading && <div style={{textAlign: 'center', padding: 16}}><Spin /></div>}
+        placeholder={placeholder}
+        showSearch
+        getPopupContainer={() => document.getElementById('select')}
+        allowClear
+        onChange={(value, option) => {
+          onSuccess(option && option.key);
+          onChange(option && option.key);
+          setName(value);
+        }}
+        onSearch={(value) => {
+          run({
+            params,
+            data: {
+              customerName: value,
+              supply,
+              ...dataParams
+            }
+          });
+        }}
+      >
+        {options && options.map((items) => {
+          return (
+            <Select.Option
+              key={items.id}
+              title={items.label}
+              value={items.value}>
+              {items.label}
+            </Select.Option>
+          );
+        })}
+      </Select>
+    </div>
   );
 };
 
