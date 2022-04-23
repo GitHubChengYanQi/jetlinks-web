@@ -27,6 +27,7 @@ import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
 import cookie from 'js-cookie';
+import Note from '@/components/Note';
 
 const {Column} = Table;
 const {FormItem} = Form;
@@ -207,10 +208,10 @@ const PartsList = ({
             return <div style={{minWidth: 100}}>{value && value.standard}</div>;
           }} />
           <Column title="物料" key={1} dataIndex="skuResult" render={(value) => {
-            return (<SkuResultSkuJsons skuResult={value} />);
+            return (<Note width={400}><SkuResultSkuJsons skuResult={value} /></Note>);
           }} />
-          <Column title="数量" key={2} dataIndex="number" render={(value) => {
-            return <>{value || null}</>;
+          <Column title="数量" key={2} dataIndex="number" align='center' render={(value) => {
+            return <div style={{minWidth:50}}>{value || null}</div>;
           }} />
           <Column title="备注" key={3} visible={spuSkuId && false} dataIndex="note" />
           <Column title="创建人" key={4} visible={spuSkuId && false} dataIndex="userResult" render={(value) => {
