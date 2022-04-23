@@ -306,7 +306,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       value={params.module === 'PO' && userInfo.customerId}
-                      dataParams={params.module === 'PO' && {status: 99}}
+                      selfEnterprise={params.module === 'PO'}
                       supply={params.module === 'PO' ? null : 0}
                       label="公司名称"
                       placeholder="请选择甲方公司"
@@ -420,7 +420,7 @@ const CreateOrder = ({...props}) => {
                   <Col span={12}>
                     <FormItem
                       value={params.module === 'SO' && userInfo.customerId}
-                      dataParams={params.module === 'SO' && {status: 99}}
+                      selfEnterprise={params.module === 'SO'}
                       supply={params.module === 'SO' ? null : 1}
                       label="公司名称"
                       placeholder="请选择乙方公司"

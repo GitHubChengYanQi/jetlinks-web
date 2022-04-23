@@ -5,13 +5,14 @@ import AddCustomerButton from '@/pages/Crm/customer/components/AddCustomerButton
 
 const SelectCustomer = (props) => {
 
-  const {value, onChange,supply = 0,placeholder,dataParams, width,noAdd} = props;
+  const {value, onChange,supply = 0,placeholder,dataParams, width,noAdd,selfEnterprise} = props;
 
   return (
     <>
       <>
         <CustomerSelect
           method={false}
+          selfEnterprise={selfEnterprise}
           dataParams={dataParams}
           placeholder={placeholder}
           style={{width,marginRight:!noAdd && 8}}

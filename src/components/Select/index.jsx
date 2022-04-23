@@ -70,7 +70,9 @@ const Select = (props) => {
           <Spin />
           :
           <AntSelect
+            // open
             {...other}
+            listHeight={200}
             getPopupContainer={()=>{
               return document.getElementById('select');
             }}
