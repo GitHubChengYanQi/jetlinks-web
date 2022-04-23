@@ -15,11 +15,12 @@ const AddSpu = (
     customerId,
     supply,
   }) => {
-  console.log(customerId);
 
   const [checkConfig, setCheckConfig] = useState([]);
 
   const [state] = store.useModel('dataSource');
+
+  // const []
 
   const [skuClassId, setSkuClassId] = useState();
 
@@ -144,6 +145,7 @@ const AddSpu = (
           style={{maxWidth:538}}
           supply={supply}
           params={{customerId}}
+          // getDetailLoading={}
           width="100%"
           value={value}
           spuClassId={skuClassId}

@@ -6,13 +6,15 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, notification, Space, Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import {useHistory} from 'ice';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import {orderList} from '@/pages/Erp/order/OrderUrl';
 import * as SysField from '../SysField/index';
+import Modal from '@/components/Modal';
+import CreateContract from '@/pages/Order/CreateContract';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -21,6 +23,10 @@ const OrderTable = (props) => {
 
   const history = useHistory(null);
   const tableRef = useRef(null);
+
+  const createContractRef = useRef();
+
+  const compoentRef = useRef();
 
   const module = () => {
     switch (props.location.pathname) {
@@ -108,28 +114,49 @@ const OrderTable = (props) => {
         }} />
         <Column title="创建时间" dataIndex="createTime" />
         <Column />
-        <Column title="操作" width={100} render={(value, record) => {
-          return <>
-            {!record.contractId && <Button type="link" onClick={() => {
-              notification.warn({
-                message: 'QAQ努力开发中~'
-              });
-            }}>创建合同</Button>}
-            <Button type="link" onClick={() => {
-              switch (props.location.pathname) {
-                case '/CRM/order':
-                  history.push(`/CRM/order/detail?id=${record.orderId}`);
-                  break;
-                case '/purchase/order':
-                  history.push(`/purchase/order/detail?id=${record.orderId}`);
-                  break;
-                default:
-                  break;
-              }
-            }}>详情</Button>
-          </>;
-        }} />
+        <Column
+          title={<div style={{textAlign: 'center'}}>操作</div>}
+          width={200}
+          align="right"
+          render={(value, record) => {
+            return <>
+              {!record.contractId && <Button type="link" onClick={() => {
+                createContractRef.current.open(false);
+              }}>创建合同</Button>}
+              <Button type="link" onClick={() => {
+                switch (props.location.pathname) {
+                  case '/CRM/order':
+                    history.push(`/CRM/order/detail?id=${record.orderId}`);
+                    break;
+                  case '/purchase/order':
+                    history.push(`/purchase/order/detail?id=${record.orderId}`);
+                    break;
+                  default:
+                    break;
+                }
+              }}>详情</Button>
+            </>;
+          }} />
       </Table>
+
+      <Modal
+        headTitle="创建合同"
+        width="auto"
+        ref={createContractRef}
+        compoentRef={compoentRef}
+        component={CreateContract}
+        onSuccess={() => {
+          createContractRef.current.close();
+        }}
+        footer={<Space>
+          <Button type="primary" onClick={() => {
+            compoentRef.current.submit();
+          }}>保存</Button>
+          <Button onClick={() => {
+            createContractRef.current.close();
+          }}>取消</Button>
+        </Space>}
+      />
 
     </>
   );

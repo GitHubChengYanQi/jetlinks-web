@@ -214,6 +214,7 @@ const CreateOrder = ({...props}) => {
         return value;
       }}
       effects={({setFieldState, getFieldState}) => {
+
         EffectsAction(setFieldState, getFieldState);
 
         FormEffectHooks.onFieldValueChange$('payPlan').subscribe(async ({value, active}) => {
@@ -756,15 +757,12 @@ const CreateOrder = ({...props}) => {
         </MegaLayout>
       </ProCard>
 
-      <Divider />
-
-      <MegaLayout labelWidth={labelWidth}>
+      <ProCard bodyStyle={{padding: 16}} className="h2Card" title="其他约定项" headerBordered>
         <FormItem
-          label="其他约定项"
           name="note"
           component={SysField.Note}
         />
-      </MegaLayout>
+      </ProCard>
     </Form>
 
     <Drawer

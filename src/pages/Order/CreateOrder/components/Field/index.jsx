@@ -36,6 +36,7 @@ import Select from '@/components/Select';
 import {taxRateListSelect} from '@/pages/Purshase/taxRate/taxRateUrl';
 import CheckBrand from '@/pages/Erp/brand/components/CheckBrand';
 import Message from '@/components/Message';
+import SelectCreate from '@/components/SelectCreate';
 
 
 export const AddSku = ({value = [], customerId, onChange, module, currency}) => {
@@ -43,6 +44,8 @@ export const AddSku = ({value = [], customerId, onChange, module, currency}) => 
   const addSpu = useRef();
 
   const [sku, setSku] = useState();
+
+  const [skuId, setSkuId] = useState();
 
   return (<>
     <AddSkuTable
@@ -70,7 +73,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency}) => 
           }
           onChange([...value, sku]);
           addSpu.current.close();
-        }}>确认并关闭</Button>
+        }}>完成并关闭</Button>
         <Button type="primary" disabled={!sku} onClick={() => {
           if (!(sku.purchaseNumber && sku.onePrice)) {
             return Message.warning('请输入数量和单价！');
@@ -85,17 +88,19 @@ export const AddSku = ({value = [], customerId, onChange, module, currency}) => 
           supply={module === 'PO'}
           customerId={customerId}
           onChange={(skuId, sku) => {
-            const res = {...sku, skuId};
-            setSku({
-              skuId: res.skuId,
-              coding: res.standard,
-              skuResult: res,
-              preordeNumber: 0,
-              unitId: res.spuResult && res.spuResult.unitId,
-              brandIds: res.brandIds
-            });
+            setSkuId(skuId);
+            if (sku) {
+              setSku({
+                skuId: sku.skuId,
+                coding: sku.standard,
+                skuResult: sku,
+                preordeNumber: 0,
+                unitId: sku.spuResult && sku.spuResult.unitId,
+                brandIds: sku.brandIds
+              });
+            }
           }}
-          value={sku && sku.skuId}
+          value={skuId}
         />
         {sku && <Descriptions column={3} className="descriptionsCenter" labelStyle={{width: 100}}>
           <Descriptions.Item label="单位" span={3}>
@@ -349,14 +354,18 @@ export const Percentum = (props) => {
 };
 
 export const TemplateId = (props) => {
-  return (
-    <SetSelectOrCascader
-      height="100%"
-      component={TemplateEdit}
-      placement="top"
-      api={templateListSelect}
-      title="添加合同模板"
-      width={200} {...props} />);
+
+  return <SelectCreate
+    component={TemplateEdit}
+    title="创建合同"
+    width="100vw"
+    createTitle="创建合同"
+    api={templateListSelect}
+    response={(res) => {
+      return res.data;
+    }}
+    {...props}
+  />;
 };
 
 export const Freight = (props) => {
@@ -394,10 +403,13 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({onChange, array}) => {
+export const AllField = ({
+  onChange = () => {
+  },
+  array
+}) => {
 
   const [values, setValues] = useState([]);
-  console.log(values);
 
   useEffect(() => {
     if (array && Array.isArray(array)) {
@@ -505,8 +517,7 @@ export const AllField = ({onChange, array}) => {
     <Descriptions style={{width: '85vw'}} bordered column={2} labelStyle={{minWidth: 150}} title="合同模板中的其他字段">
       {
         values.map((item, index) => {
-          const span = item.type === 'editor' ? 2 : 1;
-          return <Descriptions.Item key={index} span={span} label={item.name}>
+          return <Descriptions.Item key={index} label={item.name}>
             {replaceDom(item, index)}
           </Descriptions.Item>;
         })
