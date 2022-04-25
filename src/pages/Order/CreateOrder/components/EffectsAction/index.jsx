@@ -19,7 +19,7 @@ export const customerAAction = (setFieldState) => {
     api = customerDetail;
   }
 
-  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value,pristine}) => {
+  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value, pristine}) => {
     if (value) {
       const customer = await request({...api, data: {customerId: value}});
       if (!customer) {
@@ -173,7 +173,7 @@ export const customerBAction = (setFieldState) => {
     api = supplierDetail;
   }
 
-  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value,pristine}) => {
+  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value, pristine}) => {
     if (value) {
       const customer = await request({...api, data: {customerId: value}});
       setFieldState('partyBAdressId', (state) => {
@@ -308,24 +308,52 @@ const paymentAction = (setFieldState, getFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('money').subscribe(({value, pristine, inputed}) => {
+  FormEffectHooks.onFieldValueChange$('money').subscribe(async ({value, pristine, inputed}) => {
     if (value && !pristine && inputed) {
+      const paymentDetail = await new Promise((resolve) => {
+        resolve(getFieldState('paymentDetail'));
+      });
       setFieldState('paymentDetail', (state) => {
-        state.value = [{}];
+        if (paymentDetail && Array.isArray(paymentDetail.value)) {
+          state.value = paymentDetail.value.map((item) => {
+            if (item) {
+              return {
+                ...item,
+                money: (((item.percentum || 0) / 100) * value).toFixed(2),
+              };
+            }
+            return item;
+          });
+        } else {
+          state.value = [{}];
+        }
+
       });
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({active, name, value}) => {
-    const money = getFieldState('money');
-    const paymentDetail = getFieldState('paymentDetail');
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(async ({
+    name,
+    value,
+    inputed,
+  }) => {
+
+    if (!value) {
+      return;
+    }
+    const money = await new Promise((resolve) => {
+      resolve(getFieldState('money'));
+    });
+    const paymentDetail = await new Promise((resolve) => {
+      resolve(getFieldState('paymentDetail'));
+    });
     if (!money || !money.value) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
         return `paymentDetail.${$1}.percentum`;
       }), (state) => {
         state.value = null;
       });
-      return active && message.warn('请输入采购总价！');
+      return inputed && message.warn('请输入采购总价！');
     }
     if (paymentDetail && paymentDetail.value) {
       let percentum = 0;
@@ -344,10 +372,11 @@ const paymentAction = (setFieldState, getFieldState) => {
         return message.warn('总比例不能超过百分之百！');
       }
     }
+
     setFieldState(FormPath.transform(name, /\d/, ($1) => {
       return paymentDetail.value[$1] && `paymentDetail.${$1}.money`;
     }), (state) => {
-      state.value = money.value * (value / 100);
+      state.value = (money.value * (value / 100)).toFixed(2);
     });
     if (paymentDetail.value) {
       let percentum = 0;
@@ -368,17 +397,28 @@ const paymentAction = (setFieldState, getFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(({active, name, value}) => {
+  FormEffectHooks.onFieldValueChange$('paymentDetail.*.money').subscribe(async ({
+    name,
+    value,
+    inputed
+  }) => {
 
-    const money = getFieldState('money');
-    const paymentDetail = getFieldState('paymentDetail');
+    if (!inputed) {
+      return;
+    }
+    const money = await new Promise((resolve) => {
+      resolve(getFieldState('money'));
+    });
+    const paymentDetail = await new Promise((resolve) => {
+      resolve(getFieldState('paymentDetail'));
+    });
     if (!money || !money.value) {
       setFieldState(FormPath.transform(name, /\d/, ($1) => {
         return `paymentDetail.${$1}.money`;
       }), (state) => {
         state.value = null;
       });
-      return active && message.warn('请输入采购总价！');
+      return inputed && message.warn('请输入采购总价！');
     }
     if (paymentDetail && paymentDetail.value) {
       let number = 0;
@@ -400,7 +440,10 @@ const paymentAction = (setFieldState, getFieldState) => {
     setFieldState(FormPath.transform(name, /\d/, ($1) => {
       return paymentDetail.value[$1] && `paymentDetail.${$1}.percentum`;
     }), (state) => {
-      state.value = (value / money.value) * 100;
+      if (!value) {
+        return state.value = 0;
+      }
+      state.value = (((value) / money.value).toFixed(4)) * 100;
     });
   });
 };
