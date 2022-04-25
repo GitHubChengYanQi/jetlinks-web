@@ -19,7 +19,7 @@ export const customerAAction = (setFieldState) => {
     api = customerDetail;
   }
 
-  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value,pristine}) => {
     if (value) {
       const customer = await request({...api, data: {customerId: value}});
       if (!customer) {
@@ -173,7 +173,7 @@ export const customerBAction = (setFieldState) => {
     api = supplierDetail;
   }
 
-  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value,pristine}) => {
     if (value) {
       const customer = await request({...api, data: {customerId: value}});
       setFieldState('partyBAdressId', (state) => {
