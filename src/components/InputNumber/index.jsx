@@ -19,7 +19,7 @@ const InputNumber = (
     controls={false}
     min={1}
     style={{width}}
-    value={value || number}
+    value={value}
     placeholder={placeholder}
     {...props}
     onChange={(value) => {
@@ -27,7 +27,7 @@ const InputNumber = (
       setNumber(value);
     }}
     onBlur={() => {
-      onBlur(number);
+      onBlur(number || value);
     }}
   />;
 };
