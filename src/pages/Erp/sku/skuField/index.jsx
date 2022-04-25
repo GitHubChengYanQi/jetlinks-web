@@ -75,20 +75,20 @@ export const SpuId = (props) => {
   });
 
   return (<AutoComplete
-      value={value && value.name ? value.name : null}
-      notFoundContent={loading && <Spin/>}
-      options={options || []}
-      // disabled={skuId}
-      style={{width: 300}}
-      onSelect={(value, option) => {
-        onChange({name: value, spuId: option.id});
-      }}
-      onChange={async (value) => {
-        onChange({name: value});
-        action(value);
-      }}
-      placeholder="请输入物料名称"
-    />);
+    value={value && value.name ? value.name : null}
+    notFoundContent={loading && <Spin />}
+    options={options || []}
+    // disabled={skuId}
+    style={{width: 300}}
+    onSelect={(value, option) => {
+      onChange({name: value, spuId: option.id});
+    }}
+    onChange={async (value) => {
+      onChange({name: value});
+      action(value);
+    }}
+    placeholder="请输入物料名称"
+  />);
 };
 
 export const Attributes = (props) => {
@@ -102,6 +102,11 @@ export const ClassCode = (props) => {
 
 
 export const SkuName = (props) => {
+  return (<Input {...props} />);
+};
+
+
+export const SpuCoding = (props) => {
   return (<Input {...props} />);
 };
 
@@ -158,18 +163,18 @@ export const Specs = (props) => {
 };
 
 export const FileId = (props) => {
-  return (<FileUpload {...props} maxCount={1}/>);
+  return (<FileUpload {...props} maxCount={1} />);
 };
 
 export const Img = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="物料图片"/>
+    <FileUpload {...props} maxCount={1} title="物料图片" />
   </div>);
 };
 
 export const Bind = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="关联图纸"/>
+    <FileUpload {...props} maxCount={1} title="关联图纸" />
   </div>);
 };
 
