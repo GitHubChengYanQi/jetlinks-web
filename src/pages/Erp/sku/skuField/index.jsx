@@ -84,7 +84,11 @@ export const SpuId = (props) => {
       onChange({name: value, spuId: option.id});
     }}
     onChange={async (value) => {
-      onChange({name: value});
+      if (value === ''){
+        onChange(null);
+      }else {
+        onChange({name: value});
+      }
       action(value);
     }}
     placeholder="请输入物料名称"

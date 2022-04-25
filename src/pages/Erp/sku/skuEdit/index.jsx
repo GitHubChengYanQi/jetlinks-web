@@ -75,7 +75,7 @@ const SkuEdit = ({...props}, ref) => {
         details={(res) => {
           setDetails(res);
         }}
-        onError={(error) => {
+        onError={() => {
           openNotificationWithIcon('error');
         }}
         onSuccess={(res) => {
@@ -114,7 +114,7 @@ const SkuEdit = ({...props}, ref) => {
               setFieldState(
                 'spuCoding',
                 state => {
-                  state.value = spu.coding || 1;
+                  state.value = spu.coding || '无编码';
                   state.props.disabled  = true;
                 }
               );
@@ -122,7 +122,6 @@ const SkuEdit = ({...props}, ref) => {
               setFieldState(
                 'spuCoding',
                 state => {
-                  state.value = null;
                   state.props.disabled  = false;
                 }
               );
