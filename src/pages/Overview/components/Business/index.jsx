@@ -5,21 +5,26 @@ import {useHistory} from 'ice';
 import {ProfileOutlined} from '@ant-design/icons';
 import styles from '@/pages/Overview/index.module.scss';
 import {useRequest} from '@/util/Request';
+import Empty from '@/components/Empty';
 
 const Business = () => {
 
   const history = useHistory();
 
-  const {loading, data} = useRequest({url: '/crmBusiness/list', method: 'POST'});
+  const {loading, data} = useRequest({url: '/crmBusiness/list', method: 'POST'}, {manual: true});
 
   if (loading) {
     return (<ProSkeleton type="descriptions" />);
   }
 
+  if (!data) {
+    return <Empty />;
+  }
+
   const renderTitle = (title) => {
     return (
       <div>
-        <Avatar icon={<ProfileOutlined />} style={{marginRight:8}} />{title || '项目标题'}
+        <Avatar icon={<ProfileOutlined />} style={{marginRight: 8}} />{title || '项目标题'}
       </div>
     );
   };
@@ -28,7 +33,7 @@ const Business = () => {
   return (
     <Card title="进行中的项目" extra={<a onClick={() => {
       history.push('/CRM/business');
-    }}>全部项目</a>} style={{marginBottom: 24,cursor:'pointer'}}>
+    }}>全部项目</a>} style={{marginBottom: 24, cursor: 'pointer'}}>
       {data && data.map((items, index) => {
         if (index < 6) {
           return (
