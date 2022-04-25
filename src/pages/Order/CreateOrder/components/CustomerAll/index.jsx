@@ -24,9 +24,15 @@ export const Adress = (props) => {
   const [option, setOption] = useState([]);
 
   useEffect(() => {
-    setOption(options || []);
-    props.onChange(defaultValue || null);
-  }, [customerId]);
+    if (Array.isArray(options)) {
+      setOption(options || []);
+      let value = null;
+      if (options.map(item => item.value).includes(other.value)) {
+        value = other.value;
+      }
+      props.onChange(value || defaultValue);
+    }
+  }, [customerId, options]);
 
   const ref = useRef();
 
@@ -88,9 +94,15 @@ export const Contacts = (props) => {
   const [option, setOption] = useState([]);
 
   useEffect(() => {
-    setOption(options || []);
-    props.onChange(defaultValue || null);
-  }, [customerId]);
+    if (Array.isArray(options)) {
+      setOption(options || []);
+      let value = null;
+      if (options.map(item => item.value).includes(other.value)) {
+        value = other.value;
+      }
+      props.onChange(value || defaultValue);
+    }
+  }, [customerId, options]);
 
   const ref = useRef();
 
@@ -150,9 +162,15 @@ export const Phone = (props) => {
   const [option, setOption] = useState([]);
 
   useEffect(() => {
-    setOption(options || []);
-    props.onChange(defaultValue || null);
-  }, [contactsId]);
+    if (Array.isArray(options)) {
+      setOption(options || []);
+      let value = null;
+      if (options.map(item => item.value).includes(other.value)) {
+        value = other.value;
+      }
+      props.onChange(value || defaultValue);
+    }
+  }, [contactsId, options]);
 
   const ref = useRef();
 
@@ -214,20 +232,24 @@ export const BankAccount = (props) => {
   const [option, setOption] = useState([]);
 
   useEffect(() => {
-    if (customerId && options) {
+    if (customerId && Array.isArray(options)) {
       let array = options;
       if (bankId) {
         array = options.filter((item) => {
           return item.id === bankId;
         });
       }
-      props.onChange(defaultValue || null);
+      let value = null;
+      if (array.map(item => item.value).includes(other.value)) {
+        value = other.value;
+      }
+      props.onChange(value || defaultValue);
       setOption(array || []);
     } else {
       setOption([]);
       props.onChange(null);
     }
-  }, [customerId, bankId]);
+  }, [customerId, bankId, options]);
 
   const ref = useRef();
 
@@ -289,11 +311,7 @@ export const BankAccount = (props) => {
 
 export const Bank = (props) => {
 
-  const {customerId, defaultValue, ...other} = props;
-
-  useEffect(() => {
-    props.onChange(defaultValue || null);
-  }, [customerId]);
+  const {customerId, ...other} = props;
 
   const {loading, data, refresh} = useRequest(bankListSelect);
 

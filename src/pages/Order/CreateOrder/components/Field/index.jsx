@@ -265,18 +265,6 @@ export const Index = (props) => {
   return (<></>);
 };
 
-export const AdressId = (props) => {
-  const {customerId, ...other} = props;
-  return (customerId ? <SetSelectOrCascader
-    placeholder="请选择交货地址"
-    width={200}
-    customer={customerId}
-    api={adressIdSelect}
-    data={{customerId}}
-    title="添加其他地址"
-    component={AdressEdit} {...other} /> : '请选择甲方公司');
-};
-
 export const userId = (props) => {
   const {customerId, ...other} = props;
   return (customerId ? <SetSelectOrCascader
@@ -406,13 +394,7 @@ export const Note = (props) => {
   return (<Editor {...props} />);
 };
 
-export const AllField = ({
-  onChange = () => {
-  },
-  array
-}) => {
-
-  const [values, setValues] = useState([]);
+export const AllField = ({value: values = [], onChange, array}) => {
 
   useEffect(() => {
     if (array && Array.isArray(array)) {
@@ -431,7 +413,6 @@ export const AllField = ({
         };
       });
       onChange(newValues);
-      setValues(newValues);
     }
   }, [array]);
 
@@ -446,7 +427,6 @@ export const AllField = ({
       return item;
     });
     onChange(newValues);
-    setValues(newValues);
   };
 
   const replaceDom = (item) => {

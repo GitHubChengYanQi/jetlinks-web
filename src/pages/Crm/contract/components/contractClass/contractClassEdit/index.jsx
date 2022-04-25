@@ -6,7 +6,6 @@
  */
 
 import React, {useRef} from 'react';
-import {Input} from 'antd';
 import Form from '@/components/Form';
 import {contractClassDetail, contractClassAdd, contractClassEdit} from '../contractClassUrl';
 import * as SysField from '../contractClassField';
@@ -26,11 +25,12 @@ const ContractClassEdit = ({...props}) => {
   return (
     <Form
       {...props}
+      formType="contractClass"
       ref={formRef}
       api={ApiConfig}
       fieldKey="contractClassId"
     >
-      <FormItem label="名称" name="name" component={SysField.Name} required/>
+      <FormItem label="名称" name="name" component={SysField.Name} required />
     </Form>
   );
 };
