@@ -72,6 +72,7 @@ const SpuEdit = ({...props}, ref) => {
                 component={SysField.SpuClass}
                 required />
               <FormItem label="名称" name="name" component={SysField.Name} required />
+              <FormItem label="产品码" name="coding" component={SysField.Name} required />
               <FormItem label="单位" name="unitId" component={SysField.UnitId} required />
               <FormItem label="生产类型" name="productionType" component={SysField.Type} required />
             </ProCard>

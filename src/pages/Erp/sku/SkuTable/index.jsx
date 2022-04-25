@@ -9,12 +9,13 @@ import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {CopyOutlined} from '@ant-design/icons';
 import {config, useHistory} from 'ice';
+import cookie from 'js-cookie';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {deleteBatch, skuDelete, skuList} from '../skuUrl';
+import {deleteBatch, skuDelete, skuDetail, skuList} from '../skuUrl';
 import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
@@ -27,6 +28,7 @@ import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
 import Note from '@/components/Note';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
+import {useRequest} from '@/util/Request';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -35,6 +37,8 @@ const {baseURI} = config;
 
 
 const SkuTable = ({...props}, ref) => {
+
+  const token = cookie.get('tianpeng-token');
 
   const {spuClass, spuId, ...other} = props;
 
@@ -55,8 +59,9 @@ const SkuTable = ({...props}, ref) => {
   const formRef = useRef(null);
   const addParts = useRef(null);
   const tableRef = useRef(null);
-  const history = useHistory(null);
   const editParts = useRef(null);
+
+  const history = useHistory(null);
 
   const addBom = (id) => {
     setSkuId(id);
@@ -88,7 +93,7 @@ const SkuTable = ({...props}, ref) => {
           addRef.current.open(false);
           setEdit(false);
           setCopy(false);
-        }}/>
+        }} />
       </Space>
     );
   };
@@ -101,26 +106,26 @@ const SkuTable = ({...props}, ref) => {
           label="编码"
           placeholder="请输入编码"
           name="standard"
-          component={SysField.SelectSkuName}/>
+          component={SysField.SelectSkuName} />
         <FormItem
           label="名称"
           placeholder="请输入名称"
           name="spuName"
-          component={SysField.SelectSkuName}/>
+          component={SysField.SelectSkuName} />
         <FormItem
           label="型号"
           placeholder="请输入型号"
           name="name"
-          component={SysField.SelectSkuName}/>
+          component={SysField.SelectSkuName} />
         <FormItem
           name="spuClass"
           hidden
-          component={SysField.SelectSpuClass}/>
+          component={SysField.SelectSpuClass} />
         <FormItem
           name="spuId"
           hidden
           value={spuId}
-          component={SysField.SkuName}/>
+          component={SysField.SkuName} />
       </>
     );
   };
@@ -129,7 +134,7 @@ const SkuTable = ({...props}, ref) => {
   const footer = () => {
     return (
       <>
-        <Button type="link" disabled={sku.length !== 1} icon={<CopyOutlined/>} onClick={() => {
+        <Button type="link" disabled={sku.length !== 1} icon={<CopyOutlined />} onClick={() => {
           setEdit(true);
           setCopy(true);
           const value = {...sku[0], copy: true};
@@ -154,7 +159,7 @@ const SkuTable = ({...props}, ref) => {
   return (
     <>
       <Table
-        title={<Breadcrumb/>}
+        title={<Breadcrumb />}
         headStyle={spuId && {display: 'none'}}
         noRowSelection={spuId}
         api={skuList}
@@ -162,6 +167,7 @@ const SkuTable = ({...props}, ref) => {
         actionButton={<Space>
           <Button type="link">查看日志</Button>
           <Import
+            checkbox
             url={`${baseURI}Excel/importSku`}
             title="导入物料"
             module="sku"
@@ -169,10 +175,27 @@ const SkuTable = ({...props}, ref) => {
               tableRef.current.submit();
             }}
             templateUrl={`${baseURI}api/SkuExcel`}
+            onMerge={(data) => {
+              console.log(data);
+              addRef.current.open(data);
+            }}
+            onNext={(data) => {
+              console.log(data);
+            }}
           />
-          <Button type='link' icon={<Icon type="icon-daoru"/>} onClick={() => {
+          <div>
+            <a
+              href={`${baseURI}skuExcel/skuExport?authorization=${token}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Space>
+                <Icon type="icon-daoru" />
+                导出物料
+              </Space>
+            </a>
+          </div>
 
-          }}>导出物料</Button>
         </Space>}
         rowKey="skuId"
         isModal={false}
@@ -190,7 +213,7 @@ const SkuTable = ({...props}, ref) => {
         <Column title="物料编码" key={1} dataIndex="standard" render={(value, record) => {
           return (
             <>
-              <Code source="sku" id={record.skuId}/>
+              <Code source="sku" id={record.skuId} />
               <Button type="link" onClick={() => {
                 history.push(`/SPU/sku/${record.skuId}`);
               }}>
@@ -198,7 +221,7 @@ const SkuTable = ({...props}, ref) => {
               </Button>
             </>
           );
-        }}/>
+        }} />
 
         <Column title="名称 / 型号" key={2} dataIndex="skuName" render={(value, record) => {
           if (record.spuResult)
@@ -209,7 +232,7 @@ const SkuTable = ({...props}, ref) => {
                 {record.skuName}
               </>
             );
-        }} sorter/>
+        }} sorter />
 
         <Column title="名称" key={3} dataIndex="spuId" hidden render={(value, record) => {
           return (
@@ -217,7 +240,7 @@ const SkuTable = ({...props}, ref) => {
               {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
             </>
           );
-        }} sorter/>
+        }} sorter />
 
         <Column title="型号" key={4} dataIndex="spuId" hidden render={(value, record) => {
           return (
@@ -225,19 +248,19 @@ const SkuTable = ({...props}, ref) => {
               {record.spuResult && record.spuResult.name}
             </>
           );
-        }} sorter/>
+        }} sorter />
 
         <Column title="物料描述" key={5} render={(value, record) => {
           return (
-            <div style={{minWidth: 100,maxWidth:300}}>
-              <Note value={<SkuResultSkuJsons describe skuResult={record}/>}/>
+            <div style={{minWidth: 100, maxWidth: 300}}>
+              <Note value={<SkuResultSkuJsons describe skuResult={record} />} />
             </div>
           );
-        }}/>
+        }} />
 
         <Column title="规格" key={6} dataIndex="specifications" render={(value) => {
           return <div style={{minWidth: 50}}>{value}</div>;
-        }}/>
+        }} />
 
         <Column
           key={7}
@@ -250,9 +273,9 @@ const SkuTable = ({...props}, ref) => {
             return <>
               {record.user && record.user.name} / {record.createTime}
             </>;
-          }}/>
+          }} />
 
-        <Column/>
+        <Column />
 
         <Column title="操作" key={8} dataIndex="skuId" width={300} align="center" render={(value, record) => {
           return (
@@ -277,13 +300,13 @@ const SkuTable = ({...props}, ref) => {
                 addRef.current.open(record);
                 setCopy(false);
                 setEdit(true);
-              }}/>
+              }} />
               <DelButton api={skuDelete} value={value} onSuccess={() => {
                 tableRef.current.refresh();
-              }}/>
+              }} />
             </>
           );
-        }}/>
+        }} />
 
       </Table>
 
@@ -325,7 +348,7 @@ const SkuTable = ({...props}, ref) => {
               formRef.current.nextAdd(false);
             }}
           >完成</Button>
-        </>}/>
+        </>} />
 
 
       <Modal
