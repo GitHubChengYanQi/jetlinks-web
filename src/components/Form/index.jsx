@@ -2,18 +2,20 @@ import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react
 import {
   Form as FormilyForm, FormItem as AntFormItem, Submit,
   Reset,
-  FormButtonGroup, createFormActions,
+  FormButtonGroup, createAsyncFormActions,
 } from '@formily/antd';
 import {MegaLayout as antMegaLayout} from '@formily/antd-components';
 import useRequest from '@/util/Request/useRequest';
 import {SkeletonForm} from '@/components/Skeleton';
 
 import style from './index.module.less';
+import Draft from '@/components/Form/components/Draft';
 
-const formActionsPublic = createFormActions();
+const formActionsPublic = createAsyncFormActions();
 
 const FormWrapper = (
   {
+    formType,
     children,
     labelCol,
     wrapperCol,
@@ -31,7 +33,7 @@ const FormWrapper = (
     onSubmit = (values) => {
       return values;
     },
-    loading = () =>{
+    loading = () => {
 
     },
     onSuccess = () => {
@@ -66,7 +68,7 @@ const FormWrapper = (
 
 
   // 获取数据
-  const {run: find, loading: findLoad,refresh} = useRequest(api.view, {
+  const {run: find, loading: findLoad, refresh} = useRequest(api.view, {
     manual: true,
     onError: (error) => {
       onError(error);
@@ -102,9 +104,9 @@ const FormWrapper = (
     }
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     loading(saveLoad);
-  },[saveLoad]);
+  }, [saveLoad]);
 
 
   if (!formActions) {
@@ -112,8 +114,26 @@ const FormWrapper = (
   }
 
 
+  const getFormState = async () => {
+    const res = await new Promise((resolve) => {
+      formActions.getFormState().then((value) => {
+        resolve(value);
+      });
+    });
+    return res.values;
+  };
+
+  const setFormState = (value) => {
+    setFindData(undefined);
+    setTimeout(() => {
+      setFindData(value);
+    }, 0);
+  };
+
   useImperativeHandle(ref, () => ({
     ...formActions,
+    getFormState,
+    setFormState,
     refresh,
   }));
 
@@ -138,12 +158,11 @@ const FormWrapper = (
     );
   }
 
-
   return findData && <FormilyForm
-    style={{margin: 'auto',height:'100%',...formStyle}}
+    style={{margin: 'auto', height: '100%', ...formStyle}}
     actions={formActions}
     labelAlign={labelAlign}
-    layout='horizontal'
+    layout="horizontal"
     value={defaultValue}
     className={style.formWarp}
     labelCol={labelCol !== undefined ? labelCol : 6}
@@ -162,7 +181,7 @@ const FormWrapper = (
         }
       );
     }}
-    initialValues={{...findData,...initialValues}}
+    initialValues={{...findData, ...initialValues}}
     {...props}
   >
     {children}
@@ -170,6 +189,15 @@ const FormWrapper = (
     {NoButton && <FormButtonGroup offset={11}>
       <Submit showLoading>保存</Submit>
       <Reset>重置</Reset>
+      <Draft
+        type={formType}
+        getValues={async () => {
+          return await getFormState();
+        }}
+        onChange={(value) => {
+          setFormState(value);
+        }}
+      />
     </FormButtonGroup>}
   </FormilyForm>;
 };

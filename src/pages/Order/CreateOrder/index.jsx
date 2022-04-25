@@ -31,6 +31,7 @@ import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
 import {skuResults} from '@/pages/Erp/sku/skuUrl';
+import Draft from '@/components/Form/components/Draft';
 
 const {FormItem} = Form;
 
@@ -305,7 +306,7 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'PO' && userInfo.customerId}
+                      value={params.module === 'PO' ? userInfo.customerId : null}
                       dataParams={params.module === 'PO' && {status: 99}}
                       supply={params.module === 'PO' ? null : 0}
                       label="公司名称"
@@ -419,7 +420,7 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'SO' && userInfo.customerId}
+                      value={params.module === 'SO' ? userInfo.customerId : null}
                       dataParams={params.module === 'SO' && {status: 99}}
                       supply={params.module === 'SO' ? null : 1}
                       label="公司名称"
@@ -573,7 +574,7 @@ const CreateOrder = ({...props}) => {
             <FieldList
               name="paymentDetail"
               initialValue={[
-                {},
+                {payType:0,dateNumber:1,dateWay:1},
               ]}
             >
               {({state, mutators}) => {
@@ -603,17 +604,14 @@ const CreateOrder = ({...props}) => {
                                   :
                                   <>
                                     <FormItem
-                                      value={0}
                                       name={`paymentDetail.${index}.payType`}
                                       component={SysField.PayType}
                                     />
                                     <FormItem
-                                      value={1}
                                       name={`paymentDetail.${index}.dateNumber`}
                                       component={SysField.dateNumber}
                                     />
                                     <FormItem
-                                      value={0}
                                       name={`paymentDetail.${index}.dateWay`}
                                       component={SysField.DateWay}
                                     />
@@ -846,6 +844,15 @@ const CreateOrder = ({...props}) => {
           <Button onClick={() => {
             history.push('/purchase/toBuyPlan');
           }}>取消</Button>
+          <Draft
+            type={params.module}
+            getValues={async () => {
+              return await formRef.current.getFormState();
+            }}
+            onChange={(value) => {
+              formRef.current.setFormState(value);
+            }}
+          />
         </Space>
       </div>
     </Affix>

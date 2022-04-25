@@ -6,9 +6,8 @@ import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
 import {invoiceDetail} from '@/pages/Crm/invoice/invoiceUrl';
 
-
 export const customerAAction = (setFieldState) => {
-  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value, pristine, inputed}) => {
     if (value) {
       const customer = await request({...customerDetail, data: {customerId: value}});
       if (!customer) {
@@ -17,7 +16,9 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('partyAAdressId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.defaultAddress;
+        if (!pristine) {
+          state.props.defaultValue = customer.defaultAddress;
+        }
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {
           return {
             label: item.detailLocation || item.location,
@@ -28,7 +29,9 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('adressId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.defaultAddress;
+        if (!pristine) {
+          state.props.defaultValue = customer.defaultAddress;
+        }
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {
           return {
             label: item.detailLocation || item.location,
@@ -39,7 +42,9 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('partyAContactsId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.defaultContacts;
+        if (!pristine) {
+          state.props.defaultValue = customer.defaultContacts;
+        }
         state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
           return {
             label: item.contactsName,
@@ -50,7 +55,9 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('userId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.defaultContacts;
+        if (!pristine) {
+          state.props.defaultValue = customer.defaultContacts;
+        }
         state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
           return {
             label: item.contactsName,
@@ -61,12 +68,16 @@ export const customerAAction = (setFieldState) => {
 
       setFieldState('partyABankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.invoiceResult && customer.invoiceResult.bankId;
+        if (!pristine) {
+          state.value = customer.invoiceResult && customer.invoiceResult.bankId;
+        }
       });
 
       setFieldState('partyABankAccount', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.invoiceId;
+        if (!pristine) {
+          state.props.defaultValue = customer.invoiceId;
+        }
         state.props.options = customer.invoiceResults && customer.invoiceResults.map((item) => {
           return {
             label: item.bankAccount,
@@ -92,16 +103,16 @@ export const customerAAction = (setFieldState) => {
     } else {
       setFieldState('partyABankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = null;
         state.value = null;
       });
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('partyABankId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('partyABankId').subscribe(async ({value, pristine}) => {
     if (value) {
       setFieldState('partyABankAccount', (state) => {
         state.props.bankId = value;
+        state.props.defaultValue = null;
       });
     }
   });
@@ -115,12 +126,14 @@ export const customerAAction = (setFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('partyAContactsId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('partyAContactsId').subscribe(async ({value, pristine}) => {
     if (value) {
       const res = await request({...contactsDetail, data: {contactsId: value}});
       setFieldState('partyAPhone', (state) => {
         state.props.contactsId = value;
-        state.props.defaultValue = res.phoneParams && res.phoneParams[0].phoneId;
+        if (!pristine) {
+          state.props.defaultValue = res.phoneParams && res.phoneParams[0].phoneId;
+        }
         state.props.options = res.phoneParams && res.phoneParams.map((item) => {
           return {
             label: item.phone,
@@ -131,18 +144,21 @@ export const customerAAction = (setFieldState) => {
     } else {
       setFieldState('partyAPhone', (state) => {
         state.value = null;
+        state.props.defaultValue = null;
       });
     }
   });
 };
 
 export const customerBAction = (setFieldState) => {
-  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value, pristine, inputed}) => {
     if (value) {
       const customer = await request({...customerDetail, data: {customerId: value}});
       setFieldState('partyBAdressId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.defaultAddress;
+        if (!pristine) {
+          state.props.defaultValue = customer.defaultAddress;
+        }
         state.props.options = customer.adressParams && customer.adressParams.map((item) => {
           return {
             label: item.detailLocation || item.location,
@@ -153,7 +169,9 @@ export const customerBAction = (setFieldState) => {
 
       setFieldState('partyBContactsId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.defaultContacts;
+        if (!pristine) {
+          state.props.defaultValue = customer.defaultContacts;
+        }
         state.props.options = customer.contactsParams && customer.contactsParams.map((item) => {
           return {
             label: item.contactsName,
@@ -164,12 +182,16 @@ export const customerBAction = (setFieldState) => {
 
       setFieldState('partyBBankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.invoiceResult && customer.invoiceResult.bankId;
+        if (!pristine) {
+          state.value = customer.invoiceResult && customer.invoiceResult.bankId;
+        }
       });
 
       setFieldState('partyBBankAccount', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = customer.invoiceId;
+        if (!pristine) {
+          state.props.defaultValue = customer.invoiceId;
+        }
         state.props.options = customer.invoiceResults && customer.invoiceResults.map((item) => {
           return {
             label: item.bankAccount,
@@ -199,18 +221,19 @@ export const customerBAction = (setFieldState) => {
     } else {
       setFieldState('partyBBankId', (state) => {
         state.props.customerId = value;
-        state.props.defaultValue = null;
         state.value = null;
       });
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('partyBContactsId').subscribe(async ({value}) => {
+  FormEffectHooks.onFieldValueChange$('partyBContactsId').subscribe(async ({value, pristine}) => {
     if (value) {
       const res = await request({...contactsDetail, data: {contactsId: value}});
       setFieldState('partyBPhone', (state) => {
         state.props.contactsId = value;
-        state.props.defaultValue = res.phoneParams && res.phoneParams[0].phoneId;
+        if (!pristine) {
+          state.props.defaultValue = res.phoneParams && res.phoneParams[0].phoneId;
+        }
         state.props.options = res.phoneParams && res.phoneParams.map((item) => {
           return {
             label: item.phone,
@@ -236,18 +259,21 @@ export const customerBAction = (setFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(({value}) => {
-    setFieldState('partyBBankAccount', (state) => {
-      state.props.bankId = value;
-    });
+  FormEffectHooks.onFieldValueChange$('partyBBankId').subscribe(({value, pristine}) => {
+    if (value) {
+      setFieldState('partyBBankAccount', (state) => {
+        state.props.bankId = value;
+        state.props.defaultValue = null;
+      });
+    }
   });
 
 };
 
 const paymentAction = (setFieldState, getFieldState) => {
-  FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value}) => {
+  FormEffectHooks.onFieldValueChange$('detailParams').subscribe(({value, inputed}) => {
     let money = 0;
-    if (value) {
+    if (value && inputed) {
       value.map((item) => {
         if (item && item.totalPrice) {
           money += item.totalPrice;
@@ -260,8 +286,8 @@ const paymentAction = (setFieldState, getFieldState) => {
     }
   });
 
-  FormEffectHooks.onFieldValueChange$('money').subscribe(({value}) => {
-    if (value) {
+  FormEffectHooks.onFieldValueChange$('money').subscribe(({value, pristine, inputed}) => {
+    if (value && !pristine && inputed) {
       setFieldState('paymentDetail', (state) => {
         state.value = [{}];
       });
@@ -269,7 +295,6 @@ const paymentAction = (setFieldState, getFieldState) => {
   });
 
   FormEffectHooks.onFieldValueChange$('paymentDetail.*.percentum').subscribe(({active, name, value}) => {
-    console.log(value);
     const money = getFieldState('money');
     const paymentDetail = getFieldState('paymentDetail');
     if (!money || !money.value) {
