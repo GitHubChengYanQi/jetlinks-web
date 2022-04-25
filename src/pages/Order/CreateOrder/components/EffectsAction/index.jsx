@@ -1,15 +1,27 @@
 import {FormEffectHooks, FormPath} from '@formily/antd';
 import {message} from 'antd';
+import {getSearchParams} from 'ice';
 import {request} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
 import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
 import {invoiceDetail} from '@/pages/Crm/invoice/invoiceUrl';
+import {selfEnterpriseDetail, supplierDetail} from '@/pages/Purshase/Supply/SupplyUrl';
 
 export const customerAAction = (setFieldState) => {
-  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value, pristine, inputed}) => {
+
+  const params = getSearchParams();
+
+  let api = {};
+  if (params.module === 'PO') {
+    api = selfEnterpriseDetail;
+  } else if (params.module === 'SO') {
+    api = customerDetail;
+  }
+
+  FormEffectHooks.onFieldValueChange$('buyerId').subscribe(async ({value}) => {
     if (value) {
-      const customer = await request({...customerDetail, data: {customerId: value}});
+      const customer = await request({...api, data: {customerId: value}});
       if (!customer) {
         return message.warn('请检查供应商！');
       }
@@ -151,9 +163,19 @@ export const customerAAction = (setFieldState) => {
 };
 
 export const customerBAction = (setFieldState) => {
-  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value, pristine, inputed}) => {
+
+  const params = getSearchParams();
+
+  let api = {};
+  if (params.module === 'SO') {
+    api = selfEnterpriseDetail;
+  } else if (params.module === 'PO') {
+    api = supplierDetail;
+  }
+
+  FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value}) => {
     if (value) {
-      const customer = await request({...customerDetail, data: {customerId: value}});
+      const customer = await request({...api, data: {customerId: value}});
       setFieldState('partyBAdressId', (state) => {
         state.props.customerId = value;
         if (!pristine) {

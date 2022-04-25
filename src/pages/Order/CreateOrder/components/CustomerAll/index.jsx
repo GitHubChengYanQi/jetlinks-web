@@ -11,6 +11,7 @@ import {useRequest} from '@/util/Request';
 import {bankListSelect} from '@/pages/Purshase/bank/bankUrl';
 import BankEdit from '@/pages/Purshase/bank/bankEdit';
 import InvoiceEdit from '@/pages/Crm/invoice/invoiceEdit';
+import {selfEnterpriseList} from '@/pages/Purshase/Supply/SupplyUrl';
 
 export const Customer = (props) => {
   return (<SelectCustomer width="100%" noAdd {...props} />);

@@ -38,8 +38,20 @@ export const supplierDetail = {
   rowKey:'customerId'
 };
 
+export const selfEnterpriseDetail = {
+  url: '/selfEnterprise/detail',
+  method: 'POST',
+  rowKey:'customerId'
+};
+
 export const supplierList = {
   url: '/supplier/list',
+  method: 'POST',
+  rowKey:'customerId'
+};
+
+export const selfEnterpriseList = {
+  url: '/selfEnterprise/list',
   method: 'POST',
   rowKey:'customerId'
 };

@@ -445,7 +445,7 @@ const CustomerEdit = (
               </Row>
             </MegaLayout>
           </ProCard>
-          <div title="添加物料">
+          <div>
             <FormItem
               name="supplyParams"
               component={SysField.AddSku}

@@ -112,11 +112,15 @@ const InvoiceList = ({customer, refresh}) => {
           );
         }} width={300} />
       </Table>
-      <Drawer width={800} title="开票信息" customerId={customer && customer.customerId} component={InvoiceEdit}
-              onSuccess={() => {
-                tableRef.current.refresh();
-                ref.current.close();
-              }} ref={ref} />
+      <Drawer
+        width={800}
+        title="开票信息"
+        customerId={customer && customer.customerId}
+        component={InvoiceEdit}
+        onSuccess={() => {
+          tableRef.current.refresh();
+          ref.current.close();
+        }} ref={ref} />
     </>
   );
 };
