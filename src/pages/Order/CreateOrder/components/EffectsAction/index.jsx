@@ -309,7 +309,7 @@ const paymentAction = (setFieldState, getFieldState) => {
   });
 
   FormEffectHooks.onFieldValueChange$('money').subscribe(async ({value, pristine, inputed}) => {
-    if (value && !pristine && inputed) {
+    if (value) {
       const paymentDetail = await new Promise((resolve) => {
         resolve(getFieldState('paymentDetail'));
       });
