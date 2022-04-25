@@ -35,7 +35,7 @@ const Draft = (
     return JSON.parse(data);
   };
 
-  const {loading: listLoading, data: listDta, refresh} = useRequest({
+  const {loading: listLoading, data: listDta, refresh,run:listRun} = useRequest({
     ...list,
     data: {type},
     params: {limit: 5, page: 1}
@@ -87,7 +87,9 @@ const Draft = (
           width="100%"
           RangePicker
           onChange={(time) => {
-            console.log(time);
+            listRun({
+              data:{dates:time}
+            });
           }} />
       </div>
       <Menu selectable={false}>
