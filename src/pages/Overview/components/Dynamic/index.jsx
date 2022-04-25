@@ -6,7 +6,7 @@ const Dynamic = () => {
 
   return (
     <Card title="动态">
-      <Empty />
+      <Empty description='暂无动态' />
       {/*<List*/}
       {/*  itemLayout="horizontal"*/}
       {/*  dataSource={[1, 2, 3, 4, 5, 6]}*/}
