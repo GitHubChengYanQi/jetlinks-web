@@ -7,10 +7,10 @@
 
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {createFormActions, FormEffectHooks} from '@formily/antd';
-import {notification, Popover, Space} from 'antd';
+import { notification, Popover, Space} from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
-import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
+import {skuDetail, skuAdd, skuEdit, skuMarge} from '../skuUrl';
 import * as SysField from '../skuField';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
@@ -26,10 +26,20 @@ const SkuEdit = ({...props}, ref) => {
 
   const [copy, setCopy] = useState();
 
+  let save = '';
+
+  if (value.copy) {
+    save = skuAdd;
+  } else if (value.merge) {
+    save = skuMarge;
+  } else {
+    save = skuEdit;
+  }
+
   const ApiConfig = {
     view: skuDetail,
     add: addUrl || skuAdd,
-    save: value.copy ? skuAdd : skuEdit
+    save
   };
 
   const formRef = useRef();
@@ -68,6 +78,7 @@ const SkuEdit = ({...props}, ref) => {
         formActions={formActionsPublic}
         defaultValue={{
           'spu': value.spuResult,
+          ...(value.defaultValue || {}),
         }}
         api={ApiConfig}
         NoButton={false}
@@ -115,14 +126,14 @@ const SkuEdit = ({...props}, ref) => {
                 'spuCoding',
                 state => {
                   state.value = spu.coding || '无编码';
-                  state.props.disabled  = true;
+                  state.props.disabled = true;
                 }
               );
-            }else {
+            } else {
               setFieldState(
                 'spuCoding',
                 state => {
-                  state.props.disabled  = false;
+                  state.props.disabled = false;
                 }
               );
             }
@@ -151,10 +162,12 @@ const SkuEdit = ({...props}, ref) => {
           label="物料编码"
           name="standard"
           copy={value.copy}
+          data={value}
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
         />
+
         <FormItem
           label="物料分类"
           name="spuClass"

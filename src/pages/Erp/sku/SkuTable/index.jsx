@@ -15,20 +15,19 @@ import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {deleteBatch, skuDelete, skuDetail, skuList} from '../skuUrl';
+import {deleteBatch, skuDelete, skuList} from '../skuUrl';
 import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
-import Import from '@/pages/Erp/sku/SkuTable/Import';
 import Icon from '@/components/Icon';
 import PartsEdit from '@/pages/Erp/parts/PartsEdit';
 import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
 import Note from '@/components/Note';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import {useRequest} from '@/util/Request';
+import SkuImport from '@/pages/Erp/sku/SkuTable/SkuImport';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -166,23 +165,7 @@ const SkuTable = ({...props}, ref) => {
         tableKey="sku"
         actionButton={<Space>
           <Button type="link">查看日志</Button>
-          <Import
-            checkbox
-            url={`${baseURI}Excel/importSku`}
-            title="导入物料"
-            module="sku"
-            onOk={() => {
-              tableRef.current.submit();
-            }}
-            templateUrl={`${baseURI}api/SkuExcel`}
-            onMerge={(data) => {
-              console.log(data);
-              addRef.current.open(data.simpleResult);
-            }}
-            onNext={(data) => {
-              console.log(data);
-            }}
-          />
+          <SkuImport addRef={addRef} tableRef={tableRef} />
           <div>
             <a
               href={`${baseURI}skuExcel/skuExport?authorization=${token}`}

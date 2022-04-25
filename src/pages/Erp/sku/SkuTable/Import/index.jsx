@@ -18,6 +18,8 @@ const Import = (
     onNext = () => {
 
     },
+    onAdd = () => {
+    },
     checkbox,
   }) => {
 
@@ -53,7 +55,7 @@ const Import = (
           dataIndex: 'classItem'
         }, {
           title: '型号',
-          dataIndex: 'spuName'
+          dataIndex: 'specifications'
         }, {
           title: '单位',
           dataIndex: 'unit'
@@ -63,14 +65,24 @@ const Import = (
         }, {
           title: '参数配置',
           dataIndex: 'describe',
-          render: (value) => {
-            return value && value.map((item) => {
-              return `${item.attribute}:${item.value}`;
-            }).join(' , ');
-          }
         }, {
           title: '问题原因',
           dataIndex: 'error'
+        }, {
+          title: '操作',
+          dataIndex: 'actions',
+          render: (value, record) => {
+            switch (record.type) {
+              case 'noSpu':
+                return <Button
+                  type="link"
+                  onClick={() => {
+                    onAdd(record);
+                  }}>处理</Button>;
+              default:
+                break;
+            }
+          }
         },);
         break;
       case 'bom':
@@ -242,7 +254,7 @@ const Import = (
             }
             name="file"
             beforeUpload={(file) => {
-              if (file.name.indexOf('xlsx') === -1) {
+              if (file.name.indexOf('xls') === -1 && file.name.indexOf('xlsx') !== -1) {
                 message.warn('请上传xlsx类型的文件!');
                 return false;
               }
@@ -252,7 +264,7 @@ const Import = (
           >
             {filelist.length === 0 && <Space>
               <Button icon={<Icon type="icon-daoru" />} ghost type="primary">上传文件</Button>
-              附件支持类型：XLSX，最大不超过10M
+              附件支持类型：XLSX/XLS，最大不超过10M
             </Space>}
           </Upload>
         </Space>
@@ -277,7 +289,7 @@ const Import = (
             setSelectedRows(selectedRows);
           },
           getCheckboxProps: (record) => ({
-            disabled: record.type === 'codingRepeat'
+            disabled: ['codingRepeat', 'noSpu'].includes(record.type),
           }),
         }}
         rowKey="key"

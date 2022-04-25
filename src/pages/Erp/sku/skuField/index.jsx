@@ -7,7 +7,7 @@
 
 import React, {useEffect} from 'react';
 import {
-  Input, Radio, AutoComplete, Spin,
+  Input, Radio, AutoComplete, Spin, List, Button,
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -84,9 +84,9 @@ export const SpuId = (props) => {
       onChange({name: value, spuId: option.id});
     }}
     onChange={async (value) => {
-      if (value === ''){
+      if (value === '') {
         onChange(null);
-      }else {
+      } else {
         onChange({name: value});
       }
       action(value);
@@ -115,12 +115,36 @@ export const SpuCoding = (props) => {
 };
 
 export const Codings = (props) => {
+
+  const {data, ...other} = props;
+
   useEffect(() => {
-    if (props.copy) {
-      props.onChange(null);
+    if (other.copy) {
+      other.onChange(null);
     }
   }, []);
-  return (<Coding {...props} />);
+  return (<div>
+    <Coding {...other} />
+    {data && data.merge && <List size="small">
+      <List.Item>
+        <div>
+          已有编码：{data.standard}
+        </div>
+        <Button type="link" style={{padding: 0}} onClick={() => {
+          other.onChange(data.standard);
+        }}>使用</Button>
+      </List.Item>
+      <List.Item>
+        <div>
+          导入编码：{data.newCoding}
+        </div>
+        <Button type="link" style={{padding: 0}} onClick={() => {
+          other.onChange(data.newCoding);
+        }}>使用</Button>
+      </List.Item>
+    </List>}
+
+  </div>);
 };
 export const UnitId = (props) => {
   return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitEdit} {...props} />);
