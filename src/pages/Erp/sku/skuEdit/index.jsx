@@ -110,6 +110,22 @@ const SkuEdit = ({...props}, ref) => {
                   state.value = spu.unitId;
                 }
               );
+
+              setFieldState(
+                'spuCoding',
+                state => {
+                  state.value = spu.coding || 1;
+                  state.props.disabled  = true;
+                }
+              );
+            }else {
+              setFieldState(
+                'spuCoding',
+                state => {
+                  state.value = null;
+                  state.props.disabled  = false;
+                }
+              );
             }
           });
 
@@ -139,32 +155,34 @@ const SkuEdit = ({...props}, ref) => {
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
-          rules={[{
-            required: true,
-          }]}
         />
         <FormItem
           label="物料分类"
           name="spuClass"
           placeholder="请选择所属分类"
           component={SysField.SpuClass}
-          required/>
+          required />
         <FormItem
           label="产品名称"
           skuId={value.skuId}
           name="spu"
           component={SysField.SpuId}
-          required/>
+          required />
+        <FormItem
+          label="产品码"
+          name="spuCoding"
+          component={SysField.SpuCoding}
+          required />
         <FormItem
           label="型号"
           name="skuName"
           component={SysField.SkuName}
-          required/>
+          required />
         <FormItem
           label="单位"
           name="unitId"
           component={SysField.UnitId}
-          required/>
+          required />
         <FormItem
           label="二维码生成方式"
           name="batch"
@@ -199,34 +217,34 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="备注"
           name="remarks"
-          component={SysField.Note}/>
+          component={SysField.Note} />
         <FormItem
           label={<Space>
             附件
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
           name="fileId"
-          component={SysField.FileId}/>
+          component={SysField.FileId} />
         <FormItem
           label={<Space>
             物料图片
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
           name="images"
-          component={SysField.Img}/>
+          component={SysField.Img} />
         <FormItem
           label={<Space>
             关联图纸
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
           name="drawing"
-          component={SysField.Bind}/>
+          component={SysField.Bind} />
       </Form>
     </div>
   );
