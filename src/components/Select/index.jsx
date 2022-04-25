@@ -73,9 +73,6 @@ const Select = (props) => {
             // open
             {...other}
             listHeight={200}
-            getPopupContainer={()=>{
-              return document.getElementById('select');
-            }}
             bordered={border}
             options={options || data && data.map((items) => {
               return {
