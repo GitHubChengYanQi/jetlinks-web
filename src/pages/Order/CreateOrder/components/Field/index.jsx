@@ -22,7 +22,6 @@ import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 import {adressIdSelect} from '@/pages/Crm/adress/AdressUrl';
 import SetSelectOrCascader from '@/components/SetSelectOrCascader';
-import AdressEdit from '@/pages/Crm/adress/AdressEdit';
 import {templateListSelect} from '@/pages/Crm/template/TemplateUrl';
 import Editor from '@/components/Editor';
 import AddSkuTable from '@/pages/Order/CreateOrder/components/AddSkuTable';

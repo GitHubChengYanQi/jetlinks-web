@@ -177,7 +177,7 @@ const SkuTable = ({...props}, ref) => {
             templateUrl={`${baseURI}api/SkuExcel`}
             onMerge={(data) => {
               console.log(data);
-              addRef.current.open(data);
+              addRef.current.open(data.simpleResult);
             }}
             onNext={(data) => {
               console.log(data);
