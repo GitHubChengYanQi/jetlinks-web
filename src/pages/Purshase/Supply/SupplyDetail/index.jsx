@@ -6,7 +6,7 @@ const SupplyDetail = () => {
 
   const params = useParams();
 
-  return <CustomerDetail id={params.cid} />;
+  return <CustomerDetail id={params.cid} supply={1} />;
 };
 
 export default SupplyDetail;

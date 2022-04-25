@@ -133,6 +133,7 @@ const AddSkuTable = ({
       <Table.Column
         title="品牌 / 厂家"
         onCell={sharedOnCell}
+        width={200}
         dataIndex="defaultBrandResult"
         render={(value, record, index) => {
           return value

@@ -1,6 +1,6 @@
 import {request} from '@/util/Request';
 import {userInfo} from '@/Config/ApiUrl/system/user';
-import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
+import {selfEnterpriseDetail} from '@/pages/Purshase/Supply/SupplyUrl';
 
 export default {
   state: {},
@@ -16,7 +16,7 @@ export default {
     async getUserInfo() {
       try {
         const response = await request(userInfo);
-        let res = await request(customerDetail);
+        let res = await request(selfEnterpriseDetail);
         if (!res) {
           res = {};
         }

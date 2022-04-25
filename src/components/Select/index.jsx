@@ -63,14 +63,16 @@ const Select = (props) => {
   }
 
   return (
-    <>
+    <div id='select' style={{width:wid || '100%'}}>
       {
         loading
           ?
           <Spin />
           :
           <AntSelect
+            // open
             {...other}
+            listHeight={200}
             bordered={border}
             options={options || data && data.map((items) => {
               return {
@@ -82,7 +84,7 @@ const Select = (props) => {
             showArrow={showArrow}
             disabled={disabled}
             placeholder={placeholder}
-            style={{width: wid}}
+            style={{width: '100%'}}
             value={valueArray}
             onChange={(value, option) => {
               onChange(value, option);
@@ -96,7 +98,7 @@ const Select = (props) => {
               return option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
             }}
           />}
-    </>
+    </div>
   );
 };
 

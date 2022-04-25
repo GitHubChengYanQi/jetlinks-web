@@ -23,6 +23,8 @@ const SelectSku = (
     spuClassId,
     ids,
     style,
+    getDetailLoading = () => {
+    },
   }) => {
 
   const formRef = useRef();
@@ -97,12 +99,16 @@ const SelectSku = (
     });
   };
 
-  const {run: detail} = useRequest(skuDetail, {
+  const {loading: detailLoading, run: detail} = useRequest(skuDetail, {
     manual: true, onSuccess: (res) => {
       onChange(res.skuId, res);
       setChange(`${skuLabel(res)}standard:${res.standard}`);
     }
   });
+
+  useEffect(() => {
+    getDetailLoading(detailLoading);
+  }, [detailLoading]);
 
   useEffect(() => {
     if (value) {

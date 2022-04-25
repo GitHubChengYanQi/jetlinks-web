@@ -26,22 +26,24 @@ import InvoiceList from '@/pages/Crm/invoice/invoiceList';
 import SupplyList from '@/pages/Crm/supply/supplyList';
 import TreeSelectSee from '@/pages/Erp/TreeSelectSee';
 import store from '@/store';
-import Empty from "@/components/Empty";
+import Empty from '@/components/Empty';
+import {supplierDetail} from '@/pages/Purshase/Supply/SupplyUrl';
 
 const {TabPane} = Tabs;
 
-const CustomerDetail = ({id, status, ...props}) => {
+const CustomerDetail = ({id,supply = 0, status, ...props}) => {
 
   const params = useParams();
-
   const addRef = useRef(null);
   const refTrack = useRef(null);
   const submitRef = useRef(null);
   const history = useHistory();
 
+  const api = supply ? supplierDetail : customerDetail;
+
   const [areaData] = store.useModel('dataSource');
 
-  const {loading, data, refresh} = useRequest(customerDetail, {
+  const {loading, data, refresh} = useRequest(api, {
     defaultParams: {
       data: {
         customerId: params.cid || id,

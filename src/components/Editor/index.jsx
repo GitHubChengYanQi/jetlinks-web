@@ -22,6 +22,14 @@ const Editor = ({
     editorSave,
   }));
 
+  useEffect(() => {
+    // tinymce.init({
+    //   selector: 'editor',  // change this value according to your HTML
+    //   plugins: 'autoresize'
+    // });
+
+  }, []);
+
   const toobar = () => {
     switch (module) {
       case 'PHYSICALDETAIL':
@@ -37,7 +45,7 @@ const Editor = ({
   return (
     <div style={{width}}>
       <TinymceEditor
-        // id='editor'
+        id='editor'
         apiKey="no-api-key"
         onInit={(evt, editor) => {
           editorRef.current = editor;
@@ -46,10 +54,11 @@ const Editor = ({
         init={{
           language: 'zh_CN',
           branding: false,
-          height: '76vh',
+          // height: 'auto',
+          width: '100%',
           menubar: false,
           plugins: ['advlist', 'autolink', 'autolink'
-            , 'lists', 'link', 'image', 'charmap', 'print', 'preview',
+            , 'lists', 'link', 'image', 'charmap', 'print','autoresize', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
             'insertdatetime', 'media', 'table', 'paste', 'code', 'help', 'wordcount', 'editorPlugins'],
           toolbar: ['undo redo', ...toobar(), 'formatselect', 'fontsizeselect', 'bold italic backcolor', 'alignleft aligncenter', 'alignright alignjustify', 'bullist numlist outdent indent', 'table', 'actionsImg', 'removeformat', 'help'].join(' | ')
