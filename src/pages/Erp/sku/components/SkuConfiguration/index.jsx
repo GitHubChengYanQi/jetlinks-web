@@ -35,7 +35,7 @@ const SkuConfiguration = ({
   });
 
   const change = (array) => {
-    if (spuId){
+    if (spuId) {
       const sku = array.filter((item) => {
         return item.label && item.value;
       });
@@ -90,6 +90,15 @@ const SkuConfiguration = ({
 
   };
 
+  const sname = (name) => {
+    if (!name) {
+      return false;
+    }
+    return datas.data.filter(item => {
+      return item.label === name;
+    }).length > 1;
+  };
+
   return <>
     {
       datas.data.map((items, index) => {
@@ -111,6 +120,7 @@ const SkuConfiguration = ({
               名称：
               <AutoComplete
                 value={items.label}
+                style={{border: sname(items.label) && 'solid 1px red'}}
                 disabled={items.disabled}
                 filterOption={(inputValue, option) =>
                   option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1

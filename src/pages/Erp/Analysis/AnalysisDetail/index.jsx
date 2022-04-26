@@ -1,13 +1,10 @@
 import React, {useEffect} from 'react';
-import {Alert, Button, Card, Descriptions, Progress, Space, Spin} from 'antd';
+import {Alert, Card, Descriptions, Progress, Space, Spin} from 'antd';
 import Recommended from '@/pages/Erp/Analysis/Recommended';
 import OweSku from '@/pages/Erp/Analysis/OweSku';
 import Empty from '@/components/Empty';
 import {useRequest} from '@/util/Request';
-import Note from "@/components/Note";
-import InputNumber from "@/components/InputNumber";
-import styles from "@/pages/Erp/Analysis/SkuList/index.module.less";
-import {VerticalAlignTopOutlined} from "@ant-design/icons";
+import Note from '@/components/Note';
 
 const AnalysisDetail = (
   {

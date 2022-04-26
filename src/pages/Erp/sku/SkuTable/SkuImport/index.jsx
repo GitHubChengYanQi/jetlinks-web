@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {config} from 'ice';
 import {useRequest} from '@/util/Request';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
@@ -6,26 +6,42 @@ import Message from '@/components/Message';
 
 const {baseURI} = config;
 
-
 const SkuImport = ({
   tableRef,
-  addRef
+  addRef,
+  setEdit,
+  successKey,
+  setSuccessKey,
 }) => {
+
+  const ref = useRef();
 
   const [keys, setKeys] = useState([]);
 
   const {loading, run} = useRequest({url: '/sku/batchAdd', method: 'POST'}, {
     manual: true,
     onSuccess: () => {
-      Message.success('导入成功！');
+      Message.success('保存成功！');
+      tableRef.current.submit();
+      ref.current.changeTable(keys);
     },
     onError: () => {
       Message.error('导入失败!');
     }
   });
 
+  useEffect(() => {
+    if (successKey !== null) {
+      ref.current.changeTable([successKey]);
+    }
+  }, [successKey]);
+
   return <div>
     <Import
+      onImport={() => {
+        setSuccessKey(null);
+      }}
+      ref={ref}
       nextLoading={loading}
       checkbox
       url={`${baseURI}Excel/importSku`}
@@ -36,33 +52,10 @@ const SkuImport = ({
       }}
       templateUrl={`${baseURI}api/SkuExcel`}
       onMerge={(data) => {
-        const skuData = data.simpleResult || {};
 
-        const describe = [];
-        data.describe.split(',').map((item) => {
-          return describe.push({
-            label: item.split(':')[0],
-            value: item.split(':')[1],
-          });
-        });
-
-        skuData.list.map((item) => {
-          return describe.push({
-            label: item.itemAttributeResult && item.itemAttributeResult.attribute,
-            value: item.attributeValues,
-          });
-        });
-
-        addRef.current.open({
-          ...skuData,
-          newCoding: data.standard,
-          merge: true,
-          defaultValue: {
-            sku: describe
-          }
-        });
       }}
       onNext={(data) => {
+        setKeys(data.map(item => item.key));
         run({
           data: {
             skuParams: data.map((item) => {
@@ -90,22 +83,7 @@ const SkuImport = ({
         });
       }}
       onAdd={(data) => {
-        const describe = data.describe || '';
-        addRef.current.open({
-          defaultValue: {
-            standard: data.standard,
-            spu: {name: data.classItem},
-            skuName: data.skuName,
-            batch: data.isNotBatch === '是' ? 1 : 0,
-            specifications: data.specifications,
-            sku: describe.split(',').map((item) => {
-              return {
-                label: item.split(':')[0],
-                value: item.split(':')[1],
-              };
-            }),
-          }
-        });
+
       }}
     />
   </div>;

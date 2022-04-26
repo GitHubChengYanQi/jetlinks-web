@@ -16,7 +16,6 @@ import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import {deleteBatch, skuDelete, skuList} from '../skuUrl';
-import SkuEdit from '../skuEdit';
 import * as SysField from '../skuField';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -28,6 +27,9 @@ import Detail from '@/pages/ReSearch/Detail';
 import Note from '@/components/Note';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import SkuImport from '@/pages/Erp/sku/SkuTable/SkuImport';
+import {useRequest} from '@/util/Request';
+import Message from '@/components/Message';
+import AddSkuModal from '@/pages/Erp/sku/SkuTable/AddSkuModal';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -53,9 +55,10 @@ const SkuTable = ({...props}, ref) => {
 
   const [skuId, setSkuId] = useState();
 
+  const [successKey, setSuccessKey] = useState(null);
+
   const addRef = useRef(null);
   const showShip = useRef(null);
-  const formRef = useRef(null);
   const addParts = useRef(null);
   const tableRef = useRef(null);
   const editParts = useRef(null);
@@ -163,9 +166,15 @@ const SkuTable = ({...props}, ref) => {
         noRowSelection={spuId}
         api={skuList}
         tableKey="sku"
-        actionButton={<Space>
-          <Button type="link">查看日志</Button>
-          <SkuImport addRef={addRef} tableRef={tableRef} />
+        actionButton={<Space size={24}>
+          <a>查看日志</a>
+          <SkuImport
+            setEdit={setEdit}
+            addRef={addRef}
+            tableRef={tableRef}
+            successKey={successKey}
+            setSuccessKey={setSuccessKey}
+          />
           <div>
             <a
               href={`${baseURI}skuExcel/skuExport?authorization=${token}`}
@@ -207,29 +216,29 @@ const SkuTable = ({...props}, ref) => {
         }} />
 
         <Column title="名称 / 型号" key={2} dataIndex="skuName" render={(value, record) => {
-          if (record.spuResult)
-            return (
-              <>
-                {record.spuResult.name}
-                &nbsp;/&nbsp;
-                {record.skuName}
-              </>
-            );
-        }} sorter />
-
-        <Column title="名称" key={3} dataIndex="spuId" hidden render={(value, record) => {
+          const spu = record.spuResult || {};
           return (
             <>
-              {record.spuResult && record.spuResult.spuClassificationResult && record.spuResult.spuClassificationResult.name}
+              {spu.name}
+              &nbsp;/&nbsp;
+              {record.skuName}
             </>
           );
         }} sorter />
 
-        <Column title="型号" key={4} dataIndex="spuId" hidden render={(value, record) => {
+        <Column title="名称" key={3} dataIndex="spuResult" hidden render={(value) => {
           return (
-            <>
-              {record.spuResult && record.spuResult.name}
-            </>
+            <div style={{minWidth: 70}}>
+              {value && value.name}
+            </div>
+          );
+        }} sorter />
+
+        <Column title="型号" key={4} dataIndex="skuName" hidden render={(value) => {
+          return (
+            <div style={{minWidth: 70}}>
+              {value}
+            </div>
           );
         }} sorter />
 
@@ -251,7 +260,7 @@ const SkuTable = ({...props}, ref) => {
           sorter
           width={250}
           align="center"
-          dataIndex="createUser"
+          dataIndex="createTime"
           render={(value, record) => {
             return <>
               {record.user && record.user.name} / {record.createTime}
@@ -260,79 +269,46 @@ const SkuTable = ({...props}, ref) => {
 
         <Column />
 
-        <Column title="操作" key={8} dataIndex="skuId" width={300} align="center" render={(value, record) => {
-          return (
-            <>
-              <Button type="link" style={{color: record.inBom && 'green'}} onClick={() => {
-                if (record.inBom) {
-                  editParts.current.open(record.partsId);
-                } else {
-                  editParts.current.open(false);
-                  setSkuId(record.skuId);
-                }
-              }}>{record.inBom ? '有' : '无'}BOM</Button>
-              <Button type="link" style={{color: record.processResult && 'green'}} onClick={() => {
-                if (record.processResult) {
-                  showShip.current.open(record.processResult.processId);
-                } else {
-                  showShip.current.open(false);
-                  setSkuId(value);
-                }
-              }}>{record.processResult ? '有' : '无'}工艺</Button>
-              <EditButton onClick={() => {
-                addRef.current.open(record);
-                setCopy(false);
-                setEdit(true);
-              }} />
-              <DelButton api={skuDelete} value={value} onSuccess={() => {
-                tableRef.current.refresh();
-              }} />
-            </>
-          );
-        }} />
-
+        <Column
+          title="操作"
+          fixed="right"
+          key={8}
+          dataIndex="skuId"
+          width={300}
+          align="center"
+          render={(value, record) => {
+            return (
+              <>
+                <Button type="link" style={{color: record.inBom && 'green'}} onClick={() => {
+                  if (record.inBom) {
+                    editParts.current.open(record.partsId);
+                  } else {
+                    editParts.current.open(false);
+                    setSkuId(record.skuId);
+                  }
+                }}>{record.inBom ? '有' : '无'}BOM</Button>
+                <Button type="link" style={{color: record.processResult && 'green'}} onClick={() => {
+                  if (record.processResult) {
+                    showShip.current.open(record.processResult.processId);
+                  } else {
+                    showShip.current.open(false);
+                    setSkuId(value);
+                  }
+                }}>{record.processResult ? '有' : '无'}工艺</Button>
+                <EditButton onClick={() => {
+                  addRef.current.open(record);
+                  setCopy(false);
+                  setEdit(true);
+                }} />
+                <DelButton api={skuDelete} value={value} onSuccess={() => {
+                  tableRef.current.refresh();
+                }} />
+              </>
+            );
+          }} />
       </Table>
 
-      <Modal
-        title="物料"
-        compoentRef={formRef}
-        loading={setLoading}
-        component={SkuEdit}
-        onSuccess={(res, action) => {
-          if (action) {
-            tableRef.current.refresh();
-          } else {
-            tableRef.current.submit();
-          }
-          addRef.current.close();
-        }}
-        ref={addRef}
-        footer={<>
-          {copy && <Button
-            loading={loading}
-            type="primary"
-            ghost
-            onClick={() => {
-              formRef.current.copyAdd(true);
-            }}
-          >复制并拷贝BOM(工艺路线)</Button>}
-          {!edit && <Button
-            loading={loading}
-            type="primary"
-            ghost
-            onClick={() => {
-              formRef.current.nextAdd(true);
-            }}
-          >完成并添加下一个</Button>}
-          <Button
-            loading={loading}
-            type="primary"
-            onClick={() => {
-              formRef.current.nextAdd(false);
-            }}
-          >完成</Button>
-        </>} />
-
+      <AddSkuModal addRef={addRef} tableRef={tableRef} copy={copy} edit={edit} />
 
       <Modal
         width={1200}
@@ -348,7 +324,7 @@ const SkuTable = ({...props}, ref) => {
         onClose={() => {
           setSkuId(null);
         }}
-        onSuccess={(res) => {
+        onSuccess={() => {
           setSkuId(null);
           tableRef.current.refresh();
           editParts.current.close();

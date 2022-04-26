@@ -4,9 +4,9 @@ import Modal from '@/components/Modal';
 import SkuList from '@/pages/Erp/Analysis/SkuList';
 import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
-import store from "@/store";
+import store from '@/store';
 
-const Analysis = ({type}) => {
+const Analysis = ({type,style}) => {
 
   const skuRef = useRef();
 
@@ -33,7 +33,7 @@ const Analysis = ({type}) => {
   return (
     <div>
 
-      <Button type={type} onClick={() => {
+      <Button style={style} type={type} onClick={() => {
         ref.current.open(true);
       }}>物料分析</Button>
 

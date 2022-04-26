@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Row,Col} from 'antd';
+import {Row, Col} from 'antd';
 import SLogin from './component';
 
 import style from './index.module.scss';
@@ -13,7 +13,7 @@ const Login = () => {
   return (
     <div className={style.UserLayout}>
       <div className={style.panel}>
-        <Row style={{height:'100%'}}>
+        <Row style={{height: '100%'}}>
           <Col span={12} offset={12} className={style.loginPanel}>
             <div className={style.form}>
               <h3><img src={loginLogo} alt="logo" /></h3>

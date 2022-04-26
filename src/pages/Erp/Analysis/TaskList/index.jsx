@@ -1,12 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
-import {useHistory} from 'ice';
 import cookie from 'js-cookie';
 import {useRequest} from '@/util/Request';
-import Modal from '@/components/Modal';
-import AnalysisDetail from '@/pages/Erp/Analysis/AnalysisDetail';
 import store from '@/store';
+import AnalysisModal from '@/pages/Erp/Analysis/TaskList/components/AnalysisModal';
+import SkuImport from '@/pages/Erp/Analysis/TaskList/components/SkuImport';
 
 
 const TaskList = () => {
@@ -14,11 +13,9 @@ const TaskList = () => {
 
   const [state, dataDispatchers] = store.useModel('dataSource');
 
-  const [content, seContent] = useState({});
-
   const showRef = useRef();
 
-  const history = useHistory();
+  const skuImportRef = useRef();
 
   const {loading, cancel, data: List} = useRequest({
     url: '/asynTask/list',
@@ -61,19 +58,23 @@ const TaskList = () => {
                   <Button type="link" onClick={() => {
                     switch (item.type) {
                       case '物料分析':
-                        dataDispatchers.opentaskList(false);
                         showRef.current.open(item.taskId);
+                        break;
+                      case '物料导入':
+                        skuImportRef.current.open(item.taskId);
                         break;
                       default:
                         break;
                     }
+                    dataDispatchers.opentaskList(false);
                   }}>查看</Button>
                 </Space>
               }
             >
               <AntList.Item.Meta
                 title={item.type}
-                description={item.createTime} />
+                description={item.createTime}
+              />
             </AntList.Item>;
 
           }}
@@ -98,27 +99,9 @@ const TaskList = () => {
       </Button>
     </Popover>
 
-    <Modal
-      width="auto"
-      headTitle="物料推荐"
-      component={AnalysisDetail}
-      onSuccess={(res) => {
-        seContent(res);
-      }}
-      footer={<Space>
-        <Button onClick={() => {
-          showRef.current.close();
-        }}>关闭</Button>
-        <Button disabled={!Array.isArray(content.owe) || content.owe.length === 0} type="primary" onClick={() => {
-          const skus = content.owe.map((item) => {
-            return {skuId: item.skuId, applyNumber: item.lackNumber};
-          });
-          showRef.current.close();
-          history.push(`/purchase/purchaseAsk/add?skus=${JSON.stringify(skus)}`);
-        }}>发起采购</Button>
-      </Space>}
-      ref={showRef}
-    />
+    <AnalysisModal showRef={showRef} />
+
+    <SkuImport ref={skuImportRef} />
 
   </>;
 };

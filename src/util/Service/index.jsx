@@ -50,8 +50,8 @@ ajaxService.interceptors.response.use((response) => {
         }
       });
       throw new Error(response.message);
-    } else if (response.message.indexOf('JSON') !== -1) {
-      message.error('输入格式错误！！！');
+    } else if (errCode === 1001) {
+      return response;
     } else if (errCode !== 200) {
       message.error(response.message);
     }
