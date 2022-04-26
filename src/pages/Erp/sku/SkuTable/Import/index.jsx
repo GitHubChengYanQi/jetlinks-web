@@ -12,6 +12,7 @@ const Import = (
     url,
     title,
     module,
+    nextLoading,
     onMerge = () => {
 
     },
@@ -169,7 +170,7 @@ const Import = (
         </Button>];
       case 'sku':
         return [
-          <Button key="0" disabled={selectedRows.length === 0} onClick={() => {
+          <Button key="0" loading={nextLoading} disabled={selectedRows.length === 0} onClick={() => {
             onNext(selectedRows);
             // setTable({visible: false, columns: [], errData: []});
           }}>
@@ -274,7 +275,7 @@ const Import = (
 
     <Modal
       title="错误数据"
-      width={1500}
+      width={1600}
       visible={table.visible}
       footer={footer()}
       onCancel={() => {
