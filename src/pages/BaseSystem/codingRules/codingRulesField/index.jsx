@@ -91,12 +91,12 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           label: '分类码',
           // eslint-disable-next-line no-template-curly-in-string
-          value: '${classCode}'
+          value: '${skuClass}'
         }, {
           // eslint-disable-next-line no-template-curly-in-string
           label: '产品码',
           // eslint-disable-next-line no-template-curly-in-string
-          value: '${spuCode}'
+          value: '${spuCoding}'
         }
         ];
       case 1:
