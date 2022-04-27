@@ -30,7 +30,9 @@ export default function BasicLayout({children}) {
         throw new Error('本地登录信息错误');
       }
       const res = await request({url: '/rest/refreshToken', method: 'GET'});
-      cookie.set('tianpeng-token', res);
+      if (res){
+        cookie.set('tianpeng-token', res);
+      }
       dispatchers.getUserInfo();
       dataDispatchers.getSkuClass();
       dataDispatchers.getCustomerLevel();
