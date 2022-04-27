@@ -200,14 +200,15 @@ const SkuImport = ({...props}, ref) => {
                 onClick={() => {
                   const row = selectedRows[0];
                   const skuResult = row.simpleResult || {};
+                  const spuResult = skuResult.spuResult || {};
                   const describe = row.describe;
                   setErrKeys([row.detailId]);
                   addRef.current.open({
                     defaultValue: {
-                      spuClass: row.classId,
+                      spuClass: row.classId || skuResult.spuClass,
                       spu: {id: skuResult.spuId, name: row.classItem},
                       skuName: row.skuName,
-                      unitId: row.unitId,
+                      unitId: row.unitId || spuResult.unitId,
                       standard: row.standard,
                       batch: row.isNotBatch === '是' ? 1 : 0,
                       specifications: row.specifications,
