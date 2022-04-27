@@ -6,6 +6,7 @@ import {useRequest} from '@/util/Request';
 import store from '@/store';
 import AnalysisModal from '@/pages/Erp/Analysis/TaskList/components/AnalysisModal';
 import SkuImport from '@/pages/Erp/Analysis/TaskList/components/SkuImport';
+import SpuImport from '@/pages/Erp/Analysis/TaskList/components/SpuImport';
 
 
 const TaskList = () => {
@@ -14,8 +15,8 @@ const TaskList = () => {
   const [state, dataDispatchers] = store.useModel('dataSource');
 
   const showRef = useRef();
-
   const skuImportRef = useRef();
+  const spuImportRef = useRef();
 
   const {cancel, data: List} = useRequest({
     url: '/asynTask/list',
@@ -56,6 +57,9 @@ const TaskList = () => {
                     case '物料导入':
                       skuImportRef.current.open(item.taskId);
                       break;
+                    case '产品导入':
+                      spuImportRef.current.open(item.taskId);
+                      break;
                     default:
                       break;
                   }
@@ -94,6 +98,8 @@ const TaskList = () => {
     <AnalysisModal showRef={showRef} />
 
     <SkuImport ref={skuImportRef} />
+
+    <SpuImport ref={spuImportRef} />
 
   </>;
 };

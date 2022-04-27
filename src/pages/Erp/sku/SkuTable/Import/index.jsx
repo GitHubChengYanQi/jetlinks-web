@@ -129,6 +129,7 @@ const Import = (
           errorData = res;
           break;
         case 'sku':
+        case 'spu':
           Message.success('已加入队列！');
           setVisible(false);
           dataDispatchers.opentaskList(true);
@@ -163,8 +164,6 @@ const Import = (
 
   const [filelist, setFilelist] = useState([]);
 
-  const [selectedRows, setSelectedRows] = useState([]);
-
   const handleUpload = () => {
     const formData = new FormData();
     filelist.forEach(file => {
@@ -187,6 +186,8 @@ const Import = (
         return '《BOM模板》';
       case 'stock':
         return '《库存模板》';
+      case 'spu':
+        return '《产品导入模板》';
       default:
         break;
     }
@@ -195,10 +196,9 @@ const Import = (
   const modalTitle = () => {
     switch (module) {
       case 'customer':
-        return '异常数据';
       case 'bom':
-        return '异常数据';
       case 'stock':
+      case 'spu':
         return '异常数据';
       default:
         break;
@@ -208,23 +208,19 @@ const Import = (
   const footer = () => {
     switch (module) {
       case 'customer':
-        // setTable({visible: false, columns: [], errData: []});
         return null;
       case 'stock':
-        // setTable({visible: false, columns: [], errData: []});
         return null;
       case 'bom':
-        // setTable({visible: false, columns: [], errData: []});
         return null;
       default:
-        break;
+        return null;
     }
   };
 
 
   return <>
     <a onClick={() => {
-      setSelectedRows([]);
       setFilelist([]);
       setVisible(true);
       onImport();
@@ -264,7 +260,13 @@ const Import = (
             操作步骤：
           </div>
           <div>
-            1、下载 <a href={templateUrl}>{templateName()}</a>
+            1、下载
+            <a
+              href={templateUrl}
+              target="_blank"
+              rel="noreferrer">
+              {templateName()}
+            </a>
           </div>
           <div>
             2、打开下载表，将对应信息填入或粘贴至表内，为保证导入成功，请使用纯文本或数字

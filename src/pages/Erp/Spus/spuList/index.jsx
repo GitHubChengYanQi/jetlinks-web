@@ -6,8 +6,10 @@
  */
 
 import React, {useRef, useState} from 'react';
+import {Button, Space, Table as AntTable} from 'antd';
+import {config, useHistory} from 'ice';
+import cookie from 'js-cookie';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
@@ -15,15 +17,19 @@ import Form from '@/components/Form';
 import {deleteBatch, spuDelete, spuList} from '../spuUrl';
 import SpuEdit from '../spuEdit';
 import * as SysField from '../spuField';
-import {useHistory} from 'ice';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 import Code from '@/pages/Erp/spu/components/Code';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+const {baseURI} = config;
 
 const SpuList = () => {
+
+  const token = cookie.get('tianpeng-token');
+
   const ref = useRef(null);
   const formRef = useRef(null);
   const tableRef = useRef(null);
@@ -67,6 +73,14 @@ const SpuList = () => {
         api={spuList}
         rowKey="spuId"
         tableKey="spu"
+        // actionButton={<Space>
+        //   <Import
+        //     url={`${baseURI}spuExcel/spuImport`}
+        //     title="导入产品"
+        //     module="spu"
+        //     templateUrl={`${baseURI}spuExcel/spuTemp?authorization=${token}`}
+        //   />
+        // </Space>}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
