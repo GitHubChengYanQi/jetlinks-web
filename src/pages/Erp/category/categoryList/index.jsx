@@ -28,6 +28,7 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const CategoryList = () => {
+
   const ref = useRef(null);
   const configRef = useRef(null);
   const refAttribute = useRef(null);
@@ -84,13 +85,13 @@ const CategoryList = () => {
             record.children = null;
           }
           return (
-            <Button type="link" style={{padding: 0}} onClick={() => {
+            <a style={{padding: 0}} onClick={() => {
               refAttribute.current.open(record.key);
             }}>
               {
                 value
               }
-            </Button>
+            </a>
           );
         }} />
         <Column title="操作" align="right" render={(value, record) => {

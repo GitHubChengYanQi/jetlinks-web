@@ -26,9 +26,6 @@ import Drawer from '@/components/Drawer';
 import Detail from '@/pages/ReSearch/Detail';
 import Note from '@/components/Note';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import SkuImport from '@/pages/Erp/sku/SkuTable/SkuImport';
-import {useRequest} from '@/util/Request';
-import Message from '@/components/Message';
 import AddSkuModal from '@/pages/Erp/sku/SkuTable/AddSkuModal';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
 
@@ -55,8 +52,6 @@ const SkuTable = ({...props}, ref) => {
   const [copy, setCopy] = useState();
 
   const [skuId, setSkuId] = useState();
-
-  const [successKey, setSuccessKey] = useState(null);
 
   const addRef = useRef(null);
   const showShip = useRef(null);

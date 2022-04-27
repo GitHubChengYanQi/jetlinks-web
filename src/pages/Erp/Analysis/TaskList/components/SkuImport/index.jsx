@@ -66,7 +66,6 @@ const SkuImport = ({...props}, ref) => {
   }).length > 0;
 
 
-
   const addDisabled =  selectedRows.length !== 1 || !disabled;
   const meargeDisabled = selectedRows.length !== 1 || disabled;
   const nextDisabled = selectedRows.length === 0 || disabled || codingDisabled;
@@ -81,7 +80,6 @@ const SkuImport = ({...props}, ref) => {
   useImperativeHandle(ref, () => ({
     open,
   }));
-
 
   const searchForm = () => {
     return (
