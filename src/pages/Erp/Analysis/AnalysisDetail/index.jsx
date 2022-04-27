@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react';
-import {Alert, Button, Card, Descriptions, Progress, Space, Spin} from 'antd';
+import {Alert, Card, Descriptions, Progress, Space, Spin} from 'antd';
 import Recommended from '@/pages/Erp/Analysis/Recommended';
 import OweSku from '@/pages/Erp/Analysis/OweSku';
 import Empty from '@/components/Empty';
 import {useRequest} from '@/util/Request';
-import Note from "@/components/Note";
-import InputNumber from "@/components/InputNumber";
-import styles from "@/pages/Erp/Analysis/SkuList/index.module.less";
-import {VerticalAlignTopOutlined} from "@ant-design/icons";
+import Note from '@/components/Note';
+import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
 
 const AnalysisDetail = (
   {
@@ -50,22 +48,7 @@ const AnalysisDetail = (
   }
 
   if (data.allCount !== data.count) {
-    return <div style={{width: 500, textAlign: 'center', padding: 24}}>
-      <Progress
-        width={120}
-        type="circle"
-        format={percent => {
-          return <div style={{fontSize: 16}}>
-            {`分析中 ${percent}%`}
-          </div>;
-        }}
-        strokeColor={{
-          '0%': '#108ee9',
-          '100%': '#87d068',
-        }}
-        percent={(Math.floor((data.count / data.allCount) * 100))}
-      />
-    </div>;
+    return <TaskProgress data={data} title='分析中' />;
   }
 
   if (!data.allBomResult) {

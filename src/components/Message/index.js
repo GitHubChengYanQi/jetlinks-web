@@ -1,5 +1,5 @@
 import {Message as AfdMessage} from '@alifd/next';
-import {notification} from "antd";
+import {notification} from 'antd';
 
 const defaultConfig = {
   title: '提示',

@@ -25,6 +25,7 @@ const TableWarp = (
     maxHeight,
     loading: getLoading,
     showCard,
+    rowSelection,
     selectedRowKeys,
     api,
     tableData,
@@ -284,6 +285,7 @@ const TableWarp = (
                 onChange: (selectedRowKeys, selectedRows) => {
                   typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
                 },
+                ...rowSelection,
                 getCheckboxProps,
               }}
               footer={footer}

@@ -10,7 +10,7 @@ import {createFormActions, FormEffectHooks} from '@formily/antd';
 import {notification, Popover, Space} from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
-import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
+import {skuDetail, skuAdd, skuEdit, skuMarge} from '../skuUrl';
 import * as SysField from '../skuField';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
@@ -22,14 +22,31 @@ const formActionsPublic = createFormActions();
 
 const SkuEdit = ({...props}, ref) => {
 
-  const {value, addUrl, ...other} = props;
-
+  const {
+    value,
+    addUrl,
+    onRepeat = () => {
+    },
+    ...other
+  } = props;
   const [copy, setCopy] = useState();
+
+  const [submitValue, setSubmitValue] = useState({});
+
+  let save = '';
+
+  if (value.copy) {
+    save = skuAdd;
+  } else if (value.merge) {
+    save = skuMarge;
+  } else {
+    save = skuEdit;
+  }
 
   const ApiConfig = {
     view: skuDetail,
     add: addUrl || skuAdd,
-    save: value.copy ? skuAdd : skuEdit
+    save
   };
 
   const formRef = useRef();
@@ -68,6 +85,7 @@ const SkuEdit = ({...props}, ref) => {
         formActions={formActionsPublic}
         defaultValue={{
           'spu': value.spuResult,
+          ...(value.defaultValue || {}),
         }}
         api={ApiConfig}
         NoButton={false}
@@ -79,6 +97,10 @@ const SkuEdit = ({...props}, ref) => {
           openNotificationWithIcon('error');
         }}
         onSuccess={(res) => {
+          if (res.errCode === 1001) {
+            onRepeat(res.data, {...submitValue, errKey: value.errKey});
+            return;
+          }
           openNotificationWithIcon('success');
           if (!next) {
             props.onSuccess(res.data, value);
@@ -92,8 +114,10 @@ const SkuEdit = ({...props}, ref) => {
             type: 0,
             isHidden: true,
             skuId: value.copy ? null : value.skuId,
-            oldSkuId: copy ? value.skuId : null
+            oldSkuId: copy ? value.skuId : null,
+            spu: {...submitValue.spu, coding: submitValue.spuCoding}
           };
+          setSubmitValue(submitValue);
           return submitValue;
         }}
         effects={async () => {
@@ -114,15 +138,15 @@ const SkuEdit = ({...props}, ref) => {
               setFieldState(
                 'spuCoding',
                 state => {
-                  state.value = spu.coding || '无编码';
-                  state.props.disabled  = true;
+                  state.value = spu.coding;
+                  state.props.disabled = spu.coding;
                 }
               );
-            }else {
+            } else {
               setFieldState(
                 'spuCoding',
                 state => {
-                  state.props.disabled  = false;
+                  state.props.disabled = false;
                 }
               );
             }
@@ -151,10 +175,12 @@ const SkuEdit = ({...props}, ref) => {
           label="物料编码"
           name="standard"
           copy={value.copy}
+          data={value}
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
         />
+
         <FormItem
           label="物料分类"
           name="spuClass"

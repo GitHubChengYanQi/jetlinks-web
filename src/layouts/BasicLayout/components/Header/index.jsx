@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
   UnorderedListOutlined
 } from '@ant-design/icons';
-import {Menu, Drawer, Avatar, Button, Dropdown, Space, Popover} from 'antd';
+import {Menu, Drawer, Avatar, Button, Dropdown, Space} from 'antd';
 import {useHistory, config} from 'ice';
 import Icon from '@/components/Icon';
 import store from '@/store';
@@ -24,7 +24,6 @@ import daoxinyun from '@/asseset/imgs/daoxinyun.png';
 
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
-import {toggleFullScreen} from '@/layouts/BasicLayout/components/Header/components/FullScreen';
 import TaskList from "@/pages/Erp/Analysis/TaskList";
 
 const AppIcon = {
