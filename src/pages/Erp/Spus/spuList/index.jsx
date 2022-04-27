@@ -73,14 +73,14 @@ const SpuList = () => {
         api={spuList}
         rowKey="spuId"
         tableKey="spu"
-        // actionButton={<Space>
-        //   <Import
-        //     url={`${baseURI}spuExcel/spuImport`}
-        //     title="导入产品"
-        //     module="spu"
-        //     templateUrl={`${baseURI}spuExcel/spuTemp?authorization=${token}`}
-        //   />
-        // </Space>}
+        actionButton={<Space>
+          <Import
+            url={`${baseURI}spuExcel/spuImport`}
+            title="导入产品"
+            module="spu"
+            templateUrl={`${baseURI}spuExcel/spuTemp?authorization=${token}`}
+          />
+        </Space>}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
