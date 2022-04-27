@@ -41,7 +41,7 @@ const SetSelectOrCascader = ({disabled, options, component, title,height, module
           ref.current.close();
           setFalse();
         }}
-        onSuccess={() => {
+        onSuccess={(res) => {
           ref.current.close();
           setTrue();
         }} />

@@ -123,6 +123,7 @@ export const Codings = (props) => {
       other.onChange(null);
     }
   }, []);
+
   return (<div>
     <Coding {...other} />
     {data && data.merge && <List size="small">

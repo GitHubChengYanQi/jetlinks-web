@@ -1,6 +1,7 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Alert, Button, Dropdown, Input, Menu, Space, Spin, Table as AntTable} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
@@ -15,6 +16,8 @@ const {FormItem} = Form;
 
 const api = {url: '/asynTaskDetail/errorlist', method: 'POST'};
 const removeApi = {url: '/asynTaskDetail/removeBatch', method: 'POST'};
+
+const formActionsPublic = createFormActions();
 
 const SkuImport = ({...props}, ref) => {
 
@@ -100,6 +103,7 @@ const SkuImport = ({...props}, ref) => {
     } else {
       return <div style={{maxWidth: 1700}}>
         <Table
+          formActions={formActionsPublic}
           noSort
           contentHeight
           headStyle={{display: 'none'}}
@@ -205,7 +209,7 @@ const SkuImport = ({...props}, ref) => {
                   addRef.current.open({
                     defaultValue: {
                       spuClass: row.classId || skuResult.spuClass,
-                      spu: {id: skuResult.spuId, name: row.classItem},
+                      spu: {spuId: skuResult.spuId, name: row.classItem},
                       skuName: row.skuName,
                       unitId: row.unitId || spuResult.unitId,
                       standard: row.standard,
@@ -275,7 +279,7 @@ const SkuImport = ({...props}, ref) => {
                         return {
                           standard: item.standard,
                           spuClass: skuResult.spuClass,
-                          spu: {id: skuResult.spuId, name: spuResult.name},
+                          spu: {spuId: skuResult.spuId, name: spuResult.name},
                           skuName: skuResult.skuName,
                           unitId: spuResult.unitId,
                           batch: item.isNotBatch === '是' ? 1 : 0,

@@ -54,7 +54,7 @@ const OperationLogList = () => {
       >
         <Column title="日志类型" dataIndex="logType" />
         <Column title="日志名称" dataIndex="logName" />
-        <Column title="用户" dataIndex="userId" width={100} />
+        <Column title="用户" dataIndex="userName" width={100} />
         <Column title="类名称" dataIndex="className" />
         <Column title="方法名称" dataIndex="method" />
         <Column title="创建时间" dataIndex="createTime" />
