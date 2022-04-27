@@ -17,10 +17,6 @@ const Business = () => {
     return (<ProSkeleton type="descriptions" />);
   }
 
-  if (!data) {
-    return <Empty />;
-  }
-
   const renderTitle = (title) => {
     return (
       <div>
@@ -34,7 +30,7 @@ const Business = () => {
     <Card title="进行中的项目" extra={<a onClick={() => {
       history.push('/CRM/business');
     }}>全部项目</a>} style={{marginBottom: 24, cursor: 'pointer'}}>
-      {data && data.map((items, index) => {
+      {(data && data.length > 0) ? data.map((items, index) => {
         if (index < 6) {
           return (
             <Card.Grid key={index} onClick={() => {
@@ -56,7 +52,7 @@ const Business = () => {
         } else {
           return null;
         }
-      })}
+      }) : <Empty description='暂无项目' />}
     </Card>
   );
 };

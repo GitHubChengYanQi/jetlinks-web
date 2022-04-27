@@ -54,6 +54,7 @@ export const AddSku = ({value = [], customerId, onChange, module, currency}) => 
       onChange={onChange}
       onAddSku={() => {
         setSku(null);
+        setSkuId(null);
         addSpu.current.open(true);
       }}
     />
@@ -257,6 +258,17 @@ export const Money = (props) => {
   return (<InputNumber min={0} precision={2} {...props} />);
 };
 
+export const PayMoney = (props) => {
+
+  const {value, onChange} = props;
+
+  return (<InputNumber
+    min={0}
+    value={value}
+    onBlur={onChange}
+  />);
+};
+
 export const Index = (props) => {
   return (<></>);
 };
@@ -325,19 +337,13 @@ export const Percentum = (props) => {
 
   const {value, onChange} = props;
 
-  const [number, setNumber] = useState();
-
   return (<InputNumber
     min={1}
     max={100}
     addonAfter="%"
     value={value}
-    onChange={(value) => {
-      setNumber(value);
-    }}
-    onBlur={() => {
-      onChange(number);
-    }} />);
+    onBlur={onChange}
+  />);
 };
 
 export const TemplateId = (props) => {

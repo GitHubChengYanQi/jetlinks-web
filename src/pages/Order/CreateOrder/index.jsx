@@ -31,6 +31,7 @@ import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase
 import Empty from '@/components/Empty';
 import {skuResults} from '@/pages/Erp/sku/skuUrl';
 import Draft from '@/components/Form/components/Draft';
+import {payMoney} from './components/Field';
 
 const {FormItem} = Form;
 
@@ -632,7 +633,7 @@ const CreateOrder = ({...props}) => {
                             itemStyle={{margin: 0}}
                             label="付款金额"
                             name={`paymentDetail.${index}.money`}
-                            component={SysField.Money}
+                            component={SysField.PayMoney}
                           />
                         </Col>
                         <Col span={span}>
