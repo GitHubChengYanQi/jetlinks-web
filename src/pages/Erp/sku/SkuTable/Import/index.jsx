@@ -13,14 +13,7 @@ const Import = (
     url,
     title,
     module,
-    nextLoading,
-    onMerge = () => {
-    },
     onImport = () => {
-    },
-    onNext = () => {
-    },
-    onAdd = () => {
     },
     checkbox,
   }, ref) => {
@@ -28,8 +21,6 @@ const Import = (
   const [, dataDispatchers] = store.useModel('dataSource');
 
   const [table, setTable] = useState({visible: false, columns: [], errData: []});
-
-  const [resNum, setResNum] = useState({});
 
   const [visible, setVisible] = useState();
 
@@ -49,38 +40,6 @@ const Import = (
     const columns = [];
 
     switch (module) {
-      case 'sku':
-        columns.push({
-          width: 100,
-          align: 'cenetr',
-          title: '错误行',
-          dataIndex: 'line',
-        }, {
-          title: '物料编码',
-          dataIndex: 'standard'
-        }, {
-          title: '物料分类',
-          dataIndex: 'spuClass'
-        }, {
-          title: '产品',
-          dataIndex: 'classItem'
-        }, {
-          title: '型号',
-          dataIndex: 'specifications'
-        }, {
-          title: '单位',
-          dataIndex: 'unit'
-        }, {
-          title: '批量',
-          dataIndex: 'isNotBatch'
-        }, {
-          title: '参数配置',
-          dataIndex: 'describe',
-        }, {
-          title: '问题原因',
-          dataIndex: 'error'
-        },);
-        break;
       case 'bom':
         columns.push({
           title: '错误信息',
@@ -237,16 +196,6 @@ const Import = (
     switch (module) {
       case 'customer':
         return '异常数据';
-      case 'sku':
-        return <Space>
-          <div>
-            导入成功 <Button type="link" style={{padding: 0}}>{resNum.successNum}</Button> 条
-          </div>
-          /
-          <div>
-            导入失败 <Button type="link" style={{padding: 0}} danger>{resNum.errorNum}</Button> 条
-          </div>
-        </Space>;
       case 'bom':
         return '异常数据';
       case 'stock':
@@ -256,63 +205,16 @@ const Import = (
     }
   };
 
-
-  const disabled = selectedRows.filter((item) => {
-    return ['noSpu', 'noClass'].includes(item.type);
-  }).length > 0;
-
-  const codingDisabled = selectedRows.filter((item) => {
-    return ['codingRepeat'].includes(item.type);
-  }).length > 0;
-
   const footer = () => {
     switch (module) {
       case 'customer':
-        setTable({visible: false, columns: [], errData: []});
+        // setTable({visible: false, columns: [], errData: []});
         return null;
       case 'stock':
-        setTable({visible: false, columns: [], errData: []});
+        // setTable({visible: false, columns: [], errData: []});
         return null;
-      case 'sku':
-        return [
-          <Button
-            key="0"
-            disabled={
-              selectedRows.length !== 1
-              ||
-              !disabled
-              ||
-              codingDisabled
-            }
-            onClick={() => {
-              onAdd(selectedRows[0]);
-            }}>
-            处理
-          </Button>,
-          <Button
-            key="2"
-            disabled={selectedRows.length !== 1 || disabled || !codingDisabled}
-            type="primary"
-            ghost
-            onClick={() => {
-              onMerge(selectedRows[0]);
-            }}>
-            合并
-          </Button>,
-          <Button
-            key="1"
-            loading={nextLoading}
-            disabled={selectedRows.length === 0 || disabled || codingDisabled}
-            type="primary"
-            ghost
-            onClick={() => {
-              onNext(selectedRows);
-            }}>
-            直接导入
-          </Button>,
-        ];
       case 'bom':
-        setTable({visible: false, columns: [], errData: []});
+        // setTable({visible: false, columns: [], errData: []});
         return null;
       default:
         break;
@@ -418,13 +320,6 @@ const Import = (
       }}
     >
       <AntTable
-        rowSelection={checkbox && {
-          type: 'checkbox',
-          selectedRowKeys: selectedRows.map(item => item.key),
-          onChange: (selectedRowKeys, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
         rowKey="key"
         dataSource={table.errData}
         pagination={{

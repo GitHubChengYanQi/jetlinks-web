@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
+import {Button, List as AntList, notification, Popover, Progress, Space,} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
 import {useRequest} from '@/util/Request';
@@ -17,11 +17,11 @@ const TaskList = () => {
 
   const skuImportRef = useRef();
 
-  const {loading, cancel, data: List} = useRequest({
+  const {cancel, data: List} = useRequest({
     url: '/asynTask/list',
     method: 'POST'
   }, {
-    pollingInterval: 5000,
+    pollingInterval: 2000,
   });
 
   useEffect(() => {
@@ -30,56 +30,48 @@ const TaskList = () => {
     }
   }, [token]);
 
-  useEffect(() => {
-    if (state.showTaskList) {
-      dataDispatchers.opentaskList(true);
-    }
-  }, [state.showTaskList]);
-
   const taskList = () => {
     return <div style={{minWidth: 500, maxHeight: '50vh', overflow: 'auto'}}>
-      <Spin spinning={!List && loading}>
-        <AntList
-          dataSource={List || []}
-          renderItem={item => {
-            return <AntList.Item
-              extra={
-                <Space>
-                  <div style={{width: 200}}>
-                    <Progress
-                      strokeColor={{
-                        '0%': '#108ee9',
-                        '100%': '#87d068',
-                      }}
-                      percent={(Math.floor((item.count / item.allCount) * 100))}
-                    />
-                  </div>
+      <AntList
+        dataSource={List || []}
+        renderItem={item => {
+          return <AntList.Item
+            extra={
+              <Space>
+                <div style={{width: 200}}>
+                  <Progress
+                    strokeColor={{
+                      '0%': '#108ee9',
+                      '100%': '#87d068',
+                    }}
+                    percent={(Math.floor((item.count / item.allCount) * 100))}
+                  />
+                </div>
 
-                  <Button type="link" onClick={() => {
-                    switch (item.type) {
-                      case '物料分析':
-                        showRef.current.open(item.taskId);
-                        break;
-                      case '物料导入':
-                        skuImportRef.current.open(item.taskId);
-                        break;
-                      default:
-                        break;
-                    }
-                    dataDispatchers.opentaskList(false);
-                  }}>查看</Button>
-                </Space>
-              }
-            >
-              <AntList.Item.Meta
-                title={item.type}
-                description={item.createTime}
-              />
-            </AntList.Item>;
+                <Button type="link" onClick={() => {
+                  switch (item.type) {
+                    case '物料分析':
+                      showRef.current.open(item.taskId);
+                      break;
+                    case '物料导入':
+                      skuImportRef.current.open(item.taskId);
+                      break;
+                    default:
+                      break;
+                  }
+                  dataDispatchers.opentaskList(false);
+                }}>查看</Button>
+              </Space>
+            }
+          >
+            <AntList.Item.Meta
+              title={item.type}
+              description={item.createTime}
+            />
+          </AntList.Item>;
 
-          }}
-        />
-      </Spin>
+        }}
+      />
     </div>;
   };
 

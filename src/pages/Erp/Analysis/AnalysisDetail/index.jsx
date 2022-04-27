@@ -5,6 +5,7 @@ import OweSku from '@/pages/Erp/Analysis/OweSku';
 import Empty from '@/components/Empty';
 import {useRequest} from '@/util/Request';
 import Note from '@/components/Note';
+import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
 
 const AnalysisDetail = (
   {
@@ -47,22 +48,7 @@ const AnalysisDetail = (
   }
 
   if (data.allCount !== data.count) {
-    return <div style={{width: 500, textAlign: 'center', padding: 24}}>
-      <Progress
-        width={120}
-        type="circle"
-        format={percent => {
-          return <div style={{fontSize: 16}}>
-            {`分析中 ${percent}%`}
-          </div>;
-        }}
-        strokeColor={{
-          '0%': '#108ee9',
-          '100%': '#87d068',
-        }}
-        percent={(Math.floor((data.count / data.allCount) * 100))}
-      />
-    </div>;
+    return <TaskProgress data={data} title='分析中' />;
   }
 
   if (!data.allBomResult) {

@@ -93,7 +93,7 @@ const SkuEdit = ({...props}, ref) => {
         details={(res) => {
           setDetails(res);
         }}
-        onError={(error) => {
+        onError={() => {
           openNotificationWithIcon('error');
         }}
         onSuccess={(res) => {

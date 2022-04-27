@@ -30,6 +30,7 @@ import SkuImport from '@/pages/Erp/sku/SkuTable/SkuImport';
 import {useRequest} from '@/util/Request';
 import Message from '@/components/Message';
 import AddSkuModal from '@/pages/Erp/sku/SkuTable/AddSkuModal';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -168,12 +169,14 @@ const SkuTable = ({...props}, ref) => {
         tableKey="sku"
         actionButton={<Space size={24}>
           <a>查看日志</a>
-          <SkuImport
-            setEdit={setEdit}
-            addRef={addRef}
-            tableRef={tableRef}
-            successKey={successKey}
-            setSuccessKey={setSuccessKey}
+          <Import
+            url={`${baseURI}Excel/importSku`}
+            title="导入物料"
+            module="sku"
+            onOk={() => {
+              tableRef.current.submit();
+            }}
+            templateUrl={`${baseURI}api/SkuExcel`}
           />
           <div>
             <a

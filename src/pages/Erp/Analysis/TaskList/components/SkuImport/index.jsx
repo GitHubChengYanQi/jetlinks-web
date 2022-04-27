@@ -1,16 +1,18 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Alert, Button, Input, Progress, Space, Spin, Table as AntTable} from 'antd';
+import {Alert, Button, Input, notification, Space, Spin, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import {useRequest} from '@/util/Request';
 import Empty from '@/components/Empty';
 import Modal from '@/components/Modal';
 import AddSkuModal from '@/pages/Erp/sku/SkuTable/AddSkuModal';
+import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const api = {url: '/asynTaskDetail/list', method: 'POST'};
+const api = {url: '/asynTaskDetail/errorlist', method: 'POST'};
+const removeApi = {url: '/asynTaskDetail/removeBatch', method: 'POST'};
 
 const SkuImport = ({...props}, ref) => {
 
@@ -24,6 +26,8 @@ const SkuImport = ({...props}, ref) => {
 
   const [taskId, setTaskId] = useState();
 
+  const [errKeys, setErrKeys] = useState([]);
+
   const [selectedRows, setSelectedRows] = useState([]);
 
   const {loading, data, run, cancel} = useRequest({
@@ -36,6 +40,17 @@ const SkuImport = ({...props}, ref) => {
       if (res.allCount === res.count) {
         cancel();
       }
+    }
+  });
+
+  const load = data && (data.allCount === data.count);
+
+  const {loading: removeLoading, run: removeRun} = useRequest(removeApi, {
+    manual: true,
+    onSuccess: () => {
+      setSelectedRows([]);
+      setErrKeys([]);
+      tableRef.current.refresh();
     }
   });
 
@@ -71,31 +86,18 @@ const SkuImport = ({...props}, ref) => {
     if (!data) {
       return <Empty />;
     }
-    if (data.allCount !== data.count) {
-      return <div style={{width: 500, textAlign: 'center', padding: 24}}>
-        <Progress
-          width={120}
-          type="circle"
-          format={percent => {
-            return <div style={{fontSize: 16}}>
-              {`分析中 ${percent}%`}
-            </div>;
-          }}
-          strokeColor={{
-            '0%': '#108ee9',
-            '100%': '#87d068',
-          }}
-          percent={(Math.floor((data.count / data.allCount) * 100))}
-        />
-      </div>;
+    if (!load) {
+      return <TaskProgress data={data} title='导入中' />;
     } else {
       return <div style={{maxWidth: 1700}}>
         <Table
+          noSort
           contentHeight
           headStyle={{display: 'none'}}
           api={api}
           rowKey="detailId"
           searchForm={searchForm}
+          loading={removeLoading}
           ref={tableRef}
           value
           selectedRowKeys={selectedRows.map(item => item.detailId)}
@@ -108,10 +110,20 @@ const SkuImport = ({...props}, ref) => {
                 setSelectedRows(array);
               }
             },
+            onSelectAll: (selected, rows, changeRows) => {
+              const array = selectedRows.filter(item => !(changeRows.map(item => item.detailId).includes(item.detailId)));
+              if (selected) {
+                setSelectedRows([...array, ...changeRows.map(item => {
+                  return {...item.skuExcelItem, detailId: item.detailId};
+                })]);
+              } else {
+                setSelectedRows(array);
+              }
+            }
           }}
         >
-          <Column title="错误行" dataIndex="skuExcelItem" render={(value) => {
-            return <div style={{minWidth: 70}}>{value && value.line}</div>;
+          <Column title="错误行" dataIndex="skuExcelItem" align="center" render={(value) => {
+            return <div style={{minWidth: 50}}>{value && value.line}</div>;
           }} />
           <Column title="物料编码" dataIndex="skuExcelItem" render={(value) => {
             return <div style={{minWidth: 70}}>{value && value.standard}</div>;
@@ -123,6 +135,9 @@ const SkuImport = ({...props}, ref) => {
             return <div style={{minWidth: 70}}>{value && value.classItem}</div>;
           }} />
           <Column title="型号" dataIndex="skuExcelItem" render={(value) => {
+            return <div style={{minWidth: 70}}>{value && value.skuName}</div>;
+          }} />
+          <Column title="规格" dataIndex="skuExcelItem" render={(value) => {
             return <div style={{minWidth: 70}}>{value && value.specifications}</div>;
           }} />
           <Column title="单位" dataIndex="skuExcelItem" render={(value) => {
@@ -146,7 +161,7 @@ const SkuImport = ({...props}, ref) => {
     <Modal
       ref={modalRef}
       headTitle={
-        <Space>
+        load? <Space>
           <div>
             导入成功 <Button type="link" style={{padding: 0}}>{data && data.successNum}</Button> 条
           </div>
@@ -154,10 +169,10 @@ const SkuImport = ({...props}, ref) => {
           <div>
             导入失败 <Button type="link" style={{padding: 0}} danger>{data && data.errorNum}</Button> 条
           </div>
-        </Space>
+        </Space> : '物料导入'
       }
       width="auto"
-      footer={[
+      footer={load && [
         <Button
           key="0"
           type="primary"
@@ -168,20 +183,18 @@ const SkuImport = ({...props}, ref) => {
           onClick={() => {
             const row = selectedRows[0];
             const skuResult = row.simpleResult || {};
-            const spuResult = skuResult.spuResult || {};
-            const describe = row.describe || '';
-
+            const describe = row.describe;
+            setErrKeys([row.detailId]);
             addRef.current.open({
-              errKey: row.key,
               defaultValue: {
-                spuClass: skuResult.spuClass,
-                spu: {id: skuResult.spuId, name: spuResult.name},
-                skuName: skuResult.skuName,
-                unitId: spuResult.unitId,
+                spuClass: row.classId,
+                spu: {id: skuResult.spuId, name: row.classItem},
+                skuName: row.skuName,
+                unitId: row.unitId,
                 standard: row.standard,
                 batch: row.isNotBatch === '是' ? 1 : 0,
-                specifications: skuResult.specifications,
-                sku: describe.split(',').map((item) => {
+                specifications: row.specifications,
+                sku: describe && describe.split(',').map((item) => {
                   return {
                     label: item.split(':')[0],
                     value: item.split(':')[1],
@@ -194,7 +207,7 @@ const SkuImport = ({...props}, ref) => {
         </Button>,
         <Button
           key="2"
-          disabled={selectedRows.length !== 1 || disabled || !codingDisabled}
+          disabled={selectedRows.length !== 1 || disabled}
           type="primary"
           ghost
           onClick={() => {
@@ -202,7 +215,7 @@ const SkuImport = ({...props}, ref) => {
             const skuData = row.simpleResult || {};
 
             const describe = [];
-            row.describe.split(',').map((item) => {
+            row.describe && row.describe.split(',').map((item) => {
               return describe.push({
                 label: item.split(':')[0],
                 value: item.split(':')[1],
@@ -215,10 +228,11 @@ const SkuImport = ({...props}, ref) => {
                 value: item.attributeValues,
               });
             });
-
+            setErrKeys([row.detailId]);
             addRef.current.open({
-              errKey: row.key,
+              errKey: row.detailId,
               ...skuData,
+              specifications:row.specifications || skuData.specifications,
               newCoding: row.standard,
               merge: true,
               skuJsons: [],
@@ -231,17 +245,17 @@ const SkuImport = ({...props}, ref) => {
         </Button>,
         <Button
           key="1"
-          // loading={nextLoading}
           disabled={selectedRows.length === 0 || disabled || codingDisabled}
           type="primary"
           ghost
           onClick={() => {
-            addSkuRef.current.batchAdd({
+            setErrKeys(selectedRows.map(item => item.detailId));
+            addSkuRef.current.batchRun({
               data: {
                 skuParams: selectedRows.map((item) => {
                   const skuResult = item.simpleResult || {};
                   const spuResult = skuResult.spuResult || {};
-                  const describe = item.describe || '';
+                  const describe = item.describe;
 
                   return {
                     standard: item.standard,
@@ -251,7 +265,7 @@ const SkuImport = ({...props}, ref) => {
                     unitId: spuResult.unitId,
                     batch: item.isNotBatch === '是' ? 1 : 0,
                     specifications: item.specifications,
-                    sku: describe.split(',').map((item) => {
+                    sku: describe && describe.split(',').map((item) => {
                       return {
                         label: item.split(':')[0],
                         value: item.split(':')[1],
@@ -281,7 +295,16 @@ const SkuImport = ({...props}, ref) => {
 
     </Modal>
 
-    <AddSkuModal addRef={addRef} tableRef={tableRef} ref={addSkuRef} edit copy={false} />
+    <AddSkuModal
+      addRef={addRef}
+      tableRef={tableRef}
+      ref={addSkuRef}
+      edit
+      copy={false}
+      onSuccess={() => {
+        removeRun({data: {ids: errKeys}});
+      }}
+    />
   </>;
 };
 

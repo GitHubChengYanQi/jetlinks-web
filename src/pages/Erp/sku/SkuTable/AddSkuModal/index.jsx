@@ -10,15 +10,18 @@ const AddSkuModal = ({
   copy,
   edit,
   addRef,
+  onSuccess = () => {
+  },
 }, ref) => {
 
   const formRef = useRef();
 
   const [loading, setLoading] = useState();
 
-  const {loading: batchLoading, run: batchAdd} = useRequest({url: '/sku/batchAdd', method: 'POST'}, {
+  const {loading: batchLoading, run: batchRun} = useRequest({url: '/sku/batchAdd', method: 'POST'}, {
     manual: true,
     onSuccess: () => {
+      onSuccess();
       addRef.current.close();
       Message.success('保存成功！');
       if (tableRef) {
@@ -31,7 +34,7 @@ const AddSkuModal = ({
   });
 
   useImperativeHandle(ref, () => ({
-    batchAdd,
+    batchRun,
   }));
 
   return <>
@@ -59,12 +62,13 @@ const AddSkuModal = ({
           okButtonProps: {type: 'primary', ghost: true},
           cancelButtonProps: {type: 'primary', ghost: true, loading: batchLoading},
           okText: '合并物料',
-          cancelText: '直接保存',
+          cancelText: '继续保存',
           onOk: () => {
             addRef.current.close();
             addRef.current.open({
               errKey: newData.errKey,
               ...oldData,
+              specifications:newData.specifications || oldData.specifications,
               newCoding: newData.standard,
               merge: true,
               skuJsons: [],
@@ -74,7 +78,7 @@ const AddSkuModal = ({
             });
           },
           onCancel: () => {
-            batchAdd({
+            batchRun({
               data: {
                 skuParams: [newData]
               }
@@ -83,7 +87,7 @@ const AddSkuModal = ({
         });
       }}
       onSuccess={(res, action) => {
-
+        onSuccess(action);
         if (action) {
           tableRef.current.refresh();
         } else {

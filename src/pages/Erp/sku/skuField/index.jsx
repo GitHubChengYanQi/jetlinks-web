@@ -136,7 +136,7 @@ export const Codings = (props) => {
       </List.Item>
       <List.Item>
         <div>
-          导入编码：{data.newCoding}
+          合并编码：{data.newCoding}
         </div>
         <Button type="link" style={{padding: 0}} onClick={() => {
           other.onChange(data.newCoding);
