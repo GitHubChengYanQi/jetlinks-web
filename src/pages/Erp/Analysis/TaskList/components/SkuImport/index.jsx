@@ -65,6 +65,12 @@ const SkuImport = ({...props}, ref) => {
     return ['codingRepeat'].includes(item.type);
   }).length > 0;
 
+
+
+  const addDisabled =  selectedRows.length !== 1 || !disabled;
+  const meargeDisabled = selectedRows.length !== 1 || disabled;
+  const nextDisabled = selectedRows.length === 0 || disabled || codingDisabled;
+
   const open = (taskId) => {
     setSelectedRows([]);
     run({data: {taskId}});
@@ -177,14 +183,13 @@ const SkuImport = ({...props}, ref) => {
       width="auto"
       footer={load && [
         <Dropdown
+          disabled={addDisabled && meargeDisabled && nextDisabled}
           key={1}
           overlay={
             <Menu>
               <Menu.Item
                 key="0"
-                disabled={
-                  selectedRows.length !== 1 || !disabled
-                }
+                disabled={addDisabled}
                 onClick={() => {
                   const row = selectedRows[0];
                   const skuResult = row.simpleResult || {};
@@ -213,7 +218,7 @@ const SkuImport = ({...props}, ref) => {
               </Menu.Item>
               <Menu.Item
                 key="1"
-                disabled={selectedRows.length !== 1 || disabled}
+                disabled={meargeDisabled}
                 onClick={() => {
                   const row = selectedRows[0];
                   const skuData = row.simpleResult || {};
@@ -250,7 +255,7 @@ const SkuImport = ({...props}, ref) => {
               </Menu.Item>
               <Menu.Item
                 key="2"
-                disabled={selectedRows.length === 0 || disabled || codingDisabled}
+                disabled={nextDisabled}
                 onClick={() => {
                   setErrKeys(selectedRows.map(item => item.detailId));
                   addSkuRef.current.batchRun({
