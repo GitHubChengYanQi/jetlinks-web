@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Alert, Card, Descriptions, Progress, Space, Spin} from 'antd';
+import {Alert, Card, Descriptions, Space, Spin} from 'antd';
 import Recommended from '@/pages/Erp/Analysis/Recommended';
 import OweSku from '@/pages/Erp/Analysis/OweSku';
 import Empty from '@/components/Empty';
@@ -19,7 +19,7 @@ const AnalysisDetail = (
     method: 'POST'
   }, {
     manual: true,
-    pollingInterval: 5000,
+    pollingInterval: 2000,
     onSuccess: (res) => {
       if (res.allCount === res.count) {
         cancel();

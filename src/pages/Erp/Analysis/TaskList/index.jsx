@@ -17,25 +17,25 @@ const TaskList = () => {
   const skuImportRef = useRef();
   const spuImportRef = useRef();
 
-  const {loading,cancel, data: List,run} = useRequest({
+  const {loading, cancel, data: List, run} = useRequest({
     url: '/asynTask/list',
     method: 'POST'
   }, {
-    manual:true,
+    manual: true,
     pollingInterval: 2000,
   });
 
   useEffect(() => {
     if (state.showTaskList) {
       run();
-    }else {
+    } else if (List) {
       cancel();
     }
   }, [state.showTaskList]);
 
   const taskList = () => {
     return <div style={{minWidth: 500, maxHeight: '50vh', overflow: 'auto'}}>
-      <Spin spinning={!List && loading} tip='加载中...'>
+      <Spin spinning={!List && loading} tip="加载中...">
         <AntList
           dataSource={List || []}
           renderItem={item => {
