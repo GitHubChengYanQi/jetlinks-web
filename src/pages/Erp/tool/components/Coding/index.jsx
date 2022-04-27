@@ -1,22 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Select as AntdSelect, Space, Spin} from 'antd';
+import {Input, Select as AntdSelect, Space} from 'antd';
 import cookie from 'js-cookie';
-import {useRequest} from '@/util/Request';
 
 
 const Coding = ({value, width, onChange, module, placeholder}) => {
 
   const [state, setState] = useState(value ? 'defined' : (cookie.get('codingType') || 'defined'));
-
-  const {loading, run} = useRequest({
-    url: '/codingRules/defaultEncoding',
-    method: 'GET'
-  }, {
-    manual: true,
-    onSuccess: (res) => {
-      onChange(res);
-    }
-  });
 
   const options = [
     {
@@ -31,43 +20,31 @@ const Coding = ({value, width, onChange, module, placeholder}) => {
 
   useEffect(() => {
     if (!value && module !== undefined && cookie.get('codingType') === 'sys') {
-      run({
-        params: {
-          type: module
-        }
-      });
+
     }
   }, []);
 
-  if (loading) {
-    return <Spin />;
-  }
-
   return (
-    <Space style={{width}}>
+    <div style={{display: 'flex'}}>
       <AntdSelect
-        style={{width: 100}}
+        style={state === 'defined' ? {width: 100, marginRight: 16} : {}}
         value={state}
-        dropdownMatchSelectWidth={200}
+        // dropdownMatchSelectWidth={200}
         options={options}
         onSelect={(value) => {
           cookie.set('codingType', value);
           setState(value);
           if (value === 'sys') {
-            run({
-              params: {
-                type: module
-              }
-            });
+
           } else {
             onChange(null);
           }
         }}
       />
-      <Input value={value} placeholder={placeholder || '请输入自定义编码'} onChange={(value) => {
+      {state === 'defined' && <Input value={value} placeholder={placeholder || '请输入自定义编码'} onChange={(value) => {
         onChange(value.target.value);
-      }} />
-    </Space>
+      }} />}
+    </div>
   );
 };
 

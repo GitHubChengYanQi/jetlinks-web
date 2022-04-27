@@ -15,6 +15,12 @@ export const skuEdit = {
   method: 'POST',
 };
 
+
+export const skuMarge = {
+  url: '/sku/mirageSku',
+  method: 'POST',
+};
+
 export const skuDelete = {
   url: '/sku/delete',
   method: 'POST',

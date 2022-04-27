@@ -7,7 +7,7 @@
 
 import React, {useEffect} from 'react';
 import {
-  Input, Radio, AutoComplete, Spin,
+  Input, Radio, AutoComplete, Spin, List, Button,
 } from 'antd';
 import Cascader from '@/components/Cascader';
 import Select from '@/components/Select';
@@ -75,20 +75,24 @@ export const SpuId = (props) => {
   });
 
   return (<AutoComplete
-      value={value && value.name ? value.name : null}
-      notFoundContent={loading && <Spin/>}
-      options={options || []}
-      // disabled={skuId}
-      style={{width: 300}}
-      onSelect={(value, option) => {
-        onChange({name: value, spuId: option.id});
-      }}
-      onChange={async (value) => {
+    value={value && value.name ? value.name : null}
+    notFoundContent={loading && <Spin />}
+    options={options || []}
+    // disabled={skuId}
+    style={{width: 300}}
+    onSelect={(value, option) => {
+      onChange({name: value, spuId: option.id});
+    }}
+    onChange={async (value) => {
+      if (value === '') {
+        onChange(null);
+      } else {
         onChange({name: value});
-        action(value);
-      }}
-      placeholder="请输入物料名称"
-    />);
+      }
+      action(value);
+    }}
+    placeholder="请输入物料名称"
+  />);
 };
 
 export const Attributes = (props) => {
@@ -105,13 +109,42 @@ export const SkuName = (props) => {
   return (<Input {...props} />);
 };
 
+
+export const SpuCoding = (props) => {
+  return (<Input {...props} />);
+};
+
 export const Codings = (props) => {
+
+  const {data, ...other} = props;
+
   useEffect(() => {
-    if (props.copy) {
-      props.onChange(null);
+    if (other.copy) {
+      other.onChange(null);
     }
   }, []);
-  return (<Coding {...props} />);
+  return (<div>
+    <Coding {...other} />
+    {data && data.merge && <List size="small">
+      <List.Item>
+        <div>
+          已有编码：{data.standard}
+        </div>
+        <Button type="link" style={{padding: 0}} onClick={() => {
+          other.onChange(data.standard);
+        }}>使用</Button>
+      </List.Item>
+      <List.Item>
+        <div>
+          合并编码：{data.newCoding}
+        </div>
+        <Button type="link" style={{padding: 0}} onClick={() => {
+          other.onChange(data.newCoding);
+        }}>使用</Button>
+      </List.Item>
+    </List>}
+
+  </div>);
 };
 export const UnitId = (props) => {
   return (<SetSelectOrCascader api={unitListSelect} width={200} title="设置单位" component={UnitEdit} {...props} />);
@@ -158,18 +191,18 @@ export const Specs = (props) => {
 };
 
 export const FileId = (props) => {
-  return (<FileUpload {...props} maxCount={1}/>);
+  return (<FileUpload {...props} maxCount={1} />);
 };
 
 export const Img = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="物料图片"/>
+    <FileUpload {...props} maxCount={1} title="物料图片" />
   </div>);
 };
 
 export const Bind = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="关联图纸"/>
+    <FileUpload {...props} maxCount={1} title="关联图纸" />
   </div>);
 };
 

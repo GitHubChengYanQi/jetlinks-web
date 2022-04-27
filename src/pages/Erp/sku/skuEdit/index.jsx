@@ -10,7 +10,7 @@ import {createFormActions, FormEffectHooks} from '@formily/antd';
 import {notification, Popover, Space} from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
-import {skuDetail, skuAdd, skuEdit} from '../skuUrl';
+import {skuDetail, skuAdd, skuEdit, skuMarge} from '../skuUrl';
 import * as SysField from '../skuField';
 import {request} from '@/util/Request';
 import {spuDetail} from '@/pages/Erp/spu/spuUrl';
@@ -22,14 +22,31 @@ const formActionsPublic = createFormActions();
 
 const SkuEdit = ({...props}, ref) => {
 
-  const {value, addUrl, ...other} = props;
-
+  const {
+    value,
+    addUrl,
+    onRepeat = () => {
+    },
+    ...other
+  } = props;
   const [copy, setCopy] = useState();
+
+  const [submitValue, setSubmitValue] = useState({});
+
+  let save = '';
+
+  if (value.copy) {
+    save = skuAdd;
+  } else if (value.merge) {
+    save = skuMarge;
+  } else {
+    save = skuEdit;
+  }
 
   const ApiConfig = {
     view: skuDetail,
     add: addUrl || skuAdd,
-    save: value.copy ? skuAdd : skuEdit
+    save
   };
 
   const formRef = useRef();
@@ -68,6 +85,7 @@ const SkuEdit = ({...props}, ref) => {
         formActions={formActionsPublic}
         defaultValue={{
           'spu': value.spuResult,
+          ...(value.defaultValue || {}),
         }}
         api={ApiConfig}
         NoButton={false}
@@ -75,10 +93,14 @@ const SkuEdit = ({...props}, ref) => {
         details={(res) => {
           setDetails(res);
         }}
-        onError={(error) => {
+        onError={() => {
           openNotificationWithIcon('error');
         }}
         onSuccess={(res) => {
+          if (res.errCode === 1001) {
+            onRepeat(res.data, {...submitValue, errKey: value.errKey});
+            return;
+          }
           openNotificationWithIcon('success');
           if (!next) {
             props.onSuccess(res.data, value);
@@ -92,8 +114,10 @@ const SkuEdit = ({...props}, ref) => {
             type: 0,
             isHidden: true,
             skuId: value.copy ? null : value.skuId,
-            oldSkuId: copy ? value.skuId : null
+            oldSkuId: copy ? value.skuId : null,
+            spu: {...submitValue.spu, coding: submitValue.spuCoding}
           };
+          setSubmitValue(submitValue);
           return submitValue;
         }}
         effects={async () => {
@@ -108,6 +132,21 @@ const SkuEdit = ({...props}, ref) => {
                 'unitId',
                 state => {
                   state.value = spu.unitId;
+                }
+              );
+
+              setFieldState(
+                'spuCoding',
+                state => {
+                  state.value = spu.coding;
+                  state.props.disabled = spu.coding;
+                }
+              );
+            } else {
+              setFieldState(
+                'spuCoding',
+                state => {
+                  state.props.disabled = false;
                 }
               );
             }
@@ -136,35 +175,39 @@ const SkuEdit = ({...props}, ref) => {
           label="物料编码"
           name="standard"
           copy={value.copy}
+          data={value}
           placeholder="请输入自定义物料编码"
           component={SysField.Codings}
           module={0}
-          rules={[{
-            required: true,
-          }]}
         />
+
         <FormItem
           label="物料分类"
           name="spuClass"
           placeholder="请选择所属分类"
           component={SysField.SpuClass}
-          required/>
+          required />
         <FormItem
           label="产品名称"
           skuId={value.skuId}
           name="spu"
           component={SysField.SpuId}
-          required/>
+          required />
+        <FormItem
+          label="产品码"
+          name="spuCoding"
+          component={SysField.SpuCoding}
+          required />
         <FormItem
           label="型号"
           name="skuName"
           component={SysField.SkuName}
-          required/>
+          required />
         <FormItem
           label="单位"
           name="unitId"
           component={SysField.UnitId}
-          required/>
+          required />
         <FormItem
           label="二维码生成方式"
           name="batch"
@@ -199,34 +242,34 @@ const SkuEdit = ({...props}, ref) => {
         <FormItem
           label="备注"
           name="remarks"
-          component={SysField.Note}/>
+          component={SysField.Note} />
         <FormItem
           label={<Space>
             附件
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
           name="fileId"
-          component={SysField.FileId}/>
+          component={SysField.FileId} />
         <FormItem
           label={<Space>
             物料图片
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
           name="images"
-          component={SysField.Img}/>
+          component={SysField.Img} />
         <FormItem
           label={<Space>
             关联图纸
             <Popover content="附件支持类型：JPG/JPEG/PDF/DOC/DOCX/XLSX，最大不超过10MB">
-              <QuestionCircleOutlined style={{cursor: 'pointer'}}/>
+              <QuestionCircleOutlined style={{cursor: 'pointer'}} />
             </Popover>
           </Space>}
           name="drawing"
-          component={SysField.Bind}/>
+          component={SysField.Bind} />
       </Form>
     </div>
   );

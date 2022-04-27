@@ -58,7 +58,10 @@ const Detail = ({id}) => {
         <a
           href={`${baseURI}Excel/exportContractWord?id=${contract.contractId}&authorization=${token}`}
           target="_blank"
-          rel="noreferrer">合同导出word</a>}
+          rel="noreferrer">
+          合同导出word
+        </a>
+        }
         <Button
           onClick={() => {
             history.back();

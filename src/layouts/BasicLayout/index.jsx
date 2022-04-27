@@ -8,6 +8,7 @@ import store from '@/store';
 import WindowOpenImg from '@/components/Editor/components/WindowOpenImg';
 import WindowOpenSku from '@/components/Editor/components/WindowOpenSku';
 import WindowOpenPosition from '@/components/Editor/components/WindowOpenPosition';
+import {request} from '@/util/Request';
 
 const {Content} = Layout;
 
@@ -17,17 +18,19 @@ export default function BasicLayout({children}) {
   const [state, dispatchers] = store.useModel('user');
   const dataDispatchers = store.useModel('dataSource')[1];
 
-  useEffect(() => {
+  const Initialize = async () => {
     window.document.title = '道昕智造（沈阳）网络科技有限公司';
     try {
-      const data = cookie.get('tianpeng-token');
-      if (!data) {
+      const token = cookie.get('tianpeng-token');
+      if (!token) {
         throw new Error('本地登录信息不存在');
       }
-      const jwt = data.split('.');
+      const jwt = token.split('.');
       if (jwt.length !== 3) {
         throw new Error('本地登录信息错误');
       }
+      const res = await request({url: '/rest/refreshToken', method: 'GET'});
+      cookie.set('tianpeng-token', res);
       dispatchers.getUserInfo();
       dataDispatchers.getSkuClass();
       dataDispatchers.getCustomerLevel();
@@ -43,6 +46,10 @@ export default function BasicLayout({children}) {
       // TODO 登录超时处理
       history.push('/login');
     }
+  };
+
+  useEffect(() => {
+    Initialize();
   }, []);
 
   return (
