@@ -1,5 +1,5 @@
 import React, {useImperativeHandle, useRef, useState} from 'react';
-import {Alert, Avatar, Button, Dropdown, Input, Menu, Space, Spin, Table as AntTable} from 'antd';
+import {Alert, Button, Dropdown, Input, Menu, Space, Spin, Table as AntTable} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
@@ -8,8 +8,7 @@ import Empty from '@/components/Empty';
 import Modal from '@/components/Modal';
 import AddSkuModal from '@/pages/Erp/sku/SkuTable/AddSkuModal';
 import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
-import styles from '@/layouts/BasicLayout/components/Header/index.module.less';
-import {config} from 'ice';
+import Note from '@/components/Note';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -38,7 +37,7 @@ const SkuImport = ({...props}, ref) => {
     method: 'POST'
   }, {
     manual: true,
-    pollingInterval: 5000,
+    pollingInterval: 2000,
     onSuccess: (res) => {
       if (res.allCount === res.count) {
         cancel();
@@ -61,14 +60,16 @@ const SkuImport = ({...props}, ref) => {
     return ['noSpu', 'noClass'].includes(item.type);
   }).length > 0;
 
+  const nameDisabled = selectedRows.filter((item) => {
+    return ['spuRepeat', 'skuRepeat'].includes(item.type);
+  }).length > 0;
+
   const codingDisabled = selectedRows.filter((item) => {
     return ['codingRepeat'].includes(item.type);
   }).length > 0;
 
-
-
-  const addDisabled =  selectedRows.length !== 1 || !disabled;
-  const meargeDisabled = selectedRows.length !== 1 || disabled;
+  const addDisabled = selectedRows.length !== 1 || nameDisabled;
+  const meargeDisabled = selectedRows.length !== 1 || disabled || codingDisabled;
   const nextDisabled = selectedRows.length === 0 || disabled || codingDisabled;
 
   const open = (taskId) => {
@@ -131,20 +132,24 @@ const SkuImport = ({...props}, ref) => {
             }
           }}
         >
-          <Column title="错误行" dataIndex="skuExcelItem" align="center" render={(value) => {
+          <Column title="错误行" fixed="left" dataIndex="skuExcelItem" align="center" render={(value) => {
             return <div style={{minWidth: 50}}>{value && value.line}</div>;
           }} />
-          <Column title="物料编码" dataIndex="skuExcelItem" render={(value) => {
+          <Column title="物料编码" fixed="left" dataIndex="skuExcelItem" render={(value) => {
             return <div style={{minWidth: 70}}>{value && value.standard}</div>;
           }} />
           <Column title="物料分类" dataIndex="skuExcelItem" render={(value) => {
             return <div style={{minWidth: 70}}>{value && value.spuClass}</div>;
           }} />
           <Column title="产品" dataIndex="skuExcelItem" render={(value) => {
-            return <div style={{minWidth: 70}}>{value && value.classItem}</div>;
+            return <div style={{minWidth: 70}}>
+              <Note maxWidth={200}>{value && value.classItem}</Note>
+            </div>;
           }} />
           <Column title="型号" dataIndex="skuExcelItem" render={(value) => {
-            return <div style={{minWidth: 70}}>{value && value.skuName}</div>;
+            return <div style={{minWidth: 70}}>
+              <Note maxWidth={200}>{value && value.skuName}</Note>
+            </div>;
           }} />
           <Column title="规格" dataIndex="skuExcelItem" render={(value) => {
             return <div style={{minWidth: 70}}>{value && value.specifications}</div>;
@@ -156,7 +161,9 @@ const SkuImport = ({...props}, ref) => {
             return <div style={{minWidth: 70}}>{value && value.isNotBatch}</div>;
           }} />
           <Column title="参数配置" dataIndex="skuExcelItem" render={(value) => {
-            return <div style={{minWidth: 70}}>{value && value.describe}</div>;
+            return <div style={{minWidth: 70}}>
+              <Note maxWidth={200}>{value && value.describe}</Note>
+            </div>;
           }} />
           <Column title="问题原因" dataIndex="skuExcelItem" render={(value) => {
             return <div style={{minWidth: 70}}>{value && value.error}</div>;
@@ -297,7 +304,7 @@ const SkuImport = ({...props}, ref) => {
       }
     >
       {
-        loading
+        !data && loading
           ?
           <Spin spinning>
             <Alert
