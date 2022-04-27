@@ -26,15 +26,13 @@ const formActionsPublic = createFormActions();
 
 const SpuClassificationEdit = ({...props}) => {
 
-  const {type, ...other} = props;
-
   const formRef = useRef();
 
   const dispatchers = store.useModel('dataSource')[1];
 
   return (
     <Form
-      {...other}
+      {...props}
       ref={formRef}
       api={ApiConfig}
       formActions={formActionsPublic}
@@ -44,19 +42,19 @@ const SpuClassificationEdit = ({...props}) => {
         props.onSuccess();
       }}
       onSubmit={(value) => {
-        return {...value, type: type ? 1 : 2};
+        return {...value, type: 1};
       }}
     >
       <FormItem
-        label={type !== 1 ? '分类名称' : '上级分类'}
+        label='上级分类'
         name="pid"
         component={SysField.Pid}
         defaultParams={{data: {isNotproduct: 1}}}
-        top={type === 1}
+        top
         required />
       <FormItem label="分类名称" name="name" component={SysField.Name} required />
       <FormItem
-        label={<Space>{type !== 1 ? '产品码' : '分类码'} <Popover content={`${type !== 1 ? '产品码' : '分类码'}仅用于配置“编码规则”时使用`}>
+        label={<Space>分类码 <Popover content='产品码用于配置“编码规则”时使用'>
           <QuestionCircleOutlined style={{cursor: 'pointer'}} />
         </Popover></Space>}
         name="codingClass"
