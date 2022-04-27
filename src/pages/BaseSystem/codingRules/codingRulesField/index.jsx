@@ -91,7 +91,7 @@ export const Values = (props) => {
           // eslint-disable-next-line no-template-curly-in-string
           label: '分类码',
           // eslint-disable-next-line no-template-curly-in-string
-          value: '${classCoding}'
+          value: '${skuClass}'
         }, {
           // eslint-disable-next-line no-template-curly-in-string
           label: '产品码',
