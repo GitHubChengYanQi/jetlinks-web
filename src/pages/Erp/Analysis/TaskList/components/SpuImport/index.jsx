@@ -2,11 +2,14 @@ import React, {useRef} from 'react';
 import {Input, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
+import {createFormActions} from '@formily/antd';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const api = {url: '/asynTaskDetail/errorlist', method: 'POST'};
+
+const formActionsPublic = createFormActions();
 
 const SpuImport = ({taskId}) => {
 
@@ -20,9 +23,10 @@ const SpuImport = ({taskId}) => {
     );
   };
 
-  return <div style={{maxWidth:1500}}>
+  return <div style={{maxWidth:1300}}>
     <Table
       noSort
+      formActions={formActionsPublic}
       contentHeight
       headStyle={{display: 'none'}}
       api={api}
@@ -42,9 +46,6 @@ const SpuImport = ({taskId}) => {
       }} />
       <Column title="产品名称" dataIndex="spuExcel" render={(value) => {
         return <div style={{minWidth: 70}}>{value && value.spuName}</div>;
-      }} />
-      <Column title="规格" dataIndex="spuExcel" render={(value) => {
-        return <div style={{minWidth: 70}}>{value && value.specifications}</div>;
       }} />
       <Column title="单位" dataIndex="spuExcel" render={(value) => {
         return <div style={{minWidth: 70}}>{value && value.unit}</div>;
