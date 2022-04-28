@@ -130,6 +130,7 @@ export function Sortable(
     useDragOverlay = true,
     wrapperStyle = () => ({}),
   }: Props) {
+
   const [items, setItems] = useState<ItemData[]>(initialItems || []);
 
   const [activeId, setActiveId] = useState<string | null>(null);

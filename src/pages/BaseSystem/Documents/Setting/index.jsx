@@ -1,63 +1,47 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {getSearchParams} from 'ice';
-import {Affix, Button, Card, Input, List, Modal, Select, Space} from 'antd';
-import {DeleteOutlined, MenuOutlined, PlusOutlined} from '@ant-design/icons';
+import {Affix, Button, Card, Input, List as AntList, Modal, Select, Space} from 'antd';
+import {DeleteOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
 import Breadcrumb from '@/components/Breadcrumb';
 import {Sortable} from '@/components/Table/components/DndKit/Sortable';
 import {Handle} from '@/components/Table/components/DndKit/Item';
-
-export const Inp = ({value, onChange}) => {
-
-  const [val, setVal] = useState(value);
-
-  useEffect(() => {
-    setVal(value);
-  }, [value]);
-
-  return <Input
-    value={val}
-    placeholder="单据状态"
-    onChange={(value) => {
-      setVal(value.target.value);
-    }}
-    onBlur={() => {
-      onChange(val);
-    }}
-  />;
-
-};
+import {List} from '@/components/Table/components/DndKit/List';
+import Note from '@/components/Note';
+import Message from '@/components/Message';
 
 const Setting = () => {
 
   const params = getSearchParams();
 
   const [status, setStatus] = useState([
-    {label: '发起', value: 0},
-    {label: '完成', value: 99},
-    {label: '拒绝', value: -1},
+    {label: '发起', value: 0, actions: [], index: 0, default: true},
+    {label: '完成', value: 99, actions: [], index: 1, default: true},
+    {label: '拒绝', value: -1, actions: [], index: 2, default: true},
   ]);
 
   const [visible, setVisible] = useState();
 
   const [statuName, setStatuName] = useState();
 
+  const disabled = (value) => {
+    return status.filter((item) => {
+      return item.actions.filter(item => item.value === value).length > 0;
+    }).length > 0;
+  };
+
   const typeObject = () => {
     switch (params.type) {
       case 'purchaseAsk':
         return {
-          title: '采购申请',
+          title: '采购申请单',
           types: [
-            {label: '发起采购申请', value: 0},
-            {label: '采购申请完成', value: 99},
+            {label: '执行申请', value: '0',disabled:disabled('0')},
           ]
         };
       case 'PO':
         return {
           title: '采购单',
-          types: [
-            {label: '发起采购单', value: 1},
-          ]
         };
       case 'SO':
         return {
@@ -67,13 +51,8 @@ const Setting = () => {
         return {
           title: '入库申请单',
           types: [
-            {label: '已拒绝', value: -1},
-            {label: '审批中', value: 0},
-            {label: '待入库', value: 1},
-            {label: '异常审批中', value: 49},
-            {label: '异常审批拒绝', value: 50},
-            {label: '进行中', value: 98},
-            {label: '入库完成', value: 99},
+            {label: '处理异常', value: '-1',disabled:disabled('-1')},
+            {label: '执行入库', value: '0',disabled:disabled('0')},
           ]
         };
       case 'instockError':
@@ -92,22 +71,18 @@ const Setting = () => {
         return {
           title: '入厂检',
           types: [
-            {label: '已拒绝', value: -1},
-            {label: '新建', value: 0},
-            {label: '分派', value: 1},
-            {label: '完成', value: 2},
-            {label: '已入库', value: 3},
+            {label: '分派', value: '1',disabled:disabled('1')},
+            {label: '执行质检', value: '2',disabled:disabled('2')},
+            {label: '质检入库', value: '3',disabled:disabled('3')},
           ]
         };
       case 'productionQuality':
         return {
           title: '生产检查',
           types: [
-            {label: '已拒绝', value: -1},
-            {label: '新建', value: 0},
-            {label: '分派', value: 1},
-            {label: '完成', value: 2},
-            {label: '已入库', value: 3},
+            {label: '分派', value: '1',disabled:disabled('1')},
+            {label: '执行质检', value: '2',disabled:disabled('2')},
+            {label: '质检入库', value: '3',disabled:disabled('3')},
           ]
         };
       default:
@@ -117,32 +92,45 @@ const Setting = () => {
 
   const [refresh, {toggle}] = useBoolean();
 
-  const [statusList, setStatusList] = useState([]);
+  const onStatus = async (data, index, listindex, allActions) => {
+    const array = status.map((item, statuIndex) => {
+      if (statuIndex === listindex) {
+        if (allActions) {
+          return {...item, actions: allActions};
+        }
+        let actions;
+        if (data) {
+          actions = item.actions.map((item, actionIndex) => {
+            if (actionIndex === index) {
+              return {...item, ...data};
+            }
+            return item;
+          });
+        } else {
+          actions = item.actions.filter((item, actionIndex) => actionIndex !== index);
+        }
 
-  // const setStatus = async (data, index) => {
-  //   const array = statusList.filter(() => true);
-  //   array[index] = {...array[index], ...data};
-  //   await setStatusList(array);
-  //   toggle();
-  // };
+        return {...item, actions};
+      }
+      return item;
+    });
+    await setStatus(array);
+    toggle();
+  };
 
   const Item = (props) => {
+
     const {value, item, index, ...other} = props;
+
     return <Space size={8}>
-      <Handle icon={<MenuOutlined />} {...other} />
-      <Inp
-        value={value}
-        onChange={(value) => {
-          setStatus({title: value}, index);
-        }}
-      />
+      <Handle {...other} />
       <Select
         placeholder="请选择单据动作"
-        value={item.formStatus}
+        value={item.value}
         style={{width: 200}}
         options={typeObject().types}
-        onChange={(value) => {
-          setStatus({formStatus: value}, index);
+        onChange={(value, option) => {
+          onStatus({title: option.label, value}, index, item.listIndex);
         }}
       />
       <Button
@@ -150,11 +138,7 @@ const Setting = () => {
         style={{padding: 0}}
         type="link"
         onClick={async () => {
-          const array = statusList.filter((item, skuIndex) => {
-            return skuIndex !== index;
-          });
-          await setStatusList(array);
-          await toggle();
+          onStatus(null, index, item.listIndex);
         }}>
         <DeleteOutlined />
       </Button>
@@ -165,14 +149,61 @@ const Setting = () => {
     <div style={{height: '100vh'}}>
       <Card title={<Breadcrumb title="单据设置" />} bordered={false} />
 
-      <Card title={`设置${typeObject().title}单据状态`} bordered={false} style={{width: 1250, margin: 'auto'}}>
+      <Card
+        title={`设置${typeObject().title}状态`}
+        bordered={false}
+        bodyStyle={{overflow: 'auto'}}
+      >
 
-        <List
+        <AntList
           dataSource={status}
           renderItem={(item, index) => {
-            return <List.Item>
-              {item.label}
-            </List.Item>;
+            return <AntList.Item>
+              <Space style={{minHeight: 60}}>
+                <Button disabled={item.default} type="link" danger onClick={() => {
+                  const newStatus = status.filter((item, statusIndex) => {
+                    return statusIndex !== index;
+                  });
+                  setStatus(newStatus);
+                }}>
+                  <MinusCircleOutlined />
+                </Button>
+                <div style={{width: 150}}>
+                  <Note>
+                    {item.label}
+                  </Note>
+                </div>
+
+                {item.actions.length > 0 && <Sortable
+                  handle
+                  Container={(props) => <List horizontal {...props} />}
+                  DefinedItem={Item}
+                  refresh={refresh}
+                  items={item.actions}
+                  onDragEnd={async (allIems) => {
+                    onStatus(null, null, index, allIems);
+                  }}
+                />}
+                <Button
+                  style={{marginLeft:38}}
+                  onClick={() => {
+                    const newStatus = status.map((item, statuIndex) => {
+                      if (statuIndex === index) {
+                        const newActions = item.actions.map((item, index) => {
+                          return {...item, key: `${index}`};
+                        });
+                        return {
+                          ...item,
+                          actions: [...newActions, {key: `${newActions.length}`, listIndex: item.index}]
+                        };
+                      }
+                      return item;
+                    });
+                    setStatus(newStatus);
+                    toggle();
+                  }}><PlusOutlined /> 增加动作</Button>
+              </Space>
+            </AntList.Item>;
           }}
         />
         <Button
@@ -180,12 +211,11 @@ const Setting = () => {
           type="primary"
           ghost
           onClick={() => {
+            setStatuName('');
             setVisible(true);
-            // const endList = statusList[statusList.length - 1];
-            // setStatusList([...statusList, {title: '', key: `${endList ? endList.key + 1 : 0}`}]);
-            // toggle();
           }}><PlusOutlined /> 增加状态</Button>
       </Card>
+
     </div>
 
     <Modal
@@ -194,9 +224,13 @@ const Setting = () => {
       onCancel={() => {
         setVisible(false);
       }}
+      okButtonProps={{htmlType:'submit'}}
       onOk={() => {
+        if (!statuName){
+          return Message.warning('请输入状态名称!');
+        }
         const endStatus = status[status.length - 1];
-        setStatus([...status, {label: statuName, value: `${endStatus.value + 1}`}]);
+        setStatus([...status, {label: statuName, value: `${endStatus.value + 1}`, actions: [], index: status.length}]);
         setVisible(false);
       }}>
       <Input

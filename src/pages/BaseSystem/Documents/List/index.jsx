@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card} from 'antd';
+import {Button, Card, Divider} from 'antd';
 import {useHistory} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -26,21 +26,20 @@ const List = () => {
           dataSource.map((item, index) => {
             return <Card.Grid
               key={index}
-              style={{textAlign: 'center', cursor: 'pointer', width: '15%', padding: 0}}
+              style={{textAlign: 'center', width: '20%',padding:0}}
             >
-              <Card
-                // bordered={false}
-                actions={[
-                  <Button
-                    type="link"
-                    style={{padding: 0}}
-                    onClick={() => {
-                      history.push(`/BASE_SYSTEM/documents/setting?type=${item.type}`);
-                    }}>编辑</Button>,
-                ]}
-              >
+              <div style={{padding:24}}>
                 {item.name}
-              </Card>
+              </div>
+              <Divider style={{margin:0}} />
+              <div style={{display:'flex'}}>
+                <Button
+                  type="link"
+                  style={{padding: 0,flexGrow:1}}
+                  onClick={() => {
+                    history.push(`/BASE_SYSTEM/documents/setting?type=${item.type}`);
+                  }}>设置</Button>
+              </div>
             </Card.Grid>;
           })
         }
