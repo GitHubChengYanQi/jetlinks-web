@@ -5,7 +5,7 @@ import Empty from '@/components/Empty';
 import Modal from '@/components/Modal';
 import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
 
-const Import = ({children,setTaskId, ...props}, ref) => {
+const Import = ({children, setTaskId, ...props}, ref) => {
 
   const modalRef = useRef();
 
@@ -62,7 +62,7 @@ const Import = ({children,setTaskId, ...props}, ref) => {
       width="auto"
     >
       {
-        loading
+        !data && loading
           ?
           <Spin spinning>
             <Alert
