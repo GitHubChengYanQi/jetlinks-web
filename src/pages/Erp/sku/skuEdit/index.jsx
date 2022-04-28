@@ -197,7 +197,7 @@ const SkuEdit = ({...props}, ref) => {
           label="产品码"
           name="spuCoding"
           component={SysField.SpuCoding}
-          required />
+        />
         <FormItem
           label="型号"
           name="skuName"
