@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
@@ -7,15 +7,20 @@ import store from '@/store';
 import AnalysisModal from '@/pages/Erp/Analysis/TaskList/components/AnalysisModal';
 import SkuImport from '@/pages/Erp/Analysis/TaskList/components/SkuImport';
 import SpuImport from '@/pages/Erp/Analysis/TaskList/components/SpuImport';
+import Import from '@/pages/Erp/Analysis/TaskList/components/Import';
+import StockImport from '@/pages/Erp/Analysis/TaskList/components/StockImport';
 
 
 const TaskList = () => {
 
   const [state, dataDispatchers] = store.useModel('dataSource');
 
+  const [taskId,setTaskId] = useState();
+
   const showRef = useRef();
   const skuImportRef = useRef();
   const spuImportRef = useRef();
+  const stockImportRef = useRef();
 
   const {loading, cancel, data: List, run} = useRequest({
     url: '/asynTask/list',
@@ -63,6 +68,9 @@ const TaskList = () => {
                       case '产品导入':
                         spuImportRef.current.open(item.taskId);
                         break;
+                      case '库存导入':
+                        stockImportRef.current.open(item.taskId);
+                        break;
                       default:
                         break;
                     }
@@ -102,9 +110,17 @@ const TaskList = () => {
 
     <AnalysisModal showRef={showRef} />
 
+
+    <Import setTaskId={setTaskId} ref={spuImportRef}>
+      <SpuImport taskId={taskId} />
+    </Import>
+
+    <Import setTaskId={setTaskId} ref={stockImportRef}>
+      <StockImport taskId={taskId} />
+    </Import>
+
     <SkuImport ref={skuImportRef} />
 
-    <SpuImport ref={spuImportRef} />
 
   </>;
 };

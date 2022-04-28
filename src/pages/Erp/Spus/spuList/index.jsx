@@ -73,21 +73,19 @@ const SpuList = () => {
         api={spuList}
         rowKey="spuId"
         tableKey="spu"
-        // actionButton={<Space>
-        //   <Import
-        //     url={`${baseURI}spuExcel/spuImport`}
-        //     title="导入产品"
-        //     module="spu"
-        //     templateUrl={`${baseURI}spuExcel/spuTemp?authorization=${token}`}
-        //   />
-        // </Space>}
+        actionButton={<Space>
+          <Import
+            url={`${baseURI}spuExcel/spuImport`}
+            title="导入产品"
+            module="spu"
+            templateUrl={`${baseURI}spuExcel/spuTemp?authorization=${token}`}
+          />
+        </Space>}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
         footer={footer}
-        onChange={(ids) => {
-          setIds(ids);
-        }}
+        onChange={setIds}
       >
         <Column title="名称" key={1} dataIndex="name" render={(value, record) => {
           return (
@@ -136,7 +134,6 @@ const SpuList = () => {
             default:
               break;
           }
-
         }} sorter />
         <Column title="养护周期" key={6} width={120} align="center" dataIndex="curingCycle" render={(value) => {
           return (
@@ -165,17 +162,19 @@ const SpuList = () => {
         compoentRef={formRef}
         component={SpuEdit}
         footer={<>
-          <Button type='primary' onClick={()=>{
+          <Button type="primary" onClick={() => {
             formRef.current.formRef.current.submit();
           }}>保存</Button>
-          <Button type='default' onClick={()=>{
+          <Button type="default" onClick={() => {
             ref.current.close();
           }}>取消</Button>
         </>}
         onSuccess={() => {
           tableRef.current.refresh();
           ref.current.close();
-        }} ref={ref} />
+        }}
+        ref={ref}
+      />
     </>
   );
 };

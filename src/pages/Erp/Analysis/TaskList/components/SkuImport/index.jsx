@@ -182,11 +182,11 @@ const SkuImport = ({...props}, ref) => {
       headTitle={
         load ? <Space>
           <div>
-            导入成功 <Button type="link" style={{padding: 0}}>{data && data.successNum}</Button> 条
+            导入成功 <Button type="link" style={{padding: 0}}>{data && data.successNum || 0}</Button> 条
           </div>
           /
           <div>
-            导入失败 <Button type="link" style={{padding: 0}} danger>{data && data.errorNum}</Button> 条
+            导入失败 <Button type="link" style={{padding: 0}} danger>{data && data.errorNum || 0}</Button> 条
           </div>
         </Space> : '物料导入'
       }
