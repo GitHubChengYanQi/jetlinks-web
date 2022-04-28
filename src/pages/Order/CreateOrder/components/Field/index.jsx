@@ -434,7 +434,7 @@ export const AllField = ({value: values = [], onChange, array}) => {
     onChange(newValues);
   };
 
-  const replaceDom = (item) => {
+  const replaceDom = (item,index) => {
 
     const detail = item.detail || [];
 

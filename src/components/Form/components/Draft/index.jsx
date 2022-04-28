@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Dropdown, Menu, Modal, Spin} from 'antd';
+import {Button, Dropdown, List, Menu, Modal, Spin} from 'antd';
 import * as pako from 'pako';
 import {EllipsisOutlined} from '@ant-design/icons';
 import Empty from '@/components/Empty';
@@ -35,17 +35,16 @@ const Draft = (
     return JSON.parse(data);
   };
 
-  const {loading: listLoading, data: listDta, refresh,run:listRun} = useRequest({
+  const {loading: listLoading, data: listDta, refresh, run: listRun} = useRequest({
     ...list,
     data: {type},
     params: {limit: 5, page: 1}
   });
 
-  const {loading: editLoading, run: editRun} = useRequest(edit, {manual: true});
-
   const {loading: deleteLoading, run: deleteRun} = useRequest(deleteItem, {
     manual: true,
     onSuccess: () => {
+      Message.success('删除草稿成功！');
       refresh();
     }
   });
@@ -77,25 +76,23 @@ const Draft = (
       return <Spin />;
     }
 
-    if (!listDta || listDta.length === 0) {
+    if (!listDta) {
       return <Empty />;
     }
 
-    return <div style={{padding: 6}}>
-      <div>
-        <DatePicker
-          width="100%"
-          RangePicker
-          onChange={(time) => {
-            listRun({
-              data:{dates:time}
-            });
-          }} />
-      </div>
-      <Menu selectable={false}>
+    return <div style={{backgroundColor: '#fff'}}>
+      <DatePicker
+        width="100%"
+        RangePicker
+        onChange={(time) => {
+          listRun({
+            data: {dates: time}
+          });
+        }} />
+      <List bordered>
         {
           listDta.map((item, index) => {
-            return <Menu.Item
+            return <List.Item
               key={item.draftsId}
             >
               <div style={{display: 'flex', alignItems: 'center'}}>
@@ -124,10 +121,10 @@ const Draft = (
                   });
                 }}>删除</Button>
               </div>
-            </Menu.Item>;
+            </List.Item>;
           })
         }
-      </Menu>
+      </List>
     </div>;
   };
 
@@ -143,13 +140,19 @@ const Draft = (
             type="primary"
             loading={addLoading || detailLoading || deleteLoading}
             ghost
-            onClick={async () => {
-              addRun({
-                data: {
-                  info: save(await getValues()),
-                  type,
+            onClick={() => {
+              Modal.confirm({
+                title: '是否储存此草稿？',
+                onOk: async () => {
+                  addRun({
+                    data: {
+                      info: save(await getValues()),
+                      type,
+                    }
+                  });
                 }
               });
+
             }}
           >存草稿</Button>,
           <Button type="primary" ghost><EllipsisOutlined /></Button>
