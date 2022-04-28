@@ -42,6 +42,7 @@ const StockTable = (props) => {
           url={`${baseURI}Excel/importPositionBind`}
           title="导入库存"
           module="stock"
+          templateUrl={`${baseURI}Excel/positionTemp?authorization=${token}`}
           onOk={() => {
             tableRef.current.submit();
           }}

@@ -130,6 +130,7 @@ const Import = (
           break;
         case 'sku':
         case 'spu':
+        case 'stock':
           Message.success('已加入队列！');
           setVisible(false);
           dataDispatchers.opentaskList(true);
@@ -137,10 +138,6 @@ const Import = (
         case 'bom':
           Message.success('导入成功!');
           errorData = res;
-          break;
-        case 'stock':
-          Message.success('导入成功!');
-          errorData = res.errorList;
           break;
         default:
           break;
