@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
 import {Input, Table as AntTable} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 
@@ -7,6 +8,8 @@ const {Column} = AntTable;
 const {FormItem} = Form;
 
 const api = {url: '/asynTaskDetail/errorlist', method: 'POST'};
+
+const formActionsPublic = createFormActions();
 
 const StockImport = ({taskId}) => {
 
@@ -23,6 +26,7 @@ const StockImport = ({taskId}) => {
   return <div style={{maxWidth:1500}}>
     <Table
       noSort
+      formActions={formActionsPublic}
       contentHeight
       headStyle={{display: 'none'}}
       api={api}
