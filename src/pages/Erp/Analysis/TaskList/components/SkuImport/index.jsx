@@ -178,6 +178,9 @@ const SkuImport = ({...props}, ref) => {
 
   return <>
     <Modal
+      onClose={() => {
+        cancel();
+      }}
       ref={modalRef}
       headTitle={
         load ? <Space>
