@@ -307,7 +307,7 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'PO' && userInfo.customerId}
+                      value={params.module === 'PO' ? userInfo.customerId : null}
                       selfEnterprise={params.module === 'PO'}
                       supply={params.module === 'PO' ? null : 0}
                       label="公司名称"
@@ -421,7 +421,7 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'SO' && userInfo.customerId}
+                      value={params.module === 'SO' ? userInfo.customerId : null}
                       selfEnterprise={params.module === 'SO'}
                       supply={params.module === 'SO' ? null : 1}
                       label="公司名称"
