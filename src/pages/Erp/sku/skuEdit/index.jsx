@@ -29,6 +29,7 @@ const SkuEdit = ({...props}, ref) => {
     },
     ...other
   } = props;
+
   const [copy, setCopy] = useState();
 
   const [submitValue, setSubmitValue] = useState({});
