@@ -1,28 +1,74 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getSearchParams} from 'ice';
-import {Affix, Button, Card, Input, List as AntList, Modal, Select, Space} from 'antd';
+import {Button, Card, Empty, Input, List as AntList, Modal, Select, Space} from 'antd';
 import {DeleteOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import Breadcrumb from '@/components/Breadcrumb';
 import {Sortable} from '@/components/Table/components/DndKit/Sortable';
 import {Handle} from '@/components/Table/components/DndKit/Item';
 import {List} from '@/components/Table/components/DndKit/List';
 import Note from '@/components/Note';
 import Message from '@/components/Message';
+import {useRequest} from '@/util/Request';
+
+const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
+const addActionsApi = {url: '/statueAction/addPurchaseAction', method: 'POST'};
+const detailApi = {url: '/documentStatus/getDetails', method: 'GET'};
 
 const Setting = () => {
 
   const params = getSearchParams();
 
-  const [status, setStatus] = useState([
-    {label: '发起', value: 0, actions: [], index: 0, default: true},
-    {label: '完成', value: 99, actions: [], index: 1, default: true},
-    {label: '拒绝', value: -1, actions: [], index: 2, default: true},
-  ]);
+  const [status, setStatus] = useState([]);
 
   const [visible, setVisible] = useState();
 
   const [statuName, setStatuName] = useState();
+
+  const {loading: detailLoading, run: detailRun} = useRequest(detailApi, {
+    manual: true,
+    onSuccess: (res) => {
+      setStatus(res.map((item, statuIndex) => {
+        return {
+          default: [0, 50, 99].includes(item.documentsStatusId),
+          noActions: [50, 99].includes(item.documentsStatusId),
+          label: item.name,
+          value: item.documentsStatusId,
+          actions: item.actionResults ? item.actionResults.map((item, index) => {
+            return {
+              key: `${index}`,
+              value: item.action,
+              listIndex: statuIndex
+            };
+          }) : [],
+        };
+      }));
+    }
+  });
+
+  useEffect(() => {
+    if (params.type) {
+      detailRun({
+        params: {type: params.type}
+      });
+    }
+  }, []);
+
+  const {loading: addStatusLoading, run: addStatusRun} = useRequest(addStatusApi, {
+    manual: true,
+    onSuccess: (res) => {
+      setStatus([...status, {label: statuName, value: res, actions: []}]);
+      setVisible(false);
+    }
+  });
+
+  const {loading: addActionsLoading, run: addActionsRun} = useRequest(addActionsApi, {
+    manual: true,
+    onSuccess: (res) => {
+      Message.success('保存成功！');
+    }
+  });
 
   const disabled = (value) => {
     return status.filter((item) => {
@@ -36,7 +82,7 @@ const Setting = () => {
         return {
           title: '采购申请单',
           types: [
-            {label: '执行申请', value: '0',disabled:disabled('0')},
+            {label: '执行申请', value: 'perform', disabled: disabled('perform')},
           ]
         };
       case 'PO':
@@ -51,8 +97,8 @@ const Setting = () => {
         return {
           title: '入库申请单',
           types: [
-            {label: '处理异常', value: '-1',disabled:disabled('-1')},
-            {label: '执行入库', value: '0',disabled:disabled('0')},
+            {label: '核实数量', value: 'verify', disabled: disabled('verify')},
+            {label: '执行入库', value: 'performInstock', disabled: disabled('performInstock')},
           ]
         };
       case 'instockError':
@@ -71,18 +117,18 @@ const Setting = () => {
         return {
           title: '入厂检',
           types: [
-            {label: '分派', value: '1',disabled:disabled('1')},
-            {label: '执行质检', value: '2',disabled:disabled('2')},
-            {label: '质检入库', value: '3',disabled:disabled('3')},
+            {label: '分派', value: '1', disabled: disabled('1')},
+            {label: '执行质检', value: '2', disabled: disabled('2')},
+            {label: '质检入库', value: '3', disabled: disabled('3')},
           ]
         };
       case 'productionQuality':
         return {
           title: '生产检查',
           types: [
-            {label: '分派', value: '1',disabled:disabled('1')},
-            {label: '执行质检', value: '2',disabled:disabled('2')},
-            {label: '质检入库', value: '3',disabled:disabled('3')},
+            {label: '分派', value: '1', disabled: disabled('1')},
+            {label: '执行质检', value: '2', disabled: disabled('2')},
+            {label: '质检入库', value: '3', disabled: disabled('3')},
           ]
         };
       default:
@@ -145,11 +191,20 @@ const Setting = () => {
     </Space>;
   };
 
+  if (detailLoading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
+  if (!params.type) {
+    return <Empty />;
+  }
+
   return <>
-    <div style={{height: '100vh'}}>
+    <div>
       <Card title={<Breadcrumb title="单据设置" />} bordered={false} />
 
       <Card
+        style={{width: 1250, margin: 'auto'}}
         title={`设置${typeObject().title}状态`}
         bordered={false}
         bodyStyle={{overflow: 'auto'}}
@@ -177,7 +232,7 @@ const Setting = () => {
                 {item.actions.length > 0 && <Sortable
                   handle
                   Container={(props) => <List horizontal {...props} />}
-                  DefinedItem={Item}
+                  definedItem={Item}
                   refresh={refresh}
                   items={item.actions}
                   onDragEnd={async (allIems) => {
@@ -185,7 +240,9 @@ const Setting = () => {
                   }}
                 />}
                 <Button
-                  style={{marginLeft:38}}
+                  hidden={item.noActions}
+                  disabled={item.actions.length === typeObject().types.length}
+                  style={{marginLeft: 38}}
                   onClick={() => {
                     const newStatus = status.map((item, statuIndex) => {
                       if (statuIndex === index) {
@@ -194,7 +251,7 @@ const Setting = () => {
                         });
                         return {
                           ...item,
-                          actions: [...newActions, {key: `${newActions.length}`, listIndex: item.index}]
+                          actions: [...newActions, {key: `${newActions.length}`, listIndex: statuIndex}]
                         };
                       }
                       return item;
@@ -206,14 +263,70 @@ const Setting = () => {
             </AntList.Item>;
           }}
         />
-        <Button
-          style={{width: 440, margin: 'auto', display: 'block'}}
-          type="primary"
-          ghost
-          onClick={() => {
-            setStatuName('');
-            setVisible(true);
-          }}><PlusOutlined /> 增加状态</Button>
+
+        <Space>
+          <Button
+            // style={{width: 440, margin: 'auto', display: 'block'}}
+            type="primary"
+            ghost
+            onClick={() => {
+              setStatuName('');
+              setVisible(true);
+            }}><PlusOutlined /> 增加状态</Button>
+          <Button loading={addActionsLoading} type="primary" onClick={() => {
+            addActionsRun({
+              data: {
+                orderEnum: params.type,
+                actions: status.map((item) => {
+                  const enums = [];
+                  item.actions.map((item) => {
+                    if (item.value) {
+                      return enums.push(item.value);
+                    }
+                    return item;
+                  });
+                  let Enums = {};
+                  switch (params.type) {
+                    case 'purchaseAsk':
+                      Enums = {purchaseActionEnums: enums};
+                      break;
+                    case 'PO':
+                      Enums = {poOrderActionEnums: enums};
+                      break;
+                    case 'SO':
+                      Enums = {soOrderActionEnums: enums};
+                      break;
+                    case 'instockAsk':
+                      Enums = {inStockActionEnums: enums};
+                      break;
+                    case 'instockError':
+                      Enums = {purchaseActionEnums: enums};
+                      break;
+                    case 'outstock':
+                      Enums = {purchaseActionEnums: enums};
+                      break;
+                    case 'payAsk':
+                      Enums = {purchaseActionEnums: enums};
+                      break;
+                    case 'inQuality':
+                      Enums = {inQualityActionEnums: enums};
+                      break;
+                    case 'productionQuality':
+                      Enums = {productionQualityActionEnums: enums};
+                      break;
+                    default:
+                      return {};
+                  }
+                  return {
+                    statusId: item.value,
+                    ...Enums
+                  };
+                })
+              }
+            });
+          }}>保存</Button>
+        </Space>
+
       </Card>
 
     </div>
@@ -224,14 +337,17 @@ const Setting = () => {
       onCancel={() => {
         setVisible(false);
       }}
-      okButtonProps={{htmlType:'submit'}}
+      okButtonProps={{htmlType: 'submit', loading: addStatusLoading}}
       onOk={() => {
-        if (!statuName){
+        if (!statuName) {
           return Message.warning('请输入状态名称!');
         }
-        const endStatus = status[status.length - 1];
-        setStatus([...status, {label: statuName, value: `${endStatus.value + 1}`, actions: [], index: status.length}]);
-        setVisible(false);
+        addStatusRun({
+          data: {
+            orderEnum: params.type,
+            param: {name: statuName}
+          }
+        });
       }}>
       <Input
         placeholder="请输入状态名称"
@@ -241,24 +357,6 @@ const Setting = () => {
         }} />
     </Modal>
 
-    <Affix offsetBottom={0}>
-      <div
-        style={{
-          height: 47,
-          borderTop: '1px solid #e7e7e7',
-          background: '#fff',
-          textAlign: 'right',
-          paddingTop: 8,
-          paddingRight: 24,
-          boxShadow: '0 0 8px 0 rgb(0 0 0 / 10%)'
-        }}>
-        <Space>
-          <Button type="primary" onClick={() => {
-
-          }}>保存</Button>
-        </Space>
-      </div>
-    </Affix>
   </>;
 };
 
