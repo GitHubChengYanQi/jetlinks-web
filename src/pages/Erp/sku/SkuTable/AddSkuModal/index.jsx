@@ -64,7 +64,6 @@ const AddSkuModal = ({
           okText: '合并物料',
           cancelText: '继续保存',
           onOk: () => {
-            addRef.current.close();
             addRef.current.open({
               errKey: newData.errKey,
               ...oldData,
@@ -73,7 +72,8 @@ const AddSkuModal = ({
               merge: true,
               skuJsons: [],
               defaultValue: {
-                sku: describe
+                ...newData,
+                sku: describe,
               }
             });
           },

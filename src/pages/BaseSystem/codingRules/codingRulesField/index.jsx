@@ -203,7 +203,7 @@ export const Values = (props) => {
                 setState(true);
               }
             }} />
-          <InputNumber style={{width: 200}} value={number} placeholder="长度,(最大5)" min="0" max="5" onChange={(value) => {
+          <InputNumber style={{width: 200}} value={number} placeholder="长度" min="0" onChange={(value) => {
             setNumber(value);
             onChange(`\${serial[${value}]}`);
           }} />

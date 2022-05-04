@@ -150,7 +150,9 @@ const SkuList = ({...props}, ref) => {
         }}>确定</Button>
       </Space>}
     >
-      <AddSpu onChange={setSkuId} value={skuId} noSkuIds={skuList.map((item) => item.skuId)}/>
+      <div style={{padding:24}}>
+        <AddSpu maxWidth='100%' onChange={setSkuId} value={skuId} noSkuIds={skuList.map((item) => item.skuId)}/>
+      </div>
     </Modal>
   </>;
 };
