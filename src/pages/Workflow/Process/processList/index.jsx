@@ -24,7 +24,7 @@ import {useRequest} from '@/util/Request';
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ProcessList = () => {
+const ProcessList = ({topTitle}) => {
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -85,7 +85,7 @@ const ProcessList = () => {
     return (
       <>
         <FormItem label="名称" name="processName" component={SysField.ProcessName}/>
-        <FormItem label="类型" name="type" component={SysField.Type} style={{width: 200}}/>
+        <FormItem label="类型" name="type" component={SysField.Type} />
       </>
     );
   };
@@ -93,7 +93,7 @@ const ProcessList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb/>}
+        title={topTitle ? <div>流程管理</div> : <Breadcrumb/>}
         api={processList}
         rowKey="processId"
         searchForm={searchForm}

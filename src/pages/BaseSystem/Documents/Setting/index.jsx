@@ -13,7 +13,7 @@ import Message from '@/components/Message';
 import {useRequest} from '@/util/Request';
 
 const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
-const addActionsApi = {url: '/statueAction/addPurchaseAction', method: 'POST'};
+const addActionsApi = {url: '/statueAction/addAction', method: 'POST'};
 const detailApi = {url: '/documentStatus/getDetails', method: 'GET'};
 
 const Setting = () => {
@@ -85,15 +85,11 @@ const Setting = () => {
             {label: '执行申请', value: 'perform', disabled: disabled('perform')},
           ]
         };
-      case 'PO':
+      case 'purchaseOrder':
         return {
           title: '采购单',
         };
-      case 'SO':
-        return {
-          title: '销售单'
-        };
-      case 'instockAsk':
+      case 'createInstock':
         return {
           title: '入库申请单',
           types: [
@@ -105,14 +101,6 @@ const Setting = () => {
         return {
           title: '入库异常'
         };
-      case 'outstock':
-        return {
-          title: '领料单'
-        };
-      case 'payAsk':
-        return {
-          title: '付款申请单'
-        };
       case 'inQuality':
         return {
           title: '入厂检',
@@ -122,9 +110,18 @@ const Setting = () => {
             {label: '质检入库', value: '3', disabled: disabled('3')},
           ]
         };
+      case 'outQuality':
+        return {
+          title: '出厂检',
+          types: [
+            {label: '分派', value: '1', disabled: disabled('1')},
+            {label: '执行质检', value: '2', disabled: disabled('2')},
+            {label: '质检入库', value: '3', disabled: disabled('3')},
+          ]
+        };
       case 'productionQuality':
         return {
-          title: '生产检查',
+          title: '生产检',
           types: [
             {label: '分派', value: '1', disabled: disabled('1')},
             {label: '执行质检', value: '2', disabled: disabled('2')},
@@ -241,7 +238,7 @@ const Setting = () => {
                 />}
                 <Button
                   hidden={item.noActions}
-                  disabled={item.actions.length === typeObject().types.length}
+                  disabled={(item.actions && item.actions.length) === (typeObject().types && typeObject().types.length)}
                   style={{marginLeft: 38}}
                   onClick={() => {
                     const newStatus = status.map((item, statuIndex) => {
@@ -290,20 +287,20 @@ const Setting = () => {
                     case 'purchaseAsk':
                       Enums = {purchaseActionEnums: enums};
                       break;
-                    case 'PO':
+                    case 'purchaseOrder':
                       Enums = {poOrderActionEnums: enums};
                       break;
                     case 'SO':
                       Enums = {soOrderActionEnums: enums};
                       break;
-                    case 'instockAsk':
+                    case 'createInstock':
                       Enums = {inStockActionEnums: enums};
                       break;
                     case 'instockError':
                       Enums = {purchaseActionEnums: enums};
                       break;
-                    case 'outstock':
-                      Enums = {purchaseActionEnums: enums};
+                    case 'outQuality':
+                      Enums = {outStockActionEnums: enums};
                       break;
                     case 'payAsk':
                       Enums = {purchaseActionEnums: enums};

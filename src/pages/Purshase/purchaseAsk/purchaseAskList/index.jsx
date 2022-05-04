@@ -5,9 +5,8 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Badge, Button, Table as AntTable} from 'antd';
-import {getSearchParams, useHistory} from 'ice';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
@@ -15,9 +14,8 @@ import Form from '@/components/Form';
 import {purchaseAskList} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal from '@/components/Modal';
-import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
 import MinWidthDiv from '@/components/MinWidthDiv';
+import Documents from '@/pages/Workflow/Documents';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,23 +23,14 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const PurchaseAskList = ({status, ...props}) => {
-  const history = useHistory();
-  const detailRef = useRef(null);
   const tableRef = useRef(null);
-
-  const params = getSearchParams();
-
-  useEffect(() => {
-    if (params.id) {
-      // detailRef.current.open(params.id);
-    }
-  }, []);
+  const documentRef = useRef();
 
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          history.push('/purchase/purchaseAsk/add');
+          documentRef.current.create('purchaseAsk');
         }} />
       </>
     );
@@ -73,7 +62,7 @@ const PurchaseAskList = ({status, ...props}) => {
       >
         <Column title="编号" key={1} dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            detailRef.current.open(record.purchaseAskId);
+            documentRef.current.action(null,value,'purchaseAsk');
           }}>{value}</Button>;
         }} />
         <Column key={2} title="申请类型" dataIndex="type" render={(value) => {
@@ -122,25 +111,28 @@ const PurchaseAskList = ({status, ...props}) => {
         <Column key={9} title="申请时间" dataIndex="createTime" />
         <Column />
         {!status &&
-        <Column key={10} title="操作" fixed='right' width={250} align="center" dataIndex="purchaseAskId" render={(value, record) => {
-          return <>
-            <Button type="link">撤回</Button>
-            <Button type="link" onClick={() => {
-              history.push(`/purchase/purchaseAsk/add?id=${value}`);
-            }}>编辑</Button>
-            <Button type="link" onClick={() => {
-              detailRef.current.open(value);
-            }}>查看</Button>
-          </>;
-        }} />}
+        <Column
+          key={10}
+          title="操作"
+          fixed="right"
+          width={250}
+          align="center"
+          dataIndex="purchaseAskId"
+          render={(value) => {
+            return <>
+              <Button type="link">撤回</Button>
+              <Button type="link" onClick={() => {
+                documentRef.current.create('purchaseAsk', value);
+              }}>编辑</Button>
+              <Button type="link" onClick={() => {
+                documentRef.current.action(null,value,'purchaseAsk');
+              }}>查看</Button>
+            </>;
+          }} />}
       </Table>
 
-      <Modal
-        width={1300}
-        headTitle="采购申请详情"
-        component={PurchaseListingList}
-        ref={detailRef}
-      />
+
+      <Documents ref={documentRef} />
     </>
   );
 };

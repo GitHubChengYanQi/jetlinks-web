@@ -150,14 +150,18 @@ const CheckSku = ({
           }}
           dataIndex="spuResult"
           render={(value) => {
-            return value && value.name;
+            return <Note maxWidth={200}>
+              {value && value.name}
+            </Note>;
           }} />
         <Column
           title="型号 / 规格"
           key={2}
           dataIndex="skuName"
           render={(value, record) => {
-            return `${value} / ${record.specifications || '无'}`;
+            return <Note maxWidth={200}>
+              {`${value} / ${record.specifications || '无'}`}
+            </Note>;
           }} />
 
         <Column

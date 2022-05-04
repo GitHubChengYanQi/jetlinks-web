@@ -30,12 +30,14 @@ const ProcessEdit = ({...props}) => {
       api={ApiConfig}
       fieldKey="processId"
       effects={({setFieldState}) => {
-        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
 
+        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
           setFieldState('module', state => {
-            state.props.type = value;
+            state.value = null;
+            state.props.types = value && value.details;
           });
         });
+
       }}
     >
       <FormItem label="名称" name="processName" component={SysField.ProcessName} required />

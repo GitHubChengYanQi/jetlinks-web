@@ -5,21 +5,12 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
+import React from 'react';
 import {Badge, Descriptions, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {purchaseListingDelete, purchaseListingList} from '../purchaseListingUrl';
-import PurchaseListingEdit from '../purchaseListingEdit';
-import * as SysField from '../purchaseListingField';
 import ProCard from '@ant-design/pro-card';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import {useRequest} from '@/util/Request';
 import {purchaseAskDetail} from '@/pages/Purshase/purchaseAsk/purchaseAskUrl';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Note from '@/components/Note';
 
@@ -55,7 +46,7 @@ const PurchaseListingList = ({value}) => {
   };
 
   return (
-    <div style={{padding: 16}}>
+    <div>
       <ProCard headerBordered className="h2Card" title="基础信息">
         <Descriptions column={2} bordered labelStyle={{width: 120}}>
           <Descriptions.Item label="采购申请编号"> {data.coding}</Descriptions.Item>
@@ -72,7 +63,7 @@ const PurchaseListingList = ({value}) => {
           rowKey="purchaseListingId"
         >
           <Column title="物料" dataIndex="skuId" render={(value, record) => {
-            return <SkuResultSkuJsons skuResult={record.skuResult} />;
+            return <Note><SkuResultSkuJsons skuResult={record.skuResult} /></Note>;
           }}
           />
           <Column title="品牌" dataIndex="brandResult" render={(value) => {

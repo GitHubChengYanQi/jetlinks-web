@@ -1,130 +1,69 @@
-import React, {useRef, useState} from 'react';
-import {createFormActions} from '@formily/antd';
-import { Col, Descriptions, message, Modal, Row,  Table as AntTable} from 'antd';
+import React from 'react';
+import {Col, Descriptions, Row, Table, Table as AntTable} from 'antd';
 import ProCard from '@ant-design/pro-card';
-import * as SysField from '@/pages/Erp/instock/InstockField';
-import Table from '@/components/Table';
-import Breadcrumb from '@/components/Breadcrumb';
-import {instock, instockEdit} from '@/pages/Erp/instock/InstockUrl';
-import Form from '@/components/Form';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {instockOrderDetail} from '@/pages/Erp/instock/InstockUrl';
 import {useRequest} from '@/util/Request';
-import InstockListTable from '@/pages/Erp/instock/InstockList/components/InstockListTable';
-import Cascader from '@/components/Cascader';
-import {storehousePositionsTreeView} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
 import Code from '@/pages/Erp/spu/components/Code';
-import BackSkus from '@/pages/Erp/sku/components/BackSkus';
+import Empty from '@/components/Empty';
+import MinWidthDiv from '@/components/MinWidthDiv';
+import Note from '@/components/Note';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 const {Column} = AntTable;
-const {FormItem} = Form;
-
-const formActionsPublic = createFormActions();
-
 const Instock = (props) => {
 
   const {value} = props;
 
-  const [show, setShow] = useState();
+  const {loading, data} = useRequest({...instockOrderDetail, data: {instockOrderId: value}});
 
-  const [position, setPosition] = useState();
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
 
-  const tableRef = useRef(null);
-  const instockRef = useRef(null);
-
-  const [items, setItems] = useState();
-
-  const {run} = useRequest(instockEdit, {
-    manual: true, onSuccess: () => {
-      setShow(false);
-      tableRef.current.submit();
-      instockRef.current.tableRef.current.submit();
-    }
-  });
-
-  const searchForm = () => {
-
-    return (
-      <FormItem name="instockOrderId" value={value.instockOrderId} component={SysField.barcode} />
-    );
-  };
-
+  if (!data) {
+    return <Empty />;
+  }
 
   return (
-    <div style={{padding: 24}}>
+    <div>
       <ProCard className="h2Card" title="入库信息" headerBordered>
         <Row gutter={24}>
           <Col span={16}>
             <Descriptions column={1} bordered labelStyle={{width: 120}}>
-              <Descriptions.Item label="入库单号"> {value.coding}</Descriptions.Item>
+              <Descriptions.Item label="入库单号"> {data.coding}</Descriptions.Item>
               <Descriptions.Item
-                label="入库仓库"> {value.storehouseResult && value.storehouseResult.name}</Descriptions.Item>
-              <Descriptions.Item label="负责人">{value.userResult && value.userResult.name}</Descriptions.Item>
-              <Descriptions.Item label="创建时间">{value.createTime}</Descriptions.Item>
+                label="入库仓库"> {data.storehouseResult && data.storehouseResult.name}</Descriptions.Item>
+              <Descriptions.Item label="负责人">{data.userResult && data.userResult.name}</Descriptions.Item>
+              <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
             </Descriptions>
           </Col>
           <Col span={8}>
-            <Code source="instock" id={value.instockOrderId} image codeWidth={210} />
+            <Code source="instock" id={data.instockOrderId} image codeWidth={210} />
           </Col>
         </Row>
       </ProCard>
       <ProCard className="h2Card" headerBordered title="入库清单">
         <Table
-          title={<Breadcrumb />}
-          api={instock}
-          formActions={formActionsPublic}
-          headStyle={{display: 'none'}}
           rowKey="instockListId"
-          contentHeight
-          noRowSelection
-          isModal={false}
-          searchForm={searchForm}
-          ref={tableRef}
+          dataSource={data.instockListResults || []}
         >
-          <Column title="物料" render={(text, record) => {
-            return <BackSkus record={record} />;
+          <Column title="物料编码" dataIndex="skuResult" render={(value) => {
+            return <MinWidthDiv width={70}>{value && value.standard}</MinWidthDiv>;
           }} sorter />
-          <Column title="供应商(品牌)" dataIndex="brandId" width={200} render={(text, record) => {
-            return (
-              <>
-                {record.brandResult && record.brandResult.brandName}
-              </>
-            );
+          <Column title="物料名称" dataIndex="skuResult" render={(value, record) => {
+            return <Note width={200}><SkuResultSkuJsons skuResult={{...value, spuResult: record.spuResult}} /></Note>;
           }} sorter />
-          <Column title="总数量" width={120} align="center" dataIndex="instockNumber" sorter />
-          <Column title="剩余数量" width={120} align="center" dataIndex="number" sorter />
-          <Column title="总价" width={120} align="center" dataIndex="costPrice" sorter />
-          <Column title="单价" width={120} align="center" dataIndex="sellingPrice" sorter />
+          <Column title="计划数量" width={120} align="center" dataIndex="instockNumber" sorter />
+          <Column title="核实数量" width={120} align="center" dataIndex="number" sorter />
+          <Column title="未入数量" width={120} align="center" dataIndex="realNumber" sorter />
+          <Column title="供应商" dataIndex="brandResult" render={(value) => {
+            return <MinWidthDiv width={70}>{value && value.brandName}</MinWidthDiv>;
+          }} sorter />
+          <Column title="品牌" dataIndex="customerResult" render={(value) => {
+            return <MinWidthDiv width={70}>{value && value.customerName}</MinWidthDiv>;
+          }} sorter />
         </Table>
-      </ProCard>
-
-      <Modal
-        visible={show}
-        title="选择库位"
-        onCancel={() => {
-          setShow(false);
-        }}
-        onOk={async () => {
-          if (position) {
-            await run({
-              data: {
-                ...items,
-                storehousePositionsId: position,
-              }
-            });
-          } else {
-            message.error('请选择库位！');
-          }
-        }}
-      >
-        <Cascader
-          width="100%"
-          defaultParams={{params: {ids: items && items.storeHouseId}}}
-          api={storehousePositionsTreeView}
-          onChange={(value) => {
-            setPosition(value);
-          }} value={position} />
-      </Modal>
-      <ProCard className="h2Card" headerBordered title="入库明细">
-        <InstockListTable ref={instockRef} value={value.instockOrderId} />
       </ProCard>
     </div>
   );

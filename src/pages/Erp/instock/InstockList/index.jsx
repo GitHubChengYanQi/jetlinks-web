@@ -6,49 +6,37 @@
  */
 
 import React, {useEffect, useRef} from 'react';
-import Table from '@/components/Table';
-import {Badge, Button, Modal, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import Breadcrumb from '@/components/Breadcrumb';
-import MyModal from '@/components/Modal';
+import {Badge, Button, Space, Table as AntTable} from 'antd';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {ExclamationCircleOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
-import Icon from '@/components/Icon';
-import InstockEdit from '../InstockEdit';
-import {useRequest} from '@/util/Request';
-import {instockDelete, instockEdit, instockList, instockOrderList, itemIdSelect} from '../InstockUrl';
-import * as SysField from '../InstockField';
-import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
-import Code from '@/pages/Erp/spu/components/Code';
+import {SearchOutlined} from '@ant-design/icons';
 import {getSearchParams} from 'ice';
+import Table from '@/components/Table';
+import AddButton from '@/components/AddButton';
+import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
+import Icon from '@/components/Icon';
+import {instockOrderList} from '../InstockUrl';
+import * as SysField from '../InstockField';
+import Code from '@/pages/Erp/spu/components/Code';
+import Documents from '@/pages/Workflow/Documents';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const InstockList = () => {
 
-  const ref = useRef(null);
+  const ducomentRef = useRef(null);
   const tableRef = useRef(null);
-  const instockRef = useRef(null);
 
   const params = getSearchParams();
-
-  useEffect(() => {
-    if (params.id) {
-      instockRef.current.open(params.id);
-    }
-  }, []);
 
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ref.current.open(false);
+          ducomentRef.current.create('instockAsk');
         }} />
       </>
     );
@@ -125,7 +113,7 @@ const InstockList = () => {
             <>
               <Code source="instock" id={record.instockOrderId} />
               <a onClick={() => {
-                instockRef.current.open(record);
+                ducomentRef.current.action(false, record.instockOrderId,'createInstock');
               }}>
                 {text}
               </a>
@@ -159,16 +147,18 @@ const InstockList = () => {
           }
         }} />
         <Column key={5} title="创建时间" width={200} dataIndex="createTime" sorter />
+        <Column />
+        <Column title="操作" align="center" width={100} dataIndex="instockOrderId" render={(value) => {
+          return <Space>
+            <Button type="link" onClick={() => {
+              ducomentRef.current.action(false, value,'createInstock');
+            }}>查看</Button>
+          </Space>;
+        }} />
       </Table>
 
-      <MyModal width={1300} title="入库单" component={InstockEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Documents ref={ducomentRef} />
 
-      <MyModal width={1300} component={Instock} onSuccess={() => {
-        instockRef.current.close();
-      }} ref={instockRef} />
     </>
   );
 };

@@ -1,11 +1,35 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Avatar, Space, Steps} from 'antd';
 import {AuditOutlined, SendOutlined} from '@ant-design/icons';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import ProCard from '@ant-design/pro-card';
 import Icon from '@/components/Icon';
+import {useRequest} from '@/util/Request';
+import styles from './index.module.less';
 
 const ProcessSteps = ({
-  data,
+  data: auditData,
+  createName,
+  type,
+  card,
 }) => {
+
+  const {loading, data, run} = useRequest({
+    url: '/activitiSteps/getStepResultByType',
+    method: 'GET',
+  }, {
+    manual: true,
+  });
+
+  useEffect(() => {
+    if (type) {
+      run({
+        params: {
+          type,
+        },
+      });
+    }
+  }, []);
 
   const processType = (value) => {
     switch (value) {
@@ -47,7 +71,7 @@ const ProcessSteps = ({
         }
         return null;
       });
-      return <Space direction="vertical" wrap>
+      return <Space direction="vertical" wrap align="center">
         {
           users.map((items, index) => {
             return <Space align="center" key={index}>
@@ -70,11 +94,11 @@ const ProcessSteps = ({
     const fontSize = 32;
     switch (step.auditType) {
       case 'start':
-        return <Icon type="icon-caigou_faqiren" style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
+        return <Icon type="icon-caigou_faqiren" style={{fontSize, color: stepStatus === 'finish' && 'green'}} />;
       case 'send':
-        return <SendOutlined style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
+        return <SendOutlined style={{fontSize, color: stepStatus === 'finish' && 'green'}} />;
       case 'route':
-        return <AuditOutlined style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
+        return <AuditOutlined style={{fontSize, color: stepStatus === 'finish' && 'green'}} />;
       case 'process':
         switch (step.auditRule.type) {
           case 'audit':
@@ -86,17 +110,17 @@ const ProcessSteps = ({
                   case 'wait':
                     return <Icon type="icon-caigou_weishenpi1" style={{fontSize}} />;
                   default:
-                    return 'null';
+                    return <Icon type="icon-caigou_weishenpi1" style={{fontSize}} />;
                 }
               case 0:
                 return <Icon type="icon-caigou_shenpibutongguo1" style={{fontSize}} />;
               case 1:
                 return <Icon type="icon-caigou_shenpitongguo1" style={{fontSize}} />;
               default:
-                return 'null';
+                return <Icon type="icon-caigou_weishenpi1" style={{fontSize}} />;
             }
           default:
-            return <Icon type="icon-caigou_dongzuo" style={{fontSize,color:stepStatus === 'finish' && 'green'}} />;
+            return <Icon type="icon-caigou_dongzuo" style={{fontSize, color: stepStatus === 'finish' && 'green'}} />;
         }
       default:
         return 'null';
@@ -127,23 +151,22 @@ const ProcessSteps = ({
       case 'start':
         return <>
           <Steps.Step
-            style={{minHeight:80}}
+            style={{minHeight: 80}}
             status={stepStatus}
-            description={<Space align="center">
+            description={createName ? <Space align="start">
               <Avatar
-                style={{fontSize: 16}}
                 size={24}
                 shape="square"
-              >{data.createName.substring(0, 1)}</Avatar>
-              {data.createName}
-            </Space>}
-            icon={status(step,stepStatus)} />
+              >{createName.substring(0, 1)}</Avatar>
+              {createName}
+            </Space> : rules(step.auditRule)}
+            icon={status(step, stepStatus)} />
           {steps(step.childNode, step.logResult && step.logResult.status === 1)}
         </>;
       case 'route':
         return <>
           <Steps.Step
-            style={{minHeight:80}}
+            style={{minHeight: 80}}
             status={stepStatus}
             description={
               <div style={{overflowX: 'auto'}}>
@@ -154,14 +177,14 @@ const ProcessSteps = ({
                 </Space>
               </div>
             }
-            icon={status(step,stepStatus)} />
+            icon={status(step, stepStatus)} />
           {steps(step.childNode, step.logResult && step.logResult.status === 1)}
         </>;
       case 'send':
       case 'process':
         return <>
           <Steps.Step
-            style={{minHeight:80}}
+            style={{minHeight: 80}}
             status={stepStatus}
             title={processType(step.auditRule.type)}
             description={rules(step.auditRule)}
@@ -175,16 +198,29 @@ const ProcessSteps = ({
 
 
   const allStep = (audit, next, index) => {
-    return <div key={index} style={{minWidth:200}}>
-      <Steps direction="vertical">
+    return <div key={index} style={{minWidth: 200}}>
+      <Steps direction="vertical" className={styles.step}>
         {steps(audit, next)}
       </Steps>
     </div>;
   };
 
+  if (loading) {
+    return <ProSkeleton type="descriptions" />;
+  }
+
+  if (!(auditData || data)) {
+    return <></>;
+  }
+
 
   return <>
-    {allStep(data.stepsResult, true, 0)}
+    {
+      card ? <ProCard title="审批流程" className="h2Card" headerBordered>
+        {allStep(auditData || data, true, 0)}
+      </ProCard> : allStep(auditData || data, true, 0)
+    }
+
   </>;
 };
 

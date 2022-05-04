@@ -171,7 +171,7 @@ const Action = () => {
           }}>拒绝</Button>
         </Space>}
       >
-        <ProcessSteps data={data} />
+        <ProcessSteps data={data.stepsResult} createName={data.createName} />
       </ProCard>
       {data.remarks && data.remarks.length > 0 ?
         <ProCard
