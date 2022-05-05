@@ -62,7 +62,7 @@ const PurchaseAskList = ({status, ...props}) => {
       >
         <Column title="编号" key={1} dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            documentRef.current.action(null, value, 'purchaseAsk');
+            documentRef.current.action(null, record.purchaseAskId, 'purchaseAsk');
           }}>{value}</Button>;
         }} />
         <Column key={2} title="申请类型" dataIndex="type" render={(value) => {
@@ -81,19 +81,8 @@ const PurchaseAskList = ({status, ...props}) => {
               break;
           }
         }} />
-        {!status && <Column key={3} title="申请状态" dataIndex="status" render={(value) => {
-          switch (value) {
-            case 0:
-              return <Badge text="待审核" color="yellow" />;
-            case 2:
-              return <Badge text="已通过" color="green" />;
-            case 1:
-              return <Badge text="已通过" color="red" />;
-            case 3:
-              return <Badge text="已撤回" color="red" />;
-            default:
-              break;
-          }
+        {!status && <Column key={3} title="申请状态" dataIndex="statusResult" render={(value) => {
+          return <MinWidthDiv width={70}>{value && value.name}</MinWidthDiv>;
         }} />}
         <Column key={4} title="申请品类" width={100} align="center" dataIndex="applyType" />
         <Column key={5} title="申请数量" width={100} align="center" dataIndex="applyNumber" />

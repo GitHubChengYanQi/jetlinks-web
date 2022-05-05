@@ -32,19 +32,6 @@ const PurchaseListingList = ({value}) => {
   if (!data)
     return null;
 
-  const status = (value) => {
-    switch (value) {
-      case 0:
-        return <Badge text="待审核" color="yellow" />;
-      case 2:
-        return <Badge text="已通过" color="green" />;
-      case 1:
-        return <Badge text="已拒绝" color="red" />;
-      default:
-        break;
-    }
-  };
-
   return (
     <div>
       <ProCard headerBordered className="h2Card" title="基础信息">
@@ -53,7 +40,7 @@ const PurchaseListingList = ({value}) => {
           <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
           <Descriptions.Item label="备注"> <Note width="100%" value={data.note || '无'} /></Descriptions.Item>
-          <Descriptions.Item label="状态">{status(data.status)}</Descriptions.Item>
+          <Descriptions.Item label="状态">{data.statusResult && data.statusResult.name}</Descriptions.Item>
         </Descriptions>
       </ProCard>
       <ProCard headerBordered className="h2Card" title="采购申请详情">
