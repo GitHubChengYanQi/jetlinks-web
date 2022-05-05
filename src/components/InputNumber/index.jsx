@@ -22,6 +22,9 @@ const InputNumber = (
     value={value}
     placeholder={placeholder}
     {...props}
+    onPressEnter={()=>{
+      onBlur(number || value);
+    }}
     onChange={(value) => {
       onChange(value);
       setNumber(value);

@@ -19,7 +19,7 @@ import * as SysField from '../purchaseAskField';
 import {request, useRequest} from '@/util/Request';
 import {skuDetail, skuResults} from '@/pages/Erp/sku/skuUrl';
 import Breadcrumb from '@/components/Breadcrumb';
-import store from "@/store";
+import store from '@/store';
 
 const {FormItem} = Form;
 
@@ -40,13 +40,18 @@ const PurchaseAskEdit = () => {
   const {run} = useRequest(skuResults, {
     manual: true,
     onSuccess: (res) => {
-      formRef.current.setFieldValue('purchaseListings', res.map((item,index) => {
-        return {
-          ...skus[index],
-          skuResult: item,
-          coding:item.standard,
-        };
-      }));
+      const purchaseListings = [];
+      res.map((item) => {
+        return skus.filter(skuItem => skuItem.skuId === item.skuId).map((skuItem) => {
+          return purchaseListings.push({
+            ...skuItem,
+            skuResult: item,
+            coding: item.standard,
+          });
+        });
+      });
+
+      formRef.current.setFieldValue('purchaseListings', purchaseListings);
     }
   });
 
@@ -63,7 +68,7 @@ const PurchaseAskEdit = () => {
   return (
     <>
       <div style={{padding: 16}}>
-        <Breadcrumb title={params.id ? '编辑采购申请' : '创建采购申请'}/>
+        <Breadcrumb title={params.id ? '编辑采购申请' : '创建采购申请'} />
       </div>
       <Card
         title="创建采购申请"
@@ -134,17 +139,17 @@ const PurchaseAskEdit = () => {
         >
           <ProCard title="基础信息" className="h2Card" headerBordered>
             <div style={{display: 'inline-block', width: '30%'}}>
-              <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required/>
+              <FormItem label="编号" name="coding" component={SysField.Codings} module={5} required />
             </div>
             <div style={{display: 'inline-block', width: '30%'}}>
-              <FormItem label="采购申请类型" name="type" component={SysField.Type} required/>
+              <FormItem label="采购申请类型" name="type" component={SysField.Type} required />
             </div>
             <div style={{display: 'inline-block', width: '30%'}}>
-              <FormItem label="备注说明" name="note" component={SysField.Note}/>
+              <FormItem label="备注说明" name="note" component={SysField.Note} />
             </div>
           </ProCard>
 
-          <FormItem name="purchaseListings" component={SysField.AddSku}/>
+          <FormItem name="purchaseListings" component={SysField.AddSku} />
         </Form>
       </Card>
 
