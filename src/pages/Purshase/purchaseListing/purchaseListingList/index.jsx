@@ -48,7 +48,7 @@ const PurchaseListingList = ({value}) => {
   return (
     <div>
       <ProCard headerBordered className="h2Card" title="基础信息">
-        <Descriptions column={2} bordered labelStyle={{width: 120}}>
+        <Descriptions column={2} bordered>
           <Descriptions.Item label="采购申请编号"> {data.coding}</Descriptions.Item>
           <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>

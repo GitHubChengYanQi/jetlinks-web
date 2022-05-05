@@ -1,49 +1,46 @@
 import {Button, Space} from 'antd';
 import React from 'react';
-import Message from '@/components/Message';
+import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
 import AuditButton from '@/pages/Workflow/Documents/components/AuditButton';
-import InstockEdit from '@/pages/Erp/instock/InstockEdit';
-import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
+import CreateOrder from '@/pages/Order/CreateOrder';
+import Draft from '@/components/Form/components/Draft';
 
 
-export const createInstockAsk = ({
+export const createPurcaseOrder = ({
   setModalProps,
   setDocument,
   modalRef,
   setAddLoading,
   addRef,
-  value,
-  onSuccess
+  data = {},
+  onSuccess,
+  title,
+  orderModule,
 }) => {
 
   setModalProps({
-    width: '70vw',
-    title: '创建入库申请单',
+    width: '80vw',
+    title,
   });
 
-  setDocument(<InstockEdit
-    value={value}
+  setDocument(<CreateOrder
+    modalRef={modalRef}
+    orderModule={orderModule}
+    skus={data.skus}
     ref={addRef}
     loading={setAddLoading}
-    onSuccess={() => {
-      Message.success('创建入库单成功！');
-      onSuccess();
-      modalRef.current.close();
-    }}
-    onError={() => {
-      Message.success('创建入库请单失败！');
-    }}
+    onSuccess={onSuccess}
   />);
 };
 
 
-export const actionInstockAsk = ({
+export const actionPurcaseOrder = ({
   setModalProps,
   setDocument,
   res,
 }) => {
 
-  setDocument(<Instock value={res.formId} />);
+  setDocument(<PurchaseListingList value={res.formId} />);
 
   setModalProps({
     title: '采购申请单',
@@ -51,15 +48,16 @@ export const actionInstockAsk = ({
   });
 };
 
-export const CreateInstockFooter = ({
+export const PurchaseOrderFooter = ({
   addLoading,
   addRef,
   value,
+  modalRef,
   createDocument,
   run,
-  modalRef,
-  res
+  res,
 }) => {
+
 
   if (createDocument) {
     return <Space>
@@ -69,6 +67,15 @@ export const CreateInstockFooter = ({
       <Button onClick={() => {
         modalRef.current.close();
       }}>取消</Button>
+      <Draft
+        type="purcaseOrder"
+        getValues={async () => {
+          return await addRef.current.getFormState();
+        }}
+        onChange={(value) => {
+          addRef.current.setFormState(value);
+        }}
+      />
     </Space>;
   }
 
@@ -82,5 +89,3 @@ export const CreateInstockFooter = ({
   </Space>;
 
 };
-
-

@@ -1,6 +1,5 @@
 import {FormEffectHooks, FormPath} from '@formily/antd';
 import {message} from 'antd';
-import {getSearchParams} from 'ice';
 import {request} from '@/util/Request';
 import {customerDetail} from '@/pages/Crm/customer/CustomerUrl';
 import {contactsDetail} from '@/pages/Crm/contacts/contactsUrl';
@@ -8,14 +7,12 @@ import {templateGetLabel} from '@/pages/Crm/template/TemplateUrl';
 import {invoiceDetail} from '@/pages/Crm/invoice/invoiceUrl';
 import {selfEnterpriseDetail, supplierDetail} from '@/pages/Purshase/Supply/SupplyUrl';
 
-export const customerAAction = (setFieldState) => {
-
-  const params = getSearchParams();
+export const customerAAction = (setFieldState,module) => {
 
   let api = {};
-  if (params.module === 'PO') {
+  if (module === 'PO') {
     api = selfEnterpriseDetail;
-  } else if (params.module === 'SO') {
+  } else if (module === 'SO') {
     api = customerDetail;
   }
 
@@ -162,14 +159,13 @@ export const customerAAction = (setFieldState) => {
   });
 };
 
-export const customerBAction = (setFieldState) => {
+export const customerBAction = (setFieldState,module) => {
 
-  const params = getSearchParams();
 
   let api = {};
-  if (params.module === 'SO') {
+  if (module === 'SO') {
     api = selfEnterpriseDetail;
-  } else if (params.module === 'PO') {
+  } else if (module === 'PO') {
     api = supplierDetail;
   }
 
@@ -478,9 +474,9 @@ const contractAction = (setFieldState) => {
 
 };
 
-export const EffectsAction = (setFieldState, getFieldState) => {
-  customerAAction(setFieldState);
-  customerBAction(setFieldState);
+export const EffectsAction = (setFieldState, getFieldState,orderModule) => {
+  customerAAction(setFieldState,orderModule);
+  customerBAction(setFieldState,orderModule);
   paymentAction(setFieldState, getFieldState);
   contractAction(setFieldState);
 

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {Button, Dropdown, List, Menu, Modal, Spin} from 'antd';
+import {Button, Dropdown, List, Modal, Spin} from 'antd';
 import * as pako from 'pako';
 import {EllipsisOutlined} from '@ant-design/icons';
 import Empty from '@/components/Empty';
 import {useRequest} from '@/util/Request';
-import {add, deleteItem, detail, edit, list} from '@/components/Form/components/DraftUrl';
+import {add, deleteItem, detail, list} from '@/components/Form/components/DraftUrl';
 import Message from '@/components/Message';
 import DatePicker from '@/components/DatePicker';
 
@@ -21,8 +21,7 @@ const Draft = (
 
   const save = (values) => {
     const deflate = pako.deflate(JSON.stringify(values));
-    const encode = Enc.base64.encode(deflate);
-    return encode;
+    return Enc.base64.encode(deflate);
   };
 
   const decode = (base64) => {
@@ -89,7 +88,11 @@ const Draft = (
             data: {dates: time}
           });
         }} />
+
       <List bordered>
+        {
+          listDta.length === 0 && <div style={{paddingBottom:16}}><Empty description="暂无草稿" /></div>
+        }
         {
           listDta.map((item, index) => {
             return <List.Item

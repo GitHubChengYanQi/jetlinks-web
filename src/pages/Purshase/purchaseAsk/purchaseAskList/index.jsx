@@ -62,7 +62,7 @@ const PurchaseAskList = ({status, ...props}) => {
       >
         <Column title="编号" key={1} dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            documentRef.current.action(null,value,'purchaseAsk');
+            documentRef.current.action(null, value, 'purchaseAsk');
           }}>{value}</Button>;
         }} />
         <Column key={2} title="申请类型" dataIndex="type" render={(value) => {
@@ -125,14 +125,16 @@ const PurchaseAskList = ({status, ...props}) => {
                 documentRef.current.create('purchaseAsk', value);
               }}>编辑</Button>
               <Button type="link" onClick={() => {
-                documentRef.current.action(null,value,'purchaseAsk');
+                documentRef.current.action(null, value, 'purchaseAsk');
               }}>查看</Button>
             </>;
           }} />}
       </Table>
 
 
-      <Documents ref={documentRef} />
+      <Documents ref={documentRef} onSuccess={() => {
+        tableRef.current.submit();
+      }} />
     </>
   );
 };

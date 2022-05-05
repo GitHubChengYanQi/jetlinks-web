@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {getSearchParams} from 'ice';
+import React, {useEffect, useRef, useState} from 'react';
+import {getSearchParams, useHistory} from 'ice';
 import {Button, Card, Empty, Input, List as AntList, Modal, Select, Space} from 'antd';
 import {DeleteOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
@@ -11,20 +11,32 @@ import {List} from '@/components/Table/components/DndKit/List';
 import Note from '@/components/Note';
 import Message from '@/components/Message';
 import {useRequest} from '@/util/Request';
+import ModalMessage from '@/components/ModalMessage';
 
 const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
+const deleteStatusApi = {url: '/documentStatus/delete', method: 'POST'};
 const addActionsApi = {url: '/statueAction/addAction', method: 'POST'};
 const detailApi = {url: '/documentStatus/getDetails', method: 'GET'};
 
-const Setting = () => {
+const Setting = ({
+  value,
+  onSuccess = () => {
+  }
+}) => {
+
+  const history = useHistory();
 
   const params = getSearchParams();
+
+  const type = params.type || value;
 
   const [status, setStatus] = useState([]);
 
   const [visible, setVisible] = useState();
 
   const [statuName, setStatuName] = useState();
+
+  const resultRef = useRef();
 
   const {loading: detailLoading, run: detailRun} = useRequest(detailApi, {
     manual: true,
@@ -48,9 +60,9 @@ const Setting = () => {
   });
 
   useEffect(() => {
-    if (params.type) {
+    if (type) {
       detailRun({
-        params: {type: params.type}
+        params: {type: type || value}
       });
     }
   }, []);
@@ -63,10 +75,33 @@ const Setting = () => {
     }
   });
 
+  const {loading: deleteStatusLoading, run: deleteStatusRun} = useRequest(deleteStatusApi, {manual: true});
+
   const {loading: addActionsLoading, run: addActionsRun} = useRequest(addActionsApi, {
     manual: true,
-    onSuccess: (res) => {
-      Message.success('保存成功！');
+    onSuccess: () => {
+      resultRef.current.success({
+        title: '保存成功!',
+        onCancel: () => {
+          onSuccess();
+          history.goBack();
+        },
+        onOk: onSuccess,
+        onClose: onSuccess,
+        noCancel: value,
+      });
+    },
+    onError: () => {
+      resultRef.current.error({
+        title: '保存失败!',
+        onCancel: () => {
+          history.goBack();
+        },
+        onOk: () => {
+          onSuccess();
+        },
+        noCancel: value,
+      });
     }
   });
 
@@ -77,7 +112,7 @@ const Setting = () => {
   };
 
   const typeObject = () => {
-    switch (params.type) {
+    switch (type || value) {
       case 'purchaseAsk':
         return {
           title: '采购申请单',
@@ -192,13 +227,13 @@ const Setting = () => {
     return <ProSkeleton type="descriptions" />;
   }
 
-  if (!params.type) {
+  if (!type) {
     return <Empty />;
   }
 
   return <>
     <div>
-      <Card title={<Breadcrumb title="单据设置" />} bordered={false} />
+      <Card hidden={value} title={<Breadcrumb title="单据设置" />} bordered={false} />
 
       <Card
         style={{width: 1250, margin: 'auto'}}
@@ -206,13 +241,13 @@ const Setting = () => {
         bordered={false}
         bodyStyle={{overflow: 'auto'}}
       >
-
         <AntList
           dataSource={status}
           renderItem={(item, index) => {
             return <AntList.Item>
               <Space style={{minHeight: 60}}>
-                <Button disabled={item.default} type="link" danger onClick={() => {
+                <Button loading={deleteStatusLoading} disabled={item.default} type="link" danger onClick={async () => {
+                  await deleteStatusRun({data: {documentsStatusId: item.value}});
                   const newStatus = status.filter((item, statusIndex) => {
                     return statusIndex !== index;
                   });
@@ -273,7 +308,7 @@ const Setting = () => {
           <Button loading={addActionsLoading} type="primary" onClick={() => {
             addActionsRun({
               data: {
-                orderEnum: params.type,
+                orderEnum: type,
                 actions: status.map((item) => {
                   const enums = [];
                   item.actions.map((item) => {
@@ -283,7 +318,7 @@ const Setting = () => {
                     return item;
                   });
                   let Enums = {};
-                  switch (params.type) {
+                  switch (type) {
                     case 'purchaseAsk':
                       Enums = {purchaseActionEnums: enums};
                       break;
@@ -341,7 +376,7 @@ const Setting = () => {
         }
         addStatusRun({
           data: {
-            orderEnum: params.type,
+            orderEnum: type,
             param: {name: statuName}
           }
         });
@@ -353,6 +388,8 @@ const Setting = () => {
           setStatuName(value.target.value);
         }} />
     </Modal>
+
+    <ModalMessage ref={resultRef} />
 
   </>;
 };

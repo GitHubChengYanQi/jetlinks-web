@@ -5,13 +5,12 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Badge, Button, Space, Table as AntTable} from 'antd';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {getSearchParams} from 'ice';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
@@ -30,13 +29,11 @@ const InstockList = () => {
   const ducomentRef = useRef(null);
   const tableRef = useRef(null);
 
-  const params = getSearchParams();
-
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ducomentRef.current.create('instockAsk');
+          ducomentRef.current.create('createInstock');
         }} />
       </>
     );
@@ -157,7 +154,9 @@ const InstockList = () => {
         }} />
       </Table>
 
-      <Documents ref={ducomentRef} />
+      <Documents ref={ducomentRef} onSuccess={() => {
+        tableRef.current.submit();
+      }} />
 
     </>
   );

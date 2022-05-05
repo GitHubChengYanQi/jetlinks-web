@@ -9,31 +9,26 @@ export const createPurcaseAsk = ({
   setModalProps,
   setDocument,
   modalRef,
-  addLoading,
-  setLoading,
-  purchaseAskAddRef,
-  value
+  setAddLoading,
+  addRef,
+  value,
+  data = {},
+  onSuccess,
 }) => {
 
   setModalProps({
     width: '70vw',
     title: '创建采购申请单',
-    footer: <Space>
-      <Button loading={addLoading} type="primary" onClick={() => {
-        purchaseAskAddRef.current.submit();
-      }}>{value ? '修改' : '创建'}</Button>
-      <Button onClick={() => {
-        modalRef.current.close();
-      }}>取消</Button>
-    </Space>
   });
 
   setDocument(<PurchaseAskEdit
+    skus={data.skus}
     value={value}
-    ref={purchaseAskAddRef}
-    loading={setLoading}
+    ref={addRef}
+    loading={setAddLoading}
     onSuccess={() => {
       Message.success('创建采购申请单成功！');
+      onSuccess();
       modalRef.current.close();
     }}
     onError={() => {
@@ -47,8 +42,6 @@ export const actionPurchaseAsk = ({
   setModalProps,
   setDocument,
   res,
-  run,
-  modalRef
 }) => {
 
   setDocument(<PurchaseListingList value={res.formId} />);
@@ -56,13 +49,54 @@ export const actionPurchaseAsk = ({
   setModalProps({
     title: '采购申请单',
     width: '50vw',
-    footer: <Space>
-      <AuditButton res={res} taskId={res.processTaskId} refresh={() => {
-        run({params: {taskId: res.processTaskId},});
-      }} />
+  });
+};
+
+export const PurchaseAskFooter = ({
+  addLoading,
+  addRef,
+  value,
+  modalRef,
+  createDocument,
+  run,
+  currentNode = [],
+  res,
+}) => {
+
+  if (createDocument) {
+    return <Space>
+      <Button loading={addLoading} type="primary" onClick={() => {
+        addRef.current.submit();
+      }}>{value ? '修改' : '创建'}</Button>
       <Button onClick={() => {
         modalRef.current.close();
       }}>取消</Button>
-    </Space>
-  });
+    </Space>;
+  }
+
+  const buttons = () => {
+    const actions = [];
+    currentNode.map((item) => {
+      if (item.logResult && Array.isArray(item.logResult.actionResults)) {
+        return item.logResult.actionResults.map((item) => {
+          return actions.push(item.action);
+        });
+      }
+      return null;
+    });
+    return <Space>
+      <AuditButton res={res} taskId={res.processTaskId} refresh={() => {
+        run({params: {taskId: res.processTaskId},});
+      }} />
+      <Button type="primary" ghost hidden={!actions.includes('perform')}>执行采购</Button>
+    </Space>;
+  };
+
+  return <Space>
+    {buttons()}
+    <Button onClick={() => {
+      modalRef.current.close();
+    }}>取消</Button>
+  </Space>;
+
 };

@@ -5,7 +5,7 @@ import Originator from '@/pages/Workflow/Nodes/Originator';
 import Branchs from '@/pages/Workflow/Nodes/Branchs';
 
 const Audit = ({
-  type:formType,
+  type: formType,
   currentNode,
   updateNode,
   module,
@@ -58,15 +58,14 @@ const Audit = ({
         type={formType}
         module={module}
         value={currentNode && currentNode.current && {
+          ...(currentNode.current.auditRule || {}),
           type: currentNode.current.stepType,
           auditRule: currentNode.current.auditRule && currentNode.current.auditRule.rules,
-          documentsStatusId: currentNode.current.auditRule && currentNode.current.auditRule.documentsStatusId,
         }}
         onChange={(value) => {
           currentNode.current.auditRule = {
-            type: value.type,
+            ...value,
             rules: value.auditRule,
-            documentsStatusId: value.documentsStatusId,
             formType
           };
           currentNode.current.stepType = value.type;

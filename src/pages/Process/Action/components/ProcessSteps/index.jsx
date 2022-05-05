@@ -71,7 +71,7 @@ const ProcessSteps = ({
         }
         return null;
       });
-      return <Space direction="vertical" wrap align="center">
+      return <Space direction="vertical" wrap>
         {
           users.map((items, index) => {
             return <Space align="center" key={index}>

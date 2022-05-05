@@ -38,7 +38,7 @@ const List = () => {
                   type="link"
                   style={{padding: 0, flexGrow: 1}}
                   onClick={() => {
-                    processRef.current.open(false);
+                    processRef.current.open(item.type);
                   }}>流程设置</Button>
                 <Button
                   type="link"
@@ -54,6 +54,8 @@ const List = () => {
     </Card>
 
     <Modal
+      noTitle
+      headTitle="流程管理"
       width={1000}
       component={ProcessList}
       ref={processRef}

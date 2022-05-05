@@ -1,7 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import ProCard from '@ant-design/pro-card';
 import {
-  Affix,
   Button,
   Col,
   Drawer,
@@ -15,7 +14,7 @@ import {
 import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {getSearchParams, useHistory} from 'ice';
+import {useHistory} from 'ice';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
 import * as SysField from './components/Field';
@@ -29,9 +28,6 @@ import PaymentTemplateList from '@/pages/Purshase/paymentTemplate/paymentTemplat
 import {request, useRequest} from '@/util/Request';
 import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase/paymentTemplate/paymentTemplateUrl';
 import Empty from '@/components/Empty';
-import {skuResults} from '@/pages/Erp/sku/skuUrl';
-import Draft from '@/components/Form/components/Draft';
-import {payMoney} from './components/Field';
 
 const {FormItem} = Form;
 
@@ -47,37 +43,23 @@ const ApiConfig = {
 const span = 6;
 const labelWidth = 128;
 
-const CreateOrder = ({...props}) => {
-
-  const params = getSearchParams();
+const CreateOrder = ({
+  orderModule,
+  modalRef,
+  onSuccess = () => {
+  }
+}, ref) => {
 
   const formRef = useRef();
 
-  const skus = params.skus && Array.isArray(JSON.parse(params.skus)) && JSON.parse(params.skus);
-
-  const {run: getSkus} = useRequest(skuResults, {
-    manual: true,
-    onSuccess: (res) => {
-      const detail = res.map((item, index) => {
-        return {
-          ...skus[index],
-          skuResult: item,
-        };
-      });
-      formRef.current.setFieldValue('detailParams', detail);
-    }
-  });
-
-
-  useEffect(() => {
-    if (skus) {
-      getSkus({data: {skuIds: skus.map(item => item.skuId)}});
-    }
-  }, []);
+  useImperativeHandle(ref, () => ({
+    submit: formRef.current.submit,
+    ...formRef.current,
+  }));
 
 
   const module = () => {
-    switch (params.module) {
+    switch (orderModule) {
       case 'SO':
         return {
           type: 2,
@@ -113,7 +95,7 @@ const CreateOrder = ({...props}) => {
     }
   };
 
-  const ref = useRef();
+  const payRef = useRef();
 
   const history = useHistory();
 
@@ -133,8 +115,7 @@ const CreateOrder = ({...props}) => {
 
   useEffect(() => {
     if (payPlan === 4) {
-      // setPayPlan(null);
-      ref.current.open(true);
+      payRef.current.open(true);
     }
   }, [payPlan]);
 
@@ -142,11 +123,7 @@ const CreateOrder = ({...props}) => {
     return <Empty />;
   }
 
-  return <div style={{padding: 16}}>
-    <div style={{padding: '16px 0'}}>
-      <Breadcrumb title={module().title} />
-    </div>
-
+  return <div>
     <Form
       value={false}
       ref={formRef}
@@ -216,7 +193,7 @@ const CreateOrder = ({...props}) => {
       }}
       effects={({setFieldState, getFieldState}) => {
 
-        EffectsAction(setFieldState, getFieldState);
+        EffectsAction(setFieldState, getFieldState,orderModule);
 
         FormEffectHooks.onFieldValueChange$('payPlan').subscribe(async ({value, active}) => {
           if (value && active) {
@@ -298,7 +275,7 @@ const CreateOrder = ({...props}) => {
               className="h2Card"
               title="甲方信息"
               headerBordered
-              extra={params.module === 'SO' && <Button onClick={() => {
+              extra={orderModule === 'SO' && <Button onClick={() => {
                 setVisible(true);
               }}>新建客户</Button>}
               headStyle={{height: 49}}
@@ -307,9 +284,9 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'PO' ? userInfo.customerId : null}
-                      selfEnterprise={params.module === 'PO'}
-                      supply={params.module === 'PO' ? null : 0}
+                      value={orderModule === 'PO' ? userInfo.customerId : null}
+                      selfEnterprise={orderModule === 'PO'}
+                      supply={orderModule === 'PO' ? null : 0}
                       label="公司名称"
                       placeholder="请选择甲方公司"
                       name="buyerId"
@@ -413,7 +390,7 @@ const CreateOrder = ({...props}) => {
               headStyle={{height: 49}}
               className="h2Card"
               title="乙方信息"
-              extra={params.module === 'PO' && <Button onClick={() => {
+              extra={orderModule === 'PO' && <Button onClick={() => {
                 setVisible(true);
               }}>新建供应商</Button>}
               headerBordered>
@@ -421,9 +398,9 @@ const CreateOrder = ({...props}) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <FormItem
-                      value={params.module === 'SO' ? userInfo.customerId : null}
-                      selfEnterprise={params.module === 'SO'}
-                      supply={params.module === 'SO' ? null : 1}
+                      value={orderModule === 'SO' ? userInfo.customerId : null}
+                      selfEnterprise={orderModule === 'SO'}
+                      supply={orderModule === 'SO' ? null : 1}
                       label="公司名称"
                       placeholder="请选择乙方公司"
                       name="sellerId"
@@ -526,9 +503,8 @@ const CreateOrder = ({...props}) => {
 
       <ProCard bodyStyle={{padding: 16}} className="h2Card" title={module().detailTitle} headerBordered>
         <FormItem
-          module={params.module}
+          module={orderModule}
           name="detailParams"
-          {...props}
           component={SysField.AddSku}
         />
       </ProCard>
@@ -575,7 +551,7 @@ const CreateOrder = ({...props}) => {
             <FieldList
               name="paymentDetail"
               initialValue={[
-                {payType:0,dateNumber:1,dateWay:1},
+                {payType: 0, dateNumber: 1, dateWay: 0},
               ]}
             >
               {({state, mutators}) => {
@@ -786,11 +762,10 @@ const CreateOrder = ({...props}) => {
     <Modal
       headTitle="添加付款计划模板"
       width={800}
-      {...props}
       component={PaymentTemplateList}
-      ref={ref}
+      ref={payRef}
       onClose={() => {
-        ref.current.close();
+        payRef.current.close();
         refresh();
       }}
     />
@@ -818,12 +793,15 @@ const CreateOrder = ({...props}) => {
                 取消
               </Button>,
               <Button type="primary" key="console" onClick={() => {
-                history.goBack();
+                setResultVisible(false);
+                onSuccess();
+                modalRef.current.close();
               }}>
-                返回订单列表
+                返回
               </Button>,
               success && <Button key="buy" onClick={() => {
                 history.push(`/purchase/order/detail?id=${success.orderId}`);
+                modalRef.current.close();
               }}>
                 查看详情
               </Button>
@@ -832,29 +810,7 @@ const CreateOrder = ({...props}) => {
       }
     </AntModal>
 
-    <Affix offsetBottom={0}>
-      <div
-        style={{height: 47, borderTop: '1px solid #e7e7e7', background: '#fff', textAlign: 'center', paddingTop: 8}}>
-        <Space>
-          <Button type="primary" onClick={() => {
-            formRef.current.submit();
-          }}>保存</Button>
-          <Button onClick={() => {
-            history.push('/purchase/toBuyPlan');
-          }}>取消</Button>
-          <Draft
-            type={params.module}
-            getValues={async () => {
-              return await formRef.current.getFormState();
-            }}
-            onChange={(value) => {
-              formRef.current.setFormState(value);
-            }}
-          />
-        </Space>
-      </div>
-    </Affix>
   </div>;
 };
 
-export default CreateOrder;
+export default React.forwardRef(CreateOrder);

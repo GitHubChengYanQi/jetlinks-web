@@ -15,6 +15,7 @@ import {orderList} from '@/pages/Erp/order/OrderUrl';
 import * as SysField from '../SysField/index';
 import Modal from '@/components/Modal';
 import CreateContract from '@/pages/Order/CreateContract';
+import Documents from '@/pages/Workflow/Documents';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -28,19 +29,19 @@ const OrderTable = (props) => {
 
   const compoentRef = useRef();
 
+  const documentRef = useRef();
+
   const module = () => {
     switch (props.location.pathname) {
       case '/CRM/order':
         return {
           createTitle: '创建销售单',
-          createRoute: '/CRM/order/createOrder?module=SO',
           module: 'SO',
           type: 2,
         };
       case '/purchase/order':
         return {
           createTitle: '创建采购单',
-          createRoute: '/purchase/order/createOrder?module=PO',
           module: 'PO',
           type: 1,
         };
@@ -53,7 +54,16 @@ const OrderTable = (props) => {
     return (
       <>
         <Button type="primary" onClick={() => {
-          history.push(module().createRoute || '/');
+          switch (module().module) {
+            case 'PO':
+              documentRef.current.create('purchaseOrder');
+              break;
+            case 'SO':
+              documentRef.current.create('SO');
+              break;
+            default:
+              break;
+          }
         }}>{module().createTitle || '创建'}</Button>
       </>
     );
@@ -158,6 +168,9 @@ const OrderTable = (props) => {
         </Space>}
       />
 
+      <Documents ref={documentRef} onSuccess={() => {
+        tableRef.current.submit();
+      }} />
     </>
   );
 };

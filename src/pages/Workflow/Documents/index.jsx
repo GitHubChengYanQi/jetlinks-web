@@ -4,22 +4,40 @@ import Modal from '@/components/Modal';
 import Message from '@/components/Message';
 import ProcessSteps from '@/pages/Process/Action/components/ProcessSteps';
 import {useRequest} from '@/util/Request';
-import {actionPurchaseAsk, createPurcaseAsk} from '@/pages/Workflow/Documents/components/Module/purchaseAsk';
-import {actionInstockAsk, createInstockAsk} from '@/pages/Workflow/Documents/components/Module/instock';
+import {
+  actionPurchaseAsk,
+  createPurcaseAsk,
+  PurchaseAskFooter
+} from '@/pages/Workflow/Documents/components/Module/purchaseAsk';
+import {
+  actionInstockAsk,
+  createInstockAsk,
+  CreateInstockFooter
+} from '@/pages/Workflow/Documents/components/Module/instock';
 import Comments from '@/pages/Workflow/Documents/components/Comments';
+import {createPurcaseOrder, PurchaseOrderFooter} from '@/pages/Workflow/Documents/components/Module/purchaseOrder';
 
 const getTaskIdApi = {url: '/activitiProcessTask/getTaskIdByFromId', method: 'GET'};
 const auditDetail = {url: '/audit/detail', method: 'GET'};
 
-const Documents = ({...props}, ref) => {
+const Documents = ({
+  onSuccess = () => {
+  }
+}, ref) => {
 
   // ref
   // 单据弹窗Ref
   const modalRef = useRef();
-  // 采购申请ref
-  const purchaseAskAddRef = useRef();
+  // 添加ref
+  const addRef = useRef();
 
   // state
+  // 当前单据的type
+  const [type, setType] = useState();
+  // 创建单据传入的数据
+  const [createData, setCreateData] = useState({});
+  // 操作单据传入的数据
+  const [actionData, setActionData] = useState({});
   // 单据内容
   const [document, setDocument] = useState();
   // 单据创建loading
@@ -30,6 +48,23 @@ const Documents = ({...props}, ref) => {
   const [processProps, setProcessProps] = useState({data: null, createName: '', type: '', card: false});
   // 是否是创建单据
   const [createDocument, setCreateDocument] = useState(true);
+
+  // function
+  // 获取当前节点
+  const getCurrentNode = (data) => {
+    if (!data) {
+      return {};
+    }
+    if (data.logResult && data.logResult.status === -1) {
+      if (data.stepType === 'route') {
+        return data.conditionNodeList.map((item) => {
+          return getCurrentNode(item.childNode);
+        });
+      }
+      return data;
+    }
+    return getCurrentNode(data.childNode);
+  };
 
   // request
   // 通过formId获取taskId
@@ -43,17 +78,28 @@ const Documents = ({...props}, ref) => {
         if (!res) {
           return Message.error('参数错误！');
         }
-
+        const node = getCurrentNode(res.stepsResult);
+        const currentNode = Array.isArray(node) ? node : [node];
         switch (res.type) {
           case 'purchaseAsk':
-            actionPurchaseAsk({setDocument, setModalProps, res, run, modalRef});
+            actionPurchaseAsk({
+              setModalProps,
+              setDocument,
+              res,
+            });
             break;
           case 'createInstock':
-            actionInstockAsk({setDocument, setModalProps, res, run, modalRef});
+            actionInstockAsk({
+              setModalProps,
+              setDocument,
+              res,
+            });
             break;
           default:
             break;
         }
+        setType(res.type);
+        setActionData({res, currentNode});
         setProcessProps({data: res.stepsResult, createName: res.createName, card: true});
         setCreateDocument(false);
         modalRef.current.open(true);
@@ -63,35 +109,51 @@ const Documents = ({...props}, ref) => {
 
 
   // 创建单据
-  const create = (type, value) => {
+  const create = (type, value, data) => {
     switch (type) {
       case 'purchaseAsk':
         createPurcaseAsk({
           setModalProps,
           setDocument,
-          addLoading,
-          type,
-          purchaseAskAddRef,
           modalRef,
           setAddLoading,
-          value
+          addRef,
+          value,
+          data,
+          onSuccess
         });
         break;
-      case 'instockAsk':
+      case 'createInstock':
         createInstockAsk({
           setModalProps,
           setDocument,
-          addLoading,
-          type,
-          purchaseAskAddRef,
           modalRef,
           setAddLoading,
-          value
+          addRef,
+          value,
+          data,
+          onSuccess
+        });
+        break;
+      case 'purchaseOrder':
+      case 'SO':
+        createPurcaseOrder({
+          setModalProps,
+          setDocument,
+          modalRef,
+          setAddLoading,
+          addRef,
+          data,
+          onSuccess,
+          title: type === 'purchaseOrder' ? '创建采购单' : '创建销售单',
+          orderModule: type === 'purchaseOrder' ? 'PO' : 'SO'
         });
         break;
       default:
         break;
     }
+    setType(type);
+    setCreateData({value, data});
     setProcessProps({type, card: true});
     setCreateDocument(true);
     modalRef.current.open(true);
@@ -118,12 +180,51 @@ const Documents = ({...props}, ref) => {
     action,
   }));
 
+  const footer = () => {
+    switch (type) {
+      case 'purchaseAsk':
+        return <PurchaseAskFooter
+          value={createData.value}
+          addRef={addRef}
+          modalRef={modalRef}
+          addLoading={addLoading}
+          createDocument={createDocument}
+          res={actionData.res}
+          run={run}
+          currentNode={actionData.currentNode}
+        />;
+      case 'createInstock':
+        return <CreateInstockFooter
+          value={createData.value}
+          addRef={addRef}
+          modalRef={modalRef}
+          addLoading={addLoading}
+          run={run}
+          res={actionData.res}
+          createDocument={createDocument}
+        />;
+      case 'purchaseOrder':
+      case 'SO':
+        return <PurchaseOrderFooter
+          value={createData.value}
+          addRef={addRef}
+          modalRef={modalRef}
+          addLoading={addLoading}
+          run={run}
+          res={actionData.res}
+          createDocument={createDocument}
+        />;
+      default:
+        break;
+    }
+  };
+
   return <>
     <Modal
       width={modalProps.width}
       headTitle={modalProps.title}
       ref={modalRef}
-      footer={modalProps.footer}
+      footer={footer()}
     >
       {
         loading ?

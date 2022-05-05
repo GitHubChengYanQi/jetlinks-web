@@ -20,11 +20,13 @@ import ProcessEdit from '../processEdit';
 import * as SysField from '../processField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
+import {TableModule} from '../processField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ProcessList = ({topTitle}) => {
+const ProcessList = ({noTitle,value}) => {
+
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -52,7 +54,7 @@ const ProcessList = ({topTitle}) => {
     }
     Modal.confirm({
       title: `是否 [ ${statusType} ]该流程?`,
-      icon: <ExclamationCircleOutlined/>,
+      icon: <ExclamationCircleOutlined />,
       content: type === 0 ? '提示：发布之后不能进行修改' : '提示：每个功能模块仅能开启一套审批流程',
       onOk: async () => {
         return await run({
@@ -76,7 +78,7 @@ const ProcessList = ({topTitle}) => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
@@ -84,8 +86,9 @@ const ProcessList = ({topTitle}) => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="名称" name="processName" component={SysField.ProcessName}/>
-        <FormItem label="类型" name="type" component={SysField.Type} />
+        <FormItem label="名称" name="processName" component={SysField.ProcessName} />
+        <FormItem label="单据" name="type" component={SysField.Type} />
+        <FormItem label={!value && '类型'} hidden={value} name="module" component={SysField.TableModule} value={value} />
       </>
     );
   };
@@ -93,7 +96,8 @@ const ProcessList = ({topTitle}) => {
   return (
     <>
       <Table
-        title={topTitle ? <div>流程管理</div> : <Breadcrumb/>}
+        title={!noTitle && <Breadcrumb />}
+        contentHeight={noTitle}
         api={processList}
         rowKey="processId"
         searchForm={searchForm}
@@ -108,7 +112,7 @@ const ProcessList = ({topTitle}) => {
               }}>{value}</a>
             </>
           );
-        }}/>
+        }} />
         <Column title="类型" dataIndex="type" render={(value) => {
           switch (value) {
             case 'ship':
@@ -122,7 +126,7 @@ const ProcessList = ({topTitle}) => {
             default:
               break;
           }
-        }}/>
+        }} />
         <Column title="功能" dataIndex="module" render={(value) => {
           switch (value) {
             case 'inQuality':
@@ -144,20 +148,20 @@ const ProcessList = ({topTitle}) => {
             default:
               break;
           }
-        }}/>
+        }} />
         <Column title="状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:
-              return <Badge color="yellow" text="未发布"/>;
+              return <Badge color="yellow" text="未发布" />;
             case 99:
-              return <Badge color="green" text="启用"/>;
+              return <Badge color="green" text="启用" />;
             case 98:
-              return <Badge color="red" text="停用"/>;
+              return <Badge color="red" text="停用" />;
             default:
               break;
           }
-        }}/>
-        <Column/>
+        }} />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           if (!record.status) {
             return (
@@ -167,10 +171,10 @@ const ProcessList = ({topTitle}) => {
                 }}>发布</Button>
                 <EditButton onClick={() => {
                   ref.current.open(record.processId);
-                }}/>
+                }} />
                 <DelButton api={processDelete} value={record.processId} onSuccess={() => {
                   tableRef.current.refresh();
-                }}/>
+                }} />
               </>
             );
           } else if (record.status === 98) {
@@ -185,12 +189,12 @@ const ProcessList = ({topTitle}) => {
             }}>停用</Button>;
           }
 
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={ProcessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

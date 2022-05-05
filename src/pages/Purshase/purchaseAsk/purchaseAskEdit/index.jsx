@@ -5,19 +5,18 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useEffect, useImperativeHandle, useRef} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {Col, message, Row} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {
   FormEffectHooks,
   FormPath, MegaLayout,
 } from '@formily/antd';
-import {getSearchParams} from 'ice';
 import Form from '@/components/Form';
 import {purchaseAskDetail, purchaseAskAdd, purchaseAskEdit} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
-import {request, useRequest} from '@/util/Request';
-import {skuDetail, skuResults} from '@/pages/Erp/sku/skuUrl';
+import {request} from '@/util/Request';
+import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 
 const {FormItem} = Form;
 
@@ -35,36 +34,14 @@ const PurchaseAskEdit = ({
   onError = () => {
   },
   value,
+  skus = [],
 }, ref) => {
-
-  const params = getSearchParams();
 
   const formRef = useRef();
 
   useImperativeHandle(ref, () => ({
     submit: formRef.current.submit
   }));
-
-  const skus = params.skus && JSON.parse(params.skus);
-
-  const {run} = useRequest(skuResults, {
-    manual: true,
-    onSuccess: (res) => {
-      formRef.current.setFieldValue('purchaseListings', res.map((item, index) => {
-        return {
-          ...skus[index],
-          skuResult: item,
-          coding: item.standard,
-        };
-      }));
-    }
-  });
-
-  useEffect(() => {
-    if (Array.isArray(skus)) {
-      run({data: {skuIds: skus.map(item => item.skuId)}});
-    }
-  }, []);
 
   return (
     <div>
@@ -73,6 +50,9 @@ const PurchaseAskEdit = ({
         ref={formRef}
         api={ApiConfig}
         loading={loading}
+        defaultValue={{
+          purchaseListings: skus
+        }}
         NoButton={false}
         fieldKey="purchaseAskId"
         wrapperCol={24}

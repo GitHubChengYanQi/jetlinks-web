@@ -9,40 +9,51 @@ import {
 } from '@formily/antd';
 import {Radio} from '@formily/antd-components';
 import {Button} from 'antd';
-import {Rule, StautsId} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
+import {ActionIds, Rule, StautsId} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
 
 const actions = createFormActions();
 
 
-const Setps = ({value, onClose, onChange, module}) => {
+const Setps = ({
+  value,
+  onClose = () => {
+  },
+  onChange = () => {
+  },
+  module
+}) => {
 
   return (
     <Form
       labelCol={4}
       wrapperCol={12}
       actions={actions}
-      effects={($, {setFieldState}) => {
+      effects={($, {setFieldState, getFieldState}) => {
 
-        FormEffectHooks.onFieldValueChange$('quality_action').subscribe(({value}) => {
-
-          setFieldState('actionRule', state => {
-            if (value === 'quality_dispatch') {
-              state.visible = true;
-            } else {
-              state.visible = false;
-            }
+        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
+          setFieldState('actionStatuses', state => {
+            state.visible = value === 'status';
           });
+        });
 
+        FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value}) => {
+          const type = getFieldState('type');
+          if (type && type.value === 'status') {
+            setFieldState('actionStatuses', state => {
+              const visible = value && value.actions;
+              state.visible = visible;
+              state.props.actions = visible ? value.actions : [];
+            });
+          }
         });
 
       }}
       defaultValue={{
         type: value && value.type || 'audit',
-        auditRule: value && value.auditRule,
-        documentsStatusId: value && value.documentsStatusId
+        ...value,
       }}
       onSubmit={(values) => {
-        typeof onChange === 'function' && onChange(values);
+        onChange({...values, documentsStatusId: values.documentsStatusId && values.documentsStatusId.value});
       }}
     >
 
@@ -62,18 +73,24 @@ const Setps = ({value, onClose, onChange, module}) => {
           {label: '状态', value: 'status'},
         ]} />
       <FormItem
-        required
         type={module}
         label="单据状态"
         name="documentsStatusId"
         component={StautsId}
+      />
+      <FormItem
+        visible={false}
+        type={module}
+        label="单据动作"
+        name="actionStatuses"
+        component={ActionIds}
       />
 
       <div style={{marginTop: 16}}>
         <FormButtonGroup offset={8} sticky>
           <Submit>确定</Submit>
           <Button onClick={() => {
-            typeof onClose === 'function' && onClose();
+            onClose();
           }}>取消</Button>
         </FormButtonGroup>
       </div>
