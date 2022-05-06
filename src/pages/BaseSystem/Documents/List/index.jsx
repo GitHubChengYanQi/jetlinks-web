@@ -12,13 +12,12 @@ const List = () => {
   const processRef = useRef();
 
   const dataSource = [
-    {name: '采购申请单', type: 'purchaseAsk'},
-    {name: '采购单', type: 'purchaseOrder'},
-    {name: '入库申请单', type: 'createInstock'},
-    {name: '入库异常', type: 'instockError'},
-    {name: '入厂检', type: 'inQuality'},
-    {name: '出厂检', type: 'outQuality'},
-    {name: '生产检', type: 'productionQuality'},
+    {name: '采购申请单', type: 'PURCHASE'},
+    {name: '采购单', type: 'PURCHASEORDER'},
+    {name: '入库单', type: 'INSTOCK'},
+    {name: '入库异常', type: 'INSTOCKERROR'},
+    {name: '出库单', type: 'OUTSTOCK'},
+    {name: '质检单', type: 'QUALITY'},
   ];
 
   return <>

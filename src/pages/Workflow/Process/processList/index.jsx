@@ -20,12 +20,11 @@ import ProcessEdit from '../processEdit';
 import * as SysField from '../processField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
-import {TableModule} from '../processField';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ProcessList = ({noTitle,value}) => {
+const ProcessList = ({noTitle, value}) => {
 
   const ref = useRef(null);
   const tableRef = useRef(null);
@@ -113,22 +112,30 @@ const ProcessList = ({noTitle,value}) => {
             </>
           );
         }} />
-        <Column title="类型" dataIndex="type" render={(value) => {
+        <Column title="单据" dataIndex="type" render={(value) => {
           switch (value) {
-            case 'ship':
-              return <>工艺</>;
-            case 'quality':
-              return <>质检</>;
-            case 'purchase':
-              return <>采购</>;
-            case 'instock':
-              return <>入库</>;
+            case 'PURCHASE':
+              return <>采购申请单</>;
+            case 'PURCHASEORDER':
+              return <>采购单</>;
+            case 'INSTOCK':
+              return <>入库单</>;
+            case 'INSTOCKERROR':
+              return <>入库异常</>;
+            case 'OUTSTOCK':
+              return <>出库单</>;
+            case 'QUALITY':
+              return <>质检单</>;
             default:
               break;
           }
         }} />
-        <Column title="功能" dataIndex="module" render={(value) => {
+        <Column title="类型" dataIndex="module" render={(value) => {
           switch (value) {
+            case 'productionInstock':
+              return <>生产入库</>;
+            case 'purchaseInstock':
+              return <>采购入库</>;
             case 'inQuality':
               return <>入厂检</>;
             case 'instockError':

@@ -26,16 +26,8 @@ const Audit = ({
         break;
       case '3':
         switch (formType) {
-          case 'purchase':
-            switch (module) {
-              case 'purchaseAsk':
-                refBranch.current.open(true);
-                break;
-              case 'purchasePlan':
-                break;
-              default:
-                break;
-            }
+          case 'PURCHASE':
+            refBranch.current.open(true);
             break;
           default:
             break;

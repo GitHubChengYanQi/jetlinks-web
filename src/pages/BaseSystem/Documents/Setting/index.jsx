@@ -113,50 +113,36 @@ const Setting = ({
 
   const typeObject = () => {
     switch (type || value) {
-      case 'purchaseAsk':
+      case 'PURCHASE':
         return {
           title: '采购申请单',
           types: [
             {label: '执行申请', value: 'perform', disabled: disabled('perform')},
           ]
         };
-      case 'purchaseOrder':
+      case 'PURCHASEORDER':
         return {
           title: '采购单',
         };
-      case 'createInstock':
+      case 'INSTOCK':
         return {
-          title: '入库申请单',
+          title: '入库单',
           types: [
             {label: '核实数量', value: 'verify', disabled: disabled('verify')},
             {label: '执行入库', value: 'performInstock', disabled: disabled('performInstock')},
           ]
         };
-      case 'instockError':
+      case 'INSTOCKERROR':
         return {
           title: '入库异常'
         };
-      case 'inQuality':
+      case 'OUTSTOCK':
         return {
-          title: '入厂检',
-          types: [
-            {label: '分派', value: '1', disabled: disabled('1')},
-            {label: '执行质检', value: '2', disabled: disabled('2')},
-            {label: '质检入库', value: '3', disabled: disabled('3')},
-          ]
+          title: '出库单',
         };
-      case 'outQuality':
+      case 'QUALITY':
         return {
-          title: '出厂检',
-          types: [
-            {label: '分派', value: '1', disabled: disabled('1')},
-            {label: '执行质检', value: '2', disabled: disabled('2')},
-            {label: '质检入库', value: '3', disabled: disabled('3')},
-          ]
-        };
-      case 'productionQuality':
-        return {
-          title: '生产检',
+          title: '质检单',
           types: [
             {label: '分派', value: '1', disabled: disabled('1')},
             {label: '执行质检', value: '2', disabled: disabled('2')},
@@ -308,7 +294,7 @@ const Setting = ({
           <Button loading={addActionsLoading} type="primary" onClick={() => {
             addActionsRun({
               data: {
-                orderEnum: type,
+                receiptsEnum: type,
                 actions: status.map((item) => {
                   const enums = [];
                   item.actions.map((item) => {
@@ -319,32 +305,23 @@ const Setting = ({
                   });
                   let Enums = {};
                   switch (type) {
-                    case 'purchaseAsk':
+                    case 'PURCHASE':
                       Enums = {purchaseActionEnums: enums};
                       break;
-                    case 'purchaseOrder':
+                    case 'PURCHASEORDER':
                       Enums = {poOrderActionEnums: enums};
                       break;
-                    case 'SO':
-                      Enums = {soOrderActionEnums: enums};
-                      break;
-                    case 'createInstock':
+                    case 'INSTOCK':
                       Enums = {inStockActionEnums: enums};
                       break;
-                    case 'instockError':
-                      Enums = {purchaseActionEnums: enums};
+                    case 'INSTOCKERROR':
+                      Enums = {instockErrorActionEnums: enums};
                       break;
-                    case 'outQuality':
+                    case 'OUTSTOCK':
                       Enums = {outStockActionEnums: enums};
                       break;
-                    case 'payAsk':
-                      Enums = {purchaseActionEnums: enums};
-                      break;
-                    case 'inQuality':
-                      Enums = {inQualityActionEnums: enums};
-                      break;
-                    case 'productionQuality':
-                      Enums = {productionQualityActionEnums: enums};
+                    case 'QUALITY':
+                      Enums = {qualityActionEnums: enums};
                       break;
                     default:
                       return {};
@@ -376,7 +353,7 @@ const Setting = ({
         }
         addStatusRun({
           data: {
-            orderEnum: type,
+            receiptsEnum: type,
             param: {name: statuName}
           }
         });
