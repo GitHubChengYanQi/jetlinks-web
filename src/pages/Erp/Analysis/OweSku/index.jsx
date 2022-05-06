@@ -8,6 +8,10 @@ const OweSku = ({data}) => {
     return <Empty description="请选择物料进行分析" />;
   }
 
+  const valueResult = (value) => {
+    return <div style={{minWidth: 70}}>{(value === null || value === undefined || value === '') ? '-' : value}</div>;
+  };
+
   return <>
     <Table
       dataSource={data.map((item, index) => {
@@ -27,14 +31,14 @@ const OweSku = ({data}) => {
       <Table.Column title="物料规格" dataIndex="specifications" render={(value) => {
         return <div style={{minWidth: 100}}>{value}</div>;
       }} />
-      <Table.Column title="需求数量" dataIndex="demandNumber" render={(value) => {
-        return <div style={{minWidth: 100}}>{value || 0}</div>;
+      <Table.Column title="需求数量" align="center" dataIndex="demandNumber" render={(value) => {
+        return valueResult(value);
       }} />
-      <Table.Column title="库存数量" dataIndex="stockNumber" render={(value) => {
-        return <div style={{minWidth: 100}}>{value || 0}</div>;
+      <Table.Column title="库存数量" align="center" dataIndex="stockNumber" render={(value) => {
+        return valueResult(value);
       }} />
-      <Table.Column title="缺料数量" dataIndex="lackNumber" render={(value) => {
-        return <div style={{minWidth: 100}}>{value || 0}</div>;
+      <Table.Column title="缺料数量" align="center" dataIndex="lackNumber" render={(value) => {
+        return valueResult(value);
       }} />
     </Table>
   </>;
