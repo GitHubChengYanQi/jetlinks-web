@@ -20,6 +20,7 @@ const Setps = ({
   },
   onChange = () => {
   },
+  type,
   module
 }) => {
 
@@ -73,14 +74,13 @@ const Setps = ({
           {label: '状态', value: 'status'},
         ]} />
       <FormItem
-        type={module}
+        type={type}
         label="单据状态"
         name="documentsStatusId"
         component={StautsId}
       />
       <FormItem
         visible={false}
-        type={module}
         label="单据动作"
         name="actionStatuses"
         component={ActionIds}
