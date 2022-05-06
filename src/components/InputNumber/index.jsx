@@ -10,6 +10,7 @@ const InputNumber = (
     width,
     onChange = () => {
     },
+    min,
     ...props
   }) => {
 
@@ -17,7 +18,7 @@ const InputNumber = (
 
   return <AntInputNumber
     controls={false}
-    min={1}
+    min={min === undefined ? 1 : min}
     style={{width}}
     value={value}
     placeholder={placeholder}
