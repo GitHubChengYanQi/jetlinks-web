@@ -16,6 +16,7 @@ import {
 } from '@/pages/Workflow/Documents/components/Module/instock';
 import Comments from '@/pages/Workflow/Documents/components/Comments';
 import {createPurcaseOrder, PurchaseOrderFooter} from '@/pages/Workflow/Documents/components/Module/purchaseOrder';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const getTaskIdApi = {url: '/activitiProcessTask/getTaskIdByFromId', method: 'GET'};
 const auditDetail = {url: '/audit/detail', method: 'GET'};
@@ -81,14 +82,15 @@ const Documents = ({
         const node = getCurrentNode(res.stepsResult);
         const currentNode = Array.isArray(node) ? node : [node];
         switch (res.type) {
-          case 'purchaseAsk':
+          case DocumentEnums.purchaseAsk:
             actionPurchaseAsk({
               setModalProps,
               setDocument,
               res,
             });
             break;
-          case 'createInstock':
+          case DocumentEnums.instockOrder:
+            console.log(1);
             actionInstockAsk({
               setModalProps,
               setDocument,
@@ -111,7 +113,7 @@ const Documents = ({
   // 创建单据
   const create = (type, value, data) => {
     switch (type) {
-      case 'purchaseAsk':
+      case DocumentEnums.purchaseAsk:
         createPurcaseAsk({
           setModalProps,
           setDocument,
@@ -123,7 +125,7 @@ const Documents = ({
           onSuccess
         });
         break;
-      case 'createInstock':
+      case DocumentEnums.instockOrder:
         createInstockAsk({
           setModalProps,
           setDocument,
@@ -182,7 +184,7 @@ const Documents = ({
 
   const footer = () => {
     switch (type) {
-      case 'purchaseAsk':
+      case DocumentEnums.purchaseAsk:
         return <PurchaseAskFooter
           value={createData.value}
           addRef={addRef}
@@ -193,7 +195,7 @@ const Documents = ({
           run={run}
           currentNode={actionData.currentNode}
         />;
-      case 'createInstock':
+      case DocumentEnums.instockOrder:
         return <CreateInstockFooter
           value={createData.value}
           addRef={addRef}

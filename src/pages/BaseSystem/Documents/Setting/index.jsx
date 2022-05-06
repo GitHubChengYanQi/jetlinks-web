@@ -12,6 +12,7 @@ import Note from '@/components/Note';
 import Message from '@/components/Message';
 import {useRequest} from '@/util/Request';
 import ModalMessage from '@/components/ModalMessage';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
 const deleteStatusApi = {url: '/documentStatus/delete', method: 'POST'};
@@ -113,18 +114,18 @@ const Setting = ({
 
   const typeObject = () => {
     switch (type || value) {
-      case 'PURCHASE':
+      case DocumentEnums.purchaseAsk:
         return {
           title: '采购申请单',
           types: [
             {label: '执行申请', value: 'perform', disabled: disabled('perform')},
           ]
         };
-      case 'PURCHASEORDER':
+      case DocumentEnums.purchaseOrder:
         return {
           title: '采购单',
         };
-      case 'INSTOCK':
+      case DocumentEnums.instockOrder:
         return {
           title: '入库单',
           types: [
@@ -132,15 +133,15 @@ const Setting = ({
             {label: '执行入库', value: 'performInstock', disabled: disabled('performInstock')},
           ]
         };
-      case 'INSTOCKERROR':
+      case DocumentEnums.instockError:
         return {
           title: '入库异常'
         };
-      case 'OUTSTOCK':
+      case DocumentEnums.outstockOrder:
         return {
           title: '出库单',
         };
-      case 'QUALITY':
+      case DocumentEnums.quality:
         return {
           title: '质检单',
           types: [
@@ -305,22 +306,22 @@ const Setting = ({
                   });
                   let Enums = {};
                   switch (type) {
-                    case 'PURCHASE':
+                    case DocumentEnums.purchaseAsk:
                       Enums = {purchaseActionEnums: enums};
                       break;
-                    case 'PURCHASEORDER':
+                    case DocumentEnums.purchaseOrder:
                       Enums = {poOrderActionEnums: enums};
                       break;
-                    case 'INSTOCK':
+                    case DocumentEnums.instockOrder:
                       Enums = {inStockActionEnums: enums};
                       break;
-                    case 'INSTOCKERROR':
+                    case DocumentEnums.instockError:
                       Enums = {instockErrorActionEnums: enums};
                       break;
-                    case 'OUTSTOCK':
+                    case DocumentEnums.outstockOrder:
                       Enums = {outStockActionEnums: enums};
                       break;
-                    case 'QUALITY':
+                    case DocumentEnums.quality:
                       Enums = {qualityActionEnums: enums};
                       break;
                     default:

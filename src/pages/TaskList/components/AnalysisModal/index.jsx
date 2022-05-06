@@ -4,6 +4,7 @@ import {useHistory} from 'ice';
 import Modal from '@/components/Modal';
 import AnalysisDetail from '@/pages/Erp/Analysis/AnalysisDetail';
 import Documents from '@/pages/Workflow/Documents';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const AnalysisModal = ({showRef}) => {
 
@@ -26,7 +27,6 @@ const AnalysisModal = ({showRef}) => {
         <Button disabled={!Array.isArray(content.owe) || content.owe.length === 0} type="primary" onClick={() => {
 
           const skus = content.owe.map((item) => {
-            console.log(item);
             return {
               skuId: item.skuId,
               applyNumber: item.lackNumber,
@@ -34,7 +34,7 @@ const AnalysisModal = ({showRef}) => {
             };
           });
           showRef.current.close();
-          documentRef.current.create('purchaseAsk', null, {skus});
+          documentRef.current.create(DocumentEnums.purchaseAsk, null, {skus});
         }}>发起采购</Button>
       </Space>}
       ref={showRef}

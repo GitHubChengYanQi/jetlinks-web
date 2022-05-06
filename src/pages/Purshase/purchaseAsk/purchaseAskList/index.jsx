@@ -6,7 +6,7 @@
  */
 
 import React, {useRef} from 'react';
-import {Badge, Button, Table as AntTable} from 'antd';
+import {Button, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
@@ -16,6 +16,7 @@ import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
 import MinWidthDiv from '@/components/MinWidthDiv';
 import Documents from '@/pages/Workflow/Documents';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -30,7 +31,7 @@ const PurchaseAskList = ({status, ...props}) => {
     return (
       <>
         <AddButton onClick={() => {
-          documentRef.current.create('purchaseAsk');
+          documentRef.current.create(DocumentEnums.purchaseAsk);
         }} />
       </>
     );
@@ -62,7 +63,7 @@ const PurchaseAskList = ({status, ...props}) => {
       >
         <Column title="编号" key={1} dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            documentRef.current.action(null, record.purchaseAskId, 'purchaseAsk');
+            documentRef.current.action(null, record.purchaseAskId, DocumentEnums.purchaseAsk);
           }}>{value}</Button>;
         }} />
         <Column key={2} title="申请类型" dataIndex="type" render={(value) => {
@@ -111,10 +112,10 @@ const PurchaseAskList = ({status, ...props}) => {
             return <>
               <Button type="link">撤回</Button>
               <Button type="link" onClick={() => {
-                documentRef.current.create('purchaseAsk', value);
+                documentRef.current.create(DocumentEnums.purchaseAsk, value);
               }}>编辑</Button>
               <Button type="link" onClick={() => {
-                documentRef.current.action(null, value, 'purchaseAsk');
+                documentRef.current.action(null, value, DocumentEnums.purchaseAsk);
               }}>查看</Button>
             </>;
           }} />}

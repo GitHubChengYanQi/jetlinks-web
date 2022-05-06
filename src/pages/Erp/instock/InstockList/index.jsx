@@ -20,6 +20,8 @@ import {instockOrderList} from '../InstockUrl';
 import * as SysField from '../InstockField';
 import Code from '@/pages/Erp/spu/components/Code';
 import Documents from '@/pages/Workflow/Documents';
+import MinWidthDiv from '@/components/MinWidthDiv';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -33,7 +35,7 @@ const InstockList = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ducomentRef.current.create('createInstock');
+          ducomentRef.current.create(DocumentEnums.instockOrder);
         }} />
       </>
     );
@@ -110,24 +112,10 @@ const InstockList = () => {
             <>
               <Code source="instock" id={record.instockOrderId} />
               <a onClick={() => {
-                ducomentRef.current.action(false, record.instockOrderId,'createInstock');
+                ducomentRef.current.action(false, record.instockOrderId, DocumentEnums.instockOrder);
               }}>
                 {text}
               </a>
-            </>
-          );
-        }} />
-        <Column key={2} title="仓库名称" dataIndex="storeHouseId" render={(text, record) => {
-          return (
-            <>
-              {record.storehouseResult && record.storehouseResult.name}
-            </>
-          );
-        }} sorter />
-        <Column key={3} title="负责人" width={200} dataIndex="userId" sorter render={(text, record) => {
-          return (
-            <>
-              {record.userResult && record.userResult.name}
             </>
           );
         }} />
@@ -143,12 +131,23 @@ const InstockList = () => {
               return null;
           }
         }} />
-        <Column key={5} title="创建时间" width={200} dataIndex="createTime" sorter />
+        <Column key={3} title="创建时间" width={200} dataIndex="createTime" />
+        <Column key={3} title="入库类型" width={150} dataIndex="type" />
+        <Column key={5} title="送料人员" dataIndex="userResult" render={(value) => {
+          return <MinWidthDiv width={70}>{value && value.name}</MinWidthDiv>;
+        }} />
+        <Column key={5} title="送料时间" width={200} dataIndex="registerTime" />
+        <Column key={5} title="库管人员" dataIndex="registerTime" render={(value) => {
+          return <MinWidthDiv width={70}>{value && value.name}</MinWidthDiv>;
+        }} />
+        <Column key={5} title="入库物料" align="center" width={100} dataIndex="enoughNumber" />
+        <Column key={5} title="已入库" align="center" width={100} dataIndex="notNumber" />
+        <Column key={5} title="未入库" align="center" width={100} dataIndex="realNumber" />
         <Column />
         <Column title="操作" align="center" width={100} dataIndex="instockOrderId" render={(value) => {
           return <Space>
             <Button type="link" onClick={() => {
-              ducomentRef.current.action(false, value,'createInstock');
+              ducomentRef.current.action(false, value, DocumentEnums.instockOrder);
             }}>查看</Button>
           </Space>;
         }} />

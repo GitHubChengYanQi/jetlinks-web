@@ -43,7 +43,7 @@ export default {
   ren: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.76/',
+    baseURI: 'http://192.168.1.117/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'

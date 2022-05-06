@@ -20,6 +20,7 @@ import ProcessEdit from '../processEdit';
 import * as SysField from '../processField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -114,17 +115,17 @@ const ProcessList = ({noTitle, value}) => {
         }} />
         <Column title="单据" dataIndex="type" render={(value) => {
           switch (value) {
-            case 'PURCHASE':
+            case DocumentEnums.purchaseAsk:
               return <>采购申请单</>;
-            case 'PURCHASEORDER':
+            case DocumentEnums.purchaseOrder:
               return <>采购单</>;
-            case 'INSTOCK':
+            case DocumentEnums.instockOrder:
               return <>入库单</>;
-            case 'INSTOCKERROR':
+            case DocumentEnums.instockError:
               return <>入库异常</>;
-            case 'OUTSTOCK':
+            case DocumentEnums.outstockOrder:
               return <>出库单</>;
-            case 'QUALITY':
+            case DocumentEnums.quality:
               return <>质检单</>;
             default:
               break;

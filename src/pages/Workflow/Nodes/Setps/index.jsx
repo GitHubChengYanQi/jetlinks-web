@@ -44,6 +44,7 @@ const Setps = ({
               const visible = value && value.actions;
               state.visible = visible;
               state.props.actions = visible ? value.actions : [];
+              state.value = value.actions || [];
             });
           }
         });
