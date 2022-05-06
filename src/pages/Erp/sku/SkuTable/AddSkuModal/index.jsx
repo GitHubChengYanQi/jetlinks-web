@@ -116,6 +116,7 @@ const AddSkuModal = ({
         <Button
           loading={loading}
           type="primary"
+          ghost={copy}
           onClick={() => {
             formRef.current.nextAdd(false);
           }}

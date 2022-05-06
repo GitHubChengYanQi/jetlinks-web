@@ -64,11 +64,7 @@ const List = () => {
         return <></>;
       default:
         return <Button type="primary" onClick={() => {
-          if (!value.coding) {
-            return notification.warn({
-              message: '请输入编码！'
-            });
-          } else if (!value.executionTime) {
+          if (!value.executionTime) {
             return notification.warn({
               message: '请选择执行时间！'
             });

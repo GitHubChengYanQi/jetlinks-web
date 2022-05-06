@@ -84,6 +84,8 @@ const CodingRulesList = () => {
         return '合同';
       case 13:
         return '生产计划';
+      case 14:
+        return '产品';
       default:
         break;
     }

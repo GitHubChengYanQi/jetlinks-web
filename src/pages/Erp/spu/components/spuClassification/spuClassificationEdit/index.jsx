@@ -54,7 +54,7 @@ const SpuClassificationEdit = ({...props}) => {
         required />
       <FormItem label="分类名称" name="name" component={SysField.Name} required />
       <FormItem
-        label={<Space>分类码 <Popover content='产品码用于配置“编码规则”时使用'>
+        label={<Space>分类码 <Popover content='分类码用于配置“编码规则”时使用'>
           <QuestionCircleOutlined style={{cursor: 'pointer'}} />
         </Popover></Space>}
         name="codingClass"
@@ -63,7 +63,7 @@ const SpuClassificationEdit = ({...props}) => {
           pattern: '^[A-Z\\d\\+\\-\\*\\/\\(\\)\\%（）]+$',
           message: '只能输入大写字母或数字！'
         }]} />
-      <FormItem label="排序" name="sort" component={SysField.Sort} />
+      <FormItem label="排序" name="sort" value={0} component={SysField.Sort} />
     </Form>
   );
 };

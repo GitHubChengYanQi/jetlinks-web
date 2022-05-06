@@ -68,6 +68,7 @@ export const Values = (props) => {
         case `\${quarter}`:
         case `\${skuClass}`:
         case `\${storehouse}`:
+        case `\${spuCoding}`:
           setState('通用');
           break;
         default:
@@ -141,9 +142,9 @@ export const Values = (props) => {
         // eslint-disable-next-line no-template-curly-in-string
         {label: '两位数年', value: '${YY}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '月', value: '${MM}'},
+        {label: '两位数月', value: '${MM}'},
         // eslint-disable-next-line no-template-curly-in-string
-        {label: '日', value: '${dd}'},
+        {label: '两位数日', value: '${dd}'},
         // eslint-disable-next-line no-template-curly-in-string
         {label: '随机数', value: '${randomInt}'},
         // eslint-disable-next-line no-template-curly-in-string
@@ -275,6 +276,7 @@ export const Module = (props) => {
     {label: '采购单', value: 11},
     {label: '合同', value: 12},
     {label: '生产计划', value: 13},
+    {label: '产品', value: 14},
   ];
 
   return (<AntdSelect options={options} {...props} />);
