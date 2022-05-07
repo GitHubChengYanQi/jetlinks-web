@@ -29,22 +29,8 @@ export const StautsId = (props) => {
       label: item.name,
       value: item.documentsStatusId,
       actions: item.actionResults ? item.actionResults.map(item => {
-        let name = '';
-        switch (item.action) {
-          case 'perform':
-            name = '执行申请';
-            break;
-          case 'verify':
-            name = '核实数量';
-            break;
-          case 'performInstock':
-            name = '执行入库';
-            break;
-          default:
-            break;
-        }
         return {
-          name,
+          name: item.actionName,
           action: item.action,
           actionId: item.documentsActionId,
         };
@@ -67,7 +53,7 @@ export const StautsId = (props) => {
 
   const options = [];
   data && data.map((item) => {
-    if (![0, 50, 99].includes(item.documentsStatusId)) {
+    if (![50, 99].includes(item.documentsStatusId)) {
       return options.push(getItem(item));
     }
     return null;

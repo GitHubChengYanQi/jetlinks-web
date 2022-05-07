@@ -153,6 +153,8 @@ const ProcessList = ({noTitle, value}) => {
               return <>采购单</>;
             case 'purchaseQuality':
               return <>采购质检</>;
+            case 'verifyError':
+              return <>核实异常</>;
             default:
               break;
           }
