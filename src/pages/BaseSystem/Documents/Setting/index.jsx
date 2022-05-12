@@ -45,7 +45,7 @@ const Setting = ({
       setStatus(res.map((item, statuIndex) => {
         return {
           default: [0, 50, 99].includes(item.documentsStatusId),
-          noActions: [50, 99].includes(item.documentsStatusId),
+          noActions: [0,50, 99].includes(item.documentsStatusId),
           label: item.name,
           value: item.documentsStatusId,
           actions: item.actionResults ? item.actionResults.map((item, index) => {

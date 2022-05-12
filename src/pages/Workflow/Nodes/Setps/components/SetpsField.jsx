@@ -53,7 +53,7 @@ export const StautsId = (props) => {
 
   const options = [];
   data && data.map((item) => {
-    if (![50, 99].includes(item.documentsStatusId)) {
+    if (![0,50, 99].includes(item.documentsStatusId)) {
       return options.push(getItem(item));
     }
     return null;
