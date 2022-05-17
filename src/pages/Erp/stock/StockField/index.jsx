@@ -5,19 +5,21 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useRef, useState} from 'react';
-import {Input, InputNumber, Button, Checkbox} from 'antd';
+import React, {useRef} from 'react';
+import {Input, Button, Checkbox, Select as AntSelect, Spin, Space} from 'antd';
 import Select from '@/components/Select';
 import Items from '@/pages/Erp/stock/StockEdit/components/Items';
 import Drawer from '@/components/Drawer';
 import * as apiUrl from '../StockUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
-import Cascader from "@/components/Cascader";
+import Cascader from '@/components/Cascader';
 import {
   storehousePositionsTreeView
-} from "@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl";
-
-const w = 200;
+} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
+import style from './index.module.less';
+import InputNumber from '@/components/InputNumber';
+import {useRequest} from '@/util/Request';
+import {partsList} from '@/pages/Erp/parts/PartsUrl';
 
 export const Palce = (props) => {
   return <Input {...props} />;
@@ -31,7 +33,7 @@ export const Position = (props) => {
     resh={id}
     api={storehousePositionsTreeView}
     defaultParams={{params: {ids: id}}}
-    onChange={onChange}/>;
+    onChange={onChange} />;
 };
 
 
@@ -47,7 +49,7 @@ export const Stock = (props) => {
     } else {
       onChange(null);
     }
-  }}/>;
+  }} />;
 };
 
 export const Item = (props) => {
@@ -67,7 +69,7 @@ export const Item = (props) => {
     }} ref={ref} ckeck={(id) => {
       onChange(id);
       ref.current.close();
-    }}/>
+    }} />
   </>);
 };
 
@@ -83,4 +85,97 @@ export const BrandId = (props) => {
 };
 export const Inventory = (props) => {
   return (<InputNumber min={0}   {...props} />);
+};
+
+export const StockNumbers = ({value = {}, onChange}) => {
+
+  return <Space size={0}>
+    <InputNumber
+      min={0}
+      className={style.between}
+      value={value.mixNum}
+      style={{width: 100, textAlign: 'center'}}
+      placeholder="最小库存"
+      onChange={(mixNum) => {
+        onChange({
+          mixNum,
+          maxNum: mixNum >= value.maxNum ? null : value.maxNum
+        });
+      }}
+    />
+    <Input
+      style={{
+        width: 30,
+        borderLeft: 0,
+        borderRight: 0,
+        backgroundColor: '#fff',
+        pointerEvents: 'none',
+      }}
+      placeholder="~"
+      disabled
+    />
+    <InputNumber
+      className={style.and}
+      style={{
+        width: 100,
+        textAlign: 'center',
+      }}
+      value={value.maxNum}
+      min={value.mixNum + 1}
+      placeholder="最大库存"
+      onChange={(maxNum) => {
+        onChange({
+          ...value,
+          maxNum
+        });
+      }}
+    />
+  </Space>;
+};
+
+export const BomSelect = ({onChange}) => {
+
+  const {loading, data, run} = useRequest({...partsList, params: {limit: 10, page: 1}});
+
+  const options = (!loading && data) ? data.map((item) => {
+    const skuResult = item.skuResult || {};
+    const spuResult = skuResult.spuResult || {};
+    return {
+      label: `${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
+      value: `${skuResult.skuId} / ${skuResult.standard} / ${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
+      id: skuResult.skuId,
+    };
+  }) : [];
+
+  return <AntSelect
+    allowClear
+    placeholder="搜索BOM"
+    style={{width: 200}}
+    showSearch
+    notFoundContent={loading && <div style={{textAlign: 'center'}}><Spin /></div>}
+    options={options}
+    onSearch={(string) => {
+      run({
+        data: {
+          skuName: string,
+        },
+        params: {
+          limit: 10,
+          page: 1
+        }
+      });
+    }}
+    onChange={(value, option) => {
+      onChange(option.id);
+    }}
+  />;
+};
+
+export const SelectBom = (props) => {
+  return <AntSelect
+    placeholder='BOM查询条件'
+    style={{width: 150}}
+    options={[{label: '所有物料', value: 'All'}, {label: '下级物料', value: 'Present'},]}
+    {...props}
+  />;
 };

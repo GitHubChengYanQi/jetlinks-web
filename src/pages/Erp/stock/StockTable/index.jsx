@@ -7,6 +7,7 @@
 
 import React, {useEffect, useRef, useState,} from 'react';
 import {
+  Button,
   Input, Progress,
   Space, Statistic,
 } from 'antd';
@@ -16,9 +17,12 @@ import Table from '@/components/Table';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Breadcrumb from '@/components/Breadcrumb';
 import Form from '@/components/Form';
-import {Position} from '@/pages/Erp/stock/StockField';
+import {BomSelect, Position, SelectBom, StockNumbers} from '@/pages/Erp/stock/StockField';
 import Analysis from '@/pages/Erp/Analysis';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
+import {skuList} from '@/pages/Erp/sku/skuUrl';
+import MinWidthDiv from '@/components/MinWidthDiv';
+import Note from '@/components/Note';
 
 const {baseURI} = config;
 const {FormItem} = Form;
@@ -36,8 +40,8 @@ const StockTable = (props) => {
   const actions = () => {
     return (
       <Space size={24}>
-        <Analysis type='link' style={{padding:0}}/>
-        <a href={`${baseURI}stockExcel/stockExport?authorization=${token}`} target='_blank' rel="noreferrer">导出库存</a>
+        <Analysis type="link" style={{padding: 0}} />
+        <a href={`${baseURI}stockExcel/stockExport?authorization=${token}`} target="_blank" rel="noreferrer">导出库存</a>
         <Import
           url={`${baseURI}Excel/importPositionBind`}
           title="导入库存"
@@ -52,8 +56,10 @@ const StockTable = (props) => {
   };
 
   useEffect(() => {
-    tableRef.current.formActions.setFieldValue('storehouseId', state);
-    tableRef.current.submit();
+    if (state){
+      tableRef.current.formActions.setFieldValue('storehouseId', state);
+      tableRef.current.submit();
+    }
   }, [state]);
 
 
@@ -65,23 +71,29 @@ const StockTable = (props) => {
           label="物料名称"
           placeholder="搜索物料"
           name="skuName"
-          component={Input}/>
+          component={Input} />
+        <FormItem
+          label="库存范围"
+          name="numbers"
+          component={StockNumbers} />
+        <FormItem
+          label="BOM查询"
+          name="skuId"
+          component={BomSelect} />
+        <FormItem
+          name="selectBom"
+          component={SelectBom} />
         <FormItem
           visible={state || false}
           label="库位"
           id={state}
           placeholder="搜索库位"
           name="storehousePositionsId"
-          component={Position}/>
-        <FormItem
-          hidden
-          name="type"
-          value="sku"
-          component={Input}/>
+          component={Position} />
         <FormItem
           hidden
           name="storehouseId"
-          component={Input}/>
+          component={Input} />
       </>
     );
   };
@@ -105,8 +117,8 @@ const StockTable = (props) => {
       ref={tableRef}
       noRowSelection
       actionButton={actions()}
-      showCard={<div style={{borderBottom:'solid 1px #eee',marginBottom:16}}>
-        <Space size={24} style={{paddingBottom:24}}>
+      showCard={<div style={{borderBottom: 'solid 1px #eee', marginBottom: 16}}>
+        <Space size={24} style={{paddingBottom: 24}}>
           <Progress
             type="circle"
             percent={100}
@@ -115,8 +127,8 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="物料种类" value={data[0] ? data[0].skuTypeNum : 0}/>
-            }/>
+              <Statistic title="物料种类" value={data[0] ? data[0].skuTypeNum : 0} />
+            } />
           <Progress
             type="circle"
             percent={100}
@@ -125,49 +137,60 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="总数量" value={data[0] ? data[0].skuCount : 0}/>
-            }/>
+              <Statistic title="总数量" value={data[0] ? data[0].skuCount : 0} />
+            } />
         </Space>
       </div>}
-      title={<Breadcrumb/>}
+      title={<Breadcrumb />}
       searchForm={searchForm}
+      formSubmit={(values) => {
+        const numbers = values.numbers || {};
+        values = {
+          ...values,
+          maxNum: numbers.maxNum,
+          mixNum: numbers.mixNum,
+        };
+        return values;
+      }}
       branch={(data) => {
         setData(data);
         return data;
       }}
-      api={{
-        url: '/viewStockDetails/list',
-        method: 'POST',
-      }}
+      api={skuList}
       tableKey="stockSku"
       rowKey="skuId"
       {...props}
     >
-      <Table.Column key={1} title="物料编码" dataIndex="skuResult" render={(value) => {
-        return value && value.standard;
-      }}/>
-      <Table.Column key={2} title="物料名称" dataIndex="skuResult" render={(value) => {
-        return <div style={{minWidth: 60}}>{value && value.spuResult && value.spuResult.name}</div>;
-      }}/>
-      <Table.Column key={3} title="物料型号" dataIndex="skuResult" render={(value) => {
-        return value && value.skuName;
-      }}/>
-      <Table.Column key={4} title="物料规格" dataIndex="skuResult" render={(value) => {
-        return <div style={{minWidth: 60}}>{value && value.specifications}</div>;
-      }}/>
-      <Table.Column key={5} title="物料描述" dataIndex="skuResult" render={(value) => {
-        return <div style={{minWidth: 60}}><SkuResultSkuJsons skuResult={value} describe/></div>;
-      }}/>
-      <Table.Column key={6} title="库存数量" dataIndex="number" render={(value) => {
-        return <div style={{minWidth: 60}}>{value}</div>;
-      }}/>
+      <Table.Column key={1} title="物料编码" dataIndex="standard" render={(value) => {
+        return <MinWidthDiv width={60}>{value}</MinWidthDiv>;
+      }} />
+      <Table.Column key={2} title="物料名称" dataIndex="spuName" render={(value) => {
+        return <MinWidthDiv width={60}>{value}</MinWidthDiv>;
+      }} />
+      <Table.Column key={3} title="物料型号" dataIndex="skuName" render={(value) => {
+        return <MinWidthDiv width={60}>{value}</MinWidthDiv>;
+      }} />
+      <Table.Column key={4} title="物料规格" dataIndex="specifications" render={(value) => {
+        return <MinWidthDiv width={60}>{value}</MinWidthDiv>;
+      }} />
+      <Table.Column title="物料描述" key={5} render={(value, record) => {
+        return <div style={{minWidth: 100, maxWidth: 300}}>
+          <Note value={<SkuResultSkuJsons describe skuResult={record} />} />
+        </div>;
+      }} />
+      <Table.Column key={6} title="库存数量" dataIndex="stockNumber" render={(value) => {
+        return <MinWidthDiv width={60}>{value || 0}</MinWidthDiv>;
+      }} />
+      <Table.Column key={6} title="预购数量" dataIndex="purchaseNumber" render={(value) => {
+        return <MinWidthDiv width={60}>{value || 0}</MinWidthDiv>;
+      }} />
       <Table.Column key={7} title="库位" dataIndex="positionsResult" render={(value) => {
         return <div style={{minWidth: 60}}>{positionResult(value)}</div>;
-      }}/>
+      }} />
       <Table.Column key={8} title="仓库" dataIndex="storehouseResult" render={(value) => {
         return <div style={{minWidth: 60}}>{value && value.name}</div>;
-      }}/>
-      <Table.Column/>
+      }} />
+      <Table.Column />
     </Table>
   );
 };

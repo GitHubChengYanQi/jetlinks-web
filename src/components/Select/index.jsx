@@ -16,6 +16,8 @@ const Select = (props) => {
     defaultValue,
     onChange = () => {
     },
+    onSearch = () => {
+    },
     width: wid,
     ...other
   } = props;
@@ -89,6 +91,7 @@ const Select = (props) => {
             onChange={(value, option) => {
               onChange(value, option);
             }}
+            onSearch={onSearch}
             allowClear
             showSearch
             filterOption={(input, option) => {
