@@ -47,7 +47,7 @@ const routerConfig = [
       ...ResearchRouterConfig,
       {
         path: '/test',
-        component: lazy(() => import('@/pages/Erp/Analysis')),
+        component: lazy(() => import('@/pages/Test')),
         fallback: <div>loading...</div>,
         exact: true,
       },
