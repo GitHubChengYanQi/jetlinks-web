@@ -143,7 +143,7 @@ export const BomSelect = ({onChange}) => {
     return {
       label: `${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
       value: `${skuResult.skuId} / ${skuResult.standard} / ${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
-      id: skuResult.skuId,
+      id: skuResult.partsId,
     };
   }) : [];
 

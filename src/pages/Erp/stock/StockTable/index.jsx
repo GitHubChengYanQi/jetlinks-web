@@ -29,7 +29,7 @@ const {FormItem} = Form;
 
 const StockTable = (props) => {
 
-  const {state} = props;
+  const {storeHouse} = props;
 
   const tableRef = useRef();
 
@@ -56,11 +56,12 @@ const StockTable = (props) => {
   };
 
   useEffect(() => {
-    if (state){
-      tableRef.current.formActions.setFieldValue('storehouseId', state);
+    if (storeHouse) {
+      tableRef.current.formActions.setFieldValue('storehouseId', storeHouse[0]);
+      tableRef.current.formActions.setFieldValue('storehousePositionsId', null);
       tableRef.current.submit();
     }
-  }, [state]);
+  }, [storeHouse]);
 
 
   const searchForm = () => {
@@ -78,21 +79,26 @@ const StockTable = (props) => {
           component={StockNumbers} />
         <FormItem
           label="BOM查询"
-          name="skuId"
+          name="partsId"
           component={BomSelect} />
         <FormItem
           name="selectBom"
           component={SelectBom} />
         <FormItem
-          visible={state || false}
+          visible={storeHouse || false}
           label="库位"
-          id={state}
+          id={storeHouse && storeHouse[0]}
           placeholder="搜索库位"
           name="storehousePositionsId"
           component={Position} />
         <FormItem
           hidden
           name="storehouseId"
+          component={Input} />
+        <FormItem
+          hidden
+          name="stockView"
+          value
           component={Input} />
       </>
     );
@@ -147,13 +153,14 @@ const StockTable = (props) => {
         const numbers = values.numbers || {};
         values = {
           ...values,
+          numbers: null,
           maxNum: numbers.maxNum,
           mixNum: numbers.mixNum,
         };
         return values;
       }}
       branch={(data) => {
-        setData(data);
+        setData(data || []);
         return data;
       }}
       api={skuList}
@@ -185,10 +192,15 @@ const StockTable = (props) => {
         return <MinWidthDiv width={60}>{value || 0}</MinWidthDiv>;
       }} />
       <Table.Column key={7} title="库位" dataIndex="positionsResult" render={(value) => {
-        return <div style={{minWidth: 60}}>{positionResult(value)}</div>;
+        if (Array.isArray(value) && value.length > 0) {
+          return value.map((item, index) => {
+            return <div key={index} style={{minWidth: 60}}>{positionResult(item)}</div>;
+          });
+        }
+        return '-';
       }} />
       <Table.Column key={8} title="仓库" dataIndex="storehouseResult" render={(value) => {
-        return <div style={{minWidth: 60}}>{value && value.name}</div>;
+        return <div style={{minWidth: 60}}>{value ? value.name : '-'}</div>;
       }} />
       <Table.Column />
     </Table>
