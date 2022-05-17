@@ -13,5 +13,11 @@ export const DocumentsRouter = [
     component: lazy(() => import('../Setting')),
     fallback: <div>loading...</div>,
     exact: true,
+  },{
+    path: '/documents/permissions',
+    name:'单据管理',
+    component: lazy(() => import('../Permissions')),
+    fallback: <div>loading...</div>,
+    exact: true,
   },
 ];

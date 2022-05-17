@@ -46,6 +46,12 @@ const List = () => {
                   onClick={() => {
                     history.push(`/BASE_SYSTEM/documents/setting?type=${item.type}`);
                   }}>状态设置</Button>
+                <Button
+                  type="link"
+                  style={{padding: 0, flexGrow: 1}}
+                  onClick={() => {
+                    history.push(`/BASE_SYSTEM/documents/permissions?type=${item.type}`);
+                  }}>权限设置</Button>
               </div>
             </Card.Grid>;
           })

@@ -220,7 +220,7 @@ const Setting = ({
 
   return <>
     <div>
-      <Card hidden={value} title={<Breadcrumb title="单据设置" />} bordered={false} />
+      <Card hidden={value} title={<Breadcrumb title="状态设置" />} bordered={false} />
 
       <Card
         style={{width: 1250, margin: 'auto'}}
