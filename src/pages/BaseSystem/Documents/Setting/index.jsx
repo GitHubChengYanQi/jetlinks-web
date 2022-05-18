@@ -13,6 +13,7 @@ import Message from '@/components/Message';
 import {useRequest} from '@/util/Request';
 import ModalMessage from '@/components/ModalMessage';
 import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
+import {typeObject} from '@/pages/BaseSystem/Documents/Config';
 
 const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
 const deleteStatusApi = {url: '/documentStatus/delete', method: 'POST'};
@@ -106,54 +107,7 @@ const Setting = ({
     }
   });
 
-  const disabled = (value) => {
-    return status.filter((item) => {
-      return item.actions.filter(item => item.value === value).length > 0;
-    }).length > 0;
-  };
 
-  const typeObject = () => {
-    switch (type || value) {
-      case DocumentEnums.purchaseAsk:
-        return {
-          title: '采购申请单',
-          types: [
-            {label: '执行申请', value: 'perform', disabled: disabled('perform')},
-          ]
-        };
-      case DocumentEnums.purchaseOrder:
-        return {
-          title: '采购单',
-        };
-      case DocumentEnums.instockOrder:
-        return {
-          title: '入库单',
-          types: [
-            {label: '核实数量', value: 'verify', disabled: disabled('verify')},
-            {label: '执行入库', value: 'performInstock', disabled: disabled('performInstock')},
-          ]
-        };
-      case DocumentEnums.instockError:
-        return {
-          title: '入库异常'
-        };
-      case DocumentEnums.outstockOrder:
-        return {
-          title: '出库单',
-        };
-      case DocumentEnums.quality:
-        return {
-          title: '质检单',
-          types: [
-            {label: '分派', value: '1', disabled: disabled('1')},
-            {label: '执行质检', value: '2', disabled: disabled('2')},
-            {label: '质检入库', value: '3', disabled: disabled('3')},
-          ]
-        };
-      default:
-        return '';
-    }
-  };
 
   const [refresh, {toggle}] = useBoolean();
 
@@ -193,7 +147,7 @@ const Setting = ({
         placeholder="请选择单据动作"
         value={item.value}
         style={{width: 200}}
-        options={typeObject().types}
+        options={typeObject({type,value,status}).types}
         onChange={(value, option) => {
           onStatus({title: option.label, value}, index, item.listIndex);
         }}
@@ -224,7 +178,7 @@ const Setting = ({
 
       <Card
         style={{width: 1250, margin: 'auto'}}
-        title={`设置${typeObject().title}状态`}
+        title={`设置${typeObject({type,value}).title}状态`}
         bordered={false}
         bodyStyle={{overflow: 'auto'}}
       >
@@ -260,7 +214,7 @@ const Setting = ({
                 />}
                 <Button
                   hidden={item.noActions}
-                  disabled={(item.actions && item.actions.length) === (typeObject().types && typeObject().types.length)}
+                  disabled={(item.actions && item.actions.length) === (typeObject({type,value,status}).types && typeObject(type,value,status).types.length)}
                   style={{marginLeft: 38}}
                   onClick={() => {
                     const newStatus = status.map((item, statuIndex) => {

@@ -1,234 +1,165 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, Descriptions, Space} from 'antd';
-import {getSearchParams} from 'ice';
+import React, {useRef, useState} from 'react';
+import {Button, Card, Table} from 'antd';
+import {getSearchParams, useHistory} from 'ice';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import Breadcrumb from '@/components/Breadcrumb';
-import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 import {useRequest} from '@/util/Request';
 import {roleList} from '@/Config/ApiUrl/system/role';
 import Empty from '@/components/Empty';
 import style from './index.module.less';
-import PermissionsConfig from '@/pages/BaseSystem/Documents/Permissions/components/PermissionsConfig/index,';
+import Note from '@/components/Note';
+import ModalMessage from '@/components/ModalMessage';
+import {typeObject} from '@/pages/BaseSystem/Documents/Config';
+import {columns} from '@/pages/BaseSystem/Documents/Permissions/components/PermissionsConfig/index,';
 
-const labelStyle = {
-  display: 'none'
-};
+const addPermissions = {url: '/documentsPermissions/addList', method: 'POST'};
 
-const contentStyle = {
-  width: '40%',
-  textAlign: 'center'
-};
-
-const filedContentStyle = {
-  ...contentStyle,
-  width: '20%'
-};
+const getDPermissions = {url: '/documentsPermissions/detail', method: 'GET'};
 
 const Permissions = () => {
+
+  const history = useHistory();
+
+  const resultRef = useRef();
 
   const params = getSearchParams();
 
   const type = params.type;
 
-  const {loading, data} = useRequest(roleList);
-
-  const typeObject = () => {
-    switch (type) {
-      case DocumentEnums.purchaseAsk:
-        return {
-          title: '采购申请单',
-        };
-      case DocumentEnums.purchaseOrder:
-        return {
-          title: '采购单',
-        };
-      case DocumentEnums.instockOrder:
-        return {
-          title: '入库单',
-        };
-      case DocumentEnums.instockError:
-        return {
-          title: '入库异常'
-        };
-      case DocumentEnums.outstockOrder:
-        return {
-          title: '出库单',
-        };
-      case DocumentEnums.quality:
-        return {
-          title: '质检单',
-        };
-      default:
-        return '';
-    }
-  };
-
   const [fields, setFields] = useState([]);
 
-  console.log(fields);
+  const {loading: addFieldLoading, run: addField} = useRequest(addPermissions, {
+    manual: true,
+    onSuccess: () => {
+      resultRef.current.success({
+        title: '保存成功!',
+        onCancel: () => {
+          history.goBack();
+        },
+      });
+    },
+    onError: () => {
+      resultRef.current.error({
+        title: '保存失败!',
+        onCancel: () => {
+          history.goBack();
+        },
+      });
+    }
+  });
 
-  const fieldData = [{
-    name: '名称',
-    roles: [{
-      roleId: 1,
-      permissions: ['see', 'edit'],
-    }],
-  }, {
-    name: '状态'
-  }, {
-    name: '创建时间'
-  }, {
-    name: '创建人'
-  }, {
-    name: '编号'
-  }, {
-    name: '备注'
-  }];
+  const {loading: fieldLoading, run: fieldRun} = useRequest(getDPermissions, {
+    manual: true,
+    onSuccess: (res) => {
 
-  useEffect(() => {
-    if (data) {
-      const initialization = fieldData.map((item) => {
-        const roles = item.roles || [];
+      const initialization = res.map((item) => {
+        const roles = item.operationResults || [];
         return {
+          filedName: item.filedName,
           name: item.name,
-          roles: data.map((item) => {
+          roles: roles.map((item) => {
+            const permissions = item.canDos || [];
             return {
               roleId: item.roleId,
-              permissions: ['see', 'edit'],
+              permissions: permissions.map((item) => {
+                return {
+                  action: item.doName,
+                  checked: item.isCan,
+                };
+              })
             };
           })
         };
       });
       setFields(initialization);
+    },
+  });
+
+  const {loading: roleLoading, data: roleData} = useRequest(roleList, {
+    onSuccess: () => {
+      fieldRun({
+        params: {formType: type}
+      });
     }
+  });
 
-  }, [data]);
+  // const data = [{name: '超级管理员'}, {name: '超级管理员'}];
 
-
-  if (loading) {
+  if (roleLoading || fieldLoading) {
     return <ProSkeleton type="descriptions" />;
   }
 
-  if (!data) {
+  if (!roleData) {
     return <Empty />;
   }
 
 
-  return <>
+  return <div style={{maxHeight: '100vh', overflow: 'auto'}}>
+
     <Card title={<Breadcrumb title="权限设置" />} bordered={false} />
 
-    <Card
-      style={{width: 1250, margin: 'auto'}}
-      title={`设置${typeObject().title}权限`}
-      bordered={false}
-      bodyStyle={{overflow: 'auto'}}
-    >
-
-      <Descriptions
-        className={style.list}
-        bordered
-        labelStyle={labelStyle}
-        contentStyle={{backgroundColor: 'rgb(235 232 232 / 22%)'}}
-        column={data.length + 1}
-      >
-
-        <Descriptions.Item contentStyle={filedContentStyle}>字段名</Descriptions.Item>
-        {
-          data.map((item, idnex) => {
-            return <Descriptions.Item key={idnex} contentStyle={filedContentStyle}>
-              <Space direction="vertical" size={24} style={{width: '100%'}}>
-                {item.name}
-                <div style={{display: 'flex'}}>
-                  <div style={{flexGrow: 1, textAlign: 'center'}}>
-                    <Button type="link" onClick={() => {
-                      const newFields = fields.map((fieldItem) => {
-                        const roles = fieldItem.roles || [];
+    <div style={{textAlign: 'center'}}>
+      <Table
+        footer={() => {
+          return <div style={{textAlign: 'right'}}>
+            <Button loading={addFieldLoading} type="primary" onClick={() => {
+              addField({
+                data: {
+                  params: fields.map((item) => {
+                    const operationParams = item.roles || [];
+                    return {
+                      operationParams: operationParams.map((item) => {
+                        const canDos = item.permissions || [];
                         return {
-                          ...fieldItem,
-                          roles: roles.map(roleItem => {
-                            if (roleItem.roleId === item.roleId) {
-                              const permissions = roleItem.permissions || [];
-                              return {
-                                ...roleItem,
-                                permissions:[...permissions,'see']
-                              };
-                            }
-                            return roleItem;
-                          })
+                          canDos: canDos.map((item) => {
+                            return {
+                              doName: item.action,
+                              isCan: item.checked
+                            };
+                          }),
+                          roleId: item.roleId,
                         };
-                      });
-                      setFields(newFields);
-                    }}>查看</Button>
-                  </div>
-                  <div style={{flexGrow: 1, textAlign: 'center'}}>
-                    <Button type="link" onClick={() => {
-                      const newFields = fields.map((fieldItem) => {
-                        const roles = fieldItem.roles || [];
-                        return {
-                          ...fieldItem,
-                          roles: roles.map(roleItem => {
-                            if (roleItem.roleId === item.roleId) {
-                              const permissions = roleItem.permissions || [];
-                              return {
-                                ...roleItem,
-                                permissions:[...permissions,'edit']
-                              };
-                            }
-                            return roleItem;
-                          })
-                        };
-                      });
-                      setFields(newFields);
-                    }}>编辑</Button>
-                  </div>
-                </div>
-              </Space>
-
-            </Descriptions.Item>;
-          })
-        }
-      </Descriptions>
-
-      {
-        fields.map((item, index) => {
-          return <PermissionsConfig
-            key={index}
-            roles={data}
-            fieldItem={item}
-            borderBottom={index !== (fields.length - 1)}
-            onCheck={(check, action, roleId) => {
-              const newFields = fields.map((fieldItem) => {
-                const roles = fieldItem.roles || [];
-                if (fieldItem.name === item.name) {
-                  return {
-                    ...fieldItem,
-                    roles: roles.map(roleItem => {
-                      if (roleItem.roleId === roleId) {
-                        let permissions = roleItem.permissions || [];
-                        if (check) {
-                          permissions = permissions.filter(item => item !== action);
-                        } else {
-                          permissions.push(action);
-                        }
-                        return {
-                          ...roleItem,
-                          permissions
-                        };
-                      }
-                      return roleItem;
-                    })
-                  };
+                      }),
+                      name: item.name,
+                      filedName: item.name,
+                    };
+                  }),
+                  formType: type,
                 }
-                return fieldItem;
               });
-              setFields(newFields);
-            }}
+            }}>保存</Button>
+          </div>;
+        }}
+        title={() => {
+          return <Card
+            title={`设置${typeObject({type}).title}权限`}
+            headStyle={{textAlign: 'left'}}
+            bordered={false}
+            bodyStyle={{padding: 0}}
           />;
-        })
-      }
-    </Card>
+        }}
+        className={style.table}
+        scroll={{x: 'max-content'}}
+        sticky
+        rowKey="name"
+        pagination={false}
+        dataSource={fields}
+        columns={[{
+          fixed: 'left',
+          title: <div style={{width: 100}}>字段名</div>,
+          dataIndex: 'name',
+          align: 'center',
+          render: (value) => {
+            return <Note width={100}>{value}</Note>;
+          }
+        }, ...columns({roleData, fields, setFields})]}
+      />
 
-  </>;
+    </div>
+
+    <ModalMessage ref={resultRef} />
+
+  </div>;
 };
 
 export default Permissions;
