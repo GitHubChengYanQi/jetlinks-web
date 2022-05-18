@@ -142,8 +142,7 @@ export const BomSelect = ({onChange}) => {
     const spuResult = skuResult.spuResult || {};
     return {
       label: `${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
-      value: `${skuResult.skuId} / ${skuResult.standard} / ${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
-      id: skuResult.partsId,
+      value: skuResult.partsId,
     };
   }) : [];
 
@@ -152,6 +151,7 @@ export const BomSelect = ({onChange}) => {
     placeholder="搜索BOM"
     style={{width: 200}}
     showSearch
+    filterOption={false}
     notFoundContent={loading && <div style={{textAlign: 'center'}}><Spin /></div>}
     options={options}
     onSearch={(string) => {
@@ -165,8 +165,8 @@ export const BomSelect = ({onChange}) => {
         }
       });
     }}
-    onChange={(value, option) => {
-      onChange(option.id);
+    onChange={(value) => {
+      onChange(value);
     }}
   />;
 };
