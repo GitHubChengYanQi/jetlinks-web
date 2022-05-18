@@ -7,9 +7,10 @@
 
 import React, {useEffect, useRef, useState,} from 'react';
 import {
-  Button,
-  Input, Progress,
-  Space, Statistic,
+  Input,
+  Progress,
+  Space, Spin,
+  Statistic,
 } from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
@@ -23,9 +24,12 @@ import Import from '@/pages/Erp/sku/SkuTable/Import';
 import {skuList} from '@/pages/Erp/sku/skuUrl';
 import MinWidthDiv from '@/components/MinWidthDiv';
 import Note from '@/components/Note';
+import {useRequest} from '@/util/Request';
 
 const {baseURI} = config;
 const {FormItem} = Form;
+
+const stockDetailApi = {url: '/viewStockDetails/detail', method: 'GET'};
 
 const StockTable = (props) => {
 
@@ -33,9 +37,10 @@ const StockTable = (props) => {
 
   const tableRef = useRef();
 
-  const [data, setData] = useState([]);
 
   const token = cookie.get('tianpeng-token');
+
+  const {loading, data: stockDetail} = useRequest(stockDetailApi);
 
   const actions = () => {
     return (
@@ -123,7 +128,7 @@ const StockTable = (props) => {
       ref={tableRef}
       noRowSelection
       actionButton={actions()}
-      showCard={<div style={{borderBottom: 'solid 1px #eee', marginBottom: 16}}>
+      showCard={loading ? <div style={{margin:24}}><Spin size='large' /></div> : <div style={{borderBottom: 'solid 1px #eee', marginBottom: 16}}>
         <Space size={24} style={{paddingBottom: 24}}>
           <Progress
             type="circle"
@@ -133,7 +138,7 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="物料种类" value={data[0] ? data[0].skuTypeNum : 0} />
+              <Statistic title="物料种类" value={stockDetail && stockDetail.type} />
             } />
           <Progress
             type="circle"
@@ -143,7 +148,7 @@ const StockTable = (props) => {
               '100%': '#87d068',
             }}
             format={() =>
-              <Statistic title="总数量" value={data[0] ? data[0].skuCount : 0} />
+              <Statistic title="总数量" value={stockDetail && stockDetail.number} />
             } />
         </Space>
       </div>}
@@ -158,10 +163,6 @@ const StockTable = (props) => {
           mixNum: numbers.mixNum,
         };
         return values;
-      }}
-      branch={(data) => {
-        setData(data || []);
-        return data;
       }}
       api={skuList}
       tableKey="stockSku"
