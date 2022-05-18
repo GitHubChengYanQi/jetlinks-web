@@ -11,11 +11,12 @@ import Note from '@/components/Note';
 import ModalMessage from '@/components/ModalMessage';
 import {typeObject} from '@/pages/BaseSystem/Documents/Config';
 import {columns} from '@/pages/BaseSystem/Documents/Permissions/components/PermissionsConfig/index,';
-import ListSelect from '@/components/Select/components/ListSelect';
 
 const addPermissions = {url: '/documentsPermissions/addList', method: 'POST'};
 
-const getDPermissions = {url: '/documentsPermissions/detail', method: 'GET'};
+const getPermissions = {url: '/documentsPermissions/detail', method: 'GET'};
+
+const getField = {url: '/permission/selectDict', method: 'GET'};
 
 const Permissions = () => {
 
@@ -28,6 +29,8 @@ const Permissions = () => {
   const type = params.type;
 
   const [fields, setFields] = useState([]);
+
+  const [roleData, setRoleData] = useState([]);
 
   const {loading: addFieldLoading, run: addField} = useRequest(addPermissions, {
     manual: true,
@@ -49,10 +52,46 @@ const Permissions = () => {
     }
   });
 
-  const {loading: fieldLoading, run: fieldRun} = useRequest(getDPermissions, {
+  // 获取字段
+  const {loading: getFieldLoading, run: getFieldRun} = useRequest(getField, {
     manual: true,
     onSuccess: (res) => {
+      if (!Array.isArray(res)) {
+        return;
+      }
+      // 初始化字段权限配置，默认全部选中
+      const initialization = res.map((item) => {
+        return {
+          filedName: item.label,
+          name: item.value,
+          roles: roleData.map((item) => {
+            return {
+              roleId: item.roleId,
+              permissions: [{
+                action: 'see',
+                checked: true,
+              }, {
+                action: 'edit',
+                checked: true,
+              }]
+            };
+          })
+        };
+      });
+      setFields(initialization);
+    },
+  });
 
+  // 获取字段权限
+  const {loading: fieldPermissionsLoading, run: fieldPermissionsRun} = useRequest(getPermissions, {
+    manual: true,
+    onSuccess: (res) => {
+      if (res.length === 0) {
+        // 如果没获取到字段权限，则获取单据字段
+        getFieldRun({params: {receiptsEnum: type}});
+        return;
+      }
+      // 初始化字段权限配置
       const initialization = res.map((item) => {
         const roles = item.operationResults || [];
         return {
@@ -76,9 +115,12 @@ const Permissions = () => {
     },
   });
 
-  const {loading: roleLoading, data: roleData} = useRequest(roleList, {
-    onSuccess: () => {
-      fieldRun({
+  // 获取角色列表
+  const {loading: roleLoading} = useRequest(roleList, {
+    onSuccess: (res) => {
+      setRoleData(res);
+      // 获取角色之后获取字段和权限
+      fieldPermissionsRun({
         params: {formType: type}
       });
     }
@@ -86,7 +128,7 @@ const Permissions = () => {
 
   // const data = [{name: '超级管理员'}, {name: '超级管理员'}];
 
-  if (roleLoading || fieldLoading) {
+  if (roleLoading || fieldPermissionsLoading || getFieldLoading) {
     return <ProSkeleton type="descriptions" />;
   }
 
