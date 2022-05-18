@@ -11,6 +11,7 @@ import Note from '@/components/Note';
 import ModalMessage from '@/components/ModalMessage';
 import {typeObject} from '@/pages/BaseSystem/Documents/Config';
 import {columns} from '@/pages/BaseSystem/Documents/Permissions/components/PermissionsConfig/index,';
+import ListSelect from '@/components/Select/components/ListSelect';
 
 const addPermissions = {url: '/documentsPermissions/addList', method: 'POST'};
 
