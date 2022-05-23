@@ -100,11 +100,6 @@ const StockTable = (props) => {
           hidden
           name="storehouseId"
           component={Input} />
-        <FormItem
-          hidden
-          name="stockView"
-          value
-          component={Input} />
       </>
     );
   };
