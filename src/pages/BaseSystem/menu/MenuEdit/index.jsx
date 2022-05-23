@@ -54,7 +54,6 @@ const MenuEdit = ({...props}) => {
       <FormItem
         label="移动端菜单"
         name="type"
-        value='0'
         component={AntRadio.Group}
         options={[{label: '是', value: '1'}, {label: '否', value: '0'}]}
       />
