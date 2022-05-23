@@ -84,7 +84,7 @@ const StockTable = (props) => {
           component={StockNumbers} />
         <FormItem
           label="BOM查询"
-          name="partsId"
+          name="partsSkuId"
           component={BomSelect} />
         <FormItem
           name="selectBom"

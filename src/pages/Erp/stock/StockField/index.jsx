@@ -142,7 +142,7 @@ export const BomSelect = ({onChange}) => {
     const spuResult = skuResult.spuResult || {};
     return {
       label: `${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
-      value: skuResult.partsId,
+      value: skuResult.skuId,
     };
   }) : [];
 
@@ -173,7 +173,7 @@ export const BomSelect = ({onChange}) => {
 
 export const SelectBom = (props) => {
   return <AntSelect
-    placeholder='BOM查询条件'
+    placeholder="BOM查询条件"
     style={{width: 150}}
     options={[{label: '所有物料', value: 'All'}, {label: '下级物料', value: 'Present'},]}
     {...props}
