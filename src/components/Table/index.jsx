@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Button, Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
-import {createFormActions, Form, FormButtonGroup, useFormTableQuery, Submit} from '@formily/antd';
+import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
@@ -39,6 +39,7 @@ const TableWarp = (
     rowKey,
     headStyle,
     tab,
+    formSubmit,
     dataSource: dataSources,
     noSort,
     configPagination,
@@ -59,6 +60,7 @@ const TableWarp = (
     labelAlign,
     noTableColumn,
     sortList,
+    submitAction,
     footer: parentFooter,
     isModal = true,
     formActions = null,
@@ -109,10 +111,11 @@ const TableWarp = (
       field: sorter.field,
       order: sorter.order
     };
+    const newValues = typeof formSubmit === 'function' ? formSubmit(values) : values;
     if (!isModal) {
       setState({
         params: JSON.stringify({
-          ...page, ...values
+          ...page, ...newValues
         })
       });
     }
@@ -127,7 +130,7 @@ const TableWarp = (
         response = await ajaxService({
           ...api,
           data: {
-            ...values,
+            ...newValues,
           },
           ...other,
           params: page

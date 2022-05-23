@@ -10,6 +10,7 @@ import {Button, Descriptions, Space} from 'antd';
 import {createFormActions} from '@formily/antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {config} from 'ice';
+import cookie from 'js-cookie';
 import {backDetails, partsList} from '../PartsUrl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
@@ -26,7 +27,6 @@ import Drawer from '@/components/Drawer';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
 import BackSkus from '@/pages/Erp/sku/components/BackSkus';
 import Import from '@/pages/Erp/sku/SkuTable/Import';
-import cookie from 'js-cookie';
 import Note from '@/components/Note';
 
 const {Column} = Table;

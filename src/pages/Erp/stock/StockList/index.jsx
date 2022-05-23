@@ -23,7 +23,7 @@ const StockList = () => {
     };
   }) : [];
 
-  const [state, setState] = useState();
+  const [storeHouse, setStoreHouse] = useState(undefined);
 
   const Left = () => {
     return (
@@ -41,9 +41,9 @@ const StockList = () => {
             :
             <Tree
               showLine
-              checkedKeys={state}
+              checkedKeys={storeHouse}
               onSelect={(value) => {
-                setState(value);
+                setStoreHouse(value);
               }}
               defaultExpandedKeys={['']}
               treeData={[
@@ -59,7 +59,7 @@ const StockList = () => {
   };
   return (
     <ListLayout>
-      <StockTable left={Left()} state={state && state[0]} />
+      <StockTable left={Left()} storeHouse={storeHouse} />
     </ListLayout>
   );
 };
