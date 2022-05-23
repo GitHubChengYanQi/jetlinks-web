@@ -24,7 +24,8 @@ const MenuEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="menuId"
-      onError={()=>{}}
+      onError={() => {
+      }}
       onSubmit={(values) => {
         if (Array.isArray(values.pids) && values.pids.length > 0) {
           values.pid = values.pids[values.pids.length - 1];
@@ -49,6 +50,13 @@ const MenuEdit = ({...props}) => {
         name="menuFlag"
         component={AntRadio.Group}
         options={[{label: '是', value: 'Y'}, {label: '否', value: 'N'}]}
+      />
+      <FormItem
+        label="移动端菜单"
+        name="type"
+        value='0'
+        component={AntRadio.Group}
+        options={[{label: '是', value: '1'}, {label: '否', value: '0'}]}
       />
       <FormItem label="图标" name="icon" component={Input} />
       <FormItem label="请求地址" required name="url" component={Input} />
