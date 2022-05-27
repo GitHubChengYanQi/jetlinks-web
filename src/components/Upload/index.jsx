@@ -79,7 +79,7 @@ const UpLoadImg = (props) => {
             return false;
           }
         }}
-        onChange={({file, fileList, event}) => {
+        onChange={({event}) => {
           if (event && event.percent >= 100) {
             setLoading(false);
             message.success('上传成功！');

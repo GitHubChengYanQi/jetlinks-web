@@ -31,7 +31,6 @@ import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase
 import Empty from '@/components/Empty';
 import {skuResults} from '@/pages/Erp/sku/skuUrl';
 import Draft from '@/components/Form/components/Draft';
-import {payMoney} from './components/Field';
 
 const {FormItem} = Form;
 

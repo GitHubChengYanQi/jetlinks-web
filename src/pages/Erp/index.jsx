@@ -4,6 +4,7 @@ import TopLayout from '@/layouts/TopLayout';
 import StorehouseList from '@/pages/Erp/storehouse/StorehouseList';
 import SetView from '@/layouts/SetView';
 import Modal from '@/components/Modal';
+import AnnouncementsList from '@/pages/Erp/announcements/announcementsList';
 
 
 const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) => {
@@ -13,8 +14,10 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
   const RenderComponent = () => {
     switch (type) {
-      case 'ckgl':
+      case '仓库管理':
         return <StorehouseList />;
+      case '注意事项':
+        return <AnnouncementsList />;
       default:
         return null;
     }
@@ -36,12 +39,15 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
             setType(item.key);
           }}
         >
-          <Menu.Item key="ckgl">
+          <Menu.Item key="仓库管理">
             <span>仓库管理</span>
+          </Menu.Item>
+          <Menu.Item key="注意事项">
+            <span>注意事项</span>
           </Menu.Item>
           <Menu.Divider />
         </Menu>} />
-      <Modal width={1200} title='设置' footer={[]} ref={ref}>{RenderComponent()}</Modal>
+      <Modal width={1200} headTitle={type} footer={[]} ref={ref}>{RenderComponent()}</Modal>
     </>
   );
 };
