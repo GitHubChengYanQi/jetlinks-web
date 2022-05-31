@@ -6,7 +6,6 @@ import CssPennants from '@/pages/Erp/Analysis/CssPennants';
 
 const Recommended = ({data}) => {
 
-
   const [content, setContent] = useState([]);
 
   const listItem = (item, index) => {
@@ -92,6 +91,7 @@ const Recommended = ({data}) => {
       <a>查看更多组合</a>
     </Divider>}
   </div>;
+
 };
 
 export default Recommended;

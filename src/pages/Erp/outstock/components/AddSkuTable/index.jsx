@@ -93,11 +93,6 @@ const AddSkuTable = ({
           setValue({brandId: value, maxNumber: number}, index);
         }} />;
       }} />
-      {/* <Table.Column title="供应商" dataIndex="customertId" render={(value, record, index) => { */}
-      {/*  return supplyLoading ? <Spin /> : <Select options={supplyData} value={value} onChange={(value) => { */}
-      {/*    setValue({customertId: value}, index); */}
-      {/*  }} />; */}
-      {/* }} /> */}
       <Table.Column title="数量" width={100} dataIndex="number" render={(value, record, index) => {
         return <InputNumber
           placeholder={`库存 ${record.maxNumber || 0}`}

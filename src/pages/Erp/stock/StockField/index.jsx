@@ -20,6 +20,7 @@ import style from './index.module.less';
 import InputNumber from '@/components/InputNumber';
 import {useRequest} from '@/util/Request';
 import {partsList} from '@/pages/Erp/parts/PartsUrl';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 export const Palce = (props) => {
   return <Input {...props} />;
@@ -135,14 +136,13 @@ export const StockNumbers = ({value = {}, onChange}) => {
 
 export const BomSelect = ({onChange}) => {
 
-  const {loading, data, run} = useRequest({...partsList, params: {limit: 10, page: 1}});
+  const {loading, data, run} = useRequest({...partsList, params: {limit: 10, page: 1}, data: {status: 99}});
 
   const options = (!loading && data) ? data.map((item) => {
     const skuResult = item.skuResult || {};
-    const spuResult = skuResult.spuResult || {};
     return {
-      label: `${spuResult.name} / ${skuResult.skuName} / ${skuResult.specifications}`,
-      value: skuResult.skuId,
+      label: <SkuResultSkuJsons skuResult={skuResult} />,
+      value: item.skuId,
     };
   }) : [];
 
@@ -157,6 +157,7 @@ export const BomSelect = ({onChange}) => {
     onSearch={(string) => {
       run({
         data: {
+          status: 99,
           skuName: string,
         },
         params: {
