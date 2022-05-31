@@ -29,8 +29,8 @@ const Recommended = ({data}) => {
         break;
     }
     return <List.Item
+      key={index}
       id="listItem"
-      // extra={<Button type='link'><Typography.Link underline>按此顺序生产</Typography.Link></Button>}
     >
       <List.Item.Meta
         style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
@@ -77,12 +77,11 @@ const Recommended = ({data}) => {
     return <Empty description="请选择物料进行分析" />;
   }
 
-
   return <div>
     <List
       itemLayout="horizontal"
     >
-      {content.map(item => item)}
+      {content}
     </List>
     {(data.length > 3 && data.length !== content.length) && <Divider
       style={{cursor: 'pointer'}}
