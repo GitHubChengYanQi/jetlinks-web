@@ -32,7 +32,7 @@ export default {
   cheng: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.119/',
+    baseURI: 'http://192.168.1.229/',
     // baseURI: 'https://api.daoxin.gf2025.com/',
     projectName: '道昕云',
     AMAP_KEY: '',
@@ -43,7 +43,7 @@ export default {
   ren: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.143/',
+    baseURI: 'http://192.168.1.53/',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'

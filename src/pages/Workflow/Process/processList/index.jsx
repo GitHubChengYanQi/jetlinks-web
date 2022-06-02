@@ -142,7 +142,7 @@ const ProcessList = ({noTitle, value}) => {
             case 'instockError':
               return <>入库异常</>;
             case 'createInstock':
-              return <>创建入库</>;
+              return <>直接入库</>;
             case 'productionQuality':
               return <>生产检</>;
             case 'purchaseAsk':

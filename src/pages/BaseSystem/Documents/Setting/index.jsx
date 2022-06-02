@@ -64,7 +64,7 @@ const Setting = ({
   useEffect(() => {
     if (type) {
       detailRun({
-        params: {type: type || value}
+        params: {type}
       });
     }
   }, []);
@@ -147,7 +147,7 @@ const Setting = ({
         placeholder="请选择单据动作"
         value={item.value}
         style={{width: 200}}
-        options={typeObject({type,value,status}).types}
+        options={typeObject({type,status}).types}
         onChange={(value, option) => {
           onStatus({title: option.label, value}, index, item.listIndex);
         }}
@@ -178,7 +178,7 @@ const Setting = ({
 
       <Card
         style={{width: 1250, margin: 'auto'}}
-        title={`设置${typeObject({type,value}).title}状态`}
+        title={`设置${typeObject({type}).title}状态`}
         bordered={false}
         bodyStyle={{overflow: 'auto'}}
       >
@@ -214,7 +214,11 @@ const Setting = ({
                 />}
                 <Button
                   hidden={item.noActions}
-                  disabled={(item.actions && item.actions.length) === (typeObject({type,value,status}).types && typeObject(type,value,status).types.length)}
+                  disabled={
+                    (Array.isArray(item.actions) && item.actions.length) === (typeObject({type,status}).types
+                      &&
+                      typeObject({type, status}).types.length
+                    )}
                   style={{marginLeft: 38}}
                   onClick={() => {
                     const newStatus = status.map((item, statuIndex) => {

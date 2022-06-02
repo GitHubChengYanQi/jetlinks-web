@@ -1,7 +1,7 @@
 import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 
-export const typeObject = ({type, value, status = []}) => {
+export const typeObject = ({type,  status = []}) => {
 
   const disabled = (value) => {
     return status.filter((item) => {
@@ -9,7 +9,7 @@ export const typeObject = ({type, value, status = []}) => {
     }).length > 0;
   };
 
-  switch (type || value) {
+  switch (type) {
     case DocumentEnums.purchaseAsk:
       return {
         title: '采购申请单',
@@ -27,15 +27,21 @@ export const typeObject = ({type, value, status = []}) => {
         types: [
           {label: '核实数量', value: 'verify', disabled: disabled('verify')},
           {label: '执行入库', value: 'performInstock', disabled: disabled('performInstock')},
-        ]
+        ],
       };
     case DocumentEnums.instockError:
       return {
-        title: '入库异常'
+        title: '入库异常',
+        types: [
+          {label: '执行申请', value: 'perform', disabled: disabled('perform')},
+        ]
       };
     case DocumentEnums.outstockOrder:
       return {
         title: '出库单',
+        types: [
+          {label: '执行申请', value: 'perform', disabled: disabled('perform')},
+        ]
       };
     case DocumentEnums.quality:
       return {
@@ -47,6 +53,9 @@ export const typeObject = ({type, value, status = []}) => {
         ]
       };
     default:
-      return '';
+      return {
+        title: '质检单',
+        types: []
+      };
   }
 };
