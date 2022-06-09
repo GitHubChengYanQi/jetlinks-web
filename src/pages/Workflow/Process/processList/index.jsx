@@ -87,8 +87,8 @@ const ProcessList = ({noTitle, value}) => {
     return (
       <>
         <FormItem label="名称" name="processName" component={SysField.ProcessName} />
-        <FormItem label="单据" name="type" component={SysField.Type} />
-        <FormItem label={!value && '类型'} hidden={value} name="module" component={SysField.TableModule} value={value} />
+        <FormItem label={!value && '单据'} hidden={value} name="type" value={value} component={SysField.Type} />
+        <FormItem label='类型' name="module" component={SysField.TableModule}  />
       </>
     );
   };

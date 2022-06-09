@@ -25,7 +25,7 @@ export const typeObject = ({type,  status = []}) => {
       return {
         title: '入库单',
         types: [
-          {label: '核实数量', value: 'verify', disabled: disabled('verify')},
+          // {label: '核实数量', value: 'verify', disabled: disabled('verify')},
           {label: '执行入库', value: 'performInstock', disabled: disabled('performInstock')},
         ],
       };
@@ -33,7 +33,7 @@ export const typeObject = ({type,  status = []}) => {
       return {
         title: '入库异常',
         types: [
-          {label: '执行申请', value: 'perform', disabled: disabled('perform')},
+          {label: '处理异常', value: 'perform', disabled: disabled('perform')},
         ]
       };
     case DocumentEnums.outstockOrder:

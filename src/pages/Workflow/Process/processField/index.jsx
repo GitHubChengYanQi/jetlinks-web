@@ -14,7 +14,7 @@ export const ProcessName = (props) => {
   return (<Input {...props} />);
 };
 
-export const Type = ({value, onChange}) => {
+export const Type = ({value, onChange,...props}) => {
 
   const api = {url: '/processType/list', method: 'GET'};
   const {loading, data} = useRequest(api);
@@ -38,6 +38,7 @@ export const Type = ({value, onChange}) => {
   }
 
   return (<AntdSelect
+    {...props}
     style={{minWidth: 200}}
     value={typeof value === 'object' ? value.value : value}
     options={data ? data.map((item) => {
