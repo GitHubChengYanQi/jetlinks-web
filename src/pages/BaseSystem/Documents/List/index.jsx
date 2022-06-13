@@ -28,7 +28,7 @@ const List = () => {
           dataSource.map((item, index) => {
             return <Card.Grid
               key={index}
-              style={{textAlign: 'center', width: '20%', padding: 0}}
+              style={{textAlign: 'center', width: '20%', padding: 0,display:'inline-block'}}
             >
               <div style={{padding: 24}}>
                 {item.name}
