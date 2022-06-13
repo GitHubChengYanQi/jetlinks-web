@@ -5,14 +5,13 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useRef} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import {FormEffectHooks, FormPath, InternalFieldList as FieldList} from '@formily/antd';
-import {Avatar, Button, Card,  Space} from 'antd';
+import {Avatar, Button, Card, Space} from 'antd';
 import ProCard from '@ant-design/pro-card';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {config} from 'ice';
 import Form from '@/components/Form';
-import {instockDetail,  instockEdit, instockOrderAdd} from '../InstockUrl';
+import {instockDetail, instockEdit, instockOrderAdd} from '../InstockUrl';
 import * as SysField from '../InstockField';
 import {request} from '@/util/Request';
 import {skuDetail} from '@/pages/Erp/sku/skuUrl';
@@ -25,29 +24,38 @@ const ApiConfig = {
   save: instockEdit
 };
 
-const {wxCp} = config;
-
-const InstockEdit = ({...props}) => {
+const InstockEdit = ({
+  onSuccess = () => {
+  },
+  loading = () => {
+  },
+  onError = () => {
+  },
+  value,
+}, ref) => {
 
   const formRef = useRef();
+
+  useImperativeHandle(ref, () => ({
+    submit: formRef.current.submit,
+  }));
 
   return (
     <div style={{padding: 16}}>
       <Form
-        {...props}
+        value={value || false}
+        NoButton={false}
         ref={formRef}
         api={ApiConfig}
+        loading={loading}
         fieldKey="instockId"
         onSuccess={() => {
-          props.onSuccess();
+          onSuccess();
         }}
         onError={() => {
-
+          onError();
         }}
-        onSubmit={(value) => {
-          return {...value, url: `${wxCp}OrCode?id=codeId`};
-        }}
-        effects={({setFieldState,getFieldState}) => {
+        effects={({setFieldState, getFieldState}) => {
 
           FormEffectHooks.onFieldValueChange$('instockRequest.*.number').subscribe(({name}) => {
             setFieldState(
@@ -167,7 +175,7 @@ const InstockEdit = ({...props}) => {
                           <FormItem
                             labelCol={10}
                             itemStyle={{margin: 0}}
-                            label="供应商(品牌)"
+                            label="品牌"
                             name={`instockRequest.${index}.brandId`}
                             component={SysField.BrandId}
                             required
@@ -238,4 +246,4 @@ const InstockEdit = ({...props}) => {
   );
 };
 
-export default InstockEdit;
+export default React.forwardRef(InstockEdit);

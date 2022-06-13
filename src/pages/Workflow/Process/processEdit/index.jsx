@@ -29,18 +29,25 @@ const ProcessEdit = ({...props}) => {
       ref={formRef}
       api={ApiConfig}
       fieldKey="processId"
+      onSubmit={(value) => {
+        return {...value, type: value.type && value.type.value};
+      }}
       effects={({setFieldState}) => {
-        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
 
+        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
           setFieldState('module', state => {
-            state.props.type = value;
+            if (typeof value === 'object' && !value.default) {
+              state.value = null;
+            }
+            state.props.types = value && value.details;
           });
         });
+
       }}
     >
       <FormItem label="名称" name="processName" component={SysField.ProcessName} required />
-      <FormItem label="类型" name="type" component={SysField.Type} required />
-      <FormItem label="功能" name="module" component={SysField.Module} required />
+      <FormItem label="单据" name="type" component={SysField.Type} required />
+      <FormItem label="类型" name="module" component={SysField.Module} />
     </Form>
   );
 };

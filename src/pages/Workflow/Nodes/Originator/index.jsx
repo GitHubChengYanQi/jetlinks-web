@@ -47,15 +47,6 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
   };
 
   return <Space>
-    <Button
-      type="link"
-      disabled={count === 1}
-      icon={<DeleteOutlined />}
-      onClick={() => {
-        typeof remove === 'function' && remove(selectValue);
-      }}
-      danger
-    />
     <Select style={{minWidth: 100}} value={selectValue} placeholder="请选择" options={options} onChange={(value) => {
       setSelectValue(value);
       switch (value) {
@@ -72,6 +63,15 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
           break;
       }
     }}
+    />
+    <Button
+      type="link"
+      disabled={count === 1}
+      icon={<DeleteOutlined />}
+      onClick={() => {
+        typeof remove === 'function' && remove(selectValue);
+      }}
+      danger
     />
     {type()}
     <Modal

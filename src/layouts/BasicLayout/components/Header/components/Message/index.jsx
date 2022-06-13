@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {AlertOutlined, BellOutlined, CloseCircleOutlined, MessageOutlined} from '@ant-design/icons';
-import {Badge, Button, Drawer, Space, Tabs} from 'antd';
+import {AlertOutlined, BellOutlined,  MessageOutlined} from '@ant-design/icons';
+import {Badge, Button, Drawer, Tabs} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {useRequest} from '@/util/Request';
 import Empty from '@/components/Empty';
@@ -31,13 +31,6 @@ const Message = () => {
 
   const title = () => {
     return <Tabs
-      tabBarExtraContent={<Button
-        type="link"
-        onClick={() => {
-          setVisible(false);
-        }}
-        icon={<CloseCircleOutlined />}
-      />}
       activeKey={key}
       onChange={(value) => {
         setKey(value);

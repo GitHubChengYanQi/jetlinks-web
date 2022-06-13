@@ -24,7 +24,7 @@ import daoxinyun from '@/asseset/imgs/daoxinyun.png';
 
 import styles from './index.module.less';
 import Message from '@/layouts/BasicLayout/components/Header/components/Message';
-import TaskList from "@/pages/Erp/Analysis/TaskList";
+import TaskList from "@/pages/TaskList";
 
 const AppIcon = {
   ENT_FUNC: menu,

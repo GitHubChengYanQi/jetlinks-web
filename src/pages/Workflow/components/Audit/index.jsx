@@ -5,7 +5,7 @@ import Originator from '@/pages/Workflow/Nodes/Originator';
 import Branchs from '@/pages/Workflow/Nodes/Branchs';
 
 const Audit = ({
-  type,
+  type: formType,
   currentNode,
   updateNode,
   module,
@@ -25,17 +25,9 @@ const Audit = ({
         refAudit.current.open(true);
         break;
       case '3':
-        switch (type) {
-          case 'purchase':
-            switch (module) {
-              case 'purchaseAsk':
-                refBranch.current.open(true);
-                break;
-              case 'purchasePlan':
-                break;
-              default:
-                break;
-            }
+        switch (formType) {
+          case 'PURCHASE':
+            refBranch.current.open(true);
             break;
           default:
             break;
@@ -55,27 +47,19 @@ const Audit = ({
   return <>
     <Drawer title="步骤设置" ref={refAudit} width={800}>
       <Setps
-        type={type}
+        type={formType}
         module={module}
         value={currentNode && currentNode.current && {
+          ...(currentNode.current.auditRule || {}),
           type: currentNode.current.stepType,
           auditRule: currentNode.current.auditRule && currentNode.current.auditRule.rules,
-          action: currentNode.current.auditRule && currentNode.current.auditRule.type,
         }}
         onChange={(value) => {
-          switch (value.type) {
-            case 'audit':
-              currentNode.current.auditRule = {type: 'audit', rules: value.auditRule};
-              break;
-            case 'quality':
-              currentNode.current.auditRule = {type: value.quality_action, rules: value.actionRule};
-              break;
-            case 'purchase':
-              currentNode.current.auditRule = {type: value.purchase_action};
-              break;
-            default:
-              break;
-          }
+          currentNode.current.auditRule = {
+            ...value,
+            rules: value.auditRule,
+            formType
+          };
           currentNode.current.stepType = value.type;
           refAudit.current.close();
           updateNode();
@@ -89,16 +73,12 @@ const Audit = ({
       <Originator
         value={currentNode && currentNode.current && currentNode.current.auditRule && currentNode.current.auditRule.rules}
         onChange={(value) => {
-          switch (currentNode.current.type) {
-            case '0':
-              currentNode.current.auditRule = {type: 'start', rules: value};
-              break;
-            case '2':
-              currentNode.current.auditRule = {type: 'send', rules: value};
-              break;
-            default:
-              break;
-          }
+          currentNode.current.auditRule = {
+            type: currentNode.current.type === '0' ? 'start' : 'send',
+            documentsStatusId: currentNode.current.type === '0' && 0,
+            rules: value,
+            formType
+          };
           updateNode();
           refStart.current.close();
         }} />

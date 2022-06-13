@@ -162,14 +162,13 @@ export const customerAAction = (setFieldState) => {
   });
 };
 
-export const customerBAction = (setFieldState) => {
+export const customerBAction = (setFieldState,module) => {
 
-  const params = getSearchParams();
 
   let api = {};
-  if (params.module === 'SO') {
+  if (module === 'SO') {
     api = selfEnterpriseDetail;
-  } else if (params.module === 'PO') {
+  } else if (module === 'PO') {
     api = supplierDetail;
   }
 

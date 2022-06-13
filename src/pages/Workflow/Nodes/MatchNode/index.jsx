@@ -55,20 +55,6 @@ export const Owner = (props) => {
       });
   };
 
-  const action = (value) => {
-    switch (value) {
-      case 'quality_dispatch':
-        return <>分派任务</>;
-      case 'quality_perform':
-        return <>执行任务</>;
-      case 'quality_complete':
-        return <>完成任务</>;
-      case 'purchase_complete':
-        return <>采购申请完成</>;
-      default:
-        break;
-    }
-  };
 
   const Rule = (rule) => {
     if (rule) {
@@ -130,14 +116,10 @@ export const Owner = (props) => {
         <strong>抄送</strong>
         <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
       </>;
-    case 'quality':
+    case 'status':
       return <>
-        <strong>{action(props.auditRule && props.auditRule.type)}</strong>
+        <strong>状态</strong>
         <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
-      </>;
-    case 'purchase':
-      return <>
-        <strong>{action(props.auditRule && props.auditRule.type)}</strong>
       </>;
     case 'branch':
       switch (props.auditRule && props.auditRule.type) {

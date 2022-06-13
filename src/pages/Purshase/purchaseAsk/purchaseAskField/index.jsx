@@ -46,7 +46,7 @@ export const AddSku = ({value = [], onChange}) => {
     <Modal
       ref={ref}
       headTitle='添加物料'
-      width={1000}
+      width={1100}
       footer={<Space>
         <Button onClick={() => {
           onChange(addSkuRef.current.check());
@@ -104,7 +104,7 @@ export const BrandId = ({data, ...props}) => {
   />);
 };
 export const Note = (props) => {
-  return (<Input.TextArea placeholder="请输入对此次采购申请的备注说明内容" {...props} />);
+  return (<Input.TextArea rows={1} placeholder="请输入备注内容" {...props} />);
 };
 export const SkuId = (props) => {
   return (<SelectSku {...props} dropdownMatchSelectWidth={400} />);

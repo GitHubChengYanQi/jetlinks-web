@@ -20,7 +20,7 @@ export interface Props {
   liBorder?: boolean;
   handle?: boolean;
   height?: number;
-  DefinedItem?: React.ReactNode,
+  definedItem?: Function,
   index?: number;
   checked?: boolean;
   itemData?: ItemData[];
@@ -68,7 +68,7 @@ export const Item = React.memo(
         },
         fadeIn,
         handle,
-        DefinedItem,
+        definedItem,
         height,
         checked,
         index,
@@ -165,14 +165,9 @@ export const Item = React.memo(
             tabIndex={!handle ? 0 : undefined}
           >
             {
-              DefinedItem
+              definedItem
                 ?
-                <DefinedItem
-                  {...listeners}
-                  value={value}
-                  item={item}
-                  index={index}
-                />
+                definedItem({...listeners,value,item,index})
                 :
                 <>
                   <Space>

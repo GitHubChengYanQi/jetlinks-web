@@ -1,54 +1,47 @@
-import React, {useState} from 'react';
-import {Input} from 'antd';
-import {getLastMeasureIndex} from './LastMention';
+import React from 'react';
+import {Mentions} from 'antd';
 import FileUpload from '@/components/FileUpload';
+import {useRequest} from '@/util/Request';
+import {userIdSelect} from '@/pages/Portal/remind/remindUrl';
 
 const MentionsNote = ({
-  getUserIds = () => {
-  }, onChange = () => {
-  }, value, placeholder, getImgs = () => {
+  getUsers = () => {
+  },
+  onChange = () => {
+  },
+  value,
+  users,
+  placeholder,
+  getImgs = () => {
   }
 }) => {
 
-  const [users, setUsers] = useState([]);
-
-  const onKeyUp = (even) => {
-    const {location: measureIndex, prefix: measurePrefix} = getLastMeasureIndex(
-      value,
-      '@',
-    );
-    if (measureIndex !== -1) {
-      if (even.key === measurePrefix || even.key === 'Shift') {
-        console.log(111);
-      }
-
-    }
-  };
+  const {data} = useRequest(userIdSelect);
 
   return <>
-    <Input.TextArea
-      rows={3}
+    <Mentions
       value={value}
+      rows={4}
       placeholder={placeholder}
-      onChange={(value) => {
-        const user = users.filter((items) => {
-          return value.target.value.indexOf(items.label) !== -1;
-        });
-        setUsers(user);
-        getUserIds(user);
-        onChange(value.target.value);
+      style={{width: '100%'}}
+      onChange={onChange}
+      onSelect={(option) => {
+        getUsers([...users, {name: option.value, id: option.key}]);
       }}
-      onKeyUp={(e) => {
-        onKeyUp(e);
-      }}
-    />
+    >
+      {
+        data && data.map((item) => {
+          return <Mentions.Option key={item.value} value={item.label}>{item.label}</Mentions.Option>;
+        })
+      }
+    </Mentions>
 
     <div style={{marginTop: 16}}>
       <FileUpload
         title="上传图片"
         maxCount={10}
         onChange={(value) => {
-          getImgs([value]);
+          getImgs(value);
         }} />
     </div>
 
