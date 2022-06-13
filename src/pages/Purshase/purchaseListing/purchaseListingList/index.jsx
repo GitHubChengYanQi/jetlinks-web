@@ -5,21 +5,12 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useRef} from 'react';
-import Table from '@/components/Table';
+import React from 'react';
 import {Badge, Descriptions, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import Drawer from '@/components/Drawer';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import {purchaseListingDelete, purchaseListingList} from '../purchaseListingUrl';
-import PurchaseListingEdit from '../purchaseListingEdit';
-import * as SysField from '../purchaseListingField';
 import ProCard from '@ant-design/pro-card';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import {useRequest} from '@/util/Request';
 import {purchaseAskDetail} from '@/pages/Purshase/purchaseAsk/purchaseAskUrl';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import Note from '@/components/Note';
 
@@ -41,28 +32,15 @@ const PurchaseListingList = ({value}) => {
   if (!data)
     return null;
 
-  const status = (value) => {
-    switch (value) {
-      case 0:
-        return <Badge text="待审核" color="yellow" />;
-      case 2:
-        return <Badge text="已通过" color="green" />;
-      case 1:
-        return <Badge text="已拒绝" color="red" />;
-      default:
-        break;
-    }
-  };
-
   return (
-    <div style={{padding: 16}}>
+    <div>
       <ProCard headerBordered className="h2Card" title="基础信息">
-        <Descriptions column={2} bordered labelStyle={{width: 120}}>
+        <Descriptions column={2} bordered>
           <Descriptions.Item label="采购申请编号"> {data.coding}</Descriptions.Item>
           <Descriptions.Item label="创建人">{data.user && data.user.name}</Descriptions.Item>
           <Descriptions.Item label="创建时间">{data.createTime}</Descriptions.Item>
           <Descriptions.Item label="备注"> <Note width="100%" value={data.note || '无'} /></Descriptions.Item>
-          <Descriptions.Item label="状态">{status(data.status)}</Descriptions.Item>
+          <Descriptions.Item label="状态">{data.statusResult && data.statusResult.name}</Descriptions.Item>
         </Descriptions>
       </ProCard>
       <ProCard headerBordered className="h2Card" title="采购申请详情">
@@ -72,7 +50,7 @@ const PurchaseListingList = ({value}) => {
           rowKey="purchaseListingId"
         >
           <Column title="物料" dataIndex="skuId" render={(value, record) => {
-            return <SkuResultSkuJsons skuResult={record.skuResult} />;
+            return <Note><SkuResultSkuJsons skuResult={record.skuResult} /></Note>;
           }}
           />
           <Column title="品牌" dataIndex="brandResult" render={(value) => {

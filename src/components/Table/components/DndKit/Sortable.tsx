@@ -61,7 +61,7 @@ export interface Props {
   removable?: boolean;
   reorderItems?: typeof arrayMove;
   strategy?: SortingStrategy;
-  DefinedItem?: React.ReactNode,
+  definedItem?: Function,
   style?: React.CSSProperties;
   useDragOverlay?: boolean;
   onDragEnd?: Function;
@@ -126,10 +126,11 @@ export function Sortable(
     reorderItems = arrayMove,
     strategy = rectSortingStrategy,
     style,
-    DefinedItem,
+    definedItem,
     useDragOverlay = true,
     wrapperStyle = () => ({}),
   }: Props) {
+
   const [items, setItems] = useState<ItemData[]>(initialItems || []);
 
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -253,7 +254,7 @@ export function Sortable(
               return <SortableItem
                 liBorder={liBorder}
                 key={index}
-                DefinedItem={DefinedItem}
+                definedItem={definedItem}
                 onChecked={(key) => {
                   const array = items.map((item) => {
                     if (item.key === key) {
@@ -329,7 +330,7 @@ interface SortableItemProps {
   id: string;
   item: object,
   index: number;
-  DefinedItem?: React.ReactNode,
+  definedItem?: Function,
   handle: boolean;
   checked: boolean;
   useDragOverlay?: boolean;
@@ -361,7 +362,7 @@ export function SortableItem(
     handle,
     id,
     itemData,
-    DefinedItem,
+    definedItem,
     index,
     style,
     onChecked,
@@ -389,7 +390,7 @@ export function SortableItem(
     <Item
       ref={setNodeRef}
       liBorder={liBorder}
-      DefinedItem={DefinedItem}
+      definedItem={definedItem}
       value={title}
       item={item}
       onChecked={(value) => {

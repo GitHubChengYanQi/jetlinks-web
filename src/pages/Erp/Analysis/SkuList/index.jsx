@@ -88,7 +88,7 @@ const SkuList = ({...props}, ref) => {
     <Sortable
       handle
       liBorder
-      DefinedItem={Item}
+      definedItem={Item}
       refresh={refresh}
       items={skuList.map((item) => {
         return {

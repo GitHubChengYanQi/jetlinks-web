@@ -22,7 +22,6 @@ const Modal = (
     ...props
   }, ref) => {
 
-
   const [value, show] = useState(null);
 
   if (modal !== undefined) {
@@ -45,7 +44,7 @@ const Modal = (
 
   const visible = value !== null && value !== undefined;
 
-  const [simpleClass] = useState( Math.random()
+  const [simpleClass] = useState(Math.random()
     .toString(36)
     .substring(2));
 
@@ -60,34 +59,34 @@ const Modal = (
   // const [sumX,setSumX] = useState(0);
 
   const initialEvent = (visible) => {
-      setTimeout(() => {
-        window.removeEventListener('mouseup', removeUp, false);
+    setTimeout(() => {
+      window.removeEventListener('mouseup', removeUp, false);
 
-        const contain = document.getElementsByClassName(simpleClass)[0];
-        const header = contain.getElementsByClassName('ant-modal-header')[0];
-        if(
-          header
-        ){
-          modalContent = contain.getElementsByClassName('ant-modal-content')[0];
+      const contain = document.getElementsByClassName(simpleClass)[0];
+      const header = contain.getElementsByClassName('ant-modal-header')[0];
+      if (
+        header
+      ) {
+        modalContent = contain.getElementsByClassName('ant-modal-content')[0];
 
-          header.style.cursor = 'all-scroll';
-          header.onmousedown = (e) => {
-            mouseDownX = e.pageX;
-            mouseDownY = e.pageY;
-            document.body.onselectstart = () => false;
-            window.addEventListener('mousemove', handleMove, false);
-          };
+        header.style.cursor = 'all-scroll';
+        header.onmousedown = (e) => {
+          mouseDownX = e.pageX;
+          mouseDownY = e.pageY;
+          document.body.onselectstart = () => false;
+          window.addEventListener('mousemove', handleMove, false);
+        };
 
-          window.addEventListener('mouseup', removeUp, false);
-        }
+        window.addEventListener('mouseup', removeUp, false);
+      }
 
-      }, 0);
+    }, 0);
   };
 
   const handleMove = (event) => {
     deltaX = event.pageX - mouseDownX;
     deltaY = event.pageY - mouseDownY;
-    modalContent.style.transform = `translate(${deltaX+sumX}px, ${deltaY + sumY}px)`;
+    modalContent.style.transform = `translate(${deltaX + sumX}px, ${deltaY + sumY}px)`;
   };
 
   const removeMove = () => {
@@ -106,10 +105,10 @@ const Modal = (
   };
 
   useEffect(() => {
-    if(visible){
-      setTimeout(()=>{
+    if (visible) {
+      setTimeout(() => {
         initialEvent(true);
-      },0)
+      }, 0);
 
     }
   }, [visible]);
@@ -117,7 +116,6 @@ const Modal = (
   const wrapModalClassName = wrapClassName ? `${wrapClassName} ${simpleClass}` : `${simpleClass}`;
 
   return (
-
     <AntdModal
       visible={visible}
       footer={footer || null}
@@ -133,7 +131,11 @@ const Modal = (
       destroyOnClose
       wrapClassName={wrapModalClassName}
     >
-      <div style={{maxHeight: footer ? 'calc(100vh - 110px)' : 'calc(100vh - 55px)', overflowY: 'auto',overflowX:'hidden'}}>
+      <div style={{
+        maxHeight: footer ? 'calc(100vh - 110px)' : 'calc(100vh - 55px)',
+        overflowY: 'auto',
+        overflowX: 'hidden'
+      }}>
         {Component ? <Component
           {...props}
           ref={compoentRef}

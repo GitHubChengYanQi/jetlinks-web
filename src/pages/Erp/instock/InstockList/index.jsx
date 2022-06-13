@@ -5,50 +5,37 @@
  * @Date 2021-07-17 10:46:08
  */
 
-import React, {useEffect, useRef} from 'react';
-import Table from '@/components/Table';
-import {Badge, Button, Modal, notification, Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
-import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
-import Form from '@/components/Form';
-import Breadcrumb from '@/components/Breadcrumb';
-import MyModal from '@/components/Modal';
+import React, {useRef} from 'react';
+import {Badge, Button, Space, Table as AntTable} from 'antd';
 import {useBoolean} from 'ahooks';
 import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
-import {ExclamationCircleOutlined, ScanOutlined, SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons';
+import Table from '@/components/Table';
+import AddButton from '@/components/AddButton';
+import Form from '@/components/Form';
+import Breadcrumb from '@/components/Breadcrumb';
 import Icon from '@/components/Icon';
-import InstockEdit from '../InstockEdit';
-import {useRequest} from '@/util/Request';
-import {instockDelete, instockEdit, instockList, instockOrderList, itemIdSelect} from '../InstockUrl';
+import {instockOrderList} from '../InstockUrl';
 import * as SysField from '../InstockField';
-import Instock from '@/pages/Erp/instock/InstockEdit/components/Instock';
 import Code from '@/pages/Erp/spu/components/Code';
-import {getSearchParams} from 'ice';
+import Documents from '@/pages/Workflow/Documents';
+import MinWidthDiv from '@/components/MinWidthDiv';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
 const InstockList = () => {
 
-  const ref = useRef(null);
+  const ducomentRef = useRef(null);
   const tableRef = useRef(null);
-  const instockRef = useRef(null);
-
-  const params = getSearchParams();
-
-  useEffect(() => {
-    if (params.id) {
-      instockRef.current.open(params.id);
-    }
-  }, []);
 
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          ref.current.open(false);
+          ducomentRef.current.create(DocumentEnums.instockOrder);
         }} />
       </>
     );
@@ -125,24 +112,10 @@ const InstockList = () => {
             <>
               <Code source="instock" id={record.instockOrderId} />
               <a onClick={() => {
-                instockRef.current.open(record);
+                ducomentRef.current.action(false, record.instockOrderId, DocumentEnums.instockOrder);
               }}>
                 {text}
               </a>
-            </>
-          );
-        }} />
-        <Column key={2} title="仓库名称" dataIndex="storeHouseId" render={(text, record) => {
-          return (
-            <>
-              {record.storehouseResult && record.storehouseResult.name}
-            </>
-          );
-        }} sorter />
-        <Column key={3} title="负责人" width={200} dataIndex="userId" sorter render={(text, record) => {
-          return (
-            <>
-              {record.userResult && record.userResult.name}
             </>
           );
         }} />
@@ -158,17 +131,32 @@ const InstockList = () => {
               return null;
           }
         }} />
-        <Column key={5} title="创建时间" width={200} dataIndex="createTime" sorter />
+        <Column key={3} title="创建时间" width={200} dataIndex="createTime" />
+        <Column key={3} title="入库类型" width={150} dataIndex="type" />
+        <Column key={5} title="送料人员" dataIndex="userResult" render={(value) => {
+          return <MinWidthDiv width={70}>{value && value.name}</MinWidthDiv>;
+        }} />
+        <Column key={5} title="送料时间" width={200} dataIndex="registerTime" />
+        <Column key={5} title="库管人员" dataIndex="registerTime" render={(value) => {
+          return <MinWidthDiv width={70}>{value && value.name}</MinWidthDiv>;
+        }} />
+        <Column key={5} title="入库物料" align="center" width={100} dataIndex="enoughNumber" />
+        <Column key={5} title="已入库" align="center" width={100} dataIndex="notNumber" />
+        <Column key={5} title="未入库" align="center" width={100} dataIndex="realNumber" />
+        <Column />
+        <Column title="操作" align="center" width={100} dataIndex="instockOrderId" render={(value) => {
+          return <Space>
+            <Button type="link" onClick={() => {
+              ducomentRef.current.action(false, value, DocumentEnums.instockOrder);
+            }}>查看</Button>
+          </Space>;
+        }} />
       </Table>
 
-      <MyModal width={1300} title="入库单" component={InstockEdit} onSuccess={() => {
-        tableRef.current.refresh();
-        ref.current.close();
-      }} ref={ref} />
+      <Documents ref={ducomentRef} onSuccess={() => {
+        tableRef.current.submit();
+      }} />
 
-      <MyModal width={1300} component={Instock} onSuccess={() => {
-        instockRef.current.close();
-      }} ref={instockRef} />
     </>
   );
 };

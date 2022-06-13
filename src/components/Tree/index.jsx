@@ -4,7 +4,10 @@ import {useRequest} from '@/util/Request';
 
 
 const Tree = (props) => {
-  const {value,onChange, api, ...other} = props;
+  const {
+    value, onChange = () => {
+    }, api, ...other
+  } = props;
   if (!api) {
     throw new Error('Table component: api cannot be empty,But now it doesn\'t exist!');
   }
@@ -12,11 +15,11 @@ const Tree = (props) => {
 
   if (data) {
     return (<AntdTree
-      onCheck={(values) => {
-        console.log(values);
-        typeof onChange==="function" && onChange(values);
+      onCheck={(values,checkInfo) => {
+        onChange(values,checkInfo.checkedNodes);
       }}
       defaultExpandedKeys={['0']}
+      selectable={false}
       checkable
       checkedKeys={value}
       treeData={data}

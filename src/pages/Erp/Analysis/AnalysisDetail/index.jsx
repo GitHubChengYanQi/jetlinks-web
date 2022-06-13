@@ -5,7 +5,7 @@ import OweSku from '@/pages/Erp/Analysis/OweSku';
 import Empty from '@/components/Empty';
 import {useRequest} from '@/util/Request';
 import Note from '@/components/Note';
-import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
+import TaskProgress from '@/pages/TaskList/components/TaskProgress';
 
 const AnalysisDetail = (
   {

@@ -8,14 +8,21 @@
 export const instockAdd = {
   url: '/instock/add',
   method: 'POST',
-  rowKey:'instockId'
+  rowKey: 'instockId'
 };
 
 export const instockOrderAdd = {
   url: '/instockOrder/add',
   method: 'POST',
-  rowKey:'instockOrderId'
+  rowKey: 'instockOrderId'
 };
+
+export const instockOrderDetail = {
+  url: '/instockOrder/detail',
+  method: 'POST',
+  rowKey: 'instockOrderId'
+};
+
 
 export const instockEdit = {
   url: '/instockList/edit',
@@ -25,30 +32,30 @@ export const instockEdit = {
 export const instockDelete = {
   url: '/instock/delete',
   method: 'POST',
-  rowKey:'instockId'
+  rowKey: 'instockId'
 };
 
 export const instockDetail = {
   url: '/instock/detail',
   method: 'POST',
-  rowKey:'instockId'
+  rowKey: 'instockId'
 };
 
 export const instockList = {
   url: '/instock/list',
   method: 'POST',
-  rowKey:'instockId'
+  rowKey: 'instockId'
 };
 export const instock = {
   url: '/instockList/list',
   method: 'POST',
-  rowKey:'instockListId'
+  rowKey: 'instockListId'
 };
 
 export const instockOrderList = {
   url: '/instockOrder/list',
   method: 'POST',
-  rowKey:'instockOrderId'
+  rowKey: 'instockOrderId'
 };
 
 export const itemIdSelect = {
