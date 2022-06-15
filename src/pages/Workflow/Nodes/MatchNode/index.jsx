@@ -46,7 +46,7 @@ export const Owner = (props) => {
           default:
             break;
         }
-        return <Space key={index} direction='horizontal'>
+        return <Space key={index} direction="horizontal">
           <div>{type}</div>
           <div>{items.purchaseAsk && items.purchaseAsk.operator}</div>
           <div>{items.purchaseAsk && items.purchaseAsk.value}</div>
@@ -88,7 +88,9 @@ export const Owner = (props) => {
                 }
               </div>;
             } else if (items.type === 'AllPeople') {
-              return <strong key={index}>所有人</strong>;
+              return <div key={index}><strong>所有人</strong></div>;
+            } else if (items.type === 'MasterDocumentPromoter') {
+              return <div key={index}><strong>主单据负责人</strong></div>;
             } else {
               return null;
             }
