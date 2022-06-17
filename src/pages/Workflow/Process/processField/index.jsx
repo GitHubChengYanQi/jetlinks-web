@@ -54,6 +54,46 @@ export const Type = ({value, onChange,...props}) => {
   />);
 };
 
+export const ListType = ({value, onChange,...props}) => {
+
+  const api = {url: '/processType/list', method: 'GET'};
+  const {loading, data} = useRequest(api);
+
+  useEffect(() => {
+    if (value && data) {
+      const type = data.filter(item => item.type === value);
+      if (type && type[0]) {
+        onChange({
+          label: type[0].name,
+          value: type[0].type,
+          details: type[0].details,
+          default: true,
+        });
+      }
+    }
+  }, [data]);
+
+  if (loading) {
+    return <Spin />;
+  }
+
+  return (<AntdSelect
+    {...props}
+    style={{minWidth: 200}}
+    value={typeof value === 'object' ? value.value : value}
+    options={data ? data.map((item) => {
+      return {
+        label: item.name,
+        value: item.type,
+        details: item.details,
+      };
+    }) : []}
+    onChange={(value) => {
+      onChange(value);
+    }}
+  />);
+};
+
 export const Module = (props) => {
   const {types = [], ...other} = props;
 
