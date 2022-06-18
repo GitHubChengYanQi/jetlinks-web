@@ -79,6 +79,7 @@ const Setps = ({
         label="单据状态"
         name="documentsStatusId"
         component={StautsId}
+        required
       />
       <FormItem
         visible={false}

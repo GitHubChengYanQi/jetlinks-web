@@ -79,6 +79,7 @@ export const StautsId = (props) => {
 };
 
 export const ActionIds = ({value = [], onChange, actions = []}) => {
+
   if (actions.length === 0) {
     return <>无</>;
   }

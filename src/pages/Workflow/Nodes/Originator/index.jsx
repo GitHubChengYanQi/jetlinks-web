@@ -4,7 +4,18 @@ import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import UserTree from '@/pages/Workflow/Nodes/UserTree';
 import Modal from '@/components/Modal';
 
-export const SelectOriginator = ({options, count, index, onChange, defaultValue, value, remove}) => {
+export const SelectOriginator = (
+  {
+    options,
+    count,
+    index,
+    onChange = () => {
+    },
+    defaultValue,
+    value,
+    remove = () => {
+    }
+  }) => {
 
   const ref = useRef();
 
@@ -51,13 +62,16 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
       setSelectValue(value);
       switch (value) {
         case 'AppointUsers':
-          typeof onChange === 'function' && onChange({type: value, appointUsers: []});
+          onChange({type: value, appointUsers: []});
           break;
         case 'DeptPositions':
-          typeof onChange === 'function' && onChange({type: value, deptPositions: []});
+          onChange({type: value, deptPositions: []});
           break;
         case 'AllPeople':
-          typeof onChange === 'function' && onChange({type: value});
+          onChange({type: value});
+          break;
+        case 'MasterDocumentPromoter':
+          onChange({type: value});
           break;
         default:
           break;
@@ -69,7 +83,7 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
       disabled={count === 1}
       icon={<DeleteOutlined />}
       onClick={() => {
-        typeof remove === 'function' && remove(selectValue);
+        remove(selectValue);
       }}
       danger
     />
@@ -79,7 +93,7 @@ export const SelectOriginator = ({options, count, index, onChange, defaultValue,
       width={600}
       footer={
         <Button type="primary" onClick={() => {
-          typeof onChange === 'function' && onChange({type: selectValue, ...change});
+          onChange({type: selectValue, ...change});
           ref.current.close();
         }}>
           保存
@@ -118,6 +132,12 @@ const Originator = ({value, onChange, hidden}) => {
         value: 'AllPeople',
         disabled: array.filter((value) => {
           return value.type === 'AllPeople';
+        }).length > 0
+      }, {
+        label: '主单据负责人',
+        value: 'MasterDocumentPromoter',
+        disabled: array.filter((value) => {
+          return value.type === 'MasterDocumentPromoter';
         }).length > 0
       },
     ];

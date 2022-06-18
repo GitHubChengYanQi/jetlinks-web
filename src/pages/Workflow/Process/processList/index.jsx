@@ -87,8 +87,8 @@ const ProcessList = ({noTitle, value}) => {
     return (
       <>
         <FormItem label="名称" name="processName" component={SysField.ProcessName} />
-        <FormItem label={!value && '单据'} hidden={value} name="type" value={value} component={SysField.Type} />
-        <FormItem label='类型' name="module" component={SysField.TableModule}  />
+        <FormItem label={!value && '单据'} hidden={value} name="type" value={value} component={SysField.ListType} />
+        <FormItem label="类型" name="module" component={SysField.TableModule} />
       </>
     );
   };
@@ -155,6 +155,8 @@ const ProcessList = ({noTitle, value}) => {
               return <>采购质检</>;
             case 'verifyError':
               return <>核实异常</>;
+            case 'pickLists':
+              return <>直接出库</>;
             default:
               break;
           }
