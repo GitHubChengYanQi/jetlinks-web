@@ -157,6 +157,8 @@ const ProcessList = ({noTitle, value}) => {
               return <>核实异常</>;
             case 'pickLists':
               return <>直接出库</>;
+            case 'productionOutStock':
+              return <>生产出库</>;
             default:
               break;
           }
