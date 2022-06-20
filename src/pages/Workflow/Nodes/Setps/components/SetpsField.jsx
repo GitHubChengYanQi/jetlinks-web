@@ -53,7 +53,7 @@ export const StautsId = (props) => {
 
   const options = [];
   data && data.map((item) => {
-    if (![0,50, 99].includes(item.documentsStatusId)) {
+    if (![0, 50, 99].includes(item.documentsStatusId)) {
       return options.push(getItem(item));
     }
     return null;
@@ -78,7 +78,13 @@ export const StautsId = (props) => {
   );
 };
 
-export const ActionIds = ({value = [], onChange, actions = []}) => {
+export const ActionIds = ({value = [], onChange, actions = [], defaultValue}) => {
+
+  useEffect(() => {
+    if (defaultValue){
+      onChange(defaultValue);
+    }
+  }, []);
 
   if (actions.length === 0) {
     return <>无</>;

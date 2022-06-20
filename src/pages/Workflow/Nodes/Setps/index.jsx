@@ -15,7 +15,7 @@ const actions = createFormActions();
 
 
 const Setps = ({
-  value,
+  value = {},
   onClose = () => {
   },
   onChange = () => {
@@ -37,7 +37,7 @@ const Setps = ({
           });
         });
 
-        FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value}) => {
+        FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value, ...props}) => {
           const type = getFieldState('type');
           if (type && type.value === 'status') {
             setFieldState('actionStatuses', state => {
@@ -51,7 +51,7 @@ const Setps = ({
 
       }}
       defaultValue={{
-        type: value && value.type || 'audit',
+        type: value.type || 'audit',
         ...value,
       }}
       onSubmit={(values) => {
@@ -84,6 +84,7 @@ const Setps = ({
       <FormItem
         visible={false}
         label="单据动作"
+        defaultValue={value.actionStatuses}
         name="actionStatuses"
         component={ActionIds}
       />
