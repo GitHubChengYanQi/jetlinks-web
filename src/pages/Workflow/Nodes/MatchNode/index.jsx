@@ -102,32 +102,42 @@ export const Owner = (props) => {
     }
   };
 
+  const auditRule = props.auditRule || {};
+  const actionStatuses = auditRule.actionStatuses || [];
+
   switch (props.stepType) {
     case 'start':
       return <>
         <strong>发起人</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'audit':
       return <>
         <strong>审批</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'send':
       return <>
         <strong>抄送</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'status':
       return <>
-        <strong>状态</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <strong>状态 </strong>
+        <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+          <strong>动作:</strong>
+          {(actionStatuses.map((item) => {
+            return item.name || item.actionName;
+          })).toString()}
+        </Typography.Paragraph>
+
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'branch':
-      switch (props.auditRule && props.auditRule.type) {
+      switch (auditRule.type) {
         case 'purchaseAsk':
           return <>
-            <div>{purchaseAsk(props.auditRule && props.auditRule.rules)}</div>
+            <div>{purchaseAsk(auditRule.rules)}</div>
           </>;
         default:
           return '无条件';

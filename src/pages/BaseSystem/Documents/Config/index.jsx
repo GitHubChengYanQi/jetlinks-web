@@ -40,7 +40,7 @@ export const typeObject = ({type,  status = []}) => {
       return {
         title: '出库单',
         types: [
-          {label: '备料', value: 'stockPreparation', disabled: disabled('stockPreparation')},
+          {label: '出库', value: 'outStock', disabled: disabled('outStock')},
         ]
       };
     case DocumentEnums.quality:

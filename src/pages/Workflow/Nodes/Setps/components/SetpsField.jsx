@@ -12,7 +12,8 @@ export const Rule = (props) => {
 
 export const StautsId = (props) => {
 
-  const {type, value, onChange} = props;
+  const {type, actionType, value, onChange} = props;
+
 
   const ref = useRef();
 
@@ -25,16 +26,18 @@ export const StautsId = (props) => {
   }, []);
 
   const getItem = (item) => {
+    const actions = item.actionResults || [];
     return {
+      disabled: actionType === 'status' && actions.length === 0,
       label: item.name,
       value: item.documentsStatusId,
-      actions: item.actionResults ? item.actionResults.map(item => {
+      actions: actions.map(item => {
         return {
           name: item.actionName,
           action: item.action,
           actionId: item.documentsActionId,
         };
-      }) : []
+      }),
     };
   };
 
@@ -81,7 +84,7 @@ export const StautsId = (props) => {
 export const ActionIds = ({value = [], onChange, actions = [], defaultValue}) => {
 
   useEffect(() => {
-    if (defaultValue){
+    if (defaultValue) {
       onChange(defaultValue);
     }
   }, []);
