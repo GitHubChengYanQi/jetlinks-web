@@ -10,6 +10,7 @@ import {
 import {Radio} from '@formily/antd-components';
 import {Button} from 'antd';
 import {ActionIds, Rule, StautsId} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const actions = createFormActions();
 
@@ -21,7 +22,7 @@ const Setps = ({
   onChange = () => {
   },
   type,
-  module
+  module,
 }) => {
 
   return (
@@ -31,20 +32,34 @@ const Setps = ({
       actions={actions}
       effects={($, {setFieldState, getFieldState}) => {
 
-        FormEffectHooks.onFieldValueChange$('type').subscribe(({value}) => {
+        FormEffectHooks.onFieldValueChange$('type').subscribe(({value, inputed}) => {
+          setFieldState('documentsStatusId', state => {
+            state.props.actionType = value;
+            if (inputed) {
+              state.value = null;
+            }
+          });
+
           setFieldState('actionStatuses', state => {
             state.visible = value === 'status';
           });
+
+          setFieldState('auditRule', state => {
+            state.visible = !(value === 'status' && type === DocumentEnums.outstockOrder);
+          });
         });
 
-        FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value, ...props}) => {
+        FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value}) => {
           const type = getFieldState('type');
-          if (type && type.value === 'status') {
+          if (type && type.value === 'status' && value) {
             setFieldState('actionStatuses', state => {
-              const visible = value && value.actions;
+              const visible = value.actions;
+              const actions = value.actions || [];
               state.visible = visible;
-              state.props.actions = visible ? value.actions : [];
-              state.value = value.actions || [];
+              state.props.actions = visible ? actions : [];
+              state.value = actions.map(item => {
+                return {...item, checked: true};
+              }) || [];
             });
           }
         });
@@ -59,12 +74,6 @@ const Setps = ({
       }}
     >
 
-      <FormItem
-        label="人员范围"
-        required
-        name="auditRule"
-        component={Rule}
-      />
       <FormItem
         required
         label="类型"
@@ -87,6 +96,13 @@ const Setps = ({
         defaultValue={value.actionStatuses}
         name="actionStatuses"
         component={ActionIds}
+      />
+
+      <FormItem
+        label="人员范围"
+        required
+        name="auditRule"
+        component={Rule}
       />
 
       <div style={{marginTop: 16}}>
