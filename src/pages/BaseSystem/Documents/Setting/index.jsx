@@ -46,7 +46,7 @@ const Setting = ({
       setStatus(res.map((item, statuIndex) => {
         return {
           default: [0, 50, 99].includes(item.documentsStatusId),
-          noActions: [0,50, 99].includes(item.documentsStatusId),
+          noActions: [0, 50, 99].includes(item.documentsStatusId),
           label: item.name,
           value: item.documentsStatusId,
           actions: item.actionResults ? item.actionResults.map((item, index) => {
@@ -108,7 +108,6 @@ const Setting = ({
   });
 
 
-
   const [refresh, {toggle}] = useBoolean();
 
   const onStatus = async (data, index, listindex, allActions) => {
@@ -147,7 +146,7 @@ const Setting = ({
         placeholder="请选择单据动作"
         value={item.value}
         style={{width: 200}}
-        options={typeObject({type,status}).types}
+        options={typeObject({type, status}).types}
         onChange={(value, option) => {
           onStatus({title: option.label, value}, index, item.listIndex);
         }}
@@ -215,7 +214,7 @@ const Setting = ({
                 <Button
                   hidden={item.noActions}
                   disabled={
-                    (Array.isArray(item.actions) && item.actions.length) === (typeObject({type,status}).types
+                    (Array.isArray(item.actions) && item.actions.length) === (typeObject({type, status}).types
                       &&
                       typeObject({type, status}).types.length
                     )}
@@ -281,6 +280,12 @@ const Setting = ({
                       break;
                     case DocumentEnums.quality:
                       Enums = {qualityActionEnums: enums};
+                      break;
+                    case DocumentEnums.stocktaking:
+                      Enums = {stocktakingEnums: enums};
+                      break;
+                    case DocumentEnums.maintenance:
+                      Enums = {maintenanceActionEnums: enums};
                       break;
                     default:
                       return {};

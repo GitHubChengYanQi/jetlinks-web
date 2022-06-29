@@ -1,7 +1,7 @@
 import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 
-export const typeObject = ({type,  status = []}) => {
+export const typeObject = ({type, status = []}) => {
 
   const disabled = (value) => {
     return status.filter((item) => {
@@ -41,6 +41,20 @@ export const typeObject = ({type,  status = []}) => {
         title: '出库单',
         types: [
           {label: '出库', value: 'outStock', disabled: disabled('outStock')},
+        ]
+      };
+    case DocumentEnums.stocktaking:
+      return {
+        title: '盘点单',
+        types: [
+          {label: '盘点', value: 'check', disabled: disabled('check')},
+        ]
+      };
+    case DocumentEnums.maintenance:
+      return {
+        title: '养护单',
+        types: [
+          {label: '开始养护', value: 'maintenanceing', disabled: disabled('maintenanceing')},
         ]
       };
     case DocumentEnums.quality:

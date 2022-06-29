@@ -127,6 +127,10 @@ const ProcessList = ({noTitle, value}) => {
               return <>出库单</>;
             case DocumentEnums.quality:
               return <>质检单</>;
+            case DocumentEnums.stocktaking:
+              return <>盘点单</>;
+            case DocumentEnums.maintenance:
+              return <>养护单</>;
             default:
               break;
           }
@@ -159,6 +163,10 @@ const ProcessList = ({noTitle, value}) => {
               return <>直接出库</>;
             case 'productionOutStock':
               return <>生产出库</>;
+            case 'Stocktaking':
+              return <>普通盘点</>;
+            case 'reMaintenance':
+              return <>复检复调</>;
             default:
               break;
           }

@@ -18,6 +18,8 @@ const List = () => {
     {name: '入库单', type: DocumentEnums.instockOrder},
     {name: '入库异常', type: DocumentEnums.instockError},
     {name: '出库单', type: DocumentEnums.outstockOrder},
+    {name: '盘点单', type: DocumentEnums.stocktaking},
+    {name: '养护单', type: DocumentEnums.maintenance},
     {name: '质检单', type: DocumentEnums.quality},
   ];
 
