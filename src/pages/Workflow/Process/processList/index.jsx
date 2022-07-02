@@ -122,7 +122,7 @@ const ProcessList = ({noTitle, value}) => {
             case DocumentEnums.instockOrder:
               return <>入库单</>;
             case DocumentEnums.instockError:
-              return <>入库异常</>;
+              return <>异常单</>;
             case DocumentEnums.outstockOrder:
               return <>出库单</>;
             case DocumentEnums.quality:
@@ -157,8 +157,10 @@ const ProcessList = ({noTitle, value}) => {
               return <>采购单</>;
             case 'purchaseQuality':
               return <>采购质检</>;
-            case 'verifyError':
-              return <>核实异常</>;
+            case 'INSTOCKERROR':
+              return <>入库异常</>;
+            case 'StocktakingError':
+              return <>盘点异常</>;
             case 'pickLists':
               return <>直接出库</>;
             case 'productionOutStock':

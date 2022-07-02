@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Typography} from 'antd';
 
 const Note = (
@@ -9,7 +9,6 @@ const Note = (
     maxWidth,
     style,
   }) => {
-
   return <Typography.Paragraph
     ellipsis={{rows: 1, tooltip: true,}}
     style={{width, margin: 0,maxWidth,...style}}>

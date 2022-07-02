@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {getSearchParams, useHistory} from 'ice';
-import {Button, Card, Empty, Input, List as AntList, Modal, Select, Space} from 'antd';
+import {Button, Card, Empty, Input, List as AntList, Modal, Select, Space, Typography} from 'antd';
 import {DeleteOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -16,6 +16,7 @@ import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 import {typeObject} from '@/pages/BaseSystem/Documents/Config';
 
 const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
+const editStatusApi = {url: '/documentStatus/edit', method: 'POST'};
 const deleteStatusApi = {url: '/documentStatus/delete', method: 'POST'};
 const addActionsApi = {url: '/statueAction/addAction', method: 'POST'};
 const detailApi = {url: '/documentStatus/getDetails', method: 'GET'};
@@ -58,6 +59,20 @@ const Setting = ({
           }) : [],
         };
       }));
+    }
+  });
+
+  const {run: editStatus} = useRequest(editStatusApi, {
+    manual: true,
+    onSuccess: (res) => {
+      const newStatus = status.map(item => {
+        if (item.value === res.documentsStatusId) {
+          return {...item, label: res.name};
+        } else {
+          return item;
+        }
+      });
+      setStatus(newStatus);
     }
   });
 
@@ -197,7 +212,21 @@ const Setting = ({
                 </Button>
                 <div style={{width: 150}}>
                   <Note>
-                    {item.label}
+                    <Typography.Paragraph
+                      editable={!item.default && {
+                        onChange: (value) => {
+                          editStatus({
+                            data: {
+                              documentsStatusId: item.value,
+                              name: value
+                            }
+                          });
+                        }
+                      }}
+                      ellipsis={{rows: 1, tooltip: true,}}
+                      style={{margin: 0}}>
+                      {item.label}
+                    </Typography.Paragraph>
                   </Note>
                 </div>
 

@@ -31,7 +31,7 @@ export const typeObject = ({type, status = []}) => {
       };
     case DocumentEnums.instockError:
       return {
-        title: '入库异常',
+        title: '异常单',
         types: [
           {label: '核实', value: 'verify', disabled: disabled('verify')},
         ]
