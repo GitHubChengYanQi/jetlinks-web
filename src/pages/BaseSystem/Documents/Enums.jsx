@@ -5,4 +5,6 @@ export const DocumentEnums = {
   instockError: 'INSTOCKERROR',
   outstockOrder: 'OUTSTOCK',
   quality:'QUALITY',
+  stocktaking:'Stocktaking',
+  maintenance:'MAINTENANCE',
 };

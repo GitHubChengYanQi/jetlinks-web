@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {getSearchParams, useHistory} from 'ice';
-import {Button, Card, Empty, Input, List as AntList, Modal, Select, Space} from 'antd';
+import {Button, Card, Empty, Input, List as AntList, Modal, Select, Space, Typography} from 'antd';
 import {DeleteOutlined, MinusCircleOutlined, PlusOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -16,6 +16,7 @@ import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 import {typeObject} from '@/pages/BaseSystem/Documents/Config';
 
 const addStatusApi = {url: '/statueAction/addState', method: 'POST'};
+const editStatusApi = {url: '/documentStatus/edit', method: 'POST'};
 const deleteStatusApi = {url: '/documentStatus/delete', method: 'POST'};
 const addActionsApi = {url: '/statueAction/addAction', method: 'POST'};
 const detailApi = {url: '/documentStatus/getDetails', method: 'GET'};
@@ -46,7 +47,7 @@ const Setting = ({
       setStatus(res.map((item, statuIndex) => {
         return {
           default: [0, 50, 99].includes(item.documentsStatusId),
-          noActions: [0,50, 99].includes(item.documentsStatusId),
+          noActions: [0, 50, 99].includes(item.documentsStatusId),
           label: item.name,
           value: item.documentsStatusId,
           actions: item.actionResults ? item.actionResults.map((item, index) => {
@@ -58,6 +59,20 @@ const Setting = ({
           }) : [],
         };
       }));
+    }
+  });
+
+  const {run: editStatus} = useRequest(editStatusApi, {
+    manual: true,
+    onSuccess: (res) => {
+      const newStatus = status.map(item => {
+        if (item.value === res.documentsStatusId) {
+          return {...item, label: res.name};
+        } else {
+          return item;
+        }
+      });
+      setStatus(newStatus);
     }
   });
 
@@ -108,7 +123,6 @@ const Setting = ({
   });
 
 
-
   const [refresh, {toggle}] = useBoolean();
 
   const onStatus = async (data, index, listindex, allActions) => {
@@ -147,7 +161,7 @@ const Setting = ({
         placeholder="请选择单据动作"
         value={item.value}
         style={{width: 200}}
-        options={typeObject({type,status}).types}
+        options={typeObject({type, status}).types}
         onChange={(value, option) => {
           onStatus({title: option.label, value}, index, item.listIndex);
         }}
@@ -198,7 +212,21 @@ const Setting = ({
                 </Button>
                 <div style={{width: 150}}>
                   <Note>
-                    {item.label}
+                    <Typography.Paragraph
+                      editable={!item.default && {
+                        onChange: (value) => {
+                          editStatus({
+                            data: {
+                              documentsStatusId: item.value,
+                              name: value
+                            }
+                          });
+                        }
+                      }}
+                      ellipsis={{rows: 1, tooltip: true,}}
+                      style={{margin: 0}}>
+                      {item.label}
+                    </Typography.Paragraph>
                   </Note>
                 </div>
 
@@ -215,7 +243,7 @@ const Setting = ({
                 <Button
                   hidden={item.noActions}
                   disabled={
-                    (Array.isArray(item.actions) && item.actions.length) === (typeObject({type,status}).types
+                    (Array.isArray(item.actions) && item.actions.length) === (typeObject({type, status}).types
                       &&
                       typeObject({type, status}).types.length
                     )}
@@ -281,6 +309,12 @@ const Setting = ({
                       break;
                     case DocumentEnums.quality:
                       Enums = {qualityActionEnums: enums};
+                      break;
+                    case DocumentEnums.stocktaking:
+                      Enums = {stocktakingEnums: enums};
+                      break;
+                    case DocumentEnums.maintenance:
+                      Enums = {maintenanceActionEnums: enums};
                       break;
                     default:
                       return {};

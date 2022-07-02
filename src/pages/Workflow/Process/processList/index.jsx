@@ -122,11 +122,15 @@ const ProcessList = ({noTitle, value}) => {
             case DocumentEnums.instockOrder:
               return <>入库单</>;
             case DocumentEnums.instockError:
-              return <>入库异常</>;
+              return <>异常单</>;
             case DocumentEnums.outstockOrder:
               return <>出库单</>;
             case DocumentEnums.quality:
               return <>质检单</>;
+            case DocumentEnums.stocktaking:
+              return <>盘点单</>;
+            case DocumentEnums.maintenance:
+              return <>养护单</>;
             default:
               break;
           }
@@ -153,12 +157,18 @@ const ProcessList = ({noTitle, value}) => {
               return <>采购单</>;
             case 'purchaseQuality':
               return <>采购质检</>;
-            case 'verifyError':
-              return <>核实异常</>;
+            case 'INSTOCKERROR':
+              return <>入库异常</>;
+            case 'StocktakingError':
+              return <>盘点异常</>;
             case 'pickLists':
               return <>直接出库</>;
             case 'productionOutStock':
               return <>生产出库</>;
+            case 'Stocktaking':
+              return <>普通盘点</>;
+            case 'reMaintenance':
+              return <>复检复调</>;
             default:
               break;
           }

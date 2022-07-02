@@ -88,6 +88,8 @@ const CodingRulesList = () => {
         return '产品';
       case 15:
         return '入库异常';
+      case 16:
+        return '养护任务';
       default:
         break;
     }
