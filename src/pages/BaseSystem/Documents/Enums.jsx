@@ -2,7 +2,7 @@ export const DocumentEnums = {
   instockOrder: 'INSTOCK',
   purchaseAsk: 'PURCHASE',
   purchaseOrder: 'PURCHASEORDER',
-  instockError: 'INSTOCKERROR',
+  instockError: 'ERROR',
   outstockOrder: 'OUTSTOCK',
   quality:'QUALITY',
   stocktaking:'Stocktaking',
