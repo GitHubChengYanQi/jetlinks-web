@@ -92,6 +92,7 @@ const SkuEdit = ({...props}, ref) => {
         NoButton={false}
         fieldKey="skuId"
         details={(res) => {
+          console.log(res);
           setDetails(res);
         }}
         onError={() => {
