@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Typography} from 'antd';
 
 const Note = (
@@ -7,11 +7,11 @@ const Note = (
     children,
     width,
     maxWidth,
+    style,
   }) => {
-
   return <Typography.Paragraph
     ellipsis={{rows: 1, tooltip: true,}}
-    style={{width, margin: 0,maxWidth}}>
+    style={{width, margin: 0,maxWidth,...style}}>
     {value || children}
   </Typography.Paragraph>;
 };

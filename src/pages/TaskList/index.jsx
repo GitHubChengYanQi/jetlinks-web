@@ -1,14 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, List as AntList, Popover, Progress, Space, Spin,} from 'antd';
 import {UnorderedListOutlined} from '@ant-design/icons';
-import cookie from 'js-cookie';
 import {useRequest} from '@/util/Request';
 import store from '@/store';
-import AnalysisModal from '@/pages/Erp/Analysis/TaskList/components/AnalysisModal';
-import SkuImport from '@/pages/Erp/Analysis/TaskList/components/SkuImport';
-import SpuImport from '@/pages/Erp/Analysis/TaskList/components/SpuImport';
-import Import from '@/pages/Erp/Analysis/TaskList/components/Import';
-import StockImport from '@/pages/Erp/Analysis/TaskList/components/StockImport';
+import AnalysisModal from '@/pages/TaskList/components/AnalysisModal';
+import SkuImport from '@/pages/TaskList/components/SkuImport';
+import SpuImport from '@/pages/TaskList/components/SpuImport';
+import Import from '@/pages/TaskList/components/Import';
+import StockImport from '@/pages/TaskList/components/StockImport';
 
 
 const TaskList = () => {

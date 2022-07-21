@@ -46,7 +46,7 @@ export const Owner = (props) => {
           default:
             break;
         }
-        return <Space key={index} direction='horizontal'>
+        return <Space key={index} direction="horizontal">
           <div>{type}</div>
           <div>{items.purchaseAsk && items.purchaseAsk.operator}</div>
           <div>{items.purchaseAsk && items.purchaseAsk.value}</div>
@@ -55,20 +55,6 @@ export const Owner = (props) => {
       });
   };
 
-  const action = (value) => {
-    switch (value) {
-      case 'quality_dispatch':
-        return <>分派任务</>;
-      case 'quality_perform':
-        return <>执行任务</>;
-      case 'quality_complete':
-        return <>完成任务</>;
-      case 'purchase_complete':
-        return <>采购申请完成</>;
-      default:
-        break;
-    }
-  };
 
   const Rule = (rule) => {
     if (rule) {
@@ -102,7 +88,9 @@ export const Owner = (props) => {
                 }
               </div>;
             } else if (items.type === 'AllPeople') {
-              return <strong key={index}>所有人</strong>;
+              return <div key={index}><strong>所有人</strong></div>;
+            } else if (items.type === 'MasterDocumentPromoter') {
+              return <div key={index}><strong>主单据负责人</strong></div>;
             } else {
               return null;
             }
@@ -114,36 +102,42 @@ export const Owner = (props) => {
     }
   };
 
+  const auditRule = props.auditRule || {};
+  const actionStatuses = auditRule.actionStatuses || [];
+
   switch (props.stepType) {
     case 'start':
       return <>
         <strong>发起人</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'audit':
       return <>
         <strong>审批</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'send':
       return <>
         <strong>抄送</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
+        <div>{Rule(auditRule.rules)}</div>
       </>;
-    case 'quality':
+    case 'status':
       return <>
-        <strong>{action(props.auditRule && props.auditRule.type)}</strong>
-        <div>{Rule(props.auditRule && props.auditRule.rules)}</div>
-      </>;
-    case 'purchase':
-      return <>
-        <strong>{action(props.auditRule && props.auditRule.type)}</strong>
+        <strong>状态 </strong>
+        <Typography.Paragraph ellipsis style={{marginBottom: 0}}>
+          <strong>动作:</strong>
+          {(actionStatuses.map((item) => {
+            return item.name || item.actionName;
+          })).toString()}
+        </Typography.Paragraph>
+
+        <div>{Rule(auditRule.rules)}</div>
       </>;
     case 'branch':
-      switch (props.auditRule && props.auditRule.type) {
+      switch (auditRule.type) {
         case 'purchaseAsk':
           return <>
-            <div>{purchaseAsk(props.auditRule && props.auditRule.rules)}</div>
+            <div>{purchaseAsk(auditRule.rules)}</div>
           </>;
         default:
           return '无条件';

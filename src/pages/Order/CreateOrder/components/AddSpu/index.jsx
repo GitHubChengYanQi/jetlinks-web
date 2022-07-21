@@ -14,6 +14,7 @@ const AddSpu = (
     noSkuIds,
     customerId,
     supply,
+    maxWidth,
   }) => {
 
   const [checkConfig, setCheckConfig] = useState([]);
@@ -29,8 +30,8 @@ const AddSpu = (
     tree: []
   });
 
-  const change = (value,sku) => {
-    onChange(value,sku);
+  const change = (value, sku) => {
+    onChange(value, sku);
   };
 
   const onConfig = (k, v, config) => {
@@ -123,7 +124,7 @@ const AddSpu = (
 
 
   return <div>
-    <Descriptions column={1} className='descriptionsCenter' labelStyle={{width:100}}>
+    <Descriptions column={1} className="descriptionsCenter" labelStyle={{width: 100}}>
       <Descriptions.Item label="物料分类">
         <Cascader
           width="100%"
@@ -142,7 +143,7 @@ const AddSpu = (
       </Descriptions.Item>
       <Descriptions.Item label="物料名称">
         <SelectSku
-          style={{maxWidth:538}}
+          style={{maxWidth: maxWidth || 538}}
           supply={supply}
           params={{customerId}}
           // getDetailLoading={}
@@ -150,9 +151,9 @@ const AddSpu = (
           value={value}
           spuClassId={skuClassId}
           skuIds={noSkuIds}
-          onChange={(id,sku)=>{
-            change(id,sku);
-            if (sku){
+          onChange={(id, sku) => {
+            change(id, sku);
+            if (sku) {
               const array = [];
               if (sku.spuId) {
                 detailRun({

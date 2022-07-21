@@ -9,7 +9,7 @@ import styles from './index.module.scss';
 import Audit from '@/pages/Workflow/components/Audit';
 
 
-const WorkFlow = ({configs, value, onChange, type, module}) => {
+const WorkFlow = ({value, onChange, type, module}) => {
 
   const ref = useRef();
 
@@ -42,7 +42,7 @@ const WorkFlow = ({configs, value, onChange, type, module}) => {
     const o = objRef.childNode;
 
     if (type === OptionTypes.APPROVER) {
-      objRef.childNode = {...NodeTemplates[OptionTypes.APPROVER], childNode: o,auditType: 'process',};
+      objRef.childNode = {...NodeTemplates[OptionTypes.APPROVER], childNode: o, auditType: 'process',};
     }
     if (type === OptionTypes.NOTIFIER) {
       objRef.childNode = {
@@ -110,8 +110,11 @@ const WorkFlow = ({configs, value, onChange, type, module}) => {
     <WFC.Provider value={{config, updateNode, onAddNode, onDeleteNode, onSelectNode}}>
       <section className={styles.dingflowDesign}>
         <ZoomLayout>
-          <Render config={config} onContentClick={() => {
-          }} />
+          <Render
+            config={config}
+            onContentClick={() => {
+            }}
+          />
           <EndNode />
         </ZoomLayout>
       </section>

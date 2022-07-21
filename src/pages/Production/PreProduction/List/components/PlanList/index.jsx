@@ -5,8 +5,8 @@ import {pendingProductionPlan} from '@/pages/Production/Url';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 import {useRequest} from '@/util/Request';
 import Label from '@/components/Label';
-import Drawer from "@/components/Drawer";
-import Detail from "@/pages/ReSearch/Detail";
+import Drawer from '@/components/Drawer';
+import Detail from '@/pages/ReSearch/Detail';
 import Note from '@/components/Note';
 
 

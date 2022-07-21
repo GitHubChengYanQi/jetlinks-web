@@ -19,7 +19,7 @@ const UserRole = (props)=>{
         const result = {
           ...values,
           roleIds: values.checked.join(',')
-        }
+        };
         return result;
       }}
       {...props}

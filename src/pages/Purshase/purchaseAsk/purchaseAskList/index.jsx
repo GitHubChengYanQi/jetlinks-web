@@ -5,9 +5,8 @@
  * @Date 2021-12-15 09:35:37
  */
 
-import React, {useEffect, useRef} from 'react';
-import {Badge, Button, Table as AntTable} from 'antd';
-import {getSearchParams, useHistory} from 'ice';
+import React, {useRef} from 'react';
+import {Button, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
 import Table from '@/components/Table';
 import AddButton from '@/components/AddButton';
@@ -15,9 +14,9 @@ import Form from '@/components/Form';
 import {purchaseAskList} from '../purchaseAskUrl';
 import * as SysField from '../purchaseAskField';
 import Breadcrumb from '@/components/Breadcrumb';
-import Modal from '@/components/Modal';
-import PurchaseListingList from '@/pages/Purshase/purchaseListing/purchaseListingList';
 import MinWidthDiv from '@/components/MinWidthDiv';
+import Documents from '@/pages/Workflow/Documents';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -25,23 +24,14 @@ const {FormItem} = Form;
 const formActionsPublic = createFormActions();
 
 const PurchaseAskList = ({status, ...props}) => {
-  const history = useHistory();
-  const detailRef = useRef(null);
   const tableRef = useRef(null);
-
-  const params = getSearchParams();
-
-  useEffect(() => {
-    if (params.id) {
-      // detailRef.current.open(params.id);
-    }
-  }, []);
+  const documentRef = useRef();
 
   const actions = () => {
     return (
       <>
         <AddButton onClick={() => {
-          history.push('/purchase/purchaseAsk/add');
+          documentRef.current.create(DocumentEnums.purchaseAsk);
         }} />
       </>
     );
@@ -73,7 +63,7 @@ const PurchaseAskList = ({status, ...props}) => {
       >
         <Column title="编号" key={1} dataIndex="coding" render={(value, record) => {
           return <Button type="link" onClick={() => {
-            detailRef.current.open(record.purchaseAskId);
+            documentRef.current.action(null, record.purchaseAskId, DocumentEnums.purchaseAsk);
           }}>{value}</Button>;
         }} />
         <Column key={2} title="申请类型" dataIndex="type" render={(value) => {
@@ -92,19 +82,8 @@ const PurchaseAskList = ({status, ...props}) => {
               break;
           }
         }} />
-        {!status && <Column key={3} title="申请状态" dataIndex="status" render={(value) => {
-          switch (value) {
-            case 0:
-              return <Badge text="待审核" color="yellow" />;
-            case 2:
-              return <Badge text="已通过" color="green" />;
-            case 1:
-              return <Badge text="已通过" color="red" />;
-            case 3:
-              return <Badge text="已撤回" color="red" />;
-            default:
-              break;
-          }
+        {!status && <Column key={3} title="申请状态" dataIndex="statusResult" render={(value) => {
+          return <MinWidthDiv width={70}>{value && value.name}</MinWidthDiv>;
         }} />}
         <Column key={4} title="申请品类" width={100} align="center" dataIndex="applyType" />
         <Column key={5} title="申请数量" width={100} align="center" dataIndex="applyNumber" />
@@ -122,25 +101,30 @@ const PurchaseAskList = ({status, ...props}) => {
         <Column key={9} title="申请时间" dataIndex="createTime" />
         <Column />
         {!status &&
-        <Column key={10} title="操作" fixed='right' width={250} align="center" dataIndex="purchaseAskId" render={(value, record) => {
-          return <>
-            <Button type="link">撤回</Button>
-            <Button type="link" onClick={() => {
-              history.push(`/purchase/purchaseAsk/add?id=${value}`);
-            }}>编辑</Button>
-            <Button type="link" onClick={() => {
-              detailRef.current.open(value);
-            }}>查看</Button>
-          </>;
-        }} />}
+        <Column
+          key={10}
+          title="操作"
+          fixed="right"
+          width={250}
+          align="center"
+          dataIndex="purchaseAskId"
+          render={(value) => {
+            return <>
+              <Button type="link">撤回</Button>
+              <Button type="link" onClick={() => {
+                documentRef.current.create(DocumentEnums.purchaseAsk, value);
+              }}>编辑</Button>
+              <Button type="link" onClick={() => {
+                documentRef.current.action(null, value, DocumentEnums.purchaseAsk);
+              }}>查看</Button>
+            </>;
+          }} />}
       </Table>
 
-      <Modal
-        width={1300}
-        headTitle="采购申请详情"
-        component={PurchaseListingList}
-        ref={detailRef}
-      />
+
+      <Documents ref={documentRef} onSuccess={() => {
+        tableRef.current.submit();
+      }} />
     </>
   );
 };

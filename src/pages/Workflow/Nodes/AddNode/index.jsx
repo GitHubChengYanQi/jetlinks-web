@@ -14,9 +14,18 @@ const AddNode = (props) => {
     onAddNode(type, props.pRef, props.objRef);
   }
 
+  const [visible, setVisible] = useState();
+
   return (<div className={styles.addNodeBtnBox}>
     <div className="add-node-btn">
-      <Popover placement="bottom" content={<AddNodeList onOptionClick={onOptionClick} />} trigger="click">
+      <Popover
+        visible={visible}
+        onVisibleChange={setVisible}
+        placement="bottom"
+        content={<AddNodeList onOptionClick={(type) => {
+          setVisible(false);
+          onOptionClick(type);
+        }} />} trigger="click">
         <div className="btn">
           <Icon type="icon-add1" />
         </div>

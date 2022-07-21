@@ -3,7 +3,7 @@ import {Alert, Button, Space, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import Empty from '@/components/Empty';
 import Modal from '@/components/Modal';
-import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
+import TaskProgress from '@/pages/TaskList/components/TaskProgress';
 
 const Import = ({children, setTaskId, ...props}, ref) => {
 

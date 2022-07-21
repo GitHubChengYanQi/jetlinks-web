@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {Button, Table} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
-import {ApplyNumber, BrandId, Date, Note, Time} from '@/pages/Purshase/purchaseAsk/purchaseAskField';
+import { BrandId, Date, Note, Time} from '@/pages/Purshase/purchaseAsk/purchaseAskField';
 import {useRequest} from '@/util/Request';
 import {brandIdSelect} from '@/pages/Erp/stock/StockUrl';
 import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
-import MinWidthDiv from "@/components/MinWidthDiv";
-import MyNote from "@/components/Note";
+import MinWidthDiv from '@/components/MinWidthDiv';
+import MyNote from '@/components/Note';
+import InputNumber from '@/components/InputNumber';
 
 const AddSkuTable = (
   {
@@ -88,11 +89,11 @@ const AddSkuTable = (
       <Table.Column title="序号" align="center" dataIndex="key" render={(value) => {
         return <MinWidthDiv width={50}>{value + 1}</MinWidthDiv>;
       }}/>
-      <Table.Column title="物料编号" dataIndex="coding" render={(value) => {
-        return <MinWidthDiv width={100}>{value}</MinWidthDiv>;
+      <Table.Column title="物料编号" dataIndex="skuResult" render={(value) => {
+        return <MinWidthDiv width={100}>{value && value.standard}</MinWidthDiv>;
       }}/>
       <Table.Column title="物料" dataIndex="skuResult" width={200} render={(value) => {
-        return <MyNote>
+        return <MyNote maxWidth={200}>
           <SkuResultSkuJsons skuResult={value}/>
         </MyNote>;
       }}/>
@@ -108,7 +109,7 @@ const AddSkuTable = (
       }}/>
       <Table.Column title="申请数量" dataIndex="applyNumber" render={(value, record, index) => {
         return <MinWidthDiv width={50}>
-          <ApplyNumber
+          <InputNumber
             value={value}
             onChange={(value) => {
               setValue({applyNumber: value}, index);

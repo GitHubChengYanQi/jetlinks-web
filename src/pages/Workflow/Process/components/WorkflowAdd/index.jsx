@@ -56,13 +56,15 @@ const WorkflowAdd = () => {
     return (<ProSkeleton type="descriptions" />);
   }
 
-  if (!data)
+  if (!data){
     return <Empty style={{padding: 64}} />;
+  }
+
 
 
   return <>
     <div style={{padding: 16}}>
-      <div style={{display: 'inline-block', width: '50%'}}>添加流程步骤</div>
+      <div style={{display: 'inline-block', width: '50%'}}>添加{data.processName}流程步骤</div>
       <div style={{display: 'inline-block', textAlign: 'right', width: '50%'}}>
         <Space>
           <Button type="primary" disabled={data && data.status !== 0} onClick={() => {

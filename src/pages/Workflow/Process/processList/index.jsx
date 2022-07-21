@@ -20,11 +20,13 @@ import ProcessEdit from '../processEdit';
 import * as SysField from '../processField';
 import Breadcrumb from '@/components/Breadcrumb';
 import {useRequest} from '@/util/Request';
+import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
 
-const ProcessList = () => {
+const ProcessList = ({noTitle, value}) => {
+
   const ref = useRef(null);
   const tableRef = useRef(null);
 
@@ -52,7 +54,7 @@ const ProcessList = () => {
     }
     Modal.confirm({
       title: `是否 [ ${statusType} ]该流程?`,
-      icon: <ExclamationCircleOutlined/>,
+      icon: <ExclamationCircleOutlined />,
       content: type === 0 ? '提示：发布之后不能进行修改' : '提示：每个功能模块仅能开启一套审批流程',
       onOk: async () => {
         return await run({
@@ -76,7 +78,7 @@ const ProcessList = () => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
@@ -84,8 +86,9 @@ const ProcessList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="名称" name="processName" component={SysField.ProcessName}/>
-        <FormItem label="类型" name="type" component={SysField.Type} style={{width: 200}}/>
+        <FormItem label="名称" name="processName" component={SysField.ProcessName} />
+        <FormItem label={!value && '单据'} hidden={value} name="type" value={value} component={SysField.ListType} />
+        <FormItem label="类型" name="module" component={SysField.TableModule} />
       </>
     );
   };
@@ -93,7 +96,8 @@ const ProcessList = () => {
   return (
     <>
       <Table
-        title={<Breadcrumb/>}
+        title={!noTitle && <Breadcrumb />}
+        contentHeight={noTitle}
         api={processList}
         rowKey="processId"
         searchForm={searchForm}
@@ -108,29 +112,41 @@ const ProcessList = () => {
               }}>{value}</a>
             </>
           );
-        }}/>
-        <Column title="类型" dataIndex="type" render={(value) => {
+        }} />
+        <Column title="单据" dataIndex="type" render={(value) => {
           switch (value) {
-            case 'ship':
-              return <>工艺</>;
-            case 'quality':
-              return <>质检</>;
-            case 'purchase':
-              return <>采购</>;
-            case 'instock':
-              return <>入库</>;
+            case DocumentEnums.purchaseAsk:
+              return <>采购申请单</>;
+            case DocumentEnums.purchaseOrder:
+              return <>采购单</>;
+            case DocumentEnums.instockOrder:
+              return <>入库单</>;
+            case DocumentEnums.instockError:
+              return <>异常单</>;
+            case DocumentEnums.outstockOrder:
+              return <>出库单</>;
+            case DocumentEnums.quality:
+              return <>质检单</>;
+            case DocumentEnums.stocktaking:
+              return <>盘点单</>;
+            case DocumentEnums.maintenance:
+              return <>养护单</>;
             default:
               break;
           }
-        }}/>
-        <Column title="功能" dataIndex="module" render={(value) => {
+        }} />
+        <Column title="类型" dataIndex="module" render={(value) => {
           switch (value) {
+            case 'productionInstock':
+              return <>生产入库</>;
+            case 'purchaseInstock':
+              return <>采购入库</>;
             case 'inQuality':
               return <>入厂检</>;
             case 'instockError':
               return <>入库异常</>;
             case 'createInstock':
-              return <>创建入库</>;
+              return <>直接入库</>;
             case 'productionQuality':
               return <>生产检</>;
             case 'purchaseAsk':
@@ -141,23 +157,35 @@ const ProcessList = () => {
               return <>采购单</>;
             case 'purchaseQuality':
               return <>采购质检</>;
+            case 'INSTOCKERROR':
+              return <>入库异常</>;
+            case 'StocktakingError':
+              return <>盘点异常</>;
+            case 'pickLists':
+              return <>直接出库</>;
+            case 'productionOutStock':
+              return <>生产出库</>;
+            case 'Stocktaking':
+              return <>普通盘点</>;
+            case 'reMaintenance':
+              return <>复检复调</>;
             default:
               break;
           }
-        }}/>
+        }} />
         <Column title="状态" dataIndex="status" render={(value) => {
           switch (value) {
             case 0:
-              return <Badge color="yellow" text="未发布"/>;
+              return <Badge color="yellow" text="未发布" />;
             case 99:
-              return <Badge color="green" text="启用"/>;
+              return <Badge color="green" text="启用" />;
             case 98:
-              return <Badge color="red" text="停用"/>;
+              return <Badge color="red" text="停用" />;
             default:
               break;
           }
-        }}/>
-        <Column/>
+        }} />
+        <Column />
         <Column title="操作" align="right" render={(value, record) => {
           if (!record.status) {
             return (
@@ -167,10 +195,10 @@ const ProcessList = () => {
                 }}>发布</Button>
                 <EditButton onClick={() => {
                   ref.current.open(record.processId);
-                }}/>
+                }} />
                 <DelButton api={processDelete} value={record.processId} onSuccess={() => {
                   tableRef.current.refresh();
-                }}/>
+                }} />
               </>
             );
           } else if (record.status === 98) {
@@ -185,12 +213,12 @@ const ProcessList = () => {
             }}>停用</Button>;
           }
 
-        }} width={300}/>
+        }} width={300} />
       </Table>
       <Drawer width={800} title="编辑" component={ProcessEdit} onSuccess={() => {
         tableRef.current.refresh();
         ref.current.close();
-      }} ref={ref}/>
+      }} ref={ref} />
     </>
   );
 };

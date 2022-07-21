@@ -8,7 +8,7 @@ import {useRequest} from '@/util/Request';
 import Empty from '@/components/Empty';
 import Modal from '@/components/Modal';
 import AddSkuModal from '@/pages/Erp/sku/SkuTable/AddSkuModal';
-import TaskProgress from '@/pages/Erp/Analysis/TaskList/components/TaskProgress';
+import TaskProgress from '@/pages/TaskList/components/TaskProgress';
 import Note from '@/components/Note';
 
 const {Column} = AntTable;
