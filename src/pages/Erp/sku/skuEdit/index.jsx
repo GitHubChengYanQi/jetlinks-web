@@ -182,7 +182,6 @@ const SkuEdit = ({...props}, ref) => {
           component={SysField.Codings}
           module={0}
         />
-
         <FormItem
           label="物料分类"
           name="spuClass"
@@ -221,6 +220,12 @@ const SkuEdit = ({...props}, ref) => {
           placeholder="无规格内容可填写“型号”"
           name="specifications"
           component={SysField.Specs}
+        />
+        <FormItem
+          label="养护周期"
+          placeholder="请输入养护周期"
+          name="maintenancePeriod"
+          component={SysField.MaintenancePeriod}
         />
         <FormItem
           label="物料描述"
