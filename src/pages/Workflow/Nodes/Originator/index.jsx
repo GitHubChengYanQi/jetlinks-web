@@ -50,6 +50,8 @@ export const SelectOriginator = (
         </Button>;
       case 'AllPeople':
         return null;
+      case 'MasterDocumentPromoter':
+        return null;
       default:
         return <Button type="link" onClick={() => {
           message.warn('请选择发起人');

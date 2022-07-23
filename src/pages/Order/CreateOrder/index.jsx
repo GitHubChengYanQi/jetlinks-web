@@ -108,7 +108,7 @@ const CreateOrder = ({...props}) => {
           supply: 1
         };
       default:
-        break;
+        return {};
     }
   };
 
@@ -574,7 +574,7 @@ const CreateOrder = ({...props}) => {
             <FieldList
               name="paymentDetail"
               initialValue={[
-                {payType:0,dateNumber:1,dateWay:1},
+                {payType: 0, dateNumber: 1, dateWay: 1},
               ]}
             >
               {({state, mutators}) => {

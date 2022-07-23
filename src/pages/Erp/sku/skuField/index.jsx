@@ -192,18 +192,18 @@ export const Specs = (props) => {
 };
 
 export const FileId = (props) => {
-  return (<FileUpload {...props} maxCount={1} />);
+  return (<FileUpload {...props} maxCount={5} />);
 };
 
 export const Img = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="物料图片" />
+    <FileUpload {...props} maxCount={5} title="物料图片" />
   </div>);
 };
 
 export const Bind = (props) => {
   return (<div style={{maxWidth: 300}}>
-    <FileUpload {...props} maxCount={1} title="关联图纸" />
+    <FileUpload {...props} maxCount={5} title="关联图纸" />
   </div>);
 };
 
