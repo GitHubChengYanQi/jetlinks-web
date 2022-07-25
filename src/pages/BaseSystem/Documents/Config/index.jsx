@@ -66,6 +66,14 @@ export const typeObject = ({type, status = []}) => {
           {label: '质检入库', value: '3', disabled: disabled('3')},
         ]
       };
+    case DocumentEnums.allocation:
+      return {
+        title: '调拨单',
+        types: [
+          {label: '分派', value: 'assign', disabled: disabled('assign')},
+          {label: '执行', value: 'carryAllocation', disabled: disabled('carryAllocation')},
+        ]
+      };
     default:
       return {
         title: '质检单',
