@@ -7,4 +7,5 @@ export const DocumentEnums = {
   quality:'QUALITY',
   stocktaking:'Stocktaking',
   maintenance:'MAINTENANCE',
+  allocation:'ALLOCATION',
 };

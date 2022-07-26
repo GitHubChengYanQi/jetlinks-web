@@ -131,6 +131,8 @@ const ProcessList = ({noTitle, value}) => {
               return <>盘点单</>;
             case DocumentEnums.maintenance:
               return <>养护单</>;
+            case DocumentEnums.allocation:
+              return <>调拨单</>;
             default:
               break;
           }
@@ -169,6 +171,8 @@ const ProcessList = ({noTitle, value}) => {
               return <>普通盘点</>;
             case 'reMaintenance':
               return <>复检复调</>;
+            case 'allocation':
+              return <>调拨申请</>;
             default:
               break;
           }

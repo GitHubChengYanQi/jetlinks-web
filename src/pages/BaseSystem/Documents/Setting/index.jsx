@@ -316,6 +316,9 @@ const Setting = ({
                     case DocumentEnums.maintenance:
                       Enums = {maintenanceActionEnums: enums};
                       break;
+                    case DocumentEnums.allocation:
+                      Enums = {allocationActionEnums: enums};
+                      break;
                     default:
                       return {};
                   }

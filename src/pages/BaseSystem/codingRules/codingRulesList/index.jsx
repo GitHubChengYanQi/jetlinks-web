@@ -90,6 +90,8 @@ const CodingRulesList = () => {
         return '入库异常';
       case 16:
         return '养护任务';
+      case 17:
+        return '调拨任务';
       default:
         break;
     }

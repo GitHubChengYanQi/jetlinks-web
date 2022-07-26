@@ -11,12 +11,14 @@ const InputNumber = (
     onChange = () => {
     },
     min,
+    addonAfter,
     ...props
   }) => {
 
   const [number, setNumber] = useState(value);
 
   return <AntInputNumber
+    addonAfter={addonAfter}
     controls={false}
     min={min === undefined ? 1 : min}
     style={{width}}
