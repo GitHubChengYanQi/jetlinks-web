@@ -44,9 +44,6 @@ const Setps = ({
             state.visible = value === 'status';
           });
 
-          setFieldState('auditRule', state => {
-            state.visible = !(value === 'status' && type === DocumentEnums.outstockOrder);
-          });
         });
 
         FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value}) => {
