@@ -33,7 +33,6 @@ const SetView = ({mode = 'horizontal', theme, width = '50%', buttons = [], SetMe
           top: mode === 'vertical' ? 62 : 112
         }}
         visible={drawerIsShow}
-        getContainer={false}
         bodyStyle={{padding: 0}}
         placement={mode === 'vertical' ? 'left' : 'right'}
         onClose={() => {

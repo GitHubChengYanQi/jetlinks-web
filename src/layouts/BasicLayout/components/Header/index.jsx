@@ -137,7 +137,6 @@ const Header = () => {
         }}
         visible={visible}
         width={325}
-        maskStyle={{opacity: 0, background: 'none'}}
         bodyStyle={{padding: 0, margin: 0}}
       >
         <div className="docker-top-container">
