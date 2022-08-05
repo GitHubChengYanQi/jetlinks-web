@@ -6,29 +6,31 @@
  */
 
 import React, {useRef, useState} from 'react';
+import {Button, Space, Table as AntTable} from 'antd';
+import {useBoolean} from 'ahooks';
+import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
+import {MegaLayout} from '@formily/antd-components';
+import {SearchOutlined} from '@ant-design/icons';
+import {config} from 'ice';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
-import CheckButton from '@/components/CheckButton';
 import {batchDelete} from '@/pages/Erp/material/MaterialUrl';
-import {useBoolean} from 'ahooks';
-import {MegaLayout} from '@formily/antd-components';
-import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {ScanOutlined, SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import {storehouseDelete, storehouseList} from '../StorehouseUrl';
 import * as SysField from '../StorehouseField';
 import StorehouseEdit from '../StorehouseEdit';
 import StorehousePositionsList from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsList';
 import Code from '@/pages/Erp/spu/components/Code';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
+const {baseURI} = config;
 
 const formActionsPublic = createFormActions();
 
@@ -41,11 +43,16 @@ const StorehouseList = (props) => {
   const tableRef = useRef(null);
   const actions = () => {
     return (
-      <>
+      <Space>
         <AddButton onClick={() => {
           ref.current.open(false);
         }} />
-      </>
+        <Import
+          url={`${baseURI}Excel/importPosition`}
+          title="导入库位"
+          module="position"
+        />
+      </Space>
     );
   };
 
@@ -132,8 +139,8 @@ const StorehouseList = (props) => {
         <Column title="仓库名称" dataIndex="name" sorter render={(value, record) => {
           return (
             <>
-              <Code source='storehouse' id={record.storehouseId} />
-              <Button type="link" style={{padding:0}} onClick={() => {
+              <Code source="storehouse" id={record.storehouseId} />
+              <Button type="link" style={{padding: 0}} onClick={() => {
                 refPosition.current.open(record.storehouseId);
               }}>{value}</Button>
             </>

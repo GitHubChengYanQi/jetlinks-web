@@ -72,12 +72,6 @@ const StorehousePositionsList = (props) => {
         <AddButton onClick={() => {
           ref.current.open(false);
         }}/>
-        <Import
-          url={`${baseURI}Excel/importPosition`}
-          title="导入库位"
-          module="position"
-          templateUrl={`${baseURI}Excel/positionTemp?authorization=${token}`}
-        />
       </Space>
     );
   };
