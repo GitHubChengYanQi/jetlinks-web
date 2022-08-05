@@ -48,10 +48,15 @@ const Setps = ({
 
         FormEffectHooks.onFieldValueChange$('documentsStatusId').subscribe(({value}) => {
           const type = getFieldState('type');
+          const actions = (value && value.actions) || [];
+          setFieldState('auditRule', state => {
+            const hidden = actions.filter(item => ['check'].includes(item.action)).length > 0;
+            state.visible = !(type && type.value === 'status' && hidden);
+          });
+
           if (type && type.value === 'status' && value) {
             setFieldState('actionStatuses', state => {
               const visible = value.actions;
-              const actions = value.actions || [];
               state.visible = visible;
               state.props.actions = visible ? actions : [];
               state.value = actions.map(item => {

@@ -8,18 +8,20 @@ import SkuImport from '@/pages/TaskList/components/SkuImport';
 import SpuImport from '@/pages/TaskList/components/SpuImport';
 import Import from '@/pages/TaskList/components/Import';
 import StockImport from '@/pages/TaskList/components/StockImport';
+import PositionImport from '@/pages/TaskList/components/PositionImport';
 
 
 const TaskList = () => {
 
   const [state, dataDispatchers] = store.useModel('dataSource');
 
-  const [taskId,setTaskId] = useState();
+  const [taskId, setTaskId] = useState();
 
   const showRef = useRef();
   const skuImportRef = useRef();
   const spuImportRef = useRef();
   const stockImportRef = useRef();
+  const positionImportRef = useRef();
 
   const {loading, cancel, data: List, run} = useRequest({
     url: '/asynTask/list',
@@ -70,6 +72,9 @@ const TaskList = () => {
                       case '库存导入':
                         stockImportRef.current.open(item.taskId);
                         break;
+                      case '库位导入':
+                        positionImportRef.current.open(item.taskId);
+                        break;
                       default:
                         break;
                     }
@@ -116,6 +121,9 @@ const TaskList = () => {
 
     <Import setTaskId={setTaskId} ref={stockImportRef}>
       <StockImport taskId={taskId} />
+    </Import>
+    <Import setTaskId={setTaskId} ref={positionImportRef}>
+      <PositionImport taskId={taskId} />
     </Import>
 
     <SkuImport ref={skuImportRef} />

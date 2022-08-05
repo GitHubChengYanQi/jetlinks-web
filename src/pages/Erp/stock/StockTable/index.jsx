@@ -5,7 +5,7 @@
  * @Date 2021-07-15 11:13:02
  */
 
-import React, {useEffect, useRef, useState,} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   Input,
   Progress,
@@ -37,7 +37,6 @@ const StockTable = (props) => {
 
   const tableRef = useRef();
 
-
   const token = cookie.get('tianpeng-token');
 
   const {loading, data: stockDetail} = useRequest(stockDetailApi);
@@ -52,9 +51,12 @@ const StockTable = (props) => {
           title="导入库存"
           module="stock"
           templateUrl={`${baseURI}Excel/positionTemp?authorization=${token}`}
-          onOk={() => {
-            tableRef.current.submit();
-          }}
+        />
+        <Import
+          url={`${baseURI}Excel/importPosition`}
+          title="导入库位"
+          module="position"
+          // templateUrl={`${baseURI}Excel/positionTemp?authorization=${token}`}
         />
       </Space>
     );

@@ -8,6 +8,7 @@
 import React, {useRef, useState} from 'react';
 import {SearchOutlined} from '@ant-design/icons';
 import {Button, Card, Divider, Input, Space, Table as AntTable, Drawer as AntDrawer} from 'antd';
+import cookie from 'js-cookie';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
@@ -21,13 +22,19 @@ import Code from '@/pages/Erp/spu/components/Code';
 import {useRequest} from '@/util/Request';
 import TableSort from '@/components/Table/components/TableSort';
 import UpdateSort from '@/components/Table/components/UpdateSort';
-import StorehousePositionsBindList
-  from '@/pages/Erp/storehouse/components/storehousePositionsBind/storehousePositionsBindList';
+import StorehousePositionsBindList from '@/pages/Erp/storehouse/components/storehousePositionsBind/storehousePositionsBindList';
 import DeptTree from '@/components/DeptTree';
+import Import from '@/pages/Erp/sku/SkuTable/Import';
+import {config} from 'ice';
+
+const {baseURI} = config;
 
 const {Column} = AntTable;
 
 const StorehousePositionsList = (props) => {
+
+  const token = cookie.get('tianpeng-token');
+
   const {value} = props;
   const ref = useRef(null);
   const bindRef = useRef(null);
@@ -61,11 +68,17 @@ const StorehousePositionsList = (props) => {
   const [name, setName] = useState();
   const actions = () => {
     return (
-      <>
+      <Space>
         <AddButton onClick={() => {
           ref.current.open(false);
         }}/>
-      </>
+        <Import
+          url={`${baseURI}Excel/importPosition`}
+          title="导入库位"
+          module="position"
+          templateUrl={`${baseURI}Excel/positionTemp?authorization=${token}`}
+        />
+      </Space>
     );
   };
 

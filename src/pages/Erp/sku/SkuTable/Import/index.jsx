@@ -131,6 +131,7 @@ const Import = (
         case 'sku':
         case 'spu':
         case 'stock':
+        case 'position':
           Message.success('已加入队列！');
           setVisible(false);
           dataDispatchers.opentaskList(true);
@@ -185,6 +186,8 @@ const Import = (
         return '《库存模板》';
       case 'spu':
         return '《产品导入模板》';
+      case 'position':
+        return '《库位导入模板》';
       default:
         break;
     }
