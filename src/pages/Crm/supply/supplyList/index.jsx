@@ -8,6 +8,7 @@
 import React, {useRef} from 'react';
 import {Button, Divider, Table as AntTable} from 'antd';
 import {createFormActions} from '@formily/antd';
+import {SearchOutlined} from '@ant-design/icons';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
@@ -18,7 +19,6 @@ import SupplyEdit from '../supplyEdit';
 import * as SysField from '../supplyField';
 import Modal from '@/components/Modal';
 import SkuDetail from '@/pages/Erp/sku/SkuDetail';
-import {SearchOutlined} from '@ant-design/icons';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -76,7 +76,7 @@ const SupplyList = ({customer}) => {
           return record.skuResult && (`${record.skuResult.skuName} / ${record.skuResult.specifications || '无'}`);
         }} />
         <Column title="品牌" dataIndex="brandResult" render={(value) => {
-          return <>{value && value.brandName}</>;
+          return <>{value && value.brandName || '无品牌'}</>;
         }} />
         <Column />
         <Column title="操作" align="right" render={(value, record) => {

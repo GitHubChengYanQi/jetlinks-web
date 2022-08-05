@@ -85,7 +85,7 @@ export const BrandId = (props) => {
       value={brandBindResults}
       tagRender={tagRender}
       style={{width: '100%',display:displays || null}}
-      options={options}
+      options={[{value:0,label:'无品牌'},...options]}
       onChange={(value) => {
         props.onChange(value);
       }}
