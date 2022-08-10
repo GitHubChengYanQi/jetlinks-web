@@ -90,7 +90,7 @@ export const Owner = (props) => {
             } else if (items.type === 'AllPeople') {
               return <div key={index}><strong>所有人</strong></div>;
             } else if (items.type === 'MasterDocumentPromoter') {
-              return <div key={index}><strong>主单据负责人</strong></div>;
+              return <div key={index}><strong>主单据发起人</strong></div>;
             } else {
               return null;
             }

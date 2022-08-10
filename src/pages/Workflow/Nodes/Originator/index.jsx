@@ -136,7 +136,7 @@ const Originator = ({value, onChange, hidden}) => {
           return value.type === 'AllPeople';
         }).length > 0
       }, {
-        label: '主单据负责人',
+        label: '主单据发起人',
         value: 'MasterDocumentPromoter',
         disabled: array.filter((value) => {
           return value.type === 'MasterDocumentPromoter';
