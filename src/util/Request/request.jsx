@@ -1,4 +1,3 @@
-import React from 'react';
 import {request as requestProivde} from '@/util/Service';
 
 const request = async (config) => {

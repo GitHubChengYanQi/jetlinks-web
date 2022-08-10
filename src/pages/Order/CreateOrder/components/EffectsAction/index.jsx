@@ -162,19 +162,22 @@ export const customerAAction = (setFieldState) => {
   });
 };
 
-export const customerBAction = (setFieldState,module) => {
+export const customerBAction = (setFieldState) => {
 
-
+  const params = getSearchParams();
   let api = {};
-  if (module === 'SO') {
+  if (params.module === 'PO') {
     api = selfEnterpriseDetail;
-  } else if (module === 'PO') {
-    api = supplierDetail;
+  } else if (params.module === 'SO') {
+    api = customerDetail;
   }
 
   FormEffectHooks.onFieldValueChange$('sellerId').subscribe(async ({value, pristine}) => {
     if (value) {
       const customer = await request({...api, data: {customerId: value}});
+      if (!customer) {
+        return message.warn('请检查供应商！');
+      }
       setFieldState('partyBAdressId', (state) => {
         state.props.customerId = value;
         if (!pristine) {
