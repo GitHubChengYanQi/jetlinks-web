@@ -30,13 +30,6 @@ const WindowOpenPosition = () => {
 
   const moduleOnoK = () => {
     let content = '';
-    let labeltds = '';
-    table.map((item) => {
-      if (item.value) {
-        labeltds += `<td>${item.label}</td>`;
-      }
-      return null;
-    });
     let valuetds = '';
     table.map((item) => {
       if (item.value) {
@@ -46,7 +39,7 @@ const WindowOpenPosition = () => {
     });
     switch (button) {
       case 'skuTable':
-        content = `<table style="border-collapse: collapse;" border="1"><tr>${labeltds}</tr><tr data-group="sku">${valuetds}</tr></table>`;
+        content = `<table style="border-collapse: collapse;" border="1"><tr data-group="sku">${valuetds}</tr></table>`;
         insertContent(content);
         break;
       default:

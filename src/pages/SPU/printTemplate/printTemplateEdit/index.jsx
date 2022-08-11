@@ -6,13 +6,11 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {FormEffectHooks, FormPath} from '@formily/antd';
 import Form from '@/components/Form';
 import {printTemplateDetail, printTemplateAdd, printTemplateEdit} from '../printTemplateUrl';
 import * as SysField from '../printTemplateField';
 import Editor from '@/components/Editor';
 
-const {onFieldValueChange$} = FormEffectHooks;
 const {FormItem} = Form;
 
 const ApiConfig = {
@@ -46,13 +44,13 @@ const PrintTemplateEdit = ({...props}) => {
         };
         return value;
       }}
-      effects={({setFieldState}) => {
-        onFieldValueChange$('type').subscribe(({value}) => {
-          setType(value);
-        });
-      }}
     >
-      <FormItem label="类型" name="type" component={SysField.Type} required />
+      <FormItem label="类型" name="type" component={SysField.Type} required typeChange={(type) => {
+        setType('');
+        setTimeout(() => {
+          setType(type);
+        }, 0);
+      }} />
       <FormItem label="名称" name="name" component={SysField.Name} required />
       {type && <Editor module={type} ref={editorRef} value={detail.templete} />}
     </Form>
