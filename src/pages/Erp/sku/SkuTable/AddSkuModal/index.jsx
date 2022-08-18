@@ -57,6 +57,7 @@ const AddSkuModal = ({
         });
 
         AntModal.confirm({
+          keyboard:false,
           centered: true,
           title: '发现重复物料,请选择操作方式',
           okButtonProps: {type: 'primary', ghost: true},

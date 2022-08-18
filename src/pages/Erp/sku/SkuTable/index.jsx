@@ -39,7 +39,7 @@ const SkuTable = ({...props}, ref) => {
 
   const token = cookie.get('tianpeng-token');
 
-  const {spuClass, spuId, ...other} = props;
+  const {spuClass, spuId, isModal, ...other} = props;
 
   const [loading, setLoading] = useState();
 
@@ -188,7 +188,7 @@ const SkuTable = ({...props}, ref) => {
 
         </Space>}
         rowKey="skuId"
-        isModal={false}
+        isModal={isModal || false}
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}

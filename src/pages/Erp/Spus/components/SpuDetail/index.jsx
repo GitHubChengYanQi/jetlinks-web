@@ -109,7 +109,7 @@ const SpuDetail = () => {
           <ProCard className="h2Card" title="物料列表" headerBordered extra={<Button onClick={() => {
             partsAddRef.current.open(false);
           }}>添加型号</Button>}>
-            <SkuTable spuId={params.cid} ref={skuRef} />
+            <SkuTable isModal spuId={params.cid} ref={skuRef} />
           </ProCard>
         </div>
       </Card>
