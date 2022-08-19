@@ -7,7 +7,7 @@ export default {
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',
     wxBind:'https://wx.daoxin.gf2025.com',
-    wxCp:'https://wx.daoxin.gf2025.com/cp/#/',
+    wxCp:'http://http://192.168.0.220:8001/',
   },
   buildZjzc: {
     logLevel: 'info',
