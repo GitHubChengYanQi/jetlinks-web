@@ -5,17 +5,14 @@
  * @Date 2022-01-20 11:15:05
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import Form from '@/components/Form';
 import {
   storehousePositionsBindDetail,
   storehousePositionsBindAdd,
   storehousePositionsBindEdit,
-  storehousePositionsBindSpuAddBind
 } from '../storehousePositionsBindUrl';
 import * as SysField from '../storehousePositionsBindField';
-import {useRequest} from '@/util/Request';
-import {storehousePositionsDetail} from '@/pages/Erp/storehouse/components/storehousePositions/storehousePositionsUrl';
 
 const {FormItem} = Form;
 
