@@ -52,6 +52,8 @@ export const SelectOriginator = (
         return null;
       case 'MasterDocumentPromoter':
         return null;
+      case 'Director':
+        return null;
       default:
         return <Button type="link" onClick={() => {
           message.warn('请选择发起人');
@@ -73,6 +75,9 @@ export const SelectOriginator = (
           onChange({type: value});
           break;
         case 'MasterDocumentPromoter':
+          onChange({type: value});
+          break;
+        case 'Director':
           onChange({type: value});
           break;
         default:
@@ -140,6 +145,12 @@ const Originator = ({value, onChange, hidden}) => {
         value: 'MasterDocumentPromoter',
         disabled: array.filter((value) => {
           return value.type === 'MasterDocumentPromoter';
+        }).length > 0
+      }, {
+        label: '单据负责人',
+        value: 'Director',
+        disabled: array.filter((value) => {
+          return value.type === 'Director';
         }).length > 0
       },
     ];
