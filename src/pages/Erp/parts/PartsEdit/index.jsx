@@ -125,6 +125,12 @@ const PartsEdit = ({...props}, ref) => {
 
           <ProCard className="h2Card" headerBordered title="父件信息">
             <FormItem
+              required
+              label="版本号"
+              name="name"
+              component={SysField.Name}
+            />
+            <FormItem
               visible={false}
               label="物料编码"
               name="showSkuCoding"

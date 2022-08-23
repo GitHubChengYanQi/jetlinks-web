@@ -204,7 +204,10 @@ const PartsList = ({
             }
           }}
         >
-          <Column title={<div style={{marginLeft:24}}>物料编码</div>} key={1} dataIndex="skuResult" render={(value) => {
+          <Column title={<div style={{marginLeft:24}}>版本号</div>} key={1} dataIndex="skuResult" render={(value) => {
+            return <div style={{minWidth: 100}}>{value && value.name}</div>;
+          }} />
+          <Column title='物料编码' key={1} dataIndex="skuResult" render={(value) => {
             return <div style={{minWidth: 100}}>{value && value.standard}</div>;
           }} />
           <Column title="物料" key={1} dataIndex="skuResult" render={(value) => {

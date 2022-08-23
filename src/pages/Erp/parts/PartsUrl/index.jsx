@@ -6,7 +6,8 @@
  */
 
 export const partsAdd = {
-  url: '/parts/add',
+  // url: '/parts/add',
+  url: '/parts/v1.1.1/add',
   method: 'POST',
   rowKey:'partsId'
 };

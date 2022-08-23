@@ -35,7 +35,7 @@ export const Item = (props) => {
 };
 
 export const Name = (props) => {
-  return (<Input.TextArea rows={1}  {...props} />);
+  return (<Input style={{width:400}} placeholder='请输入版本号'  {...props} />);
 };
 
 export const SkuInput = (props) => {
