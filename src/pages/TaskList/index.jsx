@@ -61,6 +61,7 @@ const TaskList = () => {
                   <Button type="link" onClick={() => {
                     switch (item.type) {
                       case '物料分析':
+                      case '报表物料分析':
                         showRef.current.open(item.taskId);
                         break;
                       case '物料导入':

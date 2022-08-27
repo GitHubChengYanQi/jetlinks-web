@@ -7,7 +7,7 @@ import loginLogo from '../../asseset/imgs/loginLogo.png';
 
 const Login = () => {
   useEffect(() => {
-    window.document.title = '感谢使用道昕智造企业数字化管理系统';
+    window.document.title = '欢迎使用道昕智造企业数字化管理系统';
   });
 
   return (
