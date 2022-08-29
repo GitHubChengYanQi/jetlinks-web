@@ -205,7 +205,7 @@ const PartsList = ({
           }}
         >
           <Column title={<div style={{marginLeft:24}}>版本号</div>} key={1} dataIndex="skuResult" render={(value) => {
-            return <div style={{minWidth: 100}}>{value && value.name}</div>;
+            return <div style={{minWidth: 100}}>{value && value.name || '无'}</div>;
           }} />
           <Column title='物料编码' key={1} dataIndex="skuResult" render={(value) => {
             return <div style={{minWidth: 100}}>{value && value.standard}</div>;

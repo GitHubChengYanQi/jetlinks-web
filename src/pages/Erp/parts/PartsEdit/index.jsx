@@ -51,6 +51,8 @@ const PartsEdit = ({...props}, ref) => {
 
   const [type, setType] = useState((!value && spuId) ? 0 : 1);
 
+  const [deleted, setDeleted] = useState([]);
+
   return (
     <>
       <div style={{padding: 16}}>
@@ -105,8 +107,7 @@ const PartsEdit = ({...props}, ref) => {
                 }
               }
             });
-          }
-          }
+          }}
           onSubmit={(value) => {
             if (!value.parts || value.parts.length === 0) {
               message.warn('请添加物料清单！');
@@ -199,9 +200,39 @@ const PartsEdit = ({...props}, ref) => {
             name="parts"
             loading={partsLoading}
             component={SysField.AddSku}
+            deteted={deleted}
+            setDeleted={(skus) => {
+              const startKey = (deleted[deleted.length - 1] || {}).key || 0;
+              const newDeleted = skus.map((item, index) => ({...item, key: startKey + index + 1}));
+              setDeleted([...deleted, ...newDeleted]);
+            }}
             extraButton={spuSkuId && <Button onClick={() => {
               partsRef.current.open(spuSkuId);
             }}>拷贝BOM</Button>}
+          />
+
+          <FormItem
+            visible={deleted.length > 0}
+            name="back"
+            deleted={deleted}
+            setDeleted={setDeleted}
+            component={SysField.BackSku}
+            back={(skus = []) => {
+              const partSkus = formRef.current.getFieldValue('parts');
+              const exits = [];
+              let newParts = partSkus.map((partItem) => {
+                const skuItem = skus.filter(item => partItem.skuId === item.skuId)[0];
+                if (skuItem) {
+                  exits.push(skuItem.key);
+                  return {...partItem, number: (partItem.number || 0) + (skuItem.number || 0)};
+                }
+                return partItem;
+              });
+              if (exits.length !== skus.length) {
+                newParts = [...newParts, ...skus.filter(item => !exits.includes(item.key))];
+              }
+              formRef.current.setFieldValue('parts', newParts);
+            }}
           />
         </Form>
       </div>

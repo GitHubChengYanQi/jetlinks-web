@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Button, Space, Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable, Typography} from 'antd';
 import {CopyOutlined} from '@ant-design/icons';
 import {config, useHistory} from 'ice';
 import cookie from 'js-cookie';
@@ -202,14 +202,17 @@ const SkuTable = ({...props}, ref) => {
 
         <Column title="物料编码" key={1} dataIndex="standard" render={(value, record) => {
           return (
-            <>
+            <Space align='center'>
               <Code source="sku" id={record.skuId} />
               <Button type="link" onClick={() => {
                 history.push(`/SPU/sku/${record.skuId}`);
               }}>
                 {value}
               </Button>
-            </>
+              <Typography.Text copyable={{
+                text: value
+              }} />
+            </Space>
           );
         }} />
 
@@ -261,7 +264,7 @@ const SkuTable = ({...props}, ref) => {
           dataIndex="createTime"
           render={(value, record) => {
             return <>
-              {record.user && record.user.name} / {record.createTime}
+              {record.user && record.user.name || '-'} / {record.createTime}
             </>;
           }} />
 

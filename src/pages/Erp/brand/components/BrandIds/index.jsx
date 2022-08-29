@@ -37,7 +37,7 @@ const BrandIds = ({value, onChange}) => {
       allowClear
       showSearch
       filterOption={(input, option) => option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-      value={value}
+      value={Array.isArray(value) ? value : []}
       tagRender={tagRender}
       style={{width: '100%'}}
       options={options}

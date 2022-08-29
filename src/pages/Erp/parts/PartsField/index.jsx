@@ -5,13 +5,13 @@
  * @Date 2021-07-14 14:30:20
  */
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Input,
   InputNumber,
   Select as AntdSelect,
   Radio,
-  Spin, Descriptions, Button, Space,
+  Spin, Descriptions, Button, Space, Table,
 } from 'antd';
 import ProCard from '@ant-design/pro-card';
 import Select from '@/components/Select';
@@ -25,6 +25,8 @@ import SkuConfiguration from '@/pages/Erp/sku/components/SkuConfiguration';
 import Modal from '@/components/Modal';
 import CheckSku from '@/pages/Erp/sku/components/CheckSku';
 import AddSkuTable from '@/pages/Erp/parts/components/AddSkuTable';
+import {DeleteOutlined} from '@ant-design/icons';
+import SkuResultSkuJsons from '@/pages/Erp/sku/components/SkuResult_skuJsons';
 
 export const BrandId = (props) => {
   return (<Select api={apiUrl.brandIdSelect} {...props} />);
@@ -35,7 +37,7 @@ export const Item = (props) => {
 };
 
 export const Name = (props) => {
-  return (<Input style={{width:400}} placeholder='请输入版本号'  {...props} />);
+  return (<Input style={{width: 400}} placeholder="请输入版本号"  {...props} />);
 };
 
 export const SkuInput = (props) => {
@@ -213,7 +215,15 @@ export const Show = ({value}) => {
   return <>{value}</>;
 };
 
-export const AddSku = ({value = [], onChange, loading, extraButton}) => {
+export const AddSku = (
+  {
+    value = [],
+    onChange,
+    loading,
+    extraButton,
+    setDeleted = () => {
+    },
+  }) => {
 
   const ref = useRef();
 
@@ -242,6 +252,7 @@ export const AddSku = ({value = [], onChange, loading, extraButton}) => {
           </div>
           :
           <AddSkuTable
+            setDeleted={setDeleted}
             value={value}
             onChange={onChange}
           />
@@ -251,7 +262,7 @@ export const AddSku = ({value = [], onChange, loading, extraButton}) => {
     <Modal
       ref={ref}
       width={1000}
-      headTitle='添加物料'
+      headTitle="添加物料"
       footer={<Space>
         <Button onClick={() => {
           const res = addSkuRef.current.check();
@@ -270,6 +281,85 @@ export const AddSku = ({value = [], onChange, loading, extraButton}) => {
       />
     </Modal>
   </>);
+};
+
+export const BackSku = ({
+  deleted = [],
+  setDeleted = () => {
+  },
+  back = () => {
+  },
+}) => {
+
+  const [keys, setKeys] = useState([]);
+
+  return <ProCard
+    style={{marginTop: 24}}
+    bodyStyle={{padding: 16}}
+    className="h2Card"
+    title="删除信息"
+    headerBordered
+  >
+    <Table
+      dataSource={deleted}
+      pagination={false}
+      rowKey="key"
+      footer={() => {
+        return <>
+          <Button
+            type="link"
+            disabled={keys.length === 0}
+            icon={<DeleteOutlined />}
+            onClick={() => {
+              const ids = keys.map(item => item.key);
+              setDeleted(deleted.filter((item) => {
+                return !ids.includes(item.key);
+              }));
+              setKeys([]);
+              back(keys);
+            }}
+            danger
+          >
+            批量还原
+          </Button>
+        </>;
+      }}
+      rowSelection={{
+        selectedRowKeys: keys.map((item) => {
+          return item.key;
+        }),
+        onChange: (keys, record) => {
+          setKeys(record);
+        }
+      }}
+    >
+      <Table.Column title="序号" width={70} align="center" dataIndex="skuId" render={(value, record, index) => {
+        return index + 1;
+      }} />
+      <Table.Column title="物料编号" width={200} dataIndex="coding" />
+      <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
+        return <SkuResultSkuJsons skuResult={value} />;
+      }} />
+      <Table.Column title="数量" width={100} dataIndex="number" render={(value) => {
+        return value;
+      }} />
+      <Table.Column title="备注" dataIndex="note" render={(value) => {
+        return value;
+      }} />
+      <Table.Column title="操作" dataIndex="key" align="center" width={100} render={(value, record) => {
+        return <Button type="link" onClick={() => {
+          setDeleted(deleted.filter((item) => {
+            return item.key !== value;
+          }));
+          setKeys(keys.filter((item) => {
+            return item.key !== value;
+          }));
+          back([record]);
+        }}>还原</Button>;
+      }} />
+
+    </Table>
+  </ProCard>;
 };
 
 

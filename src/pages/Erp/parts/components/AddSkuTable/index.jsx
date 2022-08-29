@@ -7,22 +7,19 @@ import InputNumber from '@/components/InputNumber';
 const AddSkuTable = ({
   value = [],
   onChange = () => {
+  },
+  setDeleted = () => {
   }
 }) => {
 
   const [keys, setKeys] = useState([]);
 
-  const dataSources = value.map((item, index) => {
-    return {
-      ...item,
-      key: index
-    };
-  });
+  const dataSources = value;
 
 
-  const setValue = (data, index) => {
+  const setValue = (data, skuId) => {
     const array = dataSources.map((item) => {
-      if (item.key === index) {
+      if (item.skuId === skuId) {
         return {
           ...item,
           ...data
@@ -39,7 +36,7 @@ const AddSkuTable = ({
     <Table
       dataSource={dataSources}
       pagination={false}
-      rowKey="key"
+      rowKey="skuId"
       footer={() => {
         return <>
           <Button
@@ -53,6 +50,7 @@ const AddSkuTable = ({
               const array = value.filter((item) => {
                 return !ids.includes(item.skuId);
               });
+              setDeleted(keys);
               onChange(array);
               setKeys([]);
             }}
@@ -64,28 +62,28 @@ const AddSkuTable = ({
       }}
       rowSelection={{
         selectedRowKeys: keys.map((item) => {
-          return item.key;
+          return item.skuId;
         }),
         onChange: (keys, record) => {
           setKeys(record);
         }
       }}
     >
-      <Table.Column title="序号" width={70} align="center" dataIndex="key" render={(value) => {
-        return value + 1;
+      <Table.Column title="序号" width={70} align="center" dataIndex="skuId" render={(value, record, index) => {
+        return index + 1;
       }} />
       <Table.Column title="物料编号" width={200} dataIndex="coding" />
       <Table.Column title="物料" dataIndex="skuResult" render={(value) => {
         return <SkuResultSkuJsons skuResult={value} />;
       }} />
-      <Table.Column title="数量" width={100} dataIndex="number" render={(value,record,index) => {
+      <Table.Column title="数量" width={100} dataIndex="number" render={(value, record, index) => {
         return <InputNumber value={value} min={1} onChange={(value) => {
-          setValue({number:value},index);
+          setValue({number: value}, record.skuId);
         }} />;
       }} />
-      <Table.Column title="备注" dataIndex="note" render={(value,record,index) => {
-        return <Input.TextArea rows={1} value={value}  onChange={(value) => {
-          setValue({note:value.target.value},index);
+      <Table.Column title="备注" dataIndex="note" render={(value, record, index) => {
+        return <Input.TextArea rows={1} value={value} onChange={(value) => {
+          setValue({note: value.target.value}, record.skuId);
         }} />;
       }} />
       <Table.Column title="操作" dataIndex="skuId" align="center" width={100} render={(value, record, index) => {
@@ -93,9 +91,13 @@ const AddSkuTable = ({
           type="link"
           icon={<DeleteOutlined />}
           onClick={() => {
+            setDeleted([record]);
             const array = dataSources.filter((item) => {
-              return item.key !== index;
+              return item.skuId !== value;
             });
+            setKeys(keys.filter((item) => {
+              return item.skuId !== value;
+            }));
             onChange(array);
           }}
           danger
