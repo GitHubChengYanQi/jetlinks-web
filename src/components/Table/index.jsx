@@ -86,6 +86,8 @@ const TableWarp = (
     },
   );
 
+  const defaultTableQuery = state.params && JSON.parse(state.params) || {};
+
   if (!formActions) {
     formActions = formActionsPublic;
   }
@@ -115,7 +117,7 @@ const TableWarp = (
     if (!isModal) {
       setState({
         params: JSON.stringify({
-          ...page, ...newValues
+          ...page, values: newValues
         })
       });
     }
@@ -160,9 +162,11 @@ const TableWarp = (
 
   const {setPagination, form, table: tableProps} = useFormTableQuery(requestMethod, null, {
     pagination: {
-      pageSize,
+      pageSize: pageSize || defaultTableQuery.limit,
+      current: defaultTableQuery.page,
       pageSizeOptions: [5, 10, 20, 50, 100]
-    }
+    },
+    sorter: defaultTableQuery.sorter || {},
   });
 
   const submit = () => {
@@ -218,6 +222,7 @@ const TableWarp = (
             <Row justify="space-between">
               <Col>
                 <Form
+                  initialValues={defaultTableQuery.values || {}}
                   layout={layout || 'inline'}
                   {...form}
                   actions={formActions}
