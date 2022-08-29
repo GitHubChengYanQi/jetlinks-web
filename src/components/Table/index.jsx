@@ -117,7 +117,7 @@ const TableWarp = (
     if (!isModal) {
       setState({
         params: JSON.stringify({
-          ...page, values: newValues
+          ...page, values: pagination.current ? newValues : {}
         })
       });
     }
@@ -222,7 +222,7 @@ const TableWarp = (
             <Row justify="space-between">
               <Col>
                 <Form
-                  initialValues={defaultTableQuery.values || {}}
+                  value={defaultTableQuery.values || {}}
                   layout={layout || 'inline'}
                   {...form}
                   actions={formActions}
