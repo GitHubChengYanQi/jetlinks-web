@@ -16,7 +16,6 @@ const AddSkuTable = ({
 
   const dataSources = value;
 
-
   const setValue = (data, skuId) => {
     const array = dataSources.map((item) => {
       if (item.skuId === skuId) {

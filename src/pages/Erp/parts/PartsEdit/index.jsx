@@ -206,8 +206,8 @@ const PartsEdit = ({...props}, ref) => {
               const newDeleted = skus.map((item, index) => ({...item, key: startKey + index + 1}));
               setDeleted([...deleted, ...newDeleted]);
             }}
-            extraButton={spuSkuId && <Button onClick={() => {
-              partsRef.current.open(spuSkuId);
+            extraButton={<Button onClick={() => {
+              partsRef.current.open(spuSkuId || true);
             }}>拷贝BOM</Button>}
           />
 
