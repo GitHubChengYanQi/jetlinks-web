@@ -22,13 +22,13 @@ import PartsList from '@/pages/Erp/parts/PartsList';
 
 const {FormItem} = Form;
 
-const formActionsPublic = createFormActions();
-
 const ApiConfig = {
   view: partsDetail,
   add: partsAdd,
   save: partsAdd
 };
+
+const formActionsPublic = createFormActions();
 
 const PartsEdit = ({...props}, ref) => {
 
@@ -120,7 +120,7 @@ const PartsEdit = ({...props}, ref) => {
               message.warn('请添加物料数量！');
               return false;
             }
-            return {...value, type: 1, batch: 0, status: 0};
+            return {...value, ...value.item,type: 1, batch: 0, status: 0,partsId:value.partsId || '1'};
           }}
         >
 

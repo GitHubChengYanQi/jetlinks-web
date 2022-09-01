@@ -34,8 +34,6 @@ const {FormItem} = Form;
 
 const {baseURI} = config;
 
-const formActionsPublic = createFormActions();
-
 const PartsList = ({
   spuId,
   spuSkuId,
@@ -44,6 +42,8 @@ const PartsList = ({
   },
   type = 1
 }) => {
+
+  const [formActionsPublic, setFormActionsPublic] = useState(createFormActions);
 
   const refAdd = useRef();
   const formRef = useRef();
