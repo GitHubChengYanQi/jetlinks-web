@@ -47,6 +47,9 @@ const SpuImport = ({taskId}) => {
       <Column title="产品名称" dataIndex="spuExcel" render={(value) => {
         return <div style={{minWidth: 70}}>{value && value.spuName}</div>;
       }} />
+      <Column title="型号" dataIndex="spuExcel" render={(value) => {
+        return <div style={{minWidth: 70}}>{value && value.specifications}</div>;
+      }} />
       <Column title="单位" dataIndex="spuExcel" render={(value) => {
         return <div style={{minWidth: 70}}>{value && value.unit}</div>;
       }} />
