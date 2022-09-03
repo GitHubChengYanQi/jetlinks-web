@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, Card, Collapse} from 'antd';
-import styled from 'styled-components';
 import {FormItem, InternalFieldList as FieldList} from '@formily/antd';
 import Form from '@/components/Form';
 import {remindAdd, remindDetail, remindEdit} from '@/pages/Portal/remind/remindUrl';
@@ -8,19 +7,6 @@ import * as SysField from '@/pages/Portal/remind/remindField';
 import styles from './index.module.scss';
 
 const { Panel } = Collapse;
-
-const RowStyleLayout = styled(props => <div {...props} />)`
-  .ant-btn {
-    margin-right: 16px;
-  }
-
-  .ant-form-item {
-    display: inline-flex;
-    margin-right: 16px;
-    width: 42%;
-    //margin-bottom: 16px;
-  }
-`;
 
 
 const TemplateTable = (props) => {
@@ -54,7 +40,7 @@ const TemplateTable = (props) => {
                 {state.value.map((item, index) => {
                   const onRemove = index => mutators.remove(index);
                   return (
-                    <RowStyleLayout key={index}>
+                    <div key={index}>
                       <FormItem
                         name={`template.dataList.${index}.key`}
                         component={SysField.key}
@@ -67,7 +53,7 @@ const TemplateTable = (props) => {
                       />
                       {/* eslint-disable-next-line react/jsx-no-bind */}
                       <Button onClick={onRemove.bind(null, index)}>删除</Button>
-                    </RowStyleLayout>
+                    </div>
                   );
                 })}
                 <Button onClick={onAdd}>增加</Button>

@@ -25,7 +25,6 @@ import {spuDetail, spuAdd, spuEdit} from '../spuUrl';
 import * as SysField from '../spuField';
 import ProCard from '@ant-design/pro-card';
 import {FormEffectHooks, InternalFieldList as FieldList, Reset, Submit} from '@formily/antd';
-import styled from 'styled-components';
 import {useRequest} from '@/util/Request';
 import {categoryDetail} from '@/pages/Erp/category/categoryUrl';
 import {useHistory, useParams} from 'ice';

@@ -6,7 +6,6 @@
  */
 
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import styled from 'styled-components';
 import ProCard from '@ant-design/pro-card';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {Button, Col, Divider, Row, Switch} from 'antd';
@@ -23,17 +22,6 @@ const {FormItem} = Form;
 const ApiConfig = {
   add: trackMessageAdd
 };
-
-const RowStyleLayout = styled(props => <div {...props} />)`
-  .ant-btn {
-    //margin-right: 16px;
-  }
-
-  .ant-form-item {
-    display: inline-flex;
-    width: 100%;
-  }
-`;
 
 const CrmBusinessTrackEdit = (props, ref) => {
 
@@ -134,7 +122,7 @@ const CrmBusinessTrackEdit = (props, ref) => {
                                   onRemove(index);
                                 }}
                                 danger />} key={index}>
-                              <RowStyleLayout key={index}>
+                              <div key={index}>
                                 <FormItem
                                   label="分类"
                                   name={`businessTrackParams.${index}.classify`}
@@ -190,7 +178,7 @@ const CrmBusinessTrackEdit = (props, ref) => {
                                   required
                                   name={`businessTrackParams.${index}.money`}
                                   component={SysField.Money} /> : null}
-                              </RowStyleLayout>
+                              </div>
                               <Divider dashed />
                             </ProCard>
                           );

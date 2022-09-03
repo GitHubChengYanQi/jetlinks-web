@@ -20,7 +20,6 @@ import Title from '@/components/Title';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import {Switch} from '@alifd/next';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import styled from 'styled-components';
 
 
 const {FormItem} = Form;

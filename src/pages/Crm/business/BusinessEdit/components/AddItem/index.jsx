@@ -13,7 +13,6 @@ import ProCard from '@ant-design/pro-card';
 import Title from '@/components/Title';
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import styled from 'styled-components';
 import {
   crmBusinessDetailedDetail,
 } from '@/pages/Crm/business/crmBusinessDetailed/crmBusinessDetailedUrl';
@@ -42,18 +41,6 @@ const AddItem = (props, ref) => {
   }
   const formRef = useRef(null);
   const {data} = props;
-
-
-  const RowStyleLayout = styled(props => <div {...props} />)`
-    .ant-btn {
-      margin-right: 5px;
-    }
-
-    .ant-form-item {
-      display: inline-flex;
-      width: 100%;
-    }
-  `;
 
   useImperativeHandle(ref, () => ({
     formRef
@@ -120,7 +107,7 @@ const AddItem = (props, ref) => {
                       const onRemove = index => mutators.remove(index);
                       return (
                         <div key={index}>
-                          <RowStyleLayout key={index}>
+                          <div key={index}>
                             <Row gutter={1}>
                               <Col span={6}>
                                 <FormItem
@@ -171,7 +158,7 @@ const AddItem = (props, ref) => {
 
                             </Row>
 
-                          </RowStyleLayout>
+                          </div>
                           <Divider dashed style={{margin: 0}} />
                         </div>
                       );

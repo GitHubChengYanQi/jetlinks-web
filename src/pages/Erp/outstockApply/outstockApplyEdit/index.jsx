@@ -10,7 +10,6 @@ import {Button, Col, Row} from 'antd';
 import Form from '@/components/Form';
 import {createFormActions, InternalFieldList as FieldList} from '@formily/antd';
 import * as SysField from '@/pages/Erp/outstockApply/outstockApplyField';
-import styled from 'styled-components';
 import CustomerAll from '@/pages/Crm/contract/components/CustomerAll';
 import ProCard from '@ant-design/pro-card';
 import {outstockApplyDetail, outstockApplyAdd, outstockApplyEdit} from '../outstockApplyUrl';
@@ -26,20 +25,6 @@ const ApiConfig = {
 const formActions = createFormActions();
 
 const OutstockApplyEdit = ({...props}, ref) => {
-
-
-  const RowStyleLayout = styled(props => <div {...props} />)`
-    .ant-btn {
-      margin-right: 16px;
-    }
-
-    .ant-form-item {
-      display: inline-flex;
-      margin-right: 16px;
-      width: 25%;
-    }
-  `;
-
 
 
   const formRef = useRef();
@@ -92,7 +77,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
                         {state.value.map((item, index) => {
                           const onRemove = index => mutators.remove(index);
                           return (
-                            <RowStyleLayout key={index}>
+                            <div key={index}>
                               <FormItem
                                 label="产品"
                                 name={`applyDetails.${index}.itemId`}
@@ -115,7 +100,7 @@ const OutstockApplyEdit = ({...props}, ref) => {
                                 style={{display: state.value.length === 1 && 'none'}}
                                 onClick={()=>onRemove( index)}
                               >删除</Button>
-                            </RowStyleLayout>
+                            </div>
                           );
                         })}
                         <Button onClick={onAdd}>增加</Button>
