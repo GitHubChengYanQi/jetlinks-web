@@ -16,11 +16,7 @@ export default {
     async getUserInfo() {
       try {
         const response = await request(userInfo);
-        let res = await request(selfEnterpriseDetail);
-        if (!res) {
-          res = {};
-        }
-        dispatch.user.update({...response, abbreviation: res.abbreviation, customerName: res.customerName,customerId:res.customerId});
+        dispatch.user.update(response);
       } catch (e) {
         console.log(e);
       }

@@ -9,6 +9,7 @@ import WindowOpenImg from '@/components/Editor/components/WindowOpenImg';
 import WindowOpenSku from '@/components/Editor/components/WindowOpenSku';
 import WindowOpenPosition from '@/components/Editor/components/WindowOpenPosition';
 import {request} from '@/util/Request';
+import TopLayout from '@/layouts/TopLayout';
 
 const {Content} = Layout;
 
@@ -29,19 +30,7 @@ export default function BasicLayout({children}) {
       if (jwt.length !== 3) {
         throw new Error('本地登录信息错误');
       }
-      const res = await request({url: '/rest/refreshToken', method: 'GET'});
-      if (res) {
-        cookie.set('tianpeng-token', res);
-      }
       dispatchers.getUserInfo();
-      dataDispatchers.getSkuClass();
-      dataDispatchers.getCustomerLevel();
-      dataDispatchers.getCommonArea();
-      dataDispatchers.getBusinessSale();
-      dataDispatchers.getOrigin();
-      dataDispatchers.getDataClass();
-      dataDispatchers.getSpeechcraftClass();
-
     } catch (e) {
       logger.error(e.message);
       cookie.remove('tianpeng-token');
@@ -67,10 +56,10 @@ export default function BasicLayout({children}) {
           />
         </Spin> :
         <>
-          <Header />
-          <Content className="web-content">
+          {/* <Header /> */}
+          <TopLayout className="web-content">
             {children}
-          </Content>
+          </TopLayout>
         </>
       }
 

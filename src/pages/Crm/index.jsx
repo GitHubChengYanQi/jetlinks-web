@@ -92,10 +92,6 @@ const RightMenu = ({mode = 'horizontal', theme, width = '50%', buttons = []}) =>
 
 const CrmLayout = ({children}) => {
 
-  return (
-    <TopLayout rightMenu={RightMenu}>
-      {children}
-    </TopLayout>
-  );
+  return children;
 };
 export default CrmLayout;

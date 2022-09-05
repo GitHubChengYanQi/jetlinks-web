@@ -35,7 +35,7 @@ ajaxService.interceptors.response.use((response) => {
   const errCode = typeof response.errCode !== 'undefined' ? parseInt(response.errCode, 0) : 0;
   if (errCode !== 0) {
     if (errCode === 1502) {
-      // cookie.remove('tianpeng-token');
+      cookie.remove('tianpeng-token');
       Modal.error({
         title: '提示',
         content: '您已登录超时，请重新登录。',

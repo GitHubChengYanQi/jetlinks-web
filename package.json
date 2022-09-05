@@ -38,6 +38,7 @@
     "stylelint": "stylelint ./**/*.scss"
   },
   "dependencies": {
+    "@ant-design/pro-layout": "^6.38.22",
     "@ahooksjs/use-url-state": "^2.5.8",
     "@alifd/next": "^1.19.4",
     "@alifd/theme-atsoft-sing": "^0.2.7",
@@ -49,6 +50,7 @@
     "@formily/antd": "^1.3.6",
     "@icedesign/dynamic-icon": "^0.1.8",
     "@icedesign/img": "^1.0.4",
+    "@jiumao/rc-send-code": "0.0.2",
     "@tinymce/tinymce-react": "^3.13.0",
     "ac-barcode": "^1.0.0",
     "ahooks": "^2.9.1",

@@ -14,14 +14,12 @@ import {DataRouter} from '@/pages/Crm/data/dataRouter';
 import {SpeechcraftRouter} from '@/pages/Crm/speechcraft/speechcraftRouter';
 import {OutstockApplyRouter} from '@/pages/Erp/outstockApply/outstockApplyRouter';
 import {BusinessTrackRouter} from '@/pages/Crm/Track/businessTrackRouter';
-import {OrderRouter} from '@/pages/Order/router';
 
 
 const CrmRouterConfig = [
   {
     path: '/CRM',
     name: '营销中心',
-    component: CrmLayout,
     children: [
       ...CustomerRouter,
       ...BusinessRouter,

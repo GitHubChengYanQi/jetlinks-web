@@ -57,9 +57,7 @@ const BaseSystem = ({ children }) => {
     );
   };
   // console.log(subMenu);
-  return (
-    <SiderLayout left={renderLeftMenu(subMenu.subMenus)}>{children}</SiderLayout>
-  );
+  return children;
 };
 
 export default BaseSystem;
