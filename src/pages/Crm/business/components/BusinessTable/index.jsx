@@ -6,8 +6,11 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
+import {Button, Space, Statistic, Table as AntTable} from 'antd';
+import {useHistory} from 'ice';
+import {FormButtonGroup, Submit} from '@formily/antd';
+import {ArrowDownOutlined, ArrowUpOutlined, SearchOutlined} from '@ant-design/icons';
 import Table from '@/components/Table';
-import {Button, Statistic, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -17,10 +20,6 @@ import {
   businessList,
 } from '@/pages/Crm/business/BusinessUrl';
 import * as SysField from '@/pages/Crm/business/BusinessField';
-import {useHistory} from 'ice';
-import {FormButtonGroup, Submit} from '@formily/antd';
-import {ArrowDownOutlined, ArrowUpOutlined, SearchOutlined} from '@ant-design/icons';
-import {MegaLayout} from '@formily/antd-components';
 import Icon from '@/components/Icon';
 import BusinessAdd from '@/pages/Crm/business/BusinessAdd';
 import Form from '@/components/Form';
@@ -91,48 +90,34 @@ const BusinessTable = (props) => {
     };
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4}
-          full
-          autoRow>
-          <FormItem
-            mega-props={{span: 1}}
-            placeholder="项目名称"
-            name="businessName"
-            component={SysField.BusinessNameListSelect} />
-          {search ? formItem() : null}
-        </MegaLayout>
-      </div>
+      <Space wrap>
+        <FormItem
+          mega-props={{span: 1}}
+          placeholder="项目名称"
+          name="businessName"
+          component={SysField.BusinessNameListSelect} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
-              <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />
-              <FormItem hidden name="state" component={SysField.BusinessNameListSelect} />
-            </MegaLayout>
-          </FormButtonGroup>
-
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            if (search) {
+              setSearch(false);
+            } else {
+              setSearch(true);
+            }
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <FormItem hidden name="originId" component={SysField.BusinessNameListSelect} />
+          <FormItem hidden name="salesId" component={SysField.BusinessNameListSelect} />
+          <FormItem hidden name="state" component={SysField.BusinessNameListSelect} />
+        </FormButtonGroup>
       </>
     );
   };
@@ -146,7 +131,7 @@ const BusinessTable = (props) => {
         searchForm={searchForm}
         actions={actions()}
         ref={tableRef}
-        tableKey='business'
+        tableKey="business"
         footer={footer}
         isModal={false}
         SearchButton={Search()}

@@ -7,10 +7,8 @@ import {
   Submit,
   FormButtonGroup,
 } from '@formily/antd';
-import {Radio} from '@formily/antd-components';
-import {Button} from 'antd';
+import {Button, Radio} from 'antd';
 import {ActionIds, Rule, StautsId} from '@/pages/Workflow/Nodes/Setps/components/SetpsField';
-import {DocumentEnums} from '@/pages/BaseSystem/Documents/Enums';
 
 const actions = createFormActions();
 
@@ -81,7 +79,7 @@ const Setps = ({
         label="类型"
         name="type"
         component={Radio.Group}
-        dataSource={[
+        options={[
           {label: '审批', value: 'audit'},
           {label: '状态', value: 'status'},
         ]} />

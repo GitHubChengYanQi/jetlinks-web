@@ -11,7 +11,6 @@ import Form from '@/components/Form';
 import {dispatchingDetail, dispatchingAdd, dispatchingEdit} from '../dispatchingUrl';
 import * as SysField from '../dispatchingField';
 import DescAddress from '@/pages/Repair/repair/RepairDetails/components/DescAddress';
-import {MegaLayout} from '@formily/antd-components';
 
 const {FormItem} = Form;
 
@@ -59,7 +58,6 @@ const DispatchingEdit = ({...props}) => {
             wrapperCol={24}
             fieldKey="dispatchingId"
           >
-            <MegaLayout labelWidth={120} grid labelAlign="top">
               <FormItem
                 label="姓名"
                 name="name"
@@ -70,11 +68,6 @@ const DispatchingEdit = ({...props}) => {
                 name="phone"
                 component={SysField.Phone}
                 rules={[{required: true, message: '请输入工程师手机号'}]} />
-            </MegaLayout>
-            <MegaLayout
-              labelWidth={120}
-              grid
-              labelAlign="top" full>
               <FormItem
                 label="预计到达时间"
                 name="time"
@@ -85,7 +78,6 @@ const DispatchingEdit = ({...props}) => {
                 name="address"
                 component={SysField.Address}
                 rules={[{required: true, message: '请选择服务区域'}]} />
-            </MegaLayout>
             <FormItem hidden name="repairId" component={SysField.RepairId} val={value.repairId || null} />
             <FormItem hidden name="repair" component={SysField.Repair} val={value || null} />
             <div style={{textAlign: 'center'}}>

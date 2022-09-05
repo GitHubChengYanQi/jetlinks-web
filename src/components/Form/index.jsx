@@ -4,7 +4,6 @@ import {
   Reset,
   FormButtonGroup, createAsyncFormActions,
 } from '@formily/antd';
-import {MegaLayout as antMegaLayout} from '@formily/antd-components';
 import useRequest from '@/util/Request/useRequest';
 import {SkeletonForm} from '@/components/Skeleton';
 
@@ -30,6 +29,7 @@ const FormWrapper = (
     initialValues,
     NoButton = true,
     formActions = null,
+    className,
     onSubmit = (values) => {
       return values;
     },
@@ -164,7 +164,7 @@ const FormWrapper = (
     labelAlign={labelAlign}
     layout="horizontal"
     value={defaultValue}
-    className={style.formWarp}
+    className={`${style.formWarp} ${className || ''}`}
     labelCol={labelCol !== undefined ? labelCol : 6}
     wrapperCol={wrapperCol || 15}
     onSubmit={async (values) => {
@@ -205,6 +205,5 @@ const FormWrapper = (
 const Form = forwardRef(FormWrapper);
 
 Form.FormItem = AntFormItem;
-Form.MegaLayout = antMegaLayout;
 
 export default Form;

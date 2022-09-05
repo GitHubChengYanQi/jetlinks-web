@@ -5,12 +5,11 @@
  * @Date 2022-02-10 09:21:35
  */
 
-import React, {useImperativeHandle, useRef, useState} from 'react';
+import React, {useImperativeHandle, useRef} from 'react';
 import ProCard from '@ant-design/pro-card';
 import {InternalFieldList as FieldList} from '@formily/antd';
 import {Button, Card, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
-import {MegaLayout} from '@formily/antd-components';
 import {useBoolean} from 'ahooks';
 import * as SysField from '../sopField';
 import {sopDetail, sopAdd, sopEdit} from '../sopUrl';
@@ -47,28 +46,21 @@ const SopEdit = ({...props}, ref) => {
         }}
         onError={() => {
         }}
-        wrapperCol={24}
+        labelCol={4}
+        wrapperCol={20}
       >
         <ProCard title="基本信息" className="h2Card" headerBordered>
 
-          <MegaLayout labelWidth={100} grid>
-            <FormItem label="编号" name="coding" component={SysField.Codings} module={8} required />
-            <FormItem label="名称" name="name" component={SysField.Name} required />
-          </MegaLayout>
+          <FormItem label="编号" name="coding" component={SysField.Codings} module={8} required />
+          <FormItem label="名称" name="name" component={SysField.Name} required />
 
-          <MegaLayout labelWidth={100} grid>
-            <FormItem label="版本号" name="versionNumber" module={9}  component={SysField.Codings} required />
-          </MegaLayout>
+          <FormItem label="版本号" name="versionNumber" module={9} component={SysField.Codings} required />
 
-          <MegaLayout labelWidth={100} grid>
-            <FormItem label="成品图" name="finishedPicture" component={SysField.FinishedPicture} />
-          </MegaLayout>
-          <MegaLayout labelWidth={100} grid>
-            <FormItem label="作业要求" name="note" component={SysField.Note} />
-          </MegaLayout>
-          {props.value && <MegaLayout labelWidth={100} grid>
-            <FormItem label="修改原因" name="alterWhy" component={SysField.AlterWhy} />
-          </MegaLayout>}
+          <FormItem label="成品图" name="finishedPicture" component={SysField.FinishedPicture} />
+          <FormItem label="作业要求" name="note" component={SysField.Note} />
+          {props.value &&
+          <FormItem label="修改原因" name="alterWhy" component={SysField.AlterWhy} />
+          }
         </ProCard>
         <ProCard title="作业步骤" className="h2Card" headerBordered>
           <FieldList

@@ -7,7 +7,6 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Button, Col, Row, Space, Table as AntTable, Upload} from 'antd';
-import {MegaLayout} from '@formily/antd-components';
 import {config, useHistory} from 'ice';
 import {SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
@@ -81,19 +80,15 @@ const CustomerTable = (props) => {
 
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-          columns={4} full autoRow>
-          <FormItem
-            mega-props={{span: 1}}
-            placeholder="请输入客户名称"
-            name="customerName"
-            component={SysField.Name} />
-          {search ? formItem() : null}
-        </MegaLayout>
+      <Space wrap>
+        <FormItem
+          mega-props={{span: 1}}
+          placeholder="请输入客户名称"
+          name="customerName"
+          component={SysField.Name} />
+        {search ? formItem() : null}
 
-      </div>
+      </Space>
     );
   };
 
@@ -101,20 +96,16 @@ const CustomerTable = (props) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="status" component={SysField.Name} />
-              <FormItem hidden name="classification" component={SysField.Name} />
-              <FormItem hidden name="customerLevelId" component={SysField.Name} />
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            toggle();
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <FormItem hidden name="status" component={SysField.Name} />
+          <FormItem hidden name="classification" component={SysField.Name} />
+          <FormItem hidden name="customerLevelId" component={SysField.Name} />
+        </FormButtonGroup>
       </>
     );
   };

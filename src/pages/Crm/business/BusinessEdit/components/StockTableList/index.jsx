@@ -10,7 +10,6 @@ import Table from '@/components/Table';
 import {Button, Modal as AntModal, Table as AntTable} from 'antd';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined, SelectOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';

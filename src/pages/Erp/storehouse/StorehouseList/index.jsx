@@ -9,7 +9,6 @@ import React, {useRef, useState} from 'react';
 import {Button, Space, Table as AntTable} from 'antd';
 import {useBoolean} from 'ahooks';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
-import {MegaLayout} from '@formily/antd-components';
 import {SearchOutlined} from '@ant-design/icons';
 import {config} from 'ice';
 import Table from '@/components/Table';
@@ -72,18 +71,10 @@ const StorehouseList = (props) => {
 
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4} full autoRow>
-          <FormItem placeholder="仓库名称" mega-props={{span: 1}} name="name" component={SysField.Name} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
+      <Space wrap>
+        <FormItem placeholder="仓库名称" mega-props={{span: 1}} name="name" component={SysField.Name} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -91,15 +82,13 @@ const StorehouseList = (props) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            toggle();
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+        </FormButtonGroup>
       </>
     );
   };

@@ -6,23 +6,20 @@
  */
 
 import React, {useRef} from 'react';
+import {Button, Image, Space, Table as AntTable} from 'antd';
+import {SearchOutlined} from '@ant-design/icons';
+import {useBoolean} from 'ahooks';
+import {FormButtonGroup, Submit} from '@formily/antd';
 import Table from '@/components/Table';
-import {Button, Image, Table as AntTable} from 'antd';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
-import {businessTrackDelete, businessTrackList} from '../businessTrackUrl';
+import {businessTrackList} from '../businessTrackUrl';
 import * as SysField from '../businessTrackField';
 import Modal from '@/components/Modal';
 import CrmBusinessTrackEdit from '@/pages/Crm/business/crmBusinessTrack/crmBusinessTrackEdit';
-import {EditOutlined, SearchOutlined} from '@ant-design/icons';
-import {useBoolean} from 'ahooks';
-import {MegaLayout} from '@formily/antd-components';
-import {FormButtonGroup, Submit} from '@formily/antd';
 import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import Conent from '@/pages/Crm/Track/components/Conent';
-import {Customer} from '../businessTrackField';
-import {userRemove} from '@/Config/ApiUrl/system/user';
 
 const {Column} = AntTable;
 const {FormItem} = Form;
@@ -60,15 +57,16 @@ const BusinessTrackList = () => {
 
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-          columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} style={{width:'100%'}} placeholder="请选择客户" name="customerId" component={SysField.Customer} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
+      <Space wrap>
+        <FormItem
+          mega-props={{span: 1}}
+          style={{width: '100%'}}
+          placeholder="请选择客户"
+          name="customerId"
+          component={SysField.Customer}
+        />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -76,15 +74,13 @@ const BusinessTrackList = () => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            toggle();
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+        </FormButtonGroup>
       </>
     );
   };
@@ -96,7 +92,7 @@ const BusinessTrackList = () => {
         title={<Breadcrumb />}
         api={businessTrackList}
         rowKey="trackId"
-        tableKey='track'
+        tableKey="track"
         layout={search}
         SearchButton={Search()}
         searchForm={searchForm}
@@ -124,7 +120,7 @@ const BusinessTrackList = () => {
           );
         }} />
         <Column key={5} title="负责人" dataIndex="userId" render={(value, record) => {
-          return(
+          return (
             <>
               {record.userResult.name}
             </>
@@ -133,14 +129,14 @@ const BusinessTrackList = () => {
 
         } />
         <Column key={6} title="分类" dataIndex="classify" render={(value, record) => {
-          return(
+          return (
             <>
               {record.categoryName}
             </>
           );
         }} />
         <Column key={7} title="名称" dataIndex="classifyId" render={(value, record) => {
-          return(
+          return (
             <>
               {record.name}
             </>
@@ -152,20 +148,20 @@ const BusinessTrackList = () => {
         refTrack.current.close();
         tableRef.current.submit();
       }} track={null}
-      compoentRef={submitRef}
-      footer={
-        <>
-          <Button type="primary" onClick={() => {
-            submitRef.current.formRef.current.submit();
-          }}>
-             保存
-          </Button>
-          <Button onClick={() => {
-            ref.current.close();
-          }}>
-             取消
-          </Button>
-        </>}
+             compoentRef={submitRef}
+             footer={
+               <>
+                 <Button type="primary" onClick={() => {
+                   submitRef.current.formRef.current.submit();
+                 }}>
+                   保存
+                 </Button>
+                 <Button onClick={() => {
+                   ref.current.close();
+                 }}>
+                   取消
+                 </Button>
+               </>}
 
 
       />

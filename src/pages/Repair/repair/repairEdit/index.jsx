@@ -5,9 +5,8 @@
  * @Date 2021-08-20 17:11:20
  */
 
-import React, { useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import ProCard from '@ant-design/pro-card';
-import {MegaLayout} from '@formily/antd-components';
 import Form from '@/components/Form';
 import {repairDetail, repairAdd, repairEdit} from '../repairUrl';
 import * as SysField from '../repairField';
@@ -26,7 +25,7 @@ const RepairEdit = ({...props}) => {
 
   const {value} = props;
 
-  const [state,setState] = useState();
+  const [state, setState] = useState();
 
   const [areaData] = store.useModel('dataSource');
 
@@ -35,7 +34,7 @@ const RepairEdit = ({...props}) => {
   const {data, run} = useRequest({
     url: '/api/getDeliveryList',
     method: 'POST',
-    data: {customerId: value ? props.value.customerId : '111' }
+    data: {customerId: value ? props.value.customerId : '111'}
   });
 
 
@@ -51,31 +50,20 @@ const RepairEdit = ({...props}) => {
       >
 
         <ProCard style={{marginTop: 8}} title="使用单位" headerBordered>
-          <MegaLayout labelWidth={120}>
-            <FormItem label="使用单位" name="customerId" component={SysField.CustomerId} customerId={async (value)=>{
-              setState(true);
-              await run(
-                {
-                  data: {customerId: value || ' '}
-                }
-              );
-            }} required />
-
-          </MegaLayout>
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="省/市/区" name="area" component={SysField.Province} options={areaData && areaData.area} required />
-          </MegaLayout>
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="详细地址" name="address" component={SysField.Address} required />
-          </MegaLayout>
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="姓名" name="people" component={SysField.People} required />
-            <FormItem label="电话" name="telephone" component={SysField.Telephone} required />
-          </MegaLayout>
-          <MegaLayout labelWidth={120} grid wrapperCol={9} >
-            <FormItem   label="职务" name="position" component={SysField.Position} required />
-          </MegaLayout>
-
+          <FormItem label="使用单位" name="customerId" component={SysField.CustomerId} customerId={async (value) => {
+            setState(true);
+            await run(
+              {
+                data: {customerId: value || ' '}
+              }
+            );
+          }} required />
+          <FormItem label="省/市/区" name="area" component={SysField.Province} options={areaData && areaData.area}
+                    required />
+          <FormItem label="详细地址" name="address" component={SysField.Address} required />
+          <FormItem label="姓名" name="people" component={SysField.People} required />
+          <FormItem label="电话" name="telephone" component={SysField.Telephone} required />
+          <FormItem label="职务" name="position" component={SysField.Position} required />
 
         </ProCard>
 
@@ -83,27 +71,12 @@ const RepairEdit = ({...props}) => {
           title="报修信息"
           headerBordered
         >
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="设备" name="itemId" component={SysField.ItemId} repair={data || null} state={state} required />
-          </MegaLayout>
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="图片" name="itemImgUrlList" banner={value.repairId || null} component={SysField.Img}  />
-          </MegaLayout>
-
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} required />
-            <FormItem label="期望到达日期" name="expectTime" component={SysField.ExpectTime} required />
-          </MegaLayout>
-
-          <MegaLayout labelWidth={120} grid>
-            <FormItem label="维修费用" name="money" component={SysField.Money} required />
-          </MegaLayout>
-
-          <MegaLayout labelWidth={120}>
-            <FormItem label="描述" name="comment" component={SysField.Comment} required />
-          </MegaLayout>
-
-
+          <FormItem label="设备" name="itemId" component={SysField.ItemId} repair={data || null} state={state} required />
+          <FormItem label="图片" name="itemImgUrlList" banner={value.repairId || null} component={SysField.Img} />
+          <FormItem label="服务类型" name="serviceType" component={SysField.ServiceType} required />
+          <FormItem label="期望到达日期" name="expectTime" component={SysField.ExpectTime} required />
+          <FormItem label="维修费用" name="money" component={SysField.Money} required />
+          <FormItem label="描述" name="comment" component={SysField.Comment} required />
         </ProCard>
 
 

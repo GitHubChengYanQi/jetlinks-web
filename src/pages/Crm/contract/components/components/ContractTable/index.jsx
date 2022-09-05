@@ -7,11 +7,10 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory} from 'ice';
-import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import {useBoolean} from 'ahooks';
-import {Button, notification, Modal as AntModal, Table as AntTable, Divider} from 'antd';
+import {Button, notification, Modal as AntModal, Table as AntTable, Divider, Space} from 'antd';
 import Table from '@/components/Table';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
@@ -55,7 +54,7 @@ const ContractTable = (props) => {
       <>
         <AddButton onClick={() => {
           ref.current.open(false);
-        }}/>
+        }} />
       </>
     );
   };
@@ -69,7 +68,7 @@ const ContractTable = (props) => {
             mega-props={{span: 1}}
             placeholder="请选择乙方"
             name="partyB"
-            component={SysField.CustomerNameListSelect}/>
+            component={SysField.CustomerNameListSelect} />
           {
             customerId ?
               null
@@ -79,51 +78,40 @@ const ContractTable = (props) => {
                 placeholder="请选择乙方"
                 value={customerId || null}
                 name="partyB"
-                component={SysField.CustomerNameListSelect}/>
+                component={SysField.CustomerNameListSelect} />
           }
         </>
       );
     };
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="请输入合同名称" name="name" component={SysField.Name}/>
-          {search ? formItem() : null}
-        </MegaLayout>
-      </div>
+      <Space wrap>
+        <FormItem mega-props={{span: 1}} placeholder="请输入合同名称" name="name" component={SysField.Name} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
   const Search = () => {
     return (
       <div style={{width: 800}}>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined/>查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'}/>{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="audit" component={SysField.Name}/>
-              {
-                customerId ?
-                  <FormItem
-                    mega-props={{span: 1}}
-                    placeholder="请选择甲方"
-                    hidden
-                    value={customerId || ' '}
-                    name="partyA"
-                    component={SysField.CustomerNameListSelect}/> : null
-              }
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            toggle();
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <FormItem hidden name="audit" component={SysField.Name} />
+          {
+            customerId ?
+              <FormItem
+                mega-props={{span: 1}}
+                placeholder="请选择甲方"
+                hidden
+                value={customerId || ' '}
+                name="partyA"
+                component={SysField.CustomerNameListSelect} /> : null
+          }
+        </FormButtonGroup>
       </div>
     );
   };
@@ -160,7 +148,7 @@ const ContractTable = (props) => {
     AntModal.confirm({
       title: '审核',
       centered: true,
-      icon: <ExclamationCircleOutlined/>,
+      icon: <ExclamationCircleOutlined />,
       content: '确认审核',
       okText: '确认',
       style: {margin: 'auto'},
@@ -182,7 +170,7 @@ const ContractTable = (props) => {
     <>
       <Table
         headStyle={customerId && {display: 'none'}}
-        title={<Breadcrumb/>}
+        title={<Breadcrumb />}
         api={contractList}
         // actions={actions()}
         rowKey="contractId"
@@ -213,7 +201,7 @@ const ContractTable = (props) => {
               </div>
             </div>
           );
-        }}/>
+        }} />
         <Column key={3} title="乙方信息" dataIndex="partAName" render={(text, record) => {
           return (
             <div title="点击进入乙方详情" style={{cursor: 'pointer'}} onClick={() => {
@@ -228,23 +216,23 @@ const ContractTable = (props) => {
               </div>
             </div>
           );
-        }}/>
+        }} />
         {/* <Column title="总金额" dataIndex="allMoney" /> */}
-        <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter/>
+        <Column key={4} title="创建时间" width={200} dataIndex="createTime" sorter />
         <Column title="审核" width={120} align="left" render={(value, record) => {
           return (
-            <BadgeState state={record.audit} text={['未审核', '已审核']} color={['red', 'green']}/>
+            <BadgeState state={record.audit} text={['未审核', '已审核']} color={['red', 'green']} />
           );
-        }}/>
-        <Column/>
+        }} />
+        <Column />
         <Column key={5} title="操作" fixed="right" align="right" render={(value, record) => {
           return (
             <>
               <>
-                {record.audit === 0 && <Button type='link' onClick={() => {
+                {record.audit === 0 && <Button type="link" onClick={() => {
                   confirmOk(record);
                 }}>
-                  <Icon type="icon-shenhe"/>
+                  <Icon type="icon-shenhe" />
                   审核
                 </Button>}
                 <Button type="link" onClick={() => {
@@ -252,11 +240,11 @@ const ContractTable = (props) => {
                 }}>详情</Button>
                 {record.audit === 0 && <DelButton api={contractDelete} value={record.contractId} onSuccess={() => {
                   tableRef.current.submit();
-                }}/>}
+                }} />}
               </>
             </>
           );
-        }}/>
+        }} />
       </Table>
 
 

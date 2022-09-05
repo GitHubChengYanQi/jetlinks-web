@@ -7,13 +7,11 @@ import {
   FieldList,
   Submit,
 } from '@formily/antd';
-import {Radio} from '@formily/antd-components';
-import {Affix, Button, Divider, Input, message, Space} from 'antd';
+import {Affix, Button, Divider, Input, message, Radio, Space} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import InputNumber from '@/components/InputNumber';
 import Select from '@/components/Select';
 import {
-  qualityCheckListSelect,
   qualityPlanListSelect
 } from '@/pages/Erp/qualityCheck/components/qualityPlan/qualityPlanUrl';
 import SelectSku from '@/pages/Erp/sku/components/SelectSku';
@@ -108,7 +106,7 @@ const Setps = (
         label="配置生产过程"
         name="type"
         component={Radio.Group}
-        dataSource={[
+        options={[
           {label: '工序', value: 'setp',},
           {label: '工艺路线', value: 'ship',},
         ]}/>
@@ -133,7 +131,7 @@ const Setps = (
             return setProductionType(value.target.value);
           }}
           component={Radio.Group}
-          dataSource={[
+          options={[
             {label: '是', value: 'in',},
             {label: '否', value: 'out',},
           ]}

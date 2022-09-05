@@ -6,13 +6,12 @@
  */
 
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
@@ -60,21 +59,12 @@ const CompetitorTable = ({...props}) => {
     };
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4}
-          full
-          autoRow>
-          {value ? null :
-            <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称" name="competitorId" style={{width: 200}}
-                      component={SysField.Competitor} />}
-          {search ? formItem() : null}
-        </MegaLayout>
-      </div>
+      <Space wrap>
+        {value ? null :
+          <FormItem mega-props={{span: 1}} placeholder="请选择报价方名称" name="competitorId" style={{width: 200}}
+                    component={SysField.Competitor} />}
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -82,25 +72,21 @@ const CompetitorTable = ({...props}) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="campType" component={SysField.CampType} />
-              {value && <FormItem hidden name="competitorId" value={value || null} component={SysField.CompetitorId} />}
-              {businessId &&
-              <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />}
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            if (search) {
+              setSearch(false);
+            } else {
+              setSearch(true);
+            }
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <FormItem hidden name="campType" component={SysField.CampType} />
+          {value && <FormItem hidden name="competitorId" value={value || null} component={SysField.CompetitorId} />}
+          {businessId &&
+          <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />}
+        </FormButtonGroup>
 
       </>
     );

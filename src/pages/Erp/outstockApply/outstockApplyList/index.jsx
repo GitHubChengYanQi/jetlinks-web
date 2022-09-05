@@ -20,7 +20,6 @@ import Icon from '@/components/Icon';
 import Breadcrumb from '@/components/Breadcrumb';
 import ApplyDetailsList from '@/pages/Erp/outstockApply/applyDetails/applyDetailsList';
 import {useBoolean} from 'ahooks';
-import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import OutStockApply from '@/pages/Erp/outstockApply/components/OutStockApply';
@@ -65,15 +64,10 @@ const OutstockApplyList = () => {
 
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-          columns={4} full autoRow>
+      <Space wrap>
           <FormItem mega-props={{span: 1}} placeholder="请输入发货申请单号" name="outstockApplyId" component={SysField.ApplyState} />
           {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
+      </Space>
     );
   };
 
@@ -81,20 +75,16 @@ const OutstockApplyList = () => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
           <FormButtonGroup>
             <Submit><SearchOutlined />查询</Submit>
             <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
               toggle();
             }}>
               <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
               {/* <FormItem hidden name="status" component={SysField.Name} /> */}
               {/* <FormItem hidden name="classification" component={SysField.Name} /> */}
               {/* <FormItem hidden name="customerLevelId" component={SysField.Name} /> */}
-            </MegaLayout>
           </FormButtonGroup>
-        </MegaLayout>
       </>
     );
   };

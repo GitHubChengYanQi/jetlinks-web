@@ -7,7 +7,6 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Button, Col, Row, Space, Table as AntTable} from 'antd';
-import {MegaLayout} from '@formily/antd-components';
 import {config, useHistory} from 'ice';
 import {SearchOutlined} from '@ant-design/icons';
 import {FormButtonGroup, Submit} from '@formily/antd';
@@ -79,19 +78,14 @@ const SupplyList = (props) => {
 
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}} labelAlign="left" layoutProps={{wrapperWidth: 200}} grid={search}
-          columns={4} full autoRow>
-          <FormItem
-            mega-props={{span: 1}}
-            placeholder='供应商名称'
-            name="customerName"
-            component={SysField.Name} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
+      <Space wrap>
+        <FormItem
+          mega-props={{span: 1}}
+          placeholder="供应商名称"
+          name="customerName"
+          component={SysField.Name} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -99,21 +93,17 @@ const SupplyList = (props) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="status" component={SysField.Name} />
-              <FormItem hidden name="classification" component={SysField.Name} />
-              <FormItem hidden name="customerLevelId" component={SysField.Name} />
-              <FormItem hidden name="supply" value={1} component={SysField.Name} />
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            toggle();
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <FormItem hidden name="status" component={SysField.Name} />
+          <FormItem hidden name="classification" component={SysField.Name} />
+          <FormItem hidden name="customerLevelId" component={SysField.Name} />
+          <FormItem hidden name="supply" value={1} component={SysField.Name} />
+        </FormButtonGroup>
       </>
     );
   };
@@ -241,7 +231,7 @@ const SupplyList = (props) => {
         <Column key={6} title="创建时间" width={200} align="center" dataIndex="createTime" sorter />
       </Table>
       <CreateNewCustomer
-        title='供应商'
+        title="供应商"
         model={CustomerEdit}
         supply={1}
         widths={1200}

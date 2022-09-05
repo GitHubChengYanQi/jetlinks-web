@@ -7,13 +7,12 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import Table from '@/components/Table';
-import {Button, Divider, Table as AntTable, Tag} from 'antd';
+import {Button, Divider, Space, Table as AntTable, Tag} from 'antd';
 import {useRequest} from '@/util/Request';
 import DelButton from '@/components/DelButton';
 import AddButton from '@/components/AddButton';
 import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {MegaLayout} from '@formily/antd-components';
 import {createFormActions, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined, InfoCircleOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
@@ -80,27 +79,18 @@ const CompetitorTable = (props) => {
           <FormItem mega-props={{span: 1}} placeholder="联系电话" name="phone" component={SysField.Phone} />
           <FormItem mega-props={{span: 1}} placeholder="员工规模" name="staffSize" component={SysField.StaffSize} />
           <FormItem mega-props={{span: 1}} placeholder="公司所有制" name="ownership" component={SysField.Ownership} />
-          <FormItem mega-props={{span: 1}} placeholder="地区" name="region" options={data && data.area} component={SysField.Region} />
+          <FormItem mega-props={{span: 1}} placeholder="地区" name="region" options={data && data.area}
+                    component={SysField.Region} />
           <FormItem mega-props={{span: 1}} placeholder="年销售" name="annualSales" component={SysField.AnnualSales} />
         </>
       );
     };
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4}
-          full
-          autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="竞争对手企业名称" name="name" component={SysField.Name} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
+      <Space wrap>
+        <FormItem mega-props={{span: 1}} placeholder="竞争对手企业名称" name="name" component={SysField.Name} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -108,24 +98,19 @@ const CompetitorTable = (props) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              <FormItem hidden name="competitionLevel" component={SysField.CompetitionLevel} />
-              <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
-
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            if (search) {
+              setSearch(false);
+            } else {
+              setSearch(true);
+            }
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <FormItem hidden name="competitionLevel" component={SysField.CompetitionLevel} />
+          <FormItem hidden name="businessId" value={businessId || null} component={SysField.BusinessId} />
+        </FormButtonGroup>
       </>
     );
   };
@@ -149,9 +134,9 @@ const CompetitorTable = (props) => {
         api={competitorList}
         isModal={false}
         rowKey="competitorId"
-        tableKey='competitor'
+        tableKey="competitor"
         searchForm={searchForm}
-        headStyle={{display:businessId && 'none'}}
+        headStyle={{display: businessId && 'none'}}
         SearchButton={Search()}
         formActions={formActionsPublic}
         layout={search}
@@ -204,20 +189,20 @@ const CompetitorTable = (props) => {
         tableRef.current.refresh();
         ref.current.close();
       }} ref={ref}
-      compoentRef={submitRef}
-      footer={
-        <>
-          <Button type="primary" onClick={() => {
-            submitRef.current.formRef.current.submit();
-          }}>
-           保存
-          </Button>
-          <Button onClick={() => {
-            ref.current.close();
-          }}>
-           取消
-          </Button>
-        </>}
+             compoentRef={submitRef}
+             footer={
+               <>
+                 <Button type="primary" onClick={() => {
+                   submitRef.current.formRef.current.submit();
+                 }}>
+                   保存
+                 </Button>
+                 <Button onClick={() => {
+                   ref.current.close();
+                 }}>
+                   取消
+                 </Button>
+               </>}
       />
       <Modal width={1200} component={competitorTable} onSuccess={() => {
         tableRef.current.refresh();

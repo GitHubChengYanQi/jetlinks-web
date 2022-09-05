@@ -12,7 +12,6 @@ import {
   Spin,
   Modal as AntModal, Alert
 } from 'antd';
-import {MegaLayout} from '@formily/antd-components';
 import {FormEffectHooks, InternalFieldList as FieldList} from '@formily/antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {getSearchParams, useHistory} from 'ice';
@@ -31,6 +30,7 @@ import {paymentTemplateDetail, paymentTemplateListSelect} from '@/pages/Purshase
 import Empty from '@/components/Empty';
 import {skuResults} from '@/pages/Erp/sku/skuUrl';
 import Draft from '@/components/Form/components/Draft';
+import style from './index.module.less';
 
 const {FormItem} = Form;
 
@@ -147,6 +147,7 @@ const CreateOrder = ({...props}) => {
     </div>
 
     <Form
+      className={style.form}
       value={false}
       ref={formRef}
       NoButton={false}
@@ -250,43 +251,41 @@ const CreateOrder = ({...props}) => {
     >
 
       <ProCard style={{marginTop: 24}} bodyStyle={{padding: 16}} className="h2Card" title="基本信息" headerBordered>
-        <MegaLayout labelWidth={labelWidth}>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                module={11}
-                label={module().coding}
-                name="coding"
-                component={SysField.Codings}
-              />
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label={module().dateTitle}
-                name="deliveryDate"
-                component={SysField.Date}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="币种"
-                name="currency"
-                component={SysField.Currency}
-              />
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label={module().noteTitle}
-                name="remark"
-                component={SysField.Remark}
-              />
-            </Col>
-          </Row>
-        </MegaLayout>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              module={11}
+              label={module().coding}
+              name="coding"
+              component={SysField.Codings}
+            />
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label={module().dateTitle}
+              name="deliveryDate"
+              component={SysField.Date}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              label="币种"
+              name="currency"
+              component={SysField.Currency}
+            />
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label={module().noteTitle}
+              name="remark"
+              component={SysField.Remark}
+            />
+          </Col>
+        </Row>
       </ProCard>
 
       <Overflow defaultHeight={300}>
@@ -302,108 +301,106 @@ const CreateOrder = ({...props}) => {
               }}>新建客户</Button>}
               headStyle={{height: 49}}
             >
-              <MegaLayout labelWidth={labelWidth}>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      value={params.module === 'PO' ? userInfo.customerId : null}
-                      selfEnterprise={params.module === 'PO'}
-                      supply={params.module === 'PO' ? null : 0}
-                      label="公司名称"
-                      placeholder="请选择甲方公司"
-                      name="buyerId"
-                      component={CustomerSysField.Customer}
-                      required
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="公司地址"
-                      placeholder="请选择甲方公司地址"
-                      name="partyAAdressId"
-                      component={CustomerSysField.Adress}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="委托代理"
-                      placeholder="请选择甲方公司委托代理"
-                      name="partyAContactsId"
-                      component={CustomerSysField.Contacts}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="联系电话"
-                      placeholder="请选择甲方公司联系电话"
-                      name="partyAPhone"
-                      component={CustomerSysField.Phone}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="开户银行"
-                      placeholder="请选择甲方开户银行"
-                      name="partyABankId"
-                      component={CustomerSysField.Bank}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="开户账号"
-                      placeholder="请选择甲方开户账号"
-                      name="partyABankAccount"
-                      component={CustomerSysField.BankAccount}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="法定代表人"
-                      name="partyALegalPerson"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="开户行号"
-                      placeholder="请选择甲方开户行号"
-                      name="partyABankNo"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="公司电话"
-                      name="partyACompanyPhone"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="公司传真"
-                      name="partyAFax"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="邮政编码"
-                      name="partyAZipCode"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                </Row>
-              </MegaLayout>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    value={params.module === 'PO' ? userInfo.customerId : null}
+                    selfEnterprise={params.module === 'PO'}
+                    supply={params.module === 'PO' ? null : 0}
+                    label="公司名称"
+                    placeholder="请选择甲方公司"
+                    name="buyerId"
+                    component={CustomerSysField.Customer}
+                    required
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="公司地址"
+                    placeholder="请选择甲方公司地址"
+                    name="partyAAdressId"
+                    component={CustomerSysField.Adress}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="委托代理"
+                    placeholder="请选择甲方公司委托代理"
+                    name="partyAContactsId"
+                    component={CustomerSysField.Contacts}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="联系电话"
+                    placeholder="请选择甲方公司联系电话"
+                    name="partyAPhone"
+                    component={CustomerSysField.Phone}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="开户银行"
+                    placeholder="请选择甲方开户银行"
+                    name="partyABankId"
+                    component={CustomerSysField.Bank}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="开户账号"
+                    placeholder="请选择甲方开户账号"
+                    name="partyABankAccount"
+                    component={CustomerSysField.BankAccount}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="法定代表人"
+                    name="partyALegalPerson"
+                    component={SysField.Show}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="开户行号"
+                    placeholder="请选择甲方开户行号"
+                    name="partyABankNo"
+                    component={SysField.Show}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="公司电话"
+                    name="partyACompanyPhone"
+                    component={SysField.Show}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="公司传真"
+                    name="partyAFax"
+                    component={SysField.Show}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="邮政编码"
+                    name="partyAZipCode"
+                    component={SysField.Show}
+                  />
+                </Col>
+              </Row>
             </ProCard>
           </Col>
           <Col span={12}>
@@ -416,108 +413,106 @@ const CreateOrder = ({...props}) => {
                 setVisible(true);
               }}>新建供应商</Button>}
               headerBordered>
-              <MegaLayout labelWidth={labelWidth}>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      value={params.module === 'SO' ? userInfo.customerId : null}
-                      selfEnterprise={params.module === 'SO'}
-                      supply={params.module === 'SO' ? null : 1}
-                      label="公司名称"
-                      placeholder="请选择乙方公司"
-                      name="sellerId"
-                      component={CustomerSysField.Customer}
-                      required
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="公司地址"
-                      placeholder="请选择乙方公司地址"
-                      name="partyBAdressId"
-                      component={CustomerSysField.Adress}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="委托代理"
-                      placeholder="请选择乙方公司委托代理"
-                      name="partyBContactsId"
-                      component={CustomerSysField.Contacts}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="联系电话"
-                      placeholder="请选择乙方公司联系电话"
-                      name="partyBPhone"
-                      component={CustomerSysField.Phone}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="开户银行"
-                      placeholder="请选择乙方开户银行"
-                      name="partyBBankId"
-                      component={CustomerSysField.Bank}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="开户账号"
-                      placeholder="请选择乙方开户账号"
-                      name="partyBBankAccount"
-                      component={CustomerSysField.BankAccount}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="法定代表人"
-                      name="partyBLegalPerson"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="开户行号"
-                      placeholder="请选择甲方开户行号"
-                      name="partyBBankNo"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="公司电话"
-                      name="partyBCompanyPhone"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <FormItem
-                      label="公司传真"
-                      name="partyBFax"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <FormItem
-                      label="邮政编码"
-                      name="partyBZipCode"
-                      component={SysField.Show}
-                    />
-                  </Col>
-                </Row>
-              </MegaLayout>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    value={params.module === 'SO' ? userInfo.customerId : null}
+                    selfEnterprise={params.module === 'SO'}
+                    supply={params.module === 'SO' ? null : 1}
+                    label="公司名称"
+                    placeholder="请选择乙方公司"
+                    name="sellerId"
+                    component={CustomerSysField.Customer}
+                    required
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="公司地址"
+                    placeholder="请选择乙方公司地址"
+                    name="partyBAdressId"
+                    component={CustomerSysField.Adress}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="委托代理"
+                    placeholder="请选择乙方公司委托代理"
+                    name="partyBContactsId"
+                    component={CustomerSysField.Contacts}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="联系电话"
+                    placeholder="请选择乙方公司联系电话"
+                    name="partyBPhone"
+                    component={CustomerSysField.Phone}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="开户银行"
+                    placeholder="请选择乙方开户银行"
+                    name="partyBBankId"
+                    component={CustomerSysField.Bank}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="开户账号"
+                    placeholder="请选择乙方开户账号"
+                    name="partyBBankAccount"
+                    component={CustomerSysField.BankAccount}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="法定代表人"
+                    name="partyBLegalPerson"
+                    component={SysField.Show}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="开户行号"
+                    placeholder="请选择甲方开户行号"
+                    name="partyBBankNo"
+                    component={SysField.Show}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="公司电话"
+                    name="partyBCompanyPhone"
+                    component={SysField.Show}
+                  />
+                </Col>
+                <Col span={12}>
+                  <FormItem
+                    label="公司传真"
+                    name="partyBFax"
+                    component={SysField.Show}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <FormItem
+                    label="邮政编码"
+                    name="partyBZipCode"
+                    component={SysField.Show}
+                  />
+                </Col>
+              </Row>
             </ProCard>
           </Col>
         </Row>
@@ -533,225 +528,213 @@ const CreateOrder = ({...props}) => {
       </ProCard>
 
       <ProCard bodyStyle={{padding: 16}} className="h2Card" title="财务信息" headerBordered>
-        <MegaLayout labelWidth={labelWidth}>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label={module().moneyTitle}
-                name="money"
-                component={SysField.Money}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="是否含运费"
-                name="freight"
-                value={1}
-                component={SysField.Freight}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="结算方式"
-                name="payMethod"
-                component={SysField.PayMethod}
-              />
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label="付款计划"
-                name="payPlan"
-                data={data}
-                value={3}
-                loading={templateLoading}
-                component={SysField.PayPlan}
-              />
-            </Col>
-          </Row>
-          <MegaLayout labelWidth={100}>
-            <FieldList
-              name="paymentDetail"
-              initialValue={[
-                {payType: 0, dateNumber: 1, dateWay: 1},
-              ]}
-            >
-              {({state, mutators}) => {
-                const onAdd = () => mutators.push();
-                return (
-                  <div>
-                    {state.value.map((item, index) => {
-                      const onRemove = index => mutators.remove(index);
-                      return <Row gutter={24} key={index}>
-                        <Col span={8}>
-                          <div style={{display: 'flex'}}>
-                            <MegaLayout labelWidth={labelWidth}>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label={module().moneyTitle}
+              name="money"
+              component={SysField.Money}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              label="是否含运费"
+              name="freight"
+              value={1}
+              component={SysField.Freight}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              label="结算方式"
+              name="payMethod"
+              component={SysField.PayMethod}
+            />
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label="付款计划"
+              name="payPlan"
+              data={data}
+              value={3}
+              loading={templateLoading}
+              component={SysField.PayPlan}
+            />
+          </Col>
+        </Row>
+        <FieldList
+          name="paymentDetail"
+          initialValue={[
+            {payType: 0, dateNumber: 1, dateWay: 1},
+          ]}
+        >
+          {({state, mutators}) => {
+            const onAdd = () => mutators.push();
+            return (
+              <div>
+                {state.value.map((item, index) => {
+                  const onRemove = index => mutators.remove(index);
+                  return <Row gutter={24} key={index}>
+                    <Col span={8}>
+                      <div style={{display: 'flex'}}>
+                        <FormItem
+                          label={`第${index + 1}批`}
+                          name={`paymentDetail.${index}.index`}
+                          component={SysField.Index}
+                        />
+                        <Space>
+                          {
+                            payPlan === 2 ?
                               <FormItem
-                                label={`第${index + 1}批`}
-                                name={`paymentDetail.${index}.index`}
-                                component={SysField.Index}
+                                label="付款日期"
+                                name={`paymentDetail.${index}.payTime`}
+                                component={SysField.PayTime}
                               />
-                            </MegaLayout>
-                            <Space>
-                              {
-                                payPlan === 2 ?
-                                  <FormItem
-                                    label="付款日期"
-                                    name={`paymentDetail.${index}.payTime`}
-                                    component={SysField.PayTime}
-                                  />
-                                  :
-                                  <>
-                                    <FormItem
-                                      name={`paymentDetail.${index}.payType`}
-                                      component={SysField.PayType}
-                                    />
-                                    <FormItem
-                                      name={`paymentDetail.${index}.dateNumber`}
-                                      component={SysField.dateNumber}
-                                    />
-                                    <FormItem
-                                      name={`paymentDetail.${index}.dateWay`}
-                                      component={SysField.DateWay}
-                                    />
-                                  </>
-                              }
-                            </Space>
-                          </div>
-                        </Col>
-                        <Col span={5}>
-                          <FormItem
-                            label="付款比例"
-                            name={`paymentDetail.${index}.percentum`}
-                            component={SysField.Percentum}
-                          />
-                        </Col>
-                        <Col span={5}>
-                          <FormItem
-                            itemStyle={{margin: 0}}
-                            label="付款金额"
-                            name={`paymentDetail.${index}.money`}
-                            component={SysField.PayMoney}
-                          />
-                        </Col>
-                        <Col span={span}>
-                          <Space align="start">
-                            <FormItem
-                              label="款项说明"
-                              placeholder="请输入款项说明"
-                              rows={1}
-                              name={`paymentDetail.${index}.remark`}
-                              component={SysField.Remark}
-                            />
-                            <Button
-                              type="link"
-                              style={{float: 'right'}}
-                              disabled={state.value.length === 1}
-                              icon={<DeleteOutlined />}
-                              onClick={() => {
-                                onRemove(index);
-                              }}
-                              danger
-                            />
-                          </Space>
-                        </Col>
-                      </Row>;
-                    })}
-                    <Button
-                      type="dashed"
-                      style={{marginTop: 8, marginBottom: 16, marginLeft: labelWidth}}
-                      icon={<PlusOutlined />}
-                      onClick={onAdd}>添加付款批次</Button>
-                  </div>
-                );
-              }}
-            </FieldList>
-          </MegaLayout>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label="财务备注"
-                name="paymentRemark"
-                placeholder="请输入财务备注"
-                component={SysField.Remark}
-              />
-            </Col>
-          </Row>
-        </MegaLayout>
+                              :
+                              <>
+                                <FormItem
+                                  name={`paymentDetail.${index}.payType`}
+                                  component={SysField.PayType}
+                                />
+                                <FormItem
+                                  name={`paymentDetail.${index}.dateNumber`}
+                                  component={SysField.dateNumber}
+                                />
+                                <FormItem
+                                  name={`paymentDetail.${index}.dateWay`}
+                                  component={SysField.DateWay}
+                                />
+                              </>
+                          }
+                        </Space>
+                      </div>
+                    </Col>
+                    <Col span={5}>
+                      <FormItem
+                        label="付款比例"
+                        name={`paymentDetail.${index}.percentum`}
+                        component={SysField.Percentum}
+                      />
+                    </Col>
+                    <Col span={5}>
+                      <FormItem
+                        itemStyle={{margin: 0}}
+                        label="付款金额"
+                        name={`paymentDetail.${index}.money`}
+                        component={SysField.PayMoney}
+                      />
+                    </Col>
+                    <Col span={span}>
+                      <Space align="start">
+                        <FormItem
+                          label="款项说明"
+                          placeholder="请输入款项说明"
+                          rows={1}
+                          name={`paymentDetail.${index}.remark`}
+                          component={SysField.Remark}
+                        />
+                        <Button
+                          type="link"
+                          style={{float: 'right'}}
+                          disabled={state.value.length === 1}
+                          icon={<DeleteOutlined />}
+                          onClick={() => {
+                            onRemove(index);
+                          }}
+                          danger
+                        />
+                      </Space>
+                    </Col>
+                  </Row>;
+                })}
+                <Button
+                  type="dashed"
+                  style={{marginTop: 8, marginBottom: 16, marginLeft: labelWidth}}
+                  icon={<PlusOutlined />}
+                  onClick={onAdd}>添加付款批次</Button>
+              </div>
+            );
+          }}
+        </FieldList>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label="财务备注"
+              name="paymentRemark"
+              placeholder="请输入财务备注"
+              component={SysField.Remark}
+            />
+          </Col>
+        </Row>
       </ProCard>
 
       <ProCard bodyStyle={{padding: 16}} className="h2Card" title={module().goodTitle} headerBordered>
-        <MegaLayout labelWidth={labelWidth}>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label="交货方式"
-                name="deliveryWay"
-                component={SysField.DeliveryWay}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="交货地址"
-                name="adressId"
-                adressType="goods"
-                component={CustomerSysField.Adress}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="交货人"
-                name="userId"
-                component={CustomerSysField.Contacts}
-              />
-            </Col>
-          </Row>
-        </MegaLayout>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label="交货方式"
+              name="deliveryWay"
+              component={SysField.DeliveryWay}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              label="交货地址"
+              name="adressId"
+              adressType="goods"
+              component={CustomerSysField.Adress}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              label="交货人"
+              name="userId"
+              component={CustomerSysField.Contacts}
+            />
+          </Col>
+        </Row>
       </ProCard>
 
       <ProCard bodyStyle={{padding: 16}} className="h2Card" title="合同关联信息" headerBordered>
-        <MegaLayout labelWidth={labelWidth}>
-          <Row gutter={24}>
-            <Col span={span}>
-              <FormItem
-                label="是否需要合同"
-                required
-                name="generateContract"
-                component={SysField.Freight}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                visible={false}
-                label="合同模板"
-                name="templateId"
-                component={SysField.TemplateId}
-              />
-            </Col>
-            <Col span={span}>
-              <FormItem
-                label="合同编码"
-                visible={false}
-                name="contractCoding"
-                module={12}
-                component={SysField.Codings}
-              />
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={24}>
-              <MegaLayout labelWidth={200} labelAlign="top">
-                <FormItem
-                  visible={false}
-                  // label="合同模板中的其他字段"
-                  name="labelResults"
-                  component={SysField.AllField}
-                />
-              </MegaLayout>
-            </Col>
-          </Row>
-        </MegaLayout>
+        <Row gutter={24}>
+          <Col span={span}>
+            <FormItem
+              label="是否需要合同"
+              required
+              name="generateContract"
+              component={SysField.Freight}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              visible={false}
+              label="合同模板"
+              name="templateId"
+              component={SysField.TemplateId}
+            />
+          </Col>
+          <Col span={span}>
+            <FormItem
+              label="合同编码"
+              visible={false}
+              name="contractCoding"
+              module={12}
+              component={SysField.Codings}
+            />
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={24}>
+            <FormItem
+              visible={false}
+              // label="合同模板中的其他字段"
+              name="labelResults"
+              component={SysField.AllField}
+            />
+          </Col>
+        </Row>
       </ProCard>
 
       <ProCard bodyStyle={{padding: 16}} className="h2Card" title="其他约定项" headerBordered>

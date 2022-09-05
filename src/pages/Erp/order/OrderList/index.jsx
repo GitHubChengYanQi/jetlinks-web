@@ -6,19 +6,18 @@
  */
 
 import React, {useRef} from 'react';
-import {Button, Table as AntTable} from 'antd';
+import {Button, Space, Table as AntTable} from 'antd';
 import Table from '@/components/Table';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
 import Modal from '@/components/Modal';
 import './index.scss';
 import {useBoolean} from 'ahooks';
-import {MegaLayout} from '@formily/antd-components';
 import {FormButtonGroup, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Icon from '@/components/Icon';
 import OrderEdit from '../OrderEdit';
-import { orderList} from '../OrderUrl';
+import {orderList} from '../OrderUrl';
 import * as SysField from '../OrderField';
 
 const {Column} = AntTable;
@@ -32,7 +31,7 @@ const OrderList = (props) => {
   const tableRef = useRef(null);
   const orderDetailRef = useRef(null);
 
-  const [search,{toggle}]  = useBoolean(false);
+  const [search, {toggle}] = useBoolean(false);
 
   const searchForm = () => {
 
@@ -41,19 +40,19 @@ const OrderList = (props) => {
         <>
           <FormItem mega-props={{span: 1}} placeholder="货单状态" name="state" component={SysField.State} />
           {
-            customerId ? null :  <FormItem mega-props={{span: 1}} placeholder="客户名称"  value={customerId || null} name="customerId" component={SysField.CustomerListSelect} />
+            customerId ? null :
+              <FormItem mega-props={{span: 1}} placeholder="客户名称" value={customerId || null} name="customerId"
+                        component={SysField.CustomerListSelect} />
           }
         </>
       );
     };
 
     return (
-      <div style={{maxWidth:800}} >
-        <MegaLayout responsive={{s: 1,m:2,lg:2}} labelAlign="left" layoutProps={{wrapperWidth:200}} grid={search} columns={4} full autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="合同名称" name="contractName" component={SysField.contractName} />
-          {search ? formItem() : null}
-        </MegaLayout>
-      </div>
+      <Space wrap>
+        <FormItem mega-props={{span: 1}} placeholder="合同名称" name="contractName" component={SysField.contractName} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -61,20 +60,20 @@ const OrderList = (props) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type='link' title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              toggle();
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search?'收起':'高级'}</Button>
-            <MegaLayout inline>
-              {
-                customerId ?  <FormItem mega-props={{span: 1}} placeholder="客户名称"  hidden value={customerId || ' '} name="partyA" component={SysField.CustomerListSelect} /> : null
-              }
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            toggle();
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          <MegaLayout inline>
+            {
+              customerId ?
+                <FormItem mega-props={{span: 1}} placeholder="客户名称" hidden value={customerId || ' '} name="partyA"
+                          component={SysField.CustomerListSelect} /> : null
+            }
+          </MegaLayout>
+        </FormButtonGroup>
 
       </>
     );
@@ -92,14 +91,14 @@ const OrderList = (props) => {
         searchForm={searchForm}
         ref={tableRef}
       >
-        <Column title="合同名称" fixed dataIndex="contractName" render={(value,record)=>{
+        <Column title="合同名称" fixed dataIndex="contractName" render={(value, record) => {
           return (
             <Button type="link" onClick={() => {
               orderDetailRef.current.open(record.orderId);
             }}>{record.contractName}</Button>
           );
-        }} sorter/>
-        <Column title="甲方" width={120} dataIndex="partyA" render={(value,record)=>{
+        }} sorter />
+        <Column title="甲方" width={120} dataIndex="partyA" render={(value, record) => {
           return (
             <div>
               {
@@ -107,8 +106,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="甲方联系人"  width={120}  dataIndex="partyAContactsId" render={(value,record)=>{
+        }} sorter />
+        <Column title="甲方联系人" width={120} dataIndex="partyAContactsId" render={(value, record) => {
           return (
             <div>
               {
@@ -116,8 +115,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="甲方联系地址"  width={200}  dataIndex="partyAAdressId" render={(value,record)=>{
+        }} sorter />
+        <Column title="甲方联系地址" width={200} dataIndex="partyAAdressId" render={(value, record) => {
           return (
             <div>
               {
@@ -125,8 +124,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="甲方联系人电话"  width={150}  dataIndex="partyAPhone" render={(value,record)=>{
+        }} sorter />
+        <Column title="甲方联系人电话" width={150} dataIndex="partyAPhone" render={(value, record) => {
           return (
             <div>
               {
@@ -134,8 +133,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="乙方"  width={120}  dataIndex="partyB" render={(value,record)=>{
+        }} sorter />
+        <Column title="乙方" width={120} dataIndex="partyB" render={(value, record) => {
           return (
             <div>
               {
@@ -143,8 +142,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="乙方联系人"  width={120}  dataIndex="partyBContactsId" render={(value,record)=>{
+        }} sorter />
+        <Column title="乙方联系人" width={120} dataIndex="partyBContactsId" render={(value, record) => {
           return (
             <div>
               {
@@ -152,8 +151,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="乙方联系地址"  width={200}  dataIndex="partyBAdressId" render={(value,record)=>{
+        }} sorter />
+        <Column title="乙方联系地址" width={200} dataIndex="partyBAdressId" render={(value, record) => {
           return (
             <div>
               {
@@ -161,8 +160,8 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="乙方联系人电话"  width={150}  dataIndex="partyBPhone" render={(value,record)=>{
+        }} sorter />
+        <Column title="乙方联系人电话" width={150} dataIndex="partyBPhone" render={(value, record) => {
           return (
             <div>
               {
@@ -170,9 +169,9 @@ const OrderList = (props) => {
               }
             </div>
           );
-        }} sorter/>
-        <Column title="货单状态" width={120} align='center' dataIndex="state"   sorter/>
-        <Column title="货单时间" width={200} dataIndex="orderTime" sorter/>
+        }} sorter />
+        <Column title="货单状态" width={120} align="center" dataIndex="state" sorter />
+        <Column title="货单时间" width={200} dataIndex="orderTime" sorter />
       </Table>
       <Modal width={1200} title="货单" component={OrderEdit} onSuccess={() => {
         tableRef.current.refresh();

@@ -9,8 +9,7 @@ import {
   Submit,
   FormButtonGroup,
 } from '@formily/antd';
-import {Radio} from '@formily/antd-components';
-import {Button, Input,  Space, Tabs} from 'antd';
+import {Button, Input, Radio, Space, Tabs} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import InputNumber from '@/components/InputNumber';
 import Select from '@/components/Select';
@@ -149,7 +148,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
         label="配置生产过程"
         name="type"
         component={Radio.Group}
-        dataSource={[
+        options={[
           {label: '工序', value: 'setp',},
           {label: '工艺路线', value: 'ship',},
         ]} />
@@ -160,7 +159,7 @@ const Setps = ({value: defaultValue, onClose, onChange, bomSkuIds}) => {
           label="投入与产出是否相同"
           name="productionType"
           component={Radio.Group}
-          dataSource={[
+          options={[
             {label: '是', value: 1,},
             {label: '否', value: 0,},
           ]}

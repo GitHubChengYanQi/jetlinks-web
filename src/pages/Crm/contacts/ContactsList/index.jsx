@@ -6,8 +6,7 @@
  */
 
 import React, {useRef, useState} from 'react';
-import {Button, Divider, Input, Modal as AntModal, Table as AntTable, Tag} from 'antd';
-import {MegaLayout} from '@formily/antd-components';
+import {Button, Divider, Input, Modal as AntModal, Space, Table as AntTable, Tag} from 'antd';
 import {createFormActions, FormButtonGroup, Submit} from '@formily/antd';
 import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import Table from '@/components/Table';
@@ -93,20 +92,10 @@ const ContactsTable = (props) => {
 
 
     return (
-      <div style={{maxWidth: 800}}>
-        <MegaLayout
-          responsive={{s: 1, m: 2, lg: 2}}
-          labelAlign="left"
-          layoutProps={{wrapperWidth: 200}}
-          grid={search}
-          columns={4}
-          full
-          autoRow>
-          <FormItem mega-props={{span: 1}} placeholder="联系人姓名" name="contactsName" component={SysField.ContactsName} />
-          {search ? formItem() : null}
-        </MegaLayout>
-
-      </div>
+      <Space wrap>
+        <FormItem mega-props={{span: 1}} placeholder="联系人姓名" name="contactsName" component={SysField.ContactsName} />
+        {search ? formItem() : null}
+      </Space>
     );
   };
 
@@ -114,26 +103,22 @@ const ContactsTable = (props) => {
   const Search = () => {
     return (
       <>
-        <MegaLayout>
-          <FormButtonGroup>
-            <Submit><SearchOutlined />查询</Submit>
-            <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
-              if (search) {
-                setSearch(false);
-              } else {
-                setSearch(true);
-              }
-            }}>
-              <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
-            <MegaLayout inline>
-              {customer && <FormItem
-                hidden
-                value={customer.customerId || ' '}
-                name="customerId"
-                component={SysField.Customer} />}
-            </MegaLayout>
-          </FormButtonGroup>
-        </MegaLayout>
+        <FormButtonGroup>
+          <Submit><SearchOutlined />查询</Submit>
+          <Button type="link" title={search ? '收起高级搜索' : '展开高级搜索'} onClick={() => {
+            if (search) {
+              setSearch(false);
+            } else {
+              setSearch(true);
+            }
+          }}>
+            <Icon type={search ? 'icon-shouqi' : 'icon-gaojisousuo'} />{search ? '收起' : '高级'}</Button>
+          {customer && <FormItem
+            hidden
+            value={customer.customerId || ' '}
+            name="customerId"
+            component={SysField.Customer} />}
+        </FormButtonGroup>
       </>
     );
   };
@@ -144,7 +129,7 @@ const ContactsTable = (props) => {
       centered: true,
       content: <>
         请确认离职操作
-        <Input onChange={(value)=>{
+        <Input onChange={(value) => {
           setNewCustomerId(value.target.value);
         }} />
       </>,
