@@ -8,7 +8,6 @@ import useRequest from '@/util/Request/useRequest';
 import {SkeletonForm} from '@/components/Skeleton';
 
 import style from './index.module.less';
-import Draft from '@/components/Form/components/Draft';
 
 const formActionsPublic = createAsyncFormActions();
 
@@ -189,15 +188,6 @@ const FormWrapper = (
     {NoButton && <FormButtonGroup offset={11}>
       <Submit showLoading>保存</Submit>
       <Reset>重置</Reset>
-      <Draft
-        type={formType}
-        getValues={async () => {
-          return await getFormState();
-        }}
-        onChange={(value) => {
-          setFormState(value);
-        }}
-      />
     </FormButtonGroup>}
   </FormilyForm>;
 };

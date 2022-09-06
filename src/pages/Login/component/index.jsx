@@ -28,7 +28,7 @@ export default function Login({ submitText }) {
           data: values
         });
         if (response) {
-          cookie.set('tianpeng-token', response);
+          cookie.set('jetlink-token', response);
           setTimeout(() => {
             if (params.backUrl) {
               window.location.href = decodeURIComponent(params.backUrl);

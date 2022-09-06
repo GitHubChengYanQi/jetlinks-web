@@ -25,16 +25,6 @@ const UserList = () => {
     );
   };
 
-  const actions = () => {
-    return (
-      <>
-        <AddButton onClick={() => {
-          dfRef.current.open(false);
-        }}/>
-      </>
-    );
-  };
-
   // 冻结账号
   const {run: freezeRun} = useRequest(userFreeze,
     {
@@ -154,12 +144,13 @@ const UserList = () => {
     <>
       <Table
         ref={ref}
-        title={<Breadcrumb />}
         api={userList}
         columns={columns}
         rowKey="userId"
         searchForm={searchForm}
-        actions={actions()}
+        searchButtons={[ <AddButton onClick={() => {
+          dfRef.current.open(false);
+        }}/>]}
       />
       <Drawer ref={dfRef} title='编辑客户' component={UserEdit} onSuccess={() => {
         ref.current.refresh();

@@ -1,16 +1,15 @@
 import React, {useRef} from 'react';
+import {RollbackOutlined} from '@ant-design/icons';
+import {useParams, useHistory} from 'ice';
+import {Input, Button} from 'antd';
 import Table from '@/components/Table';
 import {dictList} from '@/Config/ApiUrl/system/dict';
-import {Input, Button} from 'antd';
-import {useParams, useHistory} from 'ice';
 import EditButton from '@/components/EditButton';
 import Drawer from '@/components/Drawer';
 import DictEdit from '@/pages/BaseSystem/dictType/dict/Edit';
 import AddButton from '@/components/AddButton';
-import {RollbackOutlined} from '@ant-design/icons';
 import Form from '@/components/Form';
 import Breadcrumb from '@/components/Breadcrumb';
-import MinWidthDiv from '@/components/MinWidthDiv';
 import Note from '@/components/Note';
 
 const {Column} = Table;
@@ -23,19 +22,6 @@ const DictList = () => {
   const tableRef = useRef();
   const ref = useRef();
   const {dictTypeId} = useParams();
-
-  const actions = () => {
-    return (
-      <>
-        <Button onClick={() => {
-          history.push('/BASE_SYSTEM/dictType');
-        }}><RollbackOutlined />返回</Button>
-        <AddButton onClick={() => {
-          ref.current.open(false);
-        }} />
-      </>
-    );
-  };
 
   const searchForm = () => {
     return (
@@ -53,13 +39,20 @@ const DictList = () => {
   return (
     <>
       <Table
+        formSubmit={(values) => ({...values, dictTypeId})}
         isModal={false}
         noPagination
         title={<Breadcrumb />}
         ref={tableRef}
         api={dictList}
-        searchForm={searchForm}
-        actions={actions()}
+        searchButtons={[
+          <Button key={1} onClick={() => {
+            history.push('/BASE_SYSTEM/dictType');
+          }}><RollbackOutlined />返回</Button>,
+          <AddButton key={2} onClick={() => {
+            ref.current.open(false);
+          }} />
+        ]}
       >
         <Column title="名称" dataIndex="name" width={200} render={(value) => {
           return <Note width={200}>{value}</Note>;

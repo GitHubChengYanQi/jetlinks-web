@@ -15,7 +15,7 @@ const {FormItem} = Form;
 
 const GenEdit = () => {
 
-  const token = cookie.get('tianpeng-token');
+  const token = cookie.get('jetlink-token');
 
   let javaGenPack = {
     author: '',
@@ -63,7 +63,7 @@ const GenEdit = () => {
           // const res = request( {
           //   url:`${config.baseURI}${execute.url}?${qs.stringify(result)}`,
           //   method: 'GET',
-          //   headers: {Authorization: cookie.get('tianpeng-token')},
+          //   headers: {Authorization: cookie.get('jetlink-token')},
           // });
           window.open(`${config.baseURI}${execute.url}?${qs.stringify(result)}&authorization=${token}`);
           return false;

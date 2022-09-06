@@ -1,16 +1,14 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Button, Card, Col, Layout, Row, Space, Table as AntdTable} from 'antd';
+import {Button, Card, Col, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
-import useTableSet from '@/hook/useTableSet';
 import TableSort from '@/components/Table/components/TableSort';
 
 
 const {Column} = AntdTable;
-const {Sider, Content} = Layout;
 
 const formActionsPublic = createFormActions();
 
@@ -34,6 +32,7 @@ const TableWarp = (
     noPagination,
     isChildren,
     contentHeight,
+    searchButtons = [],
     searchForm,
     cardTitle,
     rowKey,
@@ -62,7 +61,6 @@ const TableWarp = (
     sortList,
     submitAction,
     footer: parentFooter,
-    isModal = true,
     formActions = null,
     left,
     ...props
@@ -114,13 +112,11 @@ const TableWarp = (
       order: sorter.order
     };
     const newValues = typeof formSubmit === 'function' ? formSubmit(values) : values;
-    if (!isModal) {
-      setState({
-        params: JSON.stringify({
-          ...page, values: pagination.current ? newValues : {}
-        })
-      });
-    }
+    setState({
+      params: JSON.stringify({
+        ...page, values: pagination.current ? newValues : {}
+      })
+    });
     let response;
 
     try {
@@ -201,24 +197,11 @@ const TableWarp = (
     );
   };
 
-  const {tableColumn, setButton} = useTableSet(children, tableKey);
-
   return (
-    <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
-      <div style={headStyle}>
-        {title ? <div className={style.listHeader}>
-          <div className="title">{title}</div>
-        </div> : null}
-      </div>
-      <Layout>
-        {left && <Sider className={style.sider} width={180}>
-          {left}
-        </Sider>}
-        <Content
-          style={{height: contentHeight || 'calc(100vh - 128px)', overflow: 'auto'}}
-          id="tableContent"
-        >
-          {searchForm ? <div className="search" style={headStyle}>
+    <Card bordered={false}>
+      <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
+        <div className="search" style={headStyle}>
+          {searchForm ?
             <Row justify="space-between">
               <Col>
                 <Form
@@ -245,103 +228,82 @@ const TableWarp = (
                       }}>
                       重置
                     </Button>
+                    {searchButtons}
                   </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
                 {!listHeader && actions}
               </Col>
-            </Row>
-
-          </div> : <Form
-            layout="inline"
-            {...form}
-            actions={formActions}
-          />}
-          <Card
-            bordered={bordered || false}
-            title={listHeader ? actions : null}
-            headStyle={headStyle || cardHeaderStyle}
-            bodyStyle={bodyStyle}
-            extra={<Space>
-              {actionButton}
-              {!headStyle && !noTableColumn && setButton}
-            </Space>}
-          >
-            {showCard}
-            <AntdTable
-              showTotal
-              expandable={expandable}
-              loading={getLoading || loading}
-              dataSource={dataSource || []}
-              rowKey={rowKey}
-              columns={columns}
-              pagination={
-                noPagination || {
-                  ...pagination,
-                  showTotal: (total) => {
-                    return `共${total || dataSource.length}条`;
-                  },
-                  showQuickJumper: true,
-                  position: ['bottomRight']
-                }
+            </Row> : <>
+              <Form
+                layout="inline"
+                {...form}
+                actions={formActions}
+              />
+              {searchButtons}
+            </>}
+        </div>
+        <AntdTable
+          showTotal
+          expandable={expandable}
+          loading={getLoading || loading}
+          dataSource={dataSource || []}
+          rowKey={rowKey}
+          columns={columns}
+          pagination={
+            noPagination || {
+              ...pagination,
+              showTotal: (total) => {
+                return `共${total || dataSource.length}条`;
+              },
+              showQuickJumper: true,
+              position: ['bottomRight']
+            }
+          }
+          rowSelection={!noRowSelection && {
+            type: selectionType || 'checkbox',
+            defaultSelectedRowKeys,
+            selectedRowKeys,
+            onChange: (selectedRowKeys, selectedRows) => {
+              typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
+            },
+            ...rowSelection,
+            getCheckboxProps,
+          }}
+          footer={footer}
+          layout
+          scroll={{x: 'max-content', y: maxHeight}}
+          {...other}
+          {...props}
+        >
+          {noSort || <Column
+            fixed="left"
+            title="序号"
+            dataIndex="sort"
+            width={80}
+            align="center"
+            render={(text, item, index) => {
+              if (sortAction && (text || text === 0)) {
+                return <TableSort
+                  rowKey={item[rowKey]}
+                  sorts={sorts}
+                  value={text}
+                  onChange={(value) => {
+                    if (typeof sortList === 'function') {
+                      sortList(value);
+                    }
+                    setSorts(value);
+                  }} />;
+              } else {
+                return <>{index + 1}</>;
               }
-              rowSelection={!noRowSelection && {
-                type: selectionType || 'checkbox',
-                defaultSelectedRowKeys,
-                selectedRowKeys,
-                onChange: (selectedRowKeys, selectedRows) => {
-                  typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
-                },
-                ...rowSelection,
-                getCheckboxProps,
-              }}
-              footer={footer}
-              layout
-              scroll={{x: 'max-content', y: maxHeight}}
-              sticky={{
-                getContainer: () => {
-                  return document.getElementById('tableContent');
-                }
-              }}
-              {...other}
-              {...props}
-            >
-              {noSort || <Column
-                fixed="left"
-                title="序号"
-                dataIndex="sort"
-                width={80}
-                align="center"
-                render={(text, item, index) => {
-                  if (sortAction && (text || text === 0)) {
-                    return <TableSort
-                      rowKey={item[rowKey]}
-                      sorts={sorts}
-                      value={text}
-                      onChange={(value) => {
-                        if (typeof sortList === 'function') {
-                          sortList(value);
-                        }
-                        setSorts(value);
-                      }} />;
-                  } else {
-                    return <>{index + 1}</>;
-                  }
 
-                }} />}
-              {tableColumn.filter((items) => {
-                if (items && items.props && items.props.visible === false) {
-                  return false;
-                }
-                return !(items && (items.checked === false));
-              })}
-            </AntdTable>
-          </Card>
-        </Content>
-      </Layout>
-
-    </div>
+            }} />}
+          {children}
+        </AntdTable>
+      </div>
+    </Card>
   );
 };
 

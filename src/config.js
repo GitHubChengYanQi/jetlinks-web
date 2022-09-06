@@ -39,10 +39,10 @@ export default {
     wxBind: 'https://wx.zz2025.com/',
     wxCp: 'http://10.147.20.68:8848/#/',
   },
-  cheng: {
+  Genius: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.124.7:80/',
+    baseURI: 'http://192.168.0.230:85/',
     // baseURI: 'http://10.147.20.68:8881',
     projectName: '道昕云',
     AMAP_KEY: '',

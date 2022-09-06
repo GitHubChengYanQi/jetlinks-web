@@ -8,12 +8,10 @@
 import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {Table as AntTable} from 'antd';
-import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';
-import EditButton from '@/components/EditButton';
 import Form from '@/components/Form';
-import {operationLogDelete, operationLogList} from '../operationLogUrl';
+import {operationLogList} from '../operationLogUrl';
 import OperationLogEdit from '../operationLogEdit';
 import * as SysField from '../operationLogField';
 

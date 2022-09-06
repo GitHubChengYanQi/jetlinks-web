@@ -1,17 +1,16 @@
 import React, {useRef} from 'react';
-import {Button} from 'antd';
+import {Button, Input} from 'antd';
 
 import {roleList} from '@/Config/ApiUrl/system/role';
 
 import Table from '@/components/Table';
-import DelButton from '@/components/DelButton';
 import EditButton from "@/components/EditButton";
-import MenuEdit from "@/pages/BaseSystem/menu/MenuEdit";
 import Drawer from "@/components/Drawer";
 import RoleEdit from "@/pages/BaseSystem/role/RoleEdit";
 import RoleSet from "@/pages/BaseSystem/role/RoleSet";
 import AddButton from "@/components/AddButton";
 import Breadcrumb from '@/components/Breadcrumb';
+import FormItem from '@/components/Table/components/FormItem/index';
 
 
 const RoleList = () => {
@@ -60,18 +59,26 @@ const RoleList = () => {
     }
   ];
 
+  const searchForm = () => {
+    return (
+      <>
+        <FormItem label="角色名称" name="name" component={Input} />
+      </>
+    );
+  };
+
+
   return (
     <>
       <Table
+        searchForm={searchForm}
         api={roleList}
         title={<Breadcrumb />}
         columns={columns}
         rowKey="roleId"
-        actions={<>
-          <AddButton onClick={() => {
-            ref.current.open(false);
-          }}/>
-        </>}
+        searchButtons={[<AddButton key='1' onClick={() => {
+          ref.current.open(false);
+        }}/>]}
         ref={tableRef}
       />
       <Drawer width={800} title="编辑角色" component={RoleEdit} onSuccess={() => {

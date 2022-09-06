@@ -1,15 +1,13 @@
 import React, {useRef, useState} from 'react';
+import {Input, Table as AntTable} from 'antd';
 import {positionDel, positionList} from '@/Config/ApiUrl/system/position';
 import Table from '@/components/Table';
-import {Table as AntTable} from 'antd';
 import Breadcrumb from '@/components/Breadcrumb';
 import AddButton from '@/components/AddButton';
-import * as SysField from '@/pages/Erp/brand/BrandField';
 import DelButton from '@/components/DelButton';
 import Form from '@/components/Form';
 import EditButton from '@/components/EditButton';
 import Drawer from '@/components/Drawer';
-import PositionForm from '@/pages/BaseSystem/position/PositionEdit/PositionForm';
 import PositionEdit from '@/pages/BaseSystem/position/PositionEdit';
 
 const ApiConfig = {
@@ -37,7 +35,7 @@ const PositionList = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="职位名称" name="brandName" component={SysField.BrandName} />
+        <FormItem label="职位名称" name="brandName" component={Input} />
       </>
     );
   };

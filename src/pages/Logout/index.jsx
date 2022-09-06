@@ -6,7 +6,7 @@ import { useHistory } from 'ice';
 
 const Logout = () => {
 
-  cookie.remove('tianpeng-token');
+  cookie.remove('jetlink-token');
 
   const history = useHistory();
   const [count, setCount] = useState(5);

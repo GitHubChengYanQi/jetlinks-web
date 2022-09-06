@@ -1,28 +1,20 @@
 import React, {useEffect} from 'react';
 import cookie from 'js-cookie';
 import {logger, useHistory} from 'ice';
-import {Alert, Spin, Layout} from 'antd';
-import Header from '@/layouts/BasicLayout/components/Header';
+import {Alert, Spin} from 'antd';
 import store from '@/store';
 
-import WindowOpenImg from '@/components/Editor/components/WindowOpenImg';
-import WindowOpenSku from '@/components/Editor/components/WindowOpenSku';
-import WindowOpenPosition from '@/components/Editor/components/WindowOpenPosition';
-import {request} from '@/util/Request';
 import TopLayout from '@/layouts/TopLayout';
-
-const {Content} = Layout;
 
 export default function BasicLayout({children}) {
 
   const history = useHistory();
   const [state, dispatchers] = store.useModel('user');
-  const dataDispatchers = store.useModel('dataSource')[1];
 
   const Initialize = async () => {
-    window.document.title = '道昕智造（沈阳）网络科技有限公司';
+    window.document.title = '奥普泰设备业务云平台';
     try {
-      const token = cookie.get('tianpeng-token');
+      const token = cookie.get('jetlink-token');
       if (!token) {
         throw new Error('本地登录信息不存在');
       }
@@ -33,7 +25,7 @@ export default function BasicLayout({children}) {
       dispatchers.getUserInfo();
     } catch (e) {
       logger.error(e.message);
-      cookie.remove('tianpeng-token');
+      cookie.remove('jetlink-token');
       // TODO 登录超时处理
       history.push('/login');
     }
@@ -62,14 +54,6 @@ export default function BasicLayout({children}) {
           </TopLayout>
         </>
       }
-
-
-      <WindowOpenSku />
-
-      <WindowOpenPosition />
-
-      <WindowOpenImg />
-
     </>
   );
 }

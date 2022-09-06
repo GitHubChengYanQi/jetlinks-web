@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useHistory, useLocation} from 'ice';
 import {ProLayout} from '@ant-design/pro-layout';
 import store from '@/store';
 import styles from './index.module.less';
 import logo from '../../asseset/imgs/logo.png';
+import Avatar from '@/layouts/TopLayout/components/Avatar/Avatar';
 
 const TopLayout = ({children}) => {
 
@@ -12,12 +13,12 @@ const TopLayout = ({children}) => {
   const [userInfo] = store.useModel('user');
   const {menus} = userInfo;
 
-  const routes = (menuList) => {
+  const getRoutes = (menuList) => {
     return menuList.map(item => {
       return {
         name: item.name,
-        path: item.url === '#' ? item.code :(item.url || `/${item.id}`),
-        routes: (item.subMenus || item.children) ? routes(item.subMenus || item.children) : [],
+        path: item.url === '#' ? item.code : (item.url || `/${item.id}`),
+        routes: (item.subMenus || item.children) ? getRoutes(item.subMenus || item.children) : [],
       };
     });
   };
@@ -32,11 +33,30 @@ const TopLayout = ({children}) => {
     });
   };
 
+  const routes = getRoutes(menus);
+
+  const getFirstRoute = (route) => {
+    if (route) {
+      if (route.routes.length > 0) {
+        return getFirstRoute(route.routes[0]);
+      } else {
+        return route;
+      }
+    }
+
+  };
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      history.push(getFirstRoute(routes[0]).path);
+    }
+  }, []);
+
   return <ProLayout
     location={location}
     route={{
       path: '/',
-      routes: routes(menus)
+      routes
     }}
     className={styles.layout}
     menuItemRender={(menuItemProps, defaultDom) => {
@@ -46,13 +66,13 @@ const TopLayout = ({children}) => {
       return <div onClick={() => history.push(menuItemProps.path)}>{defaultDom}</div>;
     }}
     menuDataRender={(props) => menuDataRender(props)}
-    rightContentRender={() => <></>}
+    rightContentRender={() => <Avatar userInfo={userInfo} />}
     title={<div className={styles.layoutTitle}>
       奥普泰设备业务云平台
     </div>}
     logo={logo}
     splitMenus
-    collapsed={false}
+    // collapsed={false}
     headerTheme="light"
     navTheme="dark"
     layout="mix"

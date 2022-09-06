@@ -26,7 +26,7 @@ const ListSelect = () => {
       setOptions([]);
       setFetching(true);
       request({...skuList, data: {skuName: value}}).then((res) => {
-        const newOptions = res.map((item) => {
+        const newOptions = res.data.map((item) => {
           return {
             label: item.skuName,
             value: item.skuId,

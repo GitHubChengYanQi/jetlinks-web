@@ -21,7 +21,7 @@ const RoleSet = ({...props}) => {
         const result = {
           ...values,
           ids: values.checked.join(',')
-        }
+        };
         return result;
       }}
       {...props}

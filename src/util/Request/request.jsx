@@ -4,10 +4,9 @@ const request = async (config) => {
 
   // const {ajaxService} = Service();
   try {
-    const response = await requestProivde({
+    return await requestProivde({
       ...config
     });
-    return response.data;
   }catch (e) {
     return {};
   }
