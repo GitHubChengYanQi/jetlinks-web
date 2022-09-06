@@ -18,12 +18,17 @@ const Select = (
     },
     onSearch = () => {
     },
+    format = (data) => {
+      return data;
+    },
     width: wid,
     ...other
   }
 ) => {
 
   const {loading, data, refresh} = useRequest({...api, data: param}, {manual: !api});
+
+  const selectOptions = format(data) || [];
 
   useEffect(() => {
     if (resh) {
@@ -32,15 +37,15 @@ const Select = (
   }, [resh]);
 
   useEffect(() => {
-    if (value && data && !param) {
-      const items = data && data.filter((items) => {
+    if (value && selectOptions && !param) {
+      const items = selectOptions.filter((items) => {
         return `${items.value}` === `${value}`;
       });
       if (items && items.length <= 0) {
         onChange(null);
       }
     }
-  }, [data, value]);
+  }, [selectOptions, value]);
 
   let valueArray = [];
   const {mode} = other;
@@ -66,18 +71,18 @@ const Select = (
   }
 
   return (
-    <div id='select' style={{width:wid || '100%'}}>
+    <div id="select" style={{width: wid || '100%'}}>
       {
         loading
           ?
-          <Spin />
+          <Spin/>
           :
           <AntSelect
             // open
             {...other}
             listHeight={200}
             bordered={border}
-            options={options || data && data.map((items) => {
+            options={options || selectOptions.map((items) => {
               return {
                 label: items.label || items.title,
                 value: items.value

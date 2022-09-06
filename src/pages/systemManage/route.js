@@ -13,6 +13,11 @@ const systemManageConfig = [
         component: lazy(() => import('@/pages/systemManage/Configuration')),
       },
       {
+        path: '/tenant',
+        name: '租户管理',
+        component: lazy(() => import('@/pages/systemManage/Tenant')),
+      },
+      {
         path: '/role',
         name: '角色管理',
         component: lazy(() => import('@/pages/systemManage/Role')),

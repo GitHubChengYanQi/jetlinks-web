@@ -8,7 +8,7 @@ interface Props {
 
 const Render: React.FC<Props> = (props) => {
   const {width = 100, text, children} = props;
-  return <div style={{minWidth: width}}>{text || children}</div>;
+  return <div style={{minWidth: width,}}>{text || children}</div>;
 };
 
 export default Render;

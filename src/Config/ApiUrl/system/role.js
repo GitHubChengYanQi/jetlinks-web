@@ -14,8 +14,8 @@ export const roleSave = {
 };
 
 export const roleList = {
-  url: '/rest/role/list',
-  method: 'GET',
+  url: '/role/pageList',
+  method: 'POST',
 };
 
 export const roleView = {
@@ -28,6 +28,11 @@ export const roleTree = {
 };
 export const roleTreeList = {
   url: '/rest/role/roleTree',
+  method: 'POST'
+};
+
+export const roleListSelect = {
+  url: '/role/listSelect',
   method: 'POST'
 };
 export const roleSet = {

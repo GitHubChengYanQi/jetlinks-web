@@ -4,7 +4,7 @@ import {DatePicker, Input, message, Modal, Radio, Space, Spin} from 'antd';
 import Select from '@/components/Select';
 import {useRequest} from '@/util/Request';
 import {userAdd, userSave} from '@/Config/ApiUrl/system/user';
-import {roleTreeList} from '@/Config/ApiUrl/system/role';
+import {roleListSelect, roleTreeList} from '@/Config/ApiUrl/system/role';
 
 const RangePicker = DatePicker.RangePicker;
 
@@ -74,7 +74,7 @@ const Save = (
               {required: true, message: '请输入账号名称'},
             ]}
           >
-            <Input placeholder="请输入账号名称" />
+            <Input placeholder="请输入账号名称"/>
           </Form.Item>
           <Form.Item
             initialValue={data?.username}
@@ -85,7 +85,7 @@ const Save = (
               {required: true, message: '请输入账号姓名'},
             ]}
           >
-            <Input placeholder="请输入账号姓名" />
+            <Input placeholder="请输入账号姓名"/>
           </Form.Item>
           <Form.Item
             initialValue={data?.group}
@@ -96,18 +96,20 @@ const Save = (
               {required: false, message: '请选择分组'},
             ]}
           >
-            <Select placeholder="请选择分组" />
+            <Select placeholder="请选择分组"/>
           </Form.Item>
           <Form.Item
             initialValue={data?.checked}
-            key="checked"
+            key="roleId"
             label="选择角色"
-            name="checked"
+            name="roleId"
             rules={[
               {required: true, message: '请选择角色'},
             ]}
           >
-            <Select api={roleTreeList} placeholder="请选择角色" />
+            <Select format={(data = []) => {
+              return data.map(item => ({label: item.name, value: item.role_id+''}));
+            }} api={roleListSelect} placeholder="请选择角色"/>
           </Form.Item>
           <Form.Item
             initialValue={data?.phone}
@@ -118,7 +120,7 @@ const Save = (
               {required: true, message: '请输入手机号码'},
             ]}
           >
-            <Input placeholder="请输入手机号码" />
+            <Input placeholder="请输入手机号码"/>
           </Form.Item>
           <Form.Item
             initialValue={data?.email}
@@ -126,7 +128,7 @@ const Save = (
             label="电子邮件"
             name="email"
           >
-            <Input placeholder="请输入电子邮件" />
+            <Input placeholder="请输入电子邮件"/>
           </Form.Item>
           <Form.Item
             initialValue={data?.password}
@@ -137,7 +139,7 @@ const Save = (
               {required: true, message: '请输入密码'},
             ]}
           >
-            <Input.Password autoComplete="new-password" placeholder="请输入账号密码" visibilityToggle={false} />
+            <Input.Password autoComplete="new-password" placeholder="请输入账号密码" visibilityToggle={false}/>
           </Form.Item>
           <Form.Item
             key="time"
@@ -152,7 +154,7 @@ const Save = (
                 <Radio value="0">永久</Radio>
                 <Space>
                   <Radio value="1">时间段</Radio>
-                  <RangePicker />
+                  <RangePicker/>
                 </Space>
               </Space>
             </Radio.Group>

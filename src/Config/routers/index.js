@@ -3,6 +3,8 @@ import BasicLayout from '@/layouts/BasicLayout';
 import baseSystem from './baseSystem';
 import logConfig from '@/pages/log/route';
 import systemManageConfig from '@/pages/systemManage/route';
+import equipmentConfig from '@/pages/equipment/route';
+import alarmConfig from '@/pages/alarm/route';
 
 
 const routerConfig = [
@@ -23,7 +25,12 @@ const routerConfig = [
       ...baseSystem,
       ...logConfig,
       ...systemManageConfig,
+      ...equipmentConfig,
+      ...alarmConfig,
       {
+        path: '/monitor',
+        component: lazy(() => import(('@/pages/monitor'))),
+      }, {
         path: '/member',
         component: lazy(() => import(('@/pages/Member'))),
       },
