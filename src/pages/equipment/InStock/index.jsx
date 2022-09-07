@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -7,26 +7,15 @@ import Info from '@/pages/equipment/InStock/Info';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
+import {instockList} from '@/pages/equipment/InStock/url';
 
 const InStock = () => {
 
+  const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState(false);
 
   const [infoVisible, setInfoVisible] = useState({});
-
-  const dataSource = Array(5).fill('').map((item, index) => ({
-    key: index,
-    '0': '0',
-    '1': '在线',
-    '3': `4012M智能箱${index}`,
-    '4': '智能箱产品',
-    '5': '智能箱产品',
-    '6': 'OPT IMS-4012M',
-    '7': 'EC:B9:70:BB:74:34',
-    '8': '李子木',
-    '9': '2022/08/21 12:00:00'
-  }));
 
   const columns = [
     {
@@ -41,9 +30,9 @@ const InStock = () => {
     {title: '设备名称', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备类别', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备型号', dataIndex: '6', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '设备MAC地址', dataIndex: '7', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
     {title: '入库人员', dataIndex: '8', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '入库时间', dataIndex: '9', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '入库时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {
       title: '操作',
       fixed: 'right',
@@ -106,6 +95,7 @@ const InStock = () => {
 
   return <>
     <Table
+      ref={ref}
       searchButtons={[
         <Dropdown key={1} overlay={inStockMenu} placement="bottom">
           <Button>新增入库</Button>
@@ -116,13 +106,16 @@ const InStock = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      dataSource={dataSource}
+      api={instockList}
       columns={columns}
-      rowKey="key"
+      rowKey="instockId"
     />
 
     <Info id={infoVisible.id} onClose={() => setInfoVisible({})}/>
-    <Save visible={saveVisible} close={() => setSaveVisible(false)}/>
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} success={() => {
+      setSaveVisible(false);
+      ref.current.submit();
+    }}/>
   </>;
 };
 export default InStock;

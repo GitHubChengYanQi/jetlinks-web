@@ -6,28 +6,13 @@ import Save from '@/pages/equipment/OutStock/Save';
 import Info from '@/pages/equipment/OutStock/Info';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
+import {outstockList} from '@/pages/equipment/OutStock/url';
 
 const OutStock = () => {
 
   const [saveVisible, setSaveVisible] = useState(false);
 
   const [infoVisible, setInfoVisible] = useState({});
-
-  const dataSource = Array(5).fill('').map((item, index) => ({
-    key: index,
-    '0': '0',
-    '1': '在线',
-    '2': '已绑定',
-    '3': '辽宁奥普泰通信股份有限公司',
-    '4': `4012M智能箱${index}`,
-    '5': '智能箱产品',
-    '6': '智能箱产品',
-    '7': 'OPT IMS-4012M',
-    '8': 'EC:B9:70:BB:74:34',
-    '9': '李子木',
-    '10': '2022/08/21 12:00:00',
-    '11': '2022/08/21 12:00:00',
-  }));
 
   const columns = [
     {
@@ -119,9 +104,9 @@ const OutStock = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      dataSource={dataSource}
+      api={outstockList}
       columns={columns}
-      rowKey="key"
+      rowKey="outstockId"
     />
 
     <Info id={infoVisible.id} onClose={() => setInfoVisible({})}/>

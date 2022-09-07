@@ -5,15 +5,22 @@ import {useRequest} from '@/util/Request';
 
 const AntForm = (
   {
+    labelCol = 6,
+    wrapperCol = 18,
+    width,
     apis = {},
     title = '',
     rowKey = '',
     close = () => {
     },
+    onValuesChange = () => {
+    },
     visible,
     initialValues = {},
     children,
     success = () => {
+    },
+    afterClose = () => {
     },
     format = (values) => {
       return values;
@@ -22,6 +29,11 @@ const AntForm = (
 ) => {
 
   const [form] = Form.useForm();
+
+  const key = {};
+  if (initialValues[rowKey]) {
+    key[rowKey] = initialValues[rowKey];
+  }
 
   const {loading: addLoading, run: add} = useRequest(apis.add, {
     manual: true,
@@ -40,7 +52,7 @@ const AntForm = (
 
   const submitData = () => {
     form.validateFields().then((values) => {
-      const data = format(values);
+      const data = format({...values, ...key});
       if (initialValues[rowKey]) {
         edit({data});
       } else {
@@ -51,9 +63,12 @@ const AntForm = (
 
   return <>
     <Modal
-      afterClose={() => form.resetFields()}
+      afterClose={() => {
+        afterClose();
+        form.resetFields();
+      }}
       destroyOnClose
-      width={800}
+      width={width || 500}
       title={`${initialValues[rowKey] ? '编辑' : '新建'}${title}`}
       open={visible}
       okText="确定"
@@ -65,7 +80,12 @@ const AntForm = (
       onCancel={() => close()}
     >
       {visible && <Spin spinning={addLoading || editLoading}>
-        <Form form={form} labelCol={{span: 4}} wrapperCol={{span: 20}}>
+        <Form
+          form={form}
+          labelCol={{span: labelCol}}
+          wrapperCol={{span: wrapperCol}}
+          onValuesChange={onValuesChange}
+        >
           {children}
         </Form>
       </Spin>}

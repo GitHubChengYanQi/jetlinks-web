@@ -5,6 +5,8 @@ import AntTree from '../../../../../components/AntTree';
 import Warning from '@/components/Warning';
 import styles from '../../index.module.less';
 import Save from './Save';
+import {useRequest} from '@/util/Request';
+import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 
 const Group = (props) => {
 
@@ -16,33 +18,12 @@ const Group = (props) => {
   const [saveVisible, setSaveVisible] = useState();
   const [currentItem, setCurrentItem] = useState({});
 
-  const treeData = [{
-    title: '辽宁公司1',
-    key: '1',
-    number: 12,
-    children: [{
-      title: '辽宁公司2',
-      key: '2',
-      number: 34,
-      children: [{
-        title: '辽宁公司3',
-        key: '3',
-        number: 65,
-        children: []
-      }]
-    }, {
-      title: '辽宁公司4',
-      key: '4',
-      number: 12,
-      children: []
-    },]
-  }];
+  const {loading, data} = useRequest(deviceClassifyTree);
 
-  const formatData = (data) => {
+  const formatData = (data = []) => {
     return data.map(item => {
       return {
         ...item,
-        title: `${item.title} (${item.number})`,
         children: formatData(item.children),
       };
     });
@@ -69,15 +50,16 @@ const Group = (props) => {
 
   return <>
     {!noAction && <Button
-      type='primary'
+      type="primary"
       className={styles.add}
-      icon={<PlusOutlined />}
+      icon={<PlusOutlined/>}
       onClick={() => {
         setCurrentItem({});
         setSaveVisible(true);
       }}
     >新建客户</Button>}
     <AntTree
+      loading={loading}
       noAction={noAction}
       menu={menu}
       onChange={(keys) => {
@@ -85,7 +67,7 @@ const Group = (props) => {
         setKeys(keys);
       }}
       value={keys}
-      treeData={formatData(treeData)}
+      treeData={formatData(data)}
     />
 
     <Save

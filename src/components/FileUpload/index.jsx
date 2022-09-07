@@ -7,12 +7,14 @@ import cookie from 'js-cookie';
 const {baseURI} = config;
 
 const FileUpload = ({
+  maxCount = 1,
   defaultFileList = [],
   onChange = () => {
   },
 }) => {
 
   const uploadProps = {
+    maxCount,
     accept: '*',
     action: `${baseURI}system/upload`,
     headers: {
@@ -28,7 +30,7 @@ const FileUpload = ({
     },
   };
   return <Upload defaultFileList={defaultFileList} {...uploadProps}>
-    <Button type="primary" ghost icon={<UploadOutlined />}>
+    <Button type="primary" ghost icon={<UploadOutlined/>}>
       上传文件
     </Button>
   </Upload>;

@@ -36,45 +36,48 @@ const Model = () => {
       title: '序号',
       align: 'center',
       dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50} />
+      render: (value, record, index) => <Render text={index + 1} width={50}/>
     },
-    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '所属设备类别', dataIndex: 'classifiedName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text} />},
+    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '所属设备类别',
+      dataIndex: 'categoryResult',
+      align: 'center',
+      render: (categoryResult = {}) => <Render text={categoryResult.name}/>
+    },
+    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text}/>},
     {
       title: '设备型号状态',
-      dataIndex: 'state',
+      dataIndex: 'status',
       align: 'center',
-      render: (text = 0) => <Render>{text !== 0 ?
-        <Button type="link">启用</Button> :
-        <Button type="link" danger>停用</Button>}
-      </Render>
+      render: (text = '0') => {
+        const open = text !== '0';
+        return <Render><Button type="link" danger={!open}>{open ? '启用' : '禁用'}</Button></Render>;
+      }
     },
     {
       title: '通信协议',
-      dataIndex: 'fileId',
+      dataIndex: 'filePath',
       align: 'center',
       render: (text) => <Render>
-        <a
-          href={text}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <Button type="link" onClick={() => {
+          window.location.href = text;
+        }}>
           查看
-        </a></Render>
+        </Button></Render>
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '操作',
       fixed: 'right',
       align: 'center',
       render: (text, record) => {
-        const stop = record.state === 0;
+        const stop = record.status === '0';
         return <Space>
           <Button ghost type="primary" onClick={() => {
             setSaveVisible(record);
@@ -126,9 +129,9 @@ const Model = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="0" component={Input} />
-      <FormItem label="设备型号状态" name="1" component={Input} />
-      <FormItem label="设备型号名称" name="2" component={Input} />
+      <FormItem label="创建时间" name="0" component={Input}/>
+      <FormItem label="设备型号状态" name="1" component={Input}/>
+      <FormItem label="设备型号名称" name="2" component={Input}/>
     </>;
   };
 
@@ -156,7 +159,7 @@ const Model = () => {
       success={() => {
         setSaveVisible(null);
         ref.current.submit();
-      }} />
+      }}/>
   </>;
 };
 

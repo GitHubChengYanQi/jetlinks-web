@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Space, Dropdown, Menu, Select, Input} from 'antd';
+import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Restart from '@/pages/equipment/Equipment/Restart';
@@ -7,7 +8,7 @@ import Save from '@/pages/equipment/Equipment/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {useHistory} from 'ice';
+import {deviceList} from '@/pages/equipment/Equipment/url';
 
 const Equipment = () => {
 
@@ -16,6 +17,7 @@ const Equipment = () => {
   const [saveVisible, setSaveVisible] = useState();
 
   const [restarting, setRestarting] = useState();
+
   const changeDeploy = (record) => {
 
   };
@@ -54,10 +56,10 @@ const Equipment = () => {
       title: '设备名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
     },
     {title: '设备分组', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备类别', dataIndex: '6', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '设备型号',
-      dataIndex: 'productName',
+      dataIndex: 'modelName',
       align: 'center',
       render: (text) => <Render width={120} text={text}/>
     },
@@ -148,9 +150,9 @@ const Equipment = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      dataSource={[{id: 1}, {id: 2}]}
+      api={deviceList}
       columns={columns}
-      rowKey="id"
+      rowKey="deviceId"
     />
 
     <Save

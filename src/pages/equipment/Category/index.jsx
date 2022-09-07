@@ -29,7 +29,7 @@ const Category = () => {
 
   const columns = [
     {title: '设备类别名称', dataIndex: 'name'},
-    {title: '所属设备型号种类', dataIndex: '2', align: 'center', render: (text) => <Render text={text} />},
+    {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render text={text} />},
     {title: '所属设备型号数量', dataIndex: '3', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '设备类别状态',

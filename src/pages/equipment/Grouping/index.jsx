@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Row, Col, Button, Space, Dropdown, Menu, Select, Input} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Row, Col, Button, Space, Dropdown, Menu, Select, Input} from 'antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -7,19 +7,13 @@ import Save from './Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import styles from '@/pages/monitor/index.module.less';
+import {deviceClassifyList} from '@/pages/equipment/Grouping/url';
 
-const Grouping = props => {
+const Grouping = () => {
+
+  const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState();
-  const dataSource = Array(5).fill('').map((item, index) => ({
-    key: index,
-    '0': '0',
-    '1': '辽宁奥普泰通信股份有限公司',
-    '2': `浑南区${index}`,
-    '3': 100,
-    '4': '启用',
-    '5': '2022/08/21 12:00:00',
-  }));
 
   const columns = [
     {
@@ -29,10 +23,8 @@ const Grouping = props => {
       render: (value, record, index) => <Render text={index + 1} width={50}/>
     },
     {title: '所属客户', dataIndex: '1', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '分组名称', dataIndex: '2', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备数量', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '分组状态', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '操作',
       fixed: 'right',
@@ -89,11 +81,13 @@ const Grouping = props => {
             showModules={['group']}
             onChange={(key) => {
 
-            }}/>
+            }}
+          />
         </div>
       </Col>
       <Col span={close ? 24 : 20}>
         <Table
+          ref={ref}
           searchForm={searchForm}
           searchButtons={[
             <Dropdown key={1} overlay={menu} placement="bottom">
@@ -101,15 +95,17 @@ const Grouping = props => {
             </Dropdown>,
             <Button key={2}>导出</Button>
           ]}
-          dataSource={dataSource}
+          api={deviceClassifyList}
           columns={columns}
-          rowKey="key"
+          rowKey="classifyId"
         />
       </Col>
     </Row>
 
     <Save
       success={() => {
+        setSaveVisible(null);
+        ref.current.submit();
       }}
       visible={Boolean(saveVisible)}
       close={() => setSaveVisible(null)}

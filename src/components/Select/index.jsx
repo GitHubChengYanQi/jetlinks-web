@@ -7,7 +7,7 @@ const Select = (
     value,
     api,
     border,
-    data: param,
+    data: param = {},
     resh,
     options,
     showArrow,
@@ -25,10 +25,9 @@ const Select = (
     ...other
   }
 ) => {
-
   const {loading, data, refresh} = useRequest({...api, data: param}, {manual: !api});
 
-  const selectOptions = format(data) || [];
+  const selectOptions = loading ? [] : (format(data) || []);
 
   useEffect(() => {
     if (resh) {
@@ -37,15 +36,15 @@ const Select = (
   }, [resh]);
 
   useEffect(() => {
-    if (value && selectOptions.length > 0 && !param) {
-      const items = selectOptions.filter((items) => {
+    if (value && selectOptions.length > 0) {
+      const items = selectOptions.find((items) => {
         return `${items.value}` === `${value}`;
       });
-      if (items && items.length <= 0) {
+      if (!items) {
         onChange(null);
       }
     }
-  }, [selectOptions,value]);
+  }, [selectOptions, value]);
 
   let valueArray = [];
   const {mode} = other;

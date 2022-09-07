@@ -3,6 +3,11 @@ export const deviceModelList = {
   method: 'POST',
 };
 
+export const deviceModelListSelect = {
+  url: '/deviceModel/listSelect',
+  method: 'POST',
+};
+
 export const deviceModelAdd = {
   url: '/deviceModel/add',
   method: 'POST',

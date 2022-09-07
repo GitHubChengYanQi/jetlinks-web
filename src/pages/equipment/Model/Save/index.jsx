@@ -18,11 +18,10 @@ const Save = props => {
       }}
       title="设备型号"
       initialValues={{...data, status: data.status || '1'}}
-      rowKey="categoryId"
+      rowKey="modelId"
       success={success}
       visible={visible}
       close={close}
-      format={(values) => ({...values})}
     >
       <Form.Item
         initialValue={data?.name}
@@ -33,7 +32,7 @@ const Save = props => {
           {required: true, message: '请输入设备型号名称'},
         ]}
       >
-        <Input placeholder="请输入设备型号名称" />
+        <Input placeholder="请输入设备型号名称"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.categoryId}
@@ -44,7 +43,7 @@ const Save = props => {
           {required: true, message: '请选择设备类别'},
         ]}
       >
-        <SelectTopClass />
+        <SelectTopClass/>
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}
@@ -69,7 +68,7 @@ const Save = props => {
           {required: true, message: '请上传通信协议'},
         ]}
       >
-        <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []} />
+        <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []}/>
       </Form.Item>
     </AntForm>
   );

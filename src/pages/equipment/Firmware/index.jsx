@@ -1,27 +1,18 @@
-import React, {useState} from 'react';
-import { Button, Space, Dropdown, Menu, Select} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Button, Space, Dropdown, Menu, Select} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Firmware/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
+import {deviceList} from '@/pages/equipment/Equipment/url';
 
 const Firmware = () => {
 
+  const ref = useRef();
+
   const [saveVisible, setSaveVisible] = useState();
-
-
-  const dataSource = Array(5).fill('').map((item, index) => ({
-    key: index,
-    '0': '0',
-    '1': '智能箱产品',
-    '2': 'OPT IMS-4012M',
-    '3': `4012M升级固件${index}`,
-    '4': 'V2.0.0（22082123）',
-    '5': '启用',
-    '6': '2022/08/21 12:00:00',
-  }));
 
   const columns = [
     {
@@ -30,29 +21,42 @@ const Firmware = () => {
       dataIndex: '0',
       render: (value, record, index) => <Render text={index + 1} width={50}/>
     },
-    {title: '设备类别', dataIndex: '1', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备型号', dataIndex: '2', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '固件名称', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {title: '固件版本', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '固件状态', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '上传时间', dataIndex: '6', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '固件状态', dataIndex: 'status', align: 'center',
+      render: (text = '0') => {
+        const open = text !== '0';
+        return <Render><Button type="link" danger={!open}>{open ? '启用' : '禁用'}</Button></Render>;
+      }
+    },
+    {title: '上传时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '操作',
       fixed: 'right',
       align: 'center',
-      render: (text, record) => (
-        <Space>
+      render: (text, record) => {
+        const stop = record.status === '0';
+        return <Space>
           <Button ghost type="primary" onClick={() => {
-            setSaveVisible({id: '1', name: record['1']});
+            setSaveVisible(record);
           }}>编辑</Button>
-          <Warning content="您确定启用么？">
-            <Button ghost type="primary">启用</Button>
+          <Warning content="您确定启用么？" onOk={() => {
+            if (stop) {
+
+            } else {
+
+            }
+          }}>
+            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
           </Warning>
           <Warning>
             <Button danger>删除</Button>
           </Warning>
-        </Space>
-      ),
+        </Space>;
+      }
     },
   ];
 
@@ -98,6 +102,7 @@ const Firmware = () => {
 
   return <>
     <Table
+      ref={ref}
       searchButtons={[
         <Button key={1} onClick={() => setSaveVisible({})}>新建固件</Button>,
         <Dropdown key={2} overlay={menu} placement="bottom">
@@ -106,12 +111,20 @@ const Firmware = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      dataSource={dataSource}
+      api={deviceList}
       columns={columns}
-      rowKey="key"
+      rowKey="deviceId"
     />
 
-    <Save visible={Boolean(saveVisible)} close={() => setSaveVisible(null)} data={saveVisible || {}}/>
+    <Save
+      visible={Boolean(saveVisible)}
+      close={() => setSaveVisible(null)}
+      data={saveVisible || {}}
+      success={() => {
+        setSaveVisible(null);
+        ref.current.submit();
+      }}
+    />
   </>;
 };
 export default Firmware;

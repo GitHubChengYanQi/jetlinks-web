@@ -6,20 +6,19 @@ import styles from './index.module.less';
 
 
 
-const AntTree = (props) => {
-  const {
-    treeData,
-    value,
-    onChange,
-    multiple,
-    loading,
-    onGetNode = () => {
-    },
-    menu = () => {
-      return <></>;
-    },
-    noAction,
-  } = props;
+const AntTree = ({
+  treeData,
+  value,
+  onChange,
+  multiple,
+  loading,
+  onGetNode = () => {
+  },
+  menu = () => {
+    return <></>;
+  },
+  noAction,
+}) => {
 
   if (treeData.length === 0 && loading){
     return <div style={{padding:24,textAlign:'center'}}><Spin /></div>;
