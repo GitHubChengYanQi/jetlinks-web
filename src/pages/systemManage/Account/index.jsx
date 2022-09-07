@@ -68,7 +68,6 @@ const Account = () => {
     },
     {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text} />},
     {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text} />},
-    {title: '分组名称', dataIndex: '3', align: 'center', render: () => <Render />},
     {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
       title: '账号状态', dataIndex: 'status', align: 'center', render: (text) => <Render>

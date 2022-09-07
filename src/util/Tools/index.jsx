@@ -12,6 +12,19 @@ const  randomString=(len)=>{
   return str;
 };
 
+// 返回空对象
+const isObject = (object) => {
+  return (object && typeof object === 'object') ? object : {};
+};
+
+// 返回空集合
+const isArray = (array) => {
+  return Array.isArray(array) ? array : [];
+};
+
+
 export {
-  randomString
+  randomString,
+  isObject,
+  isArray
 };

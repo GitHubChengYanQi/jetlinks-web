@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Model/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
+import {deviceModelList} from '@/pages/equipment/Model/url';
 
 
 const Model = () => {
 
+  const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState();
   const [keys, setKeys] = useState([]);
@@ -20,6 +22,7 @@ const Model = () => {
   const deploy = (record) => {
 
   };
+
   const unDeploy = (record) => {
 
   };
@@ -33,11 +36,11 @@ const Model = () => {
       title: '序号',
       align: 'center',
       dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
+      render: (value, record, index) => <Render text={index + 1} width={50} />
     },
-    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '所属设备类别', dataIndex: 'classifiedName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text}/>},
+    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '所属设备类别', dataIndex: 'classifiedName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text} />},
     {
       title: '设备型号状态',
       dataIndex: 'state',
@@ -64,7 +67,7 @@ const Model = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '操作',
@@ -123,14 +126,15 @@ const Model = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="0" component={Input}/>
-      <FormItem label="设备型号状态" name="1" component={Input}/>
-      <FormItem label="设备型号名称" name="2" component={Input}/>
+      <FormItem label="创建时间" name="0" component={Input} />
+      <FormItem label="设备型号状态" name="1" component={Input} />
+      <FormItem label="设备型号名称" name="2" component={Input} />
     </>;
   };
 
   return <>
     <Table
+      ref={ref}
       searchButtons={[
         <Button key={1} onClick={() => setSaveVisible({})}>新建设备型号</Button>,
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
@@ -138,11 +142,11 @@ const Model = () => {
         </Dropdown>,
         <Button key={3}>导出</Button>
       ]}
+      api={deviceModelList}
       searchForm={searchForm}
       onChange={setKeys}
-      dataSource={[{id: 1}, {id: 2}]}
       columns={columns}
-      rowKey="id"
+      rowKey="modelId"
     />
 
     <Save
@@ -151,7 +155,8 @@ const Model = () => {
       data={saveVisible || {}}
       success={() => {
         setSaveVisible(null);
-      }}/>
+        ref.current.submit();
+      }} />
   </>;
 };
 

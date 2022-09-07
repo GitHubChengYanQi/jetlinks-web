@@ -79,14 +79,14 @@ const Configuration = () => {
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="地图模式" name='map'>
+        <Form.Item label="平合模式" name='map'>
           <Radio.Group>
             <Space direction='vertical'>
               <Radio value='close'>
-                <Space>在线地图 <div className={styles.extra}>(联网使用，适用于云平台)</div></Space>
+                <Space>外网模式 <div className={styles.extra}>(互联网部署，联网使用，包括在线地图、短信通知)</div></Space>
               </Radio>
               <Radio value='open'>
-                <Space>离线地图 <div className={styles.extra}>(内网使用，适用于本地私有化部署)</div></Space>
+                <Space>内网模式 <div className={styles.extra}>(本地部署，内网使用，包括离线地图、内网短信推送)</div></Space>
               </Radio>
             </Space>
           </Radio.Group>

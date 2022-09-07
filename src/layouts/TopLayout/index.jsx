@@ -67,9 +67,7 @@ const TopLayout = ({children}) => {
     }}
     menuDataRender={(props) => menuDataRender(props)}
     rightContentRender={() => <Avatar userInfo={userInfo} />}
-    title={<div className={styles.layoutTitle}>
-      奥普泰设备业务云平台
-    </div>}
+    title='奥普泰设备业务云平台'
     logo={logo}
     splitMenus
     // collapsed={false}

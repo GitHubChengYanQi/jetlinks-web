@@ -31,7 +31,7 @@ const Restart = (props) => {
 
   return <>
     <Modal
-      visible={visible}
+      open={visible}
       centered
       className={style.restart}
       footer={null}

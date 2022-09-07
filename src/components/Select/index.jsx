@@ -37,7 +37,7 @@ const Select = (
   }, [resh]);
 
   useEffect(() => {
-    if (value && selectOptions && !param) {
+    if (value && selectOptions.length > 0 && !param) {
       const items = selectOptions.filter((items) => {
         return `${items.value}` === `${value}`;
       });
@@ -45,7 +45,7 @@ const Select = (
         onChange(null);
       }
     }
-  }, [selectOptions, value]);
+  }, [selectOptions,value]);
 
   let valueArray = [];
   const {mode} = other;

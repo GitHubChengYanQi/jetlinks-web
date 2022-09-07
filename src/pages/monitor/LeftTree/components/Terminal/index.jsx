@@ -5,6 +5,9 @@ import AntTree from '@/components/AntTree';
 import Warning from '@/components/Warning';
 import styles from '../../index.module.less';
 import Save from '@/pages/equipment/Category/Save';
+import {useRequest} from '@/util/Request';
+import {caregoryFindAll} from '@/pages/equipment/Category/url';
+import {isArray} from '@/util/Tools';
 
 const Terminal = (props) => {
 
@@ -21,24 +24,29 @@ const Terminal = (props) => {
   const [saveVisible, setSaveVisible] = useState();
   const [currentItem, setCurrentItem] = useState({});
 
-  const [loading, setLoading] = useState(false);
   const [treeData, setTreeData] = useState([]);
 
-  const getTreeData = () => {
-
-
-  };
+  const {loading, run} = useRequest(caregoryFindAll, {
+    manual: true,
+    onSuccess: (res) => {
+      setTreeData(isArray(res).map(item => {
+        return {
+          key: item.categoryId,
+          title: item.name,
+        };
+      }));
+    }
+  });
 
   useEffect(() => {
-    getTreeData();
+    run({data: {}});
   }, []);
 
   const formatData = (data) => {
     return data.map(item => {
       return {
-        key: item.id,
-        title: `${item.name} (${item.number || 0})`,
-        item,
+        ...item,
+        title: `${item.title} (${item.number || 0})`,
         children: formatData(item.children || []),
       };
     });
@@ -65,7 +73,7 @@ const Terminal = (props) => {
 
   return <>
     {!noAction && <Button
-      type='primary'
+      type="primary"
       className={styles.add}
       icon={<PlusOutlined />}
       onClick={() => {

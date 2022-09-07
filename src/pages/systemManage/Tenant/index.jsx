@@ -6,6 +6,7 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import AccountAsk from '@/pages/Login/AccountAsk';
+import {customerList} from '@/pages/systemManage/Tenant/url';
 
 
 const Tenant = () => {
@@ -91,7 +92,7 @@ const Tenant = () => {
 
   return <>
     <Table
-      dataSource={[{id:1},{id:2}]}
+      api={customerList}
       searchButtons={[
         <Dropdown key={1} overlay={menu} placement="bottom">
           <Button>批量操作</Button>
@@ -100,7 +101,7 @@ const Tenant = () => {
       ]}
       searchForm={searchForm}
       columns={columns}
-      rowKey="id"
+      rowKey="customerId"
     />
 
     <AccountAsk

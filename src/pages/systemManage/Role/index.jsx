@@ -1,13 +1,14 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Menu, Dropdown, Input, Select} from 'antd';
+import {Button, Space, Menu, Dropdown, Input, Select, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
 import Table from '@/components/Table';
 import DatePicker from '@/components/DatePicker';
 import FormItem from '../../../components/Table/components/FormItem/index';
-import {roleList} from '@/Config/ApiUrl/system/role';
+import {roleList, roleRemove} from '@/Config/ApiUrl/system/role';
 import Note from '@/components/Note';
+import {request} from '@/util/Request';
 
 const Role = () => {
 
@@ -16,8 +17,13 @@ const Role = () => {
   const [saveVisible, setSaveVisible] = useState();
 
 
-  const handleDelete = (item) => {
-
+  const handleDelete = (roleId) => {
+    request({...roleRemove, params: {roleId}}).then((res) => {
+      if (res.success) {
+        message.success('删除成功!');
+        ref.current.submit();
+      }
+    }).catch(() => message.success('删除失败！'));
   };
 
   const columns = [
@@ -55,7 +61,7 @@ const Role = () => {
           <Warning content="您确定启用么?">
             <Button type="primary" ghost>启用</Button>
           </Warning>
-          <Warning onOk={() => handleDelete(record)}>
+          <Warning onOk={() => handleDelete(record.roleId)}>
             <Button danger>删除</Button>
           </Warning>
         </Space>

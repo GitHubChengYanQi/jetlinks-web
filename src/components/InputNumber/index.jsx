@@ -21,11 +21,11 @@ const InputNumber = (
     addonAfter={addonAfter}
     controls={false}
     min={min === undefined ? 1 : min}
-    style={{width}}
+    style={{width: width || '100%'}}
     value={value}
     placeholder={placeholder}
     {...props}
-    onPressEnter={()=>{
+    onPressEnter={() => {
       onBlur(number || value);
     }}
     onChange={(value) => {

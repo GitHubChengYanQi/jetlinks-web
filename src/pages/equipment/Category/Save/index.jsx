@@ -1,80 +1,65 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Form from 'antd/es/form';
-import {Input, Modal, Radio, Spin} from 'antd';
+import {Input, Radio} from 'antd';
 import SelectTopClass from '@/pages/equipment/Category/Save/components/SelectTopClass';
+import AntForm from '@/components/AntForm';
+import {caregoryAdd, caregoryEdit} from '@/pages/equipment/Category/url';
 
 const Save = props => {
 
-  const {close, visible, data, status, success} = props;
-
-  const [loading,] = useState(false);
-
-  const [form] = Form.useForm();
-
-  const submitData = () => {
-    form.validateFields().then((values) => {
-      if (data.id) {
-
-      }
-
-    });
-  };
+  const {close, visible, data = {}, status, success} = props;
 
   return (
-    <Modal
-      afterClose={() => form.resetFields()}
-      destroyOnClose
-      width={800}
-      title={`${data.id ? '编辑' : '新建'}设备类别`}
-      open={visible}
-      okText="确定"
-      cancelText="取消"
-      onOk={() => {
-        submitData();
+    <AntForm
+      title="设备类别"
+      apis={{
+        add: caregoryAdd,
+        edit: caregoryEdit,
       }}
-      onCancel={() => close()}
+      initialValues={{...data, status: data.status || '1'}}
+      rowKey="categoryId"
+      success={success}
+      visible={visible}
+      close={close}
+      format={(values) => ({...values, categoryId: data.categoryId})}
     >
-      <Spin spinning={loading}>
-        <Form form={form} labelCol={{span: 4}} wrapperCol={{span: 20}}>
-          <Form.Item
-            initialValue={data.name}
-            key="name"
-            label="设备类别名称"
-            name='name'
-            rules={[
-              {required: true, message: '请输入设备类别名称'},
-            ]}
-          >
-            <Input placeholder="请输入设备类别名称" />
-          </Form.Item>
-          {status && <Form.Item
-            initialValue={data.parentId}
-            key="parentId"
-            name='parentId'
-            label="选择上级类别"
-            rules={[
-              {required: true, message: '请选择上级类别'},
-            ]}
-          >
-            <SelectTopClass />
-          </Form.Item>}
-          {!status && <Form.Item
-            initialValue='0'
-            key="1"
-            label="类别状态"
-            name='id'
-            rules={[
-              {required: true, message: '请选择类别状态'},
-            ]}
-          >
-            <Radio.Group>
-              <Radio value='0'>启用</Radio>
-              <Radio value='1'>停用</Radio>
-            </Radio.Group>
-          </Form.Item>}
-        </Form>
-      </Spin>
-    </Modal>
+      <Form.Item
+        initialValue={data?.name}
+        key="name"
+        label="设备类别名称"
+        name="name"
+        rules={[
+          {required: true, message: '请输入设备类别名称'},
+        ]}
+      >
+        <Input placeholder="请输入设备类别名称" />
+      </Form.Item>
+      {status && <Form.Item
+        initialValue={data?.pid}
+        key="pid"
+        name="pid"
+        label="选择上级类别"
+        rules={[
+          {required: true, message: '请选择上级类别'},
+        ]}
+      >
+        <SelectTopClass />
+      </Form.Item>}
+      {!status && <Form.Item
+        initialValue={data?.status || '1'}
+        key="status"
+        label="类别状态"
+        name="status"
+        rules={[
+          {required: true, message: '请选择类别状态'},
+        ]}
+      >
+        <Radio.Group>
+          <Radio value="1">启用</Radio>
+          <Radio value="0">停用</Radio>
+        </Radio.Group>
+      </Form.Item>}
+    </AntForm>
   );
 };
 
