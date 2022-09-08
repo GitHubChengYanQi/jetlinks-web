@@ -5,6 +5,8 @@ import FileUpload from '@/components/FileUpload';
 import AntForm from '@/components/AntForm';
 import {deviceModelAdd, deviceModelEdit} from '@/pages/equipment/Model/url';
 import SelectTopClass from '@/pages/equipment/Category/Save/components/SelectTopClass';
+import Select from '@/components/Select';
+import {caregoryFindAll} from '@/pages/equipment/Category/url';
 
 const Save = props => {
 
@@ -43,7 +45,11 @@ const Save = props => {
           {required: true, message: '请选择设备类别'},
         ]}
       >
-        <SelectTopClass/>
+        <Select
+          api={caregoryFindAll}
+          format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
+          placeholder="请选择设备所属类别"
+        />
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}

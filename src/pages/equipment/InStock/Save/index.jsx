@@ -77,6 +77,36 @@ const Save = ({data, success, close, visible}) => {
       >
         <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
       </Form.Item>
+      <Form.Item
+        key="name"
+        label="登记名称"
+        name="name"
+        rules={[
+          {required: true, message: '请输入登记名称'},
+        ]}
+      >
+        <Input placeholder="请输入登记名称"/>
+      </Form.Item>
+      <Form.Item
+        key="note"
+        label="终端备注"
+        name="note"
+        rules={[
+          {required: true, message: '请输入登记名称'},
+        ]}
+      >
+        <Input placeholder="请输入登记名称"/>
+      </Form.Item>
+      <Form.Item
+        key="group"
+        label="设备分组"
+        name="group"
+        rules={[
+          {required: true, message: '请选择设备分组'},
+        ]}
+      >
+        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
+      </Form.Item>
     </AntForm>
   );
 };

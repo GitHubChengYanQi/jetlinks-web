@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Form from 'antd/es/form';
 import {Input, Radio} from 'antd';
 import FileUpload from '@/components/FileUpload';
-import { deviceModelListSelect} from '@/pages/equipment/Model/url';
+import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';
 import Select from '@/components/Select';
 import {caregoryFindAll} from '@/pages/equipment/Category/url';
@@ -49,7 +49,7 @@ const Save = ({
           {required: true, message: '请输入设备固件名称'},
         ]}
       >
-        <Input placeholder="请输入设备固件名称"/>
+        <Input placeholder="请输入设备固件名称" />
       </Form.Item>
       <Form.Item
         initialValue={data?.categoryId}
@@ -75,7 +75,18 @@ const Save = ({
           {required: true, message: '请选择设备所属型号'},
         ]}
       >
-        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
+        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号" />
+      </Form.Item>
+      <Form.Item
+        initialValue={data?.version}
+        key="version"
+        label="固件版本"
+        name="version"
+        rules={[
+          {required: true, message: '请输入固件版本'},
+        ]}
+      >
+        <Input placeholder="请输入固件版本" />
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}
@@ -100,7 +111,7 @@ const Save = ({
           {required: true, message: '请上传设备固件'},
         ]}
       >
-        <FileUpload defaultFileList={data?.fileId ? [{name: data?.fileName}] : []}/>
+        <FileUpload defaultFileList={data?.fileId ? [{name: data?.fileName}] : []} />
       </Form.Item>
     </AntForm>
   );

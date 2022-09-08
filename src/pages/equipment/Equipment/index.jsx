@@ -53,7 +53,7 @@ const Equipment = () => {
       }
     },
     {
-      title: '设备名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
+      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
     },
     {title: '设备分组', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},

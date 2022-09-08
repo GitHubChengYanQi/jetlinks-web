@@ -24,7 +24,7 @@ const Firmware = () => {
     {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
     {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '固件版本', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '固件版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '固件状态', dataIndex: 'status', align: 'center',
       render: (text = '0') => {
