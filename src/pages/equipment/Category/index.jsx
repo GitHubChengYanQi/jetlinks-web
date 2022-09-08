@@ -6,7 +6,7 @@ import Save from './Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {caregoryDelete, caregoryList} from '@/pages/equipment/Category/url';
+import {categoryDelete, categoryList} from '@/pages/equipment/Category/url';
 import {request} from '@/util/Request';
 
 
@@ -18,7 +18,7 @@ const Category = () => {
   const [saveVisible, setSaveVisible] = useState();
 
   const delConfirm = (categoryId) => {
-    request({...caregoryDelete, data: {categoryId}}).then((res) => {
+    request({...categoryDelete, data: {categoryId}}).then((res) => {
       if (res.success) {
         message.success('删除成功!');
         ref.current.submit();
@@ -29,15 +29,15 @@ const Category = () => {
 
   const columns = [
     {title: '设备类别名称', dataIndex: 'name'},
-    {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render text={text} />},
-    {title: '所属设备型号数量', dataIndex: '3', align: 'center', render: (text) => <Render text={text} />},
+    {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
+    {title: '所属设备型号数量', dataIndex: '3', align: 'center', render: (text) => <Render>{text || 0}</Render>},
     {
       title: '设备类别状态',
       dataIndex: 'status',
       align: 'center',
       render: (text) => <Render><Button type="link" danger={text === '0'}>{text === '1' ? '启用' : '禁用'}</Button></Render>
     },
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
     {
       title: '操作',
       fixed: 'right',
@@ -91,9 +91,24 @@ const Category = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="0" component={DatePicker} showTime />
-      <FormItem label="类别状态" name="1" component={Select} />
-      <FormItem label="设备类别名称" name="2" component={Input} />
+      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
+      <FormItem
+        initialValue={0}
+        label="类别状态"
+        name="status"
+        component={({value, onChange}) => {
+          return <Select
+            defaultValue="all"
+            value={value || 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'},]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+        select
+      />
+      <FormItem label="设备类别名称" name="name" component={Input}/>
     </>;
   };
 
@@ -108,7 +123,7 @@ const Category = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      api={caregoryList}
+      api={categoryList}
       columns={columns}
       rowKey="categoryId"
     />

@@ -6,6 +6,7 @@ import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
 import TableSort from '@/components/Table/components/TableSort';
+import Render from '@/components/Render';
 
 
 const {Column} = AntdTable;
@@ -15,7 +16,7 @@ const formActionsPublic = createFormActions();
 const TableWarp = (
   {
     children,
-    columns,
+    columns = [],
     actions,
     NoChildren,
     title,
@@ -192,7 +193,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}} />
+        <br style={{clear: 'both'}}/>
       </div>
     );
   };
@@ -212,24 +213,24 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup>
-                    <Button
-                      id="submit"
-                      loading={getLoading || loading}
-                      type="primary"
-                      htmlType="submit"
-                      onClick={() => {
-                        submit();
-                      }}><SearchOutlined />查询
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        reset();
-                      }}>
-                      重置
-                    </Button>
-                    {searchButtons}
-                  </FormButtonGroup>}
+                    <FormButtonGroup>
+                      <Button
+                        id="submit"
+                        loading={getLoading || loading}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {
+                          submit();
+                        }}><SearchOutlined/>查询
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reset();
+                        }}>
+                        重置
+                      </Button>
+                      {searchButtons}
+                    </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -250,7 +251,13 @@ const TableWarp = (
           loading={getLoading || loading}
           dataSource={dataSource || []}
           rowKey={rowKey}
-          columns={columns}
+          columns={[{
+            title: '序号',
+            align: 'center',
+            fixed: 'left',
+            dataIndex: '0',
+            render: (value, record, index) => <Render text={index + 1} width={50}/>
+          }, ...columns]}
           pagination={
             noPagination || {
               ...pagination,
@@ -276,32 +283,7 @@ const TableWarp = (
           scroll={{x: 'max-content', y: maxHeight}}
           {...other}
           {...props}
-        >
-          {noSort || <Column
-            fixed="left"
-            title="序号"
-            dataIndex="sort"
-            width={80}
-            align="center"
-            render={(text, item, index) => {
-              if (sortAction && (text || text === 0)) {
-                return <TableSort
-                  rowKey={item[rowKey]}
-                  sorts={sorts}
-                  value={text}
-                  onChange={(value) => {
-                    if (typeof sortList === 'function') {
-                      sortList(value);
-                    }
-                    setSorts(value);
-                  }} />;
-              } else {
-                return <>{index + 1}</>;
-              }
-
-            }} />}
-          {children}
-        </AntdTable>
+        />
       </div>
     </Card>
   );

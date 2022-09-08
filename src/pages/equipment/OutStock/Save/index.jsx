@@ -1,8 +1,9 @@
 import React from 'react';
 import Form from 'antd/es/form';
-import {Input, Select} from 'antd';
 import AntForm from '@/components/AntForm';
 import {outstockAdd, outstockEdit} from '@/pages/equipment/OutStock/url';
+import DatePicker from '@/components/DatePicker';
+import SelectDevice from '@/pages/equipment/OutStock/Save/components/SelectDevice';
 
 
 const Save = ({success, close, visible}) => {
@@ -21,24 +22,24 @@ const Save = ({success, close, visible}) => {
       close={close}
     >
       <Form.Item
-        key="mac"
+        key="deviceId"
         label="设备MAC"
-        name="mac"
+        name="deviceId"
         rules={[
-          {required: true, message: '请输入设备MAC'},
+          {required: true, message: '请选择设备MAC'},
         ]}
       >
-        <Input placeholder="请输入设备MAC"/>
+        <SelectDevice/>
       </Form.Item>
       <Form.Item
-        key="customerId"
-        label="所属客户"
-        name="customerId"
+        key="outstockTime"
+        label="出库时间"
+        name="outstockTime"
         rules={[
-          {required: true, message: '请选择所属客户'},
+          {required: true, message: '请选择出库时间'},
         ]}
       >
-        <Select placeholder="请选择所属客户"/>
+        <DatePicker placeholder="请选择出库时间"/>
       </Form.Item>
     </AntForm>
   );

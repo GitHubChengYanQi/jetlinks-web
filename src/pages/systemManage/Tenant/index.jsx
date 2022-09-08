@@ -16,12 +16,6 @@ const Tenant = () => {
 
   const columns = [
     {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
-    },
-    {
       title: '审核结果',
       dataIndex: 'status',
       align: 'center',

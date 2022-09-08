@@ -8,10 +8,9 @@ import Save from './Save';
 import {useRequest} from '@/util/Request';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 
-const Group = (props) => {
-
-
-  const {noAction, onChange, value} = props;
+const Group = (
+  {noAction, onChange, value}
+) => {
 
   const [keys, setKeys] = useState(value ? [value] : []);
 

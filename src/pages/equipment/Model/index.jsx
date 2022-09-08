@@ -1,11 +1,12 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, Select} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Model/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import {deviceModelList} from '@/pages/equipment/Model/url';
+import DatePicker from '@/components/DatePicker';
 
 
 const Model = () => {
@@ -32,12 +33,6 @@ const Model = () => {
   };
 
   const columns = [
-    {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
-    },
     {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '所属设备类别',
@@ -129,9 +124,24 @@ const Model = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="0" component={Input}/>
-      <FormItem label="设备型号状态" name="1" component={Input}/>
-      <FormItem label="设备型号名称" name="2" component={Input}/>
+      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
+      <FormItem
+        initialValue={0}
+        label="设备型号状态"
+        name="status"
+        component={({value, onChange}) => {
+          return <Select
+            defaultValue="all"
+            value={value || 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'},]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+        select
+      />
+      <FormItem label="设备型号名称" name="name" component={Input}/>
     </>;
   };
 

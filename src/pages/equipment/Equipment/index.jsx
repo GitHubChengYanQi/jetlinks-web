@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Space, Dropdown, Menu, Select, Input} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, Select as AntSelect} from 'antd';
 import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -9,6 +9,11 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {deviceList} from '@/pages/equipment/Equipment/url';
+import Select from '@/components/Select';
+import Cascader from '@/components/Cascader';
+import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
+import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
 
 const Equipment = () => {
 
@@ -28,23 +33,16 @@ const Equipment = () => {
 
   const columns = [
     {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
-    },
-    {
-      title: '设备状态', dataIndex: 'state', align: 'center', render: (state = {}) => {
-        const notActive = state.value === 'notActive';
-        const offline = state.value === 'offline';
+      title: '设备状态', dataIndex: 'status', align: 'center', render: (value) => {
+        const open = value === '99';
         return <Render>
-          <Button type="link" disabled={offline} danger={notActive}>{state.text}</Button>
+          <Button type="link" disabled={!open}>{open ? '在线' : '离线'}</Button>
         </Render>;
       }
     },
     {
       title: '终端备注',
-      dataIndex: '2',
+      dataIndex: 'remarks',
       align: 'center',
       render: (text) => {
         return <Render>
@@ -55,7 +53,7 @@ const Equipment = () => {
     {
       title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
     },
-    {title: '设备分组', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '设备型号',
@@ -72,7 +70,7 @@ const Equipment = () => {
         </Render>;
       }
     },
-    {title: '设备MAC地址', dataIndex: '9', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
     {title: '位置信息', dataIndex: '10', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '运行时间', dataIndex: '11', align: 'center', render: (text) => <Render text={text}/>},
     {
@@ -126,12 +124,32 @@ const Equipment = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="设备状态" name="1" component={Select}/>
-      <FormItem label="终端备注" name="2" component={Input}/>
-      <FormItem label="设备名称" name="3" component={Input}/>
-      <FormItem label="设备分组" name="4" component={Input}/>
-      <FormItem label="设备型号" name="5" component={Input}/>
-      <FormItem label="设备MAC" name="6" component={Input}/>
+      <FormItem
+        label="设备状态"
+        name="status"
+        component={({value, onChange}) => {
+          return <AntSelect
+            defaultValue="all"
+            value={value || 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '在线', value: '99'}, {label: '离线', value: '0'}]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+      />
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="设备名称" name="name" component={Input}/>
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
+      <FormItem
+        label="设备类别"
+        name="categoryId"
+        api={categoryFindAll}
+        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
+        component={Select}
+      />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
       <FormItem label="位置信息" name="7" component={Input}/>
       <FormItem label="离线时间" name="8" component={DatePicker} showTime/>
     </>;

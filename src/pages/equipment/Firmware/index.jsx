@@ -1,12 +1,15 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Select} from 'antd';
+import {Button, Space, Dropdown, Menu, Select as AntSelect} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Firmware/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {deviceList} from '@/pages/equipment/Equipment/url';
+import {firmwareList} from '@/pages/equipment/Firmware/url';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
+import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import Select from '@/components/Select';
 
 const Firmware = () => {
 
@@ -16,13 +19,12 @@ const Firmware = () => {
 
   const columns = [
     {
-      title: '序号',
+      title: '设备类别',
+      dataIndex: 'modelResult',
       align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
+      render: (value) => <Render text={value.categoryResult && value.categoryResult.name}/>
     },
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备型号', dataIndex: 'modelResult', align: 'center', render: (value = {}) => <Render text={value.name}/>},
     {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {title: '固件版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
     {
@@ -91,12 +93,29 @@ const Firmware = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="上传时间" name="time" component={DatePicker} showTime/>
-      <FormItem label="上传时间" name="time" component={DatePicker} showTime/>
-      <FormItem label="上传时间" name="time" component={DatePicker} showTime/>
-      <FormItem label="固件状态" name="1" component={Select}/>
-      <FormItem label="设备类别" name="2" component={Select}/>
-      <FormItem label="设备型号" name="3" component={Select}/>
+      <FormItem label="上传时间" name="createTime" component={DatePicker} RangePicker />
+      <FormItem
+        label="固件状态"
+        name="status"
+        component={({value, onChange}) => {
+          return <AntSelect
+            defaultValue="all"
+            value={value || 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '启用', value: '99'}, {label: '禁用', value: '0'}]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+      />
+      <FormItem
+        label="设备类别"
+        name="categoryId"
+        api={categoryFindAll}
+        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
+        component={Select}
+      />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
     </>;
   };
 
@@ -111,9 +130,9 @@ const Firmware = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      api={deviceList}
+      api={firmwareList}
       columns={columns}
-      rowKey="deviceId"
+      rowKey="firmwarId"
     />
 
     <Save

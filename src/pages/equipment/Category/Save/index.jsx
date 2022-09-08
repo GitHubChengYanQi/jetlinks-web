@@ -3,7 +3,7 @@ import Form from 'antd/es/form';
 import {Input, Radio} from 'antd';
 import SelectTopClass from '@/pages/equipment/Category/Save/components/SelectTopClass';
 import AntForm from '@/components/AntForm';
-import {caregoryAdd, caregoryEdit} from '@/pages/equipment/Category/url';
+import {categoryAdd, categoryEdit} from '@/pages/equipment/Category/url';
 
 const Save = props => {
 
@@ -13,8 +13,8 @@ const Save = props => {
     <AntForm
       title="设备类别"
       apis={{
-        add: caregoryAdd,
-        edit: caregoryEdit,
+        add: categoryAdd,
+        edit: categoryEdit,
       }}
       initialValues={{...data, status: data.status || '1'}}
       rowKey="categoryId"

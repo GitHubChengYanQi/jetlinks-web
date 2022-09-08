@@ -4,11 +4,16 @@ import {CloseOutlined} from '@ant-design/icons';
 import style from './index.module.less';
 import Save from '../../../monitor/Info/Save';
 
-const Info = (props) => {
-
-  const {id, onClose} = props;
+const Info = ({
+  visible,
+  onClose = () => {
+  },
+  data = {}
+}) => {
 
   const [saveVisible, setSaveVisible] = useState();
+
+  const deviceResult = data.deviceResult || {};
 
   return <>
     <Drawer
@@ -16,10 +21,10 @@ const Info = (props) => {
       width={1000}
       placement="right"
       onClose={onClose}
-      visible={Boolean(id)}
+      visible={visible}
     >
       <div style={{textAlign: 'right'}}>
-        <CloseOutlined onClick={onClose} />
+        <CloseOutlined onClick={onClose}/>
       </div>
       <Descriptions
         column={2}
@@ -32,12 +37,12 @@ const Info = (props) => {
           </div>
         }
       >
-        <Descriptions.Item label="终端备注">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="登记名称">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="设备类别">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="设备型号">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="所属客户">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="设备MAC地址">Cloud Database</Descriptions.Item>
+        <Descriptions.Item label="终端备注">{deviceResult.remarks}</Descriptions.Item>
+        <Descriptions.Item label="登记名称">{deviceResult.name}</Descriptions.Item>
+        <Descriptions.Item label="设备类别">{deviceResult.categoryName}</Descriptions.Item>
+        <Descriptions.Item label="设备型号">{deviceResult.modelName}</Descriptions.Item>
+        <Descriptions.Item label="所属客户">{data.customerResult && data.customerResult.name}</Descriptions.Item>
+        <Descriptions.Item label="设备MAC地址">{deviceResult.mac}</Descriptions.Item>
       </Descriptions>
 
       <Descriptions
@@ -51,8 +56,8 @@ const Info = (props) => {
           </div>
         }
       >
-        <Descriptions.Item label="入库人员">李子木</Descriptions.Item>
-        <Descriptions.Item label="入库时间">2022-07-28 12:00:00</Descriptions.Item>
+        <Descriptions.Item label="入库人员">{data.userName}</Descriptions.Item>
+        <Descriptions.Item label="入库时间">{data.outstockTime}</Descriptions.Item>
         <Descriptions.Item label="绑定状态">已绑定</Descriptions.Item>
       </Descriptions>
 
@@ -79,7 +84,7 @@ const Info = (props) => {
       </Descriptions>
     </Drawer>
 
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}} />
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}}/>
   </>;
 };
 

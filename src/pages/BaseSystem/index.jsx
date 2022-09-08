@@ -1,8 +1,7 @@
-import SiderLayout from '@/layouts/SiderLayout';
 import React from 'react';
 import {useRouteMatch, useHistory, useLocation} from 'ice';
-import store from '@/store';
 import { Menu } from 'antd';
+import store from '@/store';
 // import * as Icon from '@ant-design/icons';
 
 const BaseSystem = ({ children }) => {

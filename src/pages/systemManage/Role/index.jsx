@@ -27,12 +27,6 @@ const Role = () => {
   };
 
   const columns = [
-    {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
-    },
     {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '菜单权限',

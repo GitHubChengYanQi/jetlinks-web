@@ -6,7 +6,7 @@ import AntForm from '@/components/AntForm';
 import {deviceModelAdd, deviceModelEdit} from '@/pages/equipment/Model/url';
 import SelectTopClass from '@/pages/equipment/Category/Save/components/SelectTopClass';
 import Select from '@/components/Select';
-import {caregoryFindAll} from '@/pages/equipment/Category/url';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
 
 const Save = props => {
 
@@ -46,7 +46,7 @@ const Save = props => {
         ]}
       >
         <Select
-          api={caregoryFindAll}
+          api={categoryFindAll}
           format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
           placeholder="请选择设备所属类别"
         />

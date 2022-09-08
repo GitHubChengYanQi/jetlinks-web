@@ -10,11 +10,13 @@ const FormItem = (
     name,
     component,
     children,
+    initialValue,
     ...porps
   }
 ) => {
 
   return <AntFormItem
+    initialValue={initialValue}
     label={label}
     name={name}
     component={component || children}

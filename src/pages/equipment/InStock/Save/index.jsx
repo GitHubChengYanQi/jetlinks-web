@@ -3,9 +3,12 @@ import Form from 'antd/es/form';
 import {Input} from 'antd';
 import AntForm from '@/components/AntForm';
 import {instockAdd, instockEdit} from '@/pages/equipment/InStock/url';
-import {caregoryFindAll} from '@/pages/equipment/Category/url';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
+import Group from '@/pages/monitor/LeftTree/components/Group';
+import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
+import DatePicker from '@/components/DatePicker';
 
 
 const Save = ({data, success, close, visible}) => {
@@ -62,7 +65,7 @@ const Save = ({data, success, close, visible}) => {
         ]}
       >
         <Select
-          api={caregoryFindAll}
+          api={categoryFindAll}
           format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
           placeholder="请选择设备所属类别"
         />
@@ -88,24 +91,34 @@ const Save = ({data, success, close, visible}) => {
         <Input placeholder="请输入登记名称"/>
       </Form.Item>
       <Form.Item
-        key="note"
+        key="remarks"
         label="终端备注"
-        name="note"
+        name="remarks"
         rules={[
-          {required: true, message: '请输入登记名称'},
+          {required: true, message: '请输入终端备注'},
         ]}
       >
-        <Input placeholder="请输入登记名称"/>
+        <Input placeholder="请输入终端备注"/>
       </Form.Item>
       <Form.Item
-        key="group"
+        key="classifyId"
         label="设备分组"
-        name="group"
+        name="classifyId"
         rules={[
           {required: true, message: '请选择设备分组'},
         ]}
       >
-        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
+        <SelectTopClass/>
+      </Form.Item>
+      <Form.Item
+        key="instockTime"
+        label="入库时间"
+        name="instockTime"
+        rules={[
+          {required: true, message: '请选择入库时间'},
+        ]}
+      >
+        <DatePicker/>
       </Form.Item>
     </AntForm>
   );

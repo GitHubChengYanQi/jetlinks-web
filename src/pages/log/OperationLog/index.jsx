@@ -10,12 +10,6 @@ const OperationLog = () => {
 
   const columns = [
     {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50} />
-    },
-    {
       title: '操作时间',
       dataIndex: 'createTime',
       align: 'center',

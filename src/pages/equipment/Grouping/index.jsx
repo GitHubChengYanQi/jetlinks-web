@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Row, Col, Button, Space, Dropdown, Menu, Select, Input} from 'antd';
+import {Row, Col, Button, Space, Dropdown, Menu, Select, Input, Select as AntSelect} from 'antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -16,14 +16,17 @@ const Grouping = () => {
   const [saveVisible, setSaveVisible] = useState();
 
   const columns = [
-    {
-      title: '序号',
-      dataIndex: '0',
-      align: 'center',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
-    },
     {title: '所属客户', dataIndex: '1', align: 'center', render: (text) => <Render text={text}/>},
     {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备数量', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '分组状态', dataIndex: 'status', align: 'center', render: (value) => {
+        const open = value === '99';
+        return <Render>
+          <Button type="link" disabled={!open}>{open ? '启用' : '停用'}</Button>
+        </Render>;
+      }
+    },
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '操作',
@@ -66,8 +69,23 @@ const Grouping = () => {
   const searchForm = () => {
     return <>
       <FormItem label="所属客户" name="customer" component={Select} select/>
-      <FormItem label="分组名称" name="1" component={Input}/>
-      <FormItem label="设备状态" name="2" component={Select} select/>
+      <FormItem label="分组名称" name="name" component={Input}/>
+      <FormItem
+        initialValue={0}
+        label="分组状态"
+        name="status"
+        component={({value, onChange}) => {
+          return <Select
+            defaultValue="all"
+            value={value || 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'},]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+        select
+      />
     </>;
   };
 

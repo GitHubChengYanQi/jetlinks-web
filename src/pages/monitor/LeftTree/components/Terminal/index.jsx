@@ -6,7 +6,7 @@ import Warning from '@/components/Warning';
 import styles from '../../index.module.less';
 import Save from '@/pages/equipment/Category/Save';
 import {useRequest} from '@/util/Request';
-import {caregoryFindAll} from '@/pages/equipment/Category/url';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {isArray} from '@/util/Tools';
 
 const Terminal = (props) => {
@@ -26,7 +26,7 @@ const Terminal = (props) => {
 
   const [treeData, setTreeData] = useState([]);
 
-  const {loading, run} = useRequest(caregoryFindAll, {
+  const {loading, run, refresh} = useRequest(categoryFindAll, {
     manual: true,
     onSuccess: (res) => {
       setTreeData(isArray(res).map(item => {
@@ -46,7 +46,6 @@ const Terminal = (props) => {
     return data.map(item => {
       return {
         ...item,
-        title: `${item.title} (${item.number || 0})`,
         children: formatData(item.children || []),
       };
     });
@@ -75,7 +74,7 @@ const Terminal = (props) => {
     {!noAction && <Button
       type="primary"
       className={styles.add}
-      icon={<PlusOutlined />}
+      icon={<PlusOutlined/>}
       onClick={() => {
         setCurrentItem({});
         setSaveVisible(true);
@@ -103,8 +102,8 @@ const Terminal = (props) => {
       visible={saveVisible}
       data={currentItem}
       success={() => {
-        getTreeData();
-      }} />
+
+      }}/>
   </>;
 };
 

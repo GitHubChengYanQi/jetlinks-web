@@ -1,26 +1,26 @@
-export const caregoryList = {
+export const categoryList = {
   url: '/deviceCategory/list',
   method: 'POST',
 };
 
-export const caregoryAdd = {
+export const categoryAdd = {
   url: '/deviceCategory/add',
   method: 'POST',
 };
 
 
-export const caregoryEdit = {
+export const categoryEdit = {
   url: '/deviceCategory/edit',
   method: 'POST',
 };
 
-export const caregoryDelete = {
+export const categoryDelete = {
   url: '/deviceCategory/delete',
   method: 'POST',
 };
 
 
-export const caregoryFindAll = {
+export const categoryFindAll = {
   url: '/deviceCategory/findAll',
   method: 'POST',
 };

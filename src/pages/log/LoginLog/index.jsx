@@ -10,12 +10,6 @@ import FormItem from '@/components/Table/components/FormItem/index'
 const LoginLog = () => {
 
   const columns = [
-    {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50} />
-    },
     {title: '登录时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
     {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text} />},

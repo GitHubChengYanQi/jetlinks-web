@@ -26,12 +26,6 @@ const Record = props => {
   }));
 
   const columns = [
-    {
-      title: '序号',
-      align: 'center',
-      dataIndex: '0',
-      render: (value, record, index) => <Render text={index + 1} width={50}/>
-    },
     {title: '报警时间', dataIndex: '1', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '终端备注',
