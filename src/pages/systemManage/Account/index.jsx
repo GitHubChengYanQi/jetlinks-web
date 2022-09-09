@@ -156,19 +156,18 @@ const Account = () => {
       actionRender={ (text, record) => {
         const open = record.status === 'ENABLE';
         return <Space>
-          <Button type="primary" ghost onClick={() => setSaveVisible(record)}>编辑</Button>
+          <Button type="link" onClick={() => setSaveVisible(record)}>编辑</Button>
           <Warning
             content={`您确定${open ? '禁用' : '启用'}么?`}
             onOk={() => !open ? unfreeze(record.userId) : freeze(record.userId)
             }>
             <Button
-              type="primary"
+              type="link"
               danger={open}
-              ghost
             >{open ? '禁用' : '启用'}</Button>
           </Warning>
           <Warning onOk={() => remove(record.userId)}>
-            <Button danger>删除</Button>
+            <Button danger type='link'>删除</Button>
           </Warning>
         </Space>;
       }}

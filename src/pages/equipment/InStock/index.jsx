@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, message, Select as AntSelect} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, message, Select as AntSelect, Badge} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/InStock/Save';
@@ -38,7 +38,7 @@ const InStock = () => {
       title: '设备状态', dataIndex: 'status', align: 'center', render: (value) => {
         const open = true || value === '99';
         return <Render>
-          <Button type="link" disabled={!open}>{open ? '在线' : '离线'}</Button>
+          <Badge color={open ? 'green' : 'red'} text={open ? '在线' : '离线'}/>
         </Render>;
       }
     },
@@ -133,11 +133,11 @@ const InStock = () => {
       rowKey="instockId"
       actionRender={(text, record) => (
         <Space>
-          <Button ghost type="primary" onClick={() => {
+          <Button type="link" onClick={() => {
             setInfoVisible(record);
           }}>详情</Button>
           <Warning onOk={() => delConfirm(record.instockId)}>
-            <Button danger>删除</Button>
+            <Button danger type='link'>删除</Button>
           </Warning>
         </Space>
       )}

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select as AntSelect} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, Badge} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/OutStock/Save';
@@ -25,7 +25,7 @@ const OutStock = () => {
       title: '设备状态', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => {
         const open = value.status === '99';
         return <Render>
-          <Button type="link" disabled={!open}>{open ? '在线' : '离线'}</Button>
+          <Badge color={open ? 'green' : 'red'} text={open ? '在线' : '离线'}/>
         </Render>;
       }
     },
@@ -33,7 +33,7 @@ const OutStock = () => {
       title: '绑定状态', dataIndex: 'status', align: 'center', render: (value = {}) => {
         const open = value.status === '99';
         return <Render>
-          <Button type="link" danger={!open}>{open ? '已绑定' : '未绑定'}</Button>
+          <Badge color={open ? 'green' : 'red'} text={open ? '已绑定' : '未绑定'}/>
         </Render>;
       }
     },
@@ -156,11 +156,11 @@ const OutStock = () => {
       rowKey="outstockId"
       actionRender={(text, record) => (
         <Space>
-          <Button ghost type="primary" onClick={() => {
+          <Button type="link" onClick={() => {
             setInfoVisible(record);
           }}>详情</Button>
           <Warning content="您确定解绑么？">
-            <Button danger>解绑</Button>
+            <Button danger type='link'>解绑</Button>
           </Warning>
         </Space>
       )}

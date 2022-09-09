@@ -26,14 +26,6 @@ const OperationLog = () => {
     {title: '登录IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text} />},
     {title: '操作菜单', dataIndex: 'logType', align: 'center', render: (text = '') => <Render text={text} />},
     {title: '操作内容', dataIndex: 'logName', align: 'center', render: (text = '') => <Render text={text} />},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text ,record) => (
-        <Warning><Button danger>删除</Button></Warning>
-      ),
-    }
   ];
 
 
@@ -59,6 +51,9 @@ const OperationLog = () => {
       api={operationLogList}
       columns={columns}
       rowKey="operationLogId"
+      actionRender={(text ,record) => (
+        <Warning><Button danger type='link'>删除</Button></Warning>
+      )}
     />
   </>;
 };

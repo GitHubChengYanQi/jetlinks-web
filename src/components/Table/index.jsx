@@ -273,8 +273,8 @@ const TableWarp = (
               align: 'center',
               fixed: 'left',
               dataIndex: '0',
-              width: '50px',
-              render: (value, record, index) => <Render text={index + 1} width={50} />
+              width: '70px',
+              render: (value, record, index) => <Render text={index + 1} width={70} />
             },
             ...tableColumn.filter(item => item.checked),
             {},

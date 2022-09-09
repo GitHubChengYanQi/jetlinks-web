@@ -7,6 +7,7 @@ import styles from '../../index.module.less';
 import Save from './Save';
 import {useRequest} from '@/util/Request';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
+import {isArray} from '@/util/Tools';
 
 const Group = (
   {noAction, onChange, value}
@@ -19,8 +20,8 @@ const Group = (
 
   const {loading, data} = useRequest(deviceClassifyTree);
 
-  const formatData = (data = []) => {
-    return data.map(item => {
+  const formatData = (data) => {
+    return isArray(data).map(item => {
       return {
         ...item,
         children: formatData(item.children),

@@ -81,7 +81,10 @@ const useTableSet = (column, tableKey) => {
     });
   };
 
-  const {loading, data, refresh} = useRequest({...tableViewListSelect, data: {tableKey: md5TableKey()}});
+  const {loading, data, refresh} = useRequest({
+    ...tableViewListSelect,
+    data: {tableKey: md5TableKey()}
+  }, {manual: true});
 
   const {run} = useRequest(tableViewEdit, {
     manual: true,
@@ -152,7 +155,7 @@ const useTableSet = (column, tableKey) => {
     if (detail) {
       Modal.confirm({
         title: '覆盖当前视图',
-        icon: <ExclamationCircleOutlined />,
+        icon: <ExclamationCircleOutlined/>,
         content: `更改视图展现的内容，确定覆盖视图「${detail.name}」？`,
         okText: '确认',
         cancelText: '取消',
@@ -250,13 +253,13 @@ const useTableSet = (column, tableKey) => {
 
   return {
     tableColumn,
-    saveView: state
+    saveView:  tableKey && (state
       &&
       <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
         <Button style={{marginRight: 8}}>保存视图</Button>
-      </Dropdown>,
-    selectView: loading ?
-      <Spin />
+      </Dropdown>),
+    selectView:  tableKey && (loading ?
+      <Spin/>
       :
       <Select
         options={data}
@@ -275,7 +278,7 @@ const useTableSet = (column, tableKey) => {
           });
 
         }}
-        value={detail && detail.tableViewId} />,
+        value={detail && detail.tableViewId}/>),
     setButton: tableKey &&
       <>
         <Dropdown
@@ -291,7 +294,7 @@ const useTableSet = (column, tableKey) => {
             type="text"
             onClick={() => {
               setVisible(true);
-            }}><Icon type="icon-xitongpeizhi" />列设置</Button>
+            }}><Icon type="icon-xitongpeizhi"/>列设置</Button>
         </Dropdown>
 
         <Modal
@@ -326,7 +329,7 @@ const useTableSet = (column, tableKey) => {
             <span style={{color: '#a6a2a2'}}>将当前的展示方式、排序方式保存为视图。</span>
             <Input maxLength={20} style={{width: '100%'}} placeholder="请输入视图名称(最多20字)" onChange={(value) => {
               setName(value.target.value);
-            }} />
+            }}/>
           </Space>
         </Modal>
       </>

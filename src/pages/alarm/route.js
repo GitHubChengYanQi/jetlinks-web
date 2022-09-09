@@ -13,6 +13,11 @@ const alarmConfig = [
         component: lazy(() => import('@/pages/alarm/Record')),
       },
       {
+        path: '/contact',
+        name: '报警联系人',
+        component: lazy(() => import('@/pages/alarm/Contacts')),
+      },
+      {
         redirect: '/alarm/record',
       }
     ]

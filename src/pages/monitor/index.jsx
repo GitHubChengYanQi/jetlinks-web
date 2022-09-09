@@ -107,14 +107,6 @@ const Monitor = () => {
     {title: '附属检测', dataIndex: '9', align: 'center', render: (text) => <Render text={text}/>},
     {title: 'GPS定位', dataIndex: '10', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备IP地址', dataIndex: '11', align: 'center', render: (text) => <Render text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => (
-        <Button>孪生数据</Button>
-      ),
-    },
   ];
 
   const [close, setClose] = useState(false);
@@ -144,6 +136,9 @@ const Monitor = () => {
           dataSource={dataSource}
           columns={columns}
           rowKey="key"
+          actionRender={(text, record) => (
+            <Button type='link'>孪生数据</Button>
+          )}
         />
       </Col>
     </Row>

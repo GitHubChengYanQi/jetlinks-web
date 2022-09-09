@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Row, Col, Button, Input, Select as AntSelect} from 'antd';
+import {Row, Col, Button, Input, Select as AntSelect, Badge} from 'antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Save from '@/pages/equipment/Edition/Save';
@@ -22,7 +22,7 @@ const Edition = () => {
       title: '设备状态', dataIndex: 'status', align: 'center', render: (value) => {
         const open = value === '99';
         return <Render>
-          <Button type="link" disabled={!open}>{open ? '在线' : '离线'}</Button>
+          <Badge color={open ? 'green' : 'red'} text={open ? '在线' : '离线'}/>
         </Render>;
       }
     },
@@ -92,7 +92,7 @@ const Edition = () => {
           columns={columns}
           rowKey="deviceId"
           actionRender={(text, record) => (
-            <Button onClick={() => setUpgradeVisible({v: 'V1.1.0'})}>升级</Button>
+            <Button type='link' onClick={() => setUpgradeVisible({v: 'V1.1.0'})}>升级</Button>
           )}
         />
       </Col>

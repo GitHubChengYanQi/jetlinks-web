@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message, Badge} from 'antd';
 import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -74,7 +74,7 @@ const Equipment = () => {
       render: (value) => {
         const open = value === '99';
         return <Render>
-          <Button type="link" disabled={!open}>{open ? '在线' : '离线'}</Button>
+          <Badge color={open ? 'green' : 'red'} text={open ? '在线' : '离线'}/>
         </Render>;
       }
     },
@@ -94,28 +94,28 @@ const Equipment = () => {
       key: '2',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备分组',
       key: '3',
       dataIndex: 'classifyName',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备类别',
       key: '4',
       dataIndex: 'categoryName',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备型号',
       key: '5',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
+      render: (text) => <Render width={120} text={text}/>
     },
     {
       title: '设备IP地址',
@@ -135,14 +135,14 @@ const Equipment = () => {
       key: '7',
       dataIndex: 'mac',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
+      render: (text) => <Render width={120} text={text}/>
     },
     {
       title: '位置信息',
       key: '8',
       dataIndex: '10',
       align: 'center',
-      render: (text) => <Render width={200} text={text} />
+      render: (text) => <Render width={200} text={text}/>
     },
     {
       title: '运行时间',
@@ -150,7 +150,7 @@ const Equipment = () => {
       dataIndex: 'runTime',
       align: 'center',
       render: (value) => <Render width={150}>
-        {moment.unix(moment(new Date()).diff(value)).from('dd 天')}
+        {/* {moment.unix(moment(new Date()).diff(value)).from('dd 天')} */}
       </Render>
     },
     {
@@ -158,21 +158,21 @@ const Equipment = () => {
       key: '10',
       dataIndex: 'createTime',
       align: 'center',
-      render: (value) => <Render width={150} text={value} />
+      render: (value) => <Render width={150} text={value}/>
     },
     {
       title: '离线时间',
       key: '11',
       dataIndex: '12',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} text={text}/>
     },
     {
       title: '质保时间',
       key: '12',
       dataIndex: '12',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} text={text}/>
     },
   ];
 
@@ -204,9 +204,9 @@ const Equipment = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="设备名称" name="name" component={Input}/>
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -214,10 +214,10 @@ const Equipment = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="位置信息" name="7" component={Input} />
-      <FormItem label="离线时间" name="8" component={DatePicker} showTime />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="位置信息" name="7" component={Input}/>
+      <FormItem label="离线时间" name="8" component={DatePicker} showTime/>
     </>;
   };
 
@@ -242,11 +242,10 @@ const Equipment = () => {
         const open = record.status === '99';
         return <Space>
           <Button
-            ghost
-            type="primary"
+            type="link"
             onClick={() => setSaveVisible({...record, position: [record.longitude, record.latitude]})}>编辑</Button>
           <Warning content={`确定要${!open ? '重启' : '关闭'}重启设备么？`} onOk={() => restart(record)}>
-            <Button ghost danger={open} type="primary">{!open ? '重启' : '关闭 '}</Button>
+            <Button danger={open} type="link">{!open ? '重启' : '关闭 '}</Button>
           </Warning>
         </Space>;
       }}

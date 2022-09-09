@@ -45,21 +45,6 @@ const Record = props => {
     {title: 'MAC地址', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
     {title: '所属客户', dataIndex: '9', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '位置信息', dataIndex: '10', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => (
-        <Space>
-          <Warning content="您确定处理么？">
-            <Button ghost type="primary">已阅</Button>
-          </Warning>
-          <Button ghost type="primary">
-            <div onClick={() => history.push('/monitor')}>实时监控</div>
-          </Button>
-        </Space>
-      ),
-    },
   ];
 
   const menu = <Menu
@@ -100,6 +85,16 @@ const Record = props => {
       dataSource={dataSource}
       columns={columns}
       rowKey="key"
+      actionRender={(text, record) => (
+        <Space>
+          <Warning content="您确定处理么？">
+            <Button type="link">已阅</Button>
+          </Warning>
+          <Button type="link">
+            <div onClick={() => history.push('/monitor')}>实时监控</div>
+          </Button>
+        </Space>
+      )}
     />
   </>;
 };

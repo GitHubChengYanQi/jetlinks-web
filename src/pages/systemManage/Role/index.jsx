@@ -98,7 +98,7 @@ const Role = () => {
       rowKey="roleId"
       actionRender={(text, record) => (
         <Space>
-          <Button type="primary" ghost onClick={() => {
+          <Button type="link" onClick={() => {
             const menuList = record.menuList || [];
             setSaveVisible({
               ...record,
@@ -106,10 +106,10 @@ const Role = () => {
             });
           }}>编辑</Button>
           <Warning content="您确定启用么?">
-            <Button type="primary" ghost>启用</Button>
+            <Button type="link">启用</Button>
           </Warning>
           <Warning onOk={() => handleDelete(record.roleId)}>
-            <Button danger>删除</Button>
+            <Button danger type='link'>删除</Button>
           </Warning>
         </Space>
       )}

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, Select, Badge} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Model/Save';
@@ -47,7 +47,9 @@ const Model = () => {
       align: 'center',
       render: (text = '0') => {
         const open = text !== '0';
-        return <Render><Button type="link" danger={!open}>{open ? '启用' : '禁用'}</Button></Render>;
+        return <Render>
+          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '禁用'}/>
+        </Render>;
       }
     },
     {
@@ -138,7 +140,7 @@ const Model = () => {
       actionRender={(text, record) => {
         const stop = record.status === '0';
         return <Space>
-          <Button ghost type="primary" onClick={() => {
+          <Button type="link" onClick={() => {
             setSaveVisible(record);
           }}>编辑</Button>
           <Warning content="您确定启用么？" onOk={() => {
@@ -148,10 +150,10 @@ const Model = () => {
               unDeploy(record);
             }
           }}>
-            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
+            <Button danger={!stop} type="link">{!stop ? '停用' : '启用'}</Button>
           </Warning>
           <Warning onOk={() => remove(record.id)}>
-            <Button danger>删除</Button>
+            <Button danger type='link'>删除</Button>
           </Warning>
         </Space>;
       }}

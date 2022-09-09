@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, message, Select, Input} from 'antd';
+import {Button, Space, Dropdown, Menu, message, Select, Input, Badge} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
@@ -35,7 +35,12 @@ const Category = () => {
       title: '设备类别状态',
       dataIndex: 'status',
       align: 'center',
-      render: (text) => <Render><Button type="link" danger={text === '0'}>{text === '1' ? '启用' : '禁用'}</Button></Render>
+      render: (text) => {
+        const open = text === '1';
+        return <Render>
+          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '禁用'}/>
+        </Render>;
+      }
     },
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
   ];
@@ -97,7 +102,7 @@ const Category = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})} type='primary' ghost>新建设备类别</Button>,
+        <Button key={1} onClick={() => setSaveVisible({})} type="primary" ghost>新建设备类别</Button>,
         <Dropdown key={2} overlay={menu} placement="bottom">
           <Button>批量操作</Button>
         </Dropdown>,
@@ -110,14 +115,14 @@ const Category = () => {
       actionRender={(text, record) => {
         const open = record.status === '1';
         return <Space>
-          <Button ghost type="primary" onClick={() => {
+          <Button type="link" onClick={() => {
             setSaveVisible(record);
           }}>编辑</Button>
           <Warning content={`您确定${open ? '禁用' : '启用'}么？`}>
-            <Button ghost danger={open} type="primary">{open ? '禁用' : '启用'}</Button>
+            <Button danger={open} type="link">{open ? '禁用' : '启用'}</Button>
           </Warning>
           <Warning onOk={() => delConfirm(record.categoryId)}>
-            <Button danger>删除</Button>
+            <Button danger type="link">删除</Button>
           </Warning>
         </Space>;
       }}

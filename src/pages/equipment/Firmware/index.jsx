@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Select as AntSelect} from 'antd';
+import {Button, Space, Dropdown, Menu, Select as AntSelect, Badge} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Firmware/Save';
@@ -22,7 +22,7 @@ const Firmware = () => {
       title: '设备类别',
       dataIndex: 'modelResult',
       align: 'center',
-      render: (value) => <Render text={value.categoryResult && value.categoryResult.name} />
+      render: (value={}) => <Render text={value.categoryResult && value.categoryResult.name} />
     },
     {title: '设备型号', dataIndex: 'modelResult', align: 'center', render: (value = {}) => <Render text={value.name} />},
     {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
@@ -31,7 +31,9 @@ const Firmware = () => {
       title: '固件状态', dataIndex: 'status', align: 'center',
       render: (text = '0') => {
         const open = text !== '0';
-        return <Render><Button type="link" danger={!open}>{open ? '启用' : '禁用'}</Button></Render>;
+        return <Render>
+          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '停用'}/>
+        </Render>;
       }
     },
     {title: '上传时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
@@ -111,20 +113,16 @@ const Firmware = () => {
       actionRender={(text, record) => {
         const stop = record.status === '0';
         return <Space>
-          <Button ghost type="primary" onClick={() => {
+          <Button type="link" onClick={() => {
             setSaveVisible(record);
           }}>编辑</Button>
           <Warning content="您确定启用么？" onOk={() => {
-            if (stop) {
 
-            } else {
-
-            }
           }}>
-            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
+            <Button danger={!stop} type="link">{!stop ? '停用' : '启用'}</Button>
           </Warning>
           <Warning>
-            <Button danger>删除</Button>
+            <Button danger type='link'>删除</Button>
           </Warning>
         </Space>;
       }}

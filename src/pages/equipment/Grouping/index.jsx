@@ -94,9 +94,9 @@ const Grouping = () => {
           rowKey="classifyId"
           actionRender={(text, record) => (
             <Space>
-              <Button onClick={() => setSaveVisible({id: '1', name: text})}>编辑</Button>
+              <Button type='link' onClick={() => setSaveVisible({id: '1', name: text})}>编辑</Button>
               <Warning>
-                <Button danger>删除</Button>
+                <Button type='link' danger>删除</Button>
               </Warning>
             </Space>
           )}
