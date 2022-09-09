@@ -44,14 +44,6 @@ const Edition = () => {
     {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
     {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text}/>},
     {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => (
-        <Button onClick={() => setUpgradeVisible({v: 'V1.1.0'})}>升级</Button>
-      ),
-    }
   ];
 
   const [close, setClose] = useState(false);
@@ -99,6 +91,9 @@ const Edition = () => {
           api={deviceList}
           columns={columns}
           rowKey="deviceId"
+          actionRender={(text, record) => (
+            <Button onClick={() => setUpgradeVisible({v: 'V1.1.0'})}>升级</Button>
+          )}
         />
       </Col>
     </Row>

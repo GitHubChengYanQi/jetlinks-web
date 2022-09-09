@@ -77,30 +77,6 @@ const Account = () => {
       align: 'center',
       render: (text) => <Render width={150} text={text} />
     },
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => {
-        const open = record.status === 'ENABLE';
-        return <Space>
-          <Button type="primary" ghost onClick={() => setSaveVisible(record)}>编辑</Button>
-          <Warning
-            content={`您确定${open ? '禁用' : '启用'}么?`}
-            onOk={() => !open ? unfreeze(record.userId) : freeze(record.userId)
-            }>
-            <Button
-              type="primary"
-              danger={open}
-              ghost
-            >{open ? '禁用' : '启用'}</Button>
-          </Warning>
-          <Warning onOk={() => remove(record.userId)}>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>;
-      }
-    }
   ];
 
   const menu = <Menu
@@ -177,6 +153,25 @@ const Account = () => {
           <Button>导入导出</Button>
         </Dropdown>
       ]}
+      actionRender={ (text, record) => {
+        const open = record.status === 'ENABLE';
+        return <Space>
+          <Button type="primary" ghost onClick={() => setSaveVisible(record)}>编辑</Button>
+          <Warning
+            content={`您确定${open ? '禁用' : '启用'}么?`}
+            onOk={() => !open ? unfreeze(record.userId) : freeze(record.userId)
+            }>
+            <Button
+              type="primary"
+              danger={open}
+              ghost
+            >{open ? '禁用' : '启用'}</Button>
+          </Warning>
+          <Warning onOk={() => remove(record.userId)}>
+            <Button danger>删除</Button>
+          </Warning>
+        </Space>;
+      }}
     />
     <Save
       success={() => {

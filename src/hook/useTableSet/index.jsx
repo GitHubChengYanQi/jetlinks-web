@@ -37,10 +37,11 @@ const useTableSet = (column, tableKey) => {
 
   tableKey && Array.isArray(tableColumn) && tableColumn.map((items) => {
     if (items && items.key) {
+      const props = items.props || {};
       return itemsData.push({
-        title: items.props.title,
+        title: items.title || props.title,
         key: items.key,
-        visible: items.props.fixed,
+        visible: items.fixed || props.fixed,
         checked: items.checked,
       });
     }
@@ -183,9 +184,9 @@ const useTableSet = (column, tableKey) => {
         title="表头设置"
         headStyle={{textAlign: 'center', padding: 0}}
         bodyStyle={{maxWidth: 300, padding: 0, borderTop: 'solid 1px #eee', height: 'auto'}}
-        extra={<Button icon={<CloseOutlined />} style={{marginRight: 16}} type="text" onClick={() => {
-          setVisible(false);
-        }} />}
+        // extra={<Button icon={<CloseOutlined />} style={{marginRight: 16}} type="text" onClick={() => {
+        //   setVisible(false);
+        // }} />}
       >
         <Sortable
           handle
@@ -195,12 +196,12 @@ const useTableSet = (column, tableKey) => {
             setTrue();
             const array = [];
             allIems.map((items) => {
-              const columns = tableColumn.filter((columns) => {
-                return columns && items.key === columns.key;
+              const columns = tableColumn.find((columns) => {
+                return items.key === columns.key;
               });
-              return array.push(columns[0]);
+              return array.push(columns);
             });
-            setTableColumn(array);
+            setTableColumn([...array, ...tableColumn.filter(item => !item.key)]);
           }}
           onChecked={(value) => {
             setTrue();
@@ -222,6 +223,10 @@ const useTableSet = (column, tableKey) => {
 
   const save = (
     <Menu
+      items={[
+        {key: '0', label: '另存为新视图'},
+        {key: '1', label: '覆盖当前视图', disabled: !detail}
+      ]}
       style={{minWidth: 220}}
       onClick={(value) => {
         if (value.key === '0') {
@@ -230,14 +235,7 @@ const useTableSet = (column, tableKey) => {
           cover();
         }
       }}
-    >
-      <Menu.Item key={0}>
-        另存为新视图
-      </Menu.Item>
-      <Menu.Item key={1} disabled={!detail}>
-        覆盖当前视图
-      </Menu.Item>
-    </Menu>
+    />
   );
 
   useEffect(() => {
@@ -252,45 +250,41 @@ const useTableSet = (column, tableKey) => {
 
   return {
     tableColumn,
+    saveView: state
+      &&
+      <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
+        <Button style={{marginRight: 8}}>保存视图</Button>
+      </Dropdown>,
+    selectView: loading ?
+      <Spin />
+      :
+      <Select
+        options={data}
+        style={{minWidth: 200}}
+        loading={loading}
+        placeholder="请选择视图"
+        bordered={false}
+        onSelect={(value) => {
+
+          localStorage.setItem(md5TableKey(), value);
+
+          viewDetail({
+            data: {
+              tableViewId: value,
+            }
+          });
+
+        }}
+        value={detail && detail.tableViewId} />,
     setButton: tableKey &&
       <>
-        {
-          state
-          &&
-          <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
-            <Button style={{marginRight: 8}}>保存视图</Button>
-          </Dropdown>
-        }
-
-        {loading ?
-          <Spin />
-          :
-          <Select
-            options={data}
-            style={{minWidth: 200}}
-            loading={loading}
-            placeholder="请选择视图"
-            bordered={false}
-            onSelect={(value) => {
-
-              localStorage.setItem(md5TableKey(), value);
-
-              viewDetail({
-                data: {
-                  tableViewId: value,
-                }
-              });
-
-            }}
-            value={detail && detail.tableViewId} />}
-
         <Dropdown
           overlay={menu}
           overlayStyle={{backgroundColor: '#fff', zIndex: 99}}
-          onVisibleChange={(value) => {
+          onOpenChange={(value) => {
             setVisible(value);
           }}
-          visible={visible}
+          open={visible}
           placement="bottomRight"
           trigger={['click']}>
           <Button
@@ -302,7 +296,7 @@ const useTableSet = (column, tableKey) => {
 
         <Modal
           title="保存视图"
-          visible={showModal}
+          open={showModal}
           footer={[
             <Button
               type="primary"

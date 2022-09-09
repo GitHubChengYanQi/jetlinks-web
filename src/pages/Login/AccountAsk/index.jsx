@@ -201,10 +201,10 @@ const AccountAsk = (
                     <FileUpload />
                   </Form.Item>
                   <Form.Item
-                    initialValue={data.idNumber}
-                    key="idNumber"
+                    initialValue={data.idName}
+                    key="idName"
                     label="申请人/企业法人姓名"
-                    name="idNumber"
+                    name="idName"
                   >
                     <Input disabled={success} placeholder="请输入申请人或企业法人姓名" />
                   </Form.Item>

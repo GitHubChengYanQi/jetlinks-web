@@ -49,21 +49,6 @@ const InStock = () => {
     {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '入库时间', dataIndex: 'instockTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => (
-        <Space>
-          <Button ghost type="primary" onClick={() => {
-            setInfoVisible(record);
-          }}>详情</Button>
-          <Warning onOk={() => delConfirm(record.instockId)}>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>
-      ),
-    },
   ];
 
 
@@ -135,7 +120,7 @@ const InStock = () => {
       ref={ref}
       searchButtons={[
         <Dropdown key={1} overlay={inStockMenu} placement="bottom">
-          <Button>新增入库</Button>
+          <Button type='primary' ghost>新增入库</Button>
         </Dropdown>,
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <Button>批量操作</Button>
@@ -146,6 +131,16 @@ const InStock = () => {
       api={instockList}
       columns={columns}
       rowKey="instockId"
+      actionRender={(text, record) => (
+        <Space>
+          <Button ghost type="primary" onClick={() => {
+            setInfoVisible(record);
+          }}>详情</Button>
+          <Warning onOk={() => delConfirm(record.instockId)}>
+            <Button danger>删除</Button>
+          </Warning>
+        </Space>
+      )}
     />
 
     <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>

@@ -9,6 +9,7 @@ import FormItem from '../../../components/Table/components/FormItem/index';
 import {roleList, roleRemove} from '@/Config/ApiUrl/system/role';
 import Note from '@/components/Note';
 import {request} from '@/util/Request';
+import {isArray} from '@/util/Tools';
 
 const Role = () => {
 
@@ -32,35 +33,14 @@ const Role = () => {
       title: '菜单权限',
       dataIndex: 'menuList',
       align: 'center',
-      render: (menuList = []) => <Render width={200}><Note
-        maxWidth={400}>{menuList.map(item => item.name).toString()}</Note></Render>
+      render: (menuList = []) => <Render width={200}>
+        <Note maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
+      </Render>
     },
     {title: '分组权限', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
     {title: '角色状态', dataIndex: '4', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '应用账号数', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => (
-        <Space>
-          <Button type="primary" ghost onClick={() => {
-            const menuList = record.menuList || [];
-            setSaveVisible({
-              ...record,
-              menuIds: menuList.map(item => `${item.menuId}`)
-            });
-          }}>编辑</Button>
-          <Warning content="您确定启用么?">
-            <Button type="primary" ghost>启用</Button>
-          </Warning>
-          <Warning onOk={() => handleDelete(record.roleId)}>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>
-      ),
-    }
   ];
 
   const menu = <Menu
@@ -116,6 +96,23 @@ const Role = () => {
       api={roleList}
       columns={columns}
       rowKey="roleId"
+      actionRender={(text, record) => (
+        <Space>
+          <Button type="primary" ghost onClick={() => {
+            const menuList = record.menuList || [];
+            setSaveVisible({
+              ...record,
+              menuIds: menuList.map(item => `${item.menuId}`)
+            });
+          }}>编辑</Button>
+          <Warning content="您确定启用么?">
+            <Button type="primary" ghost>启用</Button>
+          </Warning>
+          <Warning onOk={() => handleDelete(record.roleId)}>
+            <Button danger>删除</Button>
+          </Warning>
+        </Space>
+      )}
     />
 
     <Save

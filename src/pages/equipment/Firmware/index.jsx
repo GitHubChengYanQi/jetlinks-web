@@ -22,11 +22,11 @@ const Firmware = () => {
       title: '设备类别',
       dataIndex: 'modelResult',
       align: 'center',
-      render: (value) => <Render text={value.categoryResult && value.categoryResult.name}/>
+      render: (value) => <Render text={value.categoryResult && value.categoryResult.name} />
     },
-    {title: '设备型号', dataIndex: 'modelResult', align: 'center', render: (value = {}) => <Render text={value.name}/>},
-    {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '固件版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备型号', dataIndex: 'modelResult', align: 'center', render: (value = {}) => <Render text={value.name} />},
+    {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '固件版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '固件状态', dataIndex: 'status', align: 'center',
       render: (text = '0') => {
@@ -34,32 +34,7 @@ const Firmware = () => {
         return <Render><Button type="link" danger={!open}>{open ? '启用' : '禁用'}</Button></Render>;
       }
     },
-    {title: '上传时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => {
-        const stop = record.status === '0';
-        return <Space>
-          <Button ghost type="primary" onClick={() => {
-            setSaveVisible(record);
-          }}>编辑</Button>
-          <Warning content="您确定启用么？" onOk={() => {
-            if (stop) {
-
-            } else {
-
-            }
-          }}>
-            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
-          </Warning>
-          <Warning>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>;
-      }
-    },
+    {title: '上传时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
 
@@ -115,7 +90,7 @@ const Firmware = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
     </>;
   };
 
@@ -123,7 +98,7 @@ const Firmware = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})}>新建固件</Button>,
+        <Button key={1} onClick={() => setSaveVisible({})} type="primary" ghost>新建固件</Button>,
         <Dropdown key={2} overlay={menu} placement="bottom">
           <Button>批量操作</Button>
         </Dropdown>,
@@ -133,6 +108,26 @@ const Firmware = () => {
       api={firmwareList}
       columns={columns}
       rowKey="firmwarId"
+      actionRender={(text, record) => {
+        const stop = record.status === '0';
+        return <Space>
+          <Button ghost type="primary" onClick={() => {
+            setSaveVisible(record);
+          }}>编辑</Button>
+          <Warning content="您确定启用么？" onOk={() => {
+            if (stop) {
+
+            } else {
+
+            }
+          }}>
+            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
+          </Warning>
+          <Warning>
+            <Button danger>删除</Button>
+          </Warning>
+        </Space>;
+      }}
     />
 
     <Save

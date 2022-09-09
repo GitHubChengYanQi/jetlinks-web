@@ -2,7 +2,6 @@ import React, {useRef} from 'react';
 import Table from '@/components/Table';
 import {dictTypeList} from '@/Config/ApiUrl/system/dict';
 import EditButton from '@/components/EditButton';
-import DelButton from '@/components/DelButton';
 import DictTypeEdit from '@/pages/BaseSystem/dictType/Edit';
 import Drawer from '@/components/Drawer';
 import {Button} from 'antd';

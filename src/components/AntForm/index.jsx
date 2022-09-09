@@ -53,6 +53,9 @@ const AntForm = (
   const submitData = () => {
     form.validateFields().then((values) => {
       const data = format({...values, ...key});
+      if (!data) {
+        return;
+      }
       if (initialValues[rowKey]) {
         edit({data});
       } else {

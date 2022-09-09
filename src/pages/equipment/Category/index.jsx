@@ -38,25 +38,6 @@ const Category = () => {
       render: (text) => <Render><Button type="link" danger={text === '0'}>{text === '1' ? '启用' : '禁用'}</Button></Render>
     },
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => {
-        const open = record.status === '1';
-        return <Space>
-          <Button ghost type="primary" onClick={() => {
-            setSaveVisible(record);
-          }}>编辑</Button>
-          <Warning content={`您确定${open ? '禁用' : '启用'}么？`}>
-            <Button ghost danger={open} type="primary">{open ? '禁用' : '启用'}</Button>
-          </Warning>
-          <Warning onOk={() => delConfirm(record.categoryId)}>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>;
-      }
-    },
   ];
 
   const menu = <Menu
@@ -116,7 +97,7 @@ const Category = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})}>新建设备类别</Button>,
+        <Button key={1} onClick={() => setSaveVisible({})} type='primary' ghost>新建设备类别</Button>,
         <Dropdown key={2} overlay={menu} placement="bottom">
           <Button>批量操作</Button>
         </Dropdown>,
@@ -126,6 +107,20 @@ const Category = () => {
       api={categoryList}
       columns={columns}
       rowKey="categoryId"
+      actionRender={(text, record) => {
+        const open = record.status === '1';
+        return <Space>
+          <Button ghost type="primary" onClick={() => {
+            setSaveVisible(record);
+          }}>编辑</Button>
+          <Warning content={`您确定${open ? '禁用' : '启用'}么？`}>
+            <Button ghost danger={open} type="primary">{open ? '禁用' : '启用'}</Button>
+          </Warning>
+          <Warning onOk={() => delConfirm(record.categoryId)}>
+            <Button danger>删除</Button>
+          </Warning>
+        </Space>;
+      }}
     />
 
     <Save

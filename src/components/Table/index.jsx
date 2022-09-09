@@ -5,8 +5,9 @@ import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@form
 import useUrlState from '@ahooksjs/use-url-state';
 import Service from '@/util/Service';
 import style from './index.module.less';
-import TableSort from '@/components/Table/components/TableSort';
 import Render from '@/components/Render';
+import useTableSet from '@/hook/useTableSet';
+import Warning from '@/components/Warning';
 
 
 const {Column} = AntdTable;
@@ -22,7 +23,7 @@ const TableWarp = (
     title,
     sortAction,
     maxHeight,
-    loading: getLoading,
+    loading: otherLoading,
     showCard,
     rowSelection,
     selectedRowKeys,
@@ -64,6 +65,10 @@ const TableWarp = (
     footer: parentFooter,
     formActions = null,
     left,
+    noAction,
+    actionRender = () => {
+      return <></>;
+    },
     ...props
   }, ref) => {
 
@@ -73,9 +78,6 @@ const TableWarp = (
   if (!rowKey) {
     console.warn('Table component: rowKey cannot be empty,But now it doesn\'t exist!');
   }
-
-  // 排序
-  const [sorts, setSorts] = useState([]);
 
   const {ajaxService} = Service();
 
@@ -90,7 +92,6 @@ const TableWarp = (
   if (!formActions) {
     formActions = formActionsPublic;
   }
-  // const [formActions,setFormActions] = useState(formActionsPublic);
 
   const dataSourcedChildren = (data) => {
     if (NoChildren || !Array.isArray(data.children) || data.children.length === 0) {
@@ -193,10 +194,23 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
+
+  const {tableColumn, setButton, saveView, selectView} = useTableSet(children || columns, tableKey);
+
+  const action = [];
+  if (!noAction) {
+    action.push({
+      title: <>操作{setButton}</>,
+      fixed: 'right',
+      align: 'center',
+      width: '200px',
+      render: actionRender,
+    },);
+  }
 
   return (
     <Card bordered={false}>
@@ -213,24 +227,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id="submit"
-                        loading={getLoading || loading}
-                        type="primary"
-                        htmlType="submit"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                      {searchButtons}
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={otherLoading || loading}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                    {searchButtons}
+                    {selectView}
+                    {saveView}
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -242,22 +258,28 @@ const TableWarp = (
                 {...form}
                 actions={formActions}
               />
-              {searchButtons}
+              <Space>{searchButtons}</Space>
             </>}
         </div>
         <AntdTable
           showTotal
           expandable={expandable}
-          loading={getLoading || loading}
+          loading={otherLoading || loading}
           dataSource={dataSource || []}
           rowKey={rowKey}
-          columns={[{
-            title: '序号',
-            align: 'center',
-            fixed: 'left',
-            dataIndex: '0',
-            render: (value, record, index) => <Render text={index + 1} width={50}/>
-          }, ...columns]}
+          columns={[
+            {
+              title: '序号',
+              align: 'center',
+              fixed: 'left',
+              dataIndex: '0',
+              width: '50px',
+              render: (value, record, index) => <Render text={index + 1} width={50} />
+            },
+            ...tableColumn.filter(item => item.checked),
+            {},
+            ...action,
+          ]}
           pagination={
             noPagination || {
               ...pagination,
@@ -283,7 +305,9 @@ const TableWarp = (
           scroll={{x: 'max-content', y: maxHeight}}
           {...other}
           {...props}
-        />
+        >
+          {children}
+        </AntdTable>
       </div>
     </Card>
   );

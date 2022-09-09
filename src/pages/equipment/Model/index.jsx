@@ -67,31 +67,6 @@ const Model = () => {
       align: 'center',
       render: (text) => <Render text={text}/>
     },
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      render: (text, record) => {
-        const stop = record.status === '0';
-        return <Space>
-          <Button ghost type="primary" onClick={() => {
-            setSaveVisible(record);
-          }}>编辑</Button>
-          <Warning content="您确定启用么？" onOk={() => {
-            if (stop) {
-              deploy(record);
-            } else {
-              unDeploy(record);
-            }
-          }}>
-            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
-          </Warning>
-          <Warning onOk={() => remove(record.id)}>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>;
-      }
-    },
   ];
 
   const menu = <Menu
@@ -149,7 +124,7 @@ const Model = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})}>新建设备型号</Button>,
+        <Button key={1} onClick={() => setSaveVisible({})} type='primary' ghost>新建设备型号</Button>,
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <Button>批量操作</Button>
         </Dropdown>,
@@ -160,6 +135,26 @@ const Model = () => {
       onChange={setKeys}
       columns={columns}
       rowKey="modelId"
+      actionRender={(text, record) => {
+        const stop = record.status === '0';
+        return <Space>
+          <Button ghost type="primary" onClick={() => {
+            setSaveVisible(record);
+          }}>编辑</Button>
+          <Warning content="您确定启用么？" onOk={() => {
+            if (stop) {
+              deploy(record);
+            } else {
+              unDeploy(record);
+            }
+          }}>
+            <Button ghost danger={!stop} type="primary">{!stop ? '停用' : '启用'}</Button>
+          </Warning>
+          <Warning onOk={() => remove(record.id)}>
+            <Button danger>删除</Button>
+          </Warning>
+        </Space>;
+      }}
     />
 
     <Save

@@ -15,6 +15,7 @@ const Restart = (props) => {
 
   useEffect(() => {
     if (visible) {
+      setCount(0);
       let total = 0;
       const interval = setInterval(() => {
         if (total < 100) {

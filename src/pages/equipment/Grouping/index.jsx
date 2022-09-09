@@ -18,30 +18,7 @@ const Grouping = () => {
   const columns = [
     {title: '所属客户', dataIndex: '1', align: 'center', render: (text) => <Render text={text}/>},
     {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备数量', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {
-      title: '分组状态', dataIndex: 'status', align: 'center', render: (value) => {
-        const open = value === '99';
-        return <Render>
-          <Button type="link" disabled={!open}>{open ? '启用' : '停用'}</Button>
-        </Render>;
-      }
-    },
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
-    {
-      title: '操作',
-      fixed: 'right',
-      align: 'center',
-      dataIndex: '2',
-      render: (text, record) => (
-        <Space>
-          <Button onClick={() => setSaveVisible({id: '1', name: text})}>编辑</Button>
-          <Warning>
-            <Button danger>删除</Button>
-          </Warning>
-        </Space>
-      ),
-    },
   ];
 
 
@@ -106,16 +83,23 @@ const Grouping = () => {
       <Col span={close ? 24 : 20}>
         <Table
           ref={ref}
-          searchForm={searchForm}
           searchButtons={[
             <Dropdown key={1} overlay={menu} placement="bottom">
-              <Button>新建分组</Button>
+              <Button type='primary'>新建分组</Button>
             </Dropdown>,
             <Button key={2}>导出</Button>
           ]}
           api={deviceClassifyList}
           columns={columns}
           rowKey="classifyId"
+          actionRender={(text, record) => (
+            <Space>
+              <Button onClick={() => setSaveVisible({id: '1', name: text})}>编辑</Button>
+              <Warning>
+                <Button danger>删除</Button>
+              </Warning>
+            </Space>
+          )}
         />
       </Col>
     </Row>
