@@ -1,6 +1,5 @@
 import React from 'react';
-import {message, Modal, Spin} from 'antd';
-import Form from 'antd/es/form';
+import {message, Modal, Spin,Form} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const AntForm = (

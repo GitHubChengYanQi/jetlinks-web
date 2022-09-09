@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { dbTableList } from '@/pages/BaseSystem/gen/GenUrl';
+import React, { useEffect, useRef } from 'react';
 import { Button, Table, Modal } from 'antd';
+import { dbTableList } from '@/pages/BaseSystem/gen/GenUrl';
 import { useRequest } from '@/util/Request';
 import FieldConfigList from '@/pages/BaseSystem/dbInfo/fieldConfig/fieldConfigList';
 

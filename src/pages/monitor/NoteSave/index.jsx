@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import Form from 'antd/es/form';
-import {Input, Modal, Spin} from 'antd';
+import {Input, Modal, Spin,Form} from 'antd';
 
 
 const NoteSave = props => {

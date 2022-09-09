@@ -1,6 +1,5 @@
 import React from 'react';
-import Form from 'antd/es/form';
-import {Input, Radio} from 'antd';
+import {Input, Radio,Form} from 'antd';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 import AntForm from '@/components/AntForm';
 import {deviceClassifyAdd, deviceClassifyEdit} from '@/pages/equipment/Grouping/url';

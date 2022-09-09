@@ -1,5 +1,4 @@
 import React from 'react';
-import Form from 'antd/es/form';
 import AntForm from '@/components/AntForm';
 import {outstockAdd, outstockEdit} from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import Form from 'antd/es/form';
-import {Input} from 'antd';
+import {Input,Form} from 'antd';
 import AntForm from '@/components/AntForm';
 import {instockAdd, instockEdit} from '@/pages/equipment/InStock/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';

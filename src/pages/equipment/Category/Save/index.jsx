@@ -1,6 +1,5 @@
 import React from 'react';
-import Form from 'antd/es/form';
-import {Input, Radio} from 'antd';
+import {Input, Radio, Form} from 'antd';
 import SelectTopClass from '@/pages/equipment/Category/Save/components/SelectTopClass';
 import AntForm from '@/components/AntForm';
 import {categoryAdd, categoryEdit} from '@/pages/equipment/Category/url';
@@ -32,7 +31,7 @@ const Save = props => {
           {required: true, message: '请输入设备类别名称'},
         ]}
       >
-        <Input placeholder="请输入设备类别名称" />
+        <Input placeholder="请输入设备类别名称"/>
       </Form.Item>
       {status && <Form.Item
         initialValue={data?.pid}
@@ -43,7 +42,7 @@ const Save = props => {
           {required: true, message: '请选择上级类别'},
         ]}
       >
-        <SelectTopClass />
+        <SelectTopClass/>
       </Form.Item>}
       {!status && <Form.Item
         initialValue={data?.status || '1'}

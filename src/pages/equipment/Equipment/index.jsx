@@ -15,7 +15,6 @@ import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
-import moment from 'moment';
 
 const Equipment = () => {
 

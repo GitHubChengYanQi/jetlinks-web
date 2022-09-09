@@ -7,7 +7,6 @@ import Service from '@/util/Service';
 import style from './index.module.less';
 import Render from '@/components/Render';
 import useTableSet from '@/hook/useTableSet';
-import Warning from '@/components/Warning';
 
 
 const {Column} = AntdTable;

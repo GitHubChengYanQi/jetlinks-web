@@ -33,7 +33,7 @@ const Warning: React.FC<Props> = (props) => {
       onOk,
       onCancel,
     });
-  }}>{children}</div>
+  }}>{children}</div>;
 };
 
 export default Warning;

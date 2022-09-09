@@ -25,7 +25,7 @@ const Position: React.FC<Props> = (props) => {
       placeholder='请输入维度'
       value={value[1]}
       onChange={(number) => onChange([value[0], number])} />
-  </div>
+  </div>;
 };
 
 export default Position;

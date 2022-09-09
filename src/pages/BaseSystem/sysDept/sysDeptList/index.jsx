@@ -6,8 +6,8 @@
  */
 
 import React, {useRef} from 'react';
+import {Table as AntTable} from 'antd';
 import Table from '@/components/Table';
-import {Button, Table as AntTable} from 'antd';
 import DelButton from '@/components/DelButton';
 import Drawer from '@/components/Drawer';
 import AddButton from '@/components/AddButton';

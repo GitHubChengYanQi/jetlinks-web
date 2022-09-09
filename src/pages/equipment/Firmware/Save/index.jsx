@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import Form from 'antd/es/form';
-import {Input, Radio} from 'antd';
+import {Input, Radio,Form} from 'antd';
 import FileUpload from '@/components/FileUpload';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';

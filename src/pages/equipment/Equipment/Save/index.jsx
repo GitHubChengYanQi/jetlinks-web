@@ -1,6 +1,5 @@
 import React from 'react';
-import Form from 'antd/es/form';
-import {Input} from 'antd';
+import {Input,Form} from 'antd';
 import Position from '@/pages/equipment/Equipment/Save/components/Position';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';

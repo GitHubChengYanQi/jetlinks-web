@@ -2,9 +2,9 @@ import React from 'react';
 import { Row, Col, Card, Avatar, Image, Skeleton, Divider, Typography, Input, Radio, DatePicker } from 'antd';
 import { Form, FormItem, FormButtonGroup, Submit } from '@formily/antd';
 import moment from 'moment';
+import { config } from 'ice';
 import { useRequest } from '@/util/Request';
 import store from '@/store';
-import { config } from 'ice';
 import { userSave } from '@/Config/ApiUrl/system/user';
 
 import { currentUserInfo } from './apiUrl';

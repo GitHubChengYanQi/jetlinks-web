@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Image, Input, InputNumber, Radio, Space, Spin, Tabs} from 'antd';
-import Form from 'antd/es/form';
+import {Button, Image, Input,Form, InputNumber, Radio, Space, Spin, Tabs} from 'antd';
 import styles from './index.module.less';
 import FileUpload from '@/components/FileUpload';
 

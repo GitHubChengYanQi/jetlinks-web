@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import Form from 'antd/es/form';
-import {Checkbox, Modal, Select, Spin} from 'antd';
+import {Checkbox, Modal, Select, Spin,Form} from 'antd';
 
 export const Check = (
   {

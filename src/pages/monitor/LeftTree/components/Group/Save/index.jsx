@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import Form from 'antd/es/form';
-import {Input, Modal, Spin} from 'antd';
+import {Input, Modal, Spin,Form} from 'antd';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 
 const Save = props => {

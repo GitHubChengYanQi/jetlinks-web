@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {Card, Col, Drawer, Input, Row, Checkbox, Button, Space, Tooltip, message, Spin} from 'antd';
+import {Form,Card, Col, Drawer, Input, Row, Checkbox, Button, Space, Tooltip, message, Spin} from 'antd';
 import {ExclamationCircleFilled, QuestionCircleOutlined} from '@ant-design/icons';
-import Form from 'antd/es/form';
 import styles from './index.module.less';
 import FileUpload from '../../../components/FileUpload';
 import Password from './components/Password';

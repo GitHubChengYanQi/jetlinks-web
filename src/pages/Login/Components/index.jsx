@@ -1,14 +1,13 @@
-import React, {useState} from "react";
-import classNames from "classnames";
-import {HomeOutlined, LockOutlined, UserOutlined, MobileOutlined, VerifiedOutlined} from "@ant-design/icons";
-import SendCode from '@jiumao/rc-send-code';
+import React, {useState} from 'react';
+import classNames from 'classnames';
+import {HomeOutlined, LockOutlined, UserOutlined, MobileOutlined, VerifiedOutlined} from '@ant-design/icons';
 import style from '../index.module.less';
 
 export const Code = (
   {
     handleSubmit = () => {
     },
-    setCode = (code: any) => {
+    setCode = () => {
     },
     code = '',
     getCodeImg = () => {
@@ -34,24 +33,13 @@ export const Code = (
       value={code}
       type="text"
     />
-    {phoneCode ?
-      <SendCode
-        className={style.sendCode}
-        onCaptcha={() => {
-          return true;
-        }}
-      />
-      :
-      <div className={style.code} onClick={() => {
-        getCodeImg();
-      }}><img src={captchaImg} className={style.code_img} alt=''/></div>}
   </div>;
 };
 
 export const UserName = (
   {
     username = '',
-    setUsername = (username: any) => {
+    setUsername = () => {
     },
   }) => {
 
@@ -73,7 +61,7 @@ export const UserName = (
 export const CorporateName = (
   {
     corporateName = '',
-    setCorporateName = (corporateName: any) => {
+    setCorporateName = () => {
     },
   }) => {
 
@@ -95,7 +83,7 @@ export const CorporateName = (
 export const Phone = (
   {
     phone = '',
-    setPhone = (phone: any) => {
+    setPhone = () => {
     },
   }) => {
 
@@ -117,7 +105,7 @@ export const Phone = (
 export const Password = (
   {
     password = '',
-    setPassword = (password: any) => {
+    setPassword = () => {
     },
   }) => {
 

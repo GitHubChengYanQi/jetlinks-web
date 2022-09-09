@@ -1,7 +1,7 @@
 import React from 'react';
+import {Input, Radio} from 'antd';
 import Form from '@/components/Form';
 import {dictTypeDetail} from '@/Config/ApiUrl/system/dict';
-import {Input, Radio} from "antd";
 
 const {FormItem} = Form;
 

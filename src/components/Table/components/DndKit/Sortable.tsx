@@ -68,7 +68,7 @@ export interface Props {
   onChecked?: Function;
   refresh?: Boolean;
 
-  getItemStyles?(args: {
+  getItemStyles(args: {
     id: UniqueIdentifier;
     index: number;
     isSorting: boolean;
@@ -77,13 +77,13 @@ export interface Props {
     isDragging: boolean;
   }): React.CSSProperties;
 
-  wrapperStyle?(args: {
+  wrapperStyle(args: {
     index: number;
     isDragging: boolean;
     id: string;
   }): React.CSSProperties;
 
-  isDisabled?(id: UniqueIdentifier): boolean;
+  isDisabled(id: UniqueIdentifier): boolean;
 }
 
 const defaultDropAnimationConfig: DropAnimation = {
