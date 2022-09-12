@@ -31,6 +31,12 @@ const routerConfig = [
         path: '/monitor',
         component: lazy(() => import(('@/pages/monitor'))),
       }, {
+        path: '/statistical',
+        component: lazy(() => import(('@/pages/statistical'))),
+      },{
+        path: '/electronicsMap',
+        component: lazy(() => import(('@/pages/electronicsMap'))),
+      }, {
         path: '/member',
         component: lazy(() => import(('@/pages/Member'))),
       },

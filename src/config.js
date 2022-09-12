@@ -42,8 +42,8 @@ export default {
   Genius: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://10.147.20.100:85/',
-    // baseURI: 'http://10.147.20.68:8881',
+    // baseURI: 'http://10.147.20.100:85/',
+    baseURI: 'http://124.71.235.212:82',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0',

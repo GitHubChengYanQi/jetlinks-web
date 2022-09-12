@@ -10,6 +10,7 @@ export default function BasicLayout({children}) {
 
   const history = useHistory();
   const [state, dispatchers] = store.useModel('user');
+  const dataDispatchers = store.useModel('dataSource')[1];
 
   const Initialize = async () => {
     window.document.title = '奥普泰设备业务云平台';
@@ -23,6 +24,7 @@ export default function BasicLayout({children}) {
         throw new Error('本地登录信息错误');
       }
       dispatchers.getUserInfo();
+      dataDispatchers.getCommonArea();
     } catch (e) {
       logger.error(e.message);
       cookie.remove('jetlink-token');

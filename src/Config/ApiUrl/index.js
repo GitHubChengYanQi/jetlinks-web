@@ -11,6 +11,11 @@ export const addressTree = {
   method: 'POST',
 };
 
+export const addressList = {
+  url: '/commonArea/list',
+  method: 'POST',
+};
+
 export default {
   ...system
 };
