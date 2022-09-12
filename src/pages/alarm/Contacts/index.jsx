@@ -1,45 +1,52 @@
-import React from 'react';
-import {Button, Space, Dropdown, Menu, Input} from 'antd';
-import {useHistory} from 'ice';
+import React, {useRef, useState} from 'react';
+import {Button, Space, Dropdown, Menu, Input, Badge, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
+import {contactDelete, contactList} from '@/pages/alarm/Contacts/url';
+import Save from '@/pages/alarm/Contacts/Save';
+import {request} from '@/util/Request';
 
 const Contacts = () => {
 
-  const history = useHistory();
+  const [saveVisible, setSaveVisible] = useState();
 
-  const dataSource = Array(5).fill('').map((item, index) => ({
-    key: index,
-    '0': '0',
-    '1': '2022/08/19 12:00:00',
-    '2': `4012M智能箱${index}`,
-    '3': '智能箱产品',
-    '4': '浑南区、和平区',
-    '5': '浑南区、和平区',
-    '6': 'OPT IMS-4012M',
-    '7': '市电断电',
-    '8': 'EC:B9:70:BB:74:34',
-    '9': '辽宁奥普泰通信股份有限公司',
-    '10': '沈阳市浑南区文溯街',
-  }));
+  const ref = useRef();
 
   const columns = [
-    {title: '姓名', dataIndex: '1', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '职务',
-      dataIndex: '2',
+      dataIndex: 'job',
       align: 'center',
       render: (text) => <Render text={text}/>
     },
-    {title: '负责区域', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '剩余免费短信条数', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '是否短信通知', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '手机号码', dataIndex: '6', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '电子邮箱', dataIndex: '7', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '剩余免费短信条数',
+      dataIndex: 'shortMessageNumber',
+      align: 'center',
+      render: (text) => <Render text={text || 500}/>
+    },
+    {
+      title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text) => <Render>
+        <Badge color={text === '1' ? 'green' : 'red'} text={text === '1' ? '是' : '否'}/>
+      </Render>
+    },
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
   ];
+
+  const handleDelete = (contactId) => {
+    request({...contactDelete, data: {contactId}}).then((res) => {
+      if (res.success) {
+        message.success('删除成功!');
+        ref.current.submit();
+      }
+    }).catch(() => message.success('删除失败！'));
+  };
 
   const menu = <Menu
     items={[
@@ -47,7 +54,7 @@ const Contacts = () => {
         key: '1',
         label: '单独新增',
         onClick: () => {
-
+          setSaveVisible({});
         }
       },
       {
@@ -86,6 +93,8 @@ const Contacts = () => {
 
   return <>
     <Table
+      ref={ref}
+      api={contactList}
       searchButtons={[
         <Dropdown key={1} overlay={menu} placement="bottom">
           <Button>新增联系人</Button>
@@ -96,18 +105,22 @@ const Contacts = () => {
         <Button key={3}>导出</Button>
       ]}
       searchForm={searchForm}
-      dataSource={dataSource}
       columns={columns}
-      rowKey="key"
+      rowKey="contactId"
       actionRender={(text, record) => (
         <Space>
-          <Button type="link">编辑</Button>
-          <Warning>
+          <Button type="link" onClick={() => setSaveVisible(record)}>编辑</Button>
+          <Warning onOk={()=>handleDelete(record.contactId)}>
             <Button type="link" danger>删除</Button>
           </Warning>
         </Space>
       )}
     />
+
+    <Save data={saveVisible} visible={saveVisible} success={() => {
+      setSaveVisible();
+      ref.current.submit();
+    }} close={() => setSaveVisible()}/>
   </>;
 };
 export default Contacts;
