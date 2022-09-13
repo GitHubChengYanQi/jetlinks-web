@@ -10,6 +10,7 @@ const Tree = (
     },
     api,
     border,
+    treeData,
     ...other
   }
 ) => {
@@ -18,7 +19,7 @@ const Tree = (
   }
   const {data} = useRequest(api);
 
-  if (data) {
+  if (treeData || data) {
     return (<div style={border ? {maxHeight: '50vh', overflow: 'auto', border: 'solid 1px #d9d9d9', padding: 8} : {}}>
       <AntdTree
         onCheck={(values, checkInfo) => {
@@ -28,7 +29,7 @@ const Tree = (
         selectable={false}
         checkable
         checkedKeys={value}
-        treeData={data}
+        treeData={treeData || data}
         {...other}
       />
     </div>);

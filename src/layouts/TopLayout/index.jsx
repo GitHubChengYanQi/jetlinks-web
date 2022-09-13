@@ -5,6 +5,10 @@ import store from '@/store';
 import styles from './index.module.less';
 import logo from '../../asseset/imgs/logo.png';
 import Avatar from '@/layouts/TopLayout/components/Avatar/Avatar';
+import Setting from '@/layouts/TopLayout/components/Setting/inedx';
+import Message from '@/layouts/TopLayout/components/Message/inedx';
+import {Space} from 'antd';
+import Action from '@/layouts/TopLayout/components/Action/inedx';
 
 const TopLayout = ({children}) => {
 
@@ -68,8 +72,14 @@ const TopLayout = ({children}) => {
       return <div onClick={() => history.push(menuItemProps.path)}>{defaultDom}</div>;
     }}
     menuDataRender={(props) => menuDataRender(props)}
-    rightContentRender={() => <Avatar userInfo={userInfo} />}
-    title='奥普泰设备业务云平台'
+    rightContentRender={() => <>
+      <Setting/>
+      <Message/>
+      <Action/>
+      <Avatar userInfo={userInfo}/>
+    </>
+    }
+    title="奥普泰设备业务云平台"
     logo={logo}
     splitMenus
     // collapsed={false}

@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Menu} from 'antd';
-import {PlusOutlined} from '@ant-design/icons';
+import {Menu} from 'antd';
 import AntTree from '@/components/AntTree';
 import Warning from '@/components/Warning';
-import styles from '../../index.module.less';
 import Save from '@/pages/equipment/Category/Save';
 import {useRequest} from '@/util/Request';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
@@ -26,7 +24,7 @@ const Terminal = (props) => {
 
   const [treeData, setTreeData] = useState([]);
 
-  const {loading, run, refresh} = useRequest(categoryFindAll, {
+  const {loading, run} = useRequest(categoryFindAll, {
     manual: true,
     onSuccess: (res) => {
       setTreeData(isArray(res).map(item => {

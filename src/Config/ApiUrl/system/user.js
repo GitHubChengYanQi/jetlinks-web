@@ -31,6 +31,11 @@ export const userList = {
   method: 'POST',
 };
 
+export const mgrUserList = {
+  url: '/mgr/pageList',
+  method: 'POST',
+};
+
 export const userRoleSave = {
   url: '/rest/mgr/setRole',
   method: 'POST',

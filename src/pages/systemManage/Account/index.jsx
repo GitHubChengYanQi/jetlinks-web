@@ -4,7 +4,7 @@ import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/systemManage/Account/Save';
 import Table from '@/components/Table';
-import {userFreeze, userList, userRemove, userUnfreeze} from '@/Config/ApiUrl/system/user';
+import {mgrUserList, userFreeze, userRemove, userUnfreeze} from '@/Config/ApiUrl/system/user';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {request, useRequest} from '@/util/Request';
@@ -141,7 +141,7 @@ const Account = () => {
   return <>
     <Table
       ref={ref}
-      api={userList}
+      api={mgrUserList}
       columns={columns}
       rowKey="userId"
       searchForm={searchForm}
