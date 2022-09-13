@@ -193,12 +193,15 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}} />
+        <br style={{clear: 'both'}}/>
       </div>
     );
   };
 
-  const {tableColumn, setButton, saveView, selectView} = useTableSet(children || columns, tableKey);
+  const {tableColumn, setButton, saveView, selectView} = useTableSet(children || columns.map((item, index) => ({
+    ...item,
+    key: `${index}`
+  })), tableKey);
 
   const action = [];
   if (!noAction) {
@@ -226,26 +229,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup>
-                    <Button
-                      id="submit"
-                      loading={otherLoading || loading}
-                      type="primary"
-                      htmlType="submit"
-                      onClick={() => {
-                        submit();
-                      }}><SearchOutlined />查询
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        reset();
-                      }}>
-                      重置
-                    </Button>
-                    {searchButtons}
-                    {selectView}
-                    {saveView}
-                  </FormButtonGroup>}
+                    <FormButtonGroup>
+                      <Button
+                        id="submit"
+                        loading={otherLoading || loading}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {
+                          submit();
+                        }}><SearchOutlined/>查询
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reset();
+                        }}>
+                        重置
+                      </Button>
+                      {searchButtons}
+                      {selectView}
+                      {saveView}
+                    </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -263,9 +266,9 @@ const TableWarp = (
         <AntdTable
           showTotal
           bordered
-          onHeaderRow={(record)=>{
+          onHeaderRow={(record) => {
             return {
-              className:style.headerRow
+              className: style.headerRow
             };
           }}
           expandable={expandable}
@@ -279,10 +282,9 @@ const TableWarp = (
               fixed: 'left',
               dataIndex: '0',
               width: '70px',
-              render: (value, record, index) => <Render text={index + 1} width={70} />
+              render: (value, record, index) => <Render text={index + 1} width={70}/>
             },
             ...tableColumn.filter(item => item.checked),
-            {},
             ...action,
           ]}
           pagination={

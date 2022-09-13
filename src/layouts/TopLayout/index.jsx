@@ -7,8 +7,8 @@ import logo from '../../asseset/imgs/logo.png';
 import Avatar from '@/layouts/TopLayout/components/Avatar/Avatar';
 import Setting from '@/layouts/TopLayout/components/Setting/inedx';
 import Message from '@/layouts/TopLayout/components/Message/inedx';
-import {Space} from 'antd';
 import Action from '@/layouts/TopLayout/components/Action/inedx';
+import {isArray} from '@/util/Tools';
 
 const TopLayout = ({children}) => {
 
@@ -18,11 +18,14 @@ const TopLayout = ({children}) => {
   const {menus} = userInfo;
 
   const getRoutes = (menuList) => {
-    return menuList.map(item => {
+    return isArray(menuList).map(item => {
+      if (item.ismenu === 'N') {
+        return null;
+      }
       return {
         name: item.name,
         path: item.url === '#' ? item.code : (item.url || `/${item.id}`),
-        routes: (item.subMenus || item.children) ? getRoutes(item.subMenus || item.children) : [],
+        routes: !['statistical', 'electronicsMap', 'monitor'].includes(item.id) ? getRoutes(item.subMenus || item.children) : [],
       };
     });
   };

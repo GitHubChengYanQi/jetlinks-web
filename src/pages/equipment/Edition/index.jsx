@@ -84,6 +84,7 @@ const Edition = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          tableKey='edition'
           searchButtons={[
             <PrimaryButton key="1" onClick={() => setUpgradeVisible({})}>批量升级</PrimaryButton>,
             <PrimaryButton key="2">导出</PrimaryButton>

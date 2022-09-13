@@ -99,6 +99,7 @@ const Firmware = () => {
 
   return <>
     <Table
+      tableKey='firmware'
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建固件</PrimaryButton>,

@@ -10,10 +10,6 @@ export const Code = (
     setCode = () => {
     },
     code = '',
-    getCodeImg = () => {
-    },
-    captchaImg = '',
-    phoneCode = false,
   }) => {
 
   const [blur, setBlur] = useState(false);
@@ -94,7 +90,7 @@ export const Phone = (
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      placeholder='请输入企业名称'
+      placeholder='请输入手机号'
       onChange={e => setPhone(e.target.value)}
       value={phone}
       type="text"

@@ -119,6 +119,7 @@ const InStock = () => {
 
   return <>
     <Table
+      tableKey='instock'
       onChange={setkeys}
       ref={ref}
       searchButtons={[

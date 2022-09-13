@@ -7,13 +7,16 @@ import style from './index.module.less';
 import logo from '../../asseset/imgs/logo.png';
 import {CorporateName, UserName, Password, Phone, Code} from './Components';
 import AccountAsk from './AccountAsk';
-import { useRequest } from '@/util/Request';
-import { login as loginUrl } from '@/Config/ApiUrl';
+import {useRequest} from '@/util/Request';
+import {login as loginUrl} from '@/Config/ApiUrl';
 
 
 const Login = () => {
   const history = useHistory();
   const params = getSearchParams();
+
+
+  const adminLogin = history.location.pathname === '/adminLogin';
 
   const [corporateName, setCorporateName] = useState('');
   const [phone, setPhone] = useState('');
@@ -24,7 +27,7 @@ const Login = () => {
 
   const [code, setCode] = useState('');
 
-  const {run,error,data, loading} = useRequest(loginUrl, {
+  const {run, error, data, loading} = useRequest(loginUrl, {
     manual: true,
     ready: true,
   });
@@ -53,11 +56,12 @@ const Login = () => {
         <CorporateName corporateName={corporateName} setCorporateName={setCorporateName}/>
         <UserName username={username} setUsername={setUsername}/>
         <Password password={password} setPassword={setPassword}/>
-      </> },
+      </>
+    },
     {
       label: '手机验证码登陆',
       key: 'item-2',
-      children:<>
+      children: <>
         <CorporateName corporateName={corporateName} setCorporateName={setCorporateName}/>
         <Phone phone={phone} setPhone={setPhone}/>
         <Code
@@ -82,10 +86,17 @@ const Login = () => {
           <img width={100} src={logo} alt=""/>
         </div>
 
-        <Tabs items={tabItems} defaultActiveKey="1" centered className={style.tab} />
+        <Tabs items={adminLogin ? [{
+          label: '管理员登陆',
+          key: 'item-1',
+          children: <>
+            <UserName username={username} setUsername={setUsername}/>
+            <Password password={password} setPassword={setPassword}/>
+          </>
+        }] : tabItems} defaultActiveKey="1" centered className={style.tab}/>
 
         <Button
-          htmlType='submit'
+          htmlType="submit"
           loading={loading}
           onClick={() => {
             handleSubmit();
@@ -93,14 +104,14 @@ const Login = () => {
           className={style.btn}
         >{loading ? '登录中' : '登录'}</Button>
 
-        <div style={{marginTop:16}}>
+        <div style={{marginTop: 16}}>
           {error && <Alert message={error.message} type="error"/>}
-          {data && <Alert message='登录成功，请稍候...' type='success'/>}
+          {data && <Alert message="登录成功，请稍候..." type="success"/>}
         </div>
 
         <div className={style.footer}>
           <div className={style.add}>
-            没有账号，<Button type='link' onClick={() => setAskAccount(true)}>立即申请</Button>
+            没有账号，<Button type="link" onClick={() => setAskAccount(true)}>立即申请</Button>
           </div>
           <div className={style.find}>
             找回密码

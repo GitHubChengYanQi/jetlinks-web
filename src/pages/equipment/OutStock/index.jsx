@@ -144,6 +144,7 @@ const OutStock = () => {
 
   return <>
     <Table
+      tableKey='outstock'
       searchButtons={[
         <Dropdown key={1} overlay={outStockMenu} placement="bottom">
           <PrimaryButton>新增出库</PrimaryButton>

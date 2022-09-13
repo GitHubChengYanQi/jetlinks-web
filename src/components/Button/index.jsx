@@ -5,9 +5,10 @@ export const ActionButton = ({
   onClick = () => {
   },
   children,
+  disabled,
   ...props
 }) => {
-  return <Button {...props} className="bgGreen" onClick={onClick}>{children}</Button>;
+  return <Button disabled={disabled} {...props} className={!disabled && 'bgGreen'} onClick={onClick}>{children}</Button>;
 };
 
 export const DangerButton = ({

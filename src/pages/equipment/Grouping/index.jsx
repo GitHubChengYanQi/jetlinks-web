@@ -19,7 +19,7 @@ const Grouping = () => {
   const [batchImport, setBatchImport] = useState(false);
 
   const columns = [
-    {title: '所属客户', dataIndex: '1', align: 'center', render: (text) => <Render text={text} />},
+    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text} />},
     {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
@@ -86,6 +86,7 @@ const Grouping = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          tableKey='grouping'
           ref={ref}
           searchButtons={[
             <Dropdown key={1} overlay={menu} placement="bottom">
