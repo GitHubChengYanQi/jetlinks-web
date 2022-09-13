@@ -68,7 +68,6 @@ const Equipment = () => {
   const columns = [
     {
       title: '设备状态',
-      key: '0',
       dataIndex: 'status',
       align: 'center',
       render: (value) => {
@@ -81,72 +80,63 @@ const Equipment = () => {
     {
       title: '终端备注',
       dataIndex: 'remarks',
-      key: '1',
       align: 'center',
       render: (text) => {
         return <Render>
-          <a onClick={() => history.push('/monitor')}>{text}</a>
+          <a className='blue' onClick={() => history.push('/monitor')}>{text}</a>
         </Render>;
       }
     },
     {
       title: '登记名称',
-      key: '2',
       dataIndex: 'name',
       align: 'center',
       render: (text) => <Render text={text} />
     },
     {
       title: '设备分组',
-      key: '3',
       dataIndex: 'classifyName',
       align: 'center',
       render: (text) => <Render text={text} />
     },
     {
       title: '设备类别',
-      key: '4',
       dataIndex: 'categoryName',
       align: 'center',
       render: (text) => <Render text={text} />
     },
     {
       title: '设备型号',
-      key: '5',
       dataIndex: 'modelName',
       align: 'center',
       render: (text) => <Render width={120} text={text} />
     },
     {
       title: '设备IP地址',
-      key: '6',
       dataIndex: '8',
       align: 'center',
       render: (text) => {
         return <Render width={120}>
           <Warning content="确定进入远程配置么？">
-            <Button type="link">{text}</Button>
+            <Button className='blue' type="link">{text}</Button>
           </Warning>
         </Render>;
       }
     },
     {
       title: '设备MAC地址',
-      key: '7',
       dataIndex: 'mac',
       align: 'center',
       render: (text) => <Render width={120} text={text} />
     },
     {
       title: '位置信息',
-      key: '8',
       dataIndex: '10',
       align: 'center',
       render: (text) => <Render width={200} text={text} />
     },
     {
       title: '运行时间',
-      key: '9',
       dataIndex: 'runTime',
       align: 'center',
       render: (value) => <Render width={150}>
@@ -155,21 +145,18 @@ const Equipment = () => {
     },
     {
       title: '上线时间',
-      key: '10',
       dataIndex: 'createTime',
       align: 'center',
       render: (value) => <Render width={150} text={value} />
     },
     {
       title: '离线时间',
-      key: '11',
       dataIndex: '12',
       align: 'center',
       render: (text) => <Render width={150} text={text} />
     },
     {
       title: '质保时间',
-      key: '12',
       dataIndex: '12',
       align: 'center',
       render: (text) => <Render width={150} text={text} />

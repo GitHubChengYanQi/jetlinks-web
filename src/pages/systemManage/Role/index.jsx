@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Menu, Dropdown, Input, Select, message} from 'antd';
+import {Space, Menu, Dropdown, Input, Select, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
@@ -29,7 +29,7 @@ const Role = () => {
   };
 
   const columns = [
-    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '菜单权限',
       dataIndex: 'menuList',
@@ -38,10 +38,17 @@ const Role = () => {
         <Note maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
       </Render>
     },
-    {title: '分组权限', dataIndex: '3', align: 'center', render: (text) => <Render text={text} />},
-    {title: '角色状态', dataIndex: '4', align: 'center', render: (text) => <Render width={200} text={text} />},
-    {title: '应用账号数', dataIndex: '5', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '分组权限', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '角色状态', dataIndex: '4', align: 'center', render: (text) => {
+        const open = text !== 0;
+        return <Render>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+        </Render>;
+      }
+    },
+    {title: '应用账号数', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
   ];
 
   const menu = <Menu
@@ -75,9 +82,9 @@ const Role = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="创建时间" select name="time" component={DatePicker} showTime />
-        <FormItem label="角色状态" name="status" component={Select} />
-        <FormItem label="角色名称" name="name" component={Input} />
+        <FormItem label="创建时间" select name="time" component={DatePicker} showTime/>
+        <FormItem label="角色状态" name="status" component={Select}/>
+        <FormItem label="角色名称" name="name" component={Input}/>
       </>
     );
   };
@@ -97,23 +104,24 @@ const Role = () => {
       api={roleList}
       columns={columns}
       rowKey="roleId"
-      actionRender={(text, record) => (
-        <Space>
-          <PrimaryButton onClick={() => {
+      actionRender={(text, record) => {
+        const disabled =  [1,2,3].includes(record.roleId);
+        return <Space>
+          <PrimaryButton disabled={disabled} onClick={() => {
             const menuList = record.menuList || [];
             setSaveVisible({
               ...record,
               menuIds: menuList.map(item => `${item.menuId}`)
             });
           }}>编辑</PrimaryButton>
-          <Warning content="您确定启用么?">
-            <ActionButton>启用</ActionButton>
+          <Warning disabled={disabled} content="您确定禁用么?">
+            <DangerButton disabled={disabled}>禁用</DangerButton>
           </Warning>
-          <Warning onOk={() => handleDelete(record.roleId)}>
-            <DangerButton>删除</DangerButton>
+          <Warning disabled={disabled} onOk={() => handleDelete(record.roleId)}>
+            <DangerButton disabled={disabled}>删除</DangerButton>
           </Warning>
-        </Space>
-      )}
+        </Space>;
+      }}
     />
 
     <Save

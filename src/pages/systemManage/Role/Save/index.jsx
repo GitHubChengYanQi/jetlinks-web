@@ -2,7 +2,6 @@ import React from 'react';
 import {Form, Input, Radio} from 'antd';
 import Tree from '@/components/Tree';
 import {roleAdd, roleSave} from '@/Config/ApiUrl/system/role';
-import {menuTreeNow} from '@/Config/ApiUrl/system/menu';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 import AntForm from '@/components/AntForm';
 import store from '@/store';
@@ -19,14 +18,13 @@ const Save = ({
 }) => {
 
   const [userInfo] = store.useModel('user');
-  console.log(userInfo.menus);
 
   const formatData = (data) => {
-    return isArray(data).map(item => {
+    return isArray(data).map((item, index) => {
       return {
-        key: item,
-        title: item,
-        children: formatData(item.subMenus),
+        key: item.url ? `${item.id}` : `dict_${item.id}`,
+        title: item.name,
+        children: formatData(item.children || item.subMenus),
       };
     });
   };
@@ -43,6 +41,9 @@ const Save = ({
       success={success}
       visible={visible}
       close={close}
+      format={(values) => {
+        return {...values, menuIds: values.menuIds.filter(item => item + ''.indexOf('dict') === -1).toString()};
+      }}
     >
       <Form.Item
         initialValue={data?.name}
@@ -64,8 +65,7 @@ const Save = ({
           {required: true, message: '请选择菜单权限'},
         ]}
       >
-        {/* treeData={formatData(userInfo.menus)} */}
-        <Tree api={menuTreeNow} border/>
+        <Tree treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border/>
       </Form.Item>
       <Form.Item
         initialValue={data?.group}
@@ -79,7 +79,7 @@ const Save = ({
         <SelectTopClass/>
       </Form.Item>
       <Form.Item
-        initialValue={0}
+        initialValue={data?.status || 1}
         key="status"
         label="角色状态"
         name="status"

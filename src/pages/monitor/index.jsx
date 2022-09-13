@@ -23,20 +23,22 @@ const Monitor = () => {
     '2': `4012M智能箱${index}`,
     '3': '智能箱产品',
     '4': '220/4',
-    '51': '通/4',
-    '52': '通/4',
-    '53': '通/4',
-    '6': '光连接/4',
+    '51': '220',
+    '52': '通',
+    '53': '1000',
+    '54': '0',
+    '6': '光连接',
     '7': '24',
     '81': '4',
     '82': '4',
     '9': '5',
     '10': '123.4556789',
     '11': '内网：192.168.1.1',
+    '99':'5'
   }));
 
   const columns = [
-    {title: '设备状态', dataIndex: '1', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备状态', dataIndex: '1', align: 'center', render: (text) => <Render text={<span className='green'>{text}</span>}/>},
     {
       title: <Space>
         终端备注
@@ -48,7 +50,7 @@ const Monitor = () => {
       align: 'center',
       render: (text) => {
         return <Space>
-          <Button type="link" onClick={() => setInfoVisible({id: '1'})}>{text}</Button>
+          <Button className='blue' type="link" onClick={() => setInfoVisible({id: '1'})}>{text}</Button>
           <EditOutlined onClick={() => setNoteVisible({id: '1', note: text})}/>
         </Space>;
       }
@@ -69,13 +71,13 @@ const Monitor = () => {
           title: '实时值',
           dataIndex: '51',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '51',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
       ]
     },
@@ -84,39 +86,39 @@ const Monitor = () => {
       children: [
         {
           title: '网络状态',
-          dataIndex: '51',
+          dataIndex: '52',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '51',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
         {
           title: '网络速率/Mbps',
-          dataIndex: '52',
+          dataIndex: '53',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '51',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
         {
           title: '网络丢包率/%',
-          dataIndex: '53',
+          dataIndex: '54',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '51',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
       ]
     },
@@ -125,15 +127,15 @@ const Monitor = () => {
       children: [
         {
           title: '实时值',
-          dataIndex: '51',
+          dataIndex: '6',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '51',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
       ]
     },
@@ -144,13 +146,13 @@ const Monitor = () => {
           title: '通道数',
           dataIndex: '51',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '51',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
       ]
     },
@@ -159,20 +161,20 @@ const Monitor = () => {
       children: [
         {
           title: '实时值',
-          dataIndex: '81',
+          dataIndex: '52',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '82',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         }, {
           title: '信号强度',
           dataIndex: '82',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
       ]
     }, {
@@ -180,25 +182,25 @@ const Monitor = () => {
       children: [
         {
           title: '网络状态',
-          dataIndex: '81',
+          dataIndex: '52',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>{text}</span>}/>
         },
         {
           title: '报警数',
-          dataIndex: '82',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         }, {
           title: '供电状态',
           dataIndex: '82',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='green'>正常</span>}/>
         }, {
           title: '报警数',
-          dataIndex: '82',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         },
       ]
     },
@@ -208,12 +210,12 @@ const Monitor = () => {
       children: [
         {
           title: '报警数',
-          dataIndex: '81',
+          dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={text}/>
+          render: (text) => <Render text={<span className='red'>{text}</span>}/>
         }]
     },
-    {title: 'GPS定位', dataIndex: '10', align: 'center', render: (text) => <Render text={text}/>},
+    {title: 'GPS定位', dataIndex: '10', align: 'center', render: (text) => <Render text={<span className='green'>{text}</span>}/>},
     {title: '设备IP地址', dataIndex: '11', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
@@ -239,6 +241,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          tableKey='monitor'
           searchForm={searchForm}
           dataSource={dataSource}
           columns={columns}

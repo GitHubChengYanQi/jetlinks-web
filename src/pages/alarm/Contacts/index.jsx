@@ -30,12 +30,15 @@ const Contacts = () => {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render text={text || 500}/>
+      render: (text) => <Render className='green' text={text || 500}/>
     },
     {
-      title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text) => <Render>
-        <Badge color={text === '1' ? 'green' : 'red'} text={text === '1' ? '是' : '否'}/>
-      </Render>
+      title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
+        const open = text !== '0';
+        return <Render>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+        </Render>;
+      }
     },
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
@@ -96,6 +99,7 @@ const Contacts = () => {
 
   return <>
     <Table
+      tableKey='contact'
       ref={ref}
       api={contactList}
       searchButtons={[

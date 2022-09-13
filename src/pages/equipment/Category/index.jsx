@@ -29,9 +29,14 @@ const Category = () => {
 
 
   const columns = [
-    {title: '设备类别名称', dataIndex: 'name'},
+    {title: '设备类别名称', dataIndex: 'name', align: 'center',},
     {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
-    {title: '所属设备型号数量', dataIndex: '3', align: 'center', render: (text) => <Render>{text || 0}</Render>},
+    {
+      title: '所属设备型号数量',
+      dataIndex: '3',
+      align: 'center',
+      render: (text) => <Render className="green">{text || 0}</Render>
+    },
     {
       title: '设备类别状态',
       dataIndex: 'status',
@@ -43,7 +48,7 @@ const Category = () => {
         </Render>;
       }
     },
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
   ];
 
   const menu = <Menu
@@ -78,7 +83,7 @@ const Category = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker />
+      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
       <FormItem
         initialValue={0}
         label="类别状态"
@@ -95,12 +100,13 @@ const Category = () => {
         }}
         select
       />
-      <FormItem label="设备类别名称" name="name" component={Input} />
+      <FormItem label="设备类别名称" name="name" component={Input}/>
     </>;
   };
 
   return <>
     <Table
+      tableKey='category'
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备类别</PrimaryButton>,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Space, Dropdown, Menu, Input} from 'antd';
+import { Space, Dropdown, Menu, Input} from 'antd';
 import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -7,7 +7,7 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import {PrimaryButton} from '@/components/Button';
 
-const Record = props => {
+const Record = () => {
 
   const history = useHistory();
 
@@ -33,7 +33,7 @@ const Record = props => {
       dataIndex: '2',
       align: 'center',
       render: (text) => <Render>
-        <div onClick={() => {
+        <div className='blue' onClick={() => {
           history.push('/monitor');
         }}>{text}</div>
       </Render>
@@ -42,7 +42,7 @@ const Record = props => {
     {title: '设备分组', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备类别', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
     {title: '设备型号', dataIndex: '6', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '报警类型', dataIndex: '7', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '报警类型', dataIndex: '7', align: 'center', render: (text) => <Render className='green' text={text}/>},
     {title: 'MAC地址', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
     {title: '所属客户', dataIndex: '9', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '位置信息', dataIndex: '10', align: 'center', render: (text) => <Render width={150} text={text}/>},
@@ -76,6 +76,7 @@ const Record = props => {
 
   return <>
     <Table
+      tableKey='record'
       searchButtons={[
         <Dropdown key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>

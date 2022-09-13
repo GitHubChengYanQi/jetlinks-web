@@ -58,7 +58,7 @@ const Model = () => {
       dataIndex: 'filePath',
       align: 'center',
       render: (text) => <Render>
-        <Button type="link" onClick={() => {
+        <Button className='blue' type="link" onClick={() => {
           window.location.href = text;
         }}>
           查看
@@ -125,6 +125,7 @@ const Model = () => {
 
   return <>
     <Table
+      tableKey='model'
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备型号</PrimaryButton>,
