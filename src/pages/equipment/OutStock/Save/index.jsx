@@ -1,4 +1,5 @@
 import React from 'react';
+import {Form} from '@formily/antd';
 import AntForm from '@/components/AntForm';
 import {outstockAdd, outstockEdit} from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';
@@ -28,7 +29,7 @@ const Save = ({success, close, visible}) => {
           {required: true, message: '请选择设备MAC'},
         ]}
       >
-        <SelectDevice/>
+        <SelectDevice />
       </Form.Item>
       <Form.Item
         key="outstockTime"
@@ -38,7 +39,7 @@ const Save = ({success, close, visible}) => {
           {required: true, message: '请选择出库时间'},
         ]}
       >
-        <DatePicker placeholder="请选择出库时间"/>
+        <DatePicker placeholder="请选择出库时间" />
       </Form.Item>
     </AntForm>
   );
