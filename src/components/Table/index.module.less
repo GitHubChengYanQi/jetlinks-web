@@ -10,6 +10,12 @@
       background-color: #FFF;
     }
 
+    .ant-table-row-selected {
+      td {
+        background-color: #fff !important;
+      }
+    }
+
     .ant-form-item {
       min-width: 300px;
       margin-bottom: 16px;
@@ -103,10 +109,17 @@
 
 .sider {
   //position: fixed;
+  padding: 8px;
   left: 0;
   height: 100%; // calc(100vh - 112px);
   overflow: auto;
   background-color: #fff;
   border-right: 1px solid #f0f0f0;
-  padding: 8px;
+}
+
+.headerRow {
+  th {
+    background-color: #026d9b !important;
+    color: #fff !important;
+  }
 }

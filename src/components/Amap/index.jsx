@@ -23,7 +23,7 @@ const Amap = ({title, value, onClose, onChange, show}) => {
   };
 
   const map = () => {
-    return <div style={{height: 'calc(100vh - 90px)'}}>
+    return <div style={{height: '100%'}}>
       <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
         <AmapSearch value={value} ref={mapRef} center={(value) => {
           setCenter({longitude: value.lgn, latitude: value.lat});

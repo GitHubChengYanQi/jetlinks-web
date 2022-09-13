@@ -8,6 +8,7 @@ import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {categoryDelete, categoryList} from '@/pages/equipment/Category/url';
 import {request} from '@/util/Request';
+import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 
 
 const Category = () => {
@@ -38,11 +39,11 @@ const Category = () => {
       render: (text) => {
         const open = text === '1';
         return <Render>
-          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '禁用'}/>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
         </Render>;
       }
     },
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'} />},
   ];
 
   const menu = <Menu
@@ -77,7 +78,7 @@ const Category = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
+      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker />
       <FormItem
         initialValue={0}
         label="类别状态"
@@ -94,7 +95,7 @@ const Category = () => {
         }}
         select
       />
-      <FormItem label="设备类别名称" name="name" component={Input}/>
+      <FormItem label="设备类别名称" name="name" component={Input} />
     </>;
   };
 
@@ -102,11 +103,11 @@ const Category = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})} type="primary" ghost>新建设备类别</Button>,
+        <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备类别</PrimaryButton>,
         <Dropdown key={2} overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={categoryList}
@@ -115,14 +116,14 @@ const Category = () => {
       actionRender={(text, record) => {
         const open = record.status === '1';
         return <Space>
-          <Button type="link" onClick={() => {
+          <PrimaryButton onClick={() => {
             setSaveVisible(record);
-          }}>编辑</Button>
-          <Warning content={`您确定${open ? '禁用' : '启用'}么？`}>
-            <Button danger={open} type="link">{open ? '禁用' : '启用'}</Button>
+          }}>编辑</PrimaryButton>
+          <Warning content={`您确定${open ? '停用' : '启用'}么？`}>
+            {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
           <Warning onOk={() => delConfirm(record.categoryId)}>
-            <Button danger type="link">删除</Button>
+            <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;
       }}

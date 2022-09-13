@@ -5,6 +5,7 @@ import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import {operationLogList} from './url';
 import FormItem from '../../../components/Table/components/FormItem/index';
+import {DangerButton, PrimaryButton} from '@/components/Button';
 
 const OperationLog = () => {
 
@@ -44,15 +45,15 @@ const OperationLog = () => {
   return <>
     <Table
       searchButtons={[
-        <Warning key={1}><Button danger>批量删除</Button></Warning>,
-        <Button key={2}>导出</Button>
+        <Warning key={1}><DangerButton>批量删除</DangerButton></Warning>,
+        <PrimaryButton key={2}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={operationLogList}
       columns={columns}
       rowKey="operationLogId"
       actionRender={(text ,record) => (
-        <Warning><Button danger type='link'>删除</Button></Warning>
+        <Warning><DangerButton>删除</DangerButton></Warning>
       )}
     />
   </>;

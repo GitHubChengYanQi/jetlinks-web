@@ -53,6 +53,8 @@ const TopLayout = ({children}) => {
   }, []);
 
   return <ProLayout
+    collapsed={false}
+    collapsedButtonRender={null}
     location={location}
     route={{
       path: '/',
@@ -75,7 +77,7 @@ const TopLayout = ({children}) => {
     navTheme="dark"
     layout="mix"
   >
-    <div style={{maxHeight: 'calc(100vh - 100px)', overflowY: 'auto', overflowX: 'hidden'}}>
+    <div style={{height: 'calc(100vh - 100px)', overflowY: 'auto', overflowX: 'hidden'}}>
       {children}
     </div>
   </ProLayout>;

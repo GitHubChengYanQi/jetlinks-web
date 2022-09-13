@@ -8,6 +8,7 @@ import {userFreeze, userList, userRemove, userUnfreeze} from '@/Config/ApiUrl/sy
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {request, useRequest} from '@/util/Request';
+import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 
 
 const Account = () => {
@@ -145,29 +146,26 @@ const Account = () => {
       rowKey="userId"
       searchForm={searchForm}
       searchButtons={[
-        <Button key="0" onClick={() => setSaveVisible({})}>新建账号</Button>,
+        <PrimaryButton key="0" onClick={() => setSaveVisible({})}>新建账号</PrimaryButton>,
         <Dropdown key="1" overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
         <Dropdown key="2" overlay={exportMenu} placement="bottom">
-          <Button>导入导出</Button>
+          <PrimaryButton>导入导出</PrimaryButton>
         </Dropdown>
       ]}
       actionRender={ (text, record) => {
         const open = record.status === 'ENABLE';
         return <Space>
-          <Button type="link" onClick={() => setSaveVisible(record)}>编辑</Button>
+          <PrimaryButton type="link" onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
           <Warning
             content={`您确定${open ? '禁用' : '启用'}么?`}
             onOk={() => !open ? unfreeze(record.userId) : freeze(record.userId)
             }>
-            <Button
-              type="link"
-              danger={open}
-            >{open ? '禁用' : '启用'}</Button>
+            {open ? <DangerButton>禁用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
           <Warning onOk={() => remove(record.userId)}>
-            <Button danger type='link'>删除</Button>
+            <DangerButton danger type='link'>删除</DangerButton>
           </Warning>
         </Space>;
       }}

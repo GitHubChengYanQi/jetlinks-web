@@ -2,7 +2,6 @@ import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, Badge} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
-import Save from '@/pages/equipment/OutStock/Save';
 import Info from '@/pages/equipment/OutStock/Info';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
@@ -11,12 +10,16 @@ import DatePicker from '@/components/DatePicker';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import Save from '@/pages/equipment/OutStock/Save';
+import BatchImport from '@/components/BatchImport';
+import {DangerButton, PrimaryButton} from '@/components/Button';
 
 const OutStock = () => {
 
   const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState(false);
+  const [batchImport, setBatchImport] = useState(false);
 
   const [infoVisible, setInfoVisible] = useState();
 
@@ -25,7 +28,7 @@ const OutStock = () => {
       title: '设备状态', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => {
         const open = value.status === '99';
         return <Render>
-          <Badge color={open ? 'green' : 'red'} text={open ? '在线' : '离线'}/>
+          <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;
       }
     },
@@ -33,7 +36,7 @@ const OutStock = () => {
       title: '绑定状态', dataIndex: 'status', align: 'center', render: (value = {}) => {
         const open = value.status === '99';
         return <Render>
-          <Badge color={open ? 'green' : 'red'} text={open ? '已绑定' : '未绑定'}/>
+          <span className={open ? 'green' : 'red'}>{open ? '已绑定' : '未绑定'}</span>
         </Render>;
       }
     },
@@ -76,7 +79,7 @@ const OutStock = () => {
         key: '2',
         label: '批量出库',
         onClick: () => {
-
+          setBatchImport(true);
         }
       },
     ]}
@@ -143,12 +146,12 @@ const OutStock = () => {
     <Table
       searchButtons={[
         <Dropdown key={1} overlay={outStockMenu} placement="bottom">
-          <Button type="primary" ghost>新增出库</Button>
+          <PrimaryButton>新增出库</PrimaryButton>
         </Dropdown>,
         <Dropdown key={2} overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={outstockList}
@@ -156,11 +159,11 @@ const OutStock = () => {
       rowKey="outstockId"
       actionRender={(text, record) => (
         <Space>
-          <Button type="link" onClick={() => {
+          <PrimaryButton onClick={() => {
             setInfoVisible(record);
-          }}>详情</Button>
+          }}>详情</PrimaryButton>
           <Warning content="您确定解绑么？">
-            <Button danger type='link'>解绑</Button>
+            <DangerButton>解绑</DangerButton>
           </Warning>
         </Space>
       )}
@@ -171,6 +174,15 @@ const OutStock = () => {
       setSaveVisible();
       ref.current.submit();
     }} />
+    <BatchImport
+      title="出库"
+      success={() => {
+        setBatchImport(false);
+        ref.current.submit();
+      }}
+      visible={batchImport}
+      close={() => setBatchImport(false)}
+    />
   </>;
 };
 export default OutStock;

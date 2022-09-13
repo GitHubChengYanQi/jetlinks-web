@@ -262,6 +262,12 @@ const TableWarp = (
         </div>
         <AntdTable
           showTotal
+          bordered
+          onHeaderRow={(record)=>{
+            return {
+              className:style.headerRow
+            };
+          }}
           expandable={expandable}
           loading={otherLoading || loading}
           dataSource={dataSource || []}

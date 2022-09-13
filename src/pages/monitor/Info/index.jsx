@@ -19,7 +19,7 @@ const Info = (props) => {
       width={1000}
       placement="right"
       onClose={onClose}
-      visible={Boolean(id)}
+      open={Boolean(id)}
     >
       <div style={{textAlign: 'right'}}>
         <Button type='link' onClick={() => setSaveVisible(true)}>报警设置</Button> <CloseOutlined onClick={onClose} />

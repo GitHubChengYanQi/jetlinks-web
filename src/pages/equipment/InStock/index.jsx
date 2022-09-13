@@ -12,12 +12,15 @@ import {request} from '@/util/Request';
 import Select from '@/components/Select';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import BatchImport from '@/components/BatchImport';
+import {DangerButton, PrimaryButton} from '@/components/Button';
 
 const InStock = () => {
 
   const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState(false);
+  const [batchImport, setBatchImport] = useState(false);
 
   const [infoVisible, setInfoVisible] = useState();
 
@@ -38,17 +41,17 @@ const InStock = () => {
       title: '设备状态', dataIndex: 'status', align: 'center', render: (value) => {
         const open = true || value === '99';
         return <Render>
-          <Badge color={open ? 'green' : 'red'} text={open ? '在线' : '离线'}/>
+          <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;
       }
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '入库时间', dataIndex: 'instockTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '入库时间', dataIndex: 'instockTime', align: 'center', render: (text) => <Render width={200} text={text} />},
   ];
 
 
@@ -64,7 +67,7 @@ const InStock = () => {
         key: '2',
         label: '批量入库',
         onClick: () => {
-
+          setBatchImport(true);
         }
       },
     ]}
@@ -85,9 +88,9 @@ const InStock = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="入库时间" name="instockTime" component={DatePicker} RangePicker/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="登记名称" name="name" component={Input}/>
+      <FormItem label="入库时间" name="instockTime" component={DatePicker} RangePicker />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="登记名称" name="name" component={Input} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -95,7 +98,7 @@ const InStock = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
       <FormItem
         label="设备状态"
         name="status"
@@ -110,7 +113,7 @@ const InStock = () => {
           />;
         }}
       />
-      <FormItem label="所属客户" name="6" component={Select}/>
+      <FormItem label="所属客户" name="6" component={Select} />
     </>;
   };
 
@@ -119,13 +122,13 @@ const InStock = () => {
       onChange={setkeys}
       ref={ref}
       searchButtons={[
-        <Dropdown key={1} overlay={inStockMenu} placement="bottom">
-          <Button type='primary' ghost>新增入库</Button>
+        <Dropdown key={1} overlay={inStockMenu} placement="bottom" trigger={['click', 'hover']}>
+          <PrimaryButton>新增入库</PrimaryButton>
         </Dropdown>,
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={instockList}
@@ -133,21 +136,30 @@ const InStock = () => {
       rowKey="instockId"
       actionRender={(text, record) => (
         <Space>
-          <Button type="link" onClick={() => {
+          <PrimaryButton onClick={() => {
             setInfoVisible(record);
-          }}>详情</Button>
+          }}>详情</PrimaryButton>
           <Warning onOk={() => delConfirm(record.instockId)}>
-            <Button danger type='link'>删除</Button>
+            <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
       )}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
     <Save visible={saveVisible} close={() => setSaveVisible(false)} success={() => {
       setSaveVisible(false);
       ref.current.submit();
-    }}/>
+    }} />
+    <BatchImport
+      title="入库"
+      success={() => {
+        setBatchImport(false);
+        ref.current.submit();
+      }}
+      visible={batchImport}
+      close={() => setBatchImport(false)}
+    />
   </>;
 };
 export default InStock;

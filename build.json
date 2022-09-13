@@ -22,8 +22,8 @@
       "build-plugin-antd",
       {
         "themeConfig": {
-          "primary-color": "#257bde",
-          "primary-1": "#e9f2f9",
+          "primary-color": "#026d9b",
+          "primary-1": "#026d9b",
           "btn-text-hover-bg": "rgba(0, 0, 0, 0.035)"
         }
       }

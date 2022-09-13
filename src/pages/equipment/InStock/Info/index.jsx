@@ -17,10 +17,10 @@ const Info = ({
       width={1000}
       placement="right"
       onClose={onClose}
-      visible={visible}
+      open={visible}
     >
       <div style={{textAlign: 'right'}}>
-        <CloseOutlined onClick={onClose}/>
+        <CloseOutlined onClick={onClose} />
       </div>
       <Descriptions
         column={2}

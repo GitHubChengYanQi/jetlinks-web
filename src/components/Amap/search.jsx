@@ -1,9 +1,7 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Marker} from 'react-amap';
-import {Button, Card, Cascader as AntCascader, Input, List, Popover, Space} from 'antd';
-import {useRequest} from '@/util/Request';
+import {Button, Card,  Input, List, Popover, Space} from 'antd';
 import store from '@/store';
-import {addressList} from '@/Config/ApiUrl';
 import Cascader from '@/components/Cascader';
 
 let MSearch = null;

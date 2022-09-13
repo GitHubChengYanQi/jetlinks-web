@@ -1,9 +1,10 @@
 import React from 'react';
-import {Form,Input, message, Modal, Radio, Select, Spin} from 'antd';
+import {Form, Input, message, Modal, Radio,  Spin} from 'antd';
 import Tree from '@/components/Tree';
 import {useRequest} from '@/util/Request';
 import {roleAdd, roleSave} from '@/Config/ApiUrl/system/role';
 import {menuTreeNow} from '@/Config/ApiUrl/system/menu';
+import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 
 
 const Save = ({
@@ -14,7 +15,6 @@ const Save = ({
   success = () => {
   }
 }) => {
-
 
   const [form] = Form.useForm();
 
@@ -71,7 +71,7 @@ const Save = ({
               {required: true, message: '请输入账号名称'},
             ]}
           >
-            <Input placeholder="请输入账号名称"/>
+            <Input placeholder="请输入账号名称" />
           </Form.Item>
           <Form.Item
             initialValue={data?.menuIds}
@@ -82,7 +82,7 @@ const Save = ({
               {required: true, message: '请选择菜单权限'},
             ]}
           >
-            <Tree api={menuTreeNow} border/>
+            <Tree api={menuTreeNow} border />
           </Form.Item>
           <Form.Item
             initialValue={data?.group}
@@ -93,7 +93,7 @@ const Save = ({
               {required: false, message: '请选择分组权限'},
             ]}
           >
-            <Select placeholder="请选择分组"/>
+            <SelectTopClass />
           </Form.Item>
           <Form.Item
             initialValue={0}

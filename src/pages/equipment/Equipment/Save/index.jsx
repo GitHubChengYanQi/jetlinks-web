@@ -8,11 +8,14 @@ import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
 import {addressTree} from '@/Config/ApiUrl';
 import {deviceAdd, deviceEdit} from '@/pages/equipment/Equipment/url';
+import store from '@/store';
 
 
 const Save = props => {
 
   const {success, data = {}, visible, close} = props;
+
+  const [dataSource] = store.useModel('dataSource');
 
   return (
     <AntForm
@@ -126,7 +129,7 @@ const Save = props => {
           {required: false, message: '请选择位置信息'},
         ]}
       >
-        <Cascader api={addressTree} />
+        <Cascader options={dataSource.area} placeholder='请选择位置信息' />
       </Form.Item>
       <Form.Item
         initialValue={data.address}

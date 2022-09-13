@@ -5,6 +5,7 @@ import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
+import {PrimaryButton} from '@/components/Button';
 
 const Record = props => {
 
@@ -77,9 +78,9 @@ const Record = props => {
     <Table
       searchButtons={[
         <Dropdown key={2} overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       dataSource={dataSource}
@@ -88,11 +89,11 @@ const Record = props => {
       actionRender={(text, record) => (
         <Space>
           <Warning content="您确定处理么？">
-            <Button type="link">已阅</Button>
+            <PrimaryButton type="link">已阅</PrimaryButton>
           </Warning>
-          <Button type="link">
-            <div onClick={() => history.push('/monitor')}>实时监控</div>
-          </Button>
+          <PrimaryButton onClick={() => history.push('/monitor')}>
+            实时监控
+          </PrimaryButton>
         </Space>
       )}
     />

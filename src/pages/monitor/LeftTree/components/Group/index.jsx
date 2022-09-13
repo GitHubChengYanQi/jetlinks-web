@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import {Button, Menu} from 'antd';
-import {PlusOutlined} from '@ant-design/icons';
+import {Menu} from 'antd';
 import AntTree from '../../../../../components/AntTree';
 import Warning from '@/components/Warning';
-import styles from '../../index.module.less';
 import Save from './Save';
 import {useRequest} from '@/util/Request';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 import {isArray} from '@/util/Tools';
 
 const Group = (
-  {noAction, onChange, value}
+  {
+    noAction,
+    onChange,
+    value,
+  }
 ) => {
 
   const [keys, setKeys] = useState(value ? [value] : []);
@@ -49,15 +51,6 @@ const Group = (
   };
 
   return <>
-    {!noAction && <Button
-      type="primary"
-      className={styles.add}
-      icon={<PlusOutlined/>}
-      onClick={() => {
-        setCurrentItem({});
-        setSaveVisible(true);
-      }}
-    >新建客户</Button>}
     <AntTree
       loading={loading}
       noAction={noAction}
@@ -67,7 +60,7 @@ const Group = (
         setKeys(keys);
       }}
       value={keys}
-      treeData={formatData(data)}
+      treeData={[{key:'0',title:'顶级',children:formatData(data)}]}
     />
 
     <Save

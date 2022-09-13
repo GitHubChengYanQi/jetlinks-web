@@ -71,15 +71,6 @@ const Terminal = (props) => {
   };
 
   return <>
-    {!noAction && <Button
-      type="primary"
-      className={styles.add}
-      icon={<PlusOutlined/>}
-      onClick={() => {
-        setCurrentItem({});
-        setSaveVisible(true);
-      }}
-    >新建设备类别</Button>}
     <AntTree
       onGetNode={onGetNode}
       loading={loading}

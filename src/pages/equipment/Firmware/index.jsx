@@ -10,6 +10,7 @@ import {firmwareList} from '@/pages/equipment/Firmware/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
+import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 
 const Firmware = () => {
 
@@ -22,7 +23,7 @@ const Firmware = () => {
       title: '设备类别',
       dataIndex: 'modelResult',
       align: 'center',
-      render: (value={}) => <Render text={value.categoryResult && value.categoryResult.name} />
+      render: (value = {}) => <Render text={value.categoryResult && value.categoryResult.name} />
     },
     {title: '设备型号', dataIndex: 'modelResult', align: 'center', render: (value = {}) => <Render text={value.name} />},
     {title: '固件名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
@@ -32,7 +33,7 @@ const Firmware = () => {
       render: (text = '0') => {
         const open = text !== '0';
         return <Render>
-          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '停用'}/>
+          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '停用'} />
         </Render>;
       }
     },
@@ -100,11 +101,11 @@ const Firmware = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})} type="primary" ghost>新建固件</Button>,
+        <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建固件</PrimaryButton>,
         <Dropdown key={2} overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={firmwareList}
@@ -113,16 +114,14 @@ const Firmware = () => {
       actionRender={(text, record) => {
         const stop = record.status === '0';
         return <Space>
-          <Button type="link" onClick={() => {
+          <PrimaryButton type="link" onClick={() => {
             setSaveVisible(record);
-          }}>编辑</Button>
-          <Warning content="您确定启用么？" onOk={() => {
-
-          }}>
-            <Button danger={!stop} type="link">{!stop ? '停用' : '启用'}</Button>
+          }}>编辑</PrimaryButton>
+          <Warning content={`您确定${open ? '停用' : '启用'}么？`}>
+            {!stop ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
           <Warning>
-            <Button danger type='link'>删除</Button>
+            <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;
       }}

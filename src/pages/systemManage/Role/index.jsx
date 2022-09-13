@@ -10,6 +10,7 @@ import {roleList, roleRemove} from '@/Config/ApiUrl/system/role';
 import Note from '@/components/Note';
 import {request} from '@/util/Request';
 import {isArray} from '@/util/Tools';
+import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 
 const Role = () => {
 
@@ -28,7 +29,7 @@ const Role = () => {
   };
 
   const columns = [
-    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '菜单权限',
       dataIndex: 'menuList',
@@ -37,10 +38,10 @@ const Role = () => {
         <Note maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
       </Render>
     },
-    {title: '分组权限', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '角色状态', dataIndex: '4', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '应用账号数', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '分组权限', dataIndex: '3', align: 'center', render: (text) => <Render text={text} />},
+    {title: '角色状态', dataIndex: '4', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '应用账号数', dataIndex: '5', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text} />},
   ];
 
   const menu = <Menu
@@ -74,9 +75,9 @@ const Role = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="创建时间" select name="time" component={DatePicker} showTime/>
-        <FormItem label="角色状态" name="status" component={Select}/>
-        <FormItem label="角色名称" name="name" component={Input}/>
+        <FormItem label="创建时间" select name="time" component={DatePicker} showTime />
+        <FormItem label="角色状态" name="status" component={Select} />
+        <FormItem label="角色名称" name="name" component={Input} />
       </>
     );
   };
@@ -87,29 +88,29 @@ const Role = () => {
       ref={ref}
       searchForm={searchForm}
       searchButtons={[
-        <Button key="0" onClick={() => setSaveVisible({})}>新建角色</Button>,
+        <PrimaryButton key="0" onClick={() => setSaveVisible({})}>新建角色</PrimaryButton>,
         <Dropdown key="1" overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key="2">导出</Button>
+        <PrimaryButton key="2">导出</PrimaryButton>
       ]}
       api={roleList}
       columns={columns}
       rowKey="roleId"
       actionRender={(text, record) => (
         <Space>
-          <Button type="link" onClick={() => {
+          <PrimaryButton onClick={() => {
             const menuList = record.menuList || [];
             setSaveVisible({
               ...record,
               menuIds: menuList.map(item => `${item.menuId}`)
             });
-          }}>编辑</Button>
+          }}>编辑</PrimaryButton>
           <Warning content="您确定启用么?">
-            <Button type="link">启用</Button>
+            <ActionButton>启用</ActionButton>
           </Warning>
           <Warning onOk={() => handleDelete(record.roleId)}>
-            <Button danger type='link'>删除</Button>
+            <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
       )}

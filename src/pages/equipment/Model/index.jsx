@@ -7,6 +7,7 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import {deviceModelList} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
+import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 
 
 const Model = () => {
@@ -48,7 +49,7 @@ const Model = () => {
       render: (text = '0') => {
         const open = text !== '0';
         return <Render>
-          <Badge color={open ? 'green' : 'red'} text={open ? '启用' : '禁用'}/>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
         </Render>;
       }
     },
@@ -126,11 +127,11 @@ const Model = () => {
     <Table
       ref={ref}
       searchButtons={[
-        <Button key={1} onClick={() => setSaveVisible({})} type='primary' ghost>新建设备型号</Button>,
+        <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备型号</PrimaryButton>,
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       api={deviceModelList}
       searchForm={searchForm}
@@ -140,9 +141,9 @@ const Model = () => {
       actionRender={(text, record) => {
         const stop = record.status === '0';
         return <Space>
-          <Button type="link" onClick={() => {
+          <PrimaryButton onClick={() => {
             setSaveVisible(record);
-          }}>编辑</Button>
+          }}>编辑</PrimaryButton>
           <Warning content="您确定启用么？" onOk={() => {
             if (stop) {
               deploy(record);
@@ -150,10 +151,10 @@ const Model = () => {
               unDeploy(record);
             }
           }}>
-            <Button danger={!stop} type="link">{!stop ? '停用' : '启用'}</Button>
+            {!stop ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
           <Warning onOk={() => remove(record.id)}>
-            <Button danger type='link'>删除</Button>
+            <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;
       }}

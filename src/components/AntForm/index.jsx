@@ -1,5 +1,5 @@
 import React from 'react';
-import {message, Modal, Spin,Form} from 'antd';
+import {message, Modal, Spin, Form} from 'antd';
 import {useRequest} from '@/util/Request';
 
 const AntForm = (
@@ -9,6 +9,7 @@ const AntForm = (
     width,
     apis = {},
     title = '',
+    headerTitle = '',
     rowKey = '',
     close = () => {
     },
@@ -71,7 +72,7 @@ const AntForm = (
       }}
       destroyOnClose
       width={width || 500}
-      title={`${initialValues[rowKey] ? '编辑' : '新建'}${title}`}
+      title={headerTitle || `${initialValues[rowKey] ? '编辑' : '新建'}${title}`}
       open={visible}
       okText="确定"
       cancelText="取消"

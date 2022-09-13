@@ -7,10 +7,13 @@ import FormItem from '@/components/Table/components/FormItem';
 import {contactDelete, contactList} from '@/pages/alarm/Contacts/url';
 import Save from '@/pages/alarm/Contacts/Save';
 import {request} from '@/util/Request';
+import BatchImport from '@/components/BatchImport';
+import {DangerButton, PrimaryButton} from '@/components/Button';
 
 const Contacts = () => {
 
   const [saveVisible, setSaveVisible] = useState();
+  const [batchImport, setBatchImport] = useState(false);
 
   const ref = useRef();
 
@@ -97,21 +100,21 @@ const Contacts = () => {
       api={contactList}
       searchButtons={[
         <Dropdown key={1} overlay={menu} placement="bottom">
-          <Button>新增联系人</Button>
+          <PrimaryButton>新增联系人</PrimaryButton>
         </Dropdown>,
         <Dropdown key={2} overlay={actionMenu} placement="bottom">
-          <Button>批量操作</Button>
+          <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button key={3}>导出</Button>
+        <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       columns={columns}
       rowKey="contactId"
       actionRender={(text, record) => (
         <Space>
-          <Button type="link" onClick={() => setSaveVisible(record)}>编辑</Button>
+          <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
           <Warning onOk={()=>handleDelete(record.contactId)}>
-            <Button type="link" danger>删除</Button>
+            <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
       )}
@@ -121,6 +124,16 @@ const Contacts = () => {
       setSaveVisible();
       ref.current.submit();
     }} close={() => setSaveVisible()}/>
+
+    <BatchImport
+      title="联系人"
+      success={() => {
+        setBatchImport(false);
+        ref.current.submit();
+      }}
+      visible={batchImport}
+      close={() => setBatchImport(false)}
+    />
   </>;
 };
 export default Contacts;

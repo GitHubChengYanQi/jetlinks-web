@@ -8,17 +8,20 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import styles from '@/pages/monitor/index.module.less';
 import {deviceClassifyList} from '@/pages/equipment/Grouping/url';
+import BatchImport from '@/components/BatchImport';
+import {DangerButton, PrimaryButton} from '@/components/Button';
 
 const Grouping = () => {
 
   const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState();
+  const [batchImport, setBatchImport] = useState(false);
 
   const columns = [
-    {title: '所属客户', dataIndex: '1', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '所属客户', dataIndex: '1', align: 'center', render: (text) => <Render text={text} />},
+    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
 
@@ -35,7 +38,7 @@ const Grouping = () => {
         key: '2',
         label: '批量导入',
         onClick: () => {
-
+          setBatchImport(true);
         }
       },
     ]}
@@ -45,8 +48,8 @@ const Grouping = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="所属客户" name="customer" component={Select} select/>
-      <FormItem label="分组名称" name="name" component={Input}/>
+      <FormItem label="所属客户" name="customer" component={Select} select />
+      <FormItem label="分组名称" name="name" component={Input} />
       <FormItem
         initialValue={0}
         label="分组状态"
@@ -68,35 +71,36 @@ const Grouping = () => {
 
   return <>
     <Row gutter={24}>
-      <Col span={close ? 0 : 4}>
+      <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
           <LeftTree
-            close={() => setClose(true)}
+            open={close}
+            close={() => setClose(!close)}
             noAction
             showModules={['group']}
-            onChange={(key) => {
+            onChange={() => {
 
             }}
           />
         </div>
       </Col>
-      <Col span={close ? 24 : 20}>
+      <Col span={close ? 23 : 20}>
         <Table
           ref={ref}
           searchButtons={[
             <Dropdown key={1} overlay={menu} placement="bottom">
-              <Button type='primary'>新建分组</Button>
+              <Button type="primary">新建分组</Button>
             </Dropdown>,
-            <Button key={2}>导出</Button>
+            <Button key={2} type="primary">导出</Button>
           ]}
           api={deviceClassifyList}
           columns={columns}
           rowKey="classifyId"
-          actionRender={(text, record) => (
+          actionRender={(text) => (
             <Space>
-              <Button type='link' onClick={() => setSaveVisible({id: '1', name: text})}>编辑</Button>
+              <PrimaryButton onClick={() => setSaveVisible({id: '1', name: text})}>编辑</PrimaryButton>
               <Warning>
-                <Button type='link' danger>删除</Button>
+                <DangerButton>删除</DangerButton>
               </Warning>
             </Space>
           )}
@@ -112,6 +116,16 @@ const Grouping = () => {
       visible={Boolean(saveVisible)}
       close={() => setSaveVisible(null)}
       data={saveVisible || {}}
+    />
+
+    <BatchImport
+      title="分组"
+      success={() => {
+        setBatchImport(false);
+        ref.current.submit();
+      }}
+      visible={batchImport}
+      close={() => setBatchImport(false)}
     />
   </>;
 };

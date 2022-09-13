@@ -1,13 +1,11 @@
 import React from 'react';
 import {Button, Tabs} from 'antd';
-import {LeftCircleOutlined} from '@ant-design/icons';
+import {LeftCircleOutlined, RightCircleOutlined} from '@ant-design/icons';
 import Group from '@/pages/monitor/LeftTree/components/Group';
 import Terminal from '@/pages/monitor/LeftTree/components/Terminal';
 import styles from './index.module.less';
 
-const LeftTree = (props) => {
-
-  const {onChange, showModules, noAction, close} = props;
+const LeftTree = ({onChange, showModules, noAction, close, open}) => {
 
   const show = (key) => {
     return showModules ? showModules.includes(key) : true;
@@ -21,7 +19,8 @@ const LeftTree = (props) => {
       label: '终端设备',
       children: <Terminal noAction={noAction} onChange={onChange} />
     });
-  } else if (show('group')) {
+  }
+  if (show('group')) {
     items.push({
       key: '2',
       label: '设备分组',
@@ -29,12 +28,18 @@ const LeftTree = (props) => {
     });
   }
 
+  if (open) {
+    return <Button type="link" style={{padding: 0}} onClick={() => close()}>
+      <RightCircleOutlined />
+    </Button>;
+  }
+
   return <>
     <Tabs
       items={items}
       className={styles.tab}
       tabBarExtraContent={<>
-        <Button type="link" onClick={() => close()}>
+        <Button type="link" style={{padding: 0}} onClick={() => close()}>
           <LeftCircleOutlined />
         </Button>
       </>}

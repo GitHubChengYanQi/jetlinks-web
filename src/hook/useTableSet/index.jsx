@@ -294,7 +294,7 @@ const useTableSet = (column, tableKey) => {
             type="text"
             onClick={() => {
               setVisible(true);
-            }}><Icon type="icon-xitongpeizhi"/>列设置</Button>
+            }}><Icon style={{color:'#fff'}} type="icon-xitongpeizhi"/></Button>
         </Dropdown>
 
         <Modal
