@@ -24,9 +24,13 @@ const FileUpload = ({
     onChange(info) {
       const file = info.file || {};
       const response = file.response || {};
-      if (file.status === 'done' && isObject(response.data).fileId) {
-        onChange(response.data.fileId);
-        message.success('文件上传成功');
+      if (file.status === 'done') {
+        if (isObject(response.data).fileId){
+          onChange(response.data.fileId);
+          message.success('文件上传成功');
+        }else {
+          message.error(response.message || '上传失败！');
+        }
       } else if (file.status === 'error') {
         message.error(response.message || '上传失败！');
       }

@@ -3,6 +3,11 @@ export const customerAdd = {
   method: 'POST',
 };
 
+export const customerEdit = {
+  url: '/customer/edit',
+  method: 'POST',
+};
+
 
 export const customerList = {
   url: '/customer/list',

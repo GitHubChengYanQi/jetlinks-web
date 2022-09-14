@@ -30,7 +30,7 @@ const Tenant = () => {
       dataIndex: 'status',
       align: 'center',
       render: (text) => <Render>
-        <Button danger={text !== 99} type="link">{text === 99 ? '通过' : '待审核'}</Button></Render>
+        <Button danger={text !== 1} type="link">{text === 1 ? '通过' : '待审核'}</Button></Render>
     },
     {title: '企业名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '统一社会信用代码', dataIndex: 'code', align: 'center', render: (text) => <Render text={text}/>},
@@ -97,7 +97,7 @@ const Tenant = () => {
       columns={columns}
       rowKey="customerId"
       actionRender={(text, record) => {
-        const open = record.status === 99;
+        const open = record.status === 1;
         return <Space>
           {!open && <ActionButton onClick={() => setInfoVisible(record)}>通过</ActionButton>}
           {!open && <PrimaryButton onClick={() => setAskAccount(record)}>修改</PrimaryButton>}
@@ -112,7 +112,10 @@ const Tenant = () => {
     <AccountAsk
       visibilityToggle={false}
       visible={askAccount}
-      onClose={() => setAskAccount(null)}
+      onClose={() => {
+        ref.current.submit();
+        setAskAccount(null);
+      }}
       data={askAccount || {}}
     />
 

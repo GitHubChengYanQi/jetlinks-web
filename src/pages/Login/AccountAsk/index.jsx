@@ -5,7 +5,7 @@ import styles from './index.module.less';
 import FileUpload from '../../../components/FileUpload';
 import Password from './components/Password';
 import {useRequest} from '@/util/Request';
-import {customerAdd} from '@/pages/systemManage/Tenant/url';
+import {customerAdd, customerEdit} from '@/pages/systemManage/Tenant/url';
 import InputNumber from '@/components/InputNumber';
 
 
@@ -38,10 +38,31 @@ const AccountAsk = (
     }
   });
 
+  const {loading: editLoading, run: edit} = useRequest(customerEdit, {
+    manual: true,
+    response: true,
+    onSuccess: (res) => {
+      if (res.errCode === 1001) {
+        Modal.warn({
+          content: res.message,
+          okText: '确认'
+        });
+        return;
+      }
+      message.success('修改成功');
+      setErrorText('');
+      setSuccess(true);
+    }
+  });
+
   const submit = () => {
     form.validateFields().then((values) => {
       if (!checked) {
         setErrorText('请阅读并同意《用户服务条款和用户隐私政策》');
+        return;
+      }
+      if (data.customerId) {
+        edit({data: {...values,customerId:data.customerId}});
         return;
       }
       run({data: values});
@@ -68,13 +89,16 @@ const AccountAsk = (
 
 
   return <>
-    <Drawer height="100vh" placement="top" open={visible} onClose={() => onClose()}>
+    <Drawer height="100vh" placement="top" open={visible} onClose={() => {
+      setSuccess(false);
+      onClose();
+    }}>
       <div className={styles.header}>
         <div className={styles.headerTitle}>设备业务云平台企业账号申请</div>
         <div className={styles.tips}>准备并提交相关申请资料，提交后由专职人员负责审核，3个工作日内进行审核，请耐心等待</div>
       </div>
       <div className={styles.content}>
-        <Spin spinning={loading}>
+        <Spin spinning={loading || editLoading}>
           <Form
             form={form}
             labelCol={{span: 8}}
@@ -145,7 +169,7 @@ const AccountAsk = (
                     <InputNumber disabled={success} placeholder="请输入企业联系人手机号码"/>
                   </Form.Item>
                   <Form.Item
-                    initialValue={data.adminId}
+                    initialValue={data.adminAccount}
                     key="adminAccount"
                     label="设置管理员账号"
                     name="adminAccount"
@@ -261,7 +285,10 @@ const AccountAsk = (
           </Space>
         </div>
         <div hidden={!success}>
-          <Button type="link" onClick={() => onClose()}>{data.id ? '返回' : '返回登陆页面'}</Button>
+          <Button type="link" onClick={() => {
+            setSuccess(false);
+            onClose();
+          }}>{data.customerId ? '返回' : '返回登陆页面'}</Button>
         </div>
       </div>
     </Drawer>

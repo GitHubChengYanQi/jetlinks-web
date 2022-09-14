@@ -17,6 +17,7 @@ const Info = ({
     manual: true,
     onSuccess: () => {
       message.success('通过成功！');
+      success();
     }
   });
 
