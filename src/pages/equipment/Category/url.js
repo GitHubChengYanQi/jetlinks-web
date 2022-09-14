@@ -25,4 +25,20 @@ export const categoryFindAll = {
   method: 'POST',
 };
 
+export const deviceCategoryDelete = {
+  url: '/deviceCategory/batchDelete',
+  method: 'POST',
+};
+
+
+export const deviceCategoryStop = {
+  url: '/deviceCategory/stop',
+  method: 'POST',
+};
+
+export const deviceCategoryStart = {
+  url: '/deviceCategory/start',
+  method: 'POST',
+};
+
 

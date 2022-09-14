@@ -21,7 +21,18 @@ export const deviceModelEdit = {
 
 
 export const deviceModelDelete = {
-  url: '/deviceModel/delete',
+  url: '/deviceModel/batchDelete',
+  method: 'POST',
+};
+
+
+export const deviceModelStop = {
+  url: '/deviceModel/stop',
+  method: 'POST',
+};
+
+export const deviceModelStart = {
+  url: '/deviceModel/start',
   method: 'POST',
 };
 

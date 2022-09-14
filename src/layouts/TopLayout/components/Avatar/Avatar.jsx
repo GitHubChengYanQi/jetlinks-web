@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {CaretDownFilled, CaretUpFilled} from '@ant-design/icons';
 import {useHistory} from 'react-router';
 import styles from './index.module.less';
+import Save from '@/layouts/TopLayout/components/Avatar/components/Save';
 
 
 const Avatar = ({userInfo = {name: ''}}) => {
@@ -10,6 +11,8 @@ const Avatar = ({userInfo = {name: ''}}) => {
   const [visible, setVisible] = useState(false);
 
   const history = useHistory();
+
+  const [saveVisible, setSaveVisible] = useState(false);
 
   const menuHeaderDropdown = <Menu
     className={styles.menu}
@@ -19,7 +22,7 @@ const Avatar = ({userInfo = {name: ''}}) => {
         key: 'settings',
         label: '账号设置',
         onClick: () => {
-
+          setSaveVisible(true);
         }
       }, {
         key: 'logout',
@@ -43,10 +46,12 @@ const Avatar = ({userInfo = {name: ''}}) => {
           />
           <span className={styles.name}>
             欢迎您，{userInfo.name}
-            <span style={{paddingLeft: 8}}>{!visible ? <CaretUpFilled /> : <CaretDownFilled />}</span>
+            <span style={{paddingLeft: 8}}>{!visible ? <CaretUpFilled/> : <CaretDownFilled/>}</span>
           </span>
         </span>
       </Dropdown>
+
+      <Save visible={saveVisible} close={()=>setSaveVisible(false)}/>
     </div>
   ) : (
     <Spin

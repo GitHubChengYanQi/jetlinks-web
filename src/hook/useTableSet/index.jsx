@@ -84,7 +84,7 @@ const useTableSet = (column, tableKey) => {
   const {loading, data, refresh} = useRequest({
     ...tableViewListSelect,
     data: {tableKey: md5TableKey()}
-  }, {manual: true});
+  });
 
   const {run} = useRequest(tableViewEdit, {
     manual: true,

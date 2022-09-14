@@ -1,22 +1,59 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Select as AntSelect, Badge} from 'antd';
+import {Space, Dropdown, Menu, Select as AntSelect, Badge, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Firmware/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {firmwareList} from '@/pages/equipment/Firmware/url';
-import {categoryFindAll} from '@/pages/equipment/Category/url';
+import {firmwareDelete, firmwareList, firmwareStart, firmwareStop} from '@/pages/equipment/Firmware/url';
+import {
+  categoryFindAll,
+} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import {useRequest} from '@/util/Request';
 
 const Firmware = () => {
 
   const ref = useRef();
 
   const [saveVisible, setSaveVisible] = useState();
+
+
+  const [keys, setKeys] = useState([]);
+
+  const {loading: stopLoading, run: stop} = useRequest(firmwareStop, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('关闭成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('关闭失败!')
+  });
+
+  const {loading: startLoading, run: start} = useRequest(firmwareStart, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('启用成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('启用失败!')
+  });
+
+  const {loading: deleteLoading, run: deleteRun} = useRequest(firmwareDelete, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('删除失败!')
+  });
+
 
   const columns = [
     {
@@ -45,26 +82,17 @@ const Firmware = () => {
     items={[
       {
         key: '1',
-        label: <Warning content="您确定启用么？">批量启用</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning content="您确定启用么？" onOk={() => start({data: {firmwarIds: keys}})}>批量启用</Warning>,
       },
       {
         danger: true,
         key: '2',
-        label: <Warning content="您确定停用么？">批量停用</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning content="您确定停用么？" onOk={() => stop({data: {firmwarIds: keys}})}>批量停用</Warning>,
       },
       {
         danger: true,
         key: '3',
-        label: <Warning>批量删除</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning onOk={() => deleteRun({data: {firmwarIds: keys}})}>批量删除</Warning>,
       },
     ]}
   />;
@@ -99,6 +127,9 @@ const Firmware = () => {
 
   return <>
     <Table
+      onChange={setKeys}
+      selectedRowKeys={keys}
+      loading={startLoading || deleteLoading || stopLoading}
       tableKey='firmware'
       ref={ref}
       searchButtons={[
@@ -113,13 +144,19 @@ const Firmware = () => {
       columns={columns}
       rowKey="firmwarId"
       actionRender={(text, record) => {
-        const stop = record.status === '0';
+        const open = record.status === '1';
         return <Space>
           <PrimaryButton type="link" onClick={() => {
             setSaveVisible(record);
           }}>编辑</PrimaryButton>
-          <Warning content={`您确定${open ? '停用' : '启用'}么？`}>
-            {!stop ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
+          <Warning content={`您确定${open ? '停用' : '启用'}么？`} onOk={() => {
+            if (open) {
+              stop({data: {firmwarIds: [record.firmwarId]}});
+            } else {
+              start({data: {firmwarIds: [record.firmwarId]}});
+            }
+          }}>
+            {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
           <Warning>
             <DangerButton>删除</DangerButton>

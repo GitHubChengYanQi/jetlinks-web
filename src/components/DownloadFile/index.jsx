@@ -1,60 +1,34 @@
-import React, {useState} from 'react';
-import {Button} from 'antd';
+import React from 'react';
 import {config} from 'ice';
-import {useRequest} from '@/util/Request';
+import cookie from 'js-cookie';
+import {Button} from 'antd';
 
 export const filePreview = '/system/filePreview';
-export const preview = {url: '/rest/system/preview', method: 'GET'};
+export const preview = '/rest/system/preview';
+export const upload = '/rest/system/upload';
 
 const {baseURI} = config;
 
 const DownloadFile = (
   {
     fileId,
-    fileName,
   }
 ) => {
 
-  const [file,setFile] = useState();
-  console.log(file);
-  const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  };
+  const token = cookie.get('jetlink-token');
 
-  const {run} = useRequest(preview, {
-    manual: true,
-    onSuccess: async (res) => {
-      const img = await getBase64(new Blob([res]));
-      setFile(img);
-      // const eleLink = document.createElement('a');
-      // eleLink.download = fileName;
-      // eleLink.style.display = 'none';
-      // // 字符内容转变成blob地址
-      // const blob = new Blob([res]);
-      // eleLink.href = URL.createObjectURL(blob);
-      // // 自动触发点击
-      // document.body.appendChild(eleLink);
-      // eleLink.click();
-      // // 然后移除
-      // document.body.removeChild(eleLink);
-
-    }
-  });
-
+  if (!fileId) {
+    return <Button style={{padding: 0}} type="link" disabled>查看</Button>;
+  }
 
   return <>
-    <Button className="blue" type="link" onClick={() => {
-      if (fileId) {
-        run({params: {fileId}});
-      }
-    }}>
+    <a
+      href={`${baseURI}${upload}?fileId=${fileId}&authorization=${token}`}
+      target="_blank"
+      rel="noreferrer"
+    >
       查看
-    </Button>
+    </a>
   </>;
 };
 

@@ -14,6 +14,17 @@ export const firmwareEdit = {
 };
 
 export const firmwareDelete = {
-  url: '/firmware/delete',
+  url: '/firmware/batchDelete',
+  method: 'POST',
+};
+
+
+export const firmwareStop = {
+  url: '/firmware/stop',
+  method: 'POST',
+};
+
+export const firmwareStart = {
+  url: '/firmware/start',
   method: 'POST',
 };

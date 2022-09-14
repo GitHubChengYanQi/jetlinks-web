@@ -14,6 +14,7 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
+import {isArray} from '@/util/Tools';
 
 const InStock = () => {
 
@@ -88,7 +89,7 @@ const InStock = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="入库时间" name="instockTime" component={DatePicker} RangePicker />
+      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="登记名称" name="name" component={Input} />
       <FormItem
@@ -119,8 +120,15 @@ const InStock = () => {
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       tableKey='instock'
       onChange={setkeys}
+      selectedRowKeys={keys}
       ref={ref}
       searchButtons={[
         <Dropdown key={1} overlay={inStockMenu} placement="bottom" trigger={['click', 'hover']}>

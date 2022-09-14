@@ -8,7 +8,7 @@ import Save from '@/pages/equipment/Equipment/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {deviceBatchStart, deviceList, deviceStart, deviceStop} from '@/pages/equipment/Equipment/url';
+import {deviceList, deviceStart, deviceStop} from '@/pages/equipment/Equipment/url';
 import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
@@ -16,6 +16,7 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton} from '@/components/Button';
+import {isArray} from '@/util/Tools';
 
 const Equipment = () => {
 
@@ -29,41 +30,25 @@ const Equipment = () => {
 
   const [keys, setKeys] = useState([]);
 
-  const {loading: unDeployLoading, run: unDeploy} = useRequest(deviceStop, {
+  const {loading: stopLoading, run: stop} = useRequest(deviceStop, {
     manual: true,
     onSuccess: () => {
+      setKeys([]);
       message.success('关闭成功！');
       ref.current.submit();
     },
     onError: () => message.error('关闭失败!')
   });
 
-  const {loading: changeDeployLoading, run: changeDeploy} = useRequest(deviceStart, {
+  const {loading: startLoading, run: start} = useRequest(deviceStart, {
     manual: true,
     onSuccess: () => {
+      setKeys([]);
       message.success('启用成功！');
       ref.current.submit();
     },
     onError: () => message.error('启用失败!')
   });
-
-  const {loading: batchDeployLoading, run: batchDeploy} = useRequest(deviceBatchStart, {
-    manual: true,
-    onSuccess: () => {
-      message.success('批量启用成功！');
-      ref.current.submit();
-    },
-    onError: () => message.error('批量启用失败!')
-  });
-
-  const restart = (record) => {
-    const open = record.status === '99';
-    if (!open) {
-      changeDeploy({params: {deviceId: record.deviceId}});
-    } else {
-      unDeploy({params: {deviceId: record.deviceId}});
-    }
-  };
 
   const columns = [
     {
@@ -71,7 +56,7 @@ const Equipment = () => {
       dataIndex: 'status',
       align: 'center',
       render: (value) => {
-        const open = value === '99';
+        const open = value === '1';
         return <Render>
           <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;
@@ -83,7 +68,7 @@ const Equipment = () => {
       align: 'center',
       render: (text) => {
         return <Render>
-          <a className='blue' onClick={() => history.push('/monitor')}>{text}</a>
+          <a className="blue" onClick={() => history.push('/monitor')}>{text}</a>
         </Render>;
       }
     },
@@ -91,25 +76,25 @@ const Equipment = () => {
       title: '登记名称',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备分组',
       dataIndex: 'classifyName',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备类别',
       dataIndex: 'categoryName',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
+      render: (text) => <Render width={120} text={text}/>
     },
     {
       title: '设备IP地址',
@@ -118,7 +103,7 @@ const Equipment = () => {
       render: (text) => {
         return <Render width={120}>
           <Warning content="确定进入远程配置么？">
-            <Button className='blue' type="link">{text}</Button>
+            <Button className="blue" type="link">{text}</Button>
           </Warning>
         </Render>;
       }
@@ -127,13 +112,13 @@ const Equipment = () => {
       title: '设备MAC地址',
       dataIndex: 'mac',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
+      render: (text) => <Render width={120} text={text}/>
     },
     {
       title: '位置信息',
       dataIndex: '10',
       align: 'center',
-      render: (text) => <Render width={200} text={text} />
+      render: (text) => <Render width={200} text={text}/>
     },
     {
       title: '运行时间',
@@ -147,19 +132,19 @@ const Equipment = () => {
       title: '上线时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (value) => <Render width={150} text={value} />
+      render: (value) => <Render width={150} text={value}/>
     },
     {
       title: '离线时间',
-      dataIndex: '12',
+      dataIndex: 'offlineTime',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} text={text}/>
     },
     {
       title: '质保时间',
       dataIndex: '12',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} text={text}/>
     },
   ];
 
@@ -167,10 +152,9 @@ const Equipment = () => {
     items={[
       {
         key: '1',
-        label: <Warning content="确定要重启设备么?" onOk={() => batchDeploy({data: {deviceIds: keys}})}>批量重启</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning content="确定要重启设备么?" onOk={() => {
+          start({data: {deviceIds: keys}});
+        }}>批量重启</Warning>,
       },
     ]}
   />;
@@ -191,9 +175,9 @@ const Equipment = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="设备名称" name="name" component={Input}/>
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -201,18 +185,25 @@ const Equipment = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="位置信息" name="7" component={Input} />
-      <FormItem label="离线时间" name="8" component={DatePicker} showTime RangePicker />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="位置信息" name="7" component={Input}/>
+      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker/>
     </>;
   };
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       onChange={setKeys}
+      selectedRowKeys={keys}
       tableKey="device"
-      loading={unDeployLoading || changeDeployLoading}
+      loading={startLoading || stopLoading}
       ref={ref}
       searchButtons={[
         <Button type="primary" key={1}>移动分组</Button>,
@@ -226,7 +217,7 @@ const Equipment = () => {
       columns={columns}
       rowKey="deviceId"
       actionRender={(text, record) => {
-        const open = record.status === '99';
+        const open = record.status === '1';
         return <Space>
           <Button
             type="primary"
@@ -234,7 +225,13 @@ const Equipment = () => {
           >
             编辑
           </Button>
-          <Warning content={`确定要${!open ? '重启' : '关闭'}重启设备么？`} onOk={() => restart(record)}>
+          <Warning content={`确定要${!open ? '重启' : '关闭'}重启设备么？`} onOk={() => {
+            if (open) {
+              stop({data: {deviceIds: [record.deviceId]}});
+            } else {
+              start({data: {deviceIds: [record.deviceId]}});
+            }
+          }}>
             {!open ? <ActionButton>重启</ActionButton> : <DangerButton>关闭</DangerButton>}
           </Warning>
         </Space>;

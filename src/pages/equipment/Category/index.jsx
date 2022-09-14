@@ -1,13 +1,18 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, message, Select, Input, Badge} from 'antd';
+import {Space, Dropdown, Menu, message, Select, Input} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {categoryDelete, categoryList} from '@/pages/equipment/Category/url';
-import {request} from '@/util/Request';
+import {
+  categoryList,
+  deviceCategoryDelete,
+  deviceCategoryStart,
+  deviceCategoryStop
+} from '@/pages/equipment/Category/url';
+import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 
 
@@ -18,14 +23,37 @@ const Category = () => {
 
   const [saveVisible, setSaveVisible] = useState();
 
-  const delConfirm = (categoryId) => {
-    request({...categoryDelete, data: {categoryId}}).then((res) => {
-      if (res.success) {
-        message.success('删除成功!');
-        ref.current.submit();
-      }
-    }).catch(() => message.success('删除失败！'));
-  };
+  const [keys, setKeys] = useState([]);
+
+  const {loading: stopLoading, run: stop} = useRequest(deviceCategoryStop, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('关闭成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('关闭失败!')
+  });
+
+  const {loading: startLoading, run: start} = useRequest(deviceCategoryStart, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('启用成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('启用失败!')
+  });
+
+  const {loading: deleteLoading, run: deleteRun} = useRequest(deviceCategoryDelete, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('删除失败!')
+  });
 
 
   const columns = [
@@ -55,28 +83,19 @@ const Category = () => {
     items={[
       {
         key: '1',
-        label: <Warning content="您确定启用么？">批量启用</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning content="您确定启用么？" onOk={() => start({data: {categoryIds: keys}})}>批量启用</Warning>,
       },
       {
         danger: true,
         key: '2',
-        label: <Warning content="您确定停用么？">批量停用</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning content="您确定停用么？" onOk={() => stop({data: {categoryIds: keys}})}>批量停用</Warning>,
       },
       {
         danger: true,
         key: '3',
         label: <Warning onOk={() => {
-
+          deleteRun({data: {categoryIds: keys}});
         }}>批量删除</Warning>,
-        onClick: () => {
-
-        }
       },
     ]}
   />;
@@ -85,7 +104,6 @@ const Category = () => {
     return <>
       <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
       <FormItem
-        initialValue={0}
         label="类别状态"
         name="status"
         component={({value, onChange}) => {
@@ -106,11 +124,14 @@ const Category = () => {
 
   return <>
     <Table
-      tableKey='category'
+      loading={stopLoading || startLoading || deleteLoading}
+      onChange={setKeys}
+      selectedRowKeys={keys}
+      tableKey="category"
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备类别</PrimaryButton>,
-        <Dropdown key={2} overlay={menu} placement="bottom">
+        <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
         <PrimaryButton key={3}>导出</PrimaryButton>
@@ -125,10 +146,16 @@ const Category = () => {
           <PrimaryButton onClick={() => {
             setSaveVisible(record);
           }}>编辑</PrimaryButton>
-          <Warning content={`您确定${open ? '停用' : '启用'}么？`}>
+          <Warning content={`您确定${open ? '停用' : '启用'}么？`} onOk={() => {
+            if (open) {
+              stop({data: {categoryIds: [record.categoryId]}});
+            } else {
+              start({data: {categoryIds: [record.categoryId]}});
+            }
+          }}>
             {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
-          <Warning onOk={() => delConfirm(record.categoryId)}>
+          <Warning onOk={() => deleteRun({data: {categoryIds: [record.categoryId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;

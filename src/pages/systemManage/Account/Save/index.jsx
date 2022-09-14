@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Form, DatePicker, Input, Radio, Space} from 'antd';
 import Select from '@/components/Select';
 import {userAdd, userSave} from '@/Config/ApiUrl/system/user';
 import {roleListSelect} from '@/Config/ApiUrl/system/role';
 import Password from '@/pages/Login/AccountAsk/components/Password';
 import AntForm from '@/components/AntForm';
+import store from '@/store';
 
 const RangePicker = DatePicker.RangePicker;
 
@@ -13,12 +14,17 @@ const Save = (
     visible,
     close = () => {
     },
-    data,
+    data = {},
     success = () => {
     }
   }
 ) => {
 
+  const [userInfo] = store.useModel('user');
+
+  const currentUser = userInfo.info || {};
+
+  const [newPassword, setNewPassword] = useState();
 
   return (
     <AntForm
@@ -32,6 +38,7 @@ const Save = (
       success={success}
       visible={visible}
       close={close}
+      format={(values) => ({...values, password: newPassword})}
     >
       <Form.Item
         initialValue={data?.account}
@@ -42,7 +49,7 @@ const Save = (
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称" />
+        <Input placeholder="请输入账号名称"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.name}
@@ -53,7 +60,7 @@ const Save = (
           {required: true, message: '请输入账号姓名'},
         ]}
       >
-        <Input placeholder="请输入账号姓名" />
+        <Input placeholder="请输入账号姓名"/>
       </Form.Item>
       <Form.Item
         initialValue={`${data?.roleId || ''}`}
@@ -64,9 +71,9 @@ const Save = (
           {required: true, message: '请选择角色'},
         ]}
       >
-        <Select format={(data = []) => {
+        <Select disabled={currentUser.userId === data?.userId} format={(data = []) => {
           return data.map(item => ({label: item.name, value: `${item.role_id}`}));
-        }} api={roleListSelect} placeholder="请选择角色" />
+        }} api={roleListSelect} placeholder="请选择角色"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.phone}
@@ -78,7 +85,7 @@ const Save = (
           {message: '请输入正确的手机号码!', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/}
         ]}
       >
-        <Input placeholder="请输入手机号码" />
+        <Input placeholder="请输入手机号码"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.email}
@@ -86,7 +93,7 @@ const Save = (
         label="电子邮件"
         name="email"
       >
-        <Input placeholder="请输入电子邮件" />
+        <Input placeholder="请输入电子邮件"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.password || (data.userId ? '111111' : null)}
@@ -100,8 +107,15 @@ const Save = (
         <Password
           inputDisabled={data?.userId}
           placeholder="请输入密码"
+          initPassword={() => {
+            const phone = data?.phone || '';
+            return phone.substring(phone.length - 6, phone.length);
+          }}
           reset={data?.userId}
           visibilityToggle={!data?.userId}
+          onReset={(value) => {
+            setNewPassword(value);
+          }}
         />
       </Form.Item>
       <Form.Item
@@ -116,14 +130,14 @@ const Save = (
           <Space direction="vertical">
             <Radio value="0">永久</Radio>
             <Space>
-              <Radio value="1" style={{minWidth:80}}>时间段</Radio>
-              <RangePicker />
+              <Radio value="1" style={{minWidth: 80}}>时间段</Radio>
+              <RangePicker/>
             </Space>
           </Space>
         </Radio.Group>
       </Form.Item>
       <Form.Item
-        initialValue={1}
+        initialValue={data?.status}
         key="status"
         label="账号状态"
         name="status"
@@ -132,8 +146,8 @@ const Save = (
         ]}
       >
         <Radio.Group>
-          <Radio value={1}>启用</Radio>
-          <Radio value={0}>停用</Radio>
+          <Radio value='ENABLE'>启用</Radio>
+          <Radio value='LOCKED'>停用</Radio>
         </Radio.Group>
       </Form.Item>
     </AntForm>

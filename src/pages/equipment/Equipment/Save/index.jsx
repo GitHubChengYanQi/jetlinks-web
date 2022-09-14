@@ -6,7 +6,6 @@ import AntForm from '@/components/AntForm';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
-import {addressTree} from '@/Config/ApiUrl';
 import {deviceAdd, deviceEdit} from '@/pages/equipment/Equipment/url';
 import store from '@/store';
 

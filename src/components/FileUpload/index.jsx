@@ -3,6 +3,7 @@ import {Button, message, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import {isObject} from '@/util/Tools';
 
 const {baseURI} = config;
 
@@ -16,16 +17,18 @@ const FileUpload = ({
   const uploadProps = {
     maxCount,
     accept: '*',
-    action: `${baseURI}system/upload`,
+    action: `${baseURI}/system/upload`,
     headers: {
       'Authorization': cookie.get('jetlink-token'),
     },
     onChange(info) {
-      if (info.file.status === 'done') {
-        onChange(info.file.response.data.fileId);
+      const file = info.file || {};
+      const response = file.response || {};
+      if (file.status === 'done' && isObject(response.data).fileId) {
+        onChange(response.data.fileId);
         message.success('文件上传成功');
-      } else if (info.file.status === 'error') {
-        message.error(info.file.response.message);
+      } else if (file.status === 'error') {
+        message.error(response.message || '上传失败！');
       }
     },
   };

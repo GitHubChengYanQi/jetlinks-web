@@ -3,9 +3,8 @@ import {Menu} from 'antd';
 import AntTree from '../../../../../components/AntTree';
 import Warning from '@/components/Warning';
 import Save from './Save';
-import {useRequest} from '@/util/Request';
-import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 import {isArray} from '@/util/Tools';
+import store from '@/store';
 
 const Group = (
   {
@@ -20,7 +19,7 @@ const Group = (
   const [saveVisible, setSaveVisible] = useState();
   const [currentItem, setCurrentItem] = useState({});
 
-  const {loading, data} = useRequest(deviceClassifyTree);
+  const [dataSource] = store.useModel('dataSource');
 
   const formatData = (data) => {
     return isArray(data).map(item => {
@@ -52,7 +51,6 @@ const Group = (
 
   return <>
     <AntTree
-      loading={loading}
       noAction={noAction}
       menu={menu}
       onChange={(keys) => {
@@ -60,7 +58,7 @@ const Group = (
         setKeys(keys);
       }}
       value={keys}
-      treeData={[{key:'0',title:'全部分组',children:formatData(data)}]}
+      treeData={[{key: '0', title: '全部分组', children: formatData(dataSource.deviceClass)}]}
     />
 
     <Save

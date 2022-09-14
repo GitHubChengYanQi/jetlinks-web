@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, Card, Col, Drawer, Input, Row, Checkbox, Button, Space, Tooltip, message, Spin} from 'antd';
+import {Form, Card, Col, Drawer, Input, Row, Checkbox, Button, Space, Tooltip, message, Spin, Modal} from 'antd';
 import {ExclamationCircleFilled, QuestionCircleOutlined} from '@ant-design/icons';
 import styles from './index.module.less';
 import FileUpload from '../../../components/FileUpload';
@@ -23,7 +23,15 @@ const AccountAsk = (
 
   const {loading, run} = useRequest(customerAdd, {
     manual: true,
-    onSuccess: () => {
+    response: true,
+    onSuccess: (res) => {
+      if (res.errCode === 1001) {
+        Modal.warn({
+          content: res.message,
+          okText: '确认'
+        });
+        return;
+      }
       message.success('申请成功');
       setErrorText('');
       setSuccess(true);
@@ -58,13 +66,6 @@ const AccountAsk = (
     }
   };
 
-  const validateToNextPassword = (rule, value, callback) => {
-    if (value && confirmDirty) {
-      form.validateFields(['check'], {force: true});
-    }
-    callback();
-  };
-
 
   return <>
     <Drawer height="100vh" placement="top" open={visible} onClose={() => onClose()}>
@@ -74,7 +75,16 @@ const AccountAsk = (
       </div>
       <div className={styles.content}>
         <Spin spinning={loading}>
-          <Form form={form} labelCol={{span: 8}} wrapperCol={{span: 16}}>
+          <Form
+            form={form}
+            labelCol={{span: 8}}
+            wrapperCol={{span: 16}}
+            onValuesChange={(changedValues) => {
+              if (changedValues.adminPassword) {
+                form.setFieldValue('check', '');
+              }
+            }}
+          >
             <Row gutter={24}>
               <Col span={12} className={styles.col}>
                 <Card title="1、基本信息" bordered={false} headStyle={{border: 'none'}}>
@@ -87,7 +97,7 @@ const AccountAsk = (
                       {required: true, message: '请输入企业名称'},
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入企业名称" />
+                    <Input disabled={success} placeholder="请输入企业名称"/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.code}
@@ -98,7 +108,7 @@ const AccountAsk = (
                       {required: true, message: '请输入统一社会信用代码'},
                     ]}
                   >
-                    <InputNumber disabled={success} placeholder="请输入统一社会信用代码" />
+                    <InputNumber disabled={success} placeholder="请输入统一社会信用代码"/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.place}
@@ -109,7 +119,7 @@ const AccountAsk = (
                       {required: true, message: '请输入企业经营场所'},
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入企业经营场所" />
+                    <Input disabled={success} placeholder="请输入企业经营场所"/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.contactName}
@@ -120,7 +130,7 @@ const AccountAsk = (
                       {required: true, message: '请输入联系人姓名'},
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入联系人姓名" />
+                    <Input disabled={success} placeholder="请输入联系人姓名"/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.contactPhone}
@@ -132,7 +142,7 @@ const AccountAsk = (
                       {message: '请输入正确的手机号码!', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/}
                     ]}
                   >
-                    <InputNumber disabled={success} placeholder="请输入企业联系人手机号码" />
+                    <InputNumber disabled={success} placeholder="请输入企业联系人手机号码"/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.adminId}
@@ -143,7 +153,7 @@ const AccountAsk = (
                       {required: true, message: '请输入企业管理员账号名称'},
                     ]}
                   >
-                    <Input autoComplete="new-password" disabled={success} placeholder="请输入企业管理员账号名称" />
+                    <Input autoComplete="new-password" disabled={success} placeholder="请输入企业管理员账号名称"/>
                   </Form.Item>
                   <Form.Item key="adminPassword" label="管理员密码">
                     <Form.Item
@@ -153,17 +163,14 @@ const AccountAsk = (
                       rules={[
                         {required: true, message: '请输入企业管理员账号密码'},
                         {
-                          message: '密码包含6~18位字母、数字、特殊符号的2种或多种组合',
                           pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/,
+                          message: '密码包含6~18位字母、数字、特殊符号的2种或多种组合',
                         },
-                        // {
-                        //   validator: validateToNextPassword,
-                        // }
                       ]}
                     >
                       <Password
                         visibilityToggle={visibilityToggle}
-                        reset={data.id}
+                        reset={data.customerId}
                         initPassword={() => {
                           const phone = form.getFieldValue('contactPhone') || '';
                           return phone.substring(phone.length - 6, phone.length);
@@ -174,11 +181,11 @@ const AccountAsk = (
                     </Form.Item>
                     <div className={styles.extra}>
                       <Tooltip placement="top" title="密码包含6~18位字母、数字、特殊符号的2种或多种组合">
-                        <QuestionCircleOutlined />
+                        <QuestionCircleOutlined/>
                       </Tooltip>
                     </div>
                   </Form.Item>
-                  {!data.id && <Form.Item
+                  {!data.customerId && <Form.Item
                     key="check"
                     label="再次确认密码"
                     name="check"
@@ -203,11 +210,11 @@ const AccountAsk = (
                 <Card title="2、辅助验证" bordered={false} headStyle={{border: 'none'}}>
                   <Form.Item
                     initialValue={data.fileId}
-                    key="fileId"
+                    key="file"
                     label="上传营业执照"
-                    name="fileId"
+                    name="file"
                   >
-                    <FileUpload />
+                    <FileUpload/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.legalPersonName}
@@ -215,7 +222,7 @@ const AccountAsk = (
                     label="申请人/企业法人姓名"
                     name="legalPersonName"
                   >
-                    <Input disabled={success} placeholder="请输入申请人或企业法人姓名" />
+                    <Input disabled={success} placeholder="请输入申请人或企业法人姓名"/>
                   </Form.Item>
                   <Form.Item
                     initialValue={data.legalPersonName}
@@ -223,7 +230,7 @@ const AccountAsk = (
                     label="申请人/企业法人身份证号"
                     name="legalPersonCard"
                   >
-                    <Input disabled={success} placeholder="请输入申请人或企业法人身份证号码" />
+                    <Input disabled={success} placeholder="请输入申请人或企业法人身份证号码"/>
                   </Form.Item>
                 </Card>
               </Col>
@@ -250,7 +257,7 @@ const AccountAsk = (
         </div>
         <div hidden={!errorText} className={styles.error}>
           <Space>
-            <ExclamationCircleFilled />{errorText}
+            <ExclamationCircleFilled/>{errorText}
           </Space>
         </div>
         <div hidden={!success}>

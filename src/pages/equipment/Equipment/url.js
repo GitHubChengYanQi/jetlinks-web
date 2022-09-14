@@ -19,17 +19,18 @@ export const deviceDelete = {
 };
 
 
+export const deviceBatchDelete = {
+  url: '/device/batchDelete',
+  method: 'POST',
+};
+
+
 export const deviceStop = {
   url: '/device/stop',
-  method: 'GET',
+  method: 'POST',
 };
 
 export const deviceStart = {
   url: '/device/start',
-  method: 'GET',
-};
-
-export const deviceBatchStart = {
-  url: '/device/batchStart',
   method: 'POST',
 };

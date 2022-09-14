@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Row, Col, Button, Space, Dropdown, Menu, Select, Input, Select as AntSelect} from 'antd';
+import {Row, Col, Button, Space, Dropdown, Menu, Select, Input} from 'antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -10,6 +10,7 @@ import styles from '@/pages/monitor/index.module.less';
 import {deviceClassifyList} from '@/pages/equipment/Grouping/url';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
+import store from '@/store';
 
 const Grouping = () => {
 
@@ -17,11 +18,13 @@ const Grouping = () => {
 
   const [saveVisible, setSaveVisible] = useState();
   const [batchImport, setBatchImport] = useState(false);
+  const dataDispatchers = store.useModel('dataSource')[1];
+
 
   const columns = [
-    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
+    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
 
@@ -48,10 +51,9 @@ const Grouping = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="所属客户" name="customer" component={Select} select />
-      <FormItem label="分组名称" name="name" component={Input} />
+      <FormItem label="所属客户" name="customer" component={Select} select/>
+      <FormItem label="分组名称" name="name" component={Input}/>
       <FormItem
-        initialValue={0}
         label="分组状态"
         name="status"
         component={({value, onChange}) => {
@@ -86,7 +88,7 @@ const Grouping = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
-          tableKey='grouping'
+          tableKey="grouping"
           ref={ref}
           searchButtons={[
             <Dropdown key={1} overlay={menu} placement="bottom">
@@ -111,6 +113,7 @@ const Grouping = () => {
 
     <Save
       success={() => {
+        dataDispatchers.getDeviceClass();
         setSaveVisible(null);
         ref.current.submit();
       }}

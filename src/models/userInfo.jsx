@@ -1,5 +1,6 @@
 import {request} from '@/util/Request';
 import {userInfo} from '@/Config/ApiUrl/system/user';
+import {currentUserInfo} from '@/pages/Member/apiUrl';
 
 export default {
   state: {},
@@ -15,7 +16,8 @@ export default {
     async getUserInfo() {
       try {
         const response = await request(userInfo);
-        dispatch.user.update(response.data);
+        const currentUser = await request(currentUserInfo);
+        dispatch.user.update({...response.data,info:currentUser.data});
       } catch (e) {
         console.log(e);
       }

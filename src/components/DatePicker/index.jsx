@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import {DatePicker as AntDatePicker} from 'antd';
+import {isArray} from '@/util/Tools';
 
 const DatePicker = (
   {
@@ -23,11 +24,11 @@ const DatePicker = (
       disabled={disabled}
       disabledDate={disabledDate}
       style={{...style, width: width || null}}
-      value={value && moment(value)}
+      value={isArray(value).length > 0 ? [moment(value[0]), moment(value[1])] : []}
       showTime={showTime}
-      onChange={(date, dateString) => {
-        onChange(dateString);
-      }} />;
+      onChange={(date, dateString = []) => {
+        onChange([moment(dateString[0]).format('YYYY/MM/DD HH:mm:ss'),moment(dateString[1]).format('YYYY/MM/DD HH:mm:ss')]);
+      }}/>;
   }
   return <AntDatePicker
     disabled={disabled}
@@ -36,8 +37,8 @@ const DatePicker = (
     value={value && moment(value)}
     showTime={showTime}
     onChange={(date, dateString) => {
-      onChange(dateString);
-    }} />;
+      onChange(moment(dateString).format('YYYY/MM/DD HH:mm:ss'));
+    }}/>;
 
 
 };
