@@ -53,3 +53,13 @@ export const userUnfreeze = {
   url: '/rest/mgr/unfreeze',
   method: 'POST',
 };
+
+export const userStop = {
+  url: '/rest/mgr/stop',
+  method: 'POST',
+};
+
+export const userStart = {
+  url: '/rest/mgr/start',
+  method: 'POST',
+};

@@ -12,6 +12,7 @@ import {
 } from '@/hook/useTableSet/components/TableViewUrl';
 import {Sortable} from '@/components/Table/components/DndKit/Sortable';
 import styles from './index.module.less';
+import {isArray} from '@/util/Tools';
 
 const md5 = require('md5');
 
@@ -23,7 +24,7 @@ const md5 = require('md5');
 
 const useTableSet = (column, tableKey) => {
 
-  const [tableColumn, setTableColumn] = useState(Array.isArray(column) && column.map((item) => {
+  const defaultColumn = Array.isArray(column) && column.map((item) => {
     if (!item) {
       return null;
     }
@@ -31,7 +32,9 @@ const useTableSet = (column, tableKey) => {
       ...item,
       checked: !(item.props && item.props.hidden),
     };
-  }) || []);
+  }) || [];
+
+  const [tableColumn, setTableColumn] = useState(defaultColumn);
 
   const itemsData = [];
 
@@ -80,11 +83,7 @@ const useTableSet = (column, tableKey) => {
       message: type === 'success' ? '保存成功！' : '保存失败!',
     });
   };
-
-  const {loading, data, refresh} = useRequest({
-    ...tableViewListSelect,
-    data: {tableKey: md5TableKey()}
-  });
+  const {loading, data, refresh, run: getTableView} = useRequest(tableViewListSelect, {manual: true});
 
   const {run} = useRequest(tableViewEdit, {
     manual: true,
@@ -119,8 +118,12 @@ const useTableSet = (column, tableKey) => {
   const {run: viewDetail} = useRequest(tableViewDetail,
     {
       manual: true,
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (res) {
+          const list = await getTableView({data: {tableKey: md5TableKey()}});
+          if (!(isArray(list).find(item => item.value === res.tableViewId))) {
+            return;
+          }
           setDetail(res);
           if (res.field) {
             if (res.tableKey === md5TableKey()) {
@@ -248,17 +251,19 @@ const useTableSet = (column, tableKey) => {
           tableViewId: view,
         }
       });
+    } else {
+      getTableView({data: {tableKey: md5TableKey()}});
     }
   }, []);
 
   return {
     tableColumn,
-    saveView:  tableKey && (state
+    saveView: tableKey && (state
       &&
       <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
         <Button style={{marginRight: 8}}>保存视图</Button>
       </Dropdown>),
-    selectView:  tableKey && (loading ?
+    selectView: tableKey && (loading ?
       <Spin/>
       :
       <Select
@@ -294,7 +299,7 @@ const useTableSet = (column, tableKey) => {
             type="text"
             onClick={() => {
               setVisible(true);
-            }}><Icon style={{color:'#fff'}} type="icon-xitongpeizhi"/></Button>
+            }}><Icon style={{color: '#fff'}} type="icon-xitongpeizhi"/></Button>
         </Dropdown>
 
         <Modal
