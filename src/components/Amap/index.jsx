@@ -7,7 +7,7 @@ import Icon from '@/components/Icon';
 
 const {AMAP_KEY, AMAP_VERSION} = config;
 
-const Amap = ({title, value, onClose, onChange, show}) => {
+const Amap = ({title, value, onClose, onChange, show,noAction}) => {
   const [visible, setVisible] = useState(false);
   const [center, setCenter] = useState({});
 
@@ -23,9 +23,9 @@ const Amap = ({title, value, onClose, onChange, show}) => {
   };
 
   const map = () => {
-    return <div style={{height: '100%'}}>
+    return <div style={{height: 'calc(100% - 56px)'}}>
       <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
-        <AmapSearch value={value} ref={mapRef} center={(value) => {
+        <AmapSearch noAction={noAction} value={value} ref={mapRef} center={(value) => {
           setCenter({longitude: value.lgn, latitude: value.lat});
         }} onChange={(value) => {
           setVisible(false);

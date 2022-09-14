@@ -72,6 +72,7 @@ const Account = () => {
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
     {title: '电子邮箱', dataIndex: 'email', align: 'center', render: (text) => <Render width={150} text={text} />},
     {title: '账号有效期', dataIndex: '8', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '租户名称', dataIndex: 'customerName', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '创建时间',
       dataIndex: 'createTime',
@@ -140,6 +141,7 @@ const Account = () => {
 
   return <>
     <Table
+      tableKey='account'
       ref={ref}
       api={mgrUserList}
       columns={columns}

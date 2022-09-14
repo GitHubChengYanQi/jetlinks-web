@@ -60,7 +60,7 @@ const Group = (
         setKeys(keys);
       }}
       value={keys}
-      treeData={[{key:'0',title:'顶级',children:formatData(data)}]}
+      treeData={[{key:'0',title:'全部分组',children:formatData(data)}]}
     />
 
     <Save

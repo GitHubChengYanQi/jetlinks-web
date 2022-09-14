@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message, Badge} from 'antd';
+import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message} from 'antd';
 import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -204,7 +204,7 @@ const Equipment = () => {
       <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="位置信息" name="7" component={Input} />
-      <FormItem label="离线时间" name="8" component={DatePicker} showTime />
+      <FormItem label="离线时间" name="8" component={DatePicker} showTime RangePicker />
     </>;
   };
 

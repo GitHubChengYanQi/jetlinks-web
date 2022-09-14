@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select, Badge} from 'antd';
+import {Space, Dropdown, Menu, Input, Select} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Model/Save';
@@ -8,6 +8,7 @@ import FormItem from '@/components/Table/components/FormItem';
 import {deviceModelList} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import DownloadFile from '@/components/DownloadFile';
 
 
 const Model = () => {
@@ -34,14 +35,14 @@ const Model = () => {
   };
 
   const columns = [
-    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '所属设备类别',
       dataIndex: 'categoryResult',
       align: 'center',
-      render: (categoryResult = {}) => <Render text={categoryResult.name}/>
+      render: (categoryResult = {}) => <Render text={categoryResult.name} />
     },
-    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text}/>},
+    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text} />},
     {
       title: '设备型号状态',
       dataIndex: 'status',
@@ -55,20 +56,17 @@ const Model = () => {
     },
     {
       title: '通信协议',
-      dataIndex: 'filePath',
+      dataIndex: 'file',
       align: 'center',
-      render: (text) => <Render>
-        <Button className='blue' type="link" onClick={() => {
-          window.location.href = text;
-        }}>
-          查看
-        </Button></Render>
+      render: (fileId,record) => <Render>
+        <DownloadFile fileId={fileId} fileName={record.fileName} />
+      </Render>
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
   ];
 
@@ -102,9 +100,8 @@ const Model = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
+      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker />
       <FormItem
-        initialValue={0}
         label="设备型号状态"
         name="status"
         component={({value, onChange}) => {
@@ -119,13 +116,13 @@ const Model = () => {
         }}
         select
       />
-      <FormItem label="设备型号名称" name="name" component={Input}/>
+      <FormItem label="设备型号名称" name="name" component={Input} />
     </>;
   };
 
   return <>
     <Table
-      tableKey='model'
+      tableKey="model"
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备型号</PrimaryButton>,
@@ -168,7 +165,7 @@ const Model = () => {
       success={() => {
         setSaveVisible(null);
         ref.current.submit();
-      }}/>
+      }} />
   </>;
 };
 

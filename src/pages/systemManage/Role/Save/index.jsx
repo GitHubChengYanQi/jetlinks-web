@@ -42,7 +42,7 @@ const Save = ({
       visible={visible}
       close={close}
       format={(values) => {
-        return {...values, menuIds: values.menuIds.filter(item => item + ''.indexOf('dict') === -1).toString()};
+        return {...values, menuIds: values.menuIds.filter(item => item.indexOf('dict') === -1).toString()};
       }}
     >
       <Form.Item

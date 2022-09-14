@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form,Card, Col, Drawer, Input, Row, Checkbox, Button, Space, Tooltip, message, Spin} from 'antd';
+import {Form, Card, Col, Drawer, Input, Row, Checkbox, Button, Space, Tooltip, message, Spin} from 'antd';
 import {ExclamationCircleFilled, QuestionCircleOutlined} from '@ant-design/icons';
 import styles from './index.module.less';
 import FileUpload from '../../../components/FileUpload';
@@ -23,7 +23,7 @@ const AccountAsk = (
 
   const {loading, run} = useRequest(customerAdd, {
     manual: true,
-    onSuccess:()=>{
+    onSuccess: () => {
       message.success('申请成功');
       setErrorText('');
       setSuccess(true);
@@ -36,7 +36,7 @@ const AccountAsk = (
         setErrorText('请阅读并同意《用户服务条款和用户隐私政策》');
         return;
       }
-      run({data:values});
+      run({data: values});
     }).catch((e) => {
       console.log(e);
       setErrorText('请填写完整申请所需内容');
@@ -56,6 +56,13 @@ const AccountAsk = (
     } else {
       callback();
     }
+  };
+
+  const validateToNextPassword = (rule, value, callback) => {
+    if (value && confirmDirty) {
+      form.validateFields(['check'], {force: true});
+    }
+    callback();
   };
 
 
@@ -147,8 +154,11 @@ const AccountAsk = (
                         {required: true, message: '请输入企业管理员账号密码'},
                         {
                           message: '密码包含6~18位字母、数字、特殊符号的2种或多种组合',
-                          pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/
+                          pattern: /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/,
                         },
+                        // {
+                        //   validator: validateToNextPassword,
+                        // }
                       ]}
                     >
                       <Password
@@ -200,18 +210,18 @@ const AccountAsk = (
                     <FileUpload />
                   </Form.Item>
                   <Form.Item
-                    initialValue={data.idName}
-                    key="idName"
+                    initialValue={data.legalPersonName}
+                    key="legalPersonName"
                     label="申请人/企业法人姓名"
-                    name="idName"
+                    name="legalPersonName"
                   >
                     <Input disabled={success} placeholder="请输入申请人或企业法人姓名" />
                   </Form.Item>
                   <Form.Item
-                    initialValue={data.idNumber}
-                    key="idNumber"
+                    initialValue={data.legalPersonName}
+                    key="legalPersonCard"
                     label="申请人/企业法人身份证号"
-                    name="idNumber"
+                    name="legalPersonCard"
                   >
                     <Input disabled={success} placeholder="请输入申请人或企业法人身份证号码" />
                   </Form.Item>

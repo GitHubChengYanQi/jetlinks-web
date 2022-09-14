@@ -42,7 +42,7 @@ const Save = (
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称"/>
+        <Input placeholder="请输入账号名称" />
       </Form.Item>
       <Form.Item
         initialValue={data?.name}
@@ -53,7 +53,7 @@ const Save = (
           {required: true, message: '请输入账号姓名'},
         ]}
       >
-        <Input placeholder="请输入账号姓名"/>
+        <Input placeholder="请输入账号姓名" />
       </Form.Item>
       <Form.Item
         initialValue={`${data?.roleId || ''}`}
@@ -66,7 +66,7 @@ const Save = (
       >
         <Select format={(data = []) => {
           return data.map(item => ({label: item.name, value: `${item.role_id}`}));
-        }} api={roleListSelect} placeholder="请选择角色"/>
+        }} api={roleListSelect} placeholder="请选择角色" />
       </Form.Item>
       <Form.Item
         initialValue={data?.phone}
@@ -75,9 +75,10 @@ const Save = (
         name="phone"
         rules={[
           {required: true, message: '请输入手机号码'},
+          {message: '请输入正确的手机号码!', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/}
         ]}
       >
-        <Input placeholder="请输入手机号码"/>
+        <Input placeholder="请输入手机号码" />
       </Form.Item>
       <Form.Item
         initialValue={data?.email}
@@ -85,7 +86,7 @@ const Save = (
         label="电子邮件"
         name="email"
       >
-        <Input placeholder="请输入电子邮件"/>
+        <Input placeholder="请输入电子邮件" />
       </Form.Item>
       <Form.Item
         initialValue={data?.password || (data.userId ? '111111' : null)}
@@ -115,8 +116,8 @@ const Save = (
           <Space direction="vertical">
             <Radio value="0">永久</Radio>
             <Space>
-              <Radio value="1">时间段</Radio>
-              <RangePicker/>
+              <Radio value="1" style={{minWidth:80}}>时间段</Radio>
+              <RangePicker />
             </Space>
           </Space>
         </Radio.Group>

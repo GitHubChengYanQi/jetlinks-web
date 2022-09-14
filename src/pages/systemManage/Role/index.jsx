@@ -92,6 +92,7 @@ const Role = () => {
   return <>
 
     <Table
+      tableKey='role'
       ref={ref}
       searchForm={searchForm}
       searchButtons={[

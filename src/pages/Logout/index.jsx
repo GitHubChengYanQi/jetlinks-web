@@ -9,7 +9,7 @@ const Logout = () => {
   cookie.remove('jetlink-token');
 
   const history = useHistory();
-  const [count, setCount] = useState(5);
+  const [count, setCount] = useState(3);
   useInterval(() => {
 
     if (count <=1) {

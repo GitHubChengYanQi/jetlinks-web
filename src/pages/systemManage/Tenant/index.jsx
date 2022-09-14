@@ -9,11 +9,14 @@ import AccountAsk from '@/pages/Login/AccountAsk';
 import {customerList, customerStart} from '@/pages/systemManage/Tenant/url';
 import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import Save from '@/pages/systemManage/Tenant/Save';
 
 
 const Tenant = () => {
 
   const [askAccount, setAskAccount] = useState();
+
+  const [visible, setVisible] = useState(false);
 
   const {loading, run} = useRequest(customerStart, {
     manual: true,
@@ -36,7 +39,7 @@ const Tenant = () => {
     {title: '管理员姓名', dataIndex: 'contactName', align: 'center', render: (text) => <Render text={text} />},
     {title: '管理员手机号码', dataIndex: 'contactPhone', align: 'center', render: (text) => <Render text={text} />},
     {title: '管理员账号', dataIndex: 'adminAccount', align: 'center', render: (text) => <Render text={text} />},
-    {title: '身份证号 ', dataIndex: 'idNumber', align: 'center', render: (text) => <Render text={text} />},
+    {title: '身份证号 ', dataIndex: 'legalPersonCard', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '营业执照 ',
       dataIndex: '9',
@@ -82,6 +85,7 @@ const Tenant = () => {
 
   return <>
     <Table
+      tableKey='customer'
       loading={loading}
       api={customerList}
       searchButtons={[
@@ -102,7 +106,7 @@ const Tenant = () => {
             <ActionButton>通过</ActionButton>
           </Warning>}
           <PrimaryButton onClick={() => setAskAccount(record)}>修改</PrimaryButton>
-          <PrimaryButton>数据转发</PrimaryButton>
+          <PrimaryButton onClick={() => setVisible(true)}>数据转发</PrimaryButton>
           <Warning>
             <DangerButton>删除</DangerButton>
           </Warning>
@@ -116,6 +120,10 @@ const Tenant = () => {
       onClose={() => setAskAccount(null)}
       data={askAccount || {}}
     />
+
+    <Save visible={visible} close={() => setVisible(false)} success={() => {
+      setVisible(false);
+    }} />
   </>;
 };
 
