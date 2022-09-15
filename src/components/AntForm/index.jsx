@@ -37,17 +37,27 @@ const AntForm = (
 
   const {loading: addLoading, run: add} = useRequest(apis.add, {
     manual: true,
+    response: true,
     onSuccess: (res) => {
+      if (res.errCode === 1001) {
+        Modal.warn({
+          content: res.message,
+          okText: '确认'
+        });
+        return;
+      }
       message.success('添加成功！');
-      success(res);
-    }
+      success(res.data);
+    },
+    onError: () => message.error('添加失败！')
   });
   const {loading: editLoading, run: edit} = useRequest(apis.edit, {
     manual: true,
     onSuccess: (res) => {
       message.success('修改成功！');
       success(res);
-    }
+    },
+    onError: () => message.error('修改失败！')
   });
 
   const submitData = () => {

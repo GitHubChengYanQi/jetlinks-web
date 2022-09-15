@@ -38,7 +38,7 @@ const Save = (
       success={success}
       visible={visible}
       close={close}
-      format={(values) => ({...values, password: newPassword})}
+      format={(values) => ({...values, password: data?.userId ? newPassword : values.password})}
     >
       <Form.Item
         initialValue={data?.account}
@@ -137,7 +137,7 @@ const Save = (
         </Radio.Group>
       </Form.Item>
       <Form.Item
-        initialValue={data?.status}
+        initialValue={data?.status || 'ENABLE'}
         key="status"
         label="账号状态"
         name="status"
