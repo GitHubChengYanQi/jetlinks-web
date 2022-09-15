@@ -1,17 +1,17 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Menu, Dropdown, Select, Input, message} from 'antd';
+import {Button, Space, Menu, Dropdown, Input, Select as AntSelect} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import AccountAsk from '@/pages/Login/AccountAsk';
-import {customerList, customerStart} from '@/pages/systemManage/Tenant/url';
-import {useRequest} from '@/util/Request';
+import {customerList} from '@/pages/systemManage/Tenant/url';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import Save from '@/pages/systemManage/Tenant/Save';
 import Info from '@/pages/systemManage/Tenant/Info';
 import DownloadFile from '@/components/DownloadFile';
+import {isArray} from '@/util/Tools';
 
 
 const Tenant = () => {
@@ -75,15 +75,35 @@ const Tenant = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="审核结果" name="jg" component={Select} select/>
-      <FormItem label="提交时间" name="tj" component={DatePicker} select/>
-      <FormItem label="企业查询" name="qy" component={Input} select/>
-      <FormItem label="联系人查询" name="lxr" component={Input} select/>
+      <FormItem
+        label="审核结果"
+        name="status"
+        component={({value, onChange}) => {
+          return <AntSelect
+            defaultValue="all"
+            value={typeof value === 'number' ? value : 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '通过', value: 1}, {label: '待审核', value: 0}]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+        select
+      />
+      <FormItem label="提交时间" name="time" component={DatePicker} RangePicker select/>
+      <FormItem label="企业查询" name="name" component={Input} placeholder='请输入企业名称/统一社会信用代码'/>
+      <FormItem label="管理员人查询" name="contactName" component={Input} placeholder='请输入管理员账号/姓名/手机号/邮箱'/>
     </>;
   };
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       ref={ref}
       tableKey="customer"
       api={customerList}

@@ -22,3 +22,10 @@ export const deviceClassifyDelete = {
   url: '/deviceClassify/delete',
   method: 'POST',
 };
+
+export const DeviceClassifyExcel = {
+  url: '/DeviceClassifyExcel/import',
+  method: 'GET',
+};
+
+export const DeviceClassifyDownloadTemplate = '/DeviceClassifyExcel/downloadTemplate';

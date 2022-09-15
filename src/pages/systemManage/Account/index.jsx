@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Menu, Dropdown, message, Input, Select} from 'antd';
+import {Button, Space, Menu, Dropdown, message, Input, Select, Select as AntSelect} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/systemManage/Account/Save';
@@ -9,6 +9,7 @@ import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {request, useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import {isArray} from '@/util/Tools';
 
 
 const Account = () => {
@@ -27,7 +28,7 @@ const Account = () => {
         message.error(error.message);
       },
       onSuccess: () => {
-        message.success('禁用成功！');
+        message.success('停用成功！');
         ref.current.refresh();
       }
     });
@@ -42,7 +43,7 @@ const Account = () => {
       },
       onSuccess: () => {
         setKeys([]);
-        message.success('禁用成功！');
+        message.success('停用成功！');
         ref.current.refresh();
       }
     });
@@ -100,7 +101,7 @@ const Account = () => {
     {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {
       title: '账号状态', dataIndex: 'status', align: 'center', render: (text) => <Render>
-        <Button danger={text !== 'ENABLE'} type="link">{text === 'ENABLE' ? '启用' : '禁用'}</Button>
+        <Button danger={text !== 'ENABLE'} type="link">{text === 'ENABLE' ? '启用' : '停用'}</Button>
       </Render>
     },
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
@@ -159,16 +160,33 @@ const Account = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem name="name" label="创建时间" component={DatePicker} showTime select/>
-        <FormItem name="status" label="账号状态" component={Select} select/>
-        <FormItem name="status" label="分组名称" component={Select} select/>
-        <FormItem name="status" label="关键字查询" component={Input}/>
+        <FormItem name="time" label="创建时间" component={DatePicker} RangePicker select/>
+        <FormItem
+          name="status"
+          label="账号状态"
+          component={({value, onChange}) => {
+            return <AntSelect
+              defaultValue="all"
+              value={value || 'all'}
+              options={[{label: '全部', value: 'all'}, {label: '启用', value: 'ENABLE'}, {label: '停用', value: 'LOCKED'}]}
+              onChange={(value) => {
+                onChange(value === 'all' ? null : value);
+              }}
+            />;
+          }} select/>
+        <FormItem name="name" label="关键字查询" component={Input} placeholder='管理员账号/姓名/手机号/邮箱'/>
       </>
     );
   };
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       onChange={setKeys}
       selectedRowKeys={keys}
       tableKey="account"
@@ -191,10 +209,10 @@ const Account = () => {
         return <Space>
           <PrimaryButton type="link" onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
           <Warning
-            content={`您确定${open ? '禁用' : '启用'}么?`}
+            content={`您确定${open ? '停用' : '启用'}么?`}
             onOk={() => !open ? unfreeze(record.userId) : freeze(record.userId)
             }>
-            {open ? <DangerButton>禁用</DangerButton> : <ActionButton>启用</ActionButton>}
+            {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
           <Warning onOk={() => remove(record.userId)}>
             <DangerButton danger type="link">删除</DangerButton>

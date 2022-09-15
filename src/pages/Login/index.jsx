@@ -34,7 +34,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     const response = await run({
-      data: {username, password}
+      data: {username, password, customerName: corporateName}
     });
     if (response) {
       cookie.set('jetlink-token', response);

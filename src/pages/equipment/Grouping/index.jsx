@@ -7,7 +7,7 @@ import Save from './Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import styles from '@/pages/monitor/index.module.less';
-import {deviceClassifyList} from '@/pages/equipment/Grouping/url';
+import {DeviceClassifyDownloadTemplate, DeviceClassifyExcel, deviceClassifyList} from '@/pages/equipment/Grouping/url';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import store from '@/store';
@@ -123,7 +123,13 @@ const Grouping = () => {
     />
 
     <BatchImport
+      columns={[
+        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
+      ]}
       title="分组"
+      templeteApi={DeviceClassifyDownloadTemplate}
+      api={DeviceClassifyExcel}
       success={() => {
         setBatchImport(false);
         ref.current.submit();

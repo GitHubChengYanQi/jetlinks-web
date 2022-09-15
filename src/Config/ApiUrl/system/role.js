@@ -49,3 +49,18 @@ export const roleListByUserId = {
   method: 'POST',
   rowKey: 'userId'
 };
+
+export const roleStop = {
+  url: '/rest/role/stop',
+  method: 'POST',
+};
+
+export const roleStart = {
+  url: '/rest/role/start',
+  method: 'POST',
+};
+
+export const roleBatchDelete = {
+  url: '/rest/role/batchDelete',
+  method: 'POST',
+};

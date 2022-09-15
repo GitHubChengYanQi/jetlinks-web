@@ -28,3 +28,10 @@ export const outstockList = {
   rowKey:'outstockId'
 };
 
+export const outStockImport = {
+  url: '/OutStockExcel/import',
+  method: 'GET',
+};
+
+export const outStockDownloadTemplate = '/OutStockExcel/downloadTemplate';
+

@@ -15,7 +15,7 @@ const Configuration = () => {
 
   const info = userInfo.info || {};
 
-  const {loading, data, refresh} = useRequest({
+  const {loading, data = {}, refresh} = useRequest({
     ...customerDetail,
     data: {customerId: info.customerId}
   }, {manual: !info.customerId});

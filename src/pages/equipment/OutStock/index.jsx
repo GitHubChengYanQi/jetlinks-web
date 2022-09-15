@@ -5,7 +5,7 @@ import Warning from '@/components/Warning';
 import Info from '@/pages/equipment/OutStock/Info';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
-import {outstockList} from '@/pages/equipment/OutStock/url';
+import {outStockDownloadTemplate, outStockImport, outstockList} from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
@@ -184,6 +184,11 @@ const OutStock = () => {
       ref.current.submit();
     }}/>
     <BatchImport
+      columns={[
+        {title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
+      ]}
+      api={outStockImport}
+      templeteApi={outStockDownloadTemplate}
       title="出库"
       success={() => {
         setBatchImport(false);

@@ -1,10 +1,25 @@
 .title {
-  color: #1890FFFF;
-  border-bottom: solid 1px #1890FFFF;
+  color: @primary-color;
+  border-bottom: solid 1px @primary-color;
   display: inline-block;
   padding: 4px 8px;
 }
 
+.navTitle {
+  padding: 12px;
+  text-align: center;
+}
+
 .descriptions {
-  margin-bottom: 24px;
+  :global {
+    .ant-descriptions-item-label {
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .ant-descriptions-item-content {
+      text-align: center;
+      color: var(--green)
+    }
+  }
 }

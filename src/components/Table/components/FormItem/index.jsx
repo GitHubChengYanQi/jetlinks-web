@@ -11,6 +11,7 @@ const FormItem = (
     component,
     children,
     initialValue,
+    placeholder,
     ...porps
   }
 ) => {
@@ -20,7 +21,7 @@ const FormItem = (
     label={label}
     name={name}
     component={component || children}
-    placeholder={`请${select ? '选择' : '输入'}${label}`}
+    placeholder={placeholder || `请${select ? '选择' : '输入'}${label}`}
     {...porps}
   />;
 };
