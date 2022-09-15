@@ -99,9 +99,9 @@ const Grouping = () => {
           api={deviceClassifyList}
           columns={columns}
           rowKey="classifyId"
-          actionRender={(text) => (
+          actionRender={(text,record) => (
             <Space>
-              <PrimaryButton onClick={() => setSaveVisible({id: '1', name: text})}>编辑</PrimaryButton>
+              <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
               <Warning>
                 <DangerButton>删除</DangerButton>
               </Warning>

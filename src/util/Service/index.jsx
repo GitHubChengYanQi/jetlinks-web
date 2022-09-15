@@ -35,21 +35,23 @@ ajaxService.interceptors.response.use((response) => {
   const errCode = typeof response.errCode !== 'undefined' ? parseInt(response.errCode, 0) : 0;
   if (errCode !== 0) {
     if (errCode === 1502) {
-      cookie.remove('jetlink-token');
-      Modal.error({
-        title: '提示',
-        content: '您已登录超时，请重新登录。',
-        okText: '重新登录',
-        onOk: () => {
-          Modal.destroyAll();
-          try {
-            GotoLogin();
-          } catch (e) {
-            window.location.href = `/#/login?backUrl=${encodeURIComponent(window.location.href)}`;
+      if (cookie.get('jetlink-token')){
+        cookie.remove('jetlink-token');
+        Modal.error({
+          title: '提示',
+          content: '您已登录超时，请重新登录。',
+          okText: '重新登录',
+          onOk: () => {
+            Modal.destroyAll();
+            try {
+              GotoLogin();
+            } catch (e) {
+              window.location.href = `/#/login?backUrl=${encodeURIComponent(window.location.href)}`;
+            }
           }
-        }
-      });
-      throw new Error(response.message);
+        });
+        throw new Error(response.message);
+      }
     } else if (errCode === 1001) {
       return response;
     } else if (errCode !== 200) {
