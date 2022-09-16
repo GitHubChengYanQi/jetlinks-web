@@ -43,7 +43,7 @@ const Tenant = () => {
       title: '营业执照 ',
       dataIndex: 'file',
       align: 'center',
-      render: (fileId) => <Render width={50}><DownloadFile fileId={fileId}/></Render>
+      render: (fileId,record) => <Render width={50}><DownloadFile fileId={fileId} fileName={record.fileName}/></Render>
     },
     {
       title: '提交时间 ',

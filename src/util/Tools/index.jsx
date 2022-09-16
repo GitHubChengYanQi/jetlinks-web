@@ -22,9 +22,19 @@ const isArray = (array) => {
   return Array.isArray(array) ? array : [];
 };
 
+// 查找字符串返回 true / false
+const queryString = (value='', string) => {
+  if (value.includes('\\')){
+    value = value.replaceAll('\\','|');
+  }
+  const patt = new RegExp(value, 'i');
+  return patt.test(string);
+};
+
 
 export {
   randomString,
   isObject,
-  isArray
+  isArray,
+  queryString
 };
