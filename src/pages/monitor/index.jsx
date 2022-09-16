@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Row, Col, Button, Space, Tooltip, Select, Input} from 'antd';
+import {Row, Col, Button, Space, Tooltip, Select, Input, Drawer} from 'antd';
 import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
@@ -8,6 +8,8 @@ import Render from '@/components/Render';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import styles from './index.module.less';
+import GridPowerSupply from '@/pages/monitor/components/GridPowerSupply';
+import BackboneNetwork from '@/pages/monitor/components/BackboneNetwork';
 
 
 const Monitor = () => {
@@ -15,6 +17,8 @@ const Monitor = () => {
 
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
+
+  const [open, setOpen] = useState('');
 
   const dataSource = Array(5).fill('').map((item, index) => ({
     key: index,
@@ -34,11 +38,16 @@ const Monitor = () => {
     '9': '5',
     '10': '123.4556789',
     '11': '内网：192.168.1.1',
-    '99':'5'
+    '99': '5'
   }));
 
   const columns = [
-    {title: '设备状态', dataIndex: '1', align: 'center', render: (text) => <Render text={<span className='green'>{text}</span>}/>},
+    {
+      title: '设备状态',
+      dataIndex: '1',
+      align: 'center',
+      render: (text) => <Render text={<span className="green">{text}</span>}/>
+    },
     {
       title: <Space>
         终端备注
@@ -50,7 +59,7 @@ const Monitor = () => {
       align: 'center',
       render: (text) => {
         return <Space>
-          <Button className='blue' type="link" onClick={() => setInfoVisible({id: '1'})}>{text}</Button>
+          <Button className="blue" type="link" onClick={() => setInfoVisible({id: '1'})}>{text}</Button>
           <EditOutlined onClick={() => setNoteVisible({id: '1', note: text})}/>
         </Space>;
       }
@@ -71,13 +80,64 @@ const Monitor = () => {
           title: '实时值',
           dataIndex: '51',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('GridPowerSupply')}
+            text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('GridPowerSupply')}
+            text={<span className="red">{text}</span>}/>
+        },
+      ]
+    },
+    {
+      title: '太阳能供电监测',
+      children: [
+        {
+          title: '实时值',
+          dataIndex: '51',
+          align: 'center',
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('GridPowerSupply')}
+            text={<span className="green">{text}</span>}/>
+        },
+        {
+          title: '报警数',
+          dataIndex: '99',
+          align: 'center',
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('GridPowerSupply')}
+            text={<span className="red">{text}</span>}/>
+        },
+      ]
+    }, {
+      title: '太阳能电池容量',
+      children: [
+        {
+          title: '实时值',
+          dataIndex: '51',
+          align: 'center',
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('GridPowerSupply')}
+            text={<span className="green">{text}</span>}/>
+        },
+        {
+          title: '报警数',
+          dataIndex: '99',
+          align: 'center',
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('GridPowerSupply')}
+            text={<span className="red">{text}</span>}/>
         },
       ]
     },
@@ -88,37 +148,55 @@ const Monitor = () => {
           title: '网络状态',
           dataIndex: '52',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('BackboneNetwork')}
+            text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('BackboneNetwork')}
+            text={<span className="red">{text}</span>}/>
         },
         {
           title: '网络速率/Mbps',
           dataIndex: '53',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('BackboneNetwork')}
+            text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '51',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('BackboneNetwork')}
+            text={<span className="red">{text}</span>}/>
         },
         {
           title: '网络丢包率/%',
           dataIndex: '54',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('BackboneNetwork')}
+            text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render
+            className={styles.click}
+            onClick={() => setOpen('BackboneNetwork')}
+            text={<span className="red">{text}</span>}/>
         },
       ]
     },
@@ -129,13 +207,29 @@ const Monitor = () => {
           title: '实时值',
           dataIndex: '6',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
+        },
+      ]
+    }, {
+      title: '通道控制',
+      children: [
+        {
+          title: '通道数',
+          dataIndex: '6',
+          align: 'center',
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
+        },
+        {
+          title: '报警数',
+          dataIndex: '99',
+          align: 'center',
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         },
       ]
     },
@@ -146,13 +240,13 @@ const Monitor = () => {
           title: '通道数',
           dataIndex: '51',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         },
       ]
     },
@@ -163,18 +257,50 @@ const Monitor = () => {
           title: '实时值',
           dataIndex: '52',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         }, {
           title: '信号强度',
           dataIndex: '82',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
+        },
+      ]
+    }, {
+      title: '上行设备供电状态',
+      children: [
+        {
+          title: '实时值',
+          dataIndex: '52',
+          align: 'center',
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
+        },
+        {
+          title: '报警数',
+          dataIndex: '99',
+          align: 'center',
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
+        },
+      ]
+    }, {
+      title: '上行设备网络状态',
+      children: [
+        {
+          title: '实时值',
+          dataIndex: '52',
+          align: 'center',
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
+        },
+        {
+          title: '报警数',
+          dataIndex: '99',
+          align: 'center',
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         },
       ]
     }, {
@@ -184,23 +310,23 @@ const Monitor = () => {
           title: '网络状态',
           dataIndex: '52',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>{text}</span>}/>
+          render: (text) => <Render text={<span className="green">{text}</span>}/>
         },
         {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         }, {
           title: '供电状态',
           dataIndex: '82',
           align: 'center',
-          render: (text) => <Render text={<span className='green'>正常</span>}/>
+          render: (text) => <Render text={<span className="green">正常</span>}/>
         }, {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         },
       ]
     },
@@ -212,10 +338,15 @@ const Monitor = () => {
           title: '报警数',
           dataIndex: '99',
           align: 'center',
-          render: (text) => <Render text={<span className='red'>{text}</span>}/>
+          render: (text) => <Render text={<span className="red">{text}</span>}/>
         }]
     },
-    {title: 'GPS定位', dataIndex: '10', align: 'center', render: (text) => <Render text={<span className='green'>{text}</span>}/>},
+    {
+      title: 'GPS定位',
+      dataIndex: '10',
+      align: 'center',
+      render: (text) => <Render text={<span className="green">{text}</span>}/>
+    },
     {title: '设备IP地址', dataIndex: '11', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
@@ -241,7 +372,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
-          tableKey='monitor'
+          tableKey="monitor"
           searchForm={searchForm}
           dataSource={dataSource}
           columns={columns}
@@ -255,6 +386,17 @@ const Monitor = () => {
 
     <Info id={infoVisible.id} onClose={() => setInfoVisible({})}/>
     <NoteSave close={() => setNoteVisible({})} data={noteVisible}/>
+
+    <Drawer
+      title='终端备注：4012M智能箱；设备型号：OPT IMS-4012M'
+      destroyOnClose
+      width="50vw"
+      open={open}
+      onClose={() => setOpen('')}
+    >
+      {open === 'GridPowerSupply' && <GridPowerSupply/>}
+      {open === 'BackboneNetwork' && <BackboneNetwork/>}
+    </Drawer>
   </>;
 };
 export default Monitor;

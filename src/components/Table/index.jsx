@@ -31,6 +31,7 @@ const TableWarp = (
     actionButton,
     pageSize,
     noPagination,
+    noFooter,
     isChildren,
     contentHeight,
     searchButtons = [],
@@ -286,19 +287,19 @@ const TableWarp = (
           dataSource={dataSource || []}
           rowKey={rowKey}
           columns={[
-            {
+            ...(noSort ? [] : [{
               title: '序号',
               align: 'center',
               fixed: 'left',
               dataIndex: '0',
               width: '70px',
               render: (value, record, index) => <Render text={index + 1} width={70}/>
-            },
+            }]),
             ...tableColumn.filter(item => item.checked),
             ...action,
           ]}
           pagination={
-            noPagination || {
+            noPagination ? false : {
               ...pagination,
               showTotal: (total) => {
                 return `共${total || dataSource.length}条`;
@@ -317,7 +318,7 @@ const TableWarp = (
             ...rowSelection,
             getCheckboxProps,
           }}
-          footer={footer}
+          footer={noFooter ? false :footer}
           layout
           scroll={{x: 'max-content', y: maxHeight}}
           {...other}

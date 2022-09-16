@@ -27,7 +27,8 @@ const DatePicker = (
       value={isArray(value).length > 0 ? [moment(value[0]), moment(value[1])] : []}
       showTime={showTime}
       onChange={(date, dateString = []) => {
-        onChange([moment(dateString[0]).format('YYYY/MM/DD HH:mm:ss'),moment(dateString[1]).format('YYYY/MM/DD HH:mm:ss')]);
+        const dates = dateString.filter(item => item);
+        onChange(dates.length === 0 ? [] : [moment(dateString[0]).format('YYYY/MM/DD HH:mm:ss'), moment(dateString[1]).format('YYYY/MM/DD HH:mm:ss')]);
       }}/>;
   }
   return <AntDatePicker

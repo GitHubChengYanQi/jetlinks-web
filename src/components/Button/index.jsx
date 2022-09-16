@@ -8,7 +8,8 @@ export const ActionButton = ({
   disabled,
   ...props
 }) => {
-  return <Button disabled={disabled} {...props} className={!disabled && 'bgGreen'} onClick={onClick}>{children}</Button>;
+  return <Button disabled={disabled} {...props} className={!disabled && 'bgGreen'}
+                 onClick={onClick}>{children}</Button>;
 };
 
 export const DangerButton = ({
@@ -27,4 +28,13 @@ export const PrimaryButton = ({
   ...props
 }) => {
   return <Button {...props} type="primary" onClick={onClick}>{children}</Button>;
+};
+
+export const LinkButton = ({
+  onClick = () => {
+  },
+  children,
+  ...props
+}) => {
+  return <Button {...props} type="link" className="blue" onClick={onClick}>{children}</Button>;
 };

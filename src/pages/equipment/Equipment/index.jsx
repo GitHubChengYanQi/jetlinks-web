@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message} from 'antd';
 import {useHistory} from 'ice';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Restart from '@/pages/equipment/Equipment/Restart';
@@ -56,7 +57,7 @@ const Equipment = () => {
       dataIndex: 'status',
       align: 'center',
       render: (value) => {
-        const open = value === '1';
+        const open = value === 'online';
         return <Render>
           <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;
@@ -122,23 +123,40 @@ const Equipment = () => {
     },
     {
       title: '运行时间',
-      dataIndex: 'runTime',
+      dataIndex: 'logTime',
       align: 'center',
-      render: (value) => <Render width={150}>
-        {/* {moment.unix(moment(new Date()).diff(value)).from('dd 天')} */}
-      </Render>
+      render: (value, record) => {
+        const open = record.status === 'online';
+        if (!open) {
+          return <Render width={150}/>;
+        }
+        const oldsecond = moment(new Date()).diff(value, 'second');
+        const day = Math.floor(oldsecond / 86400) || 0;
+        const hours = Math.floor((oldsecond % 86400) / 3600) || 0;
+        const minutes = Math.floor(((oldsecond % 86400) % 3600) / 60) || 0;
+        const newsecond = Math.floor(((oldsecond % 86400) % 3600) % 60) || 0;
+        return <Render width={150}>
+          {day}天{hours}时{minutes}分{newsecond}秒
+        </Render>;
+      }
     },
     {
       title: '上线时间',
-      dataIndex: 'createTime',
+      dataIndex: 'logTime',
       align: 'center',
-      render: (value) => <Render width={150} text={value}/>
+      render: (value, record) => {
+        const open = record.status === 'online';
+        return <Render width={150} text={open ? value : ''}/>;
+      }
     },
     {
       title: '离线时间',
-      dataIndex: 'offlineTime',
+      dataIndex: 'logTime',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (value, record) => {
+        const open = record.status === 'online';
+        return <Render width={150} text={!open ? value : ''}/>;
+      }
     },
     {
       title: '质保时间',
@@ -217,7 +235,7 @@ const Equipment = () => {
       columns={columns}
       rowKey="deviceId"
       actionRender={(text, record) => {
-        const open = record.status === '1';
+        const open = record.status === 'online';
         return <Space>
           <Button
             type="primary"
