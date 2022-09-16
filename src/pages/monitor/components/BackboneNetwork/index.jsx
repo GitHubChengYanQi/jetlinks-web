@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Card, Space, Tabs} from 'antd';
 import DatePicker from '@/components/DatePicker';
 import {LinkButton, PrimaryButton} from '@/components/Button';
@@ -6,9 +6,14 @@ import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
+import Warning from '@/components/Warning';
+import Save from '@/pages/monitor/components/BackboneNetwork/Save';
 
 // 主干网络检测
 const BackboneNetwork = () => {
+
+  const [saveVisible, setSaveVisible] = useState();
+
   return <>
     <Card
       bodyStyle={{padding: 0}}
@@ -22,8 +27,8 @@ const BackboneNetwork = () => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <LinkButton>报警设置</LinkButton>
-        <LinkButton>远程控制</LinkButton>
+        <LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>
+        <Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>
         <LinkButton>导出</LinkButton>
         <LinkButton>一件处理</LinkButton>
       </Space>}
@@ -83,6 +88,8 @@ const BackboneNetwork = () => {
         }
       ]}
     />
+
+    <Save visible={saveVisible} close={() => setSaveVisible()}/>
   </>;
 };
 

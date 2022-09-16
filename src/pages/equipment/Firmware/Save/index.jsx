@@ -5,7 +5,6 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';
 import Select from '@/components/Select';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
-import {deviceAdd, deviceEdit} from '@/pages/equipment/Equipment/url';
 import {firmwareAdd, firmwareEdit} from '@/pages/equipment/Firmware/url';
 
 const Save = ({
