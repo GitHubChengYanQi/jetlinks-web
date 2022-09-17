@@ -26,8 +26,8 @@ const OutStock = () => {
 
   const columns = [
     {
-      title: '设备状态', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => {
-        const open = value.status === '99';
+      title: '设备状态', dataIndex: 'deviceResult', align: 'center', render: (value) => {
+        const open = value === 'online';
         return <Render>
           <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;

@@ -1,47 +1,41 @@
-import React, {useState} from 'react';
-import {Input, Modal, Spin,Form} from 'antd';
+import React from 'react';
+import {Input, Form} from 'antd';
+import {deviceEdit} from '@/pages/equipment/Equipment/url';
+import AntForm from '@/components/AntForm';
 
 
-const NoteSave = props => {
-
-  const [loading,] = useState(false);
-
-  const [form] = Form.useForm();
-
-  const submitData = () => {
-    form.validateFields().then((values) => {
-      console.log(values);
-    });
-  };
+const NoteSave = ({
+  data = {},
+  success = () => {
+  },
+  close = () => {
+  },
+}) => {
 
   return (
-    <Modal
-      destroyOnClose
-      title='修改终端备注'
-      open={props.data.id}
-      okText="确定"
-      cancelText="取消"
-      onOk={() => {
-        submitData();
+    <AntForm
+      apis={{
+        edit: deviceEdit,
       }}
-      onCancel={() => props.close()}
+      title="终端备注"
+      initialValues={data}
+      rowKey="deviceId"
+      success={success}
+      visible={data.deviceId}
+      close={close}
     >
-      <Spin spinning={loading}>
-        <Form form={form} layout='vertical'>
-          <Form.Item
-            initialValue={props.data.note}
-            key="note"
-            label="终端备注"
-            name='note'
-            rules={[
-              {required: true, message: '请输入终端备注'},
-            ]}
-          >
-            <Input placeholder="请输入终端备注" />
-          </Form.Item>
-        </Form>
-      </Spin>
-    </Modal>
+      <Form.Item
+        initialValue={data.remarks}
+        key="remarks"
+        label="终端备注"
+        name="remarks"
+        rules={[
+          {required: true, message: '请输入终端备注'},
+        ]}
+      >
+        <Input placeholder="请输入终端备注" />
+      </Form.Item>
+    </AntForm>
   );
 };
 

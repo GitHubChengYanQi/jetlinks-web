@@ -21,7 +21,7 @@ const Edition = () => {
   const columns = [
     {
       title: '设备状态', dataIndex: 'status', align: 'center', render: (value) => {
-        const open = value === '99';
+        const open = value === 'online';
         return <Render>
           <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;
