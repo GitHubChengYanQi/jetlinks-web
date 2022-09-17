@@ -432,7 +432,8 @@ const Monitor = () => {
     <Drawer
       title={`终端备注：${open.remarks}    设备型号：${open.modelName}`}
       destroyOnClose
-      width="50vw"
+      style={{minWidth:'50vw'}}
+      className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}
       extra={<DatePicker width={200} RangePicker/>}
