@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import {Menu} from 'antd';
 import AntTree from '../../../../../components/AntTree';
-import Warning from '@/components/Warning';
 import Save from './Save';
 import {isArray} from '@/util/Tools';
 import store from '@/store';
 
 const Group = (
   {
-    noAction,
-    onChange,
+    onChange = () => {
+    },
     value,
   }
 ) => {
@@ -30,31 +28,10 @@ const Group = (
     });
   };
 
-  const menu = (node) => {
-    return <Menu
-      items={[
-        {
-          key: '1',
-          label: '编辑',
-          onClick: () => {
-            setCurrentItem({id: node.title});
-            setSaveVisible(true);
-          }
-        },
-        {
-          key: '2',
-          label: <Warning>删除</Warning>,
-        }
-      ]}
-    />;
-  };
-
   return <>
     <AntTree
-      noAction={noAction}
-      menu={menu}
       onChange={(keys) => {
-        onChange(keys[0]);
+        onChange(keys[0], 'group');
         setKeys(keys);
       }}
       value={keys}

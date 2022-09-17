@@ -1,6 +1,5 @@
 import React from 'react';
 import {Spin, Tree} from 'antd';
-import styles from './index.module.less';
 
 
 const AntTree = ({
@@ -10,8 +9,11 @@ const AntTree = ({
   loading,
 }) => {
 
-  if (treeData.length === 0 && loading) {
-    return <div style={{padding: 24, textAlign: 'center'}}><Spin/></div>;
+  if (treeData.length === 0) {
+    if (loading) {
+      return <div style={{padding: 24, textAlign: 'center'}}><Spin/></div>;
+    }
+    return <></>;
   }
 
   return <Spin spinning={Boolean(loading)}>

@@ -10,11 +10,8 @@ import {isArray} from '@/util/Tools';
 const Terminal = (props) => {
 
   const {
-    noAction,
     onChange,
     value,
-    onGetNode = () => {
-    }
   } = props;
 
   const [keys, setKeys] = useState(value ? [value] : []);
@@ -28,9 +25,15 @@ const Terminal = (props) => {
     manual: true,
     onSuccess: (res) => {
       setTreeData(isArray(res).map(item => {
+        const modelList = item.modelList || [];
         return {
           key: item.categoryId,
           title: item.name,
+          selectable:false,
+          children:modelList.map(item=>({
+            key: item.modelId,
+            title: item.name,
+          }))
         };
       }));
     }
@@ -49,33 +52,11 @@ const Terminal = (props) => {
     });
   };
 
-  const menu = (node) => {
-    return <Menu
-      items={[
-        {
-          key: '1',
-          label: '编辑',
-          onClick: () => {
-            setCurrentItem(node.item);
-            setSaveVisible(true);
-          }
-        },
-        {
-          key: '2',
-          label: <Warning>删除</Warning>,
-        }
-      ]}
-    />;
-  };
-
   return <>
     <AntTree
-      onGetNode={onGetNode}
       loading={loading}
-      noAction={noAction}
-      menu={menu}
       onChange={(keys) => {
-        onChange(keys[0]);
+        onChange(keys[0], 'terminal');
         setKeys(keys);
       }}
       value={keys}
