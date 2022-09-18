@@ -66,6 +66,7 @@ const TableWarp = (
     formActions = null,
     left,
     noAction,
+    columnsResh,
     actionRender = () => {
       return <></>;
     },
@@ -212,7 +213,7 @@ const TableWarp = (
   const {tableColumn, setButton, saveView, selectView} = useTableSet(children || columns.map((item, index) => ({
     ...item,
     key: `${index}`
-  })), tableKey);
+  })), tableKey,columnsResh);
 
   const action = [];
   if (!noAction) {

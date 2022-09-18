@@ -5,7 +5,7 @@ import Group from '@/pages/monitor/LeftTree/components/Group';
 import Terminal from '@/pages/monitor/LeftTree/components/Terminal';
 import styles from './index.module.less';
 
-const LeftTree = ({onChange, showModules, close, open}) => {
+const LeftTree = ({onChange, showModules, close, open,firstKey}) => {
 
   const show = (key) => {
     return showModules ? showModules.includes(key) : true;
@@ -17,7 +17,7 @@ const LeftTree = ({onChange, showModules, close, open}) => {
     items.push({
       key: '1',
       label: '终端设备',
-      children: <Terminal onChange={onChange} />
+      children: <Terminal firstKey onChange={onChange} />
     });
   }
   if (show('group')) {

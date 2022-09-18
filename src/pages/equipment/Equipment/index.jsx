@@ -99,7 +99,7 @@ const Equipment = () => {
     },
     {
       title: '设备IP地址',
-      dataIndex: '8',
+      dataIndex: 'ip',
       align: 'center',
       render: (text) => {
         return <Render width={120}>
@@ -128,7 +128,7 @@ const Equipment = () => {
       render: (value, record) => {
         const open = record.status === 'online';
         if (!open) {
-          return <Render width={150}/>;
+          return <Render width={150} text='-'/>;
         }
         const oldsecond = moment(new Date()).diff(value, 'second');
         const day = Math.floor(oldsecond / 86400) || 0;
@@ -146,7 +146,7 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={open ? value : ''}/>;
+        return <Render width={150} text={open ? value : '-'}/>;
       }
     },
     {
@@ -155,7 +155,7 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={!open ? value : ''}/>;
+        return <Render width={150} text={!open ? value : '-'}/>;
       }
     },
     {

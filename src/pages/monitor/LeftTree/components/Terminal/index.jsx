@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Menu} from 'antd';
 import AntTree from '@/components/AntTree';
-import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Category/Save';
 import {useRequest} from '@/util/Request';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
@@ -12,6 +10,7 @@ const Terminal = (props) => {
   const {
     onChange,
     value,
+    firstKey,
   } = props;
 
   const [keys, setKeys] = useState(value ? [value] : []);
@@ -24,13 +23,19 @@ const Terminal = (props) => {
   const {loading, run} = useRequest(categoryFindAll, {
     manual: true,
     onSuccess: (res) => {
+      if (firstKey) {
+        const category = isArray(res)[0] || {};
+        const model = category.modelList[0] || {};
+        onChange(model.modelId, 'terminal');
+        setKeys([model.modelId]);
+      }
       setTreeData(isArray(res).map(item => {
         const modelList = item.modelList || [];
         return {
           key: item.categoryId,
           title: item.name,
-          selectable:false,
-          children:modelList.map(item=>({
+          selectable: false,
+          children: modelList.map(item => ({
             key: item.modelId,
             title: item.name,
           }))
@@ -56,8 +61,10 @@ const Terminal = (props) => {
     <AntTree
       loading={loading}
       onChange={(keys) => {
-        onChange(keys[0], 'terminal');
-        setKeys(keys);
+        if (keys.length > 0){
+          onChange(keys[0], 'terminal');
+          setKeys(keys);
+        }
       }}
       value={keys}
       treeData={formatData(treeData)}

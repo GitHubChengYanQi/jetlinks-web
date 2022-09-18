@@ -15,7 +15,6 @@ const AntTree = ({
     }
     return <></>;
   }
-
   return <Spin spinning={Boolean(loading)}>
     <Tree
       onSelect={(values) => {
@@ -23,7 +22,7 @@ const AntTree = ({
       }}
       autoExpandParent
       defaultExpandAll
-      checkedKeys={value}
+      selectedKeys={value}
       treeData={treeData}
     />
   </Spin>;

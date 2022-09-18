@@ -1,36 +1,76 @@
-import React, {useRef, useState} from 'react';
-import {Row, Col, Button, Space, Tooltip, Input, Drawer, Select as AntSelect} from 'antd';
-import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import React, {useState} from 'react';
+import {
+  Row,
+  Col,
+  Button,
+  Space,
+  Tooltip,
+  Input,
+  Drawer,
+  Select as AntSelect,
+  Table,
+  Card,
+} from 'antd';
+import {EditOutlined, QuestionCircleOutlined, SearchOutlined,} from '@ant-design/icons';
+import {Form, FormButtonGroup, Submit, Reset} from '@formily/antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
 import Info from '@/pages/monitor/Info';
 import Render from '@/components/Render';
-import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import styles from './index.module.less';
 import GridPowerSupply from '@/pages/monitor/components/GridPowerSupply';
 import BackboneNetwork from '@/pages/monitor/components/BackboneNetwork';
-import {deviceList} from '@/pages/equipment/Equipment/url';
 import Network4G from '@/pages/monitor/components/4gNetwork';
 import DatePicker from '@/components/DatePicker';
+import {useRequest} from '@/util/Request';
+import {deviceModelList} from '@/pages/monitor/url';
+import Save from '@/pages/monitor/Info/Save';
+import {LinkButton} from '@/components/Button';
+import {isObject} from '@/util/Tools';
+import style from '@/components/Table/index.module.less';
 
 
 const Monitor = () => {
 
-  const ref = useRef();
+  const [params, setParams] = useState({});
 
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
 
+  const [saveVisible, setSaveVisible] = useState(false);
+
   const [open, setOpen] = useState({});
+
+  const {loading, data = {}, run, refresh} = useRequest(deviceModelList, {manual: true});
+
+  const modelColumns = data.column || [];
+  const modelDataSource = (data.convertColumnData || []).map(item => ({
+    ...item,
+    deviceId: isObject(item.deviceResult).deviceId
+  }));
+
+  const submit = (data = {}) => {
+    const newParams = {...params, ...data};
+    setParams(newParams);
+    run({data: newParams});
+  };
 
   const columns = [
     {
-      title: '设备状态',
-      dataIndex: 'status',
+      title: '序号',
       align: 'center',
-      render: (value) => {
-        const online = value === 'online';
+      fixed: 'left',
+      dataIndex: '0',
+      width: '70px',
+      render: (value, record, index) => <Render text={index + 1} width={70}/>
+    },
+    {
+      title: '设备状态',
+      dataIndex: 'deviceResult',
+      align: 'center',
+      render: (deviceResult) => {
+        const online = deviceResult.status === 'online';
         return <Render>
           <span className={online ? 'green' : 'close'}>{online ? '在线' : '离线'}</span>
         </Render>;
@@ -43,15 +83,15 @@ const Monitor = () => {
           <QuestionCircleOutlined/>
         </Tooltip>
       </Space>,
-      dataIndex: 'remarks',
+      dataIndex: 'deviceResult',
       align: 'center',
-      render: (text, record) => {
+      render: (deviceResult, record) => {
         return <Space>
           <Button
             className="blue"
             type="link"
-            onClick={() => setInfoVisible(record)}>{text}</Button>
-          <EditOutlined onClick={() => setNoteVisible({deviceId: record.deviceId, remarks: text})}/>
+            onClick={() => setInfoVisible(deviceResult)}>{deviceResult.remarks}</Button>
+          <EditOutlined onClick={() => setNoteVisible({deviceId: record.deviceId, remarks: deviceResult.remarks})}/>
         </Space>;
       }
     },
@@ -61,288 +101,13 @@ const Monitor = () => {
         <Tooltip placement="top" title="设备上报的登记名称，平台不可以修改">
           <QuestionCircleOutlined/>
         </Tooltip>
-      </Space>, dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
+      </Space>, dataIndex: 'deviceResult', align: 'center', render: (deviceResult) => <Render text={deviceResult.name}/>
     },
-    {title: '市电检测/V', dataIndex: '4', align: 'center', render: (text) => <Render text={text || '-'}/>},
-    {
-      title: '电网供电监测',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '51',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'GridPowerSupply'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'GridPowerSupply'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-      ]
-    },
-    {
-      title: '太阳能供电监测',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '51',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'GridPowerSupply'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'GridPowerSupply'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-      ]
-    }, {
-      title: '太阳能电池容量',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '51',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'GridPowerSupply'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'GridPowerSupply'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-      ]
-    },
-    {
-      title: '主干网络检测',
-      children: [
-        {
-          title: '网络状态',
-          dataIndex: '52',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'BackboneNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'BackboneNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '网络速率/Mbps',
-          dataIndex: '53',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'BackboneNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '51',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'BackboneNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '网络丢包率/%',
-          dataIndex: '54',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'BackboneNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: 'BackboneNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-      ]
-    },
-    {
-      title: 'Combo',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '6',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        },
-      ]
-    }, {
-      title: '通道控制',
-      children: [
-        {
-          title: '通道数',
-          dataIndex: '6',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        },
-      ]
-    },
-    {
-      title: '接入网口',
-      children: [
-        {
-          title: '通道数',
-          dataIndex: '51',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        },
-      ]
-    },
-    {
-      title: '4G网络',
-      dataIndex: '52',
-      align: 'center',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '52',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: '4gNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: '4gNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        }, {
-          title: '信号强度',
-          dataIndex: '82',
-          align: 'center',
-          render: (text, record) => <Render
-            className={styles.click}
-            onClick={() => setOpen({...record, type: '4gNetwork'})}
-            text={<span className="green">{text || '-'}</span>}/>
-        },
-      ]
-    }, {
-      title: '上行设备供电状态',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '52',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        },
-      ]
-    }, {
-      title: '上行设备网络状态',
-      children: [
-        {
-          title: '实时值',
-          dataIndex: '52',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        },
-      ]
-    }, {
-      title: '上行设备监测',
-      children: [
-        {
-          title: '网络状态',
-          dataIndex: '52',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        },
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        }, {
-          title: '供电状态',
-          dataIndex: '82',
-          align: 'center',
-          render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
-        }, {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        },
-      ]
-    },
-    {
-      title: '附属检测',
-      align: 'center',
-      children: [
-        {
-          title: '报警数',
-          dataIndex: '99',
-          align: 'center',
-          render: (text) => <Render text={<span className="red">{text || '-'}</span>}/>
-        }]
-    },
+    ...modelColumns.map(item => {
+      const children = item.children || [];
+      const render = (text = '-') => <Render text={typeof text === 'object' ? '' : text}/>;
+      return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
+    }),
     {
       title: 'GPS定位',
       dataIndex: '10',
@@ -381,42 +146,67 @@ const Monitor = () => {
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
-          <LeftTree open={close} close={() => setClose(!close)} onChange={(key, type) => {
+          <LeftTree firstKey open={close} close={() => setClose(!close)} onChange={(key, type) => {
             switch (type) {
               case 'terminal':
-                ref.current.formActions.setFieldValue('modelId', key);
+                submit({modelId: key});
                 break;
               case 'group':
-                ref.current.formActions.setFieldValue('classifyId', key);
+
                 break;
               default:
                 break;
             }
-            ref.current.submit();
           }}/>
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
-        <Table
-          ref={ref}
-          api={deviceList}
-          rowKey="deviceId"
-          tableKey="monitor"
-          searchForm={searchForm}
-          columns={columns}
-          actionRender={(text, record) => (
-            <Button type="primary">孪生数据</Button>
-          )}
-        />
+        <Card bordered={false}>
+          <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
+            <div className="search">
+              <Form
+                layout="inline"
+                onSubmit={(values) => {
+                  console.log(values);
+                }}
+                onReset={() => {
+                }}
+              >
+                {searchForm()}
+                <FormButtonGroup>
+                  <Submit loading={loading}><SearchOutlined/>查询</Submit>
+                  <Reset>重置</Reset>
+                </FormButtonGroup>
+              </Form>
+            </div>
+            <Table
+              layout
+              scroll={{x: 'max-content'}}
+              onHeaderRow={() => {
+                return {
+                  className: style.headerRow
+                };
+              }}
+              dataSource={modelDataSource}
+              loading={loading}
+              rowKey="deviceId"
+              columns={columns}
+              showTotal
+              bordered
+            />
+          </div>
+        </Card>
       </Col>
     </Row>
 
     <Drawer
+      destroyOnClose
       title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
       width="60vw"
       placement="right"
       onClose={() => setInfoVisible({})}
       open={infoVisible.deviceId}
+      extra={<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>}
     >
       <Info deviceId={infoVisible.deviceId}/>
     </Drawer>
@@ -425,7 +215,7 @@ const Monitor = () => {
       data={noteVisible}
       success={() => {
         setNoteVisible({});
-        ref.current.submit();
+        refresh();
       }}
     />
 
@@ -442,6 +232,8 @@ const Monitor = () => {
       {open.type === 'BackboneNetwork' && <BackboneNetwork/>}
       {open.type === '4gNetwork' && <Network4G/>}
     </Drawer>
+
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}}/>
   </>;
 };
 export default Monitor;

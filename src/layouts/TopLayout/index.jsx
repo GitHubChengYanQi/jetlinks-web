@@ -87,7 +87,6 @@ const TopLayout = ({children}) => {
     splitMenus
     // collapsed={false}
     headerTheme="light"
-    navTheme="dark"
     layout="mix"
   >
     <div style={{height: 'calc(100vh - 100px)', overflowY: 'auto', overflowX: 'hidden'}}>
