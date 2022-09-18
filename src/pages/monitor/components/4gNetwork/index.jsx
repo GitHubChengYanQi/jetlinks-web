@@ -6,6 +6,7 @@ import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
 import Broken from '@/pages/monitor/components/Chart/Broken';
+import {deviceStatusLogList} from '@/pages/monitor/url';
 
 const Network4G = () => {
 
@@ -28,46 +29,41 @@ const Network4G = () => {
           label: '历史数据',
           children: <>
             <Table
-              noFooter
-              noPagination
-              noRowSelection
+              bodyStyle={{padding: 0}}
+              api={deviceStatusLogList}
               noSort
-              rowKey="key"
-              dataSource={[{'key': '1', '1': '2022-08-04 11:30:00', '2': '220'}]}
+              noRowSelection
+              rowKey="logId"
               columns={[
                 {
                   title: '更新时间',
                   align: 'center',
                   fixed: 'left',
-                  dataIndex: '1',
+                  dataIndex: 'logTime',
                   render: (value) => <Render text={value}/>
                 }, {
-                  title: '目标IP地址',
+                  title: 'IP地址',
                   align: 'center',
                   fixed: 'left',
-                  dataIndex: '1',
+                  dataIndex: 'ip',
                   render: (value) => <Render text={value}/>
                 },
                 {
                   title: '网络状态',
                   align: 'center',
                   fixed: 'left',
-                  dataIndex: '1',
-                  render: (value) => <Render text={value}/>
+                  dataIndex: 'type',
+                  render: (value) => <Render
+                    className={value === 'online' ? 'green' : 'red'}
+                    text={value === 'online' ? '通' : '断'}
+                  />
                 },
                 {
-                  title: '网络速率',
+                  title: '信号强度',
                   align: 'center',
                   fixed: 'left',
                   dataIndex: '1',
-                  render: (value) => <Render text={value}/>
-                },
-                {
-                  title: '网络丢包率',
-                  align: 'center',
-                  fixed: 'left',
-                  dataIndex: '1',
-                  render: (value) => <Render text={value}/>
+                  render: (value) => <Render text="-"/>
                 },
               ]}
               actionRender={() => {

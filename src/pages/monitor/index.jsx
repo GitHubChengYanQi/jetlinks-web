@@ -11,8 +11,6 @@ import styles from './index.module.less';
 import GridPowerSupply from '@/pages/monitor/components/GridPowerSupply';
 import BackboneNetwork from '@/pages/monitor/components/BackboneNetwork';
 import {deviceList} from '@/pages/equipment/Equipment/url';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
-import Select from '@/components/Select';
 import Network4G from '@/pages/monitor/components/4gNetwork';
 import DatePicker from '@/components/DatePicker';
 
@@ -245,6 +243,8 @@ const Monitor = () => {
     },
     {
       title: '4G网络',
+      dataIndex: '52',
+      align: 'center',
       children: [
         {
           title: '实时值',
@@ -372,8 +372,8 @@ const Monitor = () => {
       />
       <FormItem label="终端备注" name="remarks" component={Input}/>
       <FormItem label="设备名称" name="name" component={Input}/>
-      <div style={{display:'none'}}><FormItem name="modelId" component={Input}/></div>
-      <div style={{display:'none'}}><FormItem name="classifyId" component={Input}/></div>
+      <div style={{display: 'none'}}><FormItem name="modelId" component={Input}/></div>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
     </>;
   };
 
@@ -432,7 +432,7 @@ const Monitor = () => {
     <Drawer
       title={`终端备注：${open.remarks}    设备型号：${open.modelName}`}
       destroyOnClose
-      style={{minWidth:'50vw'}}
+      style={{minWidth: '50vw'}}
       className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}

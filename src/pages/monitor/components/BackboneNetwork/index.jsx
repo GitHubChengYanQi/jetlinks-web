@@ -8,6 +8,7 @@ import Render from '@/components/Render';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import Warning from '@/components/Warning';
 import Save from '@/pages/monitor/components/BackboneNetwork/Save';
+import {deviceStatusLogList} from '@/pages/monitor/url';
 
 // 主干网络检测
 const BackboneNetwork = () => {
@@ -38,24 +39,23 @@ const BackboneNetwork = () => {
           label: '历史数据',
           children: <>
             <Table
-              noFooter
-              noPagination
-              noRowSelection
+              api={deviceStatusLogList}
               noSort
-              rowKey="key"
-              dataSource={[{'key': '1', '1': '2022-08-04 11:30:00', '2': '220'}]}
+              bodyStyle={{padding: 0}}
+              noRowSelection
+              rowKey="logId"
               columns={[
                 {
                   title: '更新时间',
                   align: 'center',
                   fixed: 'left',
-                  dataIndex: '1',
+                  dataIndex: 'logTime',
                   render: (value) => <Render text={value}/>
                 }, {
                   title: '目标IP地址',
                   align: 'center',
                   fixed: 'left',
-                  dataIndex: '1',
+                  dataIndex: 'ip',
                   render: (value) => <Render text={value}/>
                 },
                 {
@@ -63,21 +63,21 @@ const BackboneNetwork = () => {
                   align: 'center',
                   fixed: 'left',
                   dataIndex: '1',
-                  render: (value) => <Render text={value}/>
+                  render: (value) => <Render className='green' text={value === 'online' ? '通' : '断'}/>
                 },
                 {
                   title: '网络速率',
                   align: 'center',
                   fixed: 'left',
                   dataIndex: '1',
-                  render: (value) => <Render text={value}/>
+                  render: (value) => <Render text='-'/>
                 },
                 {
                   title: '网络丢包率',
                   align: 'center',
                   fixed: 'left',
                   dataIndex: '1',
-                  render: (value) => <Render text={value}/>
+                  render: (value) => <Render text='-'/>
                 },
               ]}
               actionRender={() => {

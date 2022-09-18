@@ -226,7 +226,7 @@ const TableWarp = (
   }
 
   return (
-    <Card bordered={false}>
+    <Card bordered={false} bodyStyle={bodyStyle}>
       <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
         <div className="search" style={headStyle}>
           {searchForm ?

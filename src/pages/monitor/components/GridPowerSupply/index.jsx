@@ -7,6 +7,7 @@ import Table from '@/components/Table';
 import Render from '@/components/Render';
 import Save from '@/pages/monitor/components/BackboneNetwork/Save';
 import Warning from '@/components/Warning';
+import {deviceStatusLogList} from '@/pages/monitor/url';
 
 // 电网供电监测
 const GridPowerSupply = () => {
@@ -35,25 +36,24 @@ const GridPowerSupply = () => {
           label: '历史数据',
           children: <>
             <Table
-              noFooter
-              noPagination
-              noRowSelection
+              api={deviceStatusLogList}
               noSort
-              rowKey="key"
-              dataSource={[{'key': '1', '1': '2022-08-04 11:30:00', '2': '220'}]}
+              noRowSelection
+              bodyStyle={{padding: 0}}
+              rowKey="logId"
               columns={[
                 {
                   title: '更新时间',
                   align: 'center',
                   fixed: 'left',
-                  dataIndex: '1',
+                  dataIndex: 'logTime',
                   render: (value) => <Render text={value}/>
                 }, {
                   title: '电网供电电压',
                   align: 'center',
                   fixed: 'left',
                   dataIndex: '2',
-                  render: (value) => <Render className="green" text={value}/>
+                  render: (value) => <Render className="green" text='-'/>
                 },
               ]}
               actionRender={() => {
