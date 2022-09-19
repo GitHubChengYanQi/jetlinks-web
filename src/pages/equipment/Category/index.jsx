@@ -14,6 +14,7 @@ import {
 } from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import {isArray} from '@/util/Tools';
 
 
 const Category = () => {
@@ -102,7 +103,7 @@ const Category = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
+      <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>
       <FormItem
         label="类别状态"
         name="status"
@@ -124,6 +125,12 @@ const Category = () => {
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       loading={stopLoading || startLoading || deleteLoading}
       onChange={setKeys}
       selectedRowKeys={keys}

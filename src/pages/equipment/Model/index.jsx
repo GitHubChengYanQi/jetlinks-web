@@ -15,6 +15,7 @@ import DatePicker from '@/components/DatePicker';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import DownloadFile from '@/components/DownloadFile';
 import {useRequest} from '@/util/Request';
+import {isArray} from '@/util/Tools';
 
 
 const Model = () => {
@@ -113,7 +114,7 @@ const Model = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="创建时间" name="createTime" component={DatePicker} RangePicker/>
+      <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>
       <FormItem
         label="设备型号状态"
         name="status"
@@ -135,6 +136,12 @@ const Model = () => {
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       loading={startLoading || deleteLoading || stopLoading}
       tableKey="model"
       ref={ref}

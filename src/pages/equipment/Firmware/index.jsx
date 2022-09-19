@@ -14,6 +14,7 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {useRequest} from '@/util/Request';
+import {isArray} from '@/util/Tools';
 
 const Firmware = () => {
 
@@ -99,7 +100,7 @@ const Firmware = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="上传时间" name="createTime" component={DatePicker} RangePicker />
+      <FormItem label="上传时间" name="time" component={DatePicker} RangePicker />
       <FormItem
         label="固件状态"
         name="status"
@@ -127,6 +128,12 @@ const Firmware = () => {
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       onChange={setKeys}
       selectedRowKeys={keys}
       loading={startLoading || deleteLoading || stopLoading}

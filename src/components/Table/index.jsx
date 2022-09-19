@@ -15,67 +15,83 @@ const formActionsPublic = createFormActions();
 
 const TableWarp = (
   {
-    children,
-    columns = [],
+    // a
     actions,
-    NoChildren,
-    title,
-    sortAction,
-    maxHeight,
-    loading: otherLoading,
-    showCard,
-    rowSelection,
-    selectedRowKeys,
     api,
-    tableData,
     actionButton,
-    pageSize,
-    noPagination,
-    noFooter,
-    isChildren,
-    contentHeight,
-    searchButtons = [],
-    searchForm,
-    cardTitle,
-    rowKey,
-    headStyle,
-    tab,
-    formSubmit,
-    dataSource: dataSources,
-    noSort,
-    configPagination,
-    tableKey,
-    branch,
-    noRowSelection,
-    bodyStyle,
-    bordered,
-    defaultSelectedRowKeys,
-    SearchButton,
-    selectionType,
-    onChange,
-    getCheckboxProps,
-    layout,
-    cardHeaderStyle,
-    expandable,
-    listHeader = true,
-    condition = () => true,
-    labelAlign,
-    noTableColumn,
-    sortList,
-    submitAction,
-    footer: parentFooter,
-    formActions = null,
-    onResponse = () => {
-    },
-    format = (data) => {
-      return data;
-    },
-    left,
-    noAction,
-    columnsResh,
     actionRender = () => {
       return <></>;
     },
+    // b
+    bodyStyle,
+    bordered,
+    // c
+    children,
+    columns,
+    contentHeight,
+    cardTitle,
+    configPagination,
+    cardHeaderStyle,
+    columnsResh,
+    condition = () => true,
+    // d
+    dataSource: dataSources,
+    defaultSelectedRowKeys,
+    // e
+    expandable,
+    // f
+    formSubmit,
+    format = (data) => data,
+    footer: parentFooter,
+    formActions = null,
+    // g
+    getCheckboxProps,
+    // h
+    headStyle,
+    // i
+    isChildren,
+    isModal = true,
+    // l
+    left,
+    layout,
+    listHeader = true,
+    labelAlign,
+    loading: getLoading,
+    loading: otherLoading,
+    // m
+    maxHeight,
+    // n
+    NoChildren,
+    noPagination,
+    noSort,
+    noRowSelection,
+    noTableColumn,
+    noFooter,
+    noAction,
+    // o
+    onChange,
+    onResponse = () => {
+    },
+    // p
+    pageSize,
+    // r
+    rowSelection,
+    rowKey,
+    // s
+    sortAction,
+    showCard,
+    selectedRowKeys,
+    searchForm,
+    SearchButton,
+    selectionType,
+    sortList,
+    submitAction,
+    searchButtons = [],
+    // t
+    title,
+    tableData,
+    tab,
+    tableKey,
     ...props
   }, ref) => {
 
