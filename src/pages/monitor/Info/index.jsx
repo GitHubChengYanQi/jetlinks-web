@@ -76,10 +76,11 @@ const Info = ({
     >
       {
         networkData.map((item, index) => {
+          const text = protocolDetail[item.dataIndex];
           return <Descriptions.Item
             key={index}
             label={item.title}>
-            {protocolDetail[item.dataIndex] || '-'}
+            {typeof text === 'undefined' ? '-' : text}
           </Descriptions.Item>;
         })
       }
@@ -94,10 +95,11 @@ const Info = ({
           <Descriptions column={3} bordered className={style.descriptions} style={{marginBottom: 24}}>
             {
               children.map((item, index) => {
+                const text = protocolDetail[item.dataIndex];
                 return <Descriptions.Item
                   key={index}
                   label={item.title}>
-                  {protocolDetail[item.dataIndex] || '-'}
+                  {typeof text === 'undefined' ? '-' : text}
                 </Descriptions.Item>;
               })
             }

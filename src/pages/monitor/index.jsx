@@ -82,7 +82,13 @@ const Monitor = () => {
     },
     ...modelColumns.map(item => {
       const children = item.children || [];
-      const render = (text) => <Render text={typeof text === 'object' ? '' : (text || '-')} />;
+      const render = (text) => {
+        try {
+          return <Render>{typeof text === 'undefined' ? '-' : text}</Render>;
+        } catch (e) {
+          return <Render text="-" />;
+        }
+      };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
     }),
     {

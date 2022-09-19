@@ -17,7 +17,7 @@ const LeftTree = ({onChange, showModules, close, open,firstKey}) => {
     items.push({
       key: '1',
       label: '终端设备',
-      children: <Terminal firstKey onChange={onChange} />
+      children: <Terminal firstKey={firstKey} onChange={onChange} />
     });
   }
   if (show('group')) {

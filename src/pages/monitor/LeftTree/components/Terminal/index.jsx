@@ -23,24 +23,28 @@ const Terminal = (props) => {
   const {loading, run} = useRequest(categoryFindAll, {
     manual: true,
     onSuccess: (res) => {
-      if (firstKey) {
-        const category = isArray(res)[0] || {};
-        const model = category.modelList[0] || {};
-        onChange(model.modelId, 'terminal');
-        setKeys([model.modelId]);
-      }
+      let modelId;
       setTreeData(isArray(res).map(item => {
         const modelList = item.modelList || [];
         return {
           key: item.categoryId,
           title: item.name,
           selectable: false,
-          children: modelList.map(item => ({
-            key: item.modelId,
-            title: item.name,
-          }))
+          children: modelList.map(item => {
+            if (!modelId) {
+              modelId = item.modelId;
+            }
+            return {
+              key: item.modelId,
+              title: item.name,
+            };
+          })
         };
       }));
+      if (firstKey) {
+        onChange(modelId, 'terminal');
+        setKeys([modelId]);
+      }
     }
   });
 
@@ -61,7 +65,7 @@ const Terminal = (props) => {
     <AntTree
       loading={loading}
       onChange={(keys) => {
-        if (keys.length > 0){
+        if (keys.length > 0) {
           onChange(keys[0], 'terminal');
           setKeys(keys);
         }
@@ -80,7 +84,7 @@ const Terminal = (props) => {
       data={currentItem}
       success={() => {
 
-      }}/>
+      }} />
   </>;
 };
 
