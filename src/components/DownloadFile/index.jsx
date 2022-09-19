@@ -15,7 +15,7 @@ const imgTypes = ['bmp', 'jpg', 'jpeg', 'png', 'tif', 'gif', 'pcx', 'tga', 'exif
 const DownloadFile = (
   {
     fileId,
-    fileName,
+    fileName = '',
   }
 ) => {
 
@@ -23,7 +23,13 @@ const DownloadFile = (
 
   const [visible, setVisible] = useState(false);
 
-  const isImg = imgTypes.find(item => queryString(item, fileName));
+  let isImg = false;
+
+  try {
+    isImg = imgTypes.find(item => queryString(item, fileName.split('.')[fileName.split('.').length - 1]));
+  }catch (e) {
+    console.error(e);
+  }
 
   return <>
     <Space>
@@ -49,7 +55,7 @@ const DownloadFile = (
     </Space>
 
     <Modal open={visible} footer={null} onCancel={() => setVisible(false)}>
-      <div style={{padding:24,textAlign:'center'}}>
+      <div style={{padding: 24, textAlign: 'center'}}>
         <Image src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
       </div>
     </Modal>
