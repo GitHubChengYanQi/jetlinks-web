@@ -4,25 +4,28 @@ import PageSkeleton from '@ant-design/pro-skeleton';
 import moment from 'moment';
 import style from './index.module.less';
 import {useRequest} from '@/util/Request';
-import {deviceDetail} from '@/pages/equipment/Equipment/url';
 import Render from '@/components/Render';
+import {monitorDetail} from '@/pages/monitor/url';
 
 
 const Info = ({
-  deviceId
+  deviceId,
+  modelId
 }) => {
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [networkData, setNetworkData] = useState([]);
   const [otherData, setOtherData] = useState([]);
 
+  const protocolDetail = data.protocolDetail || {};
+
   const {loading} = useRequest(
-    {...deviceDetail, data: {deviceId}},
+    {...monitorDetail, data: {deviceId, modelId}},
     {
       onSuccess: (res) => {
         setData(res);
-        setNetworkData((res.cals || []).filter(item => item.children.length <= 0));
-        setOtherData((res.cals || []).filter(item => item.children.length > 0));
+        setNetworkData((res.columns || []).filter(item => item.children.length <= 0));
+        setOtherData((res.columns || []).filter(item => item.children.length > 0));
       }
     }
   );
@@ -30,12 +33,12 @@ const Info = ({
   const online = data.status === 'online';
 
   if (loading) {
-    return <PageSkeleton/>;
+    return <PageSkeleton />;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150}/>;
+      return <Render width={150} text="-" />;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -58,10 +61,10 @@ const Info = ({
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
       <Descriptions.Item label="设备IP地址">{data.ip || '-'}</Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
-      <Descriptions.Item label="GPS定位">{data.ip || '-'}</Descriptions.Item>
+      <Descriptions.Item label="GPS定位">-</Descriptions.Item>
       <Descriptions.Item label="设备MAC地址">{data.mac || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备类别">{data.categoryName || '-'}</Descriptions.Item>
-      <Descriptions.Item label="位置信息">{data.ip || '-'}</Descriptions.Item>
+      <Descriptions.Item label="位置信息">-</Descriptions.Item>
       <Descriptions.Item label="所属客户">{data.customerName || '-'}</Descriptions.Item>
     </Descriptions>
 
@@ -73,11 +76,10 @@ const Info = ({
     >
       {
         networkData.map((item, index) => {
-          const value = typeof item.value === 'object' ? '' : item.value;
           return <Descriptions.Item
             key={index}
             label={item.title}>
-            {value || '-'}
+            {protocolDetail[item.dataIndex] || '-'}
           </Descriptions.Item>;
         })
       }
@@ -92,11 +94,10 @@ const Info = ({
           <Descriptions column={3} bordered className={style.descriptions} style={{marginBottom: 24}}>
             {
               children.map((item, index) => {
-                const value = typeof item.value === 'object' ? '' : item.value;
                 return <Descriptions.Item
                   key={index}
                   label={item.title}>
-                  {value || '-'}
+                  {protocolDetail[item.dataIndex] || '-'}
                 </Descriptions.Item>;
               })
             }
@@ -163,8 +164,8 @@ const Info = ({
       bordered
       style={{marginBottom: 24}}
     >
-      <Descriptions.Item label="软件版本">{data.ip || '-'}</Descriptions.Item>
-      <Descriptions.Item label="升级时间">{data.ip || '-'}</Descriptions.Item>
+      <Descriptions.Item label="软件版本">-</Descriptions.Item>
+      <Descriptions.Item label="升级时间">-</Descriptions.Item>
       <Descriptions.Item label="运行时间">{runTime() || '-'}</Descriptions.Item>
       <Descriptions.Item label="上线时间">{online ? (data.logtime || '-') : '-'}</Descriptions.Item>
       <Descriptions.Item label="离线时间">{!online ? (data.logtime || '-') : '-'}</Descriptions.Item>

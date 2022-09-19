@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Row,
   Col,
@@ -8,11 +8,8 @@ import {
   Input,
   Drawer,
   Select as AntSelect,
-  Table,
-  Card,
 } from 'antd';
-import {EditOutlined, QuestionCircleOutlined, SearchOutlined,} from '@ant-design/icons';
-import {Form, FormButtonGroup, Submit, Reset} from '@formily/antd';
+import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
 import Info from '@/pages/monitor/Info';
@@ -23,17 +20,12 @@ import GridPowerSupply from '@/pages/monitor/components/GridPowerSupply';
 import BackboneNetwork from '@/pages/monitor/components/BackboneNetwork';
 import Network4G from '@/pages/monitor/components/4gNetwork';
 import DatePicker from '@/components/DatePicker';
-import {useRequest} from '@/util/Request';
-import {deviceModelList} from '@/pages/monitor/url';
+import {monitorList} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
 import {LinkButton} from '@/components/Button';
-import {isObject} from '@/util/Tools';
-import style from '@/components/Table/index.module.less';
-
+import Table from '@/components/Table';
 
 const Monitor = () => {
-
-  const [params, setParams] = useState({});
 
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
@@ -42,35 +34,17 @@ const Monitor = () => {
 
   const [open, setOpen] = useState({});
 
-  const {loading, data = {}, run, refresh} = useRequest(deviceModelList, {manual: true});
+  const ref = useRef();
 
-  const modelColumns = data.column || [];
-  const modelDataSource = (data.convertColumnData || []).map(item => ({
-    ...item,
-    deviceId: isObject(item.deviceResult).deviceId
-  }));
-
-  const submit = (data = {}) => {
-    const newParams = {...params, ...data};
-    setParams(newParams);
-    run({data: newParams});
-  };
+  const [modelColumns, setModelColumns] = useState([]);
 
   const columns = [
     {
-      title: '序号',
-      align: 'center',
-      fixed: 'left',
-      dataIndex: '0',
-      width: '70px',
-      render: (value, record, index) => <Render text={index + 1} width={70}/>
-    },
-    {
       title: '设备状态',
-      dataIndex: 'deviceResult',
+      dataIndex: 'status',
       align: 'center',
-      render: (deviceResult) => {
-        const online = deviceResult.status === 'online';
+      render: (status) => {
+        const online = status === 'online';
         return <Render>
           <span className={online ? 'green' : 'close'}>{online ? '在线' : '离线'}</span>
         </Render>;
@@ -80,18 +54,18 @@ const Monitor = () => {
       title: <Space>
         终端备注
         <Tooltip placement="top" title="终端设备备注的名称，平台可以修改">
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </Tooltip>
       </Space>,
-      dataIndex: 'deviceResult',
+      dataIndex: 'remarks',
       align: 'center',
-      render: (deviceResult, record) => {
+      render: (remarks, record) => {
         return <Space>
           <Button
             className="blue"
             type="link"
-            onClick={() => setInfoVisible(deviceResult)}>{deviceResult.remarks}</Button>
-          <EditOutlined onClick={() => setNoteVisible({deviceId: record.deviceId, remarks: deviceResult.remarks})}/>
+            onClick={() => setInfoVisible(record)}>{remarks}</Button>
+          <EditOutlined onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})} />
         </Space>;
       }
     },
@@ -99,22 +73,25 @@ const Monitor = () => {
       title: <Space>
         登记名称
         <Tooltip placement="top" title="设备上报的登记名称，平台不可以修改">
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </Tooltip>
-      </Space>, dataIndex: 'deviceResult', align: 'center', render: (deviceResult) => <Render text={deviceResult.name}/>
+      </Space>,
+      dataIndex: 'name',
+      align: 'center',
+      render: (name) => <Render text={name} />
     },
     ...modelColumns.map(item => {
       const children = item.children || [];
-      const render = (text = '-') => <Render text={typeof text === 'object' ? '' : text}/>;
+      const render = (text) => <Render text={typeof text === 'object' ? '' : (text || '-')} />;
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
     }),
     {
       title: 'GPS定位',
       dataIndex: '10',
       align: 'center',
-      render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
+      render: (text) => <Render text={<span className="green">{text || '-'}</span>} />
     },
-    {title: '设备IP地址', dataIndex: '11', align: 'center', render: (text) => <Render text={text || '-'}/>},
+    {title: '设备IP地址', dataIndex: '11', align: 'center', render: (text) => <Render text={text || '-'} />},
   ];
 
   const [close, setClose] = useState(false);
@@ -135,10 +112,10 @@ const Monitor = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
-      <div style={{display: 'none'}}><FormItem name="modelId" component={Input}/></div>
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <div style={{display: 'none'}}><FormItem name="modelId" component={Input} /></div>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
     </>;
   };
 
@@ -149,53 +126,39 @@ const Monitor = () => {
           <LeftTree firstKey open={close} close={() => setClose(!close)} onChange={(key, type) => {
             switch (type) {
               case 'terminal':
-                submit({modelId: key});
+                ref.current.formActions.setFieldValue('modelId', key);
                 break;
               case 'group':
-
+                ref.current.formActions.setFieldValue('classifyId', key);
                 break;
               default:
                 break;
             }
-          }}/>
+            ref.current.submit();
+          }} />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
-        <Card bordered={false}>
-          <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
-            <div className="search">
-              <Form
-                layout="inline"
-                onSubmit={(values) => {
-                  console.log(values);
-                }}
-                onReset={() => {
-                }}
-              >
-                {searchForm()}
-                <FormButtonGroup>
-                  <Submit loading={loading}><SearchOutlined/>查询</Submit>
-                  <Reset>重置</Reset>
-                </FormButtonGroup>
-              </Form>
-            </div>
-            <Table
-              layout
-              scroll={{x: 'max-content'}}
-              onHeaderRow={() => {
-                return {
-                  className: style.headerRow
-                };
-              }}
-              dataSource={modelDataSource}
-              loading={loading}
-              rowKey="deviceId"
-              columns={columns}
-              showTotal
-              bordered
-            />
-          </div>
-        </Card>
+        <Table
+          condition={(values) => {
+            return values.modelId;
+          }}
+          format={(data = []) => {
+            return data.map(item => ({...item, ...(item.protocolDetail || {})}));
+          }}
+          onResponse={(res = {}) => {
+            setModelColumns(res.columns || []);
+          }}
+          columnsResh
+          ref={ref}
+          searchForm={searchForm}
+          api={monitorList}
+          columns={columns}
+          rowKey="deviceId"
+          actionRender={(text, record) => (
+            <Button type="primary">孪生数据</Button>
+          )}
+        />
       </Col>
     </Row>
 
@@ -205,17 +168,17 @@ const Monitor = () => {
       width="60vw"
       placement="right"
       onClose={() => setInfoVisible({})}
-      open={infoVisible.deviceId}
+      open={infoVisible.modelId}
       extra={<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>}
     >
-      <Info deviceId={infoVisible.deviceId}/>
+      <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
     </Drawer>
     <NoteSave
       close={() => setNoteVisible({})}
       data={noteVisible}
       success={() => {
         setNoteVisible({});
-        refresh();
+        ref.current.submit();
       }}
     />
 
@@ -226,14 +189,14 @@ const Monitor = () => {
       className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}
-      extra={<DatePicker width={200} RangePicker/>}
+      extra={<DatePicker width={200} RangePicker />}
     >
-      {open.type === 'GridPowerSupply' && <GridPowerSupply/>}
-      {open.type === 'BackboneNetwork' && <BackboneNetwork/>}
-      {open.type === '4gNetwork' && <Network4G/>}
+      {open.type === 'GridPowerSupply' && <GridPowerSupply />}
+      {open.type === 'BackboneNetwork' && <BackboneNetwork />}
+      {open.type === '4gNetwork' && <Network4G />}
     </Drawer>
 
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}}/>
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}} />
   </>;
 };
 export default Monitor;

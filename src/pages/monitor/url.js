@@ -3,8 +3,13 @@ export const deviceStatusLogList = {
   method: 'POST'
 };
 
-export const deviceModelList = {
-  url: '/deviceModel/byModelId',
+export const monitorList = {
+  url: '/monitor/list',
+  method: 'POST'
+};
+
+export const monitorDetail = {
+  url: '/monitor/detail',
   method: 'POST'
 };
 

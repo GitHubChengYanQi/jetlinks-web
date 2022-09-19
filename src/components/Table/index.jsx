@@ -58,12 +58,18 @@ const TableWarp = (
     cardHeaderStyle,
     expandable,
     listHeader = true,
+    condition = () => true,
     labelAlign,
     noTableColumn,
     sortList,
     submitAction,
     footer: parentFooter,
     formActions = null,
+    onResponse = () => {
+    },
+    format = (data) => {
+      return data;
+    },
     left,
     noAction,
     columnsResh,
@@ -125,13 +131,18 @@ const TableWarp = (
       order: sorter.order
     };
     const newValues = typeof formSubmit === 'function' ? formSubmit(values) : values;
+    if (!condition(newValues)) {
+      return new Promise((resolve) => {
+        onResponse({});
+        resolve('');
+      });
+    }
     setState({
       params: JSON.stringify({
         ...page, values: pagination.current ? newValues : {}
       })
     });
     let response;
-
     try {
       if (dataSources) {
         response = {
@@ -147,10 +158,8 @@ const TableWarp = (
           params: page
         });
       }
-
-      if (typeof branch === 'function') {
-        response.data = branch(response.data);
-      }
+      onResponse(response || {});
+      response.data = format(response.data);
       return new Promise((resolve) => {
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
@@ -163,8 +172,9 @@ const TableWarp = (
       });
     } catch (e) {
       console.warn(e.message);
-      return new Promise((resolve, reject) => {
-        reject(e.message);
+      return new Promise((resolve) => {
+        onResponse({});
+        resolve(e.message);
       });
     }
   };
@@ -205,7 +215,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
@@ -213,7 +223,7 @@ const TableWarp = (
   const {tableColumn, setButton, saveView, selectView} = useTableSet(children || columns.map((item, index) => ({
     ...item,
     key: `${index}`
-  })), tableKey,columnsResh);
+  })), tableKey, columnsResh && !loading);
 
   const action = [];
   if (!noAction) {
@@ -241,26 +251,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id="submit"
-                        loading={otherLoading || loading}
-                        type="primary"
-                        htmlType="submit"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                      {searchButtons}
-                      {selectView}
-                      {saveView}
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={otherLoading || loading}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                    {searchButtons}
+                    {selectView}
+                    {saveView}
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -294,7 +304,7 @@ const TableWarp = (
               fixed: 'left',
               dataIndex: '0',
               width: '70px',
-              render: (value, record, index) => <Render text={index + 1} width={70}/>
+              render: (value, record, index) => <Render text={index + 1} width={70} />
             }]),
             ...tableColumn.filter(item => item.checked),
             ...action,
@@ -319,7 +329,7 @@ const TableWarp = (
             ...rowSelection,
             getCheckboxProps,
           }}
-          footer={noFooter ? false :footer}
+          footer={noFooter ? false : footer}
           layout
           scroll={{x: 'max-content', y: maxHeight}}
           {...other}
