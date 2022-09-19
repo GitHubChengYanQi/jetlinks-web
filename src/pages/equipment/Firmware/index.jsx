@@ -165,7 +165,7 @@ const Firmware = () => {
           }}>
             {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
-          <Warning>
+          <Warning onOk={()=>deleteRun({data: {firmwarIds: [record.firmwarId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;

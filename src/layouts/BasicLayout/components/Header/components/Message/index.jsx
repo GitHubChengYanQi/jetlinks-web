@@ -76,7 +76,7 @@ const Message = () => {
         onClose={() => {
           setVisible(false);
         }}
-        visible={visible}
+        open={visible}
         title={title()}
       >
         {

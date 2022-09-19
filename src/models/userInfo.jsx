@@ -11,13 +11,16 @@ export default {
         ...payload,
       };
     },
+    clear(prevState, payload) {
+      return {};
+    },
   },
   effects: (dispatch) => ({
     async getUserInfo() {
       try {
         const response = await request(userInfo);
         const currentUser = await request(currentUserInfo);
-        dispatch.user.update({...response.data,info:currentUser.data});
+        dispatch.user.update({...response.data, info: currentUser.data});
       } catch (e) {
         console.log(e);
       }

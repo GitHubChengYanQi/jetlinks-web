@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import cookie from 'js-cookie';
-import { Result } from 'antd';
-import { useInterval } from 'ahooks';
-import { useHistory } from 'ice';
+import {Result} from 'antd';
+import {useInterval} from 'ahooks';
+import {useHistory} from 'ice';
+import store from '@/store';
 
 const Logout = () => {
 
   cookie.remove('jetlink-token');
 
+  const [, dispatchers] = store.useModel('user');
+
   const history = useHistory();
   const [count, setCount] = useState(3);
   useInterval(() => {
 
-    if (count <=1) {
+    if (count <= 1) {
+      dispatchers.clear();
       history.push('login');
-    }else{
+    } else {
       setCount(count - 1);
     }
   }, 1000);

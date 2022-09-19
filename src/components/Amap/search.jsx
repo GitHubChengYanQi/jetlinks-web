@@ -164,7 +164,7 @@ const AmapSearch = ({
             }
           });
         }} />}</span>
-      <Popover onVisibleChange={(visible) => {
+      <Popover onOpenChange={(visible) => {
         setVisiable(visible);
       }} placement="bottom" content={reslut && reslut.count > 0 &&
       <Card style={{maxHeight: 500, minWidth: 500, overflowY: 'auto', marginTop: 16}}>

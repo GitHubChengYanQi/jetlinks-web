@@ -67,9 +67,12 @@ const Equipment = () => {
       title: '终端备注',
       dataIndex: 'remarks',
       align: 'center',
-      render: (text) => {
+      render: (text, record) => {
         return <Render>
-          <a className="blue" onClick={() => history.push('/monitor')}>{text}</a>
+          <a className="blue" onClick={() => history.push({
+            pathname: '/monitor',
+            search: `deviceId=${record.deviceId}&modelId=${record.modelId}&classifyId=${record.classifyId}`,
+          })}>{text}</a>
         </Render>;
       }
     },
@@ -128,7 +131,7 @@ const Equipment = () => {
       render: (value, record) => {
         const open = record.status === 'online';
         if (!open) {
-          return <Render width={150} text='-'/>;
+          return <Render width={150} text="-"/>;
         }
         const oldsecond = moment(new Date()).diff(value, 'second');
         const day = Math.floor(oldsecond / 86400) || 0;

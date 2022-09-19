@@ -5,14 +5,11 @@ import {useRequest} from '@/util/Request';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {isArray} from '@/util/Tools';
 
-const Terminal = (props) => {
-
-  const {
-    onChange,
-    value,
-    firstKey,
-  } = props;
-
+const Terminal = ({
+  onChange,
+  value,
+  firstKey,
+}) => {
   const [keys, setKeys] = useState(value ? [value] : []);
 
   const [saveVisible, setSaveVisible] = useState();

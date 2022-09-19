@@ -5,7 +5,7 @@ import Group from '@/pages/monitor/LeftTree/components/Group';
 import Terminal from '@/pages/monitor/LeftTree/components/Terminal';
 import styles from './index.module.less';
 
-const LeftTree = ({onChange, showModules, close, open,firstKey}) => {
+const LeftTree = ({onChange, showModules, close, open, firstKey, modelId, classifyId}) => {
 
   const show = (key) => {
     return showModules ? showModules.includes(key) : true;
@@ -17,20 +17,20 @@ const LeftTree = ({onChange, showModules, close, open,firstKey}) => {
     items.push({
       key: '1',
       label: '终端设备',
-      children: <Terminal firstKey={firstKey} onChange={onChange} />
+      children: <Terminal value={modelId} firstKey={firstKey} onChange={onChange}/>
     });
   }
   if (show('group')) {
     items.push({
       key: '2',
       label: '设备分组',
-      children: <Group onChange={onChange} />
+      children: <Group value={classifyId} onChange={onChange}/>
     });
   }
 
   if (open) {
     return <Button type="link" style={{padding: 0}} onClick={() => close()}>
-      <RightCircleOutlined />
+      <RightCircleOutlined/>
     </Button>;
   }
 
@@ -40,13 +40,13 @@ const LeftTree = ({onChange, showModules, close, open,firstKey}) => {
       className={styles.tab}
       tabBarExtraContent={<>
         <Button type="link" style={{padding: 0}} onClick={() => close()}>
-          <LeftCircleOutlined />
+          <LeftCircleOutlined/>
         </Button>
       </>}
       defaultActiveKey="1"
       onChange={() => {
 
-      }} />
+      }}/>
   </>;
 };
 export default LeftTree;

@@ -46,7 +46,7 @@ const Amap = ({title, value, onClose, onChange, show,noAction}) => {
       }}><Icon type="icon-dingwei"/>{title || '定位'}</Button>
       <Drawer
         destroyOnClose
-        visible={visible}
+        open={visible}
         onClose={() => {
           setVisible(false);
           typeof onClose === 'function' && onClose();

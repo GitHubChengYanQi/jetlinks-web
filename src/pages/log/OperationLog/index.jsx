@@ -1,11 +1,13 @@
 import React from 'react';
-import {Button, DatePicker, Select, Input} from 'antd';
+import {DatePicker, Select as AntSelect, Input} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import {operationLogList} from './url';
 import FormItem from '../../../components/Table/components/FormItem/index';
 import {DangerButton, PrimaryButton} from '@/components/Button';
+import Select from '@/components/Select';
+import {roleListSelect} from '@/Config/ApiUrl/system/role';
 
 const OperationLog = () => {
 
@@ -40,16 +42,25 @@ const OperationLog = () => {
       <>
         <FormItem label="操作时间" select name="time" component={DatePicker} showTime/>
         <FormItem label="账号姓名" name="name" component={Input}/>
-        <FormItem label="账号名称" name="name" component={Input}/>
-        <FormItem label="角色名称" select name="roleId" component={Select}/>
-        <FormItem label="操作菜单" select name="menu" component={Select}/>
+        <FormItem label="账号名称" name="account" component={Input}/>
+        <FormItem
+          label="角色名称"
+          select
+          name="roleId"
+          format={(data = []) => {
+            return data.map(item => ({label: item.name, value: `${item.role_id}`}));
+          }}
+          api={roleListSelect}
+          component={Select}
+        />
+        <FormItem label="操作菜单" select name="menu" component={AntSelect}/>
       </>
     );
   };
 
   return <>
     <Table
-      tableKey='operationlog'
+      tableKey="operationlog"
       searchButtons={[
         <Warning key={1}><DangerButton>批量删除</DangerButton></Warning>,
         <PrimaryButton key={2}>导出</PrimaryButton>

@@ -135,7 +135,7 @@ const Header = () => {
         onClose={() => {
           setVisible(false);
         }}
-        visible={visible}
+        open={visible}
         width={325}
         bodyStyle={{padding: 0, margin: 0}}
       >

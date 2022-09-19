@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, DatePicker, Input} from 'antd';
+import {DatePicker, Input} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -32,8 +32,8 @@ const LoginLog = () => {
     return (
       <>
         <FormItem label="登录时间" name="time" component={DatePicker} showTime/>
-        <FormItem label="账号姓名" name="username" component={Input}/>
-        <FormItem label="账号名称" name="name" component={Input}/>
+        <FormItem label="账号姓名" name="name" component={Input}/>
+        <FormItem label="账号名称" name="account" component={Input}/>
       </>
     );
   };
