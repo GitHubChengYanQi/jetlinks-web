@@ -1,7 +1,7 @@
 import {Button, Card, Dropdown, Input, Menu, message, Modal, notification, Select, Space, Spin} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {useBoolean} from 'ahooks';
-import {CloseOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import {

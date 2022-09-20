@@ -76,6 +76,7 @@ const AntForm = (
 
   return <>
     <Modal
+      maskClosable={false}
       afterClose={() => {
         afterClose();
         form.resetFields();

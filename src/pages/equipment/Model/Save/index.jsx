@@ -3,7 +3,6 @@ import {Input, Radio,Form} from 'antd';
 import FileUpload from '@/components/FileUpload';
 import AntForm from '@/components/AntForm';
 import {deviceModelAdd, deviceModelEdit} from '@/pages/equipment/Model/url';
-import SelectTopClass from '@/pages/equipment/Category/Save/components/SelectTopClass';
 import Select from '@/components/Select';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 
@@ -65,15 +64,22 @@ const Save = props => {
         </Radio.Group>
       </Form.Item>
       <Form.Item
+        hidden
         initialValue={data?.file}
         key="file"
         label="上传通信协议"
         name="file"
-        rules={[
-          {required: true, message: '请上传通信协议'},
-        ]}
       >
         <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []}/>
+      </Form.Item>
+      <Form.Item
+        initialValue={data?.protocolPath}
+        key="protocolPath"
+        label="通信协议名称"
+        name="protocolPath"
+        rules={[{required:true,message:'请输入通信协议名称'}]}
+      >
+        <Input placeholder='请输入通信协议名称' />
       </Form.Item>
     </AntForm>
   );
