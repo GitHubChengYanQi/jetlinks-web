@@ -7,6 +7,9 @@ const AmapSearch = ({
   onBounds = () => {
 
   },
+  onCenter = () => {
+
+  },
 }, ref) => {
 
   window.AMap.plugin(['AMap.Geocoder'], function () {
@@ -21,8 +24,6 @@ const AmapSearch = ({
     const northwest = __map__.getBounds().getNorthWest();
     // 东南
     const southeast = __map__.getBounds().getSouthEast();
-    // 中
-    const center = __map__.getCenter();
     onBounds({
       northwest: {
         latitude: northwest.lat,
@@ -31,10 +32,6 @@ const AmapSearch = ({
       southeast: {
         latitude: southeast.lat,
         longitude: southeast.lng
-      },
-      center: {
-        latitude: center.lat,
-        longitude: center.lng
       },
     });
   };
@@ -56,7 +53,10 @@ const AmapSearch = ({
         if (status === 'complete' && result.info === 'OK') {
           Geocoder.getLocation(result.city, function (status, result) {
             if (status === 'complete' && result.info === 'OK') {
-              getBounds();
+              onCenter({
+                latitude: result.geocodes[0].location.lat,
+                longitude: result.geocodes[0].location.lng
+              });
             }
           });
         }

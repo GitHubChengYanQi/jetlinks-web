@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {Button, Col, Input, Row, Select} from 'antd';
-import {Form, FormButtonGroup} from '@formily/antd';
+import React, {useRef, useState} from 'react';
+import {Col, Input, Row, Select} from 'antd';
+import {Form, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Amap from '@/components/Amap';
 import styles from '@/pages/monitor/index.module.less';
@@ -11,10 +11,15 @@ const ElectronicsMap = () => {
 
   const [close, setClose] = useState(false);
 
+  const ref = useRef();
+
   const searchForm = () => {
     return <>
       <Form
         layout="inline"
+        onSubmit={(values) => {
+          ref.current.submit(values);
+        }}
       >
         <FormItem
           label="报警状态"
@@ -29,10 +34,10 @@ const ElectronicsMap = () => {
               }}
             />;
           }}
-          select />
+          select/>
         <FormItem
           label="设备状态"
-          name="sbzt"
+          name="status"
           component={({value, onChange}) => {
             return <Select
               defaultValue="all"
@@ -43,24 +48,12 @@ const ElectronicsMap = () => {
               }}
             />;
           }}
-          select />
-        <FormItem label="设备查询" name="device" component={Input} />
-        <FormItem label="位置信息" name="place" component={Input} />
+          select/>
+        <FormItem label="设备查询" name="name" component={Input}/>
+        <FormItem label="位置信息" name="place" component={Input}/>
         <FormButtonGroup>
-          <Button
-            id="submit"
-            type="primary"
-            htmlType="submit"
-            onClick={() => {
-
-            }}><SearchOutlined />查询
-          </Button>
-          <Button
-            onClick={() => {
-
-            }}>
-            重置
-          </Button>
+          <Submit><SearchOutlined/>查询</Submit>
+          <Reset>重置</Reset>
         </FormButtonGroup>
       </Form>
     </>;
@@ -75,17 +68,17 @@ const ElectronicsMap = () => {
             close={() => setClose(!close)}
             noAction
             showModules={['group']}
-            onChange={() => {
-
+            onChange={(classifyId) => {
+              ref.current.submit({classifyId});
             }}
           />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
-        <div style={{backgroundColor:'#fff',padding:12}}>
+        <div style={{backgroundColor: '#fff', padding: 12}}>
           {searchForm()}
         </div>
-        <Amap show noAction />
+        <Amap ref={ref} show noAction/>
       </Col>
     </Row>
   </>;
