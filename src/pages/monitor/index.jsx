@@ -82,6 +82,11 @@ const Monitor = () => {
       dataIndex: 'name',
       align: 'center',
       render: (name) => <Render text={name}/>
+    }, {
+      title: 'MAC',
+      dataIndex: 'mac',
+      align: 'center',
+      render: (mac) => <Render text={mac}/>
     },
     ...modelColumns.map(item => {
       const children = item.children || [];
@@ -100,7 +105,7 @@ const Monitor = () => {
       align: 'center',
       render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
     },
-    {title: '设备IP地址', dataIndex: '11', align: 'center', render: (text) => <Render text={text || '-'}/>},
+    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'}/>},
   ];
 
   const [close, setClose] = useState(false);

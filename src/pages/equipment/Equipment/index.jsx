@@ -72,25 +72,25 @@ const Equipment = () => {
       title: '登记名称',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备分组',
       dataIndex: 'classifyName',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备类别',
       dataIndex: 'categoryName',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={text}/>
+      render: (text) => <Render width={120} text={text} />
     },
     {
       title: '设备IP地址',
@@ -108,13 +108,13 @@ const Equipment = () => {
       title: '设备MAC地址',
       dataIndex: 'mac',
       align: 'center',
-      render: (text) => <Render width={120} text={text}/>
+      render: (text) => <Render width={120} text={text} />
     },
     {
       title: '位置信息',
       dataIndex: '10',
       align: 'center',
-      render: (text) => <Render width={200} text={text}/>
+      render: (text) => <Render width={200} text={text} />
     },
     {
       title: '运行时间',
@@ -123,7 +123,7 @@ const Equipment = () => {
       render: (value, record) => {
         const open = record.status === 'online';
         if (!open) {
-          return <Render width={150} text="-"/>;
+          return <Render width={150} text="-" />;
         }
         const oldsecond = moment(new Date()).diff(value, 'second');
         const day = Math.floor(oldsecond / 86400) || 0;
@@ -141,7 +141,7 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={open ? value : '-'}/>;
+        return <Render width={150} text={open ? value : '-'} />;
       }
     },
     {
@@ -150,14 +150,14 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={!open ? value : '-'}/>;
+        return <Render width={150} text={!open ? value : '-'} />;
       }
     },
     {
       title: '质保时间',
       dataIndex: '12',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (text) => <Render width={150} text={text} />
     },
   ];
 
@@ -172,9 +172,26 @@ const Equipment = () => {
     ]}
   />;
 
+  const formatKey = (object) => {
+    if (typeof object !== 'object') {
+      return object;
+    }
+    Object.keys(object).forEach(key => {
+      const value = object[key];
+      for (let i = 0; i < key.length; i++) {
+        if (key[i] === key[i].toUpperCase() && key[i] !== key[i].toLowerCase()) {
+          key = key.replace(key[i], `-${key[i].toLowerCase()}`);
+        }
+      }
+      object[key] = formatKey(value);
+    });
+    return object;
+  };
+
   const actions = (items = []) => {
     return <Menu
       items={items.map((item, index) => {
+        const data = item.data || {};
         switch (item.type) {
           case 'confirm':
             return {
@@ -187,7 +204,7 @@ const Equipment = () => {
             return {
               key: index,
               label: item.title,
-              onClick: () => setFormVisible(item),
+              onClick: () => setFormVisible({...item,data:Object.keys(data).map(key=>formatKey(data[key]))}),
             };
           default:
             return <></>;
@@ -212,9 +229,9 @@ const Equipment = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -222,12 +239,13 @@ const Equipment = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="位置信息" name="7" component={Input}/>
-      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="位置信息" name="7" component={Input} />
+      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker />
     </>;
   };
+
 
   return <>
     <Table
@@ -254,55 +272,6 @@ const Equipment = () => {
       columns={columns}
       rowKey="deviceId"
       actionRender={(text, record) => {
-        const json = [
-          {title: '重启', type: 'confirm', key: 'but1', data: {}},
-          {
-            title: '设置', type: 'form', key: 'but2', data: {
-              'year': {  // 字段的key
-                required: true, // 必填
-                default: '11', // 默认值
-                title: '下拉选择', // label标题
-                'x-component': 'select', // 数据录入组件
-                'x-component-props': { // 数据录入组件参数
-                  options: [{label: '11', value: '11'}, {label: '22', value: '22'}]
-                }
-              },
-              'name': {
-                required: true,
-                default: '111',
-                title: '输入框',
-                'x-component': 'input',
-              },
-              'age': {
-                required: true,
-                title: '数字框',
-                'x-component': 'inputNumber',
-              },
-              'sex': {
-                required: true,
-                title: '单选框',
-                'x-component': 'RadioGroup',
-                'x-component-props': {
-                  options: [{label: '11', value: '11'}, {label: '22', value: '22'}]
-                }
-              },
-              'like': {
-                required: true,
-                title: '多选框',
-                'x-component': 'CheckboxGroup',
-                'x-component-props': {
-                  options: [{label: 'Apple', value: 'Apple'}, {label: 'Pear', value: 'Pear'}]
-                }
-              },
-              'createTime': {
-                required: true,
-                title: '时间框',
-                'x-component': 'datePicker',
-              }
-            }
-          },
-        ];
-
         return <Space>
           <Button
             type="primary"
@@ -310,7 +279,11 @@ const Equipment = () => {
           >
             编辑
           </Button>
-          <Dropdown overlay={actions(json)} placement="bottom">
+          <Dropdown
+            disabled={isArray(record.options).length === 0}
+            overlay={actions(record.options || [])}
+            placement="bottom"
+          >
             <Button type="primary">更多</Button>
           </Dropdown>
         </Space>;

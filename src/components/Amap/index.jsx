@@ -1,15 +1,39 @@
 import React, {useRef, useState} from 'react';
-import {Map} from 'react-amap';
-import {config} from 'ice';
-import {Button, Drawer} from 'antd';
+import {Map, Markers} from 'react-amap';
+import {Spin} from 'antd';
 import AmapSearch from '@/components/Amap/search';
-import Icon from '@/components/Icon';
+import {useRequest} from '@/util/Request';
 
-const {AMAP_KEY, AMAP_VERSION} = config;
+export const deviceList = {url: '/electronicMap/list', method: 'POST'};
 
-const Amap = ({title, value, onClose, onChange, show,noAction}) => {
-  const [visible, setVisible] = useState(false);
-  const [center, setCenter] = useState({});
+const Amap = () => {
+
+  const {loading: devicesLoading, run: getDeviceList} = useRequest(deviceList, {
+    manual: true,
+    onSuccess: (res) => {
+      // console.log(res);
+    }
+  });
+
+  const markers = ({longitude = 0, latitude = 0}) => {
+    return Array(200).fill(true).map((e, idx) => {
+      if (idx > 100) {
+        return {
+          position: {
+            longitude: longitude + Math.random() * 0.02,
+            latitude: latitude + Math.random() * 0.02
+          }
+        };
+      } else {
+        return {
+          position: {
+            longitude: longitude - Math.random() * 0.02,
+            latitude: latitude - Math.random() * 0.02
+          }
+        };
+      }
+    });
+  };
 
   const mapRef = useRef(null);
 
@@ -22,41 +46,30 @@ const Amap = ({title, value, onClose, onChange, show,noAction}) => {
     }
   };
 
-  const map = () => {
-    return <div style={{height: 'calc(100% - 56px)'}}>
-      <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
-        <AmapSearch noAction={noAction} value={value} ref={mapRef} center={(value) => {
-          setCenter({longitude: value.lgn, latitude: value.lat});
-        }} onChange={(value) => {
-          setVisible(false);
-          typeof onChange === 'function' && onChange(value);
-        }}/>
+  const [center, setCenter] = useState({});
+
+  const [positions, setPositions] = useState([]);
+
+  return <Spin spinning={devicesLoading} tip="正在查询设备，请稍后...">
+    <div style={{height:'100vh'}}>
+      <Map events={events} center={center} zoom={16}>
+        <Markers
+          markers={positions}
+        />
+        <AmapSearch
+          ref={mapRef}
+          onBounds={(bounds = {}) => {
+            const locationParams = [
+              bounds.northwest,
+              bounds.southeast
+            ];
+            getDeviceList({data:{locationParams}});
+            setPositions(markers(bounds.center));
+            setCenter(bounds.center);
+          }}
+        />
       </Map>
-    </div>;
-  };
-
-  if (show) {
-    return map();
-  }
-
-  return (
-    <>
-      <Button type="text" onClick={() => {
-        setVisible(true);
-      }}><Icon type="icon-dingwei"/>{title || '定位'}</Button>
-      <Drawer
-        destroyOnClose
-        open={visible}
-        onClose={() => {
-          setVisible(false);
-          typeof onClose === 'function' && onClose();
-        }}
-        width="50%"
-        title={title}>
-        {map()}
-      </Drawer>
-    </>
-
-  );
+    </div>
+  </Spin>;
 };
 export default Amap;

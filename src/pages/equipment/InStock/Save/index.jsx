@@ -5,9 +5,9 @@ import {instockAdd, instockEdit} from '@/pages/equipment/InStock/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
-import Group from '@/pages/monitor/LeftTree/components/Group';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 import DatePicker from '@/components/DatePicker';
+import Position from '@/pages/equipment/Equipment/Save/components/Position';
 
 
 const Save = ({data, success, close, visible}) => {
@@ -29,6 +29,14 @@ const Save = ({data, success, close, visible}) => {
       success={success}
       visible={visible}
       close={close}
+      format={(values) => {
+        const position = values.position || [];
+        return {
+          ...values,
+          longitude: position[0],
+          latitude: position[1],
+        };
+      }}
       onValuesChange={(values) => {
         if (values.categoryId) {
           setCategoryId(values.categoryId);
@@ -108,6 +116,16 @@ const Save = ({data, success, close, visible}) => {
         ]}
       >
         <SelectTopClass/>
+      </Form.Item>
+      <Form.Item
+        key="position"
+        label="经纬度信息"
+        name="position"
+        rules={[
+          {required: false, message: '请输入经纬度信息'},
+        ]}
+      >
+        <Position />
       </Form.Item>
       <Form.Item
         key="instockTime"

@@ -64,7 +64,7 @@ const Save = props => {
         </Radio.Group>
       </Form.Item>
       <Form.Item
-        hidden
+        // hidden
         initialValue={data?.file}
         key="file"
         label="上传通信协议"
@@ -73,11 +73,12 @@ const Save = props => {
         <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []}/>
       </Form.Item>
       <Form.Item
+        hidden
         initialValue={data?.protocolPath}
         key="protocolPath"
         label="通信协议名称"
         name="protocolPath"
-        rules={[{required:true,message:'请输入通信协议名称'}]}
+        // rules={[{required:true,message:'请输入通信协议名称'}]}
       >
         <Input placeholder='请输入通信协议名称' />
       </Form.Item>

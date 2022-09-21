@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input, message, Select as AntSelect, Badge} from 'antd';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/InStock/Save';
@@ -52,7 +53,7 @@ const InStock = () => {
     {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
     {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '入库时间', dataIndex: 'instockTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '入库时间', dataIndex: 'instockTime', align: 'center', render: (text) => <Render width={200} text={moment(text).format('YYYY-MM-DD')}/>},
   ];
 
 
