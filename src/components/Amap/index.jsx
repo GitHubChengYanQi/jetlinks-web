@@ -6,7 +6,8 @@ import {useDebounceEffect} from 'ahooks';
 import AmapSearch from '@/components/Amap/search';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
-import {deviceList} from '@/pages/electronicsMap/Amap';
+
+export const deviceList = {url: '/electronicMap/list', method: 'POST'};
 
 const Amap = ({
   show,
