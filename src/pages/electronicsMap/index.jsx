@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Col, Input, Row, Select} from 'antd';
 import {Form, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
-import Amap from '@/components/Amap';
+import Amap from '@/pages/electronicsMap/Amap';
 import styles from '@/pages/monitor/index.module.less';
 import LeftTree from '@/pages/monitor/LeftTree';
 import FormItem from '@/components/Table/components/FormItem';

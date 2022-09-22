@@ -111,7 +111,7 @@ const Save = props => {
       <Form.Item
         initialValue={data.position}
         key="position"
-        label="经纬度信息"
+        label="经度"
         name="position"
         rules={[
           {required: false, message: '请输入经纬度信息'},
