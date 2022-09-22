@@ -1,11 +1,14 @@
 import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Map, Markers} from 'react-amap';
+import {Map} from 'react-amap';
 import {Spin} from 'antd';
+import {config} from 'ice';
 import AmapSearch from '@/pages/electronicsMap/Amap/search';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 
 export const deviceList = {url: '/electronicMap/list', method: 'POST'};
+
+const {AMAP_KEY, AMAP_VERSION} = config;
 
 const Amap = (props, ref) => {
 
@@ -23,8 +26,8 @@ const Amap = (props, ref) => {
         if (item.latitude && item.longitude) {
           list.push({
             position: {
-              latitude: item.latitude,
-              longitude: item.longitude
+              lat: item.latitude,
+              lng: item.longitude
             }
           });
         }
@@ -33,34 +36,14 @@ const Amap = (props, ref) => {
     }
   });
 
-  const markers = ({longitude = 0, latitude = 0}) => {
-    return Array(200).fill(true).map((e, idx) => {
-      if (idx > 100) {
-        return {
-          position: {
-            longitude: longitude + Math.random() * 0.02,
-            latitude: latitude + Math.random() * 0.02
-          }
-        };
-      } else {
-        return {
-          position: {
-            longitude: longitude - Math.random() * 0.02,
-            latitude: latitude - Math.random() * 0.02
-          }
-        };
-      }
-    });
-  };
-
-  const mapRef = useRef(null);
+  const searchRef = useRef(null);
 
   const events = {
     dragend: () => {
-      mapRef.current.setCenter(true);
+      searchRef.current.center(true);
     },
     dragging: (v) => {
-      mapRef.current.setCenter(false);
+      searchRef.current.center(false);
     }
   };
 
@@ -83,20 +66,19 @@ const Amap = (props, ref) => {
 
   useEffect(() => {
     if (center) {
-      mapRef.current.setCenter(true);
+      searchRef.current.center(true);
     }
   }, [center]);
 
   return <Spin spinning={devicesLoading} tip="正在查询设备，请稍后...">
     <div style={{height: '100vh'}}>
-      <Map events={events} center={center} zoom={16}>
-        <Markers
-          markers={positions}
-        />
+      <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
         <AmapSearch
-          ref={mapRef}
+          positions={positions}
+          ref={searchRef}
           onCenter={(position) => {
             // setPositions(markers(bounds.center));
+            console.log(position);
             setCenter(position);
           }}
           onBounds={(bounds = {}) => {

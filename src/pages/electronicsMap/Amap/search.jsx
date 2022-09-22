@@ -1,4 +1,5 @@
 import React, {useEffect, useImperativeHandle} from 'react';
+import {Markers} from 'react-amap';
 
 let Geocoder = null;
 
@@ -10,6 +11,7 @@ const AmapSearch = ({
   onCenter = () => {
 
   },
+  positions=[],
 }, ref) => {
 
   window.AMap.plugin(['AMap.Geocoder'], function () {
@@ -64,7 +66,12 @@ const AmapSearch = ({
     });
   }, []);
 
-  return <></>;
+  return <>
+    <Markers
+      markers={positions}
+      __map__={__map__}
+    />
+  </>;
 
 };
 
