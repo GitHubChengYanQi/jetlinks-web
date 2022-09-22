@@ -1,19 +1,26 @@
-import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
-import {Map, Markers} from 'react-amap';
+import React, {useRef, useState, useImperativeHandle} from 'react';
+import {Map} from 'react-amap';
+import {config} from 'ice';
 import {Spin} from 'antd';
+import {useDebounceEffect} from 'ahooks';
 import AmapSearch from '@/components/Amap/search';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
+import {deviceList} from '@/pages/electronicsMap/Amap';
 
-export const deviceList = {url: '/electronicMap/list', method: 'POST'};
+const Amap = ({
+  show,
+  value = [],
+  onChange = () => {
+  },
+}, ref) => {
 
-const Amap = (props, ref) => {
+  const {AMAP_KEY, AMAP_VERSION} = config;
 
+  const [center, setCenter] = useState(value.length > 0 ? {longitude: value[0], latitude: value[1]} : {});
   const [params, setParams] = useState({});
 
   const [positions, setPositions] = useState([]);
-
-  const [center, setCenter] = useState();
 
   const {loading: devicesLoading, run: getDeviceList} = useRequest(deviceList, {
     manual: true,
@@ -23,8 +30,8 @@ const Amap = (props, ref) => {
         if (item.latitude && item.longitude) {
           list.push({
             position: {
-              latitude: item.latitude,
-              longitude: item.longitude
+              lat: item.latitude,
+              lng: item.longitude
             }
           });
         }
@@ -32,26 +39,6 @@ const Amap = (props, ref) => {
       setPositions(list);
     }
   });
-
-  const markers = ({longitude = 0, latitude = 0}) => {
-    return Array(200).fill(true).map((e, idx) => {
-      if (idx > 100) {
-        return {
-          position: {
-            longitude: longitude + Math.random() * 0.02,
-            latitude: latitude + Math.random() * 0.02
-          }
-        };
-      } else {
-        return {
-          position: {
-            longitude: longitude - Math.random() * 0.02,
-            latitude: latitude - Math.random() * 0.02
-          }
-        };
-      }
-    });
-  };
 
   const mapRef = useRef(null);
 
@@ -81,34 +68,40 @@ const Amap = (props, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (center) {
+  useDebounceEffect(() => {
+    if (Object.keys(center).length > 0 && show) {
       mapRef.current.setCenter(true);
     }
-  }, [center]);
+  }, [Object.keys(center).length], {
+    wait: 1000
+  });
 
-  return <Spin spinning={devicesLoading} tip="正在查询设备，请稍后...">
-    <div style={{height: '100vh'}}>
-      <Map events={events} center={center} zoom={16}>
-        <Markers
-          markers={positions}
-        />
-        <AmapSearch
-          ref={mapRef}
-          onCenter={(position) => {
-            // setPositions(markers(bounds.center));
-            setCenter(position);
-          }}
-          onBounds={(bounds = {}) => {
-            const locationParams = [
-              bounds.northwest,
-              bounds.southeast
-            ];
-            getDeviceList({data: {locationParams}});
-          }}
-        />
-      </Map>
-    </div>
-  </Spin>;
+  return (
+    <Spin spinning={devicesLoading} tip="正在查询设备，请稍后...">
+      <div style={{height: show ? '100vh' : 'calc(100vh - 90px)'}}>
+        <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
+          <AmapSearch
+            show={show}
+            value={value}
+            ref={mapRef}
+            center={(value) => {
+              setCenter({longitude: value.lng, latitude: value.lat});
+            }}
+            onChange={(value) => {
+              onChange(value);
+            }}
+            positions={positions}
+            onBounds={(bounds = {}) => {
+              const locationParams = [
+                bounds.northwest,
+                bounds.southeast
+              ];
+              getDeviceList({data: {locationParams}});
+            }}
+          />
+        </Map>
+      </div>
+    </Spin>
+  );
 };
 export default React.forwardRef(Amap);

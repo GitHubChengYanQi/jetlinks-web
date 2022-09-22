@@ -2,10 +2,10 @@ import React, {useRef, useState} from 'react';
 import {Col, Input, Row, Select} from 'antd';
 import {Form, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
-import Amap from '@/components/Amap';
 import styles from '@/pages/monitor/index.module.less';
 import LeftTree from '@/pages/monitor/LeftTree';
 import FormItem from '@/components/Table/components/FormItem';
+import Amap from '@/components/Amap';
 
 const ElectronicsMap = () => {
 
@@ -78,7 +78,7 @@ const ElectronicsMap = () => {
         <div style={{backgroundColor: '#fff', padding: 12}}>
           {searchForm()}
         </div>
-        <Amap ref={ref} show noAction/>
+        <Amap ref={ref} show/>
       </Col>
     </Row>
   </>;
