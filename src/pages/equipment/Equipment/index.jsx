@@ -115,6 +115,13 @@ const Equipment = () => {
       dataIndex: '10',
       align: 'center',
       render: (text) => <Render width={200} text={text} />
+    }, {
+      title: '经纬度信息',
+      dataIndex: '10',
+      align: 'center',
+      render: (text, record) => <Render width={200}>
+        经度：{record.longitude || '-'}，维度：{record.latitude || '-'}
+      </Render>
     },
     {
       title: '运行时间',
@@ -204,7 +211,7 @@ const Equipment = () => {
             return {
               key: index,
               label: item.title,
-              onClick: () => setFormVisible({...item,data:Object.keys(data).map(key=>formatKey(data[key]))}),
+              onClick: () => setFormVisible({...item, data: Object.keys(data).map(key => formatKey(data[key]))}),
             };
           default:
             return <></>;
