@@ -67,7 +67,6 @@ const Amap = ({
     const data = {...params, ...newParams,};
     setParams(data);
     const res = await getDeviceList({data});
-    console.log(res);
     if (isArray(res).length > 0 && res[0].latitude && res[0].longitude) {
       setCenter({
         latitude: res[0].latitude,
