@@ -99,9 +99,10 @@ const AmapSearch = (
         getBounds();
         return;
       }
-      const value = __map__.getCenter();
-      setMarkerPosition(value);
+
       if (is) {
+        const value = __map__.getCenter();
+        setMarkerPosition(value);
         const lnglat = [value.lng, value.lat];
         Geocoder.getAddress(lnglat, function (status, result) {
           if (status === 'complete' && result.info === 'OK') {
