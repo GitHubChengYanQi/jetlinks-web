@@ -64,7 +64,7 @@ const Save = props => {
         </Radio.Group>
       </Form.Item>
       <Form.Item
-        // hidden
+        hidden
         initialValue={data?.file}
         key="file"
         label="上传通信协议"
@@ -73,7 +73,7 @@ const Save = props => {
         <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []}/>
       </Form.Item>
       <Form.Item
-        hidden
+        // hidden
         initialValue={data?.protocolPath}
         key="protocolPath"
         label="通信协议名称"

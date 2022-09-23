@@ -185,7 +185,7 @@ const AmapSearch = (
             title={<div className={styles.tip}>{device.remarks}</div>}
             color="#fff">
             <div className={styles.test}>
-              <img width='19px' height='32px' src={mark} alt="" />
+              <img width='19px' src={mark} alt="" />
             </div>
           </Tooltip>
         </div>;
