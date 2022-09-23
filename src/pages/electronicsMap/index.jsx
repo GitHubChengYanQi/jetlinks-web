@@ -1,15 +1,21 @@
 import React, {useRef, useState} from 'react';
-import {Col, Input, Row, Select} from 'antd';
+import {Col, Drawer, Input, Row, Select} from 'antd';
 import {Form, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import styles from '@/pages/monitor/index.module.less';
 import LeftTree from '@/pages/monitor/LeftTree';
 import FormItem from '@/components/Table/components/FormItem';
 import Amap from '@/components/Amap';
+import {LinkButton} from '@/components/Button';
+import Info from '@/pages/monitor/Info';
+import Save from '@/pages/monitor/Info/Save';
 
 const ElectronicsMap = () => {
 
   const [close, setClose] = useState(false);
+
+  const [infoVisible, setInfoVisible] = useState({});
+  const [saveVisible, setSaveVisible] = useState(false);
 
   const ref = useRef();
 
@@ -34,7 +40,7 @@ const ElectronicsMap = () => {
               }}
             />;
           }}
-          select/>
+          select />
         <FormItem
           label="设备状态"
           name="status"
@@ -48,11 +54,11 @@ const ElectronicsMap = () => {
               }}
             />;
           }}
-          select/>
-        <FormItem label="设备查询" name="name" component={Input}/>
-        <FormItem label="位置信息" name="place" component={Input}/>
+          select />
+        <FormItem label="设备查询" name="name" component={Input} />
+        <FormItem label="位置信息" name="place" component={Input} />
         <FormButtonGroup>
-          <Submit><SearchOutlined/>查询</Submit>
+          <Submit><SearchOutlined />查询</Submit>
           <Reset>重置</Reset>
         </FormButtonGroup>
       </Form>
@@ -78,9 +84,21 @@ const ElectronicsMap = () => {
         <div style={{backgroundColor: '#fff', padding: 12}}>
           {searchForm()}
         </div>
-        <Amap ref={ref} show/>
+        <Amap ref={ref} show onMarkerClick={setInfoVisible} />
       </Col>
     </Row>
+    <Drawer
+      destroyOnClose
+      title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
+      width="60vw"
+      placement="right"
+      onClose={() => setInfoVisible({})}
+      open={infoVisible.modelId}
+      extra={<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>}
+    >
+      <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
+    </Drawer>
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}} />
   </>;
 };
 

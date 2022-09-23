@@ -14,6 +14,8 @@ const Amap = ({
   value = [],
   onChange = () => {
   },
+  onMarkerClick = () => {
+  },
 }, ref) => {
 
   const {AMAP_KEY, AMAP_VERSION} = config;
@@ -33,7 +35,8 @@ const Amap = ({
             position: {
               lat: item.latitude,
               lng: item.longitude
-            }
+            },
+            device:item,
           });
         }
       });
@@ -92,6 +95,7 @@ const Amap = ({
               onChange(value);
             }}
             positions={positions}
+            onMarkerClick={onMarkerClick}
             onBounds={(bounds = {}) => {
               const locationParams = [
                 bounds.northwest,

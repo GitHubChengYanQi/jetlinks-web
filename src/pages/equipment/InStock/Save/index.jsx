@@ -119,7 +119,7 @@ const Save = ({data, success, close, visible}) => {
       </Form.Item>
       <Form.Item
         key="position"
-        label="经纬度信息"
+        label="经度"
         name="position"
         rules={[
           {required: false, message: '请输入经纬度信息'},
