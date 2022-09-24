@@ -58,9 +58,6 @@ const AmapSearch = (
       extensions: 'all' // 返回信息详略，默认为base（基本信息）
     };
     MSearch = new window.AMap.PlaceSearch(PlaceSearchOptions); // 构造PlaceSearch类
-    window.AMap.Event.addListener(MSearch, 'complete', (result) => {
-      setResult(result.poiList);
-    }); // 返回结果
   });
   window.AMap.plugin(['AMap.Geocoder'], function () {
     Geocoder = new window.AMap.Geocoder({
@@ -173,26 +170,7 @@ const AmapSearch = (
 
 
   if (show) {
-    return <Markers
-      useCluster
-      markers={positions}
-      render={(extData) => {
-        const device = extData.device || {};
-        return <div onClick={() => {
-          onMarkerClick(device);
-        }}>
-          <Tooltip
-            overlayClassName={styles.tooltip}
-            title={<div className={styles.tip}>{device.remarks}</div>}
-            color="#fff">
-            <div className={styles.test}>
-              <img width="19px" src={mark} alt=""/>
-            </div>
-          </Tooltip>
-        </div>;
-      }}
-      __map__={__map__}
-    />;
+    return <></>;
   }
 
   return (
@@ -209,13 +187,18 @@ const AmapSearch = (
           placeholder="请选择省市区进行搜索"
           options={children(data && data.area)}
           defaultValue={city ? [city] : []}
-          onChange={async (value) => {
+          onChange={async (value = []) => {
+            if (!value) {
+              return;
+            }
             const currentCity = await runCisy({
               params: {
                 positionId: value[value.length - 1]
               }
             });
-            setCity(currentCity);
+            if (value.length === 1) {
+              setCity(currentCity);
+            }
             Geocoder.getLocation(currentCity, function (status, result) {
               if (status === 'complete' && result.info === 'OK') {
                 setadinfo({
@@ -236,63 +219,55 @@ const AmapSearch = (
                 // result中对应详细地理坐标信息
               }
             });
-          }}/>
+          }} />
       </span>
       <Popover onOpenChange={(visible) => {
         setVisiable(visible);
       }} placement="bottom" content={reslut && reslut.count > 0 &&
-        <Card style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
-          <List>
-            {reslut.pois.map((item, index) => {
-              return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
-                const m = {
-                  address: item.address,
-                  location: [item.location.lng, item.location.lat],
-                  city: item.cityname
-                };
-                setadinfo(m);
-                setData(item);
-              }} extra={<Button type="primary" onClick={() => {
-                const location = {
-                  address: item.pname + item.cityname + item.address,
-                  location: [item.location.lng, item.location.lat],
-                  city: item.cityname || item.pname
-                };
-                onChange(location);
-                setVisiable(false);
-              }}>使用该地址</Button>}>
-                <Space direction="vertical">
-                  <div>
-                    {item.name}
-                  </div>
-                  <div>
-                    {item.address}
-                  </div>
-                  <div>
-                    {item.type}
-                  </div>
-                </Space>
-              </List.Item>);
-            })}
-          </List>
-        </Card>} open={visiable}>
+      <Card style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
+        <List>
+          {reslut.pois.map((item, index) => {
+            return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
+              const m = {
+                address: item.address,
+                location: [item.location.lng, item.location.lat],
+                city: item.cityname
+              };
+              setadinfo(m);
+              setData(item);
+            }} extra={<Button type="primary" onClick={() => {
+              const location = {
+                address: item.pname + item.cityname + item.address,
+                location: [item.location.lng, item.location.lat],
+                city: item.cityname || item.pname
+              };
+              onChange(location);
+              setVisiable(false);
+            }}>使用该地址</Button>}>
+              <Space direction="vertical">
+                <div>
+                  {item.name}
+                </div>
+                <div>
+                  {item.address}
+                </div>
+                <div>
+                  {item.type}
+                </div>
+              </Space>
+            </List.Item>);
+          })}
+        </List>
+      </Card>} open={visiable}>
         <Input.Search
           placeholder="搜索地点"
           onChange={(value) => {
-            MSearch.search(value.target.value);
+            MSearch.search(value.target.value, (status, result) => {
+              if (status === 'complete') {
+                setResult(result.poiList);
+              }
+            });
             setVisiable(true);
-          }}
-          onSearch={(e) => {
-            MSearch.search(e);
-            if (reslut && reslut.pois && reslut.pois.length > 0) {
-              const m = {
-                address: reslut.pois[0].address,
-                location: [reslut.pois[0].location.lng, reslut.pois[0].location.lat],
-                city: reslut.pois[0].cityname
-              };
-              setadinfo(m);
-              setData(reslut.pois[0]);
-            }
           }}
           style={{width: 'auto', marginRight: 20}}
         />
@@ -302,7 +277,7 @@ const AmapSearch = (
         onClick={() => {
           onChange(adinfo);
         }}>确定</Button>
-      {markerPosition && <Marker position={markerPosition} __map__={__map__}/>}
+      {markerPosition && <Marker position={markerPosition} __map__={__map__} />}
 
     </div>
   );

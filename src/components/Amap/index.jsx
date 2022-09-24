@@ -1,9 +1,10 @@
 import React, {useRef, useState, useImperativeHandle} from 'react';
-import {Map} from 'react-amap';
+import {Map, Markers} from 'react-amap';
 import {config} from 'ice';
 import AmapSearch from '@/components/Amap/search';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
+import TestAmap from '@/components/Amap/testAmap';
 
 export const deviceList = {url: '/electronicMap/list', method: 'POST'};
 
@@ -32,8 +33,8 @@ const Amap = ({
         if (item.latitude && item.longitude) {
           list.push({
             position: {
-              lat: item.latitude,
-              lng: item.longitude
+              latitude: item.latitude,
+              longitude: item.longitude
             },
             device: item,
           });
@@ -79,9 +80,17 @@ const Amap = ({
     submit,
   }));
 
+  if (show) {
+    return <TestAmap />;
+  }
+
   return (
-    <div style={{height: show ? '100vh' : 'calc(100vh - 90px)'}}>
+    <div style={{height: show ? '772px' : 'calc(100vh - 90px)'}}>
       <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
+        <Markers
+          useCluster
+          markers={positions}
+        />
         <AmapSearch
           show={show}
           value={value}
