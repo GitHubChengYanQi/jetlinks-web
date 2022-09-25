@@ -49,17 +49,17 @@ const Amap = ({
   const events = {
     moveend: () => {
       if (show) {
-        mapRef.current.setCenter(true);
+        mapRef.current && mapRef.current.setCenter(true);
       }
     },
     dragend: () => {
       if (!show) {
-        mapRef.current.setCenter(true);
+        mapRef.current && mapRef.current.setCenter(true);
       }
     },
     dragging: () => {
       if (!show) {
-        mapRef.current.setCenter(false);
+        mapRef.current && mapRef.current.setCenter(false);
       }
     }
   };
