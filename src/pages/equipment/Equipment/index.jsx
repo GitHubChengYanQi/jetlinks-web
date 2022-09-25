@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message, Modal} from 'antd';
-import {useHistory} from 'ice';
+import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message} from 'antd';
+import {config, useHistory} from 'ice';
 import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -9,7 +9,7 @@ import Save from '@/pages/equipment/Equipment/Save';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {deviceList, deviceStart, deviceStop} from '@/pages/equipment/Equipment/url';
+import {deviceList, deviceStart} from '@/pages/equipment/Equipment/url';
 import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
@@ -18,8 +18,14 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DynamicForms from '@/pages/equipment/Equipment/DynamicForms';
+import {upload} from '@/components/DownloadFile';
+import cookie from 'js-cookie';
+
+const {baseURI} = config;
 
 const Equipment = () => {
+
+  const token = cookie.get('jetlink-token');
 
   const ref = useRef();
 
@@ -272,7 +278,9 @@ const Equipment = () => {
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <Button type="primary">批量操作</Button>
         </Dropdown>,
-        <Button type="primary" key={3}>导出</Button>
+        <Button type="primary" key={3} onClick={() => {
+          window.open(`${baseURI}/deviceExcel/export&authorization=${token}`);
+        }}>导出</Button>
       ]}
       searchForm={searchForm}
       api={deviceList}

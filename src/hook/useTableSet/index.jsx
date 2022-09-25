@@ -1,11 +1,12 @@
 import {Button, Card, Dropdown, Input, Menu, message, Modal, notification, Select, Space, Spin} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {useBoolean} from 'ahooks';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
+import {ExclamationCircleOutlined, DeleteOutlined} from '@ant-design/icons';
+import classNames from 'classnames';
 import {useRequest} from '@/util/Request';
 import Icon from '@/components/Icon';
 import {
-  tableViewAdd,
+  tableViewAdd, tableViewDelete,
   tableViewDetail,
   tableViewEdit,
   tableViewListSelect
@@ -13,6 +14,8 @@ import {
 import {Sortable} from '@/components/Table/components/DndKit/Sortable';
 import styles from './index.module.less';
 import {isArray} from '@/util/Tools';
+import Warning from '@/components/Warning';
+import Message from '@/components/Message';
 
 const md5 = require('md5');
 
@@ -84,18 +87,24 @@ const useTableSet = (column, tableKey, resh) => {
 
   const [showModal, setShowModal] = useState();
 
-  const openNotificationWithIcon = type => {
-    notification[type]({
-      message: type === 'success' ? '保存成功！' : '保存失败!',
-    });
-  };
   const {loading, data, refresh, run: getTableView} = useRequest(tableViewListSelect, {manual: true});
 
-  const {run} = useRequest(tableViewEdit, {
+  const {loading: editLoading, run} = useRequest(tableViewEdit, {
     manual: true,
     onSuccess: () => {
+      Message.success('覆盖成功!');
       setFalse();
       refresh();
+    }
+  });
+
+  const {loading: delLoading, run: deleteTableView} = useRequest(tableViewDelete, {
+    manual: true,
+    onSuccess: () => {
+      Message.success('删除成功!');
+      setFalse();
+      refresh();
+      setDetail();
     }
   });
 
@@ -113,10 +122,10 @@ const useTableSet = (column, tableKey, resh) => {
 
         setFalse();
         refresh();
-        openNotificationWithIcon('success');
+        Message.success('保存成功!');
       },
       onError: () => {
-        openNotificationWithIcon('error');
+        Message.error('保存失败!');
       }
     });
 
@@ -269,27 +278,36 @@ const useTableSet = (column, tableKey, resh) => {
       <Dropdown overlay={save} placement="bottomLeft" trigger={['click']}>
         <Button style={{marginRight: 8}}>保存视图</Button>
       </Dropdown>),
-    selectView: tableKey && (loading ?
+    selectView: tableKey && ((loading || editLoading || delLoading) ?
       <Spin/>
       :
       <Select
-        options={data}
+        options={isArray(data)}
         style={{minWidth: 200}}
         loading={loading}
         placeholder="请选择视图"
         bordered={false}
-        onSelect={(value) => {
+        value={detail?.tableViewId}
+        dropdownRender={() => {
+          return isArray(data).map((item, index) => {
+            const checked = detail?.tableViewId === item.value;
+            return <div className={classNames(styles.item, checked && styles.checked)} key={index}>
+              <div className={styles.label} onClick={() => {
+                localStorage.setItem(md5TableKey(), item.value);
 
-          localStorage.setItem(md5TableKey(), value);
-
-          viewDetail({
-            data: {
-              tableViewId: value,
-            }
+                viewDetail({
+                  data: {
+                    tableViewId: item.value,
+                  }
+                });
+              }}>{item.label}</div>
+              <Warning onOk={() => {
+                deleteTableView({data: {tableViewId: item.value,}});
+              }}><Button style={{padding: 0, height: 'auto'}} type="link" danger><DeleteOutlined/></Button></Warning>
+            </div>;
           });
-
         }}
-        value={detail && detail.tableViewId}/>),
+      />),
     setButton: tableKey &&
       <>
         <Dropdown
