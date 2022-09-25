@@ -33,8 +33,8 @@ const Amap = ({
         if (item.latitude && item.longitude) {
           list.push({
             position: {
-              latitude: item.latitude,
-              longitude: item.longitude
+              lat: item.latitude,
+              lng: item.longitude
             },
             device: item,
           });
@@ -80,17 +80,9 @@ const Amap = ({
     submit,
   }));
 
-  if (show) {
-    return <TestAmap />;
-  }
-
   return (
-    <div style={{height: show ? '772px' : 'calc(100vh - 90px)'}}>
-      <Map events={events} amapkey={AMAP_KEY} center={center} version={AMAP_VERSION} zoom={16}>
-        <Markers
-          useCluster
-          markers={positions}
-        />
+    <div style={{height: show ? '100vh' : 'calc(100vh - 90px)'}}>
+      <Map events={events} amapkey={AMAP_KEY} center={center} version={show ? null : AMAP_VERSION} zoom={16}>
         <AmapSearch
           show={show}
           value={value}

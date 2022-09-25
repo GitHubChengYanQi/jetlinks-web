@@ -170,7 +170,26 @@ const AmapSearch = (
 
 
   if (show) {
-    return <></>;
+    return <Markers
+      useCluster
+      markers={positions}
+      render={(extData) => {
+        const device = extData.device || {};
+        return <div onClick={() => {
+          onMarkerClick(device);
+        }}>
+          <Tooltip
+            overlayClassName={styles.tooltip}
+            title={<div className={styles.tip}>{device.remarks}</div>}
+            color="#fff">
+            <div className={styles.test}>
+              <img width='19px' height='32px' src={mark} alt="" />
+            </div>
+          </Tooltip>
+        </div>;
+      }}
+      __map__={__map__}
+    />;
   }
 
   return (
