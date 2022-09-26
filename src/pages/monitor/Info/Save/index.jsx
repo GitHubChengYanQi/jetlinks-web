@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {Card, Input, message, Modal} from 'antd';
-import styles from './index.module.less';
-import Config from '@/pages/monitor/components/Config';
-import Contacts from '@/pages/alarm/Contacts';
+import React, {useEffect, useState} from 'react';
+import {Button, Drawer, Empty, message, Modal, Select, Space, Spin} from 'antd';
+import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
-import {alarmAdd} from '@/pages/alarm/url';
-
+import {alarmListSelect} from '@/pages/alarm/url';
+import Warning from '@/components/Warning';
+import {deviceEdit} from '@/pages/equipment/Equipment/url';
+import AlarmDetail from '@/pages/alarm/Rule/AlarmDetail';
 
 const Save = (
   {
@@ -13,13 +13,26 @@ const Save = (
     close = () => {
     },
     visible,
-    modelColumns = [],
   }
 ) => {
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
 
-  const {loading, run} = useRequest(alarmAdd, {
+  const dataChange = (newData = {}, key) => {
+    const newDataSource = data.map((item, index) => {
+      if (index === key) {
+        return {...item, ...newData};
+      }
+      return item;
+    });
+    setData(newDataSource);
+  };
+
+  const [open, setOpen] = useState();
+
+  const [rules, setRules] = useState([]);
+
+  const {loading, run} = useRequest(deviceEdit, {
     manual: true,
     onSuccess: () => {
       message.success('保存成功！');
@@ -28,44 +41,92 @@ const Save = (
     onError: () => message.error('保存失败！')
   });
 
+  const {loading: ruleListLoading, run: getRuleList} = useRequest(alarmListSelect, {
+    manual: true,
+    onSuccess: (res) => {
+      setRules(res);
+    },
+  });
+
+  useEffect(() => {
+    if (device.modelId) {
+      getRuleList({data: {modelId: device.modelId}});
+    }
+  }, [device.modelId]);
+
   return (
     <Modal
+      afterClose={() => setData([])}
+      title="设置报警规则"
       zIndex={1001}
       open={visible}
       centered
-      width="50vw"
-      okText="确定"
+      okText="保存"
       cancelText="取消"
       okButtonProps={{loading}}
       onOk={() => {
         run({
           data: {
             deviceId: device.deviceId,
-            modelId: device.modelId,
-            ...data,
+            alarmId: data[0].alarmId
           }
         });
       }}
       onCancel={() => close()}
     >
-      <Card className={styles.card} title={<div className={styles.title}>基本信息</div>} bordered={false}>
-        <div className={styles.name}>
-          <span>规则名称:</span>
-          <Input placeholder="请输入规则名称" onChange={({target: {value}}) => {
-            setData({...data, name: value});
-          }} />
+      <Spin spinning={ruleListLoading}>
+        <div style={{textAlign: 'center'}}>
+          {data.length === 0 && <Empty description={
+            <>当前设备暂无规则,<Button type="link" onClick={() => {
+              setData([{}]);
+            }}>增加规则</Button></>
+          }/>}
+          <Space direction="vertical" style={{width: '100%'}}>
+            {
+              data.map((item, index) => {
+                return <Space key={index}>
+                  <Select
+                    value={item.alarmId}
+                    options={rules.map(item => {
+                      const disabled = data.some(dataItem => dataItem.alarmId === item.value);
+                      return {...item, disabled};
+                    })}
+                    placeholder="请选择规则"
+                    style={{width: 300, marginRight: 16}}
+                    onChange={(value) => {
+                      dataChange({alarmId: value}, index);
+                    }}
+                  />
+                  <Button disabled={!item.alarmId} type="link" style={{padding: 0}} onClick={() => {
+                    setOpen(item.alarmId);
+                  }}>查看</Button>
+                  <Warning onOk={() => {
+                    const newData = data.filter((dataItem, dataIndex) => dataIndex !== index);
+                    setData(newData);
+                  }}>
+                    <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
+                  </Warning>
+                </Space>;
+              })
+            }
+
+            {data.length > 0 && <Button type="primary" ghost onClick={() => {
+              setData([...data, {}]);
+            }}><PlusOutlined/>增加规则</Button>}
+          </Space>
         </div>
-      </Card>
-      <Card className={styles.card} title={<div className={styles.title}>报警配置</div>} bordered={false}>
-        <Config fileds={modelColumns} onChange={(value = []) => {
-          setData({...data, rules: value});
-        }} />
-      </Card>
-      <Card className={styles.card} title={<div className={styles.title}>报警人员</div>} bordered={false}>
-        <Contacts noAction onChange={(value) => {
-          setData({...data, userIds: value});
-        }} />
-      </Card>
+      </Spin>
+
+      <Drawer
+        width="50vw"
+        zIndex={1002}
+        title="查看报警规则"
+        destroyOnClose
+        open={open}
+        onClose={() => setOpen()}
+      >
+        <AlarmDetail alarmId={open}/>
+      </Drawer>
     </Modal>
   );
 };

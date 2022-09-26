@@ -1,51 +1,52 @@
 import React from 'react';
-import { Space, Dropdown, Menu, Input} from 'antd';
+import {Space, Dropdown, Menu, Input} from 'antd';
 import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import {PrimaryButton} from '@/components/Button';
+import {alarmRecordList} from '@/pages/alarm/url';
 
 const Record = () => {
 
   const history = useHistory();
 
-  const dataSource = Array(5).fill('').map((item, index) => ({
-    key: index,
-    '0': '0',
-    '1': '2022/08/19 12:00:00',
-    '2': `4012M智能箱${index}`,
-    '3': '智能箱产品',
-    '4': '浑南区、和平区',
-    '5': '浑南区、和平区',
-    '6': 'OPT IMS-4012M',
-    '7': '市电断电',
-    '8': 'EC:B9:70:BB:74:34',
-    '9': '辽宁奥普泰通信股份有限公司',
-    '10': '沈阳市浑南区文溯街',
-  }));
-
   const columns = [
-    {title: '报警时间', dataIndex: '1', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '报警时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '终端备注',
-      dataIndex: '2',
+      dataIndex: 'deviceResult',
       align: 'center',
       render: (text) => <Render>
-        <div className='blue' onClick={() => {
+        <div className="blue" onClick={() => {
           history.push('/monitor');
-        }}>{text}</div>
+        }}>{text?.remarks}</div>
       </Render>
     },
-    {title: '登记名称', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备分组', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备类别', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备型号', dataIndex: '6', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '报警类型', dataIndex: '7', align: 'center', render: (text) => <Render className='green' text={text}/>},
-    {title: 'MAC地址', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '所属客户', dataIndex: '9', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '位置信息', dataIndex: '10', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '登记名称', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.name}/>},
+    {title: '设备分组', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.classifyName}/>},
+    {title: '设备类别', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.categoryName}/>},
+    {
+      title: '设备型号',
+      dataIndex: 'deviceResult',
+      align: 'center',
+      render: (text) => <Render width={150} text={text?.modelName}/>
+    },
+    {title: '报警类型', dataIndex: '7', align: 'center', render: (text) => <Render className="green" text={text || '-'}/>},
+    {title: 'MAC地址', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.mac}/>},
+    {
+      title: '所属客户',
+      dataIndex: 'deviceResult',
+      align: 'center',
+      render: (text) => <Render width={200} text={text?.customerName || '-'}/>
+    },
+    {
+      title: '位置信息',
+      dataIndex: 'deviceResult',
+      align: 'center',
+      render: (text) => <Render width={150} text={text?.adress || '-'}/>
+    },
   ];
 
   const menu = <Menu
@@ -76,7 +77,7 @@ const Record = () => {
 
   return <>
     <Table
-      tableKey='record'
+      tableKey="record"
       searchButtons={[
         <Dropdown key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
@@ -84,9 +85,9 @@ const Record = () => {
         <PrimaryButton key={3}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
-      dataSource={dataSource}
+      api={alarmRecordList}
       columns={columns}
-      rowKey="key"
+      rowKey="recordId"
       actionRender={(text, record) => (
         <Space>
           <Warning content="您确定处理么？">

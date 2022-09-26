@@ -226,7 +226,6 @@ const Monitor = () => {
       visible={saveVisible}
       close={() => setSaveVisible()}
       device={saveVisible}
-      modelColumns={modelColumns}
     />
   </>;
 };

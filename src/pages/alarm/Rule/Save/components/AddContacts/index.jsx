@@ -8,6 +8,7 @@ import style from '@/components/Table/index.module.less';
 
 const AddContacts = (
   {
+    show,
     value = [],
     onChange = () => {
     }
@@ -18,21 +19,22 @@ const AddContacts = (
 
   return <>
     <Table
+      pagination={false}
       onHeaderRow={() => {
         return {
           className: style.headerRow
         };
       }}
       columns={[
-        {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
-        {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text} />},
-        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
-        {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
+        {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
+        {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
+        {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       dataSource={value}
       rowKey="contactId"
       footer={() => {
-        return <PrimaryButton ghost onClick={() => {
+        return !show && <PrimaryButton ghost onClick={() => {
           setOpen(true);
         }}>增加报警联系人</PrimaryButton>;
       }}
@@ -52,7 +54,7 @@ const AddContacts = (
         onSuccess={() => setOpen(false)}
         onChange={(value, records) => {
           onChange(records);
-        }} />
+        }}/>
     </Drawer>
   </>;
 };

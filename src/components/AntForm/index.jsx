@@ -4,6 +4,7 @@ import {useRequest} from '@/util/Request';
 
 const AntForm = (
   {
+    loading = false,
     labelCol = 6,
     wrapperCol = 18,
     width,
@@ -93,7 +94,7 @@ const AntForm = (
       }}
       onCancel={() => close()}
     >
-      {visible && <Spin spinning={addLoading || editLoading}>
+      {visible && <Spin spinning={addLoading || editLoading || loading}>
         <Form
           form={form}
           labelCol={{span: labelCol}}

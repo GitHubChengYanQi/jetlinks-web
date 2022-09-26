@@ -9,6 +9,9 @@ import Save from '@/pages/alarm/Contacts/Save';
 import {request} from '@/util/Request';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
+import {createFormActions} from '@formily/antd';
+
+const formActionsPublic = createFormActions();
 
 const Contacts = ({
   noAction,
@@ -27,19 +30,19 @@ const Contacts = ({
   const ref = useRef();
 
   const columns = [
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '职务',
       dataIndex: 'job',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
-    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
+    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className="green" text={text || 500} />
+      render: (text) => <Render className="green" text={text || 500}/>
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
@@ -49,9 +52,9 @@ const Contacts = ({
         </Render>;
       }
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
   const handleDelete = (contactId) => {
@@ -97,16 +100,17 @@ const Contacts = ({
 
   const searchForm = () => {
     return <>
-      <FormItem noLabel={noAction} label="姓名" name="1" component={Input} />
-      <FormItem noLabel={noAction} label="职务" name="2" component={Input} />
-      <FormItem noLabel={noAction} label="负责区域" name="3" component={Input} />
-      <FormItem noLabel={noAction} label="手机号码" name="5" component={Input} />
-      {!noAction && <FormItem label="创建时间" name="6" component={Input} />}
+      <FormItem noLabel={noAction} label="姓名" name="1" component={Input}/>
+      <FormItem noLabel={noAction} label="职务" name="2" component={Input}/>
+      <FormItem noLabel={noAction} label="负责区域" name="3" component={Input}/>
+      <FormItem noLabel={noAction} label="手机号码" name="5" component={Input}/>
+      {!noAction && <FormItem label="创建时间" name="6" component={Input}/>}
     </>;
   };
 
   return <>
     <Table
+      formActions={formActionsPublic}
       selectedRowKeys={keys}
       onChange={(value, record) => {
         onChange(value, record);
@@ -128,8 +132,8 @@ const Contacts = ({
       searchForm={searchForm}
       columns={columns}
       rowKey="contactId"
-      footer={() => {
-        return <Button type='primary' ghost onClick={onSuccess}>确认</Button>;
+      footer={!noAction ? null : () => {
+        return <Button type="primary" ghost onClick={onSuccess}>确认</Button>;
       }}
       actionRender={(text, record) => (
         <Space>
@@ -144,7 +148,7 @@ const Contacts = ({
     <Save data={saveVisible} visible={saveVisible} success={() => {
       setSaveVisible();
       ref.current.submit();
-    }} close={() => setSaveVisible()} />
+    }} close={() => setSaveVisible()}/>
 
     <BatchImport
       title="联系人"

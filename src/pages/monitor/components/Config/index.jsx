@@ -7,6 +7,7 @@ import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
 
 const Config = ({
+  show,
   modelColumns = [],
   value,
   onChange = () => {
@@ -26,11 +27,6 @@ const Config = ({
     setDataSource(newDataSource);
   };
 
-  // useEffect(() => {
-  //   const defaultData = [];
-  //   setDataSource(defaultData);
-  // }, []);
-
   const columns = [
     {
       title: '属性字段',
@@ -40,6 +36,9 @@ const Config = ({
         return <Select
           placeholder="请选择属性字段"
           style={{width: 200}}
+          bordered={!show}
+          open={show ? false : undefined}
+          suffixIcon={show && null}
           value={text}
           options={modelColumns.map(item => {
             const disabled = dataSource.some(dataItem => dataItem.field === item.value);
@@ -47,7 +46,7 @@ const Config = ({
           })}
           onChange={(field) => {
             dataSourceChange({field}, record.key);
-          }} />;
+          }}/>;
       }
     }, {
       title: '报警条件',
@@ -55,21 +54,24 @@ const Config = ({
       align: 'center',
       render: (text, record) => {
         const options = [
-          {label: '=', value: 1},
-          {label: '>=', value: 2},
-          {label: '<=', value: 3},
-          {label: '>', value: 4},
-          {label: '<', value: 5},
-          {label: '<>', value: 6},
+          {label: '=', value: '1'},
+          {label: '>=', value: '2'},
+          {label: '<=', value: '3'},
+          {label: '>', value: '4'},
+          {label: '<', value: '5'},
+          {label: '<>', value: '6'},
         ];
         return <Select
+          bordered={!show}
+          open={show ? false : undefined}
+          suffixIcon={show && null}
           placeholder="请选择条件"
           style={{width: 100}}
           value={text}
           options={options}
           onChange={(alarmCondition) => {
             dataSourceChange({alarmCondition}, record.key);
-          }} />;
+          }}/>;
       }
     }, {
       title: '报警值',
@@ -77,11 +79,12 @@ const Config = ({
       align: 'center',
       render: (text, record) => {
         if (record.alarmCondition === 6) {
-          return <Section value={text ? text.split(',') : []} onChange={(value = []) => {
-            dataSourceChange({value: value.join(',')}, record.key);
-          }} />;
+          return show ? <>{text && text.split(',').join('——')}</> :
+            <Section value={text ? text.split(',') : []} onChange={(value = []) => {
+              dataSourceChange({value: value.join(',')}, record.key);
+            }}/>;
         }
-        return <Input
+        return show ? text : <Input
           style={{width: 230}}
           value={text}
           placeholder="请输入报警值"
@@ -90,7 +93,11 @@ const Config = ({
           }}
         />;
       }
-    }, {
+    },
+  ];
+
+  if (!show) {
+    columns.push({
       align: 'center',
       width: 50,
       render: (text, record) => {
@@ -98,11 +105,11 @@ const Config = ({
           const newData = dataSource.filter((item, index) => record.key !== index);
           setDataSource(newData);
         }}>
-          <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
+          <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
         </Warning>;
       }
-    },
-  ];
+    });
+  }
 
   return <>
     <Table
@@ -117,7 +124,7 @@ const Config = ({
       columns={columns}
       dataSource={dataSource.map((item, index) => ({...item, key: index}))}
       rowKey="key"
-      footer={() => {
+      footer={show ? null : () => {
         return <PrimaryButton ghost onClick={() => {
           setDataSource([...dataSource, {}]);
         }}>增加报警配置</PrimaryButton>;

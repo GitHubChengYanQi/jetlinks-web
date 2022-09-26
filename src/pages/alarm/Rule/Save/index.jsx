@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Alert, Card, Col, Form, Input, message, Row, Spin} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Alert, Card, Form, Input, message, Spin} from 'antd';
 import styles from './index.module.less';
 import Config from '@/pages/monitor/components/Config';
 import {useRequest} from '@/util/Request';
-import {alarmAdd, alarmEdit} from '@/pages/alarm/url';
+import {alarmAdd, alarmDetail, alarmEdit} from '@/pages/alarm/url';
 import Select from '@/components/Select';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import {getColumnByModelId} from '@/pages/monitor/url';
@@ -18,6 +18,7 @@ const Save = (
     },
     success = () => {
     },
+    detail = {},
     visible,
   }
 ) => {
@@ -25,24 +26,6 @@ const Save = (
   const [data, setData] = useState({});
 
   const [modelColumns, setModelColumns] = useState([]);
-
-  // const {loading, run} = useRequest(alarmAdd, {
-  //   manual: true,
-  //   onSuccess: () => {
-  //     message.success('保存成功！');
-  //     success();
-  //   },
-  //   onError: () => message.error('保存失败！')
-  // });
-  //
-  // run({
-  //   data: {
-  //     modelId: data.modelId,
-  //     name: data.name,
-  //     rules: data.rules,
-  //     contactIds: data.contacts.map(item => item.contactId)
-  //   }
-  // });
 
   const {loading: getColumnsLoaing, run: getColumns} = useRequest(getColumnByModelId, {
     manual: true,
@@ -59,54 +42,88 @@ const Save = (
     },
   });
 
+  const {loading, run} = useRequest(alarmDetail, {
+    manual: true,
+    onSuccess: (res) => {
+      if (res.modelId) {
+        getColumns({data: {modelId: res.modelId}});
+      }
+      setData({...res, rules: res.rulesResults});
+    },
+  });
+
+
+  useEffect(() => {
+    if (!detail.alarmId) {
+      return;
+    }
+    run({
+      data: {
+        alarmId: detail.alarmId,
+      }
+    });
+  }, [detail.alarmId]);
+
   return (
     <AntForm
+      labelCol={4}
+      afterClose={() => {
+        setData({});
+      }}
+      loading={loading}
       width="50vw"
       apis={{
         add: alarmAdd,
         edit: alarmEdit,
       }}
-      title="报警联系人"
+      title="报警规则"
       initialValues={data}
-      rowKey="contactId"
+      rowKey="alarmId"
       success={success}
       visible={visible}
       close={close}
+      format={(values) => {
+        if (isArray(data.rules).some(item => !item.field || !item.alarmCondition || !item.value)) {
+          message.warn('请完善报警规则!');
+          return false;
+        }
+        if (isArray(data.contacts).length === 0) {
+          message.warn('请选择报警联系人!');
+          return false;
+        }
+        return {...values, rules: data.rules, contactIds: isArray(data.contacts).map(item => item.contactId)};
+      }}
     >
       <Card className={styles.card} title={<div className={styles.title}>基本信息</div>} bordered={false}>
-        <Row>
-          <Col span={12}>
-            <Form.Item
-              initialValue={data?.name}
-              key="name"
-              label="姓名"
-              name="name"
-              rules={[
-                {required: true, message: '请输入规则名称'},
-              ]}
-            >
-              <Input placeholder="请输入规则名称" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              initialValue={data?.modelId}
-              key="modelId"
-              label="姓名"
-              name="modelId"
-              rules={[
-                {required: true, message: '请选择设备型号'},
-              ]}
-            >
-              <Select api={deviceModelListSelect} placeholder="请选择设备型号" onChange={(value) => {
-                if (value) {
-                  getColumns({data: {modelId: value}});
-                }
-                setData({...data, modelId: value});
-              }} />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Form.Item
+          initialValue={detail?.name}
+          key="name"
+          label="规则名称"
+          name="name"
+          rules={[
+            {required: true, message: '请输入规则名称'},
+          ]}
+        >
+          <Input placeholder="请输入规则名称" onChange={({target: {value}}) => {
+            setData({...data, name: value});
+          }}/>
+        </Form.Item>
+        <Form.Item
+          initialValue={detail?.modelId}
+          key="modelId"
+          label="设备型号"
+          name="modelId"
+          rules={[
+            {required: true, message: '请选择设备型号'},
+          ]}
+        >
+          <Select api={deviceModelListSelect} placeholder="请选择设备型号" onChange={(value) => {
+            if (value) {
+              getColumns({data: {modelId: value}});
+            }
+            setData({...data, modelId: value, rules: []});
+          }}/>
+        </Form.Item>
       </Card>
       {getColumnsLoaing ? <Spin>
         <Alert
@@ -121,12 +138,12 @@ const Save = (
       >
         <Config value={data.rules} modelColumns={modelColumns} onChange={(value = []) => {
           setData({...data, rules: value});
-        }} />
+        }}/>
       </Card>}
       <Card className={styles.card} title={<div className={styles.title}>报警人员</div>} bordered={false}>
         <AddContacts value={data.contacts} onChange={(contacts) => {
           setData({...data, contacts});
-        }} />
+        }}/>
       </Card>
     </AntForm>
   );
