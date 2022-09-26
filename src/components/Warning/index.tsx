@@ -26,6 +26,7 @@ const Warning: React.FC<Props> = (props) => {
       return;
     }
     Modal.confirm({
+      zIndex: 1005,
       title: '提示信息',
       centered: true,
       icon: <ExclamationCircleOutlined />,

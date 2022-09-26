@@ -8,6 +8,12 @@ export const monitorList = {
   method: 'POST'
 };
 
+
+export const getColumnByModelId = {
+  url: '/deviceModel/getColumnByModelId',
+  method: 'POST'
+};
+
 export const monitorDetail = {
   url: '/monitor/detail',
   method: 'POST'

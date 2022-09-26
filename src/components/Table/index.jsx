@@ -68,6 +68,7 @@ const TableWarp = (
     noTableColumn,
     noFooter,
     noAction,
+    noForm,
     // o
     onChange,
     onResponse = () => {
@@ -255,7 +256,7 @@ const TableWarp = (
   return (
     <Card bordered={false} bodyStyle={bodyStyle}>
       <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
-        <div className="search" style={headStyle}>
+        {!noForm && <div className="search" style={headStyle}>
           {searchForm ?
             <Row justify="space-between">
               <Col>
@@ -300,7 +301,7 @@ const TableWarp = (
               />
               <Space>{searchButtons}</Space>
             </>}
-        </div>
+        </div>}
         <AntdTable
           showTotal
           bordered

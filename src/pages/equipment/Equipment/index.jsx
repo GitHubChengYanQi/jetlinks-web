@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message} from 'antd';
 import {config, useHistory} from 'ice';
 import moment from 'moment';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Restart from '@/pages/equipment/Equipment/Restart';
@@ -18,8 +19,6 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DynamicForms from '@/pages/equipment/Equipment/DynamicForms';
-import {upload} from '@/components/DownloadFile';
-import cookie from 'js-cookie';
 
 const {baseURI} = config;
 
@@ -279,7 +278,7 @@ const Equipment = () => {
           <Button type="primary">批量操作</Button>
         </Dropdown>,
         <Button type="primary" key={3} onClick={() => {
-          window.open(`${baseURI}/deviceExcel/export&authorization=${token}`);
+          window.open(`${baseURI}/deviceExcel/export?authorization=${token}`);
         }}>导出</Button>
       ]}
       searchForm={searchForm}

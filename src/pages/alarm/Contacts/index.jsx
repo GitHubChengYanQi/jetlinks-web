@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Badge, message} from 'antd';
+import {Space, Dropdown, Menu, Input, message, Button} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -10,27 +10,36 @@ import {request} from '@/util/Request';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 
-const Contacts = () => {
+const Contacts = ({
+  noAction,
+  ids = [],
+  onChange = () => {
+  },
+  onSuccess = () => {
+  }
+}) => {
 
   const [saveVisible, setSaveVisible] = useState();
   const [batchImport, setBatchImport] = useState(false);
 
+  const [keys, setKeys] = useState(ids || []);
+
   const ref = useRef();
 
   const columns = [
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '职务',
       dataIndex: 'job',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
-    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className='green' text={text || 500}/>
+      render: (text) => <Render className="green" text={text || 500} />
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
@@ -40,9 +49,9 @@ const Contacts = () => {
         </Render>;
       }
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
   const handleDelete = (contactId) => {
@@ -88,21 +97,26 @@ const Contacts = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="姓名" name="1" component={Input}/>
-      <FormItem label="职务" name="2" component={Input}/>
-      <FormItem label="负责区域" name="3" component={Input}/>
-      <FormItem label="通知状态" name="4" component={Input}/>
-      <FormItem label="手机号码" name="5" component={Input}/>
-      <FormItem label="创建时间" name="6" component={Input}/>
+      <FormItem noLabel={noAction} label="姓名" name="1" component={Input} />
+      <FormItem noLabel={noAction} label="职务" name="2" component={Input} />
+      <FormItem noLabel={noAction} label="负责区域" name="3" component={Input} />
+      <FormItem noLabel={noAction} label="手机号码" name="5" component={Input} />
+      {!noAction && <FormItem label="创建时间" name="6" component={Input} />}
     </>;
   };
 
   return <>
     <Table
-      tableKey='contact'
+      selectedRowKeys={keys}
+      onChange={(value, record) => {
+        onChange(value, record);
+        setKeys(value);
+      }}
+      noAction={noAction}
+      tableKey={noAction ? '' : 'contact'}
       ref={ref}
       api={contactList}
-      searchButtons={[
+      searchButtons={noAction ? [] : [
         <Dropdown key={1} overlay={menu} placement="bottom">
           <PrimaryButton>新增联系人</PrimaryButton>
         </Dropdown>,
@@ -114,10 +128,13 @@ const Contacts = () => {
       searchForm={searchForm}
       columns={columns}
       rowKey="contactId"
+      footer={() => {
+        return <Button type='primary' ghost onClick={onSuccess}>确认</Button>;
+      }}
       actionRender={(text, record) => (
         <Space>
           <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
-          <Warning onOk={()=>handleDelete(record.contactId)}>
+          <Warning onOk={() => handleDelete(record.contactId)}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
@@ -127,7 +144,7 @@ const Contacts = () => {
     <Save data={saveVisible} visible={saveVisible} success={() => {
       setSaveVisible();
       ref.current.submit();
-    }} close={() => setSaveVisible()}/>
+    }} close={() => setSaveVisible()} />
 
     <BatchImport
       title="联系人"

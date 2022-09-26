@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, Input, Select, message} from 'antd';
+import {Space, Dropdown, Menu, Input, Select, message, Button} from 'antd';
+import cookie from 'js-cookie';
+import {config} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Model/Save';
@@ -17,8 +19,11 @@ import DownloadFile from '@/components/DownloadFile';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 
+const {baseURI} = config;
 
 const Model = () => {
+
+  const token = cookie.get('jetlink-token');
 
   const ref = useRef();
 
@@ -150,7 +155,9 @@ const Model = () => {
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3}>导出</PrimaryButton>
+        <Button type="primary" key={3} onClick={() => {
+          window.open(`${baseURI}/modelExcel/export?authorization=${token}`);
+        }}>导出</Button>
       ]}
       api={deviceModelList}
       searchForm={searchForm}

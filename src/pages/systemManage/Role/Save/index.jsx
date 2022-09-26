@@ -20,7 +20,7 @@ const Save = ({
   const [userInfo] = store.useModel('user');
 
   const formatData = (data) => {
-    return isArray(data).map((item, index) => {
+    return isArray(data).map((item) => {
       return {
         key: item.url ? `${item.id}` : `dict_${item.id}`,
         title: item.name,
@@ -79,7 +79,7 @@ const Save = ({
         <SelectTopClass/>
       </Form.Item>
       <Form.Item
-        initialValue={data?.status || 1}
+        initialValue={data?.status || '1'}
         key="status"
         label="角色状态"
         name="status"
@@ -88,8 +88,8 @@ const Save = ({
         ]}
       >
         <Radio.Group>
-          <Radio value={1}>启用</Radio>
-          <Radio value={0}>停用</Radio>
+          <Radio value='1'>启用</Radio>
+          <Radio value='0'>停用</Radio>
         </Radio.Group>
       </Form.Item>
     </AntForm>

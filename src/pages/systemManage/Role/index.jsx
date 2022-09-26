@@ -142,7 +142,7 @@ const Role = () => {
         const disabled = [1, 2, 3].includes(record.roleId);
         const open = record.status === '1';
         return <Space>
-          <PrimaryButton disabled={disabled} onClick={() => {
+          <PrimaryButton onClick={() => {
             const menuList = record.menuList || [];
             setSaveVisible({
               ...record,

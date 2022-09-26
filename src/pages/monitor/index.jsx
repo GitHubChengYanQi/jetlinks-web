@@ -33,7 +33,7 @@ const Monitor = () => {
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
 
-  const [saveVisible, setSaveVisible] = useState(false);
+  const [saveVisible, setSaveVisible] = useState();
 
   const [open, setOpen] = useState({});
 
@@ -192,7 +192,10 @@ const Monitor = () => {
       placement="right"
       onClose={() => setInfoVisible({})}
       open={infoVisible.modelId}
-      extra={<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>}
+      extra={<LinkButton onClick={() => setSaveVisible({
+        deviceId: infoVisible.deviceId,
+        modelId: infoVisible.modelId
+      })}>报警设置</LinkButton>}
     >
       <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
     </Drawer>
@@ -219,7 +222,12 @@ const Monitor = () => {
       {open.type === '4gNetwork' && <Network4G />}
     </Drawer>
 
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}} />
+    <Save
+      visible={saveVisible}
+      close={() => setSaveVisible()}
+      device={saveVisible}
+      modelColumns={modelColumns}
+    />
   </>;
 };
 export default Monitor;

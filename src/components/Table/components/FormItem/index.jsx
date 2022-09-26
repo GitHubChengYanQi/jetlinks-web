@@ -12,13 +12,14 @@ const FormItem = (
     children,
     initialValue,
     placeholder,
+    noLabel,
     ...porps
   }
 ) => {
 
   return <AntFormItem
     initialValue={initialValue}
-    label={label}
+    label={noLabel ? null : label}
     name={name}
     component={component || children}
     placeholder={placeholder || `请${select ? '选择' : '输入'}${label}`}

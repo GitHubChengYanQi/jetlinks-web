@@ -21,7 +21,7 @@ const Select = (
     format = (data) => {
       return data;
     },
-    width: wid,
+    width,
     ...other
   }
 ) => {
@@ -69,45 +69,40 @@ const Select = (
     valueArray = null;
   }
 
-  return (
-    <div id="select" style={{width: wid || '100%'}}>
-      {
-        loading
-          ?
-          <Spin/>
-          :
-          <AntSelect
-            // open
-            {...other}
-            listHeight={200}
-            bordered={border}
-            options={options || selectOptions.map((items) => {
-              return {
-                label: items.label || items.title,
-                value: items.value
-              };
-            })}
-            defaultValue={defaultValue}
-            showArrow={showArrow}
-            disabled={disabled}
-            placeholder={placeholder}
-            style={{width: '100%'}}
-            value={valueArray}
-            onChange={(value, option) => {
-              onChange(value, option);
-            }}
-            onSearch={onSearch}
-            allowClear
-            showSearch
-            filterOption={(input, option) => {
-              if (typeof option.label !== 'string') {
-                return true;
-              }
-              return option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-            }}
-          />}
-    </div>
-  );
+  return loading
+    ?
+    <Spin />
+    :
+    <AntSelect
+      // open
+      {...other}
+      listHeight={200}
+      bordered={border}
+      options={options || selectOptions.map((items) => {
+        return {
+          label: items.label || items.title,
+          value: items.value
+        };
+      })}
+      defaultValue={defaultValue}
+      showArrow={showArrow}
+      disabled={disabled}
+      placeholder={placeholder}
+      style={{width: width || '100%'}}
+      value={valueArray}
+      onChange={(value, option) => {
+        onChange(value, option);
+      }}
+      onSearch={onSearch}
+      allowClear
+      showSearch
+      filterOption={(input, option) => {
+        if (typeof option.label !== 'string') {
+          return true;
+        }
+        return option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      }}
+    />;
 };
 
 export default Select;
