@@ -8,6 +8,12 @@ import FormItem from '@/components/Table/components/FormItem';
 import {PrimaryButton} from '@/components/Button';
 import {alarmRecordBatchView, alarmRecordList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
+import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
+import Cascader from '@/components/Cascader';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
+import Select from '@/components/Select';
+import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import DatePicker from '@/components/DatePicker';
 
 const Record = () => {
 
@@ -29,36 +35,36 @@ const Record = () => {
     {title: '报警时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '终端备注',
-      dataIndex: 'deviceResult',
+      dataIndex: 'remarks',
       align: 'center',
       render: (text) => <Render>
         <div className="blue" onClick={() => {
           history.push('/monitor');
-        }}>{text?.remarks}</div>
+        }}>{text}</div>
       </Render>
     },
-    {title: '登记名称', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.name} />},
-    {title: '设备分组', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.classifyName} />},
-    {title: '设备类别', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.categoryName} />},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '设备型号',
-      dataIndex: 'deviceResult',
+      dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={150} text={text?.modelName} />
+      render: (text) => <Render width={150} text={text} />
     },
     {title: '报警类型', dataIndex: '7', align: 'center', render: (text) => <Render className="green" text={text || '-'} />},
-    {title: 'MAC地址', dataIndex: 'deviceResult', align: 'center', render: (text) => <Render text={text?.mac} />},
+    {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '所属客户',
-      dataIndex: 'deviceResult',
+      dataIndex: 'customerName',
       align: 'center',
-      render: (text) => <Render width={200} text={text?.customerName || '-'} />
+      render: (text) => <Render width={200} text={text || '-'} />
     },
     {
       title: '位置信息',
-      dataIndex: 'deviceResult',
+      dataIndex: 'area',
       align: 'center',
-      render: (text) => <Render width={150} text={text?.area || '-'} />
+      render: (text) => <Render width={150} text={text || '-'} />
     },
   ];
 
@@ -73,15 +79,21 @@ const Record = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="报警时间" name="1" component={Input} />
-      <FormItem label="终端备注" name="2" component={Input} />
-      <FormItem label="登记名称" name="3" component={Input} />
-      <FormItem label="设备分组" name="4" component={Input} />
-      <FormItem label="设备类别" name="5" component={Input} />
-      <FormItem label="设备型号" name="6" component={Input} />
+      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
+      <FormItem
+        label="设备类别"
+        name="categoryId"
+        api={categoryFindAll}
+        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
+        component={Select}
+      />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="报警类型" name="7" component={Input} />
       <FormItem label="所属客户" name="8" component={Input} />
-      <FormItem label="设备MAC" name="9" component={Input} />
     </>;
   };
 
