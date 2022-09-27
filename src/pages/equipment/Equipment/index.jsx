@@ -271,10 +271,13 @@ const Equipment = () => {
   return <>
     <Table
       formSubmit={(values) => {
+        if (values.positionId) {
+          values = {...values, positionIds: [values.positionId]};
+        }
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return {...values, positionIds: values.positionId ? [values.positionId] : null};
+        return values;
       }}
       onChange={(values, records) => setResords(records)}
       selectedRowKeys={keys}
