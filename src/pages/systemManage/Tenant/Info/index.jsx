@@ -30,7 +30,7 @@ const Info = ({
       okButtonProps={{loading}}
       okText="通过"
       onOk={() => {
-        run({params: {customerId: data.customerId}});
+        run({data: {customerIds: [data.customerId]}});
       }}>
       <Descriptions column={1} bordered labelStyle={{width: '30%', textAlign: 'center'}}>
         <Descriptions.Item label="企业名称">{data.name}</Descriptions.Item>

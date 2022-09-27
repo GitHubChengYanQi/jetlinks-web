@@ -19,7 +19,13 @@ export const customerList = {
   method: 'POST',
 };
 
+
+export const customerDelete = {
+  url: '/customer/delete',
+  method: 'POST',
+};
+
 export const customerStart = {
   url: '/customer/start',
-  method: 'GET',
+  method: 'POST',
 };

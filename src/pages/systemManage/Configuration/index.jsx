@@ -24,14 +24,17 @@ const Configuration = () => {
   const {loading, data = {}, refresh} = useRequest({
     ...customerDetail,
     data: {customerId: info.customerId}
-  }, {manual: !info.customerId});
+  }, {
+    manual: !info.customerId,
+  });
 
   const {loading: editLoading, run: edit} = useRequest(customerEdit, {
     manual: true,
     onSuccess: () => {
       message.success('修改成功！');
       refresh();
-    }
+    },
+    onError:()=> message.error('修改失败！')
   });
 
   const [fileId, setFileId] = useState();
