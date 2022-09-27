@@ -156,7 +156,7 @@ const Model = () => {
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
         <Button type="primary" key={3} onClick={() => {
-          window.open(`${baseURI}/modelExcel/export?authorization=${token}`);
+          window.open(`${baseURI}/modelExcel/export?authorization=${token}&modelIds=${keys}`);
         }}>导出</Button>
       ]}
       api={deviceModelList}

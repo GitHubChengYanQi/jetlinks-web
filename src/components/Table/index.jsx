@@ -305,7 +305,7 @@ const TableWarp = (
         <AntdTable
           showTotal
           bordered
-          onHeaderRow={(record) => {
+          onHeaderRow={() => {
             return {
               className: style.headerRow
             };
@@ -348,7 +348,7 @@ const TableWarp = (
           }}
           footer={noFooter ? false : footer}
           layout
-          scroll={{x: 'max-content', y: maxHeight}}
+          scroll={{x: 'max-content'}}
           {...other}
           {...props}
         >

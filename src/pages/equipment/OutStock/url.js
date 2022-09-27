@@ -34,6 +34,12 @@ export const outstockList = {
   rowKey:'outstockId'
 };
 
+export const outstockUnbind = {
+  url: '/outstock/unbind',
+  method: 'POST',
+  rowKey:'outstockId'
+};
+
 export const outStockImport = {
   url: '/OutStockExcel/import',
   method: 'GET',

@@ -10,6 +10,7 @@ import DatePicker from '@/components/DatePicker';
 import {request, useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
+import moment from 'moment';
 
 
 const Account = () => {
@@ -106,7 +107,12 @@ const Account = () => {
     },
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {title: '电子邮箱', dataIndex: 'email', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '账号有效期', dataIndex: '8', align: 'center', render: (text) => <Render width={150} text={text || '永久'}/>},
+    {
+      title: '账号有效期', dataIndex: '8', align: 'center',
+      render: (text, record) => <Render width={150}>
+        {record.beginTime ? `${moment(record.beginTime).format('YYYY-MM-DD') || '-'}~${moment(record.endTime).format('YYYY-MM-DD') || '-'}` : '永久'}
+      </Render>
+    },
     {title: '租户名称', dataIndex: 'customerName', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '创建时间',
@@ -174,7 +180,7 @@ const Account = () => {
               }}
             />;
           }} select/>
-        <FormItem name="name" label="关键字查询" component={Input} placeholder='管理员账号/姓名/手机号/邮箱'/>
+        <FormItem name="name" label="关键字查询" component={Input} placeholder="管理员账号/姓名/手机号/邮箱"/>
       </>
     );
   };

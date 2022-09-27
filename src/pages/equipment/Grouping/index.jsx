@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Row, Col, Button, Space, Dropdown, Menu, message,} from 'antd';
+import cookie from 'js-cookie';
+import {config} from 'ice';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -24,6 +26,8 @@ const Grouping = () => {
   const [saveVisible, setSaveVisible] = useState();
   const [batchImport, setBatchImport] = useState(false);
   const dataDispatchers = store.useModel('dataSource')[1];
+
+  const [keys,setKeys] = useState([]);
 
   const {loading, run} = useRequest(deviceClassifyDelete, {
     manual: true,
@@ -63,6 +67,9 @@ const Grouping = () => {
 
   const [close, setClose] = useState(false);
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
   return <>
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
@@ -80,6 +87,7 @@ const Grouping = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          onChange={setKeys}
           loading={loading}
           tableKey="grouping"
           ref={ref}
@@ -87,7 +95,9 @@ const Grouping = () => {
             <Dropdown key={1} overlay={menu} placement="bottom">
               <Button type="primary">新建分组</Button>
             </Dropdown>,
-            <Button key={2} type="primary">导出</Button>
+            <Button key={2} type="primary" onClick={()=>{
+              window.open(`${baseURI}/DeviceClassifyExcel/export?authorization=${token}&classifyIds=${keys}`);
+            }}>导出</Button>
           ]}
           api={deviceClassifyList}
           columns={columns}
@@ -126,6 +136,7 @@ const Grouping = () => {
       success={() => {
         setBatchImport(false);
         ref.current.submit();
+        dataDispatchers.getDeviceClass();
       }}
       visible={batchImport}
       close={() => setBatchImport(false)}

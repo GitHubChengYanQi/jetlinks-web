@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, message, Select, Input} from 'antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
@@ -19,6 +21,8 @@ import {isArray} from '@/util/Tools';
 
 const Category = () => {
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
 
   const ref = useRef();
 
@@ -141,7 +145,9 @@ const Category = () => {
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3}>导出</PrimaryButton>
+        <PrimaryButton key={3} onClick={() => {
+          window.open(`${baseURI}/ClassifyExcel/export?authorization=${token}&categoryIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={categoryList}

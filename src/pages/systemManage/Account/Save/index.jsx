@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
-import {Form, DatePicker, Input, Radio, Space} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Form, Input, Radio, Space} from 'antd';
 import Select from '@/components/Select';
 import {userAdd, userSave} from '@/Config/ApiUrl/system/user';
 import {roleListSelect} from '@/Config/ApiUrl/system/role';
 import Password from '@/pages/Login/AccountAsk/components/Password';
 import AntForm from '@/components/AntForm';
 import store from '@/store';
-
-const RangePicker = DatePicker.RangePicker;
+import DatePicker from '@/components/DatePicker';
 
 const Save = (
   {
@@ -26,8 +25,19 @@ const Save = (
 
   const [newPassword, setNewPassword] = useState();
 
+  const [time, setTime] = useState([]);
+
+  useEffect(() => {
+    if (data.beginTime && data.endTime) {
+      setTime([data.beginTime, data.endTime]);
+    }
+  }, [data.userId]);
+
   return (
     <AntForm
+      afterClose={() => {
+        setTime([]);
+      }}
       apis={{
         add: userAdd,
         edit: userSave,
@@ -38,7 +48,12 @@ const Save = (
       success={success}
       visible={visible}
       close={close}
-      format={(values) => ({...values, password: data?.userId ? newPassword : values.password})}
+      format={(values) => ({
+        ...values,
+        password: data?.userId ? newPassword : values.password,
+        beginTime: values.time === '1' ? time[0] : null,
+        endTime: values.time === '1' ? time[1] : null,
+      })}
     >
       <Form.Item
         initialValue={data?.account}
@@ -95,7 +110,7 @@ const Save = (
         rules={[
           {
             message: '请输入正确的网址',
-            pattern: '^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'
+            pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'
           }
         ]}
       >
@@ -126,7 +141,7 @@ const Save = (
       </Form.Item>
       <Form.Item
         key="time"
-        initialValue={data?.time || '0'}
+        initialValue={data?.beginTime ? '1' : '0'}
         label="账号有效期"
         name="time"
         rules={[
@@ -138,7 +153,7 @@ const Save = (
             <Radio value="0">永久</Radio>
             <Space>
               <Radio value="1" style={{minWidth: 80}}>时间段</Radio>
-              <RangePicker/>
+              <DatePicker value={time} RangePicker onChange={setTime}/>
             </Space>
           </Space>
         </Radio.Group>
@@ -153,8 +168,8 @@ const Save = (
         ]}
       >
         <Radio.Group>
-          <Radio value='ENABLE'>启用</Radio>
-          <Radio value='LOCKED'>停用</Radio>
+          <Radio value="ENABLE">启用</Radio>
+          <Radio value="LOCKED">停用</Radio>
         </Radio.Group>
       </Form.Item>
     </AntForm>

@@ -21,6 +21,8 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 const InStock = () => {
 
@@ -47,7 +49,7 @@ const InStock = () => {
   const columns = [
     {
       title: '设备状态', dataIndex: 'status', align: 'center', render: (value) => {
-        const open = true || value === '99';
+        const open = value === 'online';
         return <Render>
           <span className={open ? 'green' : 'close'}>{open ? '在线' : '离线'}</span>
         </Render>;
@@ -127,6 +129,9 @@ const InStock = () => {
     </>;
   };
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
   return <>
     <Table
       loading={deleteLoading}
@@ -147,7 +152,9 @@ const InStock = () => {
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3}>导出</PrimaryButton>
+        <PrimaryButton key={3} onClick={()=>{
+          window.open(`${baseURI}/InStockExcel/export?authorization=${token}&instockIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={instockList}

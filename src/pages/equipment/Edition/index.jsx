@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Row, Col, Input, Select as AntSelect} from 'antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Save from '@/pages/equipment/Edition/Save';
@@ -15,8 +17,13 @@ import {ActionButton, PrimaryButton} from '@/components/Button';
 
 const Edition = () => {
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
   const [upgradeVisible, setUpgradeVisible] = useState();
   const [restarting, setRestarting] = useState(false);
+
+  const [keys, setKeys] = useState([]);
 
   const ref = useRef();
 
@@ -40,20 +47,20 @@ const Edition = () => {
       }
     },
     {
-      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />
+      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
     },
-    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
-    {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text} />},
-    {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text} />},
-    {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
   const [close, setClose] = useState(false);
 
   const searchForm = () => {
     return <>
-      <FormItem label="升级时间" name="0" component={DatePicker} RangePicker />
+      <FormItem label="升级时间" name="0" component={DatePicker} RangePicker/>
       <FormItem
         label="设备状态"
         name="status"
@@ -68,11 +75,11 @@ const Edition = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="登记名称" name="name" component={Input}/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
     </>;
   };
 
@@ -101,11 +108,14 @@ const Edition = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          onChange={setKeys}
           ref={ref}
           tableKey="edition"
           searchButtons={[
             <PrimaryButton key="1" onClick={() => setUpgradeVisible({})}>批量升级</PrimaryButton>,
-            <PrimaryButton key="2">导出</PrimaryButton>
+            <PrimaryButton key="2" onClick={() => {
+              window.open(`${baseURI}/deviceExcel/export?authorization=${token}&deviceIds=${keys}`);
+            }}>导出</PrimaryButton>
           ]}
           searchForm={searchForm}
           api={deviceList}
@@ -129,7 +139,7 @@ const Edition = () => {
     />
     <Restart
       visible={restarting}
-      close={() => setRestarting(false)}
+      success={() => setRestarting(false)}
     />
   </>;
 };

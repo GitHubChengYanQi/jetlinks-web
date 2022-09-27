@@ -88,46 +88,6 @@ const Save = ({data, success, close, visible}) => {
         <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
       </Form.Item>
       <Form.Item
-        key="name"
-        label="登记名称"
-        name="name"
-        rules={[
-          {required: true, message: '请输入登记名称'},
-        ]}
-      >
-        <Input placeholder="请输入登记名称"/>
-      </Form.Item>
-      <Form.Item
-        key="remarks"
-        label="终端备注"
-        name="remarks"
-        rules={[
-          {required: true, message: '请输入终端备注'},
-        ]}
-      >
-        <Input placeholder="请输入终端备注"/>
-      </Form.Item>
-      <Form.Item
-        key="classifyId"
-        label="设备分组"
-        name="classifyId"
-        rules={[
-          {required: true, message: '请选择设备分组'},
-        ]}
-      >
-        <SelectTopClass/>
-      </Form.Item>
-      <Form.Item
-        key="position"
-        label="经度"
-        name="position"
-        rules={[
-          {required: false, message: '请输入经纬度信息'},
-        ]}
-      >
-        <Position />
-      </Form.Item>
-      <Form.Item
         key="instockTime"
         label="入库时间"
         name="instockTime"

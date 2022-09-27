@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, Select as AntSelect, Badge, message} from 'antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/Firmware/Save';
@@ -17,6 +19,9 @@ import {useRequest} from '@/util/Request';
 import {isArray, isObject} from '@/util/Tools';
 
 const Firmware = () => {
+
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
 
   const ref = useRef();
 
@@ -144,7 +149,9 @@ const Firmware = () => {
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3}>导出</PrimaryButton>
+        <PrimaryButton key={3} onClick={()=>{
+          window.open(`${baseURI}/FirmwareExcel/export?authorization=${token}&firmWareIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={firmwareList}
