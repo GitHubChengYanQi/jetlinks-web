@@ -19,6 +19,7 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DynamicForms from '@/pages/equipment/Equipment/DynamicForms';
+import MoveGroup from '@/pages/equipment/Equipment/MoveGroup';
 
 const {baseURI} = config;
 
@@ -32,16 +33,20 @@ const Equipment = () => {
 
   const [saveVisible, setSaveVisible] = useState();
 
+  const [moveGrouVisible, setMoveGrouVisible] = useState();
+
   const [restarting, setRestarting] = useState();
 
-  const [keys, setKeys] = useState([]);
+  const [records, setResords] = useState([]);
+
+  const keys = records.map(item => item.deviceId);
 
   const [formVisible, setFormVisible] = useState();
 
   const {loading: startLoading, run: start} = useRequest(deviceStart, {
     manual: true,
     onSuccess: () => {
-      setKeys([]);
+      setResords([]);
       message.success('启用成功！');
       ref.current.submit();
     },
@@ -77,25 +82,25 @@ const Equipment = () => {
       title: '登记名称',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备分组',
       dataIndex: 'classifyName',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备类别',
       dataIndex: 'categoryName',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={text}/>
+      render: (text) => <Render width={120} text={text} />
     },
     {
       title: '设备IP地址',
@@ -113,13 +118,13 @@ const Equipment = () => {
       title: '设备MAC地址',
       dataIndex: 'mac',
       align: 'center',
-      render: (text) => <Render width={120} text={text}/>
+      render: (text) => <Render width={120} text={text} />
     },
     {
       title: '位置信息',
-      dataIndex: '10',
+      dataIndex: 'area',
       align: 'center',
-      render: (text) => <Render width={200} text={text}/>
+      render: (text) => <Render width={200} text={text} />
     }, {
       title: '经纬度信息',
       dataIndex: '10',
@@ -135,7 +140,7 @@ const Equipment = () => {
       render: (value, record) => {
         const open = record.status === 'online';
         if (!open) {
-          return <Render width={150} text="-"/>;
+          return <Render width={150} text="-" />;
         }
         const oldsecond = moment(new Date()).diff(value, 'second');
         const day = Math.floor(oldsecond / 86400) || 0;
@@ -153,7 +158,7 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={open ? value : '-'}/>;
+        return <Render width={150} text={open ? value : '-'} />;
       }
     },
     {
@@ -162,14 +167,14 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={!open ? value : '-'}/>;
+        return <Render width={150} text={!open ? value : '-'} />;
       }
     },
     {
       title: '质保时间',
       dataIndex: '12',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (text) => <Render width={150} text={text} />
     },
   ];
 
@@ -234,16 +239,16 @@ const Equipment = () => {
           return <AntSelect
             defaultValue="all"
             value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '在线', value: '99'}, {label: '离线', value: '0'}]}
+            options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
             onChange={(value) => {
               onChange(value === 'all' ? null : value);
             }}
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -251,10 +256,10 @@ const Equipment = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="位置信息" name="7" component={Input}/>
-      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="位置信息" name="7" component={Input} />
+      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker />
     </>;
   };
 
@@ -267,13 +272,15 @@ const Equipment = () => {
         }
         return values;
       }}
-      onChange={setKeys}
+      onChange={(values, records) => setResords(records)}
       selectedRowKeys={keys}
       tableKey="device"
       loading={startLoading}
       ref={ref}
       searchButtons={[
-        <Button type="primary" key={1}>移动分组</Button>,
+        <Button disabled={keys.length !== 1} type="primary" key={1} onClick={() => {
+          setMoveGrouVisible(records[0]);
+        }}>移动分组</Button>,
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <Button type="primary">批量操作</Button>
         </Dropdown>,
@@ -313,6 +320,18 @@ const Equipment = () => {
         ref.current.submit();
       }}
     />
+
+    <MoveGroup
+      visible={Boolean(moveGrouVisible)}
+      close={() => setMoveGrouVisible(null)}
+      data={moveGrouVisible || {}}
+      success={() => {
+        setResords([]);
+        setMoveGrouVisible(null);
+        ref.current.submit();
+      }}
+    />
+
     <Restart
       visible={restarting}
       success={() => {

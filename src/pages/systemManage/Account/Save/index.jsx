@@ -92,6 +92,12 @@ const Save = (
         key="email"
         label="电子邮件"
         name="email"
+        rules={[
+          {
+            message: '请输入正确的网址',
+            pattern: '^(http(s)?:\\/\\/)?(www\\.)?[\\w-]+\\.(com|net|cn)$'
+          }
+        ]}
       >
         <Input placeholder="请输入电子邮件"/>
       </Form.Item>
@@ -120,6 +126,7 @@ const Save = (
       </Form.Item>
       <Form.Item
         key="time"
+        initialValue={data?.time || '0'}
         label="账号有效期"
         name="time"
         rules={[

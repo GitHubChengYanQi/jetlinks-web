@@ -16,7 +16,7 @@ const DynamicForms = (
     }
   }
 ) => {
-  console.log(formData);
+
   const form = createForm();
 
   return <>

@@ -58,7 +58,7 @@ const Record = () => {
       title: '位置信息',
       dataIndex: 'deviceResult',
       align: 'center',
-      render: (text) => <Render width={150} text={text?.adress || '-'} />
+      render: (text) => <Render width={150} text={text?.area || '-'} />
     },
   ];
 

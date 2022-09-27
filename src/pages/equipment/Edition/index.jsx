@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Row, Col, Button, Input, Select as AntSelect, Badge} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Row, Col, Input, Select as AntSelect} from 'antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Save from '@/pages/equipment/Edition/Save';
@@ -17,6 +17,8 @@ const Edition = () => {
 
   const [upgradeVisible, setUpgradeVisible] = useState();
   const [restarting, setRestarting] = useState(false);
+
+  const ref = useRef();
 
   const columns = [
     {
@@ -59,7 +61,7 @@ const Edition = () => {
           return <AntSelect
             defaultValue="all"
             value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '在线', value: '99'}, {label: '离线', value: '0'}]}
+            options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
             onChange={(value) => {
               onChange(value === 'all' ? null : value);
             }}
@@ -70,6 +72,7 @@ const Edition = () => {
       <FormItem label="登记名称" name="name" component={Input} />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
     </>;
   };
 
@@ -77,14 +80,29 @@ const Edition = () => {
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
-          <LeftTree open={close} close={() => setClose(!close)} noAction onChange={(key) => {
-
-          }} />
+          <LeftTree
+            open={close}
+            close={() => setClose(!close)}
+            onChange={(key, type) => {
+              switch (type) {
+                case 'terminal':
+                  ref.current.formActions.setFieldValue('modelId', key);
+                  break;
+                case 'group':
+                  ref.current.formActions.setFieldValue('classifyId', key);
+                  break;
+                default:
+                  break;
+              }
+              ref.current.submit();
+            }}
+          />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
-          tableKey='edition'
+          ref={ref}
+          tableKey="edition"
           searchButtons={[
             <PrimaryButton key="1" onClick={() => setUpgradeVisible({})}>批量升级</PrimaryButton>,
             <PrimaryButton key="2">导出</PrimaryButton>

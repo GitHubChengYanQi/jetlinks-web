@@ -81,7 +81,7 @@ const Amap = ({
   }));
 
   return (
-    <div style={{height: show ? '100vh' : 'calc(100vh - 90px)'}}>
+    <div style={{height: show ? 'calc(100vh - 160px)' : 'calc(100vh - 90px)'}}>
       <Map events={events} amapkey={AMAP_KEY} center={center} version={show ? null : AMAP_VERSION} zoom={16}>
         <AmapSearch
           show={show}

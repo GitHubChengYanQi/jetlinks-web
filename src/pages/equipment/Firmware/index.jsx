@@ -14,7 +14,7 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {useRequest} from '@/util/Request';
-import {isArray} from '@/util/Tools';
+import {isArray, isObject} from '@/util/Tools';
 
 const Firmware = () => {
 
@@ -108,7 +108,7 @@ const Firmware = () => {
           return <AntSelect
             defaultValue="all"
             value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '启用', value: '99'}, {label: '禁用', value: '0'}]}
+            options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'}]}
             onChange={(value) => {
               onChange(value === 'all' ? null : value);
             }}
@@ -137,11 +137,11 @@ const Firmware = () => {
       onChange={setKeys}
       selectedRowKeys={keys}
       loading={startLoading || deleteLoading || stopLoading}
-      tableKey='firmware'
+      tableKey="firmware"
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建固件</PrimaryButton>,
-        <Dropdown key={2} overlay={menu} placement="bottom">
+        <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
         <PrimaryButton key={3}>导出</PrimaryButton>
@@ -154,7 +154,7 @@ const Firmware = () => {
         const open = record.status === '1';
         return <Space>
           <PrimaryButton type="link" onClick={() => {
-            setSaveVisible(record);
+            setSaveVisible({...record,categoryId:isObject(record.modelResult).categoryId});
           }}>编辑</PrimaryButton>
           <Warning content={`您确定${open ? '停用' : '启用'}么？`} onOk={() => {
             if (open) {
@@ -165,7 +165,7 @@ const Firmware = () => {
           }}>
             {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
-          <Warning onOk={()=>deleteRun({data: {firmwarIds: [record.firmwarId]}})}>
+          <Warning onOk={() => deleteRun({data: {firmwarIds: [record.firmwarId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;

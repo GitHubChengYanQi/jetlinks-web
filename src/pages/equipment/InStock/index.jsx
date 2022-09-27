@@ -8,8 +8,13 @@ import Info from '@/pages/equipment/InStock/Info';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {instockDelete, instockDownloadTemplate, instockImport, instockList} from '@/pages/equipment/InStock/url';
-import {request} from '@/util/Request';
+import {
+  instockBatchDelete,
+  instockDownloadTemplate,
+  instockImport,
+  instockList
+} from '@/pages/equipment/InStock/url';
+import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
@@ -26,16 +31,17 @@ const InStock = () => {
 
   const [infoVisible, setInfoVisible] = useState();
 
-  const [keys, setkeys] = useState([]);
+  const [keys, setKeys] = useState([]);
 
-  const delConfirm = (instockId) => {
-    request({...instockDelete, data: {instockId}}).then((res) => {
-      if (res.success) {
-        message.success('删除成功!');
-        ref.current.submit();
-      }
-    }).catch(() => message.success('删除失败！'));
-  };
+  const {loading: deleteLoading, run: deleteRun} = useRequest(instockBatchDelete, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('删除失败!')
+  });
 
 
   const columns = [
@@ -47,13 +53,18 @@ const InStock = () => {
         </Render>;
       }
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '入库时间', dataIndex: 'instockTime', align: 'center', render: (text) => <Render width={200} text={moment(text).format('YYYY-MM-DD')}/>},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {
+      title: '入库时间',
+      dataIndex: 'instockTime',
+      align: 'center',
+      render: (text) => <Render width={200} text={text ? moment(text).format('YYYY-MM-DD') : '-'} />
+    },
   ];
 
 
@@ -79,10 +90,7 @@ const InStock = () => {
     items={[
       {
         key: '1',
-        label: <Warning>批量删除</Warning>,
-        onClick: () => {
-
-        }
+        label: <Warning onOk={() => deleteRun({data: {inStockIds: keys}})}>批量删除</Warning>,
       },
     ]}
   />;
@@ -90,9 +98,9 @@ const InStock = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="登记名称" name="name" component={Input}/>
+      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="登记名称" name="name" component={Input} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -100,7 +108,7 @@ const InStock = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
       <FormItem
         label="设备状态"
         name="status"
@@ -108,19 +116,20 @@ const InStock = () => {
           return <AntSelect
             defaultValue="all"
             value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '在线', value: '99'}, {label: '离线', value: '0'}]}
+            options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
             onChange={(value) => {
               onChange(value === 'all' ? null : value);
             }}
           />;
         }}
       />
-      <FormItem label="所属客户" name="6" component={Select}/>
+      <FormItem label="所属客户" name="6" component={Select} />
     </>;
   };
 
   return <>
     <Table
+      loading={deleteLoading}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
@@ -128,7 +137,7 @@ const InStock = () => {
         return values;
       }}
       tableKey="instock"
-      onChange={setkeys}
+      onChange={setKeys}
       selectedRowKeys={keys}
       ref={ref}
       searchButtons={[
@@ -149,27 +158,27 @@ const InStock = () => {
           <PrimaryButton onClick={() => {
             setInfoVisible(record);
           }}>详情</PrimaryButton>
-          <Warning onOk={() => delConfirm(record.instockId)}>
+          <Warning onOk={() => deleteRun({data: {inStockIds: [record.instockId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
       )}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
     <Save visible={saveVisible} close={() => setSaveVisible(false)} success={() => {
       setSaveVisible(false);
       ref.current.submit();
-    }}/>
+    }} />
     <BatchImport
       columns={[
-        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
+        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text} />},
       ]}
       api={instockImport}
       templeteApi={instockDownloadTemplate}

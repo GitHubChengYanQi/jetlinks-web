@@ -16,6 +16,12 @@ export const outstockDelete = {
   rowKey:'outstockId'
 };
 
+export const outstockBatchDelete = {
+  url: '/outstock/batchDelete',
+  method: 'POST',
+  rowKey:'outstockId'
+};
+
 export const outstockDetail = {
   url: '/outstock/detail',
   method: 'POST',

@@ -1,11 +1,15 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, Badge} from 'antd';
+import {Space, Dropdown, Menu, Input, Select as AntSelect} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Info from '@/pages/equipment/OutStock/Info';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
-import {outStockDownloadTemplate, outStockImport, outstockList} from '@/pages/equipment/OutStock/url';
+import {
+  outStockDownloadTemplate,
+  outStockImport,
+  outstockList
+} from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
@@ -24,6 +28,9 @@ const OutStock = () => {
 
   const [infoVisible, setInfoVisible] = useState();
 
+  const [keys, setKeys] = useState([]);
+
+
   const columns = [
     {
       title: '设备状态', dataIndex: 'deviceResult', align: 'center', render: (value) => {
@@ -41,31 +48,31 @@ const OutStock = () => {
         </Render>;
       }
     },
-    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '终端备注',
       dataIndex: 'deviceResult',
       align: 'center',
-      render: (value = {}) => <Render text={value.remarks}/>
+      render: (value = {}) => <Render text={value.remarks} />
     },
-    {title: '设备名称', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => <Render text={value.name}/>},
+    {title: '设备名称', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => <Render text={value.name} />},
     {
       title: '设备类别',
       dataIndex: 'deviceResult',
       align: 'center',
-      render: (value = {}) => <Render text={value.categoryName}/>
+      render: (value = {}) => <Render text={value.categoryName} />
     },
     {
       title: '设备型号',
       dataIndex: 'deviceResult',
       align: 'center',
-      render: (value = {}) => <Render text={value.modelName}/>
+      render: (value = {}) => <Render text={value.modelName} />
     },
-    {title: '设备MAC地址', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => <Render text={value.mac}/>},
-    {title: '出库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '出库时间', dataIndex: 'outstockTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '质保时间', dataIndex: '11', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '设备MAC地址', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => <Render text={value.mac} />},
+    {title: '出库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '出库时间', dataIndex: 'outstockTime', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '质保时间', dataIndex: '11', align: 'center', render: (text) => <Render width={200} text={text} />},
   ];
 
   const outStockMenu = <Menu
@@ -100,9 +107,9 @@ const OutStock = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="出库时间" name="time" component={DatePicker} RangePicker/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="设备查询" name="name" component={Input}/>
+      <FormItem label="出库时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="设备查询" name="name" component={Input} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -110,8 +117,8 @@ const OutStock = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
-      <FormItem label="所属客户" name="customerId" component={Select}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="所属客户" name="customerId" component={Select} />
       <FormItem
         label="设备状态"
         name="status"
@@ -145,6 +152,8 @@ const OutStock = () => {
 
   return <>
     <Table
+      onChange={setKeys}
+      selectedRowKeys={keys}
       ref={ref}
       tableKey="outstock"
       formSubmit={(values) => {
@@ -178,14 +187,14 @@ const OutStock = () => {
       )}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
     <Save visible={saveVisible} close={() => setSaveVisible(false)} success={() => {
       setSaveVisible();
       ref.current.submit();
-    }}/>
+    }} />
     <BatchImport
       columns={[
-        {title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
       ]}
       api={outStockImport}
       templeteApi={outStockDownloadTemplate}

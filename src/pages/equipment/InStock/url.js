@@ -16,6 +16,12 @@ export const instockDelete = {
   rowKey: 'instockId'
 };
 
+export const instockBatchDelete = {
+  url: '/instock/batchDelete',
+  method: 'POST',
+  rowKey: 'instockId'
+};
+
 export const instockDetail = {
   url: '/instock/detail',
   method: 'POST',

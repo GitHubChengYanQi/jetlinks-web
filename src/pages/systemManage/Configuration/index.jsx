@@ -21,11 +21,16 @@ const Configuration = () => {
 
   const info = userInfo.info || {};
 
+  const [fileId, setFileId] = useState();
+
   const {loading, data = {}, refresh} = useRequest({
     ...customerDetail,
     data: {customerId: info.customerId}
   }, {
     manual: !info.customerId,
+    onSuccess: (res) => {
+      setFileId(res.logo);
+    }
   });
 
   const {loading: editLoading, run: edit} = useRequest(customerEdit, {
@@ -34,13 +39,11 @@ const Configuration = () => {
       message.success('修改成功！');
       refresh();
     },
-    onError:()=> message.error('修改失败！')
+    onError: () => message.error('修改失败！')
   });
 
-  const [fileId, setFileId] = useState();
-
   if (loading && !data) {
-    return <div style={{padding: 24, textAlign: 'center'}}><Spin/></div>;
+    return <div style={{padding: 24, textAlign: 'center'}}><Spin /></div>;
   }
 
   return <Spin spinning={loading || editLoading}>
@@ -57,7 +60,7 @@ const Configuration = () => {
                   name="name"
                   noStyle
                 >
-                  <Input style={{minWidth:400}} placeholder="请输入企业真实名称"/>
+                  <Input style={{minWidth: 400}} placeholder="请输入企业真实名称" />
                 </Form.Item>
                 <div className={styles.extra}>（企业名称将显示在您的平台左上角位置）</div>
               </Space>
@@ -70,7 +73,7 @@ const Configuration = () => {
                   noStyle
                   initialValue={fileId}
                 >
-                  <FileUpload onChange={(file) => setFileId(file)}/>
+                  <FileUpload onChange={(file) => setFileId(file)} />
                 </Form.Item>
                 <div className={styles.extra}>（企业LOGO将显示在您的平台左上角位置和登录页面）</div>
               </Space>
@@ -81,22 +84,22 @@ const Configuration = () => {
             </Form.Item>
 
           </>
-        }]}/>
+        }]} />
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="登陆有效期" name="loginTime" initialValue='close'>
+        <Form.Item label="登陆有效期" name="loginTime" initialValue="close">
           <Radio.Group>
             <Space direction="vertical">
               <Radio value="close">关</Radio>
-              <Radio value="open">长时间未操作、后台挂起、正常使用<InputNumber min={1} style={{margin: '0 8px'}}/> 分钟后，重新登录系统</Radio>
+              <Radio value="open">长时间未操作、后台挂起、正常使用<InputNumber min={1} style={{margin: '0 8px'}} /> 分钟后，重新登录系统</Radio>
             </Space>
           </Radio.Group>
         </Form.Item>
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="平合模式" name="map" initialValue='close'>
+        <Form.Item label="平合模式" name="map" initialValue="close">
           <Radio.Group>
             <Space direction="vertical">
               <Radio value="close">

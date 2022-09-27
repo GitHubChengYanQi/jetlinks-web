@@ -1,16 +1,21 @@
 import React, {useRef, useState} from 'react';
-import {Row, Col, Button, Space, Dropdown, Menu, Select, Input} from 'antd';
+import {Row, Col, Button, Space, Dropdown, Menu, message,} from 'antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
 import Table from '@/components/Table';
-import FormItem from '@/components/Table/components/FormItem';
 import styles from '@/pages/monitor/index.module.less';
-import {DeviceClassifyDownloadTemplate, DeviceClassifyExcel, deviceClassifyList} from '@/pages/equipment/Grouping/url';
+import {
+  deviceClassifyDelete,
+  DeviceClassifyDownloadTemplate,
+  DeviceClassifyExcel,
+  deviceClassifyList
+} from '@/pages/equipment/Grouping/url';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import store from '@/store';
+import {useRequest} from '@/util/Request';
 
 const Grouping = () => {
 
@@ -20,11 +25,20 @@ const Grouping = () => {
   const [batchImport, setBatchImport] = useState(false);
   const dataDispatchers = store.useModel('dataSource')[1];
 
+  const {loading, run} = useRequest(deviceClassifyDelete, {
+    manual: true,
+    onSuccess: () => {
+      message.success('删除成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('删除失败！')
+  });
+
 
   const columns = [
-    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
 
@@ -49,28 +63,6 @@ const Grouping = () => {
 
   const [close, setClose] = useState(false);
 
-  const searchForm = () => {
-    return <>
-      <FormItem label="所属客户" name="customer" component={Select} select/>
-      <FormItem label="分组名称" name="name" component={Input}/>
-      <FormItem
-        label="分组状态"
-        name="status"
-        component={({value, onChange}) => {
-          return <Select
-            defaultValue="all"
-            value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'},]}
-            onChange={(value) => {
-              onChange(value === 'all' ? null : value);
-            }}
-          />;
-        }}
-        select
-      />
-    </>;
-  };
-
   return <>
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
@@ -88,6 +80,7 @@ const Grouping = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          loading={loading}
           tableKey="grouping"
           ref={ref}
           searchButtons={[
@@ -99,10 +92,10 @@ const Grouping = () => {
           api={deviceClassifyList}
           columns={columns}
           rowKey="classifyId"
-          actionRender={(text,record) => (
+          actionRender={(text, record) => (
             <Space>
               <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
-              <Warning>
+              <Warning onOk={() => run({data: {classifyId: record.classifyId}})}>
                 <DangerButton>删除</DangerButton>
               </Warning>
             </Space>
@@ -124,8 +117,8 @@ const Grouping = () => {
 
     <BatchImport
       columns={[
-        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
       ]}
       title="分组"
       templeteApi={DeviceClassifyDownloadTemplate}

@@ -9,7 +9,9 @@ const Terminal = ({
   onChange,
   value,
   firstKey,
+  noEmpty,
 }) => {
+
   const [keys, setKeys] = useState(value ? [value] : []);
 
   const [saveVisible, setSaveVisible] = useState();
@@ -62,10 +64,11 @@ const Terminal = ({
     <AntTree
       loading={loading}
       onChange={(keys) => {
-        if (keys.length > 0) {
-          onChange(keys[0], 'terminal');
-          setKeys(keys);
+        if (keys.length === 0 && noEmpty) {
+          return;
         }
+        onChange(keys[0], 'terminal');
+        setKeys(keys);
       }}
       value={keys}
       treeData={formatData(treeData)}

@@ -119,7 +119,7 @@ const Monitor = () => {
           return <AntSelect
             defaultValue="all"
             value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '在线', value: '99'}, {label: '离线', value: '0'}]}
+            options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
             onChange={(value) => {
               onChange(value === 'all' ? null : value);
             }}
@@ -141,6 +141,7 @@ const Monitor = () => {
       <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
           <LeftTree
+            noEmpty
             firstKey={!searchParams.modelId}
             open={close}
             modelId={searchParams.modelId}
