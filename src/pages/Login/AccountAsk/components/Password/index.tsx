@@ -10,6 +10,7 @@ interface Props {
   disabled?: any;
   inputDisabled?: any;
   placeholder?: any;
+  content?: any;
   reset?: boolean;
   visibilityToggle?: boolean;
 }
@@ -27,7 +28,8 @@ const Password: React.FC<Props> = (props) => {
     initPassword = () => {
     },
     disabled,
-    placeholder
+    placeholder,
+    content,
   } = props;
 
   return <Input.Group>
@@ -41,7 +43,7 @@ const Password: React.FC<Props> = (props) => {
       style={{width: reset ? 'calc(100% - 90px)' : ''}}
     />
     <div hidden={!reset} style={{display: 'inline-block'}}>
-      <Warning disabled={disabled} content='您确定要重置密码么？重置后默认初始密码为手机号后六位' onOk={() => {
+      <Warning disabled={disabled} content={content || '您确定要重置密码么？重置后默认初始密码为手机号后六位'} onOk={() => {
         onChange(initPassword());
         onReset(initPassword());
       }}>

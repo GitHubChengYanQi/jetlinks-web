@@ -34,3 +34,14 @@ export const alarmRecordList = {
   url: '/alarmRecord/list',
   method: 'POST'
 };
+
+export const alarmRecordEdit = {
+  url: '/alarmRecord/edit',
+  method: 'POST'
+};
+
+
+export const alarmRecordBatchView = {
+  url: '/alarmRecord/batchView',
+  method: 'POST'
+};

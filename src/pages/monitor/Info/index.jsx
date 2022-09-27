@@ -169,8 +169,8 @@ const Info = ({
       <Descriptions.Item label="软件版本">-</Descriptions.Item>
       <Descriptions.Item label="升级时间">-</Descriptions.Item>
       <Descriptions.Item label="运行时间">{runTime() || '-'}</Descriptions.Item>
-      <Descriptions.Item label="上线时间">{online ? (data.logtime || '-') : '-'}</Descriptions.Item>
-      <Descriptions.Item label="离线时间">{!online ? (data.logtime || '-') : '-'}</Descriptions.Item>
+      <Descriptions.Item label="上线时间">{online ? (data.logTime || '-') : '-'}</Descriptions.Item>
+      <Descriptions.Item label="离线时间">{!online ? (data.logTime || '-') : '-'}</Descriptions.Item>
     </Descriptions>
 
 

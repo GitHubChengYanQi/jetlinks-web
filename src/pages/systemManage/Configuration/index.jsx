@@ -1,13 +1,19 @@
 import React, {useState} from 'react';
 import {Button, Image, Input, Form, InputNumber, Radio, Space, Spin, Tabs, message} from 'antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import styles from './index.module.less';
 import FileUpload from '@/components/FileUpload';
 import {useRequest} from '@/util/Request';
 import {customerDetail, customerEdit} from '@/pages/systemManage/Tenant/url';
 import store from '@/store';
+import {preview} from '@/components/DownloadFile';
 
+const {baseURI} = config;
 
 const Configuration = () => {
+
+  const token = cookie.get('jetlink-token');
 
   const [form] = Form.useForm();
 
@@ -28,7 +34,7 @@ const Configuration = () => {
     }
   });
 
-  const [titleIcon, setTitleIcon] = useState();
+  const [fileId, setFileId] = useState();
 
   if (loading && !data) {
     return <div style={{padding: 24, textAlign: 'center'}}><Spin/></div>;
@@ -48,7 +54,7 @@ const Configuration = () => {
                   name="name"
                   noStyle
                 >
-                  <Input placeholder="请输入企业真实名称"/>
+                  <Input style={{minWidth:400}} placeholder="请输入企业真实名称"/>
                 </Form.Item>
                 <div className={styles.extra}>（企业名称将显示在您的平台左上角位置）</div>
               </Space>
@@ -57,18 +63,18 @@ const Configuration = () => {
             <Form.Item label="企业LOGO">
               <Space>
                 <Form.Item
-                  name="titleIcon"
+                  name="logo"
                   noStyle
-                  initialValue={titleIcon}
+                  initialValue={fileId}
                 >
-                  <FileUpload fileData={(file) => setTitleIcon(file.url)}/>
+                  <FileUpload onChange={(file) => setFileId(file)}/>
                 </Form.Item>
                 <div className={styles.extra}>（企业LOGO将显示在您的平台左上角位置和登录页面）</div>
               </Space>
             </Form.Item>
 
             <Form.Item label="预览">
-              <Image width={100} src={titleIcon}/>
+              <Image width={100} src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
             </Form.Item>
 
           </>
@@ -76,18 +82,18 @@ const Configuration = () => {
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="登陆有效期" name="loginTime">
+        <Form.Item label="登陆有效期" name="loginTime" initialValue='close'>
           <Radio.Group>
             <Space direction="vertical">
               <Radio value="close">关</Radio>
-              <Radio value="open">长时间未操作、后台挂起、正常使用<InputNumber style={{margin: '0 8px'}}/> 分钟后，重新登录系统</Radio>
+              <Radio value="open">长时间未操作、后台挂起、正常使用<InputNumber min={1} style={{margin: '0 8px'}}/> 分钟后，重新登录系统</Radio>
             </Space>
           </Radio.Group>
         </Form.Item>
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="平合模式" name="map">
+        <Form.Item label="平合模式" name="map" initialValue='close'>
           <Radio.Group>
             <Space direction="vertical">
               <Radio value="close">

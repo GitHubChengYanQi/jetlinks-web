@@ -12,6 +12,7 @@ const FileUpload = ({
   defaultFileList = [],
   onChange = () => {
   },
+  disbaled,
 }) => {
 
   const uploadProps = {
@@ -36,8 +37,8 @@ const FileUpload = ({
       }
     },
   };
-  return <Upload defaultFileList={defaultFileList} {...uploadProps}>
-    <Button type="primary" ghost icon={<UploadOutlined/>}>
+  return <Upload disabled={disbaled} defaultFileList={defaultFileList} {...uploadProps}>
+    <Button disabled={disbaled} type="primary" ghost icon={<UploadOutlined/>}>
       上传文件
     </Button>
   </Upload>;
