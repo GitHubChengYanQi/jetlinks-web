@@ -14,6 +14,8 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
+import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
+import {isArray} from '@/util/Tools';
 
 const Record = () => {
 
@@ -22,6 +24,22 @@ const Record = () => {
   const ref = useRef();
 
   const [keys, setKeys] = useState([]);
+
+  const getTypeName = (type, column = []) => {
+    let name = '';
+    column.forEach(columnItem => {
+      if (name) {
+        return;
+      }
+      if (columnItem.dataIndex === type) {
+        name = columnItem.title;
+        return;
+      }
+      const children = columnItem.children || [];
+      name = getTypeName(type, children);
+    });
+    return name;
+  };
 
   const {loading: batchViewLoading, run: batchView} = useRequest(alarmRecordBatchView, {
     manual: true,
@@ -32,7 +50,7 @@ const Record = () => {
   });
 
   const columns = [
-    {title: '报警时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '终端备注',
       dataIndex: 'remarks',
@@ -52,7 +70,22 @@ const Record = () => {
       align: 'center',
       render: (text) => <Render width={150} text={text} />
     },
-    {title: '报警类型', dataIndex: '7', align: 'center', render: (text) => <Render className="green" text={text || '-'} />},
+    {
+      title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
+      render: (text, record) => {
+        const column = record.column || [];
+        let ruleConditionJson = [];
+        try {
+          ruleConditionJson = JSON.parse(record.ruleConditionJson);
+        } catch (e) {
+
+        }
+        const types = ruleConditionJson.map(item => {
+          return getTypeName(item, column);
+        });
+        return <Render className="green">{types.toString()}</Render>;
+      }
+    },
     {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '所属客户',
@@ -79,7 +112,7 @@ const Record = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker />
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="设备名称" name="name" component={Input} />
       <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
@@ -92,13 +125,19 @@ const Record = () => {
       />
       <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
       <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="报警类型" name="7" component={Input} />
-      <FormItem label="所属客户" name="8" component={Input} />
+      {/* <FormItem label="报警类型" name="7" component={Input} /> */}
+      <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
     </>;
   };
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       ref={ref}
       onChange={setKeys}
       selectedRowKeys={keys}

@@ -8,6 +8,8 @@ import {DangerButton, PrimaryButton} from '@/components/Button';
 import Save from '@/pages/alarm/Rule/Save';
 import {alarmDelete, alarmList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
+import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import Select from '@/components/Select';
 
 const Rule = () => {
 
@@ -31,8 +33,8 @@ const Rule = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="规则名称" name="1" component={Input}/>
-      <FormItem label="设备型号" name="2" component={Input}/>
+      <FormItem label="规则名称" name="name" component={Input}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
     </>;
   };
 

@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, Input, message, Button} from 'antd';
+import {createFormActions} from '@formily/antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -9,7 +10,8 @@ import Save from '@/pages/alarm/Contacts/Save';
 import {request} from '@/util/Request';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
-import {createFormActions} from '@formily/antd';
+import {isArray} from '@/util/Tools';
+import DatePicker from '@/components/DatePicker';
 
 const formActionsPublic = createFormActions();
 
@@ -30,19 +32,19 @@ const Contacts = ({
   const ref = useRef();
 
   const columns = [
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '职务',
       dataIndex: 'job',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
-    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className="green" text={text || 500}/>
+      render: (text) => <Render className="green" text={text || 500} />
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
@@ -52,9 +54,9 @@ const Contacts = ({
         </Render>;
       }
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
   const handleDelete = (contactId) => {
@@ -100,16 +102,22 @@ const Contacts = ({
 
   const searchForm = () => {
     return <>
-      <FormItem noLabel={noAction} label="姓名" name="1" component={Input}/>
-      <FormItem noLabel={noAction} label="职务" name="2" component={Input}/>
-      <FormItem noLabel={noAction} label="负责区域" name="3" component={Input}/>
-      <FormItem noLabel={noAction} label="手机号码" name="5" component={Input}/>
-      {!noAction && <FormItem label="创建时间" name="6" component={Input}/>}
+      <FormItem noLabel={noAction} label="姓名" name="name" component={Input} />
+      <FormItem noLabel={noAction} label="职务" name="job" component={Input} />
+      <FormItem noLabel={noAction} label="负责区域" name="region" component={Input} />
+      <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input} />
+      {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker />}
     </>;
   };
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       formActions={formActionsPublic}
       selectedRowKeys={keys}
       onChange={(value, record) => {
@@ -148,7 +156,7 @@ const Contacts = ({
     <Save data={saveVisible} visible={saveVisible} success={() => {
       setSaveVisible();
       ref.current.submit();
-    }} close={() => setSaveVisible()}/>
+    }} close={() => setSaveVisible()} />
 
     <BatchImport
       title="联系人"
