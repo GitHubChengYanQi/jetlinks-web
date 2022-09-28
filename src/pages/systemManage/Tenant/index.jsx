@@ -13,6 +13,8 @@ import Info from '@/pages/systemManage/Tenant/Info';
 import DownloadFile from '@/components/DownloadFile';
 import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 const Tenant = () => {
 
@@ -113,6 +115,10 @@ const Tenant = () => {
     </>;
   };
 
+
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
   return <>
     <Table
       loading={loading || deleteLoading}
@@ -131,7 +137,9 @@ const Tenant = () => {
         <Dropdown disabled={keys.length === 0} key={1} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={2}>导出</PrimaryButton>
+        <PrimaryButton key={2} onClick={()=>{
+          window.open(`${baseURI}/CustomerExcel/export?authorization=${token}&customerIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       columns={columns}

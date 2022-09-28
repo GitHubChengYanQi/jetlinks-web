@@ -28,4 +28,5 @@ const alarmConfig = [
     ]
   },
 ];
+
 export default alarmConfig;

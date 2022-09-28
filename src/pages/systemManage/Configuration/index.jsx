@@ -23,7 +23,7 @@ const Configuration = () => {
 
   const [fileId, setFileId] = useState();
 
-  const {loading, data = {}, refresh} = useRequest({
+  const {loading, data, refresh} = useRequest({
     ...customerDetail,
     data: {customerId: info.customerId}
   }, {

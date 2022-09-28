@@ -6,6 +6,11 @@ export const login = {
   method: 'POST',
 };
 
+export const loginByPhone = {
+  url: '/rest/loginByPhone',
+  method: 'POST',
+};
+
 export const addressTree = {
   url: '/commonArea/treeView',
   method: 'POST',

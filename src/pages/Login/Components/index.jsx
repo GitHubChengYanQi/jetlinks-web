@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import classNames from 'classnames';
 import {HomeOutlined, LockOutlined, UserOutlined, MobileOutlined, VerifiedOutlined} from '@ant-design/icons';
+import {Button, message} from 'antd';
 import style from '../index.module.less';
-import SendCode from '@jiumao/rc-send-code';
+import request from '../../../util/Request/request';
+import {useRequest} from '@/util/Request';
 
 export const Code = (
   {
-    handleSubmit = () => {
-    },
     setCode = () => {
     },
     code = '',
+    phone = ''
   }) => {
 
   const [blur, setBlur] = useState(false);
@@ -21,23 +22,12 @@ export const Code = (
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      onKeyUp={e => {
-        if (e.keyCode === 13) {
-          handleSubmit();
-        }
-      }}
-      placeholder='请输入验证码'
+      placeholder="请输入验证码"
       onChange={e => setCode(e.target.value)}
       value={code}
       type="text"
     />
-    <SendCode
-      className={style.sendCode}
-      onCaptcha={() => {
-        console.log(111);
-        return true;
-      }}
-    />
+    <SendCode phone={phone}/>
   </div>;
 };
 
@@ -55,7 +45,7 @@ export const UserName = (
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      placeholder='请输入账号'
+      placeholder="请输入账号"
       onChange={e => setUsername(e.target.value)}
       value={username}
       type="text"
@@ -77,7 +67,7 @@ export const CorporateName = (
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      placeholder='请输入企业名称'
+      placeholder="请输入企业名称"
       onChange={e => setCorporateName(e.target.value)}
       value={corporateName}
       type="text"
@@ -99,7 +89,7 @@ export const Phone = (
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      placeholder='请输入手机号'
+      placeholder="请输入手机号"
       onChange={e => setPhone(e.target.value)}
       value={phone}
       type="text"
@@ -123,10 +113,58 @@ export const Password = (
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      placeholder='请输入密码'
+      placeholder="请输入密码"
       onChange={e => setPassword(e.target.value)}
       value={password}
       type="password"
     />
+  </div>;
+};
+
+
+export const SendCode = ({phone}) => {
+  const [count, setCount] = useState(60);
+  const [isShow, setShow] = useState(false);
+
+  const TimeRef = useRef();
+  const hClick = () => {
+    setShow(true);
+    TimeRef.current = setInterval(() => {
+      setCount(count => {
+        if (count === 0) {
+          // 清除定时器
+          clearInterval(TimeRef.current);
+          // 启用按钮
+          setShow(false);
+          setCount(60);
+        }
+        return count - 1;
+      });
+    }, 1000);
+  };
+
+  const {loading,run} = useRequest({url: '/sms/sendCode', method: 'POST'},{
+    manual:true,
+    onSuccess:()=>{
+      message.warn('验证码已发送，请注意查收!');
+      hClick(!isShow);
+    }
+  });
+
+  return <div>
+    <Button
+      loading={loading}
+      className={style.sendCode}
+      type="primary"
+      ghost
+      onClick={async () => {
+        if (phone) {
+          run({data:{account: phone}});
+        } else {
+          message.warn('请输入手机号!');
+        }
+      }}
+      disabled={isShow}
+    >{isShow ? `${count}秒后再试` : '发送验证码'}</Button>
   </div>;
 };

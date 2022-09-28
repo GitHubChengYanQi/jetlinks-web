@@ -5,13 +5,15 @@ import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
-import {contactDelete, contactList} from '@/pages/alarm/Contacts/url';
+import {contactDelete, contactDownloadTemplate, contactExcel, contactList} from '@/pages/alarm/Contacts/url';
 import Save from '@/pages/alarm/Contacts/Save';
 import {request} from '@/util/Request';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 const formActionsPublic = createFormActions();
 
@@ -32,19 +34,19 @@ const Contacts = ({
   const ref = useRef();
 
   const columns = [
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '职务',
       dataIndex: 'job',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
-    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
+    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className="green" text={text || 500} />
+      render: (text) => <Render className="green" text={text || 500}/>
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
@@ -54,9 +56,9 @@ const Contacts = ({
         </Render>;
       }
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
   const handleDelete = (contactId) => {
@@ -81,7 +83,7 @@ const Contacts = ({
         key: '3',
         label: '批量新增',
         onClick: () => {
-
+          setBatchImport(true);
         }
       },
     ]}
@@ -102,13 +104,17 @@ const Contacts = ({
 
   const searchForm = () => {
     return <>
-      <FormItem noLabel={noAction} label="姓名" name="name" component={Input} />
-      <FormItem noLabel={noAction} label="职务" name="job" component={Input} />
-      <FormItem noLabel={noAction} label="负责区域" name="region" component={Input} />
-      <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input} />
-      {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker />}
+      <FormItem noLabel={noAction} label="姓名" name="name" component={Input}/>
+      <FormItem noLabel={noAction} label="职务" name="job" component={Input}/>
+      <FormItem noLabel={noAction} label="负责区域" name="region" component={Input}/>
+      <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input}/>
+      {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>}
     </>;
   };
+
+
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
 
   return <>
     <Table
@@ -135,7 +141,9 @@ const Contacts = ({
         <Dropdown key={2} overlay={actionMenu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3}>导出</PrimaryButton>
+        <PrimaryButton key={3} onClick={() => {
+          window.open(`${baseURI}/ContactExcel/export?authorization=${token}&contactIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       columns={columns}
@@ -156,9 +164,18 @@ const Contacts = ({
     <Save data={saveVisible} visible={saveVisible} success={() => {
       setSaveVisible();
       ref.current.submit();
-    }} close={() => setSaveVisible()} />
+    }} close={() => setSaveVisible()}/>
 
     <BatchImport
+      columns={[
+        {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+        {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text} />},
+        {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
+        {title: '手机号', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text} />},
+        {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
+      ]}
+      templeteApi={contactDownloadTemplate}
+      api={contactExcel}
       title="联系人"
       success={() => {
         setBatchImport(false);

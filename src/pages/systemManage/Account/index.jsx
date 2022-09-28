@@ -1,12 +1,14 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Menu, Dropdown, message, Input, Select as AntSelect} from 'antd';
 import moment from 'moment';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/systemManage/Account/Save';
 import Table from '@/components/Table';
 import {
-  mgrUserList, UserExcelExport,
+  mgrUserList, UserExcelDownloadTemplate,
   UserExcelImport,
   userFreeze,
   userRemove,
@@ -20,9 +22,6 @@ import {request, useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import BatchImport from '@/components/BatchImport';
-import {DeviceClassifyDownloadTemplate, DeviceClassifyExcel} from '@/pages/equipment/Grouping/url';
-import {config} from 'ice';
-import cookie from 'js-cookie';
 
 
 const Account = () => {
@@ -175,7 +174,7 @@ const Account = () => {
         key: '2',
         label: '导出',
         onClick: () => {
-          window.open(`${baseURI}/DeviceClassifyExcel/export?authorization=${token}&classifyIds=${keys}`);
+          window.open(`${baseURI}/UserExcel/export?authorization=${token}&userIds=${keys}`);
         }
       },
     ]}
@@ -260,7 +259,7 @@ const Account = () => {
         {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
       ]}
       title="分组"
-      templeteApi={UserExcelExport}
+      templeteApi={UserExcelDownloadTemplate}
       api={UserExcelImport}
       success={() => {
         setBatchImport(false);

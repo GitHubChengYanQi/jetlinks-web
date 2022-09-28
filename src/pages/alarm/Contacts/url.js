@@ -19,4 +19,11 @@ export const contactDelete = {
   method: 'POST',
 };
 
+export const contactExcel = {
+  url: '/ContactExcel/import',
+  method: 'GET',
+};
+
+export const contactDownloadTemplate = '/ContactExcel/downloadTemplate';
+
 

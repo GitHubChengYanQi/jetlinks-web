@@ -69,9 +69,4 @@ export const UserExcelImport = {
   method: 'GET',
 };
 
-export const UserExcelExport = {
-  url: '/UserExcel/export',
-  method: 'GET',
-};
-
 export const UserExcelDownloadTemplate = '/UserExcel/downloadTemplate';

@@ -11,6 +11,8 @@ import Note from '@/components/Note';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 const Role = () => {
 
@@ -67,7 +69,7 @@ const Role = () => {
         </Render>;
       }
     },
-    {title: '应用账号数', dataIndex: '5', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '应用账号数', dataIndex: 'userCount', align: 'center', render: (text) => <Render text={text}/>},
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
   ];
 
@@ -115,9 +117,14 @@ const Role = () => {
     );
   };
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
   return <>
 
     <Table
+      onChange={setKeys}
+      selectedRowKeys={keys}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
@@ -133,7 +140,9 @@ const Role = () => {
         <Dropdown key="1" overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key="2">导出</PrimaryButton>
+        <PrimaryButton key="2" onClick={()=>{
+          window.open(`${baseURI}/RoleExcel/export?authorization=${token}&roleIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       api={roleList}
       columns={columns}

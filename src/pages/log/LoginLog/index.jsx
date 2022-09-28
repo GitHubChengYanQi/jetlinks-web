@@ -9,6 +9,8 @@ import {DangerButton, PrimaryButton} from '@/components/Button';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 
 const LoginLog = () => {
@@ -28,10 +30,10 @@ const LoginLog = () => {
   });
 
   const columns = [
-    {title: '登录时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text} />},
-    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text} />},
+    {title: '登录时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '登录内容',
       dataIndex: 'succeed',
@@ -48,12 +50,15 @@ const LoginLog = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="登录时间" name="time" component={DatePicker} RangePicker />
-        <FormItem label="账号姓名" name="name" component={Input} />
-        <FormItem label="账号名称" name="account" component={Input} />
+        <FormItem label="登录时间" name="time" component={DatePicker} RangePicker/>
+        <FormItem label="账号姓名" name="name" component={Input}/>
+        <FormItem label="账号名称" name="account" component={Input}/>
       </>
     );
   };
+
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
 
   return <>
     <Table
@@ -80,7 +85,9 @@ const LoginLog = () => {
           >
             批量删除</DangerButton>
         </Warning>,
-        <PrimaryButton key="1">导出</PrimaryButton>
+        <PrimaryButton key="1" onClick={() => {
+          window.open(`${baseURI}/LoginLogExcel/export?authorization=${token}&logIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={loginLogList}

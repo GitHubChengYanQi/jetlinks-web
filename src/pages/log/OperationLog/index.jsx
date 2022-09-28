@@ -9,6 +9,8 @@ import {DangerButton, PrimaryButton} from '@/components/Button';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 const OperationLog = () => {
 
@@ -40,7 +42,7 @@ const OperationLog = () => {
       render: (text) => <Render text={text}/>
     },
     {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '角色名称', dataIndex: '4', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
     {title: '登录IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text}/>},
     {title: '操作菜单', dataIndex: 'logType', align: 'center', render: (text = '') => <Render text={text}/>},
     {
@@ -67,6 +69,9 @@ const OperationLog = () => {
     );
   };
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
   return <>
     <Table
       formSubmit={(values) => {
@@ -90,9 +95,12 @@ const OperationLog = () => {
             disabled={keys.length === 0}
             danger
           >
-            批量删除</DangerButton>
+            批量删除
+          </DangerButton>
         </Warning>,
-        <PrimaryButton key="1">导出</PrimaryButton>
+        <PrimaryButton key="1" onClick={()=>{
+          window.open(`${baseURI}/LogExcel/export?authorization=${token}&operationLogIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={operationLogList}
