@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import classNames from 'classnames';
 import {HomeOutlined, LockOutlined, UserOutlined, MobileOutlined, VerifiedOutlined} from '@ant-design/icons';
 import style from '../index.module.less';
+import SendCode from '@jiumao/rc-send-code';
 
 export const Code = (
   {
@@ -16,6 +17,7 @@ export const Code = (
 
   return <div className={classNames(style.item, blur && style.check)}>
     <div className={style.userLabel}><VerifiedOutlined/></div>
+
     <input
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
@@ -28,6 +30,13 @@ export const Code = (
       onChange={e => setCode(e.target.value)}
       value={code}
       type="text"
+    />
+    <SendCode
+      className={style.sendCode}
+      onCaptcha={() => {
+        console.log(111);
+        return true;
+      }}
     />
   </div>;
 };
