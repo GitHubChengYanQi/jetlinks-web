@@ -321,7 +321,7 @@ const TableWarp = (
               fixed: 'left',
               dataIndex: '0',
               width: '70px',
-              render: (value, record, index) => <Render text={index + 1} width={70} />
+              render: (value, record, index) => <Render text={(pagination.current - 1)*pagination.pageSize+(index+1)} width={70} />
             }]),
             ...tableColumn.filter(item => item.checked),
             ...action,

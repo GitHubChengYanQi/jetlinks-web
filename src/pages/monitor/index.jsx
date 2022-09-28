@@ -63,13 +63,17 @@ const Monitor = () => {
       dataIndex: 'remarks',
       align: 'center',
       render: (remarks, record) => {
-        return <Space>
+        return <div style={{display: 'flex', alignItems: 'center'}}>
           <Button
+            style={{flexGrow: 1}}
             className="blue"
             type="link"
-            onClick={() => setInfoVisible(record)}>{remarks}</Button>
-          <EditOutlined onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})} />
-        </Space>;
+            onClick={() => setInfoVisible(record)}>{remarks || '-'}</Button>
+          <EditOutlined
+            style={{float: 'right'}}
+            onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})}
+          />
+        </div>;
       }
     },
     {

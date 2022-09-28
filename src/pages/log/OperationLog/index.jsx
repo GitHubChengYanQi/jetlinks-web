@@ -40,7 +40,7 @@ const OperationLog = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="操作时间" select name="time" component={DatePicker} showTime/>
+        <FormItem label="操作时间" select name="time" component={DatePicker} RangePicker />
         <FormItem label="账号姓名" name="name" component={Input}/>
         <FormItem label="账号名称" name="account" component={Input}/>
         <FormItem

@@ -76,35 +76,35 @@ const Equipment = () => {
       dataIndex: 'remarks',
       align: 'center',
       render: (remarks, record) => {
-        return <Space>
-          {remarks || '-'}
-          <EditOutlined onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})}/>
-        </Space>;
+        return <div style={{display:'flex',alignItems:'center'}}>
+          <Render style={{flexGrow:1}}>{remarks || '-'}</Render>
+          <EditOutlined style={{float:'right',marginLeft:8}} onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})} />
+        </div>;
       }
     },
     {
       title: '登记名称',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text || '-'}/>
+      render: (text) => <Render text={text || '-'} />
     },
     {
       title: '设备分组',
       dataIndex: 'classifyName',
       align: 'center',
-      render: (text) => <Render text={text || '-'}/>
+      render: (text) => <Render text={text || '-'} />
     },
     {
       title: '设备类别',
       dataIndex: 'categoryName',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={text}/>
+      render: (text) => <Render width={120} text={text} />
     },
     {
       title: '设备IP地址',
@@ -122,13 +122,13 @@ const Equipment = () => {
       title: '设备MAC地址',
       dataIndex: 'mac',
       align: 'center',
-      render: (text) => <Render width={120} text={text}/>
+      render: (text) => <Render width={120} text={text} />
     },
     {
       title: '位置信息',
       dataIndex: 'area',
       align: 'center',
-      render: (text) => <Render width={200} text={text}/>
+      render: (text) => <Render width={200} text={text} />
     }, {
       title: '经纬度信息',
       dataIndex: '10',
@@ -144,7 +144,7 @@ const Equipment = () => {
       render: (value, record) => {
         const open = record.status === 'online';
         if (!open) {
-          return <Render width={150} text="-"/>;
+          return <Render width={150} text="-" />;
         }
         const oldsecond = moment(new Date()).diff(value, 'second');
         const day = Math.floor(oldsecond / 86400) || 0;
@@ -162,7 +162,7 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={open ? value : '-'}/>;
+        return <Render width={150} text={open ? value : '-'} />;
       }
     },
     {
@@ -171,14 +171,14 @@ const Equipment = () => {
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={!open ? value : '-'}/>;
+        return <Render width={150} text={!open ? value : '-'} />;
       }
     },
     {
       title: '质保时间',
       dataIndex: '12',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (text) => <Render width={150} text={text} />
     },
   ];
 
@@ -250,9 +250,9 @@ const Equipment = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -260,10 +260,10 @@ const Equipment = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area}/>
-      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
+      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker />
     </>;
   };
 

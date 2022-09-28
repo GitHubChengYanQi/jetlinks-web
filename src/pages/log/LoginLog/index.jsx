@@ -1,11 +1,12 @@
 import React from 'react';
-import {DatePicker, Input} from 'antd';
+import {Input} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import {loginLogList} from './url';
 import FormItem from '@/components/Table/components/FormItem/index';
 import {DangerButton, PrimaryButton} from '@/components/Button';
+import DatePicker from '@/components/DatePicker';
 
 
 const LoginLog = () => {
@@ -31,7 +32,7 @@ const LoginLog = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="登录时间" name="time" component={DatePicker} showTime/>
+        <FormItem label="登录时间" name="time" component={DatePicker} RangePicker />
         <FormItem label="账号姓名" name="name" component={Input}/>
         <FormItem label="账号名称" name="account" component={Input}/>
       </>
