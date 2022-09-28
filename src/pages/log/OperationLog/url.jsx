@@ -28,3 +28,9 @@ export const operationLogList = {
   rowKey:'operationLogId'
 };
 
+
+export const operationLogBatchDelete = {
+  url: '/log/batchDelete',
+  method: 'POST',
+};
+

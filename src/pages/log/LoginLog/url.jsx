@@ -27,3 +27,9 @@ export const loginLogList = {
   method: 'POST',
   rowKey:'loginLogId'
 };
+
+export const loginLogBatchDelete = {
+  url: '/loginLog/batchDelete',
+  method: 'POST',
+  rowKey:'loginLogId'
+};

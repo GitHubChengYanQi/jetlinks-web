@@ -1,21 +1,36 @@
-import React from 'react';
-import {Input} from 'antd';
+import React, {useRef, useState} from 'react';
+import {Input, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
-import {loginLogList} from './url';
+import {loginLogBatchDelete, loginLogList} from './url';
 import FormItem from '@/components/Table/components/FormItem/index';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import DatePicker from '@/components/DatePicker';
+import {useRequest} from '@/util/Request';
 
 
 const LoginLog = () => {
 
+  const ref = useRef();
+
+  const [keys, setKeys] = useState([]);
+
+  const {loading: deleteLoading, run: deleteRun} = useRequest(loginLogBatchDelete, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('删除失败!')
+  });
+
   const columns = [
-    {title: '登录时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '登录时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text} />},
+    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '登录内容',
       dataIndex: 'succeed',
@@ -33,17 +48,31 @@ const LoginLog = () => {
     return (
       <>
         <FormItem label="登录时间" name="time" component={DatePicker} RangePicker />
-        <FormItem label="账号姓名" name="name" component={Input}/>
-        <FormItem label="账号名称" name="account" component={Input}/>
+        <FormItem label="账号姓名" name="name" component={Input} />
+        <FormItem label="账号名称" name="account" component={Input} />
       </>
     );
   };
 
   return <>
     <Table
-      tableKey='loginlog'
+      loading={deleteLoading}
+      selectedRowKeys={keys}
+      onChange={setKeys}
+      ref={ref}
+      tableKey="loginlog"
       searchButtons={[
-        <Warning key="0"><DangerButton danger>批量删除</DangerButton></Warning>,
+        <Warning
+          disabled={keys.length === 0}
+          key="0"
+          onOk={() => deleteRun({data: {logIds: keys}})}
+        >
+          <DangerButton
+            disabled={keys.length === 0}
+            danger
+          >
+            批量删除</DangerButton>
+        </Warning>,
         <PrimaryButton key="1">导出</PrimaryButton>
       ]}
       searchForm={searchForm}
@@ -51,7 +80,7 @@ const LoginLog = () => {
       columns={columns}
       rowKey="loginLogId"
       actionRender={(text, record) => (
-        <Warning><DangerButton>删除</DangerButton></Warning>
+        <Warning onOk={() => deleteRun({data: {logIds: [record.loginLogId]}})}><DangerButton>删除</DangerButton></Warning>
       )}
     />
   </>;

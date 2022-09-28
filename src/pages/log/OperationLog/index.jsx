@@ -1,15 +1,30 @@
-import React from 'react';
-import {DatePicker, Select as AntSelect, Input} from 'antd';
+import React, {useRef, useState} from 'react';
+import {DatePicker, Select as AntSelect, Input, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
-import {operationLogList} from './url';
+import {operationLogBatchDelete, operationLogList} from './url';
 import FormItem from '../../../components/Table/components/FormItem/index';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import Select from '@/components/Select';
 import {roleListSelect} from '@/Config/ApiUrl/system/role';
+import {useRequest} from '@/util/Request';
 
 const OperationLog = () => {
+
+  const ref = useRef();
+
+  const [keys, setKeys] = useState([]);
+
+  const {loading: deleteLoading, run: deleteRun} = useRequest(operationLogBatchDelete, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.submit();
+    },
+    onError: () => message.error('删除失败!')
+  });
 
   const columns = [
     {
@@ -60,17 +75,31 @@ const OperationLog = () => {
 
   return <>
     <Table
+      loading={deleteLoading}
+      selectedRowKeys={keys}
+      onChange={setKeys}
+      ref={ref}
       tableKey="operationlog"
       searchButtons={[
-        <Warning key={1}><DangerButton>批量删除</DangerButton></Warning>,
-        <PrimaryButton key={2}>导出</PrimaryButton>
+        <Warning
+          disabled={keys.length === 0}
+          key="0"
+          onOk={() => deleteRun({data: {logIds: keys}})}
+        >
+          <DangerButton
+            disabled={keys.length === 0}
+            danger
+          >
+            批量删除</DangerButton>
+        </Warning>,
+        <PrimaryButton key="1">导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={operationLogList}
       columns={columns}
       rowKey="operationLogId"
       actionRender={(text, record) => (
-        <Warning><DangerButton>删除</DangerButton></Warning>
+        <Warning onOk={() => deleteRun({data: {logIds: [record.operationLogId]}})}><DangerButton>删除</DangerButton></Warning>
       )}
     />
   </>;
