@@ -56,7 +56,7 @@ const Configuration = () => {
             <Form.Item label="企业名称">
               <Space>
                 <Form.Item
-                  initialValue={data.name}
+                  initialValue={data?.name}
                   name="name"
                   noStyle
                 >
