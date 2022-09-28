@@ -63,3 +63,15 @@ export const userStart = {
   url: '/rest/mgr/start',
   method: 'POST',
 };
+
+export const UserExcelImport = {
+  url: '/UserExcel/import',
+  method: 'GET',
+};
+
+export const UserExcelExport = {
+  url: '/UserExcel/export',
+  method: 'GET',
+};
+
+export const UserExcelDownloadTemplate = '/UserExcel/downloadTemplate';

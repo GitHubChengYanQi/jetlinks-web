@@ -1,16 +1,28 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Menu, Dropdown, message, Input, Select, Select as AntSelect} from 'antd';
+import {Button, Space, Menu, Dropdown, message, Input, Select as AntSelect} from 'antd';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/systemManage/Account/Save';
 import Table from '@/components/Table';
-import {mgrUserList, userFreeze, userRemove, userStart, userStop, userUnfreeze} from '@/Config/ApiUrl/system/user';
+import {
+  mgrUserList, UserExcelExport,
+  UserExcelImport,
+  userFreeze,
+  userRemove,
+  userStart,
+  userStop,
+  userUnfreeze
+} from '@/Config/ApiUrl/system/user';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {request, useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
-import moment from 'moment';
+import BatchImport from '@/components/BatchImport';
+import {DeviceClassifyDownloadTemplate, DeviceClassifyExcel} from '@/pages/equipment/Grouping/url';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 
 
 const Account = () => {
@@ -20,6 +32,8 @@ const Account = () => {
   const [saveVisible, setSaveVisible] = useState();
 
   const [keys, setKeys] = useState([]);
+
+  const [batchImport, setBatchImport] = useState(false);
 
   // 冻结账号
   const {run: freezeRun} = useRequest(userFreeze,
@@ -144,20 +158,24 @@ const Account = () => {
     ]}
   />;
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
+
   const exportMenu = <Menu
     items={[
       {
         key: '1',
         label: '导入',
         onClick: () => {
-
+          setBatchImport(true);
         }
       },
       {
         key: '2',
         label: '导出',
         onClick: () => {
-
+          window.open(`${baseURI}/DeviceClassifyExcel/export?authorization=${token}&classifyIds=${keys}`);
         }
       },
     ]}
@@ -234,6 +252,22 @@ const Account = () => {
       close={() => setSaveVisible(null)}
       visible={Boolean(saveVisible)}
       data={saveVisible || {}}
+    />
+
+    <BatchImport
+      columns={[
+        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
+      ]}
+      title="分组"
+      templeteApi={UserExcelExport}
+      api={UserExcelImport}
+      success={() => {
+        setBatchImport(false);
+        ref.current.submit();
+      }}
+      visible={batchImport}
+      close={() => setBatchImport(false)}
     />
   </>;
 };

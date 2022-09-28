@@ -43,6 +43,7 @@ const Monitor = () => {
     {
       title: '设备状态',
       dataIndex: 'status',
+      width: 100,
       align: 'center',
       render: (status) => {
         const online = status === 'online';
@@ -62,11 +63,12 @@ const Monitor = () => {
       align: 'center',
       render: (remarks, record) => {
         return <div style={{display: 'flex', alignItems: 'center'}}>
-          <Button
-            style={{flexGrow: 1}}
-            className="blue"
-            type="link"
-            onClick={() => setInfoVisible(record)}>{remarks || '-'}</Button>
+          <Render style={{flexGrow: 1}}>
+            <Button
+              className="blue"
+              type="link"
+              onClick={() => setInfoVisible(record)}>{remarks || '-'}</Button>
+          </Render>
           <EditOutlined
             style={{float: 'right'}}
             onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})}
@@ -83,7 +85,7 @@ const Monitor = () => {
       </Space>,
       dataIndex: 'name',
       align: 'center',
-      render: (name) => <Render text={name} />
+      render: (name) => <Render text={name || '-'} />
     }, {
       title: 'MAC',
       dataIndex: 'mac',
@@ -93,8 +95,11 @@ const Monitor = () => {
     ...modelColumns.map(item => {
       const children = item.children || [];
       const render = (text) => {
+        if (typeof text === 'object') {
+          return <Render>-</Render>;
+        }
         try {
-          return <Render>{typeof text === 'undefined' ? '-' : text}</Render>;
+          return <Render>{typeof text === 'number' ? text : (text || '-')}</Render>;
         } catch (e) {
           return <Render text="-" />;
         }
@@ -174,6 +179,10 @@ const Monitor = () => {
             return data.map(item => ({...item, ...(item.protocolDetail || {})}));
           }}
           onResponse={(res = {}) => {
+            if (res.count === 0) {
+              setModelColumns([]);
+              return;
+            }
             setModelColumns(res.columns || []);
           }}
           columnsResh

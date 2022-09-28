@@ -55,6 +55,13 @@ const AntForm = (
   const {loading: editLoading, run: edit} = useRequest(apis.edit, {
     manual: true,
     onSuccess: (res) => {
+      if (res.errCode === 1001) {
+        Modal.warn({
+          content: res.message,
+          okText: '确认'
+        });
+        return;
+      }
       message.success('修改成功！');
       success(res);
     },
