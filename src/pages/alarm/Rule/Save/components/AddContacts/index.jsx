@@ -44,7 +44,7 @@ const AddContacts = (
       zIndex={1002}
       title="选择报警联系人"
       destroyOnClose
-      className={styles.drawer}
+      width='50vw'
       open={open}
       onClose={() => setOpen(false)}
     >

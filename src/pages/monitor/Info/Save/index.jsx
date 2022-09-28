@@ -6,11 +6,14 @@ import {alarmListSelect} from '@/pages/alarm/url';
 import Warning from '@/components/Warning';
 import {deviceEdit} from '@/pages/equipment/Equipment/url';
 import AlarmDetail from '@/pages/alarm/Rule/AlarmDetail';
+import {isArray} from '@/util/Tools';
 
 const Save = (
   {
     device = {},
     close = () => {
+    },
+    success = () => {
     },
     visible,
   }
@@ -36,7 +39,7 @@ const Save = (
     manual: true,
     onSuccess: () => {
       message.success('保存成功！');
-      close();
+      success();
     },
     onError: () => message.error('保存失败！')
   });
@@ -49,6 +52,7 @@ const Save = (
   });
 
   useEffect(() => {
+    setData(isArray(device.alarmResults).map(item => ({alarmId: item.alarmId})));
     if (device.modelId) {
       getRuleList({data: {modelId: device.modelId}});
     }
@@ -68,7 +72,7 @@ const Save = (
         run({
           data: {
             deviceId: device.deviceId,
-            alarmId: data[0].alarmId
+            alarmIds: data.map(item => item.alarmId)
           }
         });
       }}
@@ -80,7 +84,7 @@ const Save = (
             <>当前设备暂无规则,<Button type="link" onClick={() => {
               setData([{}]);
             }}>增加规则</Button></>
-          }/>}
+          } />}
           <Space direction="vertical" style={{width: '100%'}}>
             {
               data.map((item, index) => {
@@ -104,7 +108,7 @@ const Save = (
                     const newData = data.filter((dataItem, dataIndex) => dataIndex !== index);
                     setData(newData);
                   }}>
-                    <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
+                    <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
                   </Warning>
                 </Space>;
               })
@@ -112,7 +116,7 @@ const Save = (
 
             {data.length > 0 && <Button type="primary" ghost onClick={() => {
               setData([...data, {}]);
-            }}><PlusOutlined/>增加规则</Button>}
+            }}><PlusOutlined />增加规则</Button>}
           </Space>
         </div>
       </Spin>
@@ -125,7 +129,7 @@ const Save = (
         open={open}
         onClose={() => setOpen()}
       >
-        <AlarmDetail alarmId={open}/>
+        <AlarmDetail alarmId={open} />
       </Drawer>
     </Modal>
   );

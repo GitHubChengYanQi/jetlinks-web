@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useImperativeHandle, useState} from 'react';
 import {Descriptions} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import moment from 'moment';
@@ -6,20 +6,23 @@ import style from './index.module.less';
 import {useRequest} from '@/util/Request';
 import Render from '@/components/Render';
 import {monitorDetail} from '@/pages/monitor/url';
+import Save from '@/pages/monitor/Info/Save';
 
 
 const Info = ({
   deviceId,
   modelId
-}) => {
+}, ref) => {
 
   const [data, setData] = useState({});
   const [networkData, setNetworkData] = useState([]);
   const [otherData, setOtherData] = useState([]);
 
+  const [saveVisible, setSaveVisible] = useState();
+
   const protocolDetail = data.protocolDetail || {};
 
-  const {loading} = useRequest(
+  const {loading, refresh} = useRequest(
     {...monitorDetail, data: {deviceId, modelId}},
     {
       onSuccess: (res) => {
@@ -31,6 +34,14 @@ const Info = ({
   );
 
   const online = data.status === 'online';
+
+  const openAlarm = () => {
+    setSaveVisible(data);
+  };
+
+  useImperativeHandle(ref, () => ({
+    openAlarm,
+  }));
 
   if (loading) {
     return <PageSkeleton />;
@@ -108,57 +119,6 @@ const Info = ({
       })
     }
 
-
-    {/* <Descriptions */}
-    {/*   column={3} */}
-    {/*   className={style.descriptions} */}
-    {/*   title={<div className={style.title}>网络数据</div>} */}
-    {/*   style={{marginBottom: 24}} */}
-    {/*   bordered */}
-    {/* > */}
-    {/*   <Descriptions.Item label="主干网络">-</Descriptions.Item> */}
-    {/*   <Descriptions.Item label="Combo1">-</Descriptions.Item> */}
-    {/*   <Descriptions.Item label="4G网络">-</Descriptions.Item> */}
-    {/* </Descriptions> */}
-
-    {/* <div className={style.navTitle}>接入网口网络状态</div> */}
-    {/* <Descriptions column={6} bordered className={style.descriptions} style={{marginBottom: 24}}> */}
-    {/*   { */}
-    {/*     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => { */}
-    {/*       return <Descriptions.Item label={`网口${item}`} key={index}>-</Descriptions.Item>; */}
-    {/*     }) */}
-    {/*   } */}
-    {/* </Descriptions> */}
-    {/* <div className={style.navTitle}>接入网口网络速率</div> */}
-    {/* <Descriptions column={6} bordered className={style.descriptions} style={{marginBottom: 24}}> */}
-    {/*   { */}
-    {/*     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => { */}
-    {/*       return <Descriptions.Item label={`网口${item}`} key={index}>-</Descriptions.Item>; */}
-    {/*     }) */}
-    {/*   } */}
-    {/* </Descriptions> */}
-    {/* <div className={style.navTitle}>接入网口网络丢包率</div> */}
-    {/* <Descriptions column={6} bordered className={style.descriptions} style={{marginBottom: 24}}> */}
-    {/*   { */}
-    {/*     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => { */}
-    {/*       return <Descriptions.Item label={`网口${item}`} key={index}>-</Descriptions.Item>; */}
-    {/*     }) */}
-    {/*   } */}
-    {/* </Descriptions> */}
-    {/* <Descriptions */}
-    {/*   column={5} */}
-    {/*   className={style.descriptions} */}
-    {/*   title={<div className={style.title}>环境数据</div>} */}
-    {/*   bordered */}
-    {/*   style={{marginBottom: 24}} */}
-    {/* > */}
-    {/*   <Descriptions.Item label="温度/℃">-</Descriptions.Item> */}
-    {/*   <Descriptions.Item label="湿度/%RH">-</Descriptions.Item> */}
-    {/*   <Descriptions.Item label="柜门状态">-</Descriptions.Item> */}
-    {/*   <Descriptions.Item label="风扇状态">-</Descriptions.Item> */}
-    {/*   <Descriptions.Item label="水浸状态">-</Descriptions.Item> */}
-    {/* </Descriptions> */}
-
     <Descriptions
       column={5}
       className={style.descriptions}
@@ -173,8 +133,17 @@ const Info = ({
       <Descriptions.Item label="离线时间">{!online ? (data.logTime || '-') : '-'}</Descriptions.Item>
     </Descriptions>
 
+    <Save
+      visible={saveVisible}
+      close={() => setSaveVisible()}
+      device={saveVisible}
+      success={() => {
+        setSaveVisible();
+        refresh();
+      }}
+    />
 
   </>;
 };
 
-export default Info;
+export default React.forwardRef(Info);

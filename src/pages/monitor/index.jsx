@@ -22,7 +22,6 @@ import BackboneNetwork from '@/pages/monitor/components/BackboneNetwork';
 import Network4G from '@/pages/monitor/components/4gNetwork';
 import DatePicker from '@/components/DatePicker';
 import {monitorList} from '@/pages/monitor/url';
-import Save from '@/pages/monitor/Info/Save';
 import {LinkButton} from '@/components/Button';
 import Table from '@/components/Table';
 
@@ -33,11 +32,10 @@ const Monitor = () => {
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
 
-  const [saveVisible, setSaveVisible] = useState();
-
   const [open, setOpen] = useState({});
 
   const ref = useRef();
+  const infoRef = useRef();
 
   const [modelColumns, setModelColumns] = useState([]);
 
@@ -168,6 +166,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          maxHeight="calc(100vh - 435px)"
           condition={(values) => {
             return values.modelId;
           }}
@@ -183,7 +182,7 @@ const Monitor = () => {
           api={monitorList}
           columns={columns}
           rowKey="deviceId"
-          actionRender={(text, record) => (
+          actionRender={() => (
             <Button type="primary">孪生数据</Button>
           )}
         />
@@ -197,13 +196,11 @@ const Monitor = () => {
       placement="right"
       onClose={() => setInfoVisible({})}
       open={infoVisible.modelId}
-      extra={<LinkButton onClick={() => setSaveVisible({
-        deviceId: infoVisible.deviceId,
-        modelId: infoVisible.modelId
-      })}>报警设置</LinkButton>}
+      extra={<LinkButton onClick={() => infoRef.current.openAlarm()}>报警设置</LinkButton>}
     >
-      <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
+      <Info ref={infoRef} deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
     </Drawer>
+
     <NoteSave
       close={() => setNoteVisible({})}
       data={noteVisible}
@@ -227,11 +224,6 @@ const Monitor = () => {
       {open.type === '4gNetwork' && <Network4G />}
     </Drawer>
 
-    <Save
-      visible={saveVisible}
-      close={() => setSaveVisible()}
-      device={saveVisible}
-    />
   </>;
 };
 export default Monitor;

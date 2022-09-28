@@ -1,14 +1,14 @@
 import React, {useRef, useState} from 'react';
-import {DatePicker, Select as AntSelect, Input, message} from 'antd';
+import {Select as AntSelect, Input, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import {operationLogBatchDelete, operationLogList} from './url';
 import FormItem from '../../../components/Table/components/FormItem/index';
 import {DangerButton, PrimaryButton} from '@/components/Button';
-import Select from '@/components/Select';
-import {roleListSelect} from '@/Config/ApiUrl/system/role';
 import {useRequest} from '@/util/Request';
+import {isArray} from '@/util/Tools';
+import DatePicker from '@/components/DatePicker';
 
 const OperationLog = () => {
 
@@ -60,21 +60,21 @@ const OperationLog = () => {
         <FormItem label="账号名称" name="account" component={Input}/>
         <FormItem
           label="角色名称"
-          select
-          name="roleId"
-          format={(data = []) => {
-            return data.map(item => ({label: item.name, value: `${item.role_id}`}));
-          }}
-          api={roleListSelect}
-          component={Select}
+          name="roleName"
+          component={Input}
         />
-        <FormItem label="操作菜单" select name="menu" component={AntSelect}/>
       </>
     );
   };
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       loading={deleteLoading}
       selectedRowKeys={keys}
       onChange={setKeys}

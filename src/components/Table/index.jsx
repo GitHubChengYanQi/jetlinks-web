@@ -253,10 +253,12 @@ const TableWarp = (
     },);
   }
 
+  const searchHeight = document.getElementById('search') || {};
+
   return (
     <Card bordered={false} bodyStyle={bodyStyle}>
       <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
-        {!noForm && <div className="search" style={headStyle}>
+        {!noForm && <div id="search" className="search" style={headStyle}>
           {searchForm ?
             <Row justify="space-between">
               <Col>
@@ -321,7 +323,8 @@ const TableWarp = (
               fixed: 'left',
               dataIndex: '0',
               width: '70px',
-              render: (value, record, index) => <Render text={(pagination.current - 1)*pagination.pageSize+(index+1)} width={70} />
+              render: (value, record, index) => <Render
+                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70} />
             }]),
             ...tableColumn.filter(item => item.checked),
             ...action,
@@ -348,7 +351,7 @@ const TableWarp = (
           }}
           footer={noFooter ? false : footer}
           layout
-          scroll={{x: 'max-content'}}
+          scroll={{x: 'max-content', y: maxHeight || `calc(100vh - 320px - ${searchHeight.clientHeight}px)`}}
           {...other}
           {...props}
         >

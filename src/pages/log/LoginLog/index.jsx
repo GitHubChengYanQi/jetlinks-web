@@ -8,6 +8,7 @@ import FormItem from '@/components/Table/components/FormItem/index';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
+import {isArray} from '@/util/Tools';
 
 
 const LoginLog = () => {
@@ -56,6 +57,12 @@ const LoginLog = () => {
 
   return <>
     <Table
+      formSubmit={(values) => {
+        if (isArray(values.time).length > 0) {
+          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+        }
+        return values;
+      }}
       loading={deleteLoading}
       selectedRowKeys={keys}
       onChange={setKeys}
