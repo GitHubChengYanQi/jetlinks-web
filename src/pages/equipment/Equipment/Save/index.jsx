@@ -42,9 +42,6 @@ const Save = props => {
         key="mac"
         label="设备MAC"
         name="mac"
-        rules={[
-          {required: true, message: '请输入设备MAC'},
-        ]}
       >
         <Input disabled placeholder="请输入设备MAC" />
       </Form.Item>
@@ -53,9 +50,6 @@ const Save = props => {
         key="customerName"
         label="所属客户"
         name="customerName"
-        rules={[
-          {required: false, message: '请选择所属客户'},
-        ]}
       >
         <Input disabled placeholder="请选择所属客户" />
       </Form.Item>
@@ -64,9 +58,6 @@ const Save = props => {
         key="remarks"
         label="终端备注"
         name="remarks"
-        rules={[
-          {required: true, message: '请输入终端备注'},
-        ]}
       >
         <Input placeholder="请输入终端备注" />
       </Form.Item>
@@ -75,9 +66,6 @@ const Save = props => {
         key="name"
         label="登记名称"
         name="name"
-        rules={[
-          {required: true, message: '请输入登记名称'},
-        ]}
       >
         <Input disabled placeholder="请输入登记名称" />
       </Form.Item>
@@ -86,9 +74,6 @@ const Save = props => {
         key="categoryId"
         label="设备类别"
         name="categoryId"
-        rules={[
-          {required: true, message: '请选择设备类别'},
-        ]}
       >
         <Select
           disabled
@@ -102,9 +87,6 @@ const Save = props => {
         key="modelId"
         label="设备型号"
         name="modelId"
-        rules={[
-          {required: true, message: '请选择设备型号'},
-        ]}
       >
         <Select disabled api={deviceModelListSelect} placeholder="请选择设备所属型号" />
       </Form.Item>
@@ -113,9 +95,6 @@ const Save = props => {
         key="position"
         label="经度"
         name="position"
-        rules={[
-          {required: false, message: '请输入经纬度信息'},
-        ]}
       >
         <Position />
       </Form.Item>
@@ -124,9 +103,6 @@ const Save = props => {
         key="positionId"
         label="位置信息"
         name="positionId"
-        rules={[
-          {required: false, message: '请选择位置信息'},
-        ]}
       >
         <Cascader options={dataSource.area} placeholder='请选择位置信息' />
       </Form.Item>
@@ -135,9 +111,6 @@ const Save = props => {
         key="address"
         label="详细地址"
         name="address"
-        rules={[
-          {required: true, message: '请输入详细地址'},
-        ]}
       >
         <Input.TextArea placeholder="请输入详细地址" />
       </Form.Item>

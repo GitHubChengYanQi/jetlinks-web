@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, Input, Tooltip} from 'antd';
-import {getSearchParams, useHistory} from 'ice';
+import {config, getSearchParams, useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -17,6 +17,7 @@ import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
 import {EllipsisOutlined} from '@ant-design/icons';
+import cookie from 'js-cookie';
 
 const Record = () => {
 
@@ -32,13 +33,13 @@ const Record = () => {
     return ruleConditionJson.map((item, index) => {
       if (max) {
         if (index > 2) {
-          return <div key={index} />;
+          return <div key={index}/>;
         } else if (index === 2) {
           return <div key={index}>
             <Tooltip color="#fff" title={() => {
               return ruleTypes(ruleConditionJson);
             }}>
-              <EllipsisOutlined />
+              <EllipsisOutlined/>
             </Tooltip>
           </div>;
         }
@@ -82,7 +83,7 @@ const Record = () => {
   });
 
   const columns = [
-    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '终端备注',
       dataIndex: 'remarks',
@@ -93,14 +94,14 @@ const Record = () => {
         }}>{text}</div>
       </Render>
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} text={text}/>
     },
     {
       title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
@@ -109,24 +110,24 @@ const Record = () => {
         try {
           ruleConditionJson = JSON.parse(record.ruleConditionJson);
         } catch (e) {
-
+          console.log(e);
         }
 
-        return ruleTypes(ruleConditionJson,true);
+        return <Render>{ruleTypes(ruleConditionJson, true)}</Render>;
       }
     },
-    {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
+    {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '所属客户',
       dataIndex: 'customerName',
       align: 'center',
-      render: (text) => <Render width={200} text={text || '-'} />
+      render: (text) => <Render width={200} text={text || '-'}/>
     },
     {
       title: '位置信息',
       dataIndex: 'area',
       align: 'center',
-      render: (text) => <Render width={150} text={text || '-'} />
+      render: (text) => <Render width={150} text={text || '-'}/>
     },
   ];
 
@@ -141,10 +142,10 @@ const Record = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
+      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="设备名称" name="name" component={Input}/>
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -152,15 +153,19 @@ const Record = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      {/* <FormItem label="报警类型" name="7" component={Input} /> */}
-      <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="报警类型" name="ruleConditionJson" component={Input}/>
+      <FormItem label="所属客户" name="customerId" component={SelectCustomer}/>
       <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input}/>
       </div>
     </>;
   };
+
+
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
 
   return <>
     <Table
@@ -179,7 +184,9 @@ const Record = () => {
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3}>导出</PrimaryButton>
+        <PrimaryButton key={3} onClick={() => {
+          window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${keys}`);
+        }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={alarmRecordList}

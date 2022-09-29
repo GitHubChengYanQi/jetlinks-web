@@ -20,6 +20,8 @@ const ElectronicsMap = () => {
   const [infoVisible, setInfoVisible] = useState({});
   const [saveVisible, setSaveVisible] = useState(false);
 
+  const [params, setParams] = useState({});
+
   const ref = useRef();
 
   const searchForm = () => {
@@ -29,6 +31,9 @@ const ElectronicsMap = () => {
         onSubmit={(values) => {
           ref.current.submit(values);
         }}
+        onReset={() => {
+          ref.current.submit(params, true);
+        }}
       >
         <FormItem
           label="报警状态"
@@ -37,13 +42,18 @@ const ElectronicsMap = () => {
             return <Select
               defaultValue="all"
               value={value || 'all'}
-              options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'},]}
+              options={[
+                {label: '全部', value: 'all'},
+                {label: '正常', value: '1'},
+                {label: '报警', value: '0'},
+              ]}
               onChange={(value) => {
                 onChange(value === 'all' ? null : value);
               }}
             />;
           }}
-          select />
+          select
+        />
         <FormItem
           label="设备状态"
           name="status"
@@ -57,11 +67,11 @@ const ElectronicsMap = () => {
               }}
             />;
           }}
-          select />
-        <FormItem label="设备查询" name="name" component={Input} />
-        <FormItem label="位置信息" name="place" component={Input} />
+          select/>
+        <FormItem label="设备查询" name="name" component={Input}/>
+        <FormItem label="位置信息" name="place" component={Input}/>
         <FormButtonGroup>
-          <Submit><SearchOutlined />查询</Submit>
+          <Submit><SearchOutlined/>查询</Submit>
           <Reset>重置</Reset>
         </FormButtonGroup>
       </Form>
@@ -81,9 +91,11 @@ const ElectronicsMap = () => {
               switch (type) {
                 case 'terminal':
                   ref.current.submit({modelId: key});
+                  setParams({...params, modelId: key});
                   break;
                 case 'group':
                   ref.current.submit({classifyId: key});
+                  setParams({...params, classifyId: key});
                   break;
                 default:
                   break;
@@ -98,7 +110,7 @@ const ElectronicsMap = () => {
         </div>
         <Amap ref={ref} show onMarkerClick={setInfoVisible} onHistory={(url) => {
           history.push(url);
-        }} />
+        }}/>
       </Col>
     </Row>
     <Drawer
@@ -110,9 +122,9 @@ const ElectronicsMap = () => {
       open={infoVisible.modelId}
       extra={<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>}
     >
-      <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
+      <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId}/>
     </Drawer>
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}} />
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}}/>
   </>;
 };
 

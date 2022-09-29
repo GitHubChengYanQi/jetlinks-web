@@ -6,6 +6,7 @@ import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 
 export const deviceList = {url: '/electronicMap/list', method: 'POST'};
+export const mapNum = {url: '/electronicMap/mapNum', method: 'POST'};
 
 const Amap = ({
   show,
@@ -26,7 +27,6 @@ const Amap = ({
   const [positions, setPositions] = useState([]);
 
   const {run: getDeviceList} = useRequest(deviceList, {
-    // debounceInterval: 300,
     manual: true,
     onSuccess: (res) => {
       const list = [];
@@ -45,6 +45,8 @@ const Amap = ({
       setPositions(list);
     }
   });
+
+  const {run: getMapNum, data: mapNumber} = useRequest(mapNum, {manual: true,});
 
   const mapRef = useRef(null);
 
@@ -66,16 +68,22 @@ const Amap = ({
     }
   };
 
-  const submit = async (newParams = {}) => {
-    const data = {...params, ...newParams,};
+  const submit = async (newParams = {}, reset) => {
+    const data = reset ? newParams : {...params, ...newParams,};
     setParams(data);
-    const res = await getDeviceList({data});
-    if (isArray(res).length > 0 && res[0].latitude && res[0].longitude) {
-      setCenter({
-        latitude: res[0].latitude,
-        longitude: res[0].longitude
-      });
+    getMapNum({data});
+    if (data.place) {
+      mapRef.current.getPosition(data.place);
+    } else {
+      const res = await getDeviceList({data});
+      if (isArray(res).length > 0 && res[0].latitude && res[0].longitude) {
+        setCenter({
+          latitude: res[0].latitude,
+          longitude: res[0].longitude
+        });
+      }
     }
+
   };
 
   useImperativeHandle(ref, () => ({
@@ -86,6 +94,7 @@ const Amap = ({
     <div style={{height: show ? 'calc(100vh - 160px)' : 'calc(100vh - 90px)'}}>
       <Map events={events} amapkey={AMAP_KEY} center={center} version={show ? null : AMAP_VERSION} zoom={16}>
         <AmapSearch
+          mapNum={mapNumber}
           show={show}
           value={value}
           ref={mapRef}
@@ -103,7 +112,7 @@ const Amap = ({
               bounds.northwest,
               bounds.southeast
             ];
-            getDeviceList({data: {locationParams}});
+            getDeviceList({data: {locationParams, ...params}});
           }}
         />
       </Map>

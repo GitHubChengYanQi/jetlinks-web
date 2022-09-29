@@ -29,7 +29,7 @@ const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
   let mark = '';
   let title = '';
   let className = '';
-  if (device.error) {
+  if (device.ruleConditionJson) {
     mark = error;
     title = '设备报警';
     className = styles.error;
