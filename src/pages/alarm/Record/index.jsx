@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, Input} from 'antd';
+import {Space, Dropdown, Menu, Input, Tooltip} from 'antd';
 import {getSearchParams, useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -16,6 +16,7 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
+import {EllipsisOutlined} from '@ant-design/icons';
 
 const Record = () => {
 
@@ -27,22 +28,51 @@ const Record = () => {
 
   const [keys, setKeys] = useState([]);
 
-  const getTypeName = (type, column = []) => {
-    let name = '';
-    column.forEach(columnItem => {
-      if (name) {
-        return;
+  const ruleTypes = (ruleConditionJson, max) => {
+    return ruleConditionJson.map((item, index) => {
+      if (max) {
+        if (index > 2) {
+          return <div key={index} />;
+        } else if (index === 2) {
+          return <div key={index}>
+            <Tooltip color="#fff" title={() => {
+              return ruleTypes(ruleConditionJson);
+            }}>
+              <EllipsisOutlined />
+            </Tooltip>
+          </div>;
+        }
       }
-      if (columnItem.dataIndex === type) {
-        name = columnItem.title;
-        return;
+      let alarmCondition = '';
+      switch (item.alarmCondition) {
+        case '1':
+          alarmCondition = '=';
+          break;
+        case '21':
+          alarmCondition = '>=';
+          break;
+        case '3':
+          alarmCondition = '<=';
+          break;
+        case '4':
+          alarmCondition = '>';
+          break;
+        case '5':
+          alarmCondition = '<';
+          break;
+        case '6':
+          alarmCondition = '<>';
+          break;
+        default:
+          break;
       }
-      const children = columnItem.children || [];
-      name = getTypeName(type, children);
+      return <div key={index} hidden={!item.protocolValue}>
+        <Render className="green" key={index}>
+          {item.title} {alarmCondition} {item.ruleValue} ,当前值：{item.protocolValue}
+        </Render>
+      </div>;
     });
-    return name;
   };
-
   const {loading: batchViewLoading, run: batchView} = useRequest(alarmRecordBatchView, {
     manual: true,
     onSuccess: () => {
@@ -75,17 +105,14 @@ const Record = () => {
     {
       title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
       render: (text, record) => {
-        const column = record.column || [];
         let ruleConditionJson = [];
         try {
           ruleConditionJson = JSON.parse(record.ruleConditionJson);
         } catch (e) {
 
         }
-        const types = ruleConditionJson.map(item => {
-          return getTypeName(item, column);
-        });
-        return <Render className="green">{types.toString()}</Render>;
+
+        return ruleTypes(ruleConditionJson,true);
       }
     },
     {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},

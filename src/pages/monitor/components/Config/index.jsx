@@ -44,9 +44,9 @@ const Config = ({
             const disabled = dataSource.some(dataItem => dataItem.field === item.value);
             return {...item, disabled};
           })}
-          onChange={(field) => {
-            dataSourceChange({field}, record.key);
-          }}/>;
+          onChange={(field, option) => {
+            dataSourceChange({field, title: option?.label}, record.key);
+          }} />;
       }
     }, {
       title: '报警条件',
@@ -71,7 +71,7 @@ const Config = ({
           options={options}
           onChange={(alarmCondition) => {
             dataSourceChange({alarmCondition}, record.key);
-          }}/>;
+          }} />;
       }
     }, {
       title: '报警值',
@@ -82,7 +82,7 @@ const Config = ({
           return show ? <>{text && text.split(',').join('——')}</> :
             <Section value={text ? text.split(',') : []} onChange={(value = []) => {
               dataSourceChange({value: value.join(',')}, record.key);
-            }}/>;
+            }} />;
         }
         return show ? text : <Input
           style={{width: 230}}
@@ -105,7 +105,7 @@ const Config = ({
           const newData = dataSource.filter((item, index) => record.key !== index);
           setDataSource(newData);
         }}>
-          <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
+          <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
         </Warning>;
       }
     });
