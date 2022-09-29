@@ -4,6 +4,7 @@ import {CaretDownFilled, CaretUpFilled} from '@ant-design/icons';
 import {useHistory} from 'react-router';
 import styles from './index.module.less';
 import Save from '@/layouts/TopLayout/components/Avatar/components/Save';
+import logo from '../../../../asseset/imgs/logo.png';
 
 
 const Avatar = ({userInfo = {name: ''}}) => {
@@ -40,6 +41,7 @@ const Avatar = ({userInfo = {name: ''}}) => {
       <Dropdown onOpenChange={setVisible} overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <AntAvatar
+            src={logo}
             size="small"
             className={styles.avatar}
             alt="avatar"

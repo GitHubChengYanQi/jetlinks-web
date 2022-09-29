@@ -78,9 +78,9 @@ const Config = ({
       dataIndex: 'value',
       align: 'center',
       render: (text, record) => {
-        if (record.alarmCondition === 6) {
-          return show ? <>{text && text.split(',').join('——')}</> :
-            <Section value={text ? text.split(',') : []} onChange={(value = []) => {
+        if (record.alarmCondition === '6') {
+          return show ? <>{text && `${text}`.split(',').join('——')}</> :
+            <Section value={text ? `${text}`.split(',') : []} onChange={(value = []) => {
               dataSourceChange({value: value.join(',')}, record.key);
             }} />;
         }
