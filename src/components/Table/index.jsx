@@ -71,6 +71,8 @@ const TableWarp = (
     noForm,
     // o
     onChange,
+    onReset = () => {
+    },
     onResponse = () => {
     },
     // p
@@ -213,6 +215,7 @@ const TableWarp = (
   const reset = () => {
     setPagination({});
     formActions.reset();
+    onReset();
   };
 
   const refresh = () => {

@@ -1,10 +1,10 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Marker, Markers} from 'react-amap';
-import {Button, Card, Cascader as AntCascader, Drawer, Input, List, Popover, Space, Tooltip} from 'antd';
+import {Button, Card, Cascader as AntCascader, Input, List, Popover, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import store from '@/store';
+import MarkItem from '@/components/Amap/components/MarkItem';
 import styles from './index.module.less';
-import mark from '../../asseset/imgs/mark_bs.png';
 
 let MSearch = null;
 let Geocoder = null;
@@ -20,6 +20,9 @@ const AmapSearch = (
 
     },
     onMarkerClick = () => {
+
+    },
+    onHistory = () => {
 
     },
     positions = [],
@@ -170,26 +173,33 @@ const AmapSearch = (
 
 
   if (show) {
-    return <Markers
-      useCluster
-      markers={positions}
-      render={(extData) => {
-        const device = extData.device || {};
-        return <div onClick={() => {
-          onMarkerClick(device);
-        }}>
-          <Tooltip
-            overlayClassName={styles.tooltip}
-            title={<div className={styles.tip}>{device.remarks}</div>}
-            color="#fff">
-            <div className={styles.test}>
-              <img width='19px' height='32px' src={mark} alt="" />
-            </div>
-          </Tooltip>
-        </div>;
-      }}
-      __map__={__map__}
-    />;
+    return <>
+      <Markers
+        useCluster
+        markers={positions}
+        render={(extData) => {
+          const device = extData.device || {};
+          return <MarkItem device={device} id={device.deviceId} onMarkerClick={onMarkerClick} onHistory={onHistory} />;
+        }}
+        __map__={__map__}
+      />;
+      <div className={styles.deviceCount}>
+        <Space size={24}>
+          <div>
+            设备数量：100
+          </div>
+          <div className={styles.textOnline}>
+            在线：98
+          </div>
+          <div className={styles.textOffline}>
+            离线：1
+          </div>
+          <div className={styles.textErrorline}>
+            报警：1
+          </div>
+        </Space>
+      </div>
+    </>;
   }
 
   return (

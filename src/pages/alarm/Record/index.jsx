@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, Input} from 'antd';
-import {useHistory} from 'ice';
+import {getSearchParams, useHistory} from 'ice';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -20,6 +20,8 @@ import {isArray} from '@/util/Tools';
 const Record = () => {
 
   const history = useHistory();
+
+  const searchParams = getSearchParams();
 
   const ref = useRef();
 
@@ -55,9 +57,9 @@ const Record = () => {
       title: '终端备注',
       dataIndex: 'remarks',
       align: 'center',
-      render: (text) => <Render>
+      render: (text, record) => <Render>
         <div className="blue" onClick={() => {
-          history.push('/monitor');
+          history.push(`/monitor?deviceId=${record.deviceId}&modelId=${record.modelId}`);
         }}>{text}</div>
       </Render>
     },
@@ -127,6 +129,9 @@ const Record = () => {
       <FormItem label="设备MAC" name="mac" component={Input} />
       {/* <FormItem label="报警类型" name="7" component={Input} /> */}
       <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
+      <div style={{display: 'none'}}>
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
+      </div>
     </>;
   };
 
@@ -161,7 +166,7 @@ const Record = () => {
             onOk={() => batchView({data: {recordIds: [record.recordId]}})}>
             <PrimaryButton disabled={record.status === '1'} type="link">已阅</PrimaryButton>
           </Warning>
-          <PrimaryButton onClick={() => history.push('/monitor')}>
+          <PrimaryButton onClick={() => history.push(`/monitor?deviceId=${record.deviceId}&modelId=${record.modelId}`)}>
             实时监控
           </PrimaryButton>
         </Space>

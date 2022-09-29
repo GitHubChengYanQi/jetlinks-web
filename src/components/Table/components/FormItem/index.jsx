@@ -13,12 +13,14 @@ const FormItem = (
     initialValue,
     placeholder,
     noLabel,
+    value,
     ...porps
   }
 ) => {
 
   return <AntFormItem
     initialValue={initialValue}
+    value={value}
     label={noLabel ? null : label}
     name={name}
     component={component || children}

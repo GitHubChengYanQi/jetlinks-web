@@ -1,10 +1,9 @@
 import React, {useRef, useState, useImperativeHandle} from 'react';
-import {Map, Markers} from 'react-amap';
+import {Map} from 'react-amap';
 import {config} from 'ice';
 import AmapSearch from '@/components/Amap/search';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
-import TestAmap from '@/components/Amap/testAmap';
 
 export const deviceList = {url: '/electronicMap/list', method: 'POST'};
 
@@ -14,6 +13,8 @@ const Amap = ({
   onChange = () => {
   },
   onMarkerClick = () => {
+  },
+  onHistory = () => {
   },
 }, ref) => {
 
@@ -37,6 +38,7 @@ const Amap = ({
               lng: item.longitude
             },
             device: item,
+            animation: 'AMAP_ANIMATION_DROP',
           });
         }
       });
@@ -95,6 +97,7 @@ const Amap = ({
           }}
           positions={positions}
           onMarkerClick={onMarkerClick}
+          onHistory={onHistory}
           onBounds={(bounds = {}) => {
             const locationParams = [
               bounds.northwest,

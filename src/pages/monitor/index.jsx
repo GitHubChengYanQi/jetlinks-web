@@ -32,6 +32,8 @@ const Monitor = () => {
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
 
+  const [params, setParams] = useState({});
+
   const [open, setOpen] = useState({});
 
   const ref = useRef();
@@ -135,9 +137,11 @@ const Monitor = () => {
       />
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="设备名称" name="name" component={Input} />
-      <div style={{display: 'none'}}><FormItem name="deviceId" initialValue={searchParams.deviceId} component={Input} />
+      <div style={{display: 'none'}}>
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
       </div>
-      <div style={{display: 'none'}}><FormItem name="modelId" initialValue={searchParams.modelId} component={Input} />
+      <div style={{display: 'none'}}>
+        <FormItem name="modelId" value={searchParams.modelId} component={Input} />
       </div>
       <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
     </>;
@@ -158,9 +162,11 @@ const Monitor = () => {
               switch (type) {
                 case 'terminal':
                   ref.current.formActions.setFieldValue('modelId', key);
+                  setParams({...params, modelId: key});
                   break;
                 case 'group':
                   ref.current.formActions.setFieldValue('classifyId', key);
+                  setParams({...params, classifyId: key});
                   break;
                 default:
                   break;
@@ -171,6 +177,11 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          onReset={() => {
+            ref.current.formActions.setFieldValue('modelId', params.modelId);
+            ref.current.formActions.setFieldValue('classifyId', params.classifyId);
+            ref.current.submit();
+          }}
           maxHeight="calc(100vh - 435px)"
           condition={(values) => {
             return values.modelId;

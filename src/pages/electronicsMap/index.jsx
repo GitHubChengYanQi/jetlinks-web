@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Col, Drawer, Input, Row, Select} from 'antd';
 import {Form, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
+import {useHistory} from 'ice';
 import styles from '@/pages/monitor/index.module.less';
 import LeftTree from '@/pages/monitor/LeftTree';
 import FormItem from '@/components/Table/components/FormItem';
@@ -11,6 +12,8 @@ import Info from '@/pages/monitor/Info';
 import Save from '@/pages/monitor/Info/Save';
 
 const ElectronicsMap = () => {
+
+  const history = useHistory();
 
   const [close, setClose] = useState(false);
 
@@ -70,12 +73,21 @@ const ElectronicsMap = () => {
       <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
           <LeftTree
+            firstKey
             open={close}
             close={() => setClose(!close)}
             noAction
-            showModules={['group']}
-            onChange={(classifyId) => {
-              ref.current.submit({classifyId});
+            onChange={(key, type) => {
+              switch (type) {
+                case 'terminal':
+                  ref.current.submit({modelId: key});
+                  break;
+                case 'group':
+                  ref.current.submit({classifyId: key});
+                  break;
+                default:
+                  break;
+              }
             }}
           />
         </div>
@@ -84,7 +96,9 @@ const ElectronicsMap = () => {
         <div style={{backgroundColor: '#fff', padding: 12}}>
           {searchForm()}
         </div>
-        <Amap ref={ref} show onMarkerClick={setInfoVisible} />
+        <Amap ref={ref} show onMarkerClick={setInfoVisible} onHistory={(url) => {
+          history.push(url);
+        }} />
       </Col>
     </Row>
     <Drawer
