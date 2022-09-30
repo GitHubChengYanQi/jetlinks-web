@@ -9,10 +9,14 @@ const Group = (
     onChange = () => {
     },
     value,
+    checkable,
   }
 ) => {
 
-  const [keys, setKeys] = useState(value ? [value] : []);
+  const multipleValue = value || [];
+  const noMultipleValue = value ? [value] : [];
+
+  const [keys, setKeys] = useState(checkable ? multipleValue : noMultipleValue);
 
   const [saveVisible, setSaveVisible] = useState();
   const [currentItem, setCurrentItem] = useState({});
@@ -30,9 +34,14 @@ const Group = (
 
   return <>
     <AntTree
+      checkable={checkable}
       onChange={(keys) => {
-        onChange(keys[0], 'group');
         setKeys(keys);
+        if (checkable) {
+          onChange(keys);
+          return;
+        }
+        onChange(keys[0], 'group');
       }}
       value={keys}
       treeData={[{key: '0', title: '全部分组', children: formatData(dataSource.deviceClass)}]}

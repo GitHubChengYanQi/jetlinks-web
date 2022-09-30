@@ -54,7 +54,7 @@ const Save = ({
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称"/>
+        <Input placeholder="请输入账号名称" />
       </Form.Item>
       <Form.Item
         initialValue={data?.menuIds}
@@ -65,18 +65,18 @@ const Save = ({
           {required: true, message: '请选择菜单权限'},
         ]}
       >
-        <Tree treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border/>
+        <Tree treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border />
       </Form.Item>
       <Form.Item
-        initialValue={data?.group}
-        key="group"
+        initialValue={data?.classifyIds}
+        key="classifyIds"
         label="选择分组权限"
-        name="group"
+        name="classifyIds"
         rules={[
           {required: false, message: '请选择分组权限'},
         ]}
       >
-        <SelectTopClass/>
+        <SelectTopClass checkable />
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}
@@ -88,8 +88,8 @@ const Save = ({
         ]}
       >
         <Radio.Group>
-          <Radio value='1'>启用</Radio>
-          <Radio value='0'>停用</Radio>
+          <Radio value="1">启用</Radio>
+          <Radio value="0">停用</Radio>
         </Radio.Group>
       </Form.Item>
     </AntForm>

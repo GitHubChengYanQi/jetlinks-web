@@ -119,14 +119,15 @@ const AmapSearch = (
         Geocoder.getAddress(lnglat, function (status, result) {
           if (status === 'complete' && result.info === 'OK') {
             // result为对应的地理位置详细信息
+            const position = result.regeocode.addressComponent || {};
             const m = {
               address: result.regeocode.formattedAddress,
               name: '',
               location: [value.lng, value.lat],
-              city: result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+              city: position.district || position.city || position.province
             };
             setadinfo(m);
-            setCity(result.regeocode.addressComponent.city || result.regeocode.addressComponent.province);
+            setCity(position.city);
           }
         });
       }
@@ -135,7 +136,7 @@ const AmapSearch = (
 
 
   useEffect(() => {
-    if (defaultValue.length > 0) {
+    if (defaultValue.length > 0 || show) {
       return;
     }
     window.AMap.plugin('AMap.CitySearch', function () {
@@ -153,10 +154,12 @@ const AmapSearch = (
               if (show) {
                 return;
               }
+
+              const position = result.geocodes[0].addressComponent || {};
               setadinfo({
-                address: result.geocodes[0].formattedAddress,
+                address: position.province + position.city,
                 location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
-                city: result.geocodes[0].addressComponent.city || result.geocodes[0].addressComponent.province
+                city: position.district || position.city || position.province
               });
               setMarkerPosition({
                 lat: result.geocodes[0].location.lat,
@@ -192,10 +195,10 @@ const AmapSearch = (
         markers={positions}
         render={(extData) => {
           const device = extData.device || {};
-          return <MarkItem device={device} id={device.deviceId} onMarkerClick={onMarkerClick} onHistory={onHistory}/>;
+          return <MarkItem device={device} id={device.deviceId} onMarkerClick={onMarkerClick} onHistory={onHistory} />;
         }}
         __map__={__map__}
-      />;
+      />
       <div className={styles.deviceCount}>
         <Space size={24}>
           <div>
@@ -243,10 +246,11 @@ const AmapSearch = (
             }
             Geocoder.getLocation(currentCity, function (status, result) {
               if (status === 'complete' && result.info === 'OK') {
+                const position = result.geocodes[0].addressComponent || {};
                 setadinfo({
-                  address: result.geocodes[0].formattedAddress,
+                  address: position.province + position.city,
                   location: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
-                  city: result.geocodes[0].addressComponent.city || result.geocodes[0].addressComponent.province
+                  city: position.district || position.city || position.province
                 });
                 center(
                   {
@@ -261,46 +265,46 @@ const AmapSearch = (
                 // result中对应详细地理坐标信息
               }
             });
-          }}/>
+          }} />
       </span>
       <Popover onOpenChange={(visible) => {
         setVisiable(visible);
       }} placement="bottom" content={reslut && reslut.count > 0 &&
-        <Card style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
-          <List>
-            {reslut.pois.map((item, index) => {
-              return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
-                const m = {
-                  address: item.address,
-                  location: [item.location.lng, item.location.lat],
-                  city: item.cityname
-                };
-                setadinfo(m);
-                setData(item);
-              }} extra={<Button type="primary" onClick={() => {
-                const location = {
-                  address: item.pname + item.cityname + item.address,
-                  location: [item.location.lng, item.location.lat],
-                  city: item.cityname || item.pname
-                };
-                onChange(location);
-                setVisiable(false);
-              }}>使用该地址</Button>}>
-                <Space direction="vertical">
-                  <div>
-                    {item.name}
-                  </div>
-                  <div>
-                    {item.address}
-                  </div>
-                  <div>
-                    {item.type}
-                  </div>
-                </Space>
-              </List.Item>);
-            })}
-          </List>
-        </Card>} open={visiable}>
+      <Card style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
+        <List>
+          {reslut.pois.map((item, index) => {
+            return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
+              const m = {
+                address: item.address,
+                location: [item.location.lng, item.location.lat],
+                city: item.adname || item.cityname || item.pname
+              };
+              setadinfo(m);
+              setData(item);
+            }} extra={<Button type="primary" onClick={() => {
+              const location = {
+                address: item.pname + item.cityname + item.address,
+                location: [item.location.lng, item.location.lat],
+                city: item.cityname || item.pname
+              };
+              onChange(location);
+              setVisiable(false);
+            }}>使用该地址</Button>}>
+              <Space direction="vertical">
+                <div>
+                  {item.name}
+                </div>
+                <div>
+                  {item.address}
+                </div>
+                <div>
+                  {item.type}
+                </div>
+              </Space>
+            </List.Item>);
+          })}
+        </List>
+      </Card>} open={visiable}>
         <Input.Search
           placeholder="搜索地点"
           onChange={(value) => {
@@ -319,7 +323,7 @@ const AmapSearch = (
         onClick={() => {
           onChange(adinfo);
         }}>确定</Button>
-      {markerPosition && <Marker position={markerPosition} __map__={__map__}/>}
+      {markerPosition && <Marker position={markerPosition} __map__={__map__} />}
 
     </div>
   );

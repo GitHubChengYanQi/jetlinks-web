@@ -25,11 +25,14 @@ const AntForm = (
     },
     format = (values) => {
       return values;
-    }
+    },
+    form,
   }
 ) => {
 
-  const [form] = Form.useForm();
+  if (!form) {
+    form = Form.useForm()[0];
+  }
 
   const key = {};
   if (initialValues[rowKey]) {

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Menu, Dropdown, Input, Select, message, Select as AntSelect} from 'antd';
+import {Space, Menu, Dropdown, Input, message, Select as AntSelect} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
@@ -51,7 +51,7 @@ const Role = () => {
   });
 
   const columns = [
-    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '菜单权限',
       dataIndex: 'menuList',
@@ -60,7 +60,14 @@ const Role = () => {
         <Note maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
       </Render>
     },
-    {title: '分组权限', dataIndex: '3', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '分组权限',
+      dataIndex: 'roleBindResults',
+      align: 'center',
+      render: (roleBindResults = []) => <Render width={200}>
+        <Note maxWidth={400}>{isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}</Note>
+      </Render>
+    },
     {
       title: '角色状态', dataIndex: 'status', align: 'center', render: (text) => {
         const open = text === '1';
@@ -69,8 +76,8 @@ const Role = () => {
         </Render>;
       }
     },
-    {title: '应用账号数', dataIndex: 'userCount', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '应用账号数', dataIndex: 'userCount', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text} />},
   ];
 
   const menu = <Menu
@@ -101,7 +108,7 @@ const Role = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="创建时间" select name="time" component={DatePicker} RangePicker/>
+        <FormItem label="创建时间" select name="time" component={DatePicker} RangePicker />
         <FormItem label="角色状态" name="status" component={({value, onChange}) => {
           return <AntSelect
             defaultValue="all"
@@ -111,8 +118,8 @@ const Role = () => {
               onChange(value === 'all' ? null : value);
             }}
           />;
-        }}/>
-        <FormItem label="角色名称" name="name" component={Input}/>
+        }} />
+        <FormItem label="角色名称" name="name" component={Input} />
       </>
     );
   };
@@ -140,7 +147,7 @@ const Role = () => {
         <Dropdown key="1" overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key="2" onClick={()=>{
+        <PrimaryButton key="2" onClick={() => {
           window.open(`${baseURI}/RoleExcel/export?authorization=${token}&roleIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}
@@ -153,9 +160,11 @@ const Role = () => {
         return <Space>
           <PrimaryButton onClick={() => {
             const menuList = record.menuList || [];
+            const roleBindResults = record.roleBindResults || [];
             setSaveVisible({
               ...record,
-              menuIds: menuList.map(item => `${item.menuId}`)
+              menuIds: menuList.map(item => `${item.menuId}`),
+              classifyIds: roleBindResults.map(item => `${item.classifyId}`),
             });
           }}>编辑</PrimaryButton>
           <Warning content={`您确定${open ? '停用' : '启用'}么？`} onOk={() => {

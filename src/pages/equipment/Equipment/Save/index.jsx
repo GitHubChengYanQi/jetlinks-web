@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input,Form} from 'antd';
+import {Input, Form, Spin} from 'antd';
 import Position from '@/pages/equipment/Equipment/Save/components/Position';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';
@@ -8,6 +8,7 @@ import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
 import {deviceAdd, deviceEdit} from '@/pages/equipment/Equipment/url';
 import store from '@/store';
+import {useRequest} from '@/util/Request';
 
 
 const Save = props => {
@@ -16,8 +17,25 @@ const Save = props => {
 
   const [dataSource] = store.useModel('dataSource');
 
+  const [form] = Form.useForm();
+
+  const {loading, run} = useRequest({
+    url: '/commonArea/list',
+    method: 'POST',
+  }, {
+    manual: true,
+    onSuccess: (res) => {
+      const positionId = res.length > 0 && res[0].id;
+      if (positionId) {
+        form.setFieldValue('positionId', positionId);
+      }
+    }
+  });
+
+
   return (
     <AntForm
+      form={form}
       apis={{
         add: deviceAdd,
         edit: deviceEdit,
@@ -96,7 +114,11 @@ const Save = props => {
         label="经度"
         name="position"
       >
-        <Position />
+        <Position onPosition={(city) => {
+          if (city) {
+            run({data: {title: city}});
+          }
+        }} />
       </Form.Item>
       <Form.Item
         initialValue={data.positionId}
@@ -104,7 +126,7 @@ const Save = props => {
         label="位置信息"
         name="positionId"
       >
-        <Cascader options={dataSource.area} placeholder='请选择位置信息' />
+        {loading ? <Spin /> : <Cascader options={dataSource.area} placeholder="请选择位置信息" />}
       </Form.Item>
       <Form.Item
         initialValue={data.address}

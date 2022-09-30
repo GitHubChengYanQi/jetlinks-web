@@ -7,19 +7,22 @@ const AntTree = ({
   value,
   onChange,
   loading,
+  checkable,
 }) => {
 
   if (treeData.length === 0) {
     if (loading) {
-      return <div style={{padding: 24, textAlign: 'center'}}><Spin/></div>;
+      return <div style={{padding: 24, textAlign: 'center'}}><Spin /></div>;
     }
     return <></>;
   }
   return <Spin spinning={Boolean(loading)}>
     <Tree
-      onSelect={(values) => {
-        onChange(values);
-      }}
+      checkedKeys={value}
+      selectable={!checkable}
+      checkable={checkable}
+      onCheck={onChange}
+      onSelect={onChange}
       autoExpandParent
       defaultExpandAll
       selectedKeys={value}

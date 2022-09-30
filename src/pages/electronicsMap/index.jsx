@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Col, Drawer, Input, Row, Select} from 'antd';
+import {Col, Drawer, Input, Row, Select as AntSelect, Select} from 'antd';
 import {Form, FormButtonGroup, Reset, Submit} from '@formily/antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {useHistory} from 'ice';
@@ -37,15 +37,15 @@ const ElectronicsMap = () => {
       >
         <FormItem
           label="报警状态"
-          name="bjzt"
+          name="alarmType"
           component={({value, onChange}) => {
             return <Select
               defaultValue="all"
               value={value || 'all'}
               options={[
                 {label: '全部', value: 'all'},
-                {label: '正常', value: '1'},
-                {label: '报警', value: '0'},
+                {label: '正常', value: 'n'},
+                {label: '报警', value: 'y'},
               ]}
               onChange={(value) => {
                 onChange(value === 'all' ? null : value);
@@ -58,16 +58,16 @@ const ElectronicsMap = () => {
           label="设备状态"
           name="status"
           component={({value, onChange}) => {
-            return <Select
+            return <AntSelect
               defaultValue="all"
               value={value || 'all'}
-              options={[{label: '全部', value: 'all'}, {label: '启用', value: '1'}, {label: '禁用', value: '0'},]}
+              options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
               onChange={(value) => {
                 onChange(value === 'all' ? null : value);
               }}
             />;
           }}
-          select/>
+        />
         <FormItem label="设备查询" name="name" component={Input}/>
         <FormItem label="位置信息" name="place" component={Input}/>
         <FormButtonGroup>

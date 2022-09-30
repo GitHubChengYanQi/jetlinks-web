@@ -7,6 +7,8 @@ const Position = ({
   value = [],
   onChange = () => {
   },
+  onPosition = () => {
+  },
 }) => {
 
   const [visible, setVisible] = useState(false);
@@ -40,8 +42,9 @@ const Position = ({
         value={(value[0] && value[1]) ? value : []}
         onChange={(value) => {
           setVisible(false);
-          const location = value.location || [];
+          const location = value?.location || [];
           onChange([location[0], location[1]]);
+          onPosition(value?.city);
         }}/>}
     </Drawer>
   </div>;

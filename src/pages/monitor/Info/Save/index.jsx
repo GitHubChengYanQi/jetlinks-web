@@ -58,6 +58,12 @@ const Save = (
     }
   }, [device.modelId]);
 
+
+  const options = rules.map(item => {
+    const disabled = data.some(dataItem => dataItem.alarmId === item.value);
+    return {...item, disabled};
+  });
+
   return (
     <Modal
       afterClose={() => setData([])}
@@ -88,13 +94,11 @@ const Save = (
           <Space direction="vertical" style={{width: '100%'}}>
             {
               data.map((item, index) => {
+                const exit = options.some(optionItem => optionItem.value === item.alarmId);
                 return <Space key={index}>
                   <Select
-                    value={item.alarmId}
-                    options={rules.map(item => {
-                      const disabled = data.some(dataItem => dataItem.alarmId === item.value);
-                      return {...item, disabled};
-                    })}
+                    value={exit ? item.alarmId : null}
+                    options={options}
                     placeholder="请选择规则"
                     style={{width: 300, marginRight: 16}}
                     onChange={(value) => {
