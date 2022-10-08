@@ -1,6 +1,6 @@
 import React from 'react';
-import {Input, InputNumber, Modal, Select, Radio, Checkbox, message} from 'antd';
-import {createForm, SchemaForm} from '@formily/antd';
+import {Input, InputNumber, Modal, Select, Radio, Checkbox, message, Button, Space} from 'antd';
+import {SchemaForm, Submit} from '@formily/antd';
 import DatePicker from '@/components/DatePicker';
 import {useRequest} from '@/util/Request';
 
@@ -8,8 +8,6 @@ const {Group: RadioGroup} = Radio;
 const {Group: CheckboxGroup} = Checkbox;
 
 export const submitApi = {url: '/device/buttonSubmit', method: 'POST'};
-
-const form = createForm();
 
 const DynamicForms = (
   {
@@ -33,23 +31,19 @@ const DynamicForms = (
 
   return <>
     <Modal
+      bodyStyle={{padding: 0}}
+      footer={null}
       maskClosable={false}
       destroyOnClose
       width={500}
       title={formData?.title || '设置'}
       open={open}
-      okText="确定"
-      cancelText="取消"
-      okButtonProps={{loading}}
-      onOk={() => {
-        form.submit((values) => {
-          run({data: {buttonData: values, mac: formData?.mac}});
-        });
-      }}
-      onCancel={close}
     >
       <SchemaForm
-        form={form}
+        style={{paddingTop: 16}}
+        onSubmit={(values) => {
+          run({data: {buttonData: values, mac: formData?.mac}});
+        }}
         components={{
           Input,
           Select,
@@ -64,7 +58,18 @@ const DynamicForms = (
           type: 'object',
           properties: formData?.data || {}
         }}
-      />
+      >
+        <div style={{
+          borderTop: 'solid #f0f0f0 1px',
+          padding: 8,
+          textAlign: 'right'
+        }}>
+          <Space>
+            <Button onClick={close}>取消</Button>
+            <Submit>保存</Submit>
+          </Space>
+        </div>
+      </SchemaForm>
     </Modal>
   </>;
 };
