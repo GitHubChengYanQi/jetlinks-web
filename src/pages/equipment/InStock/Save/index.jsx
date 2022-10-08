@@ -88,6 +88,7 @@ const Save = ({data, success, close, visible}) => {
         <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
       </Form.Item>
       <Form.Item
+        initialValue={new Date()}
         key="instockTime"
         label="入库时间"
         name="instockTime"
@@ -95,7 +96,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择入库时间'},
         ]}
       >
-        <DatePicker/>
+        <DatePicker />
       </Form.Item>
     </AntForm>
   );

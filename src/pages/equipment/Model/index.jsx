@@ -70,7 +70,7 @@ const Model = () => {
       align: 'center',
       render: (categoryResult = {}) => <Render text={categoryResult.name}/>
     },
-    {title: '设备数量', dataIndex: '3', align: 'center', render: (text = '0') => <Render text={text}/>},
+    {title: '设备数量', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
     {
       title: '设备型号状态',
       dataIndex: 'status',

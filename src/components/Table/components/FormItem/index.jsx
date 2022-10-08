@@ -14,11 +14,13 @@ const FormItem = (
     placeholder,
     noLabel,
     value,
+    hidden,
     ...porps
   }
 ) => {
 
   return <AntFormItem
+    hidden={hidden}
     initialValue={initialValue}
     value={value}
     label={noLabel ? null : label}

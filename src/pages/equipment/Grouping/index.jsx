@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Row, Col, Button, Space, Dropdown, Menu, message,} from 'antd';
+import {Row, Col, Button, Space, Dropdown, Menu, message, Select as AntSelect, Input,} from 'antd';
 import cookie from 'js-cookie';
 import {config} from 'ice';
 import LeftTree from '@/pages/monitor/LeftTree';
@@ -18,6 +18,10 @@ import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import store from '@/store';
 import {useRequest} from '@/util/Request';
+import FormItem from '@/components/Table/components/FormItem';
+import DatePicker from '@/components/DatePicker';
+import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import Select from '@/components/Select';
 
 const Grouping = () => {
 
@@ -27,7 +31,7 @@ const Grouping = () => {
   const [batchImport, setBatchImport] = useState(false);
   const dataDispatchers = store.useModel('dataSource')[1];
 
-  const [keys,setKeys] = useState([]);
+  const [keys, setKeys] = useState([]);
 
   const {loading, run} = useRequest(deviceClassifyDelete, {
     manual: true,
@@ -40,9 +44,9 @@ const Grouping = () => {
 
 
   const columns = [
-    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
+    {title: '所属客户', dataIndex: 'customerName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
 
@@ -70,6 +74,12 @@ const Grouping = () => {
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');
 
+  const searchForm = () => {
+    return <>
+      <FormItem hidden name="parentId" component={Input}/>
+    </>;
+  };
+
   return <>
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
@@ -79,26 +89,28 @@ const Grouping = () => {
             close={() => setClose(!close)}
             noAction
             showModules={['group']}
-            onChange={() => {
-
+            onChange={(value) => {
+              ref.current.formActions.setFieldValue('parentId', value);
+              ref.current.submit();
             }}
           />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          SearchButton={<Space>
+            <Dropdown key={1} overlay={menu} placement="bottom">
+              <Button type="primary">新建分组</Button>
+            </Dropdown>,
+            <Button key={2} type="primary" onClick={() => {
+              window.open(`${baseURI}/DeviceClassifyExcel/export?authorization=${token}&classifyIds=${keys}`);
+            }}>导出</Button>
+          </Space>}
+          searchForm={searchForm}
           onChange={setKeys}
           loading={loading}
           tableKey="grouping"
           ref={ref}
-          searchButtons={[
-            <Dropdown key={1} overlay={menu} placement="bottom">
-              <Button type="primary">新建分组</Button>
-            </Dropdown>,
-            <Button key={2} type="primary" onClick={()=>{
-              window.open(`${baseURI}/DeviceClassifyExcel/export?authorization=${token}&classifyIds=${keys}`);
-            }}>导出</Button>
-          ]}
           api={deviceClassifyList}
           columns={columns}
           rowKey="classifyId"
@@ -127,8 +139,8 @@ const Grouping = () => {
 
     <BatchImport
       columns={[
-        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
+        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       title="分组"
       templeteApi={DeviceClassifyDownloadTemplate}

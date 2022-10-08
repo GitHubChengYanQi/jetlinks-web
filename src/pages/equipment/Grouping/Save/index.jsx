@@ -16,7 +16,7 @@ const Save = props => {
       }}
       title="分组"
       initialValues={data}
-      rowKey="deviceId"
+      rowKey="classifyId"
       success={success}
       visible={visible}
       close={close}
