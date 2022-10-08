@@ -9,6 +9,8 @@ const {Group: CheckboxGroup} = Checkbox;
 
 export const submitApi = {url: '/device/buttonSubmit', method: 'POST'};
 
+const form = createForm();
+
 const DynamicForms = (
   {
     formData,
@@ -20,14 +22,13 @@ const DynamicForms = (
   }
 ) => {
 
-  const form = createForm();
-
   const {loading, run} = useRequest(submitApi, {
     manual: true,
     onSuccess: () => {
       message.success(`${formData?.title || '设置'}成功！`);
       success();
-    }
+    },
+    onError: () => message.error('添加失败！')
   });
 
   return <>

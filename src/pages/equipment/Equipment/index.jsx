@@ -228,7 +228,6 @@ const Equipment = () => {
             Object.keys(data).forEach(key => {
               newData[key] = formatKey(data[key]);
             });
-            console.log(newData);
             return {
               key: index,
               label: item.title,

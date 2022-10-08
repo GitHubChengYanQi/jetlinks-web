@@ -20,7 +20,7 @@ const FormItem = (
 ) => {
 
   return <AntFormItem
-    hidden={hidden}
+    visible={!hidden}
     initialValue={initialValue}
     value={value}
     label={noLabel ? null : label}
