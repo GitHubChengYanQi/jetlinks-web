@@ -6,31 +6,31 @@ const Broken = () => {
 
   useEffect(() => {
     const data = [{
-      year: '1991',
+      time: '00:00',
       value: 3
     }, {
-      year: '1992',
+      time: '01:00',
       value: 4
     }, {
-      year: '1993',
+      time: '02:00',
       value: 3.5
     }, {
-      year: '1994',
+      time: '03:00',
       value: 5
     }, {
-      year: '1995',
+      time: '04:00',
       value: 4.9
     }, {
-      year: '1996',
+      time: '05:00',
       value: 6
     }, {
-      year: '1997',
+      time: '06:00',
       value: 7
     }, {
-      year: '1998',
+      time: '07:00',
       value: 9
     }, {
-      year: '1999',
+      time: '08:00',
       value: 13
     }];
     const chart = new G2.Chart({
@@ -42,7 +42,7 @@ const Broken = () => {
     chart.scale('value', {
       min: 0
     });
-    chart.scale('year', {
+    chart.scale('time', {
       range: [0, 1]
     });
     chart.tooltip({
@@ -50,8 +50,8 @@ const Broken = () => {
         type: 'line'
       }
     });
-    chart.line().position('year*value');
-    chart.point().position('year*value').size(4).shape('circle').style({
+    chart.line().position('time*value');
+    chart.point().position('time*value').size(4).shape('circle').style({
       stroke: '#fff',
       lineWidth: 1
     });

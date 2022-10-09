@@ -23,7 +23,8 @@ export default function BasicLayout({children}) {
       if (jwt.length !== 3) {
         throw new Error('本地登录信息错误');
       }
-      dispatchers.getUserInfo();
+      const userInfo = await dispatchers.getUserInfo();
+      dataDispatchers.getCustomer(userInfo?.info?.customerId);
       dataDispatchers.getCommonArea();
       dataDispatchers.getDeviceClass();
     } catch (e) {

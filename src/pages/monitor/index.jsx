@@ -58,7 +58,7 @@ const Monitor = () => {
       title: <Space>
         终端备注
         <Tooltip placement="top" title="终端设备备注的名称，平台可以修改">
-          <QuestionCircleOutlined />
+          <QuestionCircleOutlined/>
         </Tooltip>
       </Space>,
       dataIndex: 'remarks',
@@ -82,28 +82,30 @@ const Monitor = () => {
       title: <Space>
         登记名称
         <Tooltip placement="top" title="设备上报的登记名称，平台不可以修改">
-          <QuestionCircleOutlined />
+          <QuestionCircleOutlined/>
         </Tooltip>
       </Space>,
       dataIndex: 'name',
       align: 'center',
-      render: (name) => <Render text={name || '-'} />
+      render: (name) => <Render text={name || '-'}/>
     }, {
       title: 'MAC',
       dataIndex: 'mac',
       align: 'center',
-      render: (mac) => <Render text={mac} />
+      render: (mac) => <Render text={mac}/>
     },
     ...modelColumns.map(item => {
       const children = item.children || [];
-      const render = (text) => {
+      const render = (text, record) => {
         if (typeof text === 'object') {
           return <Render>-</Render>;
         }
         try {
-          return <Render>{typeof text === 'number' ? text : (text || '-')}</Render>;
+          return <Render onClick={() => {
+            setOpen({type: '4gNetwork', ...record});
+          }}>{typeof text === 'number' ? text : (text || '-')}</Render>;
         } catch (e) {
-          return <Render text="-" />;
+          return <Render text="-"/>;
         }
       };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
@@ -112,9 +114,9 @@ const Monitor = () => {
       title: 'GPS定位',
       dataIndex: '10',
       align: 'center',
-      render: (text) => <Render text={<span className="green">{text || '-'}</span>} />
+      render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
     },
-    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'} />},
+    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'}/>},
   ];
 
   const [close, setClose] = useState(false);
@@ -135,15 +137,15 @@ const Monitor = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="设备名称" name="name" component={Input}/>
       <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input}/>
       </div>
       <div style={{display: 'none'}}>
-        <FormItem name="modelId" value={searchParams.modelId} component={Input} />
+        <FormItem name="modelId" value={searchParams.modelId} component={Input}/>
       </div>
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
     </>;
   };
 
@@ -172,7 +174,7 @@ const Monitor = () => {
                   break;
               }
               ref.current.submit();
-            }} />
+            }}/>
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
@@ -218,7 +220,7 @@ const Monitor = () => {
       open={infoVisible.modelId}
       extra={<LinkButton onClick={() => infoRef.current.openAlarm()}>报警设置</LinkButton>}
     >
-      <Info ref={infoRef} deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
+      <Info ref={infoRef} deviceId={infoVisible.deviceId} modelId={infoVisible.modelId}/>
     </Drawer>
 
     <NoteSave
@@ -237,11 +239,11 @@ const Monitor = () => {
       className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}
-      extra={<DatePicker width={200} RangePicker />}
+      extra={<DatePicker width={200} RangePicker/>}
     >
-      {open.type === 'GridPowerSupply' && <GridPowerSupply />}
-      {open.type === 'BackboneNetwork' && <BackboneNetwork />}
-      {open.type === '4gNetwork' && <Network4G />}
+      {open.type === 'GridPowerSupply' && <GridPowerSupply/>}
+      {open.type === 'BackboneNetwork' && <BackboneNetwork/>}
+      {open.type === '4gNetwork' && <Network4G device={open}/>}
     </Drawer>
 
   </>;

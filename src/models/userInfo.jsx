@@ -21,8 +21,10 @@ export default {
         const response = await request(userInfo);
         const currentUser = await request(currentUserInfo);
         dispatch.user.update({...response.data, info: currentUser.data});
+        return {...response.data, info: currentUser.data};
       } catch (e) {
         console.log(e);
+        return {};
       }
     },
   }),

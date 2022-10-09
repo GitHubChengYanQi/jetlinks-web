@@ -4,10 +4,9 @@ import {CaretDownFilled, CaretUpFilled} from '@ant-design/icons';
 import {useHistory} from 'react-router';
 import styles from './index.module.less';
 import Save from '@/layouts/TopLayout/components/Avatar/components/Save';
-import logo from '../../../../asseset/imgs/logo.png';
 
 
-const Avatar = ({userInfo = {name: ''}}) => {
+const Avatar = ({userInfo = {name: ''}, logo}) => {
 
   const [visible, setVisible] = useState(false);
 
@@ -53,7 +52,7 @@ const Avatar = ({userInfo = {name: ''}}) => {
         </span>
       </Dropdown>
 
-      <Save visible={saveVisible} close={()=>setSaveVisible(false)}/>
+      <Save visible={saveVisible} close={() => setSaveVisible(false)}/>
     </div>
   ) : (
     <Spin

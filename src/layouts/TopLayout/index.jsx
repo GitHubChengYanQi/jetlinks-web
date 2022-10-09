@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import {useHistory, useLocation} from 'ice';
+import {config, useHistory, useLocation} from 'ice';
 import {ProLayout} from '@ant-design/pro-layout';
+import cookie from 'js-cookie';
 import store from '@/store';
 import styles from './index.module.less';
 import logo from '../../asseset/imgs/logo.png';
@@ -9,12 +10,16 @@ import Setting from '@/layouts/TopLayout/components/Setting/inedx';
 import Message from '@/layouts/TopLayout/components/Message/inedx';
 import Action from '@/layouts/TopLayout/components/Action/inedx';
 import {isArray} from '@/util/Tools';
+import {preview} from '@/components/DownloadFile';
 
 const TopLayout = ({children}) => {
 
   const history = useHistory();
   const location = useLocation();
   const [userInfo] = store.useModel('user');
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource?.customer || {};
   const {menus} = userInfo;
 
   const getRoutes = (menuList) => {
@@ -53,6 +58,11 @@ const TopLayout = ({children}) => {
 
   };
 
+  const {baseURI} = config;
+  const token = cookie.get('jetlink-token');
+
+  const sysLogo = customer.logo ? `${baseURI}${preview}?fileId=${customer.logo}&authorization=${token}` : logo;
+
   useEffect(() => {
     if (location.pathname === '/') {
       history.push(getFirstRoute(routes[0]).path);
@@ -79,11 +89,11 @@ const TopLayout = ({children}) => {
       <Setting/>
       <Message/>
       <Action/>
-      <Avatar userInfo={userInfo}/>
+      <Avatar userInfo={userInfo} logo={sysLogo}/>
     </>
     }
-    title="奥普泰设备业务云平台"
-    logo={logo}
+    title={customer.name || '奥普泰设备业务云平台'}
+    logo={sysLogo}
     splitMenus
     // collapsed={false}
     headerTheme="light"

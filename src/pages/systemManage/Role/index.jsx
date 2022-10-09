@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Space, Menu, Dropdown, Input, message, Select as AntSelect} from 'antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
@@ -11,8 +13,6 @@ import Note from '@/components/Note';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
-import {config} from 'ice';
-import cookie from 'js-cookie';
 
 const Role = () => {
 

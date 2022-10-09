@@ -21,13 +21,31 @@ const Save = ({
 
   const formatData = (data) => {
     return isArray(data).map((item) => {
+      const children = item.children || item.subMenus || [];
       return {
         key: item.url ? `${item.id}` : `dict_${item.id}`,
         title: item.name,
-        children: formatData(item.children || item.subMenus),
+        checkStrictly: true,
+        children: formatData(children),
       };
     });
   };
+
+
+  let initMenuIds = data?.menuIds || [];
+
+  const initMenuIdsFormat = (data) => {
+    isArray(data).forEach((item) => {
+      const children = item.children || item.subMenus || [];
+      if (children.filter(item => initMenuIds.some(menuId => menuId === item.id)).length !== children.length) {
+        initMenuIds = initMenuIds.filter((initMenuId) => initMenuId !== item.id);
+      }
+      initMenuIdsFormat(children, initMenuIds);
+    });
+    return initMenuIds;
+  };
+
+  initMenuIdsFormat(userInfo.menus);
 
   return (
     <AntForm
@@ -54,10 +72,10 @@ const Save = ({
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称" />
+        <Input placeholder="请输入账号名称"/>
       </Form.Item>
       <Form.Item
-        initialValue={data?.menuIds}
+        initialValue={initMenuIds}
         key="menuIds"
         label="选择菜单权限"
         name="menuIds"
@@ -65,7 +83,7 @@ const Save = ({
           {required: true, message: '请选择菜单权限'},
         ]}
       >
-        <Tree treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border />
+        <Tree halfChecked treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border/>
       </Form.Item>
       <Form.Item
         initialValue={data?.classifyIds}
@@ -76,7 +94,7 @@ const Save = ({
           {required: false, message: '请选择分组权限'},
         ]}
       >
-        <SelectTopClass checkable />
+        <SelectTopClass checkable/>
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}

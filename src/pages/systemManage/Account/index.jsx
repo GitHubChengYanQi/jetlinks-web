@@ -34,19 +34,6 @@ const Account = () => {
 
   const [batchImport, setBatchImport] = useState(false);
 
-  // 冻结账号
-  const {run: freezeRun} = useRequest(userFreeze,
-    {
-      manual: true,
-      onError: (error) => {
-        message.error(error.message);
-      },
-      onSuccess: () => {
-        message.success('停用成功！');
-        ref.current.refresh();
-      }
-    });
-
 
   // 批量冻结账号
   const {run: stop} = useRequest(userStop,
@@ -58,23 +45,20 @@ const Account = () => {
       onSuccess: () => {
         setKeys([]);
         message.success('停用成功！');
-        ref.current.refresh();
+        ref.current.submit();
       }
     });
 
-  const freeze = async (userId) => {
-    freezeRun({data: {userId}});
-  };
-
-  // 解冻账号
-  const {run: unfreezeRun} = useRequest(userUnfreeze,
+  // 批量冻结账号
+  const {run: deleteRun} = useRequest(userRemove,
     {
       manual: true,
       onError: (error) => {
         message.error(error.message);
       },
       onSuccess: () => {
-        message.success('启用成功！');
+        setKeys([]);
+        message.success('删除成功！');
         ref.current.submit();
       }
     });
@@ -92,21 +76,6 @@ const Account = () => {
         ref.current.submit();
       }
     });
-
-
-  const unfreeze = (userId) => {
-    unfreezeRun({data: {userId}});
-  };
-
-  // 删除账号
-  const remove = (userId) => {
-    request({...userRemove, params: {userId}}).then((res) => {
-      if (res.success) {
-        message.success('删除成功!');
-        ref.current.submit();
-      }
-    }).catch(() => message.success('删除失败！'));
-  };
 
 
   const columns = [
@@ -149,7 +118,7 @@ const Account = () => {
       {
         danger: true,
         key: '3',
-        label: <Warning>批量删除</Warning>,
+        label: <Warning onOk={() => deleteRun({data: {userIds: keys}})}>批量删除</Warning>,
         onClick: () => {
 
         }
@@ -159,7 +128,6 @@ const Account = () => {
 
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');
-
 
   const exportMenu = <Menu
     items={[
@@ -197,7 +165,7 @@ const Account = () => {
               }}
             />;
           }} select/>
-        <FormItem name="name" label="关键字查询" component={Input} placeholder="管理员账号/姓名/手机号/邮箱"/>
+        <FormItem name="name" label="关键字查询" component={Input} style={{width: 250}} placeholder="管理员账号/姓名/手机号/邮箱"/>
       </>
     );
   };
@@ -233,11 +201,11 @@ const Account = () => {
           <PrimaryButton type="link" onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
           <Warning
             content={`您确定${open ? '停用' : '启用'}么?`}
-            onOk={() => !open ? unfreeze(record.userId) : freeze(record.userId)
+            onOk={() => !open ? start({data: {userIds: [record.userId]}}) : stop({data: {userIds: [record.userId]}})
             }>
             {open ? <DangerButton>停用</DangerButton> : <ActionButton>启用</ActionButton>}
           </Warning>
-          <Warning onOk={() => remove(record.userId)}>
+          <Warning onOk={() => deleteRun({data: {userIds: [record.userId]}})}>
             <DangerButton danger type="link">删除</DangerButton>
           </Warning>
         </Space>;
@@ -255,8 +223,8 @@ const Account = () => {
 
     <BatchImport
       columns={[
-        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
+        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       title="分组"
       templeteApi={UserExcelDownloadTemplate}

@@ -126,7 +126,7 @@ const Login = () => {
           <div className={style.title}>设备业务云平台</div>
           <div className={style.headerRight}/>
         </div>
-        <div className={style.logo}>
+        <div hidden className={style.logo}>
           <img width={100} src={logo} alt=""/>
         </div>
 
@@ -186,7 +186,7 @@ const Login = () => {
             {findPassword ? <>已有账号，<span className="blue">立即登陆</span></> : '找回密码'}
           </div>
         </div>
-        <div className={style.other} hidden={findPassword}>
+        <div className={style.other} hidden>
           <div/>
           <span><QrcodeOutlined/></span>
         </div>

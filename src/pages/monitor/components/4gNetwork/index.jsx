@@ -1,19 +1,24 @@
 import React from 'react';
-import {Card, Space, Tabs} from 'antd';
-import DatePicker from '@/components/DatePicker';
+import {Space, Tabs} from 'antd';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
 import Broken from '@/pages/monitor/components/Chart/Broken';
 import {deviceStatusLogList} from '@/pages/monitor/url';
+import {useRequest} from '@/util/Request';
 
-const Network4G = () => {
+export const monitoringChart = {url: '/monitor/monitoringChart', method: 'POST'};
+
+const Network4G = ({device = {}}) => {
+
+  const {loading, data} = useRequest({...monitoringChart, data: {deviceId: device.deviceId}});
+  // console.log(data);
 
 
   return <>
-    4G网络状态
-    <StepLineChart/>
+    {/* 4G网络状态 */}
+    {/* <StepLineChart/> */}
     4G信号强度
     <Broken/>
 

@@ -7,7 +7,7 @@ export const userSave = {
   method: 'POST',
 };
 export const userRemove = {
-  url: '/mgr/delete',
+  url: '/rest/mgr/delete',
   method: 'POST',
 };
 

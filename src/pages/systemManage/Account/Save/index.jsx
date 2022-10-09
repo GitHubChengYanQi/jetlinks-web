@@ -128,9 +128,9 @@ const Save = (
         <Password
           inputDisabled={data?.userId}
           placeholder="请输入密码"
+          content="您确定要重置密码么？重置后默认初始密码为【opt123】"
           initPassword={() => {
-            const phone = data?.phone || '';
-            return phone.substring(phone.length - 6, phone.length);
+            return 'opt123';
           }}
           reset={data?.userId}
           visibilityToggle={!data?.userId}

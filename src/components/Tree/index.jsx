@@ -11,6 +11,7 @@ const Tree = (
     api,
     border,
     treeData,
+    halfChecked,
     ...other
   }
 ) => {
@@ -21,15 +22,16 @@ const Tree = (
     return (<div style={border ? {maxHeight: '50vh', overflow: 'auto', border: 'solid 1px #d9d9d9', padding: 8} : {}}>
       <AntdTree
         onCheck={(values, checkInfo) => {
-          // const halfCheckedKeys = checkInfo.halfCheckedKeys || [];
+          const halfCheckedKeys = checkInfo.halfCheckedKeys || [];
           // const newValues = values.filter(item => !halfCheckedKeys.find(key => key === item));
           // console.log([...newValues, ...halfCheckedKeys]);
-          onChange(values, checkInfo.checkedNodes);
+          const checkValues = halfChecked ? [...values, ...halfCheckedKeys] : values;
+          onChange(checkValues, checkInfo.checkedNodes);
         }}
         defaultExpandedKeys={['0']}
         selectable={false}
         checkable
-        checkedKeys={value}
+        defaultCheckedKeys={value}
         treeData={treeData || data}
         {...other}
       />

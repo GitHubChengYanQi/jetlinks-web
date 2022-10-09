@@ -110,8 +110,8 @@ const Tenant = () => {
         select
       />
       <FormItem label="提交时间" name="time" component={DatePicker} RangePicker select />
-      <FormItem label="企业查询" name="name" component={Input} placeholder="请输入企业名称/统一社会信用代码" />
-      <FormItem label="管理员人查询" name="contactName" component={Input} placeholder="请输入管理员账号/姓名/手机号/邮箱" />
+      <FormItem label="企业查询" name="name" component={Input} style={{width:250}} placeholder="请输入企业名称/统一社会信用代码" />
+      <FormItem label="管理员人查询" name="contactName" component={Input} style={{width:300}} placeholder="请输入管理员账号/姓名/手机号/邮箱" />
     </>;
   };
 

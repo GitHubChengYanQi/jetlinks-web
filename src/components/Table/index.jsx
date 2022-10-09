@@ -200,9 +200,8 @@ const TableWarp = (
 
   const {setPagination, form, table: tableProps} = useFormTableQuery(requestMethod, null, {
     pagination: {
-      pageSize: pageSize || defaultTableQuery.limit,
+      pageSize: pageSize || defaultTableQuery.limit || 10,
       current: defaultTableQuery.page,
-      pageSizeOptions: [5, 10, 20, 50, 100]
     },
     sorter: defaultTableQuery.sorter || {},
   });
@@ -339,7 +338,9 @@ const TableWarp = (
                 return `共${total || dataSource.length}条`;
               },
               showQuickJumper: true,
-              position: ['bottomRight']
+              position: ['bottomRight'],
+              showSizeChanger:true,
+              pageSizeOptions: ['5', '10', '20', '50', '100']
             }
           }
           rowSelection={!noRowSelection && {
