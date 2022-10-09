@@ -9,7 +9,7 @@ import Avatar from '@/layouts/TopLayout/components/Avatar/Avatar';
 import Setting from '@/layouts/TopLayout/components/Setting/inedx';
 import Message from '@/layouts/TopLayout/components/Message/inedx';
 import Action from '@/layouts/TopLayout/components/Action/inedx';
-import {isArray} from '@/util/Tools';
+import {isArray, isObject} from '@/util/Tools';
 import {preview} from '@/components/DownloadFile';
 
 const TopLayout = ({children}) => {
@@ -65,7 +65,7 @@ const TopLayout = ({children}) => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      history.push(getFirstRoute(routes[0]).path);
+      history.push(isObject(getFirstRoute(routes[0])).path);
     }
   }, []);
 
