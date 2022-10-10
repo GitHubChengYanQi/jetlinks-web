@@ -160,11 +160,13 @@ const TableWarp = (
         resolve('');
       });
     }
-    setState({
-      params: JSON.stringify({
-        ...page, values: pagination.current ? newValues : {}
-      })
-    });
+    if (!isModal){
+      setState({
+        params: JSON.stringify({
+          ...page, values: pagination.current ? newValues : {}
+        })
+      });
+    }
     let response;
     try {
       if (dataSources) {
