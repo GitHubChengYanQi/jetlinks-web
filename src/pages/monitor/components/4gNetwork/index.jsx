@@ -1,5 +1,6 @@
 import React from 'react';
 import {Space, Tabs} from 'antd';
+import {createFormActions} from '@formily/antd';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
@@ -9,6 +10,8 @@ import {deviceStatusLogList} from '@/pages/monitor/url';
 import {useRequest} from '@/util/Request';
 
 export const monitoringChart = {url: '/monitor/monitoringChart', method: 'POST'};
+
+const formActionsPublic = createFormActions();
 
 const Network4G = ({device = {}}) => {
 
@@ -34,6 +37,7 @@ const Network4G = ({device = {}}) => {
           label: '历史数据',
           children: <>
             <Table
+              formActions={formActionsPublic}
               bodyStyle={{padding: 0}}
               api={deviceStatusLogList}
               noSort

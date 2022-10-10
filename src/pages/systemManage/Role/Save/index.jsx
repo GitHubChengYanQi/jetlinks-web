@@ -60,7 +60,11 @@ const Save = ({
       visible={visible}
       close={close}
       format={(values) => {
-        return {...values, menuIds: values.menuIds.filter(item => item.indexOf('dict') === -1).toString()};
+        const some = values.menuIds.length === initMenuIds.length && values.menuIds.filter(item => initMenuIds.some(id => id === item)).length === values.menuIds.length;
+        return {
+          ...values,
+          menuIds: some ? data?.menuIds.toString() : values.menuIds.filter(item => item.indexOf('dict') === -1).toString()
+        };
       }}
     >
       <Form.Item
@@ -72,7 +76,7 @@ const Save = ({
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称"/>
+        <Input placeholder="请输入账号名称" />
       </Form.Item>
       <Form.Item
         initialValue={initMenuIds}
@@ -83,7 +87,7 @@ const Save = ({
           {required: true, message: '请选择菜单权限'},
         ]}
       >
-        <Tree halfChecked treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border/>
+        <Tree halfChecked treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border />
       </Form.Item>
       <Form.Item
         initialValue={data?.classifyIds}
@@ -94,7 +98,7 @@ const Save = ({
           {required: false, message: '请选择分组权限'},
         ]}
       >
-        <SelectTopClass checkable/>
+        <SelectTopClass checkable />
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}
