@@ -49,10 +49,11 @@ const AddContacts = (
       onClose={() => setOpen(false)}
     >
       <Contacts
-        ids={value.map(item => item.contactId)}
+        checkedRows={value}
         noAction
+        rows={value}
         onSuccess={() => setOpen(false)}
-        onChange={(value, records) => {
+        onChange={(records) => {
           onChange(records);
         }}/>
     </Drawer>

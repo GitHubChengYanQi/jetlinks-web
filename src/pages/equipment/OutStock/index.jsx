@@ -169,7 +169,8 @@ const OutStock = () => {
   return <>
     <Table
       loading={loading}
-      onChange={(keys, records) => setRecords(records)}
+      onChangeRows={setRecords}
+      checkedRows={records}
       selectedRowKeys={keys}
       ref={ref}
       tableKey="outstock"

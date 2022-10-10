@@ -13,8 +13,13 @@ import Note from '@/components/Note';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import store from '@/store';
 
 const Role = () => {
+
+  const [userInfo] = store.useModel('user');
+
+  const info = userInfo.info || {};
 
   const ref = useRef();
 
@@ -158,7 +163,7 @@ const Role = () => {
         const disabled = [1, 2, 3].includes(record.roleId);
         const open = record.status === '1';
         return <Space>
-          <PrimaryButton onClick={() => {
+          <PrimaryButton disabled={info.roleId !== '1' && disabled} onClick={() => {
             const menuList = record.menuList || [];
             const roleBindResults = record.roleBindResults || [];
             setSaveVisible({

@@ -26,6 +26,7 @@ const TableWarp = (
     bodyStyle,
     bordered,
     // c
+    checkedRows = [],
     children,
     columns,
     contentHeight,
@@ -70,7 +71,10 @@ const TableWarp = (
     noAction,
     noForm,
     // o
-    onChange,
+    onChange = () => {
+    },
+    onChangeRows = () => {
+    },
     onReset = () => {
     },
     onResponse = () => {
@@ -83,7 +87,7 @@ const TableWarp = (
     // s
     sortAction,
     showCard,
-    selectedRowKeys,
+    selectedRowKeys = [],
     searchForm,
     SearchButton,
     selectionType,
@@ -234,7 +238,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
@@ -272,26 +276,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id="submit"
-                        loading={otherLoading || loading}
-                        type="primary"
-                        htmlType="submit"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                      {searchButtons}
-                      {selectView}
-                      {saveView}
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={otherLoading || loading}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                    {searchButtons}
+                    {selectView}
+                    {saveView}
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -326,7 +330,7 @@ const TableWarp = (
               dataIndex: '0',
               width: '70px',
               render: (value, record, index) => <Render
-                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70}/>
+                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70} />
             }]),
             ...tableColumn.filter(item => item.checked),
             ...action,
@@ -335,11 +339,14 @@ const TableWarp = (
             noPagination ? false : {
               ...pagination,
               showTotal: (total) => {
-                return `共${total || dataSource.length}条`;
+                return <>
+                  <span hidden={selectedRowKeys.length <= 0}>已选 {selectedRowKeys.length} 条</span>
+                  <span className={style.total}>{`共${total || dataSource.length}条`}</span>
+                </>;
               },
               showQuickJumper: true,
               position: ['bottomRight'],
-              showSizeChanger:true,
+              showSizeChanger: true,
               pageSizeOptions: ['5', '10', '20', '50', '100']
             }
           }
@@ -347,10 +354,28 @@ const TableWarp = (
             type: selectionType || 'checkbox',
             defaultSelectedRowKeys,
             selectedRowKeys,
-            onChange: (selectedRowKeys, selectedRows) => {
-              typeof onChange === 'function' && onChange(selectedRowKeys, selectedRows);
+            onSelect: (record, selected) => {
+              if (selected) {
+                onChange([...selectedRowKeys, record[rowKey]]);
+                onChangeRows([...checkedRows, record]);
+              } else {
+                onChange(selectedRowKeys.filter(key => key !== record[rowKey]));
+                onChangeRows(checkedRows.filter(item => item[rowKey] !== record[rowKey]));
+              }
             },
-            ...rowSelection,
+            onSelectAll: (selected, selectedRows, changeRows) => {
+              if (selected) {
+                const selectIds = changeRows.map(item => item[rowKey]);
+                onChange([...selectedRowKeys, ...selectIds]);
+                onChangeRows([...checkedRows, ...changeRows]);
+              } else {
+                const deleteIds = changeRows.map((item) => {
+                  return item[rowKey];
+                });
+                onChange(selectedRowKeys.filter(key => !deleteIds.some(deleKey => key === deleKey)));
+                onChangeRows(checkedRows.filter(item => !deleteIds.some(deleKey => item[rowKey] === deleKey)));
+              }
+            },
             getCheckboxProps,
           }}
           footer={noFooter ? false : footer}
