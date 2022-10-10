@@ -10,15 +10,13 @@ import Table from '@/components/Table';
 import {
   mgrUserList, UserExcelDownloadTemplate,
   UserExcelImport,
-  userFreeze,
   userRemove,
   userStart,
   userStop,
-  userUnfreeze
 } from '@/Config/ApiUrl/system/user';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
-import {request, useRequest} from '@/util/Request';
+import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import BatchImport from '@/components/BatchImport';
@@ -39,9 +37,6 @@ const Account = () => {
   const {run: stop} = useRequest(userStop,
     {
       manual: true,
-      onError: (error) => {
-        message.error(error.message);
-      },
       onSuccess: () => {
         setKeys([]);
         message.success('停用成功！');
@@ -49,13 +44,10 @@ const Account = () => {
       }
     });
 
-  // 批量冻结账号
+
   const {run: deleteRun} = useRequest(userRemove,
     {
       manual: true,
-      onError: (error) => {
-        message.error(error.message);
-      },
       onSuccess: () => {
         setKeys([]);
         message.success('删除成功！');
@@ -67,9 +59,6 @@ const Account = () => {
   const {run: start} = useRequest(userStart,
     {
       manual: true,
-      onError: (error) => {
-        message.error(error.message);
-      },
       onSuccess: () => {
         setKeys([]);
         message.success('启用成功！');

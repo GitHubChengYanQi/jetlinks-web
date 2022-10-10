@@ -52,11 +52,22 @@ const Tenant = () => {
       dataIndex: 'status',
       align: 'center',
       render: (text) => <Render>
-        <Button danger={text !== 1} type="link">{text === 1 ? '通过' : '待审核'}</Button></Render>
+        <Button
+          className={text === 1 ? 'green' : 'red'}
+          danger={text !== 1}
+                type="link">{text === 1 ? '通过' : '待审核'}
+        </Button>
+      </Render>
     },
     {title: '企业名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text} />},
     {title: '统一社会信用代码', dataIndex: 'code', align: 'center', render: (text) => <Render text={text} />},
     {title: '企业经营场所', dataIndex: 'place', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {
+      title: '可用短信条数',
+      dataIndex: 'total',
+      align: 'center',
+      render: (text) => <Render className="green">{text || 0}</Render>
+    },
     {title: '管理员姓名', dataIndex: 'contactName', align: 'center', render: (text) => <Render text={text} />},
     {title: '管理员手机号码', dataIndex: 'contactPhone', align: 'center', render: (text) => <Render text={text} />},
     {title: '管理员账号', dataIndex: 'adminAccount', align: 'center', render: (text) => <Render text={text} />},
@@ -110,8 +121,14 @@ const Tenant = () => {
         select
       />
       <FormItem label="提交时间" name="time" component={DatePicker} RangePicker select />
-      <FormItem label="企业查询" name="name" component={Input} style={{width:250}} placeholder="请输入企业名称/统一社会信用代码" />
-      <FormItem label="管理员人查询" name="contactName" component={Input} style={{width:300}} placeholder="请输入管理员账号/姓名/手机号/邮箱" />
+      <FormItem label="企业查询" name="name" component={Input} style={{width: 250}} placeholder="请输入企业名称/统一社会信用代码" />
+      <FormItem
+        label="管理员查询"
+        name="contactName"
+        component={Input}
+        style={{width: 300}}
+        placeholder="请输入管理员账号/姓名/手机号"
+      />
     </>;
   };
 
@@ -137,7 +154,7 @@ const Tenant = () => {
         <Dropdown disabled={keys.length === 0} key={1} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={2} onClick={()=>{
+        <PrimaryButton key={2} onClick={() => {
           window.open(`${baseURI}/CustomerExcel/export?authorization=${token}&customerIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}
@@ -147,8 +164,12 @@ const Tenant = () => {
       actionRender={(text, record) => {
         const open = record.status === 1;
         return <Space>
-          {!open && <ActionButton onClick={() => setInfoVisible(record)}>通过</ActionButton>}
-          {!open && <PrimaryButton onClick={() => setAskAccount(record)}>修改</PrimaryButton>}
+          <Button
+            className={!open && 'bgGreen'}
+            type="primary"
+            onClick={() => setInfoVisible({...record, detail: open})}>{open ? '详情' : '通过'}
+          </Button>
+          <PrimaryButton onClick={() => setAskAccount(record)}>修改</PrimaryButton>
           <PrimaryButton onClick={() => setVisible(true)}>数据转发</PrimaryButton>
           <Warning onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
             <DangerButton>删除</DangerButton>
@@ -158,6 +179,7 @@ const Tenant = () => {
     />
 
     <AccountAsk
+      customer
       visibilityToggle={false}
       visible={askAccount}
       onClose={() => {

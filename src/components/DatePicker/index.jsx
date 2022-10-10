@@ -38,7 +38,7 @@ const DatePicker = (
     value={value && moment(value)}
     showTime={showTime}
     onChange={(date, dateString) => {
-      onChange(moment(dateString).format('YYYY/MM/DD HH:mm:ss'));
+      onChange(dateString ? moment(dateString).format('YYYY/MM/DD HH:mm:ss') : null);
     }}/>;
 
 

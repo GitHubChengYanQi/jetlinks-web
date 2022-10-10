@@ -2,27 +2,15 @@ import React from 'react';
 import {Button, Input} from 'antd';
 import Warning from '@/components/Warning';
 
-interface Props {
-  value?: any;
-  onChange?: any;
-  onReset?: any;
-  initPassword?: any;
-  disabled?: any;
-  inputDisabled?: any;
-  placeholder?: any;
-  content?: any;
-  reset?: boolean;
-  visibilityToggle?: boolean;
-}
-
-const Password: React.FC<Props> = (props) => {
-
-  const {
+const Password = (
+  {
+    loading,
     inputDisabled,
     reset,
     value,
     visibilityToggle,
     onChange,
+    show,
     onReset = () => {
     },
     initPassword = () => {
@@ -30,12 +18,14 @@ const Password: React.FC<Props> = (props) => {
     disabled,
     placeholder,
     content,
-  } = props;
+  }
+) => {
 
   return <Input.Group>
     <Input.Password
+      hidden={show}
       visibilityToggle={visibilityToggle}
-      autoComplete='new-password'
+      autoComplete="new-password"
       disabled={disabled || inputDisabled}
       placeholder={placeholder}
       value={value}
@@ -47,7 +37,12 @@ const Password: React.FC<Props> = (props) => {
         onChange(initPassword());
         onReset(initPassword());
       }}>
-        <Button disabled={disabled} type="primary" ghost>重置密码</Button>
+        <Button
+          loading={loading}
+          style={{padding: show && 0}}
+          disabled={disabled}
+          type={show ? 'link' : 'primary'}
+          ghost={!show}>重置密码</Button>
       </Warning>
     </div>
   </Input.Group>;

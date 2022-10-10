@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Row, Col, Input, Select as AntSelect} from 'antd';
+import {Row, Col, Input, Select as AntSelect, Modal} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
 import LeftTree from '@/pages/monitor/LeftTree';
@@ -47,20 +47,20 @@ const Edition = () => {
       }
     },
     {
-      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
+      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />
     },
-    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text} />},
+    {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text} />},
+    {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text} />},
   ];
 
   const [close, setClose] = useState(false);
 
   const searchForm = () => {
     return <>
-      <FormItem label="升级时间" name="0" component={DatePicker} RangePicker/>
+      <FormItem label="升级时间" name="0" component={DatePicker} RangePicker />
       <FormItem
         label="设备状态"
         name="status"
@@ -75,11 +75,11 @@ const Edition = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="登记名称" name="name" component={Input}/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="登记名称" name="name" component={Input} />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
     </>;
   };
 
@@ -139,7 +139,14 @@ const Edition = () => {
     />
     <Restart
       visible={restarting}
-      success={() => setRestarting(false)}
+      success={() => {
+        Modal.success({
+          centered:true,
+          content: '升级成功!',
+          okText:'确定'
+        });
+        setRestarting(false);
+      }}
     />
   </>;
 };

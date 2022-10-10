@@ -10,7 +10,7 @@ import InputNumber from '@/components/InputNumber';
 
 
 const AccountAsk = (
-  {visible, onClose, data = {}, visibilityToggle = true}
+  {visible, onClose, data = {}, visibilityToggle = true, customer}
 ) => {
 
   const [form] = Form.useForm();
@@ -19,7 +19,7 @@ const AccountAsk = (
 
   const [success, setSuccess] = useState(false);
 
-  const [checked, setChecked] = useState(data.customerId);
+  const [checked, setChecked] = useState(customer);
 
   const {loading, run} = useRequest(customerAdd, {
     manual: true,
@@ -61,7 +61,7 @@ const AccountAsk = (
         setErrorText('请阅读并同意《用户服务条款和用户隐私政策》');
         return;
       }
-      if (data.customerId) {
+      if (customer) {
         edit({data: {...values, customerId: data.customerId}});
         return;
       }
@@ -90,10 +90,10 @@ const AccountAsk = (
 
   return <>
     <Drawer
-      extra={<CloseOutlined style={{cursor:'pointer'}} onClick={() => {
+      extra={<CloseOutlined style={{cursor: 'pointer'}} onClick={() => {
         setSuccess(false);
         onClose();
-      }}/>}
+      }} />}
       // closable={false}
       closeIcon={null}
       height="100vh"
@@ -134,7 +134,7 @@ const AccountAsk = (
                       {required: true, message: '请输入企业名称'},
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入企业名称"/>
+                    <Input disabled={success} placeholder="请输入企业名称" />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.code}
@@ -143,9 +143,13 @@ const AccountAsk = (
                     name="code"
                     rules={[
                       {required: true, message: '请输入统一社会信用代码'},
+                      {
+                        pattern: /^([0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}|[1-9]\d{14})$/,
+                        message: '请输入正确统一社会信用代码'
+                      },
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入统一社会信用代码"/>
+                    <Input disabled={success} placeholder="请输入统一社会信用代码" />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.place}
@@ -156,7 +160,7 @@ const AccountAsk = (
                       {required: true, message: '请输入企业经营场所'},
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入企业经营场所"/>
+                    <Input disabled={success} placeholder="请输入企业经营场所" />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.contactName}
@@ -167,7 +171,7 @@ const AccountAsk = (
                       {required: true, message: '请输入管理员姓名'},
                     ]}
                   >
-                    <Input disabled={success} placeholder="请输入管理员姓名"/>
+                    <Input disabled={success} placeholder="请输入管理员姓名" />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.contactPhone}
@@ -179,7 +183,7 @@ const AccountAsk = (
                       {message: '请输入正确的手机号码!', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/}
                     ]}
                   >
-                    <InputNumber disabled={success} placeholder="请输入管理员手机号码"/>
+                    <InputNumber disabled={success} placeholder="请输入管理员手机号码" />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.adminAccount}
@@ -190,7 +194,7 @@ const AccountAsk = (
                       {required: true, message: '请输入企业管理员账号名称'},
                     ]}
                   >
-                    <Input autoComplete="new-password" disabled={success} placeholder="请输入企业管理员账号名称"/>
+                    <Input autoComplete="new-password" disabled={success} placeholder="请输入企业管理员账号名称" />
                   </Form.Item>
                   <Form.Item key="adminPassword" label="管理员密码" required>
                     <Form.Item
@@ -207,7 +211,7 @@ const AccountAsk = (
                     >
                       <Password
                         visibilityToggle={visibilityToggle}
-                        reset={data.customerId}
+                        reset={customer}
                         content="您确定要重置密码么？重置后默认初始密码为【opt123】"
                         initPassword={() => {
                           return 'opt123';
@@ -218,11 +222,11 @@ const AccountAsk = (
                     </Form.Item>
                     <div className={styles.extra}>
                       <Tooltip placement="top" title="密码包含6~18位字母、数字、特殊符号的2种或多种组合">
-                        <QuestionCircleOutlined/>
+                        <QuestionCircleOutlined />
                       </Tooltip>
                     </div>
                   </Form.Item>
-                  {!data.customerId && <Form.Item
+                  {!customer && <Form.Item
                     key="check"
                     label="再次确认密码"
                     name="check"
@@ -251,7 +255,7 @@ const AccountAsk = (
                     label="上传营业执照"
                     name="file"
                   >
-                    <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []} disbaled={success}/>
+                    <FileUpload defaultFileList={data?.file ? [{name: data?.fileName}] : []} disbaled={success} />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.legalPersonName}
@@ -259,15 +263,31 @@ const AccountAsk = (
                     label="申请人/企业法人姓名"
                     name="legalPersonName"
                   >
-                    <Input disabled={success} placeholder="请输入申请人或企业法人姓名"/>
+                    <Input disabled={success} placeholder="请输入申请人或企业法人姓名" />
                   </Form.Item>
                   <Form.Item
                     initialValue={data.legalPersonCard}
                     key="legalPersonCard"
                     label="申请人/企业法人身份证号"
                     name="legalPersonCard"
+                    rules={[
+                      {
+                        message: '请输入正确身份证号',
+                        pattern: '^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$'
+                      }
+                    ]}
                   >
-                    <Input disabled={success} placeholder="请输入申请人或企业法人身份证号码"/>
+                    <Input disabled={success} placeholder="请输入申请人或企业法人身份证号码" />
+                  </Form.Item>
+                </Card>
+                <Card hidden={!customer} title="3、可用短信条数设置" bordered={false} headStyle={{border: 'none'}}>
+                  <Form.Item
+                    initialValue={data.total}
+                    key="total"
+                    label="可用短信条数"
+                    name="total"
+                  >
+                    <InputNumber placeholder="请输入租户可用短信条数" />
                   </Form.Item>
                 </Card>
               </Col>
@@ -279,6 +299,9 @@ const AccountAsk = (
         <div className={styles.check}>
           <Checkbox disabled={success} checked={checked} onChange={(e) => {
             setChecked(e.target.checked);
+            if (errorText === '请阅读并同意《用户服务条款和用户隐私政策》') {
+              setErrorText();
+            }
           }}>阅读并同意 <a>《用户服务条款和用户隐私政策》</a>
           </Checkbox>
         </div>
@@ -294,14 +317,14 @@ const AccountAsk = (
         </div>
         <div hidden={!errorText} className={styles.error}>
           <Space>
-            <ExclamationCircleFilled/>{errorText}
+            <ExclamationCircleFilled />{errorText}
           </Space>
         </div>
         <div hidden={!success}>
           <Button type="link" onClick={() => {
             setSuccess(false);
             onClose();
-          }}>{data.customerId ? '返回' : '返回登陆页面'}</Button>
+          }}>{customer ? '返回' : '返回登陆页面'}</Button>
         </div>
       </div>
     </Drawer>
