@@ -324,7 +324,7 @@ const AccountAsk = (
           <Button type="link" onClick={() => {
             setSuccess(false);
             onClose();
-          }}>{customer ? '返回' : '返回登陆页面'}</Button>
+          }}>{customer ? '返回' : '返回登录页面'}</Button>
         </div>
       </div>
     </Drawer>

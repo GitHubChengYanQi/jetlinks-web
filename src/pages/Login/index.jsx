@@ -101,13 +101,13 @@ const Login = () => {
       售后电话：400-017-0188
     </div>
   },] : [{
-    label: '账号密码登陆', key: 'password', children: <>
+    label: '账号密码登录', key: 'password', children: <>
       <CorporateName corporateName={corporateName} setCorporateName={setCorporateName}/>
       <UserName username={username} setUsername={setUsername}/>
       <Password password={password} setPassword={setPassword}/>
     </>
   }, {
-    label: '手机验证码登陆', key: 'phone', children: <>
+    label: '手机验证码登录', key: 'phone', children: <>
       <CorporateName corporateName={corporateName} setCorporateName={setCorporateName}/>
       <Phone phone={phone} setPhone={setPhone}/>
       <Code
@@ -134,7 +134,7 @@ const Login = () => {
           clear();
           setKey(key);
         }} items={adminLogin ? [{
-          label: '管理员登陆', key: 'item-1', children: <>
+          label: '管理员登录', key: 'item-1', children: <>
             <UserName username={username} setUsername={setUsername}/>
             <Password password={password} setPassword={setPassword}/>
           </>
@@ -183,7 +183,7 @@ const Login = () => {
             setKey(findPassword ? 'password' : 'find');
             setFindPassword(!findPassword);
           }}>
-            {findPassword ? <>已有账号，<span className="blue">立即登陆</span></> : '找回密码'}
+            {findPassword ? <>已有账号，<span className="blue">立即登录</span></> : '找回密码'}
           </div>
         </div>
         <div className={style.other} hidden>

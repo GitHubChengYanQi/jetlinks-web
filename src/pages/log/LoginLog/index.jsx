@@ -41,7 +41,7 @@ const LoginLog = () => {
       render: (text) => {
         const success = text === '成功';
         return <Render>
-          <span className={success ? 'green' : 'red'}>{success ? '登陆成功' : '登陆失败'}</span>
+          <span className={success ? 'green' : 'red'}>{success ? '登录成功' : '登录失败'}</span>
         </Render>;
       }
     },

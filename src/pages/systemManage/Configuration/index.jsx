@@ -79,7 +79,7 @@ const Configuration = () => {
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="登陆有效期" name="loginTime" initialValue="close">
+        <Form.Item label="登录有效期" name="loginTime" initialValue="close">
           <Radio.Group>
             <Space direction="vertical">
               <Radio value="close">关</Radio>
