@@ -51,7 +51,7 @@ const AntForm = (
         return;
       }
       message.success('添加成功！');
-      success(res.data);
+      success(res.data || true);
     },
     onError: () => message.error('添加失败！')
   });
@@ -66,7 +66,7 @@ const AntForm = (
         return;
       }
       message.success('修改成功！');
-      success(res);
+      success(false);
     },
     onError: () => message.error('修改失败！')
   });

@@ -54,7 +54,7 @@ const Equipment = () => {
     onSuccess: () => {
       setResords([]);
       message.success('启用成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('启用失败!')
   });
@@ -332,9 +332,13 @@ const Equipment = () => {
       visible={Boolean(saveVisible)}
       close={() => setSaveVisible(null)}
       data={saveVisible || {}}
-      success={() => {
+      success={(success) => {
         setSaveVisible(null);
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}
     />
 
@@ -345,7 +349,7 @@ const Equipment = () => {
       success={() => {
         setResords([]);
         setMoveGrouVisible(null);
-        ref.current.submit();
+        ref.current.refresh();
       }}
     />
 
@@ -362,7 +366,7 @@ const Equipment = () => {
       close={() => setFormVisible()}
       success={() => {
         setFormVisible();
-        ref.current.submit();
+        ref.current.refresh();
       }}
     />
 
@@ -371,7 +375,7 @@ const Equipment = () => {
       data={noteVisible}
       success={() => {
         setNoteVisible({});
-        ref.current.submit();
+        ref.current.refresh();
       }}
     />
   </>;

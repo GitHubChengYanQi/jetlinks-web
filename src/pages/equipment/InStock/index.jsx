@@ -40,7 +40,7 @@ const InStock = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('删除失败!')
   });
@@ -173,9 +173,13 @@ const InStock = () => {
     />
 
     <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} success={() => {
+    <Save visible={saveVisible} close={() => setSaveVisible(false)} success={(success) => {
       setSaveVisible(false);
-      ref.current.submit();
+      if (success) {
+        ref.current.submit();
+      } else {
+        ref.current.refresh();
+      }
     }} />
     <BatchImport
       columns={[
@@ -192,7 +196,7 @@ const InStock = () => {
       title="入库"
       success={() => {
         setBatchImport(false);
-        ref.current.submit();
+        ref.current.refresh();
       }}
       visible={batchImport}
       close={() => setBatchImport(false)}

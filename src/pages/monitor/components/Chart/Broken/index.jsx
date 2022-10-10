@@ -1,42 +1,15 @@
 import React, {useEffect} from 'react';
 import * as G2 from '@antv/g2';
 
-const Broken = () => {
+const Broken = ({data}) => {
 
 
   useEffect(() => {
-    const data = [{
-      time: '00:00',
-      value: 3
-    }, {
-      time: '01:00',
-      value: 4
-    }, {
-      time: '02:00',
-      value: 3.5
-    }, {
-      time: '03:00',
-      value: 5
-    }, {
-      time: '04:00',
-      value: 4.9
-    }, {
-      time: '05:00',
-      value: 6
-    }, {
-      time: '06:00',
-      value: 7
-    }, {
-      time: '07:00',
-      value: 9
-    }, {
-      time: '08:00',
-      value: 13
-    }];
     const chart = new G2.Chart({
       container: 'Broken',
       forceFit: true,
-      height: 200
+      height: 200,
+      padding: [20, 80, 95, 50],
     });
     chart.source(data);
     chart.scale('value', {

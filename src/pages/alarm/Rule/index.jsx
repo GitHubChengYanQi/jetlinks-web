@@ -26,7 +26,7 @@ const Rule = () => {
     manual: true,
     onSuccess: () => {
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('删除失败!')
   });
@@ -72,9 +72,13 @@ const Rule = () => {
       detail={saveVisible || {}}
       visible={saveVisible}
       close={() => setSaveVisible()}
-      success={() => {
+      success={(success) => {
         setSaveVisible();
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}
     />
   </>;

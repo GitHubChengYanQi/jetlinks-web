@@ -78,7 +78,7 @@ const Record = () => {
     manual: true,
     onSuccess: () => {
       setKeys([]);
-      ref.current.submit();
+      ref.current.refresh();
     }
   });
 

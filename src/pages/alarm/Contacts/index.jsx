@@ -65,7 +65,7 @@ const Contacts = ({
     request({...contactDelete, data: {contactId}}).then((res) => {
       if (res.success) {
         message.success('删除成功!');
-        ref.current.submit();
+        ref.current.refresh();
       }
     }).catch(() => message.success('删除失败！'));
   };
@@ -160,9 +160,13 @@ const Contacts = ({
       )}
     />
 
-    <Save data={saveVisible} visible={saveVisible} success={() => {
+    <Save data={saveVisible} visible={saveVisible} success={(success) => {
       setSaveVisible();
-      ref.current.submit();
+      if (success) {
+        ref.current.submit();
+      } else {
+        ref.current.refresh();
+      }
     }} close={() => setSaveVisible()} />
 
     <BatchImport
@@ -178,7 +182,7 @@ const Contacts = ({
       title="联系人"
       success={() => {
         setBatchImport(false);
-        ref.current.submit();
+        ref.current.refresh();
       }}
       visible={batchImport}
       close={() => setBatchImport(false)}

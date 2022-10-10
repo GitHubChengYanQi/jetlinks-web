@@ -24,7 +24,7 @@ const LoginLog = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('删除失败!')
   });

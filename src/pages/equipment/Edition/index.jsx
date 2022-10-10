@@ -101,7 +101,7 @@ const Edition = () => {
                 default:
                   break;
               }
-              ref.current.submit();
+              ref.current.refresh();
             }}
           />
         </div>

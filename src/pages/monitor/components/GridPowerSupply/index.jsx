@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Card, Space, Tabs} from 'antd';
-import DatePicker from '@/components/DatePicker';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import Table from '@/components/Table';
@@ -8,19 +7,29 @@ import Render from '@/components/Render';
 import Save from '@/pages/monitor/components/BackboneNetwork/Save';
 import Warning from '@/components/Warning';
 import {deviceStatusLogList} from '@/pages/monitor/url';
+import {createFormActions} from '@formily/antd';
 
+const formActionsPublic = createFormActions();
 // 电网供电监测
 const GridPowerSupply = () => {
 
   const [saveVisible, setSaveVisible] = useState();
 
+  const data = new Array(25).fill('').map((item, index) => {
+    return {
+      'time': `${index}.00`,
+      'value': Math.random()*100,
+      'title': '太阳能电压'
+    };
+  });
+
   return <>
     <Card
       bodyStyle={{padding: 0}}
       bordered={false}
-      extra={<DatePicker RangePicker/>}
     >
-      <BrokenLine/>
+      太阳能电压/V
+      <BrokenLine data={data}/>
     </Card>
 
     <Tabs
@@ -36,6 +45,7 @@ const GridPowerSupply = () => {
           label: '历史数据',
           children: <>
             <Table
+              formActions={formActionsPublic}
               api={deviceStatusLogList}
               noSort
               noRowSelection
@@ -49,11 +59,11 @@ const GridPowerSupply = () => {
                   dataIndex: 'logTime',
                   render: (value) => <Render text={value}/>
                 }, {
-                  title: '电网供电电压',
+                  title: '太阳能电压',
                   align: 'center',
                   fixed: 'left',
                   dataIndex: '2',
-                  render: (value) => <Render className="green" text='-'/>
+                  render: (value) => <Render className="green" text='0'/>
                 },
               ]}
               actionRender={() => {

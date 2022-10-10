@@ -36,7 +36,7 @@ const Model = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('关闭成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('关闭失败!')
   });
@@ -46,7 +46,7 @@ const Model = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('启用成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('启用失败!')
   });
@@ -56,7 +56,7 @@ const Model = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('删除失败!')
   });
@@ -191,9 +191,13 @@ const Model = () => {
       visible={Boolean(saveVisible)}
       close={() => setSaveVisible(null)}
       data={saveVisible || {}}
-      success={() => {
+      success={(success) => {
         setSaveVisible(null);
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}/>
   </>;
 };

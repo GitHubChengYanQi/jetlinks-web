@@ -11,6 +11,7 @@ import {
 } from 'antd';
 import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {getSearchParams} from 'ice';
+import moment from 'moment';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
 import Info from '@/pages/monitor/Info';
@@ -24,6 +25,19 @@ import DatePicker from '@/components/DatePicker';
 import {monitorList} from '@/pages/monitor/url';
 import {LinkButton} from '@/components/Button';
 import Table from '@/components/Table';
+import Lamp from '@/pages/monitor/components/Lamp';
+import SolarCellCapacity from '@/pages/monitor/components/SolarCellCapacity';
+import Combo from '@/pages/monitor/components/Combo';
+import AncillaryMonitoring from '@/pages/monitor/components/AncillaryMonitoring';
+import ChannelControl from '@/pages/monitor/components/ChannelControl';
+import UplinkDevice from '@/pages/monitor/components/UplinkDevice';
+import AccessNetworkPort from '@/pages/monitor/components/AccessNetworkPort';
+import WorkingVoltage from '@/pages/monitor/components/WorkingVoltage';
+import WiredNetwork from '@/pages/monitor/components/WiredNetwork';
+import AI from '@/pages/monitor/components/AI';
+import DI from '@/pages/monitor/components/DI';
+import DO from '@/pages/monitor/components/DO';
+import RS232 from '@/pages/monitor/components/RS232';
 
 const Monitor = () => {
 
@@ -31,6 +45,11 @@ const Monitor = () => {
 
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
+
+  const [date, setDate] = useState([
+    moment(new Date(new Date().setDate(new Date().getDate() - 1))).format('YYYY/MM/DD HH:mm:ss'),
+    moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
+  ]);
 
   const [params, setParams] = useState({});
 
@@ -102,7 +121,8 @@ const Monitor = () => {
         }
         try {
           return <Render onClick={() => {
-            setOpen({type: '4gNetwork', ...record});
+            console.log(item.dataIndex);
+            setOpen({type: item.dataIndex, ...record});
           }}>{typeof text === 'number' ? text : (text || '-')}</Render>;
         } catch (e) {
           return <Render text="-"/>;
@@ -173,7 +193,7 @@ const Monitor = () => {
                 default:
                   break;
               }
-              ref.current.submit();
+              ref.current.refresh();
             }}/>
         </div>
       </Col>
@@ -182,7 +202,7 @@ const Monitor = () => {
           onReset={() => {
             ref.current.formActions.setFieldValue('modelId', params.modelId);
             ref.current.formActions.setFieldValue('classifyId', params.classifyId);
-            ref.current.submit();
+            ref.current.refresh();
           }}
           maxHeight="calc(100vh - 435px)"
           condition={(values) => {
@@ -228,22 +248,35 @@ const Monitor = () => {
       data={noteVisible}
       success={() => {
         setNoteVisible({});
-        ref.current.submit();
+        ref.current.refresh();
       }}
     />
 
     <Drawer
-      title={`终端备注：${open.remarks}    设备型号：${open.modelName}`}
+      title={`终端备注：${open.remarks || '-'}    设备型号：${open.modelName}`}
       destroyOnClose
       style={{minWidth: '50vw'}}
       className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}
-      extra={<DatePicker width={200} RangePicker/>}
+      extra={<DatePicker width={400} RangePicker showTime value={date} onChange={setDate}/>}
     >
-      {open.type === 'GridPowerSupply' && <GridPowerSupply/>}
-      {open.type === 'BackboneNetwork' && <BackboneNetwork/>}
-      {open.type === '4gNetwork' && <Network4G device={open}/>}
+      {open.type === 'tyngdjc' && <GridPowerSupply/>}
+      {open.type === 'tyndcrl' && <SolarCellCapacity/>}
+      {open.type === 'zgwljc' && <BackboneNetwork/>}
+      {open.type === 'combo' && <Combo/>}
+      {open.type === 'g4' && <Network4G device={open}/>}
+      {open.type === 'fsjc' && <AncillaryMonitoring device={open}/>}
+      {open.type === 'ttkz' && <ChannelControl device={open}/>}
+      {['dwgdjc', 'sxsbjc'].includes(open.type) && <UplinkDevice device={open}/>}
+      {open.type === 'jrwk' && <AccessNetworkPort device={open}/>}
+      {open.type === 'dyjbs' && <WorkingVoltage device={open}/>}
+      {open.type === 'dlbjs' && <WiredNetwork device={open}/>}
+      {open.type === 'shbjs' && <AI device={open}/>}
+      {open.type === 'bi' && <DI device={open}/>}
+      {open.type === 'doo' && <DO device={open}/>}
+      {['rS232', 'rs485'].includes(open.type) && <RS232 device={open}/>}
+      {['dybjs', 'clbjs', 'psbjs', 'ycbjs'].includes(open.type) && <Lamp device={open} date={date}/>}
     </Drawer>
 
   </>;

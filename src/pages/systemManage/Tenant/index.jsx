@@ -33,7 +33,7 @@ const Tenant = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('通过成功！');
-      ref.current.submit();
+      ref.current.refresh();
     }
   });
 
@@ -42,7 +42,7 @@ const Tenant = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     }
   });
 
@@ -183,15 +183,19 @@ const Tenant = () => {
       visibilityToggle={false}
       visible={askAccount}
       onClose={() => {
-        ref.current.submit();
+        ref.current.refresh();
         setAskAccount(null);
       }}
       data={askAccount || {}}
     />
 
-    <Save visible={visible} close={() => setVisible(false)} success={() => {
+    <Save visible={visible} close={() => setVisible(false)} success={(success) => {
       setVisible(false);
-      ref.current.submit();
+      if (success) {
+        ref.current.submit();
+      } else {
+        ref.current.refresh();
+      }
     }} />
 
     <Info
@@ -200,7 +204,7 @@ const Tenant = () => {
       close={() => setInfoVisible()}
       success={() => {
         setInfoVisible();
-        ref.current.submit();
+        ref.current.refresh();
       }}
     />
   </>;

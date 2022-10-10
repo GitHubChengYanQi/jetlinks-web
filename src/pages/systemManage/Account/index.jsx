@@ -40,7 +40,7 @@ const Account = () => {
       onSuccess: () => {
         setKeys([]);
         message.success('停用成功！');
-        ref.current.submit();
+        ref.current.refresh();
       }
     });
 
@@ -51,7 +51,7 @@ const Account = () => {
       onSuccess: () => {
         setKeys([]);
         message.success('删除成功！');
-        ref.current.submit();
+        ref.current.refresh();
       }
     });
 
@@ -62,7 +62,7 @@ const Account = () => {
       onSuccess: () => {
         setKeys([]);
         message.success('启用成功！');
-        ref.current.submit();
+        ref.current.refresh();
       }
     });
 
@@ -201,9 +201,13 @@ const Account = () => {
       }}
     />
     <Save
-      success={() => {
+      success={(success) => {
         setSaveVisible(null);
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}
       close={() => setSaveVisible(null)}
       visible={Boolean(saveVisible)}
@@ -220,7 +224,7 @@ const Account = () => {
       api={UserExcelImport}
       success={() => {
         setBatchImport(false);
-        ref.current.submit();
+        ref.current.refresh();
       }}
       visible={batchImport}
       close={() => setBatchImport(false)}

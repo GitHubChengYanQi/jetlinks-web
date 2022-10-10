@@ -42,10 +42,10 @@ export default {
   Genius: {
     logLevel: 'info',
     component: 'ant',
-    // baseURI: 'http://10.147.20.100:85',
+    baseURI: 'http://10.147.20.100:85',
     // baseURI: 'http://192.168.0.230:85',
     // baseURI: 'http://192.168.0.205:85',
-    baseURI: 'http://124.71.235.212:82',
+    // baseURI: 'http://124.71.235.212:82',
     // baseURI: 'http://localhost:85',
     projectName: '道昕云',
     AMAP_KEY: '',
@@ -78,7 +78,7 @@ export default {
   song: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.1.230/',
+    baseURI: 'http://10.147.20.100:85',
     projectName: '道昕云',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'

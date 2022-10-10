@@ -32,7 +32,7 @@ const Role = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('禁用成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
   });
 
@@ -41,7 +41,7 @@ const Role = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('启用成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('启用失败!')
   });
@@ -51,7 +51,7 @@ const Role = () => {
     onSuccess: () => {
       setKeys([]);
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
   });
 
@@ -193,9 +193,13 @@ const Role = () => {
     />
 
     <Save
-      success={() => {
+      success={(success) => {
         setSaveVisible(null);
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}
       close={() => setSaveVisible(null)}
       visible={saveVisible}

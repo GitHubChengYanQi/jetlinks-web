@@ -12,27 +12,19 @@ export const monitoringChart = {url: '/monitor/monitoringChart', method: 'POST'}
 
 const formActionsPublic = createFormActions();
 
-const Network4G = ({device = {}}) => {
+const RS232 = ({device = {}}) => {
 
   const data = new Array(25).fill('').map((item, index) => {
     return {
       'time': `${index}:00`,
-      value: index % 2 === 0 ? '断' : '通'
+      value: index % 2 === 0 ? '正常' : '断开'
     };
   });
 
-  const data1 = new Array(25).fill('').map((item, index) => {
-    return {
-      'time': `${index}:00`,
-      value: Math.random()*100
-    };
-  });
 
   return <>
-    4G网络状态
+    连接状态
     <StepLineChart data={data}/>
-    4G信号强度
-    <Broken data={data1}/>
 
     <Tabs
       tabBarExtraContent={<Space>
@@ -59,29 +51,16 @@ const Network4G = ({device = {}}) => {
                   fixed: 'left',
                   dataIndex: 'logTime',
                   render: (value) => <Render text={value}/>
-                }, {
-                  title: 'IP地址',
-                  align: 'center',
-                  fixed: 'left',
-                  dataIndex: 'ip',
-                  render: (value) => <Render text={value}/>
                 },
                 {
-                  title: '网络状态',
+                  title: '连接状态',
                   align: 'center',
                   fixed: 'left',
                   dataIndex: 'type',
                   render: (value) => <Render
                     className={value === 'online' ? 'green' : 'red'}
-                    text={value === 'online' ? '通' : '断'}
+                    text={value === 'online' ? '正常' : '断开'}
                   />
-                },
-                {
-                  title: '信号强度',
-                  align: 'center',
-                  fixed: 'left',
-                  dataIndex: '1',
-                  render: (value) => <Render text="25"/>
                 },
               ]}
               actionRender={() => {
@@ -95,4 +74,4 @@ const Network4G = ({device = {}}) => {
   </>;
 };
 
-export default Network4G;
+export default RS232;

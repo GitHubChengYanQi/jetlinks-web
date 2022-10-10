@@ -37,7 +37,7 @@ const Grouping = () => {
     manual: true,
     onSuccess: () => {
       message.success('删除成功！');
-      ref.current.submit();
+      ref.current.refresh();
     },
     onError: () => message.error('删除失败！')
   });
@@ -91,7 +91,7 @@ const Grouping = () => {
             showModules={['group']}
             onChange={(value) => {
               ref.current.formActions.setFieldValue('parentId', value);
-              ref.current.submit();
+              ref.current.refresh();
             }}
           />
         </div>
@@ -127,10 +127,14 @@ const Grouping = () => {
     </Row>
 
     <Save
-      success={() => {
+      success={(success) => {
         dataDispatchers.getDeviceClass();
         setSaveVisible(null);
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}
       visible={Boolean(saveVisible)}
       close={() => setSaveVisible(null)}
@@ -147,7 +151,7 @@ const Grouping = () => {
       api={DeviceClassifyExcel}
       success={() => {
         setBatchImport(false);
-        ref.current.submit();
+        ref.current.refresh();
         dataDispatchers.getDeviceClass();
       }}
       visible={batchImport}

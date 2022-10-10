@@ -40,7 +40,7 @@ const OutStock = () => {
     manual: true,
     onSuccess: () => {
       message.success('解绑成功！');
-      ref.current.submit();
+      ref.current.refresh();
     }
   });
 
@@ -217,9 +217,13 @@ const OutStock = () => {
       visible={saveVisible}
       close={() => setSaveVisible(false)}
       data={saveVisible || {}}
-      success={() => {
+      success={(success) => {
         setSaveVisible();
-        ref.current.submit();
+        if (success) {
+          ref.current.submit();
+        } else {
+          ref.current.refresh();
+        }
       }}/>
     <BatchImport
       columns={[{title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},]}
@@ -228,7 +232,7 @@ const OutStock = () => {
       title="出库"
       success={() => {
         setBatchImport(false);
-        ref.current.submit();
+        ref.current.refresh();
       }}
       visible={batchImport}
       close={() => setBatchImport(false)}
