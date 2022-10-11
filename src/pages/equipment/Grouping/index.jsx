@@ -108,6 +108,7 @@ const Grouping = () => {
           </Space>}
           searchForm={searchForm}
           onChange={setKeys}
+          selectedRowKeys={keys}
           loading={loading}
           tableKey="grouping"
           ref={ref}

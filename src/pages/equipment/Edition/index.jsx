@@ -109,6 +109,7 @@ const Edition = () => {
       <Col span={close ? 23 : 20}>
         <Table
           onChange={setKeys}
+          selectedRowKeys={keys}
           ref={ref}
           tableKey="edition"
           searchButtons={[

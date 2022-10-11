@@ -289,7 +289,8 @@ const Equipment = () => {
         }
         return values;
       }}
-      onChange={(values, records) => setResords(records)}
+      checkedRows={records}
+      onChangeRows={setResords}
       selectedRowKeys={keys}
       tableKey="device"
       loading={startLoading}

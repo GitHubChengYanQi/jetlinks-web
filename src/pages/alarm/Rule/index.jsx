@@ -17,9 +17,11 @@ const Rule = () => {
 
   const [saveVisible, setSaveVisible] = useState();
 
+  const [keys, setKeys] = useState([]);
+
   const columns = [
-    {title: '规则名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '规则名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
   ];
 
   const {loading: deleteLoaing, run: deleteRun} = useRequest(alarmDelete, {
@@ -33,13 +35,15 @@ const Rule = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="规则名称" name="name" component={Input}/>
+      <FormItem label="规则名称" name="name" component={Input} />
       <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
     </>;
   };
 
   return <>
     <Table
+      onChange={setKeys}
+      selectedRowKeys={keys}
       loading={deleteLoaing}
       ref={ref}
       api={alarmList}

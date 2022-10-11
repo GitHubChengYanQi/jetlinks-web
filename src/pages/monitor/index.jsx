@@ -199,6 +199,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          noRowSelection
           onReset={() => {
             ref.current.formActions.setFieldValue('modelId', params.modelId);
             ref.current.formActions.setFieldValue('classifyId', params.classifyId);
