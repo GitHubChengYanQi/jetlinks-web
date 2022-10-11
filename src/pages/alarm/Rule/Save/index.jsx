@@ -20,6 +20,8 @@ const Save = (
     },
     detail = {},
     visible,
+    zIndex,
+    modelDisabled,
   }
 ) => {
 
@@ -54,6 +56,10 @@ const Save = (
 
 
   useEffect(() => {
+    if (modelDisabled && detail.modelId){
+      getColumns({data: {modelId: detail.modelId}});
+      setData({modelId: detail.modelId});
+    }
     if (!detail.alarmId) {
       return;
     }
@@ -62,10 +68,11 @@ const Save = (
         alarmId: detail.alarmId,
       }
     });
-  }, [detail.alarmId]);
+  }, [detail.alarmId,detail.modelId]);
 
   return (
     <AntForm
+      zIndex={zIndex}
       labelCol={4}
       afterClose={() => {
         setData({});
@@ -117,7 +124,7 @@ const Save = (
             {required: true, message: '请选择设备型号'},
           ]}
         >
-          <Select api={deviceModelListSelect} placeholder="请选择设备型号" onChange={(value) => {
+          <Select disabled={modelDisabled} api={deviceModelListSelect} placeholder="请选择设备型号" onChange={(value) => {
             if (value) {
               getColumns({data: {modelId: value}});
             }

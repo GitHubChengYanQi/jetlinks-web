@@ -35,10 +35,10 @@ const BackboneNetwork = () => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>
-        <Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>
-        <LinkButton>一件处理</LinkButton>
-        <LinkButton>导出</LinkButton>
+        {/*<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>*/}
+        {/*<Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>*/}
+        {/*<LinkButton>一件处理</LinkButton>*/}
+        {/*<LinkButton>导出</LinkButton>*/}
       </Space>}
       items={[
         {

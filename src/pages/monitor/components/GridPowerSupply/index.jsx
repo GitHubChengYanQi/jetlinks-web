@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {Card, Space, Tabs} from 'antd';
-import {LinkButton, PrimaryButton} from '@/components/Button';
+import {createFormActions} from '@formily/antd';
+import {PrimaryButton} from '@/components/Button';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
 import Save from '@/pages/monitor/components/BackboneNetwork/Save';
-import Warning from '@/components/Warning';
 import {deviceStatusLogList} from '@/pages/monitor/url';
-import {createFormActions} from '@formily/antd';
 
 const formActionsPublic = createFormActions();
 // 电网供电监测
@@ -34,10 +33,10 @@ const GridPowerSupply = () => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <LinkButton onClick={()=>setSaveVisible(true)}>报警设置</LinkButton>
-        <Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>
-        <LinkButton>导出</LinkButton>
-        <LinkButton>一件处理</LinkButton>
+        {/*<LinkButton onClick={()=>setSaveVisible(true)}>报警设置</LinkButton>*/}
+        {/*<Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>*/}
+        {/*<LinkButton>导出</LinkButton>*/}
+        {/*<LinkButton>一件处理</LinkButton>*/}
       </Space>}
       items={[
         {

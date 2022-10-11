@@ -4,6 +4,7 @@ import {useRequest} from '@/util/Request';
 
 const AntForm = (
   {
+    zIndex,
     loading = false,
     labelCol = 6,
     wrapperCol = 18,
@@ -87,6 +88,7 @@ const AntForm = (
 
   return <>
     <Modal
+      zIndex={zIndex}
       maskClosable={false}
       afterClose={() => {
         afterClose();

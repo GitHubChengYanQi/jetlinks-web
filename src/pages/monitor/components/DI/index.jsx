@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Card, Space, Tabs} from 'antd';
-import DatePicker from '@/components/DatePicker';
+import {createFormActions} from '@formily/antd';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
@@ -8,7 +8,6 @@ import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import Warning from '@/components/Warning';
 import Save from '@/pages/monitor/components/BackboneNetwork/Save';
 import {deviceStatusLogList} from '@/pages/monitor/url';
-import {createFormActions} from '@formily/antd';
 
 const formActionsPublic = createFormActions();
 
@@ -66,9 +65,9 @@ const DI = () => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>
-        <LinkButton>一件处理</LinkButton>
-        <LinkButton>导出</LinkButton>
+        {/*<Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>*/}
+        {/*<LinkButton>一件处理</LinkButton>*/}
+        {/*<LinkButton>导出</LinkButton>*/}
       </Space>}
       items={[
         {

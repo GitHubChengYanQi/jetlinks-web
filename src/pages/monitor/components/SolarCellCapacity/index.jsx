@@ -34,9 +34,9 @@ const SolarCellCapacity = () => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <LinkButton onClick={()=>setSaveVisible(true)}>报警设置</LinkButton>
-        <LinkButton>导出</LinkButton>
-        <LinkButton>一件处理</LinkButton>
+        {/*<LinkButton onClick={()=>setSaveVisible(true)}>报警设置</LinkButton>*/}
+        {/*<LinkButton>导出</LinkButton>*/}
+        {/*<LinkButton>一件处理</LinkButton>*/}
       </Space>}
       items={[
         {

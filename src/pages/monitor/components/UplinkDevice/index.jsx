@@ -61,9 +61,9 @@ const UplinkDevice = ({device = {}}) => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>
-        <LinkButton>导出</LinkButton>
-        <LinkButton>一件处理</LinkButton>
+        {/*<Warning content="确定要远程重启总闸开关么?"><LinkButton>远程控制</LinkButton></Warning>*/}
+        {/*<LinkButton>导出</LinkButton>*/}
+        {/*<LinkButton>一件处理</LinkButton>*/}
       </Space>}
       items={[
         {

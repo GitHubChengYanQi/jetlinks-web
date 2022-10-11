@@ -66,7 +66,7 @@ const Configuration = () => {
                 >
                   <FileUpload onChange={(file) => setFileId(file)}/>
                 </Form.Item>
-                <div className={styles.extra}>（企业LOGO将显示在您的平台左上角位置和登录页面）</div>
+                <div className={styles.extra}>（企业LOGO将显示在您的平台左上角企业LOGO和右上角账号头像）</div>
               </Space>
             </Form.Item>
 

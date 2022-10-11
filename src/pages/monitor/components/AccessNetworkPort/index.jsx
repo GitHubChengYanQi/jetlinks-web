@@ -120,9 +120,9 @@ const AccessNetworkPort = ({device = {}}) => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <LinkButton>报警设置</LinkButton>
-        <LinkButton>导出</LinkButton>
-        <LinkButton>一件处理</LinkButton>
+        {/*<LinkButton>报警设置</LinkButton>*/}
+        {/*<LinkButton>导出</LinkButton>*/}
+        {/*<LinkButton>一件处理</LinkButton>*/}
       </Space>}
       items={[
         {

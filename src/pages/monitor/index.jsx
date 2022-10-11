@@ -47,8 +47,8 @@ const Monitor = () => {
   const [noteVisible, setNoteVisible] = useState({});
 
   const [date, setDate] = useState([
-    moment(new Date(new Date().setDate(new Date().getDate() - 1))).format('YYYY/MM/DD HH:mm:ss'),
-    moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
+    moment(new Date(new Date().setDate(new Date().getDate() - 1))).format('YYYY/MM/DD'),
+    moment(new Date()).format('YYYY/MM/DD')
   ]);
 
   const [params, setParams] = useState({});
@@ -77,7 +77,7 @@ const Monitor = () => {
       title: <Space>
         终端备注
         <Tooltip placement="top" title="终端设备备注的名称，平台可以修改">
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </Tooltip>
       </Space>,
       dataIndex: 'remarks',
@@ -101,17 +101,17 @@ const Monitor = () => {
       title: <Space>
         登记名称
         <Tooltip placement="top" title="设备上报的登记名称，平台不可以修改">
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </Tooltip>
       </Space>,
       dataIndex: 'name',
       align: 'center',
-      render: (name) => <Render text={name || '-'}/>
+      render: (name) => <Render text={name || '-'} />
     }, {
       title: 'MAC',
       dataIndex: 'mac',
       align: 'center',
-      render: (mac) => <Render text={mac}/>
+      render: (mac) => <Render text={mac} />
     },
     ...modelColumns.map(item => {
       const children = item.children || [];
@@ -120,12 +120,12 @@ const Monitor = () => {
           return <Render>-</Render>;
         }
         try {
-          return <Render onClick={() => {
+          return <Render style={{cursor: 'pointer'}} onClick={() => {
             console.log(item.dataIndex);
             setOpen({type: item.dataIndex, ...record});
           }}>{typeof text === 'number' ? text : (text || '-')}</Render>;
         } catch (e) {
-          return <Render text="-"/>;
+          return <Render text="-" />;
         }
       };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
@@ -134,9 +134,9 @@ const Monitor = () => {
       title: 'GPS定位',
       dataIndex: '10',
       align: 'center',
-      render: (text) => <Render text={<span className="green">{text || '-'}</span>}/>
+      render: (text) => <Render text={<span className="green">{text || '-'}</span>} />
     },
-    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'}/>},
+    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'} />},
   ];
 
   const [close, setClose] = useState(false);
@@ -157,15 +157,15 @@ const Monitor = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
       <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input}/>
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
       </div>
       <div style={{display: 'none'}}>
-        <FormItem name="modelId" value={searchParams.modelId} component={Input}/>
+        <FormItem name="modelId" value={searchParams.modelId} component={Input} />
       </div>
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
     </>;
   };
 
@@ -194,7 +194,7 @@ const Monitor = () => {
                   break;
               }
               ref.current.refresh();
-            }}/>
+            }} />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
@@ -240,7 +240,7 @@ const Monitor = () => {
       open={infoVisible.modelId}
       extra={<LinkButton onClick={() => infoRef.current.openAlarm()}>报警设置</LinkButton>}
     >
-      <Info ref={infoRef} deviceId={infoVisible.deviceId} modelId={infoVisible.modelId}/>
+      <Info ref={infoRef} deviceId={infoVisible.deviceId} modelId={infoVisible.modelId} />
     </Drawer>
 
     <NoteSave
@@ -259,24 +259,25 @@ const Monitor = () => {
       className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}
-      extra={<DatePicker width={400} RangePicker showTime value={date} onChange={setDate}/>}
+      extra={<DatePicker width={300} RangePicker value={date} onChange={setDate} />}
     >
-      {open.type === 'tyngdjc' && <GridPowerSupply/>}
-      {open.type === 'tyndcrl' && <SolarCellCapacity/>}
-      {open.type === 'zgwljc' && <BackboneNetwork/>}
-      {open.type === 'combo' && <Combo/>}
-      {open.type === 'g4' && <Network4G device={open}/>}
-      {open.type === 'fsjc' && <AncillaryMonitoring device={open}/>}
-      {open.type === 'ttkz' && <ChannelControl device={open}/>}
-      {['dwgdjc', 'sxsbjc'].includes(open.type) && <UplinkDevice device={open}/>}
-      {open.type === 'jrwk' && <AccessNetworkPort device={open}/>}
-      {open.type === 'dyjbs' && <WorkingVoltage device={open}/>}
-      {open.type === 'dlbjs' && <WiredNetwork device={open}/>}
-      {open.type === 'shbjs' && <AI device={open}/>}
-      {open.type === 'bi' && <DI device={open}/>}
-      {open.type === 'doo' && <DO device={open}/>}
-      {['rS232', 'rs485'].includes(open.type) && <RS232 device={open}/>}
-      {['dybjs', 'clbjs', 'psbjs', 'ycbjs'].includes(open.type) && <Lamp device={open} date={date}/>}
+      {open.type === 'tyngdjc' && <GridPowerSupply />}
+      {open.type === 'tyndcrl' && <SolarCellCapacity />}
+      {open.type === 'zgwljc' && <BackboneNetwork />}
+      {open.type === 'combo' && <Combo />}
+      {['rtuid', 'g4', 'network', 'RSSI', 'local1', 'local2', 'ETH', '4G', 'datastreams'].includes(open.type) &&
+      <Network4G device={open} />}
+      {open.type === 'fsjc' && <AncillaryMonitoring device={open} />}
+      {open.type === 'ttkz' && <ChannelControl device={open} />}
+      {['dwgdjc', 'sxsbjc'].includes(open.type) && <UplinkDevice device={open} />}
+      {open.type === 'jrwk' && <AccessNetworkPort device={open} />}
+      {open.type === 'dyjbs' && <WorkingVoltage device={open} />}
+      {open.type === 'dlbjs' && <WiredNetwork device={open} />}
+      {open.type === 'shbjs' && <AI device={open} />}
+      {open.type === 'bi' && <DI device={open} />}
+      {open.type === 'doo' && <DO device={open} />}
+      {['rS232', 'rs485'].includes(open.type) && <RS232 device={open} />}
+      {['dybjs', 'clbjs', 'psbjs', 'ycbjs'].includes(open.type) && <Lamp device={open} date={date} />}
     </Drawer>
 
   </>;

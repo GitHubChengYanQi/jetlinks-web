@@ -7,6 +7,7 @@ import Warning from '@/components/Warning';
 import {deviceEdit} from '@/pages/equipment/Equipment/url';
 import AlarmDetail from '@/pages/alarm/Rule/AlarmDetail';
 import {isArray} from '@/util/Tools';
+import RuleSave from '@/pages/alarm/Rule/Save';
 
 const Save = (
   {
@@ -20,6 +21,8 @@ const Save = (
 ) => {
 
   const [data, setData] = useState([]);
+
+  const [saveVisible, setSaveVisible] = useState();
 
   const dataChange = (newData = {}, key) => {
     const newDataSource = data.map((item, index) => {
@@ -44,7 +47,7 @@ const Save = (
     onError: () => message.error('保存失败！')
   });
 
-  const {loading: ruleListLoading, run: getRuleList} = useRequest(alarmListSelect, {
+  const {loading: ruleListLoading, run: getRuleList,refresh} = useRequest(alarmListSelect, {
     manual: true,
     onSuccess: (res) => {
       setRules(res);
@@ -98,11 +101,15 @@ const Save = (
                 return <Space key={index}>
                   <Select
                     value={exit ? item.alarmId : null}
-                    options={options}
+                    options={[{label: <a>新增规则</a>, value: 'add'}, ...options]}
                     placeholder="请选择规则"
                     style={{width: 300, marginRight: 16}}
                     onChange={(value) => {
-                      dataChange({alarmId: value}, index);
+                      if (value === 'add') {
+                        setSaveVisible({modelId: device.modelId});
+                      } else {
+                        dataChange({alarmId: value}, index);
+                      }
                     }}
                   />
                   <Button disabled={!item.alarmId} type="link" style={{padding: 0}} onClick={() => {
@@ -135,6 +142,18 @@ const Save = (
       >
         <AlarmDetail alarmId={open} />
       </Drawer>
+
+      <RuleSave
+        modelDisabled
+        zIndex={1001}
+        detail={saveVisible || {}}
+        visible={saveVisible}
+        close={() => setSaveVisible()}
+        success={(success) => {
+          setSaveVisible();
+          refresh();
+        }}
+      />
     </Modal>
   );
 };
