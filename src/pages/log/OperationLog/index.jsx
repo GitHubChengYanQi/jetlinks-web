@@ -11,6 +11,7 @@ import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 
 const OperationLog = () => {
 
@@ -63,7 +64,7 @@ const OperationLog = () => {
         <FormItem
           label="角色名称"
           name="roleName"
-          component={Input}
+          component={SelectRoles}
         />
       </>
     );

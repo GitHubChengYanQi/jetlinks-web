@@ -14,6 +14,7 @@ import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import store from '@/store';
+import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 
 const Role = () => {
 
@@ -124,7 +125,7 @@ const Role = () => {
             }}
           />;
         }} />
-        <FormItem label="角色名称" name="name" component={Input} />
+        <FormItem label="角色名称" name="name" component={SelectRoles} />
       </>
     );
   };

@@ -20,6 +20,7 @@ import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import BatchImport from '@/components/BatchImport';
+import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 
 
 const Account = () => {
@@ -108,9 +109,6 @@ const Account = () => {
         danger: true,
         key: '3',
         label: <Warning onOk={() => deleteRun({data: {userIds: keys}})}>批量删除</Warning>,
-        onClick: () => {
-
-        }
       },
     ]}
   />;
@@ -154,6 +152,11 @@ const Account = () => {
               }}
             />;
           }} select/>
+        <FormItem
+          label="角色名称"
+          name="roleName"
+          component={SelectRoles}
+        />
         <FormItem name="name" label="关键字查询" component={Input} style={{width: 250}} placeholder="管理员账号/姓名/手机号/邮箱"/>
       </>
     );

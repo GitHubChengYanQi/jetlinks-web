@@ -55,7 +55,7 @@ const Tenant = () => {
         <Button
           className={text === 1 ? 'green' : 'red'}
           danger={text !== 1}
-                type="link">{text === 1 ? '通过' : '待审核'}
+          type="link">{text === 1 ? '通过' : '待审核'}
         </Button>
       </Render>
     },

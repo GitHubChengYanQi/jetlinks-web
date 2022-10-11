@@ -23,6 +23,7 @@ import DynamicForms from '@/pages/equipment/Equipment/DynamicForms';
 import MoveGroup from '@/pages/equipment/Equipment/MoveGroup';
 import NoteSave from '@/pages/monitor/NoteSave';
 import store from '@/store';
+import {PrimaryButton} from '@/components/Button';
 
 const Equipment = () => {
 
@@ -318,13 +319,18 @@ const Equipment = () => {
           >
             编辑
           </Button>
-          <Dropdown
-            disabled={isArray(record.options).length === 0}
-            overlay={actions(record.options || [], record.mac)}
-            placement="bottom"
-          >
-            <Button type="primary">更多</Button>
-          </Dropdown>
+          <Warning content='确定要重启设备么?' onOk={() => {
+
+          }}>
+            <PrimaryButton>重启</PrimaryButton>
+          </Warning>
+          {/*<Dropdown*/}
+          {/*  disabled={isArray(record.options).length === 0}*/}
+          {/*  overlay={actions(record.options || [], record.mac)}*/}
+          {/*  placement="bottom"*/}
+          {/*>*/}
+          {/*  <Button type="primary">更多</Button>*/}
+          {/*</Dropdown>*/}
         </Space>;
       }}
     />

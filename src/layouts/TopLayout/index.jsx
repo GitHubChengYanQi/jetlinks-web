@@ -86,9 +86,9 @@ const TopLayout = ({children}) => {
     }}
     menuDataRender={(props) => menuDataRender(props)}
     rightContentRender={() => <>
-      <Setting/>
+      {/* <Setting/> */}
       <Message/>
-      <Action/>
+      {/* <Action/> */}
       <Avatar userInfo={userInfo} logo={sysLogo}/>
     </>
     }
