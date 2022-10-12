@@ -19,4 +19,9 @@ export const monitorDetail = {
   method: 'POST'
 };
 
+export const signalLamp = {
+  url: '/signalLamp/getNewest',
+  method: 'POST'
+};
+
 

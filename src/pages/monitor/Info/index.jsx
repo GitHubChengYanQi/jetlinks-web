@@ -5,8 +5,9 @@ import moment from 'moment';
 import style from './index.module.less';
 import {useRequest} from '@/util/Request';
 import Render from '@/components/Render';
-import {monitorDetail} from '@/pages/monitor/url';
+import {monitorDetail, signalLamp} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
+import {isArray} from '@/util/Tools';
 
 
 const Info = ({
@@ -15,20 +16,24 @@ const Info = ({
 }, ref) => {
 
   const [data, setData] = useState({});
-  const [networkData, setNetworkData] = useState([]);
   const [otherData, setOtherData] = useState([]);
 
   const [saveVisible, setSaveVisible] = useState();
-
-  const protocolDetail = data.protocolDetail || {};
 
   const {loading, refresh} = useRequest(
     {...monitorDetail, data: {deviceId, modelId}},
     {
       onSuccess: (res) => {
         setData(res);
-        setNetworkData((res.columns || []).filter(item => item.children.length <= 0));
-        setOtherData((res.columns || []).filter(item => item.children.length > 0));
+      }
+    }
+  );
+
+  const {loading:otherDataLoading} = useRequest(
+    {...signalLamp, data: {deviceId, modelId}},
+    {
+      onSuccess: (res) => {
+        setOtherData(res || []);
       }
     }
   );
@@ -43,13 +48,13 @@ const Info = ({
     openAlarm,
   }));
 
-  if (loading) {
-    return <PageSkeleton />;
+  if (loading || otherDataLoading) {
+    return <PageSkeleton/>;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-" />;
+      return <Render width={150} text="-"/>;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -79,43 +84,37 @@ const Info = ({
       <Descriptions.Item label="所属客户">{data.customerName || '-'}</Descriptions.Item>
     </Descriptions>
 
-    <Descriptions
-      column={3}
-      className={style.descriptions}
-      title={<div className={style.title}>发布数据</div>}
-      bordered
-    >
-      {
-        networkData.map((item, index) => {
-          const text = protocolDetail[item.dataIndex];
-          return <Descriptions.Item
-            key={index}
-            label={item.title}>
-            {typeof text === 'undefined' ? '-' : text}
-          </Descriptions.Item>;
-        })
-      }
-    </Descriptions>
 
     {
       otherData.map((item, index) => {
-        const children = item.children || [];
-        return <div key={index}>
-          <div className={style.navTitle}>{item.title}</div>
-
-          <Descriptions column={3} bordered className={style.descriptions} style={{marginBottom: 24}}>
-            {
-              children.map((item, index) => {
-                const text = protocolDetail[item.dataIndex];
-                return <Descriptions.Item
-                  key={index}
-                  label={item.title}>
-                  {typeof text === 'undefined' ? '-' : text}
-                </Descriptions.Item>;
-              })
-            }
-          </Descriptions>
-        </div>;
+        const content = [];
+        const datas = isArray(item.data);
+        let column = 0;
+        datas.forEach(item => {
+          column = item.length;
+          item.forEach(item => {
+            content.push(item);
+          });
+        });
+        return <Descriptions
+          key={index}
+          column={column}
+          className={style.descriptions}
+          style={{marginBottom: 24}}
+          title={<div className={style.title}>{item.title}</div>}
+          contentStyle={{color: '#000'}}
+          bordered
+        >
+          {
+            content.map((item, index) => {
+              return <Descriptions.Item
+                key={index}
+                label={item.key}>
+                <span className="green">{item.value}</span>
+              </Descriptions.Item>;
+            })
+          }
+        </Descriptions>;
       })
     }
 

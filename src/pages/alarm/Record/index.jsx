@@ -30,7 +30,7 @@ const Record = () => {
   const [keys, setKeys] = useState([]);
 
   const ruleTypes = (ruleConditionJson, max) => {
-    return ruleConditionJson.map((item, index) => {
+    return isArray(ruleConditionJson).map((item, index) => {
       if (max) {
         if (index > 2) {
           return <div key={index}/>;
@@ -49,7 +49,7 @@ const Record = () => {
         case '1':
           alarmCondition = '=';
           break;
-        case '21':
+        case '2':
           alarmCondition = '>=';
           break;
         case '3':

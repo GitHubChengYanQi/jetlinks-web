@@ -38,6 +38,7 @@ import AI from '@/pages/monitor/components/AI';
 import DI from '@/pages/monitor/components/DI';
 import DO from '@/pages/monitor/components/DO';
 import RS232 from '@/pages/monitor/components/RS232';
+import {isObject} from '@/util/Tools';
 
 const Monitor = () => {
 
@@ -122,7 +123,7 @@ const Monitor = () => {
             setDate([
               moment(new Date()).format('YYYY/MM/DD'),
               moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
-            ])
+            ]);
             setOpen({type: item.dataIndex, ...record});
           }}>{typeof text === 'number' ? text : (text || '-')}</Render>;
         } catch (e) {
@@ -211,7 +212,7 @@ const Monitor = () => {
             return values.modelId;
           }}
           format={(data = []) => {
-            return data.map(item => ({...item, ...(item.protocolDetail || {})}));
+            return data.map(item => ({...item, ...(isObject(item.protocolDetail) || {})}));
           }}
           onResponse={(res = {}) => {
             if (res.count === 0) {

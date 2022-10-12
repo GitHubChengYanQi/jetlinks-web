@@ -10,7 +10,7 @@ import {useRequest} from '@/util/Request';
 import Save from '@/pages/monitor/Info/Save';
 import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
-import {isArray, isObject} from '@/util/Tools';
+import {isArray} from '@/util/Tools';
 
 export const signalLamp = {url: '/signalLamp/getChart', method: 'POST'};
 export const signalLampEdit = {url: '/signalLamp/edit', method: 'POST'};
@@ -28,7 +28,6 @@ const Lamp = ({device = {}, date = []}) => {
   const [passage, setPassage] = useState('east1');
 
   const [chartData, setChartData] = useState();
-  console.log(chartData);
 
   const [types, setTypes] = useState([]);
 
