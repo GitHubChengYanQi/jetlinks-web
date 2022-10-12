@@ -46,10 +46,7 @@ const Monitor = () => {
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
 
-  const [date, setDate] = useState([
-    moment(new Date()).format('YYYY/MM/DD'),
-    moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
-  ]);
+  const [date, setDate] = useState([]);
 
   const [params, setParams] = useState({});
 
@@ -122,6 +119,10 @@ const Monitor = () => {
         try {
           return <Render style={{cursor: 'pointer'}} onClick={() => {
             console.log(item.dataIndex);
+            setDate([
+              moment(new Date()).format('YYYY/MM/DD'),
+              moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
+            ])
             setOpen({type: item.dataIndex, ...record});
           }}>{typeof text === 'number' ? text : (text || '-')}</Render>;
         } catch (e) {
@@ -286,7 +287,7 @@ const Monitor = () => {
       {open.type === 'bi' && <DI device={open}/>}
       {open.type === 'doo' && <DO device={open}/>}
       {['rS232', 'rs485'].includes(open.type) && <RS232 device={open}/>}
-      {['dybjs', 'clbjs', 'psbjs', 'ycbjs'].includes(open.type) && <Lamp device={open} date={date}/>}
+      <Lamp device={open} date={date}/>
     </Drawer>
 
   </>;

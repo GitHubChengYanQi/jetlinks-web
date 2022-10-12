@@ -10,7 +10,7 @@ export const monitorList = {
 
 
 export const getColumnByModelId = {
-  url: '/deviceModel/getColumnByModelId',
+  url: '/deviceModel/getModelRule',
   method: 'POST'
 };
 

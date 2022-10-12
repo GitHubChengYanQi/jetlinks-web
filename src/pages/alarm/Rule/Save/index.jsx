@@ -34,11 +34,7 @@ const Save = (
     onSuccess: (res) => {
       const array = [];
       isArray(res).forEach(item => {
-        if (isArray(item.children).length > 0) {
-          item.children.map(childrenItem => array.push({label: childrenItem.title, value: childrenItem.dataIndex}));
-        } else {
-          array.push({label: item.title, value: item.dataIndex});
-        }
+        array.push({label: item.title, value: item.key});
       });
       setModelColumns(array);
     },
@@ -56,7 +52,7 @@ const Save = (
 
 
   useEffect(() => {
-    if (modelDisabled && detail.modelId){
+    if (modelDisabled && detail.modelId) {
       getColumns({data: {modelId: detail.modelId}});
       setData({modelId: detail.modelId});
     }
@@ -68,7 +64,7 @@ const Save = (
         alarmId: detail.alarmId,
       }
     });
-  }, [detail.alarmId,detail.modelId]);
+  }, [detail.alarmId, detail.modelId]);
 
   return (
     <AntForm

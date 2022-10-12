@@ -23,7 +23,7 @@ const AlarmDetail = ({
         if (isArray(item.children).length > 0) {
           item.children.map(childrenItem => array.push({label: childrenItem.title, value: childrenItem.dataIndex}));
         } else {
-          array.push({label: item.title, value: item.dataIndex});
+          array.push({label: item.title, value: item.key});
         }
       });
       setModelColumns(array);
