@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import {Input, Table, Select, Button} from 'antd';
+import {Input, Table, Select, Button, Space} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import style from '@/components/Table/index.module.less';
 import Section from '@/pages/monitor/components/Config/components/Section';
 import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
+import Render from '@/components/Render';
+import {isArray} from '@/util/Tools';
 
 const Config = ({
   show,
@@ -32,26 +34,44 @@ const Config = ({
       title: '属性字段',
       dataIndex: 'field',
       align: 'center',
-      render: (text, record) => {
-        return <Select
-          placeholder="请选择属性字段"
-          style={{width: 200}}
-          bordered={!show}
-          open={show ? false : undefined}
-          suffixIcon={show && null}
-          value={text}
-          options={modelColumns.map(item => {
-            const disabled = dataSource.some(dataItem => dataItem.field === item.value);
-            return {...item, disabled};
-          })}
-          onChange={(field, option) => {
-            dataSourceChange({field, title: option?.label}, record.key);
-          }}/>;
+      render: (text = [], record) => {
+        return <Render>
+          <Space>
+            {
+              modelColumns.map((item, index) => {
+                const options = item || [];
+                return <Select
+                  key={index}
+                  placeholder="请选择"
+                  style={{width: 100}}
+                  bordered={!show}
+                  open={show ? false : undefined}
+                  suffixIcon={show && null}
+                  value={text[index]}
+                  options={options.map(item => {
+                    return {label: item.title, value: item.key};
+                  })}
+                  onChange={(field, option) => {
+                    const title = record.title && record.title.split(' ') || [];
+                    const newFild = new Array(modelColumns.length).fill('').map((filedItem, filedIndex) => {
+                      if (filedIndex === index) {
+                        title[filedIndex] = option.label;
+                        return field;
+                      }
+                      return text[filedIndex];
+                    });
+                    dataSourceChange({field: newFild, title: title.join(' ')}, record.key);
+                  }}/>;
+              })
+            }
+          </Space>
+        </Render>;
       }
     }, {
       title: '报警条件',
       dataIndex: 'alarmCondition',
       align: 'center',
+      width: 150,
       render: (text, record) => {
         const options = [
           {label: '=', value: '1'},
@@ -77,6 +97,7 @@ const Config = ({
       title: '报警值',
       dataIndex: 'value',
       align: 'center',
+      width: 150,
       render: (text, record) => {
         if (record.alarmCondition === '6') {
           return show ? <>{text && [record.minNum, record.maxNum].join(' — ')}</> :
@@ -85,7 +106,7 @@ const Config = ({
             }}/>;
         }
         return show ? text : <Input
-          style={{width: 230}}
+          style={{width: 100}}
           value={text}
           placeholder="请输入报警值"
           onChange={({target: {value}}) => {

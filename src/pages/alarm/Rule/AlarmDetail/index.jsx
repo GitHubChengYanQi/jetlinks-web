@@ -18,15 +18,7 @@ const AlarmDetail = ({
   const {loading: getColumnsLoaing, run: getColumns} = useRequest(getColumnByModelId, {
     manual: true,
     onSuccess: (res) => {
-      const array = [];
-      isArray(res).forEach(item => {
-        if (isArray(item.children).length > 0) {
-          item.children.map(childrenItem => array.push({label: childrenItem.title, value: childrenItem.dataIndex}));
-        } else {
-          array.push({label: item.title, value: item.key});
-        }
-      });
-      setModelColumns(array);
+      setModelColumns(res.rule);
     },
   });
 
@@ -61,7 +53,7 @@ const AlarmDetail = ({
       title={<div className={styles.title}>报警配置</div>}
       bordered={false}
     >
-      <Config show modelColumns={modelColumns} value={data.rulesResults}/>
+      <Config show modelColumns={modelColumns} value={isArray(data.rulesResults).map(item => ({...item, field: item.field && item.field.split(',')}))}/>
     </Card>
     <Card className={styles.card} title={<div className={styles.title}>报警人员</div>} bordered={false}>
       <AddContacts show value={data.contacts}/>

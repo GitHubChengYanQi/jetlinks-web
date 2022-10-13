@@ -32,11 +32,7 @@ const Save = (
   const {loading: getColumnsLoaing, run: getColumns} = useRequest(getColumnByModelId, {
     manual: true,
     onSuccess: (res) => {
-      const array = [];
-      isArray(res).forEach(item => {
-        array.push({label: item.title, value: item.key});
-      });
-      setModelColumns(array);
+      setModelColumns(res.rule);
     },
   });
 
@@ -46,7 +42,10 @@ const Save = (
       if (res.modelId) {
         getColumns({data: {modelId: res.modelId}});
       }
-      setData({...res, rules: res.rulesResults});
+      setData({
+        ...res,
+        rules: isArray(res.rulesResults).map(item => ({...item, field: item.field && item.field.split(',')}))
+      });
     },
   });
 
@@ -74,7 +73,7 @@ const Save = (
         setData({});
       }}
       loading={loading}
-      width="50vw"
+      width={800}
       apis={{
         add: alarmAdd,
         edit: alarmEdit,
@@ -94,7 +93,11 @@ const Save = (
           message.warn('请选择报警联系人!');
           return false;
         }
-        return {...values, rules: data.rules, contactIds: isArray(data.contacts).map(item => item.contactId)};
+        return {
+          ...values,
+          rules: isArray(data.rules).map(item => ({...item, field: item.field.toString()})),
+          contactIds: isArray(data.contacts).map(item => item.contactId)
+        };
       }}
     >
       <Card className={styles.card} title={<div className={styles.title}>基本信息</div>} bordered={false}>

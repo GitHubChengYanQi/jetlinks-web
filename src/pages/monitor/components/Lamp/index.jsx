@@ -95,7 +95,6 @@ const Lamp = ({device = {}, date = []}) => {
         newArray.push(item);
       });
     });
-    console.log(newArray);
     return newArray;
   };
 

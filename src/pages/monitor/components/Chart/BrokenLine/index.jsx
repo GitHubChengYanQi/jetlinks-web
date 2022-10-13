@@ -21,7 +21,7 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, max, min}) => {
       end: ['max', 0],
       // color: '#ff4d4f'
     });
-    chart.guide().line({
+    max && chart.guide().line({
       start: ['min', max],
       end: ['max', max],
       lineStyle: {
@@ -41,7 +41,7 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, max, min}) => {
       }
     });
 
-    chart.guide().line({
+    min && chart.guide().line({
       start: ['min', min],
       end: ['max', min],
       lineStyle: {
