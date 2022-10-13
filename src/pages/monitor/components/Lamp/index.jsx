@@ -15,6 +15,7 @@ import {isArray} from '@/util/Tools';
 export const signalLamp = {url: '/signalLamp/getChart', method: 'POST'};
 export const signalLampEdit = {url: '/signalLamp/edit', method: 'POST'};
 export const signalLampList = {url: '/signalLamp/list', method: 'POST'};
+export const deviceDataM4012List = {url: '/deviceDataM4012/list', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
 
 const formActionsPublic = createFormActions();
@@ -98,6 +99,18 @@ const Lamp = ({device = {}, date = []}) => {
     return newArray;
   };
 
+  let listApi = {};
+  switch (chartData.key) {
+    case 'signalLampId':
+      listApi = signalLampList;
+      break;
+    case 'm4012Id':
+      listApi = deviceDataM4012List;
+      break;
+    default:
+      break;
+  }
+
   return <>
     <Card
       bodyStyle={{padding: 0}}
@@ -143,13 +156,13 @@ const Lamp = ({device = {}, date = []}) => {
       isModal
       ref={ref}
       onResponse={(res) => {
-        setTypes(res.search);
+        setTypes(res.search || []);
       }}
       formSubmit={(values) => {
-        return {...listParams, ...values,};
+        return {...listParams, ...values, title: device.type};
       }}
       formActions={formActionsPublic}
-      api={signalLampList}
+      api={listApi}
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
