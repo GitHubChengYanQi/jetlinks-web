@@ -20,7 +20,7 @@ export const monitorDetail = {
 };
 
 export const signalLamp = {
-  url: '/signalLamp/getNewest',
+  url: '/signalLamps/getNewest',
   method: 'POST'
 };
 

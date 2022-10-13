@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Card, Empty, message, Space, Tabs} from 'antd';
+import {Card, message, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
@@ -12,10 +12,16 @@ import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
 import {isArray} from '@/util/Tools';
 
-export const signalLamp = {url: '/signalLamp/getChart', method: 'POST'};
-export const signalLampEdit = {url: '/signalLamp/edit', method: 'POST'};
-export const signalLampList = {url: '/signalLamp/list', method: 'POST'};
+export const deviceChartData = {url: '/device/chartData', method: 'POST'};
+export const signalLampEdit = {url: '/signalLamps/edit', method: 'POST'};
+export const signalLampBatchHandle = {url: '/signalLamps/batchHandle', method: 'POST'};
+export const signalLampList = {url: '/signalLamps/list', method: 'POST'};
+
 export const deviceDataM4012List = {url: '/deviceDataM4012/list', method: 'POST'};
+export const deviceDataM4012BatchHandle = {url: '/deviceDataM4012/batchHandle', method: 'POST'};
+export const deviceDataM4012BatchEdit = {url: '/deviceDataM4012/edit', method: 'POST'};
+
+
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
 
 const formActionsPublic = createFormActions();
@@ -32,14 +38,44 @@ const Lamp = ({device = {}, date = []}) => {
 
   const [types, setTypes] = useState([]);
 
+  let listApi = {};
+  let batchHandleApi = {};
+  let handleApi = {};
+
+  if (chartData) {
+    switch (chartData.key) {
+      case 'signalLampId':
+        listApi = signalLampList;
+        batchHandleApi = signalLampBatchHandle;
+        handleApi = signalLampEdit;
+        break;
+      case 'mId':
+        listApi = deviceDataM4012List;
+        batchHandleApi = deviceDataM4012BatchHandle;
+        handleApi = deviceDataM4012BatchEdit;
+        break;
+      default:
+        break;
+    }
+  }
+
+
   const listParams = {deviceId: device.deviceId, passage, startTime: date[0], endTime: date[1]};
 
-  const {loading, data = {}, run} = useRequest({...signalLamp, data: {deviceId: device.deviceId}}, {manual: true});
+  const {loading, data = {}, run} = useRequest({
+    ...deviceChartData,
+    params: {deviceId: device.deviceId}
+  }, {manual: true});
 
-  const {loading: editLoading, run: edit} = useRequest({
-    ...signalLampEdit,
-    data: {deviceId: device.deviceId}
-  }, {
+  const {loading: editLoading, run: edit} = useRequest(handleApi, {
+    manual: true,
+    onSuccess: () => {
+      message.success('处理成功！');
+      ref.current.refresh();
+    }
+  });
+
+  const {loading: batchHandleLoading, run: batchHandle} = useRequest(batchHandleApi, {
     manual: true,
     onSuccess: () => {
       message.success('处理成功！');
@@ -63,7 +99,7 @@ const Lamp = ({device = {}, date = []}) => {
 
   useEffect(() => {
     if (date.length > 0) {
-      run({data: {startTime: date[0], endTime: date[1], deviceId: device.deviceId}});
+      run({data: {startTime: date[0], endTime: date[1], deviceId: device.deviceId, title: device.type}});
     }
   }, [date]);
 
@@ -99,18 +135,6 @@ const Lamp = ({device = {}, date = []}) => {
     return newArray;
   };
 
-  let listApi = {};
-  switch (chartData.key) {
-    case 'signalLampId':
-      listApi = signalLampList;
-      break;
-    case 'm4012Id':
-      listApi = deviceDataM4012List;
-      break;
-    default:
-      break;
-  }
-
   return <>
     <Card
       bodyStyle={{padding: 0}}
@@ -136,13 +160,25 @@ const Lamp = ({device = {}, date = []}) => {
     <Tabs
       tabBarExtraContent={<Space>
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
-        <Warning content="确定一键处理吗?"><LinkButton>一件处理</LinkButton></Warning>
+        <Warning
+          content="确定一键处理吗?"
+          onOk={() => batchHandle({data: {deviceId: device.deviceId}})}>
+          <LinkButton>一件处理</LinkButton>
+        </Warning>
         {/* <LinkButton>导出</LinkButton> */}
       </Space>}
       activeKey={passage}
       onTabClick={(key) => {
         setPassage(key);
-        run({data: {startTime: date[0], endTime: date[1], deviceId: device.deviceId, passage: key}});
+        run({
+          data: {
+            startTime: date[0],
+            endTime: date[1],
+            deviceId: device.deviceId,
+            passage: key,
+            title: device.type
+          }
+        });
       }}
       items={types.map((item) => {
         return {
@@ -152,7 +188,7 @@ const Lamp = ({device = {}, date = []}) => {
       })}
     />
     <Table
-      loading={editLoading}
+      loading={editLoading || batchHandleLoading}
       isModal
       ref={ref}
       onResponse={(res) => {
@@ -180,7 +216,7 @@ const Lamp = ({device = {}, date = []}) => {
         return <Warning
           disabled={handle}
           content="确定处理吗？"
-          onOk={() => edit({data: {signalLampIds: [record[chartData.key]]}})}>
+          onOk={() => edit({data: {[`${chartData.key}s`]: [record[chartData.key]]}})}>
           <PrimaryButton disabled={handle}>{handle ? '已查看' : '处理'}</PrimaryButton>
         </Warning>;
       }}
