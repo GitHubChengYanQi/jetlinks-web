@@ -17,6 +17,10 @@ const Configuration = () => {
 
   const [dataSource, dataDispatchers] = store.useModel('dataSource');
 
+  const defaultParams = {module: 'close', time: 'close'};
+
+  const [params, setParams] = useState(defaultParams);
+
   const customer = dataSource.customer || {};
 
   const [form] = Form.useForm();
@@ -80,34 +84,47 @@ const Configuration = () => {
 
       <div className={styles.card}>
         <Form.Item label="登录有效期" name="loginTime" initialValue="close">
-          <Radio.Group>
-            <Space direction="vertical">
-              <Radio value="close">关</Radio>
-              <Radio value="open">长时间未操作、后台挂起、正常使用<InputNumber min={1} style={{margin: '0 8px'}}/> 分钟后，重新登录系统</Radio>
+          <Space direction="vertical">
+            <Radio
+              value="close"
+              checked={params.time === 'close'}
+              onClick={() => setParams({...params, time: 'close'})}>关</Radio>
+            <Space align="center">
+              <Radio
+                checked={params.time === 'open'}
+                value="open"
+                onClick={() => setParams({...params, time: 'open', minute: 1})}/>
+              长时间未操作、后台挂起、正常使用
+              <InputNumber
+                onChange={(value) => setParams({...params, time: 'open', minute: value})} value={params.minute} min={1}
+                style={{margin: '0 8px'}}/>
+              分钟后，重新登录系统
             </Space>
-          </Radio.Group>
+          </Space>
         </Form.Item>
       </div>
 
       <div className={styles.card}>
         <Form.Item label="平合模式" name="map" initialValue="close">
-          <Radio.Group>
-            <Space direction="vertical">
-              <Radio value="close">
-                <Space>外网模式 <div className={styles.extra}>(互联网部署，联网使用，包括在线地图、短信通知)</div></Space>
-              </Radio>
-              <Radio value="open">
-                <Space>内网模式 <div className={styles.extra}>(本地部署，内网使用，包括离线地图、内网短信推送)</div></Space>
-              </Radio>
-            </Space>
-          </Radio.Group>
+          <div>
+            <Radio.Group value={params.module} onChange={({target: {value}}) => setParams({...params, module: value})}>
+              <Space direction="vertical">
+                <Radio value="close" checked={params.module === 'close'}>
+                  <Space>外网模式 <div className={styles.extra}>(互联网部署，联网使用，包括在线地图、短信通知)</div></Space>
+                </Radio>
+                <Radio value="open" checked={params.module === 'open'}>
+                  <Space>内网模式 <div className={styles.extra}>(本地部署，内网使用，包括离线地图、内网短信推送)</div></Space>
+                </Radio>
+              </Space>
+            </Radio.Group>
+          </div>
         </Form.Item>
       </div>
     </Form>
 
     <div className={styles.actions}>
       <Space>
-        <Button type="primary" ghost>取消</Button>
+        <Button type="primary" ghost onClick={() => setParams(defaultParams)}>重置</Button>
         <Button type="primary" onClick={() => {
           if (info.customerId) {
             const values = form.getFieldValue();

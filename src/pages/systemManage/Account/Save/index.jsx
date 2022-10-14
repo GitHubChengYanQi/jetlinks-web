@@ -37,6 +37,7 @@ const Save = (
     <AntForm
       afterClose={() => {
         setTime([]);
+        setNewPassword();
       }}
       apis={{
         add: userAdd,
@@ -64,7 +65,7 @@ const Save = (
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称" />
+        <Input placeholder="请输入账号名称"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.name}
@@ -75,7 +76,7 @@ const Save = (
           {required: true, message: '请输入账号姓名'},
         ]}
       >
-        <Input placeholder="请输入账号姓名" />
+        <Input placeholder="请输入账号姓名"/>
       </Form.Item>
       <Form.Item
         hidden={currentUser.userId === data?.userId}
@@ -89,7 +90,7 @@ const Save = (
       >
         <Select format={(data = []) => {
           return data.map(item => ({label: item.name, value: `${item.role_id}`}));
-        }} api={roleListSelect} placeholder="请选择角色" />
+        }} api={roleListSelect} placeholder="请选择角色"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.phone}
@@ -101,7 +102,7 @@ const Save = (
           {message: '请输入正确的手机号码!', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/}
         ]}
       >
-        <Input placeholder="请输入手机号码" />
+        <Input placeholder="请输入手机号码"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.email}
@@ -115,7 +116,7 @@ const Save = (
           }
         ]}
       >
-        <Input placeholder="请输入电子邮件" />
+        <Input placeholder="请输入电子邮件"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.password || (data.userId ? '111111' : 'opt123')}
@@ -127,6 +128,7 @@ const Save = (
         ]}
       >
         <Password
+          show={data?.userId && !newPassword}
           inputDisabled={data?.userId}
           placeholder="请输入密码"
           content="您确定要重置密码么？重置后默认初始密码为【opt123】"
@@ -154,7 +156,7 @@ const Save = (
             <Radio value="0">永久</Radio>
             <Space>
               <Radio value="1" style={{minWidth: 80}}>时间段</Radio>
-              <DatePicker value={time} RangePicker onChange={setTime} />
+              <DatePicker value={time} RangePicker onChange={setTime}/>
             </Space>
           </Space>
         </Radio.Group>

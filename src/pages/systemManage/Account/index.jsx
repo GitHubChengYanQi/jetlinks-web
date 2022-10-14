@@ -8,6 +8,7 @@ import Warning from '@/components/Warning';
 import Save from '@/pages/systemManage/Account/Save';
 import Table from '@/components/Table';
 import {
+  JumpLogin,
   mgrUserList, UserExcelDownloadTemplate,
   UserExcelImport,
   userRemove,
@@ -21,9 +22,14 @@ import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import BatchImport from '@/components/BatchImport';
 import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
+import store from '@/store';
 
 
 const Account = () => {
+
+  const [userInfo] = store.useModel('user');
+
+  const info = userInfo.info || {};
 
   const ref = useRef();
 
@@ -33,6 +39,15 @@ const Account = () => {
 
   const [batchImport, setBatchImport] = useState(false);
 
+
+  const {run: Jump} = useRequest(JumpLogin,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        cookie.set('jetlink-token', res);
+        window.location.reload();
+      }
+    });
 
   // 批量冻结账号
   const {run: stop} = useRequest(userStop,
@@ -190,7 +205,10 @@ const Account = () => {
       actionRender={(text, record) => {
         const open = record.status === 'ENABLE';
         return <Space>
-          <PrimaryButton type="link" onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
+          <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
+          <Warning content="确定进入到该账户系统吗？" onOk={() => Jump({params: {userId: record.userId}})}>
+            <PrimaryButton disabled={info.userId === record.userId || record.status !== 'ENABLE'}>进入账户</PrimaryButton>
+          </Warning>
           <Warning
             content={`您确定${open ? '停用' : '启用'}么?`}
             onOk={() => !open ? start({data: {userIds: [record.userId]}}) : stop({data: {userIds: [record.userId]}})
@@ -219,10 +237,15 @@ const Account = () => {
 
     <BatchImport
       columns={[
-        {title: '分组名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号角色', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '电子邮件', dataIndex: 'email', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号密码', dataIndex: 'password', align: 'center', render: (text) => <Render text={text}/>},
         {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
       ]}
-      title="分组"
+      title="账号"
       templeteApi={UserExcelDownloadTemplate}
       api={UserExcelImport}
       success={() => {

@@ -59,6 +59,12 @@ export const userStop = {
   method: 'POST',
 };
 
+
+export const JumpLogin = {
+  url: '/rest/JumpLogin',
+  method: 'GET',
+};
+
 export const userStart = {
   url: '/rest/mgr/start',
   method: 'POST',
