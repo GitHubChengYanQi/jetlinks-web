@@ -13,6 +13,7 @@ const AntForm = (
     title = '',
     headerTitle = '',
     rowKey = '',
+    errorHandle,
     close = () => {
     },
     onValuesChange = () => {
@@ -45,6 +46,10 @@ const AntForm = (
     response: true,
     onSuccess: (res) => {
       if (res.errCode === 1001) {
+        if (typeof errorHandle === 'function') {
+          errorHandle();
+          return;
+        }
         Modal.warn({
           content: res.message,
           okText: '确认'
@@ -60,6 +65,10 @@ const AntForm = (
     manual: true,
     onSuccess: (res) => {
       if (res.errCode === 1001) {
+        if (typeof errorHandle === 'function') {
+          errorHandle();
+          return;
+        }
         Modal.warn({
           content: res.message,
           okText: '确认'
