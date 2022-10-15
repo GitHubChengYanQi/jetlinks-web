@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Card, message, Space, Tabs} from 'antd';
+import {Card, Input, message, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
@@ -11,6 +11,7 @@ import Save from '@/pages/monitor/Info/Save';
 import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
 import {isArray} from '@/util/Tools';
+import FormItem from '@/components/Table/components/FormItem';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const signalLampEdit = {url: '/signalLamps/edit', method: 'POST'};
@@ -32,7 +33,7 @@ const Lamp = ({device = {}, date = []}) => {
 
   const [saveVisible, setSaveVisible] = useState();
 
-  const [passage, setPassage] = useState('east1');
+  const [passage, setPassage] = useState();
 
   const [chartData, setChartData] = useState();
 
@@ -135,6 +136,11 @@ const Lamp = ({device = {}, date = []}) => {
     return newArray;
   };
 
+  const listSubmit = (value) => {
+    ref.current.formActions.setFieldValue('passage', value);
+    ref.current.submit();
+  };
+
   return <>
     <Card
       bodyStyle={{padding: 0}}
@@ -170,15 +176,7 @@ const Lamp = ({device = {}, date = []}) => {
       activeKey={passage}
       onTabClick={(key) => {
         setPassage(key);
-        run({
-          data: {
-            startTime: date[0],
-            endTime: date[1],
-            deviceId: device.deviceId,
-            passage: key,
-            title: device.type
-          }
-        });
+        listSubmit(key);
       }}
       items={types.map((item) => {
         return {
@@ -188,10 +186,20 @@ const Lamp = ({device = {}, date = []}) => {
       })}
     />
     <Table
+      SearchButton={<></>}
+      searchForm={() => {
+        return <div style={{display: 'none'}}>
+          <FormItem name="passage" initialValue={passage} component={Input}/>
+        </div>;
+      }}
       loading={editLoading || batchHandleLoading}
       isModal
       ref={ref}
       onResponse={(res) => {
+        if (!ref.current.formActions.getFieldValue('passage')) {
+          setPassage(res.search[0]);
+          listSubmit(res.search[0]);
+        }
         setTypes(res.search || []);
       }}
       formSubmit={(values) => {
@@ -208,7 +216,19 @@ const Lamp = ({device = {}, date = []}) => {
           title: item.columns,
           align: 'center',
           dataIndex: item.key,
-          render: (value) => <Render>{value}</Render>
+          render: (value, record) => {
+            let error = false;
+            switch (chartData.key) {
+              case 'signalLampId':
+                error = (record.alarmStatus || '').split(',').find(status => status === item.key);
+                break;
+              case 'mId':
+                break;
+              default:
+                break;
+            }
+            return <Render className={error ? 'red' : 'green'}>{value}</Render>;
+          }
         };
       })}
       actionRender={(value, record) => {

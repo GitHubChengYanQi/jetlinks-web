@@ -122,7 +122,7 @@ const Info = ({
                         className={style.value}
                         style={{borderRight: index === values.length - 1 && 'none'}}
                       >
-                        {item}
+                        {item || '-'}
                       </div>;
                     })
                   }
@@ -147,7 +147,7 @@ const Info = ({
                   column={childrenColumn}
                   bordered
                   className={style.otherDescriptions}
-                  style={{marginBottom: 24}}
+                  style={{marginBottom: index=== childrens.length - 1 ? 24 : 0}}
                 >
                   {
                     childrenContent.map((item, index) => {
