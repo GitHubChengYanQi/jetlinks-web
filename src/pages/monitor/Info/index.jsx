@@ -160,7 +160,7 @@ const Info = ({
                               className={style.value}
                               style={{borderRight: index === values.length - 1 && 'none'}}
                             >
-                              {item}
+                              {item || '-'}
                             </div>;
                           })
                         }
