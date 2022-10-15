@@ -24,4 +24,9 @@ export const signalLamp = {
   method: 'POST'
 };
 
+export const deviceData = {
+  url: '/device/deviceData',
+  method: 'POST'
+};
+
 

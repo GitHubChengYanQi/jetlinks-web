@@ -5,7 +5,7 @@ import moment from 'moment';
 import style from './index.module.less';
 import {useRequest} from '@/util/Request';
 import Render from '@/components/Render';
-import {monitorDetail, signalLamp} from '@/pages/monitor/url';
+import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
 import {isArray} from '@/util/Tools';
 
@@ -18,6 +18,8 @@ const Info = ({
   const [data, setData] = useState({});
   const [otherData, setOtherData] = useState([]);
 
+  console.log(otherData);
+
   const [saveVisible, setSaveVisible] = useState();
 
   const {loading, refresh} = useRequest(
@@ -29,8 +31,8 @@ const Info = ({
     }
   );
 
-  const {loading:otherDataLoading} = useRequest(
-    {...signalLamp, data: {deviceId, modelId}},
+  const {loading: otherDataLoading} = useRequest(
+    {...deviceData, data: {deviceId, modelId}},
     {
       onSuccess: (res) => {
         setOtherData(res || []);
@@ -49,12 +51,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton/>;
+    return <PageSkeleton />;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-"/>;
+      return <Render width={150} text="-" />;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -73,7 +75,7 @@ const Info = ({
       contentStyle={{color: '#000'}}
       bordered
     >
-      <Descriptions.Item label="终端备注">{data.remarks}</Descriptions.Item>
+      <Descriptions.Item label="终端备注">{data.remarks || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
       <Descriptions.Item label="设备IP地址">{data.ip || '-'}</Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
@@ -89,6 +91,7 @@ const Info = ({
       otherData.map((item, index) => {
         const content = [];
         const datas = isArray(item.data);
+        const childrens = isArray(item.childrens);
         let column = 0;
         datas.forEach(item => {
           column = item.length;
@@ -96,25 +99,79 @@ const Info = ({
             content.push(item);
           });
         });
-        return <Descriptions
-          key={index}
-          column={column}
-          className={style.descriptions}
-          style={{marginBottom: 24}}
-          title={<div className={style.title}>{item.title}</div>}
-          contentStyle={{color: '#000'}}
-          bordered
-        >
+        return <div key={index}>
+          <Descriptions
+            key={index}
+            column={column}
+            className={style.otherDescriptions}
+            title={<div className={style.title}>{item.title}</div>}
+            contentStyle={{color: '#000'}}
+            style={{marginBottom: childrens.length > 0 ? 0 : 24}}
+            bordered
+          >
+            {
+              content.map((item, index) => {
+                const values = (item.value || '').split(',');
+                return <Descriptions.Item
+                  key={index}
+                  label={item.key}>
+                  {
+                    values.map((item, index) => {
+                      return <div
+                        key={index}
+                        className={style.value}
+                        style={{borderRight: index === values.length - 1 && 'none'}}
+                      >
+                        {item}
+                      </div>;
+                    })
+                  }
+                </Descriptions.Item>;
+              })
+            }
+          </Descriptions>
           {
-            content.map((item, index) => {
-              return <Descriptions.Item
-                key={index}
-                label={item.key}>
-                <span className="green">{item.value}</span>
-              </Descriptions.Item>;
+            childrens.map((item, index) => {
+              const childrenDatas = isArray(item.data);
+              let childrenColumn = 0;
+              const childrenContent = [];
+              childrenDatas.forEach(item => {
+                childrenColumn = item.length;
+                item.forEach(item => {
+                  childrenContent.push(item);
+                });
+              });
+              return <div key={index}>
+                <div className={style.navTitle}>{item.title}</div>
+                <Descriptions
+                  column={childrenColumn}
+                  bordered
+                  className={style.otherDescriptions}
+                  style={{marginBottom: 24}}
+                >
+                  {
+                    childrenContent.map((item, index) => {
+                      const values = (item.value || '').split(',');
+                      return <Descriptions.Item key={index} label={item.key}>
+                        {
+                          values.map((item, index) => {
+                            return <div
+                              key={index}
+                              className={style.value}
+                              style={{borderRight: index === values.length - 1 && 'none'}}
+                            >
+                              {item}
+                            </div>;
+                          })
+                        }
+                      </Descriptions.Item>;
+                    })
+                  }
+                </Descriptions>
+              </div>;
             })
           }
-        </Descriptions>;
+        </div>;
       })
     }
 
