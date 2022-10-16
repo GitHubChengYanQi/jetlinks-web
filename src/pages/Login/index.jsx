@@ -153,13 +153,13 @@ const Login = () => {
                 token = await run({
                   data: {username, password, customerName: corporateName}
                 });
-                loginInfo = JSON.stringify({username, password, customerName: corporateName});
+                loginInfo = JSON.stringify({customerName: corporateName});
                 break;
               case 'phone':
                 token = await phoneLogin({
                   data: {account: phone, code, customerName: corporateName}
                 });
-                loginInfo = JSON.stringify({account: phone, code, customerName: corporateName});
+                loginInfo = JSON.stringify({customerName: corporateName});
                 break;
               case 'find':
                 console.log(key);

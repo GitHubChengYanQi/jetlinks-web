@@ -260,14 +260,16 @@ const useTableSet = (column, tableKey, resh) => {
   );
 
   useEffect(() => {
-    if (view) {
-      viewDetail({
-        data: {
-          tableViewId: view,
-        }
-      });
-    } else {
-      getTableView({data: {tableKey: md5TableKey()}});
+    if (tableKey){
+      if (view) {
+        viewDetail({
+          data: {
+            tableViewId: view,
+          }
+        });
+      } else {
+        getTableView({data: {tableKey: md5TableKey()}});
+      }
     }
   }, []);
 

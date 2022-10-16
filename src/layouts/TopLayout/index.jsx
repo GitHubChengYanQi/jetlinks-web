@@ -92,7 +92,7 @@ const TopLayout = ({children}) => {
       <Avatar userInfo={userInfo} logo={sysLogo}/>
     </>
     }
-    title={customer.name || '奥普泰设备业务云平台'}
+    title={customer.resetName || '奥普泰设备业务云平台'}
     logo={sysLogo}
     splitMenus
     // collapsed={false}

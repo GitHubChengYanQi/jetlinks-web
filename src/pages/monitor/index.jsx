@@ -237,7 +237,7 @@ const Monitor = () => {
     <Drawer
       destroyOnClose
       title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
-      width="60vw"
+      width="auto"
       placement="right"
       onClose={() => setInfoVisible({})}
       open={infoVisible.modelId}
@@ -275,10 +275,10 @@ const Monitor = () => {
       {open.type === 'tyngdjc' && <GridPowerSupply/>}
       {open.type === 'tyndcrl' && <SolarCellCapacity/>}
       {open.type === 'zgwljc' && <BackboneNetwork/>}
-      {open.type === 'combo' && <Combo/>}
-      {['rtuid', 'g4', 'network', 'RSSI', 'local1', 'local2', 'ETH', '4G', 'datastreams'].includes(open.type) &&
+      {/* {open.type === 'combo' && <Combo/>} */}
+      {['rtuid', 'network', 'RSSI', 'local1', 'local2', 'ETH', '4G', 'datastreams'].includes(open.type) &&
         <Network4G device={open}/>}
-      {open.type === 'fsjc' && <AncillaryMonitoring device={open}/>}
+      {/* {open.type === 'fsjc' && <AncillaryMonitoring device={open}/>} */}
       {open.type === 'ttkz' && <ChannelControl device={open}/>}
       {['dwgdjc', 'sxsbjc'].includes(open.type) && <UplinkDevice device={open}/>}
       {open.type === 'jrwk' && <AccessNetworkPort device={open}/>}

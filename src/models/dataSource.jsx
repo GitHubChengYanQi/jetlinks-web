@@ -15,9 +15,6 @@ export default {
   },
   effects: (dispatch) => ({
     async getCustomer(customerId) {
-      if (!customerId) {
-        return {};
-      }
       try {
         const res = await request({
           ...customerDetail,

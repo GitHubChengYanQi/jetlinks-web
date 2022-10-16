@@ -24,7 +24,7 @@ export default function BasicLayout({children}) {
         throw new Error('本地登录信息错误');
       }
       const userInfo = await dispatchers.getUserInfo();
-      dataDispatchers.getCustomer(userInfo?.info?.customerId);
+      dataDispatchers.getCustomer(userInfo?.info?.customerId || 0);
       dataDispatchers.getCommonArea();
       dataDispatchers.getDeviceClass();
     } catch (e) {

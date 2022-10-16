@@ -31,13 +31,16 @@ const Lamp = ({device = {}, date = []}) => {
 
   const ref = useRef();
 
+  const [type, setType] = useState();
+
   const [saveVisible, setSaveVisible] = useState();
 
-  const [passage, setPassage] = useState();
+  const [search, setSearch] = useState();
 
   const [chartData, setChartData] = useState();
 
-  const [types, setTypes] = useState([]);
+  const [searchs, setSearchs] = useState([]);
+  const [updateSearch, setUpdateSearch] = useState();
 
   let listApi = {};
   let batchHandleApi = {};
@@ -60,12 +63,34 @@ const Lamp = ({device = {}, date = []}) => {
     }
   }
 
+  const listParams = {deviceId: device.deviceId, startTime: date[0], endTime: date[1]};
 
-  const listParams = {deviceId: device.deviceId, passage, startTime: date[0], endTime: date[1]};
+  const {loading: getChartLoading, run: getChartTopicRun} = useRequest({
+    ...getChartTopic,
+    data: {title: device.type, modelId: device.modelId}
+  }, {
+    onSuccess: (res) => {
+      if (res.search && !search) {
+        if (res.updateSearch) {
+          getChartTopicRun({data: {title: res.search[0].type, modelId: device.modelId}});
+          setType(res.search[0].type);
+        } else {
+          setType(device.type);
+        }
+        setSearch(res.search[0].type);
+      }
+      if (searchs.length === 0) {
+        setSearchs(res.search || []);
+      }
+      if (updateSearch === undefined) {
+        setUpdateSearch(res.updateSearch);
+      }
+      setChartData(res);
+    }
+  });
 
   const {loading, data = {}, run} = useRequest({
     ...deviceChartData,
-    params: {deviceId: device.deviceId}
   }, {manual: true});
 
   const {loading: editLoading, run: edit} = useRequest(handleApi, {
@@ -89,20 +114,11 @@ const Lamp = ({device = {}, date = []}) => {
     data: {deviceId: device.deviceId, modelId: device.modelId}
   });
 
-  const {loading: getChartLoading} = useRequest({
-    ...getChartTopic,
-    data: {title: device.type, modelId: device.modelId}
-  }, {
-    onSuccess: (res) => {
-      setChartData(res);
-    }
-  });
-
   useEffect(() => {
-    if (date.length > 0) {
-      run({data: {startTime: date[0], endTime: date[1], deviceId: device.deviceId, title: device.type}});
+    if (date.length > 0 && type) {
+      run({data: {startTime: date[0], endTime: date[1], deviceId: device.deviceId, title: type}});
     }
-  }, [date]);
+  }, [date, type]);
 
   if (loading || getChartLoading) {
     return <PageSkeleton type="descriptions"/>;
@@ -123,7 +139,6 @@ const Lamp = ({device = {}, date = []}) => {
   };
 
   const sort = (array = [], lines) => {
-
     const linesArray = lines.map(lintItem => {
       return array.filter(item => item.title === lintItem.lineTitle);
     });
@@ -137,7 +152,16 @@ const Lamp = ({device = {}, date = []}) => {
   };
 
   const listSubmit = (value) => {
-    ref.current.formActions.setFieldValue('passage', value);
+    switch (chartData.key) {
+      case 'signalLampId':
+        ref.current.formActions.setFieldValue('passage', value);
+        break;
+      case 'mId':
+        ref.current.formActions.setFieldValue('value', value);
+        break;
+      default:
+        break;
+    }
     ref.current.submit();
   };
 
@@ -146,21 +170,19 @@ const Lamp = ({device = {}, date = []}) => {
       bodyStyle={{padding: 0}}
       bordered={false}
     >
-      {
-        isArray(chartData.messages).map((item, index) => {
-          const lines = item.lines || [];
-          return <div key={index}>
-            {item.title}
-            <BrokenLine
-              data={sort(data[item.key] || [], lines)}
-              colors={lines.map(item => item.color)}
-              id={item.key}
-              // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
-              // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
-            />
-          </div>;
-        })
-      }
+      {isArray(chartData.messages).map((item, index) => {
+        const lines = item.lines || [];
+        return <div key={index}>
+          {item.title}
+          <BrokenLine
+            data={sort(data[item.key] || [], lines)}
+            colors={lines.map(item => item.color)}
+            id={item.key}
+            // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
+            // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
+          />
+        </div>;
+      })}
     </Card>
 
     <Tabs
@@ -173,37 +195,61 @@ const Lamp = ({device = {}, date = []}) => {
         </Warning>
         {/* <LinkButton>导出</LinkButton> */}
       </Space>}
-      activeKey={passage}
+      activeKey={search}
       onTabClick={(key) => {
-        setPassage(key);
-        listSubmit(key);
+        if (updateSearch) {
+          getChartTopicRun({data: {title: key, modelId: device.modelId}});
+          setType(key);
+          setChartData();
+        } else {
+          listSubmit(key);
+        }
+        setSearch(key);
       }}
-      items={types.map((item) => {
+      items={searchs.map((item) => {
         return {
-          key: item,
-          label: item,
+          key: item.type,
+          label: item.columns,
         };
       })}
     />
     <Table
       SearchButton={<></>}
       searchForm={() => {
-        return <div style={{display: 'none'}}>
-          <FormItem name="passage" initialValue={passage} component={Input}/>
-        </div>;
+        if (updateSearch) {
+          return <></>;
+        }
+        switch (chartData.key) {
+          case 'signalLampId':
+            return <div style={{display: 'none'}}>
+              <FormItem name="passage" initialValue={search} component={Input}/>
+            </div>;
+          case 'mId':
+            return <div style={{display: 'none'}}>
+              <FormItem name="value" initialValue={search} component={Input}/>
+            </div>;
+          default:
+            break;
+        }
       }}
       loading={editLoading || batchHandleLoading}
       isModal
       ref={ref}
       onResponse={(res) => {
-        if (!ref.current.formActions.getFieldValue('passage')) {
-          setPassage(res.search[0]);
-          listSubmit(res.search[0]);
-        }
-        setTypes(res.search || []);
+        // if (!ref.current.formActions.getFieldValue('passage')) {
+        //   setPassage(res.search[0]);
+        //   listSubmit(res.search[0]);
+        // }
+        // setSearchs(res.search || []);
       }}
       formSubmit={(values) => {
-        return {...listParams, ...values, title: device.type};
+        return {
+          ...listParams,
+          ...values,
+          // mId:'1581502767016009730',
+          title: type,
+          types: isArray(chartData.columns).filter(item => item.type).map(item => item.type)
+        };
       }}
       formActions={formActionsPublic}
       api={listApi}
@@ -211,6 +257,7 @@ const Lamp = ({device = {}, date = []}) => {
       noRowSelection
       bodyStyle={{padding: 0}}
       rowKey={chartData.key}
+      columnsResh
       columns={isArray(chartData.columns).map(item => {
         return {
           title: item.columns,
@@ -227,7 +274,11 @@ const Lamp = ({device = {}, date = []}) => {
               default:
                 break;
             }
-            return <Render className={error ? 'red' : 'green'}>{value}</Render>;
+            if (typeof value === 'object') {
+              return <></>;
+            }
+            return <Render
+              className={error ? 'red' : 'green'}>{typeof value === 'number' ? value : (value || '-')}</Render>;
           }
         };
       })}

@@ -144,7 +144,7 @@ const Info = ({
               return <div key={index}>
                 <div className={style.navTitle}>{item.title}</div>
                 <Descriptions
-                  column={childrenColumn}
+                  column={6}
                   bordered
                   className={style.otherDescriptions}
                   style={{marginBottom: index=== childrens.length - 1 ? 24 : 0}}

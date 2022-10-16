@@ -51,8 +51,8 @@ const Configuration = () => {
             <Form.Item label="企业名称">
               <Space>
                 <Form.Item
-                  initialValue={customer.name}
-                  name="name"
+                  initialValue={customer.resetName}
+                  name="resetName"
                   noStyle
                 >
                   <Input style={{minWidth: 400}} placeholder="请输入企业真实名称"/>
@@ -126,10 +126,8 @@ const Configuration = () => {
       <Space>
         <Button type="primary" ghost onClick={() => setParams(defaultParams)}>重置</Button>
         <Button type="primary" onClick={() => {
-          if (info.customerId) {
-            const values = form.getFieldValue();
-            edit({data: {...values, customerId: info.customerId}});
-          }
+          const values = form.getFieldValue();
+          edit({data: {...values, customerId: info.customerId}});
         }}>确认</Button>
       </Space>
     </div>
