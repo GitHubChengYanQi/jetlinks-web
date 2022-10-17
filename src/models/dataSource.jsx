@@ -18,7 +18,7 @@ export default {
       try {
         const res = await request({
           ...customerDetail,
-          data: {customerId}
+          data: {customerId:customerId || 0}
         });
         dispatch.dataSource.update({customer: res.data});
       } catch (e) {
