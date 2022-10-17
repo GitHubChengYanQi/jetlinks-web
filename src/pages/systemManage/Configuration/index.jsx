@@ -39,7 +39,7 @@ const Configuration = () => {
     manual: true,
     onSuccess: () => {
       message.success('修改成功！');
-      dataDispatchers.getCustomer(info.customerId);
+      dataDispatchers.getCustomer(info.customerId || 0);
     },
     onError: () => message.error('修改失败！')
   });

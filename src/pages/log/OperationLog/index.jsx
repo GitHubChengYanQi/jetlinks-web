@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Select as AntSelect, Input, message} from 'antd';
+import {Input, message} from 'antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -44,7 +44,7 @@ const OperationLog = () => {
     },
     {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
     {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '登录IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text}/>},
     {title: '操作菜单', dataIndex: 'logType', align: 'center', render: (text = '') => <Render text={text}/>},
     {
       title: '操作内容',
