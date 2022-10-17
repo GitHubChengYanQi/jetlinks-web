@@ -83,7 +83,7 @@ const Configuration = () => {
             </Form.Item>
 
             <Form.Item label="预览">
-              <Image width={100} src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
+              <Image hidden={!fileId} width={100} src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
             </Form.Item>
 
           </>
@@ -135,7 +135,12 @@ const Configuration = () => {
 
     <div className={styles.actions}>
       <Space>
-        <Button type="primary" ghost onClick={() => setParams(defaultParams)}>重置</Button>
+        <Button type="primary" ghost onClick={() => {
+          form.setFieldValue('resetName', customer.name);
+          form.setFieldValue('logo', '');
+          setFileId('');
+          setParams(defaultParams);
+        }}>重置</Button>
         <Button type="primary" onClick={() => {
           const values = form.getFieldValue();
           edit({
