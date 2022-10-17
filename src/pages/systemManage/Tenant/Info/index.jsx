@@ -52,7 +52,7 @@ const Info = ({
         <Descriptions.Item label="管理员姓名">{data.contactName}</Descriptions.Item>
         <Descriptions.Item label="管理员手机号码">{data.contactPhone}</Descriptions.Item>
         <Descriptions.Item label="管理员账号">{data.adminAccount}</Descriptions.Item>
-        <Descriptions.Item label="管理员密码">
+        {data.detail && <Descriptions.Item label="管理员密码">
           <Password
             loading={editLoading}
             reset
@@ -66,7 +66,7 @@ const Info = ({
               edit({data: {customerId: data.customerId, adminPassword}});
             }}
           />
-        </Descriptions.Item>
+        </Descriptions.Item>}
         <Descriptions.Item label="身份证号">{data.legalPersonCard}</Descriptions.Item>
         <Descriptions.Item label="营业执照"><DownloadFile fileId={data.file} fileName={data.fileName} /></Descriptions.Item>
         <Descriptions.Item label="提交时间">{data.createTime}</Descriptions.Item>

@@ -5,7 +5,7 @@ import cookie from 'js-cookie';
 import styles from './index.module.less';
 import FileUpload from '@/components/FileUpload';
 import {useRequest} from '@/util/Request';
-import {customerEdit} from '@/pages/systemManage/Tenant/url';
+import {customerEdit, updateCurrentCustomer} from '@/pages/systemManage/Tenant/url';
 import store from '@/store';
 import {preview} from '@/components/DownloadFile';
 
@@ -17,11 +17,15 @@ const Configuration = () => {
 
   const [dataSource, dataDispatchers] = store.useModel('dataSource');
 
-  const defaultParams = {module: 'close', time: 'close'};
-
-  const [params, setParams] = useState(defaultParams);
-
   const customer = dataSource.customer || {};
+
+  const defaultParams = {platformMode: 0, loginValidity: 'close', minute: 1};
+
+  const [params, setParams] = useState({
+    platformMode: customer.platformMode,
+    loginValidity: customer.loginValidity ? 'open' : 'close',
+    minute: customer.loginValidity
+  });
 
   const [form] = Form.useForm();
 
@@ -31,7 +35,7 @@ const Configuration = () => {
 
   const [fileId, setFileId] = useState(customer.logo);
 
-  const {loading: editLoading, run: edit} = useRequest(customerEdit, {
+  const {loading: editLoading, run: edit} = useRequest(updateCurrentCustomer, {
     manual: true,
     onSuccess: () => {
       message.success('修改成功！');
@@ -55,7 +59,7 @@ const Configuration = () => {
                   name="resetName"
                   noStyle
                 >
-                  <Input style={{minWidth: 400}} placeholder="请输入企业真实名称"/>
+                  <Input style={{minWidth: 400}} placeholder="请输入企业真实名称" />
                 </Form.Item>
                 <div className={styles.extra}>（企业名称将显示在您的平台左上角位置）</div>
               </Space>
@@ -68,36 +72,37 @@ const Configuration = () => {
                   noStyle
                   initialValue={fileId}
                 >
-                  <FileUpload onChange={(file) => setFileId(file)}/>
+                  <FileUpload onChange={(file) => setFileId(file)} />
                 </Form.Item>
                 <div className={styles.extra}>（企业LOGO将显示在您的平台左上角企业LOGO和右上角账号头像）</div>
               </Space>
             </Form.Item>
 
             <Form.Item label="预览">
-              <Image width={100} src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`}/>
+              <Image width={100} src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
             </Form.Item>
 
           </>
-        }]}/>
+        }]} />
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="登录有效期" name="loginTime" initialValue="close">
+        <Form.Item label="登录有效期" name="loginValidity" initialValue="close">
           <Space direction="vertical">
             <Radio
               value="close"
-              checked={params.time === 'close'}
-              onClick={() => setParams({...params, time: 'close'})}>关</Radio>
+              checked={params.loginValidity === 'close'}
+              onClick={() => setParams({...params, loginValidity: 'close'})}>关</Radio>
             <Space align="center">
               <Radio
-                checked={params.time === 'open'}
+                checked={params.loginValidity === 'open'}
                 value="open"
-                onClick={() => setParams({...params, time: 'open', minute: 1})}/>
+                onClick={() => setParams({...params, loginValidity: 'open', minute: 1})} />
               长时间未操作、后台挂起、正常使用
               <InputNumber
-                onChange={(value) => setParams({...params, time: 'open', minute: value})} value={params.minute} min={1}
-                style={{margin: '0 8px'}}/>
+                onChange={(value) => setParams({...params, loginValidity: 'open', minute: value})} value={params.minute}
+                min={1}
+                style={{margin: '0 8px'}} />
               分钟后，重新登录系统
             </Space>
           </Space>
@@ -105,14 +110,16 @@ const Configuration = () => {
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="平合模式" name="map" initialValue="close">
+        <Form.Item label="平合模式" name="platformMode" initialValue="close">
           <div>
-            <Radio.Group value={params.module} onChange={({target: {value}}) => setParams({...params, module: value})}>
+            <Radio.Group
+              value={params.platformMode}
+              onChange={({target: {value}}) => setParams({...params, platformMode: value})}>
               <Space direction="vertical">
-                <Radio value="close" checked={params.module === 'close'}>
+                <Radio value={0}>
                   <Space>外网模式 <div className={styles.extra}>(互联网部署，联网使用，包括在线地图、短信通知)</div></Space>
                 </Radio>
-                <Radio value="open" checked={params.module === 'open'}>
+                <Radio value={1}>
                   <Space>内网模式 <div className={styles.extra}>(本地部署，内网使用，包括离线地图、内网短信推送)</div></Space>
                 </Radio>
               </Space>
@@ -127,7 +134,13 @@ const Configuration = () => {
         <Button type="primary" ghost onClick={() => setParams(defaultParams)}>重置</Button>
         <Button type="primary" onClick={() => {
           const values = form.getFieldValue();
-          edit({data: {...values, customerId: info.customerId}});
+          edit({
+            data: {
+              ...values,
+              loginValidity: params.loginValidity === 'close' ? 0 : params.minute,
+              platformMode: params.platformMode
+            }
+          });
         }}>确认</Button>
       </Space>
     </div>

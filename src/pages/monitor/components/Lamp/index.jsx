@@ -214,6 +214,7 @@ const Lamp = ({device = {}, date = []}) => {
       })}
     />
     <Table
+      bordered={false}
       SearchButton={<></>}
       searchForm={() => {
         if (updateSearch) {

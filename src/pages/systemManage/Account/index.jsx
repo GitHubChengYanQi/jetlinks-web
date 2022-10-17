@@ -183,7 +183,7 @@ const Account = () => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return values;
+        return {...values,deptId: info.deptId};
       }}
       onChange={setKeys}
       selectedRowKeys={keys}

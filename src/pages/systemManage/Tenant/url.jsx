@@ -14,6 +14,12 @@ export const customerEdit = {
 };
 
 
+export const updateCurrentCustomer = {
+  url: '/customer/updateCurrentCustomer',
+  method: 'POST',
+};
+
+
 export const customerList = {
   url: '/customer/list',
   method: 'POST',

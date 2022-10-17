@@ -24,7 +24,7 @@ const TableWarp = (
     },
     // b
     bodyStyle,
-    bordered,
+    bordered = true,
     // c
     checkedRows = [],
     children,
@@ -314,7 +314,7 @@ const TableWarp = (
         </div>}
         <AntdTable
           showTotal
-          bordered
+          bordered={bordered}
           onHeaderRow={() => {
             return {
               className: style.headerRow

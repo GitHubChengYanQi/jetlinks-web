@@ -21,6 +21,8 @@ const AccountAsk = (
 
   const [checked, setChecked] = useState(customer);
 
+  const [reset, setReset] = useState(false);
+
   const {loading, run} = useRequest(customerAdd, {
     manual: true,
     response: true,
@@ -212,9 +214,14 @@ const AccountAsk = (
                       <Password
                         visibilityToggle={visibilityToggle}
                         reset={customer}
+                        inputDisabled={customer}
                         content="您确定要重置密码么？重置后默认初始密码为【opt123】"
                         initPassword={() => {
                           return 'opt123';
+                        }}
+                        show={!reset && customer}
+                        onReset={() => {
+                          setReset(true);
                         }}
                         disabled={success}
                         placeholder="请输入企业管理员账号密码"
