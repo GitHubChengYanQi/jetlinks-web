@@ -96,17 +96,11 @@ const Role = () => {
         danger: true,
         key: '2',
         label: <Warning content="您确定停用么？" onOk={() => stop({data: {roleIds: keys}})}>批量停用</Warning>,
-        onClick: () => {
-
-        }
       },
       {
         danger: true,
         key: '3',
         label: <Warning onOk={() => deleteRun({data: {roleIds: keys}})}>批量删除</Warning>,
-        onClick: () => {
-
-        }
       },
     ]}
   />;
@@ -142,7 +136,7 @@ const Role = () => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return values;
+        return {...values,deptId:info.deptId};
       }}
       loading={stopLoading || startLoading || deleteLoading}
       tableKey="role"

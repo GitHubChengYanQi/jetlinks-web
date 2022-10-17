@@ -35,3 +35,8 @@ export const customerStart = {
   url: '/customer/start',
   method: 'POST',
 };
+
+export const customerJumpLogin = {
+  url: '/rest/JumpLogin',
+  method: 'GET',
+};

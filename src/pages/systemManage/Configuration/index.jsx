@@ -5,9 +5,10 @@ import cookie from 'js-cookie';
 import styles from './index.module.less';
 import FileUpload from '@/components/FileUpload';
 import {useRequest} from '@/util/Request';
-import {customerEdit, updateCurrentCustomer} from '@/pages/systemManage/Tenant/url';
+import {updateCurrentCustomer} from '@/pages/systemManage/Tenant/url';
 import store from '@/store';
 import {preview} from '@/components/DownloadFile';
+import PageSkeleton from '@ant-design/pro-skeleton';
 
 
 const Configuration = () => {
@@ -18,7 +19,6 @@ const Configuration = () => {
   const [dataSource, dataDispatchers] = store.useModel('dataSource');
 
   const customer = dataSource.customer || {};
-
   const defaultParams = {platformMode: 0, loginValidity: 'close', minute: 1};
 
   const [params, setParams] = useState({
@@ -43,6 +43,10 @@ const Configuration = () => {
     },
     onError: () => message.error('修改失败！')
   });
+
+  if (customer.customerId === undefined || customer.customerId === null) {
+    return <PageSkeleton type="descriptions" />;
+  }
 
 
   return <Spin spinning={editLoading}>

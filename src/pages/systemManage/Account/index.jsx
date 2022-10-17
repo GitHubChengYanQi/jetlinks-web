@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Menu, Dropdown, message, Input, Select as AntSelect} from 'antd';
 import moment from 'moment';
-import {config} from 'ice';
+import {config, useHistory} from 'ice';
 import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -45,7 +45,7 @@ const Account = () => {
       manual: true,
       onSuccess: (res) => {
         cookie.set('jetlink-token', res);
-        window.location.reload();
+        window.location.href = window.location.origin;
       }
     });
 
@@ -100,7 +100,6 @@ const Account = () => {
         {record.beginTime ? `${moment(record.beginTime).format('YYYY-MM-DD') || '-'}~${moment(record.endTime).format('YYYY-MM-DD') || '-'}` : '永久'}
       </Render>
     },
-    {title: '租户名称', dataIndex: 'customerName', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '创建时间',
       dataIndex: 'createTime',
@@ -206,7 +205,7 @@ const Account = () => {
         const open = record.status === 'ENABLE';
         return <Space>
           <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
-          <Warning content="确定进入到该账户系统吗？" onOk={() => Jump({params: {userId: record.userId}})}>
+          <Warning disabled={info.userId === record.userId || record.status !== 'ENABLE'} content="确定进入到该账户系统吗？" onOk={() => Jump({params: {userId: record.userId}})}>
             <PrimaryButton disabled={info.userId === record.userId || record.status !== 'ENABLE'}>进入账户</PrimaryButton>
           </Warning>
           <Warning

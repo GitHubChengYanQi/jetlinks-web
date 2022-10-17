@@ -119,7 +119,7 @@ const Save = (
         <Input placeholder="请输入电子邮件"/>
       </Form.Item>
       <Form.Item
-        initialValue={data?.password || (data.userId ? '111111' : 'opt123')}
+        initialValue={data?.password || (data.userId ? '' : 'opt123')}
         key="password"
         label="账号密码"
         name="password"

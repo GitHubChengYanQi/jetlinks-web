@@ -1,5 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Menu, Dropdown, Input, Select as AntSelect, message} from 'antd';
+import {config, useHistory} from 'ice';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -7,14 +9,13 @@ import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import AccountAsk from '@/pages/Login/AccountAsk';
 import {customerDelete, customerList, customerStart} from '@/pages/systemManage/Tenant/url';
-import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
+import {DangerButton, PrimaryButton} from '@/components/Button';
 import Save from '@/pages/systemManage/Tenant/Save';
 import Info from '@/pages/systemManage/Tenant/Info';
 import DownloadFile from '@/components/DownloadFile';
 import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
-import {config} from 'ice';
-import cookie from 'js-cookie';
+import {JumpLogin} from '@/Config/ApiUrl/system/user';
 
 const Tenant = () => {
 
@@ -27,6 +28,16 @@ const Tenant = () => {
   const [infoVisible, setInfoVisible] = useState();
 
   const [keys, setKeys] = useState([]);
+
+  const {run: Jump} = useRequest(JumpLogin,
+    {
+      manual: true,
+      onSuccess: (res) => {
+        cookie.set('jetlink-token', res);
+        window.location.href = window.location.origin;
+      }
+    });
+
 
   const {loading, run} = useRequest(customerStart, {
     manual: true,
@@ -170,6 +181,9 @@ const Tenant = () => {
             onClick={() => setInfoVisible({...record, detail: open})}>{open ? '详情' : '通过'}
           </Button>
           <PrimaryButton onClick={() => setAskAccount(record)}>修改</PrimaryButton>
+          <Warning disabled={!open || !record.adminId} content="确定进入到该账户系统吗？" onOk={() => Jump({params: {userId: record.adminId}})}>
+            <PrimaryButton disabled={!open}>进入账户</PrimaryButton>
+          </Warning>
           <PrimaryButton onClick={() => setVisible(true)}>数据转发</PrimaryButton>
           <Warning onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
             <DangerButton>删除</DangerButton>

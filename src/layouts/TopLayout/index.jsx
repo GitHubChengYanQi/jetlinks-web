@@ -65,9 +65,12 @@ const TopLayout = ({children}) => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      history.push(isObject(getFirstRoute(routes[0])).path);
+      const pash = isObject(getFirstRoute(routes[0])).path;
+      if (pash) {
+        history.push(pash);
+      }
     }
-  }, []);
+  }, [location.pathname]);
 
   return <ProLayout
     collapsed={false}
@@ -87,9 +90,9 @@ const TopLayout = ({children}) => {
     menuDataRender={(props) => menuDataRender(props)}
     rightContentRender={() => <>
       {/* <Setting/> */}
-      <Message/>
+      <Message />
       {/* <Action/> */}
-      <Avatar userInfo={userInfo} logo={sysLogo}/>
+      <Avatar userInfo={userInfo} logo={sysLogo} />
     </>
     }
     title={customer.resetName || '奥普泰设备业务云平台'}
