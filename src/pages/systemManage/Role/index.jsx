@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Menu, Dropdown, Input, message, Select as AntSelect} from 'antd';
+import {Space, Menu, Dropdown, message, Select as AntSelect} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
 import Render from '@/components/Render';
