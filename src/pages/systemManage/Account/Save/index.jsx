@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Form, Input, Radio, Space} from 'antd';
-import Select from '@/components/Select';
 import {userAdd, userSave} from '@/Config/ApiUrl/system/user';
-import {roleListSelect} from '@/Config/ApiUrl/system/role';
 import Password from '@/pages/Login/AccountAsk/components/Password';
 import AntForm from '@/components/AntForm';
 import store from '@/store';
 import DatePicker from '@/components/DatePicker';
+import RoleIds from '@/pages/systemManage/Role/components/RoleIds';
 
 const Save = (
   {
@@ -51,6 +50,7 @@ const Save = (
       close={close}
       format={(values) => ({
         ...values,
+        roleId: values.roleId.toString(),
         password: data?.userId ? newPassword : values.password,
         beginTime: values.time === '1' ? time[0] : null,
         endTime: values.time === '1' ? time[1] : null,
@@ -89,9 +89,7 @@ const Save = (
           {required: true, message: '请选择角色'},
         ]}
       >
-        <Select format={(data = []) => {
-          return data.map(item => ({label: item.name, value: `${item.role_id}`}));
-        }} api={roleListSelect} placeholder="请选择角色" />
+        <RoleIds />
       </Form.Item>
       <Form.Item
         initialValue={data?.phone}

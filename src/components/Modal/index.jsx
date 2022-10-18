@@ -7,17 +7,21 @@ const Modal = (
     modal,
     component: Component,
     width,
+    destroyOnClose = true,
     headTitle,
     loading = () => {
     },
+    afterClose = () => {
+    },
     footer,
-    padding,
+    padding = 0,
     onSuccess = () => {
     },
     onClose = () => {
     },
     compoentRef,
     children,
+    zIndex,
     wrapClassName = '',
     ...props
   }, ref) => {
@@ -86,6 +90,9 @@ const Modal = (
   const handleMove = (event) => {
     deltaX = event.pageX - mouseDownX;
     deltaY = event.pageY - mouseDownY;
+    if ((deltaY + sumY) <= 0) {
+      return;
+    }
     modalContent.style.transform = `translate(${deltaX + sumX}px, ${deltaY + sumY}px)`;
   };
 
@@ -118,6 +125,7 @@ const Modal = (
   return (
     <AntdModal
       open={visible}
+      afterClose={afterClose}
       footer={footer || null}
       centered
       maskClosable={false}
@@ -127,14 +135,16 @@ const Modal = (
       }}
       bodyStyle={{padding: 0}}
       width={width}
+      zIndex={zIndex}
       title={headTitle || (title && (value ? `编辑${title}` : `添加${title}`))}
-      destroyOnClose
+      destroyOnClose={destroyOnClose}
       wrapClassName={wrapModalClassName}
     >
       <div style={{
         maxHeight: footer ? 'calc(100vh - 110px)' : 'calc(100vh - 55px)',
         overflowY: 'auto',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        padding
       }}>
         {Component ? <Component
           {...props}

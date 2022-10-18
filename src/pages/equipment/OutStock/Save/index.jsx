@@ -47,7 +47,7 @@ const Save = ({success, close, visible, data = {}}) => {
         {required: true, message: '请选择设备MAC'},
       ]}
     >
-      <SelectDevice defaultMac={data?.deviceResult?.mac} disabled={data?.deviceId}/>
+      <SelectDevice device={data?.deviceResult} disabled={data?.deviceId}/>
     </Form.Item>
     <Form.Item
       initialValue={data?.customerId}

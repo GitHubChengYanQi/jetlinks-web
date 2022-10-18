@@ -22,7 +22,7 @@ const Configuration = () => {
   const defaultParams = {platformMode: 0, loginValidity: 'close', minute: 1};
 
   const [params, setParams] = useState({
-    platformMode: customer.platformMode,
+    platformMode: customer.platformMode || 0,
     loginValidity: customer.loginValidity ? 'open' : 'close',
     minute: customer.loginValidity
   });

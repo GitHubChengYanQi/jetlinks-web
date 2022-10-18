@@ -112,6 +112,17 @@ const Save = ({
       >
         <FileUpload defaultFileList={data?.fileId ? [{name: data?.fileName}] : []} />
       </Form.Item>
+      <Form.Item
+        initialValue={data?.describe}
+        key="describe"
+        label="描述"
+        name="describe"
+        rules={[
+          {required: true, message: '请输入描述内容'},
+        ]}
+      >
+        <Input.TextArea placeholder='请输入描述内容' maxLength={300} showCount />
+      </Form.Item>
     </AntForm>
   );
 };

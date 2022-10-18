@@ -1,6 +1,7 @@
-import React from 'react';
-import {message, Modal, Spin, Form} from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {message, Spin, Form, Space, Button} from 'antd';
 import {useRequest} from '@/util/Request';
+import Modal from '@/components/Modal';
 
 const AntForm = (
   {
@@ -31,6 +32,16 @@ const AntForm = (
     form,
   }
 ) => {
+
+  const ref = useRef();
+
+  useEffect(() => {
+    if (visible) {
+      ref.current.open(false);
+    } else {
+      ref.current.close();
+    }
+  }, [visible]);
 
   if (!form) {
     form = Form.useForm()[0];
@@ -97,21 +108,22 @@ const AntForm = (
 
   return <>
     <Modal
+      ref={ref}
       zIndex={zIndex}
-      maskClosable={false}
       afterClose={() => {
         afterClose();
         form.resetFields();
       }}
       destroyOnClose
       width={width || 500}
-      title={headerTitle || `${initialValues[rowKey] ? '编辑' : '新建'}${title}`}
-      open={visible}
-      okText="确定"
-      cancelText="取消"
+      headTitle={headerTitle || `${initialValues[rowKey] ? '编辑' : '新建'}${title}`}
+      footer={<Space>
+        <Button>取消</Button>
+        <Button onClick={()=>submitData()} type='primary' loading={addLoading || editLoading}>确定</Button>
+      </Space>}
       okButtonProps={{loading: addLoading || editLoading}}
       onOk={() => {
-        submitData();
+
       }}
       onCancel={() => close()}
     >

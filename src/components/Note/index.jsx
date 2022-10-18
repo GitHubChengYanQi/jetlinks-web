@@ -10,8 +10,8 @@ const Note = (
     style,
   }) => {
   return <Typography.Paragraph
-    ellipsis={{rows: 1, tooltip: true,}}
-    style={{width, margin: 0,maxWidth,...style}}>
+    ellipsis={{rows: 1}}
+    style={{width, margin: 0, maxWidth, ...style}}>
     {value || children}
   </Typography.Paragraph>;
 };

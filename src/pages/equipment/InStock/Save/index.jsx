@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
-import {Input,Form} from 'antd';
+import {Input, Form} from 'antd';
 import AntForm from '@/components/AntForm';
 import {instockAdd, instockEdit} from '@/pages/equipment/InStock/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
-import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 import DatePicker from '@/components/DatePicker';
-import Position from '@/pages/equipment/Equipment/Save/components/Position';
+import InputNumber from '@/components/InputNumber';
 
 
 const Save = ({data, success, close, visible}) => {
@@ -51,7 +50,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入设备MAC'},
         ]}
       >
-        <Input placeholder="请输入设备MAC"/>
+        <Input placeholder="请输入设备MAC" />
       </Form.Item>
       <Form.Item
         key="cardNumber"
@@ -61,7 +60,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入设备使用的物联网卡号'},
         ]}
       >
-        <Input placeholder="请输入设备使用的物联网卡号"/>
+        <Input placeholder="请输入设备使用的物联网卡号" />
       </Form.Item>
       <Form.Item
         key="categoryId"
@@ -85,7 +84,18 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择设备型号'},
         ]}
       >
-        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
+        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号" />
+      </Form.Item>
+      <Form.Item
+        initialValue={data?.batch}
+        key="batch"
+        label="批次"
+        name="batch"
+        rules={[
+          {required: true, message: '请输入批次'},
+        ]}
+      >
+        <InputNumber placeholder='请输入批次' />
       </Form.Item>
       <Form.Item
         initialValue={new Date()}

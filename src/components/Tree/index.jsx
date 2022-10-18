@@ -12,6 +12,10 @@ const Tree = (
     border,
     treeData,
     halfChecked,
+    defaultExpandAll,
+    checkable = true,
+    disabled,
+    show,
     ...other
   }
 ) => {
@@ -21,6 +25,8 @@ const Tree = (
   if (treeData || data) {
     return (<div style={border ? {maxHeight: '50vh', overflow: 'auto', border: 'solid 1px #d9d9d9', padding: 8} : {}}>
       <AntdTree
+        disabled={disabled}
+        defaultExpandAll={defaultExpandAll}
         onCheck={(values, checkInfo) => {
           const halfCheckedKeys = checkInfo.halfCheckedKeys || [];
           // const newValues = values.filter(item => !halfCheckedKeys.find(key => key === item));
@@ -30,7 +36,7 @@ const Tree = (
         }}
         defaultExpandedKeys={['0']}
         selectable={false}
-        checkable
+        checkable={checkable}
         defaultCheckedKeys={value}
         treeData={treeData || data}
         {...other}

@@ -1,49 +1,49 @@
-import React from 'react';
-import {Select, Spin} from 'antd';
-import {deviceList} from '@/pages/equipment/Equipment/url';
-import {useRequest} from '@/util/Request';
+import React, {useRef, useState} from 'react';
+import {Button, Space} from 'antd';
+import Modal from '@/components/Modal';
+import Equipment from '@/pages/equipment/Equipment';
 
 const SelectDevice = ({
   value,
+  device: defaultDevice = {},
   onChange = () => {
   },
-  defaultMac,
   disabled
 }) => {
 
-  const params = {limit: 10, page: 1};
+  const ref = useRef();
 
-  const {loading, data, run} = useRequest({...deviceList, params, data: {mac: defaultMac}});
+  const [device, setDevice] = useState(defaultDevice);
 
-  const options = (!loading && data) ? data.map((item) => {
-    return {
-      label: item.mac,
-      value: item.deviceId,
-    };
-  }) : [];
-
-  return <Select
-    value={value}
-    disabled={disabled}
-    allowClear
-    placeholder="请选择设备MAC"
-    style={{width: '100%'}}
-    showSearch
-    filterOption={false}
-    notFoundContent={loading && <div style={{textAlign: 'center'}}><Spin/></div>}
-    options={options}
-    onSearch={(string) => {
-      run({
-        data: {
-          mac: string,
-        },
-        params
-      });
-    }}
-    onChange={(value) => {
-      onChange(value);
-    }}
-  />;
+  return <>
+    <Button
+      disabled={disabled}
+      style={{padding: 0}}
+      type="link"
+      onClick={() => {
+        ref.current.open(false);
+      }}
+    >
+      {value ? device.mac : '请选择设备MAC'}
+    </Button>
+    <Modal
+      destroyOnClose={false}
+      width={1200}
+      headTitle="选择设备"
+      ref={ref}
+      footer={<Space>
+        <Button onClick={() => ref.current.close()}>取消</Button>
+        <Button type='primary' onClick={() => {
+          onChange(device.deviceId);
+          ref.current.close();
+        }}>保存</Button>
+      </Space>}
+    >
+      <Equipment selectDevice={device} select onChange={(device) => {
+        setDevice(device || {});
+      }} />
+    </Modal>
+  </>;
 };
 
 export default SelectDevice;

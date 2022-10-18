@@ -85,7 +85,7 @@ const Save = (
       visible={visible}
       close={close}
       format={(values) => {
-        if (isArray(data.rules).some(item => !item.field || !item.alarmCondition || !item.value)) {
+        if (isArray(data.rules).some(item => !item.field || !item.alarmCondition || !(typeof item.value === 'number' ? true : item.value))) {
           message.warn('请完善报警规则!');
           return false;
         }
@@ -112,7 +112,7 @@ const Save = (
         >
           <Input placeholder="请输入规则名称" onChange={({target: {value}}) => {
             setData({...data, name: value});
-          }}/>
+          }} />
         </Form.Item>
         <Form.Item
           initialValue={detail?.modelId}
@@ -128,7 +128,7 @@ const Save = (
               getColumns({data: {modelId: value}});
             }
             setData({...data, modelId: value, rules: []});
-          }}/>
+          }} />
         </Form.Item>
       </Card>
       {getColumnsLoaing ? <Spin>
@@ -144,12 +144,12 @@ const Save = (
       >
         <Config value={data.rules} modelColumns={modelColumns} onChange={(value = []) => {
           setData({...data, rules: value});
-        }}/>
+        }} />
       </Card>}
       <Card className={styles.card} title={<div className={styles.title}>报警人员</div>} bordered={false}>
         <AddContacts value={data.contacts} onChange={(contacts) => {
           setData({...data, contacts});
-        }}/>
+        }} />
       </Card>
     </AntForm>
   );

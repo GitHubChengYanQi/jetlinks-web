@@ -4,7 +4,7 @@ import {config} from 'ice';
 import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
-import Save from './Save';
+import Save, {formatData} from './Save';
 import Table from '@/components/Table';
 import DatePicker from '@/components/DatePicker';
 import FormItem from '../../../components/Table/components/FormItem/index';
@@ -15,8 +15,12 @@ import {isArray} from '@/util/Tools';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import store from '@/store';
 import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
+import Modal from '@/components/Modal';
+import Tree from '@/components/Tree';
 
 const Role = () => {
+
+  const modelRef = useRef();
 
   const [userInfo] = store.useModel('user');
 
@@ -62,7 +66,11 @@ const Role = () => {
       title: '菜单权限',
       dataIndex: 'menuList',
       align: 'center',
-      render: (menuList = []) => <Render width={200}>
+      render: (menuList = []) => <Render
+        width={200}
+        style={{cursor:'pointer'}}
+        onClick={() => modelRef.current.open(menuList.map(item => `${item.menuId}`))}
+      >
         <Note maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
       </Render>
     },
@@ -70,7 +78,9 @@ const Role = () => {
       title: '分组权限',
       dataIndex: 'roleBindResults',
       align: 'center',
-      render: (roleBindResults = []) => <Render width={200}>
+      render: (roleBindResults = []) => <Render width={200} onClick={() => {
+
+      }}>
         <Note maxWidth={400}>{isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}</Note>
       </Render>
     },
@@ -136,7 +146,7 @@ const Role = () => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return {...values,deptId:info.deptId};
+        return {...values, deptId: info.deptId};
       }}
       loading={stopLoading || startLoading || deleteLoading}
       tableKey="role"
@@ -199,6 +209,18 @@ const Role = () => {
       close={() => setSaveVisible(null)}
       visible={saveVisible}
       data={saveVisible}
+    />
+
+    <Modal
+      defaultExpandAll
+      // disabled
+      headTitle="菜单权限"
+      ref={modelRef}
+      show
+      component={Tree}
+      padding={24}
+      halfChecked
+      treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]}
     />
   </>;
 };

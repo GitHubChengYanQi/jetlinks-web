@@ -7,6 +7,18 @@ import AntForm from '@/components/AntForm';
 import store from '@/store';
 import {isArray} from '@/util/Tools';
 
+export const formatData = (data) => {
+  return isArray(data).map((item) => {
+    const children = item.children || item.subMenus || [];
+    return {
+      key: item.url ? `${item.id}` : `dict_${item.id}`,
+      title: item.name,
+      checkStrictly: true,
+      children: formatData(children),
+    };
+  });
+};
+
 
 const Save = ({
   visible,
@@ -18,18 +30,6 @@ const Save = ({
 }) => {
 
   const [userInfo] = store.useModel('user');
-
-  const formatData = (data) => {
-    return isArray(data).map((item) => {
-      const children = item.children || item.subMenus || [];
-      return {
-        key: item.url ? `${item.id}` : `dict_${item.id}`,
-        title: item.name,
-        checkStrictly: true,
-        children: formatData(children),
-      };
-    });
-  };
 
 
   let initMenuIds = data?.menuIds || [];
