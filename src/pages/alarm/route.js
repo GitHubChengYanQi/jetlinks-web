@@ -22,9 +22,6 @@ const alarmConfig = [
         name: '报警规则',
         component: lazy(() => import('@/pages/alarm/Rule')),
       },
-      {
-        redirect: '/alarm/record',
-      }
     ]
   },
 ];

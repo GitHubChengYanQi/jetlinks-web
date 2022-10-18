@@ -6,9 +6,7 @@ import store from '@/store';
 import styles from './index.module.less';
 import logo from '../../asseset/imgs/logo.png';
 import Avatar from '@/layouts/TopLayout/components/Avatar/Avatar';
-import Setting from '@/layouts/TopLayout/components/Setting/inedx';
 import Message from '@/layouts/TopLayout/components/Message/inedx';
-import Action from '@/layouts/TopLayout/components/Action/inedx';
 import {isArray, isObject} from '@/util/Tools';
 import {preview} from '@/components/DownloadFile';
 
@@ -65,9 +63,17 @@ const TopLayout = ({children}) => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      const pash = isObject(getFirstRoute(routes[0])).path;
-      if (pash) {
-        history.push(pash);
+      if (routes[0]){
+        if (isArray(routes[0].routes).length > 0){
+          history.push(routes[0].routes[0].path);
+        }else {
+          history.push(routes[0].path);
+        }
+      }
+    } else {
+      const route = routes.find(item => item.path === location.pathname);
+      if (isArray(route && route.routes).length > 0) {
+        history.replace(isArray(route.routes)[0].path);
       }
     }
   }, [location.pathname]);
@@ -90,9 +96,9 @@ const TopLayout = ({children}) => {
     menuDataRender={(props) => menuDataRender(props)}
     rightContentRender={() => <>
       {/* <Setting/> */}
-      <Message />
+      <Message/>
       {/* <Action/> */}
-      <Avatar userInfo={userInfo} logo={sysLogo} />
+      <Avatar userInfo={userInfo} logo={sysLogo}/>
     </>
     }
     title={customer.resetName || '奥普泰设备业务云平台'}

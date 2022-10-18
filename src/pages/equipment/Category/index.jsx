@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, message, Select, Input} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import {createFormActions} from '@formily/antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from './Save';
@@ -18,8 +19,16 @@ import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 
+const formActionsPublic = createFormActions();
 
-const Category = () => {
+const Category = (
+  {
+    value,
+    select,
+    onChange = () => {
+    }
+  }
+) => {
 
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');
@@ -28,12 +37,14 @@ const Category = () => {
 
   const [saveVisible, setSaveVisible] = useState();
 
-  const [keys, setKeys] = useState([]);
+  const [records, setResords] = useState(value ? [value] : []);
+
+  const keys = records.map(item => item.categoryId);
 
   const {loading: stopLoading, run: stop} = useRequest(deviceCategoryStop, {
     manual: true,
     onSuccess: () => {
-      setKeys([]);
+      setResords([]);
       message.success('关闭成功！');
       ref.current.refresh();
     },
@@ -43,7 +54,7 @@ const Category = () => {
   const {loading: startLoading, run: start} = useRequest(deviceCategoryStart, {
     manual: true,
     onSuccess: () => {
-      setKeys([]);
+      setResords([]);
       message.success('启用成功！');
       ref.current.refresh();
     },
@@ -53,7 +64,7 @@ const Category = () => {
   const {loading: deleteLoading, run: deleteRun} = useRequest(deviceCategoryDelete, {
     manual: true,
     onSuccess: () => {
-      setKeys([]);
+      setResords([]);
       message.success('删除成功！');
       ref.current.refresh();
     },
@@ -61,28 +72,46 @@ const Category = () => {
   });
 
 
-  const columns = [
-    {title: '设备类别名称', dataIndex: 'name', align: 'center',},
-    {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
-    {
-      title: '所属设备型号数量',
-      dataIndex: '3',
-      align: 'center',
-      render: (text) => <Render className="green">{text || 0}</Render>
-    },
-    {
-      title: '设备类别状态',
-      dataIndex: 'status',
-      align: 'center',
-      render: (text) => {
-        const open = text === '1';
-        return <Render>
-          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
-        </Render>;
+  let columns;
+  if (select) {
+    columns = [
+      {title: '设备类别名称', dataIndex: 'name', align: 'center',},
+      {
+        title: '设备类别状态',
+        dataIndex: 'status',
+        align: 'center',
+        render: (text) => {
+          const open = text === '1';
+          return <Render>
+            <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+          </Render>;
+        }
       }
-    },
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
-  ];
+    ];
+  } else {
+    columns = [
+      {title: '设备类别名称', dataIndex: 'name', align: 'center',},
+      {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
+      {
+        title: '所属设备型号数量',
+        dataIndex: '3',
+        align: 'center',
+        render: (text) => <Render className="green">{text || 0}</Render>
+      },
+      {
+        title: '设备类别状态',
+        dataIndex: 'status',
+        align: 'center',
+        render: (text) => {
+          const open = text === '1';
+          return <Render>
+            <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+          </Render>;
+        }
+      },
+      {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
+    ];
+  }
 
   const menu = <Menu
     items={[
@@ -129,6 +158,7 @@ const Category = () => {
 
   return <>
     <Table
+      formActions={formActionsPublic}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
@@ -136,11 +166,17 @@ const Category = () => {
         return values;
       }}
       loading={stopLoading || startLoading || deleteLoading}
-      onChange={setKeys}
+      checkedRows={records}
       selectedRowKeys={keys}
-      tableKey="category"
+      onChangeRows={(records) => {
+        if (select) {
+          onChange(records[records.length - 1]);
+        }
+        setResords(select ? [records[records.length - 1] || {}] : records);
+      }}
+      tableKey={select ? false : 'category'}
       ref={ref}
-      searchButtons={[
+      searchButtons={select ? null : [
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新建设备类别</PrimaryButton>,
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
@@ -153,6 +189,7 @@ const Category = () => {
       api={categoryList}
       columns={columns}
       rowKey="categoryId"
+      noAction={select}
       actionRender={(text, record) => {
         const open = record.status === '1';
         return <Space>

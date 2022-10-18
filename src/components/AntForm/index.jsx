@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {message, Spin, Form, Space, Button} from 'antd';
+import {message, Spin, Form, Space, Button,Modal as AntModal} from 'antd';
 import {useRequest} from '@/util/Request';
 import Modal from '@/components/Modal';
 
@@ -56,12 +56,13 @@ const AntForm = (
     manual: true,
     response: true,
     onSuccess: (res) => {
+      console.log(res);
       if (res.errCode === 1001) {
         if (typeof errorHandle === 'function') {
           errorHandle();
           return;
         }
-        Modal.warn({
+        AntModal.warn({
           content: res.message,
           okText: '确认'
         });
@@ -80,7 +81,7 @@ const AntForm = (
           errorHandle();
           return;
         }
-        Modal.warn({
+        AntModal.warn({
           content: res.message,
           okText: '确认'
         });
@@ -116,27 +117,25 @@ const AntForm = (
       }}
       destroyOnClose
       width={width || 500}
+      onClose={close}
       headTitle={headerTitle || `${initialValues[rowKey] ? '编辑' : '新建'}${title}`}
       footer={<Space>
-        <Button>取消</Button>
-        <Button onClick={()=>submitData()} type='primary' loading={addLoading || editLoading}>确定</Button>
+        <Button onClick={close}>取消</Button>
+        <Button onClick={() => submitData()} type="primary" loading={addLoading || editLoading}>确定</Button>
       </Space>}
-      okButtonProps={{loading: addLoading || editLoading}}
-      onOk={() => {
-
-      }}
-      onCancel={() => close()}
     >
-      {visible && <Spin spinning={addLoading || editLoading || loading}>
-        <Form
-          form={form}
-          labelCol={{span: labelCol}}
-          wrapperCol={{span: wrapperCol}}
-          onValuesChange={onValuesChange}
-        >
-          {children}
-        </Form>
-      </Spin>}
+      <div style={{padding:24}}>
+        {visible && <Spin spinning={addLoading || editLoading || loading}>
+          <Form
+            form={form}
+            labelCol={{span: labelCol}}
+            wrapperCol={{span: wrapperCol}}
+            onValuesChange={onValuesChange}
+          >
+            {children}
+          </Form>
+        </Spin>}
+      </div>
     </Modal>
   </>;
 };

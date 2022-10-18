@@ -16,9 +16,6 @@ const logConfig = [
         name: '操作日志',
         component: lazy(() => import('@/pages/log/OperationLog')),
       },
-      {
-        redirect: '/log/loginLog',
-      }
     ]
   },
 ];

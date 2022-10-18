@@ -71,9 +71,6 @@ const systemConfig = [
         name: '接口文档',
         component: lazy(() => import('@/pages/BaseSystem/swagger')),
       },
-      {
-        redirect: '/BASE_SYSTEM/mgr',
-      }
     ]
   },
 ];

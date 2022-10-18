@@ -19,6 +19,8 @@ import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
+import SelectCategory from '@/pages/equipment/OutStock/Save/components/SelectCategory';
+import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 
 const OutStock = () => {
 
@@ -126,14 +128,8 @@ const OutStock = () => {
       <FormItem label="出库时间" name="time" component={DatePicker} RangePicker/>
       <FormItem label="设备MAC" name="mac" component={Input}/>
       <FormItem label="设备查询" name="name" component={Input}/>
-      <FormItem
-        label="设备类别"
-        name="categoryId"
-        api={categoryFindAll}
-        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
-        component={Select}
-      />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备类别" name="categoryId" component={SelectCategory}/>
+      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
       <FormItem label="所属客户" name="customerId" component={Select}/>
       <FormItem
         label="设备状态"

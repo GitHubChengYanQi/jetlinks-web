@@ -17,10 +17,12 @@ import store from '@/store';
 import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 import Modal from '@/components/Modal';
 import Tree from '@/components/Tree';
+import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 
 const Role = () => {
 
   const modelRef = useRef();
+  const groupRef = useRef();
 
   const [userInfo] = store.useModel('user');
 
@@ -78,9 +80,11 @@ const Role = () => {
       title: '分组权限',
       dataIndex: 'roleBindResults',
       align: 'center',
-      render: (roleBindResults = []) => <Render width={200} onClick={() => {
-
-      }}>
+      render: (roleBindResults = []) => <Render
+        width={200}
+        style={{cursor:'pointer'}}
+        onClick={() => groupRef.current.open(roleBindResults.map(item => `${item.classifyId}`))}
+      >
         <Note maxWidth={400}>{isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}</Note>
       </Render>
     },
@@ -213,14 +217,22 @@ const Role = () => {
 
     <Modal
       defaultExpandAll
-      // disabled
       headTitle="菜单权限"
       ref={modelRef}
       show
       component={Tree}
       padding={24}
+      border
       halfChecked
       treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]}
+    />
+
+    <Modal
+      headTitle="分组权限"
+      ref={groupRef}
+      component={SelectTopClass}
+      checkable
+      padding={24}
     />
   </>;
 };

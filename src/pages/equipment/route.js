@@ -47,9 +47,6 @@ const equipmentConfig = [
         name: '固件管理',
         component: lazy(() => import('@/pages/equipment/Firmware')),
       },
-      {
-        redirect: '/equipment/equipment',
-      }
     ]
   },
 ];

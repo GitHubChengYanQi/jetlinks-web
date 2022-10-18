@@ -19,9 +19,6 @@ import {DangerButton, PrimaryButton} from '@/components/Button';
 import store from '@/store';
 import {useRequest} from '@/util/Request';
 import FormItem from '@/components/Table/components/FormItem';
-import DatePicker from '@/components/DatePicker';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
-import Select from '@/components/Select';
 
 const Grouping = () => {
 
@@ -38,6 +35,7 @@ const Grouping = () => {
     onSuccess: () => {
       message.success('删除成功！');
       ref.current.refresh();
+      dataDispatchers.getDeviceClass();
     },
     onError: () => message.error('删除失败！')
   });

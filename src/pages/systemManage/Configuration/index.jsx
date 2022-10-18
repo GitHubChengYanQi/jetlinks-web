@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {Button, Image, Input, Form, InputNumber, Radio, Space, Spin, Tabs, message} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import PageSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.less';
 import FileUpload from '@/components/FileUpload';
 import {useRequest} from '@/util/Request';
 import {updateCurrentCustomer} from '@/pages/systemManage/Tenant/url';
 import store from '@/store';
 import {preview} from '@/components/DownloadFile';
-import PageSkeleton from '@ant-design/pro-skeleton';
 
 
 const Configuration = () => {

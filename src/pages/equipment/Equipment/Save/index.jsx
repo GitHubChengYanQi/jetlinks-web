@@ -17,6 +17,8 @@ const Save = props => {
 
   const [dataSource] = store.useModel('dataSource');
 
+  const customer = dataSource.customer || {};
+
   const [form] = Form.useForm();
 
   const {loading, run} = useRequest({
@@ -31,7 +33,6 @@ const Save = props => {
       }
     }
   });
-
 
   return (
     <AntForm
@@ -66,7 +67,7 @@ const Save = props => {
       <Form.Item
         initialValue={data.customerName}
         key="customerName"
-        label="所属客户"
+        label={customer.customerId ? '选择分组' : '所属客户'}
         name="customerName"
       >
         <Input disabled placeholder="请选择所属客户" />

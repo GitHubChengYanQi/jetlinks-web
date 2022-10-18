@@ -23,6 +23,8 @@ import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import SelectCategory from '@/pages/equipment/OutStock/Save/components/SelectCategory';
+import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 
 const InStock = () => {
 
@@ -59,6 +61,7 @@ const InStock = () => {
     {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
     {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},
     {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '入库批次', dataIndex: 'batch', align: 'center', render: (text) => <Render width={120} text={text} />},
     {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
     {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
@@ -103,14 +106,8 @@ const InStock = () => {
       <FormItem label="入库时间" name="time" component={DatePicker} RangePicker />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem
-        label="设备类别"
-        name="categoryId"
-        api={categoryFindAll}
-        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
-        component={Select}
-      />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备类别" name="categoryId" component={SelectCategory}/>
+      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
       <FormItem
         label="设备状态"
         name="status"

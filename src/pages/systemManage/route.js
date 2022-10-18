@@ -27,9 +27,6 @@ const systemManageConfig = [
         name: '账号管理',
         component: lazy(() => import('@/pages/systemManage/Account')),
       },
-      {
-        redirect: '/system/configuration',
-      }
     ]
   },
 ];
