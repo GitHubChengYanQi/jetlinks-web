@@ -63,17 +63,24 @@ const TopLayout = ({children}) => {
 
   useEffect(() => {
     if (location.pathname === '/') {
-      if (routes[0]){
-        if (isArray(routes[0].routes).length > 0){
+      if (routes[0]) {
+        if (isArray(routes[0].routes).length > 0) {
           history.push(routes[0].routes[0].path);
-        }else {
+        } else {
           history.push(routes[0].path);
         }
       }
     } else {
       const route = routes.find(item => item.path === location.pathname);
       if (isArray(route && route.routes).length > 0) {
-        history.replace(isArray(route.routes)[0].path);
+        switch (route.path) {
+          case '/BASE_SYSTEM':
+          case '/ENT_FUNC':
+            break;
+          default:
+            history.replace(isArray(route.routes)[0].path);
+            break;
+        }
       }
     }
   }, [location.pathname]);
@@ -96,9 +103,9 @@ const TopLayout = ({children}) => {
     menuDataRender={(props) => menuDataRender(props)}
     rightContentRender={() => <>
       {/* <Setting/> */}
-      <Message/>
+      <Message />
       {/* <Action/> */}
-      <Avatar userInfo={userInfo} logo={sysLogo}/>
+      <Avatar userInfo={userInfo} logo={sysLogo} />
     </>
     }
     title={customer.resetName || '奥普泰设备业务云平台'}

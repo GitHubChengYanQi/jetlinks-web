@@ -79,7 +79,7 @@ const Save = ({
           {required: true, message: '请输入新密码'},
         ]}
       >
-        <Input placeholder="请输入新密码"/>
+        <Input.Password placeholder="请输入新密码"/>
       </Form.Item>
       <Form.Item
         key="newPassWord"
@@ -89,7 +89,7 @@ const Save = ({
           {required: true, message: '请确认新密码'},
         ]}
       >
-        <Input placeholder="请确认新密码"/>
+        <Input.Password placeholder="请确认新密码"/>
       </Form.Item>
     </AntForm>
   );
