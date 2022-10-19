@@ -86,7 +86,12 @@ const Account = () => {
   const columns = [
     {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
     {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {
+      title: '角色名称',
+      dataIndex: 'roles',
+      align: 'center',
+      render: (roles) => <Render width={200} text={isArray(roles).map(item => item.name).toString()}/>
+    },
     {
       title: '账号状态', dataIndex: 'status', align: 'center', render: (text) => <Render>
         <Button danger={text !== 'ENABLE'} type="link">{text === 'ENABLE' ? '启用' : '停用'}</Button>
@@ -182,7 +187,7 @@ const Account = () => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return {...values,deptId: info.deptId};
+        return {...values, deptId: info.deptId};
       }}
       onChange={setKeys}
       selectedRowKeys={keys}
@@ -204,8 +209,13 @@ const Account = () => {
       actionRender={(text, record) => {
         const open = record.status === 'ENABLE';
         return <Space>
-          <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
-          <Warning disabled={info.userId === record.userId || record.status !== 'ENABLE'} content="确定进入到该账户系统吗？" onOk={() => Jump({params: {userId: record.userId}})}>
+          <PrimaryButton onClick={() => setSaveVisible({
+            ...record,
+            roleId: record.roleId && record.roleId.split(',')
+          })}>编辑</PrimaryButton>
+          <Warning
+            disabled={info.userId === record.userId || record.status !== 'ENABLE'} content="确定进入到该账户系统吗？"
+            onOk={() => Jump({params: {userId: record.userId}})}>
             <PrimaryButton disabled={info.userId === record.userId || record.status !== 'ENABLE'}>进入账户</PrimaryButton>
           </Warning>
           <Warning

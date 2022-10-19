@@ -82,7 +82,7 @@ const Save = (
       </Form.Item>
       <Form.Item
         hidden={currentUser.userId === data?.userId}
-        initialValue={`${data?.roleId || ''}`}
+        initialValue={data?.roleId}
         key="roleId"
         label="选择角色"
         name="roleId"
@@ -121,7 +121,7 @@ const Save = (
         <Input placeholder="请输入电子邮件" />
       </Form.Item>
       <Form.Item
-        initialValue={data?.password || (data.userId ? '111' : 'opt123')}
+        initialValue={data.userId ? '111' : 'opt123'}
         key="password"
         label="账号密码"
         name="password"
