@@ -114,7 +114,7 @@ const Configuration = () => {
       </div>
 
       <div className={styles.card}>
-        <Form.Item label="平合模式" name="platformMode" initialValue="close">
+        <Form.Item label="平台模式" name="platformMode" initialValue="close">
           <div>
             <Radio.Group
               value={params.platformMode}

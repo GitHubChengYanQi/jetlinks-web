@@ -21,6 +21,7 @@ import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
 import SelectCategory from '@/pages/equipment/OutStock/Save/components/SelectCategory';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
+import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 
 const OutStock = () => {
 
@@ -128,9 +129,8 @@ const OutStock = () => {
       <FormItem label="出库时间" name="time" component={DatePicker} RangePicker/>
       <FormItem label="设备MAC" name="mac" component={Input}/>
       <FormItem label="设备查询" name="name" component={Input}/>
-      <FormItem label="设备类别" name="categoryId" component={SelectCategory}/>
       <FormItem label="设备型号" name="modelId" component={SelectModle}/>
-      <FormItem label="所属客户" name="customerId" component={Select}/>
+      <FormItem label="所属客户" name="customerId" component={SelectCustomer}/>
       <FormItem
         label="设备状态"
         name="status"

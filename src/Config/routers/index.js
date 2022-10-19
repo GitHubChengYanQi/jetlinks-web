@@ -32,6 +32,9 @@ const routerConfig = [
       ...equipmentConfig,
       ...alarmConfig,
       {
+        path: '/test',
+        component: lazy(() => import(('@/pages/Test/index'))),
+      },{
         path: '/monitor',
         component: lazy(() => import(('@/pages/monitor'))),
       }, {

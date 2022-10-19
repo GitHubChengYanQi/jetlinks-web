@@ -90,9 +90,9 @@ const Modal = (
   const handleMove = (event) => {
     deltaX = event.pageX - mouseDownX;
     deltaY = event.pageY - mouseDownY;
-    if ((deltaY + sumY) <= 0) {
-      return;
-    }
+    // if ((deltaY + sumY) <= 0) {
+    //   return;
+    // }
     modalContent.style.transform = `translate(${deltaX + sumX}px, ${deltaY + sumY}px)`;
   };
 

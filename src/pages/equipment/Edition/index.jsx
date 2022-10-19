@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Row, Col, Input, Select as AntSelect, Modal} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import {createFormActions} from '@formily/antd';
 import LeftTree from '@/pages/monitor/LeftTree';
 import Render from '@/components/Render';
 import Save from '@/pages/equipment/Edition/Save';
@@ -11,11 +12,12 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {deviceList} from '@/pages/equipment/Equipment/url';
-import Select from '@/components/Select';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import {ActionButton, PrimaryButton} from '@/components/Button';
+import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 
-const Edition = () => {
+const formActionsPublic = createFormActions();
+
+const Edition = ({value = {}}) => {
 
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');
@@ -47,20 +49,20 @@ const Edition = () => {
       }
     },
     {
-      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />
+      title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>
     },
-    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
-    {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text} />},
-    {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text} />},
-    {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '当前版本', dataIndex: 'version', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '最新版本', dataIndex: '7', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '升级时间', dataIndex: '8', align: 'center', render: (text) => <Render text={text}/>},
   ];
 
   const [close, setClose] = useState(false);
 
   const searchForm = () => {
     return <>
-      <FormItem label="升级时间" name="0" component={DatePicker} RangePicker />
+      <FormItem label="升级时间" name="0" component={DatePicker} RangePicker/>
       <FormItem
         label="设备状态"
         name="status"
@@ -75,59 +77,37 @@ const Edition = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="登记名称" name="name" component={Input}/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
     </>;
   };
 
   return <>
-    <Row gutter={24}>
-      <Col span={close ? 1 : 4}>
-        <div className={styles.leftTree}>
-          <LeftTree
-            open={close}
-            close={() => setClose(!close)}
-            onChange={(key, type) => {
-              switch (type) {
-                case 'terminal':
-                  ref.current.formActions.setFieldValue('modelId', key);
-                  break;
-                case 'group':
-                  ref.current.formActions.setFieldValue('classifyId', key);
-                  break;
-                default:
-                  break;
-              }
-              ref.current.refresh();
-            }}
-          />
-        </div>
-      </Col>
-      <Col span={close ? 23 : 20}>
-        <Table
-          onChange={setKeys}
-          selectedRowKeys={keys}
-          ref={ref}
-          tableKey="edition"
-          searchButtons={[
-            <PrimaryButton key="1" onClick={() => setUpgradeVisible({})}>批量升级</PrimaryButton>,
-            <PrimaryButton key="2" onClick={() => {
-              window.open(`${baseURI}/deviceExcel/export?authorization=${token}&deviceIds=${keys}`);
-            }}>导出</PrimaryButton>
-          ]}
-          searchForm={searchForm}
-          api={deviceList}
-          columns={columns}
-          rowKey="deviceId"
-          actionRender={(text, record) => (
-            <ActionButton onClick={() => setUpgradeVisible({v: 'V1.1.0'})}>升级</ActionButton>
-          )}
-        />
-      </Col>
-    </Row>
+    <Table
+      formSubmit={(values) => {
+        return {...values, ...value};
+      }}
+      formActions={formActionsPublic}
+      onChange={setKeys}
+      selectedRowKeys={keys}
+      ref={ref}
+      searchButtons={[
+        <PrimaryButton key="1" onClick={() => setUpgradeVisible({})}>批量升级</PrimaryButton>,
+        <PrimaryButton key="2" onClick={() => {
+          window.open(`${baseURI}/deviceExcel/export?authorization=${token}&deviceIds=${keys}`);
+        }}>导出</PrimaryButton>
+      ]}
+      searchForm={searchForm}
+      api={deviceList}
+      columns={columns}
+      rowKey="deviceId"
+      actionRender={(text, record) => (
+        <ActionButton onClick={() => setUpgradeVisible({v: 'V1.1.0'})}>升级</ActionButton>
+      )}
+    />
 
     <Save
       success={() => {
@@ -142,9 +122,9 @@ const Edition = () => {
       visible={restarting}
       success={() => {
         Modal.success({
-          centered:true,
+          centered: true,
           content: '升级成功!',
-          okText:'确定'
+          okText: '确定'
         });
         setRestarting(false);
       }}

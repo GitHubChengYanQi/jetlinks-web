@@ -32,6 +32,11 @@ export const userList = {
   method: 'POST',
 };
 
+export const userAllList = {
+  url: '/mgr/allList',
+  method: 'POST',
+};
+
 export const mgrUserList = {
   url: '/mgr/pageList',
   method: 'POST',

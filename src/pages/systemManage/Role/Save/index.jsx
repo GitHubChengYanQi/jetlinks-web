@@ -6,6 +6,7 @@ import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/compo
 import AntForm from '@/components/AntForm';
 import store from '@/store';
 import {isArray} from '@/util/Tools';
+import Users from '@/pages/systemManage/Role/components/Users';
 
 export const formatData = (data) => {
   return isArray(data).map((item) => {
@@ -52,6 +53,7 @@ const Save = ({
 
   return (
     <AntForm
+      width={data?.roleId ? 800 : 500}
       apis={{
         add: roleAdd,
         edit: roleSave,
@@ -63,9 +65,21 @@ const Save = ({
       visible={visible}
       close={close}
       format={(values) => {
+
+        const users = values.users || {};
+        const userIds = users.userIds || [];
+        const newTargetKeys = users.newTargetKeys || [];
+
+        const unbindUserIds = userIds.filter(item => !newTargetKeys.find(id => id === item));
+        const bindUserIds = newTargetKeys.filter(item => !userIds.find(id => id === item));
+
+
         const some = values.menuIds.length === initMenuIds.length && values.menuIds.filter(item => initMenuIds.some(id => id === item)).length === values.menuIds.length;
         return {
           ...values,
+          users: null,
+          unbindUserIds,
+          bindUserIds,
           menuIds: some ? data?.menuIds.toString() : values.menuIds.filter(item => item.indexOf('dict') === -1).toString()
         };
       }}
@@ -102,6 +116,17 @@ const Save = ({
         ]}
       >
         <SelectTopClass checkable/>
+      </Form.Item>
+      <Form.Item
+        hidden={!data?.roleId}
+        key="users"
+        label="角色关联用户"
+        name="users"
+        rules={[
+          {required: false, message: '请选择分组权限'},
+        ]}
+      >
+        <Users roleId={data?.roleId}/>
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}

@@ -69,7 +69,7 @@ const Save = ({
           {required: true, message: '请输入原密码'},
         ]}
       >
-        <Input placeholder="请输入请输入原密码"/>
+        <Input.Password placeholder="请输入请输入原密码"/>
       </Form.Item>
       <Form.Item
         key="passWord"

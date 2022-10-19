@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space} from 'antd';
 import Modal from '@/components/Modal';
-import Equipment from '@/pages/equipment/Equipment';
+import InStock from '@/pages/equipment/InStock';
 
 const SelectDevice = ({
   value,
@@ -39,7 +39,7 @@ const SelectDevice = ({
         }}>保存</Button>
       </Space>}
     >
-      <Equipment selectDevice={device} select onChange={(device) => {
+      <InStock selectDevice={device} select onChange={(device) => {
         setDevice(device || {});
       }} />
     </Modal>

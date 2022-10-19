@@ -8,7 +8,7 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 
 const Save = props => {
 
-  const {success, data, visible, close} = props;
+  const {success, data, visible, close,categoryId} = props;
 
   return (
     <AntForm
@@ -35,7 +35,7 @@ const Save = props => {
         <Input placeholder="请输入设备型号名称"/>
       </Form.Item>
       <Form.Item
-        initialValue={data?.categoryId}
+        initialValue={data?.categoryId || categoryId}
         key="categoryId"
         label="选择设备类别"
         name="categoryId"
@@ -44,6 +44,7 @@ const Save = props => {
         ]}
       >
         <Select
+          disabled={categoryId}
           api={categoryFindAll}
           format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
           placeholder="请选择设备所属类别"

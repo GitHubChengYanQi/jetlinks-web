@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Input, Radio,Form} from 'antd';
+import React from 'react';
+import {Input, Radio, Form} from 'antd';
 import FileUpload from '@/components/FileUpload';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';
@@ -8,6 +8,8 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {firmwareAdd, firmwareEdit} from '@/pages/equipment/Firmware/url';
 
 const Save = ({
+  categoryId,
+  modelId,
   success = () => {
   },
   data,
@@ -16,13 +18,8 @@ const Save = ({
   }
 }) => {
 
-  const [categoryId, setCategoryId] = useState();
-
   return (
     <AntForm
-      afterClose={() => {
-        setCategoryId(null);
-      }}
       apis={{
         add: firmwareAdd,
         edit: firmwareEdit,
@@ -33,11 +30,6 @@ const Save = ({
       success={success}
       visible={visible}
       close={close}
-      onValuesChange={(values) => {
-        if (values.categoryId) {
-          setCategoryId(values.categoryId);
-        }
-      }}
     >
       <Form.Item
         initialValue={data?.name}
@@ -48,10 +40,10 @@ const Save = ({
           {required: true, message: '请输入设备固件名称'},
         ]}
       >
-        <Input placeholder="请输入设备固件名称" />
+        <Input placeholder="请输入设备固件名称"/>
       </Form.Item>
       <Form.Item
-        initialValue={data?.categoryId}
+        initialValue={data?.categoryId || categoryId}
         key="categoryId"
         label="设备所属类别"
         name="categoryId"
@@ -60,13 +52,14 @@ const Save = ({
         ]}
       >
         <Select
+          disabled={categoryId}
           api={categoryFindAll}
           format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
           placeholder="请选择设备所属类别"
         />
       </Form.Item>
       <Form.Item
-        initialValue={data?.modelId}
+        initialValue={data?.modelId || modelId}
         key="modelId"
         label="设备所属型号"
         name="modelId"
@@ -74,7 +67,7 @@ const Save = ({
           {required: true, message: '请选择设备所属型号'},
         ]}
       >
-        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号" />
+        <Select disabled={modelId} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.version}
@@ -85,7 +78,7 @@ const Save = ({
           {required: true, message: '请输入固件版本'},
         ]}
       >
-        <Input placeholder="请输入固件版本" />
+        <Input placeholder="请输入固件版本"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}
@@ -110,18 +103,18 @@ const Save = ({
           {required: true, message: '请上传设备固件'},
         ]}
       >
-        <FileUpload defaultFileList={data?.fileId ? [{name: data?.fileName}] : []} />
+        <FileUpload defaultFileList={data?.fileId ? [{name: data?.fileName}] : []}/>
       </Form.Item>
       <Form.Item
-        initialValue={data?.describe}
-        key="describe"
+        initialValue={data?.remarks}
+        key="remarks"
         label="描述"
-        name="describe"
+        name="remarks"
         rules={[
           {required: true, message: '请输入描述内容'},
         ]}
       >
-        <Input.TextArea placeholder='请输入描述内容' maxLength={300} showCount />
+        <Input.TextArea placeholder="请输入描述内容" maxLength={300} showCount/>
       </Form.Item>
     </AntForm>
   );

@@ -4,6 +4,7 @@ import Modal from '@/components/Modal';
 import Terminal from '@/pages/monitor/LeftTree/components/Terminal';
 
 const SelectModle = ({
+  value,
   onChange = () => {
   },
   disabled
@@ -13,7 +14,6 @@ const SelectModle = ({
   const inputRef = useRef();
 
   const [model, setModel] = useState({});
-  console.log(model);
 
   const [name, setName] = useState();
 
@@ -25,7 +25,7 @@ const SelectModle = ({
         ref.current.open(false);
         inputRef.current.blur();
       }}
-      value={name}
+      value={value ? name : null}
       placeholder="请选择设备型号"
     />
     <Modal

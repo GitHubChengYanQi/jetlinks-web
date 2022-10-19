@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, message, Select, Input} from 'antd';
+import {Space, Dropdown, Menu, message, Select, Input, Button} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
 import {createFormActions} from '@formily/antd';
@@ -18,6 +18,9 @@ import {
 import {useRequest} from '@/util/Request';
 import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
+import Modal from '@/components/Modal';
+import Model from '@/pages/equipment/Model';
+import Firmware from '@/pages/equipment/Firmware';
 
 const formActionsPublic = createFormActions();
 
@@ -34,6 +37,7 @@ const Category = (
   const token = cookie.get('jetlink-token');
 
   const ref = useRef();
+  const modelRef = useRef();
 
   const [saveVisible, setSaveVisible] = useState();
 
@@ -72,46 +76,35 @@ const Category = (
   });
 
 
-  let columns;
-  if (select) {
-    columns = [
-      {title: '设备类别名称', dataIndex: 'name', align: 'center',},
-      {
-        title: '设备类别状态',
-        dataIndex: 'status',
-        align: 'center',
-        render: (text) => {
-          const open = text === '1';
-          return <Render>
-            <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
-          </Render>;
-        }
+  const columns = [
+    {title: '设备类别名称', dataIndex: 'name', align: 'center',},
+    {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
+    {
+      title: '所属设备型号数量',
+      dataIndex: '3',
+      align: 'center',
+      render: (text) => <Render className="green">{text || 0}</Render>
+    },
+    {
+      title: '设备类别状态',
+      dataIndex: 'status',
+      align: 'center',
+      render: (text) => {
+        const open = text === '1';
+        return <Render>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+        </Render>;
       }
-    ];
-  } else {
-    columns = [
-      {title: '设备类别名称', dataIndex: 'name', align: 'center',},
-      {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
-      {
-        title: '所属设备型号数量',
-        dataIndex: '3',
-        align: 'center',
-        render: (text) => <Render className="green">{text || 0}</Render>
-      },
-      {
-        title: '设备类别状态',
-        dataIndex: 'status',
-        align: 'center',
-        render: (text) => {
-          const open = text === '1';
-          return <Render>
-            <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
-          </Render>;
-        }
-      },
-      {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
-    ];
-  }
+    },
+    {
+      title: '设备型号',
+      align: 'center',
+      render: (value, record) => <Render>
+        <Button type="link" onClick={() => modelRef.current.open({categoryId: record.categoryId})}>管理设备型号</Button>
+      </Render>
+    },
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text || '--'}/>},
+  ];
 
   const menu = <Menu
     items={[
@@ -225,6 +218,8 @@ const Category = (
       close={() => setSaveVisible(null)}
       data={saveVisible || {}}
     />
+
+    <Modal headTitle="设备型号管理" width={1200} ref={modelRef} component={Model}/>
   </>;
 };
 export default Category;

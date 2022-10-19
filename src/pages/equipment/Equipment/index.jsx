@@ -13,11 +13,8 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {deviceList, deviceStart} from '@/pages/equipment/Equipment/url';
-import Select from '@/components/Select';
 import Cascader from '@/components/Cascader';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
-import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DynamicForms from '@/pages/equipment/Equipment/DynamicForms';
@@ -25,16 +22,13 @@ import MoveGroup from '@/pages/equipment/Equipment/MoveGroup';
 import NoteSave from '@/pages/monitor/NoteSave';
 import store from '@/store';
 import {PrimaryButton} from '@/components/Button';
+import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
+import Modal from '@/components/Modal';
+import Edition from '@/pages/equipment/Edition';
 
 const formActionsPublic = createFormActions();
 
-const Equipment = (
-  {
-    selectDevice,
-    select,
-    onChange = () => {
-    }
-  }) => {
+const Equipment = () => {
 
   const [dataSource] = store.useModel('dataSource');
 
@@ -42,6 +36,7 @@ const Equipment = (
   const token = cookie.get('jetlink-token');
 
   const ref = useRef();
+  const editionRef = useRef();
 
   const history = useHistory();
 
@@ -53,7 +48,7 @@ const Equipment = (
 
   const [restarting, setRestarting] = useState();
 
-  const [records, setResords] = useState(selectDevice ? [selectDevice] : []);
+  const [records, setResords] = useState([]);
 
   const keys = records.map(item => item.deviceId);
 
@@ -88,10 +83,10 @@ const Equipment = (
       render: (remarks, record) => {
         return <div style={{display: 'flex', alignItems: 'center'}}>
           <Render style={{flexGrow: 1}}>{remarks || '-'}</Render>
-          {!select && <EditOutlined
+          <EditOutlined
             style={{float: 'right', marginLeft: 8}}
             onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})}
-          />}
+          />
         </div>;
       }
     },
@@ -125,7 +120,7 @@ const Equipment = (
       align: 'center',
       render: (text) => {
         return <Render width={120}>
-          <Warning disabled={select} content="确定进入远程配置么？">
+          <Warning content="确定进入远程配置么？">
             <Button className="blue" type="link">{text}</Button>
           </Warning>
         </Render>;
@@ -136,6 +131,13 @@ const Equipment = (
       dataIndex: 'mac',
       align: 'center',
       render: (text) => <Render width={120} text={text} />
+    },
+    {
+      title: '设备版本',
+      align: 'center',
+      render: (value, record) => <Render>
+        <Button type="link" onClick={() => editionRef.current.open({deviceId: record.deviceId})}>管理设备版本</Button>
+      </Render>
     },
     {
       title: '位置信息',
@@ -275,14 +277,7 @@ const Equipment = (
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="设备名称" name="name" component={Input} />
       <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
-      <FormItem
-        label="设备类别"
-        name="categoryId"
-        api={categoryFindAll}
-        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
-        component={Select}
-      />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
       <FormItem label="离线时间" name="time" component={DatePicker} RangePicker />
@@ -303,17 +298,12 @@ const Equipment = (
         return values;
       }}
       checkedRows={records}
-      onChangeRows={(records) => {
-        if (select) {
-          onChange(records[records.length - 1]);
-        }
-        setResords(select ? [records[records.length - 1] || {}] : records);
-      }}
+      onChangeRows={setResords}
       selectedRowKeys={keys}
-      tableKey={select ? false : 'device'}
+      tableKey='device'
       loading={startLoading}
       ref={ref}
-      searchButtons={select ? null : [
+      searchButtons={[
         <Button disabled={keys.length !== 1} type="primary" key={1} onClick={() => {
           setMoveGrouVisible(records[0]);
         }}>移动分组</Button>,
@@ -328,7 +318,6 @@ const Equipment = (
       api={deviceList}
       columns={columns}
       rowKey="deviceId"
-      noAction={select}
       actionRender={(text, record) => {
         return <Space>
           <Button
@@ -396,6 +385,8 @@ const Equipment = (
         ref.current.refresh();
       }}
     />
+
+    <Modal headTitle="设备版本管理" width={1200} ref={editionRef} component={Edition}/>
   </>;
 };
 
