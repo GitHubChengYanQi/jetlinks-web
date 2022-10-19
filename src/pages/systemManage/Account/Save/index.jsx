@@ -6,6 +6,8 @@ import AntForm from '@/components/AntForm';
 import store from '@/store';
 import DatePicker from '@/components/DatePicker';
 import RoleIds from '@/pages/systemManage/Role/components/RoleIds';
+import Select from '@/components/Select';
+import {roleListSelect} from '@/Config/ApiUrl/system/role';
 
 const Save = (
   {
@@ -50,7 +52,6 @@ const Save = (
       close={close}
       format={(values) => ({
         ...values,
-        roleId: values.roleId.toString(),
         password: data?.userId ? newPassword : values.password,
         beginTime: values.time === '1' ? time[0] : null,
         endTime: values.time === '1' ? time[1] : null,
@@ -89,7 +90,9 @@ const Save = (
           {required: true, message: '请选择角色'},
         ]}
       >
-        <RoleIds />
+        <Select format={(data = []) => {
+          return data.map(item => ({label: item.name, value: `${item.role_id}`}));
+        }} api={roleListSelect} placeholder="请选择角色"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.phone}
