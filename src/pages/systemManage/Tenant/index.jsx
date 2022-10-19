@@ -197,7 +197,7 @@ const Tenant = () => {
     />
 
     <AccountAsk
-      customer={askAccount?.customer}
+      customer={askAccount?.customerId}
       visibilityToggle={false}
       visible={askAccount}
       onClose={() => {
