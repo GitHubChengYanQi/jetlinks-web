@@ -43,6 +43,7 @@ const Save = ({data, success, close, visible}) => {
       }}
     >
       <Form.Item
+        initialValue={data?.mac}
         key="MAC"
         label="设备MAC"
         name="MAC"
@@ -53,6 +54,7 @@ const Save = ({data, success, close, visible}) => {
         <Input placeholder="请输入设备MAC" />
       </Form.Item>
       <Form.Item
+        initialValue={data?.cardNumber}
         key="cardNumber"
         label="物联网卡号"
         name="cardNumber"
@@ -63,6 +65,7 @@ const Save = ({data, success, close, visible}) => {
         <Input placeholder="请输入设备使用的物联网卡号" />
       </Form.Item>
       <Form.Item
+        initialValue={data?.categoryId}
         key="categoryId"
         label="设备类别"
         name="categoryId"
@@ -77,6 +80,7 @@ const Save = ({data, success, close, visible}) => {
         />
       </Form.Item>
       <Form.Item
+        initialValue={data?.modelId}
         key="modelId"
         label="设备型号"
         name="modelId"
@@ -95,10 +99,10 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入批次'},
         ]}
       >
-        <InputNumber placeholder='请输入批次' />
+        <InputNumber placeholder="请输入批次" />
       </Form.Item>
       <Form.Item
-        initialValue={new Date()}
+        initialValue={data?.instockTime || new Date()}
         key="instockTime"
         label="入库时间"
         name="instockTime"

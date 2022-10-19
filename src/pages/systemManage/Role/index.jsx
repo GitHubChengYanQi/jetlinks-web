@@ -70,10 +70,10 @@ const Role = () => {
       align: 'center',
       render: (menuList = []) => <Render
         width={200}
-        style={{cursor:'pointer'}}
+        style={{cursor: 'pointer'}}
         onClick={() => modelRef.current.open(menuList.map(item => `${item.menuId}`))}
       >
-        <Note maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
+        <Note className="primaryColor" maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
       </Render>
     },
     {
@@ -82,10 +82,11 @@ const Role = () => {
       align: 'center',
       render: (roleBindResults = []) => <Render
         width={200}
-        style={{cursor:'pointer'}}
+        className="green"
+        style={{cursor: 'pointer'}}
         onClick={() => groupRef.current.open(roleBindResults.map(item => `${item.classifyId}`))}
       >
-        <Note maxWidth={400}>{isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}</Note>
+        <Note className="primaryColor"  maxWidth={400}>{isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}</Note>
       </Render>
     },
     {

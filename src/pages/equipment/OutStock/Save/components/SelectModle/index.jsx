@@ -1,46 +1,52 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space} from 'antd';
+import {Button, Input, Space} from 'antd';
 import Modal from '@/components/Modal';
-import Model from '@/pages/equipment/Model';
+import Terminal from '@/pages/monitor/LeftTree/components/Terminal';
 
 const SelectModle = ({
-  value,
   onChange = () => {
   },
   disabled
 }) => {
 
   const ref = useRef();
+  const inputRef = useRef();
 
-  const [module, setModule] = useState();
+  const [model, setModel] = useState({});
+  console.log(model);
+
+  const [name, setName] = useState();
 
   return <>
-    <Button
+    <Input
+      ref={inputRef}
       disabled={disabled}
-      style={{padding: 0}}
-      type="link"
-      onClick={() => {
+      onFocus={() => {
         ref.current.open(false);
+        inputRef.current.blur();
       }}
-    >
-      {value ? module.name : '请选择设备型号'}
-    </Button>
+      value={name}
+      placeholder="请选择设备型号"
+    />
     <Modal
       destroyOnClose={false}
-      width={1200}
+      width={500}
       headTitle="选择设备型号"
       ref={ref}
       footer={<Space>
         <Button onClick={() => ref.current.close()}>取消</Button>
         <Button type="primary" onClick={() => {
-          onChange(module.modelId);
+          setName(model.name);
+          onChange(model.modelId);
           ref.current.close();
-        }}>保存</Button>
+        }}>确认</Button>
       </Space>}
     >
-      <Model value={module} select onChange={(device) => {
-        setModule(device || {});
-      }}/>
+      <div style={{padding: 24}}>
+        <Terminal value={module} select onChange={(modelId, type, module) => {
+          setModel(module);
+        }} />
+      </div>
     </Modal>
   </>;
 };

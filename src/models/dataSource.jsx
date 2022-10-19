@@ -1,7 +1,7 @@
 import {request} from '@/util/Request';
 import {addressTree} from '@/Config/ApiUrl';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
-import {customerDetail} from '@/pages/systemManage/Tenant/url';
+import {loginCustomer} from '@/pages/systemManage/Tenant/url';
 
 export default {
   state: {},
@@ -14,12 +14,9 @@ export default {
     },
   },
   effects: (dispatch) => ({
-    async getCustomer(customerId) {
+    async getCustomer() {
       try {
-        const res = await request({
-          ...customerDetail,
-          data: {customerId:customerId || 0}
-        });
+        const res = await request(loginCustomer);
         dispatch.dataSource.update({customer: res.data});
       } catch (e) {
         console.log(e);

@@ -217,7 +217,8 @@ const Tenant = () => {
     }}/>
 
     <Info
-      data={infoVisible}
+      detail={infoVisible?.detail}
+      customerId={infoVisible?.customerId}
       visible={infoVisible}
       close={() => setInfoVisible()}
       success={() => {

@@ -14,6 +14,11 @@ export const contactEdit = {
   method: 'POST',
 };
 
+export const contactDeleteBatch = {
+  url: '/contact/deleteBatch',
+  method: 'POST',
+};
+
 export const contactDelete = {
   url: '/contact/delete',
   method: 'POST',

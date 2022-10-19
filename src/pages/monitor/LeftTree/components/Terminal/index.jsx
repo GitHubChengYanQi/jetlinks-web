@@ -22,7 +22,7 @@ const Terminal = ({
   const {loading, run} = useRequest(categoryFindAll, {
     manual: true,
     onSuccess: (res) => {
-      let modelId;
+      let model;
       setTreeData(isArray(res).map(item => {
         const modelList = item.modelList || [];
         return {
@@ -30,8 +30,8 @@ const Terminal = ({
           title: item.name,
           selectable: false,
           children: modelList.map(item => {
-            if (!modelId) {
-              modelId = item.modelId;
+            if (!model) {
+              model = item;
             }
             return {
               key: item.modelId,
@@ -41,8 +41,8 @@ const Terminal = ({
         };
       }));
       if (firstKey) {
-        onChange(modelId, 'terminal');
-        setKeys([modelId]);
+        onChange(model?.modelId, 'terminal', model);
+        setKeys(model?.modelId ? [model?.modelId] : []);
       }
     }
   });
@@ -63,11 +63,14 @@ const Terminal = ({
   return <>
     <AntTree
       loading={loading}
-      onChange={(keys) => {
+      onChange={(keys, options) => {
         if (keys.length === 0 && noEmpty) {
           return;
         }
-        onChange(keys[0], 'terminal');
+        onChange(keys[0], 'terminal', options.selected ? {
+          modelId: options?.node?.key,
+          name: options?.node?.title
+        } : {});
         setKeys(keys);
       }}
       value={keys}

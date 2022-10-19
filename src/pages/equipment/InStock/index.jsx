@@ -1,6 +1,8 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space, Dropdown, Menu, Input, message, Select as AntSelect, Badge} from 'antd';
+import {Space, Dropdown, Menu, Input, message, Select as AntSelect} from 'antd';
 import moment from 'moment';
+import {config} from 'ice';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save from '@/pages/equipment/InStock/Save';
@@ -16,13 +18,9 @@ import {
 } from '@/pages/equipment/InStock/url';
 import {useRequest} from '@/util/Request';
 import Select from '@/components/Select';
-import {categoryFindAll} from '@/pages/equipment/Category/url';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
-import {config} from 'ice';
-import cookie from 'js-cookie';
 import SelectCategory from '@/pages/equipment/OutStock/Save/components/SelectCategory';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 
@@ -106,7 +104,6 @@ const InStock = () => {
       <FormItem label="入库时间" name="time" component={DatePicker} RangePicker />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem label="设备类别" name="categoryId" component={SelectCategory}/>
       <FormItem label="设备型号" name="modelId" component={SelectModle}/>
       <FormItem
         label="设备状态"
@@ -162,6 +159,9 @@ const InStock = () => {
           <PrimaryButton onClick={() => {
             setInfoVisible(record);
           }}>详情</PrimaryButton>
+          <PrimaryButton onClick={() => {
+            setSaveVisible(record);
+          }}>编辑</PrimaryButton>
           <Warning onOk={() => deleteRun({data: {inStockIds: [record.instockId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
@@ -170,7 +170,7 @@ const InStock = () => {
     />
 
     <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} success={(success) => {
+    <Save data={saveVisible} visible={saveVisible} close={() => setSaveVisible(false)} success={(success) => {
       setSaveVisible(false);
       if (success) {
         ref.current.submit();

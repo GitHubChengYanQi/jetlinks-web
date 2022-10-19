@@ -8,6 +8,11 @@ export const customerDetail = {
   method: 'POST',
 };
 
+export const loginCustomer = {
+  url: '/customer/loginCustomer',
+  method: 'GET',
+};
+
 export const customerEdit = {
   url: '/customer/edit',
   method: 'POST',

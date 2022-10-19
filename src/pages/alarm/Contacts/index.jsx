@@ -7,9 +7,15 @@ import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
-import {contactDelete, contactDownloadTemplate, contactExcel, contactList} from '@/pages/alarm/Contacts/url';
+import {
+  contactDelete,
+  contactDeleteBatch,
+  contactDownloadTemplate,
+  contactExcel,
+  contactList
+} from '@/pages/alarm/Contacts/url';
 import Save from '@/pages/alarm/Contacts/Save';
-import {request} from '@/util/Request';
+import {useRequest} from '@/util/Request';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
@@ -61,14 +67,25 @@ const Contacts = ({
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
-  const handleDelete = (contactId) => {
-    request({...contactDelete, data: {contactId}}).then((res) => {
-      if (res.success) {
-        message.success('删除成功!');
-        ref.current.refresh();
-      }
-    }).catch(() => message.success('删除失败！'));
-  };
+  const {loading: deleteBatchLoading, run: deleteBatchRun} = useRequest(contactDeleteBatch, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.refresh();
+    },
+    onError: () => message.error('删除失败!')
+  });
+
+  const {loading: deleteLoading, run: deleteRun} = useRequest(contactDelete, {
+    manual: true,
+    onSuccess: () => {
+      setKeys([]);
+      message.success('删除成功！');
+      ref.current.refresh();
+    },
+    onError: () => message.error('删除失败!')
+  });
 
   const menu = <Menu
     items={[
@@ -93,11 +110,8 @@ const Contacts = ({
     items={[
       {
         key: '1',
-        label: '批量删除',
+        label: <Warning onOk={() => deleteBatchRun({data: {contactIds: keys}})}>批量删除</Warning>,
         danger: true,
-        onClick: () => {
-
-        }
       },
     ]}
   />;
@@ -118,6 +132,7 @@ const Contacts = ({
 
   return <>
     <Table
+      loading={deleteLoading || deleteBatchLoading}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
@@ -153,7 +168,7 @@ const Contacts = ({
       actionRender={(text, record) => (
         <Space>
           <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
-          <Warning onOk={() => handleDelete(record.contactId)}>
+          <Warning onOk={() => deleteRun({data: {contactId: record.contactId}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
