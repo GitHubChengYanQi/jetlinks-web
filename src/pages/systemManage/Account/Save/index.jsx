@@ -50,6 +50,7 @@ const Save = (
       close={close}
       format={(values) => ({
         ...values,
+        roleId: values.roleId.toString(),
         password: data?.userId ? newPassword : values.password,
         beginTime: values.time === '1' ? time[0] : null,
         endTime: values.time === '1' ? time[1] : null,

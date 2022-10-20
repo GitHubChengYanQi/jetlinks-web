@@ -33,11 +33,10 @@ const Info = ({
           </div>
         }
       >
-        <Descriptions.Item label="终端备注">11</Descriptions.Item>
+        <Descriptions.Item label="终端备注">{data.remarks}</Descriptions.Item>
         <Descriptions.Item label="登记名称">{data.name}</Descriptions.Item>
         <Descriptions.Item label="设备类别">{data.categoryName}</Descriptions.Item>
         <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
-        <Descriptions.Item label="所属客户">{data.customerResult && data.customerResult.name}</Descriptions.Item>
         <Descriptions.Item label="设备MAC地址">{data.mac}</Descriptions.Item>
       </Descriptions>
 

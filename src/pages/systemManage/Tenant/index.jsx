@@ -189,7 +189,7 @@ const Tenant = () => {
             <PrimaryButton disabled={!open}>进入账户</PrimaryButton>
           </Warning>
           <PrimaryButton onClick={() => setVisible(true)}>数据转发</PrimaryButton>
-          <Warning onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
+          <Warning content='是否永久删除?' onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;

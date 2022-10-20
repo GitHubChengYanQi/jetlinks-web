@@ -300,12 +300,12 @@ const Equipment = () => {
       checkedRows={records}
       onChangeRows={setResords}
       selectedRowKeys={keys}
-      tableKey='device'
+      tableKey="device"
       loading={startLoading}
       ref={ref}
       searchButtons={[
-        <Button disabled={keys.length !== 1} type="primary" key={1} onClick={() => {
-          setMoveGrouVisible(records[0]);
+        <Button disabled={keys.length === 0} type="primary" key={1} onClick={() => {
+          setMoveGrouVisible(keys);
         }}>移动分组</Button>,
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <Button type="primary">批量操作</Button>
@@ -352,7 +352,7 @@ const Equipment = () => {
     <MoveGroup
       visible={Boolean(moveGrouVisible)}
       close={() => setMoveGrouVisible(null)}
-      data={moveGrouVisible || {}}
+      deviceIds={moveGrouVisible || []}
       success={() => {
         setResords([]);
         setMoveGrouVisible(null);
@@ -386,7 +386,7 @@ const Equipment = () => {
       }}
     />
 
-    <Modal headTitle="设备版本管理" width={1200} ref={editionRef} component={Edition}/>
+    <Modal headTitle="设备版本管理" width={1200} ref={editionRef} component={Edition} />
   </>;
 };
 

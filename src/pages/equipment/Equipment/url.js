@@ -18,6 +18,11 @@ export const deviceEdit = {
   method: 'POST',
 };
 
+export const moveGroup = {
+  url: '/device/updateBatch',
+  method: 'POST',
+};
+
 export const deviceDelete = {
   url: '/device/delete',
   method: 'POST',

@@ -41,7 +41,7 @@ const Info = ({
         <Descriptions.Item label="登记名称">{deviceResult.name}</Descriptions.Item>
         <Descriptions.Item label="设备类别">{deviceResult.categoryName}</Descriptions.Item>
         <Descriptions.Item label="设备型号">{deviceResult.modelName}</Descriptions.Item>
-        <Descriptions.Item label="所属客户">{data.customerResult && data.customerResult.name}</Descriptions.Item>
+        <Descriptions.Item label="所属客户">{data.deviceResult?.customerName}</Descriptions.Item>
         <Descriptions.Item label="设备MAC地址">{deviceResult.mac}</Descriptions.Item>
       </Descriptions>
 
