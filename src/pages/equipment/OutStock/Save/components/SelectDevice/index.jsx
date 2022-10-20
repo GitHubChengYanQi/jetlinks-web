@@ -1,31 +1,33 @@
 import React, {useRef, useState} from 'react';
-import {Button, Space} from 'antd';
+import {Button, Input, Space} from 'antd';
 import Modal from '@/components/Modal';
 import InStock from '@/pages/equipment/InStock';
 
 const SelectDevice = ({
   value,
-  device: defaultDevice = {},
   onChange = () => {
   },
   disabled
 }) => {
 
   const ref = useRef();
+  const inputRef = useRef();
 
-  const [device, setDevice] = useState(defaultDevice);
+  const [device, setDevice] = useState({});
+
+  const [mac, setMac] = useState();
 
   return <>
-    <Button
+    <Input
+      ref={inputRef}
       disabled={disabled}
-      style={{padding: 0}}
-      type="link"
-      onClick={() => {
+      onFocus={() => {
         ref.current.open(false);
+        inputRef.current.blur();
       }}
-    >
-      {value ? device.mac : '请选择设备MAC'}
-    </Button>
+      value={value ? mac : null}
+      placeholder="请选择设备"
+    />
     <Modal
       destroyOnClose={false}
       width={1200}
@@ -33,7 +35,8 @@ const SelectDevice = ({
       ref={ref}
       footer={<Space>
         <Button onClick={() => ref.current.close()}>取消</Button>
-        <Button type='primary' onClick={() => {
+        <Button type="primary" onClick={() => {
+          setMac(device.mac);
           onChange(device.deviceId);
           ref.current.close();
         }}>保存</Button>

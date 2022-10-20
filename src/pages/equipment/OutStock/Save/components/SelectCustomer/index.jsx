@@ -1,46 +1,52 @@
-import React from 'react';
-import {Select, Spin} from 'antd';
-import {useRequest} from '@/util/Request';
-import {customerList} from '@/pages/systemManage/Tenant/url';
+import React, {useRef, useState} from 'react';
+import {Button, Input, Space} from 'antd';
+import Modal from '@/components/Modal';
+import Tenant from '@/pages/systemManage/Tenant';
 
 const SelectCustomer = ({
+  disabled,
   value,
   onChange = () => {
   }
 }) => {
 
-  const params = {limit: 10, page: 1};
+  const ref = useRef();
+  const inputRef = useRef();
 
-  const {loading, data, run} = useRequest({...customerList, params, data: {customerId: value}});
+  const [customer, setCustomer] = useState({});
 
-  const options = (!loading && data) ? data.map((item) => {
-    return {
-      label: item.name,
-      value: item.customerId,
-    };
-  }) : [];
+  const [name, setName] = useState();
 
-  return <Select
-    allowClear
-    value={value}
-    placeholder="请选择所属客户"
-    style={{width: '100%'}}
-    showSearch
-    filterOption={false}
-    notFoundContent={loading && <div style={{textAlign: 'center'}}><Spin /></div>}
-    options={options}
-    onSearch={(string) => {
-      run({
-        data: {
-          name: string,
-        },
-        params
-      });
-    }}
-    onChange={(value) => {
-      onChange(value);
-    }}
-  />;
+  return <>
+    <Input
+      ref={inputRef}
+      disabled={disabled}
+      onFocus={() => {
+        ref.current.open(false);
+        inputRef.current.blur();
+      }}
+      value={value ? name : null}
+      placeholder="请选择客户"
+    />
+    <Modal
+      destroyOnClose={false}
+      width={1200}
+      headTitle="选择客户"
+      ref={ref}
+      footer={<Space>
+        <Button onClick={() => ref.current.close()}>取消</Button>
+        <Button type="primary" onClick={() => {
+          setName(customer.name);
+          onChange(customer.customerId);
+          ref.current.close();
+        }}>保存</Button>
+      </Space>}
+    >
+      <Tenant customer={customer} select onChange={(device) => {
+        setCustomer(device || {});
+      }} />
+    </Modal>
+  </>;
 };
 
 export default SelectCustomer;

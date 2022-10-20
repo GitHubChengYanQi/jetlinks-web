@@ -73,7 +73,12 @@ const Role = () => {
         style={{cursor: 'pointer'}}
         onClick={() => modelRef.current.open(menuList.map(item => `${item.menuId}`))}
       >
-        <Note className="primaryColor" maxWidth={400}>{isArray(menuList).map(item => item.name).toString()}</Note>
+        <Note
+          tooltip={false}
+          className="primaryColor"
+          maxWidth={400}>
+          {isArray(menuList).map(item => item.name).toString()}
+        </Note>
       </Render>
     },
     {
@@ -86,7 +91,12 @@ const Role = () => {
         style={{cursor: 'pointer'}}
         onClick={() => groupRef.current.open(roleBindResults.map(item => `${item.classifyId}`))}
       >
-        <Note className="primaryColor"  maxWidth={400}>{isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}</Note>
+        <Note
+          tooltip={false}
+          className="primaryColor"
+          maxWidth={400}>
+          {isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}
+        </Note>
       </Render>
     },
     {

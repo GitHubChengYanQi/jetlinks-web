@@ -145,20 +145,6 @@ const OutStock = () => {
           />;
         }}
       />
-      <FormItem
-        label="绑定状态"
-        name="status"
-        component={({value, onChange}) => {
-          return <AntSelect
-            defaultValue="all"
-            value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '已绑定', value: '99'}, {label: '未绑定', value: '0'}]}
-            onChange={(value) => {
-              onChange(value === 'all' ? null : value);
-            }}
-          />;
-        }}
-      />
     </>;
   };
 

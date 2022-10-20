@@ -9,9 +9,10 @@ const Note = (
     className,
     maxWidth,
     style,
+    tooltip = true,
   }) => {
   return <Typography.Paragraph
-    ellipsis={{rows: 1}}
+    ellipsis={{rows: 1, tooltip}}
     className={className}
     style={{width, margin: 0, maxWidth, ...style}}>
     {value || children}

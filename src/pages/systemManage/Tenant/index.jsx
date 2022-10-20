@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Button, Space, Menu, Dropdown, Input, Select as AntSelect, message} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import {createFormActions} from '@formily/antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -17,7 +18,16 @@ import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
 import {JumpLogin} from '@/Config/ApiUrl/system/user';
 
-const Tenant = () => {
+const formActionsPublic = createFormActions();
+
+const Tenant = (
+  {
+    customer,
+    select,
+    onChange = () => {
+    }
+  }
+) => {
 
   const ref = useRef();
 
@@ -27,7 +37,9 @@ const Tenant = () => {
 
   const [infoVisible, setInfoVisible] = useState();
 
-  const [keys, setKeys] = useState([]);
+  const [records, setResords] = useState(customer ? [customer] : []);
+
+  const keys = records.map(item => item.customerId);
 
   const {run: Jump} = useRequest(JumpLogin,
     {
@@ -42,7 +54,7 @@ const Tenant = () => {
   const {loading, run} = useRequest(customerStart, {
     manual: true,
     onSuccess: () => {
-      setKeys([]);
+      setResords([]);
       message.success('通过成功！');
       ref.current.refresh();
     }
@@ -51,7 +63,7 @@ const Tenant = () => {
   const {loading: deleteLoading, run: deleteRun} = useRequest(customerDelete, {
     manual: true,
     onSuccess: () => {
-      setKeys([]);
+      setResords([]);
       message.success('删除成功！');
       ref.current.refresh();
     }
@@ -70,33 +82,33 @@ const Tenant = () => {
         </Button>
       </Render>
     },
-    {title: '企业名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '统一社会信用代码', dataIndex: 'code', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '企业经营场所', dataIndex: 'place', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '企业名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '统一社会信用代码', dataIndex: 'code', align: 'center', render: (text) => <Render text={text} />},
+    {title: '企业经营场所', dataIndex: 'place', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
       title: '可用短信条数',
       dataIndex: 'total',
       align: 'center',
       render: (text) => <Render className="green">{text || 0}</Render>
     },
-    {title: '管理员姓名', dataIndex: 'contactName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '管理员手机号码', dataIndex: 'contactPhone', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '管理员账号', dataIndex: 'adminAccount', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '身份证号 ', dataIndex: 'legalPersonCard', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '管理员姓名', dataIndex: 'contactName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '管理员手机号码', dataIndex: 'contactPhone', align: 'center', render: (text) => <Render text={text} />},
+    {title: '管理员账号', dataIndex: 'adminAccount', align: 'center', render: (text) => <Render text={text} />},
+    {title: '身份证号 ', dataIndex: 'legalPersonCard', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '营业执照 ',
       dataIndex: 'file',
       align: 'center',
       render: (fileId, record) => <Render
         width={50}>
-        <DownloadFile fileId={fileId} fileName={record.fileName}/>
+        <DownloadFile fileId={fileId} fileName={record.fileName} />
       </Render>
     },
     {
       title: '提交时间 ',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (text) => <Render width={150} text={text} />
     },
   ];
 
@@ -131,8 +143,8 @@ const Tenant = () => {
         }}
         select
       />
-      <FormItem label="提交时间" name="time" component={DatePicker} RangePicker select/>
-      <FormItem label="企业查询" name="name" component={Input} style={{width: 250}} placeholder="请输入企业名称/统一社会信用代码"/>
+      <FormItem label="提交时间" name="time" component={DatePicker} RangePicker select />
+      <FormItem label="企业查询" name="name" component={Input} style={{width: 250}} placeholder="请输入企业名称/统一社会信用代码" />
       <FormItem
         label="管理员查询"
         name="contactName"
@@ -149,8 +161,16 @@ const Tenant = () => {
 
   return <>
     <Table
+      formActions={formActionsPublic}
       loading={loading || deleteLoading}
-      onChange={setKeys}
+      checkedRows={records}
+      onChangeRows={(records) => {
+        if (select) {
+          onChange(records[records.length - 1]);
+        }
+        setResords(select ? [records[records.length - 1] || {}] : records);
+      }}
+      noAction={select}
       selectedRowKeys={keys}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
@@ -159,9 +179,9 @@ const Tenant = () => {
         return values;
       }}
       ref={ref}
-      tableKey="customer"
+      tableKey={select ? null : 'customer'}
       api={customerList}
-      searchButtons={[
+      searchButtons={select ? null : [
         <PrimaryButton key={0} onClick={() => setAskAccount({})}>新增租户</PrimaryButton>,
         <Dropdown disabled={keys.length === 0} key={1} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
@@ -177,6 +197,7 @@ const Tenant = () => {
         const open = record.status === 1;
         return <Space>
           <Button
+            hidden={select}
             className={!open && 'bgGreen'}
             type="primary"
             onClick={() => setInfoVisible({...record, detail: open})}>{open ? '详情' : '通过'}
@@ -189,7 +210,7 @@ const Tenant = () => {
             <PrimaryButton disabled={!open}>进入账户</PrimaryButton>
           </Warning>
           <PrimaryButton onClick={() => setVisible(true)}>数据转发</PrimaryButton>
-          <Warning content='是否永久删除?' onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
+          <Warning content="是否永久删除?" onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>;
@@ -214,7 +235,7 @@ const Tenant = () => {
       } else {
         ref.current.refresh();
       }
-    }}/>
+    }} />
 
     <Info
       detail={infoVisible?.detail}

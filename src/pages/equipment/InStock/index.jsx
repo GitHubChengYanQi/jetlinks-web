@@ -18,7 +18,6 @@ import {
   instockList
 } from '@/pages/equipment/InStock/url';
 import {useRequest} from '@/util/Request';
-import Select from '@/components/Select';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
