@@ -18,6 +18,12 @@ export const deviceEdit = {
   method: 'POST',
 };
 
+
+export const updateDeviceRemark = {
+  url: '/monitor/updateDeviceRemark',
+  method: 'POST',
+};
+
 export const moveGroup = {
   url: '/device/updateBatch',
   method: 'POST',

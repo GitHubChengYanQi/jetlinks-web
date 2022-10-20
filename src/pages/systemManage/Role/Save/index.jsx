@@ -93,7 +93,7 @@ const Save = ({
           {required: true, message: '请输入账号名称'},
         ]}
       >
-        <Input placeholder="请输入账号名称"/>
+        <Input placeholder="请输入账号名称" />
       </Form.Item>
       <Form.Item
         initialValue={initMenuIds}
@@ -104,7 +104,7 @@ const Save = ({
           {required: true, message: '请选择菜单权限'},
         ]}
       >
-        <Tree halfChecked treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border/>
+        <Tree halfChecked treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border />
       </Form.Item>
       <Form.Item
         initialValue={data?.classifyIds}
@@ -115,7 +115,7 @@ const Save = ({
           {required: false, message: '请选择分组权限'},
         ]}
       >
-        <SelectTopClass checkable/>
+        <SelectTopClass checkable />
       </Form.Item>
       <Form.Item
         hidden={!data?.roleId}
@@ -126,7 +126,7 @@ const Save = ({
           {required: false, message: '请选择分组权限'},
         ]}
       >
-        <Users roleId={data?.roleId}/>
+        <Users roleId={data?.roleId} />
       </Form.Item>
       <Form.Item
         initialValue={data?.status || '1'}

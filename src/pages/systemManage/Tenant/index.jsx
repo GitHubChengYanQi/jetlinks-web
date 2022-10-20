@@ -17,6 +17,7 @@ import DownloadFile from '@/components/DownloadFile';
 import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
 import {JumpLogin} from '@/Config/ApiUrl/system/user';
+import store from '@/store';
 
 const formActionsPublic = createFormActions();
 
@@ -28,6 +29,10 @@ const Tenant = (
     }
   }
 ) => {
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const currentCustomer = dataSource.customer || {};
 
   const ref = useRef();
 
@@ -128,7 +133,7 @@ const Tenant = (
 
   const searchForm = () => {
     return <>
-      <FormItem
+      {!select && <FormItem
         label="审核结果"
         name="status"
         component={({value, onChange}) => {
@@ -142,7 +147,7 @@ const Tenant = (
           />;
         }}
         select
-      />
+      />}
       <FormItem label="提交时间" name="time" component={DatePicker} RangePicker select />
       <FormItem label="企业查询" name="name" component={Input} style={{width: 250}} placeholder="请输入企业名称/统一社会信用代码" />
       <FormItem
@@ -176,7 +181,7 @@ const Tenant = (
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return values;
+        return {status: select ? 1 : null, ...values};
       }}
       ref={ref}
       tableKey={select ? null : 'customer'}
@@ -209,7 +214,7 @@ const Tenant = (
             onOk={() => Jump({params: {userId: record.adminId}})}>
             <PrimaryButton disabled={!open}>进入账户</PrimaryButton>
           </Warning>
-          <PrimaryButton onClick={() => setVisible(true)}>数据转发</PrimaryButton>
+          <PrimaryButton hidden={currentCustomer.customerId === 0} onClick={() => setVisible(true)}>数据转发</PrimaryButton>
           <Warning content="是否永久删除?" onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
@@ -218,6 +223,7 @@ const Tenant = (
     />
 
     <AccountAsk
+      login
       customer={askAccount?.customerId}
       visibilityToggle={false}
       visible={askAccount}

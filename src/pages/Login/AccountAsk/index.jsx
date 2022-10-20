@@ -5,12 +5,12 @@ import styles from './index.module.less';
 import FileUpload from '../../../components/FileUpload';
 import Password from './components/Password';
 import {useRequest} from '@/util/Request';
-import {customerAdd, customerEdit} from '@/pages/systemManage/Tenant/url';
+import {customerAdd, customerAddCustomer, customerEdit} from '@/pages/systemManage/Tenant/url';
 import InputNumber from '@/components/InputNumber';
 
 
 const AccountAsk = (
-  {visible, onClose, data = {}, visibilityToggle = true, customer}
+  {login, visible, onClose, data = {}, visibilityToggle = true, customer}
 ) => {
 
   const [form] = Form.useForm();
@@ -23,7 +23,14 @@ const AccountAsk = (
 
   const [reset, setReset] = useState(false);
 
-  const {loading, run} = useRequest(customerAdd, {
+  const clear = () => {
+    setErrorText('');
+    setSuccess(false);
+    onClose();
+    setReset(false);
+  };
+
+  const {loading, run} = useRequest(login ? customerAddCustomer : customerAdd, {
     manual: true,
     response: true,
     onSuccess: (res) => {
@@ -64,7 +71,13 @@ const AccountAsk = (
         return;
       }
       if (customer) {
-        edit({data: {...values, customerId: data.customerId}});
+        edit({
+          data: {
+            ...values,
+            customerId: data.customerId,
+            adminPassword: reset ? values.adminPassword : null
+          }
+        });
         return;
       }
       run({data: values});
@@ -93,8 +106,7 @@ const AccountAsk = (
   return <>
     <Drawer
       extra={<CloseOutlined style={{cursor: 'pointer'}} onClick={() => {
-        setSuccess(false);
-        onClose();
+        clear();
       }} />}
       // closable={false}
       closeIcon={null}
@@ -201,7 +213,7 @@ const AccountAsk = (
                   <Form.Item key="adminPassword" label="管理员密码" required>
                     <Form.Item
                       noStyle
-                      initialValue={data.adminPassword}
+                      initialValue={customer ? 'opt123' : null}
                       name="adminPassword"
                       rules={[
                         {required: true, message: '请输入企业管理员账号密码'},
@@ -329,9 +341,8 @@ const AccountAsk = (
         </div>
         <div hidden={!success}>
           <Button type="link" onClick={() => {
-            setSuccess(false);
-            onClose();
-          }}>{customer ? '返回' : '返回登录页面'}</Button>
+            clear();
+          }}>{(customer || login) ? '返回' : '返回登录页面'}</Button>
         </div>
       </div>
     </Drawer>

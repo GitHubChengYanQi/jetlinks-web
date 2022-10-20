@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input, Form} from 'antd';
-import {deviceEdit} from '@/pages/equipment/Equipment/url';
+import {updateDeviceRemark} from '@/pages/equipment/Equipment/url';
 import AntForm from '@/components/AntForm';
 
 
@@ -15,7 +15,7 @@ const NoteSave = ({
   return (
     <AntForm
       apis={{
-        edit: deviceEdit,
+        edit: updateDeviceRemark,
       }}
       title="终端备注"
       initialValues={data}

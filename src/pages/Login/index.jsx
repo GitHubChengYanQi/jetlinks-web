@@ -26,7 +26,6 @@ const Login = () => {
   const [code, setCode] = useState();
 
   const clear = () => {
-    setCorporateName('');
     setPhone('');
     setUsername('');
     setPassword('');

@@ -19,7 +19,6 @@ const Users = ({
       onSuccess: (res) => {
         const userList = res || [];
         const ids = userList.filter(item => item.roleId && item.roleId.split(',').find(item => item === `${roleId}`)).map(item => item.userId);
-        console.log(ids);
         setUserIds(ids);
         setTargetKeys(ids);
         setMockData(userList.map(item => ({key: item.userId, title: `${item.name || ''}  ${item.phone || ''}`})));
