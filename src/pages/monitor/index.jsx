@@ -195,7 +195,7 @@ const Monitor = () => {
                 default:
                   break;
               }
-              ref.current.refresh();
+              ref.current.submit();
             }}/>
         </div>
       </Col>
@@ -205,7 +205,7 @@ const Monitor = () => {
           onReset={() => {
             ref.current.formActions.setFieldValue('modelId', params.modelId);
             ref.current.formActions.setFieldValue('classifyId', params.classifyId);
-            ref.current.refresh();
+            ref.current.submit();
           }}
           maxHeight="calc(100vh - 435px)"
           condition={(values) => {
