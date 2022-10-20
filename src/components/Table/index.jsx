@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Button, Card, Col, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
@@ -7,11 +7,15 @@ import Service from '@/util/Service';
 import style from './index.module.less';
 import Render from '@/components/Render';
 import useTableSet from '@/hook/useTableSet';
+import axios from 'axios';
 
 
 const {Column} = AntdTable;
 
 const formActionsPublic = createFormActions();
+
+const CancelToken = axios.CancelToken;
+let cancel;
 
 const TableWarp = (
   {
@@ -50,6 +54,7 @@ const TableWarp = (
     // h
     headStyle,
     // i
+    interval,
     isChildren,
     isModal = true,
     // l
@@ -110,6 +115,8 @@ const TableWarp = (
   }
 
   const {ajaxService} = Service();
+
+  const [timed, setTimed] = useState(false);
 
   const [state, setState] = useUrlState(
     {
@@ -175,6 +182,9 @@ const TableWarp = (
         };
       } else {
         response = await ajaxService({
+          cancelToken: new CancelToken(function executor(c) {
+            cancel = c;
+          }),
           ...api,
           data: {
             ...newValues,
@@ -212,35 +222,53 @@ const TableWarp = (
     sorter: defaultTableQuery.sorter || {},
   });
 
+  const {loading, dataSource, pagination, ...other} = tableProps;
+
   const submit = () => {
-    setPagination({});
-    formActions.submit();
+    if (interval && loading && typeof cancel === 'function') {
+      cancel();
+      setTimeout(() => {
+        setTimed(false);
+        setPagination({});
+        formActions.submit();
+      }, 0);
+    } else {
+      setTimed(false);
+      setPagination({});
+      formActions.submit();
+    }
   };
 
   const reset = () => {
+    setTimed(false);
     setPagination({});
     formActions.reset();
     onReset();
   };
 
   const refresh = () => {
+    setTimed(false);
+    formActions.submit();
+  };
+
+  const timedRefresh = () => {
+    setTimed(true);
     formActions.submit();
   };
 
   useImperativeHandle(ref, () => ({
     refresh,
     submit,
+    timedRefresh,
     reset: formActions.reset,
     formActions,
   }));
-
-  const {loading, dataSource, pagination, ...other} = tableProps;
 
   const footer = () => {
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
@@ -278,26 +306,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id="submit"
-                        loading={otherLoading || loading}
-                        type="primary"
-                        htmlType="submit"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                      {searchButtons}
-                      {selectView}
-                      {saveView}
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={otherLoading || (timed ? false : loading)}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                    {searchButtons}
+                    {selectView}
+                    {saveView}
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -321,7 +349,7 @@ const TableWarp = (
             };
           }}
           expandable={expandable}
-          loading={otherLoading || loading}
+          loading={otherLoading || (timed ? false : loading)}
           dataSource={dataSource || []}
           rowKey={rowKey}
           columns={[
@@ -332,7 +360,7 @@ const TableWarp = (
               dataIndex: '0',
               width: '70px',
               render: (value, record, index) => <Render
-                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70}/>
+                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70} />
             }]),
             ...tableColumn.filter(item => item.checked),
             ...action,
