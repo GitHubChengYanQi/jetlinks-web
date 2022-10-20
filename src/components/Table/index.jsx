@@ -7,11 +7,15 @@ import Service from '@/util/Service';
 import style from './index.module.less';
 import Render from '@/components/Render';
 import useTableSet from '@/hook/useTableSet';
+import axios from 'axios';
 
 
 const {Column} = AntdTable;
 
 const formActionsPublic = createFormActions();
+
+const CancelToken = axios.CancelToken;
+let cancel;
 
 const TableWarp = (
   {
@@ -50,6 +54,7 @@ const TableWarp = (
     // h
     headStyle,
     // i
+    interval,
     isChildren,
     isModal = true,
     // l
@@ -177,6 +182,9 @@ const TableWarp = (
         };
       } else {
         response = await ajaxService({
+          cancelToken: new CancelToken(function executor(c) {
+            cancel = c;
+          }),
           ...api,
           data: {
             ...newValues,
@@ -217,9 +225,18 @@ const TableWarp = (
   const {loading, dataSource, pagination, ...other} = tableProps;
 
   const submit = () => {
-    setTimed(false);
-    setPagination({});
-    formActions.submit();
+    if (interval && loading && typeof cancel === 'function') {
+      cancel();
+      setTimeout(() => {
+        setTimed(false);
+        setPagination({});
+        formActions.submit();
+      }, 0);
+    } else {
+      setTimed(false);
+      setPagination({});
+      formActions.submit();
+    }
   };
 
   const reset = () => {

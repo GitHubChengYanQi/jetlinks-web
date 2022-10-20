@@ -172,7 +172,7 @@ const Monitor = () => {
   useEffect(() => {
     const time = setInterval(() => {
       ref.current.timedRefresh();
-    }, 5000);
+    }, 10000);
     return () => {
       clearInterval(time);
     };
@@ -208,6 +208,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          interval
           formSubmit={(values) => {
             setParams({...params, ...values});
             return values;
