@@ -26,7 +26,6 @@ const OperationLog = () => {
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
   const columns = [

@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
-import {Button, Descriptions, message, Modal, Spin} from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {Button, Descriptions, message, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import {customerDetail, customerEdit, customerStart} from '@/pages/systemManage/Tenant/url';
 import DownloadFile from '@/components/DownloadFile';
 import Password from '@/pages/Login/AccountAsk/components/Password';
 import {PrimaryButton} from '@/components/Button';
+import Modal from '@/components/Modal';
 
 const Info = ({
   customerId,
@@ -15,6 +16,7 @@ const Info = ({
   success = () => {
   },
 }) => {
+  const ref = useRef();
 
   const {loading, run} = useRequest(customerStart, {
     manual: true,
@@ -27,6 +29,11 @@ const Info = ({
   const {loading: detailLoading, data = {}, run: getDetail} = useRequest(customerDetail, {manual: true});
 
   useEffect(() => {
+    if (visible) {
+      ref.current.open(false);
+    } else {
+      ref.current.close();
+    }
     if (customerId) {
       getDetail({data: {customerId}});
     }
@@ -42,12 +49,11 @@ const Info = ({
 
   return <>
     <Modal
+      ref={ref}
       width={800}
-      onCancel={close}
-      title={data.detail ? '租户详情' : '租户信息确认'}
-      open={visible}
+      headTitle={data.detail ? '租户详情' : '租户信息确认'}
       footer={data.detail ? null : [
-        <Button key={0}>取消</Button>,
+        <Button key={0} onClick={close}>取消</Button>,
         <PrimaryButton loading={loading} key={1} onClick={() => {
           run({data: {customerIds: [data.customerId]}});
         }}>通过</PrimaryButton>
@@ -78,7 +84,9 @@ const Info = ({
             />
           </Descriptions.Item>}
           <Descriptions.Item label="身份证号">{data.legalPersonCard}</Descriptions.Item>
-          <Descriptions.Item label="营业执照"><DownloadFile fileId={data.file} fileName={data.fileName} /></Descriptions.Item>
+          <Descriptions.Item label="营业执照">
+            <DownloadFile fileId={data.file} fileName={data.fileName} />
+          </Descriptions.Item>
           <Descriptions.Item label="提交时间">{data.createTime}</Descriptions.Item>
         </Descriptions>
       </Spin>

@@ -37,7 +37,6 @@ const Grouping = () => {
       ref.current.refresh();
       dataDispatchers.getDeviceClass();
     },
-    onError: () => message.error('删除失败！')
   });
 
 

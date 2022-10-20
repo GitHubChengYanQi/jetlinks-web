@@ -1,16 +1,24 @@
 import React from 'react';
-import {Select, Tag} from 'antd';
+import {Checkbox, Select, Space, Tag} from 'antd';
 import {useRequest} from '@/util/Request';
 import {roleListSelect} from '@/Config/ApiUrl/system/role';
+import style from './index.module.less';
+import {isObject} from '@/util/Tools';
 
-const RoleIds = ({value, onChange, placeholder}) => {
+const RoleIds = ({value = [], onChange, placeholder}) => {
 
   const {data = []} = useRequest(roleListSelect);
 
-  const options = data.map(item => ({label: item.name, value: `${item.role_id}`}));
+  const options = data.map(item => ({
+    label: <Space align="center">
+      <Checkbox checked={value.find(id => id === `${item.role_id}`)} />{item.name}
+    </Space>,
+    name: item.name,
+    value: `${item.role_id}`
+  }));
 
   const tagRender = (props) => {
-    const {label, closable, onClose} = props;
+    const {value, closable, onClose} = props;
     const onPreventMouseDown = event => {
       event.preventDefault();
       event.stopPropagation();
@@ -23,7 +31,7 @@ const RoleIds = ({value, onChange, placeholder}) => {
         onClose={onClose}
         style={{marginRight: 3}}
       >
-        {label}
+        {isObject(options.find(item => item.value === value)).name}
       </Tag>
     );
   };
@@ -31,12 +39,12 @@ const RoleIds = ({value, onChange, placeholder}) => {
 
   return (
     <Select
+      popupClassName={style.select}
       placeholder={placeholder || '请选择角色'}
       mode="multiple"
       showArrow
       allowClear
       showSearch
-      filterOption={(input, option) => option.label && option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       value={Array.isArray(value) ? value : []}
       tagRender={tagRender}
       style={{width: '100%'}}

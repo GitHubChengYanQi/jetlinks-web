@@ -37,7 +37,6 @@ const Firmware = ({value = {}}) => {
       message.success('关闭成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('关闭失败!')
   });
 
   const {loading: startLoading, run: start} = useRequest(firmwareStart, {
@@ -47,7 +46,6 @@ const Firmware = ({value = {}}) => {
       message.success('启用成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('启用失败!')
   });
 
   const {loading: deleteLoading, run: deleteRun} = useRequest(firmwareDelete, {
@@ -57,7 +55,6 @@ const Firmware = ({value = {}}) => {
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
 

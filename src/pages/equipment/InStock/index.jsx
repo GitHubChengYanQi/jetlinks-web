@@ -52,7 +52,6 @@ const InStock = (
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
 
@@ -65,19 +64,19 @@ const InStock = (
         </Render>;
       }
     },
-    {title: '终端备注', dataIndex: 'remarks', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '入库批次', dataIndex: 'batch', align: 'center', render: (text) => <Render width={120} text={text}/>},
-    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
-    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '终端备注', dataIndex: 'remarks', align: 'center', render: (text) => <Render text={text} />},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '入库批次', dataIndex: 'batch', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
       title: '入库时间',
       dataIndex: 'instockTime',
       align: 'center',
-      render: (text) => <Render width={200} text={text ? moment(text).format('YYYY-MM-DD') : '-'}/>
+      render: (text) => <Render width={200} text={text ? moment(text).format('YYYY-MM-DD') : '-'} />
     },
   ];
 
@@ -112,10 +111,10 @@ const InStock = (
 
   const searchForm = () => {
     return <>
-      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="登记名称" name="name" component={Input}/>
-      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
+      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="登记名称" name="name" component={Input} />
+      <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem
         label="设备状态"
         name="status"
@@ -157,7 +156,7 @@ const InStock = (
       noAction={select}
       selectedRowKeys={keys}
       ref={ref}
-      searchButtons={select ? null : [
+      searchButtons={select ? <PrimaryButton onClick={() => setSaveVisible(true)}>新增入库</PrimaryButton> : [
         <Dropdown key={1} overlay={inStockMenu} placement="bottom" trigger={['click', 'hover']}>
           <PrimaryButton>新增入库</PrimaryButton>
         </Dropdown>,
@@ -187,7 +186,7 @@ const InStock = (
       )}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
     <Save data={saveVisible} visible={saveVisible} close={() => setSaveVisible(false)} success={(success) => {
       setSaveVisible(false);
       if (success) {
@@ -195,23 +194,23 @@ const InStock = (
       } else {
         ref.current.refresh();
       }
-    }}/>
+    }} />
     <BatchImport
       columns={[
-        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
+        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text} />},
       ]}
       api={instockImport}
       templeteApi={instockDownloadTemplate}
       title="入库"
       success={() => {
         setBatchImport(false);
-        ref.current.refresh();
+        ref.current.submit();
       }}
       visible={batchImport}
       close={() => setBatchImport(false)}

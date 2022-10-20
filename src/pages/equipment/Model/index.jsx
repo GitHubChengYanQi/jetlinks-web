@@ -49,7 +49,6 @@ const Model = (
       message.success('关闭成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('关闭失败!')
   });
 
   const {loading: startLoading, run: start} = useRequest(deviceModelStart, {
@@ -59,7 +58,6 @@ const Model = (
       message.success('启用成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('启用失败!')
   });
 
   const {loading: deleteLoading, run: deleteRun} = useRequest(deviceModelDelete, {
@@ -69,7 +67,6 @@ const Model = (
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
 
@@ -223,7 +220,7 @@ const Model = (
         }
       }}/>
 
-    <Modal headTitle="设备固件管理" width={1200} ref={firmwareRef} component={Firmware}/>
+    <Modal headTitle="设备固件管理" width={1500} ref={firmwareRef} component={Firmware}/>
   </>;
 };
 

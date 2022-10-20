@@ -41,7 +41,6 @@ const Configuration = () => {
       message.success('修改成功！');
       dataDispatchers.getCustomer(info.customerId || 0);
     },
-    onError: () => message.error('修改失败！')
   });
 
   if (customer.customerId === undefined || customer.customerId === null) {

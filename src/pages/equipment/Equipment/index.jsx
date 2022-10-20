@@ -61,7 +61,6 @@ const Equipment = () => {
       message.success('启用成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('启用失败!')
   });
 
   const columns = [
@@ -386,7 +385,7 @@ const Equipment = () => {
       }}
     />
 
-    <Modal headTitle="设备版本管理" width={1200} ref={editionRef} component={Edition} />
+    <Modal headTitle="设备版本管理" width={1500} ref={editionRef} component={Edition} />
   </>;
 };
 

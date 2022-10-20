@@ -114,7 +114,7 @@ const Save = ({
           {required: true, message: '请输入描述内容'},
         ]}
       >
-        <Input.TextArea placeholder="请输入描述内容" maxLength={300} showCount/>
+        <Input.TextArea placeholder="请输入描述内容" maxLength={300} showCount rows={4}/>
       </Form.Item>
     </AntForm>
   );

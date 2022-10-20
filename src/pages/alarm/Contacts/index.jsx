@@ -74,7 +74,6 @@ const Contacts = ({
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
   const {loading: deleteLoading, run: deleteRun} = useRequest(contactDelete, {
@@ -84,7 +83,6 @@ const Contacts = ({
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
   const menu = <Menu

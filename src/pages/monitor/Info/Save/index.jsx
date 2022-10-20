@@ -44,7 +44,6 @@ const Save = (
       message.success('保存成功！');
       success();
     },
-    onError: () => message.error('保存失败！')
   });
 
   const {loading: ruleListLoading, run: getRuleList,refresh} = useRequest(alarmListSelect, {

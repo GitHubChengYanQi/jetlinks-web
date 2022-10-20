@@ -71,7 +71,6 @@ const AntForm = (
       message.success('添加成功！');
       success(res.data || true);
     },
-    onError: () => message.error('添加失败！')
   });
   const {loading: editLoading, run: edit} = useRequest(apis.edit, {
     manual: true,
@@ -90,7 +89,6 @@ const AntForm = (
       message.success('修改成功！');
       success(false);
     },
-    onError: () => message.error('修改失败！')
   });
 
   const submitData = () => {

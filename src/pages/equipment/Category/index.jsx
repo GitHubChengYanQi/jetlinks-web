@@ -52,7 +52,6 @@ const Category = (
       message.success('关闭成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('关闭失败!')
   });
 
   const {loading: startLoading, run: start} = useRequest(deviceCategoryStart, {
@@ -62,7 +61,6 @@ const Category = (
       message.success('启用成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('启用失败!')
   });
 
   const {loading: deleteLoading, run: deleteRun} = useRequest(deviceCategoryDelete, {
@@ -72,7 +70,6 @@ const Category = (
       message.success('删除成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('删除失败!')
   });
 
 
@@ -219,7 +216,7 @@ const Category = (
       data={saveVisible || {}}
     />
 
-    <Modal headTitle="设备型号管理" width={1200} ref={modelRef} component={Model}/>
+    <Modal headTitle="设备型号管理" width={1500} ref={modelRef} component={Model}/>
   </>;
 };
 export default Category;

@@ -50,7 +50,6 @@ const Role = () => {
       message.success('启用成功！');
       ref.current.refresh();
     },
-    onError: () => message.error('启用失败!')
   });
 
   const {loading: deleteLoading, run: deleteRun} = useRequest(roleBatchDelete, {

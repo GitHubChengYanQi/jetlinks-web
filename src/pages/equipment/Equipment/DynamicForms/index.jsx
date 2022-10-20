@@ -26,7 +26,6 @@ const DynamicForms = (
       message.success(`${formData?.title || '设置'}成功！`);
       success();
     },
-    onError: () => message.error('添加失败！')
   });
 
   return <>
