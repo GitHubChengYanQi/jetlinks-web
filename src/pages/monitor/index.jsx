@@ -170,14 +170,13 @@ const Monitor = () => {
   };
 
   useEffect(() => {
-    const refresh = setInterval(() => {
+    const time = setInterval(() => {
       ref.current.timedRefresh();
-    }, 1000);
-
+    }, 5000);
     return () => {
-      clearInterval(refresh);
+      clearInterval(time);
     };
-  }, []);
+  }, [params]);
 
   return <>
     <Row gutter={24}>
@@ -209,7 +208,10 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
-          pollingInterval={1000}
+          formSubmit={(values) => {
+            setParams({...params, ...values});
+            return values;
+          }}
           noRowSelection
           onReset={() => {
             ref.current.formActions.setFieldValue('modelId', params.modelId);
