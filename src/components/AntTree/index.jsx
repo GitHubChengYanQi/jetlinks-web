@@ -8,6 +8,7 @@ const AntTree = ({
   onChange,
   loading,
   checkable,
+  disabled,
 }) => {
 
   if (treeData.length === 0) {
@@ -18,6 +19,7 @@ const AntTree = ({
   }
   return <Spin spinning={Boolean(loading)}>
     <Tree
+      disabled={disabled}
       checkedKeys={value}
       selectable={!checkable}
       checkable={checkable}

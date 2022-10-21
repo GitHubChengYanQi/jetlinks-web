@@ -10,6 +10,7 @@ const Group = (
     },
     value,
     checkable,
+    disabled,
   }
 ) => {
 
@@ -34,6 +35,7 @@ const Group = (
 
   return <>
     <AntTree
+      disabled={disabled}
       checkable={checkable}
       onChange={(keys, options) => {
         setKeys(keys);

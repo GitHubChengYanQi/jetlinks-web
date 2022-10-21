@@ -6,12 +6,13 @@ const SelectTopClass = ({
   value,
   onChange = () => {
   },
+  disabled,
   checkable,
 }) => {
 
 
   return <div style={{border: '1px solid #d9d9d9', padding: 8,maxHeight: '50vh', overflow: 'auto'}}>
-    <Group checkable={checkable} value={value} onChange={onChange} />
+    <Group disabled={disabled} checkable={checkable} value={value} onChange={onChange} />
   </div>;
 };
 
