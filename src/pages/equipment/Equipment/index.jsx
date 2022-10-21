@@ -25,6 +25,7 @@ import {PrimaryButton} from '@/components/Button';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 import Modal from '@/components/Modal';
 import Edition from '@/pages/equipment/Edition';
+import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 
 const formActionsPublic = createFormActions();
 
@@ -275,7 +276,7 @@ const Equipment = () => {
       />
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
+      <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />

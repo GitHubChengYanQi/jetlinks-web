@@ -35,13 +35,16 @@ const Group = (
   return <>
     <AntTree
       checkable={checkable}
-      onChange={(keys) => {
+      onChange={(keys, options) => {
         setKeys(keys);
         if (checkable) {
           onChange(keys);
           return;
         }
-        onChange(keys[0], 'group');
+        onChange(keys[0], 'group', options.selected ? {
+          key: options?.node?.key,
+          title: options?.node?.title
+        } : {});
       }}
       value={keys}
       treeData={[{key: '0', title: '全部分组', children: formatData(dataSource.deviceClass)}]}

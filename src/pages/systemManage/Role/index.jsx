@@ -230,6 +230,7 @@ const Role = () => {
       headTitle="菜单权限"
       ref={modelRef}
       show
+      disabled
       component={Tree}
       padding={24}
       border
@@ -238,6 +239,7 @@ const Role = () => {
     />
 
     <Modal
+      disabled
       headTitle="分组权限"
       ref={groupRef}
       component={SelectTopClass}

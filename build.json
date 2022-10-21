@@ -23,7 +23,7 @@
       {
         "themeConfig": {
           "primary-color": "#026d9b",
-          "primary-1": "#026d9b",
+          "primary-1": "#026d9bb3",
           "btn-text-hover-bg": "rgba(0, 0, 0, 0.035)"
         }
       }
