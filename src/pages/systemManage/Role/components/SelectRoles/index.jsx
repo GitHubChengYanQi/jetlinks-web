@@ -2,6 +2,7 @@ import React from 'react';
 import {AutoComplete, Input, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import {roleListSelect} from '@/Config/ApiUrl/system/role';
+import {isArray} from '@/util/Tools';
 
 const SelectRoles = ({
   value,
@@ -12,7 +13,7 @@ const SelectRoles = ({
 
   const {loading, data} = useRequest(roleListSelect);
 
-  const options = (!loading && data) ? data.map((value) => {
+  const options = (!loading && data) ? isArray(data).map((value) => {
     return {
       label: value.name,
       value: value.name,

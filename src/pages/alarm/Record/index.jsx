@@ -1,6 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, Input, Tooltip} from 'antd';
 import {config, getSearchParams, useHistory} from 'ice';
+import {EllipsisOutlined} from '@ant-design/icons';
+import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -16,8 +18,6 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
-import {EllipsisOutlined} from '@ant-design/icons';
-import cookie from 'js-cookie';
 
 const Record = () => {
 

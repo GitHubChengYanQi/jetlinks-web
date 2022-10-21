@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Select as AntSelect, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
+import {isArray} from '@/util/Tools';
 
 const Select = (
   {
@@ -27,7 +28,7 @@ const Select = (
 ) => {
   const {loading, data, refresh} = useRequest({...api, data: param}, {manual: !api});
 
-  const selectOptions = loading ? [] : (format(data) || []);
+  const selectOptions = loading ? [] : (format(isArray(data)) || []);
 
   useEffect(() => {
     if (resh) {
