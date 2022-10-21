@@ -67,6 +67,9 @@ const Modal = (
       window.removeEventListener('mouseup', removeUp, false);
 
       const contain = document.getElementsByClassName(simpleClass)[0];
+      if (!contain) {
+        return;
+      }
       const header = contain.getElementsByClassName('ant-modal-header')[0];
       if (
         header

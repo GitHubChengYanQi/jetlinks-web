@@ -2,7 +2,6 @@ import React from 'react';
 import {Checkbox, Select, Space, Tag} from 'antd';
 import {useRequest} from '@/util/Request';
 import {roleListSelect} from '@/Config/ApiUrl/system/role';
-import style from './index.module.less';
 import {isObject} from '@/util/Tools';
 
 const RoleIds = ({value = [], onChange, placeholder}) => {
@@ -39,7 +38,6 @@ const RoleIds = ({value = [], onChange, placeholder}) => {
 
   return (
     <Select
-      popupClassName={style.select}
       placeholder={placeholder || '请选择角色'}
       mode="multiple"
       showArrow
