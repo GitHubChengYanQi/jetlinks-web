@@ -9,7 +9,13 @@ import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import AccountAsk from '@/pages/Login/AccountAsk';
-import {customerDelete, customerList, customerStart} from '@/pages/systemManage/Tenant/url';
+import {
+  customerDelete,
+  customerFrozen,
+  customerList,
+  customerStart,
+  customerThaw
+} from '@/pages/systemManage/Tenant/url';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import Save from '@/pages/systemManage/Tenant/Save';
 import Info from '@/pages/systemManage/Tenant/Info';
@@ -18,6 +24,7 @@ import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
 import {JumpLogin} from '@/Config/ApiUrl/system/user';
 import store from '@/store';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 const formActionsPublic = createFormActions();
 
@@ -74,18 +81,41 @@ const Tenant = (
     }
   });
 
+  const {loading: frozenLoading, run: frozenRun} = useRequest(customerFrozen, {
+    manual: true,
+    onSuccess: () => {
+      setResords([]);
+      message.success('冻结成功！');
+      ref.current.refresh();
+    }
+  });
+
+  const {loading: thawLoading, run: thawRun} = useRequest(customerThaw, {
+    manual: true,
+    onSuccess: () => {
+      setResords([]);
+      message.success('冻结成功！');
+      ref.current.refresh();
+    }
+  });
+
   const columns = [
     {
       title: '审核结果',
       dataIndex: 'status',
       align: 'center',
-      render: (text) => <Render>
-        <Button
-          className={text === 1 ? 'green' : 'red'}
-          danger={text !== 1}
-          type="link">{text === 1 ? '通过' : '待审核'}
-        </Button>
-      </Render>
+      render: (text) => {
+        const open = text === 1;
+        const closeText = (text === -1 ? '停用' : '待审核');
+        return <Render>
+          <Button
+            className={open ? 'green' : 'red'}
+            type="link"
+          >
+            {open ? '通过' : closeText}
+          </Button>
+        </Render>;
+      }
     },
     {title: '企业名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text} />},
     {title: '统一社会信用代码', dataIndex: 'code', align: 'center', render: (text) => <Render text={text} />},
@@ -98,7 +128,12 @@ const Tenant = (
     },
     {title: '管理员姓名', dataIndex: 'contactName', align: 'center', render: (text) => <Render text={text} />},
     {title: '管理员手机号码', dataIndex: 'contactPhone', align: 'center', render: (text) => <Render text={text} />},
-    {title: '管理员账号', dataIndex: 'adminAccount', align: 'center', render: (text) => <Render text={text} />},
+    {
+      title: '管理员账号',
+      dataIndex: 'adminAccount',
+      align: 'center',
+      render: (text) => <Render text={AccountFormat(text)} />
+    },
     {title: '身份证号 ', dataIndex: 'legalPersonCard', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '营业执照 ',
@@ -167,7 +202,7 @@ const Tenant = (
   return <>
     <Table
       formActions={formActionsPublic}
-      loading={loading || deleteLoading}
+      loading={loading || deleteLoading || frozenLoading || thawLoading}
       checkedRows={records}
       onChangeRows={(records) => {
         if (select) {
@@ -200,9 +235,10 @@ const Tenant = (
       rowKey="customerId"
       actionRender={(text, record) => {
         const open = record.status === 1;
+        const frozen = record.status === -1;
         return <Space>
           <Button
-            hidden={select}
+            hidden={select || frozen}
             className={!open && 'bgGreen'}
             type="primary"
             onClick={() => setInfoVisible({...record, detail: open})}>{open ? '详情' : '通过'}
@@ -215,6 +251,12 @@ const Tenant = (
             <PrimaryButton disabled={!open}>进入账户</PrimaryButton>
           </Warning>
           <PrimaryButton hidden={currentCustomer.customerId === 0} onClick={() => setVisible(true)}>数据转发</PrimaryButton>
+          <Warning
+            content={frozen ? '是否启用?' : '是否停用?'}
+            onOk={() => frozen ? thawRun({params: {customerId: record.customerId}}) : frozenRun({params: {customerId: record.customerId}})}
+          >
+            {frozen ? <PrimaryButton className="bgGreen">启用</PrimaryButton> : <DangerButton>停用</DangerButton>}
+          </Warning>
           <Warning content="是否永久删除?" onOk={() => deleteRun({data: {customerIds: [record.customerId]}})}>
             <DangerButton>删除</DangerButton>
           </Warning>

@@ -6,6 +6,7 @@ import DatePicker from '@/components/DatePicker';
 import SelectDevice from '@/pages/equipment/OutStock/Save/components/SelectDevice';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {useRequest} from '@/util/Request';
+import InputNumber from '@/components/InputNumber';
 
 
 const Save = ({success, close, visible, data = {}}) => {
@@ -59,6 +60,17 @@ const Save = ({success, close, visible, data = {}}) => {
       ]}
     >
       <SelectCustomer/>
+    </Form.Item>
+    <Form.Item
+      initialValue={data?.warranty}
+      key="warranty"
+      label="质保时间"
+      name="warranty"
+      rules={[
+        {required: true, message: '请输入质保时间'},
+      ]}
+    >
+      <InputNumber addonAfter='月' placeholder="请输入质保时间"/>
     </Form.Item>
     <Form.Item
       initialValue={data?.outstockTime || new Date()}

@@ -6,6 +6,7 @@ import AntForm from '@/components/AntForm';
 import store from '@/store';
 import DatePicker from '@/components/DatePicker';
 import RoleIds from '@/pages/systemManage/Role/components/RoleIds';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 const Save = (
   {
@@ -50,6 +51,7 @@ const Save = (
       close={close}
       format={(values) => ({
         ...values,
+        account: data?.account || values.account,
         roleId: values.roleId.toString(),
         password: data?.userId ? newPassword : values.password,
         beginTime: values.time === '1' ? time[0] : null,
@@ -58,7 +60,7 @@ const Save = (
       })}
     >
       <Form.Item
-        initialValue={data?.account}
+        initialValue={AccountFormat(data?.account)}
         key="account"
         label="账号名称"
         name="account"

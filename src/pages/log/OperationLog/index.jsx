@@ -12,6 +12,7 @@ import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 const OperationLog = () => {
 
@@ -41,7 +42,7 @@ const OperationLog = () => {
       align: 'center',
       render: (text) => <Render text={text}/>
     },
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)}/>},
     {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
     {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text}/>},
     {title: '操作菜单', dataIndex: 'logType', align: 'center', render: (text = '') => <Render text={text}/>},

@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Menu, Dropdown, message, Input, Select as AntSelect} from 'antd';
 import moment from 'moment';
-import {config, useHistory} from 'ice';
+import {config} from 'ice';
 import cookie from 'js-cookie';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
@@ -24,6 +24,13 @@ import BatchImport from '@/components/BatchImport';
 import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 import store from '@/store';
 
+export const AccountFormat = (account = '') => {
+  const name = account.split('_');
+  if (name.length > 1) {
+    return name.slice(1, name.length).join('_');
+  }
+  return name;
+};
 
 const Account = () => {
 
@@ -84,21 +91,21 @@ const Account = () => {
 
 
   const columns = [
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)} />},
+    {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
       title: '角色名称',
       dataIndex: 'roles',
       align: 'center',
-      render: (roles) => <Render width={200} text={isArray(roles).map(item => item.name).toString()}/>
+      render: (roles) => <Render width={200} text={isArray(roles).map(item => item.name).toString()} />
     },
     {
       title: '账号状态', dataIndex: 'status', align: 'center', render: (text) => <Render>
         <Button danger={text !== 'ENABLE'} type="link">{text === 'ENABLE' ? '启用' : '停用'}</Button>
       </Render>
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '电子邮箱', dataIndex: 'email', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '电子邮箱', dataIndex: 'email', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '账号有效期', dataIndex: '8', align: 'center',
       render: (text, record) => <Render width={150}>
@@ -109,7 +116,7 @@ const Account = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (text) => <Render width={150} text={text} />
     },
   ];
 
@@ -157,7 +164,7 @@ const Account = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem name="time" label="创建时间" component={DatePicker} RangePicker select/>
+        <FormItem name="time" label="创建时间" component={DatePicker} RangePicker select />
         <FormItem
           name="status"
           label="账号状态"
@@ -170,13 +177,13 @@ const Account = () => {
                 onChange(value === 'all' ? null : value);
               }}
             />;
-          }} select/>
+          }} select />
         <FormItem
           label="角色名称"
           name="roleName"
           component={SelectRoles}
         />
-        <FormItem name="name" label="关键字查询" component={Input} style={{width: 250}} placeholder="管理员账号/姓名/手机号/邮箱"/>
+        <FormItem name="name" label="关键字查询" component={Input} style={{width: 250}} placeholder="管理员账号/姓名/手机号/邮箱" />
       </>
     );
   };
@@ -246,13 +253,13 @@ const Account = () => {
 
     <BatchImport
       columns={[
-        {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '账号角色', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '电子邮件', dataIndex: 'email', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '账号密码', dataIndex: 'password', align: 'center', render: (text) => <Render text={text}/>},
-        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)} />},
+        {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+        {title: '账号角色', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text} />},
+        {title: '电子邮件', dataIndex: 'email', align: 'center', render: (text) => <Render text={text} />},
+        {title: '账号密码', dataIndex: 'password', align: 'center', render: (text) => <Render text={text} />},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
       ]}
       title="账号"
       templeteApi={UserExcelDownloadTemplate}

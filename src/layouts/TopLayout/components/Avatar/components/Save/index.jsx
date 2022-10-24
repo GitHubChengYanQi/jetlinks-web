@@ -33,6 +33,9 @@ const Save = ({
         if (values.passWord !== values.newPassWord) {
           message.warn('两次密码输入不一致！');
           return false;
+        }else if (!/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/.test(values.passWord )) {
+          message.warn('密码包含6~18位字母、数字、特殊符号的2种或多种组合！');
+          return false;
         }
         return values;
       }}

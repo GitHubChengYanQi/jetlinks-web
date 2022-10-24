@@ -11,6 +11,11 @@ export const loginByPhone = {
   method: 'POST',
 };
 
+export const findUserPassword = {
+  url: '/rest/resetPasswordByPhone',
+  method: 'POST',
+};
+
 export const addressTree = {
   url: '/commonArea/treeView',
   method: 'POST',

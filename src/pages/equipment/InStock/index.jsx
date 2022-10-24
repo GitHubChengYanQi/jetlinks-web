@@ -156,7 +156,7 @@ const InStock = (
       noAction={select}
       selectedRowKeys={keys}
       ref={ref}
-      searchButtons={select ? <PrimaryButton onClick={() => setSaveVisible(true)}>新增入库</PrimaryButton> : [
+      searchButtons={select ? null : [
         <Dropdown key={1} overlay={inStockMenu} placement="bottom" trigger={['click', 'hover']}>
           <PrimaryButton>新增入库</PrimaryButton>
         </Dropdown>,

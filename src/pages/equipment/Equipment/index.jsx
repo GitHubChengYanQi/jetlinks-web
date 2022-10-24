@@ -191,9 +191,9 @@ const Equipment = () => {
     },
     {
       title: '质保时间',
-      dataIndex: '12',
+      dataIndex: 'closingDate',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} className={moment(text).diff(moment(new Date()))> 0 ? 'green' : 'red'} text={text} />
     },
   ];
 
@@ -275,7 +275,7 @@ const Equipment = () => {
         }}
       />
       <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="登记名称" name="name" component={Input} />
       <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem label="设备MAC" name="mac" component={Input} />

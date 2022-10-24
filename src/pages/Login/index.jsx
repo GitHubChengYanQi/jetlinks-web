@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Button, Tabs} from 'antd';
+import {Alert, Button, message, Tabs} from 'antd';
 import {QrcodeOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
 import {getSearchParams, useHistory} from 'ice';
@@ -8,7 +8,7 @@ import logo from '../../asseset/imgs/logo.png';
 import {CorporateName, UserName, Password, Phone, Code} from './Components';
 import AccountAsk from './AccountAsk';
 import {useRequest} from '@/util/Request';
-import {login as loginUrl, loginByPhone} from '@/Config/ApiUrl';
+import {findUserPassword, login as loginUrl, loginByPhone} from '@/Config/ApiUrl';
 
 
 const Login = () => {
@@ -20,9 +20,10 @@ const Login = () => {
   const loginInfo = JSON.parse(localStorage.getItem('loginInfo') || '{}');
 
   const [corporateName, setCorporateName] = useState(loginInfo.customerName);
-  const [phone, setPhone] = useState(loginInfo.account);
-  const [username, setUsername] = useState(loginInfo.username);
-  const [password, setPassword] = useState(loginInfo.password);
+  const [phone, setPhone] = useState();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [newPassword, setNewPassword] = useState();
   const [code, setCode] = useState();
 
   const clear = () => {
@@ -30,6 +31,7 @@ const Login = () => {
     setUsername('');
     setPassword('');
     setCode('');
+    setNewPassword('');
   };
 
   const [key, setKey] = useState('password');
@@ -49,6 +51,12 @@ const Login = () => {
     manual: true, ready: true,
   });
 
+  const {
+    run: findPass, error: findPassError, data: findPassSuccess, loading: findPassLoading
+  } = useRequest(findUserPassword, {
+    manual: true, ready: true,
+  });
+
   const loginOk = (token) => {
     cookie.set('jetlink-token', token);
     setTimeout(() => {
@@ -62,6 +70,7 @@ const Login = () => {
   const tip = () => {
     let error = '';
     let success = '';
+    let successText = '登录成功，请稍候...';
     switch (key) {
       case 'password':
         error = loginError;
@@ -72,7 +81,9 @@ const Login = () => {
         success = phoneLoginSuccess;
         break;
       case 'find':
-        console.log(key);
+        error = findPassError;
+        success = findPassSuccess;
+        successText = '密码找回成功,请重新登录';
         break;
       case 'user':
         console.log(key);
@@ -82,7 +93,7 @@ const Login = () => {
     }
     return <div style={{marginTop: 16}}>
       {error && <Alert message={error?.message || phoneLoginError?.message} type="error" />}
-      {success && <Alert message="登录成功，请稍候..." type="success" />}
+      {success && <Alert message={successText} type="success" />}
     </div>;
   };
 
@@ -95,7 +106,18 @@ const Login = () => {
         code={code}
         setCode={setCode}
       />
-      <Password password={password} setPassword={setPassword} />
+      <Password
+        autoComplete="new-password"
+        placeholder="设置新密码 (6-18位字符组成)"
+        password={password}
+        setPassword={setPassword}
+      />
+      <Password
+        autoComplete="new-password"
+        placeholder="确认新密码 (6-18位字符组成)"
+        password={newPassword}
+        setPassword={setNewPassword}
+      />
     </>
   }, {
     label: '人工申诉', key: 'user', children: <div style={{padding: 24, textAlign: 'center'}}>
@@ -118,6 +140,13 @@ const Login = () => {
       />
     </>
   },];
+
+  const buttonText = () => {
+    if (key === 'find') {
+      return (findPassLoading) ? '找回密码中' : '找回密码';
+    }
+    return (loading || phoneLoginLoading) ? '登录中' : '登录';
+  };
 
   return <div className={style.login}>
     <div className={style.box}>
@@ -143,7 +172,7 @@ const Login = () => {
 
         {key !== 'user' && <Button
           htmlType="submit"
-          loading={loading || phoneLoginLoading}
+          loading={loading || phoneLoginLoading || findPassLoading}
           onClick={async () => {
             let token = '';
             let loginInfo = '';
@@ -161,7 +190,16 @@ const Login = () => {
                 loginInfo = JSON.stringify({customerName: corporateName});
                 break;
               case 'find':
-                console.log(key);
+                if (password !== newPassword) {
+                  message.warn('两次密码输入不一致！');
+                  return;
+                } else if (!/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/.test(password)) {
+                  message.warn('密码包含6~18位字母、数字、特殊符号的2种或多种组合！');
+                  return;
+                }
+                findPass({
+                  data: {account: phone, code, customerName: corporateName, password}
+                });
                 break;
               case 'user':
                 console.log(key);
@@ -175,7 +213,7 @@ const Login = () => {
             }
           }}
           className={style.btn}
-        >{(loading || phoneLoginLoading) ? '登录中' : '登录'}</Button>}
+        >{buttonText()}</Button>}
 
         {tip()}
 

@@ -99,6 +99,8 @@ export const Phone = (
 
 export const Password = (
   {
+    autoComplete,
+    placeholder,
     password = '',
     setPassword = () => {
     },
@@ -111,9 +113,10 @@ export const Password = (
       <LockOutlined/>
     </div>
     <input
+      autoComplete={autoComplete}
       onBlur={() => setBlur(false)}
       onFocus={() => setBlur(true)}
-      placeholder="请输入密码"
+      placeholder={placeholder || '请输入密码'}
       onChange={e => setPassword(e.target.value)}
       value={password}
       type="password"

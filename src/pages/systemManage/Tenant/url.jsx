@@ -41,6 +41,16 @@ export const customerDelete = {
   method: 'POST',
 };
 
+export const customerFrozen = {
+  url: '/customer/frozen',
+  method: 'GET',
+};
+
+export const customerThaw = {
+  url: '/customer/thaw',
+  method: 'GET',
+};
+
 export const customerStart = {
   url: '/customer/start',
   method: 'POST',

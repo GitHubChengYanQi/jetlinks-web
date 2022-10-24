@@ -9,6 +9,7 @@ import Cascader from '@/components/Cascader';
 import {deviceAdd, deviceEdit} from '@/pages/equipment/Equipment/url';
 import store from '@/store';
 import {useRequest} from '@/util/Request';
+import InputNumber from '@/components/InputNumber';
 
 
 const Save = props => {

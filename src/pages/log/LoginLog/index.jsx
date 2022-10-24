@@ -11,6 +11,7 @@ import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 
 const LoginLog = () => {
@@ -31,7 +32,7 @@ const LoginLog = () => {
   const columns = [
     {title: '登录时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
     {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)}/>},
     {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '登录内容',
