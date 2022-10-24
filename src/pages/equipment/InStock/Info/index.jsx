@@ -38,6 +38,7 @@ const Info = ({
         <Descriptions.Item label="设备类别">{data.categoryName}</Descriptions.Item>
         <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
         <Descriptions.Item label="设备MAC地址">{data.mac}</Descriptions.Item>
+        <Descriptions.Item label="批次">{data.batchCoding}</Descriptions.Item>
       </Descriptions>
 
       <Descriptions

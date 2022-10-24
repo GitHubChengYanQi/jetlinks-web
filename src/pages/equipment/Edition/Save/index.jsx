@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Checkbox, Modal, Select as AntSelect, Spin,Form} from 'antd';
-import {deviceSelectList} from '@/pages/equipment/Batch/url';
-import Select from '@/components/Select';
+import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 
 export const Check = (
   {
@@ -76,7 +75,7 @@ const Save = props => {
               {required: true, message: '请选择批次'},
             ]}
           >
-            <Select api={deviceSelectList} placeholder="请选择批次" />
+            <SelectBatch />
           </Form.Item>
           <Form.Item
             key="pz"

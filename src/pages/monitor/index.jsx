@@ -37,6 +37,7 @@ import DI from '@/pages/monitor/components/DI';
 import DO from '@/pages/monitor/components/DO';
 import RS232 from '@/pages/monitor/components/RS232';
 import {isObject} from '@/util/Tools';
+import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 
 const Monitor = () => {
 
@@ -159,6 +160,7 @@ const Monitor = () => {
       />
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="批次" name="batchId" component={SelectBatch} />
       <div style={{display: 'none'}}>
         <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
       </div>

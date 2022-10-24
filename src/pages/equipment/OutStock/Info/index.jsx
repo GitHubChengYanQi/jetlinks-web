@@ -43,6 +43,7 @@ const Info = ({
         <Descriptions.Item label="设备型号">{deviceResult.modelName}</Descriptions.Item>
         <Descriptions.Item label="所属客户">{data.deviceResult?.customerName}</Descriptions.Item>
         <Descriptions.Item label="设备MAC地址">{deviceResult.mac}</Descriptions.Item>
+        <Descriptions.Item label="批次">{data.batchCoding}</Descriptions.Item>
       </Descriptions>
 
       <Descriptions

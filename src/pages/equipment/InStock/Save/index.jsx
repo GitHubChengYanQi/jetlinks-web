@@ -6,8 +6,7 @@ import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
-import InputNumber from '@/components/InputNumber';
-import {deviceSelectList} from '@/pages/equipment/Batch/url';
+import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 
 
 const Save = ({data, success, close, visible}) => {
@@ -52,7 +51,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入设备MAC'},
         ]}
       >
-        <Input placeholder="请输入设备MAC" />
+        <Input placeholder="请输入设备MAC"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.cardNumber}
@@ -63,7 +62,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入设备使用的物联网卡号'},
         ]}
       >
-        <Input placeholder="请输入设备使用的物联网卡号" />
+        <Input placeholder="请输入设备使用的物联网卡号"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.categoryId}
@@ -89,7 +88,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择设备型号'},
         ]}
       >
-        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号" />
+        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
       </Form.Item>
       <Form.Item
         initialValue={data?.batchId}
@@ -100,7 +99,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择批次'},
         ]}
       >
-        <Select api={deviceSelectList} placeholder="请选择批次" />
+        <SelectBatch/>
       </Form.Item>
       <Form.Item
         initialValue={data?.instockTime || new Date()}
@@ -111,7 +110,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择入库时间'},
         ]}
       >
-        <DatePicker />
+        <DatePicker/>
       </Form.Item>
     </AntForm>
   );
