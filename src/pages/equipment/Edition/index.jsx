@@ -14,6 +14,8 @@ import DatePicker from '@/components/DatePicker';
 import {deviceList} from '@/pages/equipment/Equipment/url';
 import {ActionButton, PrimaryButton} from '@/components/Button';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
+import Select from '@/components/Select';
+import {deviceSelectList} from '@/pages/equipment/Batch/url';
 
 const formActionsPublic = createFormActions();
 
@@ -80,6 +82,7 @@ const Edition = ({value = {}}) => {
       <FormItem label="终端备注" name="remarks" component={Input}/>
       <FormItem label="登记名称" name="name" component={Input}/>
       <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="批次" name="batchId" component={Select} api={deviceSelectList} />
       <FormItem label="设备型号" name="modelId" component={SelectModle}/>
       <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
     </>;

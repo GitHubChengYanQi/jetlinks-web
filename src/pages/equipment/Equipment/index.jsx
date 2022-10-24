@@ -26,6 +26,8 @@ import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle'
 import Modal from '@/components/Modal';
 import Edition from '@/pages/equipment/Edition';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
+import Select from '@/components/Select';
+import {deviceSelectList} from '@/pages/equipment/Batch/url';
 
 const formActionsPublic = createFormActions();
 
@@ -129,6 +131,11 @@ const Equipment = () => {
     {
       title: '设备MAC地址',
       dataIndex: 'mac',
+      align: 'center',
+      render: (text) => <Render width={120} text={text} />
+    },{
+      title: '批次',
+      dataIndex: 'batchCoding',
       align: 'center',
       render: (text) => <Render width={120} text={text} />
     },
@@ -279,6 +286,7 @@ const Equipment = () => {
       <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="批次" name="batchId" component={Select} api={deviceSelectList} />
       <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
       <FormItem label="离线时间" name="time" component={DatePicker} RangePicker />
     </>;

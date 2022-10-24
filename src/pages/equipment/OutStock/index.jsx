@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Space, Dropdown, Menu, Input, Select as AntSelect, Button, message} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Info from '@/pages/equipment/OutStock/Info';
@@ -11,18 +12,15 @@ import {
   outStockDownloadTemplate, outStockImport, outstockList, outstockUnbind
 } from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';
-import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Save from '@/pages/equipment/OutStock/Save';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import {useRequest} from '@/util/Request';
-import SelectCategory from '@/pages/equipment/OutStock/Save/components/SelectCategory';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
-import moment from 'moment';
+import {deviceSelectList} from '@/pages/equipment/Batch/url';
 
 const OutStock = () => {
 
@@ -91,6 +89,11 @@ const OutStock = () => {
     align: 'center',
     render: (value = {}) => <Render text={value?.mac} />
   }, {
+    title: '批次',
+    dataIndex: 'batchCoding',
+    align: 'center',
+    render: (value ) => <Render text={value} />
+  }, {
     title: '出库人员',
     dataIndex: 'userName',
     align: 'center',
@@ -139,6 +142,7 @@ const OutStock = () => {
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="设备查询" name="name" component={Input} />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
+      <FormItem label="批次" name="batchId" component={Select} api={deviceSelectList} />
       <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
       <FormItem
         label="设备状态"

@@ -22,6 +22,8 @@ import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
+import Select from '@/components/Select';
+import {deviceSelectList} from '@/pages/equipment/Batch/url';
 
 const formActionsPublic = createFormActions();
 
@@ -115,6 +117,7 @@ const InStock = (
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="登记名称" name="name" component={Input} />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
+      <FormItem label="批次" name="batchId" component={Select} api={deviceSelectList} />
       <FormItem
         label="设备状态"
         name="status"
