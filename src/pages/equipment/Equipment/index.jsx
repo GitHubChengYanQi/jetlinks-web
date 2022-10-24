@@ -200,7 +200,11 @@ const Equipment = () => {
       title: '质保时间',
       dataIndex: 'closingDate',
       align: 'center',
-      render: (text) => <Render width={150} className={moment(text).diff(moment(new Date()))> 0 ? 'green' : 'red'} text={text} />
+      render: (text) => <Render
+        width={150}
+        className={moment(text).diff(moment(new Date())) > 0 ? 'green' : 'red'}
+        text={text ? moment(text).format('YYYY/MM/DD') : '-'}
+      />
     },
   ];
 
