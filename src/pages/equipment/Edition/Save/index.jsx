@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {Checkbox, Modal, Select, Spin,Form} from 'antd';
+import {Checkbox, Modal, Select as AntSelect, Spin,Form} from 'antd';
+import {deviceSelectList} from '@/pages/equipment/Batch/url';
+import Select from '@/components/Select';
 
 export const Check = (
   {
@@ -64,7 +66,17 @@ const Save = props => {
               {required: true, message: '请选择选择版本'},
             ]}
           >
-            <Select placeholder='请选择选择版本' options={[{label: 'V1.1.1', value: '1'}, {label: 'V1.1.2', value: '2'},]} />
+            <AntSelect placeholder='请选择选择版本' options={[{label: 'V1.1.1', value: '1'}, {label: 'V1.1.2', value: '2'},]} />
+          </Form.Item>
+          <Form.Item
+            key="batchId"
+            label="批次"
+            name="batchId"
+            rules={[
+              {required: true, message: '请选择批次'},
+            ]}
+          >
+            <Select api={deviceSelectList} placeholder="请选择批次" />
           </Form.Item>
           <Form.Item
             key="pz"

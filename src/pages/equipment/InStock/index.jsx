@@ -69,7 +69,7 @@ const InStock = (
     {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
     {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},
     {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
-    {title: '入库批次', dataIndex: 'batch', align: 'center', render: (text) => <Render width={120} text={text} />},
+    {title: '入库批次', dataIndex: 'batchCoding', align: 'center', render: (text) => <Render width={120} text={text} />},
     {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
     {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
@@ -197,13 +197,11 @@ const InStock = (
     }} />
     <BatchImport
       columns={[
-        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
         {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
         {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
+        {title: '批次', dataIndex: 'batch', align: 'center', render: (text) => <Render text={text} />},
       ]}
       api={instockImport}
       templeteApi={instockDownloadTemplate}

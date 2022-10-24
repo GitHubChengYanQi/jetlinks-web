@@ -13,6 +13,7 @@ const DatePicker = (
     showTime,
     width,
     style,
+    picker,
     RangePicker,
   }) => {
 
@@ -32,6 +33,7 @@ const DatePicker = (
       }}/>;
   }
   return <AntDatePicker
+    picker={picker}
     disabled={disabled}
     disabledDate={disabledDate}
     style={{...style, width: width || null}}

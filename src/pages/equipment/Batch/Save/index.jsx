@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {Input, Form} from 'antd';
 import AntForm from '@/components/AntForm';
-import {instockAdd, instockEdit} from '@/pages/equipment/InStock/url';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import DatePicker from '@/components/DatePicker';
 import InputNumber from '@/components/InputNumber';
-import {deviceSelectList} from '@/pages/equipment/Batch/url';
+import {deviceBatchAdd} from '@/pages/equipment/Batch/url';
 
 
 const Save = ({data, success, close, visible}) => {
@@ -20,23 +19,14 @@ const Save = ({data, success, close, visible}) => {
         setCategoryId(null);
       }}
       apis={{
-        add: instockAdd,
-        edit: instockEdit,
+        add: deviceBatchAdd,
       }}
-      title="入库"
+      title="批次"
       initialValues={data}
       rowKey="instockId"
       success={success}
       visible={visible}
       close={close}
-      format={(values) => {
-        const position = values.position || [];
-        return {
-          ...values,
-          longitude: position[0],
-          latitude: position[1],
-        };
-      }}
       onValuesChange={(values) => {
         if (values.categoryId) {
           setCategoryId(values.categoryId);
@@ -44,29 +34,26 @@ const Save = ({data, success, close, visible}) => {
       }}
     >
       <Form.Item
-        initialValue={data?.mac}
-        key="MAC"
-        label="设备MAC"
-        name="MAC"
+        key="time"
+        label="选择时间"
+        name="time"
         rules={[
-          {required: true, message: '请输入设备MAC'},
+          {required: true, message: '请选择时间'},
         ]}
       >
-        <Input placeholder="请输入设备MAC" />
+        <DatePicker picker="month" placeholder="请选择时间" />
       </Form.Item>
       <Form.Item
-        initialValue={data?.cardNumber}
-        key="cardNumber"
-        label="物联网卡号"
-        name="cardNumber"
+        key="batchNo"
+        label="批次号"
+        name="batchNo"
         rules={[
-          {required: true, message: '请输入设备使用的物联网卡号'},
+          {required: true, message: '请输入批次号'},
         ]}
       >
-        <Input placeholder="请输入设备使用的物联网卡号" />
+        <Input placeholder="请输入批次号" />
       </Form.Item>
       <Form.Item
-        initialValue={data?.categoryId}
         key="categoryId"
         label="设备类别"
         name="categoryId"
@@ -81,7 +68,6 @@ const Save = ({data, success, close, visible}) => {
         />
       </Form.Item>
       <Form.Item
-        initialValue={data?.modelId}
         key="modelId"
         label="设备型号"
         name="modelId"
@@ -92,26 +78,24 @@ const Save = ({data, success, close, visible}) => {
         <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号" />
       </Form.Item>
       <Form.Item
-        initialValue={data?.batchId}
-        key="batchId"
-        label="批次"
-        name="batchId"
+        key="deviceNo"
+        label="设备号"
+        name="deviceNo"
         rules={[
-          {required: true, message: '请选择批次'},
+          {required: true, message: '请输入设备号'},
         ]}
       >
-        <Select api={deviceSelectList} placeholder="请选择批次" />
+        <Input placeholder="请输入设备号" />
       </Form.Item>
       <Form.Item
-        initialValue={data?.instockTime || new Date()}
-        key="instockTime"
-        label="入库时间"
-        name="instockTime"
+        key="qualityInspector"
+        label="质检员"
+        name="qualityInspector"
         rules={[
-          {required: true, message: '请选择入库时间'},
+          {required: true, message: '请输入质检员'},
         ]}
       >
-        <DatePicker />
+        <Input placeholder="请输入质检员" />
       </Form.Item>
     </AntForm>
   );

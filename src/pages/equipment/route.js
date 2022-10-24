@@ -47,6 +47,11 @@ const equipmentConfig = [
         name: '固件管理',
         component: lazy(() => import('@/pages/equipment/Firmware')),
       },
+      {
+        path: '/batch',
+        name: '批次管理',
+        component: lazy(() => import('@/pages/equipment/Batch')),
+      },
     ]
   },
 ];

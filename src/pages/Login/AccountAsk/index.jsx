@@ -306,7 +306,7 @@ const AccountAsk = (
                     label="可用短信条数"
                     name="total"
                   >
-                    <InputNumber placeholder="请输入租户可用短信条数" />
+                    <InputNumber disabled={success} placeholder="请输入租户可用短信条数" />
                   </Form.Item>
                 </Card>
               </Col>

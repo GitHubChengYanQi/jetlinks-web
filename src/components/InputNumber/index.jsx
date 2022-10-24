@@ -6,6 +6,7 @@ const InputNumber = (
     placeholder,
     onBlur = () => {
     },
+    disabled,
     value,
     width,
     onChange = () => {
@@ -18,6 +19,7 @@ const InputNumber = (
   const [number, setNumber] = useState(value);
 
   return <AntInputNumber
+    disabled={disabled}
     addonAfter={addonAfter}
     controls={false}
     min={min === undefined ? 1 : min}
