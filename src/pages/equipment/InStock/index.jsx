@@ -66,7 +66,6 @@ const InStock = (
         </Render>;
       }
     },
-    {title: '终端备注', dataIndex: 'remarks', align: 'center', render: (text) => <Render text={text} />},
     {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
     {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},

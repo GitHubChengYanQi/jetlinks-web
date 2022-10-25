@@ -64,13 +64,13 @@ const Save = ({success, close, visible, data = {}}) => {
     <Form.Item
       initialValue={data?.warranty}
       key="warranty"
-      label="质保时间"
+      label="质保时长"
       name="warranty"
       rules={[
-        {required: true, message: '请输入质保时间'},
+        {required: true, message: '请输入质保时长'},
       ]}
     >
-      <InputNumber addonAfter='月' placeholder="请输入质保时间"/>
+      <InputNumber addonAfter='月' placeholder="请输入质保时长"/>
     </Form.Item>
     <Form.Item
       initialValue={data?.outstockTime || new Date()}

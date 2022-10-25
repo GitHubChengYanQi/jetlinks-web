@@ -66,9 +66,7 @@ const OutStock = () => {
     dataIndex: 'deviceResult',
     align: 'center',
     render: (text) => <Render text={text?.customerName}/>
-  }, {
-    title: '终端备注', dataIndex: 'deviceResult', align: 'center', render: (value = {}) => <Render text={value?.remarks}/>
-  }, {
+  },  {
     title: '登记名称',
     dataIndex: 'deviceResult',
     align: 'center',
