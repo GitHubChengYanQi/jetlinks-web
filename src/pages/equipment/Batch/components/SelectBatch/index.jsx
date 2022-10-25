@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Select, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import {deviceBatchList} from '@/pages/equipment/Batch/url';
@@ -6,12 +6,20 @@ import {deviceBatchList} from '@/pages/equipment/Batch/url';
 const SelectBatch = ({
   value,
   onChange = () => {
-  }
+  },
+  modelId,
+  categoryId,
 }) => {
 
   const params = {limit: 10, page: 1};
 
-  const {loading, data, run} = useRequest({...deviceBatchList, params, data: {coding: value}});
+  const defaultData = {modelId, categoryId};
+
+  const {loading, data, run} = useRequest({...deviceBatchList, params}, {manual: true});
+
+  useEffect(() => {
+    run({data: {...defaultData}});
+  }, [modelId, categoryId]);
 
   const options = (!loading && data) ? data.map((item) => {
     return {
@@ -27,12 +35,13 @@ const SelectBatch = ({
     style={{width: '100%'}}
     showSearch
     filterOption={false}
-    notFoundContent={loading && <div style={{textAlign: 'center'}}><Spin/></div>}
+    notFoundContent={loading && <div style={{textAlign: 'center'}}><Spin /></div>}
     options={options}
     onSearch={(string) => {
       run({
         data: {
           coding: string,
+          ...defaultData
         },
         params
       });

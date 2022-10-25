@@ -13,6 +13,8 @@ const Save = ({data, success, close, visible}) => {
 
   const [categoryId, setCategoryId] = useState();
 
+  const [modelId, setModelId] = useState();
+
   return (
     <AntForm
       afterClose={() => {
@@ -39,6 +41,8 @@ const Save = ({data, success, close, visible}) => {
       onValuesChange={(values) => {
         if (values.categoryId) {
           setCategoryId(values.categoryId);
+        } else if (values.modelId) {
+          setModelId(values.modelId);
         }
       }}
     >
@@ -51,7 +55,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入设备MAC'},
         ]}
       >
-        <Input placeholder="请输入设备MAC"/>
+        <Input placeholder="请输入设备MAC" />
       </Form.Item>
       <Form.Item
         initialValue={data?.cardNumber}
@@ -62,7 +66,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请输入设备使用的物联网卡号'},
         ]}
       >
-        <Input placeholder="请输入设备使用的物联网卡号"/>
+        <Input placeholder="请输入设备使用的物联网卡号" />
       </Form.Item>
       <Form.Item
         initialValue={data?.categoryId}
@@ -88,7 +92,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择设备型号'},
         ]}
       >
-        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
+        <Select resh={categoryId} data={{categoryId}} api={deviceModelListSelect} placeholder="请选择设备所属型号" />
       </Form.Item>
       <Form.Item
         initialValue={data?.batchId}
@@ -99,7 +103,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择批次'},
         ]}
       >
-        <SelectBatch/>
+        <SelectBatch modelId={modelId} categoryId={categoryId} />
       </Form.Item>
       <Form.Item
         initialValue={data?.instockTime || new Date()}
@@ -110,7 +114,7 @@ const Save = ({data, success, close, visible}) => {
           {required: true, message: '请选择入库时间'},
         ]}
       >
-        <DatePicker/>
+        <DatePicker />
       </Form.Item>
     </AntForm>
   );
