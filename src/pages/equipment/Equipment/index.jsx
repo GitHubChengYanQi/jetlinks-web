@@ -132,7 +132,7 @@ const Equipment = () => {
       dataIndex: 'mac',
       align: 'center',
       render: (text) => <Render width={120} text={text} />
-    },{
+    }, {
       title: '批次',
       dataIndex: 'batchCoding',
       align: 'center',
@@ -142,7 +142,11 @@ const Equipment = () => {
       title: '设备版本',
       align: 'center',
       render: (value, record) => <Render>
-        <Button type="link" onClick={() => editionRef.current.open({deviceId: record.deviceId})}>管理设备版本</Button>
+        <Button type="link" onClick={() => editionRef.current.open({
+          deviceId: record.deviceId,
+          modelId: record.modelId,
+          categoryId: record.categoryId
+        })}>管理设备版本</Button>
       </Render>
     },
     {

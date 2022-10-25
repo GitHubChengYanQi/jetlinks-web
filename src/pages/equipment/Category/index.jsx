@@ -78,7 +78,7 @@ const Category = (
     {title: '所属设备型号种类', dataIndex: 'modelNum', align: 'center', render: (text) => <Render>{text || 0}</Render>},
     {
       title: '所属设备型号数量',
-      dataIndex: '3',
+      dataIndex: 'deviceNum',
       align: 'center',
       render: (text) => <Render className="green">{text || 0}</Render>
     },

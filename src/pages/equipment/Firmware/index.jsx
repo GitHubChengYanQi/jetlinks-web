@@ -18,7 +18,6 @@ import Note from '@/components/Note';
 const formActionsPublic = createFormActions();
 
 const Firmware = ({value = {}}) => {
-  console.log(value);
 
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');

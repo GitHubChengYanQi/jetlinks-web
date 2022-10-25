@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Checkbox, Modal, Select as AntSelect, Spin,Form} from 'antd';
+import {Checkbox, Modal, Select as AntSelect, Spin, Form} from 'antd';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
+import SelectFirmware from '@/pages/equipment/Firmware/components/SelectFirmware';
 
 export const Check = (
   {
@@ -19,16 +20,26 @@ export const Check = (
   </div>;
 };
 
-const Save = props => {
-
+const Save = (
+  {
+    modelId,
+    categoryId,
+    data = {},
+    visible,
+    success = () => {
+    },
+    close = () => {
+    },
+  }
+) => {
+  console.log(modelId, categoryId);
   const [loading,] = useState(false);
 
   const [form] = Form.useForm();
 
   const submitData = () => {
     form.validateFields().then((values) => {
-      console.log(values);
-      props.success();
+      success();
     });
   };
 
@@ -38,34 +49,33 @@ const Save = props => {
       afterClose={() => {
         form.resetFields();
       }}
-      title='版本升级'
-      open={props.visible}
+      title="版本升级"
+      open={visible}
       okText="确定"
       cancelText="取消"
       onOk={() => {
         submitData();
       }}
-      onCancel={() => props.close()}
+      onCancel={() => close()}
     >
       <Spin spinning={loading}>
         <Form form={form} labelCol={{span: 4}} wrapperCol={{span: 20}}>
           <Form.Item
-            initialValue={props.data.name}
             key="name"
             label="当前版本"
-            name='name'
+            name="name"
           >
-            <div>{props.data.v || '---'}</div>
+            <div>{data?.v || '---'}</div>
           </Form.Item>
           <Form.Item
             key="pid"
-            name='pid'
+            name="pid"
             label="选择版本"
             rules={[
               {required: true, message: '请选择选择版本'},
             ]}
           >
-            <AntSelect placeholder='请选择选择版本' options={[{label: 'V1.1.1', value: '1'}, {label: 'V1.1.2', value: '2'},]} />
+            <SelectFirmware modelId={modelId} categoryId={categoryId}  />
           </Form.Item>
           <Form.Item
             key="batchId"
@@ -75,11 +85,11 @@ const Save = props => {
               {required: true, message: '请选择批次'},
             ]}
           >
-            <SelectBatch />
+            <SelectBatch modelId={modelId} categoryId={categoryId} />
           </Form.Item>
           <Form.Item
             key="pz"
-            name='pz'
+            name="pz"
             labelCol={{span: 0}}
             wrapperCol={{span: 24}}
           >
