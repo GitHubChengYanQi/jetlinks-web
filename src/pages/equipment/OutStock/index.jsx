@@ -12,7 +12,6 @@ import {
   outStockDownloadTemplate, outStockImport, outstockList, outstockUnbind
 } from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';
-import Select from '@/components/Select';
 import Save from '@/pages/equipment/OutStock/Save';
 import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';

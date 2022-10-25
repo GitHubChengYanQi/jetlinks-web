@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Button, Descriptions, message, Spin} from 'antd';
+import {Button, Descriptions, message, Modal as AntModal, Spin} from 'antd';
 import {useRequest} from '@/util/Request';
 import {customerDetail, customerEdit, customerStart} from '@/pages/systemManage/Tenant/url';
 import DownloadFile from '@/components/DownloadFile';
@@ -19,8 +19,16 @@ const Info = ({
   const ref = useRef();
 
   const {loading, run} = useRequest(customerStart, {
+    response: true,
     manual: true,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if (res.errCode === 1001) {
+        AntModal.warn({
+          content: res.message,
+          okText: '确认'
+        });
+        return;
+      }
       message.success('通过成功！');
       success();
     }

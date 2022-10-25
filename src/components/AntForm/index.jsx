@@ -56,7 +56,6 @@ const AntForm = (
     manual: true,
     response: true,
     onSuccess: (res) => {
-      console.log(res);
       if (res.errCode === 1001) {
         if (typeof errorHandle === 'function') {
           errorHandle();
