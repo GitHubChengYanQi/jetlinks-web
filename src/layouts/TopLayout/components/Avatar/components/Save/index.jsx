@@ -3,6 +3,7 @@ import {Form, Input, message} from 'antd';
 import AntForm from '@/components/AntForm';
 import {changePwd, userAdd, userSave} from '@/Config/ApiUrl/system/user';
 import store from '@/store';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 
 const Save = ({
@@ -37,11 +38,11 @@ const Save = ({
           message.warn('密码包含6~18位字母、数字、特殊符号的2种或多种组合！');
           return false;
         }
-        return values;
+        return {...values,account:info?.account};
       }}
     >
       <Form.Item
-        initialValue={info?.account}
+        initialValue={AccountFormat(info?.account)}
         key="account"
         label="账号名称"
         name="account"
