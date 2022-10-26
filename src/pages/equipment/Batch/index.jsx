@@ -34,7 +34,7 @@ const Batch = () => {
 
   const [records, setResords] = useState([]);
 
-  const keys = records.map(item => item.instockId);
+  const keys = records.map(item => item.batchId);
 
   const {loading: stopLoading, run: stop} = useRequest(deviceStop, {
     manual: true,
