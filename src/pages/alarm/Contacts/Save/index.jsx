@@ -2,6 +2,7 @@ import React from 'react';
 import {Form, Input, Radio} from 'antd';
 import AntForm from '@/components/AntForm';
 import {contactAdd, contactEdit} from '@/pages/alarm/Contacts/url';
+import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 
 
 const Save = ({
@@ -57,7 +58,7 @@ const Save = ({
           {required: true, message: '请输入负责区域'},
         ]}
       >
-        <Input placeholder="请输入负责区域"/>
+        <SelectTopClass />
       </Form.Item>
       <Form.Item
         initialValue={data.phone}
