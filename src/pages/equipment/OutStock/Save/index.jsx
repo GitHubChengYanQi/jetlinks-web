@@ -1,57 +1,26 @@
 import React from 'react';
-import {Form, message, Modal} from 'antd';
+import {Form} from 'antd';
 import AntForm from '@/components/AntForm';
-import {outstockAdd, outstockEdit, outstockUnbind} from '@/pages/equipment/OutStock/url';
+import {outstockAdd, outstockEdit,} from '@/pages/equipment/OutStock/url';
 import DatePicker from '@/components/DatePicker';
-import SelectDevice from '@/pages/equipment/OutStock/Save/components/SelectDevice';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
-import {useRequest} from '@/util/Request';
 import InputNumber from '@/components/InputNumber';
 
 
-const Save = ({success, close, visible, data = {}}) => {
-
-  const {loading, run} = useRequest(outstockUnbind, {
-    manual: true,
-    onSuccess: () => {
-      message.success('解绑成功！');
-    }
-  });
-
-  const [form] = Form.useForm();
-
+const Save = ({success, close, visible}) => {
+  console.log(visible);
   return <AntForm
-    form={form}
     apis={{
       add: outstockAdd,
       edit: outstockEdit,
     }}
     title="出库"
-    initialValues={data}
     rowKey="outstockId"
     success={success}
     visible={visible}
     close={close}
-    errorHandle={() => {
-      Modal.confirm({
-        content: '设备已出库，确定解绑吗?',
-        onOk: () => run({data: {deviceIds:[form.getFieldValue('deviceId')]}})
-      });
-    }}
   >
     <Form.Item
-      key="deviceId"
-      label="设备MAC"
-      initialValue={data?.deviceId}
-      name="deviceId"
-      rules={[
-        {required: true, message: '请选择设备MAC'},
-      ]}
-    >
-      <SelectDevice disabled={data?.deviceId}/>
-    </Form.Item>
-    <Form.Item
-      initialValue={data?.customerId}
       key="customerId"
       label="所属客户"
       name="customerId"
@@ -62,7 +31,6 @@ const Save = ({success, close, visible, data = {}}) => {
       <SelectCustomer/>
     </Form.Item>
     <Form.Item
-      initialValue={data?.warranty}
       key="warranty"
       label="质保时长"
       name="warranty"
@@ -70,10 +38,9 @@ const Save = ({success, close, visible, data = {}}) => {
         {required: true, message: '请输入质保时长'},
       ]}
     >
-      <InputNumber addonAfter='月' placeholder="请输入质保时长"/>
+      <InputNumber addonAfter="月" placeholder="请输入质保时长"/>
     </Form.Item>
     <Form.Item
-      initialValue={data?.outstockTime || new Date()}
       key="outstockTime"
       label="出库时间"
       name="outstockTime"

@@ -1,51 +1,47 @@
-import React, {useRef, useState} from 'react';
-import {Button, Input, Space} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
 import Modal from '@/components/Modal';
 import InStock from '@/pages/equipment/InStock';
+import Save from '@/pages/equipment/OutStock/Save';
 
 const SelectDevice = ({
-  value,
-  onChange = () => {
+  visible,
+  success = () => {
   },
-  disabled
+  close = () => {
+  },
 }) => {
 
   const ref = useRef();
-  const inputRef = useRef();
 
-  const [device, setDevice] = useState({});
+  const [saveVisible, setSaveVisible] = useState(null);
 
-  const [mac, setMac] = useState();
+  useEffect(() => {
+    if (visible) {
+      ref.current.open(false);
+    } else {
+      ref.current.close();
+    }
+  }, [visible]);
 
   return <>
-    <Input
-      ref={inputRef}
-      disabled={disabled}
-      onFocus={() => {
-        ref.current.open(false);
-        inputRef.current.blur();
-      }}
-      value={value ? mac : null}
-      placeholder="请选择设备"
-    />
     <Modal
+      onClose={close}
       destroyOnClose={false}
       width={1200}
       headTitle="选择设备"
       ref={ref}
-      footer={<Space>
-        <Button onClick={() => ref.current.close()}>取消</Button>
-        <Button type="primary" onClick={() => {
-          setMac(device.mac);
-          onChange(device.deviceId);
-          ref.current.close();
-        }}>保存</Button>
-      </Space>}
     >
-      <InStock selectDevice={device} select onChange={(device) => {
-        setDevice(device || {});
-      }} />
+      <InStock select onChange={(devices) => {
+        setSaveVisible(devices);
+      }}/>
     </Modal>
+
+    <Save
+      visible={saveVisible}
+      close={() => setSaveVisible(null)}
+      data={saveVisible || {}}
+      success={success}
+    />
   </>;
 };
 

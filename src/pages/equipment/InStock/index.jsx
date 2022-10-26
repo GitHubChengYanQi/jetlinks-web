@@ -22,14 +22,12 @@ import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
-import Select from '@/components/Select';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 
 const formActionsPublic = createFormActions();
 
 const InStock = (
   {
-    selectDevice,
     select,
     onChange = () => {
     }
@@ -43,7 +41,7 @@ const InStock = (
 
   const [infoVisible, setInfoVisible] = useState();
 
-  const [records, setResords] = useState(selectDevice ? [selectDevice] : []);
+  const [records, setResords] = useState([]);
 
   const keys = records.map(item => item.instockId);
 
@@ -66,18 +64,18 @@ const InStock = (
         </Render>;
       }
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text} />},
-    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text} />},
-    {title: '入库批次', dataIndex: 'batchCoding', align: 'center', render: (text) => <Render width={120} text={text} />},
-    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text} />},
-    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '入库批次', dataIndex: 'batchCoding', align: 'center', render: (text) => <Render width={120} text={text}/>},
+    {title: '入库人员', dataIndex: 'userName', align: 'center', render: (text) => <Render width={200} text={text}/>},
+    {title: '操作时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
     {
       title: '入库时间',
       dataIndex: 'instockTime',
       align: 'center',
-      render: (text) => <Render width={200} text={text ? moment(text).format('YYYY-MM-DD') : '-'} />
+      render: (text) => <Render width={200} text={text ? moment(text).format('YYYY-MM-DD') : '-'}/>
     },
   ];
 
@@ -112,11 +110,11 @@ const InStock = (
 
   const searchForm = () => {
     return <>
-      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker />
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem label="设备型号" name="modelId" component={SelectModle} />
-      <FormItem label="批次" name="batchId" component={SelectBatch} />
+      <FormItem label="入库时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="登记名称" name="name" component={Input}/>
+      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
+      <FormItem label="批次" name="batchId" component={SelectBatch}/>
       <FormItem
         label="设备状态"
         name="status"
@@ -149,16 +147,18 @@ const InStock = (
       }}
       tableKey={select ? null : 'instock'}
       checkedRows={records}
-      onChangeRows={(records) => {
-        if (select) {
-          onChange(records[records.length - 1]);
-        }
-        setResords(select ? [records[records.length - 1] || {}] : records);
-      }}
-      noAction={select}
+      onChangeRows={setResords}
       selectedRowKeys={keys}
       ref={ref}
-      searchButtons={select ? null : [
+      searchButtons={select ? [
+        <PrimaryButton
+          disabled={records.length === 0}
+          key={0}
+          onClick={() => onChange(records)}
+        >
+          批量出库
+        </PrimaryButton>
+      ] : [
         <Dropdown key={1} overlay={inStockMenu} placement="bottom" trigger={['click', 'hover']}>
           <PrimaryButton>新增入库</PrimaryButton>
         </Dropdown>,
@@ -173,7 +173,9 @@ const InStock = (
       api={instockList}
       columns={columns}
       rowKey="instockId"
-      actionRender={(text, record) => (
+      actionRender={(text, record) => select ? (<PrimaryButton onClick={() => {
+        onChange([record]);
+      }}>出库</PrimaryButton>) : (
         <Space>
           <PrimaryButton onClick={() => {
             setInfoVisible(record);
@@ -188,7 +190,7 @@ const InStock = (
       )}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
     <Save data={saveVisible} visible={saveVisible} close={() => setSaveVisible(false)} success={(success) => {
       setSaveVisible(false);
       if (success) {
@@ -196,14 +198,14 @@ const InStock = (
       } else {
         ref.current.refresh();
       }
-    }} />
+    }}/>
     <BatchImport
       columns={[
-        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
-        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '批次', dataIndex: 'batch', align: 'center', render: (text) => <Render text={text} />},
+        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '批次', dataIndex: 'batch', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       api={instockImport}
       templeteApi={instockDownloadTemplate}

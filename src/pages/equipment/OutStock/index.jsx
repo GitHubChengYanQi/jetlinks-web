@@ -20,6 +20,7 @@ import {useRequest} from '@/util/Request';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
+import SelectDevice from '@/pages/equipment/OutStock/Save/components/SelectDevice';
 
 const OutStock = () => {
 
@@ -65,7 +66,7 @@ const OutStock = () => {
     dataIndex: 'deviceResult',
     align: 'center',
     render: (text) => <Render text={text?.customerName}/>
-  },  {
+  }, {
     title: '登记名称',
     dataIndex: 'deviceResult',
     align: 'center',
@@ -209,18 +210,16 @@ const OutStock = () => {
     />
 
     <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
-    <Save
-      visible={saveVisible}
+
+    <SelectDevice
       close={() => setSaveVisible(false)}
-      data={saveVisible || {}}
-      success={(success) => {
+      visible={saveVisible}
+      success={() => {
         setSaveVisible();
-        if (success) {
-          ref.current.submit();
-        } else {
-          ref.current.refresh();
-        }
-      }}/>
+        ref.current.submit();
+      }}
+    />
+
     <BatchImport
       columns={[{title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},]}
       api={outStockImport}
