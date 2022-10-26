@@ -165,7 +165,7 @@ const InStock = (
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3} onClick={() => {
+        <PrimaryButton disabled={keys.length === 0} key={3} onClick={() => {
           window.open(`${baseURI}/InStockExcel/export?authorization=${token}&instockIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

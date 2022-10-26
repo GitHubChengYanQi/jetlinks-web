@@ -98,7 +98,7 @@ const Batch = () => {
       ref={ref}
       searchButtons={[
         <PrimaryButton key={1} onClick={() => setSaveVisible({})}>新增批次</PrimaryButton>,
-        <PrimaryButton key={3} onClick={() => {
+        <PrimaryButton disabled={keys.length === 0} key={3} onClick={() => {
           window.open(`${baseURI}/DeviceBatchExcel/export?authorization=${token}&batchIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

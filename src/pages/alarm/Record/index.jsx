@@ -184,7 +184,7 @@ const Record = () => {
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3} onClick={() => {
+        <PrimaryButton disabled={keys.length === 0} key={3} onClick={() => {
           window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

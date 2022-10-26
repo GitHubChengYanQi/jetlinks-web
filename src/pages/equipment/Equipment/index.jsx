@@ -325,7 +325,7 @@ const Equipment = () => {
         <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
           <Button type="primary">批量操作</Button>
         </Dropdown>,
-        <Button type="primary" key={3} onClick={() => {
+        <Button disabled={keys.length === 0} type="primary" key={3} onClick={() => {
           window.open(`${baseURI}/deviceExcel/export?authorization=${token}&deviceIds=${keys}`);
         }}>导出</Button>
       ]}

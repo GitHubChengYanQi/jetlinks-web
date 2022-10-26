@@ -153,7 +153,7 @@ const Contacts = ({
         <Dropdown key={2} overlay={actionMenu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3} onClick={() => {
+        <PrimaryButton key={3} disabled={keys.length === 0} onClick={() => {
           window.open(`${baseURI}/ContactExcel/export?authorization=${token}&contactIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

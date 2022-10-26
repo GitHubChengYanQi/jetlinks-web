@@ -226,7 +226,7 @@ const Tenant = (
         <Dropdown disabled={keys.length === 0} key={1} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={2} onClick={() => {
+        <PrimaryButton disabled={keys.length === 0} key={2} onClick={() => {
           window.open(`${baseURI}/CustomerExcel/export?authorization=${token}&customerIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

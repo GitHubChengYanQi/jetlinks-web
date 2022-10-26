@@ -140,7 +140,7 @@ const Firmware = ({value = {}}) => {
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton key={3} onClick={() => {
+        <PrimaryButton disabled={keys.length === 0} key={3} onClick={() => {
           window.open(`${baseURI}/FirmwareExcel/export?authorization=${token}&firmWareIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

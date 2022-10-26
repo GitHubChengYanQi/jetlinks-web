@@ -94,7 +94,7 @@ const Edition = ({value = {}}) => {
       ref={ref}
       searchButtons={[
         <PrimaryButton key="1" onClick={() => setUpgradeVisible({})}>批量升级</PrimaryButton>,
-        <PrimaryButton key="2" onClick={() => {
+        <PrimaryButton disabled={keys.length === 0} key="2" onClick={() => {
           window.open(`${baseURI}/deviceExcel/export?authorization=${token}&deviceIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

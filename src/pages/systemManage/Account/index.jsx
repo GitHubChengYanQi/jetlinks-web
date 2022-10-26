@@ -153,6 +153,7 @@ const Account = () => {
       },
       {
         key: '2',
+        disabled:keys.length === 0,
         label: '导出',
         onClick: () => {
           window.open(`${baseURI}/UserExcel/export?authorization=${token}&userIds=${keys}`);

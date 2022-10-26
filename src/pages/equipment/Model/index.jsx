@@ -173,7 +173,7 @@ const Model = (
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <Button type="primary" key={3} onClick={() => {
+        <Button disabled={keys.length === 0} type="primary" key={3} onClick={() => {
           window.open(`${baseURI}/modelExcel/export?authorization=${token}&modelIds=${keys}`);
         }}>导出</Button>
       ]}

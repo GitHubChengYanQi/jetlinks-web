@@ -85,7 +85,7 @@ const LoginLog = () => {
           >
             批量删除</DangerButton>
         </Warning>,
-        <PrimaryButton key="1" onClick={() => {
+        <PrimaryButton key="1" disabled={keys.length === 0} onClick={() => {
           window.open(`${baseURI}/LoginLogExcel/export?authorization=${token}&logIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}

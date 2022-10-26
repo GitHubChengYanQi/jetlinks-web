@@ -99,7 +99,7 @@ const Grouping = () => {
             <Dropdown key={1} overlay={menu} placement="bottom">
               <Button type="primary">新建分组</Button>
             </Dropdown>,
-            <Button key={2} type="primary" onClick={() => {
+            <Button disabled={keys.length === 0} key={2} type="primary" onClick={() => {
               window.open(`${baseURI}/DeviceClassifyExcel/export?authorization=${token}&classifyIds=${keys}`);
             }}>导出</Button>
           </Space>}

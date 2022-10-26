@@ -99,7 +99,7 @@ const OperationLog = () => {
             批量删除
           </DangerButton>
         </Warning>,
-        <PrimaryButton key="1" onClick={()=>{
+        <PrimaryButton key="1" disabled={keys.length === 0} onClick={()=>{
           window.open(`${baseURI}/LogExcel/export?authorization=${token}&operationLogIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}
