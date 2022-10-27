@@ -29,7 +29,7 @@ const AddContacts = (
         {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
         {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text}/>},
         {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
-        {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       dataSource={value}
       rowKey="contactId"
