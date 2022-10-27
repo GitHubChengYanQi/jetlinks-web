@@ -26,7 +26,6 @@ const SelectDevice = ({
   return <>
     <Modal
       onClose={close}
-      destroyOnClose={false}
       width={1200}
       headTitle="选择设备"
       ref={ref}
@@ -40,7 +39,10 @@ const SelectDevice = ({
       visible={saveVisible}
       close={() => setSaveVisible(null)}
       data={saveVisible || {}}
-      success={success}
+      success={() => {
+        setSaveVisible(null);
+        success();
+      }}
     />
   </>;
 };
