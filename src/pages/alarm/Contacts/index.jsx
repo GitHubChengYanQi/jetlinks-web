@@ -20,6 +20,7 @@ import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
+import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 
 const formActionsPublic = createFormActions();
 
@@ -47,7 +48,7 @@ const Contacts = ({
       align: 'center',
       render: (text) => <Render text={text} />
     },
-    {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
+    {title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
@@ -118,7 +119,7 @@ const Contacts = ({
     return <>
       <FormItem noLabel={noAction} label="姓名" name="name" component={Input} />
       <FormItem noLabel={noAction} label="职务" name="job" component={Input} />
-      <FormItem noLabel={noAction} label="负责区域" name="region" component={Input} />
+      <FormItem noLabel={noAction} label="负责区域" name="classifyId" component={SelectGroup} />
       <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input} />
       {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker />}
     </>;
@@ -186,7 +187,7 @@ const Contacts = ({
       columns={[
         {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
         {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text} />},
-        {title: '负责区域', dataIndex: 'region', align: 'center', render: (text) => <Render text={text} />},
+        {title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
         {title: '手机号', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text} />},
         {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
       ]}

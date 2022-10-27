@@ -6,6 +6,7 @@ import store from '@/store';
 
 const Group = (
   {
+    all,
     onChange = () => {
     },
     value,
@@ -49,7 +50,11 @@ const Group = (
         } : {});
       }}
       value={keys}
-      treeData={[{key: '0', title: '全部分组', children: formatData(dataSource.deviceClass)}]}
+      treeData={!all ? formatData(dataSource.deviceClass) : [{
+        key: '0',
+        title: '全部分组',
+        children: formatData(dataSource.deviceClass)
+      }]}
     />
 
     <Save

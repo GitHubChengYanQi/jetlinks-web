@@ -10,8 +10,7 @@ const SelectTopClass = ({
   checkable,
 }) => {
 
-
-  return <div style={{border: '1px solid #d9d9d9', padding: 8,maxHeight: '50vh', overflow: 'auto'}}>
+  return <div style={{border: '1px solid #d9d9d9', padding: 8, maxHeight: '50vh', overflow: 'auto'}}>
     <Group disabled={disabled} checkable={checkable} value={value} onChange={onChange} />
   </div>;
 };

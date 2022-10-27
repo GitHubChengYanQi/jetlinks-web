@@ -24,7 +24,7 @@ const LeftTree = ({onChange,noEmpty, showModules, close, open, firstKey, modelId
     items.push({
       key: '2',
       label: '设备分组',
-      children: <Group value={classifyId} onChange={onChange}/>
+      children: <Group all value={classifyId} onChange={onChange}/>
     });
   }
 

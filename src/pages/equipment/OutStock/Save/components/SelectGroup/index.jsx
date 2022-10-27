@@ -43,7 +43,7 @@ const SelectGroup = ({
       </Space>}
     >
       <div style={{padding: 24}}>
-        <Group value={module} onChange={(modelId, type, module) => {
+        <Group all value={module} onChange={(modelId, type, module) => {
           setGroup(module);
         }} />
       </div>
