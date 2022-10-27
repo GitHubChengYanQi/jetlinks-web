@@ -3,7 +3,6 @@ export const outstockAdd = {
   method: 'POST',
   rowKey:'outstockId'
 };
-
 export const outstockEdit = {
   url: '/outstock/edit',
   method: 'POST',
