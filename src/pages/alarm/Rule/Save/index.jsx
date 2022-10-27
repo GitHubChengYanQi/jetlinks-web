@@ -73,7 +73,7 @@ const Save = (
         setData({});
       }}
       loading={loading}
-      width={800}
+      width={1000}
       apis={{
         add: alarmAdd,
         edit: alarmEdit,

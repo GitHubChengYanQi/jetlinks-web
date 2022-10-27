@@ -36,6 +36,7 @@ const Section = ({
       disabled
     />
     <InputNumber
+      min={section[0] + 1}
       value={section[1]}
       className={styles.rightInput}
       style={{

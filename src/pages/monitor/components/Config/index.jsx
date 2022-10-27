@@ -97,7 +97,7 @@ const Config = ({
       title: '报警值',
       dataIndex: 'value',
       align: 'center',
-      width: 150,
+      width: 350,
       render: (text, record) => {
         if (record.alarmCondition === '6') {
           return show ? <>{text && [record.minNum, record.maxNum].join(' — ')}</> :
@@ -106,7 +106,7 @@ const Config = ({
             }}/>;
         }
         return show ? text : <Input
-          style={{width: 100}}
+          style={{width: 230}}
           value={text}
           placeholder="请输入报警值"
           onChange={({target: {value}}) => {
