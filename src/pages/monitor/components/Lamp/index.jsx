@@ -215,17 +215,6 @@ const Lamp = ({device = {}, date = []}) => {
       {isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
         switch (item.lineType) {
-          case 'WavyLine':
-            return <div key={index}>
-              {item.title}
-              <BrokenLine
-                data={sort(data[item.key] || [], lines)}
-                colors={lines.map(item => item.color)}
-                id={item.key}
-                // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
-                // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
-              />
-            </div>;
           case 'straightLine':
             return <div key={index}>
               {item.title}
@@ -237,7 +226,16 @@ const Lamp = ({device = {}, date = []}) => {
               />
             </div>;
           default:
-            return <></>;
+            return <div key={index}>
+              {item.title}
+              <BrokenLine
+                data={sort(data[item.key] || [], lines)}
+                colors={lines.map(item => item.color)}
+                id={item.key}
+                // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
+                // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
+              />
+            </div>;
         }
       })}
     </Card>
