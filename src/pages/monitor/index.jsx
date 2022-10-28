@@ -36,7 +36,7 @@ import AI from '@/pages/monitor/components/AI';
 import DI from '@/pages/monitor/components/DI';
 import DO from '@/pages/monitor/components/DO';
 import RS232 from '@/pages/monitor/components/RS232';
-import {isObject} from '@/util/Tools';
+import {isObject, queryString} from '@/util/Tools';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 
 const Monitor = () => {
@@ -116,15 +116,26 @@ const Monitor = () => {
         if (typeof text === 'object') {
           return <Render>-</Render>;
         }
+
+        let value = typeof text === 'number' ? text : (text || '-');
+        let color = 'green';
+
+        if (queryString('{grey}', value)) {
+          color = 'grey';
+          value = value.replace('{grey}', '');
+        } else if (queryString('{red}', value)) {
+          color = 'red';
+          value = value.replace('{red}', '');
+        }
         try {
-          return <Render style={{cursor: 'pointer'}} onClick={() => {
+          return <Render className={color} style={{cursor: 'pointer'}} onClick={() => {
             console.log(item.dataIndex);
             setDate([
               moment(new Date()).format('YYYY/MM/DD'),
               moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
             ]);
             setOpen({type: item.dataIndex, ...record});
-          }}>{typeof text === 'number' ? text : (text || '-')}</Render>;
+          }}>{value}</Render>;
         } catch (e) {
           return <Render text="-" />;
         }
@@ -286,14 +297,11 @@ const Monitor = () => {
           return currentDate && (currentDate < moment().subtract(7, 'days') || currentDate > moment().subtract(0, 'days'));
         }} />}
     >
-      {open.type === 'tyngdjc' && <GridPowerSupply />}
       {open.type === 'tyndcrl' && <SolarCellCapacity />}
-      {open.type === 'zgwljc' && <BackboneNetwork />}
-      {/* {open.type === 'combo' && <Combo/>} */}
       {['rtuid', 'network', 'RSSI', 'local1', 'local2', 'ETH', '4G', 'datastreams'].includes(open.type) &&
       <Network4G device={open} />}
       {/* {open.type === 'fsjc' && <AncillaryMonitoring device={open}/>} */}
-      {open.type === 'ttkz' && <ChannelControl device={open} />}
+      {/*{open.type === 'tyngdjc' && <ChannelControl device={open} />}*/}
       {['dwgdjc', 'sxsbjc'].includes(open.type) && <UplinkDevice device={open} />}
       {open.type === 'jrwk' && <AccessNetworkPort device={open} />}
       {open.type === 'dyjbs' && <WorkingVoltage device={open} />}

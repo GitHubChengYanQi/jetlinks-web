@@ -22,6 +22,10 @@ export const deviceDataM4012List = {url: '/deviceDataM4012/list', method: 'POST'
 export const deviceDataM4012BatchHandle = {url: '/deviceDataM4012/batchHandle', method: 'POST'};
 export const deviceDataM4012BatchEdit = {url: '/deviceDataM4012/edit', method: 'POST'};
 
+export const cpGwList = {url: '/cpGw/list', method: 'POST'};
+// export const deviceDataM4012BatchHandle = {url: '/deviceDataM4012/batchHandle', method: 'POST'};
+// export const deviceDataM4012BatchEdit = {url: '/deviceDataM4012/edit', method: 'POST'};
+
 
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
 
@@ -57,6 +61,11 @@ const Lamp = ({device = {}, date = []}) => {
         listApi = deviceDataM4012List;
         batchHandleApi = deviceDataM4012BatchHandle;
         handleApi = deviceDataM4012BatchEdit;
+        break;
+      case 'gwId':
+        listApi = cpGwList;
+        // batchHandleApi = deviceDataM4012BatchHandle;
+        // handleApi = deviceDataM4012BatchEdit;
         break;
       default:
         break;
@@ -121,7 +130,7 @@ const Lamp = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
@@ -223,11 +232,11 @@ const Lamp = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input}/>
+              <FormItem name="passage" initialValue={search} component={Input} />
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input}/>
+              <FormItem name="value" initialValue={search} component={Input} />
             </div>;
           default:
             break;
