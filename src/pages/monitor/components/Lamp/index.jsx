@@ -12,6 +12,8 @@ import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
 import {isArray} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
+import Control from '@/pages/monitor/Control';
+import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const signalLampEdit = {url: '/signalLamps/edit', method: 'POST'};
@@ -23,8 +25,8 @@ export const deviceDataM4012BatchHandle = {url: '/deviceDataM4012/batchHandle', 
 export const deviceDataM4012BatchEdit = {url: '/deviceDataM4012/edit', method: 'POST'};
 
 export const cpGwList = {url: '/cpGw/list', method: 'POST'};
-// export const deviceDataM4012BatchHandle = {url: '/deviceDataM4012/batchHandle', method: 'POST'};
-// export const deviceDataM4012BatchEdit = {url: '/deviceDataM4012/edit', method: 'POST'};
+export const cpGwBatchHandle = {url: '/cpGw/batchHandle', method: 'POST'};
+export const cpGwBatchEdit = {url: '/cpGw/handle', method: 'POST'};
 
 
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
@@ -38,6 +40,8 @@ const Lamp = ({device = {}, date = []}) => {
   const [type, setType] = useState();
 
   const [saveVisible, setSaveVisible] = useState();
+
+  const [control, setControl] = useState(false);
 
   const [search, setSearch] = useState();
 
@@ -64,8 +68,8 @@ const Lamp = ({device = {}, date = []}) => {
         break;
       case 'gwId':
         listApi = cpGwList;
-        // batchHandleApi = deviceDataM4012BatchHandle;
-        // handleApi = deviceDataM4012BatchEdit;
+        batchHandleApi = cpGwBatchHandle;
+        handleApi = cpGwBatchEdit;
         break;
       default:
         break;
@@ -130,7 +134,7 @@ const Lamp = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
   if (!chartData) {
@@ -174,6 +178,35 @@ const Lamp = ({device = {}, date = []}) => {
     ref.current.submit();
   };
 
+  let buttons = [];
+
+  switch (device.type) {
+    case 'tyngdjc':
+      buttons = [
+        {text: '重启总闸', content: '确定要远程重启总闸开关么？'}
+      ];
+      break;
+    case 'zgwljc':
+      buttons = [
+        {text: '网络测试', content: '确定要进行网络测试吗？'},
+        {text: '进入管理', content: '确定要进入管理吗？'}
+      ];
+      break;
+    case 'combo':
+      buttons = [
+        {text: 'Combo1端口控制', content: '确定要开启Combo1端口控制吗？'},
+        {text: 'Combo2端口控制', content: '确定要开启Combo2端口控制吗？？'}
+      ];
+      break;
+    case 'fsjc':
+      buttons = [
+        {text: '柜门控制', content: '确定打开柜门么？'}
+      ];
+      break;
+    default:
+      break;
+  }
+
   return <>
     <Card
       bodyStyle={{padding: 0}}
@@ -181,26 +214,44 @@ const Lamp = ({device = {}, date = []}) => {
     >
       {isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
-        return <div key={index}>
-          {item.title}
-          <BrokenLine
-            data={sort(data[item.key] || [], lines)}
-            colors={lines.map(item => item.color)}
-            id={item.key}
-            // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
-            // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
-          />
-        </div>;
+        switch (item.lineType) {
+          case 'WavyLine':
+            return <div key={index}>
+              {item.title}
+              <BrokenLine
+                data={sort(data[item.key] || [], lines)}
+                colors={lines.map(item => item.color)}
+                id={item.key}
+                // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
+                // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
+              />
+            </div>;
+          case 'straightLine':
+            return <div key={index}>
+              {item.title}
+              <StepLineChart
+                data={isArray(data[item.key])}
+                id={item.key}
+                // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
+                // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
+              />
+            </div>;
+          default:
+            return <></>;
+        }
       })}
     </Card>
 
     <Tabs
       tabBarExtraContent={<Space>
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
+        {isArray(chartData.button).map((item, index) => {
+          return <LinkButton key={index} onClick={() => setControl(true)}>{item?.title}</LinkButton>;
+        })}
         <Warning
           content="确定一键处理吗?"
           onOk={() => batchHandle({data: {deviceId: device.deviceId}})}>
-          <LinkButton>一件处理</LinkButton>
+          <LinkButton>一键处理</LinkButton>
         </Warning>
         {/* <LinkButton>导出</LinkButton> */}
       </Space>}
@@ -232,11 +283,11 @@ const Lamp = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input} />
+              <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input} />
+              <FormItem name="value" initialValue={search} component={Input}/>
             </div>;
           default:
             break;
@@ -313,6 +364,7 @@ const Lamp = ({device = {}, date = []}) => {
       }}
     />
 
+    <Control visible={control} data={buttons} onClose={() => setControl(false)}/>
 
   </>;
 };

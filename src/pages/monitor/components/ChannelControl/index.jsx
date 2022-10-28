@@ -2,12 +2,10 @@ import React from 'react';
 import {Space, Tabs} from 'antd';
 import {createFormActions} from '@formily/antd';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
-import {LinkButton, PrimaryButton} from '@/components/Button';
+import {PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
-import Broken from '@/pages/monitor/components/Chart/Broken';
 import {deviceStatusLogList} from '@/pages/monitor/url';
-import Warning from '@/components/Warning';
 
 const formActionsPublic = createFormActions();
 

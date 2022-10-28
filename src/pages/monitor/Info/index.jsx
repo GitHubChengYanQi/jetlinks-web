@@ -35,7 +35,7 @@ const Info = ({
     {...deviceData, data: {deviceId, modelId}},
     {
       onSuccess: (res) => {
-        setOtherData(res || []);
+        setOtherData(isArray(res));
       }
     }
   );
