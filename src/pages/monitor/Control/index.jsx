@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {message, Space} from 'antd';
+import {message, Space, Spin} from 'antd';
 import Modal from '@/components/Modal';
 import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
@@ -39,19 +39,21 @@ const Control = (
 
   return <>
     <Modal headTitle="远程控制" ref={ref} onClose={onClose}>
-      <div style={{padding: 24}}>
-        <Space direction="vertical" style={{width: '100%'}}>
-          {
-            isArray(data).map((item, index) => {
-              return <div key={index}>
-                <Warning content={`确定控制${item.title}？`} onOk={() => run({data: {MAC, buttonData: {key: item.key}}})}>
-                  <PrimaryButton style={{width: '100%'}} key={index}>{item.title}</PrimaryButton>
-                </Warning>
-              </div>;
-            })
-          }
-        </Space>
-      </div>
+      <Spin spinning={loading}>
+        <div style={{padding: 24}}>
+          <Space size={12} direction="vertical" style={{width: '100%'}}>
+            {
+              isArray(data).map((item, index) => {
+                return <div key={index}>
+                  <Warning content={`确定控制${item.title}？`} onOk={() => run({data: {MAC, buttonData: {key: item.key}}})}>
+                    <PrimaryButton style={{width: '100%'}} key={index}>{item.title}</PrimaryButton>
+                  </Warning>
+                </div>;
+              })
+            }
+          </Space>
+        </div>
+      </Spin>
     </Modal>
   </>;
 };

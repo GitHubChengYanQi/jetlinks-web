@@ -268,13 +268,6 @@ const Lamp = ({device = {}, date = []}) => {
       loading={editLoading || batchHandleLoading}
       isModal
       ref={ref}
-      onResponse={(res) => {
-        // if (!ref.current.formActions.getFieldValue('passage')) {
-        //   setPassage(res.search[0]);
-        //   listSubmit(res.search[0]);
-        // }
-        // setSearchs(res.search || []);
-      }}
       formSubmit={(values) => {
         return {
           ...listParams,
