@@ -28,6 +28,7 @@ ajaxService.interceptors.request.use((config) => {
 });
 
 ajaxService.interceptors.response.use((response) => {
+
   if (response.status !== 200) {
     throw new Error('网络错误');
   }

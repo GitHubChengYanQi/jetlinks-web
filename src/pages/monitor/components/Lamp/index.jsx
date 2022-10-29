@@ -134,7 +134,7 @@ const Lamp = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
@@ -178,35 +178,6 @@ const Lamp = ({device = {}, date = []}) => {
     ref.current.submit();
   };
 
-  let buttons = [];
-
-  switch (device.type) {
-    case 'tyngdjc':
-      buttons = [
-        {text: '重启总闸', content: '确定要远程重启总闸开关么？'}
-      ];
-      break;
-    case 'zgwljc':
-      buttons = [
-        {text: '网络测试', content: '确定要进行网络测试吗？'},
-        {text: '进入管理', content: '确定要进入管理吗？'}
-      ];
-      break;
-    case 'combo':
-      buttons = [
-        {text: 'Combo1端口控制', content: '确定要开启Combo1端口控制吗？'},
-        {text: 'Combo2端口控制', content: '确定要开启Combo2端口控制吗？？'}
-      ];
-      break;
-    case 'fsjc':
-      buttons = [
-        {text: '柜门控制', content: '确定打开柜门么？'}
-      ];
-      break;
-    default:
-      break;
-  }
-
   return <>
     <Card
       bodyStyle={{padding: 0}}
@@ -244,7 +215,10 @@ const Lamp = ({device = {}, date = []}) => {
       tabBarExtraContent={<Space>
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
         {isArray(chartData.button).map((item, index) => {
-          return <LinkButton key={index} onClick={() => setControl(true)}>{item?.title}</LinkButton>;
+          if (isArray(item.downDatas).length <= 0) {
+            return <div key={index} />;
+          }
+          return <LinkButton key={index} onClick={() => setControl(item.downDatas)}>{item?.title}</LinkButton>;
         })}
         <Warning
           content="确定一键处理吗?"
@@ -281,11 +255,11 @@ const Lamp = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input}/>
+              <FormItem name="passage" initialValue={search} component={Input} />
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input}/>
+              <FormItem name="value" initialValue={search} component={Input} />
             </div>;
           default:
             break;
@@ -362,7 +336,7 @@ const Lamp = ({device = {}, date = []}) => {
       }}
     />
 
-    <Control visible={control} data={buttons} onClose={() => setControl(false)}/>
+    <Control visible={control} MAC={device.mac} data={isArray(control)} onClose={() => setControl(false)} />
 
   </>;
 };
