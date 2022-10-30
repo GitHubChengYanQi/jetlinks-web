@@ -134,7 +134,7 @@ const Lamp = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
   if (!chartData) {
@@ -185,13 +185,21 @@ const Lamp = ({device = {}, date = []}) => {
     >
       {isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
+        const lineSort = isArray(item.sort);
         switch (item.lineType) {
           case 'straightLine':
             return <div key={index}>
               {item.title}
               <StepLineChart
-                data={isArray(data[item.key])}
+                data={isArray(data[item.key]).map(item => {
+                  const sortItem = lineSort.find(sItem => sItem.value === item.value);
+                  return {
+                    ...item,
+                    value: sortItem?.title,
+                  };
+                })}
                 id={item.key}
+                sort={lineSort.length > 0 && lineSort.map(item => item.title)}
                 // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
                 // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
               />
@@ -216,7 +224,7 @@ const Lamp = ({device = {}, date = []}) => {
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
         {isArray(chartData.button).map((item, index) => {
           if (isArray(item.downDatas).length <= 0) {
-            return <div key={index} />;
+            return <div key={index}/>;
           }
           return <LinkButton key={index} onClick={() => setControl(item.downDatas)}>{item?.title}</LinkButton>;
         })}
@@ -255,11 +263,11 @@ const Lamp = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input} />
+              <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input} />
+              <FormItem name="value" initialValue={search} component={Input}/>
             </div>;
           default:
             break;
@@ -329,7 +337,7 @@ const Lamp = ({device = {}, date = []}) => {
       }}
     />
 
-    <Control visible={control} MAC={device.mac} data={isArray(control)} onClose={() => setControl(false)} />
+    <Control visible={control} MAC={device.mac} data={isArray(control)} onClose={() => setControl(false)}/>
 
   </>;
 };

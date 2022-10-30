@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import * as G2 from '@antv/g2';
 
-const StepLineChart = ({data, id}) => {
+const StepLineChart = ({data, id, sort}) => {
 
 
   useEffect(() => {
@@ -15,7 +15,11 @@ const StepLineChart = ({data, id}) => {
     chart.source(data.map(item => ({...item, time: `${item.time}:00`})), {
       month: {
         range: [0, 1]
-      }
+      },
+      value: sort ? {
+        type: 'cat', // 声明 type 字段为分类类型
+        values: sort,// 重新显示的值
+      } : undefined
     });
     chart.line().position('time*value').shape('hv');
     chart.render();
