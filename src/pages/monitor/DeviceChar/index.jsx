@@ -33,7 +33,7 @@ export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'}
 
 const formActionsPublic = createFormActions();
 
-const Lamp = ({device = {}, date = []}) => {
+const DeviceChar = ({device = {}, date = []}) => {
 
   const ref = useRef();
 
@@ -134,7 +134,7 @@ const Lamp = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
@@ -224,9 +224,9 @@ const Lamp = ({device = {}, date = []}) => {
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
         {isArray(chartData.button).map((item, index) => {
           if (isArray(item.downDatas).length <= 0) {
-            return <div key={index}/>;
+            return <div key={index} />;
           }
-          return <LinkButton key={index} onClick={() => setControl(item.downDatas)}>{item?.title}</LinkButton>;
+          return <LinkButton key={index} onClick={() => setControl(item)}>{item?.title}</LinkButton>;
         })}
         <Warning
           content="确定一键处理吗?"
@@ -263,11 +263,11 @@ const Lamp = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input}/>
+              <FormItem name="passage" initialValue={search} component={Input} />
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input}/>
+              <FormItem name="value" initialValue={search} component={Input} />
             </div>;
           default:
             break;
@@ -337,9 +337,9 @@ const Lamp = ({device = {}, date = []}) => {
       }}
     />
 
-    <Control visible={control} MAC={device.mac} data={isArray(control)} onClose={() => setControl(false)}/>
+    <Control visible={control} MAC={device.mac} data={isArray(control?.downDatas)} search={isArray(control?.search)} onClose={() => setControl(false)} />
 
   </>;
 };
 
-export default Lamp;
+export default DeviceChar;

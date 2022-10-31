@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import {Input, Table, Select, Button, Space} from 'antd';
+import {Table, Select, Button, Space, InputNumber} from 'antd';
 import {DeleteOutlined} from '@ant-design/icons';
 import style from '@/components/Table/index.module.less';
 import Section from '@/pages/monitor/components/Config/components/Section';
 import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
 import Render from '@/components/Render';
-import {isArray} from '@/util/Tools';
 
 const Config = ({
   show,
@@ -40,10 +39,24 @@ const Config = ({
             {
               modelColumns.map((item, index) => {
                 const options = item || [];
+                let width = 0;
+                switch (modelColumns.length) {
+                  case 1:
+                    width = 300;
+                    break;
+                  case 2:
+                    width = 200;
+                    break;
+                  case 3:
+                    width = 100;
+                    break;
+                  default:
+                    break;
+                }
                 return <Select
                   key={index}
                   placeholder="请选择"
-                  style={{width: 100}}
+                  style={{width}}
                   bordered={!show}
                   open={show ? false : undefined}
                   suffixIcon={show && null}
@@ -61,7 +74,7 @@ const Config = ({
                       return text[filedIndex];
                     });
                     dataSourceChange({field: newFild, title: title.join(' ')}, record.key);
-                  }}/>;
+                  }} />;
               })
             }
           </Space>
@@ -80,6 +93,7 @@ const Config = ({
           {label: '>', value: '4'},
           {label: '<', value: '5'},
           {label: '<>', value: '6'},
+          {label: '开启报警', value: '7'},
         ];
         return <Select
           bordered={!show}
@@ -90,8 +104,15 @@ const Config = ({
           value={text}
           options={options}
           onChange={(alarmCondition) => {
-            dataSourceChange({alarmCondition}, record.key);
-          }}/>;
+            switch (alarmCondition) {
+              case '7':
+                dataSourceChange({alarmCondition, value: 1}, record.key);
+                break;
+              default:
+                dataSourceChange({alarmCondition,}, record.key);
+                break;
+            }
+          }} />;
       }
     }, {
       title: '报警值',
@@ -99,20 +120,25 @@ const Config = ({
       align: 'center',
       width: 350,
       render: (text, record) => {
-        if (record.alarmCondition === '6') {
-          return show ? <>{text && [record.minNum, record.maxNum].join(' — ')}</> :
-            <Section value={[record.minNum, record.maxNum]} onChange={(value = []) => {
-              dataSourceChange({minNum: value[0], maxNum: value[1]}, record.key);
-            }}/>;
+        switch (record.alarmCondition) {
+          case '7':
+          case '8':
+            return <></>;
+          case '6':
+            return show ? <>{text && [record.minNum, record.maxNum].join(' — ')}</> :
+              <Section value={[record.minNum, record.maxNum]} onChange={(value = []) => {
+                dataSourceChange({minNum: value[0], maxNum: value[1]}, record.key);
+              }} />;
+          default:
+            return show ? text : <InputNumber
+              style={{width: 230}}
+              value={text}
+              placeholder="请输入报警值"
+              onChange={(value) => {
+                dataSourceChange({value}, record.key);
+              }}
+            />;
         }
-        return show ? text : <Input
-          style={{width: 230}}
-          value={text}
-          placeholder="请输入报警值"
-          onChange={({target: {value}}) => {
-            dataSourceChange({value}, record.key);
-          }}
-        />;
       }
     },
   ];
@@ -126,7 +152,7 @@ const Config = ({
           const newData = dataSource.filter((item, index) => record.key !== index);
           setDataSource(newData);
         }}>
-          <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
+          <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
         </Warning>;
       }
     });

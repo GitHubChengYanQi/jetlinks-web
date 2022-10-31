@@ -7,6 +7,7 @@ const Select = (
   {
     value,
     api,
+    style,
     border,
     data: param = {},
     resh,
@@ -89,7 +90,7 @@ const Select = (
       showArrow={showArrow}
       disabled={disabled}
       placeholder={placeholder}
-      style={{width: width || '100%'}}
+      style={{width: width || '100%',...style}}
       value={valueArray}
       onChange={(value, option) => {
         onChange(value, option);

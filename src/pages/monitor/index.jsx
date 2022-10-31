@@ -11,30 +11,19 @@ import {
 } from 'antd';
 import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {getSearchParams} from 'ice';
-import moment from 'moment';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
 import Info from '@/pages/monitor/Info';
 import Render from '@/components/Render';
 import FormItem from '@/components/Table/components/FormItem';
 import styles from './index.module.less';
-import Network4G from '@/pages/monitor/components/4gNetwork';
-import DatePicker from '@/components/DatePicker';
 import {monitorList} from '@/pages/monitor/url';
 import {LinkButton} from '@/components/Button';
 import Table from '@/components/Table';
-import Lamp from '@/pages/monitor/components/Lamp';
-import SolarCellCapacity from '@/pages/monitor/components/SolarCellCapacity';
-import UplinkDevice from '@/pages/monitor/components/UplinkDevice';
-import AccessNetworkPort from '@/pages/monitor/components/AccessNetworkPort';
-import WorkingVoltage from '@/pages/monitor/components/WorkingVoltage';
-import WiredNetwork from '@/pages/monitor/components/WiredNetwork';
-import AI from '@/pages/monitor/components/AI';
-import DI from '@/pages/monitor/components/DI';
-import DO from '@/pages/monitor/components/DO';
-import RS232 from '@/pages/monitor/components/RS232';
 import {isObject, queryString} from '@/util/Tools';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
+import DateSelect from '@/pages/monitor/components/DateSelect';
+import DeviceChar from '@/pages/monitor/DeviceChar';
 
 const Monitor = () => {
 
@@ -111,7 +100,7 @@ const Monitor = () => {
       const children = item.children || [];
       const render = (text, record) => {
         if (typeof text === 'object') {
-          return <Render>-</Render>;
+          return <Render width={56}>-</Render>;
         }
 
         let value = typeof text === 'number' ? text : (text || '-');
@@ -125,16 +114,12 @@ const Monitor = () => {
           value = value.replace('{red}', '');
         }
         try {
-          return <Render className={color} style={{cursor: 'pointer'}} onClick={() => {
+          return <Render width={56} className={color} style={{cursor: 'pointer'}} onClick={() => {
             console.log(item.dataIndex);
-            setDate([
-              moment(new Date()).format('YYYY/MM/DD'),
-              moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
-            ]);
             setOpen({type: item.dataIndex, ...record});
           }}>{value}</Render>;
         } catch (e) {
-          return <Render text="-" />;
+          return <Render width={56} text="-" />;
         }
       };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
@@ -284,30 +269,11 @@ const Monitor = () => {
       className={styles.drawer}
       open={open.type}
       onClose={() => setOpen({})}
-      extra={<DatePicker
-        width={400}
-        RangePicker
-        value={date}
-        showTime
+      extra={<DateSelect
         onChange={setDate}
-        disabledDate={(currentDate) => {
-          return currentDate && (currentDate < moment().subtract(7, 'days') || currentDate > moment().subtract(0, 'days'));
-        }} />}
+      />}
     >
-      {open.type === 'tyndcrl' && <SolarCellCapacity />}
-      {['rtuid', 'network', 'RSSI', 'local1', 'local2', 'ETH', '4G', 'datastreams'].includes(open.type) &&
-      <Network4G device={open} />}
-      {/* {open.type === 'fsjc' && <AncillaryMonitoring device={open}/>} */}
-      {/*{open.type === 'tyngdjc' && <ChannelControl device={open} />}*/}
-      {['dwgdjc', 'sxsbjc'].includes(open.type) && <UplinkDevice device={open} />}
-      {open.type === 'jrwk' && <AccessNetworkPort device={open} />}
-      {open.type === 'dyjbs' && <WorkingVoltage device={open} />}
-      {open.type === 'dlbjs' && <WiredNetwork device={open} />}
-      {open.type === 'shbjs' && <AI device={open} />}
-      {open.type === 'bi' && <DI device={open} />}
-      {open.type === 'doo' && <DO device={open} />}
-      {['rS232', 'rs485'].includes(open.type) && <RS232 device={open} />}
-      <Lamp device={open} date={date} />
+      <DeviceChar device={open} date={date} />
     </Drawer>
 
   </>;

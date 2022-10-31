@@ -4,7 +4,7 @@ import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {alarmListSelect} from '@/pages/alarm/url';
 import Warning from '@/components/Warning';
-import {deviceEdit} from '@/pages/equipment/Equipment/url';
+import {deviceBindAlarm} from '@/pages/equipment/Equipment/url';
 import AlarmDetail from '@/pages/alarm/Rule/AlarmDetail';
 import {isArray} from '@/util/Tools';
 import RuleSave from '@/pages/alarm/Rule/Save';
@@ -38,7 +38,7 @@ const Save = (
 
   const [rules, setRules] = useState([]);
 
-  const {loading, run} = useRequest(deviceEdit, {
+  const {loading, run} = useRequest(deviceBindAlarm, {
     manual: true,
     onSuccess: () => {
       message.success('保存成功！');
@@ -46,7 +46,7 @@ const Save = (
     },
   });
 
-  const {loading: ruleListLoading, run: getRuleList,refresh} = useRequest(alarmListSelect, {
+  const {loading: ruleListLoading, run: getRuleList, refresh} = useRequest(alarmListSelect, {
     manual: true,
     onSuccess: (res) => {
       setRules(res);
@@ -75,7 +75,7 @@ const Save = (
       centered
       okText="保存"
       cancelText="取消"
-      okButtonProps={{loading}}
+      okButtonProps={{loading, disabled: data.filter(item => item.alarmId).length <= 0}}
       onOk={() => {
         run({
           data: {
