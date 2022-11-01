@@ -270,6 +270,7 @@ const Monitor = () => {
       open={open.type}
       onClose={() => setOpen({})}
       extra={<DateSelect
+        value={date}
         onChange={setDate}
       />}
     >
