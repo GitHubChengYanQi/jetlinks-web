@@ -133,10 +133,8 @@ const Info = ({
           {
             childrens.map((item, index) => {
               const childrenDatas = isArray(item.data);
-              let childrenColumn = 0;
               const childrenContent = [];
               childrenDatas.forEach(item => {
-                childrenColumn = item.length;
                 item.forEach(item => {
                   childrenContent.push(item);
                 });
