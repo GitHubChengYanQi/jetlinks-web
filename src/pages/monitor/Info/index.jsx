@@ -136,16 +136,16 @@ const Info = ({
             }
           </Descriptions>
           {
-            childrens.map((item, index) => {
-              const childrenDatas = isArray(item.data);
+            childrens.map((childrenItem, childrenIndex) => {
+              const childrenDatas = isArray(childrenItem.data);
               const childrenContent = [];
-              childrenDatas.forEach(item => {
-                item.forEach(item => {
-                  childrenContent.push(item);
+              childrenDatas.forEach(dataItem => {
+                dataItem.forEach(childrenContentItem => {
+                  childrenContent.push(childrenContentItem);
                 });
               });
-              return <div key={index}>
-                <div className={style.navTitle}>{item.title}</div>
+              return <div key={childrenIndex}>
+                <div className={style.navTitle}>{childrenItem.title}</div>
                 <Descriptions
                   column={6}
                   bordered
@@ -153,17 +153,22 @@ const Info = ({
                   style={{marginBottom: index === childrens.length - 1 ? 24 : 0}}
                 >
                   {
-                    childrenContent.map((item, index) => {
-                      const values = (item.value || '').split(',');
-                      return <Descriptions.Item key={index} label={item.key}>
+                    childrenContent.map((contentItem, contentIndex) => {
+                      const values = (contentItem.value || '').split(',');
+                      return <Descriptions.Item key={contentIndex} label={contentItem.key}>
                         {
-                          values.map((item, index) => {
+                          values.map((valueItem, valueIndex) => {
                             return <div
-                              key={index}
+                              key={valueIndex}
                               className={style.value}
-                              style={{borderRight: index === values.length - 1 && 'none'}}
+                              style={{borderRight: valueIndex === values.length - 1 && 'none',cursor:'pointer'}}
+                              onClick={()=>{
+                                if (contentItem.title){
+                                  open(contentItem.title);
+                                }
+                              }}
                             >
-                              {item || '-'}
+                              {valueItem || '-'}
                             </div>;
                           })
                         }
