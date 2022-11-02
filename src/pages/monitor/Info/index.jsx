@@ -12,13 +12,13 @@ import {isArray} from '@/util/Tools';
 
 const Info = ({
   deviceId,
-  modelId
+  modelId,
+  open = () => {
+  },
 }, ref) => {
 
   const [data, setData] = useState({});
   const [otherData, setOtherData] = useState([]);
-
-  console.log(otherData);
 
   const [saveVisible, setSaveVisible] = useState();
 
@@ -110,19 +110,24 @@ const Info = ({
             bordered
           >
             {
-              content.map((item, index) => {
-                const values = (item.value || '').split(',');
+              content.map((contentItem, contentIndex) => {
+                const values = (contentItem.value || '').split(',');
                 return <Descriptions.Item
-                  key={index}
-                  label={item.key}>
+                  key={contentIndex}
+                  label={contentItem.key}>
                   {
-                    values.map((item, index) => {
+                    values.map((valueItem, valueIndex) => {
                       return <div
-                        key={index}
+                        key={valueIndex}
                         className={style.value}
-                        style={{borderRight: index === values.length - 1 && 'none'}}
+                        style={{borderRight: valueIndex === values.length - 1 && 'none',cursor:'pointer'}}
+                        onClick={()=>{
+                          if (contentItem.title){
+                            open(contentItem.title);
+                          }
+                        }}
                       >
-                        {item || '-'}
+                        {valueItem || '-'}
                       </div>;
                     })
                   }
@@ -145,7 +150,7 @@ const Info = ({
                   column={6}
                   bordered
                   className={style.otherDescriptions}
-                  style={{marginBottom: index=== childrens.length - 1 ? 24 : 0}}
+                  style={{marginBottom: index === childrens.length - 1 ? 24 : 0}}
                 >
                   {
                     childrenContent.map((item, index) => {
