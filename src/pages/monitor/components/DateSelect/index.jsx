@@ -22,9 +22,9 @@ const DateSelect = (
   return (
     <Space>
       <Select style={{width: 100}} value={day} onChange={(value) => {
-        if (value){
-          onChange([moment().day(-value).format('YYYY/MM/DD 00:00:00'), moment().format('YYYY/MM/DD 23:59:59')]);
-        }else {
+        if (value) {
+          onChange([moment().add(-value, 'd').format('YYYY/MM/DD 00:00:00'), moment().format('YYYY/MM/DD 23:59:59')]);
+        } else {
           onChange([moment().format('YYYY/MM/DD 00:00:00'), moment().format('YYYY/MM/DD 23:59:59')]);
         }
         setDay(value);

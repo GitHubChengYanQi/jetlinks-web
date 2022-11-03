@@ -130,8 +130,7 @@ const Monitor = () => {
       dataIndex: '10',
       align: 'center',
       render: (text, record) => <Render className="green" width={100}>
-        <div hidden={!record.longitude}>E：{record.longitude}</div>
-        <div hidden={!record.latitude}>N：{record.latitude}</div>
+        <div hidden={!(record.longitude && record.latitude)}>自动：{record.longitude},{record.latitude}</div>
       </Render>
     },
     {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'} />},

@@ -218,7 +218,7 @@ const DeviceChar = ({device = {}, date = []}) => {
                   const sortItem = lineSort.find(sItem => sItem.value === item.value);
                   return {
                     ...item,
-                    value: sortItem?.title,
+                    value: sortItem?.title || '1',
                   };
                 })}
                 id={item.key}
