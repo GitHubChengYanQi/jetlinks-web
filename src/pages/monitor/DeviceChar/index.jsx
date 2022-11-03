@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Card, Input, message, Space, Tabs} from 'antd';
+import {Button, Card, Image, Input, message, Modal, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
+import pako from 'pako';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
@@ -14,6 +15,7 @@ import {isArray} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
+import {preview} from '@/components/DownloadFile';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const signalLampEdit = {url: '/signalLamps/edit', method: 'POST'};
@@ -46,6 +48,8 @@ const DeviceChar = ({device = {}, date = []}) => {
   const [search, setSearch] = useState();
 
   const [chartData, setChartData] = useState();
+
+  const [visible, setVisible] = useState(false);
 
   const [searchs, setSearchs] = useState([]);
   const [updateSearch, setUpdateSearch] = useState();
@@ -176,6 +180,25 @@ const DeviceChar = ({device = {}, date = []}) => {
         break;
     }
     ref.current.submit();
+  };
+
+  const getImgBase64 = (base64) => {
+    if (!base64) {
+      return '-';
+    }
+    const strData = atob(base64);
+    // Convert binary string to character-number array
+    const charData = strData.split('').map(function (x) {
+      return x.charCodeAt(0);
+    });
+    // Turn number array into byte-array
+    const binData = new Uint8Array(charData);
+    const imgBase64 = pako.inflate(binData, {to: 'string'});
+    return <Button
+      style={{padding: 0}}
+      type="link"
+      onClick={() => setVisible(`data:image/jpeg;base64,${imgBase64}`)}
+    >查看</Button>;
   };
 
   return <>
@@ -311,8 +334,16 @@ const DeviceChar = ({device = {}, date = []}) => {
             if (typeof value === 'object') {
               return <></>;
             }
+
+            if (item.filedType === 'image') {
+              return getImgBase64(value);
+            }
+
             return <Render
-              className={error ? 'red' : 'green'}>{typeof value === 'number' ? value : (value || '-')}</Render>;
+              className={error ? 'red' : 'green'}
+            >
+              {typeof value === 'number' ? value : (value || '-')}
+            </Render>;
           }
         };
       })}
@@ -337,7 +368,19 @@ const DeviceChar = ({device = {}, date = []}) => {
       }}
     />
 
-    <Control visible={control} MAC={device.mac} data={isArray(control?.downDatas)} search={isArray(control?.search)} onClose={() => setControl(false)} />
+    <Control
+      visible={control}
+      MAC={device.mac}
+      data={isArray(control?.downDatas)}
+      search={isArray(control?.search)}
+      onClose={() => setControl(false)}
+    />
+
+    <Modal width='auto' centered open={visible} footer={null} onCancel={() => setVisible(false)}>
+      <div style={{padding: 24, textAlign: 'center'}}>
+        <Image width={500} src={visible} />
+      </div>
+    </Modal>
 
   </>;
 };
