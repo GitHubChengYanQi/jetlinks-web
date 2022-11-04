@@ -11,7 +11,7 @@ import {useRequest} from '@/util/Request';
 import Save from '@/pages/monitor/Info/Save';
 import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
-import {isArray} from '@/util/Tools';
+import {isArray, queryString} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
@@ -321,16 +321,8 @@ const DeviceChar = ({device = {}, date = []}) => {
           align: 'center',
           dataIndex: item.key,
           render: (value, record) => {
-            let error = false;
-            switch (chartData.key) {
-              case 'signalLampId':
-                error = (record.alarmStatus || '').split(',').find(status => status === item.key);
-                break;
-              case 'mId':
-                break;
-              default:
-                break;
-            }
+            const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
+            const alarm = item.key && alarmFields.find(alarmItem => queryString(item.key, alarmItem));
             if (typeof value === 'object') {
               return <></>;
             }
@@ -340,7 +332,7 @@ const DeviceChar = ({device = {}, date = []}) => {
             }
 
             return <Render
-              className={error ? 'red' : 'green'}
+              className={alarm ? 'red' : 'green'}
             >
               {typeof value === 'number' ? value : (value || '-')}
             </Render>;
@@ -376,7 +368,7 @@ const DeviceChar = ({device = {}, date = []}) => {
       onClose={() => setControl(false)}
     />
 
-    <Modal width='auto' centered open={visible} footer={null} onCancel={() => setVisible(false)}>
+    <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
         <Image width={500} src={visible} />
       </div>

@@ -6,6 +6,7 @@ import Section from '@/pages/monitor/components/Config/components/Section';
 import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
 import Render from '@/components/Render';
+import {isArray} from '@/util/Tools';
 
 const Config = ({
   show,
@@ -26,6 +27,23 @@ const Config = ({
     });
     onChange(newDataSource);
     setDataSource(newDataSource);
+  };
+
+  const getBoolean = (field) => {
+    return isArray(field).find(fieldItem => {
+      let type;
+      modelColumns.find(item => {
+        const object = item.find(item => {
+          return item.key === fieldItem;
+        });
+        if (object?.conditionType) {
+          type = object.conditionType;
+          return true;
+        }
+        return false;
+      });
+      return type === 'boolean';
+    });
   };
 
   const columns = [
@@ -73,7 +91,13 @@ const Config = ({
                       }
                       return text[filedIndex];
                     });
-                    dataSourceChange({field: newFild, title: title.join(' ')}, record.key);
+                    const boolean = getBoolean(newFild);
+                    dataSourceChange({
+                      field: newFild,
+                      title: title.join(' '),
+                      booleanType: boolean,
+                      alarmCondition: boolean ? '7' : '1'
+                    }, record.key);
                   }} />;
               })
             }
@@ -86,14 +110,16 @@ const Config = ({
       align: 'center',
       width: 150,
       render: (text, record) => {
-        const options = [
+        const boolean = getBoolean(record.field);
+        const options = boolean ? [
+          {label: '=', value: '7'}
+        ] : [
           {label: '=', value: '1'},
           {label: '>=', value: '2'},
           {label: '<=', value: '3'},
           {label: '>', value: '4'},
           {label: '<', value: '5'},
           {label: '<>', value: '6'},
-          {label: '开启报警', value: '7'},
         ];
         return <Select
           bordered={!show}
@@ -122,8 +148,18 @@ const Config = ({
       render: (text, record) => {
         switch (record.alarmCondition) {
           case '7':
-          case '8':
-            return <></>;
+            return <Select
+              bordered={!show}
+              open={show ? false : undefined}
+              suffixIcon={show && null}
+              placeholder="请选择对应值"
+              value={text}
+              style={{width: 100}}
+              options={[{label: '真', value: 1}, {label: '假', value: 0}]}
+              onChange={(value) => {
+                dataSourceChange({value}, record.key);
+              }}
+            />;
           case '6':
             return show ? <>{text && [record.minNum, record.maxNum].join(' — ')}</> :
               <Section value={[record.minNum, record.maxNum]} onChange={(value = []) => {

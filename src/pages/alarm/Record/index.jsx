@@ -33,13 +33,13 @@ const Record = () => {
     return isArray(ruleConditionJson).map((item, index) => {
       if (max) {
         if (index > 2) {
-          return <div key={index}/>;
+          return <div key={index} />;
         } else if (index === 2) {
           return <div key={index}>
             <Tooltip color="#fff" title={() => {
               return ruleTypes(ruleConditionJson);
             }}>
-              <EllipsisOutlined/>
+              <EllipsisOutlined />
             </Tooltip>
           </div>;
         }
@@ -64,12 +64,22 @@ const Record = () => {
         case '6':
           alarmCondition = '<>';
           break;
+        case '7':
+          alarmCondition = '=';
+          break;
         default:
           break;
       }
+
+      let ruleValue = '';
+      if (alarmCondition === '7') {
+        ruleValue = (item.ruleValue === 1 ? '真' : '假');
+      } else {
+        ruleValue = item.ruleValue;
+      }
       return <div key={index} hidden={!item.protocolValue}>
         <Render className="green" key={index}>
-          {item.title} {alarmCondition} {item.ruleValue} ,当前值：{item.protocolValue}
+          {item.title} {alarmCondition} {ruleValue} ,当前值：{item.protocolValue}
         </Render>
       </div>;
     });
@@ -83,7 +93,7 @@ const Record = () => {
   });
 
   const columns = [
-    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '终端备注',
       dataIndex: 'remarks',
@@ -94,14 +104,14 @@ const Record = () => {
         }}>{text}</div>
       </Render>
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={150} text={text}/>
+      render: (text) => <Render width={150} text={text} />
     },
     {
       title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
@@ -116,18 +126,18 @@ const Record = () => {
         return <Render>{ruleTypes(ruleConditionJson, true)}</Render>;
       }
     },
-    {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
+    {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '所属客户',
       dataIndex: 'customerName',
       align: 'center',
-      render: (text) => <Render width={200} text={text || '-'}/>
+      render: (text) => <Render width={200} text={text || '-'} />
     },
     {
       title: '位置信息',
       dataIndex: 'area',
       align: 'center',
-      render: (text) => <Render width={150} text={text || '-'}/>
+      render: (text) => <Render width={150} text={text || '-'} />
     },
   ];
 
@@ -142,10 +152,10 @@ const Record = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker/>
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader}/>
+      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -153,12 +163,12 @@ const Record = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="报警类型" name="ruleConditionJson" component={Input}/>
-      <FormItem label="所属客户" name="customerId" component={SelectCustomer}/>
+      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="报警类型" name="ruleConditionJson" component={Input} />
+      <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
       <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input}/>
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
       </div>
     </>;
   };
