@@ -130,10 +130,10 @@ const Monitor = () => {
       dataIndex: '10',
       align: 'center',
       render: (text, record) => <Render className="green" width={100}>
-        <div hidden={!(record.longitude && record.latitude)}>自动：{record.longitude},{record.latitude}</div>
+        {(record.longitude && record.latitude) ? <div>自动：{record.longitude},{record.latitude}</div> : '-'}
       </Render>
     },
-    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render text={text || '-'} />},
+    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render>外网：{text || '-'}</Render>},
   ];
 
   const [close, setClose] = useState(false);

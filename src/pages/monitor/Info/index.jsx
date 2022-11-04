@@ -8,6 +8,7 @@ import Render from '@/components/Render';
 import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
 import {isArray} from '@/util/Tools';
+import classNames from 'classnames';
 
 
 const Info = ({
@@ -51,12 +52,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton />;
+    return <PageSkeleton/>;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-" />;
+      return <Render width={150} text="-"/>;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -70,7 +71,7 @@ const Info = ({
     <Descriptions
       column={3}
       className={style.descriptions}
-      style={{marginBottom: 24}}
+      // style={{marginBottom: 24}}
       title={<div className={style.title}>基础数据</div>}
       contentStyle={{color: '#000'}}
       bordered
@@ -103,10 +104,10 @@ const Info = ({
           <Descriptions
             key={index}
             column={column}
-            className={style.otherDescriptions}
+            className={classNames(content.length === 0 && style.noBorder, style.otherDescriptions)}
             title={<div className={style.title}>{item.title}</div>}
             contentStyle={{color: '#000'}}
-            style={{marginBottom: childrens.length > 0 ? 0 : 24}}
+            style={{marginTop: 24}}
             bordered
           >
             {
@@ -120,9 +121,9 @@ const Info = ({
                       return <div
                         key={valueIndex}
                         className={style.value}
-                        style={{borderRight: valueIndex === values.length - 1 && 'none',cursor:'pointer'}}
-                        onClick={()=>{
-                          if (contentItem.title){
+                        style={{borderRight: valueIndex === values.length - 1 && 'none', cursor: 'pointer'}}
+                        onClick={() => {
+                          if (contentItem.title) {
                             open(contentItem.title);
                           }
                         }}
@@ -144,13 +145,17 @@ const Info = ({
                   childrenContent.push(childrenContentItem);
                 });
               });
-              return <div key={childrenIndex}>
-                <div className={style.navTitle}>{childrenItem.title}</div>
+              return <div key={childrenIndex} style={{width: `${childrenItem.width || 100}%`,display:'inline-block'}}>
+                <div
+                  className={style.navTitle}
+                  style={{textAlign: childrenItem.align || 'center'}}
+                >
+                  {childrenItem.title}
+                </div>
                 <Descriptions
                   column={6}
                   bordered
                   className={style.otherDescriptions}
-                  style={{marginBottom: index === childrens.length - 1 ? 24 : 0}}
                 >
                   {
                     childrenContent.map((contentItem, contentIndex) => {
@@ -161,9 +166,9 @@ const Info = ({
                             return <div
                               key={valueIndex}
                               className={style.value}
-                              style={{borderRight: valueIndex === values.length - 1 && 'none',cursor:'pointer'}}
-                              onClick={()=>{
-                                if (contentItem.title){
+                              style={{borderRight: valueIndex === values.length - 1 && 'none', cursor: 'pointer'}}
+                              onClick={() => {
+                                if (contentItem.title) {
                                   open(contentItem.title);
                                 }
                               }}
@@ -188,7 +193,7 @@ const Info = ({
       className={style.descriptions}
       title={<div className={style.title}>运行数据</div>}
       bordered
-      style={{marginBottom: 24}}
+      style={{marginTop: 24}}
     >
       <Descriptions.Item label="软件版本">-</Descriptions.Item>
       <Descriptions.Item label="升级时间">-</Descriptions.Item>
