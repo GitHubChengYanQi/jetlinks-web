@@ -161,7 +161,7 @@ const Config = ({
               }}
             />;
           case '6':
-            return show ? <>{text && [record.minNum, record.maxNum].join(' — ')}</> :
+            return show ? <>{[record.minNum, record.maxNum].join('~')}</> :
               <Section value={[record.minNum, record.maxNum]} onChange={(value = []) => {
                 dataSourceChange({minNum: value[0], maxNum: value[1]}, record.key);
               }} />;
@@ -187,6 +187,7 @@ const Config = ({
         return <Warning onOk={() => {
           const newData = dataSource.filter((item, index) => record.key !== index);
           setDataSource(newData);
+          onChange(newData);
         }}>
           <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
         </Warning>;

@@ -85,7 +85,7 @@ const Save = (
       visible={visible}
       close={close}
       format={(values) => {
-        if (isArray(data.rules).length === 0 || isArray(data.rules).some(item => !item.field || !item.alarmCondition || !(typeof item.value === 'number' ? true : item.value))) {
+        if (isArray(data.rules).length === 0 || isArray(data.rules).some(item => !item.field || !item.alarmCondition || !(typeof item.value === 'number' ? true : (item.value || (typeof item.minNum === 'number' && typeof item.maxNum === 'number'))))) {
           message.warn('请完善报警规则!');
           return false;
         }

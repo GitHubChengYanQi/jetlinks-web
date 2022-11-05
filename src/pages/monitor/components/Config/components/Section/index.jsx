@@ -32,7 +32,7 @@ const Section = ({
         borderRight: 0,
         pointerEvents: 'none',
       }}
-      placeholder="———"
+      placeholder="~"
       disabled
     />
     <InputNumber
