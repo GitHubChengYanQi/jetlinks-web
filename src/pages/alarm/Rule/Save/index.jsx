@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Card, Form, Input, message, Spin} from 'antd';
+import {Alert, Card, Form, Input, message, Spin, Select as AntSelect} from 'antd';
 import styles from './index.module.less';
 import Config from '@/pages/monitor/components/Config';
 import {useRequest} from '@/util/Request';
@@ -129,6 +129,17 @@ const Save = (
             }
             setData({...data, modelId: value, rules: []});
           }} />
+        </Form.Item>
+        <Form.Item
+          initialValue={detail?.andOr || 0}
+          key="andOr"
+          label="报警条件"
+          name="andOr"
+          rules={[
+            {required: true, message: '请选择报警条件'},
+          ]}
+        >
+          <AntSelect placeholder="请选择报警条件" options={[{label: '全部条件满足', value: 1}, {label: '任意条件满足', value: 0}]} />
         </Form.Item>
       </Card>
       {getColumnsLoaing ? <Spin>

@@ -15,7 +15,7 @@ import {isArray, queryString} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
-import {preview} from '@/components/DownloadFile';
+import DatePicker from '@/components/DatePicker';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const signalLampEdit = {url: '/signalLamps/edit', method: 'POST'};
@@ -53,6 +53,9 @@ const DeviceChar = ({device = {}, date = []}) => {
 
   const [searchs, setSearchs] = useState([]);
   const [updateSearch, setUpdateSearch] = useState();
+
+  const [exportVisible, setExportVisble] = useState();
+  const [exportTime, setExportTime] = useState([]);
 
   let listApi = {};
   let batchHandleApi = {};
@@ -256,7 +259,7 @@ const DeviceChar = ({device = {}, date = []}) => {
           onOk={() => batchHandle({data: {deviceId: device.deviceId}})}>
           <LinkButton>一键处理</LinkButton>
         </Warning>
-        {/* <LinkButton>导出</LinkButton> */}
+        <LinkButton onClick={() => setExportVisble(true)}>导出</LinkButton>
       </Space>}
       activeKey={search}
       onTabClick={(key) => {
@@ -371,6 +374,20 @@ const DeviceChar = ({device = {}, date = []}) => {
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
         <Image width={500} src={visible} />
+      </div>
+    </Modal>
+
+    <Modal
+      onCancel={() => setExportVisble(false)}
+      title="数据导出"
+      okText="导出"
+      onOk={()=>{
+        console.log(exportTime);
+      }}
+      open={exportVisible}
+    >
+      <div style={{textAlign:'center'}}>
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
       </div>
     </Modal>
 

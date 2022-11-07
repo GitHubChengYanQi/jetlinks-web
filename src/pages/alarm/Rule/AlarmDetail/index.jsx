@@ -40,11 +40,12 @@ const AlarmDetail = ({
   return <>
     <Card className={styles.card} title={<div className={styles.title}>基本信息</div>} bordered={false}>
       <Descriptions
-        column={2}
+        column={3}
         bordered
       >
         <Descriptions.Item label="规则名称">{data.name}</Descriptions.Item>
         <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
+        <Descriptions.Item label="报警条件">{data.andOr ? '全部条件满足' : '任意条件满足'}</Descriptions.Item>
       </Descriptions>
     </Card>
 
