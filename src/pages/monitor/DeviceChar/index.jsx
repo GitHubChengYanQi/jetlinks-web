@@ -3,6 +3,9 @@ import {Button, Card, Image, Input, message, Modal, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import pako from 'pako';
+import {config} from 'ice';
+import cookie from 'js-cookie';
+import moment from 'moment';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
@@ -141,7 +144,7 @@ const DeviceChar = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
   if (!chartData) {
@@ -250,7 +253,7 @@ const DeviceChar = ({device = {}, date = []}) => {
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
         {isArray(chartData.button).map((item, index) => {
           if (isArray(item.downDatas).length <= 0) {
-            return <div key={index} />;
+            return <div key={index}/>;
           }
           return <LinkButton key={index} onClick={() => setControl(item)}>{item?.title}</LinkButton>;
         })}
@@ -289,11 +292,11 @@ const DeviceChar = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input} />
+              <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input} />
+              <FormItem name="value" initialValue={search} component={Input}/>
             </div>;
           default:
             break;
@@ -373,7 +376,7 @@ const DeviceChar = ({device = {}, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible} />
+        <Image width={500} src={visible}/>
       </div>
     </Modal>
 
@@ -381,13 +384,16 @@ const DeviceChar = ({device = {}, date = []}) => {
       onCancel={() => setExportVisble(false)}
       title="数据导出"
       okText="导出"
-      onOk={()=>{
-        console.log(exportTime);
+      okButtonProps={{disabled:exportTime.length === 0}}
+      onOk={() => {
+        const {baseURI} = config;
+        const token = cookie.get('jetlink-token');
+        window.open(`${baseURI}/cpGw/excelExport?authorization=${token}&startTime=${exportTime[0]}&endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}`);
       }}
       open={exportVisible}
     >
-      <div style={{textAlign:'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
+      <div style={{textAlign: 'center'}}>
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
       </div>
     </Modal>
 

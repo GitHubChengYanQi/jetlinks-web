@@ -2,13 +2,13 @@ import React, {useImperativeHandle, useState} from 'react';
 import {Descriptions} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import moment from 'moment';
+import classNames from 'classnames';
 import style from './index.module.less';
 import {useRequest} from '@/util/Request';
 import Render from '@/components/Render';
 import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
-import {isArray} from '@/util/Tools';
-import classNames from 'classnames';
+import {isArray, queryString} from '@/util/Tools';
 
 
 const Info = ({
@@ -67,6 +67,26 @@ const Info = ({
     return <> {day}天{hours}时{minutes}分{newsecond}秒</>;
   };
 
+  const getColor = (value) => {
+    let color = 'green';
+
+    if (typeof value !== 'string' && typeof value !== 'number') {
+      return {};
+    }
+
+    if (queryString('{grey}', value)) {
+      color = 'grey';
+      value = value.replace('{grey}', '');
+    } else if (queryString('{red}', value)) {
+      color = 'red';
+      value = value.replace('{red}', '');
+    }
+    return {
+      value,
+      color,
+    };
+  };
+
   return <>
     <Descriptions
       column={3}
@@ -118,9 +138,10 @@ const Info = ({
                   label={contentItem.key}>
                   {
                     values.map((valueItem, valueIndex) => {
+
                       return <div
                         key={valueIndex}
-                        className={style.value}
+                        className={classNames(style.value, getColor(valueItem).color)}
                         style={{borderRight: valueIndex === values.length - 1 && 'none', cursor: 'pointer'}}
                         onClick={() => {
                           if (contentItem.title) {
@@ -128,7 +149,7 @@ const Info = ({
                           }
                         }}
                       >
-                        {valueItem || '-'}
+                        {getColor(valueItem).value || '-'}
                       </div>;
                     })
                   }
@@ -145,7 +166,7 @@ const Info = ({
                   childrenContent.push(childrenContentItem);
                 });
               });
-              return <div key={childrenIndex} style={{width: `${childrenItem.width || 100}%`,display:'inline-block'}}>
+              return <div key={childrenIndex} style={{width: `${childrenItem.width || 100}%`, display: 'inline-block'}}>
                 <div
                   className={style.navTitle}
                   style={{textAlign: childrenItem.align || 'center'}}
@@ -165,7 +186,7 @@ const Info = ({
                           values.map((valueItem, valueIndex) => {
                             return <div
                               key={valueIndex}
-                              className={style.value}
+                              className={classNames(style.value, getColor(valueItem).color)}
                               style={{borderRight: valueIndex === values.length - 1 && 'none', cursor: 'pointer'}}
                               onClick={() => {
                                 if (contentItem.title) {
@@ -173,7 +194,7 @@ const Info = ({
                                 }
                               }}
                             >
-                              {valueItem || '-'}
+                              {getColor(valueItem).value || '-'}
                             </div>;
                           })
                         }
