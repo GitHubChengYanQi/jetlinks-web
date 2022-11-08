@@ -148,7 +148,7 @@ const Save = (
         detail={saveVisible || {}}
         visible={saveVisible}
         close={() => setSaveVisible()}
-        success={(success) => {
+        success={() => {
           setSaveVisible();
           refresh();
         }}

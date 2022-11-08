@@ -32,7 +32,7 @@ const Save = (
   const {loading: getColumnsLoaing, run: getColumns} = useRequest(getColumnByModelId, {
     manual: true,
     onSuccess: (res) => {
-      setModelColumns(res.rule);
+      setModelColumns(isArray(res.rule));
     },
   });
 
