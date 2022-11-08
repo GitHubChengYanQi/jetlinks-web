@@ -38,7 +38,7 @@ export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'}
 
 const formActionsPublic = createFormActions();
 
-const DeviceChar = ({device = {}, date = []}) => {
+const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const ref = useRef();
 
@@ -95,12 +95,12 @@ const DeviceChar = ({device = {}, date = []}) => {
     onSuccess: (res) => {
       if (res.search && !search) {
         if (res.updateSearch) {
-          getChartTopicRun({data: {title: res.search[0].type, modelId: device.modelId}});
-          setType(res.search[0].type);
+          getChartTopicRun({data: {title: defaultType || res.search[0].type, modelId: device.modelId}});
+          setType(defaultType || res.search[0].type);
         } else {
           setType(device.type);
         }
-        setSearch(res.search[0].type);
+        setSearch(defaultType || res.search[0].type);
       }
       if (searchs.length === 0) {
         setSearchs(res.search || []);
@@ -212,7 +212,7 @@ const DeviceChar = ({device = {}, date = []}) => {
               {item.title}
               <StepLineChart
                 data={isArray(data[item.key]).map(item => {
-                  const sortItem = lineSort.find(sItem => sItem.value === item.value);
+                  const sortItem = lineSort.find(sItem => `${sItem.value}` === `${item.value}`);
                   return {
                     ...item,
                     value: sortItem?.title || '1',
@@ -379,7 +379,7 @@ const DeviceChar = ({device = {}, date = []}) => {
       onOk={() => {
         const {baseURI} = config;
         const token = cookie.get('jetlink-token');
-        window.open(`${baseURI}/cpGw/excelExport?authorization=${token}&startTime=${exportTime[0]}&endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}`);
+        window.open(`${baseURI}/cpGw/excelExport?authorization=${token}&startTime=${exportTime[0]}&endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}&title=${device.type}`);
       }}
       open={exportVisible}
     >

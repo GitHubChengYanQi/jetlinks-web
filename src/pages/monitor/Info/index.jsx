@@ -149,7 +149,7 @@ const Info = ({
                         }}
                         onClick={() => {
                           if (contentItem.title) {
-                            open(contentItem.title);
+                            open(contentItem.title, contentItem.url);
                           }
                         }}
                       >
@@ -198,7 +198,7 @@ const Info = ({
                               }}
                               onClick={() => {
                                 if (contentItem.title) {
-                                  open(contentItem.title);
+                                  open(contentItem.title, contentItem.url);
                                 }
                               }}
                             >

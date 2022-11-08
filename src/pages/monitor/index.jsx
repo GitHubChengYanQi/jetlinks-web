@@ -255,8 +255,8 @@ const Monitor = () => {
         ref={infoRef}
         deviceId={infoVisible.deviceId}
         modelId={infoVisible.modelId}
-        open={(title) => {
-          setOpen({type: title, ...infoVisible});
+        open={(title, defaultType) => {
+          setOpen({type: title, defaultType, ...infoVisible});
           setInfoVisible({});
         }}
       />
@@ -283,7 +283,7 @@ const Monitor = () => {
         onChange={setDate}
       />}
     >
-      <DeviceChar device={open} date={date} />
+      <DeviceChar device={open} date={date} defaultType={open?.defaultType} />
     </Drawer>
 
   </>;

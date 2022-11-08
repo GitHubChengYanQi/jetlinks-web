@@ -30,7 +30,9 @@ const Config = ({
   };
 
   const getBoolean = (field) => {
-    return isArray(field).find(fieldItem => {
+    let trueText;
+    let falseText;
+    const boolean = isArray(field).find(fieldItem => {
       let type;
       modelColumns.find(item => {
         const object = item.find(item => {
@@ -38,12 +40,19 @@ const Config = ({
         });
         if (object?.conditionType) {
           type = object.conditionType;
+          trueText = object.trueText;
+          falseText = object.falseText;
           return true;
         }
         return false;
       });
       return type === 'boolean';
     });
+    return {
+      boolean,
+      trueText: trueText || '真',
+      falseText: falseText || '假',
+    };
   };
 
   const columns = [
@@ -91,7 +100,7 @@ const Config = ({
                       }
                       return text[filedIndex];
                     });
-                    const boolean = getBoolean(newFild);
+                    const {boolean} = getBoolean(newFild);
                     dataSourceChange({
                       field: newFild,
                       title: title.join(' '),
@@ -110,7 +119,7 @@ const Config = ({
       align: 'center',
       width: 150,
       render: (text, record) => {
-        const boolean = getBoolean(record.field);
+        const {boolean} = getBoolean(record.field);
         const options = boolean ? [
           {label: '=', value: '7'}
         ] : [
@@ -146,16 +155,18 @@ const Config = ({
       align: 'center',
       width: 350,
       render: (text, record) => {
+        const {trueText, falseText} = getBoolean(record.field);
+        const showText = (text ? trueText : falseText);
         switch (record.alarmCondition) {
           case '7':
-            return <Select
+            return show ? showText : <Select
               bordered={!show}
               open={show ? false : undefined}
               suffixIcon={show && null}
               placeholder="请选择对应值"
               value={text}
               style={{width: 100}}
-              options={[{label: '真', value: 1}, {label: '假', value: 0}]}
+              options={[{label: trueText, value: 1}, {label: falseText, value: 0}]}
               onChange={(value) => {
                 dataSourceChange({value}, record.key);
               }}
