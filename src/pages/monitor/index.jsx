@@ -100,12 +100,13 @@ const Monitor = () => {
     ...modelColumns.map(item => {
       const children = item.children || [];
       const render = (text, record) => {
-        if (typeof text === 'object') {
+
+        if (typeof text !== 'number' && typeof text !== 'string') {
           return <Render width={56}>-</Render>;
         }
 
         let value = typeof text === 'number' ? text : (text || '-');
-        let color = 'green';
+        let color = '#009688';
 
         if (queryString('{grey}', value)) {
           color = 'grey';
@@ -114,14 +115,11 @@ const Monitor = () => {
           color = 'red';
           value = value.replace('{red}', '');
         }
-        try {
-          return <Render width={56} className={color} style={{cursor: 'pointer'}} onClick={() => {
-            console.log(item.dataIndex);
-            setOpen({type: item.dataIndex, ...record});
-          }}>{value}</Render>;
-        } catch (e) {
-          return <Render width={56} text="-" />;
-        }
+
+        return <Render width={56} style={{cursor: 'pointer', color}} onClick={() => {
+          console.log(item.dataIndex);
+          setOpen({type: item.dataIndex, ...record});
+        }}>{value}</Render>;
       };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
     }),

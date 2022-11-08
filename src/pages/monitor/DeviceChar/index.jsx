@@ -144,22 +144,13 @@ const DeviceChar = ({device = {}, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
     return <></>;
   }
 
-  const getMax = (array = []) => {
-    let max = 0;
-    array.forEach(item => {
-      if (max < item.value) {
-        max = item.value;
-      }
-    });
-    return max;
-  };
 
   const sort = (array = [], lines) => {
     const linesArray = lines.map(lintItem => {
@@ -253,7 +244,7 @@ const DeviceChar = ({device = {}, date = []}) => {
         <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
         {isArray(chartData.button).map((item, index) => {
           if (isArray(item.downDatas).length <= 0) {
-            return <div key={index}/>;
+            return <div key={index} />;
           }
           return <LinkButton key={index} onClick={() => setControl(item)}>{item?.title}</LinkButton>;
         })}
@@ -292,11 +283,11 @@ const DeviceChar = ({device = {}, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input}/>
+              <FormItem name="passage" initialValue={search} component={Input} />
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input}/>
+              <FormItem name="value" initialValue={search} component={Input} />
             </div>;
           default:
             break;
@@ -376,7 +367,7 @@ const DeviceChar = ({device = {}, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible}/>
+        <Image width={500} src={visible} />
       </div>
     </Modal>
 
@@ -384,7 +375,7 @@ const DeviceChar = ({device = {}, date = []}) => {
       onCancel={() => setExportVisble(false)}
       title="数据导出"
       okText="导出"
-      okButtonProps={{disabled:exportTime.length === 0}}
+      okButtonProps={{disabled: exportTime.length === 0}}
       onOk={() => {
         const {baseURI} = config;
         const token = cookie.get('jetlink-token');
@@ -393,7 +384,7 @@ const DeviceChar = ({device = {}, date = []}) => {
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
       </div>
     </Modal>
 

@@ -52,12 +52,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton/>;
+    return <PageSkeleton />;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-"/>;
+      return <Render width={150} text="-" />;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -68,7 +68,7 @@ const Info = ({
   };
 
   const getColor = (value) => {
-    let color = 'green';
+    let color = '#009688';
 
     if (typeof value !== 'string' && typeof value !== 'number') {
       return {};
@@ -141,8 +141,12 @@ const Info = ({
 
                       return <div
                         key={valueIndex}
-                        className={classNames(style.value, getColor(valueItem).color)}
-                        style={{borderRight: valueIndex === values.length - 1 && 'none', cursor: 'pointer'}}
+                        className={style.value}
+                        style={{
+                          borderRight: valueIndex === values.length - 1 && 'none',
+                          cursor: 'pointer',
+                          color: getColor(valueItem).color
+                        }}
                         onClick={() => {
                           if (contentItem.title) {
                             open(contentItem.title);
@@ -186,8 +190,12 @@ const Info = ({
                           values.map((valueItem, valueIndex) => {
                             return <div
                               key={valueIndex}
-                              className={classNames(style.value, getColor(valueItem).color)}
-                              style={{borderRight: valueIndex === values.length - 1 && 'none', cursor: 'pointer'}}
+                              className={style.value}
+                              style={{
+                                borderRight: valueIndex === values.length - 1 && 'none',
+                                cursor: 'pointer',
+                                color: getColor(valueItem).color
+                              }}
                               onClick={() => {
                                 if (contentItem.title) {
                                   open(contentItem.title);
