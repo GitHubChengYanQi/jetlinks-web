@@ -68,22 +68,20 @@ const Info = ({
   };
 
   const getColor = (value) => {
-    let color = '#009688';
 
-    if (typeof value !== 'string' && typeof value !== 'number') {
+    if (typeof value !== 'number' && typeof value !== 'string') {
       return {};
     }
+    const newValue = typeof value === 'number' ? `${value}` : (value || '-');
+    const color = '#009688';
 
-    if (queryString('{grey}', value)) {
-      color = 'grey';
-      value = value.replace('{grey}', '');
-    } else if (queryString('{red}', value)) {
-      color = 'red';
-      value = value.replace('{red}', '');
-    }
+    const valuePattern = /{[a-z]+}/g;
+    const colorPattern = /[{}]/g;
+    const matchArray = isArray(value.match(valuePattern));
+
     return {
-      value,
-      color,
+      value: newValue.replace(valuePattern, ''),
+      color: matchArray[0] ? matchArray[0].replace(colorPattern, '') : color,
     };
   };
 

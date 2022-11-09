@@ -20,7 +20,7 @@ import styles from './index.module.less';
 import {monitorList} from '@/pages/monitor/url';
 import {LinkButton} from '@/components/Button';
 import Table from '@/components/Table';
-import {isObject, queryString} from '@/util/Tools';
+import {isArray, isObject, queryString} from '@/util/Tools';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 import DateSelect from '@/pages/monitor/components/DateSelect';
 import DeviceChar from '@/pages/monitor/DeviceChar';
@@ -105,21 +105,20 @@ const Monitor = () => {
           return <Render width={56}>-</Render>;
         }
 
-        let value = typeof text === 'number' ? text : (text || '-');
-        let color = '#009688';
+        const value = typeof text === 'number' ? `${text}` : (text || '-');
+        const color = '#009688';
 
-        if (queryString('{grey}', value)) {
-          color = 'grey';
-          value = value.replace('{grey}', '');
-        } else if (queryString('{red}', value)) {
-          color = 'red';
-          value = value.replace('{red}', '');
-        }
+        const valuePattern = /{[a-z]+}/g;
+        const colorPattern = /[{}]/g;
+        const matchArray = isArray(value.match(valuePattern));
 
-        return <Render width={56} style={{cursor: 'pointer', color}} onClick={() => {
-          console.log(item.dataIndex);
-          setOpen({type: item.dataIndex, ...record});
-        }}>{value}</Render>;
+        return <Render
+          width={56}
+          style={{cursor: 'pointer', color: matchArray[0] ? matchArray[0].replace(colorPattern, '') : color}}
+          onClick={() => {
+            console.log(item.dataIndex);
+            setOpen({type: item.dataIndex, ...record});
+          }}>{value.replace(valuePattern, '')}</Render>;
       };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
     }),
