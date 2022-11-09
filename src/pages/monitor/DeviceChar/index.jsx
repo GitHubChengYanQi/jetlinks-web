@@ -33,6 +33,8 @@ export const cpGwList = {url: '/cpGw/list', method: 'POST'};
 export const cpGwBatchHandle = {url: '/cpGw/batchHandle', method: 'POST'};
 export const cpGwBatchEdit = {url: '/cpGw/handle', method: 'POST'};
 
+export const cpGwPamList = {url: '/cpPam/list', method: 'POST'};
+
 
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
 
@@ -80,6 +82,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         listApi = cpGwList;
         batchHandleApi = cpGwBatchHandle;
         handleApi = cpGwBatchEdit;
+        break;
+      case 'gwPamId':
+        listApi = cpGwPamList;
         break;
       default:
         break;
