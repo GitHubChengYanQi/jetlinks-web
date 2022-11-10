@@ -62,7 +62,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [exportVisible, setExportVisble] = useState();
   const [exportTime, setExportTime] = useState([]);
 
-  let listApi = {};
 
   const getApi = (key) => {
     const api = isArray(chartData?.buttonApiUrls).find(item => item.key === key);
@@ -71,25 +70,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       method: api?.method,
     };
   };
-
-  if (chartData) {
-    switch (chartData.key) {
-      case 'signalLampId':
-        listApi = signalLampList;
-        break;
-      case 'mId':
-        listApi = deviceDataM4012List;
-        break;
-      case 'gwId':
-        listApi = cpGwList;
-        break;
-      case 'gwPamId':
-        listApi = cpGwPamList;
-        break;
-      default:
-        break;
-    }
-  }
 
   const listParams = {deviceId: device.deviceId, startTime: date[0], endTime: date[1]};
 
@@ -319,7 +299,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         };
       }}
       formActions={formActionsPublic}
-      api={listApi || getApi('sjlb')}
+      api={getApi('sjlb')}
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
