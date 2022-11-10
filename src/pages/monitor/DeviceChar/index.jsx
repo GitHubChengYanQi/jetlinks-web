@@ -62,34 +62,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [exportVisible, setExportVisble] = useState();
   const [exportTime, setExportTime] = useState([]);
 
-  let listApi = {};
-  let batchHandleApi = {};
-  let handleApi = {};
 
-  if (chartData) {
-    switch (chartData.key) {
-      case 'signalLampId':
-        listApi = signalLampList;
-        batchHandleApi = signalLampBatchHandle;
-        handleApi = signalLampEdit;
-        break;
-      case 'mId':
-        listApi = deviceDataM4012List;
-        batchHandleApi = deviceDataM4012BatchHandle;
-        handleApi = deviceDataM4012BatchEdit;
-        break;
-      case 'gwId':
-        listApi = cpGwList;
-        batchHandleApi = cpGwBatchHandle;
-        handleApi = cpGwBatchEdit;
-        break;
-      case 'gwPamId':
-        listApi = cpGwPamList;
-        break;
-      default:
-        break;
-    }
-  }
+  const getApi = (key) => {
+    const api = isArray(chartData?.buttonApiUrls).find(item => item.key === key);
+    return {
+      url: api?.path,
+      method: api?.method,
+    };
+  };
 
   const listParams = {deviceId: device.deviceId, startTime: date[0], endTime: date[1]};
 
@@ -121,7 +101,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     ...deviceChartData,
   }, {manual: true});
 
-  const {loading: editLoading, run: edit} = useRequest(handleApi, {
+  const {loading: editLoading, run: edit} = useRequest(getApi('ddcl'), {
     manual: true,
     onSuccess: () => {
       message.success('处理成功！');
@@ -129,7 +109,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading: batchHandleLoading, run: batchHandle} = useRequest(batchHandleApi, {
+  const {loading: batchHandleLoading, run: batchHandle} = useRequest(getApi('yjcl'), {
     manual: true,
     onSuccess: () => {
       message.success('处理成功！');
@@ -137,7 +117,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading: deviceLoading, data: deviceDetail, refresh} = useRequest({
+  const {data: deviceDetail, refresh} = useRequest({
     ...monitorDetail,
     data: {deviceId: device.deviceId, modelId: device.modelId}
   });
@@ -179,6 +159,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         ref.current.formActions.setFieldValue('value', value);
         break;
       default:
+        ref.current.formActions.setFieldValue('value', value);
         break;
     }
     ref.current.submit();
@@ -246,19 +227,26 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Tabs
       tabBarExtraContent={<Space>
-        <LinkButton loading={deviceLoading} onClick={() => setSaveVisible(deviceDetail)}>报警设置</LinkButton>
         {isArray(chartData.button).map((item, index) => {
-          if (isArray(item.downDatas).length <= 0) {
-            return <div key={index} />;
-          }
-          return <LinkButton key={index} onClick={() => setControl(item)}>{item?.title}</LinkButton>;
+          return <LinkButton key={index} onClick={() => {
+            switch (item.type) {
+              case 'warningConfig':
+                setSaveVisible(deviceDetail);
+                break;
+              case 'remoteControl':
+                setControl(item);
+                break;
+              case 'batchHandel':
+                batchHandle({data: {deviceId: device.deviceId}});
+                break;
+              case 'excelExport':
+                setExportVisble(true);
+                break;
+              default:
+                break;
+            }
+          }}>{item?.title}</LinkButton>;
         })}
-        <Warning
-          content="确定一键处理吗?"
-          onOk={() => batchHandle({data: {deviceId: device.deviceId}})}>
-          <LinkButton>一键处理</LinkButton>
-        </Warning>
-        <LinkButton onClick={() => setExportVisble(true)}>导出</LinkButton>
       </Space>}
       activeKey={search}
       onTabClick={(key) => {
@@ -311,7 +299,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         };
       }}
       formActions={formActionsPublic}
-      api={listApi}
+      api={getApi('sjlb')}
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
@@ -384,7 +372,12 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       onOk={() => {
         const {baseURI} = config;
         const token = cookie.get('jetlink-token');
-        window.open(`${baseURI}/cpGw/excelExport?authorization=${token}&startTime=${exportTime[0]}&endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}&title=${device.type}`);
+        window.open(`${baseURI}${getApi('dc').url}?authorization=${token}
+        &startTime=${exportTime[0]}
+        &endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}
+        &title=${device.type}
+        &deviceId=${device.deviceId}
+        `);
       }}
       open={exportVisible}
     >
