@@ -177,7 +177,7 @@ const Monitor = () => {
         <FormItem name="modelId" value={searchParams.modelId} component={Input} />
       </div>
       <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
-      <div style={{display: 'none'}}><FormItem name="customerId" component={Input} /></div>
+      <div style={{display: 'none'}}><FormItem name="deptId" component={Input} /></div>
     </>;
   };
 
@@ -199,7 +199,7 @@ const Monitor = () => {
             noEmpty
             firstKey={!defaultModelId}
             open={close}
-            showModules={customer.customerId ? ['terminal', 'group'] : ['terminal', 'customer']}
+            showModules={customer.deptId ? ['terminal', 'group'] : ['terminal', 'customer']}
             modelId={defaultModelId}
             classifyId={searchParams.classifyId}
             close={() => setClose(!close)}
@@ -214,8 +214,8 @@ const Monitor = () => {
                   setParams({...params, classifyId: key});
                   break;
                 case 'customer':
-                  ref.current.formActions.setFieldValue('customerId', key);
-                  setParams({...params, customerId: key});
+                  ref.current.formActions.setFieldValue('deptId', key);
+                  setParams({...params, deptId: key});
                   break;
                 default:
                   break;
@@ -236,7 +236,7 @@ const Monitor = () => {
           onReset={() => {
             ref.current.formActions.setFieldValue('modelId', params.modelId);
             ref.current.formActions.setFieldValue('classifyId', params.classifyId);
-            ref.current.formActions.setFieldValue('customerId', params.customerId);
+            ref.current.formActions.setFieldValue('deptId', params.deptId);
             ref.current.submit();
           }}
           maxHeight="calc(100vh - 435px)"
