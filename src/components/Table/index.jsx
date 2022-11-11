@@ -170,7 +170,7 @@ const TableWarp = (
     if (!isModal) {
       setState({
         params: JSON.stringify({
-          ...page, values: pagination.current ? newValues : {}
+          ...page, values: newValues
         })
       });
     }
@@ -217,7 +217,7 @@ const TableWarp = (
   const {setPagination, form, table: tableProps} = useFormTableQuery(requestMethod, null, {
     pagination: {
       pageSize: pageSize || defaultTableQuery.limit || 10,
-      current: defaultTableQuery.page,
+      current: defaultTableQuery.page || 1,
     },
     sorter: defaultTableQuery.sorter || {},
   });

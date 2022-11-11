@@ -10,7 +10,7 @@ import {
   Select as AntSelect,
 } from 'antd';
 import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {getSearchParams} from 'ice';
+import useUrlState from '@ahooksjs/use-url-state';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
 import Info from '@/pages/monitor/Info';
@@ -20,14 +20,25 @@ import styles from './index.module.less';
 import {monitorList} from '@/pages/monitor/url';
 import {LinkButton} from '@/components/Button';
 import Table from '@/components/Table';
-import {isArray, isObject, queryString} from '@/util/Tools';
+import {isArray, isObject} from '@/util/Tools';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 import DateSelect from '@/pages/monitor/components/DateSelect';
 import DeviceChar from '@/pages/monitor/DeviceChar';
+import {getSearchParams} from 'ice';
 
 const Monitor = () => {
 
+  const [state] = useUrlState(
+    {
+      navigateMode: 'push',
+    },
+  );
+
   const searchParams = getSearchParams();
+
+  const defaultTableQuery = state.params && JSON.parse(state.params) || {};
+
+  const defaultModelId = defaultTableQuery?.values?.modelId || searchParams.modelId;
 
   const [infoVisible, setInfoVisible] = useState({});
   const [noteVisible, setNoteVisible] = useState({});
@@ -173,15 +184,16 @@ const Monitor = () => {
     };
   }, [params]);
 
+
   return <>
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
           <LeftTree
             noEmpty
-            firstKey={!searchParams.modelId}
+            firstKey={!defaultModelId}
             open={close}
-            modelId={searchParams.modelId}
+            modelId={defaultModelId}
             classifyId={searchParams.classifyId}
             close={() => setClose(!close)}
             onChange={(key, type) => {
@@ -203,6 +215,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          isModal={false}
           interval
           formSubmit={(values) => {
             setParams({...params, ...values});
