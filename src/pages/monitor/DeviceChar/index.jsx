@@ -330,12 +330,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         };
       })}
       actionRender={(value, record) => {
+        const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
+        const alarm = alarmFields.find(alarmItem => isArray(chartData.columns).map(item => item.key).find(item => queryString(item, alarmItem)));
         const handle = record.handle;
         return <Warning
-          disabled={handle}
+          disabled={handle || !alarm}
           content="确定处理吗？"
           onOk={() => edit({data: {[`${chartData.key}s`]: [record[chartData.key]]}})}>
-          <PrimaryButton disabled={handle}>{handle ? '已查看' : '处理'}</PrimaryButton>
+          <PrimaryButton disabled={handle || !alarm}>{(handle && alarm) ? '已查看' : '处理'}</PrimaryButton>
         </Warning>;
       }}
     />
@@ -370,9 +372,13 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       okText="导出"
       okButtonProps={{disabled: exportTime.length === 0}}
       onOk={() => {
+        const url = getApi('dc').url;
+        if (!url) {
+          return;
+        }
         const {baseURI} = config;
         const token = cookie.get('jetlink-token');
-        window.open(`${baseURI}${getApi('dc').url}?authorization=${token}
+        window.open(`${baseURI}${url}?authorization=${token}
         &startTime=${exportTime[0]}
         &endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}
         &title=${device.type}

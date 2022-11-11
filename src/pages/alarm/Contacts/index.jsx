@@ -21,6 +21,7 @@ import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
+import store from '@/store';
 
 const formActionsPublic = createFormActions();
 
@@ -32,6 +33,10 @@ const Contacts = ({
   onSuccess = () => {
   }
 }) => {
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
 
   const [saveVisible, setSaveVisible] = useState();
   const [batchImport, setBatchImport] = useState(false);
@@ -48,7 +53,6 @@ const Contacts = ({
       align: 'center',
       render: (text) => <Render text={text} />
     },
-    {title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
@@ -67,6 +71,10 @@ const Contacts = ({
     {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
+
+  if (customer.customerId) {
+    columns.push({title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />});
+  }
 
   const {loading: deleteBatchLoading, run: deleteBatchRun} = useRequest(contactDeleteBatch, {
     manual: true,
