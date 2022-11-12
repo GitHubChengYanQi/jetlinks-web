@@ -19,24 +19,12 @@ import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import DatePicker from '@/components/DatePicker';
+import {alarmRecordBatchView} from '@/pages/alarm/url';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
-export const signalLampEdit = {url: '/signalLamps/edit', method: 'POST'};
-export const signalLampBatchHandle = {url: '/signalLamps/batchHandle', method: 'POST'};
-export const signalLampList = {url: '/signalLamps/list', method: 'POST'};
-
-export const deviceDataM4012List = {url: '/deviceDataM4012/list', method: 'POST'};
-export const deviceDataM4012BatchHandle = {url: '/deviceDataM4012/batchHandle', method: 'POST'};
-export const deviceDataM4012BatchEdit = {url: '/deviceDataM4012/edit', method: 'POST'};
-
-export const cpGwList = {url: '/cpGw/list', method: 'POST'};
-export const cpGwBatchHandle = {url: '/cpGw/batchHandle', method: 'POST'};
-export const cpGwBatchEdit = {url: '/cpGw/handle', method: 'POST'};
-
-export const cpGwPamList = {url: '/cpPam/list', method: 'POST'};
-
-
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
+export const alarmRecordView = {url: '/alarmRecord/batchUpdate', method: 'POST'};
 
 const formActionsPublic = createFormActions();
 
@@ -73,6 +61,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const listParams = {deviceId: device.deviceId, startTime: date[0], endTime: date[1]};
 
+  const {loading: batchViewLoading, run: batchView} = useRequest(alarmRecordBatchView, {
+    manual: true,
+    onSuccess: () => {
+      message.success('处理成功！');
+      ref.current.refresh();
+    }
+  });
+
   const {loading: getChartLoading, run: getChartTopicRun} = useRequest({
     ...getChartTopic,
     data: {title: device.type, modelId: device.modelId}
@@ -101,15 +97,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     ...deviceChartData,
   }, {manual: true});
 
-  const {loading: editLoading, run: edit} = useRequest(getApi('ddcl'), {
-    manual: true,
-    onSuccess: () => {
-      message.success('处理成功！');
-      ref.current.refresh();
-    }
-  });
-
-  const {loading: batchHandleLoading, run: batchHandle} = useRequest(getApi('yjcl'), {
+  const {loading: batchHandleLoading, run: batchHandle} = useRequest(alarmRecordView, {
     manual: true,
     onSuccess: () => {
       message.success('处理成功！');
@@ -129,7 +117,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
   if (!chartData) {
@@ -237,7 +225,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                 setControl(item);
                 break;
               case 'batchHandel':
-                batchHandle({data: {deviceId: device.deviceId}});
+                Modal.confirm({
+                  zIndex: 1005,
+                  title: '提示信息',
+                  centered: true,
+                  icon: <ExclamationCircleOutlined/>,
+                  content: '确定一键处理吗？',
+                  onOk: () => batchHandle({data: {deviceId: device.deviceId}}),
+                });
                 break;
               case 'excelExport':
                 setExportVisble(true);
@@ -276,17 +271,17 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input} />
+              <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input} />
+              <FormItem name="value" initialValue={search} component={Input}/>
             </div>;
           default:
             break;
         }
       }}
-      loading={editLoading || batchHandleLoading}
+      loading={batchViewLoading || batchHandleLoading}
       isModal
       ref={ref}
       formSubmit={(values) => {
@@ -330,12 +325,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         };
       })}
       actionRender={(value, record) => {
-        const handle = record.handle;
+        const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
+        const alarm = alarmFields.find(alarmItem => isArray(chartData.columns).map(item => item.key).find(item => queryString(item, alarmItem))) && record.alarmRecordId;
+        const handle = record.status === '1';
         return <Warning
-          disabled={handle}
+          disabled={handle || !alarm}
           content="确定处理吗？"
-          onOk={() => edit({data: {[`${chartData.key}s`]: [record[chartData.key]]}})}>
-          <PrimaryButton disabled={handle}>{handle ? '已查看' : '处理'}</PrimaryButton>
+          onOk={() => batchView({data: {recordIds: [record.alarmRecordId]}})}>
+          <PrimaryButton disabled={handle || !alarm}>{(handle && alarm) ? '已查看' : '处理'}</PrimaryButton>
         </Warning>;
       }}
     />
@@ -360,7 +357,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible} />
+        <Image width={500} src={visible}/>
       </div>
     </Modal>
 
@@ -370,19 +367,18 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       okText="导出"
       okButtonProps={{disabled: exportTime.length === 0}}
       onOk={() => {
+        const url = getApi('dc').url;
+        if (!url) {
+          return;
+        }
         const {baseURI} = config;
         const token = cookie.get('jetlink-token');
-        window.open(`${baseURI}${getApi('dc').url}?authorization=${token}
-        &startTime=${exportTime[0]}
-        &endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}
-        &title=${device.type}
-        &deviceId=${device.deviceId}
-        `);
+        window.open(`${baseURI}${url}?authorization=${token}&startTime=${exportTime[0]}&endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}&title=${type}&deviceId=${device.deviceId}`);
       }}
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
       </div>
     </Modal>
 

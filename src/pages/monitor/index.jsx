@@ -11,6 +11,7 @@ import {
 } from 'antd';
 import {EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import useUrlState from '@ahooksjs/use-url-state';
+import {getSearchParams} from 'ice';
 import LeftTree from '@/pages/monitor/LeftTree';
 import NoteSave from '@/pages/monitor/NoteSave';
 import Info from '@/pages/monitor/Info';
@@ -24,7 +25,7 @@ import {isArray, isObject} from '@/util/Tools';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 import DateSelect from '@/pages/monitor/components/DateSelect';
 import DeviceChar from '@/pages/monitor/DeviceChar';
-import {getSearchParams} from 'ice';
+import store from '@/store';
 
 const Monitor = () => {
 
@@ -33,6 +34,10 @@ const Monitor = () => {
       navigateMode: 'push',
     },
   );
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
 
   const searchParams = getSearchParams();
 
@@ -172,6 +177,7 @@ const Monitor = () => {
         <FormItem name="modelId" value={searchParams.modelId} component={Input} />
       </div>
       <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
+      <div style={{display: 'none'}}><FormItem name="deptId" component={Input} /></div>
     </>;
   };
 
@@ -193,6 +199,7 @@ const Monitor = () => {
             noEmpty
             firstKey={!defaultModelId}
             open={close}
+            showModules={customer.deptId ? ['terminal', 'group'] : ['terminal', 'customer']}
             modelId={defaultModelId}
             classifyId={searchParams.classifyId}
             close={() => setClose(!close)}
@@ -205,6 +212,10 @@ const Monitor = () => {
                 case 'group':
                   ref.current.formActions.setFieldValue('classifyId', key);
                   setParams({...params, classifyId: key});
+                  break;
+                case 'customer':
+                  ref.current.formActions.setFieldValue('deptId', key);
+                  setParams({...params, deptId: key});
                   break;
                 default:
                   break;
@@ -225,6 +236,7 @@ const Monitor = () => {
           onReset={() => {
             ref.current.formActions.setFieldValue('modelId', params.modelId);
             ref.current.formActions.setFieldValue('classifyId', params.classifyId);
+            ref.current.formActions.setFieldValue('deptId', params.deptId);
             ref.current.submit();
           }}
           maxHeight="calc(100vh - 435px)"

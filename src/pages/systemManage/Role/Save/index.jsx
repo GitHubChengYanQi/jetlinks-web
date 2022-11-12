@@ -106,17 +106,17 @@ const Save = ({
       >
         <Tree halfChecked treeData={[{key: '0', title: '全部', children: formatData(userInfo.menus)}]} border />
       </Form.Item>
-      <Form.Item
+      {!!customer.customerId && <Form.Item
         initialValue={data?.classifyIds}
         key="classifyIds"
-        label={customer.customerId ? '选择分组权限' : '选择租户权限'}
+        label='选择分组权限'
         name="classifyIds"
         rules={[
           {required: false, message: '请选择分组权限'},
         ]}
       >
-        <SelectTopClass checkable />
-      </Form.Item>
+        <SelectTopClass checkable/>
+      </Form.Item>}
       <Form.Item
         hidden={!data?.roleId}
         key="users"

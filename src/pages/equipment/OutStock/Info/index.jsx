@@ -43,7 +43,7 @@ const Info = ({
         <Descriptions.Item label="设备型号">{deviceResult.modelName}</Descriptions.Item>
         <Descriptions.Item label="所属客户">{data.deviceResult?.customerName}</Descriptions.Item>
         <Descriptions.Item label="设备MAC地址">{deviceResult.mac}</Descriptions.Item>
-        <Descriptions.Item label="质保时长">{deviceResult.warranty || 0}月</Descriptions.Item>
+        <Descriptions.Item label="质保时长">{deviceResult.warranty || 0}个月</Descriptions.Item>
         <Descriptions.Item label="质保时间">{deviceResult.closingDate}</Descriptions.Item>
         <Descriptions.Item label="批次">{data.batchCoding}</Descriptions.Item>
       </Descriptions>

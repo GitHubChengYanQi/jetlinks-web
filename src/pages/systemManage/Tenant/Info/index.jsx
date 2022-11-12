@@ -59,8 +59,8 @@ const Info = ({
     <Modal
       ref={ref}
       width={800}
-      headTitle={data.detail ? '租户详情' : '租户信息确认'}
-      footer={data.detail ? null : [
+      headTitle={data ? '租户详情' : '租户信息确认'}
+      footer={data ? null : [
         <Button key={0} onClick={close}>取消</Button>,
         <PrimaryButton loading={loading} key={1} onClick={() => {
           run({data: {customerIds: [data.customerId]}});

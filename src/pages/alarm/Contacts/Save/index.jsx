@@ -3,6 +3,7 @@ import {Form, Input, Radio} from 'antd';
 import AntForm from '@/components/AntForm';
 import {contactAdd, contactEdit} from '@/pages/alarm/Contacts/url';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
+import store from '@/store';
 
 
 const Save = ({
@@ -13,6 +14,10 @@ const Save = ({
   close = () => {
   }
 }) => {
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
 
   return (
     <AntForm
@@ -49,7 +54,7 @@ const Save = ({
       >
         <Input placeholder="请输入职务"/>
       </Form.Item>
-      <Form.Item
+      {!!customer.customerId && <Form.Item
         initialValue={data.classifyId}
         key="classifyId"
         name="classifyId"
@@ -59,7 +64,7 @@ const Save = ({
         ]}
       >
         <SelectTopClass all={false} />
-      </Form.Item>
+      </Form.Item>}
       <Form.Item
         initialValue={data.phone}
         key="phone"

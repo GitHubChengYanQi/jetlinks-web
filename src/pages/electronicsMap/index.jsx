@@ -10,6 +10,7 @@ import Amap from '@/components/Amap';
 import {LinkButton} from '@/components/Button';
 import Info from '@/pages/monitor/Info';
 import Save from '@/pages/monitor/Info/Save';
+import store from '@/store';
 
 const ElectronicsMap = () => {
 
@@ -78,6 +79,10 @@ const ElectronicsMap = () => {
     </>;
   };
 
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
+
   return <>
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
@@ -85,6 +90,7 @@ const ElectronicsMap = () => {
           <LeftTree
             firstKey
             open={close}
+            showModules={customer.deptId ? ['terminal', 'group'] : ['terminal', 'customer']}
             close={() => setClose(!close)}
             noAction
             onChange={(key, type) => {
@@ -96,6 +102,10 @@ const ElectronicsMap = () => {
                 case 'group':
                   ref.current.submit({classifyId: key});
                   setParams({...params, classifyId: key});
+                  break;
+                case 'customer':
+                  ref.current.formActions.setFieldValue('deptId', key);
+                  setParams({...params, deptId: key});
                   break;
                 default:
                   break;
