@@ -373,12 +373,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         }
         const {baseURI} = config;
         const token = cookie.get('jetlink-token');
-        window.open(`${baseURI}${url}?authorization=${token}
-        &startTime=${exportTime[0]}
-        &endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}
-        &title=${type}
-        &deviceId=${device.deviceId}
-        `);
+        window.open(`${baseURI}${url}?authorization=${token}&startTime=${exportTime[0]}&endTime=${moment(exportTime[1]).format('YYYY/MM/DD 23:59:59')}&title=${type}&deviceId=${device.deviceId}`);
       }}
       open={exportVisible}
     >
