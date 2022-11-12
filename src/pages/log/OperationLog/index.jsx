@@ -13,6 +13,7 @@ import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 import {AccountFormat} from '@/pages/systemManage/Account';
+import Note from '@/components/Note';
 
 const OperationLog = () => {
 
@@ -34,24 +35,36 @@ const OperationLog = () => {
       title: '操作时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
     {
       title: '姓名',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)}/>},
-    {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text}/>},
-    {title: '操作菜单', dataIndex: 'logType', align: 'center', render: (text = '') => <Render text={text}/>},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)} />},
+    {title: '角色名称', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '登录IP地址', dataIndex: 'ipAddress', align: 'center', render: (text) => <Render text={text} />},
+    {title: '操作菜单', dataIndex: 'logType', align: 'center', render: (text = '') => <Render text={text} />},
     {
       title: '操作内容',
       dataIndex: 'logName',
       align: 'center',
-      render: (text = '') => <Render className="green" text={text}/>
+      render: (text = '') => <Render className="green" text={text} />
     },
+    {
+      title: 'params数据',
+      dataIndex: '1',
+      align: 'center',
+      render: (text = '') => <Note margin="auto" width={200} className="green" value={text || '-'} />
+    },
+    {
+      title: 'body数据',
+      dataIndex: '2',
+      align: 'center',
+      render: (text = '') => <Note margin="auto" width={200} className="green" value={text || '-'} />
+    }
   ];
 
 
@@ -59,8 +72,8 @@ const OperationLog = () => {
     return (
       <>
         <FormItem label="操作时间" select name="time" component={DatePicker} RangePicker />
-        <FormItem label="账号姓名" name="name" component={Input}/>
-        <FormItem label="账号名称" name="account" component={Input}/>
+        <FormItem label="账号姓名" name="name" component={Input} />
+        <FormItem label="账号名称" name="account" component={Input} />
         <FormItem
           label="角色名称"
           name="roleName"
@@ -99,7 +112,7 @@ const OperationLog = () => {
             批量删除
           </DangerButton>
         </Warning>,
-        <PrimaryButton key="1" disabled={keys.length === 0} onClick={()=>{
+        <PrimaryButton key="1" disabled={keys.length === 0} onClick={() => {
           window.open(`${baseURI}/LogExcel/export?authorization=${token}&operationLogIds=${keys}`);
         }}>导出</PrimaryButton>
       ]}
@@ -108,7 +121,8 @@ const OperationLog = () => {
       columns={columns}
       rowKey="operationLogId"
       actionRender={(text, record) => (
-        <Warning onOk={() => deleteRun({data: {logIds: [record.operationLogId]}})}><DangerButton>删除</DangerButton></Warning>
+        <Warning
+          onOk={() => deleteRun({data: {logIds: [record.operationLogId]}})}><DangerButton>删除</DangerButton></Warning>
       )}
     />
   </>;
