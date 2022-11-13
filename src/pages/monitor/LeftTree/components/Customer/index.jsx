@@ -47,9 +47,10 @@ const Customer = ({
   }, []);
 
   return <div>
-    <Input placeholder="搜索客户" style={{marginBottom: 16}} onChange={({target: {value}}) => submit(1, {name: value})} />
+    <Input placeholder="搜索客户" style={{marginBottom: 16}} onChange={({target: {value}}) => submit(1, {name: value})}/>
     <div style={{maxHeight: 'calc(100vh - 300px)', overflow: 'auto'}} id="customer" onScroll={() => {
-      if (!loading && add && (customer.scrollTop === customer.scrollHeight - 100)) {
+      console.log(customer.scrollHeight === customer.scrollTop + customer.clientHeight);
+      if (!loading && add && (customer.scrollHeight === customer.scrollTop + customer.clientHeight)) {
         submit(page + 1);
       }
     }}>
@@ -60,7 +61,7 @@ const Customer = ({
         }}
       />
     </div>
-    {loading && <div style={{textAlign: 'center'}}><Spin /></div>}
+    {loading && <div style={{textAlign: 'center'}}><Spin/></div>}
   </div>;
 };
 

@@ -55,13 +55,13 @@ const OperationLog = () => {
     },
     {
       title: 'params数据',
-      dataIndex: '1',
+      dataIndex: 'getMessage',
       align: 'center',
       render: (text = '') => <Note margin="auto" width={200} className="green" value={text || '-'} />
     },
     {
-      title: 'body数据',
-      dataIndex: '2',
+      title: 'data数据',
+      dataIndex: 'postMessage',
       align: 'center',
       render: (text = '') => <Note margin="auto" width={200} className="green" value={text || '-'} />
     }
