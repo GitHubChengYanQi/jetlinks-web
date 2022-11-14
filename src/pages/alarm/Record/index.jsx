@@ -71,15 +71,10 @@ const Record = () => {
           break;
       }
 
-      let ruleValue = '';
-      if (alarmCondition === '7') {
-        ruleValue = (item.ruleValue === 1 ? '真' : '假');
-      } else {
-        ruleValue = item.ruleValue;
-      }
+
       return <div key={index} hidden={!item.protocolValue}>
         <Render className="green" key={index}>
-          {item.title} {alarmCondition} {ruleValue} ,当前值：{item.protocolValue}
+          {item.title} {alarmCondition} {item.ruleValue} <span hidden={item.alarmCondition === '7'}>,当前值：{item.protocolValue}</span>
         </Render>
       </div>;
     });
