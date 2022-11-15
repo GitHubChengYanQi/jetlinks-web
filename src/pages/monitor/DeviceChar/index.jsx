@@ -6,6 +6,7 @@ import pako from 'pako';
 import {config} from 'ice';
 import cookie from 'js-cookie';
 import moment from 'moment';
+import {ExclamationCircleOutlined} from '@ant-design/icons';
 import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
@@ -20,7 +21,6 @@ import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import DatePicker from '@/components/DatePicker';
 import {alarmRecordBatchView} from '@/pages/alarm/url';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
@@ -71,7 +71,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const {loading: getChartLoading, run: getChartTopicRun} = useRequest({
     ...getChartTopic,
-    data: {title: device.type, modelId: device.modelId}
+    data: {title: device.protocolType, modelId: device.modelId}
   }, {
     onSuccess: (res) => {
       if (res.search && !search) {
@@ -79,7 +79,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           getChartTopicRun({data: {title: defaultType || res.search[0].type, modelId: device.modelId}});
           setType(defaultType || res.search[0].type);
         } else {
-          setType(device.type);
+          setType(device.protocolType);
         }
         setSearch(defaultType || res.search[0].type);
       }

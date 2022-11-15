@@ -133,7 +133,7 @@ const Monitor = () => {
           style={{cursor: 'pointer', color: matchArray[0] ? matchArray[0].replace(colorPattern, '') : color}}
           onClick={() => {
             console.log(item.dataIndex);
-            setOpen({type: item.dataIndex, ...record});
+            setOpen({protocolType: item.dataIndex, ...record});
           }}>{value.replace(valuePattern, '')}</Render>;
       };
       return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
@@ -280,7 +280,7 @@ const Monitor = () => {
         deviceId={infoVisible.deviceId}
         modelId={infoVisible.modelId}
         open={(title, defaultType) => {
-          setOpen({type: title, defaultType, ...infoVisible});
+          setOpen({protocolType: title, defaultType, ...infoVisible});
           setInfoVisible({});
         }}
       />
@@ -300,7 +300,7 @@ const Monitor = () => {
       destroyOnClose
       style={{minWidth: '50vw'}}
       className={styles.drawer}
-      open={open.type}
+      open={open.protocolType}
       onClose={() => setOpen({})}
       extra={<DateSelect
         value={date}
