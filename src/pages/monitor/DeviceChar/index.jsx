@@ -15,7 +15,7 @@ import {useRequest} from '@/util/Request';
 import Save from '@/pages/monitor/Info/Save';
 import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
-import {isArray, queryString} from '@/util/Tools';
+import {isArray, jsonStr, queryString} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
@@ -117,7 +117,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   }, [date, type]);
 
   if (loading || getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
@@ -194,8 +194,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                 })}
                 id={item.key}
                 sort={lineSort.length > 0 && lineSort.map(item => item.title)}
-                // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
-                // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
               />
             </div>;
           default:
@@ -205,8 +203,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                 data={sort(data[item.key] || [], lines)}
                 colors={lines.map(item => item.color)}
                 id={item.key}
-                // max={parseInt(getMax(data.voltage || []) * 0.8, 0) || 0}
-                // min={parseInt(getMax(data.voltage || []) * 0.2, 0) || 0}
               />
             </div>;
         }
@@ -229,7 +225,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   zIndex: 1005,
                   title: '提示信息',
                   centered: true,
-                  icon: <ExclamationCircleOutlined/>,
+                  icon: <ExclamationCircleOutlined />,
                   content: '确定一键处理吗？',
                   onOk: () => batchHandle({data: {deviceId: device.deviceId}}),
                 });
@@ -271,11 +267,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input}/>
+              <FormItem name="passage" initialValue={search} component={Input} />
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input}/>
+              <FormItem name="value" initialValue={search} component={Input} />
             </div>;
           default:
             break;
@@ -306,27 +302,36 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           align: 'center',
           dataIndex: item.key,
           render: (value, record) => {
-            const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
-            const alarm = item.key && alarmFields.find(alarmItem => queryString(item.key, alarmItem));
+            let alarm;
+            try {
+              const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
+              alarm = item.key && alarmFields.find(alarmItem => queryString(item.key, alarmItem));
+            } catch (e) {
+              alarm = item.key && record.alarmField === item.key;
+            }
+
             if (typeof value === 'object') {
               return <></>;
-            }
-
-            if (item.filedType === 'image') {
+            } else if (item.filedType === 'image') {
               return getImgBase64(value);
+            } else {
+              return <Render
+                className={alarm ? 'red' : 'green'}
+              >
+                {typeof value === 'number' ? value : (value || '-')}
+              </Render>;
             }
-
-            return <Render
-              className={alarm ? 'red' : 'green'}
-            >
-              {typeof value === 'number' ? value : (value || '-')}
-            </Render>;
           }
         };
       })}
       actionRender={(value, record) => {
-        const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
-        const alarm = alarmFields.find(alarmItem => isArray(chartData.columns).map(item => item.key).find(item => queryString(item, alarmItem))) && record.alarmRecordId;
+        let alarm;
+        try {
+          const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
+          alarm = alarmFields.find(alarmItem => isArray(chartData.columns).map(item => item.key).find(item => queryString(item, alarmItem))) && record.alarmRecordId;
+        } catch (e) {
+          alarm = isArray(chartData.columns).map(item => item.key).find(item => queryString(item, record.alarmField)) && record.alarmRecordId;
+        }
         const handle = record.status === '1';
         return <Warning
           disabled={handle || !alarm}
@@ -357,7 +362,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible}/>
+        <Image width={500} src={visible} />
       </div>
     </Modal>
 
@@ -378,7 +383,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
       </div>
     </Modal>
 
