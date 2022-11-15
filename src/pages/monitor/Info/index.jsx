@@ -132,7 +132,6 @@ const Info = ({
           >
             {
               content.map((contentItem, contentIndex) => {
-                console.log(layoutData,contentItem.field);
                 const value = layoutData[contentItem.field];
                 return <Descriptions.Item
                   key={contentIndex}
@@ -145,8 +144,8 @@ const Info = ({
                       color: getColor(value).color
                     }}
                     onClick={() => {
-                      if (contentItem.title) {
-                        open(contentItem.title, contentItem.url);
+                      if (contentItem.path) {
+                        open(contentItem.path, contentItem.url);
                       }
                     }}
                   >
@@ -189,8 +188,8 @@ const Info = ({
                             color: getColor(value).color
                           }}
                           onClick={() => {
-                            if (contentItem.title) {
-                              open(contentItem.title, contentItem.url);
+                            if (contentItem.path) {
+                              open(contentItem.path, contentItem.url);
                             }
                           }}
                         >
