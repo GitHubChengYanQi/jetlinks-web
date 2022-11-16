@@ -98,7 +98,7 @@ const Info = ({
     >
       <Descriptions.Item label="终端备注">{data.remarks || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
-      <Descriptions.Item label="设备IP地址">{data.ip || '-'}</Descriptions.Item>
+      <Descriptions.Item label="设备IP地址">{layoutData.devip || '-'}</Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
       <Descriptions.Item label="GPS定位">-</Descriptions.Item>
       <Descriptions.Item label="设备MAC地址">{data.mac || '-'}</Descriptions.Item>
