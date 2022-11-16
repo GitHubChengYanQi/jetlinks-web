@@ -76,7 +76,7 @@ const Monitor = () => {
       title: <Space>
         终端备注
         <Tooltip placement="top" title="终端设备备注的名称，平台可以修改">
-          <QuestionCircleOutlined />
+          <QuestionCircleOutlined/>
         </Tooltip>
       </Space>,
       dataIndex: 'remarks',
@@ -100,12 +100,12 @@ const Monitor = () => {
       title: <Space>
         登记名称
         <Tooltip placement="top" title="设备上报的登记名称，平台不可以修改">
-          <QuestionCircleOutlined />
+          <QuestionCircleOutlined/>
         </Tooltip>
       </Space>,
       dataIndex: 'name',
       align: 'center',
-      render: (name) => <Render text={name || '-'} />
+      render: (name) => <Render text={name || '-'}/>
     },
     // {
     //   title: 'MAC',
@@ -117,7 +117,6 @@ const Monitor = () => {
       const children = item.children || [];
 
       const render = (text, record, columnItem) => {
-
         if (typeof text !== 'number' && typeof text !== 'string') {
           return <Render width={56} onClick={() => {
             console.log(item.dataIndex);
@@ -141,7 +140,7 @@ const Monitor = () => {
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
-          }}>{value.replace(valuePattern, '')}{columnItem.unit}</Render>;
+          }}>{value.replace(valuePattern, '')}{value !== '-' && columnItem.unit}</Render>;
       };
 
       return {
@@ -158,10 +157,16 @@ const Monitor = () => {
       dataIndex: '10',
       align: 'center',
       render: (text, record) => <Render className="green" width={100}>
-        {(record.longitude && record.latitude) ? <div>自动：{record.longitude},{record.latitude}</div> : '-'}
+        {(record.longitude && record.latitude) ? <div>手动：{record.longitude},{record.latitude}</div> : '-'}
       </Render>
     },
-    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render>{text ? `外网：${text}` : '-'}</Render>},
+    {
+      title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text, record) => <Render>
+        <div hidden={text || record.devip}>-</div>
+        <div hidden={!record.devip}>内网：{record.devip}</div>
+        <div hidden={!text}>外网：{text}</div>
+      </Render>
+    },
   ];
 
   const [close, setClose] = useState(false);
@@ -182,17 +187,17 @@ const Monitor = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="批次" name="batchId" component={SelectBatch} />
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="设备名称" name="name" component={Input}/>
+      <FormItem label="批次" name="batchId" component={SelectBatch}/>
       <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input}/>
       </div>
       <div style={{display: 'none'}}>
-        <FormItem name="modelId" value={searchParams.modelId} component={Input} />
+        <FormItem name="modelId" value={searchParams.modelId} component={Input}/>
       </div>
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
-      <div style={{display: 'none'}}><FormItem name="deptId" component={Input} /></div>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
+      <div style={{display: 'none'}}><FormItem name="deptId" component={Input}/></div>
     </>;
   };
 
@@ -323,7 +328,7 @@ const Monitor = () => {
         onChange={setDate}
       />}
     >
-      <DeviceChar device={open} date={date} defaultType={open?.defaultType} />
+      <DeviceChar device={open} date={date} defaultType={open?.defaultType}/>
     </Drawer>
 
   </>;

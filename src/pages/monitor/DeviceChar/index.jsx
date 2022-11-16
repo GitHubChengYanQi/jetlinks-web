@@ -106,7 +106,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   }, [date, type, chartData]);
 
   if (getChartLoading) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
   if (!chartData) {
@@ -173,7 +173,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       bodyStyle={{padding: 0}}
       bordered={false}
     >
-      {loading ? <PageSkeleton /> : isArray(chartData.messages).map((item, index) => {
+      {loading ? <PageSkeleton/> : isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
         const lineSort = isArray(item.sort);
         switch (item.lineType) {
@@ -222,7 +222,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   zIndex: 1005,
                   title: '提示信息',
                   centered: true,
-                  icon: <ExclamationCircleOutlined />,
+                  icon: <ExclamationCircleOutlined/>,
                   content: '确定一键处理吗？',
                   onOk: () => batchHandle({data: {key: type, deviceId: device.deviceId}}),
                 });
@@ -264,16 +264,16 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input} />
+              <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'trafficLightId':
             return <div style={{display: 'none'}}>
-              <FormItem name="passageRemarks" initialValue={search} component={Input} />
+              <FormItem name="passageRemarks" initialValue={search} component={Input}/>
               <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'mId':
             return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input} />
+              <FormItem name="value" initialValue={search} component={Input}/>
             </div>;
           default:
             break;
@@ -308,10 +308,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             } else if (item.filedType === 'image') {
               return getImgBase64(value);
             } else {
+              const val = typeof value === 'number' ? value : (value || '-');
               return <Render
                 style={{color: record.num > 0 ? item.color : '#009688'}}
               >
-                {typeof value === 'number' ? value : (value || '-')}{item.unit}
+                {val}{val !== '-' && item.unit}
               </Render>;
             }
           }
@@ -354,7 +355,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible} />
+        <Image width={500} src={visible}/>
       </div>
     </Modal>
 
@@ -375,7 +376,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
       </div>
     </Modal>
 
