@@ -15,7 +15,7 @@ import {useRequest} from '@/util/Request';
 import Save from '@/pages/monitor/Info/Save';
 import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
-import {isArray, jsonStr, queryString} from '@/util/Tools';
+import {isArray} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
@@ -93,9 +93,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading, data = {}, run} = useRequest({
-    ...deviceChartData,
-  }, {manual: true});
+  const {loading, data = {}, run} = useRequest(getApi('sjtb'), {manual: true});
 
   const {loading: batchHandleLoading, run: batchHandle} = useRequest(alarmRecordView, {
     manual: true,
@@ -111,12 +109,12 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   });
 
   useEffect(() => {
-    if (date.length > 0 && type) {
+    if (date.length > 0 && type && chartData) {
       run({data: {startTime: date[0], endTime: date[1], deviceId: device.deviceId, title: type}});
     }
-  }, [date, type]);
+  }, [date, type, chartData]);
 
-  if (loading || getChartLoading) {
+  if (getChartLoading) {
     return <PageSkeleton type="descriptions" />;
   }
 
@@ -135,7 +133,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         newArray.push(item);
       });
     });
-    return newArray;
+    return newArray.map(item => ({
+      title: item.title || '',
+      value: item.value || 0,
+      time: item.time || '',
+    }));
   };
 
   const listSubmit = (value) => {
@@ -158,11 +160,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       return '-';
     }
     const strData = atob(base64);
-    // Convert binary string to character-number array
+
     const charData = strData.split('').map(function (x) {
       return x.charCodeAt(0);
     });
-    // Turn number array into byte-array
+
     const binData = new Uint8Array(charData);
     const imgBase64 = pako.inflate(binData, {to: 'string'});
     return <Button
@@ -177,7 +179,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       bodyStyle={{padding: 0}}
       bordered={false}
     >
-      {isArray(chartData.messages).map((item, index) => {
+      {loading ? <PageSkeleton /> : isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
         const lineSort = isArray(item.sort);
         switch (item.lineType) {
@@ -188,8 +190,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                 data={isArray(data[item.key]).map(item => {
                   const sortItem = lineSort.find(sItem => `${sItem.value}` === `${item.value}`);
                   return {
-                    ...item,
-                    value: sortItem?.title || '1',
+                    title: item.title || '',
+                    value: sortItem?.title || 1,
+                    time: item.time || '',
                   };
                 })}
                 id={item.key}
@@ -294,7 +297,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
-      rowKey={chartData.key}
+      rowKey="id"
       columnsResh
       columns={isArray(chartData.columns).map(item => {
         return {
@@ -302,21 +305,13 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           align: 'center',
           dataIndex: item.key,
           render: (value, record) => {
-            let alarm;
-            try {
-              const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
-              alarm = item.key && alarmFields.find(alarmItem => queryString(item.key, alarmItem));
-            } catch (e) {
-              alarm = item.key && record.alarmField === item.key;
-            }
-
             if (typeof value === 'object') {
               return <></>;
             } else if (item.filedType === 'image') {
               return getImgBase64(value);
             } else {
               return <Render
-                className={alarm ? 'red' : 'green'}
+                style={{color: record.num > 0 ? item.color : '#009688'}}
               >
                 {typeof value === 'number' ? value : (value || '-')}
               </Render>;
@@ -325,13 +320,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         };
       })}
       actionRender={(value, record) => {
-        let alarm;
-        try {
-          const alarmFields = record.alarmField ? JSON.parse(record.alarmField) : [];
-          alarm = alarmFields.find(alarmItem => isArray(chartData.columns).map(item => item.key).find(item => queryString(item, alarmItem))) && record.alarmRecordId;
-        } catch (e) {
-          alarm = isArray(chartData.columns).map(item => item.key).find(item => queryString(item, record.alarmField)) && record.alarmRecordId;
-        }
+        const alarm = record.num > 0;
         const handle = record.status === '1';
         return <Warning
           disabled={handle || !alarm}

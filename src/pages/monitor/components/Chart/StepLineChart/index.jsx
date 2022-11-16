@@ -3,7 +3,6 @@ import * as G2 from '@antv/g2';
 
 const StepLineChart = ({data, id, sort}) => {
 
-
   useEffect(() => {
     const chart = new G2.Chart({
       container: id || 'StepLineChart',

@@ -126,19 +126,22 @@ const Monitor = () => {
         }
 
         const value = typeof text === 'number' ? `${text}` : (text || '-');
-        // const color = '#009688';
-        //
-        // const valuePattern = /{[a-z]+}/g;
-        // const colorPattern = /[{}]/g;
-        // const matchArray = isArray(value.match(valuePattern));
+        const color = '#009688';
+
+        const valuePattern = /{[a-z]+}/g;
+        const colorPattern = /[{}]/g;
+        const matchArray = isArray(value.match(valuePattern));
 
         return <Render
           width={56}
-          style={{cursor: 'pointer', color: columnItem.color || '#009688'}}
+          style={{
+            cursor: 'pointer',
+            color: columnItem.color || (matchArray[0] ? matchArray[0].replace(colorPattern, '') : color)
+          }}
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
-          }}>{value}</Render>;
+          }}>{value.replace(valuePattern, '')}</Render>;
       };
 
       return {
@@ -158,7 +161,7 @@ const Monitor = () => {
         {(record.longitude && record.latitude) ? <div>自动：{record.longitude},{record.latitude}</div> : '-'}
       </Render>
     },
-    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render>外网：{text || '-'}</Render>},
+    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render>{text ? `外网：${text}` : '-'}</Render>},
   ];
 
   const [close, setClose] = useState(false);
