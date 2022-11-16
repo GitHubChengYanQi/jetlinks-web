@@ -21,6 +21,11 @@ const StepLineChart = ({data, id, sort}) => {
       } : undefined
     });
     chart.line().position('time*value').shape('hv').color('title', '#009688');
+    chart.axis('y', {
+      line: {
+        autoRotate: true
+      }
+    });
     chart.render();
   }, []);
 

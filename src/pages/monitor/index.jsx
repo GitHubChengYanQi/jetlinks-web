@@ -236,7 +236,8 @@ const Monitor = () => {
                   break;
               }
               ref.current.submit();
-            }} />
+            }}
+          />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
