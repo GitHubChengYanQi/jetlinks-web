@@ -20,11 +20,10 @@ import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import DatePicker from '@/components/DatePicker';
-import {alarmRecordBatchView} from '@/pages/alarm/url';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
-export const alarmRecordView = {url: '/alarmRecord/batchUpdate', method: 'POST'};
+export const alarmRecordView = {url: '/alarmRecord/handelAlarm', method: 'POST'};
 
 const formActionsPublic = createFormActions();
 
@@ -60,14 +59,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   };
 
   const listParams = {deviceId: device.deviceId, startTime: date[0], endTime: date[1]};
-
-  const {loading: batchViewLoading, run: batchView} = useRequest(alarmRecordBatchView, {
-    manual: true,
-    onSuccess: () => {
-      message.success('处理成功！');
-      ref.current.refresh();
-    }
-  });
 
   const {loading: getChartLoading, run: getChartTopicRun} = useRequest({
     ...getChartTopic,
@@ -230,7 +221,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   centered: true,
                   icon: <ExclamationCircleOutlined />,
                   content: '确定一键处理吗？',
-                  onOk: () => batchHandle({data: {deviceId: device.deviceId}}),
+                  onOk: () => batchHandle({data: {key: type, deviceId: device.deviceId}}),
                 });
                 break;
               case 'excelExport':
@@ -280,14 +271,13 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             break;
         }
       }}
-      loading={batchViewLoading || batchHandleLoading}
+      loading={batchHandleLoading}
       isModal
       ref={ref}
       formSubmit={(values) => {
         return {
           ...listParams,
           ...values,
-          // mId:'1581502767016009730',
           title: type,
           types: isArray(chartData.columns).filter(item => item.type).map(item => item.type)
         };
@@ -321,12 +311,17 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       })}
       actionRender={(value, record) => {
         const alarm = record.num > 0;
-        const handle = record.status === '1';
         return <Warning
-          disabled={handle || !alarm}
+          disabled={!alarm}
           content="确定处理吗？"
-          onOk={() => batchView({data: {recordIds: [record.alarmRecordId]}})}>
-          <PrimaryButton disabled={handle || !alarm}>{(handle && alarm) ? '已查看' : '处理'}</PrimaryButton>
+          onOk={() => batchHandle({
+            data: {
+              deviceRecordId: record.deviceRecordId,
+              key: type,
+              deviceId: device.deviceId
+            }
+          })}>
+          <PrimaryButton disabled={!alarm}>处理</PrimaryButton>
         </Warning>;
       }}
     />
