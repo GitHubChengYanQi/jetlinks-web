@@ -115,28 +115,40 @@ const Monitor = () => {
     // },
     ...modelColumns.map(item => {
       const children = item.children || [];
-      const render = (text, record) => {
+
+      const render = (text, record, columnItem) => {
 
         if (typeof text !== 'number' && typeof text !== 'string') {
-          return <Render width={56}>-</Render>;
+          return <Render width={56} onClick={() => {
+            console.log(item.dataIndex);
+            setOpen({protocolType: item.dataIndex, ...record});
+          }}>-</Render>;
         }
 
         const value = typeof text === 'number' ? `${text}` : (text || '-');
-        const color = '#009688';
-
-        const valuePattern = /{[a-z]+}/g;
-        const colorPattern = /[{}]/g;
-        const matchArray = isArray(value.match(valuePattern));
+        // const color = '#009688';
+        //
+        // const valuePattern = /{[a-z]+}/g;
+        // const colorPattern = /[{}]/g;
+        // const matchArray = isArray(value.match(valuePattern));
 
         return <Render
           width={56}
-          style={{cursor: 'pointer', color: matchArray[0] ? matchArray[0].replace(colorPattern, '') : color}}
+          style={{cursor: 'pointer', color: columnItem.color || '#009688'}}
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
-          }}>{value.replace(valuePattern, '')}</Render>;
+          }}>{value}</Render>;
       };
-      return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
+
+      return {
+        ...item,
+        children: children.map(childrenItem => ({
+          ...childrenItem,
+          render: (text, record) => render(text, record, childrenItem)
+        })),
+        render
+      };
     }),
     {
       title: 'GPS定位',

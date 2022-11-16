@@ -15,6 +15,10 @@ const logConfig = [
         path: '/operationLog',
         name: '操作日志',
         component: lazy(() => import('@/pages/log/OperationLog')),
+      }, {
+        path: '/deviceLog',
+        name: '操作日志',
+        component: lazy(() => import('@/pages/log/DeviceLog')),
       },
     ]
   },

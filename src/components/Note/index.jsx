@@ -11,8 +11,10 @@ const Note = (
     style,
     margin = 0,
     tooltip = true,
+    copyable,
   }) => {
   return <Typography.Paragraph
+    copyable={copyable}
     ellipsis={{rows: 1, tooltip}}
     className={className}
     style={{width, margin, maxWidth, ...style}}>
