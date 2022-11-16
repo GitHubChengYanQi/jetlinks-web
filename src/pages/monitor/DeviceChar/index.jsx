@@ -143,6 +143,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       case 'signalLampId':
         ref.current.formActions.setFieldValue('passage', value);
         break;
+      case 'trafficLightId':
+        ref.current.formActions.setFieldValue('passageRemarks', value);
+        break;
       case 'mId':
         ref.current.formActions.setFieldValue('value', value);
         break;
@@ -271,6 +274,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         switch (chartData.key) {
           case 'signalLampId':
             return <div style={{display: 'none'}}>
+              <FormItem name="passage" initialValue={search} component={Input}/>
+            </div>;
+          case 'trafficLightId':
+            return <div style={{display: 'none'}}>
+              <FormItem name="passageRemarks" initialValue={search} component={Input} />
               <FormItem name="passage" initialValue={search} component={Input}/>
             </div>;
           case 'mId':
