@@ -311,7 +311,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
               return <Render
                 style={{color: record.num > 0 ? item.color : '#009688'}}
               >
-                {typeof value === 'number' ? value : (value || '-')}
+                {typeof value === 'number' ? value : (value || '-')}{item.unit}
               </Render>;
             }
           }

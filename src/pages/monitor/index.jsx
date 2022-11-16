@@ -141,7 +141,7 @@ const Monitor = () => {
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
-          }}>{value.replace(valuePattern, '')}</Render>;
+          }}>{value.replace(valuePattern, '')}{columnItem.unit}</Render>;
       };
 
       return {
