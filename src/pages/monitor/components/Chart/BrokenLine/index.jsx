@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import * as G2 from '@antv/g2';
 
-const BrokenLine = ({data = [], colors = ['#0c7dec'], id, max, min}) => {
+const BrokenLine = ({data = [], colors = ['#0c7dec'], id}) => {
 
   useEffect(() => {
 
@@ -15,49 +15,10 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, max, min}) => {
     chart.source(data.map(item => ({...item, time: `${item.time}:00`})));
 
     chart.line().position('time*value').color('title', colors);
-    // chart.guide().regionFilter({
-    //   bottom: true,
-    //   start: ['min', 20],
-    //   end: ['max', 30],
-    //   // color: '#ff4d4f'
-    // });
-    max && chart.guide().line({
-      start: ['min', max],
-      end: ['max', max],
-      lineStyle: {
-        stroke: '#595959',
-        lineWidth: 1,
-        lineDash: [3, 3]
-      },
-      text: {
-        position: 'end',
-        style: {
-          fill: '#8c8c8c',
-          fontSize: 12,
-          fontWeight: 'normal'
-        },
-        content: `上行阀值${max}`,
-        offsetY: 6,
-      }
-    });
 
-    min && chart.guide().line({
-      start: ['min', min],
-      end: ['max', min],
-      lineStyle: {
-        stroke: '#595959',
-        lineWidth: 1,
-        lineDash: [3, 3]
-      },
-      text: {
-        position: 'end',
-        style: {
-          fill: '#8c8c8c',
-          fontSize: 12,
-          fontWeight: 'normal'
-        },
-        content: `下行阀值${min}`,
-        offsetY: 6,
+    chart.axis('y', {
+      line: {
+        autoRotate: true
       }
     });
 

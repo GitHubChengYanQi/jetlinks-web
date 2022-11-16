@@ -3,7 +3,6 @@ import * as G2 from '@antv/g2';
 
 const StepLineChart = ({data, id, sort}) => {
 
-
   useEffect(() => {
     const chart = new G2.Chart({
       container: id || 'StepLineChart',
@@ -22,6 +21,11 @@ const StepLineChart = ({data, id, sort}) => {
       } : undefined
     });
     chart.line().position('time*value').shape('hv').color('title', '#009688');
+    chart.axis('y', {
+      line: {
+        autoRotate: true
+      }
+    });
     chart.render();
   }, []);
 

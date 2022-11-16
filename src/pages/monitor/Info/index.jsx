@@ -8,7 +8,7 @@ import {useRequest} from '@/util/Request';
 import Render from '@/components/Render';
 import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
-import {isArray, queryString} from '@/util/Tools';
+import {isArray} from '@/util/Tools';
 
 
 const Info = ({
@@ -19,7 +19,8 @@ const Info = ({
 }, ref) => {
 
   const [data, setData] = useState({});
-  const [otherData, setOtherData] = useState([]);
+  const [layout, setLayout] = useState([]);
+  const [layoutData, setLayoutData] = useState({});
 
   const [saveVisible, setSaveVisible] = useState();
 
@@ -36,7 +37,8 @@ const Info = ({
     {...deviceData, data: {deviceId, modelId}},
     {
       onSuccess: (res) => {
-        setOtherData(isArray(res));
+        setLayout(isArray(res.layout));
+        setLayoutData(res.data || {});
       }
     }
   );
@@ -52,12 +54,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton />;
+    return <PageSkeleton/>;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-" />;
+      return <Render width={150} text="-"/>;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -107,7 +109,7 @@ const Info = ({
 
 
     {
-      otherData.map((item, index) => {
+      layout.map((item, index) => {
         const content = [];
         const datas = isArray(item.data);
         const childrens = isArray(item.childrens);
@@ -130,31 +132,25 @@ const Info = ({
           >
             {
               content.map((contentItem, contentIndex) => {
-                const values = (contentItem.value || '').split(',');
+                const value = layoutData[contentItem.field];
                 return <Descriptions.Item
                   key={contentIndex}
-                  label={contentItem.key}>
-                  {
-                    values.map((valueItem, valueIndex) => {
-
-                      return <div
-                        key={valueIndex}
-                        className={style.value}
-                        style={{
-                          borderRight: valueIndex === values.length - 1 && 'none',
-                          cursor: 'pointer',
-                          color: getColor(valueItem).color
-                        }}
-                        onClick={() => {
-                          if (contentItem.title) {
-                            open(contentItem.title, contentItem.url);
-                          }
-                        }}
-                      >
-                        {getColor(valueItem).value || '-'}
-                      </div>;
-                    })
-                  }
+                  label={contentItem.title}>
+                  <div
+                    className={style.value}
+                    style={{
+                      borderRight: 'none',
+                      cursor: 'pointer',
+                      color: getColor(value).color
+                    }}
+                    onClick={() => {
+                      if (contentItem.path) {
+                        open(contentItem.path, contentItem.url);
+                      }
+                    }}
+                  >
+                    {getColor(value).value || '-'}
+                  </div>
                 </Descriptions.Item>;
               })
             }
@@ -182,28 +178,23 @@ const Info = ({
                 >
                   {
                     childrenContent.map((contentItem, contentIndex) => {
-                      const values = (contentItem.value || '').split(',');
-                      return <Descriptions.Item key={contentIndex} label={contentItem.key}>
-                        {
-                          values.map((valueItem, valueIndex) => {
-                            return <div
-                              key={valueIndex}
-                              className={style.value}
-                              style={{
-                                borderRight: valueIndex === values.length - 1 && 'none',
-                                cursor: 'pointer',
-                                color: getColor(valueItem).color
-                              }}
-                              onClick={() => {
-                                if (contentItem.title) {
-                                  open(contentItem.title, contentItem.url);
-                                }
-                              }}
-                            >
-                              {getColor(valueItem).value || '-'}
-                            </div>;
-                          })
-                        }
+                      const value = layoutData[contentItem.field];
+                      return <Descriptions.Item key={contentIndex} label={contentItem.title}>
+                        <div
+                          className={style.value}
+                          style={{
+                            borderRight: 'none',
+                            cursor: 'pointer',
+                            color: getColor(value).color
+                          }}
+                          onClick={() => {
+                            if (contentItem.path) {
+                              open(contentItem.path, contentItem.url);
+                            }
+                          }}
+                        >
+                          {getColor(value).value || '-'}
+                        </div>
                       </Descriptions.Item>;
                     })
                   }

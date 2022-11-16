@@ -115,10 +115,14 @@ const Monitor = () => {
     // },
     ...modelColumns.map(item => {
       const children = item.children || [];
-      const render = (text, record) => {
+
+      const render = (text, record, columnItem) => {
 
         if (typeof text !== 'number' && typeof text !== 'string') {
-          return <Render width={56}>-</Render>;
+          return <Render width={56} onClick={() => {
+            console.log(item.dataIndex);
+            setOpen({protocolType: item.dataIndex, ...record});
+          }}>-</Render>;
         }
 
         const value = typeof text === 'number' ? `${text}` : (text || '-');
@@ -130,13 +134,24 @@ const Monitor = () => {
 
         return <Render
           width={56}
-          style={{cursor: 'pointer', color: matchArray[0] ? matchArray[0].replace(colorPattern, '') : color}}
+          style={{
+            cursor: 'pointer',
+            color: columnItem.color || (matchArray[0] ? matchArray[0].replace(colorPattern, '') : color)
+          }}
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
           }}>{value.replace(valuePattern, '')}</Render>;
       };
-      return {...item, children: children.map(childrenItem => ({...childrenItem, render})), render};
+
+      return {
+        ...item,
+        children: children.map(childrenItem => ({
+          ...childrenItem,
+          render: (text, record) => render(text, record, childrenItem)
+        })),
+        render
+      };
     }),
     {
       title: 'GPS定位',
@@ -146,7 +161,7 @@ const Monitor = () => {
         {(record.longitude && record.latitude) ? <div>自动：{record.longitude},{record.latitude}</div> : '-'}
       </Render>
     },
-    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render>外网：{text || '-'}</Render>},
+    {title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text) => <Render>{text ? `外网：${text}` : '-'}</Render>},
   ];
 
   const [close, setClose] = useState(false);
@@ -221,7 +236,8 @@ const Monitor = () => {
                   break;
               }
               ref.current.submit();
-            }} />
+            }}
+          />
         </div>
       </Col>
       <Col span={close ? 23 : 20}>
