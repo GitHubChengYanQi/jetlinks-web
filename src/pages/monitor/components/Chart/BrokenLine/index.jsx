@@ -15,12 +15,12 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, max, min}) => {
     chart.source(data.map(item => ({...item, time: `${item.time}:00`})));
 
     chart.line().position('time*value').color('title', colors);
-    chart.guide().regionFilter({
-      bottom: true,
-      start: ['min', 20],
-      end: ['max', 0],
-      // color: '#ff4d4f'
-    });
+    // chart.guide().regionFilter({
+    //   bottom: true,
+    //   start: ['min', 20],
+    //   end: ['max', 30],
+    //   // color: '#ff4d4f'
+    // });
     max && chart.guide().line({
       start: ['min', max],
       end: ['max', max],
