@@ -32,6 +32,8 @@ const Config = ({
   const getBoolean = (field) => {
     let trueText;
     let falseText;
+    let trueValue;
+    let falseValue;
     const boolean = isArray(field).find(fieldItem => {
       let type;
       modelColumns.find(item => {
@@ -42,6 +44,8 @@ const Config = ({
           type = object.conditionType;
           trueText = object.trueText;
           falseText = object.falseText;
+          trueValue = object.trueValue;
+          falseValue = object.falseValue;
           return true;
         }
         return false;
@@ -52,6 +56,8 @@ const Config = ({
       boolean,
       trueText: trueText || '真',
       falseText: falseText || '假',
+      trueValue,
+      falseValue,
     };
   };
 
@@ -105,7 +111,8 @@ const Config = ({
                       field: newFild,
                       title: title.join(' '),
                       booleanType: boolean,
-                      alarmCondition: boolean ? '7' : '1'
+                      alarmCondition: boolean ? '7' : '1',
+                      value: undefined,
                     }, record.key);
                   }} />;
               })
@@ -155,8 +162,8 @@ const Config = ({
       align: 'center',
       width: 350,
       render: (text, record) => {
-        const {trueText, falseText} = getBoolean(record.field);
-        const showText = (text ? trueText : falseText);
+        const {trueText, falseText, trueValue, falseValue} = getBoolean(record.field);
+        const showText = (text === trueValue ? trueText : falseText);
         switch (record.alarmCondition) {
           case '7':
             return show ? showText : <Select
@@ -166,7 +173,7 @@ const Config = ({
               placeholder="请选择对应值"
               value={text}
               style={{width: 100}}
-              options={[{label: trueText, value: 1}, {label: falseText, value: 0}]}
+              options={[{label: trueText, value: trueValue}, {label: falseText, value: falseValue}]}
               onChange={(value) => {
                 dataSourceChange({value}, record.key);
               }}

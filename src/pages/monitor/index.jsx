@@ -161,7 +161,7 @@ const Monitor = () => {
       </Render>
     },
     {
-      title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text, record) => <Render>
+      title: '设备IP地址', dataIndex: 'ip', align: 'center', render: (text, record) => <Render width={250}>
         <div hidden={text || record.devip}>-</div>
         <div hidden={!record.devip}>内网：{record.devip}</div>
         <div hidden={!text}>外网：{text}</div>

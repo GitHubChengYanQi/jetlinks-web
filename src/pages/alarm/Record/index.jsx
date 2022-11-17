@@ -62,7 +62,7 @@ const Record = () => {
           alarmCondition = '<';
           break;
         case '6':
-          alarmCondition = '<>';
+          alarmCondition = '';
           break;
         case '7':
           alarmCondition = '=';
