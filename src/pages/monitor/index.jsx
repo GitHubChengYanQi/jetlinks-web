@@ -118,7 +118,7 @@ const Monitor = () => {
 
       const render = (text, record, columnItem) => {
         if (typeof text !== 'number' && typeof text !== 'string') {
-          return <Render width={56} onClick={() => {
+          return <Render width={70} onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
           }}>-</Render>;
@@ -132,7 +132,7 @@ const Monitor = () => {
         const matchArray = isArray(value.match(valuePattern));
 
         return <Render
-          width={56}
+          width={70}
           style={{
             cursor: 'pointer',
             color: columnItem.color || (matchArray[0] ? matchArray[0].replace(colorPattern, '') : color)
