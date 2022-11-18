@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Card, Image, Input, message, Modal, Space, Tabs} from 'antd';
+import {Button, Card, Empty, Image, Input, message, Modal, Space, Spin, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import pako from 'pako';
@@ -49,7 +49,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [exportVisible, setExportVisble] = useState();
   const [exportTime, setExportTime] = useState([]);
 
-
   const getApi = (key) => {
     const api = isArray(chartData?.buttonApiUrls).find(item => item.key === key);
     return {
@@ -57,8 +56,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       method: api?.method,
     };
   };
-
-  const listParams = {deviceId: device.deviceId, startTime: date[0], endTime: date[1]};
 
   const {loading: getChartLoading, run: getChartTopicRun} = useRequest({
     ...getChartTopic,
@@ -84,7 +81,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading, data = {}, run} = useRequest(getApi('sjtb'), {manual: true});
+  const {loading: chartLoading, data: chart, run: getChart} = useRequest(getApi('sjtb'), {manual: true});
 
   const {loading: batchHandleLoading, run: batchHandle} = useRequest(alarmRecordView, {
     manual: true,
@@ -94,7 +91,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {data: deviceDetail, refresh} = useRequest({
+  const {loading: deviceDetailLoading, data: deviceDetail, refresh} = useRequest({
     ...monitorDetail,
     data: {deviceId: device.deviceId, modelId: device.modelId}
   });
@@ -110,7 +107,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       } else if (diffHours > 168) {
         frame = 168;
       }
-      run({
+      getChart({
         data: {
           startTime: date[0],
           endTime: date[1],
@@ -119,6 +116,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           frame
         }
       });
+
+      // 列表时间
+      if (!ref.current) {
+        return;
+      }
+      ref.current.formActions.setFieldValue('startTime', date[0]);
+      ref.current.formActions.setFieldValue('endTime', date[1]);
+      ref.current.submit();
     }
   }, [date, type, chartData]);
 
@@ -127,7 +132,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   }
 
   if (!chartData) {
-    return <></>;
+    return <Empty />;
+  }
+
+  if (!chart) {
+    if (chartLoading) {
+      return <PageSkeleton type="descriptions" />;
+    }
+    return <Empty />;
   }
 
 
@@ -190,7 +202,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       bodyStyle={{padding: 0}}
       bordered={false}
     >
-      {loading ? <PageSkeleton /> : isArray(chartData.messages).map((item, index) => {
+      {chartLoading ? <div style={{textAlign:'center',padding:24}}><Spin /></div> : chart && isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
         const lineSort = isArray(item.sort);
         switch (item.lineType) {
@@ -198,7 +210,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             return <div key={index}>
               {item.title}
               <StepLineChart
-                data={isArray(data[item.key]).map(item => {
+                data={isArray(chart[item.key]).map(item => {
                   const sortItem = lineSort.find(sItem => `${sItem.value}` === `${item.value}`);
                   return {
                     title: item.title || '',
@@ -214,7 +226,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             return <div key={index}>
               {item.title}
               <BrokenLine
-                data={sort(data[item.key] || [], lines)}
+                data={sort(chart[item.key] || [], lines)}
                 colors={lines.map(item => item.color)}
                 id={item.key}
               />
@@ -226,6 +238,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     <Tabs
       tabBarExtraContent={<Space>
         {isArray(chartData.button).map((item, index) => {
+          if (item.type === 'warningConfig' && deviceDetailLoading) {
+            return <Spin key={index} />;
+          }
           return <LinkButton key={index} onClick={() => {
             switch (item.type) {
               case 'warningConfig':
@@ -275,38 +290,45 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       bordered={false}
       SearchButton={<></>}
       searchForm={() => {
-        if (updateSearch) {
-          return <></>;
+        let otherForm = <></>;
+        if (!updateSearch) {
+          switch (chartData.key) {
+            case 'signalLampId':
+              otherForm = <>
+                <FormItem name="passage" initialValue={search} component={Input} />
+              </>;
+              break;
+            case 'trafficLightId':
+              otherForm = <>
+                <FormItem name="passageRemarks" initialValue={search} component={Input} />
+                <FormItem name="passage" initialValue={search} component={Input} />
+              </>;
+              break;
+            case 'mId':
+              otherForm = <>
+                <FormItem name="value" initialValue={search} component={Input} />
+              </>;
+              break;
+            default:
+              break;
+          }
         }
-        switch (chartData.key) {
-          case 'signalLampId':
-            return <div style={{display: 'none'}}>
-              <FormItem name="passage" initialValue={search} component={Input} />
-            </div>;
-          case 'trafficLightId':
-            return <div style={{display: 'none'}}>
-              <FormItem name="passageRemarks" initialValue={search} component={Input} />
-              <FormItem name="passage" initialValue={search} component={Input} />
-            </div>;
-          case 'mId':
-            return <div style={{display: 'none'}}>
-              <FormItem name="value" initialValue={search} component={Input} />
-            </div>;
-          default:
-            break;
-        }
+        return <div style={{display: 'none'}}>
+          <FormItem name="deviceId" initialValue={device.deviceId} component={Input} />
+          <FormItem name="startTime" initialValue={date[0]} component={Input} />
+          <FormItem name="endTime" initialValue={date[1]} component={Input} />
+          <FormItem name="title" initialValue={type} component={Input} />
+          <FormItem
+            name="types"
+            initialValue={isArray(chartData.columns).filter(item => item.type).map(item => item.type)}
+            component={Input}
+          />
+          {otherForm}
+        </div>;
       }}
       loading={batchHandleLoading}
       isModal
       ref={ref}
-      formSubmit={(values) => {
-        return {
-          ...listParams,
-          ...values,
-          title: type,
-          types: isArray(chartData.columns).filter(item => item.type).map(item => item.type)
-        };
-      }}
       formActions={formActionsPublic}
       api={getApi('sjlb')}
       noSort
