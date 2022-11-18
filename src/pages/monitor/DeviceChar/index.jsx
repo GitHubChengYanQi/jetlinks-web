@@ -97,7 +97,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   });
 
   useEffect(() => {
-    if (date.length > 0 && type && chartData) {
+    if (date.length > 0 && type && chartData && !getChartLoading) {
       const diffHours = moment(date[1]).diff(moment(date[0]), 'hours');
       let frame = 1;
       if (diffHours > 24) {
