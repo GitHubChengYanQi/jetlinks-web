@@ -247,8 +247,16 @@ const TableWarp = (
   };
 
   const refresh = () => {
-    setTimed(false);
-    formActions.submit();
+    if (interval && loading && typeof cancel === 'function') {
+      cancel();
+      setTimeout(() => {
+        setTimed(false);
+        formActions.submit();
+      }, 0);
+    } else {
+      setTimed(false);
+      formActions.submit();
+    }
   };
 
   const timedRefresh = () => {

@@ -81,7 +81,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading: chartLoading, data: chart, run: getChart} = useRequest(getApi('sjtb'), {manual: true});
+  const {loading: chartLoading, data: chart, run: getChart, mutate} = useRequest(getApi('sjtb'), {manual: true});
 
   const {loading: batchHandleLoading, run: batchHandle} = useRequest(alarmRecordView, {
     manual: true,
@@ -202,7 +202,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       bodyStyle={{padding: 0}}
       bordered={false}
     >
-      {chartLoading ? <div style={{textAlign:'center',padding:24}}><Spin /></div> : chart && isArray(chartData.messages).map((item, index) => {
+      {chartLoading ? <div style={{textAlign: 'center', padding: 24}}><Spin />
+      </div> : chart && isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
         const lineSort = isArray(item.sort);
         switch (item.lineType) {
@@ -271,6 +272,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       activeKey={search}
       onTabClick={(key) => {
         if (updateSearch) {
+          mutate(undefined);
           getChartTopicRun({data: {title: key, modelId: device.modelId}});
           setType(key);
           setChartData();
