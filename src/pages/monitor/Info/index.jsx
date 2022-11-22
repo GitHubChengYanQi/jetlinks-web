@@ -8,7 +8,7 @@ import {useRequest} from '@/util/Request';
 import Render from '@/components/Render';
 import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
-import {isArray} from '@/util/Tools';
+import {isArray, isObject} from '@/util/Tools';
 
 
 const Info = ({
@@ -54,12 +54,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton />;
+    return <PageSkeleton/>;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-" />;
+      return <Render width={150} text="-"/>;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -69,23 +69,7 @@ const Info = ({
     return <> {day}天{hours}时{minutes}分{newsecond}秒</>;
   };
 
-  const getColor = (value) => {
-
-    if (typeof value !== 'number' && typeof value !== 'string') {
-      return {};
-    }
-    const newValue = typeof value === 'number' ? `${value}` : (value || '-');
-    const color = '#009688';
-
-    const valuePattern = /{[a-z]+}/g;
-    const colorPattern = /[{}]/g;
-    const matchArray = isArray(value.match(valuePattern));
-
-    return {
-      value: newValue.replace(valuePattern, ''),
-      color: matchArray[0] ? matchArray[0].replace(colorPattern, '') : color,
-    };
-  };
+  const color = '#009688';
 
   return <>
     <Descriptions
@@ -99,7 +83,7 @@ const Info = ({
       <Descriptions.Item label="终端备注">{data.remarks || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
       <Descriptions.Item label="设备IP地址">
-        {layoutData.devip ? `内网：${layoutData.devip}` : ''} <br />{data.ip ? `外网：${data.ip}` : ''}
+        {layoutData.devip ? `内网：${layoutData.devip}` : ''} <br/>{data.ip ? `外网：${data.ip}` : ''}
       </Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
       <Descriptions.Item label="GPS定位">-</Descriptions.Item>
@@ -135,6 +119,12 @@ const Info = ({
             {
               content.map((contentItem, contentIndex) => {
                 const value = layoutData[contentItem.field];
+                let newValue;
+                if (typeof value !== 'number' && typeof value !== 'string') {
+                  newValue = '-';
+                } else {
+                  newValue = typeof value === 'number' ? `${value}` : (value || '-');
+                }
                 return <Descriptions.Item
                   key={contentIndex}
                   label={contentItem.title}>
@@ -143,7 +133,7 @@ const Info = ({
                     style={{
                       borderRight: 'none',
                       cursor: 'pointer',
-                      color: getColor(value).color
+                      color: isObject(layoutData.filedStyle)[contentItem.field] || color
                     }}
                     onClick={() => {
                       if (contentItem.path) {
@@ -151,7 +141,7 @@ const Info = ({
                       }
                     }}
                   >
-                    {getColor(value).value || '-'}
+                    {newValue}
                   </div>
                 </Descriptions.Item>;
               })
@@ -181,13 +171,19 @@ const Info = ({
                   {
                     childrenContent.map((contentItem, contentIndex) => {
                       const value = layoutData[contentItem.field];
+                      let newValue;
+                      if (typeof value !== 'number' && typeof value !== 'string') {
+                        newValue = '-';
+                      } else {
+                        newValue = typeof value === 'number' ? `${value}` : (value || '-');
+                      }
                       return <Descriptions.Item key={contentIndex} label={contentItem.title}>
                         <div
                           className={style.value}
                           style={{
                             borderRight: 'none',
                             cursor: 'pointer',
-                            color: getColor(value).color
+                            color: isObject(layoutData.filedStyle)[contentItem.field] || color
                           }}
                           onClick={() => {
                             if (contentItem.path) {
@@ -195,7 +191,7 @@ const Info = ({
                             }
                           }}
                         >
-                          {getColor(value).value || '-'}
+                          {newValue}
                         </div>
                       </Descriptions.Item>;
                     })

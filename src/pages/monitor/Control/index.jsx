@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {message, Space, Spin} from 'antd';
 import Modal from '@/components/Modal';
 import {PrimaryButton} from '@/components/Button';
@@ -16,10 +16,10 @@ const Control = (
     data = [],
     MAC,
     search = [],
-  }
+  }, ref
 ) => {
 
-  const ref = useRef();
+  const modalRef = useRef();
 
   const [buttons, setButtons] = useState([]);
 
@@ -35,19 +35,27 @@ const Control = (
     }
   });
 
+  const submit = (key) => {
+    run({data: {MAC, buttonData: {key}}});
+  };
+
+  useImperativeHandle(ref, () => ({
+    submit,
+  }));
+
   useEffect(() => {
     if (visible) {
       if (search.length <= 0) {
         setButtons(isArray(data));
       }
-      ref.current.open(true);
+      modalRef.current.open(true);
     } else {
-      ref.current.close();
+      modalRef.current.close();
     }
   }, [visible]);
 
   return <>
-    <Modal headTitle="远程控制" ref={ref} onClose={onClose}>
+    <Modal headTitle="远程控制" ref={modalRef} onClose={onClose}>
       <Spin spinning={loading}>
         <div style={{padding: 24}}>
           {search.length > 0 && <Select
@@ -79,4 +87,4 @@ const Control = (
 };
 
 
-export default Control;
+export default React.forwardRef(Control);

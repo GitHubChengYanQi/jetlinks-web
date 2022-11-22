@@ -49,6 +49,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [exportVisible, setExportVisble] = useState();
   const [exportTime, setExportTime] = useState([]);
 
+  const controlRef = useRef();
+
   const getApi = (key) => {
     const api = isArray(chartData?.buttonApiUrls).find(item => item.key === key);
     return {
@@ -128,18 +130,18 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   }, [date, type, chartData]);
 
   if (getChartLoading) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
   if (!chartData) {
-    return <Empty />;
+    return <Empty/>;
   }
 
   if (!chart) {
     if (chartLoading) {
-      return <PageSkeleton type="descriptions" />;
+      return <PageSkeleton type="descriptions"/>;
     }
-    return <Empty />;
+    return <Empty/>;
   }
 
 
@@ -202,7 +204,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       bodyStyle={{padding: 0}}
       bordered={false}
     >
-      {chartLoading ? <div style={{textAlign: 'center', padding: 24}}><Spin />
+      {chartLoading ? <div style={{textAlign: 'center', padding: 24}}><Spin/>
       </div> : chart && isArray(chartData.messages).map((item, index) => {
         const lines = item.lines || [];
         const lineSort = isArray(item.sort);
@@ -240,7 +242,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       tabBarExtraContent={<Space>
         {isArray(chartData.button).map((item, index) => {
           if (item.type === 'warningConfig' && deviceDetailLoading) {
-            return <Spin key={index} />;
+            return <Spin key={index}/>;
           }
           return <LinkButton key={index} onClick={() => {
             switch (item.type) {
@@ -248,6 +250,19 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                 setSaveVisible(deviceDetail);
                 break;
               case 'remoteControl':
+                if (isArray(item?.downDatas).length === 1) {
+                  Modal.confirm({
+                    zIndex: 1005,
+                    title: '提示信息',
+                    centered: true,
+                    icon: <ExclamationCircleOutlined/>,
+                    content: `确定控制${item.title}？`,
+                    onOk: () => {
+                      controlRef.current.submit(isArray(item?.downDatas)[0].key);
+                    },
+                  });
+                  return;
+                }
                 setControl(item);
                 break;
               case 'batchHandel':
@@ -255,7 +270,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   zIndex: 1005,
                   title: '提示信息',
                   centered: true,
-                  icon: <ExclamationCircleOutlined />,
+                  icon: <ExclamationCircleOutlined/>,
                   content: '确定一键处理吗？',
                   onOk: () => batchHandle({data: {key: type, deviceId: device.deviceId}}),
                 });
@@ -297,18 +312,18 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           switch (chartData.key) {
             case 'signalLampId':
               otherForm = <>
-                <FormItem name="passage" initialValue={search} component={Input} />
+                <FormItem name="passage" initialValue={search} component={Input}/>
               </>;
               break;
             case 'trafficLightId':
               otherForm = <>
-                <FormItem name="passageRemarks" initialValue={search} component={Input} />
-                <FormItem name="passage" initialValue={search} component={Input} />
+                <FormItem name="passageRemarks" initialValue={search} component={Input}/>
+                <FormItem name="passage" initialValue={search} component={Input}/>
               </>;
               break;
             case 'mId':
               otherForm = <>
-                <FormItem name="value" initialValue={search} component={Input} />
+                <FormItem name="value" initialValue={search} component={Input}/>
               </>;
               break;
             default:
@@ -316,10 +331,10 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           }
         }
         return <div style={{display: 'none'}}>
-          <FormItem name="deviceId" initialValue={device.deviceId} component={Input} />
-          <FormItem name="startTime" initialValue={date[0]} component={Input} />
-          <FormItem name="endTime" initialValue={date[1]} component={Input} />
-          <FormItem name="title" initialValue={type} component={Input} />
+          <FormItem name="deviceId" initialValue={device.deviceId} component={Input}/>
+          <FormItem name="startTime" initialValue={date[0]} component={Input}/>
+          <FormItem name="endTime" initialValue={date[1]} component={Input}/>
+          <FormItem name="title" initialValue={type} component={Input}/>
           <FormItem
             name="types"
             initialValue={isArray(chartData.columns).filter(item => item.type).map(item => item.type)}
@@ -387,6 +402,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     />
 
     <Control
+      ref={controlRef}
       visible={control}
       MAC={device.mac}
       data={isArray(control?.downDatas)}
@@ -396,7 +412,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible} />
+        <Image width={500} src={visible}/>
       </div>
     </Modal>
 
@@ -417,7 +433,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
       </div>
     </Modal>
 

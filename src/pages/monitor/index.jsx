@@ -127,20 +127,16 @@ const Monitor = () => {
         const value = typeof text === 'number' ? `${text}` : (text || '-');
         const color = '#009688';
 
-        const valuePattern = /{[a-z]+}/g;
-        const colorPattern = /[{}]/g;
-        const matchArray = isArray(value.match(valuePattern));
-
         return <Render
           width={70}
           style={{
             cursor: 'pointer',
-            color: columnItem.color || (matchArray[0] ? matchArray[0].replace(colorPattern, '') : color)
+            color: columnItem.color || isObject(record.filedStyle)[columnItem.dataIndex] || color
           }}
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
-          }}>{value.replace(valuePattern, '')}{value !== '-' && columnItem.unit}</Render>;
+          }}>{value}{value !== '-' && columnItem.unit}</Render>;
       };
 
       return {
