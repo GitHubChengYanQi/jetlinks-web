@@ -6,6 +6,7 @@ import DownloadFile from '@/components/DownloadFile';
 import Password from '@/pages/Login/AccountAsk/components/Password';
 import {PrimaryButton} from '@/components/Button';
 import Modal from '@/components/Modal';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 const Info = ({
   customerId,
@@ -59,8 +60,8 @@ const Info = ({
     <Modal
       ref={ref}
       width={800}
-      headTitle={data ? '租户详情' : '租户信息确认'}
-      footer={data ? null : [
+      headTitle={detail ? '租户详情' : '租户信息确认'}
+      footer={detail ? null : [
         <Button key={0} onClick={close}>取消</Button>,
         <PrimaryButton loading={loading} key={1} onClick={() => {
           run({data: {customerIds: [data.customerId]}});
@@ -75,7 +76,7 @@ const Info = ({
           <Descriptions.Item label="可用短信条数">{data.total || 0}</Descriptions.Item>
           <Descriptions.Item label="管理员姓名">{data.contactName}</Descriptions.Item>
           <Descriptions.Item label="管理员手机号码">{data.contactPhone}</Descriptions.Item>
-          <Descriptions.Item label="管理员账号">{data.adminAccount}</Descriptions.Item>
+          <Descriptions.Item label="管理员账号">{AccountFormat(data.adminAccount)}</Descriptions.Item>
           {(detail && data.customerId) && <Descriptions.Item label="管理员密码">
             <Password
               loading={editLoading}
