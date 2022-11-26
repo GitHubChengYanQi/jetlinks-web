@@ -351,7 +351,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
-      rowKey="id"
+      rowKey="deviceRecordId"
       columnsResh
       columns={isArray(chartData.columns).map(item => {
         return {

@@ -11,7 +11,7 @@ const StepLineChart = ({data, id, sort}) => {
       padding: [20, 80, 95, 80],
     });
 
-    chart.source(data.map(item => ({...item, time: `${item.time}:00`})), {
+    chart.source(data, {
       month: {
         range: [0, 1]
       },

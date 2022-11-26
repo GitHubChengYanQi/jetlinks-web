@@ -12,7 +12,7 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id}) => {
       padding: [20, 80, 95, 80],
     });
 
-    chart.source(data.map(item => ({...item, time: `${item.time}:00`})));
+    chart.source(data);
 
     chart.line().position('time*value').color('title', colors);
 
