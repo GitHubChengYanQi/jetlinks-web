@@ -219,6 +219,7 @@ const Info = ({
     </Descriptions>
 
     <Save
+      detail
       visible={saveVisible}
       close={() => setSaveVisible()}
       device={saveVisible}

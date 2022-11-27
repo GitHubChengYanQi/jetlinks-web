@@ -25,7 +25,7 @@ const md5 = require('md5');
  * @returns {{setButton: JSX.Element, tableColumn}}
  */
 
-const useTableSet = (column, tableKey, resh) => {
+const useTableSet = (column, tableKey) => {
 
   const defaultColumn = Array.isArray(column) && column.map((item) => {
     if (!item) {
@@ -38,12 +38,6 @@ const useTableSet = (column, tableKey, resh) => {
   }) || [];
 
   const [tableColumn, setTableColumn] = useState(defaultColumn);
-
-  useEffect(() => {
-    if (resh) {
-      setTableColumn(defaultColumn);
-    }
-  }, [resh]);
 
   const itemsData = [];
 

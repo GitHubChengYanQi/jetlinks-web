@@ -234,6 +234,7 @@ const Monitor = () => {
       </Col>
       <Col span={close ? 23 : 20}>
         <Table
+          noTableColumn
           isModal={false}
           interval
           formSubmit={(values) => {
@@ -255,16 +256,15 @@ const Monitor = () => {
             return data.map(item => ({...(isObject(item.protocolDetail) || {}), ...item}));
           }}
           onResponse={(res = {}) => {
-            setTimeout(()=>{
+            setTimeout(() => {
               ref.current?.timedRefresh();
-            },10000);
+            }, 10000);
             if (res.count === 0) {
               setModelColumns([]);
               return;
             }
             setModelColumns(res.columns || []);
           }}
-          columnsResh
           ref={ref}
           searchForm={searchForm}
           api={monitorList}

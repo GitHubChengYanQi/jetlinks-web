@@ -93,11 +93,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading: deviceDetailLoading, data: deviceDetail, refresh} = useRequest({
-    ...monitorDetail,
-    data: {deviceId: device.deviceId, modelId: device.modelId}
-  });
-
   useEffect(() => {
     if (date.length > 0 && type && chartData && !getChartLoading) {
       const diffHours = moment(date[1]).diff(moment(date[0]), 'hours');
@@ -241,13 +236,10 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     <Tabs
       tabBarExtraContent={<Space>
         {isArray(chartData.button).map((item, index) => {
-          if (item.type === 'warningConfig' && deviceDetailLoading) {
-            return <Spin key={index}/>;
-          }
           return <LinkButton key={index} onClick={() => {
             switch (item.type) {
               case 'warningConfig':
-                setSaveVisible(deviceDetail);
+                setSaveVisible(true);
                 break;
               case 'remoteControl':
                 if (isArray(item?.downDatas).length === 1) {
@@ -392,12 +384,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     />
 
     <Save
+      device={device}
       visible={saveVisible}
-      close={() => setSaveVisible()}
-      device={saveVisible}
+      close={() => setSaveVisible(false)}
       success={() => {
         setSaveVisible();
-        refresh();
       }}
     />
 

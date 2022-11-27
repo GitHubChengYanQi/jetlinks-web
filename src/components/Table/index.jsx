@@ -118,7 +118,7 @@ const TableWarp = (
 
   const [timed, setTimed] = useState(false);
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [state, setState] = useUrlState(
     {
@@ -229,7 +229,7 @@ const TableWarp = (
   const {dataSource, pagination, ...other} = tableProps;
 
   const submit = () => {
-    if (interval && loading && typeof cancel === 'function') {
+    if (interval && typeof cancel === 'function') {
       cancel();
       setTimeout(() => {
         setTimed(false);
@@ -251,7 +251,7 @@ const TableWarp = (
   };
 
   const refresh = () => {
-    if (interval && loading && typeof cancel === 'function') {
+    if (interval && typeof cancel === 'function') {
       cancel();
       setTimeout(() => {
         setTimed(false);
@@ -288,7 +288,7 @@ const TableWarp = (
   const {tableColumn, setButton, saveView, selectView} = useTableSet(children || columns.map((item, index) => ({
     ...item,
     key: `${index}`
-  })), tableKey, columnsResh && !loading);
+  })), tableKey);
 
   const action = [];
   if (!noAction) {
@@ -373,7 +373,7 @@ const TableWarp = (
               render: (value, record, index) => <Render
                 text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70}/>
             }]),
-            ...tableColumn.filter(item => item.checked),
+            ...(noTableColumn ? (children || columns) : tableColumn.filter(item => item.checked)),
             ...action,
           ]}
           pagination={
