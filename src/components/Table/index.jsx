@@ -3,11 +3,11 @@ import {Button, Card, Col, Row, Space, Table as AntdTable} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import {createFormActions, Form, FormButtonGroup, useFormTableQuery} from '@formily/antd';
 import useUrlState from '@ahooksjs/use-url-state';
+import axios from 'axios';
 import Service from '@/util/Service';
 import style from './index.module.less';
 import Render from '@/components/Render';
 import useTableSet from '@/hook/useTableSet';
-import axios from 'axios';
 
 
 const {Column} = AntdTable;
@@ -118,6 +118,8 @@ const TableWarp = (
 
   const [timed, setTimed] = useState(false);
 
+  const [loading,setLoading] = useState(false);
+
   const [state, setState] = useUrlState(
     {
       navigateMode: 'push',
@@ -152,6 +154,7 @@ const TableWarp = (
   };
 
   const requestMethod = async (params) => {
+    setLoading(true);
     const {values, pagination, sorter, ...other} = params;
     const page = {};
     page.limit = pagination.pageSize;
@@ -196,6 +199,7 @@ const TableWarp = (
       onResponse(response || {});
       response.data = format(response.data);
       return new Promise((resolve) => {
+        setLoading(false);
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
             return isChildren ? items : dataSourcedChildren(items);
@@ -222,7 +226,7 @@ const TableWarp = (
     sorter: defaultTableQuery.sorter || {},
   });
 
-  const {loading, dataSource, pagination, ...other} = tableProps;
+  const {dataSource, pagination, ...other} = tableProps;
 
   const submit = () => {
     if (interval && loading && typeof cancel === 'function') {
@@ -276,7 +280,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}} />
+        <br style={{clear: 'both'}}/>
       </div>
     );
   };
@@ -314,26 +318,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup>
-                    <Button
-                      id="submit"
-                      loading={otherLoading || (timed ? false : loading)}
-                      type="primary"
-                      htmlType="submit"
-                      onClick={() => {
-                        submit();
-                      }}><SearchOutlined />查询
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        reset();
-                      }}>
-                      重置
-                    </Button>
-                    {searchButtons}
-                    {selectView}
-                    {saveView}
-                  </FormButtonGroup>}
+                    <FormButtonGroup>
+                      <Button
+                        id="submit"
+                        loading={otherLoading || (timed ? false : loading)}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {
+                          submit();
+                        }}><SearchOutlined/>查询
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reset();
+                        }}>
+                        重置
+                      </Button>
+                      {searchButtons}
+                      {selectView}
+                      {saveView}
+                    </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -357,7 +361,6 @@ const TableWarp = (
             };
           }}
           expandable={expandable}
-          loading={otherLoading || (timed ? false : loading)}
           dataSource={dataSource || []}
           rowKey={rowKey}
           columns={[
@@ -368,7 +371,7 @@ const TableWarp = (
               dataIndex: '0',
               width: '70px',
               render: (value, record, index) => <Render
-                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70} />
+                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70}/>
             }]),
             ...tableColumn.filter(item => item.checked),
             ...action,
@@ -421,6 +424,7 @@ const TableWarp = (
           scroll={{x: 'max-content', y: maxHeight || `calc((100vh - ${320 + searchHeight.clientHeight}px))`}}
           {...other}
           {...props}
+          loading={otherLoading || (timed ? false : loading)}
         >
           {children}
         </AntdTable>

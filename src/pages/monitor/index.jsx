@@ -197,15 +197,6 @@ const Monitor = () => {
     </>;
   };
 
-  useEffect(() => {
-    const time = setInterval(() => {
-      ref.current.timedRefresh();
-    }, 10000);
-    return () => {
-      clearInterval(time);
-    };
-  }, [params]);
-
 
   return <>
     <Row gutter={24}>
@@ -264,6 +255,9 @@ const Monitor = () => {
             return data.map(item => ({...(isObject(item.protocolDetail) || {}), ...item}));
           }}
           onResponse={(res = {}) => {
+            setTimeout(()=>{
+              ref.current?.timedRefresh();
+            },10000);
             if (res.count === 0) {
               setModelColumns([]);
               return;
