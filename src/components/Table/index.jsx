@@ -177,7 +177,7 @@ const TableWarp = (
         })
       });
     }
-    let response;
+    let response = {};
     try {
       if (dataSources) {
         response = {
@@ -194,12 +194,16 @@ const TableWarp = (
           },
           ...other,
           params: page
+        }).catch(()=>{
         });
       }
       onResponse(response || {});
-      response.data = format(response.data);
+      response = {
+        ...response,
+        data: format(response?.data)
+      };
+      setLoading(false);
       return new Promise((resolve) => {
-        setLoading(false);
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
             return isChildren ? items : dataSourcedChildren(items);
@@ -280,7 +284,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
@@ -318,26 +322,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id="submit"
-                        loading={otherLoading || (timed ? false : loading)}
-                        type="primary"
-                        htmlType="submit"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                      {searchButtons}
-                      {selectView}
-                      {saveView}
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={otherLoading || (timed ? false : loading)}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                    {searchButtons}
+                    {selectView}
+                    {saveView}
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -371,7 +375,7 @@ const TableWarp = (
               dataIndex: '0',
               width: '70px',
               render: (value, record, index) => <Render
-                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70}/>
+                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70} />
             }]),
             ...(noTableColumn ? (children || columns) : tableColumn.filter(item => item.checked)),
             ...action,

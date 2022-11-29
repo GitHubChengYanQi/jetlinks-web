@@ -31,6 +31,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const ref = useRef();
 
+  const startTime =  date[0];
+  const endTime =  date[1];
+
   const [type, setType] = useState();
 
   const [saveVisible, setSaveVisible] = useState();
@@ -106,8 +109,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       }
       getChart({
         data: {
-          startTime: date[0],
-          endTime: date[1],
+          startTime,
+          endTime,
           deviceId: device.deviceId,
           title: type,
           frame
@@ -118,8 +121,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       if (!ref.current) {
         return;
       }
-      ref.current.formActions.setFieldValue('startTime', date[0]);
-      ref.current.formActions.setFieldValue('endTime', date[1]);
+      ref.current.formActions.setFieldValue('startTime', startTime);
+      ref.current.formActions.setFieldValue('endTime', endTime);
       ref.current.submit();
     }
   }, [date, type, chartData]);
@@ -324,8 +327,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         }
         return <div style={{display: 'none'}}>
           <FormItem name="deviceId" initialValue={device.deviceId} component={Input}/>
-          <FormItem name="startTime" initialValue={date[0]} component={Input}/>
-          <FormItem name="endTime" initialValue={date[1]} component={Input}/>
+          <FormItem name="startTime" initialValue={startTime} component={Input}/>
+          <FormItem name="endTime" initialValue={endTime} component={Input}/>
           <FormItem name="title" initialValue={type} component={Input}/>
           <FormItem
             name="types"
