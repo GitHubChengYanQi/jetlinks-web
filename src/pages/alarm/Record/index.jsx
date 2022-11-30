@@ -74,7 +74,8 @@ const Record = () => {
 
       return <div key={index} hidden={!item.protocolValue}>
         <Render className="green" key={index}>
-          {item.title} {alarmCondition} {item.ruleValue} <span hidden={item.alarmCondition === '7'}>,当前值：{item.protocolValue}</span>
+          {item.title} {alarmCondition} {item.ruleValue} <span
+          hidden={item.alarmCondition === '7'}>,当前值：{item.protocolValue}</span>
         </Render>
       </div>;
     });
@@ -178,7 +179,13 @@ const Record = () => {
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return values;
+        return {
+          ...values,
+          remarks: values.remarks ? `%${values.remarks}%` : null,
+          name: values.name ? `%${values.name}%` : null,
+          mac: values.mac ? `%${values.mac}%` : null,
+          ruleConditionJson: values.ruleConditionJson ? `%${values.ruleConditionJson}%` : null,
+        };
       }}
       ref={ref}
       onChange={setKeys}

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Drawer, Empty, message, Modal, Select, Space, Spin} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Drawer, Empty, message, Select, Space, Spin} from 'antd';
 import {DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {alarmListSelect} from '@/pages/alarm/url';
@@ -9,18 +9,21 @@ import AlarmDetail from '@/pages/alarm/Rule/AlarmDetail';
 import {isArray} from '@/util/Tools';
 import RuleSave from '@/pages/alarm/Rule/Save';
 import {monitorDetail} from '@/pages/monitor/url';
+import Modal from '@/components/Modal';
 
 const Save = (
   {
     detail,
     close = () => {
     },
-    device={},
+    device = {},
     success = () => {
     },
     visible,
   }
 ) => {
+
+  const ref = useRef(null);
 
   const [data, setData] = useState([]);
 
@@ -65,15 +68,21 @@ const Save = (
     },
   });
   useEffect(() => {
-    if (detail){
-      setData(isArray(device.alarmResults).map(item => ({alarmId: item.alarmId})));
-      if (device.modelId) {
-        getRuleList({data: {modelId: device.modelId}});
+    if (visible) {
+      if (detail) {
+        setData(isArray(device.alarmResults).map(item => ({alarmId: item.alarmId})));
+        if (device.modelId) {
+          getRuleList({data: {modelId: device.modelId}});
+        }
+      } else if (visible) {
+        deviceRun({data: {deviceId: device.deviceId, modelId: device.modelId}});
       }
-    }else  if (visible) {
-      deviceRun({data: {deviceId: device.deviceId, modelId: device.modelId}});
+      ref.current?.open(false);
+    } else {
+      ref.current?.close();
     }
-  }, [visible,device.modelId]);
+
+  }, [visible, device.modelId]);
 
 
   const options = rules.map(item => {
@@ -84,30 +93,28 @@ const Save = (
   return (
     <Modal
       afterClose={() => setData([])}
-      title="设置报警规则"
+      headTitle="设置报警规则"
       zIndex={1001}
-      open={visible}
-      centered
-      okText="保存"
-      cancelText="取消"
-      okButtonProps={{loading, disabled: data.filter(item => item.alarmId).length <= 0}}
-      onOk={() => {
-        run({
-          data: {
-            deviceId: deviceDetail.deviceId,
-            alarmIds: data.map(item => item.alarmId)
-          }
-        });
-      }}
-      onCancel={() => close()}
+      ref={ref}
+      footer={<Space>
+        <Button type='primary' loading={loading} onClick={() => {
+          run({
+            data: {
+              deviceId: detail ? device.deviceId : deviceDetail.deviceId,
+              alarmIds: data.map(item => item.alarmId)
+            }
+          });
+        }}>保存</Button>
+        <Button onClick={close}>取消</Button>
+      </Space>}
     >
       <Spin spinning={ruleListLoading || deviceDetailLoading}>
-        <div style={{textAlign: 'center'}}>
+        <div style={{textAlign: 'center',padding:24}}>
           {data.length === 0 && <Empty description={
             <>当前设备暂无规则,<Button type="link" onClick={() => {
               setData([{}]);
             }}>增加规则</Button></>
-          }/>}
+          } />}
           <Space direction="vertical" style={{width: '100%'}}>
             {
               data.map((item, index) => {
@@ -133,7 +140,7 @@ const Save = (
                     const newData = data.filter((dataItem, dataIndex) => dataIndex !== index);
                     setData(newData);
                   }}>
-                    <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
+                    <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
                   </Warning>
                 </Space>;
               })
@@ -141,7 +148,7 @@ const Save = (
 
             {data.length > 0 && <Button type="primary" ghost onClick={() => {
               setData([...data, {}]);
-            }}><PlusOutlined/>增加规则</Button>}
+            }}><PlusOutlined />增加规则</Button>}
           </Space>
         </div>
       </Spin>
@@ -154,7 +161,7 @@ const Save = (
         open={open}
         onClose={() => setOpen()}
       >
-        <AlarmDetail alarmId={open}/>
+        <AlarmDetail alarmId={open} />
       </Drawer>
 
       <RuleSave
