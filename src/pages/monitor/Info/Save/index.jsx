@@ -74,7 +74,7 @@ const Save = (
         if (device.modelId) {
           getRuleList({data: {modelId: device.modelId}});
         }
-      } else if (visible) {
+      } else {
         deviceRun({data: {deviceId: device.deviceId, modelId: device.modelId}});
       }
       ref.current?.open(false);
@@ -97,7 +97,7 @@ const Save = (
       zIndex={1001}
       ref={ref}
       footer={<Space>
-        <Button type='primary' loading={loading} onClick={() => {
+        <Button type="primary" loading={loading} onClick={() => {
           run({
             data: {
               deviceId: detail ? device.deviceId : deviceDetail.deviceId,
@@ -109,7 +109,7 @@ const Save = (
       </Space>}
     >
       <Spin spinning={ruleListLoading || deviceDetailLoading}>
-        <div style={{textAlign: 'center',padding:24}}>
+        <div style={{textAlign: 'center', padding: 24}}>
           {data.length === 0 && <Empty description={
             <>当前设备暂无规则,<Button type="link" onClick={() => {
               setData([{}]);
