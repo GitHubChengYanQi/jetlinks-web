@@ -20,6 +20,7 @@ import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import DatePicker from '@/components/DatePicker';
+import Chart from '@/pages/monitor/DeviceChar/components/Chart';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
@@ -31,8 +32,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const ref = useRef();
 
-  const startTime =  date[0];
-  const endTime =  date[1];
+  const startTime = date[0];
+  const endTime = date[1];
 
   const [type, setType] = useState();
 
@@ -45,6 +46,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [chartData, setChartData] = useState();
 
   const [visible, setVisible] = useState(false);
+
+  const [list, setList] = useState([]);
 
   const [searchs, setSearchs] = useState([]);
   const [updateSearch, setUpdateSearch] = useState();
@@ -86,36 +89,13 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
-  const {loading: chartLoading, data: chart, run: getChart, mutate} = useRequest(getApi('sjtb'), {manual: true});
-
   const {loading: batchHandleLoading, run: batchHandle} = useRequest(alarmRecordView, {
     manual: true,
-    onSuccess: () => {
-      message.success('处理成功！');
-      ref.current.refresh();
-    }
+    fetchKey: (request) => request?.data?.deviceRecordId
   });
 
   useEffect(() => {
-    if (date.length > 0 && type && chartData && !getChartLoading) {
-      const diffHours = moment(date[1]).diff(moment(date[0]), 'hours');
-      let frame = 1;
-      if (diffHours > 24) {
-        frame = 24;
-      } else if (diffHours > 96) {
-        frame = 96;
-      } else if (diffHours > 168) {
-        frame = 168;
-      }
-      getChart({
-        data: {
-          startTime,
-          endTime,
-          deviceId: device.deviceId,
-          title: type,
-          frame
-        }
-      });
+    if (startTime && endTime) {
 
       // 列表时间
       if (!ref.current) {
@@ -125,40 +105,15 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       ref.current.formActions.setFieldValue('endTime', endTime);
       ref.current.submit();
     }
-  }, [date, type, chartData]);
+  }, [startTime, endTime]);
 
   if (getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
-    return <Empty/>;
+    return <Empty />;
   }
-
-  if (!chart) {
-    if (chartLoading) {
-      return <PageSkeleton type="descriptions"/>;
-    }
-    return <Empty/>;
-  }
-
-
-  const sort = (array = [], lines) => {
-    const linesArray = lines.map(lintItem => {
-      return array.filter(item => item.title === lintItem.lineTitle);
-    });
-    const newArray = [];
-    linesArray.forEach(lintItems => {
-      lintItems.forEach((item) => {
-        newArray.push(item);
-      });
-    });
-    return newArray.map(item => ({
-      title: item.title || '',
-      value: item.value || 0,
-      time: item.time || '',
-    }));
-  };
 
   const listSubmit = (value) => {
     switch (chartData.key) {
@@ -198,43 +153,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   };
 
   return <>
-    <Card
-      bodyStyle={{padding: 0}}
-      bordered={false}
-    >
-      {chartLoading ? <div style={{textAlign: 'center', padding: 24}}><Spin/>
-      </div> : chart && isArray(chartData.messages).map((item, index) => {
-        const lines = item.lines || [];
-        const lineSort = isArray(item.sort);
-        switch (item.lineType) {
-          case 'straightLine':
-            return <div key={index}>
-              {item.title}
-              <StepLineChart
-                data={isArray(chart[item.key]).map(item => {
-                  const sortItem = lineSort.find(sItem => `${sItem.value}` === `${item.value}`);
-                  return {
-                    title: item.title || '',
-                    value: sortItem?.title || 1,
-                    time: item.time || '',
-                  };
-                })}
-                id={item.key}
-                sort={lineSort.length > 0 && lineSort.map(item => item.title)}
-              />
-            </div>;
-          default:
-            return <div key={index}>
-              {item.title}
-              <BrokenLine
-                data={sort(chart[item.key] || [], lines)}
-                colors={lines.map(item => item.color)}
-                id={item.key}
-              />
-            </div>;
-        }
-      })}
-    </Card>
+    <Chart type={type} chartData={chartData} api={getApi('sjtb')} device={device} startTime={startTime} endTime={endTime} />
 
     <Tabs
       tabBarExtraContent={<Space>
@@ -250,7 +169,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                     zIndex: 1005,
                     title: '提示信息',
                     centered: true,
-                    icon: <ExclamationCircleOutlined/>,
+                    icon: <ExclamationCircleOutlined />,
                     content: `确定控制${item.title}？`,
                     onOk: () => {
                       controlRef.current.submit(isArray(item?.downDatas)[0].key);
@@ -265,9 +184,22 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   zIndex: 1005,
                   title: '提示信息',
                   centered: true,
-                  icon: <ExclamationCircleOutlined/>,
+                  icon: <ExclamationCircleOutlined />,
                   content: '确定一键处理吗？',
-                  onOk: () => batchHandle({data: {key: type, deviceId: device.deviceId}}),
+                  onOk: async () => {
+                    const promise = list.filter(item => item.num > 0).map(async (item) => {
+                      await batchHandle({
+                        data: {
+                          deviceRecordId: item.deviceRecordId,
+                          key: type,
+                          deviceId: device.deviceId
+                        }
+                      });
+                    });
+                    await Promise.all(promise);
+                    message.success('处理成功！');
+                    ref.current.refresh();
+                  },
                 });
                 break;
               case 'excelExport':
@@ -282,7 +214,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       activeKey={search}
       onTabClick={(key) => {
         if (updateSearch) {
-          mutate(undefined);
           getChartTopicRun({data: {title: key, modelId: device.modelId}});
           setType(key);
           setChartData();
@@ -299,6 +230,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       })}
     />
     <Table
+      noTableColumn
+      format={(data) => {
+        setList(data);
+        return data;
+      }}
       bordered={false}
       SearchButton={<></>}
       searchForm={() => {
@@ -307,18 +243,18 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           switch (chartData.key) {
             case 'signalLampId':
               otherForm = <>
-                <FormItem name="passage" initialValue={search} component={Input}/>
+                <FormItem name="passage" initialValue={search} component={Input} />
               </>;
               break;
             case 'trafficLightId':
               otherForm = <>
-                <FormItem name="passageRemarks" initialValue={search} component={Input}/>
-                <FormItem name="passage" initialValue={search} component={Input}/>
+                <FormItem name="passageRemarks" initialValue={search} component={Input} />
+                <FormItem name="passage" initialValue={search} component={Input} />
               </>;
               break;
             case 'mId':
               otherForm = <>
-                <FormItem name="value" initialValue={search} component={Input}/>
+                <FormItem name="value" initialValue={search} component={Input} />
               </>;
               break;
             default:
@@ -326,10 +262,10 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           }
         }
         return <div style={{display: 'none'}}>
-          <FormItem name="deviceId" initialValue={device.deviceId} component={Input}/>
-          <FormItem name="startTime" initialValue={startTime} component={Input}/>
-          <FormItem name="endTime" initialValue={endTime} component={Input}/>
-          <FormItem name="title" initialValue={type} component={Input}/>
+          <FormItem name="deviceId" initialValue={device.deviceId} component={Input} />
+          <FormItem name="startTime" initialValue={startTime} component={Input} />
+          <FormItem name="endTime" initialValue={endTime} component={Input} />
+          <FormItem name="title" initialValue={type} component={Input} />
           <FormItem
             name="types"
             initialValue={isArray(chartData.columns).filter(item => item.type).map(item => item.type)}
@@ -380,6 +316,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
               key: type,
               deviceId: device.deviceId
             }
+          }).then(() => {
+            message.success('处理成功！');
+            ref.current.refresh();
           })}>
           <PrimaryButton disabled={!alarm}>处理</PrimaryButton>
         </Warning>;
@@ -406,7 +345,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible}/>
+        <Image width={500} src={visible} />
       </div>
     </Modal>
 
@@ -427,7 +366,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime}/>
+        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
       </div>
     </Modal>
 

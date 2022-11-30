@@ -128,10 +128,12 @@ const TableWarp = (
 
   let defaultTableQuery = {};
 
-  try {
-    defaultTableQuery = state.params && JSON.parse(state.params);
-  } catch (e) {
-    console.log(e);
+  if (!isModal) {
+    try {
+      defaultTableQuery = state.params && JSON.parse(state.params);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   if (!defaultTableQuery) {
@@ -194,7 +196,7 @@ const TableWarp = (
           },
           ...other,
           params: page
-        }).catch(()=>{
+        }).catch(() => {
         });
       }
       onResponse(response || {});
@@ -202,8 +204,8 @@ const TableWarp = (
         ...response,
         data: format(response?.data)
       };
-      setLoading(false);
       return new Promise((resolve) => {
+        setLoading(false);
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
             return isChildren ? items : dataSourcedChildren(items);
@@ -268,6 +270,9 @@ const TableWarp = (
   };
 
   const timedRefresh = () => {
+    if (loading) {
+      return;
+    }
     setTimed(true);
     formActions.submit();
   };
@@ -375,9 +380,11 @@ const TableWarp = (
               dataIndex: '0',
               width: '70px',
               render: (value, record, index) => <Render
-                text={(pagination.current - 1) * pagination.pageSize + (index + 1)} width={70} />
+                text={(pagination.current - 1) * pagination.pageSize + (index + 1)}
+                width={70}
+              />
             }]),
-            ...(noTableColumn ? (children || columns) : tableColumn.filter(item => item.checked)),
+            ...(noTableColumn ? columns : tableColumn.filter(item => item.checked)),
             ...action,
           ]}
           pagination={
