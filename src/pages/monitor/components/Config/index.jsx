@@ -222,7 +222,6 @@ const Config = ({
 
   return <>
     <Table
-      sticky
       pagination={false}
       bordered
       onHeaderRow={() => {

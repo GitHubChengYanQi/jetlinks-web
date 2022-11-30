@@ -96,6 +96,7 @@ const Save = (
       headTitle="设置报警规则"
       zIndex={1001}
       ref={ref}
+      onClose={close}
       footer={<Space>
         <Button type="primary" loading={loading} onClick={() => {
           run({

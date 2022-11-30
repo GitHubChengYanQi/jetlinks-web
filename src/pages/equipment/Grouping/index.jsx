@@ -79,7 +79,7 @@ const Grouping = () => {
 
   return <>
     <Row gutter={24}>
-      <Col span={close ? 1 : 4}>
+      <Col span={close ? 1 : 5}>
         <div className={styles.leftTree}>
           <LeftTree
             open={close}
@@ -93,7 +93,7 @@ const Grouping = () => {
           />
         </div>
       </Col>
-      <Col span={close ? 23 : 20}>
+      <Col span={close ? 23 : 19}>
         <Table
           SearchButton={<Space>
             <Dropdown key={1} overlay={menu} placement="bottom">

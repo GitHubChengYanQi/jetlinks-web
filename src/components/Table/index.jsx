@@ -432,7 +432,7 @@ const TableWarp = (
           }}
           footer={noFooter ? false : footer}
           layout
-          scroll={{x: 'max-content', y: maxHeight || `calc((100vh - ${320 + searchHeight.clientHeight}px))`}}
+          scroll={{x: 'max-content'}}
           {...other}
           {...props}
           loading={otherLoading || (timed ? false : loading)}

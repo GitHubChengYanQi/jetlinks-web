@@ -42,7 +42,7 @@ export default {
     // baseURI: 'http://10.147.20.149:85',
     // baseURI: 'http://192.168.0.144:85',
     // baseURI: 'http://192.168.0.205:85',
-    baseURI: 'http://172.16.1.42:85',
+    baseURI: 'http://172.16.3.92:85',
     // baseURI: 'http://124.71.235.212:82',
     // baseURI: 'http://localhost:85',
     AMAP_KEY: '',
@@ -53,7 +53,7 @@ export default {
   ren: {
     logLevel: 'info',
     component: 'ant',
-    baseURI: 'http://192.168.0.100:85',
+    baseURI: 'http://172.16.3.79:85',
     AMAP_KEY: '',
     AMAP_VERSION: '2.0'
   },
