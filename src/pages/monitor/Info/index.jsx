@@ -69,7 +69,7 @@ const Info = ({
     return <> {day}天{hours}时{minutes}分{newsecond}秒</>;
   };
 
-  const color = '#009688';
+  const color = '#018a51';
 
   return <>
     <Descriptions

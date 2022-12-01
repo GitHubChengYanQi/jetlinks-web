@@ -235,18 +235,12 @@ const TableWarp = (
   const {dataSource, pagination, ...other} = tableProps;
 
   const submit = () => {
-    if (interval && typeof cancel === 'function') {
-      cancel();
-      setTimeout(() => {
-        setTimed(false);
-        setPagination({});
-        formActions.submit();
-      }, 0);
-    } else {
+    cancel();
+    setTimeout(() => {
       setTimed(false);
       setPagination({});
       formActions.submit();
-    }
+    }, 0);
   };
 
   const reset = () => {

@@ -153,8 +153,14 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   };
 
   return <>
-    <Chart type={type} chartData={chartData} api={getApi('sjtb')} device={device} startTime={startTime}
-           endTime={endTime} />
+    <Chart
+      type={type}
+      chartData={chartData}
+      api={getApi('sjtb')}
+      device={device}
+      startTime={startTime}
+      endTime={endTime}
+    />
 
     <Tabs
       tabBarExtraContent={<Space>
@@ -298,7 +304,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             } else {
               const val = typeof value === 'number' ? value : (value || '-');
               return <Render
-                style={{color: record.num > 0 ? item.color : '#009688'}}
+                style={{color: record.num > 0 ? item.color : '#018a51'}}
               >
                 {val}{val !== '-' && item.unit}
               </Render>;

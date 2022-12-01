@@ -125,7 +125,7 @@ const Monitor = () => {
         }
 
         const value = typeof text === 'number' ? `${text}` : (text || '-');
-        const color = '#009688';
+        const color = '#018a51';
 
         return <Render
           width={70}

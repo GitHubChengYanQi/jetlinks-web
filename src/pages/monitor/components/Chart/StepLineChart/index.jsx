@@ -20,7 +20,7 @@ const StepLineChart = ({data, id, sort}) => {
         values: sort,// 重新显示的值
       } : undefined
     });
-    chart.line().position('time*value').shape('hv').color('title', '#009688');
+    chart.line().position('time*value').shape('hv').color('title', '#018a51');
     chart.axis('y', {
       line: {
         autoRotate: true
