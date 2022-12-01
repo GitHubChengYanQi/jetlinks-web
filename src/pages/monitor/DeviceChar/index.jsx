@@ -96,7 +96,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   useEffect(() => {
     if (startTime && endTime) {
-
+      setExportTime(date);
       // 列表时间
       if (!ref.current) {
         return;
@@ -153,7 +153,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   };
 
   return <>
-    <Chart type={type} chartData={chartData} api={getApi('sjtb')} device={device} startTime={startTime} endTime={endTime} />
+    <Chart type={type} chartData={chartData} api={getApi('sjtb')} device={device} startTime={startTime}
+           endTime={endTime} />
 
     <Tabs
       tabBarExtraContent={<Space>
@@ -366,7 +367,15 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       open={exportVisible}
     >
       <div style={{textAlign: 'center'}}>
-        选择导出时间段 <DatePicker RangePicker value={exportTime} picker="day" onChange={setExportTime} />
+        选择导出时间段：
+        <DatePicker
+          RangePicker
+          value={exportTime}
+          picker="day"
+          onChange={setExportTime}
+          disabledDate={(currentDate) => {
+            return currentDate && currentDate >= moment().subtract(1, 'days');
+          }} />
       </div>
     </Modal>
 
