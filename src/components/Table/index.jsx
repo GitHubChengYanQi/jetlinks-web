@@ -235,7 +235,7 @@ const TableWarp = (
   const {dataSource, pagination, ...other} = tableProps;
 
   const submit = () => {
-    cancel();
+    typeof cancel === 'function' && cancel();
     setTimeout(() => {
       setTimed(false);
       setPagination({});
