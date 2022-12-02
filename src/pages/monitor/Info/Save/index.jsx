@@ -155,7 +155,7 @@ const Save = (
       </Spin>
 
       <Drawer
-        width={1000}
+        width='auto'
         zIndex={1002}
         title="查看报警规则"
         destroyOnClose

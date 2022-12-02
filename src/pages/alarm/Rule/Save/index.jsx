@@ -11,6 +11,51 @@ import {isArray} from '@/util/Tools';
 import AddContacts from '@/pages/alarm/Rule/Save/components/AddContacts';
 import AntForm from '@/components/AntForm';
 
+export const AlarmDetailFormat = async (res, fileds) => {
+
+  const getModelColumns = (options, key, filedObject) => {
+    if (!Array.isArray(options)) {
+      return false;
+    }
+    const option = options.find(item => item.key === key);
+    if (option) {
+      filedObject = {options, option};
+    } else {
+      options.forEach(item => {
+        if (filedObject) {
+          return;
+        }
+        filedObject = getModelColumns(item.children, key, filedObject);
+      });
+
+    }
+    return filedObject;
+  };
+
+  return {
+    ...res,
+    rules: isArray(res.rulesResults).map(record => {
+      const field = isArray(record.field && record.field.split(','));
+      let otherData = {};
+      const infoModelColumns = field.map((filed, index) => {
+        const {options, option} = getModelColumns(fileds, filed);
+        if (index === field.length - 1) {
+          otherData = option || {};
+        }
+        return options;
+      });
+      return {
+        ...record,
+        field,
+        infoModelColumns,
+        ...otherData,
+        alarmConditionName: isArray(otherData.conditions).find(item => item.condition === record.alarmCondition)?.symbol,
+        children: null,
+      };
+    })
+  };
+};
+
 
 const Save = (
   {
@@ -29,23 +74,24 @@ const Save = (
 
   const [modelColumns, setModelColumns] = useState([]);
 
+
   const {loading: getColumnsLoaing, run: getColumns} = useRequest(getColumnByModelId, {
     manual: true,
     onSuccess: (res) => {
-      setModelColumns(isArray(res.rule));
+      setModelColumns(isArray(res));
     },
   });
 
   const {loading, run} = useRequest(alarmDetail, {
     manual: true,
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
+      let fileds = [];
       if (res.modelId) {
-        getColumns({data: {modelId: res.modelId}});
+        fileds = await getColumns({data: {modelId: res.modelId}});
       }
-      setData({
-        ...res,
-        rules: isArray(res.rulesResults).map(item => ({...item, field: item.field && item.field.split(',')}))
-      });
+
+      const newData = await AlarmDetailFormat(res, fileds);
+      setData(newData);
     },
   });
 
@@ -73,7 +119,7 @@ const Save = (
         setData({});
       }}
       loading={loading}
-      width={1000}
+      width="auto"
       apis={{
         add: alarmAdd,
         edit: alarmEdit,
@@ -85,7 +131,13 @@ const Save = (
       visible={visible}
       close={close}
       format={(values) => {
-        if (isArray(data.rules).length === 0 || isArray(data.rules).some(item => !item.field || !item.alarmCondition || !(typeof item.value === 'number' ? true : (item.value || (typeof item.minNum === 'number' && typeof item.maxNum === 'number'))))) {
+        if (
+          isArray(data.rules).length === 0 ||
+          isArray(data.rules).some(item =>
+            !item.field ||
+            !item.alarmCondition ||
+            !(typeof item.value === 'number' ? true : (item.value || (typeof item.minNum === 'number' && typeof item.maxNum === 'number' && item.maxNum > item.minNum)))
+          )) {
           message.warn('请完善报警规则!');
           return false;
         }
@@ -153,7 +205,7 @@ const Save = (
         title={<div className={styles.title}>报警配置</div>}
         bordered={false}
       >
-        <Config value={data.rules} modelColumns={modelColumns} onChange={(value = []) => {
+        <Config detail={detail.alarmId} value={data.rules} modelColumns={modelColumns} onChange={(value = []) => {
           setData({...data, rules: value});
         }} />
       </Card>}
