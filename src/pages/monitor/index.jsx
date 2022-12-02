@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Row,
   Col,
@@ -21,11 +21,12 @@ import styles from './index.module.less';
 import {monitorList} from '@/pages/monitor/url';
 import {LinkButton} from '@/components/Button';
 import Table from '@/components/Table';
-import {isArray, isObject} from '@/util/Tools';
+import {isObject} from '@/util/Tools';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 import DateSelect from '@/pages/monitor/components/DateSelect';
 import DeviceChar from '@/pages/monitor/DeviceChar';
 import store from '@/store';
+import ThousandsSeparator from '@/components/ThousandsSeparator';
 
 const Monitor = () => {
 
@@ -76,7 +77,7 @@ const Monitor = () => {
       title: <Space>
         终端备注
         <Tooltip placement="top" title="终端设备备注的名称，平台可以修改">
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </Tooltip>
       </Space>,
       dataIndex: 'remarks',
@@ -100,12 +101,12 @@ const Monitor = () => {
       title: <Space>
         登记名称
         <Tooltip placement="top" title="设备上报的登记名称，平台不可以修改">
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined />
         </Tooltip>
       </Space>,
       dataIndex: 'name',
       align: 'center',
-      render: (name) => <Render text={name || '-'}/>
+      render: (name) => <Render text={name || '-'} />
     },
     // {
     //   title: 'MAC',
@@ -123,8 +124,12 @@ const Monitor = () => {
             setOpen({protocolType: item.dataIndex, ...record});
           }}>-</Render>;
         }
+        const percisionText = `${text}`.split('.')[1] || '';
+        const value = (typeof text === 'number' || !!Number(text)) ?
+          <ThousandsSeparator precision={percisionText.length} value={text} />
+          :
+          (text || '-');
 
-        const value = typeof text === 'number' ? `${text}` : (text || '-');
         const color = '#018a51';
 
         return <Render
@@ -136,7 +141,11 @@ const Monitor = () => {
           onClick={() => {
             console.log(item.dataIndex);
             setOpen({protocolType: item.dataIndex, ...record});
-          }}>{value}{value !== '-' && columnItem.unit}</Render>;
+          }}
+        >
+          {value}
+          {value !== '-' && columnItem.unit}
+        </Render>;
       };
 
       return {
@@ -183,17 +192,17 @@ const Monitor = () => {
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input}/>
-      <FormItem label="设备名称" name="name" component={Input}/>
-      <FormItem label="批次" name="batchId" component={SelectBatch}/>
+      <FormItem label="终端备注" name="remarks" component={Input} />
+      <FormItem label="设备名称" name="name" component={Input} />
+      <FormItem label="批次" name="batchId" component={SelectBatch} />
       <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input}/>
+        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
       </div>
       <div style={{display: 'none'}}>
-        <FormItem name="modelId" value={searchParams.modelId} component={Input}/>
+        <FormItem name="modelId" value={searchParams.modelId} component={Input} />
       </div>
-      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input}/></div>
-      <div style={{display: 'none'}}><FormItem name="deptId" component={Input}/></div>
+      <div style={{display: 'none'}}><FormItem name="classifyId" component={Input} /></div>
+      <div style={{display: 'none'}}><FormItem name="deptId" component={Input} /></div>
     </>;
   };
 
@@ -318,7 +327,7 @@ const Monitor = () => {
         onChange={setDate}
       />}
     >
-      <DeviceChar device={open} date={date} defaultType={open?.defaultType}/>
+      <DeviceChar device={open} date={date} defaultType={open?.defaultType} />
     </Drawer>
 
   </>;

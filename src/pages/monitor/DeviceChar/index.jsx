@@ -21,6 +21,7 @@ import Control from '@/pages/monitor/Control';
 import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import DatePicker from '@/components/DatePicker';
 import Chart from '@/pages/monitor/DeviceChar/components/Chart';
+import ThousandsSeparator from '@/components/ThousandsSeparator';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
@@ -302,7 +303,12 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             } else if (item.filedType === 'image') {
               return getImgBase64(value);
             } else {
-              const val = typeof value === 'number' ? value : (value || '-');
+              const percisionText = `${value}`.split('.')[1] || '';
+              const val = typeof value === 'number' || !!Number(value) ?
+                <ThousandsSeparator precision={percisionText.length} value={value} />
+                :
+                (value || '-');
+
               return <Render
                 style={{color: record.num > 0 ? item.color : '#018a51'}}
               >

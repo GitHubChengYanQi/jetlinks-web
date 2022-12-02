@@ -9,6 +9,7 @@ import Render from '@/components/Render';
 import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
 import {isArray, isObject} from '@/util/Tools';
+import ThousandsSeparator from '@/components/ThousandsSeparator';
 
 
 const Info = ({
@@ -175,7 +176,11 @@ const Info = ({
                       if (typeof value !== 'number' && typeof value !== 'string') {
                         newValue = '-';
                       } else {
-                        newValue = typeof value === 'number' ? `${value}` : (value || '-');
+                        const percisionText = `${value}`.split('.')[1] || '';
+                        newValue = typeof value === 'number' || !!Number(value) ?
+                          <ThousandsSeparator precision={percisionText.length} value={value} />
+                          :
+                          (value || '-');
                       }
                       return <Descriptions.Item key={contentIndex} label={contentItem.title}>
                         <div
