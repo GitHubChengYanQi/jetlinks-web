@@ -90,8 +90,8 @@ const Chart = (
           return <div key={index}>
             {item.title}
             <BrokenLine
-              data={sort(chart[item.key] || [], lines)}
-              colors={lines.map(item => item.color)}
+              data={sort(chart[item.key] || [], lines).map(dataItem=>({...dataItem,value:dataItem.value+(item.unit || '')}))}
+              colors={lines.map(lineItem => lineItem.color)}
               id={item.key}
             />
           </div>;
