@@ -44,12 +44,14 @@ export const AlarmDetailFormat = async (res, fileds) => {
         }
         return options;
       });
+      const alarmCndition = isArray(otherData.conditions).find(item => item.condition === record.alarmCondition);
       return {
         ...record,
         field,
         infoModelColumns,
         ...otherData,
-        alarmConditionName: isArray(otherData.conditions).find(item => item.condition === record.alarmCondition)?.symbol,
+        alarmConditionName: alarmCndition?.symbol,
+        alarmConditionTitle: alarmCndition.title,
         children: null,
       };
     })

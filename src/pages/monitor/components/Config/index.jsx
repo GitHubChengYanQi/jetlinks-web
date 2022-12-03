@@ -7,6 +7,7 @@ import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
 import {isArray} from '@/util/Tools';
 import Fileds from '@/pages/monitor/components/Config/components/Fileds';
+import AlarmCondition from '@/pages/monitor/components/Config/components/AlarmCondition';
 
 const Config = ({
   show,
@@ -46,6 +47,7 @@ const Config = ({
               ...option,
               children: null,
               alarmCondition: boolean ? '7' : null,
+              alarmConditionName: boolean ? '=' : null,
               value: null
             }, record.key);
           }}
@@ -57,33 +59,7 @@ const Config = ({
       align: 'center',
       width: 150,
       render: (text, record) => {
-        const boolean = record.conditionType === 'boolean';
-        if (!boolean && isArray(record.conditions).length === 0) {
-          return '暂无条件';
-        }
-
-        const options = boolean ? [
-          {label: '=', value: '7'}
-        ] : record.conditions.map(item => ({label: item.symbol, value: item.condition, title: item.title}));
-
-        return <Select
-          bordered={!show}
-          open={show ? false : undefined}
-          suffixIcon={show && null}
-          placeholder="请选择条件"
-          style={{width: 100}}
-          value={text}
-          options={options}
-          onChange={(alarmCondition, option) => {
-            switch (alarmCondition) {
-              case '7':
-                dataSourceChange({alarmCondition, alarmConditionName: option.label, value: null}, record.key);
-                break;
-              default:
-                dataSourceChange({alarmCondition, alarmConditionName: option.label, value: null}, record.key);
-                break;
-            }
-          }} />;
+        return <AlarmCondition value={text} onChange={dataSourceChange} show={show} record={record} />;
       }
     }, {
       title: '报警值',
@@ -108,9 +84,9 @@ const Config = ({
               bordered={!show}
               open={show ? false : undefined}
               suffixIcon={show && null}
-              placeholder="请选择对应值"
+              placeholder="请选择报警值"
               value={text}
-              style={{width: 100}}
+              style={{width: 230}}
               options={[{label: trueText, value: trueValue}, {label: falseText, value: falseValue}]}
               onChange={(value) => {
                 dataSourceChange({value}, record.key);
@@ -120,7 +96,7 @@ const Config = ({
             return show ? text : <InputNumber
               style={{width: 230}}
               value={text}
-              placeholder="请输入报警值"
+              placeholder={record.alarmConditionTitle || '请输入报警值'}
               onChange={(value) => {
                 dataSourceChange({value}, record.key);
               }}

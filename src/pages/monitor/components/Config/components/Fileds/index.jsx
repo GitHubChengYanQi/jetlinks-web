@@ -51,7 +51,6 @@ const Fileds = (
                 return value[filedValueIndex];
               }
             });
-            console.log(option);
             onChange(filedValue,option);
           }} />;
       })
