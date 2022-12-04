@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Button, message, Tabs} from 'antd';
+import {Alert, Button, Form, message, Tabs} from 'antd';
 import {QrcodeOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
 import {getSearchParams, useHistory} from 'ice';
@@ -149,94 +149,96 @@ const Login = () => {
     return (loading || phoneLoginLoading) ? '登录中' : '登录';
   };
 
-  return <div className={style.login}>
-    <div className={style.box}>
-      <div className={style.box1}>
-        <div className={style.header}>
-          <div className={style.headerLeft} />
-          <div className={style.title}>设备业务云平台</div>
-          <div className={style.headerRight} />
-        </div>
-        <div hidden className={style.logo}>
-          <img width={100} src={logo} alt="" />
-        </div>
-
-        <Tabs activeKey={key} onChange={(key) => {
-          clear();
-          setKey(key);
-        }} items={adminLogin ? [{
-          label: '管理员登录', key: 'item-1', children: <>
-            <UserName username={username} setUsername={setUsername} />
-            <Password password={password} setPassword={setPassword} />
-          </>
-        }] : tabItems} defaultActiveKey="1" centered className={style.tab} />
-
-        {key !== 'user' && <Button
-          htmlType="submit"
-          loading={loading || phoneLoginLoading || findPassLoading}
-          onClick={async () => {
-            let token = '';
-            let loginInfo = '';
-            switch (key) {
-              case 'password':
-                token = await run({
-                  data: {username, password, customerName: corporateName}
-                });
-                loginInfo = JSON.stringify({customerName: corporateName});
-                break;
-              case 'phone':
-                token = await phoneLogin({
-                  data: {account: phone, code, customerName: corporateName}
-                });
-                loginInfo = JSON.stringify({customerName: corporateName});
-                break;
-              case 'find':
-                if (password !== newPassword) {
-                  message.warn('两次密码输入不一致！');
-                  return;
-                } else if (!/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/.test(password)) {
-                  message.warn('密码包含6~18位字母、数字、特殊符号的2种或多种组合！');
-                  return;
-                }
-                findPass({
-                  data: {account: phone, code, customerName: corporateName, password}
-                });
-                break;
-              case 'user':
-                console.log(key);
-                break;
-              default:
-                break;
-            }
-            if (token) {
-              localStorage.setItem('loginInfo', loginInfo);
-              loginOk(token);
-            }
-          }}
-          className={style.btn}
-        >{buttonText()}</Button>}
-
-        {tip()}
-
-        <div className={style.footer}>
-          <div className={style.add}>
-            没有账号，<span className="blue" onClick={() => setAskAccount(true)}>立即申请</span>
+  return <Form>
+    <div className={style.login}>
+      <div className={style.box}>
+        <div className={style.box1}>
+          <div className={style.header}>
+            <div className={style.headerLeft} />
+            <div className={style.title}>设备业务云平台</div>
+            <div className={style.headerRight} />
           </div>
-          <div className={style.find} onClick={() => {
+          <div hidden className={style.logo}>
+            <img width={100} src={logo} alt="" />
+          </div>
+
+          <Tabs activeKey={key} onChange={(key) => {
             clear();
-            setKey(findPassword ? 'password' : 'find');
-            setFindPassword(!findPassword);
-          }}>
-            {findPassword ? <>已有账号，<span className="blue">立即登录</span></> : '找回密码'}
+            setKey(key);
+          }} items={adminLogin ? [{
+            label: '管理员登录', key: 'item-1', children: <>
+              <UserName username={username} setUsername={setUsername} />
+              <Password password={password} setPassword={setPassword} />
+            </>
+          }] : tabItems} defaultActiveKey="1" centered className={style.tab} />
+
+          {key !== 'user' && <Button
+            htmlType="submit"
+            loading={loading || phoneLoginLoading || findPassLoading}
+            onClick={async () => {
+              let token = '';
+              let loginInfo = '';
+              switch (key) {
+                case 'password':
+                  token = await run({
+                    data: {username, password, customerName: corporateName}
+                  });
+                  loginInfo = JSON.stringify({customerName: corporateName});
+                  break;
+                case 'phone':
+                  token = await phoneLogin({
+                    data: {account: phone, code, customerName: corporateName}
+                  });
+                  loginInfo = JSON.stringify({customerName: corporateName});
+                  break;
+                case 'find':
+                  if (password !== newPassword) {
+                    message.warn('两次密码输入不一致！');
+                    return;
+                  } else if (!/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,18}$/.test(password)) {
+                    message.warn('密码包含6~18位字母、数字、特殊符号的2种或多种组合！');
+                    return;
+                  }
+                  findPass({
+                    data: {account: phone, code, customerName: corporateName, password}
+                  });
+                  break;
+                case 'user':
+                  console.log(key);
+                  break;
+                default:
+                  break;
+              }
+              if (token) {
+                localStorage.setItem('loginInfo', loginInfo);
+                loginOk(token);
+              }
+            }}
+            className={style.btn}
+          >{buttonText()}</Button>}
+
+          {tip()}
+
+          <div className={style.footer}>
+            <div className={style.add}>
+              没有账号，<span className="blue" onClick={() => setAskAccount(true)}>立即申请</span>
+            </div>
+            <div className={style.find} onClick={() => {
+              clear();
+              setKey(findPassword ? 'password' : 'find');
+              setFindPassword(!findPassword);
+            }}>
+              {findPassword ? <>已有账号，<span className="blue">立即登录</span></> : '找回密码'}
+            </div>
           </div>
-        </div>
-        <div className={style.other} hidden>
-          <div />
-          <span><QrcodeOutlined /></span>
+          <div className={style.other} hidden>
+            <div />
+            <span><QrcodeOutlined /></span>
+          </div>
         </div>
       </div>
+      <AccountAsk visible={askAccount} onClose={() => setAskAccount(false)} />
     </div>
-    <AccountAsk visible={askAccount} onClose={() => setAskAccount(false)} />
-  </div>;
+  </Form>;
 };
 export default Login;
