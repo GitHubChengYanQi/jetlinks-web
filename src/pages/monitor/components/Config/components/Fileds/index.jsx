@@ -4,7 +4,7 @@ import {isArray} from '@/util/Tools';
 
 const Fileds = (
   {
-    array = [],
+    infoModelColumns = [],
     show,
     onChange = () => {
     },
@@ -12,11 +12,11 @@ const Fileds = (
   }
 ) => {
 
-  const [data, setData] = useState([...array]);
+  // const [data, setData] = useState([...array]);
 
   return <Space>
     {
-      data.map((item, index) => {
+      infoModelColumns.map((item, index) => {
         const options = isArray(item);
         return <Select
           showSearch
@@ -37,11 +37,12 @@ const Fileds = (
             return {...item, label: item.title, value: item.key};
           })}
           onChange={(field, option) => {
-            const newData = data.filter((dataItem, dataIndex) => dataIndex <= index);
+            const newData = infoModelColumns.filter((dataItem, dataIndex) => dataIndex <= index);
+            let newModelColumns = [];
             if (isArray(option.children).length > 0) {
-              setData([...newData, option.children]);
+              newModelColumns = [...newData, option.children];
             } else {
-              setData([...newData]);
+              newModelColumns = newData;
             }
 
             const filedValue = new Array(index + 1).fill('').map((filedValueItem, filedValueIndex) => {
@@ -51,8 +52,8 @@ const Fileds = (
                 return value[filedValueIndex];
               }
             });
-            onChange(filedValue,option);
-          }} />;
+            onChange(filedValue, option,newModelColumns);
+          }}/>;
       })
     }
   </Space>;

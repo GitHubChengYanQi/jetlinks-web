@@ -39,12 +39,14 @@ const Config = ({
         return <Fileds
           show={show}
           value={text}
-          array={isArray(record.infoModelColumns).length > 0 ? record.infoModelColumns : [modelColumns]}
-          onChange={(fileds, option) => {
+          infoModelColumns={record.infoModelColumns || [modelColumns]}
+          // array={isArray(record.infoModelColumns).length > 0 ? record.infoModelColumns : [modelColumns]}
+          onChange={(fileds, option,infoModelColumns) => {
             const boolean = option.conditionType === 'boolean';
             dataSourceChange({
               field: fileds,
               ...option,
+              infoModelColumns,
               children: null,
               alarmCondition: boolean ? '7' : null,
               alarmConditionName: boolean ? '=' : null,
@@ -59,7 +61,7 @@ const Config = ({
       align: 'center',
       width: 150,
       render: (text, record) => {
-        return <AlarmCondition value={text} onChange={dataSourceChange} show={show} record={record} />;
+        return <AlarmCondition value={text} onChange={dataSourceChange} show={show} record={record}/>;
       }
     }, {
       title: '报警值',
@@ -76,7 +78,7 @@ const Config = ({
           return show ? <>{[record.minNum, record.maxNum].join('~')}</> :
             <Section value={[record.minNum, record.maxNum]} onChange={(value = []) => {
               dataSourceChange({minNum: value[0], maxNum: value[1]}, record.key);
-            }} />;
+            }}/>;
         }
         switch (record.alarmCondition) {
           case '7':
@@ -116,7 +118,7 @@ const Config = ({
           setDataSource(newData);
           onChange(newData);
         }}>
-          <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
+          <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
         </Warning>;
       }
     });
