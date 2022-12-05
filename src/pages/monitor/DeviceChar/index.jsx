@@ -70,15 +70,16 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     ...getChartTopic,
     data: {title: device.protocolType, modelId: device.modelId}
   }, {
-    onSuccess: (res) => {
+    onSuccess: (res = {}) => {
       if (res.search && !search) {
+        const searchType = isArray(res.search)[0] && isArray(res.search)[0].type;
         if (res.updateSearch) {
-          getChartTopicRun({data: {title: defaultType || res.search[0].type, modelId: device.modelId}});
-          setType(defaultType || res.search[0].type);
+          getChartTopicRun({data: {title: defaultType || searchType, modelId: device.modelId}});
+          setType(defaultType || searchType);
         } else {
           setType(device.protocolType);
         }
-        setSearch(defaultType || res.search[0].type);
+        setSearch(defaultType || searchType);
       }
       if (searchs.length === 0) {
         setSearchs(res.search || []);

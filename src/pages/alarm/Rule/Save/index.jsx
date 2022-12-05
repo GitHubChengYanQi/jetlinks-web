@@ -51,7 +51,7 @@ export const AlarmDetailFormat = async (res, fileds) => {
         infoModelColumns,
         ...otherData,
         alarmConditionName: alarmCndition?.symbol,
-        alarmConditionTitle: alarmCndition.title,
+        alarmConditionTitle: alarmCndition?.title,
         children: null,
       };
     })
