@@ -120,6 +120,10 @@ const TableWarp = (
 
   const [loading, setLoading] = useState(false);
 
+  const [multiplying, setMultiplying] = useState();
+
+  const multiply = (multiplying > 0 ? multiplying : 1);
+
   const [state, setState] = useUrlState(
     {
       navigateMode: 'push',
@@ -204,15 +208,16 @@ const TableWarp = (
         ...response,
         data: format(response?.data)
       };
+      setMultiplying(response.multiplying);
       return new Promise((resolve) => {
         setLoading(false);
         resolve({
           dataSource: Array.isArray(response.data) ? response.data.map((items) => {
             return isChildren ? items : dataSourcedChildren(items);
           }) : [],
-          total: response.count,
+          total: response.count * (response.multiplying > 0 ? response.multiplying : 1),
           current: response.current,
-          pageSize: response.pageSize,
+          pageSize: response.multiplying > 0 ? response.pageSize * response.multiplying : response.pageSize,
         });
       });
     } catch (e) {
@@ -232,8 +237,7 @@ const TableWarp = (
     sorter: defaultTableQuery.sorter || {},
   });
 
-  const {dataSource, pagination, ...other} = tableProps;
-
+  const {dataSource, pagination, onChange: tableOnChange, ...other} = tableProps;
   const submit = () => {
     typeof cancel === 'function' && cancel();
     setTimeout(() => {
@@ -303,8 +307,6 @@ const TableWarp = (
       render: actionRender,
     },);
   }
-
-  const searchHeight = document.getElementById('search') || {};
 
   return (
     <Card bordered={false} bodyStyle={bodyStyle}>
@@ -393,7 +395,7 @@ const TableWarp = (
               showQuickJumper: true,
               position: ['bottomRight'],
               showSizeChanger: true,
-              pageSizeOptions: ['5', '10', '20', '50', '100']
+              pageSizeOptions: [`${5 * multiply}`, `${10 * multiply}`, `${20 * multiply}`, `${50 * multiply}`, `${100 * multiply}`],
             }
           }
           rowSelection={!noRowSelection && {
@@ -428,6 +430,12 @@ const TableWarp = (
           layout
           scroll={{x: 'max-content'}}
           {...other}
+          onChange={(pagination, filters, sorter, extra) => {
+            tableOnChange({
+              ...pagination,
+              pageSize: pagination.pageSize / multiply
+            }, filters, sorter, extra);
+          }}
           {...props}
           loading={otherLoading || (timed ? false : loading)}
         >
