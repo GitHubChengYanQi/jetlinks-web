@@ -128,7 +128,7 @@ const Save = (
                     style={{width: 300, marginRight: 16}}
                     onChange={(value) => {
                       if (value === 'add') {
-                        setSaveVisible({modelId: deviceDetail.modelId});
+                        setSaveVisible({modelId: device?.modelId || deviceDetail?.modelId});
                       } else {
                         dataChange({alarmId: value}, index);
                       }

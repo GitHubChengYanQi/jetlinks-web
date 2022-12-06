@@ -154,7 +154,7 @@ const Monitor = () => {
           ...childrenItem,
           render: (text, record) => render(text, record, childrenItem)
         })),
-        render
+        render: (text, record) => render(text, record, item)
       };
     }),
     {

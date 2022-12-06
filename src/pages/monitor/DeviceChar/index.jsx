@@ -7,18 +7,15 @@ import {config} from 'ice';
 import cookie from 'js-cookie';
 import moment from 'moment';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
-import BrokenLine from '@/pages/monitor/components/Chart/BrokenLine';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
 import Render from '@/components/Render';
 import {useRequest} from '@/util/Request';
 import Save from '@/pages/monitor/Info/Save';
-import {monitorDetail} from '@/pages/monitor/url';
 import Warning from '@/components/Warning';
 import {isArray} from '@/util/Tools';
 import FormItem from '@/components/Table/components/FormItem';
 import Control from '@/pages/monitor/Control';
-import StepLineChart from '@/pages/monitor/components/Chart/StepLineChart';
 import DatePicker from '@/components/DatePicker';
 import Chart from '@/pages/monitor/DeviceChar/components/Chart';
 import ThousandsSeparator from '@/components/ThousandsSeparator';
@@ -93,7 +90,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const {loading: batchHandleLoading, run: batchHandle} = useRequest(alarmRecordView, {
     manual: true,
-    fetchKey: (request) => request?.data?.deviceRecordId
+    fetchKey: (request) => {
+      return request?.key;
+    }
   });
 
   useEffect(() => {
@@ -198,6 +197,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   onOk: async () => {
                     const promise = list.filter(item => item.num > 0).map(async (item) => {
                       await batchHandle({
+                        key:item.key,
                         data: {
                           deviceRecordId: item.deviceRecordId,
                           key: type,
@@ -241,8 +241,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     <Table
       noTableColumn
       format={(data) => {
-        setList(data);
-        return data;
+        const newData = data.map((item, index) => ({...item, key: index}));
+        setList(newData);
+        return newData;
       }}
       bordered={false}
       SearchButton={<></>}
@@ -291,7 +292,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
-      rowKey="deviceRecordId"
+      rowKey="key"
       columnsResh
       columns={isArray(chartData.columns).map(item => {
         return {
