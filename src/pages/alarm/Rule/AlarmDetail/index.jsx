@@ -8,6 +8,7 @@ import Config from '@/pages/monitor/components/Config';
 import AddContacts from '@/pages/alarm/Rule/Save/components/AddContacts';
 import {getColumnByModelId} from '@/pages/monitor/url';
 import {isArray} from '@/util/Tools';
+import {AlarmDetailFormat} from '@/pages/alarm/Rule/Save';
 
 const AlarmDetail = ({
   alarmId,
@@ -15,27 +16,33 @@ const AlarmDetail = ({
 
   const [modelColumns, setModelColumns] = useState([]);
 
+  const [data, setData] = useState();
+
   const {loading: getColumnsLoaing, run: getColumns} = useRequest(getColumnByModelId, {
     manual: true,
     onSuccess: (res) => {
-      setModelColumns(res.rule);
+      setModelColumns(isArray(res));
     },
   });
 
-  const {loading, data = {}} = useRequest({...alarmDetail, data: {alarmId}}, {
-    onSuccess: (res) => {
-      getColumns({data: {modelId: res.modelId}});
-    }
+  const {loading} = useRequest({...alarmDetail, data: {alarmId}}, {
+    onSuccess: async (res) => {
+      let fileds = [];
+      if (res.modelId) {
+        fileds = await getColumns({data: {modelId: res.modelId}});
+      }
+      const newData = await AlarmDetailFormat(res, fileds);
+      setData(newData);
+    },
   });
 
   if (loading || getColumnsLoaing) {
-    return <PageSkeleton/>;
+    return <PageSkeleton />;
   }
 
   if (!data) {
-    return <Empty/>;
+    return <Empty />;
   }
-
 
   return <>
     <Card className={styles.card} title={<div className={styles.title}>基本信息</div>} bordered={false}>
@@ -54,10 +61,14 @@ const AlarmDetail = ({
       title={<div className={styles.title}>报警配置</div>}
       bordered={false}
     >
-      <Config show modelColumns={modelColumns} value={isArray(data.rulesResults).map(item => ({...item, field: item.field && item.field.split(',')}))}/>
+      <Config
+        show
+        modelColumns={modelColumns}
+        value={data.rules}
+      />
     </Card>
     <Card className={styles.card} title={<div className={styles.title}>报警人员</div>} bordered={false}>
-      <AddContacts show value={data.contacts}/>
+      <AddContacts show value={data.contacts} />
     </Card>
   </>;
 };

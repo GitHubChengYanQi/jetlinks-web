@@ -39,7 +39,7 @@ const Info = ({
     {
       onSuccess: (res) => {
         setLayout(isArray(res.layout));
-        setLayoutData(res.data || {});
+        setLayoutData(res.data);
       }
     }
   );
@@ -55,12 +55,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton/>;
+    return <PageSkeleton />;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-"/>;
+      return <Render width={150} text="-" />;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -84,7 +84,7 @@ const Info = ({
       <Descriptions.Item label="终端备注">{data.remarks || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
       <Descriptions.Item label="设备IP地址">
-        {layoutData.devip ? `内网：${layoutData.devip}` : ''} <br/>{data.ip ? `外网：${data.ip}` : ''}
+        {layoutData?.devip ? `内网：${layoutData.devip}` : ''} <br />{data.ip ? `外网：${data.ip}` : ''}
       </Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
       <Descriptions.Item label="GPS定位">-</Descriptions.Item>
@@ -119,7 +119,20 @@ const Info = ({
           >
             {
               content.map((contentItem, contentIndex) => {
-                const value = layoutData[contentItem.field];
+                let value = '';
+                if (Array.isArray(layoutData)) {
+                  let arrayIndex = 0;
+                  let field = '';
+                  try {
+                    arrayIndex = contentItem.field.split('_')[0];
+                    field = contentItem.field.split('_')[1];
+                  } catch (e) {
+                    console.log(e);
+                  }
+                  value = layoutData[arrayIndex]?.[field];
+                } else {
+                  value = layoutData[contentItem.field];
+                }
                 let newValue;
                 if (typeof value !== 'number' && typeof value !== 'string') {
                   newValue = '-';
@@ -216,7 +229,7 @@ const Info = ({
       bordered
       style={{marginTop: 24}}
     >
-      <Descriptions.Item label="软件版本">{layoutData.ver || '-'}</Descriptions.Item>
+      <Descriptions.Item label="软件版本">{layoutData?.ver || '-'}</Descriptions.Item>
       <Descriptions.Item label="升级时间">-</Descriptions.Item>
       <Descriptions.Item label="运行时间">{runTime() || '-'}</Descriptions.Item>
       <Descriptions.Item label="上线时间">{online ? (data.logTime || '-') : '-'}</Descriptions.Item>

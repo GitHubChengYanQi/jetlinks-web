@@ -128,7 +128,7 @@ const Save = (
                     style={{width: 300, marginRight: 16}}
                     onChange={(value) => {
                       if (value === 'add') {
-                        setSaveVisible({modelId: deviceDetail.modelId});
+                        setSaveVisible({modelId: device?.modelId || deviceDetail?.modelId});
                       } else {
                         dataChange({alarmId: value}, index);
                       }
@@ -155,7 +155,7 @@ const Save = (
       </Spin>
 
       <Drawer
-        width={1000}
+        width='auto'
         zIndex={1002}
         title="查看报警规则"
         destroyOnClose
