@@ -7,6 +7,7 @@ const Modal = (
     modal,
     component: Component,
     width,
+    className,
     destroyOnClose = true,
     headTitle,
     loading = () => {
@@ -127,6 +128,7 @@ const Modal = (
 
   return (
     <AntdModal
+      className={className}
       open={visible}
       afterClose={afterClose}
       footer={footer || null}

@@ -76,6 +76,7 @@ const TableWarp = (
     noAction,
     noForm,
     // o
+    otherData,
     onChange = () => {
     },
     onChangeRows = () => {
@@ -357,6 +358,7 @@ const TableWarp = (
               <Space>{searchButtons}</Space>
             </>}
         </div>}
+        {otherData}
         <AntdTable
           showTotal
           bordered={bordered}

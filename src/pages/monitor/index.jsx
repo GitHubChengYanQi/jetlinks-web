@@ -27,6 +27,8 @@ import DateSelect from '@/pages/monitor/components/DateSelect';
 import DeviceChar from '@/pages/monitor/DeviceChar';
 import store from '@/store';
 import ThousandsSeparator from '@/components/ThousandsSeparator';
+import Modal from '@/components/Modal';
+import DeviceStatus from '@/pages/monitor/DeviceStatus';
 
 const Monitor = () => {
 
@@ -57,6 +59,7 @@ const Monitor = () => {
 
   const ref = useRef();
   const infoRef = useRef();
+  const statusRef = useRef();
 
   const [modelColumns, setModelColumns] = useState([]);
 
@@ -66,10 +69,16 @@ const Monitor = () => {
       dataIndex: 'status',
       width: 100,
       align: 'center',
-      render: (status) => {
+      render: (status, record) => {
         const online = status === 'online';
         return <Render>
-          <span className={online ? 'green' : 'close'}>{online ? '在线' : '离线'}</span>
+          <span
+            style={{cursor:'pointer'}}
+            onClick={() => statusRef.current.open(record.deviceId)}
+            className={online ? 'green' : 'close'}
+          >
+            {online ? '在线' : '离线'}
+          </span>
         </Render>;
       }
     },
@@ -329,6 +338,8 @@ const Monitor = () => {
     >
       <DeviceChar device={open} date={date} defaultType={open?.defaultType} />
     </Drawer>
+
+    <Modal width={800} className={styles.deviceStatus} ref={statusRef} headTitle="设备状态" component={DeviceStatus} />
 
   </>;
 };

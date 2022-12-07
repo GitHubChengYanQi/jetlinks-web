@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Card, Empty, Image, Input, message, Modal, Space, Spin, Tabs} from 'antd';
+import {Button, Empty, Image, Input, message, Modal, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import pako from 'pako';
