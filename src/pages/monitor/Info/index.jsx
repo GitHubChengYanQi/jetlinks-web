@@ -178,7 +178,7 @@ const Info = ({
                   {childrenItem.title}
                 </div>
                 <Descriptions
-                  column={6}
+                  column={childrenItem.column || 6}
                   bordered
                   className={style.otherDescriptions}
                 >

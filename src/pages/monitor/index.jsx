@@ -296,6 +296,7 @@ const Monitor = () => {
     </Row>
 
     <Drawer
+      className={styles.infoDrawer}
       destroyOnClose
       title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
       width="auto"

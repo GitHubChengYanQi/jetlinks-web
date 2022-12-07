@@ -207,7 +207,7 @@ const TableWarp = (
       onResponse(response || {});
       response = {
         ...response,
-        data: format(response?.data)
+        data: format(response?.data || [])
       };
       setMultiplying(response.multiplying);
       return new Promise((resolve) => {
