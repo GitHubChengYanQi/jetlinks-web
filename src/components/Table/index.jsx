@@ -239,13 +239,23 @@ const TableWarp = (
   });
 
   const {dataSource, pagination, onChange: tableOnChange, ...other} = tableProps;
+
   const submit = () => {
-    typeof cancel === 'function' && cancel();
-    setTimeout(() => {
+    if (interval && typeof cancel === 'function') {
+      cancel();
+      setTimeout(() => {
+        setTimed(false);
+        setPagination({});
+        formActions.submit();
+      }, 0);
+    } else {
       setTimed(false);
-      setPagination({});
+      setPagination({
+        current: 1,
+        pageSize: pagination.pageSize,
+      });
       formActions.submit();
-    }, 0);
+    }
   };
 
   const reset = () => {

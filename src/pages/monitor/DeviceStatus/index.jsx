@@ -40,7 +40,7 @@ const DeviceStatus = (
       searchForm={() => {
         return <>
           <FormItem
-            name="status"
+            name="type"
             component={({value, onChange}) => {
               return <AntSelect
                 defaultValue="all"
@@ -58,18 +58,18 @@ const DeviceStatus = (
       isModal
       formActions={formActionsPublic}
       api={{
-        url: '/deviceStatus/list',
+        url: '/deviceStatusLog/list',
         method: 'POST'
       }}
       noSort
       noRowSelection
       bodyStyle={{padding: 0}}
-      rowKey="statusId"
+      rowKey="logId"
       noAction
       columns={[
         {
           title: '设备状态',
-          dataIndex: 'status',
+          dataIndex: 'type',
           align: 'center',
           render: (status) => {
             const online = status === 'online';
