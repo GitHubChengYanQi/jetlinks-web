@@ -19,7 +19,7 @@ const Fileds = (
       infoModelColumns.map((item, index) => {
         const options = isArray(item);
         return <Select
-          showSearch
+          showSearch={!show}
           key={index}
           placeholder="请选择"
           style={{width: 200}}

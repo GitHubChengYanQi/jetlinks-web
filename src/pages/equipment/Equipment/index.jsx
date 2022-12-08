@@ -40,8 +40,6 @@ const Equipment = () => {
   const ref = useRef();
   const editionRef = useRef();
 
-  const history = useHistory();
-
   const [noteVisible, setNoteVisible] = useState({});
 
   const [saveVisible, setSaveVisible] = useState();

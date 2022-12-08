@@ -40,6 +40,8 @@ const Monitor = () => {
 
   const [dataSource] = store.useModel('dataSource');
 
+  const [timeOutId, setTimeOutId] = useState();
+
   const customer = dataSource.customer || {};
 
   const searchParams = getSearchParams();
@@ -73,7 +75,7 @@ const Monitor = () => {
         const online = status === 'online';
         return <Render>
           <span
-            style={{cursor:'pointer'}}
+            style={{cursor: 'pointer'}}
             onClick={() => statusRef.current.open(record.deviceId)}
             className={online ? 'green' : 'close'}
           >
@@ -215,7 +217,6 @@ const Monitor = () => {
     </>;
   };
 
-
   return <>
     <Row gutter={24}>
       <Col span={close ? 1 : 4}>
@@ -254,7 +255,7 @@ const Monitor = () => {
         <Table
           noTableColumn
           isModal={false}
-          interval
+          interval={timeOutId || true}
           formSubmit={(values) => {
             setParams({...params, ...values});
             return values;
@@ -274,9 +275,11 @@ const Monitor = () => {
             return data.map(item => ({...(isObject(item.protocolDetail) || {}), ...item}));
           }}
           onResponse={(res = {}) => {
-            setTimeout(() => {
-              ref.current?.timedRefresh();
+            const id = setTimeout(() => {
+              ref.current?.timedRefresh(id);
             }, 10000);
+            console.log('time=>', id);
+            setTimeOutId(id);
             if (res.count === 0) {
               setModelColumns([]);
               return;

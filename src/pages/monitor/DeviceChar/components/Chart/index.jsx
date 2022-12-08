@@ -13,7 +13,7 @@ const Chart = (
     endTime,
     device,
     type,
-    chartData={},
+    chartData = {},
 
   }
 ) => {
@@ -90,9 +90,11 @@ const Chart = (
           return <div key={index}>
             {item.title}
             <BrokenLine
-              data={sort(chart[item.key] || [], lines).map(dataItem=>({...dataItem,value:dataItem.value+(item.unit || '')}))}
+              data={sort(chart[item.key] || [], lines)}
               colors={lines.map(lineItem => lineItem.color)}
               id={item.key}
+              unit={item.unit}
+              // scale={{min: 1, max: 100, tickInterval: 50}}
             />
           </div>;
       }

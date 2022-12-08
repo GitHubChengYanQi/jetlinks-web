@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, Input, Tooltip} from 'antd';
+import {Space, Dropdown, Menu, Input, Tooltip, message} from 'antd';
 import {config, getSearchParams, useHistory} from 'ice';
 import {EllipsisOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
@@ -8,7 +8,7 @@ import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import {PrimaryButton} from '@/components/Button';
-import {alarmRecordBatchView, alarmRecordList} from '@/pages/alarm/url';
+import {alarmRecordList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 import Cascader from '@/components/Cascader';
@@ -19,6 +19,8 @@ import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
 
+export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
+
 const Record = () => {
 
   const history = useHistory();
@@ -27,7 +29,9 @@ const Record = () => {
 
   const ref = useRef();
 
-  const [keys, setKeys] = useState([]);
+  const [records, setResords] = useState([]);
+
+  const keys = records.map(item => item.key);
 
   const ruleTypes = (ruleConditionJson, max) => {
     return isArray(ruleConditionJson).map((item, index) => {
@@ -80,12 +84,13 @@ const Record = () => {
       </div>;
     });
   };
-  const {loading: batchViewLoading, run: batchView} = useRequest(alarmRecordBatchView, {
+
+
+  const {loading: batchViewLoading, run: batchView} = useRequest(handelAlarmLog, {
+    fetchKey: (request) => {
+      return request?.key;
+    },
     manual: true,
-    onSuccess: () => {
-      setKeys([]);
-      ref.current.refresh();
-    }
   });
 
   const columns = [
@@ -137,11 +142,31 @@ const Record = () => {
     },
   ];
 
+  const getData = (item) => {
+    return {
+      tableTitle: item.tableTitle,
+      deviceRecordId: item.deviceRecordId,
+      tag: item.tag,
+      deviceId: item.deviceId,
+    };
+  };
+
   const menu = <Menu
     items={[
       {
         key: '1',
-        label: <Warning content="您确定处理么？" onOk={() => batchView({data: {recordIds: keys}})}>批量已阅</Warning>,
+        label: <Warning content="您确定处理么？" onOk={async () => {
+          const promise = records.filter(item => item.status !== '1').map(async (item, index) => {
+            await batchView({
+              key: index,
+              data: getData(item)
+            });
+          });
+          await Promise.all(promise);
+          message.success('处理成功！');
+          setResords([]);
+          ref.current.refresh();
+        }}>批量已阅</Warning>,
       },
     ]}
   />;
@@ -188,28 +213,38 @@ const Record = () => {
         };
       }}
       ref={ref}
-      onChange={setKeys}
+      format={(data) => {
+        return data.map((item, index) => ({...item, key: index}));
+      }}
+      checkedRows={records}
+      onChangeRows={setResords}
       selectedRowKeys={keys}
       loading={batchViewLoading}
       tableKey="record"
       searchButtons={[
-        <Dropdown disabled={keys.length === 0} key={2} overlay={menu} placement="bottom">
+        <Dropdown disabled={records.length === 0} key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
-        <PrimaryButton disabled={keys.length === 0} key={3} onClick={() => {
-          window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${keys}`);
+        <PrimaryButton disabled={records.length === 0} key={3} onClick={() => {
+          // window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${records.recordId}`);
         }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}
       api={alarmRecordList}
       columns={columns}
-      rowKey="recordId"
+      rowKey="key"
       actionRender={(text, record) => (
         <Space>
           <Warning
             disabled={record.status === '1'}
             content="您确定处理么？"
-            onOk={() => batchView({data: {recordIds: [record.recordId]}})}>
+            onOk={async () => {
+              await batchView({
+                data: getData(record)
+              });
+              message.success('处理成功！');
+              ref.current.refresh();
+            }}>
             <PrimaryButton disabled={record.status === '1'} type="link">已阅</PrimaryButton>
           </Warning>
           <PrimaryButton onClick={() => history.push(`/monitor?deviceId=${record.deviceId}&modelId=${record.modelId}`)}>

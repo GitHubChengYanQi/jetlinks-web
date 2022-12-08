@@ -5,7 +5,6 @@ import style from '@/components/Table/index.module.less';
 import Section from '@/pages/monitor/components/Config/components/Section';
 import {PrimaryButton} from '@/components/Button';
 import Warning from '@/components/Warning';
-import {isArray} from '@/util/Tools';
 import Fileds from '@/pages/monitor/components/Config/components/Fileds';
 import AlarmCondition from '@/pages/monitor/components/Config/components/AlarmCondition';
 

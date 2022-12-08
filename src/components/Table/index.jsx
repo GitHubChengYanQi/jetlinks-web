@@ -118,6 +118,7 @@ const TableWarp = (
   const {ajaxService} = Service();
 
   const [timed, setTimed] = useState(false);
+  const [timOutId, setTimOutId] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -243,7 +244,10 @@ const TableWarp = (
   const submit = () => {
     if (interval && typeof cancel === 'function') {
       cancel();
+      clearTimeout(interval);
       setTimeout(() => {
+        console.log('clear=>', interval);
+        clearTimeout(interval);
         setTimed(false);
         setPagination({});
         formActions.submit();
@@ -278,10 +282,11 @@ const TableWarp = (
     }
   };
 
-  const timedRefresh = () => {
+  const timedRefresh = (interval) => {
     if (loading) {
       return;
     }
+    console.log('request=>', interval);
     setTimed(true);
     formActions.submit();
   };
