@@ -14,11 +14,12 @@ const Chart = (
     device,
     type,
     chartData = {},
-
   }
 ) => {
 
   const {loading: chartLoading, data: chart, run: getChart} = useRequest(api, {manual: true});
+
+  const toDay = moment(startTime).get('date') === moment(endTime).get('date');
 
   useEffect(() => {
     if (startTime && endTime) {
@@ -53,11 +54,14 @@ const Chart = (
         newArray.push(item);
       });
     });
-    return newArray.map(item => ({
-      title: item.title || '',
-      value: item.value || 0,
-      time: item.time || '',
-    }));
+    return newArray.map(item => {
+      const time = (item.time || '').split(' ');
+      return {
+        title: item.title || '',
+        value: item.value || 0,
+        time: toDay ? time[1] : time[0],
+      };
+    });
   };
 
 
@@ -76,10 +80,11 @@ const Chart = (
             <StepLineChart
               data={isArray(chart[item.key]).map(item => {
                 const sortItem = lineSort.find(sItem => `${sItem.value}` === `${item.value}`);
+                const time = (item.time || '').split(' ');
                 return {
                   title: item.title || '',
                   value: sortItem?.title || 1,
-                  time: item.time || '',
+                  time: toDay ? time[1] : time[0],
                 };
               })}
               id={item.key}
@@ -94,7 +99,7 @@ const Chart = (
               colors={lines.map(lineItem => lineItem.color)}
               id={item.key}
               unit={item.unit}
-              // scale={{min: 1, max: 100, tickInterval: 50}}
+              scale={item.scale}
             />
           </div>;
       }

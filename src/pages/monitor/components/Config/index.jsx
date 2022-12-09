@@ -33,7 +33,6 @@ const Config = ({
     {
       title: '属性字段',
       dataIndex: 'field',
-      align: 'center',
       render: (text = [], record) => {
         return <Fileds
           show={show}

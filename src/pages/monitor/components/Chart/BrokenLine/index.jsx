@@ -15,8 +15,8 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, scale, unit}) => {
     chart.source(data, {
       value: scale ? {
         type: 'linear',
-        min: scale.min,
-        max: scale.max,
+        min: scale.minValue,
+        max: scale.maxValue,
         tickInterval: scale.tickInterval
       } : undefined
     });
