@@ -42,6 +42,6 @@ export const alarmRecordEdit = {
 
 
 export const alarmRecordBatchView = {
-  url: '/alarmRecord/batchView',
+  url: '/alarmRecord/handelAlarm',
   method: 'POST'
 };

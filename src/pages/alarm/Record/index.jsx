@@ -8,7 +8,7 @@ import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
 import {PrimaryButton} from '@/components/Button';
-import {alarmRecordList} from '@/pages/alarm/url';
+import {alarmRecordBatchView, alarmRecordList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
 import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 import Cascader from '@/components/Cascader';
@@ -86,7 +86,7 @@ const Record = () => {
   };
 
 
-  const {loading: batchViewLoading, run: batchView} = useRequest(handelAlarmLog, {
+  const {loading: batchViewLoading, run: batchView} = useRequest(alarmRecordBatchView, {
     fetchKey: (request) => {
       return request?.key;
     },
@@ -144,9 +144,8 @@ const Record = () => {
 
   const getData = (item) => {
     return {
-      tableTitle: item.tableTitle,
       deviceRecordId: item.deviceRecordId,
-      tag: item.tag,
+      key: item.tag,
       deviceId: item.deviceId,
     };
   };
