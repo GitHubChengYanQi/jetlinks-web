@@ -195,17 +195,13 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   icon: <ExclamationCircleOutlined />,
                   content: '确定一键处理吗？',
                   onOk: async () => {
-                    const promise = list.filter(item => item.num > 0).map(async (item) => {
-                      await batchHandle({
-                        key:item.key,
-                        data: {
-                          deviceRecordId: item.deviceRecordId,
-                          key: type,
-                          deviceId: device.deviceId
-                        }
-                      });
+                    await batchHandle({
+                      key:item.key,
+                      data: {
+                        key: type,
+                        deviceId: device.deviceId
+                      }
                     });
-                    await Promise.all(promise);
                     message.success('处理成功！');
                     ref.current.refresh();
                   },
