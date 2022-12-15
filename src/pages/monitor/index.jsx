@@ -278,7 +278,6 @@ const Monitor = () => {
             const id = setTimeout(() => {
               ref.current?.timedRefresh(id);
             }, 10000);
-            console.log('time=>', id);
             setTimeOutId(id);
             if (res.count === 0) {
               setModelColumns([]);

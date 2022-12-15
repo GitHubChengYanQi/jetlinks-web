@@ -242,12 +242,12 @@ const TableWarp = (
   const {dataSource, pagination, onChange: tableOnChange, ...other} = tableProps;
 
   const submit = () => {
-    if (interval && typeof cancel === 'function') {
-      cancel();
+    if (interval) {
+      if (typeof cancel === 'function') {
+        cancel();
+      }
       clearTimeout(interval);
       setTimeout(() => {
-        console.log('clear=>', interval);
-        clearTimeout(interval);
         setTimed(false);
         setPagination({});
         formActions.submit();
@@ -270,8 +270,11 @@ const TableWarp = (
   };
 
   const refresh = () => {
-    if (interval && typeof cancel === 'function') {
-      cancel();
+    if (interval) {
+      if (typeof cancel === 'function') {
+        cancel();
+      }
+      clearTimeout(interval);
       setTimeout(() => {
         setTimed(false);
         formActions.submit();
@@ -286,7 +289,6 @@ const TableWarp = (
     if (loading) {
       return;
     }
-    console.log('request=>', interval);
     setTimed(true);
     formActions.submit();
   };
