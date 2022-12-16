@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {Button, Select as AntSelect, Tabs} from 'antd';
 import {createFormActions} from '@formily/antd';
+import {config} from 'ice';
+import cookie from 'js-cookie';
+import moment from 'moment';
 import {isArray} from '@/util/Tools';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
@@ -15,8 +18,11 @@ const DeviceStatus = (
   }
 ) => {
 
+  const ref = useRef();
+
   return <div style={{padding: 24}}>
     <Table
+      ref={ref}
       otherData={
         <Tabs
           activeKey={1}
@@ -35,7 +41,20 @@ const DeviceStatus = (
       noTableColumn
       bordered={false}
       searchButtons={<>
-        <Button>导出</Button>
+        <Button onClick={() => {
+          const time = ref.current.formActions.getFieldValue('time') || [];
+          const type = ref.current.formActions.getFieldValue('type');
+          const {baseURI} = config;
+          const token = cookie.get('jetlink-token');
+          let exportUrl = `${baseURI}/statusLog/export?authorization=${token}&limit=5000&page=1`;
+          if (time.length > 0) {
+            exportUrl = `${exportUrl}&startTime=${time[0]}&endTime=${moment(time[1]).format('YYYY/MM/DD 23:59:59')}`;
+          }
+          if (type) {
+            exportUrl = `${exportUrl}&type=${type || ''}`;
+          }
+          window.open(`${exportUrl}&deviceId=${value}`);
+        }}>导出</Button>
       </>}
       searchForm={() => {
         return <>
