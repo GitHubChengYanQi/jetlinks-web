@@ -1,0 +1,32 @@
+.title {
+  color: #fff;
+  font-size: 16px;
+  padding-bottom: 12px;
+}
+
+.tableClassName {
+  :global {
+    .ant-table,
+    .ant-table-cell-fix-left,
+    .ant-pagination-item-link,
+    .ant-pagination-item,
+    .ant-select-selector,
+    .ant-pagination-options-quick-jumper,
+    .ant-table-cell {
+      background-color: transparent !important;
+      color: #fff !important;
+
+      a, input, .ant-pagination-item-ellipsis {
+        background-color: transparent;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.tableTotalClassName {
+  span {
+    background-color: transparent;
+    color: #fff;
+  }
+}

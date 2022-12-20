@@ -118,9 +118,11 @@ const ElectronicsMap = () => {
         <div style={{backgroundColor: '#fff', padding: 12}}>
           {searchForm()}
         </div>
-        <Amap ref={ref} show onMarkerClick={setInfoVisible} onHistory={(url) => {
-          history.push(url);
-        }}/>
+        <div style={{height: 'calc(100vh - 160px)'}}>
+          <Amap ref={ref} deviceMap show onMarkerClick={setInfoVisible} onHistory={(url) => {
+            history.push(url);
+          }}/>
+        </div>
       </Col>
     </Row>
     <Drawer

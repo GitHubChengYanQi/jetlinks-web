@@ -30,6 +30,7 @@ const TableWarp = (
     bodyStyle,
     bordered = true,
     // c
+    cardStyle,
     checkedRows = [],
     children,
     columns,
@@ -101,6 +102,8 @@ const TableWarp = (
     submitAction,
     searchButtons = [],
     // t
+    tableTotalClassName,
+    tableClassName,
     title,
     tableData,
     tab,
@@ -305,7 +308,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}} />
+        <br style={{clear: 'both'}}/>
       </div>
     );
   };
@@ -327,7 +330,7 @@ const TableWarp = (
   }
 
   return (
-    <Card bordered={false} bodyStyle={bodyStyle}>
+    <Card style={cardStyle} bordered={false} bodyStyle={bodyStyle}>
       <div className={style.tableWarp} id="listLayout" style={{height: '100%', overflowX: 'hidden'}}>
         {!noForm && <div id="search" className="search" style={headStyle}>
           {searchForm ?
@@ -341,26 +344,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup>
-                    <Button
-                      id="submit"
-                      loading={otherLoading || (timed ? false : loading)}
-                      type="primary"
-                      htmlType="submit"
-                      onClick={() => {
-                        submit();
-                      }}><SearchOutlined />查询
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        reset();
-                      }}>
-                      重置
-                    </Button>
-                    {searchButtons}
-                    {selectView}
-                    {saveView}
-                  </FormButtonGroup>}
+                    <FormButtonGroup>
+                      <Button
+                        id="submit"
+                        loading={otherLoading || (timed ? false : loading)}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {
+                          submit();
+                        }}><SearchOutlined/>查询
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reset();
+                        }}>
+                        重置
+                      </Button>
+                      {searchButtons}
+                      {selectView}
+                      {saveView}
+                    </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -377,6 +380,7 @@ const TableWarp = (
         </div>}
         {otherData}
         <AntdTable
+          className={tableClassName}
           showTotal
           bordered={bordered}
           onHeaderRow={() => {
@@ -406,10 +410,10 @@ const TableWarp = (
             noPagination ? false : {
               ...pagination,
               showTotal: (total) => {
-                return <>
+                return <div className={tableTotalClassName}>
                   <span hidden={selectedRowKeys.length <= 0}>已选 {selectedRowKeys.length} 条</span>
                   <span className={style.total}>{`共${total || dataSource.length}条`}</span>
-                </>;
+                </div>;
               },
               showQuickJumper: true,
               position: ['bottomRight'],
