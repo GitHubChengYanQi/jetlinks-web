@@ -264,7 +264,10 @@ const TableWarp = (
 
   const reset = () => {
     setTimed(false);
-    setPagination({});
+    setPagination({
+      current: 1,
+      pageSize: pagination.pageSize,
+    });
     formActions.reset();
     onReset();
   };

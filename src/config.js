@@ -38,10 +38,10 @@ export default {
   Genius: {
     logLevel: 'info',
     component: 'ant',
-    // baseURI: 'http://192.168.0.108:85',
+    baseURI: 'http://192.168.0.100:85',
     // baseURI: 'http://10.147.20.100:85',
     // baseURI: 'http://10.147.20.149:85',
-    baseURI: 'http://192.168.0.100:85',
+    // baseURI: 'http://192.168.0.100:85',
     // baseURI: 'http://192.168.0.205:85',
     // baseURI: 'http://172.16.2.39:85',
     // baseURI: 'http://124.71.235.212:82',
