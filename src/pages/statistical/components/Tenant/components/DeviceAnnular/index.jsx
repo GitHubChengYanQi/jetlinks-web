@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import * as G2 from '@antv/g2';
 import Box from '@/pages/statistical/components/Tenant/components/Box';
 
-const DeviceAnnular = () => {
+const DeviceAnnular = ({deviceData = {}}) => {
 
 
   useEffect(() => {
     const data = [
-      {item: '离线数量', count: 40, percent: 0.4},
-      {item: '在线数量', count: 21, percent: 0.21},
+      {item: '离线数量', percent: deviceData.onlineNum},
+      {item: '在线数量', percent: deviceData.offlineNum},
     ];
     const chart = new G2.Chart({
       padding: {top: 24, right: 24, bottom: 40, left: 24},
@@ -17,14 +17,7 @@ const DeviceAnnular = () => {
       height: 300,
       animate: false
     });
-    chart.source(data, {
-      percent: {
-        formatter: val => {
-          val = (val * 100) + '%';
-          return val;
-        }
-      }
-    });
+    chart.source(data);
     chart.coord('theta', {
       radius: 0.75,
       innerRadius: 0.6
@@ -36,7 +29,7 @@ const DeviceAnnular = () => {
 
     chart.guide().html({
       position: ['50%', '50%'],
-      html: '<div style="color:#fff;font-size: 14px;text-align: center;width: 10em;"><span style="color:#fff;font-size:20px">200</span> <br>设备总数</div>',
+      html: `<div style="color:#fff;font-size: 14px;text-align: center;width: 10em;"><span style="color:#fff;font-size:20px">${deviceData.onlineNum + deviceData.offlineNum}</span> <br>设备总数</div>`,
       alignX: 'middle',
       alignY: 'middle'
     });
@@ -48,17 +41,16 @@ const DeviceAnnular = () => {
     });
     chart.intervalStack()
       .position('percent')
-      .color('item')
+      .color('item',['#ff7c40','#64a534'])
       .label('percent', {
         textStyle: {
           fill: '#fff'
         },
         formatter: (val, item) => {
-          return item.point.item + ': ' + val;
+          return `${item.point.item}: ${val}`;
         }
       })
       .tooltip('item*percent', (item, percent) => {
-        percent = percent * 100 + '%';
         return {
           name: item,
           value: percent

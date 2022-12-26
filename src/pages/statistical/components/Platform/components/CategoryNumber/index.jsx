@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.less';
 
-const CategoryNumber = () => {
+const CategoryNumber = ({categoryResults = []}) => {
 
 
   return <>
@@ -10,11 +10,11 @@ const CategoryNumber = () => {
         不同种类设备数量
       </div>
       {
-        [1, 2, 3].map((item, index) => {
+        categoryResults.sort((a, b) => b.deviceNum - a.deviceNum).map((item, index) => {
           return <div key={index} className={styles.category}>
             <div>{index + 1}.</div>
-            <div className={styles.name}>智能箱{index + 1}</div>
-            <div>588台</div>
+            <div className={styles.name}>{item.name}</div>
+            <div>{item.deviceNum}台</div>
           </div>;
         })
       }

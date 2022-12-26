@@ -2,32 +2,29 @@ import React, {useEffect} from 'react';
 import * as G2 from '@antv/g2';
 import styles from './index.module.less';
 
-const CategoryReport = () => {
+const CategoryReport = ({categoryResults = []}) => {
 
 
   useEffect(() => {
     // 注意由于分类轴的顺序是从下往上的，所以数组的数值顺序要从小到大
-    const data = [
-      {country: '智能箱1', population: 18203},
-      {country: '智能箱2', population: 23489},
-      {country: '智能箱3', population: 29034},
-      {country: '智能箱4', population: 104970},
-      {country: '智能箱5', population: 131744}
-    ];
+    const data = categoryResults.map(item => ({
+      name: item.name,
+      number: item.deviceNum
+    }));
     const chart = new G2.Chart({
-      padding: {top: 20, right: 30, bottom: 20, left: 60},
+      padding: {top: 20, right: 30, bottom: 20, left: 80},
       container: 'CategoryReport',
       forceFit: true,
       height: 270,
     });
     chart.source(data);
-    chart.axis('country', {
+    chart.axis('name', {
       label: {
         offset: 12
       }
     });
     chart.coord().transpose();
-    chart.interval().position('country*population');
+    chart.interval().position('name*number');
     chart.render();
   }, []);
 

@@ -3,17 +3,21 @@ import * as G2 from '@antv/g2';
 import Box from '@/pages/statistical/components/Tenant/components/Box';
 import styles from './index.module.less';
 
-const CategoryReport = () => {
+const CategoryReport = ({categoryResults = []}) => {
 
   useEffect(() => {
-    const data = [
-      {item: '类别1', count: 40, percent: 0.4},
-      {item: '类别2', count: 21, percent: 0.21},
-      {item: '类别3', count: 21, percent: 0.21},
-      {item: '类别4', count: 21, percent: 0.21},
-    ];
+    let total = 0;
+    let percent = 0;
+    categoryResults.forEach(item => total += item.deviceNum);
+    const data = categoryResults.map((item, index) => {
+      if (index === categoryResults.length - 1) {
+        return {item: item.name, percent: 100 - percent};
+      }
+      percent += Math.round((item.deviceNum / total) * 100) || 0;
+      return {item: item.name, percent: Math.round((item.deviceNum / total) * 100) || 0};
+    });
     const chart = new G2.Chart({
-      padding: {top: 50, right: 70, bottom: 50, left: 50},
+      padding: {top: 50, right: 100, bottom: 50, left: 50},
       container: 'CategoryReport',
       forceFit: true,
       height: 300,
@@ -22,8 +26,7 @@ const CategoryReport = () => {
     chart.source(data, {
       percent: {
         formatter: val => {
-          val = (val * 100) + '%';
-          return val;
+          return `${val}%`;
         }
       }
     });
@@ -51,10 +54,9 @@ const CategoryReport = () => {
         }
       })
       .tooltip('item*percent', (item, percent) => {
-        percent = percent * 100 + '%';
         return {
           name: item,
-          value: percent
+          value: `${percent}%`
         };
       })
       .style({
@@ -68,7 +70,7 @@ const CategoryReport = () => {
     <div className={styles.title}>
       设备类别
     </div>
-    <div id="CategoryReport"/>
+    <div id="CategoryReport" />
   </Box>;
 };
 

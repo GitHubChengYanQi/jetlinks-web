@@ -2,12 +2,12 @@ import React, {useEffect} from 'react';
 import * as G2 from '@antv/g2';
 import styles from './index.module.less';
 
-const DeviceReport = () => {
+const DeviceReport = ({deviceData}) => {
 
   useEffect(() => {
     const data = [
-      {item: '库存数量', count: 50, percent: 0.5, color: 'red'},
-      {item: '出库数量', count: 50, percent: 0.5},
+      {item: '库存数量', percent: deviceData.deviceInNum},
+      {item: '出库数量', percent: deviceData.deviceOutNum},
     ];
     const chart = new G2.Chart({
       container: 'deviceInOutReport',
@@ -15,14 +15,7 @@ const DeviceReport = () => {
       height: 200,
       forceFit: true,
     });
-    chart.source(data, {
-      percent: {
-        formatter: val => {
-          val = (val * 100) + '%';
-          return val;
-        }
-      }
-    });
+    chart.source(data);
     chart.legend(false);
     chart.coord('theta', {
       radius: 0.75
@@ -33,18 +26,11 @@ const DeviceReport = () => {
     });
     chart.intervalStack()
       .position('percent')
-      .color('item',['#68bbc4','#5087ec'])
+      .color('item', ['#68bbc4', '#5087ec'])
       .label('percent', {
         formatter: (val, item) => {
           return item.point.item + ': ' + val;
         }
-      })
-      .tooltip('item*percent', (item, percent) => {
-        percent = percent * 100 + '%';
-        return {
-          name: item,
-          value: percent
-        };
       })
       .style({
         lineWidth: 1,
@@ -55,9 +41,10 @@ const DeviceReport = () => {
 
 
   useEffect(() => {
+
     const data = [
-      {item: '在线数量', count: 40, percent: 0.4},
-      {item: '离线数量', count: 21, percent: 0.21},
+      {item: '在线数量', percent: deviceData.onlineNum},
+      {item: '离线数量', percent: deviceData.offlineNum,},
     ];
     const chart = new G2.Chart({
       container: 'deviceReport',
@@ -65,14 +52,7 @@ const DeviceReport = () => {
       forceFit: true,
       height: 376,
     });
-    chart.source(data, {
-      percent: {
-        formatter: val => {
-          val = (val * 100) + '%';
-          return val;
-        }
-      }
-    });
+    chart.source(data);
     chart.coord('theta', {
       radius: 0.75,
       innerRadius: 0.6
@@ -84,14 +64,13 @@ const DeviceReport = () => {
 
     chart.intervalStack()
       .position('percent')
-      .color('item',['#f9c78b','#f39423'])
+      .color('item', ['#f39423', '#f9c78b'])
       .label('percent', {
         formatter: (val, item) => {
           return item.point.item + ': ' + val;
         }
       })
       .tooltip('item*percent', (item, percent) => {
-        percent = percent * 100 + '%';
         return {
           name: item,
           value: percent
