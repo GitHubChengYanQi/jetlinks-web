@@ -1,6 +1,7 @@
-import React from 'react';
-import {Select, Space} from 'antd';
+import React, {useState} from 'react';
+import {Select, Space, Tooltip} from 'antd';
 import {isArray} from '@/util/Tools';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 
 const AlarmCondition = ({
   value,
@@ -12,6 +13,8 @@ const AlarmCondition = ({
 
   const boolean = record.conditionType === 'boolean';
 
+  const [alarmConditionTitle, setAlarmConditionTitle] = useState(record.alarmConditionTitle);
+
   if (!boolean && isArray(record.conditions).length === 0) {
     return '暂无条件';
   }
@@ -19,6 +22,7 @@ const AlarmCondition = ({
   const options = boolean ? [
     {label: '=', value: '7'}
   ] : record.conditions.map(item => ({label: item.symbol, value: item.condition, title: item.title}));
+
 
   return <Space align="center">
     <Select
@@ -29,6 +33,7 @@ const AlarmCondition = ({
       style={{width: 100}}
       value={value}
       onChange={(alarmCondition, option) => {
+        setAlarmConditionTitle(option.title);
         onChange({
           alarmCondition,
           alarmConditionName: option.label,
@@ -42,6 +47,9 @@ const AlarmCondition = ({
         </Select.Option>;
       })}
     </Select>
+    <Tooltip placement="top" title={boolean ? '布尔类型' : alarmConditionTitle}>
+      <QuestionCircleOutlined />
+    </Tooltip>
   </Space>;
 };
 

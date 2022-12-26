@@ -275,6 +275,10 @@ const Monitor = () => {
             return data.map(item => ({...(isObject(item.protocolDetail) || {}), ...item}));
           }}
           onResponse={(res = {}) => {
+            if (res.errCode !== 0) {
+              setModelColumns([]);
+              return;
+            }
             const id = setTimeout(() => {
               ref.current?.timedRefresh(id);
             }, 10000);
