@@ -68,11 +68,7 @@ const AlarmRecord = () => {
       title: '终端备注',
       dataIndex: 'remarks',
       align: 'center',
-      render: (text, record) => <Render>
-        <div className="blue" onClick={() => {
-          history.push(`/monitor?deviceId=${record.deviceId}&modelId=${record.modelId}`);
-        }}>{text}</div>
-      </Render>
+      render: (text) => <Render text={text}/>
     },
     {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {

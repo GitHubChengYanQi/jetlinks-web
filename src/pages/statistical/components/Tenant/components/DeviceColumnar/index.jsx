@@ -10,7 +10,7 @@ const DeviceColumnar = ({records = []}) => {
       ...item,
       type: item.type === 'online' ? '设备在线数量' : '设备离线数量'
     }));
-    console.log(data);
+
     const chart = new G2.Chart({
       padding: {top: 40, right: 24, bottom: 40, left: 40},
       container: 'DeviceColumnar',
