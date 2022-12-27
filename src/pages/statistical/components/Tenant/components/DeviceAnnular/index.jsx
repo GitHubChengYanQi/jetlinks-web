@@ -7,8 +7,8 @@ const DeviceAnnular = ({deviceData = {}}) => {
 
   useEffect(() => {
     const data = [
-      {item: '离线数量', percent: deviceData.onlineNum},
-      {item: '在线数量', percent: deviceData.offlineNum},
+      {item: '离线数量', percent: deviceData.offlineNum},
+      {item: '在线数量', percent: deviceData.onlineNum},
     ];
     const chart = new G2.Chart({
       padding: {top: 24, right: 24, bottom: 40, left: 24},
