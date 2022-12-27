@@ -88,7 +88,6 @@ const ElectronicsMap = () => {
       <Col span={close ? 1 : 4}>
         <div className={styles.leftTree}>
           <LeftTree
-            firstKey
             open={close}
             showModules={customer.deptId ? ['terminal', 'group'] : ['terminal', 'customer']}
             close={() => setClose(!close)}

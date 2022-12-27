@@ -1,4 +1,4 @@
-import React, {useRef, useState, useImperativeHandle} from 'react';
+import React, {useRef, useState, useImperativeHandle, useEffect} from 'react';
 import {Map} from 'react-amap';
 import {config} from 'ice';
 import AmapSearch from '@/components/Amap/search';
@@ -47,7 +47,7 @@ const Amap = ({
     }
   });
 
-  const {run: getMapNum, data: mapNumber} = useRequest(mapNum, {manual: deviceMap,});
+  const {run: getMapNum, data: mapNumber} = useRequest(mapNum, {manual: true});
 
   const mapRef = useRef(null);
 
@@ -87,6 +87,10 @@ const Amap = ({
     }
 
   };
+
+  useEffect(() => {
+    submit();
+  }, []);
 
   useImperativeHandle(ref, () => ({
     submit,
