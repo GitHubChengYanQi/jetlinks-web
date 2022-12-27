@@ -10,6 +10,7 @@ import {alarmDelete, alarmList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
+import SelectDevice from '@/pages/alarm/Rule/components/SelectDevice';
 
 const Rule = () => {
 
@@ -18,6 +19,8 @@ const Rule = () => {
   const [saveVisible, setSaveVisible] = useState();
 
   const [keys, setKeys] = useState([]);
+
+  const [bindRule, setBindRule] = useState('');
 
   const columns = [
     {title: '规则名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
@@ -58,6 +61,11 @@ const Rule = () => {
       actionRender={(value, record) => (
         <Space>
           <PrimaryButton onClick={() => {
+            setBindRule(record);
+          }}>
+            一键应用
+          </PrimaryButton>
+          <PrimaryButton onClick={() => {
             setSaveVisible(record);
           }}>
             编辑
@@ -84,6 +92,8 @@ const Rule = () => {
         }
       }}
     />
+
+    <SelectDevice visible={bindRule} close={() => setBindRule('')} />
   </>;
 };
 export default Rule;

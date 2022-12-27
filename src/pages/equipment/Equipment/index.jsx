@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Button, Space, Dropdown, Menu, Input, Select as AntSelect, message} from 'antd';
-import {config, useHistory} from 'ice';
+import {config} from 'ice';
 import moment from 'moment';
 import cookie from 'js-cookie';
 import {EditOutlined} from '@ant-design/icons';
@@ -14,7 +14,6 @@ import FormItem from '@/components/Table/components/FormItem';
 import DatePicker from '@/components/DatePicker';
 import {deviceList, deviceStart} from '@/pages/equipment/Equipment/url';
 import Cascader from '@/components/Cascader';
-import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import DynamicForms from '@/pages/equipment/Equipment/DynamicForms';
@@ -30,7 +29,14 @@ import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 
 const formActionsPublic = createFormActions();
 
-const Equipment = () => {
+const Equipment = (
+  {
+    modelId,
+    select,
+    onChange = () => {
+    }
+  }
+) => {
 
   const [dataSource] = store.useModel('dataSource');
 
@@ -48,7 +54,7 @@ const Equipment = () => {
 
   const [restarting, setRestarting] = useState();
 
-  const [records, setResords] = useState([]);
+  const [records, setRecords] = useState([]);
 
   const keys = records.map(item => item.deviceId);
 
@@ -57,7 +63,7 @@ const Equipment = () => {
   const {loading: startLoading, run: start} = useRequest(deviceStart, {
     manual: true,
     onSuccess: () => {
-      setResords([]);
+      setRecords([]);
       message.success('启用成功！');
       ref.current.refresh();
     },
@@ -220,55 +226,6 @@ const Equipment = () => {
     ]}
   />;
 
-  const formatKey = (object) => {
-
-    if (typeof object !== 'object') {
-      return object;
-    }
-    Object.keys(object).forEach(key => {
-      const value = object[key];
-      for (let i = 0; i < key.length; i++) {
-        if (key[i] === key[i].toUpperCase() && key[i] !== key[i].toLowerCase()) {
-          key = key.replace(key[i], `-${key[i].toLowerCase()}`);
-        }
-      }
-      object[key] = formatKey(value);
-    });
-    return object;
-  };
-
-  const actions = (items = [], mac) => {
-    return <Menu
-      items={items.map((item, index) => {
-        const data = item.data || {};
-        const newData = {};
-        switch (item.type) {
-          case 'confirm':
-            return {
-              key: index,
-              label: <Warning content={`确定要${item.title}设备么?`} onOk={() => {
-
-              }}>{item.title}</Warning>,
-            };
-          case 'form':
-            Object.keys(data).forEach(key => {
-              newData[key] = formatKey(data[key]);
-            });
-            return {
-              key: index,
-              label: item.title,
-              onClick: () => setFormVisible({
-                mac,
-                ...item,
-                data: newData,
-              }),
-            };
-          default:
-            return <></>;
-        }
-      })}
-    />;
-  };
 
   const searchForm = () => {
     return <>
@@ -289,7 +246,9 @@ const Equipment = () => {
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="登记名称" name="name" component={Input} />
       <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
-      <FormItem label="设备型号" name="modelId" component={SelectModle} />
+      <div style={{display: modelId && 'none'}}>
+        <FormItem label="设备型号" name="modelId" value={modelId} component={SelectModle} />
+      </div>
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="批次" name="batchId" component={SelectBatch} />
       <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
@@ -311,12 +270,15 @@ const Equipment = () => {
         return values;
       }}
       checkedRows={records}
-      onChangeRows={setResords}
+      onChangeRows={(rows) => {
+        onChange(rows);
+        setRecords(rows);
+      }}
       selectedRowKeys={keys}
-      tableKey="device"
+      tableKey={select ? null : 'device'}
       loading={startLoading}
       ref={ref}
-      searchButtons={[
+      searchButtons={select ? [] : [
         <Button disabled={keys.length === 0} type="primary" key={1} onClick={() => {
           setMoveGrouVisible(keys);
         }}>移动分组</Button>,
@@ -331,6 +293,7 @@ const Equipment = () => {
       api={deviceList}
       columns={columns}
       rowKey="deviceId"
+      noAction={select}
       actionRender={(text, record) => {
         return <Space>
           <Button
@@ -367,7 +330,7 @@ const Equipment = () => {
       close={() => setMoveGrouVisible(null)}
       deviceIds={moveGrouVisible || []}
       success={() => {
-        setResords([]);
+        setRecords([]);
         setMoveGrouVisible(null);
         ref.current.refresh();
       }}
