@@ -25,6 +25,9 @@ const CategoryReport = ({categoryResults = []}) => {
     });
     chart.coord().transpose();
     chart.interval().position('name*number');
+    chart.tooltip({
+      itemTpl: `<li data-index={index}><span style="background-color:{color};width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;"></span>设备数: {value}</li>`, // tooltip 每项记录的默认模板
+    });
     chart.render();
   }, []);
 
