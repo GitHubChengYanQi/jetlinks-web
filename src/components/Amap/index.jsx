@@ -9,6 +9,7 @@ export const deviceList = {url: '/electronicMap/list', method: 'POST'};
 export const mapNum = {url: '/electronicMap/mapNum', method: 'POST'};
 
 const Amap = ({
+  deviceMap,
   show,
   value = [],
   onChange = () => {
@@ -91,9 +92,10 @@ const Amap = ({
   }));
 
   return (
-    <div style={{height: show ? 'calc(100vh - 160px)' : 'calc(100vh - 90px)'}}>
+    <div style={{height: show ? '100%' : 'calc(100vh - 90px)'}}>
       <Map events={events} amapkey={AMAP_KEY} center={center} version={show ? null : AMAP_VERSION} zoom={16}>
         <AmapSearch
+          deviceMap={deviceMap}
           mapNum={mapNumber}
           show={show}
           value={value}

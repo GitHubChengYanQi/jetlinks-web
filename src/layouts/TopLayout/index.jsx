@@ -60,7 +60,6 @@ const TopLayout = ({children}) => {
   const token = cookie.get('jetlink-token');
 
   const sysLogo = customer.logo ? `${baseURI}${preview}?fileId=${customer.logo}&authorization=${token}` : logo;
-
   useEffect(() => {
     if (location.pathname === '/') {
       if (routes[0]) {
