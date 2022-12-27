@@ -247,7 +247,7 @@ const Equipment = (
       <FormItem label="登记名称" name="name" component={Input} />
       <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
       <div style={{display: modelId && 'none'}}>
-        <FormItem label="设备型号" name="modelId" value={modelId} component={SelectModle} />
+        <FormItem label="设备型号" name="modelId" component={SelectModle} />
       </div>
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="批次" name="batchId" component={SelectBatch} />
@@ -267,7 +267,7 @@ const Equipment = (
         if (isArray(values.time).length > 0) {
           values = {...values, startTime: values.time[0], endTime: values.time[1],};
         }
-        return values;
+        return {modelId, ...values,};
       }}
       checkedRows={records}
       onChangeRows={(rows) => {

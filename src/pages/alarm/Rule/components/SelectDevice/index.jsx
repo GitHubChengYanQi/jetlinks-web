@@ -26,6 +26,7 @@ const SelectDevice = ({
 
   useEffect(() => {
     if (visible) {
+      setSaveVisible([]);
       ref.current.open(false);
     } else {
       ref.current.close();
