@@ -6,7 +6,7 @@ import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 
 export const deviceList = {url: '/electronicMap/list', method: 'POST'};
-export const mapNum = {url: '/electronicMap/mapNum', method: 'POST'};
+export const mapNum = {url: '/electronicMap/mapNum', method: 'POST', data: {}};
 
 const Amap = ({
   deviceMap,
@@ -47,7 +47,7 @@ const Amap = ({
     }
   });
 
-  const {run: getMapNum, data: mapNumber} = useRequest(mapNum, {manual: true,});
+  const {run: getMapNum, data: mapNumber} = useRequest(mapNum, {manual: deviceMap,});
 
   const mapRef = useRef(null);
 
@@ -77,10 +77,11 @@ const Amap = ({
       mapRef.current.getPosition(data.place);
     } else {
       const res = await getDeviceList({data});
-      if (isArray(res).length > 0 && res[0].latitude && res[0].longitude) {
+      const device = isArray(res).find(item => item.latitude && item.longitude);
+      if (device) {
         setCenter({
-          latitude: res[0].latitude,
-          longitude: res[0].longitude
+          latitude: device.latitude,
+          longitude: device.longitude
         });
       }
     }

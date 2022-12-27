@@ -9,17 +9,17 @@ import FormItem from '@/components/Table/components/FormItem';
 import Amap from '@/components/Amap';
 import {LinkButton} from '@/components/Button';
 import Info from '@/pages/monitor/Info';
-import Save from '@/pages/monitor/Info/Save';
 import store from '@/store';
 
 const ElectronicsMap = () => {
 
   const history = useHistory();
 
+  const infoRef = useRef();
+
   const [close, setClose] = useState(false);
 
   const [infoVisible, setInfoVisible] = useState({});
-  const [saveVisible, setSaveVisible] = useState(false);
 
   const [params, setParams] = useState({});
 
@@ -69,10 +69,10 @@ const ElectronicsMap = () => {
             />;
           }}
         />
-        <FormItem label="设备查询" name="name" component={Input}/>
-        <FormItem label="位置信息" name="place" component={Input}/>
+        <FormItem label="设备查询" name="name" component={Input} />
+        <FormItem label="位置信息" name="place" component={Input} />
         <FormButtonGroup>
-          <Submit><SearchOutlined/>查询</Submit>
+          <Submit><SearchOutlined />查询</Submit>
           <Reset>重置</Reset>
         </FormButtonGroup>
       </Form>
@@ -104,7 +104,7 @@ const ElectronicsMap = () => {
                   setParams({...params, classifyId: key});
                   break;
                 case 'customer':
-                  ref.current.formActions.setFieldValue('deptId', key);
+                  ref.current.submit({deptId: key});
                   setParams({...params, deptId: key});
                   break;
                 default:
@@ -121,22 +121,27 @@ const ElectronicsMap = () => {
         <div style={{height: 'calc(100vh - 160px)'}}>
           <Amap ref={ref} deviceMap show onMarkerClick={setInfoVisible} onHistory={(url) => {
             history.push(url);
-          }}/>
+          }} />
         </div>
       </Col>
     </Row>
+
     <Drawer
+      className={styles.infoDrawer}
       destroyOnClose
       title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
-      width="60vw"
+      width="auto"
       placement="right"
       onClose={() => setInfoVisible({})}
       open={infoVisible.modelId}
-      extra={<LinkButton onClick={() => setSaveVisible(true)}>报警设置</LinkButton>}
+      extra={<LinkButton onClick={() => infoRef.current.openAlarm()}>报警设置</LinkButton>}
     >
-      <Info deviceId={infoVisible.deviceId} modelId={infoVisible.modelId}/>
+      <Info
+        ref={infoRef}
+        deviceId={infoVisible.deviceId}
+        modelId={infoVisible.modelId}
+      />
     </Drawer>
-    <Save visible={saveVisible} close={() => setSaveVisible(false)} data={{}}/>
   </>;
 };
 

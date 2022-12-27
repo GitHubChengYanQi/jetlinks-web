@@ -1,35 +1,28 @@
 import React, {useState} from 'react';
-import {Button, Col, Modal, Popover, Row, Space} from 'antd';
+import {Button, Col, Modal, Row, Space, Spin} from 'antd';
 import classNames from 'classnames';
-import {CloseOutlined} from '@ant-design/icons';
-import moment from 'moment';
 import error from '@/asseset/imgs/error.svg';
 import online from '@/asseset/imgs/online.svg';
 import offline from '@/asseset/imgs/offline.svg';
 import styles from '@/components/Amap/index.module.less';
+import {useRequest} from '@/util/Request';
+import {isArray} from '@/util/Tools';
 
-const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
+export const MapDeviceDetail = {
+  url: '/device/MapDeviceDetail',
+  method: 'POST'
+};
+
+const MarkItem = ({device, id, onMarkerClick}) => {
 
   const [open, setOpen] = useState(false);
 
   const deviceOnline = device.status === 'online';
 
-  const runTime = () => {
-    if (!deviceOnline) {
-      return '-';
-    }
-    const oldsecond = moment(new Date()).diff(device.logTime, 'second');
-    const day = Math.floor(oldsecond / 86400) || 0;
-    const hours = Math.floor((oldsecond % 86400) / 3600) || 0;
-    const minutes = Math.floor(((oldsecond % 86400) % 3600) / 60) || 0;
-    const newsecond = Math.floor(((oldsecond % 86400) % 3600) % 60) || 0;
-    return <> {day}天{hours}时{minutes}分{newsecond}秒</>;
-  };
-
   let mark = '';
   let title = '';
   let className = '';
-  if (device.ruleConditionJson) {
+  if (device.alarm) {
     mark = error;
     title = '设备报警';
     className = styles.error;
@@ -42,8 +35,14 @@ const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
     title = '设备离线';
     className = styles.offline;
   }
+
+  const {loading, data = {}, run} = useRequest(MapDeviceDetail, {manual: true});
+
   return <div id={id}>
-    <div onClick={() => setOpen(true)}>
+    <div onClick={() => {
+      run({data: {deviceId: device.deviceId}});
+      setOpen(true);
+    }}>
       <img width="30px" height="37px" src={mark} alt="" />
     </div>
 
@@ -51,14 +50,14 @@ const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
       mask={false}
       maskClosable={false}
       centered
-      className={classNames(styles.modal,className)}
+      className={classNames(styles.modal, className)}
       width={700}
       title={title}
       onCancel={() => setOpen(false)}
       open={open}
       footer={null}
     >
-      <Row style={{width:'100%'}}>
+      <Row style={{width: '100%'}}>
         <Col span={12}>
           <Space direction="vertical" size={8} style={{width: '100%'}}>
             <div className={styles.leftRow}>
@@ -67,9 +66,6 @@ const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
               <span style={{color: deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceOnline ? '在线' : '离线'}</span>
             </div>
             <div className={styles.leftRow}>
-              <div>设备类别</div>
-              ：{device.categoryName}</div>
-            <div className={styles.leftRow}>
               <div>终端备注</div>
               ：{device.remarks}</div>
             <div className={styles.leftRow}>
@@ -77,7 +73,11 @@ const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
               ：{device.modelName}</div>
             <div className={styles.leftRow}>
               <div>IP地址</div>
-              ：{device.ip}</div>
+              ：
+              <span>
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br />(内){data?.data?.devip}</> : ''}
+              </span>
+            </div>
             <div className={styles.leftRow}>
               <div>MAC地址</div>
               ：{device.mac}</div>
@@ -87,38 +87,35 @@ const MarkItem = ({device, id, onMarkerClick, onHistory}) => {
             <div className={styles.leftRow}>
               <div>GPS定位</div>
               ：{device.longitude || '-'}，{device.latitude || '-'}</div>
-            <div className={styles.leftRow}>
-              <div>设备分组</div>
-              ：{device.classifyName}
-            </div>
           </Space>
         </Col>
         <Col span={12} className={styles.rightCol}>
           <Space direction="vertical" size={8} style={{width: '100%'}}>
-            <div className={styles.rightRow}>
-              <div>运行时间：</div>
-              <span style={{color: '#00a660'}}>{runTime() || '-'}</span>
-            </div>
-            <div className={styles.rightRow}>
-              <div>上次上线时间：</div>
-              <span style={{color: '#00a660'}}>{deviceOnline ? (device.logTime || '-') : '-'}</span>
-            </div>
-            <div className={styles.rightRow}>
-              <div>上次离线时间：</div>
-              <span style={{color: '#00a660'}}>{!deviceOnline ? (device.logTime || '-') : '-'}</span>
-            </div>
-            <div className={styles.rightRow}>
-              <div>升级时间：</div>
-              <span style={{color: '#00a660'}}>-</span>
-            </div>
+            {
+              loading ? <div style={{textAlign: 'center'}}>
+                <Spin size="large" />
+              </div> : isArray(data.layout).map((item, index) => {
+                let value = '';
+                if (!data.data) {
+
+                } else if (Array.isArray(data.data) && !!item.field) {
+                  const arrayIndex = item.field.split('_')[0];
+                  const field = item.field.split('_')[1];
+                  value = data.data[arrayIndex]?.[field];
+                } else {
+                  value = data.data[item.field];
+                }
+
+                return <div key={index} className={styles.rightRow}>
+                  <div>{item.title}</div>
+                  ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;
+              })
+            }
           </Space>
         </Col>
       </Row>
-      <div style={{marginTop: 16}}>
+      <div style={{marginTop: 16, textAlign: 'center'}}>
         <Button type="link" onClick={() => onMarkerClick(device)}>设备详情</Button>
-        <Button style={{float: 'right'}} type="link" onClick={() => {
-          onHistory(`/alarm/record?deviceId=${device.deviceId}`);
-        }}>报警记录</Button>
       </div>
     </Modal>
   </div>;
