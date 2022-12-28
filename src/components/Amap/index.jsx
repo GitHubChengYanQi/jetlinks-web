@@ -89,7 +89,9 @@ const Amap = ({
   };
 
   useEffect(() => {
-    submit();
+    if (show){
+      submit();
+    }
   }, []);
 
   useImperativeHandle(ref, () => ({
