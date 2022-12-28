@@ -20,11 +20,17 @@ import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle'
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
 import SelectDevice from '@/pages/equipment/OutStock/Save/components/SelectDevice';
+import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
+import store from '@/store';
 
 const OutStock = () => {
 
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
 
   const ref = useRef();
 
@@ -61,50 +67,50 @@ const OutStock = () => {
       </Render>;
     }
   }, {
-    title: '所属客户',
+    title: customer.customerId ? '设备分组' : '所属客户',
     dataIndex: 'deviceResult',
     align: 'center',
-    render: (text) => <Render text={text?.customerName}/>
+    render: (text) => <Render text={customer.customerId ? text?.classifyName : text?.customerName} />
   }, {
     title: '登记名称',
     dataIndex: 'deviceResult',
     align: 'center',
-    render: (value = {}) => <Render text={value?.name}/>
+    render: (value = {}) => <Render text={value?.name} />
   }, {
     title: '设备类别',
     dataIndex: 'deviceResult',
     align: 'center',
-    render: (value = {}) => <Render text={value?.categoryName}/>
+    render: (value = {}) => <Render text={value?.categoryName} />
   }, {
     title: '设备型号',
     dataIndex: 'deviceResult',
     align: 'center',
-    render: (value = {}) => <Render text={value?.modelName}/>
+    render: (value = {}) => <Render text={value?.modelName} />
   }, {
     title: '设备MAC地址',
     dataIndex: 'deviceResult',
     align: 'center',
-    render: (value = {}) => <Render text={value?.mac}/>
+    render: (value = {}) => <Render text={value?.mac} />
   }, {
     title: '批次',
     dataIndex: 'batchCoding',
     align: 'center',
-    render: (value) => <Render text={value}/>
+    render: (value) => <Render text={value} />
   }, {
     title: '出库人员',
     dataIndex: 'userName',
     align: 'center',
-    render: (text) => <Render width={200} text={text}/>
+    render: (text) => <Render width={200} text={text} />
   }, {
     title: '操作时间',
     dataIndex: 'createTime',
     align: 'center',
-    render: (text) => <Render width={200} text={text}/>
+    render: (text) => <Render width={200} text={text} />
   }, {
     title: '出库时间',
     dataIndex: 'outstockTime',
     align: 'center',
-    render: (text) => <Render width={200} text={text}/>
+    render: (text) => <Render width={200} text={text} />
   }, {
     title: '质保时间',
     dataIndex: 'closingDate',
@@ -139,12 +145,17 @@ const OutStock = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="出库时间" name="time" component={DatePicker} RangePicker/>
-      <FormItem label="设备MAC" name="mac" component={Input}/>
-      <FormItem label="设备查询" name="name" component={Input}/>
-      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
-      <FormItem label="批次" name="batchId" component={SelectBatch}/>
-      <FormItem label="所属客户" name="customerId" component={SelectCustomer}/>
+      <FormItem label="出库时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="设备查询" name="name" component={Input} />
+      <FormItem label="设备型号" name="modelId" component={SelectModle} />
+      <FormItem label="批次" name="batchId" component={SelectBatch} />
+      <div style={{display: customer.customerId && 'none'}}>
+        <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
+      </div>
+      <div style={{display: !customer.customerId && 'none'}}>
+        <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
+      </div>
       <FormItem
         label="设备状态"
         name="status"
@@ -208,7 +219,7 @@ const OutStock = () => {
       }}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
 
     <SelectDevice
       close={() => setSaveVisible(false)}
@@ -220,7 +231,7 @@ const OutStock = () => {
     />
 
     <BatchImport
-      columns={[{title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},]}
+      columns={[{title: '设备MAC', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},]}
       api={outStockImport}
       templeteApi={outStockDownloadTemplate}
       title="出库"

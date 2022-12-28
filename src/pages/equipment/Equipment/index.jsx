@@ -26,6 +26,7 @@ import Modal from '@/components/Modal';
 import Edition from '@/pages/equipment/Edition';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import SelectBatch from '@/pages/equipment/Batch/components/SelectBatch';
+import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 
 const formActionsPublic = createFormActions();
 
@@ -39,6 +40,8 @@ const Equipment = (
 ) => {
 
   const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
 
   const {baseURI} = config;
   const token = cookie.get('jetlink-token');
@@ -102,8 +105,8 @@ const Equipment = (
       render: (text) => <Render text={text || '-'} />
     },
     {
-      title: '设备分组',
-      dataIndex: 'classifyName',
+      title: customer.customerId ? '设备分组' : '所属客户',
+      dataIndex: customer.customerId ? 'classifyName' : 'customerName',
       align: 'center',
       render: (text) => <Render text={text || '-'} />
     },
@@ -245,7 +248,12 @@ const Equipment = (
       />
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
+      <div style={{display: customer.customerId && 'none'}}>
+        <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
+      </div>
+      <div style={{display: !customer.customerId && 'none'}}>
+        <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
+      </div>
       <div style={{display: modelId && 'none'}}>
         <FormItem label="设备型号" name="modelId" component={SelectModle} />
       </div>

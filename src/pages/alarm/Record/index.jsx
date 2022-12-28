@@ -18,6 +18,7 @@ import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
+import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 
 export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
 
@@ -174,8 +175,8 @@ const Record = () => {
     return <>
       <FormItem label="报警时间" name="time" component={DatePicker} RangePicker />
       <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" api={deviceClassifyTree} component={Cascader} />
+      <FormItem label="登记名称" name="name" component={Input} />
+      <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
       <FormItem
         label="设备类别"
         name="categoryId"
