@@ -45,7 +45,7 @@ const AlarmReport = ({alarmData = {}}) => {
       .style({
         lineWidth: 1,
         stroke: '#fff'
-      });
+      }).select(false);
     chart.render();
   }, []);
 

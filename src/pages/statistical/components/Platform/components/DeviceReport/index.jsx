@@ -20,6 +20,7 @@ const DeviceReport = ({deviceData}) => {
     chart.coord('theta', {
       radius: 0.75
     });
+
     chart.tooltip({
       showTitle: false,
       itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
@@ -35,7 +36,7 @@ const DeviceReport = ({deviceData}) => {
       .style({
         lineWidth: 1,
         stroke: '#fff'
-      });
+      }).select(false);
     chart.render();
   }, []);
 

@@ -62,7 +62,7 @@ const CategoryReport = ({categoryResults = []}) => {
       .style({
         lineWidth: 1,
         stroke: '#fff'
-      });
+      }).select(false);
     chart.render();
   }, []);
 

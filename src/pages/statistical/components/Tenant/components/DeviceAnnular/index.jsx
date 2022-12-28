@@ -59,7 +59,7 @@ const DeviceAnnular = ({deviceData = {}}) => {
       .style({
         lineWidth: 1,
         stroke: '#fff'
-      });
+      }).select(false);
     chart.render();
   }, []);
 
