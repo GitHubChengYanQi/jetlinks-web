@@ -311,7 +311,7 @@ const Equipment = (
             编辑
           </Button>
           <Warning content="确定要重启设备么?" onOk={() => {
-
+            message.success('操作成功！');
           }}>
             <PrimaryButton>重启</PrimaryButton>
           </Warning>

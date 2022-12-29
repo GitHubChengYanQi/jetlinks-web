@@ -10,8 +10,6 @@ import FormItem from '@/components/Table/components/FormItem';
 import {PrimaryButton} from '@/components/Button';
 import {alarmRecordBatchView, alarmRecordList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
-import {deviceClassifyTree} from '@/pages/equipment/Grouping/url';
-import Cascader from '@/components/Cascader';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
@@ -226,7 +224,7 @@ const Record = () => {
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
         <PrimaryButton disabled={records.length === 0} key={3} onClick={() => {
-          // window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${records.recordId}`);
+          window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${records.map(item => item.creattTimestamp)}`);
         }}>导出</PrimaryButton>
       ]}
       searchForm={searchForm}

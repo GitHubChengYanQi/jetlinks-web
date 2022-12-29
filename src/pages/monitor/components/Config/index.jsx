@@ -39,7 +39,7 @@ const Config = ({
           value={text}
           infoModelColumns={record.infoModelColumns || [modelColumns]}
           // array={isArray(record.infoModelColumns).length > 0 ? record.infoModelColumns : [modelColumns]}
-          onChange={(fileds, option,infoModelColumns) => {
+          onChange={(fileds, option, infoModelColumns) => {
             const boolean = option.conditionType === 'boolean';
             dataSourceChange({
               field: fileds,
@@ -59,7 +59,7 @@ const Config = ({
       align: 'center',
       width: 150,
       render: (text, record) => {
-        return <AlarmCondition value={text} onChange={dataSourceChange} show={show} record={record}/>;
+        return <AlarmCondition value={text} onChange={dataSourceChange} show={show} record={record} />;
       }
     }, {
       title: '报警值',
@@ -75,8 +75,8 @@ const Config = ({
         if (record.alarmConditionName === '~') {
           return show ? <>{[record.minNum, record.maxNum].join('~')}</> :
             <Section value={[record.minNum, record.maxNum]} onChange={(value = []) => {
-              dataSourceChange({minNum: value[0], maxNum: value[1]}, record.key);
-            }}/>;
+              dataSourceChange({minNum: value[0], maxNum: value[1], valueText: value.toString()}, record.key);
+            }} />;
         }
         switch (record.alarmCondition) {
           case '7':
@@ -88,8 +88,8 @@ const Config = ({
               value={text}
               style={{width: 230}}
               options={[{label: trueText, value: trueValue}, {label: falseText, value: falseValue}]}
-              onChange={(value) => {
-                dataSourceChange({value}, record.key);
+              onChange={(value, option) => {
+                dataSourceChange({value, valueText: option.label}, record.key);
               }}
             />;
           default:
@@ -98,7 +98,7 @@ const Config = ({
               value={text}
               placeholder={record.alarmConditionTitle || '请输入报警值'}
               onChange={(value) => {
-                dataSourceChange({value}, record.key);
+                dataSourceChange({value, valueText: value}, record.key);
               }}
             />;
         }
@@ -116,7 +116,7 @@ const Config = ({
           setDataSource(newData);
           onChange(newData);
         }}>
-          <Button type="link" danger style={{padding: 0}}><DeleteOutlined/></Button>
+          <Button type="link" danger style={{padding: 0}}><DeleteOutlined /></Button>
         </Warning>;
       }
     });
