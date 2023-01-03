@@ -160,7 +160,7 @@ const Equipment = (
       title: '位置信息',
       dataIndex: 'area',
       align: 'center',
-      render: (text) => <Render width={200} text={text} />
+      render: (text, record) => <Render width={200} text={text + record.address} />
     }, {
       title: '经纬度信息',
       dataIndex: '10',

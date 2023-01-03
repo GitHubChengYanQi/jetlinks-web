@@ -112,7 +112,7 @@ const Save = (
         name="email"
         rules={[
           {
-            message: '请输入正确的网址',
+            message: '请输入正确的电子邮件地址',
             pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$'
           }
         ]}

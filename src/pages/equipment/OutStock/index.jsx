@@ -170,6 +170,20 @@ const OutStock = () => {
           />;
         }}
       />
+      <FormItem
+        label="质保时间"
+        name="closing"
+        component={({value, onChange}) => {
+          return <AntSelect
+            defaultValue="all"
+            value={value || 'all'}
+            options={[{label: '全部', value: 'all'}, {label: '未过保', value: 'no'}, {label: '已过保', value: 'out'}]}
+            onChange={(value) => {
+              onChange(value === 'all' ? null : value);
+            }}
+          />;
+        }}
+      />
     </>;
   };
 
