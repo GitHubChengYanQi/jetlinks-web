@@ -13,7 +13,7 @@ const SelectBatch = ({
 
   const params = {limit: 10, page: 1};
 
-  const defaultData = {modelId, categoryId};
+  const defaultData = {modelId, categoryId, status: 1};
 
   const {loading, data, run} = useRequest({...deviceBatchList, params}, {manual: true});
 

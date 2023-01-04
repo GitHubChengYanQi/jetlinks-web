@@ -172,12 +172,12 @@ const OutStock = () => {
       />
       <FormItem
         label="质保时间"
-        name="closing"
+        name="isWarranty"
         component={({value, onChange}) => {
           return <AntSelect
             defaultValue="all"
             value={value || 'all'}
-            options={[{label: '全部', value: 'all'}, {label: '未过保', value: 'no'}, {label: '已过保', value: 'out'}]}
+            options={[{label: '全部', value: 'all'}, {label: '未过保', value: 'N'}, {label: '已过保', value: 'Y'}]}
             onChange={(value) => {
               onChange(value === 'all' ? null : value);
             }}
