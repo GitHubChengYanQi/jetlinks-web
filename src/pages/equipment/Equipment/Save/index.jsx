@@ -39,7 +39,7 @@ const Save = props => {
     if (visible) {
       sePositionId(data.positionId);
     }
-  }, []);
+  }, [visible]);
 
   return (
     <AntForm
