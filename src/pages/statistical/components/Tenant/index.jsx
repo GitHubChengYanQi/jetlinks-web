@@ -5,13 +5,13 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import styles from './index.module.less';
 import DeviceAnnular from '@/pages/statistical/components/Tenant/components/DeviceAnnular';
 import DeviceColumnar from '@/pages/statistical/components/Tenant/components/DeviceColumnar';
-import Map from '@/pages/statistical/components/Tenant/components/Map';
 import AlarmReport from '@/pages/statistical/components/Tenant/components/AlarmReport';
 import CategoryReport from '@/pages/statistical/components/Tenant/components/CategoryReport';
 import AlarmRecord from '@/pages/statistical/components/Tenant/components/AlarmRecord';
 import AlarmTrend from '@/pages/statistical/components/Tenant/components/AlarmTrend';
 import {useRequest} from '@/util/Request';
 import {customerView} from '@/pages/statistical/url';
+import Bmap from '@/components/Bmap';
 
 const Tenant = () => {
 
@@ -58,7 +58,7 @@ const Tenant = () => {
             </Space>
           </Col>
           <Col span={12}>
-            <Map />
+            <Bmap />
           </Col>
           <Col span={6}>
             <Space direction="vertical" size={24} style={{width: '100%'}}>

@@ -13,7 +13,7 @@ export const MapDeviceDetail = {
   method: 'POST'
 };
 
-const MarkItem = ({device, id, onMarkerClick}) => {
+const MarkItem = ({device = {}, id, onMarkerClick}) => {
 
   const [open, setOpen] = useState(false);
 
@@ -43,7 +43,7 @@ const MarkItem = ({device, id, onMarkerClick}) => {
       run({data: {deviceId: device.deviceId}});
       setOpen(true);
     }}>
-      <img width="30px" height="37px" src={mark} alt="" />
+      <img width="30px" height="37px" src={mark} alt=""/>
     </div>
 
     <Modal
@@ -75,7 +75,7 @@ const MarkItem = ({device, id, onMarkerClick}) => {
               <div>IP地址</div>
               ：
               <span>
-                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br />(内){data?.data?.devip}</> : ''}
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
               </span>
             </div>
             <div className={styles.leftRow}>
@@ -93,7 +93,7 @@ const MarkItem = ({device, id, onMarkerClick}) => {
           <Space direction="vertical" size={8} style={{width: '100%'}}>
             {
               loading ? <div style={{textAlign: 'center'}}>
-                <Spin size="large" />
+                <Spin size="large"/>
               </div> : isArray(data.layout).map((item, index) => {
                 let value = '';
                 if (!data.data) {

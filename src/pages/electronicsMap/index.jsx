@@ -10,6 +10,7 @@ import Amap from '@/components/Amap';
 import {LinkButton} from '@/components/Button';
 import Info from '@/pages/monitor/Info';
 import store from '@/store';
+import Bmap from '@/components/Bmap';
 
 const ElectronicsMap = () => {
 
@@ -118,7 +119,7 @@ const ElectronicsMap = () => {
           {searchForm()}
         </div>
         <div style={{height: 'calc(100vh - 160px)'}}>
-          <Amap ref={ref} deviceMap show onMarkerClick={setInfoVisible} onHistory={(url) => {
+          <Bmap ref={ref} onMarkerClick={setInfoVisible} onHistory={(url) => {
             history.push(url);
           }} />
         </div>
