@@ -55,12 +55,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton />;
+    return <PageSkeleton/>;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-" />;
+      return <Render width={150} text="-"/>;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -71,6 +71,31 @@ const Info = ({
   };
 
   const color = '#018a51';
+
+  const valueRender = (value, contentItem, index) => {
+    let newValue;
+    if (typeof value !== 'number' && typeof value !== 'string') {
+      newValue = '-';
+    } else {
+      newValue = typeof value === 'number' ? `${value}` : (value || '-');
+    }
+    return <div
+      key={index}
+      className={style.value}
+      style={{
+        borderRight: 'none',
+        cursor: 'pointer',
+        color: isObject(layoutData.filedStyle)[contentItem.field] || color
+      }}
+      onClick={() => {
+        if (contentItem.path) {
+          open(contentItem.path, contentItem.url);
+        }
+      }}
+    >
+      {newValue}
+    </div>;
+  };
 
   return <>
     <Descriptions
@@ -84,7 +109,7 @@ const Info = ({
       <Descriptions.Item label="终端备注">{data.remarks || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
       <Descriptions.Item label="设备IP地址">
-        {layoutData?.devip ? `内网：${layoutData.devip}` : ''} <br />{data.ip ? `外网：${data.ip}` : ''}
+        {layoutData?.devip ? `内网：${layoutData.devip}` : ''} <br/>{data.ip ? `外网：${data.ip}` : ''}
       </Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
       <Descriptions.Item label="GPS定位">-</Descriptions.Item>
@@ -102,7 +127,9 @@ const Info = ({
         const childrens = isArray(item.childrens);
         let column = 0;
         datas.forEach(item => {
-          column = item.length;
+          if (column === 0) {
+            column = item.length;
+          }
           item.forEach(item => {
             content.push(item);
           });
@@ -119,7 +146,7 @@ const Info = ({
           >
             {
               content.map((contentItem, contentIndex) => {
-                let value = '';
+                const value = [];
                 if (Array.isArray(layoutData)) {
                   let arrayIndex = 0;
                   let field = '';
@@ -129,34 +156,18 @@ const Info = ({
                   } catch (e) {
                     console.log(e);
                   }
-                  value = layoutData[arrayIndex]?.[field];
+                  value.push(layoutData[arrayIndex]?.[field]);
                 } else {
-                  value = layoutData[contentItem.field];
+                  const fields = contentItem.field ? contentItem.field.split(',') : [];
+                  fields.forEach(item => {
+                    value.push(layoutData[item]);
+                  });
                 }
-                let newValue;
-                if (typeof value !== 'number' && typeof value !== 'string') {
-                  newValue = '-';
-                } else {
-                  newValue = typeof value === 'number' ? `${value}` : (value || '-');
-                }
+
                 return <Descriptions.Item
                   key={contentIndex}
                   label={contentItem.title}>
-                  <div
-                    className={style.value}
-                    style={{
-                      borderRight: 'none',
-                      cursor: 'pointer',
-                      color: isObject(layoutData.filedStyle)[contentItem.field] || color
-                    }}
-                    onClick={() => {
-                      if (contentItem.path) {
-                        open(contentItem.path, contentItem.url);
-                      }
-                    }}
-                  >
-                    {newValue}
-                  </div>
+                  {value.map((item, index) => valueRender(item, contentItem, index))}
                 </Descriptions.Item>;
               })
             }
@@ -191,26 +202,12 @@ const Info = ({
                       } else {
                         const percisionText = `${value}`.split('.')[1] || '';
                         newValue = typeof value === 'number' || !!Number(value) ?
-                          <ThousandsSeparator precision={percisionText.length} value={value} />
+                          <ThousandsSeparator precision={percisionText.length} value={value}/>
                           :
                           (value || '-');
                       }
                       return <Descriptions.Item key={contentIndex} label={contentItem.title}>
-                        <div
-                          className={style.value}
-                          style={{
-                            borderRight: 'none',
-                            cursor: 'pointer',
-                            color: isObject(layoutData.filedStyle)[contentItem.field] || color
-                          }}
-                          onClick={() => {
-                            if (contentItem.path) {
-                              open(contentItem.path, contentItem.url);
-                            }
-                          }}
-                        >
-                          {newValue}
-                        </div>
+                        {valueRender(newValue, contentItem, index)}
                       </Descriptions.Item>;
                     })
                   }
