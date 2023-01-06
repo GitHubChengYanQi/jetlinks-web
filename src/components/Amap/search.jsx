@@ -1,10 +1,8 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
-import {Marker, Markers} from 'react-amap';
+import {Marker} from 'react-amap';
 import {Button, Card, Cascader as AntCascader, Input, List, Popover, Space} from 'antd';
 import {useRequest} from '@/util/Request';
 import store from '@/store';
-import MarkItem from '@/components/Amap/components/MarkItem';
-import styles from './index.module.less';
 
 let MSearch = null;
 let Geocoder = null;
