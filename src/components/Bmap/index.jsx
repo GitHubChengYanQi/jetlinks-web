@@ -1,6 +1,7 @@
 import React, {useRef, useState, useImperativeHandle, useEffect} from 'react';
 import {Button, Col, Modal, Row, Space, Spin} from 'antd';
 import classNames from 'classnames';
+import Script from 'react-load-script';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -22,18 +23,14 @@ const Bmap = ({
   },
 }, ref) => {
 
-  const baiduMap = window.BMap;
-  // const baiduMap = window.BMapGL;
-  console.log(baiduMap);
-  const mapRef = useRef();
-
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
   const [open, setOpen] = useState(false);
 
   const [params, setParams] = useState({});
 
-  const [map, setMap] = useState({});
+  const [baiduMap, setBaiduMap] = useState({});
+  const [map, setMap] = useState();
 
   const {loading: detailLoading, data = {}, run} = useRequest(MapDeviceDetail, {manual: true});
 
@@ -70,10 +67,9 @@ const Bmap = ({
     map.addOverlay(marker);
   };
 
-  const {loading, run: getDeviceList} = useRequest(deviceList, {
+  const {run: getDeviceList} = useRequest(deviceList, {
     manual: true,
     onSuccess: (res) => {
-      map.clearOverlays();
       isArray(res).forEach(item => {
         if (item.latitude && item.longitude) {
           mapMaker(item);
@@ -86,7 +82,8 @@ const Bmap = ({
 
   const getBounds = (initMap) => {
     // 西南，东北
-    const {sw, ne} = initMap.getBounds();
+    const sw = initMap.getBounds().getSouthWest();
+    const ne = initMap.getBounds().getNorthEast();
     // 西北 经度 纬度
     const northwest = {lng: sw.lng, lat: ne.lat};
     // 东南 经度 纬度
@@ -96,38 +93,66 @@ const Bmap = ({
       {latitude: northwest.lat, longitude: northwest.lng},
       {latitude: southeast.lat, longitude: southeast.lng}
     ];
+    initMap.clearOverlays();
+
     getDeviceList({data: {locationParams, ...params}});
   };
 
-  const submit = async (newParams = {}, reset, initMap = map) => {
+  const submit = async (newParams = {}, reset, initMap = map, baidu = baiduMap) => {
     const data = reset ? newParams : {...params, ...newParams,};
     setParams(data);
     getMapNum({data});
+    initMap.clearOverlays();
     const res = await getDeviceList({data});
     const device = isArray(res).find(item => item.latitude && item.longitude);
     if (device) {
-      const point = new baiduMap.Point(device.longitude, device.latitude);
+      const point = new baidu.Point(device.longitude, device.latitude);
       initMap.panTo(point);
     }
   };
 
-  useEffect(() => {
-    const initMap = new baiduMap.Map('container');
-    const point = new baiduMap.Point(116.404, 39.915);
-    initMap.centerAndZoom(point, 12);
+  const handleScriptCreate = () => {
+    window.bmapcfg = {
+      'imgext': '.jpg',   // 瓦片图的后缀 ------ 根据需要修改，一般是 .png .jpg
+      'tiles_dir': '/map/tiles',       // 普通瓦片图的地址，为空默认在 offlinemap/tiles/ 目录
+      'tiles_hybrid': '',       // 卫星瓦片图的地址，为空默认在 offlinemap/tiles_hybrid/ 目录
+      'tiles_self': '',        // 自定义图层的地址，为空默认在 offlinemap/tiles_self/ 目录
+      'home': '/map/'
+    };
+  };
+
+  const handleScriptLoad = () => {
+    const baidu = window.BMap;
+    setBaiduMap(baidu);
+    const initMap = new baidu.Map('container');
+
+    const point = new baidu.Point(116.404, 39.915);
+    initMap.centerAndZoom(point, 8);
     initMap.enableScrollWheelZoom(true);
-    initMap.addEventListener('moveend', () => {
-      getBounds(initMap);
-    });
-    initMap.addEventListener('zoomend', () => {
-      getBounds(initMap);
-    });
-    initMap.addEventListener('click', function (e) {
-      alert(e.point.lng + ',' + e.point.lat);
-    });
     setMap(initMap);
 
-    submit({}, false, initMap);
+    submit({}, false, initMap, baidu);
+  };
+
+  useEffect(() => {
+    if (map) {
+      map.addEventListener('dragend', () => {
+        getBounds(map);
+      });
+      map.addEventListener('zoomend', () => {
+        getBounds(map);
+      });
+    }
+    return () => {
+      if (map) {
+        map.removeEventListener('dragend');
+        map.removeEventListener('zoomend');
+      }
+    };
+  }, [params]);
+
+  useEffect(() => {
+    handleScriptLoad();
   }, []);
 
   useImperativeHandle(ref, () => ({
@@ -135,6 +160,13 @@ const Bmap = ({
   }));
 
   return <div style={{position: 'relative', height: '100%', width: '100%'}}>
+
+    {/* <Script */}
+    {/*   url="/map/bmap_offline_api_v3.0_min.js" */}
+    {/*   onCreate={handleScriptCreate} */}
+    {/*   onLoad={handleScriptLoad} */}
+    {/* /> */}
+
     <div className={styles.deviceCount}>
       <Space size={24}>
         <div>

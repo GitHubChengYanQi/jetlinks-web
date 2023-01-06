@@ -27,14 +27,6 @@ export default function BasicLayout({children}) {
       dataDispatchers.getCustomer(userInfo?.info?.customerId || 0);
       dataDispatchers.getCommonArea();
       dataDispatchers.getDeviceClass();
-
-
-      const localeSrc = 'http://124.71.235.212:81/bmap/map_load.js';
-      const script = document.createElement('script');
-      script.src = localeSrc;
-      script.async = true;
-      document.body.appendChild(script);
-
     } catch (e) {
       logger.error(e.message);
       cookie.remove('jetlink-token');
@@ -49,7 +41,6 @@ export default function BasicLayout({children}) {
 
   return (
     <>
-      <script type="text/javascript" src="http://124.71.235.212:81/bmap/map_load.js"/>
       {Object.keys(state).length === 0 ?
         <Spin size="large">
           <Alert
