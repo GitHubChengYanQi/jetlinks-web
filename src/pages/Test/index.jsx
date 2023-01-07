@@ -4,7 +4,7 @@ import Bmap from '@/components/Bmap';
 const Test = () => {
 
   return <>
-    <Bmap/>
+    <Bmap />
   </>;
 };
 export default Test;

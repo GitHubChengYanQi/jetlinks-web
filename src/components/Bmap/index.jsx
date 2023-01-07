@@ -118,7 +118,6 @@ const Bmap = ({
   const handleScriptLoad = (BMap) => {
     setBaiduMap(BMap);
     const initMap = new BMap.Map('container');
-
     const point = new BMap.Point(116.404, 39.915);
     initMap.centerAndZoom(point, 8);
     initMap.enableScrollWheelZoom(true);
@@ -129,10 +128,10 @@ const Bmap = ({
 
   const initMap = async () => {
     const bmapOffline = customer.platformMode === 1;
-    console.log(bmapOffline);
+    console.log(bmapOffline ? '离线模式' : '在线模式');
     console.log('初始化百度地图脚本...');
-    const mapUrl = 'http://124.71.235.212:81/bmap';
-    // const mapUrl = '/map';
+    // const mapUrl = 'http://124.71.235.212:81/bmap';
+    const mapUrl = '/map';
     window.bmapcfg = {
       'imgext': '.jpg',   // 瓦片图的后缀 ------ 根据需要修改，一般是 .png .jpg
       'tiles_dir': `${mapUrl}/tiles`,       // 普通瓦片图的地址，为空默认在 offlinemap/tiles/ 目录
