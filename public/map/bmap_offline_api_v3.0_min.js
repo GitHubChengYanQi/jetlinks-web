@@ -1664,7 +1664,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     //B.vp =bmapcfg.home;  //修改，本地工具资源引用(离线路径)
 	B.Wc = B.url.proto + ("2" == B.xu ? B.url.domain.main_domain_nocdn.other : B.url.domain.main_domain_nocdn.baidu) + "/";
 	//B.Wc =bmapcfg.home;  //修改，本地工具资源引用(离线路径)
-	//B.ka=B.url.proto+("2"==B.xu?B.url.domain.main_domain_cdn.other[0]:B.url.domain.main_domain_cdn.baidu[0])+"/"; 
+	//B.ka=B.url.proto+("2"==B.xu?B.url.domain.main_domain_cdn.other[0]:B.url.domain.main_domain_cdn.baidu[0])+"/";
     B.ka = bmapcfg.home;  //修改，本地工具资源引用(离线路径)
     B.Yi = B.url.proto + B.url.domain.main_domain_cdn.webmap[0] + "/";
     //B.Yi =bmapcfg.home;  //修改，本地工具资源引用(离线路径)
@@ -2818,7 +2818,7 @@ window.BMAP_AUTHENTIC_KEY = "";
     }
     ;function oa(a, b) {
 		if (/^http/.test(a))  return;//修改  屏蔽ak验证，若调用外部资源直接返回
-        
+
         if (b) {
             var c = (1E5 * Math.random()).toFixed(0);
             B._rd["_cbk" + c] = function(a) {
@@ -2845,7 +2845,7 @@ window.BMAP_AUTHENTIC_KEY = "";
             e = s
         }, 1)
     }
-    ;var Ub = {  //修改，这里是所有的模块，用到时自动加载（在线），离线的话要先下载下来放到本地，如http://api0.map.bdimg.com/getmodules?v=3.0&mod=模块1,模块2 
+    ;var Ub = {  //修改，这里是所有的模块，用到时自动加载（在线），离线的话要先下载下来放到本地，如http://api0.map.bdimg.com/getmodules?v=3.0&mod=模块1,模块2
 		//模块命名格式是map_dbwcej，直接拼接起来
         map: "dbwcej",
         common: "wkrfcz",
@@ -3001,7 +3001,7 @@ window.BMAP_AUTHENTIC_KEY = "";
                         f.Rd.Hn.length = 0;
                         //0 == a.length ? f.kL() : oa(f.wG.tQ + "&mod=" + a.join(","))
 						// 修改 加载本地模块文件，在 modules 目录下
-						console.log(a);   //打印所需模块  
+						console.log(a);   //打印所需模块
 						if( a.length > 0 ){
 						  for(i=0; i<a.length;i++){
 							mf = bmapcfg.home+'modules/'+a[i]+'.js';
@@ -3010,7 +3010,7 @@ window.BMAP_AUTHENTIC_KEY = "";
 						  }
 						} else {
 						  f.kL()
-						} 
+						}
 						//就到这
                     }, 1));
                     e.Me = this.Cj.cQ
@@ -6514,7 +6514,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         //this.map.Sx() && (g = 2);  //修改
         //e = this.map.Va.Lw(e, b).hs;
         //return (kd[Math.abs(e + a) % kd.length] + "?qt=tile&x=" + (e + "").replace(/-/gi, "M") + "&y=" + (a + "").replace(/-/gi, "M") + "&z=" + b + "&styles=" + c + "&scaler=" + g + (6 == z.ca.ia ? "&color_dep=32&colors=50" : "") + "&udt=" + f).replace(/-(\d+)/gi, "M$1")
-		
+
 		var tdir = bmapcfg.tiles_dir.length>0?bmapcfg.tiles_dir:bmapcfg.home + "tiles";
 		return tdir + "/" + b + "/" + e + "/" + a + bmapcfg.imgext; // 使用本地的瓦片
 	}
@@ -6530,8 +6530,8 @@ window.BMAP_AUTHENTIC_KEY = "";
           , e = a.y
           , f = 256 * Math.pow(2, 20 - b)
           , e = Math.round((9998336 - f * e) / f) - 1;
-        /*var tdir = bmapcfg.tiles_hybrid.length > 0 ? bmapcfg.tiles_hybrid : bmapcfg.home + "tiles_hybrid";//修改 使用本地卫星的瓦片 
-		tdir = tdir + "/" + b + "/" + c + "/" + e + bmapcfg.imgext; //修改 使用本地卫星的瓦片 
+        /*var tdir = bmapcfg.tiles_hybrid.length > 0 ? bmapcfg.tiles_hybrid : bmapcfg.home + "tiles_hybrid";//修改 使用本地卫星的瓦片
+		tdir = tdir + "/" + b + "/" + c + "/" + e + bmapcfg.imgext; //修改 使用本地卫星的瓦片
 	    return tdir;*/
 		return url = this.NO[Math.abs(c + e) % this.NO.length] + this.map.Ub + "/" + this.map.Rw + "/3/lv" + (21 - b) + "/" + c + "," + e + ".jpg"
     }
@@ -6589,7 +6589,7 @@ window.BMAP_AUTHENTIC_KEY = "";
         var c = a.x
           , e = a.y
           , f = Sb("satelliteStreet");
-          // TODO satelliteStreet offline pricture logic 
+          // TODO satelliteStreet offline pricture logic
         return (kd[Math.abs(c + e) % kd.length] + "?qt=vtile&x=" + (c + "").replace(/-/gi, "M") + "&y=" + (e + "").replace(/-/gi, "M") + "&z=" + b + "&styles=sl" + (6 == z.ca.ia ? "&color_dep=32&colors=50" : "") + "&udt=" + f).replace(/-(\d+)/gi, "M$1")
     }
     ;

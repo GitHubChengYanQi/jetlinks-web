@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Image, Input, Form, InputNumber, Radio, Space, Spin, Tabs, message} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
@@ -20,12 +20,15 @@ const Configuration = () => {
 
   const customer = dataSource.customer || {};
   const defaultParams = {platformMode: 0, loginValidity: 'close', minute: 1};
+  const [params, setParams] = useState({});
 
-  const [params, setParams] = useState({
-    platformMode: customer.platformMode || 0,
-    loginValidity: customer.loginValidity ? 'open' : 'close',
-    minute: customer.loginValidity
-  });
+  useEffect(() => {
+    setParams({
+      platformMode: customer.platformMode || 0,
+      loginValidity: customer.loginValidity ? 'open' : 'close',
+      minute: customer.loginValidity
+    });
+  }, [customer]);
 
   const [form] = Form.useForm();
 
@@ -82,7 +85,8 @@ const Configuration = () => {
             </Form.Item>
 
             <Form.Item label="预览">
-              <Image hidden={!fileId} width={100} src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
+              <Image hidden={!fileId} width={100}
+                     src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
             </Form.Item>
 
           </>

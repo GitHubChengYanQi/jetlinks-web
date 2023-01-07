@@ -1,7 +1,6 @@
-import React, {useRef, useState, useImperativeHandle, useEffect} from 'react';
+import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Button, Col, Modal, Row, Space, Spin} from 'antd';
 import classNames from 'classnames';
-import Script from 'react-load-script';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -9,6 +8,7 @@ import styles from '@/components/Amap/index.module.less';
 import error from '@/asseset/imgs/error.svg';
 import online from '@/asseset/imgs/online.svg';
 import offline from '@/asseset/imgs/offline.svg';
+import store from '@/store';
 
 
 export const MapDeviceDetail = {
@@ -22,6 +22,10 @@ const Bmap = ({
   onHistory = () => {
   },
 }, ref) => {
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
 
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
@@ -111,27 +115,52 @@ const Bmap = ({
     }
   };
 
-  const handleScriptCreate = () => {
-    window.bmapcfg = {
-      'imgext': '.jpg',   // 瓦片图的后缀 ------ 根据需要修改，一般是 .png .jpg
-      'tiles_dir': '/map/tiles',       // 普通瓦片图的地址，为空默认在 offlinemap/tiles/ 目录
-      'tiles_hybrid': '',       // 卫星瓦片图的地址，为空默认在 offlinemap/tiles_hybrid/ 目录
-      'tiles_self': '',        // 自定义图层的地址，为空默认在 offlinemap/tiles_self/ 目录
-      'home': '/map/'
-    };
-  };
+  const handleScriptLoad = (BMap) => {
+    setBaiduMap(BMap);
+    const initMap = new BMap.Map('container');
 
-  const handleScriptLoad = () => {
-    const baidu = window.BMap;
-    setBaiduMap(baidu);
-    const initMap = new baidu.Map('container');
-
-    const point = new baidu.Point(116.404, 39.915);
+    const point = new BMap.Point(116.404, 39.915);
     initMap.centerAndZoom(point, 8);
     initMap.enableScrollWheelZoom(true);
     setMap(initMap);
 
-    submit({}, false, initMap, baidu);
+    submit({}, false, initMap, BMap);
+  };
+
+  const initMap = async () => {
+    const bmapOffline = customer.platformMode === 1;
+    console.log(bmapOffline);
+    console.log('初始化百度地图脚本...');
+    const mapUrl = 'http://124.71.235.212:81/bmap';
+    // const mapUrl = '/map';
+    window.bmapcfg = {
+      'imgext': '.jpg',   // 瓦片图的后缀 ------ 根据需要修改，一般是 .png .jpg
+      'tiles_dir': `${mapUrl}/tiles`,       // 普通瓦片图的地址，为空默认在 offlinemap/tiles/ 目录
+      'tiles_hybrid': '',       // 卫星瓦片图的地址，为空默认在 offlinemap/tiles_hybrid/ 目录
+      'tiles_self': '',        // 自定义图层的地址，为空默认在 offlinemap/tiles_self/ 目录
+      'home': `${mapUrl}/`,
+    };
+    // 百度地图API文件链接，异步加载必须带参数callback，后面是回调函数。
+    const BMapURL = bmapOffline ? `${mapUrl}/bmap_offline_api_v3.0_min.js` : '//api.map.baidu.com/api?v=3.0&ak=FFFGGr9s5Hiee3vrtjVguKPtdgcxDEnv&callback=onBMapCallback';
+
+
+    // 插入script脚本
+    const scriptNode = document.createElement('script');
+    scriptNode.setAttribute('type', 'text/javascript');
+    scriptNode.setAttribute('src', BMapURL);
+    document.body.appendChild(scriptNode);
+
+    scriptNode.onload = () => {
+
+      window.onBMapCallback = () => {
+        console.log('初始化在线百度地图脚本成功~', window.BMap);
+        handleScriptLoad(window.BMap);
+      };
+      if (bmapOffline) {
+        console.log('初始化离线百度地图脚本成功~', window.BMap);
+        handleScriptLoad(window.BMap);
+      }
+    };
   };
 
   useEffect(() => {
@@ -152,7 +181,7 @@ const Bmap = ({
   }, [params]);
 
   useEffect(() => {
-    handleScriptLoad();
+    initMap();
   }, []);
 
   useImperativeHandle(ref, () => ({
@@ -160,12 +189,6 @@ const Bmap = ({
   }));
 
   return <div style={{position: 'relative', height: '100%', width: '100%'}}>
-
-    {/* <Script */}
-    {/*   url="/map/bmap_offline_api_v3.0_min.js" */}
-    {/*   onCreate={handleScriptCreate} */}
-    {/*   onLoad={handleScriptLoad} */}
-    {/* /> */}
 
     <div className={styles.deviceCount}>
       <Space size={24}>
@@ -183,7 +206,7 @@ const Bmap = ({
         </div>
       </Space>
     </div>
-    <div id="container" style={{height: '100%'}}/>
+    <div id="container" style={{height: '100%'}} />
 
     <Modal
       mask={false}
@@ -215,7 +238,7 @@ const Bmap = ({
               <div>IP地址</div>
               ：
               <span>
-                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br />(内){data?.data?.devip}</> : ''}
               </span>
             </div>
             <div className={styles.leftRow}>
@@ -233,7 +256,7 @@ const Bmap = ({
           <Space direction="vertical" size={8} style={{width: '100%'}}>
             {
               detailLoading ? <div style={{textAlign: 'center'}}>
-                <Spin size="large"/>
+                <Spin size="large" />
               </div> : isArray(data.layout).map((item, index) => {
                 let value = '';
                 if (!data.data) {

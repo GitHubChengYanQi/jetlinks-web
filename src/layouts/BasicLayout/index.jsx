@@ -27,6 +27,7 @@ export default function BasicLayout({children}) {
       dataDispatchers.getCustomer(userInfo?.info?.customerId || 0);
       dataDispatchers.getCommonArea();
       dataDispatchers.getDeviceClass();
+
     } catch (e) {
       logger.error(e.message);
       cookie.remove('jetlink-token');
