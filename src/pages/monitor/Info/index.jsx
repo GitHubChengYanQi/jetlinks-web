@@ -55,12 +55,12 @@ const Info = ({
   }));
 
   if (loading || otherDataLoading) {
-    return <PageSkeleton/>;
+    return <PageSkeleton />;
   }
 
   const runTime = () => {
     if (!online) {
-      return <Render width={150} text="-"/>;
+      return <Render width={150} text="-" />;
     }
     const oldsecond = moment(new Date()).diff(data.logTime, 'second');
     const day = Math.floor(oldsecond / 86400) || 0;
@@ -83,7 +83,7 @@ const Info = ({
       key={index}
       className={style.value}
       style={{
-        borderRight: 'none',
+        borderLeft: index === 0 && 'none',
         cursor: 'pointer',
         color: isObject(layoutData.filedStyle)[contentItem.field] || color
       }}
@@ -109,7 +109,7 @@ const Info = ({
       <Descriptions.Item label="终端备注">{data.remarks || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{data.modelName}</Descriptions.Item>
       <Descriptions.Item label="设备IP地址">
-        {layoutData?.devip ? `内网：${layoutData.devip}` : ''} <br/>{data.ip ? `外网：${data.ip}` : ''}
+        {layoutData?.devip ? `内网：${layoutData.devip}` : ''} <br />{data.ip ? `外网：${data.ip}` : ''}
       </Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
       <Descriptions.Item label="GPS定位">-</Descriptions.Item>
@@ -201,13 +201,28 @@ const Info = ({
                         newValue = '-';
                       } else {
                         const percisionText = `${value}`.split('.')[1] || '';
-                        newValue = typeof value === 'number' || !!Number(value) ?
-                          <ThousandsSeparator precision={percisionText.length} value={value}/>
+                        newValue = (typeof value === 'number' || !!Number(value)) ?
+                          <ThousandsSeparator precision={percisionText.length} value={value} />
                           :
                           (value || '-');
                       }
                       return <Descriptions.Item key={contentIndex} label={contentItem.title}>
-                        {valueRender(newValue, contentItem, index)}
+                        <div
+                          key={index}
+                          className={style.value}
+                          style={{
+                            borderLeft: 'none',
+                            cursor: 'pointer',
+                            color: isObject(layoutData.filedStyle)[contentItem.field] || color
+                          }}
+                          onClick={() => {
+                            if (contentItem.path) {
+                              open(contentItem.path, contentItem.url);
+                            }
+                          }}
+                        >
+                          {newValue}
+                        </div>
                       </Descriptions.Item>;
                     })
                   }
