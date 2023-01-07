@@ -1,5 +1,5 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
-import {Button, Col, Modal, Row, Space, Spin} from 'antd';
+import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag} from 'antd';
 import classNames from 'classnames';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
@@ -17,15 +17,26 @@ export const MapDeviceDetail = {
 };
 
 const Bmap = ({
+  value = [],
+  onChange = () => {
+  },
   onMarkerClick = () => {
   },
-  onHistory = () => {
-  },
+  search
 }, ref) => {
 
   const [dataSource] = store.useModel('dataSource');
 
   const customer = dataSource.customer || {};
+
+  const bmapOffline = customer.platformMode === 1;
+
+  const [centerPoint, setCenterPoint] = useState({});
+
+  const [visiable, setVisiable] = useState();
+
+  const [resluts, setResults] = useState([]);
+
 
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
@@ -115,19 +126,37 @@ const Bmap = ({
     }
   };
 
+  const setCenter = (point, initBaidu = baiduMap, initMap = map) => {
+    initMap.clearOverlays();
+    setCenterPoint(point);
+    const newPoint = new initBaidu.Point(point.lng, point.lat);
+    const marker = new initBaidu.Marker(newPoint);        // 创建标注
+    initMap.addOverlay(marker);
+  };
+
   const handleScriptLoad = (BMap) => {
     setBaiduMap(BMap);
     const initMap = new BMap.Map('container');
     const point = new BMap.Point(116.404, 39.915);
-    initMap.centerAndZoom(point, 8);
+    initMap.centerAndZoom(point, (search && !bmapOffline) ? 16 : 8);
     initMap.enableScrollWheelZoom(true);
     setMap(initMap);
 
-    submit({}, false, initMap, BMap);
+    if (!search) {
+      submit({}, false, initMap, BMap);
+    } else if (value.length === 0) {
+      const localCity = new BMap.LocalCity();
+      localCity.get((result) => {
+        initMap.panTo(new BMap.Point(result.center.lng, result.center.lat));
+        setCenter(result.center, BMap, initMap);
+      });
+    } else {
+      initMap.panTo(new BMap.Point(value[0], value[1]));
+      setCenter({lng: value[0], lat: value[1]}, BMap, initMap);
+    }
   };
 
   const initMap = async () => {
-    const bmapOffline = customer.platformMode === 1;
     console.log(bmapOffline ? '离线模式' : '在线模式');
     console.log('初始化百度地图脚本...');
     // const mapUrl = 'http://124.71.235.212:81/bmap';
@@ -163,8 +192,22 @@ const Bmap = ({
   };
 
   useEffect(() => {
+    if (!search) {
+      return;
+    }
     if (map) {
-      map.addEventListener('dragend', () => {
+      map.addEventListener('moving', () => {
+        setCenter(map.getCenter());
+      });
+    }
+  }, [map]);
+
+  useEffect(() => {
+    if (search) {
+      return;
+    }
+    if (map) {
+      map.addEventListener('dragend', (e) => {
         getBounds(map);
       });
       map.addEventListener('zoomend', () => {
@@ -189,7 +232,7 @@ const Bmap = ({
 
   return <div style={{position: 'relative', height: '100%', width: '100%'}}>
 
-    <div className={styles.deviceCount}>
+    <div hidden={search} className={styles.deviceCount}>
       <Space size={24}>
         <div>
           设备数量：{mapNumber.total || 0}
@@ -205,7 +248,99 @@ const Bmap = ({
         </div>
       </Space>
     </div>
-    <div id="container" style={{height: '100%'}} />
+
+    <div
+      hidden={!search}
+      style={{
+        position: 'absolute',
+        top: 0,
+        padding: 10,
+        width: '100%',
+        zIndex: 1,
+        textAlign: bmapOffline && 'right',
+        display: 'flex',
+        alignItems: 'center'
+      }}
+    >
+      <div style={{display: 'inline-block'}} hidden={bmapOffline}>
+        <Popover
+          style={{zIndex: 1}}
+          onOpenChange={(visible) => {
+            setVisiable(visible);
+          }}
+          placement="bottom"
+          content={resluts.length > 0 &&
+            <div style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
+              <List>
+                {resluts.map((item, index) => {
+                  return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
+                    const point = new baiduMap.Point(item.point.lng, item.point.lat);
+                    map.panTo(point);
+                    setCenter(item.point);
+                  }} extra={<Button type="primary" onClick={() => {
+                    onChange([item.point.lng, item.point.lat]);
+                    setVisiable(false);
+                  }}>使用该地址</Button>}>
+                    <Space direction="vertical">
+                      <div>
+                        {item.title}
+                      </div>
+                      <div>
+                        {item.address}
+                      </div>
+                      <Space>
+                        {
+                          isArray(item.tags).map((item, index) => {
+                            return <Tag key={index}>{item}</Tag>;
+                          })
+                        }
+                      </Space>
+                    </Space>
+                  </List.Item>);
+                })}
+              </List>
+            </div>}
+          open={visiable}
+        >
+          <Input.Search
+            placeholder="搜索地点"
+            onChange={(value) => {
+              const local = new baiduMap.LocalSearch(map,
+                {
+                  pageCapacity: 50,
+                  onSearchComplete: (results) => {
+                    if (results) {
+                      const totalResults = results.getNumPois();
+                      const resultArray = [];
+                      for (let i = 0; i < totalResults; i++) {
+                        if (results.getPoi(i)) {
+                          resultArray.push(results.getPoi(i));
+                        }
+                      }
+                      setResults(resultArray);
+                    } else {
+                      setResults([]);
+                    }
+                  }
+                }
+              );
+              local.searchNearby(value.target.value, new baiduMap.Point(centerPoint.lng, centerPoint.lat), 999999);
+              setVisiable(true);
+            }}
+            style={{width: 'auto', marginRight: 20}}
+          />
+        </Popover>
+      </div>
+
+      <Button
+        type="primary"
+        onClick={() => {
+          onChange([centerPoint.lng, centerPoint.lat]);
+        }}>确定</Button>
+
+    </div>
+
+    <div id="container" style={{height: '100%'}}/>
 
     <Modal
       mask={false}
@@ -237,7 +372,7 @@ const Bmap = ({
               <div>IP地址</div>
               ：
               <span>
-                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br />(内){data?.data?.devip}</> : ''}
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
               </span>
             </div>
             <div className={styles.leftRow}>
@@ -255,11 +390,11 @@ const Bmap = ({
           <Space direction="vertical" size={8} style={{width: '100%'}}>
             {
               detailLoading ? <div style={{textAlign: 'center'}}>
-                <Spin size="large" />
+                <Spin size="large"/>
               </div> : isArray(data.layout).map((item, index) => {
                 let value = '';
                 if (!data.data) {
-
+                  value = '';
                 } else if (Array.isArray(data.data) && !!item.field) {
                   const arrayIndex = item.field.split('_')[0];
                   const field = item.field.split('_')[1];

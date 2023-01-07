@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Bmap from '@/components/Bmap';
 
 const Test = () => {
 
   return <>
-    <Bmap />
+    <Bmap search />
   </>;
 };
 export default Test;
