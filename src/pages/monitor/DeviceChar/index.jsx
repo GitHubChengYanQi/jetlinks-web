@@ -109,11 +109,11 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   }, [startTime, endTime]);
 
   if (getChartLoading) {
-    return <PageSkeleton type="descriptions"/>;
+    return <PageSkeleton type="descriptions" />;
   }
 
   if (!chartData) {
-    return <Empty/>;
+    return <Empty />;
   }
 
   const listSubmit = (value) => {
@@ -177,7 +177,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                     zIndex: 1005,
                     title: '提示信息',
                     centered: true,
-                    icon: <ExclamationCircleOutlined/>,
+                    icon: <ExclamationCircleOutlined />,
                     content: `确定控制${item.title}？`,
                     onOk: () => {
                       controlRef.current.submit(isArray(item?.downDatas)[0].key);
@@ -192,7 +192,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   zIndex: 1005,
                   title: '提示信息',
                   centered: true,
-                  icon: <ExclamationCircleOutlined/>,
+                  icon: <ExclamationCircleOutlined />,
                   content: '确定一键处理吗？',
                   onOk: async () => {
                     await batchHandle({
@@ -249,18 +249,18 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           switch (chartData.key) {
             case 'signalLampId':
               otherForm = <>
-                <FormItem name="passage" initialValue={search} component={Input}/>
+                <FormItem name="passage" initialValue={search} component={Input} />
               </>;
               break;
             case 'trafficLightId':
               otherForm = <>
-                <FormItem name="passageRemarks" initialValue={search} component={Input}/>
-                <FormItem name="passage" initialValue={search} component={Input}/>
+                <FormItem name="passageRemarks" initialValue={search} component={Input} />
+                <FormItem name="passage" initialValue={search} component={Input} />
               </>;
               break;
             case 'mId':
               otherForm = <>
-                <FormItem name="value" initialValue={search} component={Input}/>
+                <FormItem name="value" initialValue={search} component={Input} />
               </>;
               break;
             default:
@@ -268,10 +268,10 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           }
         }
         return <div style={{display: 'none'}}>
-          <FormItem name="deviceId" initialValue={device.deviceId} component={Input}/>
-          <FormItem name="startTime" initialValue={startTime} component={Input}/>
-          <FormItem name="endTime" initialValue={endTime} component={Input}/>
-          <FormItem name="title" initialValue={type} component={Input}/>
+          <FormItem name="deviceId" initialValue={device.deviceId} component={Input} />
+          <FormItem name="startTime" initialValue={startTime} component={Input} />
+          <FormItem name="endTime" initialValue={endTime} component={Input} />
+          <FormItem name="title" initialValue={type} component={Input} />
           <FormItem
             name="types"
             initialValue={isArray(chartData.columns).filter(item => item.type).map(item => item.type)}
@@ -303,20 +303,24 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             } else {
               const percisionText = `${value}`.split('.')[1] || '';
               const val = typeof value === 'number' || !!Number(value) ?
-                <ThousandsSeparator precision={percisionText.length} value={value}/>
+                <ThousandsSeparator precision={percisionText.length} value={value} />
                 :
                 (value || '-');
 
               let color = '';
+              let label = '';
+              let fontSize = 14;
               const valueFormat = isArray(item.formats).find(item => item.value === value);
               if (valueFormat) {
                 color = valueFormat.color;
+                label = valueFormat.label;
+                fontSize = valueFormat.fontSize || 14;
               }
 
               return <Render
-                style={{color: color || (record.num > 0 ? item.color : '#018a51')}}
+                style={{color: color || (record.num > 0 ? item.color : '#018a51'), fontSize}}
               >
-                {val}{val !== '-' && item.unit}
+                {label || val}{((label || val) !== '-') && item.unit}
               </Render>;
             }
           }
@@ -362,7 +366,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
     <Modal width="auto" centered open={visible} footer={null} onCancel={() => setVisible(false)}>
       <div style={{padding: 24, textAlign: 'center'}}>
-        <Image width={500} src={visible}/>
+        <Image width={500} src={visible} />
       </div>
     </Modal>
 
@@ -391,7 +395,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           onChange={setExportTime}
           disabledDate={(currentDate) => {
             return currentDate && currentDate >= moment().subtract(1, 'days');
-          }}/>
+          }} />
       </div>
     </Modal>
 
