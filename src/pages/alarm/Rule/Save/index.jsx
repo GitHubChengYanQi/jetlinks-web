@@ -13,7 +13,8 @@ import AntForm from '@/components/AntForm';
 
 export const AlarmDetailFormat = async (res, fileds) => {
 
-  const getModelColumns = (options, key, filedObject) => {
+  const getModelColumns = (options, key, keys, filedObject, index = 0) => {
+
     if (!Array.isArray(options)) {
       return false;
     }
@@ -25,11 +26,12 @@ export const AlarmDetailFormat = async (res, fileds) => {
         if (filedObject) {
           return;
         }
-        filedObject = getModelColumns(item.children, key, filedObject);
+        if (item.key === keys[index]) {
+          filedObject = getModelColumns(item.children, key, keys, filedObject, index + 1);
+        }
       });
-
     }
-    return filedObject;
+    return filedObject || {};
   };
 
   return {
@@ -38,7 +40,7 @@ export const AlarmDetailFormat = async (res, fileds) => {
       const field = isArray(record.field && record.field.split(','));
       let otherData = {};
       const infoModelColumns = field.map((filed, index) => {
-        const {options, option} = getModelColumns(fileds, filed);
+        const {options, option} = getModelColumns(fileds, filed, field);
         if (index === field.length - 1) {
           otherData = option || {};
         }
@@ -93,6 +95,7 @@ const Save = (
       }
 
       const newData = await AlarmDetailFormat(res, fileds);
+
       setData(newData);
     },
   });
@@ -166,7 +169,7 @@ const Save = (
         >
           <Input placeholder="请输入规则名称" onChange={({target: {value}}) => {
             setData({...data, name: value});
-          }} />
+          }}/>
         </Form.Item>
         <Form.Item
           initialValue={detail?.modelId}
@@ -182,7 +185,7 @@ const Save = (
               getColumns({data: {modelId: value}});
             }
             setData({...data, modelId: value, rules: []});
-          }} />
+          }}/>
         </Form.Item>
         <Form.Item
           initialValue={detail?.andOr || 0}
@@ -193,7 +196,7 @@ const Save = (
             {required: true, message: '请选择报警条件'},
           ]}
         >
-          <AntSelect placeholder="请选择报警条件" options={[{label: '全部条件满足', value: 1}, {label: '任意条件满足', value: 0}]} />
+          <AntSelect placeholder="请选择报警条件" options={[{label: '全部条件满足', value: 1}, {label: '任意条件满足', value: 0}]}/>
         </Form.Item>
       </Card>
       {getColumnsLoaing ? <Spin>
@@ -209,12 +212,12 @@ const Save = (
       >
         <Config detail={detail.alarmId} value={data.rules} modelColumns={modelColumns} onChange={(value = []) => {
           setData({...data, rules: value});
-        }} />
+        }}/>
       </Card>}
       <Card className={styles.card} title={<div className={styles.title}>报警人员</div>} bordered={false}>
         <AddContacts value={data.contacts} onChange={(contacts) => {
           setData({...data, contacts});
-        }} />
+        }}/>
       </Card>
     </AntForm>
   );
