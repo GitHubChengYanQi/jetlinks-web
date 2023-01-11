@@ -2,12 +2,11 @@ import React, {useState} from 'react';
 import {Button, Drawer, InputNumber} from 'antd';
 import Amap from '@/components/Amap';
 import Icon from '@/components/Icon';
+import Bmap from '@/components/Bmap';
 
 const Position = ({
   value = [],
   onChange = () => {
-  },
-  onPosition = () => {
   },
 }) => {
 
@@ -38,13 +37,12 @@ const Position = ({
       }}
       width="50%"
       title="定位">
-      {visible && <Amap
+      {visible && <Bmap
+        search
         value={(value[0] && value[1]) ? value : []}
         onChange={(value) => {
           setVisible(false);
-          const location = value?.location || [];
-          onChange([location[0], location[1]]);
-          onPosition(value?.city);
+          onChange([value[0], value[1]]);
         }}/>}
     </Drawer>
   </div>;

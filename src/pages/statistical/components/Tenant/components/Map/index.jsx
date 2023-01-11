@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {Drawer} from 'antd';
 import {useHistory} from 'ice';
 import Box from '@/pages/statistical/components/Tenant/components/Box';
-import Amap from '@/components/Amap';
 import {LinkButton} from '@/components/Button';
 import Info from '@/pages/monitor/Info';
 import Save from '@/pages/monitor/Info/Save';
+import Bmap from '@/components/Bmap';
 
 const Map = () => {
 
@@ -17,7 +17,7 @@ const Map = () => {
 
   return <Box>
     <div style={{padding: 24,height:'100%'}}>
-      <Amap show onMarkerClick={setInfoVisible} onHistory={(url) => {
+      <Bmap onMarkerClick={setInfoVisible} onHistory={(url) => {
         history.push(url);
       }}/>
     </div>
