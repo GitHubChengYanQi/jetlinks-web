@@ -62,7 +62,7 @@ const Role = () => {
   });
 
   const columns = [
-    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '角色名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '菜单权限',
       dataIndex: 'menuList',
@@ -106,8 +106,8 @@ const Role = () => {
         </Render>;
       }
     },
-    {title: '应用账号数', dataIndex: 'userCount', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '应用账号数', dataIndex: 'userCount', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
   ];
 
   const menu = <Menu
@@ -132,7 +132,7 @@ const Role = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem label="创建时间" select name="time" component={DatePicker} RangePicker />
+        <FormItem label="创建时间" select name="time" component={DatePicker} RangePicker/>
         <FormItem label="角色状态" name="status" component={({value, onChange}) => {
           return <AntSelect
             defaultValue="all"
@@ -142,8 +142,8 @@ const Role = () => {
               onChange(value === 'all' ? null : value);
             }}
           />;
-        }} />
-        <FormItem label="角色名称" name="name" component={SelectRoles} />
+        }}/>
+        <FormItem label="角色名称" name="name" component={SelectRoles}/>
       </>
     );
   };
@@ -168,8 +168,8 @@ const Role = () => {
       searchForm={searchForm}
       searchButtons={[
         <PrimaryButton key="0" onClick={() => setSaveVisible({})}>新建角色</PrimaryButton>,
-        <Dropdown key="1" overlay={menu} placement="bottom">
-          <PrimaryButton>批量操作</PrimaryButton>
+        <Dropdown key="1" disabled={keys.length === 0} overlay={menu} placement="bottom">
+          <PrimaryButton disabled={keys.length === 0}>批量操作</PrimaryButton>
         </Dropdown>,
         <PrimaryButton disabled={keys.length === 0} key="2" onClick={() => {
           window.open(`${baseURI}/RoleExcel/export?authorization=${token}&roleIds=${keys}`);

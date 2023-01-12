@@ -47,7 +47,7 @@ const Configuration = () => {
   });
 
   if (customer.customerId === undefined || customer.customerId === null) {
-    return <PageSkeleton type="descriptions" />;
+    return <PageSkeleton type="descriptions"/>;
   }
 
 
@@ -65,7 +65,7 @@ const Configuration = () => {
                   name="resetName"
                   noStyle
                 >
-                  <Input style={{minWidth: 400}} placeholder="请输入企业真实名称" />
+                  <Input style={{minWidth: 400}} placeholder="请输入企业真实名称"/>
                 </Form.Item>
                 <div className={styles.extra}>（企业名称将显示在您的平台左上角位置）</div>
               </Space>
@@ -78,19 +78,22 @@ const Configuration = () => {
                   noStyle
                   initialValue={fileId}
                 >
-                  <FileUpload onChange={(file) => setFileId(file)} />
+                  <FileUpload onChange={(file) => setFileId(file)}/>
                 </Form.Item>
-                <div className={styles.extra}>（企业LOGO将显示在您的平台左上角企业LOGO和右上角账号头像）</div>
+                <div className={styles.extra}>（企业LOGO将显示在您的平台左上角企业LOGO和右上角账号头像，照片格式: png、jpg、jpeg格式）</div>
               </Space>
             </Form.Item>
 
             <Form.Item label="预览">
-              <Image hidden={!fileId} width={100}
-                     src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`} />
+              <Image
+                hidden={!fileId}
+                width={100}
+                src={`${baseURI}${preview}?fileId=${fileId}&authorization=${token}`}
+              />
             </Form.Item>
 
           </>
-        }]} />
+        }]}/>
       </div>
 
       <div className={styles.card}>
@@ -104,12 +107,12 @@ const Configuration = () => {
               <Radio
                 checked={params.loginValidity === 'open'}
                 value="open"
-                onClick={() => setParams({...params, loginValidity: 'open', minute: 1})} />
+                onClick={() => setParams({...params, loginValidity: 'open', minute: 1})}/>
               长时间未操作、后台挂起、正常使用
               <InputNumber
                 onChange={(value) => setParams({...params, loginValidity: 'open', minute: value})} value={params.minute}
                 min={1}
-                style={{margin: '0 8px'}} />
+                style={{margin: '0 8px'}}/>
               分钟后，重新登录系统
             </Space>
           </Space>

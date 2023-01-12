@@ -344,7 +344,6 @@ const Bmap = ({
 
     <Modal
       mask={false}
-      maskClosable={false}
       centered
       className={classNames(styles.modal, deviceModal.className)}
       width={700}

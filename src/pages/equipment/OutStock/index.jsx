@@ -147,7 +147,7 @@ const OutStock = () => {
     return <>
       <FormItem label="出库时间" name="time" component={DatePicker} RangePicker />
       <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="设备查询" name="name" component={Input} />
+      {/* <FormItem label="设备查询" name="name" component={Input} /> */}
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem label="批次" name="batchId" component={SelectBatch} />
       <div style={{display: customer.customerId && 'none'}}>
