@@ -196,7 +196,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                   content: '确定一键处理吗？',
                   onOk: async () => {
                     await batchHandle({
-                      key:item.key,
+                      key: item.key,
                       data: {
                         key: type,
                         deviceId: device.deviceId
@@ -307,10 +307,20 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
                 :
                 (value || '-');
 
+              let color = '';
+              let label = '';
+              let fontSize = 14;
+              const valueFormat = isArray(item.formats).find(item => item.value === value);
+              if (valueFormat) {
+                color = valueFormat.color;
+                label = valueFormat.label;
+                fontSize = valueFormat.fontSize || 14;
+              }
+
               return <Render
-                style={{color: record.num > 0 ? item.color : '#018a51'}}
+                style={{color: color || (record.num > 0 ? item.color : '#018a51'), fontSize}}
               >
-                {val}{val !== '-' && item.unit}
+                {label || val}{((label || val) !== '-') && item.unit}
               </Render>;
             }
           }

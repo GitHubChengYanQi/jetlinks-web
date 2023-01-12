@@ -72,6 +72,31 @@ const Info = ({
 
   const color = '#018a51';
 
+  const valueRender = (value, contentItem, index) => {
+    let newValue;
+    if (typeof value !== 'number' && typeof value !== 'string') {
+      newValue = '-';
+    } else {
+      newValue = typeof value === 'number' ? `${value}` : (value || '-');
+    }
+    return <div
+      key={index}
+      className={style.value}
+      style={{
+        borderLeft: index === 0 && 'none',
+        cursor: 'pointer',
+        color: isObject(layoutData.filedStyle)[contentItem.field] || color
+      }}
+      onClick={() => {
+        if (contentItem.path) {
+          open(contentItem.path, contentItem.url);
+        }
+      }}
+    >
+      {newValue}
+    </div>;
+  };
+
   return <>
     <Descriptions
       column={3}
@@ -102,7 +127,9 @@ const Info = ({
         const childrens = isArray(item.childrens);
         let column = 0;
         datas.forEach(item => {
-          column = item.length;
+          if (column === 0) {
+            column = item.length;
+          }
           item.forEach(item => {
             content.push(item);
           });
@@ -119,7 +146,7 @@ const Info = ({
           >
             {
               content.map((contentItem, contentIndex) => {
-                let value = '';
+                const value = [];
                 if (Array.isArray(layoutData)) {
                   let arrayIndex = 0;
                   let field = '';
@@ -129,34 +156,18 @@ const Info = ({
                   } catch (e) {
                     console.log(e);
                   }
-                  value = layoutData[arrayIndex]?.[field];
+                  value.push(layoutData[arrayIndex]?.[field]);
                 } else {
-                  value = layoutData[contentItem.field];
+                  const fields = contentItem.field ? contentItem.field.split(',') : [];
+                  fields.forEach(item => {
+                    value.push(layoutData[item]);
+                  });
                 }
-                let newValue;
-                if (typeof value !== 'number' && typeof value !== 'string') {
-                  newValue = '-';
-                } else {
-                  newValue = typeof value === 'number' ? `${value}` : (value || '-');
-                }
+
                 return <Descriptions.Item
                   key={contentIndex}
                   label={contentItem.title}>
-                  <div
-                    className={style.value}
-                    style={{
-                      borderRight: 'none',
-                      cursor: 'pointer',
-                      color: isObject(layoutData.filedStyle)[contentItem.field] || color
-                    }}
-                    onClick={() => {
-                      if (contentItem.path) {
-                        open(contentItem.path, contentItem.url);
-                      }
-                    }}
-                  >
-                    {newValue}
-                  </div>
+                  {value.map((item, index) => valueRender(item, contentItem, index))}
                 </Descriptions.Item>;
               })
             }
@@ -190,16 +201,17 @@ const Info = ({
                         newValue = '-';
                       } else {
                         const percisionText = `${value}`.split('.')[1] || '';
-                        newValue = typeof value === 'number' || !!Number(value) ?
+                        newValue = (typeof value === 'number' || !!Number(value)) ?
                           <ThousandsSeparator precision={percisionText.length} value={value} />
                           :
                           (value || '-');
                       }
                       return <Descriptions.Item key={contentIndex} label={contentItem.title}>
                         <div
+                          key={index}
                           className={style.value}
                           style={{
-                            borderRight: 'none',
+                            borderLeft: 'none',
                             cursor: 'pointer',
                             color: isObject(layoutData.filedStyle)[contentItem.field] || color
                           }}
