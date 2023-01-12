@@ -241,7 +241,7 @@ const Info = ({
       bordered
       style={{marginTop: 24}}
     >
-      <Descriptions.Item label="软件版本">{layoutData?.ver || '-'}</Descriptions.Item>
+      <Descriptions.Item label="软件版本">{data?.version || '-'}</Descriptions.Item>
       <Descriptions.Item label="升级时间">-</Descriptions.Item>
       <Descriptions.Item label="运行时间">{runTime() || '-'}</Descriptions.Item>
       <Descriptions.Item label="上线时间">{online ? (data.logTime || '-') : '-'}</Descriptions.Item>
