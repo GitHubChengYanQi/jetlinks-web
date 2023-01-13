@@ -125,11 +125,7 @@ const Info = ({
         const content = [];
         const datas = isArray(item.data);
         const childrens = isArray(item.childrens);
-        let column = 0;
         datas.forEach(item => {
-          if (column === 0) {
-            column = item.length;
-          }
           item.forEach(item => {
             content.push(item);
           });
@@ -137,7 +133,7 @@ const Info = ({
         return <div key={index}>
           <Descriptions
             key={index}
-            column={column}
+            column={item.column}
             className={classNames(content.length === 0 && style.noBorder, style.otherDescriptions)}
             title={<div className={style.title}>{item.title}</div>}
             contentStyle={{color: '#000'}}
@@ -184,6 +180,7 @@ const Info = ({
               });
               return <div key={childrenIndex} style={{width: `${childrenItem.width || 100}%`, display: 'inline-block'}}>
                 <div
+                  hidden={!childrenItem.title}
                   className={style.navTitle}
                   style={{textAlign: childrenItem.align || 'center'}}
                 >
