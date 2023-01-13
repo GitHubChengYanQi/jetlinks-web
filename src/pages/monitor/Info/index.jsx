@@ -166,6 +166,7 @@ const Info = ({
 
                 return <Descriptions.Item
                   key={contentIndex}
+                  span={contentItem.span || 1}
                   label={contentItem.title}>
                   {value.map((item, index) => valueRender(item, contentItem, index))}
                 </Descriptions.Item>;
