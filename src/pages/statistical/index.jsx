@@ -10,7 +10,7 @@ const Statistical = () => {
   const customer = dataSource.customer || {};
 
   if (customer.customerId) {
-    return <Tenant/>;
+    return <Tenant customer={customer || {}}/>;
   } else {
     return <Platform/>;
   }
