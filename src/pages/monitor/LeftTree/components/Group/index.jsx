@@ -44,7 +44,7 @@ const Group = (
           onChange(keys);
           return;
         }
-        onChange(keys[0], 'group', options.selected ? {
+        onChange(keys[0] === '0' ? null : keys[0], 'group', options.selected ? {
           key: options?.node?.key,
           title: options?.node?.title
         } : {});
