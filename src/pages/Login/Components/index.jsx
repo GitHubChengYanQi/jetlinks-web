@@ -150,7 +150,7 @@ export const SendCode = ({phone}) => {
     manual:true,
     onSuccess:()=>{
       message.warn('验证码已发送，请注意查收!');
-      hClick(!isShow);
+      hClick();
     }
   });
 
