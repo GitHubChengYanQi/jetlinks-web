@@ -15,7 +15,7 @@ const DeviceColumnar = ({records = []}) => {
       padding: {top: 40, right: 24, bottom: 40, left: 40},
       container: 'DeviceColumnar',
       forceFit: true,
-      height: 300
+      height: document.documentElement.clientHeight * 0.25
     });
     chart.source(data);
     chart.tooltip({

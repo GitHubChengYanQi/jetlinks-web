@@ -138,7 +138,7 @@ const Bmap = ({
     setBaiduMap(BMap);
     const initMap = new BMap.Map('container');
     const point = new BMap.Point(116.404, 39.915);
-    initMap.centerAndZoom(point, (search && !bmapOffline) ? 16 : 8);
+    initMap.centerAndZoom(point, 5);
     initMap.enableScrollWheelZoom(true);
     setMap(initMap);
 
@@ -243,6 +243,7 @@ const Bmap = ({
         <div className={styles.textOffline}>
           离线：{mapNumber.offNum || 0}
         </div>
+        <div className={styles.space} />
         <div className={styles.textErrorline}>
           报警：{mapNumber.alarmNum || 0}
         </div>

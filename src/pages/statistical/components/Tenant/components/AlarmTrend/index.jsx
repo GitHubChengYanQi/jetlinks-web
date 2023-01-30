@@ -2,11 +2,9 @@ import React, {useEffect, useState} from 'react';
 import * as G2 from '@antv/g2';
 import {Button, Space, Spin} from 'antd';
 import moment from 'moment';
-import ProSkeleton from '@ant-design/pro-skeleton';
 import Box from '@/pages/statistical/components/Tenant/components/Box';
 import styles from './index.module.less';
 import {useRequest} from '@/util/Request';
-import itemWapper from '@/components/ItemWapper';
 
 export const chartList = {
   url: '/statistics/chartList',
@@ -23,7 +21,6 @@ const AlarmTrend = () => {
   const [type, setType] = useState('day');
 
   const {loading, data: chartData = [], run} = useRequest(chartList);
-  console.log(chartData);
 
   useEffect(() => {
     if (loading || !document.getElementById('AlarmTrend')) {
@@ -33,7 +30,7 @@ const AlarmTrend = () => {
       padding: {top: 20, right: 50, bottom: 50, left: 50},
       container: 'AlarmTrend',
       forceFit: true,
-      height: 300
+      height: document.documentElement.clientHeight * 0.25 - 50
     });
     chart.source(chartData);
 
@@ -69,7 +66,7 @@ const AlarmTrend = () => {
     setType(span);
   };
 
-  return loading ? <div style={{padding: 24, textAlign: 'center'}}><Spin size="large"/></div> : <Box>
+  return loading ? <div style={{padding: 24, textAlign: 'center'}}><Spin size="large" /></div> : <Box>
     <div className={styles.header}>
       <div className={styles.title}>设备报警走势图</div>
       <div className={styles.screen}>
@@ -92,7 +89,7 @@ const AlarmTrend = () => {
         </Space>
       </div>
     </div>
-    <div id="AlarmTrend"/>
+    <div id="AlarmTrend" />
   </Box>;
 };
 

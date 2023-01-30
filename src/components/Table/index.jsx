@@ -92,6 +92,7 @@ const TableWarp = (
     rowSelection,
     rowKey,
     // s
+    size,
     sortAction,
     showCard,
     selectedRowKeys = [],
@@ -311,7 +312,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}}/>
+        <br style={{clear: 'both'}} />
       </div>
     );
   };
@@ -347,26 +348,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                    <FormButtonGroup>
-                      <Button
-                        id="submit"
-                        loading={otherLoading || (timed ? false : loading)}
-                        type="primary"
-                        htmlType="submit"
-                        onClick={() => {
-                          submit();
-                        }}><SearchOutlined/>查询
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          reset();
-                        }}>
-                        重置
-                      </Button>
-                      {searchButtons}
-                      {selectView}
-                      {saveView}
-                    </FormButtonGroup>}
+                  <FormButtonGroup>
+                    <Button
+                      id="submit"
+                      loading={otherLoading || (timed ? false : loading)}
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        submit();
+                      }}><SearchOutlined />查询
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        reset();
+                      }}>
+                      重置
+                    </Button>
+                    {searchButtons}
+                    {selectView}
+                    {saveView}
+                  </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -383,6 +384,7 @@ const TableWarp = (
         </div>}
         {otherData}
         <AntdTable
+          size={size}
           className={tableClassName}
           showTotal
           bordered={bordered}
@@ -454,7 +456,7 @@ const TableWarp = (
           }}
           footer={noFooter ? false : footer}
           layout
-          scroll={{x: 'max-content'}}
+          scroll={{x: 'max-content', y: maxHeight || null}}
           {...other}
           onChange={(pagination, filters, sorter, extra) => {
             tableOnChange({

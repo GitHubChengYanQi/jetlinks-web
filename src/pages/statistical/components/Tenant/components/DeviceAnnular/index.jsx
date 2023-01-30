@@ -4,17 +4,17 @@ import Box from '@/pages/statistical/components/Tenant/components/Box';
 
 const DeviceAnnular = ({deviceData = {}}) => {
 
-
   useEffect(() => {
     const data = [
       {item: '在线数量', percent: deviceData.onlineNum},
       {item: '离线数量', percent: deviceData.offlineNum},
     ];
+
     const chart = new G2.Chart({
       padding: {top: 24, right: 24, bottom: 40, left: 24},
       container: 'DeviceAnnular',
       forceFit: true,
-      height: 300,
+      height: document.documentElement.clientHeight * 0.25,
       animate: false
     });
     chart.source(data);

@@ -6,13 +6,15 @@ import {useHistory} from 'ice';
 import styles from '@/pages/monitor/index.module.less';
 import LeftTree from '@/pages/monitor/LeftTree';
 import FormItem from '@/components/Table/components/FormItem';
-import Amap from '@/components/Amap';
 import {LinkButton} from '@/components/Button';
 import Info from '@/pages/monitor/Info';
 import store from '@/store';
 import Bmap from '@/components/Bmap';
+import Cascader from '@/components/Cascader';
 
 const ElectronicsMap = () => {
+
+  const [dataSource] = store.useModel('dataSource');
 
   const history = useHistory();
 
@@ -38,6 +40,20 @@ const ElectronicsMap = () => {
         }}
       >
         <FormItem
+          label="设备状态"
+          name="status"
+          component={({value, onChange}) => {
+            return <AntSelect
+              defaultValue="all"
+              value={value || 'all'}
+              options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
+              onChange={(value) => {
+                onChange(value === 'all' ? null : value);
+              }}
+            />;
+          }}
+        />
+        <FormItem
           label="报警状态"
           name="alarmType"
           component={({value, onChange}) => {
@@ -56,22 +72,8 @@ const ElectronicsMap = () => {
           }}
           select
         />
-        <FormItem
-          label="设备状态"
-          name="status"
-          component={({value, onChange}) => {
-            return <AntSelect
-              defaultValue="all"
-              value={value || 'all'}
-              options={[{label: '全部', value: 'all'}, {label: '在线', value: 'online'}, {label: '离线', value: 'offline'}]}
-              onChange={(value) => {
-                onChange(value === 'all' ? null : value);
-              }}
-            />;
-          }}
-        />
-        <FormItem label="设备查询" name="name" component={Input} />
-        <FormItem label="位置信息" name="place" component={Input} />
+        <FormItem label="终端备注查询" name="name" component={Input} placeholder='请输入要查询的终端备注' />
+        <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
         <FormButtonGroup>
           <Submit><SearchOutlined />查询</Submit>
           <Reset>重置</Reset>
@@ -79,8 +81,6 @@ const ElectronicsMap = () => {
       </Form>
     </>;
   };
-
-  const [dataSource] = store.useModel('dataSource');
 
   const customer = dataSource.customer || {};
 

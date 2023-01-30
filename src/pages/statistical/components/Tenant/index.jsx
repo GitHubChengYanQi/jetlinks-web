@@ -18,7 +18,7 @@ const Tenant = ({customer = {}}) => {
   const {loading, data = {}} = useRequest(customerView);
 
   if (loading) {
-    return <ProSkeleton type="descriptions"/>;
+    return <ProSkeleton type="descriptions" />;
   }
 
   const getWeek = (date) => { // 参数时间戳
@@ -50,29 +50,29 @@ const Tenant = ({customer = {}}) => {
       </div>
       <div className={styles.content}>
         <Row gutter={24}>
-          <Col span={6}>
+          <Col span={7}>
             <Space direction="vertical" size={24} style={{width: '100%'}}>
-              <DeviceAnnular deviceData={data}/>
-              <DeviceColumnar records={data.records}/>
+              <DeviceAnnular deviceData={data} />
+              <DeviceColumnar records={data.records} />
             </Space>
           </Col>
-          <Col span={12}>
-            <Bmap/>
+          <Col span={10}>
+            <Bmap />
           </Col>
-          <Col span={6}>
+          <Col span={7}>
             <Space direction="vertical" size={24} style={{width: '100%'}}>
-              <AlarmReport alarmData={data.alarm}/>
-              <CategoryReport categoryResults={data.categoryResults}/>
+              <AlarmReport alarmData={data.alarm} />
+              <CategoryReport categoryResults={data.categoryResults} />
             </Space>
           </Col>
         </Row>
-        <div style={{height: 24}}/>
+        <div style={{height: 16}} />
         <Row gutter={24}>
           <Col span={12}>
-            <AlarmRecord/>
+            <AlarmRecord />
           </Col>
           <Col span={12}>
-            <AlarmTrend/>
+            <AlarmTrend />
           </Col>
         </Row>
       </div>

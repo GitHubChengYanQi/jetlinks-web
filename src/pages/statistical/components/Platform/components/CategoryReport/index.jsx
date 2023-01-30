@@ -24,7 +24,23 @@ const CategoryReport = ({categoryResults = []}) => {
       }
     });
     chart.coord().transpose();
-    chart.interval().position('name*number');
+    chart.interval().position('name*number') .label('number', val => {
+      if (val <= 0) {
+        return false;
+      }
+      return {
+        position: 'top',
+        offset: 10,
+        textStyle: {
+          fill: '#3aa1ff',
+          fontSize: 12,
+          shadowBlur: 2,
+        },
+        formatter: text => {
+          return text;
+        }
+      };
+    });
     chart.tooltip({
       itemTpl: `<li data-index={index}><span style="background-color:{color};width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;"></span>设备数: {value}</li>`, // tooltip 每项记录的默认模板
     });

@@ -20,7 +20,7 @@ const CategoryReport = ({categoryResults = []}) => {
       padding: {top: 50, right: 100, bottom: 50, left: 50},
       container: 'CategoryReport',
       forceFit: true,
-      height: 300,
+      height: document.documentElement.clientHeight * 0.25 - 50,
       animate: false
     });
     chart.source(data, {

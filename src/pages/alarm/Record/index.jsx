@@ -17,6 +17,7 @@ import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
+import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
 
 export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
 
@@ -182,7 +183,7 @@ const Record = () => {
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备型号" name="modelId" component={SelectModle} />
       <FormItem label="设备MAC" name="mac" component={Input} />
       <FormItem label="报警类型" name="ruleConditionJson" component={Input} />
       <FormItem label="所属客户" name="customerId" component={SelectCustomer} />

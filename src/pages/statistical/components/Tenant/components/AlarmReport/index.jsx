@@ -14,7 +14,7 @@ const AlarmReport = ({alarmData = {}}) => {
       padding: {top: 50, right: 50, bottom: 50, left: 50},
       container: 'AlarmReport',
       forceFit: true,
-      height: 251,
+      height: document.documentElement.clientHeight * 0.25,
       animate: false
     });
     chart.source(data);

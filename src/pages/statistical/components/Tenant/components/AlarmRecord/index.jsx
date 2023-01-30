@@ -14,13 +14,13 @@ const AlarmRecord = () => {
     return isArray(ruleConditionJson).map((item, index) => {
       if (max) {
         if (index > 2) {
-          return <div key={index}/>;
+          return <div key={index} />;
         } else if (index === 2) {
           return <div key={index}>
             <Tooltip color="#fff" title={() => {
               return ruleTypes(ruleConditionJson);
             }}>
-              <EllipsisOutlined/>
+              <EllipsisOutlined />
             </Tooltip>
           </div>;
         }
@@ -63,14 +63,14 @@ const AlarmRecord = () => {
   };
 
   const columns = [
-    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
     {
       title: '终端备注',
       dataIndex: 'remarks',
       align: 'center',
-      render: (text) => <Render text={text}/>
+      render: (text) => <Render text={text} />
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
     {
       title: '报警内容', dataIndex: 'ruleConditionJson', align: 'center',
       render: (text, record) => {
@@ -87,11 +87,13 @@ const AlarmRecord = () => {
   ];
 
   return <Box>
-    <div style={{padding: 24}}>
+    <div style={{padding: '12px 12px 0'}}>
       <div className={styles.title}>
         设备报警数据
       </div>
       <Table
+        maxHeight={document.documentElement.clientHeight * 0.25 - 100}
+        // size='small'
         pageSize={5}
         headStyle={{display: 'none'}}
         noRowSelection

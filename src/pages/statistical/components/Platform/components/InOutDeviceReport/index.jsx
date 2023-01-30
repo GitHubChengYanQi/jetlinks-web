@@ -8,15 +8,15 @@ const InOutDeviceReport = ({categoryResults = []}) => {
 
   useEffect(() => {
     // 此处数据使用了按行组织的模式，所以需要使用 DataSet 的 fold 方法对数据进行加工
-    const outData = {name: '出库设备'};
     const inData = {name: '入库设备'};
+    const outData = {name: '出库设备'};
     categoryResults.forEach(item => {
       outData[item.name] = item.deviceOutNum;
       inData[item.name] = item.deviceInNum;
     });
     const data = [
+      inData,
       outData,
-      inData
     ];
     const ds = new DataSet();
     const dv = ds.createView().source(data);
@@ -39,7 +39,25 @@ const InOutDeviceReport = ({categoryResults = []}) => {
     });
     chart.intervalStack()
       .position('title*number')
-      .color('name');
+      .color('name')
+      .label('number', val => {
+        if (val <= 0) {
+          return false;
+        }
+        return {
+          position: 'middle',
+          offset: 0,
+          textStyle: {
+            fill: '#fff',
+            fontSize: 12,
+            shadowBlur: 2,
+            shadowColor: 'rgba(0, 0, 0, .45)'
+          },
+          formatter: text => {
+            return text;
+          }
+        };
+      });
     chart.render();
   }, []);
 
