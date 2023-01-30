@@ -4,7 +4,12 @@ import styles from './index.module.less';
 const NumberReport = ({data = {}}) => {
 
 
-  return <div>
+  return <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%'
+  }}>
     <div className={styles.box}>
       <div className={styles.content} style={{borderRight: 'solid 1px #cacaca'}}>
         <div className={styles.label}>租户数量</div>

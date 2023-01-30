@@ -15,7 +15,7 @@ const CategoryReport = ({categoryResults = []}) => {
       padding: {top: 20, right: 30, bottom: 20, left: 80},
       container: 'CategoryReport',
       forceFit: true,
-      height: 270,
+      height: 376,
     });
     chart.source(data);
     chart.axis('name', {
@@ -34,7 +34,6 @@ const CategoryReport = ({categoryResults = []}) => {
         textStyle: {
           fill: '#3aa1ff',
           fontSize: 12,
-          shadowBlur: 2,
         },
         formatter: text => {
           return text;
