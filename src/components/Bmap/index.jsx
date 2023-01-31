@@ -82,19 +82,6 @@ const Bmap = ({
     map.addOverlay(marker);
   };
 
-  const {run: getDeviceList} = useRequest(deviceList, {
-    manual: true,
-    onSuccess: (res) => {
-      isArray(res).forEach(item => {
-        if (item.latitude && item.longitude) {
-          mapMaker(item);
-        }
-      });
-    }
-  });
-
-  const {run: getMapNum, data: mapNumber = {}} = useRequest(mapNum, {manual: true});
-
   const getBounds = (initMap) => {
     // 西南，东北
     const sw = initMap.getBounds().getSouthWest();
@@ -113,17 +100,45 @@ const Bmap = ({
     getDeviceList({data: {locationParams, ...params}});
   };
 
-  const submit = async (newParams = {}, reset, initMap = map, baidu = baiduMap) => {
+  const addListener = (map) => {
+    const dragend = () => {
+      getBounds(map);
+      map.removeEventListener('dragend', dragend);
+    };
+    const zoomend = () => {
+      getBounds(map);
+      map.removeEventListener('zoomend', zoomend);
+    };
+    map.addEventListener('dragend', dragend);
+    map.addEventListener('zoomend', zoomend);
+  };
+
+
+  const {run: getDeviceList} = useRequest(deviceList, {
+    manual: true,
+    onSuccess: (res) => {
+      addListener(map);
+      isArray(res).forEach(item => {
+        if (item.latitude && item.longitude) {
+          mapMaker(item);
+        }
+      });
+    }
+  });
+
+  const {run: getMapNum, data: mapNumber = {}} = useRequest(mapNum, {manual: true});
+
+  const movingLocation = (location, zoom) => {
+    map.setCenter(location);
+    map.setZoom(zoom);
+  };
+
+  const submit = async (newParams = {}, reset, initMap = map) => {
     const data = reset ? newParams : {...params, ...newParams,};
-    setParams(data);
+    setParams({...data, position: undefined});
     getMapNum({data});
     initMap.clearOverlays();
-    const res = await getDeviceList({data});
-    const device = isArray(res).find(item => item.latitude && item.longitude);
-    if (device) {
-      const point = new baidu.Point(device.longitude, device.latitude);
-      initMap.panTo(point);
-    }
+    getDeviceList({data: {...data, position: undefined}});
   };
 
   const setCenter = (point, initBaidu = baiduMap, initMap = map) => {
@@ -143,7 +158,7 @@ const Bmap = ({
     setMap(initMap);
 
     if (!search) {
-      submit({}, false, initMap, BMap);
+      getBounds(initMap);
     } else if (value.length === 0) {
       const localCity = new BMap.LocalCity();
       localCity.get((result) => {
@@ -203,31 +218,12 @@ const Bmap = ({
   }, [map]);
 
   useEffect(() => {
-    if (search) {
-      return;
-    }
-    if (map) {
-      map.addEventListener('dragend', (e) => {
-        getBounds(map);
-      });
-      map.addEventListener('zoomend', () => {
-        getBounds(map);
-      });
-    }
-    return () => {
-      if (map) {
-        map.removeEventListener('dragend');
-        map.removeEventListener('zoomend');
-      }
-    };
-  }, [params]);
-
-  useEffect(() => {
     initMap();
   }, []);
 
   useImperativeHandle(ref, () => ({
     submit,
+    movingLocation
   }));
 
   return <div style={{position: 'relative', height: '100%', width: '100%'}}>
@@ -271,36 +267,36 @@ const Bmap = ({
           }}
           placement="bottom"
           content={resluts.length > 0 &&
-            <div style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
-              <List>
-                {resluts.map((item, index) => {
-                  return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
-                    const point = new baiduMap.Point(item.point.lng, item.point.lat);
-                    map.panTo(point);
-                    setCenter(item.point);
-                  }} extra={<Button type="primary" onClick={() => {
-                    onChange([item.point.lng, item.point.lat]);
-                    setVisiable(false);
-                  }}>使用该地址</Button>}>
-                    <Space direction="vertical">
-                      <div>
-                        {item.title}
-                      </div>
-                      <div>
-                        {item.address}
-                      </div>
-                      <Space>
-                        {
-                          isArray(item.tags).map((item, index) => {
-                            return <Tag key={index}>{item}</Tag>;
-                          })
-                        }
-                      </Space>
+          <div style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
+            <List>
+              {resluts.map((item, index) => {
+                return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
+                  const point = new baiduMap.Point(item.point.lng, item.point.lat);
+                  map.panTo(point);
+                  setCenter(item.point);
+                }} extra={<Button type="primary" onClick={() => {
+                  onChange([item.point.lng, item.point.lat]);
+                  setVisiable(false);
+                }}>使用该地址</Button>}>
+                  <Space direction="vertical">
+                    <div>
+                      {item.title}
+                    </div>
+                    <div>
+                      {item.address}
+                    </div>
+                    <Space>
+                      {
+                        isArray(item.tags).map((item, index) => {
+                          return <Tag key={index}>{item}</Tag>;
+                        })
+                      }
                     </Space>
-                  </List.Item>);
-                })}
-              </List>
-            </div>}
+                  </Space>
+                </List.Item>);
+              })}
+            </List>
+          </div>}
           open={visiable}
         >
           <Input.Search
@@ -341,7 +337,7 @@ const Bmap = ({
 
     </div>
 
-    <div id="container" style={{height: '100%'}}/>
+    <div id="container" style={{height: '100%'}} />
 
     <Modal
       mask={false}
@@ -372,7 +368,7 @@ const Bmap = ({
               <div>IP地址</div>
               ：
               <span>
-                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br />(内){data?.data?.devip}</> : ''}
               </span>
             </div>
             <div className={styles.leftRow}>
@@ -390,7 +386,7 @@ const Bmap = ({
           <Space direction="vertical" size={8} style={{width: '100%'}}>
             {
               detailLoading ? <div style={{textAlign: 'center'}}>
-                <Spin size="large"/>
+                <Spin size="large" />
               </div> : isArray(data.layout).map((item, index) => {
                 let value = '';
                 if (!data.data) {

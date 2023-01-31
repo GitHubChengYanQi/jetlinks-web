@@ -72,8 +72,41 @@ const ElectronicsMap = () => {
           }}
           select
         />
-        <FormItem label="终端备注查询" name="name" component={Input} placeholder='请输入要查询的终端备注' />
-        <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
+        <FormItem label="终端备注查询" name="name" component={Input} placeholder="请输入要查询的终端备注" />
+        <FormItem
+          label="位置信息"
+          name="position"
+          options={dataSource.area}
+          component={({value, onChange}) => {
+            return <Cascader
+              placeholder="请选择位置信息"
+              width={200}
+              value={value?.value}
+              options={dataSource.area}
+              onChange={(value, option, options) => {
+                onChange(option);
+                if (options.length === 0) {
+                  return;
+                }
+                let zoom = 0;
+                switch (options.length) {
+                  case 1:
+                    zoom = 8;
+                    break;
+                  case 2:
+                    zoom = 12;
+                    break;
+                  case 3:
+                    zoom = 16;
+                    break;
+                  default:
+                    break;
+                }
+                ref.current.movingLocation(options[options.length - 1].label, zoom);
+              }}
+            />;
+          }}
+        />
         <FormButtonGroup>
           <Submit><SearchOutlined />查询</Submit>
           <Reset>重置</Reset>

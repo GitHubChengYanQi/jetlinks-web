@@ -76,7 +76,7 @@ const Cascader = ({
 
   const change = (value,option) => {
     const result = value ? value[value.length - 1] : value;
-    onChange(result,option ? option[option.length - 1] : option);
+    onChange(result,option ? option[option.length - 1] : option,option);
   };
 
   const childrenData = (dataSources) => {

@@ -296,6 +296,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           align: 'center',
           dataIndex: item.key,
           render: (value, record) => {
+            // return getImgBase64('')
             if (typeof value === 'object') {
               return <></>;
             } else if (item.filedType === 'image') {
