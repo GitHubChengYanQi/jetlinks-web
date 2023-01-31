@@ -18,6 +18,7 @@ import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCus
 import {isArray} from '@/util/Tools';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
+import moment from 'moment';
 
 export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
 
@@ -201,7 +202,11 @@ const Record = () => {
     <Table
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+          values = {
+            ...values,
+            startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59')
+          };
         }
         return {
           ...values,

@@ -12,6 +12,7 @@ import {isArray} from '@/util/Tools';
 import {config} from 'ice';
 import cookie from 'js-cookie';
 import {AccountFormat} from '@/pages/systemManage/Account';
+import moment from 'moment';
 
 
 const LoginLog = () => {
@@ -64,7 +65,8 @@ const LoginLog = () => {
     <Table
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
         }
         return values;
       }}

@@ -273,7 +273,8 @@ const Equipment = (
           values = {...values, positionIds: [values.positionId]};
         }
         if (isArray(values.time).length > 0) {
-          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
         }
         return {modelId, ...values,};
       }}

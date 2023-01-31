@@ -22,6 +22,7 @@ import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import store from '@/store';
+import moment from 'moment';
 
 const formActionsPublic = createFormActions();
 
@@ -142,7 +143,8 @@ const Contacts = ({
       loading={deleteLoading || deleteBatchLoading}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values, startTime: values.time[0], endTime: values.time[1],};
+          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
         }
         return values;
       }}

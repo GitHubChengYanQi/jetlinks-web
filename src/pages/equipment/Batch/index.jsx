@@ -20,6 +20,7 @@ import {ActionButton, DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import {deviceBatchDelete, deviceBatchList, deviceStart, deviceStop} from '@/pages/equipment/Batch/url';
 import Save from '@/pages/equipment/Batch/Save';
+import moment from 'moment';
 
 const formActionsPublic = createFormActions();
 
@@ -65,16 +66,16 @@ const Batch = () => {
 
 
   const columns = [
-    {title: '批次', dataIndex: 'coding', align: 'center', render: (text) => <Render text={text} />},
+    {title: '批次', dataIndex: 'coding', align: 'center', render: (text) => <Render text={text}/>},
     {title: '所属批次设备数量', dataIndex: 'number', align: 'center', render: (text) => <Render>{text}</Render>},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render width={200} text={text}/>},
   ];
 
 
   const searchForm = () => {
     return <>
-      <FormItem label="批次" name="coding" component={Input} />
-      <FormItem label="创建时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="批次" name="coding" component={Input}/>
+      <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>
     </>;
   };
 
@@ -87,7 +88,11 @@ const Batch = () => {
       loading={deleteLoading || stopLoading || startLoading}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values, startTime: values.time[0], endTime: values.time[1], time: undefined};
+          values = {
+            ...values,
+            startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'), time: undefined
+          };
         }
         return values;
       }}
@@ -125,7 +130,7 @@ const Batch = () => {
       }}
     />
 
-    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible} />
+    <Info visible={infoVisible} onClose={() => setInfoVisible()} data={infoVisible}/>
     <Save data={saveVisible} visible={saveVisible} close={() => setSaveVisible(false)} success={(success) => {
       setSaveVisible(false);
       if (success) {
@@ -133,16 +138,16 @@ const Batch = () => {
       } else {
         ref.current.refresh();
       }
-    }} />
+    }}/>
     <BatchImport
       columns={[
-        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
-        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text} />},
+        {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备备注', dataIndex: 'remark', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '设备MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '物料网卡号', dataIndex: 'cardNumber', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       api={instockImport}
       templeteApi={instockDownloadTemplate}
