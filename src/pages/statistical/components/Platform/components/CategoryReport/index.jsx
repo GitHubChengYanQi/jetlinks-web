@@ -15,7 +15,7 @@ const CategoryReport = ({categoryResults = []}) => {
       padding: {top: 20, right: 30, bottom: 20, left: 80},
       container: 'CategoryReport',
       forceFit: true,
-      height: 376,
+      height: 300,
     });
     chart.source(data);
     chart.axis('name', {

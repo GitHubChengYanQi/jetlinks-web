@@ -92,7 +92,7 @@ const AlarmRecord = () => {
         设备报警数据
       </div>
       <Table
-        maxHeight={document.documentElement.clientHeight * 0.25 - 100}
+        maxHeight={100}
         // size='small'
         pageSize={5}
         headStyle={{display: 'none'}}

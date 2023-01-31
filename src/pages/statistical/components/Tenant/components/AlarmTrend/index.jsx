@@ -30,7 +30,7 @@ const AlarmTrend = () => {
       padding: {top: 20, right: 50, bottom: 50, left: 50},
       container: 'AlarmTrend',
       forceFit: true,
-      height: document.documentElement.clientHeight * 0.25 - 50
+      height: 200
     });
     chart.source(chartData);
 
@@ -77,8 +77,8 @@ const AlarmTrend = () => {
             submit({span: 'day', startTime, endTime});
           }}>今日</Button>
           <Button type={type === 'week' ? 'link' : 'text'} onClick={() => {
-            const startTime = moment(moment().week(moment().week()).startOf('week').valueOf()).format('YYYY/MM/DD HH:mm:ss');
-            const endTime = moment(moment().week(moment().week()).endOf('week').valueOf()).format('YYYY/MM/DD HH:mm:ss');
+            const startTime = moment(new Date()).isoWeekday(1).format('YYYY/MM/DD HH:mm:ss');
+            const endTime = moment(new Date()).isoWeekday(7).format('YYYY/MM/DD HH:mm:ss');
             submit({span: 'week', startTime, endTime});
           }}>本周</Button>
           <Button type={type === 'month' ? 'link' : 'text'} onClick={() => {

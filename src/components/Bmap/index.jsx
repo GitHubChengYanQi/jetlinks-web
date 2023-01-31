@@ -104,9 +104,11 @@ const Bmap = ({
     const dragend = () => {
       getBounds(map);
       map.removeEventListener('dragend', dragend);
+      map.removeEventListener('zoomend', zoomend);
     };
     const zoomend = () => {
       getBounds(map);
+      map.removeEventListener('dragend', dragend);
       map.removeEventListener('zoomend', zoomend);
     };
     map.addEventListener('dragend', dragend);
@@ -239,7 +241,7 @@ const Bmap = ({
         <div className={styles.textOffline}>
           离线：{mapNumber.offNum || 0}
         </div>
-        <div className={styles.space} />
+        <div className={styles.space}/>
         <div className={styles.textErrorline}>
           报警：{mapNumber.alarmNum || 0}
         </div>
@@ -267,36 +269,36 @@ const Bmap = ({
           }}
           placement="bottom"
           content={resluts.length > 0 &&
-          <div style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
-            <List>
-              {resluts.map((item, index) => {
-                return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
-                  const point = new baiduMap.Point(item.point.lng, item.point.lat);
-                  map.panTo(point);
-                  setCenter(item.point);
-                }} extra={<Button type="primary" onClick={() => {
-                  onChange([item.point.lng, item.point.lat]);
-                  setVisiable(false);
-                }}>使用该地址</Button>}>
-                  <Space direction="vertical">
-                    <div>
-                      {item.title}
-                    </div>
-                    <div>
-                      {item.address}
-                    </div>
-                    <Space>
-                      {
-                        isArray(item.tags).map((item, index) => {
-                          return <Tag key={index}>{item}</Tag>;
-                        })
-                      }
+            <div style={{maxHeight: '50vh', minWidth: 500, overflowY: 'auto', marginTop: 16}}>
+              <List>
+                {resluts.map((item, index) => {
+                  return (<List.Item key={index} style={{cursor: 'pointer'}} onClick={() => {
+                    const point = new baiduMap.Point(item.point.lng, item.point.lat);
+                    map.panTo(point);
+                    setCenter(item.point);
+                  }} extra={<Button type="primary" onClick={() => {
+                    onChange([item.point.lng, item.point.lat]);
+                    setVisiable(false);
+                  }}>使用该地址</Button>}>
+                    <Space direction="vertical">
+                      <div>
+                        {item.title}
+                      </div>
+                      <div>
+                        {item.address}
+                      </div>
+                      <Space>
+                        {
+                          isArray(item.tags).map((item, index) => {
+                            return <Tag key={index}>{item}</Tag>;
+                          })
+                        }
+                      </Space>
                     </Space>
-                  </Space>
-                </List.Item>);
-              })}
-            </List>
-          </div>}
+                  </List.Item>);
+                })}
+              </List>
+            </div>}
           open={visiable}
         >
           <Input.Search
@@ -337,7 +339,7 @@ const Bmap = ({
 
     </div>
 
-    <div id="container" style={{height: '100%'}} />
+    <div id="container" style={{height: '100%'}}/>
 
     <Modal
       mask={false}
@@ -368,7 +370,7 @@ const Bmap = ({
               <div>IP地址</div>
               ：
               <span>
-                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br />(内){data?.data?.devip}</> : ''}
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
               </span>
             </div>
             <div className={styles.leftRow}>
@@ -386,7 +388,7 @@ const Bmap = ({
           <Space direction="vertical" size={8} style={{width: '100%'}}>
             {
               detailLoading ? <div style={{textAlign: 'center'}}>
-                <Spin size="large" />
+                <Spin size="large"/>
               </div> : isArray(data.layout).map((item, index) => {
                 let value = '';
                 if (!data.data) {

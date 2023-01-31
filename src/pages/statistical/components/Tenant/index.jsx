@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import {Col, Row, Space} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -17,8 +17,20 @@ const Tenant = ({customer = {}}) => {
 
   const {loading, data = {}} = useRequest(customerView);
 
+  const [time, setTime] = useState();
+
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setTime(moment(new Date()).format('YYYY年MM月DD日   hh:mm:ss'));
+    }, 1000);
+
+    return () => {
+      clearInterval(timeInterval);
+    };
+  }, []);
+
   if (loading) {
-    return <ProSkeleton type="descriptions" />;
+    return <ProSkeleton type="descriptions"/>;
   }
 
   const getWeek = (date) => { // 参数时间戳
@@ -40,39 +52,40 @@ const Tenant = ({customer = {}}) => {
         return '星期日';
     }
   };
+
   return <div style={{backgroundColor: '#fff'}}>
     <div className={styles.tenant}>
       <div className={styles.header}>
         {customer.resetName || '奥普泰 — 数据大屏'}
         <span>
-          {moment(new Date()).format('YYYY年MM月DD日   hh:mm:ss')} {getWeek(new Date())}
+          {time} {getWeek(new Date())}
         </span>
       </div>
       <div className={styles.content}>
         <Row gutter={24}>
-          <Col span={7}>
+          <Col span={6}>
             <Space direction="vertical" size={24} style={{width: '100%'}}>
-              <DeviceAnnular deviceData={data} />
-              <DeviceColumnar records={data.records} />
+              <DeviceAnnular deviceData={data}/>
+              <DeviceColumnar records={data.records}/>
             </Space>
           </Col>
-          <Col span={10}>
-            <Bmap />
+          <Col span={12}>
+            <Bmap/>
           </Col>
-          <Col span={7}>
+          <Col span={6}>
             <Space direction="vertical" size={24} style={{width: '100%'}}>
-              <AlarmReport alarmData={data.alarm} />
-              <CategoryReport categoryResults={data.categoryResults} />
+              <AlarmReport alarmData={data.alarm}/>
+              <CategoryReport categoryResults={data.categoryResults}/>
             </Space>
           </Col>
         </Row>
-        <div style={{height: 16}} />
+        <div style={{height: 16}}/>
         <Row gutter={24}>
           <Col span={12}>
-            <AlarmRecord />
+            <AlarmRecord/>
           </Col>
           <Col span={12}>
-            <AlarmTrend />
+            <AlarmTrend/>
           </Col>
         </Row>
       </div>

@@ -17,7 +17,7 @@ const CategoryReport = ({categoryResults = []}) => {
       return {item: item.name, percent: Math.round((item.deviceNum / total) * 100) || 0};
     });
     const chart = new G2.Chart({
-      padding: {top: 50, right: 100, bottom: 50, left: 50},
+      padding: {top: 20, right: 100, bottom: 10, left: 50},
       container: 'CategoryReport',
       forceFit: true,
       height: document.documentElement.clientHeight * 0.25 - 50,
@@ -44,14 +44,11 @@ const CategoryReport = ({categoryResults = []}) => {
     });
     chart.intervalStack()
       .position('percent')
-      .color('item')
+      .color('item', ['#e8385c', '#7b00ff', '#00d7e9', '#007aff','#568f32'])
       .label('percent', {
         textStyle: {
           fill: '#fff'
         },
-        formatter: (val, item) => {
-          return item.point.item + ': ' + val;
-        }
       })
       .tooltip('item*percent', (item, percent) => {
         return {
@@ -70,7 +67,7 @@ const CategoryReport = ({categoryResults = []}) => {
     <div className={styles.title}>
       设备类别
     </div>
-    <div id="CategoryReport" />
+    <div id="CategoryReport"/>
   </Box>;
 };
 

@@ -28,39 +28,39 @@ const NumberReport = ({data = {}}) => {
       </div>
     </div>
 
-    <div className={styles.box}>
-      <div className={styles.content}>
-        <div className={styles.label}>实时设备数量统计</div>
-        <div className={styles.value}>{data.deviceCount}</div>
-        <div className={styles.describe}>总数量</div>
-      </div>
-      <div className={styles.content}>
-        <div className={styles.label} style={{visibility: 'hidden'}}>-</div>
-        <div className={styles.value} style={{color: '#03c4bf'}}>{data.onlineNum}</div>
-        <div className={styles.describe}>在线数</div>
-      </div>
-      <div className={styles.content}>
-        <div className={styles.label} style={{visibility: 'hidden'}}>-</div>
-        <div className={styles.value} style={{color: '#f06161'}}>{data.offlineNum}</div>
-        <div className={styles.describe}>离线数</div>
+    <div className={styles.titleBox}>
+      <div className={styles.label}>实时设备数量统计</div>
+      <div className={styles.contentBox}>
+        <div className={styles.content}>
+          <div className={styles.value}>{data.deviceCount}</div>
+          <div className={styles.describe}>总数量</div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.value} style={{color: '#03c4bf'}}>{data.onlineNum}</div>
+          <div className={styles.describe}>在线数</div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.value} style={{color: '#f06161'}}>{data.offlineNum}</div>
+          <div className={styles.describe}>离线数</div>
+        </div>
       </div>
     </div>
 
-    <div className={styles.box} style={{margin: 0}}>
-      <div className={styles.content}>
-        <div className={styles.label}>设备数量统计</div>
-        <div className={styles.value}>{data.deviceCount}</div>
-        <div className={styles.describe}>总数量</div>
-      </div>
-      <div className={styles.content}>
-        <div className={styles.label} style={{visibility: 'hidden'}}>-</div>
-        <div className={styles.value} style={{color: '#03c4bf'}}>{data.deviceInNum}</div>
-        <div className={styles.describe}>库存量</div>
-      </div>
-      <div className={styles.content}>
-        <div className={styles.label} style={{visibility: 'hidden'}}>-</div>
-        <div className={styles.value} style={{color: '#f06161'}}>{data.deviceOutNum}</div>
-        <div className={styles.describe}>出库量</div>
+    <div className={styles.titleBox}>
+      <div className={styles.label}>设备数量统计</div>
+      <div className={styles.contentBox}>
+        <div className={styles.content}>
+          <div className={styles.value}>{data.deviceCount}</div>
+          <div className={styles.describe}>总数量</div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.value} style={{color: '#03c4bf'}}>{data.deviceInNum}</div>
+          <div className={styles.describe}>库存量</div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.value} style={{color: '#f06161'}}>{data.deviceOutNum}</div>
+          <div className={styles.describe}>出库量</div>
+        </div>
       </div>
     </div>
   </div>;

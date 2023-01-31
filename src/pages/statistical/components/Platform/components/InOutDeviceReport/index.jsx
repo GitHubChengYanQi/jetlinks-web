@@ -31,7 +31,7 @@ const InOutDeviceReport = ({categoryResults = []}) => {
       padding: {top: 60, right: 30, bottom: 20, left: 60},
       container: 'InOutDeviceReport',
       forceFit: true,
-      height: 300
+      height: document.documentElement.clientHeight * 0.3
     });
     chart.source(dv);
     chart.legend('name', {

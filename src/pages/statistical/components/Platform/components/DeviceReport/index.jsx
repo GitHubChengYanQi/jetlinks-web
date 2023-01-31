@@ -51,11 +51,11 @@ const DeviceReport = ({deviceData}) => {
       container: 'deviceReport',
       padding: 0,
       forceFit: true,
-      height: 376,
+      height: 276,
     });
     chart.source(data);
     chart.coord('theta', {
-      radius: 0.75,
+      radius: 1,
       innerRadius: 0.6
     });
     chart.tooltip({

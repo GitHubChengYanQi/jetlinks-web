@@ -12,7 +12,7 @@ const CategoryNumber = ({categoryResults = []}) => {
       {
         categoryResults.sort((a, b) => b.deviceNum - a.deviceNum).map((item, index) => {
           return <div key={index} className={styles.category}>
-            <div>{index + 1}.</div>
+            <div style={{width: 50}}>{index + 1}.</div>
             <div className={styles.name}>{item.name}</div>
             <div>{item.deviceNum}台</div>
           </div>;
