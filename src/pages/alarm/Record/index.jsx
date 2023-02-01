@@ -3,6 +3,7 @@ import {Space, Dropdown, Menu, Input, Tooltip, message} from 'antd';
 import {config, getSearchParams, useHistory} from 'ice';
 import {EllipsisOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -12,13 +13,11 @@ import {alarmRecordBatchView, alarmRecordList} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
 import {categoryFindAll} from '@/pages/equipment/Category/url';
 import Select from '@/components/Select';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import DatePicker from '@/components/DatePicker';
 import SelectCustomer from '@/pages/equipment/OutStock/Save/components/SelectCustomer';
 import {isArray} from '@/util/Tools';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
-import moment from 'moment';
 
 export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
 
@@ -27,7 +26,7 @@ const Record = () => {
   const history = useHistory();
 
   const searchParams = getSearchParams();
-
+  console.log(searchParams);
   const ref = useRef();
 
   const [records, setResords] = useState([]);
@@ -185,12 +184,9 @@ const Record = () => {
         component={Select}
       />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
-      <FormItem label="设备MAC" name="mac" component={Input} />
+      <FormItem label="设备MAC" name="mac" value={searchParams.mac} component={Input} />
       <FormItem label="报警类型" name="ruleConditionJson" component={Input} />
       <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
-      <div style={{display: 'none'}}>
-        <FormItem name="deviceId" value={searchParams.deviceId} component={Input} />
-      </div>
     </>;
   };
 
