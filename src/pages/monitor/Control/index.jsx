@@ -116,10 +116,10 @@ const Control = (
             {
               buttons.map((item, index) => {
                 return <div key={index}>
-                  {/* <OuntDown item={item} run={run} MAC={MAC} /> */}
-                  <Warning content={`确定控制${item.title}？`} onOk={() => run({data: {MAC, buttonData: {key: item.key}}})}>
-                    <PrimaryButton style={{width: '100%'}} key={index}>{item.title}</PrimaryButton>
-                  </Warning>
+                  <OuntDown item={item} run={run} MAC={MAC} />
+                  {/*<Warning content={`确定控制${item.title}？`} onOk={() => run({data: {MAC, buttonData: {key: item.key}}})}>*/}
+                  {/*  <PrimaryButton style={{width: '100%'}} key={index}>{item.title}</PrimaryButton>*/}
+                  {/*</Warning>*/}
                 </div>;
               })
             }
