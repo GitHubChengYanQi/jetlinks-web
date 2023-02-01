@@ -11,6 +11,7 @@ import Info from '@/pages/monitor/Info';
 import store from '@/store';
 import Bmap from '@/components/Bmap';
 import Cascader from '@/components/Cascader';
+import {isArray} from '@/util/Tools';
 
 const ElectronicsMap = () => {
 
@@ -85,7 +86,7 @@ const ElectronicsMap = () => {
               options={dataSource.area}
               onChange={(value, option, options) => {
                 onChange(option);
-                if (options.length === 0) {
+                if (isArray(options).length === 0) {
                   return;
                 }
                 let zoom = 0;

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import cookie from 'js-cookie';
 import {logger, useHistory} from 'ice';
 import {Alert, Spin} from 'antd';
@@ -9,6 +9,7 @@ import TopLayout from '@/layouts/TopLayout';
 export default function BasicLayout({children}) {
 
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const [state, dispatchers] = store.useModel('user');
   const dataDispatchers = store.useModel('dataSource')[1];
 
@@ -24,10 +25,10 @@ export default function BasicLayout({children}) {
         throw new Error('本地登录信息错误');
       }
       const userInfo = await dispatchers.getUserInfo();
-      dataDispatchers.getCustomer(userInfo?.info?.customerId || 0);
-      dataDispatchers.getCommonArea();
-      dataDispatchers.getDeviceClass();
-
+      await dataDispatchers.getCustomer(userInfo?.info?.customerId || 0);
+      await dataDispatchers.getCommonArea();
+      await dataDispatchers.getDeviceClass();
+      setLoading(false);
     } catch (e) {
       logger.error(e.message);
       cookie.remove('jetlink-token');
@@ -37,12 +38,13 @@ export default function BasicLayout({children}) {
   };
 
   useEffect(() => {
+    setLoading(true);
     Initialize();
   }, []);
 
   return (
     <>
-      {Object.keys(state).length === 0 ?
+      {(Object.keys(state).length === 0 || loading) ?
         <Spin size="large">
           <Alert
             message="加载中"

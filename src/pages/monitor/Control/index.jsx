@@ -34,7 +34,7 @@ export const OuntDown = ({item, run, MAC}) => {
     return () => {
       clearInterval(TimeRef.current);
     };
-  });
+  }, []);
 
   return <div>
     <Warning content={`确定控制${item.title}？`} onOk={() => {
