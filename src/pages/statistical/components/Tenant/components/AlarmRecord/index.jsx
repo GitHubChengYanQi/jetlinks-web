@@ -16,13 +16,13 @@ const AlarmRecord = () => {
     return isArray(ruleConditionJson).map((item, index) => {
       if (max) {
         if (index > 2) {
-          return <div key={index} />;
+          return <div key={index}/>;
         } else if (index === 2) {
           return <div key={index}>
             <Tooltip color="#fff" title={() => {
               return ruleTypes(ruleConditionJson);
             }}>
-              <EllipsisOutlined />
+              <EllipsisOutlined/>
             </Tooltip>
           </div>;
         }
@@ -65,14 +65,14 @@ const AlarmRecord = () => {
   };
 
   const columns = [
-    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '终端备注',
       dataIndex: 'remarks',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '报警内容', dataIndex: 'ruleConditionJson', align: 'center',
       render: (text, record) => {
@@ -87,21 +87,6 @@ const AlarmRecord = () => {
       }
     }
   ];
-
-  useEffect(() => {
-    const tableBodys = document.getElementsByClassName('ant-table-body');
-    if (tableBodys && tableBodys[0]) {
-      const tableBody = tableBodys[0];
-      setInterval(() => {
-        if (tableBody.scrollTop === tableBody.scrollHeight - tableBody.clientHeight) {
-          ref.current.refresh();
-          tableBody.scrollTop = 0;
-        }else {
-          tableBody.scrollTop = 1000 + tableBody.scrollTop;
-        }
-      }, 1000);
-    }
-  }, []);
 
   return <Box>
     <div style={{padding: '12px 12px 0'}}>
@@ -127,6 +112,19 @@ const AlarmRecord = () => {
           backgroundColor: ''
         }}
         format={(data) => {
+          const tableBodys = document.getElementsByClassName('ant-table-body');
+          if (tableBodys && tableBodys[0]) {
+            const tableBody = tableBodys[0];
+            const interval = setInterval(() => {
+              if (tableBody.scrollTop >= tableBody.scrollHeight - tableBody.clientHeight) {
+                clearInterval(interval);
+                ref.current.refresh();
+                tableBody.scrollTop = 0;
+              } else {
+                tableBody.scrollTop = 50 + tableBody.scrollTop;
+              }
+            }, 1000);
+          }
           return data.map((item, index) => ({...item, key: index}));
         }}
         tableKey="record"
