@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Tooltip} from 'antd';
 import {EllipsisOutlined} from '@ant-design/icons';
 import Table from '@/components/Table';
@@ -9,6 +9,8 @@ import Box from '@/pages/statistical/components/Tenant/components/Box';
 import styles from './index.module.less';
 
 const AlarmRecord = () => {
+
+  const ref = useRef();
 
   const ruleTypes = (ruleConditionJson, max) => {
     return isArray(ruleConditionJson).map((item, index) => {
@@ -86,15 +88,32 @@ const AlarmRecord = () => {
     }
   ];
 
+  useEffect(() => {
+    const tableBodys = document.getElementsByClassName('ant-table-body');
+    if (tableBodys && tableBodys[0]) {
+      const tableBody = tableBodys[0];
+      setInterval(() => {
+        if (tableBody.scrollTop === tableBody.scrollHeight - tableBody.clientHeight) {
+          ref.current.refresh();
+          tableBody.scrollTop = 0;
+        }else {
+          tableBody.scrollTop = 1000 + tableBody.scrollTop;
+        }
+      }, 1000);
+    }
+  }, []);
+
   return <Box>
     <div style={{padding: '12px 12px 0'}}>
       <div className={styles.title}>
         设备报警数据
       </div>
       <Table
-        maxHeight={100}
+        ref={ref}
+        maxHeight={140}
         // size='small'
-        pageSize={5}
+        pageSize={50}
+        noPagination
         headStyle={{display: 'none'}}
         noRowSelection
         noFooter

@@ -53,19 +53,19 @@ const AlarmReport = ({alarmData = {}}) => {
     <div className={styles.alarmReport}>
       <div className={styles.alarmNumber}>
         <div>
-          <div className={styles.label}>
+          <div style={{color: '#129ad9'}} className={styles.label}>
             报警总数
           </div>
           <div className={styles.value}>{alarmData.allNum}</div>
         </div>
         <div>
-          <div className={styles.label}>
+          <div style={{color: '#04a3a6'}} className={styles.label}>
             已处理
           </div>
           <div className={styles.value}>{alarmData.handleNum}</div>
         </div>
         <div>
-          <div className={styles.label}>
+          <div style={{color: '#f15d66'}} className={styles.label}>
             未处理
           </div>
           <div className={styles.value}>{alarmData.errorNum}</div>

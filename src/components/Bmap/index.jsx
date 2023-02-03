@@ -172,6 +172,7 @@ const Bmap = ({
 
     if (!search) {
       getBounds(initMap);
+      getMapNum({data:{}});
     } else if (value.length === 0) {
       const localCity = new BMap.LocalCity();
       localCity.get((result) => {
