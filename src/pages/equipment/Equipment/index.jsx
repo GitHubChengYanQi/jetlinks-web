@@ -303,6 +303,7 @@ const Equipment = (
       columns={columns}
       rowKey="deviceId"
       noAction={select}
+      actionWidth={150}
       actionRender={(text, record) => {
         return <Space>
           <Button
@@ -311,11 +312,6 @@ const Equipment = (
           >
             编辑
           </Button>
-          <Warning content="确定要重启设备么?" onOk={() => {
-            message.success('操作成功！');
-          }}>
-            <PrimaryButton>重启</PrimaryButton>
-          </Warning>
         </Space>;
       }}
     />

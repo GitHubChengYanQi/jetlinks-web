@@ -21,6 +21,7 @@ const TableWarp = (
   {
     // a
     actions,
+    actionWidth,
     api,
     actionButton,
     actionRender = () => {
@@ -328,7 +329,7 @@ const TableWarp = (
       title: <>操作{setButton}</>,
       fixed: 'right',
       align: 'center',
-      width: '200px',
+      width: actionWidth || '200px',
       render: actionRender,
     },);
   }
