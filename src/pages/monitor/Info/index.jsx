@@ -112,10 +112,10 @@ const Info = ({
         {layoutData?.devip ? `内网：${layoutData.devip}` : ''} <br />{data.ip ? `外网：${data.ip}` : ''}
       </Descriptions.Item>
       <Descriptions.Item label="登记名称">{data.name || '-'}</Descriptions.Item>
-      <Descriptions.Item label="GPS定位">-</Descriptions.Item>
+      <Descriptions.Item label="GPS定位">经度：{data.longitude || '-'}&nbsp;&nbsp;纬度：{data.latitude || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备MAC地址">{data.mac || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备类别">{data.categoryName || '-'}</Descriptions.Item>
-      <Descriptions.Item label="位置信息">-</Descriptions.Item>
+      <Descriptions.Item label="位置信息">{data.area}{data.adress}</Descriptions.Item>
       <Descriptions.Item label="所属客户">{data.customerName || '-'}</Descriptions.Item>
     </Descriptions>
 

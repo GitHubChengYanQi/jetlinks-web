@@ -55,12 +55,6 @@ const OperationLog = () => {
       render: (text = '') => <Render className="green" text={text} />
     },
     {
-      title: 'params数据',
-      dataIndex: 'getMessage',
-      align: 'center',
-      render: (text = '') => <Note margin="auto" width={200} className="green" value={text || '-'} />
-    },
-    {
       title: 'data数据',
       dataIndex: 'postMessage',
       align: 'center',
