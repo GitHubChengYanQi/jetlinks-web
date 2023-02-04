@@ -1,9 +1,10 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, Input, Tooltip, message} from 'antd';
+import {Space, Dropdown, Menu, Input, Tooltip, message, Select as AntSelect} from 'antd';
 import {config, getSearchParams, useHistory} from 'ice';
 import {EllipsisOutlined} from '@ant-design/icons';
 import cookie from 'js-cookie';
 import moment from 'moment';
+import {createFormActions} from '@formily/antd';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -21,10 +22,12 @@ import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle'
 
 export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
 
+const formActionsPublic = createFormActions();
+
 const Record = (
   {
     channel,
-    mac,
+    deviceId,
     show,
   }
 ) => {
@@ -43,13 +46,13 @@ const Record = (
     return isArray(ruleConditionJson).map((item, index) => {
       if (max) {
         if (index > 2) {
-          return <div key={index} />;
+          return <div key={index}/>;
         } else if (index === 2) {
           return <div key={index}>
             <Tooltip color="#fff" title={() => {
               return ruleTypes(ruleConditionJson);
             }}>
-              <EllipsisOutlined />
+              <EllipsisOutlined/>
             </Tooltip>
           </div>;
         }
@@ -102,10 +105,31 @@ const Record = (
   let columns = [];
 
   if (show) {
+    columns = [
+      {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
+      {
+        title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
+        render: (text, record) => {
+          let ruleConditionJson = [];
+          try {
+            ruleConditionJson = JSON.parse(record.ruleConditionJson);
+          } catch (e) {
+            console.log(e);
+          }
 
+          return <Render>{ruleTypes(ruleConditionJson, true)}</Render>;
+        }
+      },
+      {
+        title: '状态', dataIndex: 'status', align: 'center',
+        render: (text) => {
+          return <Render>{text === '1' ? '已阅' : '未阅'}</Render>;
+        }
+      },
+    ];
   } else {
     columns = [
-      {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+      {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text}/>},
       {
         title: '终端备注',
         dataIndex: 'remarks',
@@ -116,14 +140,14 @@ const Record = (
           }}>{text}</div>
         </Render>
       },
-      {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-      {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-      {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+      {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+      {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
+      {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text}/>},
       {
         title: '设备型号',
         dataIndex: 'modelName',
         align: 'center',
-        render: (text) => <Render width={150} text={text} />
+        render: (text) => <Render width={150} text={text}/>
       },
       {
         title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
@@ -138,18 +162,18 @@ const Record = (
           return <Render>{ruleTypes(ruleConditionJson, true)}</Render>;
         }
       },
-      {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
+      {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text}/>},
       {
         title: '所属客户',
         dataIndex: 'customerName',
         align: 'center',
-        render: (text) => <Render width={200} text={text || '-'} />
+        render: (text) => <Render width={200} text={text || '-'}/>
       },
       {
         title: '位置信息',
         dataIndex: 'area',
         align: 'center',
-        render: (text) => <Render width={150} text={text || '-'} />
+        render: (text) => <Render width={150} text={text || '-'}/>
       },
     ];
   }
@@ -183,11 +207,33 @@ const Record = (
   />;
 
   const searchForm = () => {
+    if (show) {
+      return <>
+        <FormItem
+          label="处理状态"
+          name="status"
+          component={({value, onChange}) => {
+            return <AntSelect
+              defaultValue="all"
+              value={value || 'all'}
+              options={[{label: '全部', value: 'all'}, {label: '已阅', value: 1}, {label: '未阅', value: 0}]}
+              onChange={(value) => {
+                onChange(value === 'all' ? null : value);
+              }}
+            />;
+          }}
+        />
+        <div style={{display: 'none'}}>
+          <FormItem name="channel" value={channel} component={Input}/>
+          <FormItem name="deviceId" value={deviceId} component={Input}/>
+        </div>
+      </>;
+    }
     return <>
-      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="登记名称" name="name" component={Input} />
-      <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
+      <FormItem label="报警时间" name="time" component={DatePicker} RangePicker/>
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="登记名称" name="name" component={Input}/>
+      <FormItem label="设备分组" name="classifyId" component={SelectGroup}/>
       <FormItem
         label="设备类别"
         name="categoryId"
@@ -195,10 +241,10 @@ const Record = (
         format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
         component={Select}
       />
-      <FormItem label="设备型号" name="modelId" component={SelectModle} />
-      <FormItem label="设备MAC" name="mac" value={searchParams.mac || mac} component={Input} />
-      <FormItem label="报警类型" name="channel" value={channel} component={Input} />
-      <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
+      <FormItem label="设备型号" name="modelId" component={SelectModle}/>
+      <FormItem label="设备MAC" name="mac" value={searchParams.mac} component={Input}/>
+      <FormItem label="报警类型" name="channel" value={channel} component={Input}/>
+      <FormItem label="所属客户" name="customerId" component={SelectCustomer}/>
     </>;
   };
 
@@ -208,7 +254,8 @@ const Record = (
 
   return <>
     <Table
-      headStyle={{display: show && 'none'}}
+      formActions={formActionsPublic}
+      noTableColumn={show}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
           values = {
@@ -234,7 +281,7 @@ const Record = (
       selectedRowKeys={keys}
       loading={batchViewLoading}
       tableKey="record"
-      searchButtons={[
+      searchButtons={show ? [] : [
         <Dropdown disabled={records.length === 0} key={2} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,

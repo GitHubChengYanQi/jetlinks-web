@@ -48,6 +48,7 @@ const TableWarp = (
     // e
     expandable,
     // f
+    fixDataSource,
     formSubmit,
     format = (data) => data,
     footer: parentFooter,
@@ -314,7 +315,7 @@ const TableWarp = (
     return (
       <div className={style.footer}>
         {parentFooter && <div className={style.left}>{parentFooter()}</div>}
-        <br style={{clear: 'both'}} />
+        <br style={{clear: 'both'}}/>
       </div>
     );
   };
@@ -351,26 +352,26 @@ const TableWarp = (
                 >
                   {typeof searchForm === 'function' && searchForm()}
                   {SearchButton ||
-                  <FormButtonGroup>
-                    <Button
-                      id="submit"
-                      loading={otherLoading || (timed ? false : loading)}
-                      type="primary"
-                      htmlType="submit"
-                      onClick={() => {
-                        submit();
-                      }}><SearchOutlined />查询
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        reset();
-                      }}>
-                      重置
-                    </Button>
-                    {searchButtons}
-                    {selectView}
-                    {saveView}
-                  </FormButtonGroup>}
+                    <FormButtonGroup>
+                      <Button
+                        id="submit"
+                        loading={otherLoading || (timed ? false : loading)}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {
+                          submit();
+                        }}><SearchOutlined/>查询
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          reset();
+                        }}>
+                        重置
+                      </Button>
+                      {searchButtons}
+                      {!noTableColumn && selectView}
+                      {!noTableColumn && saveView}
+                    </FormButtonGroup>}
                 </Form>
               </Col>
               <Col className={style.setTing}>
@@ -397,7 +398,7 @@ const TableWarp = (
             };
           }}
           expandable={expandable}
-          dataSource={dataSource || []}
+          dataSource={fixDataSource || dataSource || []}
           rowKey={rowKey}
           columns={[
             ...(noSort ? [] : [{
