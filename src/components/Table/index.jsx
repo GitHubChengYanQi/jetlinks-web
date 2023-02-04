@@ -23,6 +23,7 @@ const TableWarp = (
     actions,
     actionWidth,
     api,
+    actionConfig,
     actionButton,
     actionRender = () => {
       return <></>;
@@ -326,6 +327,7 @@ const TableWarp = (
   const action = [];
   if (!noAction) {
     action.push({
+      ...actionConfig,
       title: <>操作{setButton}</>,
       fixed: 'right',
       align: 'center',

@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Empty, Image, Input, message, Modal, Space, Tabs} from 'antd';
+import {Alert, Button, Empty, Image, Input, message, Modal, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import pako from 'pako';
-import {config} from 'ice';
+import {config, useHistory} from 'ice';
 import cookie from 'js-cookie';
 import moment from 'moment';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
@@ -44,6 +44,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [chartData, setChartData] = useState();
 
   const [visible, setVisible] = useState(false);
+
+  const history = useHistory();
 
   const [list, setList] = useState([]);
 
@@ -152,6 +154,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       onClick={() => setVisible(`data:image/jpeg;base64,${imgBase64}`)}
     >查看</Button>;
   };
+
+  const alarm = false;
 
   return <>
     <Chart
@@ -286,16 +290,33 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       formActions={formActionsPublic}
       api={getApi('sjlb')}
       noSort
+      actionConfig={{
+        onCell: (_, index) => ({
+          colSpan: (alarm && index === 0) ? 0 : 1,
+        })
+      }}
       noRowSelection
       bodyStyle={{padding: 0}}
       rowKey="key"
       columnsResh
-      columns={isArray(chartData.columns).map(item => {
+      columns={isArray(chartData.columns).map((item, columnsIndex) => {
+        const colSpan = columnsIndex === 0 ? chartData.columns.length + 1 : 0;
         return {
           title: item.columns,
           align: 'center',
+          onCell: (_, index) => ({
+            colSpan: (alarm && index === 0) ? colSpan : 1,
+          }),
           dataIndex: item.key,
-          render: (value, record) => {
+          render: (value, record, index) => {
+            if ((alarm && index === 0)) {
+              return <Alert
+                message={<>上报数据存在报警信息，<a onClick={() => {
+                  history.push(`/alarm/record?mac=${device.mac}`);
+                }}>点击查看报警记录</a></>}
+                type="error"
+              />;
+            }
             // return getImgBase64('')
             if (typeof value === 'object') {
               return <></>;
@@ -328,7 +349,6 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         };
       })}
       actionRender={(value, record) => {
-        const alarm = record.num > 0;
         return <Warning
           disabled={!alarm}
           content="确定处理吗？"
@@ -342,7 +362,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             message.success('处理成功！');
             ref.current.refresh();
           })}>
-          <PrimaryButton disabled={!alarm}>处理</PrimaryButton>
+          <PrimaryButton disabled={!(record.num > 0)}>处理</PrimaryButton>
         </Warning>;
       }}
     />
