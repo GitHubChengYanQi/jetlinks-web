@@ -113,7 +113,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
       alarmRecordRun({
         data: {
           deviceId: device.deviceId,
-          channel: res
+          channel: res,
+          status: 0
         }
       });
     }
