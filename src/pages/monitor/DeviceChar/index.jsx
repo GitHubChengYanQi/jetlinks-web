@@ -9,6 +9,7 @@ import moment from 'moment';
 import {ExclamationCircleOutlined} from '@ant-design/icons';
 import {LinkButton, PrimaryButton} from '@/components/Button';
 import Table from '@/components/Table';
+import MyModal from '@/components/Modal';
 import Render from '@/components/Render';
 import {useRequest} from '@/util/Request';
 import Save from '@/pages/monitor/Info/Save';
@@ -19,16 +20,20 @@ import Control from '@/pages/monitor/Control';
 import DatePicker from '@/components/DatePicker';
 import Chart from '@/pages/monitor/DeviceChar/components/Chart';
 import ThousandsSeparator from '@/components/ThousandsSeparator';
+import {alarmRecordList} from '@/pages/alarm/url';
+import Record from '@/pages/alarm/Record';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
 export const alarmRecordView = {url: '/alarmRecord/handelAlarm', method: 'POST'};
+export const getTab = {url: '/deviceHistory/getTab', method: 'POST'};
 
 const formActionsPublic = createFormActions();
 
 const DeviceChar = ({device = {}, defaultType, date = []}) => {
 
   const ref = useRef();
+  const recordRef = useRef();
 
   const startTime = date[0];
   const endTime = date[1];
@@ -97,6 +102,34 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     }
   });
 
+  const {data: alarmRecordData = [], run: alarmRecordRun} = useRequest(alarmRecordList, {
+    manual: true,
+  });
+
+
+  const {data: tab, run: getCurrentTab} = useRequest(getTab, {
+    manual: true,
+    onSuccess: (res) => {
+      alarmRecordRun({
+        data: {
+          deviceId: device.deviceId,
+          channel: res
+        }
+      });
+    }
+  });
+
+  useEffect(() => {
+    if (type) {
+      getCurrentTab({
+        data: {
+          title: type,
+          deviceId: device.deviceId
+        }
+      });
+    }
+  }, [type]);
+
   useEffect(() => {
     if (startTime && endTime) {
       setExportTime(date);
@@ -155,7 +188,7 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     >查看</Button>;
   };
 
-  const alarm = false;
+  const alarm = alarmRecordData.length > 0;
 
   return <>
     <Chart
@@ -312,7 +345,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
             if ((alarm && index === 0)) {
               return <Alert
                 message={<>上报数据存在报警信息，<a onClick={() => {
-                  history.push(`/alarm/record?mac=${device.mac}`);
+                  recordRef.current.open(true);
+                  // history.push(`/alarm/record?mac=${device.mac}&channel=${channel}`);
                 }}>点击查看报警记录</a></>}
                 type="error"
               />;
@@ -419,6 +453,10 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           }} />
       </div>
     </Modal>
+
+    <MyModal width='auto' headTitle="报警记录" ref={recordRef}>
+      <Record channel={tab} mac={device.mac} show />
+    </MyModal>
 
   </>;
 };

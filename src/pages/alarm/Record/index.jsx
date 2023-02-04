@@ -21,12 +21,18 @@ import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle'
 
 export const handelAlarmLog = {url: '/alarmRecord/handelAlarmLog', method: 'POST'};
 
-const Record = () => {
+const Record = (
+  {
+    channel,
+    mac,
+    show,
+  }
+) => {
 
   const history = useHistory();
 
   const searchParams = getSearchParams();
-  console.log(searchParams);
+
   const ref = useRef();
 
   const [records, setResords] = useState([]);
@@ -93,54 +99,60 @@ const Record = () => {
     manual: true,
   });
 
-  const columns = [
-    {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {
-      title: '终端备注',
-      dataIndex: 'remarks',
-      align: 'center',
-      render: (text, record) => <Render>
-        <div className="blue" onClick={() => {
-          history.push(`/monitor?deviceId=${record.deviceId}&modelId=${record.modelId}`);
-        }}>{text}</div>
-      </Render>
-    },
-    {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-    {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
-    {
-      title: '设备型号',
-      dataIndex: 'modelName',
-      align: 'center',
-      render: (text) => <Render width={150} text={text} />
-    },
-    {
-      title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
-      render: (text, record) => {
-        let ruleConditionJson = [];
-        try {
-          ruleConditionJson = JSON.parse(record.ruleConditionJson);
-        } catch (e) {
-          console.log(e);
-        }
+  let columns = [];
 
-        return <Render>{ruleTypes(ruleConditionJson, true)}</Render>;
-      }
-    },
-    {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
-    {
-      title: '所属客户',
-      dataIndex: 'customerName',
-      align: 'center',
-      render: (text) => <Render width={200} text={text || '-'} />
-    },
-    {
-      title: '位置信息',
-      dataIndex: 'area',
-      align: 'center',
-      render: (text) => <Render width={150} text={text || '-'} />
-    },
-  ];
+  if (show) {
+
+  } else {
+    columns = [
+      {title: '报警时间', dataIndex: 'alarmTime', align: 'center', render: (text) => <Render width={150} text={text} />},
+      {
+        title: '终端备注',
+        dataIndex: 'remarks',
+        align: 'center',
+        render: (text, record) => <Render>
+          <div className="blue" onClick={() => {
+            history.push(`/monitor?deviceId=${record.deviceId}&modelId=${record.modelId}`);
+          }}>{text}</div>
+        </Render>
+      },
+      {title: '登记名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
+      {title: '设备分组', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
+      {title: '设备类别', dataIndex: 'categoryName', align: 'center', render: (text) => <Render text={text} />},
+      {
+        title: '设备型号',
+        dataIndex: 'modelName',
+        align: 'center',
+        render: (text) => <Render width={150} text={text} />
+      },
+      {
+        title: '报警类型', dataIndex: 'ruleConditionJson', align: 'center',
+        render: (text, record) => {
+          let ruleConditionJson = [];
+          try {
+            ruleConditionJson = JSON.parse(record.ruleConditionJson);
+          } catch (e) {
+            console.log(e);
+          }
+
+          return <Render>{ruleTypes(ruleConditionJson, true)}</Render>;
+        }
+      },
+      {title: 'MAC地址', dataIndex: 'mac', align: 'center', render: (text) => <Render text={text} />},
+      {
+        title: '所属客户',
+        dataIndex: 'customerName',
+        align: 'center',
+        render: (text) => <Render width={200} text={text || '-'} />
+      },
+      {
+        title: '位置信息',
+        dataIndex: 'area',
+        align: 'center',
+        render: (text) => <Render width={150} text={text || '-'} />
+      },
+    ];
+  }
 
   const getData = (item) => {
     return {
@@ -184,8 +196,8 @@ const Record = () => {
         component={Select}
       />
       <FormItem label="设备型号" name="modelId" component={SelectModle} />
-      <FormItem label="设备MAC" name="mac" value={searchParams.mac} component={Input} />
-      <FormItem label="报警类型" name="ruleConditionJson" component={Input} />
+      <FormItem label="设备MAC" name="mac" value={searchParams.mac || mac} component={Input} />
+      <FormItem label="报警类型" name="channel" value={channel} component={Input} />
       <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
     </>;
   };
@@ -196,6 +208,7 @@ const Record = () => {
 
   return <>
     <Table
+      headStyle={{display: show && 'none'}}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
           values = {
@@ -229,10 +242,12 @@ const Record = () => {
           window.open(`${baseURI}/AlarmRecordExcel/export?authorization=${token}&recordIds=${records.map(item => item.creattTimestamp)}`);
         }}>导出</PrimaryButton>
       ]}
+      noRowSelection={show}
       searchForm={searchForm}
       api={alarmRecordList}
       columns={columns}
       rowKey="key"
+      noAction={show}
       actionRender={(text, record) => (
         <Space>
           <Warning
