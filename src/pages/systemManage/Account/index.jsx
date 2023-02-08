@@ -92,7 +92,6 @@ const Account = () => {
 
   const columns = [
     {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)} />},
-    {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={200} text={text} />},
     {
       title: '角色名称',
       dataIndex: 'roles',

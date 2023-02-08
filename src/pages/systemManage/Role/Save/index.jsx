@@ -120,7 +120,7 @@ const Save = ({
       <Form.Item
         hidden={!data?.roleId}
         key="users"
-        label="角色关联用户"
+        label="角色关联账号"
         name="users"
         rules={[
           {required: false, message: '请选择分组权限'},

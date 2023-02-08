@@ -42,7 +42,7 @@ const Users = ({
 
   return (
     <Transfer
-      titles={['用户列表', '角色关联用户']}
+      titles={['账号列表', '角色关联账号']}
       listStyle={{
         width: 300,
         height: 400,
