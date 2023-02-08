@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import AntTree from '@/components/AntTree';
 import Save from '@/pages/equipment/Category/Save';
 import {useRequest} from '@/util/Request';
-import {categoryFindAll} from '@/pages/equipment/Category/url';
+import {categoryFindAll, categoryFindAllByDevice} from '@/pages/equipment/Category/url';
 import {isArray} from '@/util/Tools';
 
 const Terminal = ({
@@ -19,7 +19,7 @@ const Terminal = ({
 
   const [treeData, setTreeData] = useState([]);
 
-  const {loading, run} = useRequest(categoryFindAll, {
+  const {loading, run} = useRequest(categoryFindAllByDevice, {
     manual: true,
     onSuccess: (res) => {
       let model;

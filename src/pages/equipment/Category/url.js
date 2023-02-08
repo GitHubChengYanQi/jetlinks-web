@@ -25,6 +25,11 @@ export const categoryFindAll = {
   method: 'POST',
 };
 
+export const categoryFindAllByDevice = {
+  url: '/deviceCategory/findAllByDevice',
+  method: 'POST',
+};
+
 export const deviceCategoryDelete = {
   url: '/deviceCategory/batchDelete',
   method: 'POST',
