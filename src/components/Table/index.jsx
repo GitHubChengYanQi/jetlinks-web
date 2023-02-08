@@ -71,6 +71,7 @@ const TableWarp = (
     // m
     maxHeight,
     // n
+    noReset,
     NoChildren,
     noPagination,
     noSort,
@@ -363,6 +364,7 @@ const TableWarp = (
                         }}><SearchOutlined/>查询
                       </Button>
                       <Button
+                        hidden={noReset}
                         onClick={() => {
                           reset();
                         }}>
