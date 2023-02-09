@@ -2,6 +2,7 @@ import {Spin, Transfer} from 'antd';
 import React, {useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {userAllList} from '@/Config/ApiUrl/system/user';
+import {AccountFormat} from '@/pages/systemManage/Account';
 
 const Users = ({
   roleId,
@@ -21,7 +22,7 @@ const Users = ({
         const ids = userList.filter(item => item.roleId && item.roleId.split(',').find(item => item === `${roleId}`)).map(item => item.userId);
         setUserIds(ids);
         setTargetKeys(ids);
-        setMockData(userList.map(item => ({key: item.userId, title: `${item.name || ''}  ${item.phone || ''}`})));
+        setMockData(userList.map(item => ({key: item.userId, title: `${AccountFormat(item.account) || ''}  ${item.phone || ''}`})));
       }
     }
   );
