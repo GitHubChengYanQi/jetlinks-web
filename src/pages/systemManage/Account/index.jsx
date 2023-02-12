@@ -36,6 +36,11 @@ const Account = () => {
 
   const [userInfo] = store.useModel('user');
 
+
+  const [dataSource] = store.useModel('dataSource');
+
+  const customer = dataSource.customer || {};
+
   const info = userInfo.info || {};
 
   const ref = useRef();
@@ -91,20 +96,20 @@ const Account = () => {
 
 
   const columns = [
-    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)} />},
+    {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)}/>},
     {
       title: '角色名称',
       dataIndex: 'roles',
       align: 'center',
-      render: (roles) => <Render width={200} text={isArray(roles).map(item => item.name).toString()} />
+      render: (roles) => <Render width={200} text={isArray(roles).map(item => item.name).toString()}/>
     },
     {
       title: '账号状态', dataIndex: 'status', align: 'center', render: (text) => <Render>
         <Button danger={text !== 'ENABLE'} type="link">{text === 'ENABLE' ? '启用' : '停用'}</Button>
       </Render>
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {title: '电子邮箱', dataIndex: 'email', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '电子邮箱', dataIndex: 'email', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '账号有效期', dataIndex: '8', align: 'center',
       render: (text, record) => <Render width={150}>
@@ -115,7 +120,7 @@ const Account = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (text) => <Render width={150} text={text} />
+      render: (text) => <Render width={150} text={text}/>
     },
   ];
 
@@ -152,7 +157,7 @@ const Account = () => {
       },
       {
         key: '2',
-        disabled:keys.length === 0,
+        disabled: keys.length === 0,
         label: '导出',
         onClick: () => {
           window.open(`${baseURI}/UserExcel/export?authorization=${token}&userIds=${keys}`);
@@ -164,7 +169,7 @@ const Account = () => {
   const searchForm = () => {
     return (
       <>
-        <FormItem name="time" label="创建时间" component={DatePicker} RangePicker select />
+        <FormItem name="time" label="创建时间" component={DatePicker} RangePicker select/>
         <FormItem
           name="status"
           label="账号状态"
@@ -177,13 +182,13 @@ const Account = () => {
                 onChange(value === 'all' ? null : value);
               }}
             />;
-          }} select />
+          }} select/>
         <FormItem
           label="角色名称"
           name="roleName"
           component={SelectRoles}
         />
-        <FormItem name="name" label="关键字查询" component={Input} style={{width: 250}} placeholder="管理员账号/姓名/手机号/邮箱" />
+        <FormItem name="name" label="关键字查询" component={Input} style={{width: 250}} placeholder="管理员账号/姓名/手机号/邮箱"/>
       </>
     );
   };
@@ -192,8 +197,10 @@ const Account = () => {
     <Table
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
-            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
+          values = {
+            ...values, startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),
+          };
         }
         return {...values, deptId: info.deptId};
       }}
@@ -221,11 +228,11 @@ const Account = () => {
             ...record,
             roleId: record.roleId && record.roleId.split(',')
           })}>编辑</PrimaryButton>
-          <Warning
+          {!customer.customerId && <Warning
             disabled={info.userId === record.userId || record.status !== 'ENABLE'} content="确定进入到该账户系统吗？"
             onOk={() => Jump({params: {userId: record.userId}})}>
             <PrimaryButton disabled={info.userId === record.userId || record.status !== 'ENABLE'}>进入账户</PrimaryButton>
-          </Warning>
+          </Warning>}
           <Warning
             content={`您确定${open ? '停用' : '启用'}么?`}
             onOk={() => !open ? start({data: {userIds: [record.userId]}}) : stop({data: {userIds: [record.userId]}})
@@ -254,13 +261,13 @@ const Account = () => {
 
     <BatchImport
       columns={[
-        {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)} />},
-        {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-        {title: '账号角色', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text} />},
-        {title: '电子邮件', dataIndex: 'email', align: 'center', render: (text) => <Render text={text} />},
-        {title: '账号密码', dataIndex: 'password', align: 'center', render: (text) => <Render text={text} />},
-        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text} />},
+        {title: '账号名称', dataIndex: 'account', align: 'center', render: (text) => <Render text={AccountFormat(text)}/>},
+        {title: '账号姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号角色', dataIndex: 'roleName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '电子邮件', dataIndex: 'email', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '账号密码', dataIndex: 'password', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '状态', dataIndex: 'status', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       title="账号"
       templeteApi={UserExcelDownloadTemplate}

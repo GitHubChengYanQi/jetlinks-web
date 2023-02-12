@@ -120,7 +120,7 @@ const AlarmRecord = () => {
             const interval = setInterval(() => {
               if (tableBody.scrollTop >= tableBody.scrollHeight - tableBody.clientHeight) {
                 clearInterval(interval);
-                ref.current.refresh();
+                ref.current?.refresh();
                 tableBody.scrollTop = 0;
               } else {
                 tableBody.scrollTop = 50 + tableBody.scrollTop;

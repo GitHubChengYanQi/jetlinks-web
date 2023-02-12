@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Space, Menu, Dropdown, message, Select as AntSelect} from 'antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Save, {formatData} from './Save';
@@ -18,7 +19,6 @@ import SelectRoles from '@/pages/systemManage/Role/components/SelectRoles';
 import Modal from '@/components/Modal';
 import Tree from '@/components/Tree';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
-import moment from 'moment';
 
 const Role = () => {
 
