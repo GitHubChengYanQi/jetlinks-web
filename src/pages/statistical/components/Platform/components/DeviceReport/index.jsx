@@ -86,12 +86,14 @@ const DeviceReport = ({deviceData}) => {
   }, []);
 
   return <>
-    <div className={styles.box}>
+    <div className={styles.box} onClick={()=>{
+      console.log('设备总览');
+    }}>
       <div className={styles.title}>
         设备总览
       </div>
-      <div id="deviceReport" className={styles.deviceReport}></div>
-      <div id="deviceInOutReport" className={styles.deviceInOutReport}></div>
+      <div id="deviceReport" className={styles.deviceReport} />
+      <div id="deviceInOutReport" className={styles.deviceInOutReport} />
     </div>
   </>;
 };
