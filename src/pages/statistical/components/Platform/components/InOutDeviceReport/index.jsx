@@ -62,7 +62,9 @@ const InOutDeviceReport = ({categoryResults = []}) => {
   }, []);
 
   return <>
-    <div className={styles.box}>
+    <div className={styles.box}  onClick={()=>{
+      console.log('出入库设备');
+    }}>
       <div className={styles.title}>
         出入库设备
       </div>

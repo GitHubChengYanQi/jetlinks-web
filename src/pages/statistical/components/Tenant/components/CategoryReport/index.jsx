@@ -11,13 +11,13 @@ const CategoryReport = ({categoryResults = []}) => {
     categoryResults.forEach(item => total += item.deviceNum);
     const data = categoryResults.map((item, index) => {
       if (index === categoryResults.length - 1) {
-        return {item: item.name, percent: 100 - percent};
+        return {item: item.name, percent: percent ? (100 - percent) : (Math.round((item.deviceNum / total) * 100) || 0)};
       }
       percent += Math.round((item.deviceNum / total) * 100) || 0;
       return {item: item.name, percent: Math.round((item.deviceNum / total) * 100) || 0};
     });
     const chart = new G2.Chart({
-      padding: {top: 20, right: 100, bottom: 10, left: 50},
+      padding: {top: 20, right: 100, bottom: 20, left: 50},
       container: 'CategoryReport',
       forceFit: true,
       height: document.documentElement.clientHeight * 0.25 - 50,
