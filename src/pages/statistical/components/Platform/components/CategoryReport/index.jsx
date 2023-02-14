@@ -47,7 +47,9 @@ const CategoryReport = ({categoryResults = []}) => {
   }, []);
 
   return <>
-    <div className={styles.box}>
+    <div className={styles.box} onClick={()=>{
+      console.log('设备类别');
+    }}>
       <div className={styles.title}>
         设备类别
       </div>

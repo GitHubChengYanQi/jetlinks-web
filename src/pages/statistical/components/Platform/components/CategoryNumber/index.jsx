@@ -5,7 +5,9 @@ const CategoryNumber = ({categoryResults = []}) => {
 
 
   return <>
-    <div className={styles.box}>
+    <div className={styles.box}  onClick={()=>{
+      console.log('不同种类设备数量');
+    }}>
       <div className={styles.title}>
         不同种类设备数量
       </div>

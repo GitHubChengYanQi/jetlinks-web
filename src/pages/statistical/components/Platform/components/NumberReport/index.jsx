@@ -10,7 +10,9 @@ const NumberReport = ({data = {}}) => {
     justifyContent: 'space-between',
     height: '100%'
   }}>
-    <div className={styles.box}>
+    <div className={styles.box} onClick={() => {
+      console.log('租户数量');
+    }}>
       <div className={styles.content} style={{borderRight: 'solid 1px #cacaca'}}>
         <div className={styles.label}>租户数量</div>
         <div className={styles.value}>{data.userCount}</div>
@@ -28,7 +30,9 @@ const NumberReport = ({data = {}}) => {
       </div>
     </div>
 
-    <div className={styles.titleBox}>
+    <div className={styles.titleBox} onClick={()=>{
+      console.log('实时设备数量统计');
+    }}>
       <div className={styles.label}>实时设备数量统计</div>
       <div className={styles.contentBox}>
         <div className={styles.content}>
@@ -46,7 +50,9 @@ const NumberReport = ({data = {}}) => {
       </div>
     </div>
 
-    <div className={styles.titleBox}>
+    <div className={styles.titleBox} onClick={()=>{
+      console.log('设备数量统计');
+    }}>
       <div className={styles.label}>设备数量统计</div>
       <div className={styles.contentBox}>
         <div className={styles.content}>
