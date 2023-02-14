@@ -1,6 +1,7 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
-import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag} from 'antd';
+import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag, Switch, Badge, Layout, Divider} from 'antd';
 import classNames from 'classnames';
+import { EyeOutlined } from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -10,6 +11,7 @@ import online from '@/asseset/imgs/online.svg';
 import offline from '@/asseset/imgs/offline.svg';
 import store from '@/store';
 
+const { Header, Footer, Sider, Content } = Layout;
 
 export const MapDeviceDetail = {
   url: '/device/MapDeviceDetail',
@@ -72,6 +74,7 @@ const Bmap = ({
       title = '设备离线';
       className = styles.offline;
     }
+    title = `${title  }　　　　　　　　　　　　　${  device.remarks  }`;
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
     const size = new baiduMap.Size(30, 37);
@@ -342,6 +345,90 @@ const Bmap = ({
 
     <div id="container" style={{height: '100%'}}/>
 
+
+
+
+
+
+
+
+
+    {/*<Modal*/}
+    {/*  mask={false}*/}
+    {/*  centered*/}
+    {/*  className={classNames(styles.modal, deviceModal.className)}*/}
+    {/*  width={700}*/}
+    {/*  title={deviceModal.title}*/}
+    {/*  onCancel={() => setOpen(false)}*/}
+    {/*  open={open}*/}
+    {/*  footer={null}*/}
+    {/*>*/}
+    {/*  <Row style={{width: '100%'}}>*/}
+    {/*    <Col span={12}>*/}
+    {/*      <Space direction="vertical" size={8} style={{width: '100%'}}>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>设备状态</div>*/}
+    {/*          ：*/}
+    {/*          <span*/}
+    {/*            style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>*/}
+    {/*        </div>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>终端备注</div>*/}
+    {/*          ：{device.remarks}</div>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>设备型号</div>*/}
+    {/*          ：{device.modelName}</div>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>IP地址</div>*/}
+    {/*          ：*/}
+    {/*          <span>*/}
+    {/*            {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}*/}
+    {/*          </span>*/}
+    {/*        </div>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>MAC地址</div>*/}
+    {/*          ：{device.mac}</div>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>位置信息</div>*/}
+    {/*          ：{device.area}</div>*/}
+    {/*        <div className={styles.leftRow}>*/}
+    {/*          <div>GPS定位</div>*/}
+    {/*          ：{device.longitude || '-'}，{device.latitude || '-'}</div>*/}
+    {/*      </Space>*/}
+    {/*    </Col>*/}
+    {/*    <Col span={12} className={styles.rightCol}>*/}
+    {/*      <Space direction="vertical" size={8} style={{width: '100%'}}>*/}
+    {/*        {*/}
+    {/*          detailLoading ? <div style={{textAlign: 'center'}}>*/}
+    {/*            <Spin size="large"/>*/}
+    {/*          </div> : isArray(data.layout).map((item, index) => {*/}
+    {/*            let value = '';*/}
+    {/*            if (!data.data) {*/}
+    {/*              value = '';*/}
+    {/*            } else if (Array.isArray(data.data) && !!item.field) {*/}
+    {/*              const arrayIndex = item.field.split('_')[0];*/}
+    {/*              const field = item.field.split('_')[1];*/}
+    {/*              value = data.data[arrayIndex]?.[field];*/}
+    {/*            } else {*/}
+    {/*              value = data.data[item.field];*/}
+    {/*            }*/}
+
+    {/*            return <div key={index} className={styles.rightRow}>*/}
+    {/*              <div>{item.title}</div>*/}
+    {/*              ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;*/}
+    {/*          })*/}
+    {/*        }*/}
+    {/*      </Space>*/}
+    {/*    </Col>*/}
+    {/*  </Row>*/}
+    {/*  <div style={{marginTop: 16, textAlign: 'center'}}>*/}
+    {/*    <Space size={24}>*/}
+    {/*      <Button type="link" onClick={() => onMarkerClick(device)}>设备详情</Button>*/}
+    {/*      <Button hidden={deviceModal.status !== 'error'} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警记录</Button>*/}
+    {/*    </Space>*/}
+    {/*  </div>*/}
+    {/*</Modal>*/}
+
     <Modal
       mask={false}
       centered
@@ -352,72 +439,392 @@ const Bmap = ({
       open={open}
       footer={null}
     >
-      <Row style={{width: '100%'}}>
-        <Col span={12}>
-          <Space direction="vertical" size={8} style={{width: '100%'}}>
-            <div className={styles.leftRow}>
-              <div>设备状态</div>
-              ：
-              <span
-                style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
-            </div>
-            <div className={styles.leftRow}>
-              <div>终端备注</div>
-              ：{device.remarks}</div>
-            <div className={styles.leftRow}>
-              <div>设备型号</div>
-              ：{device.modelName}</div>
-            <div className={styles.leftRow}>
-              <div>IP地址</div>
-              ：
-              <span>
-                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
-              </span>
-            </div>
-            <div className={styles.leftRow}>
-              <div>MAC地址</div>
-              ：{device.mac}</div>
-            <div className={styles.leftRow}>
-              <div>位置信息</div>
-              ：{device.area}</div>
-            <div className={styles.leftRow}>
-              <div>GPS定位</div>
-              ：{device.longitude || '-'}，{device.latitude || '-'}</div>
-          </Space>
-        </Col>
-        <Col span={12} className={styles.rightCol}>
-          <Space direction="vertical" size={8} style={{width: '100%'}}>
-            {
-              detailLoading ? <div style={{textAlign: 'center'}}>
-                <Spin size="large"/>
-              </div> : isArray(data.layout).map((item, index) => {
-                let value = '';
-                if (!data.data) {
-                  value = '';
-                } else if (Array.isArray(data.data) && !!item.field) {
-                  const arrayIndex = item.field.split('_')[0];
-                  const field = item.field.split('_')[1];
-                  value = data.data[arrayIndex]?.[field];
-                } else {
-                  value = data.data[item.field];
-                }
+      <div id="map-class">
+        <Row style={{width: '100%'}}>
+          <Col span={12}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow}>
+                <div>总闸状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
+                <Button onClick={() => console.log('总闸重启')} style={{marginLeft: '10px'}} type="primary" size="small">
+                  总闸重启
+                </Button>
+              </div>
+              <div className={styles.leftRow}>
+                <div>电网电压</div>
+                ：220V
+                <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电网电压历史')} />
+              </div>
+              <div className={styles.leftRow}>
+                <div>空开后电压</div>
+                ：220V
+                <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开后电压历史')} />
+              </div>
+              <div className={styles.leftRow}>
+                <div>柜门状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
+                <Switch style={{ marginLeft: '10px', marginTop: '3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`柜门状态改变：${checked}`)} />
+                <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('柜门状态历史')} />
+              </div>
+            </Space>
+          </Col>
+          <Col span={12} className={styles.rightCol}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div>
+                <Button style={{marginLeft: 'calc(100% - 88px)'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+              </div>
+              <Layout style={{background: '#FFF !important'}}>
+                <Sider>
+                  <Row style={{textAlign:'center'}}>
+                    <Col span={8}>
+                      <div style={{border: '1px solid #ccc !important'}}>
+                        Com1
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div style={{border: '1px solid #ccc !important'}}>
+                        Com2
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div style={{border: '1px solid #ccc !important'}}>
+                        主干网
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div style={{border: '1px solid #ccc !important'}}>
+                        通
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div style={{border: '1px solid #ccc !important'}}>
+                        不通
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div style={{border: '1px solid #ccc !important'}}>
+                        100%
+                      </div>
+                    </Col>
+                  </Row>
+                </Sider>
+                <Layout style={{background: '#FFF !important'}}>
+                  <Header style={{background: '#FFF !important'}}>
+                    <Button onClick={() => console.log('设备重启')} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                      设备重启
+                    </Button>
+                  </Header>
+                  <Content style={{background: '#FFF !important'}}>
+                    <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                      基础数据
+                    </Button>
+                  </Content>
+                  <Footer style={{background: '#FFF !important'}}>
+                    <Button onClick={() => console.log('工作环境')} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                      工作环境
+                    </Button>
+                  </Footer>
+                </Layout>
+              </Layout>
+            </Space>
+          </Col>
+        </Row>
+        <Divider />
+        <Row style={{width: '100%'}}>
+          <Col span={24}>
+            <strong>接入网口供电电压</strong>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={2}>
+                网口1
+              </Col>
+              <Col span={2}>
+                网口2
+              </Col>
+              <Col span={2}>
+                网口3
+              </Col>
+              <Col span={2}>
+                网口4
+              </Col>
+              <Col span={2}>
+                网口5
+              </Col>
+              <Col span={2}>
+                网口6
+              </Col>
+              <Col span={2}>
+                网口7
+              </Col>
+              <Col span={2}>
+                网口8
+              </Col>
+              <Col span={2}>
+                网口9
+              </Col>
+              <Col span={2}>
+                网口10
+              </Col>
+              <Col span={2}>
+                网口11
+              </Col>
+              <Col span={2}>
+                网口12
+              </Col>
+            </Row>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                这
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                个
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                值
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                可
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                点
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                击
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                1
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                1
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                1
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                1
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                1
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
+                1
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
-                return <div key={index} className={styles.rightRow}>
-                  <div>{item.title}</div>
-                  ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;
-              })
-            }
-          </Space>
-        </Col>
-      </Row>
-      <div style={{marginTop: 16, textAlign: 'center'}}>
-        <Space size={24}>
-          <Button type="link" onClick={() => onMarkerClick(device)}>设备详情</Button>
-          <Button hidden={deviceModal.status !== 'error'} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警记录</Button>
-        </Space>
+        <Row style={{width: '100%', marginTop: '10px'}}>
+          <Col span={24}>
+            <strong>接入网口网络状态</strong>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={2}>
+                网口1
+              </Col>
+              <Col span={2}>
+                网口2
+              </Col>
+              <Col span={2}>
+                网口3
+              </Col>
+              <Col span={2}>
+                网口4
+              </Col>
+              <Col span={2}>
+                网口5
+              </Col>
+              <Col span={2}>
+                网口6
+              </Col>
+              <Col span={2}>
+                网口7
+              </Col>
+              <Col span={2}>
+                网口8
+              </Col>
+              <Col span={2}>
+                网口9
+              </Col>
+              <Col span={2}>
+                网口10
+              </Col>
+              <Col span={2}>
+                网口11
+              </Col>
+              <Col span={2}>
+                网口12
+              </Col>
+            </Row>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#b2b1b1'}} span={2}>
+                断
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+              <Col style={{color: '#00a660'}} span={2}>
+                通
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
+        <Row style={{width: '100%', marginTop: '10px'}}>
+          <Col span={24}>
+            <strong>接入网口网络丢包率(摄像头)</strong>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={2}>
+                网口1
+              </Col>
+              <Col span={2}>
+                网口2
+              </Col>
+              <Col span={2}>
+                网口3
+              </Col>
+              <Col span={2}>
+                网口4
+              </Col>
+              <Col span={2}>
+                网口5
+              </Col>
+              <Col span={2}>
+                网口6
+              </Col>
+              <Col span={2}>
+                网口7
+              </Col>
+              <Col span={2}>
+                网口8
+              </Col>
+              <Col span={2}>
+                网口9
+              </Col>
+              <Col span={2}>
+                网口10
+              </Col>
+              <Col span={2}>
+                网口11
+              </Col>
+              <Col span={2}>
+                网口12
+              </Col>
+            </Row>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col span={2}>
+                100
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                视频
+              </Col>
+            </Row>
+          </Col>
+        </Row>
       </div>
     </Modal>
+
+
+
+
+
+
+
+
   </div>;
 };
 
