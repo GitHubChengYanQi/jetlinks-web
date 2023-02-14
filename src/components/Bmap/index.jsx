@@ -44,6 +44,7 @@ const Bmap = ({
 
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
+  const [open4012, setOpen4012] = useState(false);
   const [open, setOpen] = useState(false);
 
   const [params, setParams] = useState({});
@@ -81,7 +82,11 @@ const Bmap = ({
     const icon = new baiduMap.Icon(mark, size);
     const marker = new baiduMap.Marker(point1, {icon});        // 创建标注
     marker.addEventListener('click', () => {
-      setOpen(true);
+      if(device.modelName === "OPT IMS 4012M"){
+        setOpen4012(true);
+      } else {
+        setOpen(true);
+      }
       run({data: {deviceId: device.deviceId}});
       setDevice(device);
       setDeviceModal({title, className, deviceOnline, status});
@@ -352,83 +357,7 @@ const Bmap = ({
 
 
 
-
-    {/*<Modal*/}
-    {/*  mask={false}*/}
-    {/*  centered*/}
-    {/*  className={classNames(styles.modal, deviceModal.className)}*/}
-    {/*  width={700}*/}
-    {/*  title={deviceModal.title}*/}
-    {/*  onCancel={() => setOpen(false)}*/}
-    {/*  open={open}*/}
-    {/*  footer={null}*/}
-    {/*>*/}
-    {/*  <Row style={{width: '100%'}}>*/}
-    {/*    <Col span={12}>*/}
-    {/*      <Space direction="vertical" size={8} style={{width: '100%'}}>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>设备状态</div>*/}
-    {/*          ：*/}
-    {/*          <span*/}
-    {/*            style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>*/}
-    {/*        </div>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>终端备注</div>*/}
-    {/*          ：{device.remarks}</div>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>设备型号</div>*/}
-    {/*          ：{device.modelName}</div>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>IP地址</div>*/}
-    {/*          ：*/}
-    {/*          <span>*/}
-    {/*            {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}*/}
-    {/*          </span>*/}
-    {/*        </div>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>MAC地址</div>*/}
-    {/*          ：{device.mac}</div>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>位置信息</div>*/}
-    {/*          ：{device.area}</div>*/}
-    {/*        <div className={styles.leftRow}>*/}
-    {/*          <div>GPS定位</div>*/}
-    {/*          ：{device.longitude || '-'}，{device.latitude || '-'}</div>*/}
-    {/*      </Space>*/}
-    {/*    </Col>*/}
-    {/*    <Col span={12} className={styles.rightCol}>*/}
-    {/*      <Space direction="vertical" size={8} style={{width: '100%'}}>*/}
-    {/*        {*/}
-    {/*          detailLoading ? <div style={{textAlign: 'center'}}>*/}
-    {/*            <Spin size="large"/>*/}
-    {/*          </div> : isArray(data.layout).map((item, index) => {*/}
-    {/*            let value = '';*/}
-    {/*            if (!data.data) {*/}
-    {/*              value = '';*/}
-    {/*            } else if (Array.isArray(data.data) && !!item.field) {*/}
-    {/*              const arrayIndex = item.field.split('_')[0];*/}
-    {/*              const field = item.field.split('_')[1];*/}
-    {/*              value = data.data[arrayIndex]?.[field];*/}
-    {/*            } else {*/}
-    {/*              value = data.data[item.field];*/}
-    {/*            }*/}
-
-    {/*            return <div key={index} className={styles.rightRow}>*/}
-    {/*              <div>{item.title}</div>*/}
-    {/*              ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;*/}
-    {/*          })*/}
-    {/*        }*/}
-    {/*      </Space>*/}
-    {/*    </Col>*/}
-    {/*  </Row>*/}
-    {/*  <div style={{marginTop: 16, textAlign: 'center'}}>*/}
-    {/*    <Space size={24}>*/}
-    {/*      <Button type="link" onClick={() => onMarkerClick(device)}>设备详情</Button>*/}
-    {/*      <Button hidden={deviceModal.status !== 'error'} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警记录</Button>*/}
-    {/*    </Space>*/}
-    {/*  </div>*/}
-    {/*</Modal>*/}
-
+    {/*原有*/}
     <Modal
       mask={false}
       centered
@@ -437,6 +366,83 @@ const Bmap = ({
       title={deviceModal.title}
       onCancel={() => setOpen(false)}
       open={open}
+      footer={null}
+    >
+      <Row style={{width: '100%'}}>
+        <Col span={12}>
+          <Space direction="vertical" size={8} style={{width: '100%'}}>
+            <div className={styles.leftRow}>
+              <div>设备状态</div>
+              ：
+              <span
+                style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
+            </div>
+            <div className={styles.leftRow}>
+              <div>终端备注</div>
+              ：{device.remarks}</div>
+            <div className={styles.leftRow}>
+              <div>设备型号</div>
+              ：{device.modelName}</div>
+            <div className={styles.leftRow}>
+              <div>IP地址</div>
+              ：
+              <span>
+                {device.ip ? `(外)${device.ip}` : ''} {data?.data?.devip ? <><br/>(内){data?.data?.devip}</> : ''}
+              </span>
+            </div>
+            <div className={styles.leftRow}>
+              <div>MAC地址</div>
+              ：{device.mac}</div>
+            <div className={styles.leftRow}>
+              <div>位置信息</div>
+              ：{device.area}</div>
+            <div className={styles.leftRow}>
+              <div>GPS定位</div>
+              ：{device.longitude || '-'}，{device.latitude || '-'}</div>
+          </Space>
+        </Col>
+        <Col span={12} className={styles.rightCol}>
+          <Space direction="vertical" size={8} style={{width: '100%'}}>
+            {
+              detailLoading ? <div style={{textAlign: 'center'}}>
+                <Spin size="large"/>
+              </div> : isArray(data.layout).map((item, index) => {
+                let value = '';
+                if (!data.data) {
+                  value = '';
+                } else if (Array.isArray(data.data) && !!item.field) {
+                  const arrayIndex = item.field.split('_')[0];
+                  const field = item.field.split('_')[1];
+                  value = data.data[arrayIndex]?.[field];
+                } else {
+                  value = data.data[item.field];
+                }
+
+                return <div key={index} className={styles.rightRow}>
+                  <div>{item.title}</div>
+                  ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;
+              })
+            }
+          </Space>
+        </Col>
+      </Row>
+      <div style={{marginTop: 16, textAlign: 'center'}}>
+        <Space size={24}>
+          <Button type="link" onClick={() => onMarkerClick(device)}>设备详情</Button>
+          <Button hidden={deviceModal.status !== 'error'} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警记录</Button>
+        </Space>
+      </div>
+    </Modal>
+
+    {/*4012*/}
+    <Modal
+      mask={false}
+      centered
+      className={classNames(styles.modal, deviceModal.className)}
+      width={700}
+      title={deviceModal.title}
+      onCancel={() => setOpen4012(false)}
+      open={open4012}
       footer={null}
     >
       <div id="map-class">
