@@ -1,7 +1,7 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
 import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag, Switch, Badge, Layout, Divider} from 'antd';
 import classNames from 'classnames';
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, AlertOutlined } from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -44,6 +44,7 @@ const Bmap = ({
 
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
+  const [openTieTa, setOpenTieTa] = useState(false);
   const [open4012, setOpen4012] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -82,8 +83,11 @@ const Bmap = ({
     const icon = new baiduMap.Icon(mark, size);
     const marker = new baiduMap.Marker(point1, {icon});        // 创建标注
     marker.addEventListener('click', () => {
+      console.log(device);
       if(device.modelName === "OPT IMS 4012M"){
         setOpen4012(true);
+      } else if (device.modelName === "铁塔备电设备") {
+        setOpenTieTa(true);
       } else {
         setOpen(true);
       }
@@ -480,39 +484,42 @@ const Bmap = ({
           </Col>
           <Col span={12} className={styles.rightCol}>
             <Space direction="vertical" size={8} style={{width: '100%'}}>
-              <div>
-                <Button style={{marginLeft: 'calc(100% - 88px)'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+              <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                <div style={{textAlign:'left'}}>告警数量：</div>
+                <span style={{color: 'red', textAlign:'left'}}>23</span>
+                <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
               </div>
               <Layout style={{background: '#FFF !important'}}>
                 <Sider>
                   <Row style={{textAlign:'center'}}>
                     <Col span={8}>
-                      <div style={{border: '1px solid #ccc !important'}}>
+                      <div>
                         Com1
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div style={{border: '1px solid #ccc !important'}}>
+                      <div>
                         Com2
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div style={{border: '1px solid #ccc !important'}}>
+                      <div>
                         主干网
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div style={{border: '1px solid #ccc !important'}}>
+                      <div>
                         通
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div style={{border: '1px solid #ccc !important'}}>
+                      <div>
                         不通
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div style={{border: '1px solid #ccc !important'}}>
+                      <div>
                         100%
                       </div>
                     </Col>
@@ -824,7 +831,97 @@ const Bmap = ({
       </div>
     </Modal>
 
-
+    {/*铁塔*/}
+    <Modal
+      mask={false}
+      centered
+      className={classNames(styles.modal, deviceModal.className)}
+      width={700}
+      title={deviceModal.title}
+      onCancel={() => setOpenTieTa(false)}
+      open={openTieTa}
+      footer={null}
+    >
+      <div id="map-class">
+        <Row style={{width: '100%'}}>
+          <Col span={12}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow}>
+                <div>设备状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
+              </div>
+              <div className={styles.leftRow}>
+                <div>柜门状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
+                <Switch style={{ marginLeft: '10px', marginTop: '3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`柜门状态改变：${checked}`)} />
+              </div>
+            </Space>
+          </Col>
+          <Col span={12} className={styles.rightCol}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                <div style={{textAlign:'left'}}>告警数量：</div>
+                <span style={{color: 'red', textAlign:'left'}}>23</span>
+                <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+              </div>
+              <div className={styles.leftRow}>
+                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: 'calc(100% - 80px)', marginTop: '-5px'}} type="primary" size="small">
+                  基础数据
+                </Button>
+              </div>
+            </Space>
+          </Col>
+        </Row>
+        <Divider />
+        <Row style={{width: '100%'}}>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={8}>
+                供电输出类型：电网输出供电
+              </Col>
+              <Col span={8}>
+                空开控制：
+                <Switch style={{ marginLeft: '10px', marginTop: '-3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`空开控制：${checked}`)} />
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
+              </Col>
+              <Col span={8}>
+                电池总容量：20h
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池总容量历史')} />
+              </Col>
+              <Col span={8}>
+                输入电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输入电压历史')} />
+              </Col>
+              <Col span={8}>
+                输入电流：1.2A
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输入电流历史')} />
+              </Col>
+              <Col span={8}>
+                电池剩余容量：16h
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池剩余容量历史')} />
+              </Col>
+              <Col span={8}>
+                输出电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输出电压历史')} />
+              </Col>
+              <Col span={8}>
+                输出电流：1.2A
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输出电流历史')} />
+              </Col>
+              <Col span={8}>
+                剩余供电时间：12h23m
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('剩余供电时间历史')} />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </div>
+    </Modal>
 
 
 
