@@ -16,9 +16,8 @@ import {
   Divider,
   Drawer, message
 } from 'antd';
-import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag} from 'antd';
 import classNames from 'classnames';
-import {EyeOutlined, AlertOutlined} from '@ant-design/icons';
+import {EyeOutlined, AlertOutlined,PictureOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -31,6 +30,7 @@ import {OuntDown} from '@/pages/monitor/Control';
 import DateSelect from "@/pages/monitor/components/DateSelect";
 import DeviceChar from "@/pages/monitor/DeviceChar";
 
+const { Header, Footer, Sider, Content } = Layout;
 
 export const MapDeviceDetail = {
   url: '/device/MapDeviceDetail',
@@ -52,16 +52,16 @@ export const buttonSubmit = {
   method: 'POST'
 };
 
-const Bmap = ({
-  value = [],
-  onChange = () => {
-  },
-  onMarkerClick = () => {
-  },
-  onHistory = () => {
-  },
-  search
-}, ref) => {
+  const Bmap = ({
+    value = [],
+    onChange = () => {
+    },
+    onMarkerClick = () => {
+    },
+    onHistory = () => {
+    },
+    search
+  }, ref) => {
 
   const [dataSource] = store.useModel('dataSource');
   const customer = dataSource.customer || {};
@@ -73,7 +73,11 @@ const Bmap = ({
   const [date, setDate] = useState([]);
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
+  const [openTieTa, setOpenTieTa] = useState(false);
+  const [open4012, setOpen4012] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openAnnunciator, setOpenAnnunciator] = useState(false);
+  const [openTrafficLight, setOpenTrafficLight] = useState(false);
   const [openChar, setOpenChar] = useState({});
   const [params, setParams] = useState({});
   const [baiduMap, setBaiduMap] = useState({});
@@ -112,6 +116,7 @@ const Bmap = ({
       title = '设备离线';
       className = styles.offline;
     }
+    title = `${title  }　　　　　　　　　　　　　${  device.remarks  }`;
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
     const size = new baiduMap.Size(30, 37);
@@ -122,8 +127,13 @@ const Bmap = ({
         setOpen4012(true);
       } else if (device.modelName === "铁塔备电设备") {
         setOpenTieTa(true);
+      } else if (device.modelName === "信号机") {
+        setOpenAnnunciator(true);
+      } else if (device.modelName === "信号灯") {
+        setOpenTrafficLight(true);
       } else {
-        setOpen(true);
+        // setOpen(true);
+        setOpenAnnunciator(true);
       }
       run({data: {deviceId: device.deviceId}});
       alarmRun({data: {deviceId: device.deviceId}});
@@ -774,6 +784,132 @@ const Bmap = ({
               <Col span={8}>
                 剩余供电时间：12h23m
                 <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('剩余供电时间历史')} />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </div>
+    </Modal>
+
+    {/*信号机*/}
+    <Modal
+      mask={false}
+      centered
+      className={classNames(styles.modal, deviceModal.className)}
+      width={700}
+      title={deviceModal.title}
+      onCancel={() => setOpenAnnunciator(false)}
+      open={openAnnunciator}
+      footer={null}
+    >
+      <div id="map-class">
+        <Row style={{width: '100%'}}>
+          <Col span={12}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow}>
+                <div>设备状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
+              </div>
+              <div className={styles.leftRow}>
+                <div>空开控制</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
+              </div>
+            </Space>
+          </Col>
+          <Col span={12} className={styles.rightCol}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                <div style={{textAlign:'left'}}>告警数量：</div>
+                <span style={{color: 'red', textAlign:'left'}}>23</span>
+                <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+              </div>
+              <div className={styles.leftRow}>
+                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: 'calc(100% - 165px)', marginTop: '-5px'}} type="primary" size="small">
+                  实时视频
+                </Button>
+                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '10px', marginTop: '-5px'}} type="primary" size="small">
+                  设备详情
+                </Button>
+              </div>
+            </Space>
+          </Col>
+        </Row>
+        <Divider />
+        <strong>供电监测</strong>
+        <Row style={{width: '100%'}}>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={8}>
+                输入电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
+              </Col>
+              <Col span={8}>
+                输出电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
+              </Col>
+              <Col span={8}>
+                空开状态：关闭
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池总容量历史')} />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row style={{width: '100%', marginTop: '10px'}}>
+          <strong>主干网络监测</strong>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={6}>
+                平台IP：255.255.255.255
+              </Col>
+              <Col span={6}>
+                主干网络丢包率：25%
+              </Col>
+              <Col span={6}>
+                Com1：连接
+              </Col>
+              <Col span={6}>
+                Com2：未连接
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row id='map-class-col-12' style={{width: '100%', marginTop: '10px'}}>
+          <strong>设置监测</strong>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={12}>
+                初始配置IP：255.255.255.255
+              </Col>
+              <Col span={12}>
+                监测到目前IP：255.255.255.255
+              </Col>
+              <Col span={12}>
+                线路连接网线：已连接
+              </Col>
+              <Col span={12}>
+                线路连接丢包率：25%
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row style={{width: '100%', marginTop: '10px'}}>
+          <strong>工作环境监测</strong>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={8}>
+                柜门状态：开启
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<PictureOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('查看照片')} />
+              </Col>
+              <Col span={8}>
+                温度：26°
+              </Col>
+              <Col span={8}>
+                湿度：60%
               </Col>
             </Row>
           </Col>
