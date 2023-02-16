@@ -1,6 +1,23 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
-import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag} from 'antd';
+import {
+  Button,
+  Col,
+  Input,
+  List,
+  Modal,
+  Popover,
+  Row,
+  Space,
+  Spin,
+  Tag,
+  Switch,
+  Badge,
+  Layout,
+  Divider,
+  Drawer, message
+} from 'antd';
 import classNames from 'classnames';
+import {EyeOutlined, AlertOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -9,48 +26,73 @@ import error from '@/asseset/imgs/error.svg';
 import online from '@/asseset/imgs/online.svg';
 import offline from '@/asseset/imgs/offline.svg';
 import store from '@/store';
+import {OuntDown} from '@/pages/monitor/Control';
+import DateSelect from "@/pages/monitor/components/DateSelect";
+import DeviceChar from "@/pages/monitor/DeviceChar";
 
+const { Header, Footer, Sider, Content } = Layout;
 
 export const MapDeviceDetail = {
   url: '/device/MapDeviceDetail',
   method: 'POST'
 };
 
+export const alarmCustomerView = {
+  url: '/statistics/alarmCustomerView',
+  method: 'POST'
+};
+
+export const getChartTopic = {
+  url: '/deviceModel/getChartTopic',
+  method: 'POST'
+};
+
+export const buttonSubmit = {
+  url: '/device/buttonSubmit',
+  method: 'POST'
+};
+
 const Bmap = ({
-  value = [],
-  onChange = () => {
-  },
-  onMarkerClick = () => {
-  },
-  onHistory = () => {
-  },
-  search
-}, ref) => {
+                value = [],
+                onChange = () => {
+                },
+                onMarkerClick = () => {
+                },
+                onHistory = () => {
+                },
+                search
+              }, ref) => {
 
   const [dataSource] = store.useModel('dataSource');
-
   const customer = dataSource.customer || {};
-
   const bmapOffline = customer.platformMode === 1;
-
   const [centerPoint, setCenterPoint] = useState({});
-
+  const [infoVisible, setInfoVisible] = useState({});
   const [visiable, setVisiable] = useState();
-
   const [resluts, setResults] = useState([]);
-
-
+  const [date, setDate] = useState([]);
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
+  const [openTieTa, setOpenTieTa] = useState(false);
+  const [open4012, setOpen4012] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [openChar, setOpenChar] = useState({});
   const [params, setParams] = useState({});
-
   const [baiduMap, setBaiduMap] = useState({});
   const [map, setMap] = useState();
 
   const {loading: detailLoading, data = {}, run} = useRequest(MapDeviceDetail, {manual: true});
-
+  const {data: alarmData = {}, run: alarmRun} = useRequest(alarmCustomerView, {manual: true});
+  const {data: buttonData = {}, run: buttonRun} = useRequest(getChartTopic, {manual: true});
+  const {loading,run: submitRun} = useRequest(buttonSubmit, {
+    manual: true,
+    onSuccess: () => {
+      message.success('操作成功！');
+    },
+    onError: () => {
+      message.error('操作失败！');
+    }
+  });
   const mapMaker = (device) => {
     const deviceOnline = device.status === 'online';
 
@@ -72,15 +114,25 @@ const Bmap = ({
       title = '设备离线';
       className = styles.offline;
     }
+    title = `${title  }　　　　　　　　　　　　　${  device.remarks  }`;
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
     const size = new baiduMap.Size(30, 37);
     const icon = new baiduMap.Icon(mark, size);
     const marker = new baiduMap.Marker(point1, {icon});        // 创建标注
     marker.addEventListener('click', () => {
-      setOpen(true);
+      if(device.modelName === "OPT IMS 4012M"){
+        setOpen4012(true);
+      } else if (device.modelName === "铁塔备电设备") {
+        setOpenTieTa(true);
+      } else {
+        setOpen(true);
+      }
       run({data: {deviceId: device.deviceId}});
+      alarmRun({data: {deviceId: device.deviceId}});
+      buttonRun({data: {modelId: device.modelId,title:'dwgd'}});
       setDevice(device);
+      setInfoVisible(device);
       setDeviceModal({title, className, deviceOnline, status});
     });
     map.addOverlay(marker);
@@ -199,7 +251,6 @@ const Bmap = ({
     };
     // 百度地图API文件链接，异步加载必须带参数callback，后面是回调函数。
     const BMapURL = bmapOffline ? `${mapUrl}/bmap_offline_api_v3.0_min.js` : '//api.map.baidu.com/api?v=3.0&ak=FFFGGr9s5Hiee3vrtjVguKPtdgcxDEnv&callback=onBMapCallback';
-
 
     // 插入script脚本
     const scriptNode = document.createElement('script');
@@ -342,6 +393,7 @@ const Bmap = ({
 
     <div id="container" style={{height: '100%'}}/>
 
+    {/*原有*/}
     <Modal
       mask={false}
       centered
@@ -401,7 +453,6 @@ const Bmap = ({
                 } else {
                   value = data.data[item.field];
                 }
-
                 return <div key={index} className={styles.rightRow}>
                   <div>{item.title}</div>
                   ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;
@@ -415,9 +466,338 @@ const Bmap = ({
           <Button type="link" onClick={() => onMarkerClick(device)}>设备详情</Button>
           <Button hidden={deviceModal.status !== 'error'} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警记录</Button>
         </Space>
-
       </div>
     </Modal>
+
+    {/*4012*/}
+    <Modal
+      mask={false}
+      centered
+      className={classNames(styles.modal, deviceModal.className)}
+      width={700}
+      title={deviceModal.title}
+      onCancel={() => setOpen4012(false)}
+      open={open4012}
+      footer={null}
+    >
+      <div id="map-class">
+        {
+          detailLoading ? <div style={{textAlign: 'center'}}>
+            <Spin size="large"/>
+          </div> : isArray(data.layout).map((item, index) => {
+            if (!data.data) {
+              return <div>暂无数据</div>;
+            } else if (item.title === '基本信息'){
+              return <Row style={{width: '100%'}}>
+                <Col span={12}>
+                  <Space direction="vertical" size={8} style={{width: '100%'}}>
+                    <div id='ount-down-button' className={styles.leftRow}>
+                      <div>总闸状态</div>
+                      ：
+                      <span
+                        style={{color: data.data.powerOff ? '#00a660' : '#b2b1b1'}}>{data.data.powerOff ? '在线' : '离线'}</span>
+                      <OuntDown item={buttonData.button[1].downDatas[0]} run={submitRun} MAC={device.mac} />
+                    </div>
+                    <div className={styles.leftRow}>
+                      <div>电网电压</div>
+                      ：{data.data.gridVoltage}
+                      <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                        setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
+                      }} />
+                    </div>
+                    <div className={styles.leftRow}>
+                      <div>空开后电压</div>
+                      ：{data.data.kongkai}
+                      <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                        setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
+                      }} />
+                    </div>
+                    <div className={styles.leftRow}>
+                      <div>柜门状态</div>
+                      ：
+                      <span
+                        style={{color: data.data.door === '打开' ? 'red' : '#00a660'}}>{data.data.door}</span>
+                      <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                        setOpenChar({protocolType: 'fsjc', defaultType: 'door', ...infoVisible});
+                      }} />
+                    </div>
+                  </Space>
+                </Col>
+                <Col span={12} className={styles.rightCol}>
+                  <Space direction="vertical" size={8} style={{width: '100%'}}>
+                    <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                      <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                      <div style={{textAlign:'left'}}>告警数量：</div>
+                      <span style={{color: 'red', textAlign:'left'}}>{alarmData.alarm.errorNum}</span>
+                      <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+                    </div>
+                    <Layout style={{background: '#FFF !important'}}>
+                      <Sider>
+                        <Row style={{textAlign:'center'}}>
+                          <Col span={8}>
+                            <div>
+                              Com1
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div>
+                              Com2
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div>
+                              主干网
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div>
+                              {data.data.comboSpeed1}
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div>
+                              {data.data.comboSpeed2}
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div>
+                              {data.data.mainEth}
+                            </div>
+                          </Col>
+                        </Row>
+                      </Sider>
+                      <Layout style={{background: '#FFF !important'}}>
+                        <Header style={{background: '#FFF !important'}}>
+                          <div id='ount-down-btn'>
+                            <OuntDown item={buttonData.button[1].downDatas[1]} run={submitRun} MAC={device.mac} />
+                          </div>
+                        </Header>
+                        <Content style={{background: '#FFF !important'}}>
+                          <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                            基础数据
+                          </Button>
+                        </Content>
+                        <Footer style={{background: '#FFF !important'}}>
+                          <Button onClick={() => {
+                            setOpenChar({protocolType: 'fsjc', defaultType: '', ...infoVisible});
+                          }} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                            工作环境
+                          </Button>
+                        </Footer>
+                      </Layout>
+                    </Layout>
+                  </Space>
+                </Col>
+              </Row>;
+            } else if (item.title === '接入网口供电电压'){
+              return <Row style={{width: '100%'}}>
+                <Col span={24}>
+                  <strong>{item.title}</strong>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col span={2}> { items.title } </Col>;
+                      })
+                    }
+                  </Row>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value;
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => {
+                          if (items.path) {
+                            setOpenChar({protocolType: items.path, defaultType: items.url, ...infoVisible});
+                          }
+                        }}>
+                          {typeof value === 'number' ? `${value}` : (value || '-')}
+                        </Col>;
+                      })
+                    }
+                  </Row>
+                </Col>
+              </Row>;
+            } else if (item.title === '接入网口网络状态'){
+              return <Row style={{width: '100%', marginTop: '10px'}}>
+                <Col span={24}>
+                  <strong>{item.title}</strong>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col span={2}> { items.title } </Col>;
+                      })
+                    }
+                  </Row>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value = '';
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col style={{color: value === '通' ? '#00a660' : '#b2b1b1'}} span={2}>
+                          {typeof value === 'number' ? `${value}` : (value || '-')}
+                        </Col>;
+                      })
+                    }
+                  </Row>
+                </Col>
+              </Row>;
+            } else if (item.title === '接入网口网络速率'){
+              return <Row style={{width: '100%', marginTop: '10px'}}>
+                <Col span={24}>
+                  <strong>{item.title}</strong>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col span={2}> { items.title } </Col>;
+                      })
+                    }
+                  </Row>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value = '';
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col style={{color: '#00a660'}} span={2}>
+                          {typeof value === 'number' ? `${value}` : (value || '-')}
+                        </Col>;
+                      })
+                    }
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
+                          视频
+                        </Col>;
+                      })
+                    }
+                  </Row>
+                </Col>
+              </Row>;
+            } else {
+              return <div>暂无数据</div>;
+            }
+          })
+        }
+      </div>
+    </Modal>
+
+    {/*铁塔*/}
+    <Modal
+      mask={false}
+      centered
+      className={classNames(styles.modal, deviceModal.className)}
+      width={700}
+      title={deviceModal.title}
+      onCancel={() => setOpenTieTa(false)}
+      open={openTieTa}
+      footer={null}
+    >
+      <div id="map-class">
+        <Row style={{width: '100%'}}>
+          <Col span={12}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow}>
+                <div>设备状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
+              </div>
+              <div className={styles.leftRow}>
+                <div>柜门状态</div>
+                ：
+                <span
+                  style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
+                <Switch style={{ marginLeft: '10px', marginTop: '3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`柜门状态改变：${checked}`)} />
+              </div>
+            </Space>
+          </Col>
+          <Col span={12} className={styles.rightCol}>
+            <Space direction="vertical" size={8} style={{width: '100%'}}>
+              <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                <div style={{textAlign:'left'}}>告警数量：</div>
+                <span style={{color: 'red', textAlign:'left'}}>23</span>
+                <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+              </div>
+              <div className={styles.leftRow}>
+                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: 'calc(100% - 80px)', marginTop: '-5px'}} type="primary" size="small">
+                  基础数据
+                </Button>
+              </div>
+            </Space>
+          </Col>
+        </Row>
+        <Divider />
+        <Row style={{width: '100%'}}>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={8}>
+                供电输出类型：电网输出供电
+              </Col>
+              <Col span={8}>
+                空开控制：
+                <Switch style={{ marginLeft: '10px', marginTop: '-3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`空开控制：${checked}`)} />
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
+              </Col>
+              <Col span={8}>
+                电池总容量：20h
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池总容量历史')} />
+              </Col>
+              <Col span={8}>
+                输入电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输入电压历史')} />
+              </Col>
+              <Col span={8}>
+                输入电流：1.2A
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输入电流历史')} />
+              </Col>
+              <Col span={8}>
+                电池剩余容量：16h
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池剩余容量历史')} />
+              </Col>
+              <Col span={8}>
+                输出电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输出电压历史')} />
+              </Col>
+              <Col span={8}>
+                输出电流：1.2A
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输出电流历史')} />
+              </Col>
+              <Col span={8}>
+                剩余供电时间：12h23m
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('剩余供电时间历史')} />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </div>
+    </Modal>
+
+    <Drawer
+      title={`终端备注：${openChar.remarks || '-'}    设备型号：${openChar.modelName}`}
+      destroyOnClose
+      style={{minWidth: '50vw'}}
+      className={styles.drawer}
+      open={openChar.protocolType}
+      onClose={() => setOpenChar({})}
+      extra={<DateSelect
+        value={date}
+        onChange={setDate}
+      />}
+    >
+      <DeviceChar device={openChar} date={date} defaultType={openChar?.defaultType} />
+    </Drawer>
   </div>;
 };
 
