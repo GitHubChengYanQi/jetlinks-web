@@ -52,16 +52,16 @@ export const buttonSubmit = {
   method: 'POST'
 };
 
-  const Bmap = ({
-    value = [],
-    onChange = () => {
-    },
-    onMarkerClick = () => {
-    },
-    onHistory = () => {
-    },
-    search
-  }, ref) => {
+const Bmap = ({
+  value = [],
+  onChange = () => {
+  },
+  onMarkerClick = () => {
+  },
+  onHistory = () => {
+  },
+  search
+}, ref) => {
 
   const [dataSource] = store.useModel('dataSource');
   const customer = dataSource.customer || {};
