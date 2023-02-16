@@ -16,6 +16,7 @@ import {
   Divider,
   Drawer, message
 } from 'antd';
+import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag} from 'antd';
 import classNames from 'classnames';
 import {EyeOutlined, AlertOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
@@ -30,7 +31,6 @@ import {OuntDown} from '@/pages/monitor/Control';
 import DateSelect from "@/pages/monitor/components/DateSelect";
 import DeviceChar from "@/pages/monitor/DeviceChar";
 
-const { Header, Footer, Sider, Content } = Layout;
 
 export const MapDeviceDetail = {
   url: '/device/MapDeviceDetail',
@@ -53,15 +53,15 @@ export const buttonSubmit = {
 };
 
 const Bmap = ({
-                value = [],
-                onChange = () => {
-                },
-                onMarkerClick = () => {
-                },
-                onHistory = () => {
-                },
-                search
-              }, ref) => {
+  value = [],
+  onChange = () => {
+  },
+  onMarkerClick = () => {
+  },
+  onHistory = () => {
+  },
+  search
+}, ref) => {
 
   const [dataSource] = store.useModel('dataSource');
   const customer = dataSource.customer || {};
@@ -73,8 +73,6 @@ const Bmap = ({
   const [date, setDate] = useState([]);
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
-  const [openTieTa, setOpenTieTa] = useState(false);
-  const [open4012, setOpen4012] = useState(false);
   const [open, setOpen] = useState(false);
   const [openChar, setOpenChar] = useState({});
   const [params, setParams] = useState({});
@@ -114,7 +112,6 @@ const Bmap = ({
       title = '设备离线';
       className = styles.offline;
     }
-    title = `${title  }　　　　　　　　　　　　　${  device.remarks  }`;
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
     const size = new baiduMap.Size(30, 37);
