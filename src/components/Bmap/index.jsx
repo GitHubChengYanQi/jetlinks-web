@@ -132,8 +132,8 @@ const Bmap = ({
       } else if (device.modelName === "信号灯") {
         setOpenTrafficLight(true);
       } else {
-        // setOpen(true);
-        setOpenAnnunciator(true);
+        setOpen(true);
+        // setOpenAnnunciator(true);
       }
       run({data: {deviceId: device.deviceId}});
       alarmRun({data: {deviceId: device.deviceId}});
@@ -495,107 +495,110 @@ const Bmap = ({
             if (!data.data) {
               return <div>暂无数据</div>;
             } else if (item.title === '基本信息'){
-              return <Row style={{width: '100%'}}>
-                <Col span={12}>
-                  <Space direction="vertical" size={8} style={{width: '100%'}}>
-                    <div id='ount-down-button' className={styles.leftRow}>
-                      <div>总闸状态</div>
-                      ：
-                      <span
-                        style={{color: data.data.powerOff ? '#00a660' : '#b2b1b1'}}>{data.data.powerOff ? '在线' : '离线'}</span>
-                      <OuntDown item={buttonData.button[1].downDatas[0]} run={submitRun} MAC={device.mac} />
-                    </div>
-                    <div className={styles.leftRow}>
-                      <div>电网电压</div>
-                      ：{data.data.gridVoltage}
-                      <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
-                        setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
-                      }} />
-                    </div>
-                    <div className={styles.leftRow}>
-                      <div>空开后电压</div>
-                      ：{data.data.kongkai}
-                      <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
-                        setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
-                      }} />
-                    </div>
-                    <div className={styles.leftRow}>
-                      <div>柜门状态</div>
-                      ：
-                      <span
-                        style={{color: data.data.door === '打开' ? 'red' : '#00a660'}}>{data.data.door}</span>
-                      <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
-                        setOpenChar({protocolType: 'fsjc', defaultType: 'door', ...infoVisible});
-                      }} />
-                    </div>
-                  </Space>
-                </Col>
-                <Col span={12} className={styles.rightCol}>
-                  <Space direction="vertical" size={8} style={{width: '100%'}}>
-                    <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
-                      <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
-                      <div style={{textAlign:'left'}}>告警数量：</div>
-                      <span style={{color: 'red', textAlign:'left'}}>{alarmData.alarm.errorNum}</span>
-                      <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
-                    </div>
-                    <Layout style={{background: '#FFF !important'}}>
-                      <Sider>
-                        <Row style={{textAlign:'center'}}>
-                          <Col span={8}>
-                            <div>
-                              Com1
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div>
-                              Com2
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div>
-                              主干网
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div>
-                              {data.data.comboSpeed1}
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div>
-                              {data.data.comboSpeed2}
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div>
-                              {data.data.mainEth}
-                            </div>
-                          </Col>
-                        </Row>
-                      </Sider>
+              return <div>
+                <Row style={{width: '100%'}}>
+                  <Col span={12}>
+                    <Space direction="vertical" size={8} style={{width: '100%'}}>
+                      <div id='ount-down-button' className={styles.leftRow}>
+                        <div>总闸状态</div>
+                        ：
+                        <span
+                          style={{color: data.data.powerOff ? '#00a660' : '#b2b1b1'}}>{data.data.powerOff ? '在线' : '离线'}</span>
+                        <OuntDown item={buttonData.button[1].downDatas[0]} run={submitRun} MAC={device.mac} />
+                      </div>
+                      <div className={styles.leftRow}>
+                        <div>电网电压</div>
+                        ：{data.data.gridVoltage}
+                        <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                          setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
+                        }} />
+                      </div>
+                      <div className={styles.leftRow}>
+                        <div>空开后电压</div>
+                        ：{data.data.kongkai}
+                        <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                          setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
+                        }} />
+                      </div>
+                      <div className={styles.leftRow}>
+                        <div>柜门状态</div>
+                        ：
+                        <span
+                          style={{color: data.data.door === '打开' ? 'red' : '#00a660'}}>{data.data.door}</span>
+                        <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                          setOpenChar({protocolType: 'fsjc', defaultType: 'door', ...infoVisible});
+                        }} />
+                      </div>
+                    </Space>
+                  </Col>
+                  <Col span={12} className={styles.rightCol}>
+                    <Space direction="vertical" size={8} style={{width: '100%'}}>
+                      <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                        <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                        <div style={{textAlign:'left'}}>告警数量：</div>
+                        <span style={{color: 'red', textAlign:'left'}}>{alarmData.alarm.errorNum}</span>
+                        <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+                      </div>
                       <Layout style={{background: '#FFF !important'}}>
-                        <Header style={{background: '#FFF !important'}}>
-                          <div id='ount-down-btn'>
-                            <OuntDown item={buttonData.button[1].downDatas[1]} run={submitRun} MAC={device.mac} />
-                          </div>
-                        </Header>
-                        <Content style={{background: '#FFF !important'}}>
-                          <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
-                            基础数据
-                          </Button>
-                        </Content>
-                        <Footer style={{background: '#FFF !important'}}>
-                          <Button onClick={() => {
-                            setOpenChar({protocolType: 'fsjc', defaultType: '', ...infoVisible});
-                          }} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
-                            工作环境
-                          </Button>
-                        </Footer>
+                        <Sider>
+                          <Row style={{textAlign:'center'}}>
+                            <Col span={8}>
+                              <div>
+                                Com1
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                Com2
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                主干网
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                {data.data.comboSpeed1}
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                {data.data.comboSpeed2}
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                {data.data.mainEth}
+                              </div>
+                            </Col>
+                          </Row>
+                        </Sider>
+                        <Layout style={{background: '#FFF !important'}}>
+                          <Header style={{background: '#FFF !important'}}>
+                            <div id='ount-down-btn'>
+                              <OuntDown item={buttonData.button[1].downDatas[1]} run={submitRun} MAC={device.mac} />
+                            </div>
+                          </Header>
+                          <Content style={{background: '#FFF !important'}}>
+                            <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                              基础数据
+                            </Button>
+                          </Content>
+                          <Footer style={{background: '#FFF !important'}}>
+                            <Button onClick={() => {
+                              setOpenChar({protocolType: 'fsjc', defaultType: '', ...infoVisible});
+                            }} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                              工作环境
+                            </Button>
+                          </Footer>
+                        </Layout>
                       </Layout>
-                    </Layout>
-                  </Space>
-                </Col>
-              </Row>;
+                    </Space>
+                  </Col>
+                </Row>
+                <Divider />
+              </div>;
             } else if (item.title === '接入网口供电电压'){
               return <Row style={{width: '100%'}}>
                 <Col span={24}>
@@ -725,7 +728,6 @@ const Bmap = ({
                 ：
                 <span
                   style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
-                <Switch style={{ marginLeft: '10px', marginTop: '3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`柜门状态改变：${checked}`)} />
               </div>
             </Space>
           </Col>
@@ -753,8 +755,7 @@ const Bmap = ({
                 供电输出类型：电网输出供电
               </Col>
               <Col span={8}>
-                空开控制：
-                <Switch style={{ marginLeft: '10px', marginTop: '-3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`空开控制：${checked}`)} />
+                空开控制：开启
                 <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
               </Col>
               <Col span={8}>
