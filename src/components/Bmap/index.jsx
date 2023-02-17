@@ -10,7 +10,6 @@ import {
   Space,
   Spin,
   Tag,
-  Switch,
   Badge,
   Layout,
   Divider,
@@ -27,8 +26,8 @@ import online from '@/asseset/imgs/online.svg';
 import offline from '@/asseset/imgs/offline.svg';
 import store from '@/store';
 import {OuntDown} from '@/pages/monitor/Control';
-import DateSelect from "@/pages/monitor/components/DateSelect";
-import DeviceChar from "@/pages/monitor/DeviceChar";
+import DateSelect from '@/pages/monitor/components/DateSelect';
+import DeviceChar from '@/pages/monitor/DeviceChar';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -125,13 +124,13 @@ const Bmap = ({
     const icon = new baiduMap.Icon(mark, size);
     const marker = new baiduMap.Marker(point1, {icon});        // 创建标注
     marker.addEventListener('click', () => {
-      if(device.modelName === "OPT IMS 4012M"){
+      if(device.modelName === 'OPT IMS 4012M'){
         setOpen4012(true);
-      } else if (device.modelName === "铁塔备电设备1") {
+      } else if (device.modelName === '铁塔备电设备') {
         setOpenTieTa(true);
-      } else if (device.modelName === "信号机") {
+      } else if (device.modelName === '信号机') {
         setOpenAnnunciator(true);
-      } else if (device.modelName === "信号灯") {
+      } else if (device.modelName === '信号灯') {
         setOpenTrafficLight(true);
       } else {
         setOpen(true);
@@ -402,7 +401,7 @@ const Bmap = ({
 
     <div id="container" style={{height: '100%'}}/>
 
-    {/*原有*/}
+    {/* 原有 */}
     <Modal
       mask={false}
       centered
@@ -478,7 +477,7 @@ const Bmap = ({
       </div>
     </Modal>
 
-    {/*4012*/}
+    {/* 4012 */}
     <Modal
       mask={false}
       centered
@@ -510,7 +509,7 @@ const Bmap = ({
                           }
                         </span>
                         {
-                          deviceModal.deviceOnline ? <OuntDown item={buttonData.button[1].downDatas[0]} run={submitRun} MAC={device.mac} /> : ''
+                          deviceModal.deviceOnline ? <OuntDown item={buttonData?.button[1]?.downDatas[0]} run={submitRun} MAC={device.mac} /> : ''
                         }
                       </div>
                       <div className={styles.leftRow}>
@@ -585,7 +584,7 @@ const Bmap = ({
                           <Header style={{background: '#FFF !important'}}>
                             <div id='ount-down-btn'>
                               {
-                                deviceModal.deviceOnline ? <OuntDown item={buttonData.button[1].downDatas[1]} run={submitRun} MAC={device.mac} /> : ''
+                                deviceModal.deviceOnline ? <OuntDown item={buttonData?.button[1]?.downDatas[1]} run={submitRun} MAC={device.mac} /> : ''
                               }
                             </div>
                           </Header>
@@ -693,13 +692,13 @@ const Bmap = ({
                         </Col>;
                       })
                     }
-                    {/*{*/}
-                    {/*  isArray(item.data[0]).map((items, indexs) => {*/}
-                    {/*    return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>*/}
-                    {/*      视频*/}
-                    {/*    </Col>;*/}
-                    {/*  })*/}
-                    {/*}*/}
+                    {/* { */}
+                    {/*  isArray(item.data[0]).map((items, indexs) => { */}
+                    {/*    return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}> */}
+                    {/*      视频 */}
+                    {/*    </Col>; */}
+                    {/*  }) */}
+                    {/* } */}
                   </Row>
                 </Col>
               </Row>;
@@ -711,7 +710,7 @@ const Bmap = ({
       </div>
     </Modal>
 
-    {/*铁塔*/}
+    {/* 铁塔 */}
     <Modal
       mask={false}
       centered
@@ -744,7 +743,7 @@ const Bmap = ({
                         <div>柜门状态</div>
                         ：
                         <span
-                          style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{data.data.doorLock ? '关闭' : '开启'}</span>
+                          style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? data.data.doorLock ? '关闭' : '开启' : '-'}</span>
                       </div>
                     </Space>
                   </Col>
@@ -782,7 +781,7 @@ const Bmap = ({
                           value = data.data[items.field];
                         }
                         return <Col span={8}>
-                          {typeof value === 'number' ? `${items.title}:${value}` : (`${items.title  }:${value}` || '-')}
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${items.title}:${value}` : (`${items.title  }:${value}` || '-') : `${items.title} : -`}
                           <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
                             if (items.path) {
                               setOpenChar({protocolType: items.path, defaultType: items.url, ...infoVisible});
@@ -800,7 +799,7 @@ const Bmap = ({
       </div>
     </Modal>
 
-    {/*信号机*/}
+    {/* 信号机 */}
     <Modal
       mask={false}
       centered
