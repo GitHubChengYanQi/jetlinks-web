@@ -58,7 +58,11 @@ const Bmap = ({
     let title = '';
     let className = '';
     let status = '';
-    if (device.alarm) {
+    if (!deviceOnline){
+      mark = offline;
+      title = '设备离线';
+      className = styles.offline;
+    }else if (device.alarm) {
       mark = error;
       title = '设备报警';
       className = styles.error;
@@ -67,10 +71,6 @@ const Bmap = ({
       mark = online;
       title = '设备正常';
       className = styles.online;
-    } else {
-      mark = offline;
-      title = '设备离线';
-      className = styles.offline;
     }
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
