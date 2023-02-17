@@ -22,6 +22,11 @@ const alarmConfig = [
         name: '报警规则',
         component: lazy(() => import('@/pages/alarm/Rule')),
       },
+      {
+        path: '/alarmProject',
+        name: '报警项设置',
+        component: lazy(() => import('@/pages/alarm/AlarmProject')),
+      },
     ]
   },
 ];

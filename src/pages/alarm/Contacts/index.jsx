@@ -3,6 +3,7 @@ import {Space, Dropdown, Menu, Input, message, Button} from 'antd';
 import {createFormActions} from '@formily/antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -22,7 +23,6 @@ import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import store from '@/store';
-import moment from 'moment';
 
 const formActionsPublic = createFormActions();
 
@@ -55,6 +55,14 @@ const Contacts = ({
       render: (text) => <Render text={text} />
     },
     {
+      title: '报警联系组',
+      dataIndex: 'job',
+      align: 'center',
+      render: (text) => <Render text={text} />
+    },
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
+    {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
@@ -68,8 +76,6 @@ const Contacts = ({
         </Render>;
       }
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 

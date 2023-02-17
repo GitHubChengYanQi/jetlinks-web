@@ -1,9 +1,11 @@
-import React from 'react';
-import {Form, Input, Radio} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Form, Input, Radio, Select} from 'antd';
 import AntForm from '@/components/AntForm';
 import {contactAdd, contactEdit} from '@/pages/alarm/Contacts/url';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 import store from '@/store';
+import RoleIds from '@/pages/systemManage/Role/components/RoleIds';
+import {Total} from '@/pages/alarm/Contacts/Save/components/Total';
 
 
 const Save = ({
@@ -15,9 +17,17 @@ const Save = ({
   }
 }) => {
 
+  const [showTotal, setShowTotal] = useState(true);
+
   const [dataSource] = store.useModel('dataSource');
 
   const customer = dataSource.customer || {};
+
+  useEffect(() => {
+    if (visible) {
+      setShowTotal(true);
+    }
+  }, [visible]);
 
   return (
     <AntForm
@@ -31,6 +41,11 @@ const Save = ({
       success={success}
       visible={visible}
       close={close}
+      onValuesChange={(value) => {
+        if (value.shortMessageStatus) {
+          setShowTotal(value.shortMessageStatus === '1');
+        }
+      }}
     >
       <Form.Item
         initialValue={data.name}
@@ -63,7 +78,7 @@ const Save = ({
           {required: true, message: '请输入负责区域'},
         ]}
       >
-        <SelectTopClass all={false} />
+        <SelectTopClass all={false}/>
       </Form.Item>}
       <Form.Item
         initialValue={data.phone}
@@ -90,6 +105,24 @@ const Save = ({
           <Radio value="1">是</Radio>
           <Radio value="0">否</Radio>
         </Radio.Group>
+      </Form.Item>
+      <Form.Item
+        hidden={!showTotal}
+        key="total"
+        name="total"
+        label="选择短信条数"
+        rules={[
+          {required: showTotal, message: '请选择短信条数'},
+        ]}
+      >
+        <Total/>
+      </Form.Item>
+      <Form.Item
+        key="group"
+        name="group"
+        label="报警练习组"
+      >
+        <RoleIds/>
       </Form.Item>
       <Form.Item
         initialValue={data.mail}
