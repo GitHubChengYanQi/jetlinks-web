@@ -102,15 +102,17 @@ const Bmap = ({
     let title = '';
     let className = '';
     let status = '';
-    if (device.alarm) {
-      mark = error;
-      title = '设备报警';
-      className = styles.error;
-      status = 'error';
-    } else if (deviceOnline) {
-      mark = online;
-      title = '设备正常';
-      className = styles.online;
+    if (deviceOnline) {
+      if (device.alarm) {
+        mark = error;
+        title = '设备报警';
+        className = styles.error;
+        status = 'error';
+      } else {
+        mark = online;
+        title = '设备正常';
+        className = styles.online;
+      }
     } else {
       mark = offline;
       title = '设备离线';
@@ -125,7 +127,7 @@ const Bmap = ({
     marker.addEventListener('click', () => {
       if(device.modelName === "OPT IMS 4012M"){
         setOpen4012(true);
-      } else if (device.modelName === "铁塔备电设备") {
+      } else if (device.modelName === "铁塔备电设备1") {
         setOpenTieTa(true);
       } else if (device.modelName === "信号机") {
         setOpenAnnunciator(true);
@@ -502,20 +504,25 @@ const Bmap = ({
                       <div id='ount-down-button' className={styles.leftRow}>
                         <div>总闸状态</div>
                         ：
-                        <span
-                          style={{color: data.data.powerOff ? '#00a660' : '#b2b1b1'}}>{data.data.powerOff ? '在线' : '离线'}</span>
-                        <OuntDown item={buttonData.button[1].downDatas[0]} run={submitRun} MAC={device.mac} />
+                        <span style={{color: data.data.powerOff === '有电' ? '#00a660' : '#b2b1b1'}}>
+                          {
+                            deviceModal.deviceOnline ? data.data.powerOff : '-'
+                          }
+                        </span>
+                        {
+                          deviceModal.deviceOnline ? <OuntDown item={buttonData.button[1].downDatas[0]} run={submitRun} MAC={device.mac} /> : ''
+                        }
                       </div>
                       <div className={styles.leftRow}>
                         <div>电网电压</div>
-                        ：{data.data.gridVoltage}
+                        ：{deviceModal.deviceOnline ? data.data.gridVoltage : '-'}
                         <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
                           setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
                         }} />
                       </div>
                       <div className={styles.leftRow}>
                         <div>空开后电压</div>
-                        ：{data.data.kongkai}
+                        ：{deviceModal.deviceOnline ? data.data.kongkai : '-'}
                         <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
                           setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
                         }} />
@@ -524,7 +531,7 @@ const Bmap = ({
                         <div>柜门状态</div>
                         ：
                         <span
-                          style={{color: data.data.door === '打开' ? 'red' : '#00a660'}}>{data.data.door}</span>
+                          style={{color: data.data.door === '打开' ? 'red' : '#00a660'}}>{deviceModal.deviceOnline ? data.data.door : '-'}</span>
                         <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
                           setOpenChar({protocolType: 'fsjc', defaultType: 'door', ...infoVisible});
                         }} />
@@ -559,17 +566,17 @@ const Bmap = ({
                             </Col>
                             <Col span={8}>
                               <div>
-                                {data.data.comboSpeed1}
+                                {deviceModal.deviceOnline ? data.data.comboSpeed1 : '-'}
                               </div>
                             </Col>
                             <Col span={8}>
                               <div>
-                                {data.data.comboSpeed2}
+                                {deviceModal.deviceOnline ? data.data.comboSpeed2 : '-'}
                               </div>
                             </Col>
                             <Col span={8}>
                               <div>
-                                {data.data.mainEth}
+                                {deviceModal.deviceOnline ? data.data.mainEth : '-'}
                               </div>
                             </Col>
                           </Row>
@@ -577,7 +584,9 @@ const Bmap = ({
                         <Layout style={{background: '#FFF !important'}}>
                           <Header style={{background: '#FFF !important'}}>
                             <div id='ount-down-btn'>
-                              <OuntDown item={buttonData.button[1].downDatas[1]} run={submitRun} MAC={device.mac} />
+                              {
+                                deviceModal.deviceOnline ? <OuntDown item={buttonData.button[1].downDatas[1]} run={submitRun} MAC={device.mac} /> : ''
+                              }
                             </div>
                           </Header>
                           <Content style={{background: '#FFF !important'}}>
@@ -624,7 +633,7 @@ const Bmap = ({
                             setOpenChar({protocolType: items.path, defaultType: items.url, ...infoVisible});
                           }
                         }}>
-                          {typeof value === 'number' ? `${value}` : (value || '-')}
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${value}` : (value || '-') : '-'}
                         </Col>;
                       })
                     }
@@ -652,7 +661,7 @@ const Bmap = ({
                           value = data.data[items.field];
                         }
                         return <Col style={{color: value === '通' ? '#00a660' : '#b2b1b1'}} span={2}>
-                          {typeof value === 'number' ? `${value}` : (value || '-')}
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${value}` : (value || '-') : '-'}
                         </Col>;
                       })
                     }
@@ -680,7 +689,7 @@ const Bmap = ({
                           value = data.data[items.field];
                         }
                         return <Col style={{color: 'rgba(0, 0, 0, 0.85)'}} span={2}>
-                          {typeof value === 'number' ? `${value}` : (value || '-')}
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${value}` : (value || '-') : '-'}
                         </Col>;
                       })
                     }
