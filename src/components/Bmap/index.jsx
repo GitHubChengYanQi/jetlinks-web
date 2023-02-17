@@ -679,18 +679,18 @@ const Bmap = ({
                         } else {
                           value = data.data[items.field];
                         }
-                        return <Col style={{color: '#00a660'}} span={2}>
+                        return <Col style={{color: 'rgba(0, 0, 0, 0.85)'}} span={2}>
                           {typeof value === 'number' ? `${value}` : (value || '-')}
                         </Col>;
                       })
                     }
-                    {
-                      isArray(item.data[0]).map((items, indexs) => {
-                        return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                          视频
-                        </Col>;
-                      })
-                    }
+                    {/*{*/}
+                    {/*  isArray(item.data[0]).map((items, indexs) => {*/}
+                    {/*    return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>*/}
+                    {/*      视频*/}
+                    {/*    </Col>;*/}
+                    {/*  })*/}
+                    {/*}*/}
                   </Row>
                 </Col>
               </Row>;
