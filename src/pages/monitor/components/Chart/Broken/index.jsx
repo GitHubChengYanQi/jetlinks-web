@@ -8,8 +8,8 @@ const Broken = ({data}) => {
     const chart = new G2.Chart({
       container: 'Broken',
       forceFit: true,
-      height: 200,
-      padding: [20, 80, 95, 50],
+      height: 100,
+      padding: [10, 80, 10, 50],
     });
     chart.source(data);
     chart.scale('value', {
@@ -23,6 +23,7 @@ const Broken = ({data}) => {
         type: 'line'
       }
     });
+    chart.legend(false);
     chart.line().position('time*value');
     chart.point().position('time*value').size(4).shape('circle').style({
       stroke: '#fff',
