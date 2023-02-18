@@ -66,7 +66,8 @@ const Rule = () => {
       actionRender={(value, record) => (
         <Space>
           <PrimaryButton onClick={() => {
-            history.push(`/alarm/alarmProject?modelId=${record.modelId}`);
+            // history.push(`/alarm/alarmProject?modelId=${record.modelId}`);
+            history.push('/alarm/ContactGroupEdit');
           }}>
             编辑
           </PrimaryButton>

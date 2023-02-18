@@ -26,6 +26,14 @@ const alarmConfig = [
         path: '/alarmProject',
         name: '报警项设置',
         component: lazy(() => import('@/pages/alarm/AlarmProject')),
+      },{
+        path: '/ContactGrouplist',
+        name: '报警联系组',
+        component: lazy(() => import('@/pages/alarm/AlarmProject')),
+      },{
+        path: '/ContactGroupEdit',
+        name: '报警联系组',
+        component: lazy(() => import('@/pages/alarm/ContactGroup/Edit')),
       },
     ]
   },
