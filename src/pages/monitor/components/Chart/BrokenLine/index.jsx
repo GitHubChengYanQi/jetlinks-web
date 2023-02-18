@@ -8,8 +8,8 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, scale, unit}) => {
     const chart = new G2.Chart({
       container: id || 'BrokenLine',
       forceFit: true,
-      height: 200,
-      padding: [20, 80, 95, 80],
+      height: 100,
+      padding: [10, 80, 10, 80],
     });
 
     chart.source(data, {
@@ -26,7 +26,7 @@ const BrokenLine = ({data = [], colors = ['#0c7dec'], id, scale, unit}) => {
     chart.tooltip({
       itemTpl: `<li data-index={index}><span style="background-color:{color};width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;"></span>{name}: {value}${unit || ''}</li>`, // tooltip 每项记录的默认模板
     });
-
+    chart.legend(false);
 
     chart.axis('value', {
       label: {

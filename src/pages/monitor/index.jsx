@@ -302,7 +302,7 @@ const Monitor = () => {
       className={styles.infoDrawer}
       destroyOnClose
       title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
-      width="auto"
+      width="60vw"
       placement="right"
       onClose={() => setInfoVisible({})}
       open={infoVisible.modelId}
@@ -335,11 +335,14 @@ const Monitor = () => {
       className={styles.drawer}
       open={open.protocolType}
       onClose={() => setOpen({})}
-      extra={<DateSelect
+      extra=''
+    >
+      <DateSelect
         value={date}
         onChange={setDate}
-      />}
-    >
+      />
+      <br/>
+      <br/>
       <DeviceChar device={open} date={date} defaultType={open?.defaultType} />
     </Drawer>
 

@@ -7,8 +7,8 @@ const StepLineChart = ({data, id, sort}) => {
     const chart = new G2.Chart({
       container: id || 'StepLineChart',
       forceFit: true,
-      height: 200,
-      padding: [20, 80, 95, 80],
+      height: 100,
+      padding: [10, 80, 10, 80],
     });
 
     chart.source(data, {
@@ -26,6 +26,7 @@ const StepLineChart = ({data, id, sort}) => {
         autoRotate: true
       }
     });
+    chart.legend(false);
     chart.render();
   }, []);
 
