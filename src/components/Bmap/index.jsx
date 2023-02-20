@@ -117,7 +117,7 @@ const Bmap = ({
       title = '设备离线';
       className = styles.offline;
     }
-    title = `${title  }　　　　　　　　　　　　　${  device.remarks  }`;
+    title = `${  device.remarks  } 【${title  }】`;
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
     const size = new baiduMap.Size(30, 37);
