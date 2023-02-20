@@ -79,10 +79,6 @@ const Contacts = ({
     {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
   ];
 
-  if (customer.customerId) {
-    columns.push({title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />});
-  }
-
   const {loading: deleteBatchLoading, run: deleteBatchRun} = useRequest(contactDeleteBatch, {
     manual: true,
     onSuccess: () => {

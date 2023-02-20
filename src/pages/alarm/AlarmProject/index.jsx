@@ -1,16 +1,20 @@
 import React, {useRef, useState} from 'react';
 import {useHistory} from 'ice';
-import {Button, Modal, Space} from 'antd';
-import {deviceModelList} from '@/pages/equipment/Model/url';
+import {Button, Modal, Space, Table} from 'antd';
 import {PrimaryButton} from '@/components/Button';
-import Table from '@/components/Table';
 import Render from '@/components/Render';
 import Save from '@/pages/alarm/AlarmProject/Save';
 import AlarmTime from '@/pages/alarm/AlarmProject/components/AlarmTime';
 import Drawer from '@/components/Drawer';
 import ContactList from '@/pages/alarm/AlarmProject/components/ContactList';
+import style from '@/components/Table/index.module.less';
 
-const AlarmProject = () => {
+const AlarmProject = (
+  {
+    custom,
+    global
+  }
+) => {
 
   const ref = useRef();
 
@@ -18,13 +22,14 @@ const AlarmProject = () => {
 
   const history = useHistory();
 
-  const [keys, setKeys] = useState([]);
+  const [rows, setRows] = useState([]);
 
   const [openTime, set0penTime] = useState(false);
 
   const [saveVisible, setSaveVisible] = useState();
 
   const columns = [
+    {title: '序号', dataIndex: 'name', align: 'center', render: (text, record, index) => <Render>{index + 1}</Render>},
     {title: '报警名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
@@ -40,13 +45,25 @@ const AlarmProject = () => {
       render: (text = '0') => <Button type="link" onClick={() => drawerRef.current.open(true)}>{text || 0}</Button>
     },
     {title: '报警状态', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {
+      title: '操作', dataIndex: 'deviceNum', align: 'center', render: (value, record) => (
+        <Space>
+          <PrimaryButton onClick={() => setSaveVisible(record)}>
+            编辑
+          </PrimaryButton>
+        </Space>
+      )
+    },
   ];
 
   return <>
-    <h1 className="primaryColor">报警项设置</h1>
-    <h3>设备类型：智能箱产品</h3>
-    <h3>设备型号：opt</h3>
-    <div style={{textAlign: 'right', padding: '0 24px 12px'}}>
+    <div hidden={custom || global}>
+      <h1 className="primaryColor">报警项设置</h1>
+      <h3>设备类型：智能箱产品</h3>
+      <h3>设备型号：opt</h3>
+    </div>
+
+    <div hidden={global} style={{textAlign: 'right', padding: '0 24px 12px'}}>
       <Space>
         <Button type="primary" onClick={() => set0penTime(true)}>批量设置报警时间间隔</Button>
         <Button type="primary">批量启用</Button>
@@ -54,20 +71,23 @@ const AlarmProject = () => {
       </Space>
     </div>
     <Table
-      onChange={setKeys}
-      selectedRowKeys={keys}
-      ref={ref}
-      api={deviceModelList}
+      bordered
+      onHeaderRow={() => {
+        return {
+          className: style.headerRow
+        };
+      }}
+      rowSelection={global ? undefined : {
+        selectedRowKeys: rows.map(item => item.contactId),
+        onChange: (row, selectedRows) => {
+          setRows(selectedRows);
+        }
+      }}
+      pagination={false}
+      dataSource={[{key: 1}, {key: 2}]}
       tableKey="model"
       columns={columns}
-      rowKey="modelId"
-      actionRender={(value, record) => (
-        <Space>
-          <PrimaryButton onClick={() => setSaveVisible(record)}>
-            编辑
-          </PrimaryButton>
-        </Space>
-      )}
+      rowKey="key"
     />
 
     <Save data={saveVisible} visible={saveVisible} success={(success) => {
@@ -93,11 +113,11 @@ const AlarmProject = () => {
     </Modal>
 
     <Drawer
-      width='auto'
+      width="auto"
       headTitle="报警名称:12312312"
       ref={drawerRef}
     >
-      <ContactList/>
+      <ContactList show={custom || global}/>
     </Drawer>
   </>;
 };

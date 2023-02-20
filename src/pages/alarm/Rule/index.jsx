@@ -34,6 +34,7 @@ const Rule = () => {
     },
     {title: '启用报警项数', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
     {title: '总报警项数', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {title: '操作', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
   ];
 
   const {loading: deleteLoaing, run: deleteRun} = useRequest(alarmDelete, {
@@ -66,8 +67,8 @@ const Rule = () => {
       actionRender={(value, record) => (
         <Space>
           <PrimaryButton onClick={() => {
-            // history.push(`/alarm/alarmProject?modelId=${record.modelId}`);
-            history.push('/alarm/ContactGroupEdit');
+            history.push(`/alarm/alarmProject?modelId=${record.modelId}`);
+            // history.push('/alarm/ContactGroupEdit');
           }}>
             编辑
           </PrimaryButton>
