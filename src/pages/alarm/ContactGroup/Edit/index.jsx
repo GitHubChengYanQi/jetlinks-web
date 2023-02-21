@@ -1,19 +1,26 @@
 import React, {useState} from 'react';
-import {Button, Input, Space, Table as AntTable, Tree} from 'antd';
-import {ArrowLeftOutlined, ArrowRightOutlined} from '@ant-design/icons';
+import {Button, Input, message, Space, Table as AntTable, Tree} from 'antd';
+import {ArrowLeftOutlined, ArrowRightOutlined, LinkOutlined} from '@ant-design/icons';
+import ProSkeleton from '@ant-design/pro-skeleton';
+import {useHistory} from 'ice';
 import styles from './index.module.less';
 import Render from '@/components/Render';
 import style from '@/components/Table/index.module.less';
 import {useRequest} from '@/util/Request';
-import {contactList} from '@/pages/alarm/Contacts/url';
+import {contactAllList} from '@/pages/alarm/Contacts/url';
+import {alarmContactGroupAdd} from '@/pages/alarm/ContactGroup/url';
 
 const Edit = () => {
+
+  const history = useHistory();
 
   const initTreeData = [
     {title: 'Expand to load', key: '0'},
     {title: 'Expand to load', key: '1'},
     {title: 'Tree Node', key: '2', isLeaf: true},
   ];
+
+  const [name, setName] = useState('');
 
   const [treeData, setTreeData] = useState(initTreeData);
 
@@ -23,9 +30,17 @@ const Edit = () => {
   const [listRows, setListRows] = useState([]);
   const [checkListRows, setCheckListRows] = useState([]);
 
-  const {loading} = useRequest(contactList, {
+  const {loading} = useRequest(contactAllList, {
     onSuccess: (res) => {
       setList(res);
+    }
+  });
+
+  const {loading: addLoading, run: addRun} = useRequest(alarmContactGroupAdd, {
+    manual: true,
+    onSuccess: () => {
+      message.success('添加成功！');
+      history.goBack();
     }
   });
 
@@ -89,11 +104,15 @@ const Edit = () => {
     },
   ];
 
+  if (loading) {
+    return <ProSkeleton type="descriptions"/>;
+  }
+
 
   return <div style={{backgroundColor: '#fff'}}>
     <div className={styles.header}>
       <Space>
-        报警联系组名称：<Input placeholder="请输入组名称"/>
+        报警联系组名称：<Input placeholder="请输入组名称" value={name} onChange={({target: {value}}) => setName(value)}/>
       </Space>
     </div>
     <div style={{padding: '24px'}}>
@@ -176,10 +195,40 @@ const Edit = () => {
             />
           </div>
         </div>
+        <LinkOutlined style={{fontSize: 24}}/>
         <div className={styles.box}>
-          <Tree checkable selectable={false} loadData={onLoadData} treeData={treeData}/>
+          <div>关联报警设备</div>
+          <div style={{paddingTop: 12}}>
+            <Tree
+              checkable
+              selectable={false}
+              loadData={onLoadData}
+              treeData={treeData}
+              onCheck={(checkedKeys) => {
+                console.log(checkedKeys);
+              }}
+            />
+          </div>
+
         </div>
       </Space>
+    </div>
+    <div style={{textAlign: 'right', padding: 24}}>
+      <Button loading={addLoading} type="primary" onClick={() => {
+        if (!name) {
+          message.warning('请输入报警联系组名称!');
+          return;
+        } else if (checkList.length === 0) {
+          message.warning('请添加报警联系人!');
+          return;
+        }
+        addRun({
+          data: {
+            name,
+            contactIds: checkList.map(item => item.contactId)
+          }
+        });
+      }}>保存</Button>
     </div>
   </div>;
 };

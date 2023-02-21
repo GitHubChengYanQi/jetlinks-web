@@ -109,7 +109,7 @@ const Save = ({
       <Form.Item
         key="group"
         name="group"
-        label="报警练习组"
+        label="报警联系组"
       >
         <RoleIds/>
       </Form.Item>

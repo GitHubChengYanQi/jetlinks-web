@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {useHistory} from 'ice';
+import React, {useEffect, useRef, useState} from 'react';
+import {getSearchParams, useHistory} from 'ice';
 import {Button, Modal, Space, Table} from 'antd';
 import {PrimaryButton} from '@/components/Button';
 import Render from '@/components/Render';
@@ -8,6 +8,9 @@ import AlarmTime from '@/pages/alarm/AlarmProject/components/AlarmTime';
 import Drawer from '@/components/Drawer';
 import ContactList from '@/pages/alarm/AlarmProject/components/ContactList';
 import style from '@/components/Table/index.module.less';
+import {useRequest} from '@/util/Request';
+import {getColumnByModelId} from '@/pages/monitor/url';
+import {isArray} from '@/util/Tools';
 
 const AlarmProject = (
   {
@@ -22,15 +25,32 @@ const AlarmProject = (
 
   const history = useHistory();
 
+  const searchParams = getSearchParams();
+
   const [rows, setRows] = useState([]);
 
   const [openTime, set0penTime] = useState(false);
 
   const [saveVisible, setSaveVisible] = useState();
 
+  const [dataSource,setDatSource] = useState([]);
+
+  const {loading: getRulesLoaing, run: getRules} = useRequest(getColumnByModelId, {
+    manual: true,
+    onSuccess: (res) => {
+      setDatSource(res);
+    },
+  });
+
+  useEffect(() => {
+    if (searchParams.modelId) {
+      getRules({data: {modelId: searchParams.modelId}});
+    }
+  }, []);
+
   const columns = [
     {title: '序号', dataIndex: 'name', align: 'center', render: (text, record, index) => <Render>{index + 1}</Render>},
-    {title: '报警名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '报警名称', dataIndex: 'title', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
       dataIndex: 'categoryResult',
@@ -59,8 +79,8 @@ const AlarmProject = (
   return <>
     <div hidden={custom || global}>
       <h1 className="primaryColor">报警项设置</h1>
-      <h3>设备类型：智能箱产品</h3>
-      <h3>设备型号：opt</h3>
+      <h3>设备类型：{searchParams.categoryName}</h3>
+      <h3>设备型号：{searchParams.modelName}</h3>
     </div>
 
     <div hidden={global} style={{textAlign: 'right', padding: '0 24px 12px'}}>
@@ -71,6 +91,7 @@ const AlarmProject = (
       </Space>
     </div>
     <Table
+      loading={getRulesLoaing}
       bordered
       onHeaderRow={() => {
         return {
@@ -78,13 +99,13 @@ const AlarmProject = (
         };
       }}
       rowSelection={global ? undefined : {
-        selectedRowKeys: rows.map(item => item.contactId),
+        selectedRowKeys: rows.map(item => item.key),
         onChange: (row, selectedRows) => {
           setRows(selectedRows);
         }
       }}
       pagination={false}
-      dataSource={[{key: 1}, {key: 2}]}
+      dataSource={dataSource}
       tableKey="model"
       columns={columns}
       rowKey="key"
