@@ -9,8 +9,8 @@ import Drawer from '@/components/Drawer';
 import ContactList from '@/pages/alarm/AlarmProject/components/ContactList';
 import style from '@/components/Table/index.module.less';
 import {useRequest} from '@/util/Request';
-import {getColumnByModelId} from '@/pages/monitor/url';
-import {isArray} from '@/util/Tools';
+import Note from '@/components/Note';
+import {alarmItemFindAll} from '@/pages/alarm/AlarmProject/url';
 
 const AlarmProject = (
   {
@@ -18,8 +18,6 @@ const AlarmProject = (
     global
   }
 ) => {
-
-  const ref = useRef();
 
   const drawerRef = useRef();
 
@@ -33,9 +31,9 @@ const AlarmProject = (
 
   const [saveVisible, setSaveVisible] = useState();
 
-  const [dataSource,setDatSource] = useState([]);
+  const [dataSource, setDatSource] = useState([]);
 
-  const {loading: getRulesLoaing, run: getRules} = useRequest(getColumnByModelId, {
+  const {loading: getRulesLoaing, run: getRules, refresh: refreshRules} = useRequest(alarmItemFindAll, {
     manual: true,
     onSuccess: (res) => {
       setDatSource(res);
@@ -53,22 +51,41 @@ const AlarmProject = (
     {title: '报警名称', dataIndex: 'title', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
-      dataIndex: 'categoryResult',
+      dataIndex: 'alarmItemResult',
       align: 'center',
-      render: (categoryResult = {}) => <Render text={categoryResult.name}/>
+      render: (alarmItemResult) => <Note value={alarmItemResult?.reservePlan} style={{margin: 'auto'}} maxWidth={200}/>
     },
-    {title: '报警时间间隔', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {
+      title: '报警时间间隔',
+      dataIndex: 'alarmItemResult',
+      align: 'center',
+      render: (alarmItemResult) => <Render>{alarmItemResult?.timeSpan}</Render>
+    },
     {
       title: '报警联系人组',
-      dataIndex: 'deviceNum',
+      dataIndex: 'alarmItemResult',
       align: 'center',
-      render: (text = '0') => <Button type="link" onClick={() => drawerRef.current.open(true)}>{text || 0}</Button>
     },
-    {title: '报警状态', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {
+      title: '报警状态', dataIndex: 'alarmItemResult', align: 'center', render: (alarmItemResult) => {
+        const open = alarmItemResult?.status === 1;
+        return <Render>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+        </Render>;
+      }
+    },
     {
       title: '操作', dataIndex: 'deviceNum', align: 'center', render: (value, record) => (
         <Space>
-          <PrimaryButton onClick={() => setSaveVisible(record)}>
+          <PrimaryButton onClick={() => {
+            const alarmItemResult = record.alarmItemResult || {};
+            setSaveVisible({
+              ...record,
+              reservePlan: alarmItemResult.reservePlan,
+              timeSpan: alarmItemResult.timeSpan,
+              status: alarmItemResult.status
+            });
+          }}>
             编辑
           </PrimaryButton>
         </Space>
@@ -111,13 +128,9 @@ const AlarmProject = (
       rowKey="key"
     />
 
-    <Save data={saveVisible} visible={saveVisible} success={(success) => {
+    <Save modelId={searchParams.modelId} data={saveVisible} visible={saveVisible} success={(success) => {
       setSaveVisible();
-      if (success) {
-        ref.current.submit();
-      } else {
-        ref.current.refresh();
-      }
+      refreshRules();
     }} close={() => setSaveVisible()}/>
 
     <Modal

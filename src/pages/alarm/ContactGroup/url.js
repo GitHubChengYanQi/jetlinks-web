@@ -3,8 +3,23 @@ export const alarmContactGroupList = {
   method: 'POST'
 };
 
+export const deviceClassifyTreeList = {
+  url: '/deviceClassify/treeList',
+  method: 'GET'
+};
+
 export const alarmContactGroupAdd = {
   url: '/alarmContactGroup/add',
+  method: 'POST'
+};
+
+export const alarmContactGroupDetail = {
+  url: '/alarmContactGroup/detail',
+  method: 'POST'
+};
+
+export const alarmContactGroupEdit = {
+  url: '/alarmContactGroup/edit',
   method: 'POST'
 };
 
@@ -37,5 +52,11 @@ export const alarmContactGroupStop = {
 
 export const alarmContactGroupBatchStop = {
   url: '/alarmContactGroup/stopBatch',
+  method: 'POST'
+};
+
+
+export const deviceCategoryFindAllByDevice = {
+  url: '/deviceCategory/findAllByDevice',
   method: 'POST'
 };

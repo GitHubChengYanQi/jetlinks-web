@@ -1,28 +1,29 @@
 import React, {useState} from 'react';
-import {Button, Input, message, Space, Table as AntTable, Tree} from 'antd';
+import {Button, Input, message, Space, Spin, Table as AntTable, Tree} from 'antd';
 import {ArrowLeftOutlined, ArrowRightOutlined, LinkOutlined} from '@ant-design/icons';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {useHistory} from 'ice';
+import {getSearchParams, useHistory} from 'ice';
 import styles from './index.module.less';
 import Render from '@/components/Render';
 import style from '@/components/Table/index.module.less';
 import {useRequest} from '@/util/Request';
 import {contactAllList} from '@/pages/alarm/Contacts/url';
-import {alarmContactGroupAdd} from '@/pages/alarm/ContactGroup/url';
+import {
+  alarmContactGroupAdd,
+  alarmContactGroupDetail,
+  alarmContactGroupEdit, deviceClassifyTreeList,
+} from '@/pages/alarm/ContactGroup/url';
+import {isArray} from '@/util/Tools';
 
 const Edit = () => {
 
-  const history = useHistory();
+  const searchParams = getSearchParams();
 
-  const initTreeData = [
-    {title: 'Expand to load', key: '0'},
-    {title: 'Expand to load', key: '1'},
-    {title: 'Tree Node', key: '2', isLeaf: true},
-  ];
+  const history = useHistory();
 
   const [name, setName] = useState('');
 
-  const [treeData, setTreeData] = useState(initTreeData);
+  const [treeData, setTreeData] = useState([]);
 
   const [list, setList] = useState([]);
   const [checkList, setCheckList] = useState([]);
@@ -30,8 +31,56 @@ const Edit = () => {
   const [listRows, setListRows] = useState([]);
   const [checkListRows, setCheckListRows] = useState([]);
 
+  const {loading: detailLoading, run: detailRun} = useRequest(alarmContactGroupDetail, {
+    manual: true,
+    onSuccess: (res) => {
+      setName(res.name);
+      const newCheckList = isArray(list).filter(item => isArray(res.contactIds).find(contactId => contactId === item.contactId));
+      setCheckList(newCheckList);
+    }
+  });
+
+  const formatTree = (data) => {
+    return isArray(data).map(item => {
+      const classifyId = item.classifyId;
+      return {
+        title: item.name,
+        key: item.classifyId,
+        children: [
+          ...formatTree(item.child),
+          ...isArray(item.categoryResults).map(item => {
+            return {
+              title: item.name,
+              key: `${classifyId}classKey${item.categoryId}`,
+              children: isArray(item.modelResultList).map(item => {
+                const modelId = item.modelId;
+                return {
+                  title: item.name,
+                  key: `${classifyId}modelKey${modelId}`,
+                  children: isArray(item.items).map(item => ({
+                    title: item.name,
+                    key: `${classifyId}modelKey${modelId}ruleKey${item.itemKey}`
+                  }))
+                };
+              })
+            };
+          }),
+        ]
+      };
+    });
+  };
+
+  const {loading: treeLoading} = useRequest(deviceClassifyTreeList, {
+    onSuccess: (res) => {
+      setTreeData(formatTree(res));
+    }
+  });
+
   const {loading} = useRequest(contactAllList, {
     onSuccess: (res) => {
+      if (searchParams.groupId) {
+        detailRun({data: {groupId: searchParams.groupId}});
+      }
       setList(res);
     }
   });
@@ -44,41 +93,13 @@ const Edit = () => {
     }
   });
 
-  const updateTreeData = (list, key, children) =>
-    list.map((node) => {
-      if (node.key === key) {
-        return {
-          ...node,
-          children,
-        };
-      }
-      if (node.children) {
-        return {
-          ...node,
-          children: updateTreeData(node.children, key, children),
-        };
-      }
-      return node;
-    });
-
-  const onLoadData = ({key, children}) => {
-    return new Promise((resolve) => {
-      if (children) {
-        resolve();
-        return;
-      }
-      setTimeout(() => {
-        setTreeData((origin) =>
-          updateTreeData(origin, key, [
-            {title: 'Child Node', key: `${key}-0`},
-            {title: 'Child Node', key: `${key}-1`},
-          ]),
-        );
-
-        resolve();
-      }, 1000);
-    });
-  };
+  const {loading: editLoading, run: editRun} = useRequest(alarmContactGroupEdit, {
+    manual: true,
+    onSuccess: () => {
+      message.success('修改成功！');
+      history.goBack();
+    }
+  });
 
   const columns = [
     {title: '姓名', dataIndex: 'name', align: 'center', width: 100, render: (text) => <Render width={100} text={text}/>},
@@ -104,7 +125,7 @@ const Edit = () => {
     },
   ];
 
-  if (loading) {
+  if (loading || detailLoading) {
     return <ProSkeleton type="descriptions"/>;
   }
 
@@ -196,25 +217,25 @@ const Edit = () => {
           </div>
         </div>
         <LinkOutlined style={{fontSize: 24}}/>
-        <div className={styles.box}>
+        <div className={styles.box} style={{padding: 24}}>
           <div>关联报警设备</div>
           <div style={{paddingTop: 12}}>
-            <Tree
+            {treeLoading ? <Spin/> : <Tree
+              // checkedKeys={['3333']}
               checkable
               selectable={false}
-              loadData={onLoadData}
               treeData={treeData}
               onCheck={(checkedKeys) => {
                 console.log(checkedKeys);
               }}
-            />
+            />}
           </div>
 
         </div>
       </Space>
     </div>
     <div style={{textAlign: 'right', padding: 24}}>
-      <Button loading={addLoading} type="primary" onClick={() => {
+      <Button loading={addLoading || editLoading} type="primary" onClick={() => {
         if (!name) {
           message.warning('请输入报警联系组名称!');
           return;
@@ -222,12 +243,17 @@ const Edit = () => {
           message.warning('请添加报警联系人!');
           return;
         }
-        addRun({
-          data: {
-            name,
-            contactIds: checkList.map(item => item.contactId)
-          }
-        });
+        const data = {
+          groupId: searchParams.groupId,
+          name,
+          contactIds: checkList.map(item => item.contactId)
+        };
+        if (searchParams.groupId) {
+          editRun({data});
+        } else {
+          addRun({data});
+        }
+
       }}>保存</Button>
     </div>
   </div>;
