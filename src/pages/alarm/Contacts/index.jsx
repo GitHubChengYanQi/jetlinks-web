@@ -56,9 +56,9 @@ const Contacts = ({
     },
     {
       title: '报警联系组',
-      dataIndex: 'job',
+      dataIndex: 'groups',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (groups) => <Render text={[...new Set(isArray(groups).map(item => item.name))].join('、')} />
     },
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
     {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
@@ -66,7 +66,7 @@ const Contacts = ({
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className="green" text={text || 500} />
+      render: (text) => <Render className="green" text={text} />
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {

@@ -27,9 +27,15 @@ const Edit = () => {
 
   const [list, setList] = useState([]);
   const [checkList, setCheckList] = useState([]);
+  const [listValue, setListValue] = useState('');
+  const [searchListValue, setSearchListValue] = useState('');
 
   const [listRows, setListRows] = useState([]);
   const [checkListRows, setCheckListRows] = useState([]);
+  const [checkListValue, setCheckListValue] = useState('');
+  const [searchCheckListValue, setSearchCheckListValue] = useState('');
+
+  const [rules, setRules] = useState([]);
 
   const {loading: detailLoading, run: detailRun} = useRequest(alarmContactGroupDetail, {
     manual: true,
@@ -37,6 +43,7 @@ const Edit = () => {
       setName(res.name);
       const newCheckList = isArray(list).filter(item => isArray(res.contactIds).find(contactId => contactId === item.contactId));
       setCheckList(newCheckList);
+      setRules(isArray(res.alarmBindResults).map(item => `${item.classifyId}modelKey${item.modelId}ruleKey${item.itemKey}`));
     }
   });
 
@@ -142,8 +149,14 @@ const Edit = () => {
           <div className={styles.search}>
             <div className={styles.searchTitle}>选择报警联系人</div>
             <Space>
-              <Input placeholder="请输入要搜索的内容"/>
-              <Button type="primary">搜索</Button>
+              <Input
+                placeholder="请输入要搜索的内容"
+                value={listValue}
+                onChange={({target: {value}}) => {
+                  setListValue(value);
+                }}
+              />
+              <Button type="primary" onClick={() => setSearchListValue(listValue)}>搜索</Button>
             </Space>
           </div>
           <div className={styles.table}>
@@ -162,7 +175,12 @@ const Edit = () => {
               }}
               rowKey="contactId"
               columns={columns}
-              dataSource={list.filter(item => !checkList.find(checkItem => checkItem.contactId === item.contactId))}
+              dataSource={list.filter(item => {
+                return !checkList.find(checkItem => checkItem.contactId === item.contactId)
+                  && (item.name.indexOf(searchListValue) !== -1
+                    || item.job.indexOf(searchListValue) !== -1
+                    || item.phone.indexOf(searchListValue) !== -1);
+              })}
             />
           </div>
         </div>
@@ -192,8 +210,14 @@ const Edit = () => {
           <div className={styles.search}>
             <div className={styles.searchTitle}>已添加的报警联系人</div>
             <Space>
-              <Input placeholder="请输入要搜索的内容"/>
-              <Button type="primary">搜索</Button>
+              <Input
+                placeholder="请输入要搜索的内容"
+                value={checkListValue}
+                onChange={({target: {value}}) => {
+                  setCheckListValue(value);
+                }}
+              />
+              <Button type="primary" onClick={() => setSearchCheckListValue(checkListValue)}>搜索</Button>
             </Space>
           </div>
           <div className={styles.table}>
@@ -212,7 +236,11 @@ const Edit = () => {
                 };
               }}
               columns={columns}
-              dataSource={checkList}
+              dataSource={checkList.filter(item => {
+                return (item.name.indexOf(searchCheckListValue) !== -1
+                  || item.job.indexOf(searchCheckListValue) !== -1
+                  || item.phone.indexOf(searchCheckListValue) !== -1);
+              })}
             />
           </div>
         </div>
@@ -221,12 +249,12 @@ const Edit = () => {
           <div>关联报警设备</div>
           <div style={{paddingTop: 12}}>
             {treeLoading ? <Spin/> : <Tree
-              // checkedKeys={['3333']}
+              checkedKeys={rules}
               checkable
               selectable={false}
               treeData={treeData}
               onCheck={(checkedKeys) => {
-                console.log(checkedKeys);
+                setRules(checkedKeys);
               }}
             />}
           </div>
@@ -243,10 +271,20 @@ const Edit = () => {
           message.warning('请添加报警联系人!');
           return;
         }
+        const checkRules = rules.filter(item => item.indexOf('ruleKey') !== -1);
+        const itemParams = [];
+        checkRules.forEach((item) => {
+          itemParams.push({
+            classifyId: item.split('modelKey')[0],
+            modelId: item.split('modelKey')[1].split('ruleKey')[0],
+            itemKeys: [item.split('modelKey')[1].split('ruleKey')[1]]
+          });
+        });
         const data = {
           groupId: searchParams.groupId,
           name,
-          contactIds: checkList.map(item => item.contactId)
+          contactIds: checkList.map(item => item.contactId),
+          itemParams
         };
         if (searchParams.groupId) {
           editRun({data});

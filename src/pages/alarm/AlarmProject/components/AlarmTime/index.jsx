@@ -4,10 +4,9 @@ import moment from 'moment';
 
 const AlarmTime = ({value, onChange, width}) => {
 
-
   return <TimePicker
     style={{width}}
-    // value={moment(value)}
+    value={value ? moment(value) : null}
     hideDisabledOptions
     format="HH 天 mm 小时 ss 分钟"
     showNow={false}
@@ -17,8 +16,8 @@ const AlarmTime = ({value, onChange, width}) => {
         disabledMinutes: () => new Array(48).fill('').map((item, index) => index + 24),
       };
     }}
-    onChange={(value, timeString) => {
-      onChange(timeString);
+    onChange={(value) => {
+      onChange(value);
     }}
   />;
 };

@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Form, Input, Radio, Select} from 'antd';
+import {Form, Input, Radio} from 'antd';
 import AntForm from '@/components/AntForm';
 import {contactAdd, contactEdit} from '@/pages/alarm/Contacts/url';
-import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
-import store from '@/store';
-import RoleIds from '@/pages/systemManage/Role/components/RoleIds';
 import {Total} from '@/pages/alarm/Contacts/Save/components/Total';
+import ContactGroupTransfer from '@/pages/alarm/ContactGroup/components/ContactGroupTransfer';
+import {isArray} from '@/util/Tools';
 
 
 const Save = ({
@@ -17,11 +16,7 @@ const Save = ({
   }
 }) => {
 
-  const [showTotal, setShowTotal] = useState(true);
-
-  const [dataSource] = store.useModel('dataSource');
-
-  const customer = dataSource.customer || {};
+  const [showTotal, setShowTotal] = useState(data.shortMessageStatus === '1');
 
   useEffect(() => {
     if (visible) {
@@ -31,6 +26,7 @@ const Save = ({
 
   return (
     <AntForm
+      width={800}
       apis={{
         add: contactAdd,
         edit: contactEdit,
@@ -96,9 +92,10 @@ const Save = ({
         </Radio.Group>
       </Form.Item>
       <Form.Item
+        initialValue={data.shortMessageNumber}
         hidden={!showTotal}
-        key="total"
-        name="total"
+        key="shortMessageNumber"
+        name="shortMessageNumber"
         label="选择短信条数"
         rules={[
           {required: showTotal, message: '请选择短信条数'},
@@ -107,11 +104,12 @@ const Save = ({
         <Total/>
       </Form.Item>
       <Form.Item
-        key="group"
-        name="group"
+        initialValue={[...new Set(isArray(data.groups).map(item => item.groupId))]}
+        key="groupIds"
+        name="groupIds"
         label="报警联系组"
       >
-        <RoleIds/>
+        <ContactGroupTransfer />
       </Form.Item>
       <Form.Item
         initialValue={data.mail}

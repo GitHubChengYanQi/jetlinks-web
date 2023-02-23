@@ -46,8 +46,7 @@ const Rule = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="规则名称" name="name" component={Input}/>
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select}/>
+      <FormItem label="设备型号名称" name="name" component={Input}/>
     </>;
   };
 

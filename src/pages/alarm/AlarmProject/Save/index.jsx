@@ -1,14 +1,17 @@
 import React from 'react';
 import {Form, Input, Radio,} from 'antd';
+import moment from 'moment';
 import AntForm from '@/components/AntForm';
-import Select from '@/components/Select';
 import AlarmTime from '@/pages/alarm/AlarmProject/components/AlarmTime';
 import {alarmItemEdit} from '@/pages/alarm/AlarmProject/url';
+import ContactGroupTransfer from '@/pages/alarm/ContactGroup/components/ContactGroupTransfer';
+import {isArray} from '@/util/Tools';
 
 export const getSecond = (value) => {
-  const day = Number(value.substring(0, 2));
-  const hour = Number(value.substring(5, 7));
-  const min = Number(value.substring(11, 13));
+  const time = moment(value).format('HH 天 mm 小时 ss 分钟');
+  const day = Number(time.substring(0, 2));
+  const hour = Number(time.substring(5, 7));
+  const min = Number(time.substring(11, 13));
   return day * 86400 + hour * 3600 + min * 60;
 };
 
@@ -21,9 +24,10 @@ const Save = ({
   close = () => {
   }
 }) => {
-  console.log(data);
+  // console.log(data);
   return (
     <AntForm
+      width={800}
       apis={{
         add: alarmItemEdit,
         edit: alarmItemEdit,
@@ -35,7 +39,14 @@ const Save = ({
       visible={visible}
       close={close}
       format={(values) => {
-        return {...values, itemKey: data.key, modelId, timeSpan: getSecond(values.timeSpan)};
+        return {
+          ...values,
+          itemKey: data.key,
+          itemId: data.alarmItemResult?.itemId,
+          modelId,
+          viewTime: moment(values.timeSpan).format('YYYY-MM-DD HH:mm:ss'),
+          timeSpan: getSecond(values.timeSpan)
+        };
       }}
     >
       <Form.Item
@@ -50,7 +61,7 @@ const Save = ({
         <Input.TextArea placeholder="请输入报警通知预案"/>
       </Form.Item>
       <Form.Item
-        initialValue={data.timeSpan}
+        initialValue={data.alarmItemResult?.viewTime || undefined}
         key="timeSpan"
         name="timeSpan"
         label="报警时间间隔"
@@ -61,15 +72,12 @@ const Save = ({
         <AlarmTime/>
       </Form.Item>
       <Form.Item
-        initialValue={data.phone}
-        key="phone"
-        name="phone"
+        initialValue={[...new Set(isArray(data.alarmItemResult?.bindResults).map(item => item.group?.groupId))]}
+        key="groupIds"
+        name="groupIds"
         label="报警联系人组"
-        rules={[
-          // {required: true, message: '请输入手机号码'},
-        ]}
       >
-        <Select placeholder="请输入手机号码"/>
+        <ContactGroupTransfer />
       </Form.Item>
       <Form.Item
         initialValue={typeof data.status === 'number' ? data.status : 1}

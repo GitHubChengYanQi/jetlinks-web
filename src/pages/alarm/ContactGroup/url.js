@@ -1,3 +1,9 @@
+export const alarmContactFindAll = {
+  url: '/alarmContactGroup/findAll',
+  method: 'POST'
+};
+
+
 export const alarmContactGroupList = {
   url: '/alarmContactGroup/list',
   method: 'POST'

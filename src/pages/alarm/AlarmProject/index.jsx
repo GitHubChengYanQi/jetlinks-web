@@ -1,16 +1,23 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {getSearchParams, useHistory} from 'ice';
-import {Button, Modal, Space, Table} from 'antd';
+import {Button, message, Modal, Space, Table} from 'antd';
+import moment from 'moment';
 import {PrimaryButton} from '@/components/Button';
 import Render from '@/components/Render';
-import Save from '@/pages/alarm/AlarmProject/Save';
+import Save, {getSecond} from '@/pages/alarm/AlarmProject/Save';
 import AlarmTime from '@/pages/alarm/AlarmProject/components/AlarmTime';
 import Drawer from '@/components/Drawer';
 import ContactList from '@/pages/alarm/AlarmProject/components/ContactList';
 import style from '@/components/Table/index.module.less';
 import {useRequest} from '@/util/Request';
 import Note from '@/components/Note';
-import {alarmItemFindAll} from '@/pages/alarm/AlarmProject/url';
+import {
+  alarmItemFindAll,
+  alarmItemStartBatch,
+  alarmItemStopBatch,
+  alarmItemUpdateBatch
+} from '@/pages/alarm/AlarmProject/url';
+import {isArray} from '@/util/Tools';
 
 const AlarmProject = (
   {
@@ -27,17 +34,52 @@ const AlarmProject = (
 
   const [rows, setRows] = useState([]);
 
+  const [groupIds, setGroupIds] = useState([]);
+  const [row, setRow] = useState([]);
+
   const [openTime, set0penTime] = useState(false);
 
   const [saveVisible, setSaveVisible] = useState();
 
   const [dataSource, setDatSource] = useState([]);
 
+  const [time, setTime] = useState();
+
   const {loading: getRulesLoaing, run: getRules, refresh: refreshRules} = useRequest(alarmItemFindAll, {
     manual: true,
     onSuccess: (res) => {
       setDatSource(res);
     },
+  });
+
+  const {loading: updateBatchLoading, run: updateBatchRun} = useRequest(alarmItemUpdateBatch, {
+    manual: true,
+    onSuccess: () => {
+      set0penTime(false);
+      message.success('设置成功！');
+      setRows([]);
+      refreshRules();
+    }
+  });
+
+  const {loading: stopBatchLoading, run: stopBatchRun} = useRequest(alarmItemStopBatch, {
+    manual: true,
+    onSuccess: () => {
+      set0penTime(false);
+      setRows([]);
+      message.success('停用成功！');
+      refreshRules();
+    }
+  });
+
+  const {loading: startBatchLoading, run: startBatchRun} = useRequest(alarmItemStartBatch, {
+    manual: true,
+    onSuccess: () => {
+      set0penTime(false);
+      setRows([]);
+      message.success('启用成功！');
+      refreshRules();
+    }
   });
 
   useEffect(() => {
@@ -59,12 +101,20 @@ const AlarmProject = (
       title: '报警时间间隔',
       dataIndex: 'alarmItemResult',
       align: 'center',
-      render: (alarmItemResult) => <Render>{alarmItemResult?.timeSpan}</Render>
+      render: (alarmItemResult) => alarmItemResult?.viewTime &&
+        <Render>{moment(alarmItemResult?.viewTime).format('HH 天 mm 小时 ss 分钟')}</Render>
     },
     {
       title: '报警联系人组',
       dataIndex: 'alarmItemResult',
       align: 'center',
+      render: (alarmItemResult, record) => {
+        return <Button type="link" onClick={() => {
+          setRow(record);
+          setGroupIds([...new Set(isArray(alarmItemResult.bindResults).map(item => item.group?.groupId))]);
+          drawerRef.current.open(true);
+        }}>{[...new Set(isArray(alarmItemResult.bindResults).map(item => item.group?.name))].join('、')}</Button>;
+      }
     },
     {
       title: '报警状态', dataIndex: 'alarmItemResult', align: 'center', render: (alarmItemResult) => {
@@ -93,6 +143,23 @@ const AlarmProject = (
     },
   ];
 
+  const getIds = () => {
+    const itemIds = [];
+    const itemKeys = [];
+    rows.forEach(item => {
+      if (item.alarmItemResult?.itemId) {
+        itemIds.push(item.alarmItemResult?.itemId);
+      } else {
+        itemKeys.push(item.key);
+      }
+    });
+    return {
+      modelId: searchParams.modelId,
+      itemIds,
+      itemKeys
+    };
+  };
+
   return <>
     <div hidden={custom || global}>
       <h1 className="primaryColor">报警项设置</h1>
@@ -102,9 +169,36 @@ const AlarmProject = (
 
     <div hidden={global} style={{textAlign: 'right', padding: '0 24px 12px'}}>
       <Space>
-        <Button type="primary" onClick={() => set0penTime(true)}>批量设置报警时间间隔</Button>
-        <Button type="primary">批量启用</Button>
-        <Button type="primary">批量停用</Button>
+        <Button
+          disabled={rows.length === 0}
+          type="primary"
+          onClick={() => {
+            setTime(null);
+            set0penTime(true);
+          }}
+        >
+          批量设置报警时间间隔
+        </Button>
+        <Button
+          loading={startBatchLoading}
+          disabled={rows.length === 0}
+          type="primary"
+          onClick={() => {
+            startBatchRun({data: {...getIds()}});
+          }}
+        >
+          批量启用
+        </Button>
+        <Button
+          loading={stopBatchLoading}
+          disabled={rows.length === 0}
+          type="primary"
+          onClick={() => {
+            stopBatchRun({data: {...getIds()}});
+          }}
+        >
+          批量停
+          用</Button>
       </Space>
     </div>
     <Table
@@ -137,21 +231,35 @@ const AlarmProject = (
       title="设置报警时间间隔"
       open={openTime}
       width={500}
+      okButtonProps={{loading: updateBatchLoading}}
       onOk={() => {
+        if (!time) {
+          message.warning('请选择时间间隔!');
+          return;
+        }
+        updateBatchRun({
+          data: {
+            ...getIds(),
+            viewTime: moment(time).format('YYYY-MM-DD HH:mm:ss'),
+            timeSpan: getSecond(time)
+          }
+        });
       }}
       onCancel={() => set0penTime(false)}
     >
       <div style={{textAlign: 'center'}}>
-        <AlarmTime width={400}/>
+        <AlarmTime value={time} width={400} onChange={(value) => {
+          setTime(value);
+        }}/>
       </div>
     </Modal>
 
     <Drawer
       width="auto"
-      headTitle="报警名称:12312312"
+      headTitle={`报警名称:${row.title}`}
       ref={drawerRef}
     >
-      <ContactList show={custom || global}/>
+      <ContactList groupIds={groupIds} show={custom || global}/>
     </Drawer>
   </>;
 };
