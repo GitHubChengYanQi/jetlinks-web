@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Input, message, Space, Spin, Table as AntTable, Tree} from 'antd';
+import {Button, Input, message, Space, Spin, Table as AntTable, Tree, TreeSelect} from 'antd';
 import {ArrowLeftOutlined, ArrowRightOutlined, LinkOutlined} from '@ant-design/icons';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {getSearchParams, useHistory} from 'ice';
@@ -14,8 +14,11 @@ import {
   alarmContactGroupEdit, deviceClassifyTreeList,
 } from '@/pages/alarm/ContactGroup/url';
 import {isArray} from '@/util/Tools';
+import store from '@/store';
 
 const Edit = () => {
+
+  const [dataSource] = store.useModel('dataSource');
 
   const searchParams = getSearchParams();
 
@@ -23,7 +26,7 @@ const Edit = () => {
 
   const [name, setName] = useState('');
 
-  const [treeData, setTreeData] = useState([]);
+  const [area, setArea] = useState([]);
 
   const [list, setList] = useState([]);
   const [checkList, setCheckList] = useState([]);
@@ -43,14 +46,16 @@ const Edit = () => {
       setName(res.name);
       const newCheckList = isArray(list).filter(item => isArray(res.contactIds).find(contactId => contactId === item.contactId));
       setCheckList(newCheckList);
-      setRules(isArray(res.alarmBindResults).map(item => `${item.classifyId}modelKey${item.modelId}ruleKey${item.itemKey}`));
+      setRules(isArray(res.alarmBindResults).map(item => `${item.classifyId}modelKey${item.modelId}ruleKey${item.itemId}`));
+      setArea(isArray(res.classifies).map(item => item.classifyId));
     }
   });
 
   const formatTree = (data) => {
-    return isArray(data).map(item => {
+    const nodeList = [];
+    isArray(data).forEach(item => {
       const classifyId = item.classifyId;
-      return {
+      const node = {
         title: item.name,
         key: item.classifyId,
         children: [
@@ -66,7 +71,7 @@ const Edit = () => {
                   key: `${classifyId}modelKey${modelId}`,
                   children: isArray(item.items).map(item => ({
                     title: item.name,
-                    key: `${classifyId}modelKey${modelId}ruleKey${item.itemKey}`
+                    key: `${classifyId}modelKey${modelId}ruleKey${item.itemId}`
                   }))
                 };
               })
@@ -74,14 +79,18 @@ const Edit = () => {
           }),
         ]
       };
+      if (area.includes(classifyId)) {
+        nodeList.push(node);
+      } else {
+        formatTree(item.child).forEach(item => {
+          nodeList.push(item);
+        });
+      }
     });
+    return nodeList;
   };
 
-  const {loading: treeLoading} = useRequest(deviceClassifyTreeList, {
-    onSuccess: (res) => {
-      setTreeData(formatTree(res));
-    }
-  });
+  const {loading: treeLoading, data: deviceClassifyTree = []} = useRequest(deviceClassifyTreeList);
 
   const {loading} = useRequest(contactAllList, {
     onSuccess: (res) => {
@@ -139,8 +148,23 @@ const Edit = () => {
 
   return <div style={{backgroundColor: '#fff'}}>
     <div className={styles.header}>
-      <Space>
+      <Space style={{marginRight: 24}}>
         报警联系组名称：<Input placeholder="请输入组名称" value={name} onChange={({target: {value}}) => setName(value)}/>
+      </Space>
+      <Space>
+        负责区域：
+        <TreeSelect
+          maxTagCount={5}
+          style={{minWidth: 200}}
+          treeData={dataSource.deviceClass}
+          value={area}
+          onChange={(value) => {
+            setArea(value);
+          }}
+          treeCheckable
+          showCheckedStrategy={TreeSelect.SHOW_ALL}
+          placeholder="请选择负责区域"
+        />
       </Space>
     </div>
     <div style={{padding: '24px'}}>
@@ -252,7 +276,7 @@ const Edit = () => {
               checkedKeys={rules}
               checkable
               selectable={false}
-              treeData={treeData}
+              treeData={formatTree(deviceClassifyTree)}
               onCheck={(checkedKeys) => {
                 setRules(checkedKeys);
               }}
@@ -267,6 +291,9 @@ const Edit = () => {
         if (!name) {
           message.warning('请输入报警联系组名称!');
           return;
+        } else if (area.length === 0) {
+          message.warning('请选择负责区域!');
+          return;
         } else if (checkList.length === 0) {
           message.warning('请添加报警联系人!');
           return;
@@ -277,14 +304,15 @@ const Edit = () => {
           itemParams.push({
             classifyId: item.split('modelKey')[0],
             modelId: item.split('modelKey')[1].split('ruleKey')[0],
-            itemKeys: [item.split('modelKey')[1].split('ruleKey')[1]]
+            itemIds: [item.split('modelKey')[1].split('ruleKey')[1]]
           });
         });
         const data = {
           groupId: searchParams.groupId,
           name,
           contactIds: checkList.map(item => item.contactId),
-          itemParams
+          itemParams,
+          classifyIds: area
         };
         if (searchParams.groupId) {
           editRun({data});

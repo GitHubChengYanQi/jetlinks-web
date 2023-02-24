@@ -21,6 +21,8 @@ import {isArray} from '@/util/Tools';
 
 const AlarmProject = (
   {
+    deviceId,
+    modelId,
     custom,
     global
   }
@@ -31,6 +33,8 @@ const AlarmProject = (
   const history = useHistory();
 
   const searchParams = getSearchParams();
+
+  const currentModelId = modelId || searchParams.modelId;
 
   const [rows, setRows] = useState([]);
 
@@ -83,13 +87,13 @@ const AlarmProject = (
   });
 
   useEffect(() => {
-    if (searchParams.modelId) {
-      getRules({data: {modelId: searchParams.modelId}});
+    if (currentModelId) {
+      getRules({data: {modelId: currentModelId, deviceId: custom ? deviceId : null}});
     }
-  }, []);
+  }, [global]);
 
   const columns = [
-    {title: '序号', dataIndex: 'name', align: 'center', render: (text, record, index) => <Render>{index + 1}</Render>},
+    {title: '序号',width:50, dataIndex: 'name', align: 'center', render: (text, record, index) => <Render>{index + 1}</Render>},
     {title: '报警名称', dataIndex: 'title', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
@@ -123,8 +127,11 @@ const AlarmProject = (
           <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
         </Render>;
       }
-    },
-    {
+    }
+  ];
+
+  if (!global) {
+    columns.push({
       title: '操作', dataIndex: 'deviceNum', align: 'center', render: (value, record) => (
         <Space>
           <PrimaryButton onClick={() => {
@@ -140,8 +147,8 @@ const AlarmProject = (
           </PrimaryButton>
         </Space>
       )
-    },
-  ];
+    },);
+  }
 
   const getIds = () => {
     const itemIds = [];
@@ -154,7 +161,7 @@ const AlarmProject = (
       }
     });
     return {
-      modelId: searchParams.modelId,
+      modelId: currentModelId,
       itemIds,
       itemKeys
     };
@@ -184,7 +191,7 @@ const AlarmProject = (
           disabled={rows.length === 0}
           type="primary"
           onClick={() => {
-            startBatchRun({data: {...getIds()}});
+            startBatchRun({data: {...getIds(), deviceId}});
           }}
         >
           批量启用
@@ -194,11 +201,11 @@ const AlarmProject = (
           disabled={rows.length === 0}
           type="primary"
           onClick={() => {
-            stopBatchRun({data: {...getIds()}});
+            stopBatchRun({data: {...getIds(), deviceId}});
           }}
         >
-          批量停
-          用</Button>
+          批量停用
+        </Button>
       </Space>
     </div>
     <Table
@@ -222,10 +229,15 @@ const AlarmProject = (
       rowKey="key"
     />
 
-    <Save modelId={searchParams.modelId} data={saveVisible} visible={saveVisible} success={(success) => {
-      setSaveVisible();
-      refreshRules();
-    }} close={() => setSaveVisible()}/>
+    <Save
+      deviceId={deviceId}
+      modelId={currentModelId}
+      data={saveVisible}
+      visible={saveVisible}
+      success={(success) => {
+        setSaveVisible();
+        refreshRules();
+      }} close={() => setSaveVisible()}/>
 
     <Modal
       title="设置报警时间间隔"
@@ -239,6 +251,7 @@ const AlarmProject = (
         }
         updateBatchRun({
           data: {
+            deviceId,
             ...getIds(),
             viewTime: moment(time).format('YYYY-MM-DD HH:mm:ss'),
             timeSpan: getSecond(time)

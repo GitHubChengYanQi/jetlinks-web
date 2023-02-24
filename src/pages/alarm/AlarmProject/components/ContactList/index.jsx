@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
-import {Button, Table as AntTable, Tabs} from 'antd';
+import {Button, Space, Table as AntTable, Tabs} from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 import {useHistory} from 'ice';
 import Render from '@/components/Render';
 import style from '@/components/Table/index.module.less';
 import {useRequest} from '@/util/Request';
-import {contactFindAllByGroup} from '@/pages/alarm/AlarmProject/url';
+import {alarmContactGroupContactListByGroup} from '@/pages/alarm/AlarmProject/url';
 import {isArray} from '@/util/Tools';
+import Note from '@/components/Note';
 
 const ContactList = (
   {
@@ -17,7 +18,7 @@ const ContactList = (
 
   const history = useHistory();
 
-  const {loading, data, run} = useRequest(contactFindAllByGroup, {manual: true});
+  const {loading, data, run} = useRequest(alarmContactGroupContactListByGroup, {manual: true});
 
   const columns = [
     {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
@@ -51,16 +52,27 @@ const ContactList = (
             >
               添加联系人组
             </Button>}
-            items={[{key: '1', label: '联系人组'}]}
+            items={[{
+              key: '1', label: <Space align='center'>
+                {item.name}
+                (
+                <Note maxWidth={200} style={{display: 'inline-block',height:'18px',color:'#026d9b'}}>{
+                  isArray(item.classifies).map(item => item.name)
+                }</Note>
+                )
+              </Space>
+            }]}
           />
           <AntTable
+            pagination={false}
+            rowKey="contactId"
             onHeaderRow={() => {
               return {
                 className: style.headerRow
               };
             }}
             columns={columns}
-            dataSource={[{}, {}, {}]}
+            dataSource={item.contacts}
           />
         </div>;
       })

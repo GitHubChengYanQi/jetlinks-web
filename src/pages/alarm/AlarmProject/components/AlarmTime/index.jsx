@@ -12,7 +12,7 @@ const AlarmTime = ({value, onChange, width}) => {
     showNow={false}
     disabledTime={() => {
       return {
-        disabledHours: () => new Array(57).fill('').map((item, index) => index + 3),
+        disabledHours: () => new Array(57).fill('').map((item, index) => index + 21),
         disabledMinutes: () => new Array(48).fill('').map((item, index) => index + 24),
       };
     }}

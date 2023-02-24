@@ -9,8 +9,8 @@ export const alarmItemFindAll = {
 };
 
 
-export const contactFindAllByGroup = {
-  url: '/contact/findAllByGroup',
+export const alarmContactGroupContactListByGroup = {
+  url: '/alarmContactGroup/contactListByGroup',
   method: 'POST'
 };
 

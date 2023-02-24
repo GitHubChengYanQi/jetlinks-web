@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, message, Select, Input} from 'antd';
+import {Space, Dropdown, Menu, message, Select, Input, Button, Modal, Tag} from 'antd';
 import {createFormActions} from '@formily/antd';
 import moment from 'moment';
 import {useHistory} from 'ice';
@@ -16,6 +16,7 @@ import {
   alarmContactGroupDelete,
   alarmContactGroupList, alarmContactGroupStart, alarmContactGroupStop
 } from '@/pages/alarm/ContactGroup/url';
+import Note from '@/components/Note';
 
 const formActionsPublic = createFormActions();
 
@@ -25,6 +26,7 @@ const List = () => {
   const history = useHistory();
 
   const [records, setResords] = useState([]);
+  const [classifies, setClassifies] = useState([]);
 
   const keys = records.map(item => item.groupId);
 
@@ -85,6 +87,15 @@ const List = () => {
 
   const columns = [
     {title: '报警联系组', dataIndex: 'name', align: 'center',},
+    {
+      title: '负责区域', dataIndex: 'classifies', align: 'center', render(classifies) {
+        return <Button type="link" onClick={() => {
+          setClassifies(isArray(classifies));
+        }}>
+          <Note maxWidth={200}>{isArray(classifies).map(item => item.name)}</Note>
+        </Button>;
+      }
+    },
     {
       title: '状态',
       dataIndex: 'status',
@@ -196,6 +207,21 @@ const List = () => {
         </Space>;
       }}
     />
+
+    <Modal
+      title="负责区域"
+      open={classifies.length > 0}
+      footer={null}
+      onCancel={() => setClassifies([])}
+    >
+      {
+        isArray(classifies).map((item, index) => {
+          return <div key={index} style={{padding: 12, display: 'inline-block'}}>
+            <Tag key={index} style={{padding: 12}}>{item.name}</Tag>
+          </div>;
+        })
+      }
+    </Modal>
   </>;
 };
 export default List;

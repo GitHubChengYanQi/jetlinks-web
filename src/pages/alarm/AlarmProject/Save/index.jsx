@@ -16,6 +16,7 @@ export const getSecond = (value) => {
 };
 
 const Save = ({
+  deviceId,
   modelId,
   data = {},
   success = () => {
@@ -41,6 +42,7 @@ const Save = ({
       format={(values) => {
         return {
           ...values,
+          deviceId,
           itemKey: data.key,
           itemId: data.alarmItemResult?.itemId,
           modelId,
@@ -77,7 +79,7 @@ const Save = ({
         name="groupIds"
         label="报警联系人组"
       >
-        <ContactGroupTransfer />
+        <ContactGroupTransfer/>
       </Form.Item>
       <Form.Item
         initialValue={typeof data.status === 'number' ? data.status : 1}

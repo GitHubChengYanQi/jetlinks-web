@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
-import {Descriptions, Radio, Tabs} from 'antd';
+import {Button, Descriptions, Radio, Tabs} from 'antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 import AlarmProject from '@/pages/alarm/AlarmProject';
+import {useRequest} from '@/util/Request';
+import {deviceDetail, deviceEditAlarmCustom} from '@/pages/equipment/Equipment/url';
 
 const AlarmDetail = (
   {
@@ -8,11 +11,39 @@ const AlarmDetail = (
   }
 ) => {
 
-  const [type, setType] = useState('all');
+  const [alarmCustom, setAlarmCustom] = useState(0);
+
+  const {loading: detailLoading, refresh} = useRequest({
+    ...deviceDetail,
+    data: {deviceId: device.deviceId}
+  }, {
+    onSuccess: (res) => {
+      setAlarmCustom(res.alarmCustom);
+    }
+  });
+
+  const {loading, run} = useRequest(deviceEditAlarmCustom, {
+    manual: true,
+    onSuccess: () => {
+      refresh();
+    }
+  });
+
+  if (detailLoading) {
+    return <ProSkeleton type="descriptions"/>;
+  }
 
   return <>
     <Tabs
       items={[{key: '1', label: '基本信息'}]}
+      tabBarExtraContent={<Button
+        loading={loading}
+        type="primary"
+        onClick={() => {
+          run({
+            data: {deviceId: device.deviceId, alarmCustom}
+          });
+        }}>保存</Button>}
     />
     <Descriptions
       column={2}
@@ -24,15 +55,20 @@ const AlarmDetail = (
     </Descriptions>
     <br/>
     <Tabs
-      tabBarExtraContent={<Radio.Group value={type} onChange={({target: {value}}) => {
-        setType(value);
+      tabBarExtraContent={<Radio.Group value={alarmCustom} onChange={({target: {value}}) => {
+        setAlarmCustom(value);
       }}>
-        <Radio value="all">启用全局报警设置</Radio>
-        <Radio value="diy">启用以下自定义报警设置</Radio>
+        <Radio value={0}>启用全局报警设置</Radio>
+        <Radio value={1}>启用以下自定义报警设置</Radio>
       </Radio.Group>}
       items={[{key: '1', label: '报警项设置'}]}
     />
-    <AlarmProject global={type === 'all'} custom={type === 'diy'}/>
+    <AlarmProject
+      global={alarmCustom === 0}
+      custom={alarmCustom === 1}
+      modelId={device.modelId}
+      deviceId={device.deviceId}
+    />
   </>;
 };
 
