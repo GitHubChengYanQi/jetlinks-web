@@ -11,7 +11,7 @@ import {contactAllList} from '@/pages/alarm/Contacts/url';
 import {
   alarmContactGroupAdd,
   alarmContactGroupDetail,
-  alarmContactGroupEdit, deviceClassifyTreeList,
+  alarmContactGroupEdit, deviceClassifyTreeList, findListByClassify,
 } from '@/pages/alarm/ContactGroup/url';
 import {isArray} from '@/util/Tools';
 import store from '@/store';
@@ -28,6 +28,8 @@ const Edit = () => {
 
   const [area, setArea] = useState([]);
 
+  const [tree, setTree] = useState([]);
+
   const [list, setList] = useState([]);
   const [checkList, setCheckList] = useState([]);
   const [listValue, setListValue] = useState('');
@@ -40,57 +42,50 @@ const Edit = () => {
 
   const [rules, setRules] = useState([]);
 
+
+  const {
+    loading: findListByClassifyLoading,
+    run: findListByClassifyRun
+  } = useRequest(findListByClassify, {
+    manual: true,
+    onSuccess: (res) => {
+      setTree(isArray(res).map(item => {
+        return {
+          title: item.name,
+          key: item.categoryId,
+          children: isArray(item.modelResultList).map(modelItem => {
+            return {
+              title: modelItem.name,
+              key: modelItem.modelId,
+              children: isArray(modelItem.items).map(itemsItem => {
+                return {
+                  title: itemsItem.name,
+                  key: `${modelItem.modelId}modelRuleKey${itemsItem.itemId}`,
+                };
+              })
+            };
+          })
+        };
+      }));
+    }
+
+  });
+
   const {loading: detailLoading, run: detailRun} = useRequest(alarmContactGroupDetail, {
     manual: true,
     onSuccess: (res) => {
       setName(res.name);
       const newCheckList = isArray(list).filter(item => isArray(res.contactIds).find(contactId => contactId === item.contactId));
       setCheckList(newCheckList);
-      setRules(isArray(res.alarmBindResults).map(item => `${item.classifyId}modelKey${item.modelId}ruleKey${item.itemId}`));
-      setArea(isArray(res.classifies).map(item => item.classifyId));
+      setRules(isArray(res.alarmBindResults).map(item => `${item.modelId}modelRuleKey${item.itemId}`));
+      setArea(res.classifyIds);
+      findListByClassifyRun({
+        data: {
+          classifyIds: res.classifyIds
+        }
+      });
     }
   });
-
-  const formatTree = (data) => {
-    const nodeList = [];
-    isArray(data).forEach(item => {
-      const classifyId = item.classifyId;
-      const node = {
-        title: item.name,
-        key: item.classifyId,
-        children: [
-          ...formatTree(item.child),
-          ...isArray(item.categoryResults).map(item => {
-            return {
-              title: item.name,
-              key: `${classifyId}classKey${item.categoryId}`,
-              children: isArray(item.modelResultList).map(item => {
-                const modelId = item.modelId;
-                return {
-                  title: item.name,
-                  key: `${classifyId}modelKey${modelId}`,
-                  children: isArray(item.items).map(item => ({
-                    title: item.name,
-                    key: `${classifyId}modelKey${modelId}ruleKey${item.itemId}`
-                  }))
-                };
-              })
-            };
-          }),
-        ]
-      };
-      if (area.includes(classifyId)) {
-        nodeList.push(node);
-      } else {
-        formatTree(item.child).forEach(item => {
-          nodeList.push(item);
-        });
-      }
-    });
-    return nodeList;
-  };
-
-  const {loading: treeLoading, data: deviceClassifyTree = []} = useRequest(deviceClassifyTreeList);
 
   const {loading} = useRequest(contactAllList, {
     onSuccess: (res) => {
@@ -160,6 +155,11 @@ const Edit = () => {
           value={area}
           onChange={(value) => {
             setArea(value);
+            findListByClassifyRun({
+              data: {
+                classifyIds: value
+              }
+            });
           }}
           treeCheckable
           showCheckedStrategy={TreeSelect.SHOW_ALL}
@@ -272,11 +272,11 @@ const Edit = () => {
         <div className={styles.box} style={{padding: 24}}>
           <div>关联报警设备</div>
           <div style={{paddingTop: 12}}>
-            {treeLoading ? <Spin/> : <Tree
+            {findListByClassifyLoading ? <Spin/> : <Tree
               checkedKeys={rules}
               checkable
               selectable={false}
-              treeData={formatTree(deviceClassifyTree)}
+              treeData={tree}
               onCheck={(checkedKeys) => {
                 setRules(checkedKeys);
               }}
@@ -298,13 +298,12 @@ const Edit = () => {
           message.warning('请添加报警联系人!');
           return;
         }
-        const checkRules = rules.filter(item => item.indexOf('ruleKey') !== -1);
+        const checkRules = rules.filter(item => item.indexOf('modelRuleKey') !== -1);
         const itemParams = [];
         checkRules.forEach((item) => {
           itemParams.push({
-            classifyId: item.split('modelKey')[0],
-            modelId: item.split('modelKey')[1].split('ruleKey')[0],
-            itemIds: [item.split('modelKey')[1].split('ruleKey')[1]]
+            modelId: item.split('modelRuleKey')[0],
+            itemIds: [item.split('modelRuleKey')[1]]
           });
         });
         const data = {

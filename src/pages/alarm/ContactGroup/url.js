@@ -14,6 +14,11 @@ export const deviceClassifyTreeList = {
   method: 'GET'
 };
 
+export const findListByClassify = {
+  url: '/deviceCategory/findListByClassify',
+  method: 'POST'
+};
+
 export const alarmContactGroupAdd = {
   url: '/alarmContactGroup/add',
   method: 'POST'

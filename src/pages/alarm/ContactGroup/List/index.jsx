@@ -92,7 +92,7 @@ const List = () => {
         return <Button type="link" onClick={() => {
           setClassifies(isArray(classifies));
         }}>
-          <Note maxWidth={200}>{isArray(classifies).map(item => item.name)}</Note>
+          <Note maxWidth={200}>{isArray(classifies).map(item => item.name).join('、')}</Note>
         </Button>;
       }
     },
@@ -190,7 +190,7 @@ const List = () => {
           <PrimaryButton onClick={() => {
             history.push(`/alarm/ContactGroupEdit?groupId=${record.groupId}`);
           }}>编辑</PrimaryButton>
-          <Warning onOk={() => {
+          <Warning content='是否要删除该联系组信息，将解除所有该组内联系人及关联设备' onOk={() => {
             deleteRun({data: {groupId: record.groupId}});
           }}>
             <DangerButton>删除</DangerButton>
