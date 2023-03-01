@@ -1,3 +1,9 @@
+export const contactAllList = {
+  url: '/contact/allList',
+  method: 'GET',
+};
+
+
 export const contactList = {
   url: '/contact/list',
   method: 'POST',

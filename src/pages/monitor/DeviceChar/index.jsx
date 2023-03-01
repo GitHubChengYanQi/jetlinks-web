@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Alert, Button, Empty, Image, Input, message, Modal, Space, Tabs} from 'antd';
+import {Alert, Button, Drawer, Empty, Image, Input, message, Modal, Space, Tabs} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import {createFormActions} from '@formily/antd';
 import pako from 'pako';
@@ -22,6 +22,7 @@ import Chart from '@/pages/monitor/DeviceChar/components/Chart';
 import ThousandsSeparator from '@/components/ThousandsSeparator';
 import {alarmRecordList} from '@/pages/alarm/url';
 import Record from '@/pages/alarm/Record';
+import AlarmDetail from '@/pages/monitor/DeviceChar/components/AlarmDetail';
 
 export const deviceChartData = {url: '/device/chartData', method: 'POST'};
 export const getChartTopic = {url: '/deviceModel/getChartTopic', method: 'POST'};
@@ -41,6 +42,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
   const [type, setType] = useState();
 
   const [saveVisible, setSaveVisible] = useState();
+
+  const [alarmVisible, setAlarmVisible] = useState();
 
   const [control, setControl] = useState(false);
 
@@ -207,7 +210,8 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
           return <LinkButton key={index} onClick={() => {
             switch (item.type) {
               case 'warningConfig':
-                setSaveVisible(true);
+                setAlarmVisible(true);
+                // setSaveVisible(true);
                 break;
               case 'remoteControl':
                 if (isArray(item?.downDatas).length === 1) {
@@ -411,6 +415,16 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
         setSaveVisible();
       }}
     />
+
+    <Drawer
+      destroyOnClose
+      width="auto"
+      title="查看本设备报警规则"
+      open={alarmVisible}
+      onClose={() => setAlarmVisible(false)}
+    >
+      <AlarmDetail device={device}/>
+    </Drawer>
 
     <Control
       ref={controlRef}

@@ -25,7 +25,7 @@ const SelectGroup = ({
         ref.current.open(false);
         inputRef.current.blur();
       }}
-      value={value ? name : null}
+      value={value ? name : '全部分组'}
       placeholder="请选择分组"
     />
     <Modal
@@ -37,7 +37,7 @@ const SelectGroup = ({
         <Button onClick={() => ref.current.close()}>取消</Button>
         <Button type="primary" onClick={() => {
           setName(group.title);
-          onChange(group.key);
+          onChange(group.key === '0' ? null : group.key);
           ref.current.close();
         }}>确认</Button>
       </Space>}
@@ -45,7 +45,7 @@ const SelectGroup = ({
       <div style={{padding: 24}}>
         <Group all value={module} onChange={(modelId, type, module) => {
           setGroup(module);
-        }} />
+        }}/>
       </div>
     </Modal>
   </>;
