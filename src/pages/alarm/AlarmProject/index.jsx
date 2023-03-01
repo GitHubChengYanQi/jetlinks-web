@@ -93,7 +93,13 @@ const AlarmProject = (
   }, [global]);
 
   const columns = [
-    {title: '序号',width:50, dataIndex: 'name', align: 'center', render: (text, record, index) => <Render>{index + 1}</Render>},
+    {
+      title: '序号',
+      width: 50,
+      dataIndex: 'name',
+      align: 'center',
+      render: (text, record, index) => <Render>{index + 1}</Render>
+    },
     {title: '报警名称', dataIndex: 'title', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
@@ -105,14 +111,25 @@ const AlarmProject = (
       title: '报警时间间隔',
       dataIndex: 'alarmItemResult',
       align: 'center',
-      render: (alarmItemResult) => alarmItemResult?.viewTime &&
-        <Render>{moment(alarmItemResult?.viewTime).format('HH 天 mm 小时 ss 分钟')}</Render>
+      render: (alarmItemResult) => {
+        if (!alarmItemResult?.viewTime) {
+          return '-';
+        }
+        const times = (alarmItemResult?.viewTime || '').split(',');
+        const day = times[0] || 0;
+        const hour = times[1] || 0;
+        const min = times[2] || 0;
+        return <Render>{`${day} 天 ${hour} 小时 ${min} 分钟`}</Render>;
+      }
     },
     {
       title: '报警联系人组',
       dataIndex: 'alarmItemResult',
       align: 'center',
       render: (alarmItemResult, record) => {
+        if (isArray(alarmItemResult.bindResults).length === 0) {
+          return '-';
+        }
         return <Button type="link" onClick={() => {
           setRow(record);
           setGroupIds([...new Set(isArray(alarmItemResult.bindResults).map(item => item.group?.groupId))]);
@@ -253,7 +270,7 @@ const AlarmProject = (
           data: {
             deviceId,
             ...getIds(),
-            viewTime: moment(time).format('YYYY-MM-DD HH:mm:ss'),
+            viewTime: time,
             timeSpan: getSecond(time)
           }
         });

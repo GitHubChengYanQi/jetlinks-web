@@ -166,6 +166,39 @@ const Edit = () => {
           placeholder="请选择负责区域"
         />
       </Space>
+      <Button style={{float: 'right'}} loading={addLoading || editLoading} type="primary" onClick={() => {
+        if (!name) {
+          message.warning('请输入报警联系组名称!');
+          return;
+        } else if (area.length === 0) {
+          message.warning('请选择负责区域!');
+          return;
+        } else if (checkList.length === 0) {
+          message.warning('请添加报警联系人!');
+          return;
+        }
+        const checkRules = rules.filter(item => item.indexOf('modelRuleKey') !== -1);
+        const itemParams = [];
+        checkRules.forEach((item) => {
+          itemParams.push({
+            modelId: item.split('modelRuleKey')[0],
+            itemIds: [item.split('modelRuleKey')[1]]
+          });
+        });
+        const data = {
+          groupId: searchParams.groupId,
+          name,
+          contactIds: checkList.map(item => item.contactId),
+          itemParams,
+          classifyIds: area
+        };
+        if (searchParams.groupId) {
+          editRun({data});
+        } else {
+          addRun({data});
+        }
+
+      }}>保存</Button>
     </div>
     <div style={{padding: '24px'}}>
       <Space align="center">
@@ -285,41 +318,6 @@ const Edit = () => {
 
         </div>
       </Space>
-    </div>
-    <div style={{textAlign: 'right', padding: 24}}>
-      <Button loading={addLoading || editLoading} type="primary" onClick={() => {
-        if (!name) {
-          message.warning('请输入报警联系组名称!');
-          return;
-        } else if (area.length === 0) {
-          message.warning('请选择负责区域!');
-          return;
-        } else if (checkList.length === 0) {
-          message.warning('请添加报警联系人!');
-          return;
-        }
-        const checkRules = rules.filter(item => item.indexOf('modelRuleKey') !== -1);
-        const itemParams = [];
-        checkRules.forEach((item) => {
-          itemParams.push({
-            modelId: item.split('modelRuleKey')[0],
-            itemIds: [item.split('modelRuleKey')[1]]
-          });
-        });
-        const data = {
-          groupId: searchParams.groupId,
-          name,
-          contactIds: checkList.map(item => item.contactId),
-          itemParams,
-          classifyIds: area
-        };
-        if (searchParams.groupId) {
-          editRun({data});
-        } else {
-          addRun({data});
-        }
-
-      }}>保存</Button>
     </div>
   </div>;
 };

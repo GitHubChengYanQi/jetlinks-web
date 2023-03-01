@@ -11,6 +11,8 @@ import {useRequest} from '@/util/Request';
 import {deviceModelList, deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import SelectDevice from '@/pages/alarm/Rule/components/SelectDevice';
+import SelectModle from '@/pages/equipment/OutStock/Save/components/SelectModle';
+import {categoryFindAll} from '@/pages/equipment/Category/url';
 
 const Rule = () => {
 
@@ -32,8 +34,8 @@ const Rule = () => {
       align: 'center',
       render: (categoryResult = {}) => <Render text={categoryResult.name}/>
     },
-    {title: '启用报警项数', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
-    {title: '总报警项数', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {title: '启用报警项数', dataIndex: 'num', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {title: '总报警项数', dataIndex: 'num', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
   ];
 
   const {loading: deleteLoaing, run: deleteRun} = useRequest(alarmDelete, {
@@ -46,7 +48,14 @@ const Rule = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="设备型号名称" name="name" component={Input}/>
+      <FormItem
+        label="设备类别"
+        name="categoryId"
+        api={categoryFindAll}
+        format={(data = []) => data.map(item => ({label: item.name, value: item.categoryId}))}
+        component={Select}
+      />
+      <FormItem label="设备型号" name="modelId" component={SelectModle} />
     </>;
   };
 

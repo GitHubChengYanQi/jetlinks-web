@@ -46,12 +46,13 @@ const AlarmDetail = (
         }}>保存</Button>}
     />
     <Descriptions
-      column={2}
+      column={3}
       contentStyle={{color: '#000'}}
       bordered
     >
       <Descriptions.Item label="设备类型">{device.categoryName || '-'}</Descriptions.Item>
       <Descriptions.Item label="设备型号">{device.modelName || '-'}</Descriptions.Item>
+      <Descriptions.Item label="终端备注">{device.remarks || '-'}</Descriptions.Item>
     </Descriptions>
     <br/>
     <Tabs

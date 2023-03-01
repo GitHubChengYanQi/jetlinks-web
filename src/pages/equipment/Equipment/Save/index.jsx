@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Form} from 'antd';
+import {Input, Form, Radio} from 'antd';
 import Position from '@/pages/equipment/Equipment/Save/components/Position';
 import {deviceModelListSelect} from '@/pages/equipment/Model/url';
 import AntForm from '@/components/AntForm';
@@ -56,7 +56,7 @@ const Save = props => {
         label="设备MAC"
         name="mac"
       >
-        <Input disabled placeholder="请输入设备MAC" />
+        <Input disabled placeholder="请输入设备MAC"/>
       </Form.Item>
       <Form.Item
         initialValue={data.customerName}
@@ -64,7 +64,7 @@ const Save = props => {
         label={customer.customerId ? '选择分组' : '所属客户'}
         name="customerName"
       >
-        <Input disabled placeholder="请选择所属客户" />
+        <Input disabled placeholder="请选择所属客户"/>
       </Form.Item>
       <Form.Item
         initialValue={data.remarks}
@@ -72,7 +72,7 @@ const Save = props => {
         label="终端备注"
         name="remarks"
       >
-        <Input placeholder="请输入终端备注" />
+        <Input placeholder="请输入终端备注"/>
       </Form.Item>
       <Form.Item
         initialValue={data.name}
@@ -80,7 +80,7 @@ const Save = props => {
         label="登记名称"
         name="name"
       >
-        <Input disabled placeholder="请输入登记名称" />
+        <Input disabled placeholder="请输入登记名称"/>
       </Form.Item>
       <Form.Item
         initialValue={data.categoryId}
@@ -101,7 +101,26 @@ const Save = props => {
         label="设备型号"
         name="modelId"
       >
-        <Select disabled api={deviceModelListSelect} placeholder="请选择设备所属型号" />
+        <Select disabled api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
+      </Form.Item>
+      <Form.Item
+        initialValue={data.alarmCustom ? '自定义' : '全局'}
+        key="alarmCustom"
+        label="报警类目"
+        name="alarmCustom"
+      >
+        <Input disabled/>
+      </Form.Item>
+      <Form.Item
+        initialValue={data.alarmCustom}
+        key="alarmStatus"
+        label="报警状态"
+        name="alarmStatus"
+      >
+        <Radio.Group>
+          <Radio>启用</Radio>
+          <Radio>停用</Radio>
+        </Radio.Group>
       </Form.Item>
       <Form.Item
         initialValue={data.position}
@@ -117,7 +136,7 @@ const Save = props => {
         label="位置信息"
         name="positionId"
       >
-        <Cascader options={dataSource.area} placeholder="请选择位置信息" onChange={sePositionId} />
+        <Cascader options={dataSource.area} placeholder="请选择位置信息" onChange={sePositionId}/>
       </Form.Item>
       <Form.Item
         initialValue={data.address}
@@ -125,7 +144,7 @@ const Save = props => {
         label="详细地址"
         name="address"
       >
-        <Input.TextArea disabled={!positionId} placeholder="请输入详细地址" />
+        <Input.TextArea disabled={!positionId} placeholder="请输入详细地址"/>
       </Form.Item>
     </AntForm>
   );

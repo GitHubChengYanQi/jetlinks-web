@@ -1,6 +1,5 @@
 import React from 'react';
 import {Form, Input, Radio,} from 'antd';
-import moment from 'moment';
 import AntForm from '@/components/AntForm';
 import AlarmTime from '@/pages/alarm/AlarmProject/components/AlarmTime';
 import {alarmItemEdit} from '@/pages/alarm/AlarmProject/url';
@@ -8,10 +7,10 @@ import ContactGroupTransfer from '@/pages/alarm/ContactGroup/components/ContactG
 import {isArray} from '@/util/Tools';
 
 export const getSecond = (value) => {
-  const time = moment(value).format('HH 天 mm 小时 ss 分钟');
-  const day = Number(time.substring(0, 2));
-  const hour = Number(time.substring(5, 7));
-  const min = Number(time.substring(11, 13));
+  const times = (value || '').split(',');
+  const day = Number(times[0] || 0);
+  const hour = Number(times[1] || 0);
+  const min = Number(times[2] || 0);
   return day * 86400 + hour * 3600 + min * 60;
 };
 
@@ -46,7 +45,7 @@ const Save = ({
           itemKey: data.key,
           itemId: data.alarmItemResult?.itemId,
           modelId,
-          viewTime: moment(values.timeSpan).format('YYYY-MM-DD HH:mm:ss'),
+          viewTime: values.timeSpan,
           timeSpan: getSecond(values.timeSpan)
         };
       }}

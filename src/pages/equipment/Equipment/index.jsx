@@ -123,6 +123,29 @@ const Equipment = (
       render: (text) => <Render width={120} text={text} />
     },
     {
+      title: '报警类目',
+      dataIndex: 'alarmCustom',
+      align: 'center',
+      render: (text) => <Render width={120} text={text ? '自定义' : '全局'} />
+    },
+    {
+      title: '报警状态',
+      dataIndex: 'alarmStatus',
+      align: 'center',
+      render: (value) => {
+        const open = value === 'online';
+        return <Render>
+          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+        </Render>;
+      }
+    },
+    {
+      title: '报警联系组',
+      dataIndex: 'modelName',
+      align: 'center',
+      render: (text) => <Render width={120} text={''} />
+    },
+    {
       title: '设备IP地址',
       dataIndex: 'ip',
       align: 'center',

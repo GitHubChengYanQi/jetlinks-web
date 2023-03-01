@@ -23,6 +23,8 @@ import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import store from '@/store';
+import Select from '@/components/Select';
+import {alarmContactFindAll} from '@/pages/alarm/ContactGroup/url';
 
 const formActionsPublic = createFormActions();
 
@@ -63,7 +65,7 @@ const Contacts = ({
       />
     },
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text || '-'}/>},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
@@ -99,30 +101,16 @@ const Contacts = ({
     },
   });
 
-  const menu = <Menu
-    items={[
-      {
-        key: '1',
-        label: '单独新增',
-        onClick: () => {
-          setSaveVisible({});
-        }
-      },
-      {
-        key: '3',
-        label: '批量新增',
-        onClick: () => {
-          setBatchImport(true);
-        }
-      },
-    ]}
-  />;
-
   const actionMenu = <Menu
     items={[
       {
         key: '1',
-        label: <Warning onOk={() => deleteBatchRun({data: {contactIds: keys}})}>批量删除</Warning>,
+        label: <Warning
+          content="是否要删除该联系人信息，将解除所有绑定信息!"
+          onOk={() => deleteBatchRun({data: {contactIds: keys}})}
+        >
+          批量删除
+        </Warning>,
         danger: true,
       },
     ]}
@@ -132,8 +120,25 @@ const Contacts = ({
     return <>
       <FormItem noLabel={noAction} label="姓名" name="name" component={Input}/>
       <FormItem noLabel={noAction} label="职务" name="job" component={Input}/>
-      <FormItem noLabel={noAction} label="负责区域" name="classifyId" component={SelectGroup}/>
       <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input}/>
+      <FormItem
+        noLabel={noAction}
+        label="报警联系组"
+        name="groupId"
+        component={({value, onChange}) => {
+          return <Select
+            placeholder="请选择报警联系组"
+            value={value}
+            onChange={(value) => {
+              onChange(value);
+            }}
+            api={alarmContactFindAll}
+            format={(data) => {
+              return isArray(data).map(item => ({value: item.groupId, label: item.name}));
+            }}
+          />;
+        }}
+      />
       {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>}
     </>;
   };
@@ -164,10 +169,10 @@ const Contacts = ({
       ref={ref}
       api={contactList}
       searchButtons={noAction ? [] : [
-        <Dropdown key={1} overlay={menu} placement="bottom">
-          <PrimaryButton>新增联系人</PrimaryButton>
-        </Dropdown>,
-        <Dropdown key={2} overlay={actionMenu} placement="bottom">
+        <PrimaryButton key={1} onClick={() => {
+          setSaveVisible({});
+        }}>新增联系人</PrimaryButton>,
+        <Dropdown disabled={keys.length === 0} key={2} overlay={actionMenu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>,
         <PrimaryButton key={3} disabled={keys.length === 0} onClick={() => {

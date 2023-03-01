@@ -17,6 +17,7 @@ import {
   alarmContactGroupList, alarmContactGroupStart, alarmContactGroupStop
 } from '@/pages/alarm/ContactGroup/url';
 import Note from '@/components/Note';
+import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 
 const formActionsPublic = createFormActions();
 
@@ -124,7 +125,7 @@ const List = () => {
       {
         danger: true,
         key: '3',
-        label: <Warning onOk={() => {
+        label: <Warning content='是否要删除该联系组信息，将解除所有该组内联系人及关联设备' onOk={() => {
           batchDeleteRun({data: {groupIds: keys}});
         }}>批量删除</Warning>,
       },
@@ -135,6 +136,7 @@ const List = () => {
     return <>
       <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>
       <FormItem label="报警联系组名称" name="name" component={Input}/>
+      <FormItem label="负责区域" name="classifyId" component={SelectGroup} />
       <FormItem
         label="状态"
         name="status"
