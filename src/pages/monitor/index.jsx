@@ -205,7 +205,6 @@ const Monitor = () => {
       />
       <FormItem label="终端备注" name="remarks" component={Input} />
       <FormItem label="设备名称" name="name" component={Input} />
-      <FormItem label="批次" name="batchId" component={SelectBatch} />
       <div style={{display: 'none'}}>
         <FormItem name="modelId" value={searchParams.modelId} component={Input} />
       </div>

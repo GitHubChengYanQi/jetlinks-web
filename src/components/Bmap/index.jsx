@@ -101,6 +101,21 @@ const Bmap = ({
     let title = '';
     let className = '';
     let status = '';
+
+    // if (!deviceOnline){
+    //   mark = offline;
+    //   title = '设备离线';
+    //   className = styles.offline;
+    // }else if (device.alarm) {
+    //   mark = error;
+    //   title = '设备报警';
+    //   className = styles.error;
+    //   status = 'error';
+    // } else if (deviceOnline) {
+    //   mark = online;
+    //   title = '设备正常';
+    //   className = styles.online;
+
     if (deviceOnline) {
       if (device.alarm) {
         mark = error;

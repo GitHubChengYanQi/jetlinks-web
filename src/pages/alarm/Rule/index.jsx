@@ -1,20 +1,22 @@
 import React, {useRef, useState} from 'react';
 import {Space, Input, message} from 'antd';
+import {useHistory} from 'ice';
 import Render from '@/components/Render';
-import Warning from '@/components/Warning';
 import Table from '@/components/Table';
 import FormItem from '@/components/Table/components/FormItem';
-import {DangerButton, PrimaryButton} from '@/components/Button';
+import {PrimaryButton} from '@/components/Button';
 import Save from '@/pages/alarm/Rule/Save';
-import {alarmDelete, alarmList} from '@/pages/alarm/url';
+import {alarmDelete} from '@/pages/alarm/url';
 import {useRequest} from '@/util/Request';
-import {deviceModelListSelect} from '@/pages/equipment/Model/url';
+import {deviceModelList, deviceModelListSelect} from '@/pages/equipment/Model/url';
 import Select from '@/components/Select';
 import SelectDevice from '@/pages/alarm/Rule/components/SelectDevice';
 
 const Rule = () => {
 
   const ref = useRef();
+
+  const history = useHistory();
 
   const [saveVisible, setSaveVisible] = useState();
 
@@ -23,8 +25,15 @@ const Rule = () => {
   const [bindRule, setBindRule] = useState('');
 
   const columns = [
-    {title: '规则名称', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {title: '设备型号', dataIndex: 'modelName', align: 'center', render: (text) => <Render text={text} />},
+    {title: '设备型号名称', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+    {
+      title: '所属设备类别',
+      dataIndex: 'categoryResult',
+      align: 'center',
+      render: (categoryResult = {}) => <Render text={categoryResult.name}/>
+    },
+    {title: '启用报警项数', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
+    {title: '总报警项数', dataIndex: 'deviceNum', align: 'center', render: (text = '0') => <Render>{text || 0}</Render>},
   ];
 
   const {loading: deleteLoaing, run: deleteRun} = useRequest(alarmDelete, {
@@ -37,44 +46,29 @@ const Rule = () => {
 
   const searchForm = () => {
     return <>
-      <FormItem label="规则名称" name="name" component={Input} />
-      <FormItem label="设备型号" name="modelId" api={deviceModelListSelect} component={Select} />
+      <FormItem label="设备型号名称" name="name" component={Input}/>
     </>;
   };
 
   return <>
     <Table
+      noRowSelection
       onChange={setKeys}
       selectedRowKeys={keys}
       loading={deleteLoaing}
       ref={ref}
-      api={alarmList}
-      tableKey="rule"
-      searchButtons={[
-        <PrimaryButton key="1" onClick={() => {
-          setSaveVisible({});
-        }}>新增规则</PrimaryButton>
-      ]}
+      api={deviceModelList}
+      tableKey="model"
       searchForm={searchForm}
       columns={columns}
-      rowKey="alarmId"
+      rowKey="modelId"
       actionRender={(value, record) => (
         <Space>
           <PrimaryButton onClick={() => {
-            setBindRule(record);
-          }}>
-            一键应用
-          </PrimaryButton>
-          <PrimaryButton onClick={() => {
-            setSaveVisible(record);
+            history.push(`/alarm/alarmProject?modelId=${record.modelId}&categoryName=${record.categoryResult.name}&modelName=${record.name}`);
           }}>
             编辑
           </PrimaryButton>
-          <Warning onOk={() => {
-            deleteRun({data: {alarmId: record.alarmId}});
-          }}>
-            <DangerButton>删除</DangerButton>
-          </Warning>
         </Space>
       )}
     />
@@ -93,7 +87,7 @@ const Rule = () => {
       }}
     />
 
-    <SelectDevice visible={bindRule} close={() => setBindRule('')} />
+    <SelectDevice visible={bindRule} close={() => setBindRule('')}/>
   </>;
 };
 export default Rule;

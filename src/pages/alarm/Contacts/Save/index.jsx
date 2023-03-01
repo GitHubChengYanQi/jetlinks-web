@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Input, Radio} from 'antd';
 import AntForm from '@/components/AntForm';
 import {contactAdd, contactEdit} from '@/pages/alarm/Contacts/url';
-import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
-import store from '@/store';
+import {Total} from '@/pages/alarm/Contacts/Save/components/Total';
+import ContactGroupTransfer from '@/pages/alarm/ContactGroup/components/ContactGroupTransfer';
+import {isArray} from '@/util/Tools';
 
 
 const Save = ({
@@ -15,12 +16,17 @@ const Save = ({
   }
 }) => {
 
-  const [dataSource] = store.useModel('dataSource');
+  const [showTotal, setShowTotal] = useState(data.shortMessageStatus === '1');
 
-  const customer = dataSource.customer || {};
+  useEffect(() => {
+    if (visible) {
+      setShowTotal(true);
+    }
+  }, [visible]);
 
   return (
     <AntForm
+      width={800}
       apis={{
         add: contactAdd,
         edit: contactEdit,
@@ -31,6 +37,11 @@ const Save = ({
       success={success}
       visible={visible}
       close={close}
+      onValuesChange={(value) => {
+        if (value.shortMessageStatus) {
+          setShowTotal(value.shortMessageStatus === '1');
+        }
+      }}
     >
       <Form.Item
         initialValue={data.name}
@@ -54,17 +65,6 @@ const Save = ({
       >
         <Input placeholder="请输入职务"/>
       </Form.Item>
-      {!!customer.customerId && <Form.Item
-        initialValue={data.classifyId}
-        key="classifyId"
-        name="classifyId"
-        label="负责区域"
-        rules={[
-          {required: true, message: '请输入负责区域'},
-        ]}
-      >
-        <SelectTopClass all={false} />
-      </Form.Item>}
       <Form.Item
         initialValue={data.phone}
         key="phone"
@@ -90,6 +90,26 @@ const Save = ({
           <Radio value="1">是</Radio>
           <Radio value="0">否</Radio>
         </Radio.Group>
+      </Form.Item>
+      <Form.Item
+        initialValue={data.shortMessageNumber}
+        hidden={!showTotal}
+        key="shortMessageNumber"
+        name="shortMessageNumber"
+        label="选择短信条数"
+        rules={[
+          {required: showTotal, message: '请选择短信条数'},
+        ]}
+      >
+        <Total/>
+      </Form.Item>
+      <Form.Item
+        initialValue={[...new Set(isArray(data.groups).map(item => item.groupId))]}
+        key="groupIds"
+        name="groupIds"
+        label="报警联系组"
+      >
+        <ContactGroupTransfer />
       </Form.Item>
       <Form.Item
         initialValue={data.mail}

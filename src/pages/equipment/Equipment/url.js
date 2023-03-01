@@ -18,6 +18,11 @@ export const deviceEdit = {
   method: 'POST',
 };
 
+export const deviceEditAlarmCustom = {
+  url: '/device/EditAlarmCustom',
+  method: 'POST',
+};
+
 export const deviceBindAlarm = {
   url: '/device/bindAlarm',
   method: 'POST',

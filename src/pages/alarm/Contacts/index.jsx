@@ -3,6 +3,7 @@ import {Space, Dropdown, Menu, Input, message, Button} from 'antd';
 import {createFormActions} from '@formily/antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
+import moment from 'moment';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -22,7 +23,6 @@ import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import store from '@/store';
-import moment from 'moment';
 
 const formActionsPublic = createFormActions();
 
@@ -47,18 +47,28 @@ const Contacts = ({
   const ref = useRef();
 
   const columns = [
-    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text} />},
+    {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {
       title: '职务',
       dataIndex: 'job',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
+    {
+      title: '报警联系组',
+      dataIndex: 'groups',
+      align: 'center',
+      render: (groups) => <Render
+        text={isArray(groups).length === 0 ? '-' : [...new Set(isArray(groups).map(item => item.name))].join('、')}
+      />
+    },
+    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
+    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
     {
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className="green" text={text || 500} />
+      render: (text) => <Render className="green" text={text}/>
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
@@ -68,14 +78,8 @@ const Contacts = ({
         </Render>;
       }
     },
-    {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text} />},
-    {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
-    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text} />},
+    {title: '创建时间', dataIndex: 'createTime', align: 'center', render: (text) => <Render text={text}/>},
   ];
-
-  if (customer.customerId) {
-    columns.push({title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />});
-  }
 
   const {loading: deleteBatchLoading, run: deleteBatchRun} = useRequest(contactDeleteBatch, {
     manual: true,
@@ -126,11 +130,11 @@ const Contacts = ({
 
   const searchForm = () => {
     return <>
-      <FormItem noLabel={noAction} label="姓名" name="name" component={Input} />
-      <FormItem noLabel={noAction} label="职务" name="job" component={Input} />
-      <FormItem noLabel={noAction} label="负责区域" name="classifyId" component={SelectGroup} />
-      <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input} />
-      {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker />}
+      <FormItem noLabel={noAction} label="姓名" name="name" component={Input}/>
+      <FormItem noLabel={noAction} label="职务" name="job" component={Input}/>
+      <FormItem noLabel={noAction} label="负责区域" name="classifyId" component={SelectGroup}/>
+      <FormItem noLabel={noAction} label="手机号码" name="phone" component={Input}/>
+      {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>}
     </>;
   };
 
@@ -143,8 +147,10 @@ const Contacts = ({
       loading={deleteLoading || deleteBatchLoading}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
-            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
+          values = {
+            ...values, startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),
+          };
         }
         return values;
       }}
@@ -177,7 +183,7 @@ const Contacts = ({
       actionRender={(text, record) => (
         <Space>
           <PrimaryButton onClick={() => setSaveVisible(record)}>编辑</PrimaryButton>
-          <Warning onOk={() => deleteRun({data: {contactId: record.contactId}})}>
+          <Warning content="是否要删除该联系人信息，将解除所有绑定信息!" onOk={() => deleteRun({data: {contactId: record.contactId}})}>
             <DangerButton>删除</DangerButton>
           </Warning>
         </Space>
@@ -191,15 +197,15 @@ const Contacts = ({
       } else {
         ref.current.refresh();
       }
-    }} close={() => setSaveVisible()} />
+    }} close={() => setSaveVisible()}/>
 
     <BatchImport
       columns={[
-        {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text} />},
-        {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text} />},
-        {title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text} />},
-        {title: '手机号', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text} />},
-        {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text} />},
+        {title: '姓名', dataIndex: 'name', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '职务', dataIndex: 'job', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '负责区域', dataIndex: 'classifyName', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '手机号', dataIndex: 'phone', align: 'center', render: (text) => <Render text={text}/>},
+        {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text}/>},
       ]}
       templeteApi={contactDownloadTemplate}
       api={contactExcel}
