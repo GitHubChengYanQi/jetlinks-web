@@ -1,7 +1,22 @@
 import React, {useState, useImperativeHandle, useEffect} from 'react';
-import {Button, Col, Input, List, Modal, Popover, Row, Space, Spin, Tag, Switch, Badge, Layout, Divider} from 'antd';
+import {
+  Button,
+  Col,
+  Input,
+  List,
+  Modal,
+  Popover,
+  Row,
+  Space,
+  Spin,
+  Tag,
+  Badge,
+  Layout,
+  Divider,
+  Drawer, message
+} from 'antd';
 import classNames from 'classnames';
-import { EyeOutlined, AlertOutlined } from '@ant-design/icons';
+import {EyeOutlined, AlertOutlined,PictureOutlined} from '@ant-design/icons';
 import {useRequest} from '@/util/Request';
 import {isArray} from '@/util/Tools';
 import {deviceList, mapNum} from '@/components/Amap';
@@ -10,11 +25,29 @@ import error from '@/asseset/imgs/error.svg';
 import online from '@/asseset/imgs/online.svg';
 import offline from '@/asseset/imgs/offline.svg';
 import store from '@/store';
+import {OuntDown} from '@/pages/monitor/Control';
+import DateSelect from '@/pages/monitor/components/DateSelect';
+import DeviceChar from '@/pages/monitor/DeviceChar';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 export const MapDeviceDetail = {
   url: '/device/MapDeviceDetail',
+  method: 'POST'
+};
+
+export const alarmCustomerView = {
+  url: '/statistics/alarmCustomerView',
+  method: 'POST'
+};
+
+export const getChartTopic = {
+  url: '/deviceModel/getChartTopic',
+  method: 'POST'
+};
+
+export const buttonSubmit = {
+  url: '/device/buttonSubmit',
   method: 'POST'
 };
 
@@ -30,31 +63,37 @@ const Bmap = ({
 }, ref) => {
 
   const [dataSource] = store.useModel('dataSource');
-
   const customer = dataSource.customer || {};
-
   const bmapOffline = customer.platformMode === 1;
-
   const [centerPoint, setCenterPoint] = useState({});
-
+  const [infoVisible, setInfoVisible] = useState({});
   const [visiable, setVisiable] = useState();
-
   const [resluts, setResults] = useState([]);
-
-
+  const [date, setDate] = useState([]);
   const [device, setDevice] = useState({});
   const [deviceModal, setDeviceModal] = useState({});
   const [openTieTa, setOpenTieTa] = useState(false);
   const [open4012, setOpen4012] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [openAnnunciator, setOpenAnnunciator] = useState(false);
+  const [openTrafficLight, setOpenTrafficLight] = useState(false);
+  const [openChar, setOpenChar] = useState({});
   const [params, setParams] = useState({});
-
   const [baiduMap, setBaiduMap] = useState({});
   const [map, setMap] = useState();
 
   const {loading: detailLoading, data = {}, run} = useRequest(MapDeviceDetail, {manual: true});
-
+  const {data: alarmData = {}, run: alarmRun} = useRequest(alarmCustomerView, {manual: true});
+  const {data: buttonData = {}, run: buttonRun} = useRequest(getChartTopic, {manual: true});
+  const {loading,run: submitRun} = useRequest(buttonSubmit, {
+    manual: true,
+    onSuccess: () => {
+      message.success('操作成功！');
+    },
+    onError: () => {
+      message.error('操作失败！');
+    }
+  });
   const mapMaker = (device) => {
     const deviceOnline = device.status === 'online';
 
@@ -62,37 +101,61 @@ const Bmap = ({
     let title = '';
     let className = '';
     let status = '';
-    if (!deviceOnline){
+
+    // if (!deviceOnline){
+    //   mark = offline;
+    //   title = '设备离线';
+    //   className = styles.offline;
+    // }else if (device.alarm) {
+    //   mark = error;
+    //   title = '设备报警';
+    //   className = styles.error;
+    //   status = 'error';
+    // } else if (deviceOnline) {
+    //   mark = online;
+    //   title = '设备正常';
+    //   className = styles.online;
+
+    if (deviceOnline) {
+      if (device.alarm) {
+        mark = error;
+        title = '设备报警';
+        className = styles.error;
+        status = 'error';
+      } else {
+        mark = online;
+        title = '设备正常';
+        className = styles.online;
+      }
+    } else {
       mark = offline;
       title = '设备离线';
       className = styles.offline;
-    }else if (device.alarm) {
-      mark = error;
-      title = '设备报警';
-      className = styles.error;
-      status = 'error';
-    } else if (deviceOnline) {
-      mark = online;
-      title = '设备正常';
-      className = styles.online;
     }
-    title = `${title  }　　　　　　　　　　　　　${  device.remarks  }`;
+    title = `${  device.remarks  } 【${title  }】`;
 
     const point1 = new baiduMap.Point(device.longitude, device.latitude);
     const size = new baiduMap.Size(30, 37);
     const icon = new baiduMap.Icon(mark, size);
     const marker = new baiduMap.Marker(point1, {icon});        // 创建标注
     marker.addEventListener('click', () => {
-      console.log(device);
-      if(device.modelName === "OPT IMS 4012M"){
+      if(device.modelName === 'OPT IMS 4012M'){
         setOpen4012(true);
-      } else if (device.modelName === "铁塔备电设备") {
+      } else if (device.modelName === '铁塔备电设备') {
         setOpenTieTa(true);
+      } else if (device.modelName === '信号机') {
+        setOpenAnnunciator(true);
+      } else if (device.modelName === '信号灯') {
+        setOpenTrafficLight(true);
       } else {
         setOpen(true);
+        // setOpenAnnunciator(true);
       }
       run({data: {deviceId: device.deviceId}});
+      alarmRun({data: {deviceId: device.deviceId}});
+      buttonRun({data: {modelId: device.modelId,title:'dwgd'}});
       setDevice(device);
+      setInfoVisible(device);
       setDeviceModal({title, className, deviceOnline, status});
     });
     map.addOverlay(marker);
@@ -211,7 +274,6 @@ const Bmap = ({
     };
     // 百度地图API文件链接，异步加载必须带参数callback，后面是回调函数。
     const BMapURL = bmapOffline ? `${mapUrl}/bmap_offline_api_v3.0_min.js` : '//api.map.baidu.com/api?v=3.0&ak=FFFGGr9s5Hiee3vrtjVguKPtdgcxDEnv&callback=onBMapCallback';
-
 
     // 插入script脚本
     const scriptNode = document.createElement('script');
@@ -354,14 +416,7 @@ const Bmap = ({
 
     <div id="container" style={{height: '100%'}}/>
 
-
-
-
-
-
-
-
-    {/*原有*/}
+    {/* 原有 */}
     <Modal
       mask={false}
       centered
@@ -421,7 +476,6 @@ const Bmap = ({
                 } else {
                   value = data.data[item.field];
                 }
-
                 return <div key={index} className={styles.rightRow}>
                   <div>{item.title}</div>
                   ：{typeof value === 'number' ? `${value}` : (value || '-')}</div>;
@@ -438,7 +492,7 @@ const Bmap = ({
       </div>
     </Modal>
 
-    {/*4012*/}
+    {/* 4012 */}
     <Modal
       mask={false}
       centered
@@ -450,388 +504,228 @@ const Bmap = ({
       footer={null}
     >
       <div id="map-class">
-        <Row style={{width: '100%'}}>
-          <Col span={12}>
-            <Space direction="vertical" size={8} style={{width: '100%'}}>
-              <div className={styles.leftRow}>
-                <div>总闸状态</div>
-                ：
-                <span
-                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
-                <Button onClick={() => console.log('总闸重启')} style={{marginLeft: '10px'}} type="primary" size="small">
-                  总闸重启
-                </Button>
-              </div>
-              <div className={styles.leftRow}>
-                <div>电网电压</div>
-                ：220V
-                <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电网电压历史')} />
-              </div>
-              <div className={styles.leftRow}>
-                <div>空开后电压</div>
-                ：220V
-                <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开后电压历史')} />
-              </div>
-              <div className={styles.leftRow}>
-                <div>柜门状态</div>
-                ：
-                <span
-                  style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
-                <Switch style={{ marginLeft: '10px', marginTop: '3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`柜门状态改变：${checked}`)} />
-                <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('柜门状态历史')} />
-              </div>
-            </Space>
-          </Col>
-          <Col span={12} className={styles.rightCol}>
-            <Space direction="vertical" size={8} style={{width: '100%'}}>
-              <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
-                <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
-                <div style={{textAlign:'left'}}>告警数量：</div>
-                <span style={{color: 'red', textAlign:'left'}}>23</span>
-                <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
-              </div>
-              <Layout style={{background: '#FFF !important'}}>
-                <Sider>
-                  <Row style={{textAlign:'center'}}>
-                    <Col span={8}>
-                      <div>
-                        Com1
+        {
+          detailLoading ? <div style={{textAlign: 'center'}}>
+            <Spin size="large"/>
+          </div> : isArray(data.layout).map((item, index) => {
+            if (!data.data) {
+              return <div>暂无数据</div>;
+            } else if (item.title === '基本信息'){
+              return <div>
+                <Row style={{width: '100%'}}>
+                  <Col span={12}>
+                    <Space direction="vertical" size={8} style={{width: '100%'}}>
+                      <div id='ount-down-button' className={styles.leftRow}>
+                        <div>总闸状态</div>
+                        ：
+                        <span style={{color: data.data.powerOff === '有电' ? '#00a660' : '#b2b1b1'}}>
+                          {
+                            deviceModal.deviceOnline ? data.data.powerOff : '-'
+                          }
+                        </span>
+                        {
+                          deviceModal.deviceOnline ? <OuntDown item={buttonData?.button[1]?.downDatas[0]} run={submitRun} MAC={device.mac} /> : ''
+                        }
                       </div>
-                    </Col>
-                    <Col span={8}>
-                      <div>
-                        Com2
+                      <div className={styles.leftRow}>
+                        <div>电网电压</div>
+                        ：{deviceModal.deviceOnline ? data.data.gridVoltage : '-'}
+                        <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                          setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
+                        }} />
                       </div>
-                    </Col>
-                    <Col span={8}>
-                      <div>
-                        主干网
+                      <div className={styles.leftRow}>
+                        <div>空开后电压</div>
+                        ：{deviceModal.deviceOnline ? data.data.kongkai : '-'}
+                        <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                          setOpenChar({protocolType: 'dwgd', defaultType: '', ...infoVisible});
+                        }} />
                       </div>
-                    </Col>
-                    <Col span={8}>
-                      <div>
-                        通
+                      <div className={styles.leftRow}>
+                        <div>柜门状态</div>
+                        ：
+                        <span
+                          style={{color: data.data.door === '打开' ? 'red' : '#00a660'}}>{deviceModal.deviceOnline ? data.data.door : '-'}</span>
+                        <Badge style={{marginLeft:'10px', cursor: 'pointer'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                          setOpenChar({protocolType: 'fsjc', defaultType: 'door', ...infoVisible});
+                        }} />
                       </div>
-                    </Col>
-                    <Col span={8}>
-                      <div>
-                        不通
+                    </Space>
+                  </Col>
+                  <Col span={12} className={styles.rightCol}>
+                    <Space direction="vertical" size={8} style={{width: '100%'}}>
+                      <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                        <Badge count={<AlertOutlined style={{ color: '#f5222d',padding: '4px' }} />} />
+                        <div style={{textAlign:'left'}}>告警数量：</div>
+                        <span style={{color: 'red', textAlign:'left'}}>{alarmData.alarm.errorNum}</span>
+                        <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
                       </div>
-                    </Col>
-                    <Col span={8}>
-                      <div>
-                        100%
-                      </div>
-                    </Col>
+                      <Layout style={{background: '#FFF !important'}}>
+                        <Sider>
+                          <Row style={{textAlign:'center'}}>
+                            <Col span={8}>
+                              <div>
+                                Com1
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                Com2
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                主干网
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                {deviceModal.deviceOnline ? data.data.comboSpeed1 : '-'}
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                {deviceModal.deviceOnline ? data.data.comboSpeed2 : '-'}
+                              </div>
+                            </Col>
+                            <Col span={8}>
+                              <div>
+                                {deviceModal.deviceOnline ? data.data.mainEth : '-'}
+                              </div>
+                            </Col>
+                          </Row>
+                        </Sider>
+                        <Layout style={{background: '#FFF !important'}}>
+                          <Header style={{background: '#FFF !important'}}>
+                            <div id='ount-down-btn'>
+                              {
+                                deviceModal.deviceOnline ? <OuntDown item={buttonData?.button[1]?.downDatas[1]} run={submitRun} MAC={device.mac} /> : ''
+                              }
+                            </div>
+                          </Header>
+                          <Content style={{background: '#FFF !important'}}>
+                            <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                              基础数据
+                            </Button>
+                          </Content>
+                          <Footer style={{background: '#FFF !important'}}>
+                            <Button onClick={() => {
+                              setOpenChar({protocolType: 'fsjc', defaultType: '', ...infoVisible});
+                            }} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
+                              工作环境
+                            </Button>
+                          </Footer>
+                        </Layout>
+                      </Layout>
+                    </Space>
+                  </Col>
+                </Row>
+                <Divider />
+              </div>;
+            } else if (item.title === '接入网口供电电压'){
+              return <Row style={{width: '100%'}}>
+                <Col span={24}>
+                  <strong>{item.title}</strong>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col span={2}> { items.title } </Col>;
+                      })
+                    }
                   </Row>
-                </Sider>
-                <Layout style={{background: '#FFF !important'}}>
-                  <Header style={{background: '#FFF !important'}}>
-                    <Button onClick={() => console.log('设备重启')} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
-                      设备重启
-                    </Button>
-                  </Header>
-                  <Content style={{background: '#FFF !important'}}>
-                    <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
-                      基础数据
-                    </Button>
-                  </Content>
-                  <Footer style={{background: '#FFF !important'}}>
-                    <Button onClick={() => console.log('工作环境')} style={{marginLeft: '40px', marginTop: '5px'}} type="primary" size="small">
-                      工作环境
-                    </Button>
-                  </Footer>
-                </Layout>
-              </Layout>
-            </Space>
-          </Col>
-        </Row>
-        <Divider />
-        <Row style={{width: '100%'}}>
-          <Col span={24}>
-            <strong>接入网口供电电压</strong>
-            <Row style={{textAlign:'center', width: '100%'}}>
-              <Col span={2}>
-                网口1
-              </Col>
-              <Col span={2}>
-                网口2
-              </Col>
-              <Col span={2}>
-                网口3
-              </Col>
-              <Col span={2}>
-                网口4
-              </Col>
-              <Col span={2}>
-                网口5
-              </Col>
-              <Col span={2}>
-                网口6
-              </Col>
-              <Col span={2}>
-                网口7
-              </Col>
-              <Col span={2}>
-                网口8
-              </Col>
-              <Col span={2}>
-                网口9
-              </Col>
-              <Col span={2}>
-                网口10
-              </Col>
-              <Col span={2}>
-                网口11
-              </Col>
-              <Col span={2}>
-                网口12
-              </Col>
-            </Row>
-            <Row style={{textAlign:'center', width: '100%'}}>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                这
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                个
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                值
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                可
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                点
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                击
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                1
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                1
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                1
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                1
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                1
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('打开/关闭网口几')}>
-                1
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-
-        <Row style={{width: '100%', marginTop: '10px'}}>
-          <Col span={24}>
-            <strong>接入网口网络状态</strong>
-            <Row style={{textAlign:'center', width: '100%'}}>
-              <Col span={2}>
-                网口1
-              </Col>
-              <Col span={2}>
-                网口2
-              </Col>
-              <Col span={2}>
-                网口3
-              </Col>
-              <Col span={2}>
-                网口4
-              </Col>
-              <Col span={2}>
-                网口5
-              </Col>
-              <Col span={2}>
-                网口6
-              </Col>
-              <Col span={2}>
-                网口7
-              </Col>
-              <Col span={2}>
-                网口8
-              </Col>
-              <Col span={2}>
-                网口9
-              </Col>
-              <Col span={2}>
-                网口10
-              </Col>
-              <Col span={2}>
-                网口11
-              </Col>
-              <Col span={2}>
-                网口12
-              </Col>
-            </Row>
-            <Row style={{textAlign:'center', width: '100%'}}>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#b2b1b1'}} span={2}>
-                断
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-              <Col style={{color: '#00a660'}} span={2}>
-                通
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-
-        <Row style={{width: '100%', marginTop: '10px'}}>
-          <Col span={24}>
-            <strong>接入网口网络丢包率(摄像头)</strong>
-            <Row style={{textAlign:'center', width: '100%'}}>
-              <Col span={2}>
-                网口1
-              </Col>
-              <Col span={2}>
-                网口2
-              </Col>
-              <Col span={2}>
-                网口3
-              </Col>
-              <Col span={2}>
-                网口4
-              </Col>
-              <Col span={2}>
-                网口5
-              </Col>
-              <Col span={2}>
-                网口6
-              </Col>
-              <Col span={2}>
-                网口7
-              </Col>
-              <Col span={2}>
-                网口8
-              </Col>
-              <Col span={2}>
-                网口9
-              </Col>
-              <Col span={2}>
-                网口10
-              </Col>
-              <Col span={2}>
-                网口11
-              </Col>
-              <Col span={2}>
-                网口12
-              </Col>
-            </Row>
-            <Row style={{textAlign:'center', width: '100%'}}>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col span={2}>
-                100
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-              <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}>
-                视频
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value;
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => {
+                          if (items.path) {
+                            setOpenChar({protocolType: items.path, defaultType: items.url, ...infoVisible});
+                          }
+                        }}>
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${value}` : (value || '-') : '-'}
+                        </Col>;
+                      })
+                    }
+                  </Row>
+                </Col>
+              </Row>;
+            } else if (item.title === '接入网口网络状态'){
+              return <Row style={{width: '100%', marginTop: '10px'}}>
+                <Col span={24}>
+                  <strong>{item.title}</strong>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col span={2}> { items.title } </Col>;
+                      })
+                    }
+                  </Row>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value = '';
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col style={{color: value === '通' ? '#00a660' : '#b2b1b1'}} span={2}>
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${value}` : (value || '-') : '-'}
+                        </Col>;
+                      })
+                    }
+                  </Row>
+                </Col>
+              </Row>;
+            } else if (item.title === '接入网口网络速率'){
+              return <Row style={{width: '100%', marginTop: '10px'}}>
+                <Col span={24}>
+                  <strong>{item.title}</strong>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        return <Col span={2}> { items.title } </Col>;
+                      })
+                    }
+                  </Row>
+                  <Row style={{textAlign:'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value = '';
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col style={{color: 'rgba(0, 0, 0, 0.85)'}} span={2}>
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${value}` : (value || '-') : '-'}
+                        </Col>;
+                      })
+                    }
+                    {/* { */}
+                    {/*  isArray(item.data[0]).map((items, indexs) => { */}
+                    {/*    return <Col style={{color: '#00a660', cursor: 'pointer'}} span={2} onClick={() => console.log('视频详情')}> */}
+                    {/*      视频 */}
+                    {/*    </Col>; */}
+                    {/*  }) */}
+                    {/* } */}
+                  </Row>
+                </Col>
+              </Row>;
+            } else {
+              return <div>暂无数据</div>;
+            }
+          })
+        }
       </div>
     </Modal>
 
-    {/*铁塔*/}
+    {/* 铁塔 */}
     <Modal
       mask={false}
       centered
@@ -840,6 +734,95 @@ const Bmap = ({
       title={deviceModal.title}
       onCancel={() => setOpenTieTa(false)}
       open={openTieTa}
+      footer={null}
+    >
+      <div id="map-class">
+        {
+          detailLoading ? <div style={{textAlign: 'center'}}>
+            <Spin size="large"/>
+          </div> : isArray(data.layout).map((item, index) => {
+            if (!data.data) {
+              return <div>暂无数据</div>;
+            } else if (item.title === '基本信息') {
+              return <div>
+                <Row style={{width: '100%'}}>
+                  <Col span={12}>
+                    <Space direction="vertical" size={8} style={{width: '100%'}}>
+                      <div className={styles.leftRow}>
+                        <div>设备状态</div>
+                        ：
+                        <span
+                          style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{data.data.device ? '在线' : '离线'}</span>
+                      </div>
+                      <div className={styles.leftRow}>
+                        <div>柜门状态</div>
+                        ：
+                        <span
+                          style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? data.data.doorLock ? '关闭' : '开启' : '-'}</span>
+                      </div>
+                    </Space>
+                  </Col>
+                  <Col span={12} className={styles.rightCol}>
+                    <Space direction="vertical" size={8} style={{width: '100%'}}>
+                      <div className={styles.leftRow} style={{marginLeft: 'calc(100% - 195px)'}}>
+                        <Badge count={<AlertOutlined style={{color: '#f5222d', padding: '4px'}}/>}/>
+                        <div style={{textAlign: 'left'}}>告警数量：</div>
+                        <span style={{color: 'red', textAlign: 'left'}}>{alarmData.alarm.errorNum}</span>
+                        <Button style={{marginTop: '-5px'}} type="link"
+                          onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
+                      </div>
+                      <div className={styles.leftRow}>
+                        <Button onClick={() => onMarkerClick(device)}
+                          style={{marginLeft: 'calc(100% - 80px)', marginTop: '-5px'}} type="primary"
+                          size="small">
+                          基础数据
+                        </Button>
+                      </div>
+                    </Space>
+                  </Col>
+                </Row>
+                <Divider/>
+              </div>;
+            } else if (item.title === '数据信息') {
+              return <Row style={{width: '100%'}}>
+                <Col span={24}>
+                  <Row style={{textAlign: 'center', width: '100%'}}>
+                    {
+                      isArray(item.data[0]).map((items, indexs) => {
+                        let value = '';
+                        if (!items) {
+                          value = '';
+                        } else {
+                          value = data.data[items.field];
+                        }
+                        return <Col span={8}>
+                          {deviceModal.deviceOnline ? typeof value === 'number' ? `${items.title}:${value}` : (`${items.title  }:${value}` || '-') : `${items.title} : -`}
+                          <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => {
+                            if (items.path) {
+                              setOpenChar({protocolType: items.path, defaultType: items.url, ...infoVisible});
+                            }
+                          }} />
+                        </Col>;
+                      })
+                    }
+                  </Row>
+                </Col>
+              </Row>;
+            }
+          })
+        }
+      </div>
+    </Modal>
+
+    {/* 信号机 */}
+    <Modal
+      mask={false}
+      centered
+      className={classNames(styles.modal, deviceModal.className)}
+      width={700}
+      title={deviceModal.title}
+      onCancel={() => setOpenAnnunciator(false)}
+      open={openAnnunciator}
       footer={null}
     >
       <div id="map-class">
@@ -853,11 +836,10 @@ const Bmap = ({
                   style={{color: deviceModal.deviceOnline ? '#00a660' : '#b2b1b1'}}>{deviceModal.deviceOnline ? '在线' : '离线'}</span>
               </div>
               <div className={styles.leftRow}>
-                <div>柜门状态</div>
+                <div>空开控制</div>
                 ：
                 <span
                   style={{color: deviceModal.deviceOnline ? '#00a660' : 'red'}}>{deviceModal.deviceOnline ? '关闭' : '开启'}</span>
-                <Switch style={{ marginLeft: '10px', marginTop: '3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`柜门状态改变：${checked}`)} />
               </div>
             </Space>
           </Col>
@@ -870,52 +852,87 @@ const Bmap = ({
                 <Button style={{marginTop:'-5px'}} type="link" onClick={() => onHistory(`/alarm/record?mac=${device.mac}`)}>报警列表</Button>
               </div>
               <div className={styles.leftRow}>
-                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: 'calc(100% - 80px)', marginTop: '-5px'}} type="primary" size="small">
-                  基础数据
+                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: 'calc(100% - 165px)', marginTop: '-5px'}} type="primary" size="small">
+                  实时视频
+                </Button>
+                <Button onClick={() => onMarkerClick(device)} style={{marginLeft: '10px', marginTop: '-5px'}} type="primary" size="small">
+                  设备详情
                 </Button>
               </div>
             </Space>
           </Col>
         </Row>
         <Divider />
+        <strong>供电监测</strong>
         <Row style={{width: '100%'}}>
           <Col span={24}>
             <Row style={{textAlign:'center', width: '100%'}}>
               <Col span={8}>
-                供电输出类型：电网输出供电
-              </Col>
-              <Col span={8}>
-                空开控制：
-                <Switch style={{ marginLeft: '10px', marginTop: '-3px' }} size="small" defaultChecked='true' onChange={(checked) => console.log(`空开控制：${checked}`)} />
+                输入电压：220V
                 <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
               </Col>
               <Col span={8}>
-                电池总容量：20h
+                输出电压：220V
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('空开控制历史')} />
+              </Col>
+              <Col span={8}>
+                空开状态：关闭
                 <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池总容量历史')} />
               </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row style={{width: '100%', marginTop: '10px'}}>
+          <strong>主干网络监测</strong>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={6}>
+                平台IP：255.255.255.255
+              </Col>
+              <Col span={6}>
+                主干网络丢包率：25%
+              </Col>
+              <Col span={6}>
+                Com1：连接
+              </Col>
+              <Col span={6}>
+                Com2：未连接
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row id='map-class-col-12' style={{width: '100%', marginTop: '10px'}}>
+          <strong>设置监测</strong>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
+              <Col span={12}>
+                初始配置IP：255.255.255.255
+              </Col>
+              <Col span={12}>
+                监测到目前IP：255.255.255.255
+              </Col>
+              <Col span={12}>
+                线路连接网线：已连接
+              </Col>
+              <Col span={12}>
+                线路连接丢包率：25%
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row style={{width: '100%', marginTop: '10px'}}>
+          <strong>工作环境监测</strong>
+          <Col span={24}>
+            <Row style={{textAlign:'center', width: '100%'}}>
               <Col span={8}>
-                输入电压：220V
-                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输入电压历史')} />
+                柜门状态：开启
+                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<PictureOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('查看照片')} />
               </Col>
               <Col span={8}>
-                输入电流：1.2A
-                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输入电流历史')} />
+                温度：26°
               </Col>
               <Col span={8}>
-                电池剩余容量：16h
-                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('电池剩余容量历史')} />
-              </Col>
-              <Col span={8}>
-                输出电压：220V
-                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输出电压历史')} />
-              </Col>
-              <Col span={8}>
-                输出电流：1.2A
-                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('输出电流历史')} />
-              </Col>
-              <Col span={8}>
-                剩余供电时间：12h23m
-                <Badge style={{marginLeft:'5px', cursor: 'pointer', marginTop: '-2px'}} count={<EyeOutlined style={{ color: '#f5222d',padding: '4px' }} />} onClick={() => console.log('剩余供电时间历史')} />
+                湿度：60%
               </Col>
             </Row>
           </Col>
@@ -923,11 +940,20 @@ const Bmap = ({
       </div>
     </Modal>
 
-
-
-
-
-
+    <Drawer
+      title={`终端备注：${openChar.remarks || '-'}    设备型号：${openChar.modelName}`}
+      destroyOnClose
+      style={{minWidth: '50vw'}}
+      className={styles.drawer}
+      open={openChar.protocolType}
+      onClose={() => setOpenChar({})}
+      extra={<DateSelect
+        value={date}
+        onChange={setDate}
+      />}
+    >
+      <DeviceChar device={openChar} date={date} defaultType={openChar?.defaultType} />
+    </Drawer>
   </div>;
 };
 
