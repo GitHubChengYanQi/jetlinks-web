@@ -72,7 +72,7 @@ const Save = props => {
         label="终端备注"
         name="remarks"
       >
-        <Input placeholder="请输入终端备注"/>
+        <Input disabled={customer.customerId} placeholder="请输入终端备注"/>
       </Form.Item>
       <Form.Item
         initialValue={data.name}

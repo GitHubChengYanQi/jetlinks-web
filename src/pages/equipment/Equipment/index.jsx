@@ -91,10 +91,10 @@ const Equipment = (
       render: (remarks, record) => {
         return <div style={{display: 'flex', alignItems: 'center'}}>
           <Render style={{flexGrow: 1}}>{remarks || '-'}</Render>
-          <EditOutlined
+          {!customer.customerId && <EditOutlined
             style={{float: 'right', marginLeft: 8}}
             onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})}
-          />
+          />}
         </div>;
       }
     },

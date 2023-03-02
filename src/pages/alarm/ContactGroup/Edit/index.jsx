@@ -144,9 +144,12 @@ const Edit = () => {
   return <div style={{backgroundColor: '#fff'}}>
     <div className={styles.header}>
       <Space style={{marginRight: 24}}>
-        报警联系组名称：<Input placeholder="请输入组名称" value={name} onChange={({target: {value}}) => setName(value)}/>
+        <span style={{color: 'red'}}>*</span>
+        报警联系组名称：
+        <Input placeholder="请输入组名称" value={name} onChange={({target: {value}}) => setName(value)}/>
       </Space>
       <Space>
+        <span style={{color: 'red'}}>*</span>
         负责区域：
         <TreeSelect
           maxTagCount={5}

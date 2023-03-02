@@ -100,11 +100,10 @@ const AlarmProject = (
       align: 'center',
       render: (text, record, index) => <Render>{index + 1}</Render>
     },
-    {title: '报警名称', dataIndex: 'title', align: 'center', render: (text) => <Render text={text}/>},
+    {title: '报警名称', dataIndex: 'title',  render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
       dataIndex: 'alarmItemResult',
-      align: 'center',
       render: (alarmItemResult) => <Note value={alarmItemResult?.reservePlan} style={{margin: 'auto'}} maxWidth={200}/>
     },
     {
