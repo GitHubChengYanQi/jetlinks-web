@@ -81,7 +81,7 @@ const Contacts = ({
       title: '剩余免费短信条数',
       dataIndex: 'shortMessageNumber',
       align: 'center',
-      render: (text) => <Render className="green" text={text}/>
+      render: (text) => <Render className="green" text={text || '-'}/>
     },
     {
       title: '是否短信通知', dataIndex: 'shortMessageStatus', align: 'center', render: (text = '0') => {
