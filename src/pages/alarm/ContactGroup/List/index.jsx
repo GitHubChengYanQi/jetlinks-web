@@ -1,8 +1,9 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, message, Select, Input, Button, Modal, Tag} from 'antd';
+import {Space, Dropdown, Menu, message, Select, Input, Button, Modal, Tag, Drawer} from 'antd';
 import {createFormActions} from '@formily/antd';
 import moment from 'moment';
 import {useHistory} from 'ice';
+import {CloseOutlined} from '@ant-design/icons';
 import Render from '@/components/Render';
 import Warning from '@/components/Warning';
 import Table from '@/components/Table';
@@ -18,6 +19,7 @@ import {
 } from '@/pages/alarm/ContactGroup/url';
 import Note from '@/components/Note';
 import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
+import Edit from '@/pages/alarm/ContactGroup/Edit';
 
 const formActionsPublic = createFormActions();
 
@@ -28,6 +30,9 @@ const List = () => {
 
   const [records, setResords] = useState([]);
   const [classifies, setClassifies] = useState([]);
+
+  const [groupId, setGroupId] = useState();
+  const [open, setOpen] = useState();
 
   const keys = records.map(item => item.groupId);
 
@@ -125,7 +130,7 @@ const List = () => {
       {
         danger: true,
         key: '3',
-        label: <Warning content='是否要删除该联系组信息，将解除所有该组内联系人及关联设备' onOk={() => {
+        label: <Warning content="是否要删除该联系组信息，将解除所有该组内联系人及关联设备" onOk={() => {
           batchDeleteRun({data: {groupIds: keys}});
         }}>批量删除</Warning>,
       },
@@ -136,7 +141,7 @@ const List = () => {
     return <>
       <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>
       <FormItem label="报警联系组名称" name="name" component={Input}/>
-      <FormItem label="负责区域" name="classifyId" component={SelectGroup} />
+      <FormItem label="负责区域" name="classifyId" component={SelectGroup}/>
       <FormItem
         label="状态"
         name="status"
@@ -177,7 +182,10 @@ const List = () => {
       tableKey="category"
       ref={ref}
       searchButtons={[
-        <PrimaryButton key={1} onClick={() => history.push('/alarm/ContactGroupEdit')}>新建报警联系组</PrimaryButton>,
+        <PrimaryButton key={1} onClick={() => {
+          setGroupId('');
+          setOpen(true);
+        }}>新建报警联系组</PrimaryButton>,
         <Dropdown key={2} disabled={keys.length === 0} overlay={menu} placement="bottom">
           <PrimaryButton>批量操作</PrimaryButton>
         </Dropdown>
@@ -190,9 +198,10 @@ const List = () => {
         const open = record.status === 1;
         return <Space>
           <PrimaryButton onClick={() => {
-            history.push(`/alarm/ContactGroupEdit?groupId=${record.groupId}`);
+            setOpen(true);
+            setGroupId(record.groupId);
           }}>编辑</PrimaryButton>
-          <Warning content='是否要删除该联系组信息，将解除所有该组内联系人及关联设备' onOk={() => {
+          <Warning content="是否要删除该联系组信息，将解除所有该组内联系人及关联设备" onOk={() => {
             deleteRun({data: {groupId: record.groupId}});
           }}>
             <DangerButton>删除</DangerButton>
@@ -224,6 +233,18 @@ const List = () => {
         })
       }
     </Modal>
+
+    <Drawer
+      destroyOnClose
+      title="报警项设置"
+      closable={false}
+      extra={<CloseOutlined onClick={() => setOpen(false)}/>}
+      width="90vw"
+      open={open}
+      onClose={() => setOpen(false)}
+    >
+      <Edit groupId={groupId}/>
+    </Drawer>
   </>;
 };
 export default List;

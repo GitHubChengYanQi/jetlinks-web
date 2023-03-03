@@ -24,7 +24,9 @@ const AlarmProject = (
     deviceId,
     modelId,
     custom,
-    global
+    global,
+    categoryName,
+    modelName
   }
 ) => {
 
@@ -32,9 +34,7 @@ const AlarmProject = (
 
   const history = useHistory();
 
-  const searchParams = getSearchParams();
-
-  const currentModelId = modelId || searchParams.modelId;
+  const currentModelId = modelId;
 
   const [rows, setRows] = useState([]);
 
@@ -100,21 +100,25 @@ const AlarmProject = (
       align: 'center',
       render: (text, record, index) => <Render>{index + 1}</Render>
     },
-    {title: '报警名称', dataIndex: 'title',  render: (text) => <Render text={text}/>},
+    {title: '报警名称', dataIndex: 'title', render: (text) => <Render text={text}/>},
     {
       title: '报警通知预案',
       dataIndex: 'alarmItemResult',
-      render: (alarmItemResult) => <Note value={alarmItemResult?.reservePlan} style={{margin: 'auto'}} maxWidth={200}/>
+      render: (alarmItemResult, record) =>
+        <Note
+          value={alarmItemResult?.reservePlan || record.reservePlan}
+          maxWidth={200}
+        />
     },
     {
       title: '报警时间间隔',
       dataIndex: 'alarmItemResult',
       align: 'center',
-      render: (alarmItemResult) => {
-        if (!alarmItemResult?.viewTime) {
+      render: (alarmItemResult, record) => {
+        if (!alarmItemResult?.viewTime && !record.viewTime) {
           return '-';
         }
-        const times = (alarmItemResult?.viewTime || '').split(',');
+        const times = (alarmItemResult?.viewTime || record.viewTime || '').split(',');
         const day = times[0] || 0;
         const hour = times[1] || 0;
         const min = times[2] || 0;
@@ -154,8 +158,6 @@ const AlarmProject = (
             const alarmItemResult = record.alarmItemResult || {};
             setSaveVisible({
               ...record,
-              reservePlan: alarmItemResult.reservePlan,
-              timeSpan: alarmItemResult.timeSpan,
               status: alarmItemResult.status
             });
           }}>
@@ -185,9 +187,8 @@ const AlarmProject = (
 
   return <>
     <div hidden={custom || global}>
-      <h1 className="primaryColor">报警项设置</h1>
-      <h3>设备类型：{searchParams.categoryName}</h3>
-      <h3>设备型号：{searchParams.modelName}</h3>
+      <h3>设备类型：{categoryName}</h3>
+      <h3>设备型号：{modelName}</h3>
     </div>
 
     <div hidden={global} style={{textAlign: 'right', padding: '0 24px 12px'}}>

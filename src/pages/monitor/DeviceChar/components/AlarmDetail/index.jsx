@@ -8,15 +8,18 @@ import {deviceDetail, deviceEditAlarmCustom} from '@/pages/equipment/Equipment/u
 const AlarmDetail = (
   {
     device = {},
+    infoRefresh = () => {
+    }
   }
 ) => {
 
-  const [alarmCustom, setAlarmCustom] = useState(0);
+  const [alarmCustom, setAlarmCustom] = useState(device.alarmCustom || 0);
 
   const {loading: detailLoading, refresh} = useRequest({
     ...deviceDetail,
     data: {deviceId: device.deviceId}
   }, {
+    manual: device.info,
     onSuccess: (res) => {
       setAlarmCustom(res.alarmCustom);
     }
@@ -26,6 +29,7 @@ const AlarmDetail = (
     manual: true,
     onSuccess: () => {
       refresh();
+      infoRefresh();
     }
   });
 
@@ -60,7 +64,7 @@ const AlarmDetail = (
         setAlarmCustom(value);
       }}>
         <Radio value={0}>启用全局报警设置</Radio>
-        <Radio value={1}>启用以下自定义报警设置</Radio>
+        <Radio value={1}>启用自定义报警设置</Radio>
       </Radio.Group>}
       items={[{key: '1', label: '报警项设置'}]}
     />

@@ -103,7 +103,11 @@ const Save = ({
           {required: true, message: '请上传设备固件'},
         ]}
       >
-        <FileUpload defaultFileList={data?.fileId ? [{name: data?.fileName}] : []}/>
+        <FileUpload
+          title='上传安装包'
+          defaultFileList={data?.fileId ? [{name: data?.fileName}] : []}
+          imgTypes={['zip']}
+        />
       </Form.Item>
       <Form.Item
         initialValue={data?.remarks}

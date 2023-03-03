@@ -16,17 +16,16 @@ const Save = ({
   }
 }) => {
 
-  const [showTotal, setShowTotal] = useState(data.shortMessageStatus === '1');
+  const [showTotal, setShowTotal] = useState(true);
 
   useEffect(() => {
     if (visible) {
-      setShowTotal(true);
+      setShowTotal(data.shortMessageStatus ? data.shortMessageStatus === '1' : true);
     }
   }, [visible]);
 
   return (
     <AntForm
-      width={800}
       apis={{
         add: contactAdd,
         edit: contactEdit,
@@ -109,7 +108,7 @@ const Save = ({
         name="groupIds"
         label="报警联系组"
       >
-        <ContactGroupTransfer />
+        <ContactGroupTransfer/>
       </Form.Item>
       <Form.Item
         initialValue={data.mail}

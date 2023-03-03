@@ -143,7 +143,7 @@ const Equipment = (
       title: '报警联系组',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={''} />
+      render: (text) => <Render width={120} text='' />
     },
     {
       title: '设备IP地址',

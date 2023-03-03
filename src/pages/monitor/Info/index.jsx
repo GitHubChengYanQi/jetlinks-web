@@ -1,5 +1,5 @@
 import React, {useImperativeHandle, useState} from 'react';
-import {Descriptions} from 'antd';
+import {Descriptions, Drawer} from 'antd';
 import PageSkeleton from '@ant-design/pro-skeleton';
 import moment from 'moment';
 import classNames from 'classnames';
@@ -10,6 +10,7 @@ import {deviceData, monitorDetail} from '@/pages/monitor/url';
 import Save from '@/pages/monitor/Info/Save';
 import {isArray, isObject} from '@/util/Tools';
 import ThousandsSeparator from '@/components/ThousandsSeparator';
+import AlarmDetail from '@/pages/monitor/DeviceChar/components/AlarmDetail';
 
 
 const Info = ({
@@ -246,16 +247,20 @@ const Info = ({
       <Descriptions.Item label="离线时间">{!online ? (data.logTime || '-') : '-'}</Descriptions.Item>
     </Descriptions>
 
-    <Save
-      detail
-      visible={saveVisible}
-      close={() => setSaveVisible()}
-      device={saveVisible}
-      success={() => {
-        setSaveVisible();
-        refresh();
-      }}
-    />
+    <Drawer
+      destroyOnClose
+      width="50vw"
+      title="查看本设备报警规则"
+      open={saveVisible}
+      onClose={() => setSaveVisible(false)}
+    >
+      <AlarmDetail
+        device={saveVisible}
+        infoRefresh={()=>{
+          refresh();
+        }}
+      />
+    </Drawer>
 
   </>;
 };

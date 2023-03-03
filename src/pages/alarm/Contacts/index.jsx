@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Space, Dropdown, Menu, Input, message, Button} from 'antd';
+import {Space, Dropdown, Menu, Input, message, Button, Modal, Tag} from 'antd';
 import {createFormActions} from '@formily/antd';
 import {config} from 'ice';
 import cookie from 'js-cookie';
@@ -25,6 +25,7 @@ import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup'
 import store from '@/store';
 import Select from '@/components/Select';
 import {alarmContactFindAll} from '@/pages/alarm/ContactGroup/url';
+import Note from '@/components/Note';
 
 const formActionsPublic = createFormActions();
 
@@ -44,6 +45,8 @@ const Contacts = ({
   const [saveVisible, setSaveVisible] = useState();
   const [batchImport, setBatchImport] = useState(false);
 
+  const [array, setArray] = useState([]);
+
   const [keys, setKeys] = useState(checkedRows.map(item => item.contactId));
 
   const ref = useRef();
@@ -60,9 +63,17 @@ const Contacts = ({
       title: '报警联系组',
       dataIndex: 'groups',
       align: 'center',
-      render: (groups) => <Render
-        text={isArray(groups).length === 0 ? '-' : [...new Set(isArray(groups).map(item => item.name))].join('、')}
-      />
+      render: (groups) => {
+        const names = [...new Set(isArray(groups).map(item => item.name))];
+        return <Render>
+          <Button type="link" onClick={() => {
+            setArray(names);
+          }}>
+            {names.length === 0 ? '-' : names.filter((item, index) => index < 3).join('、')}
+            {names.length > 3 && '...'}
+          </Button>
+        </Render>;
+      }
     },
     {title: '手机号码', dataIndex: 'phone', align: 'center', render: (text) => <Render width={150} text={text}/>},
     {title: '电子邮箱', dataIndex: 'mail', align: 'center', render: (text) => <Render text={text || '-'}/>},
@@ -222,6 +233,21 @@ const Contacts = ({
       visible={batchImport}
       close={() => setBatchImport(false)}
     />
+
+    <Modal
+      title="负责区域"
+      open={array.length > 0}
+      footer={null}
+      onCancel={() => setArray([])}
+    >
+      {
+        isArray(array).map((item, index) => {
+          return <div key={index} style={{padding: 12, display: 'inline-block'}}>
+            <Tag key={index} style={{padding: 12}}>{item}</Tag>
+          </div>;
+        })
+      }
+    </Modal>
   </>;
 };
 export default Contacts;

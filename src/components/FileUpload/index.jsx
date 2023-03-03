@@ -12,7 +12,9 @@ const FileUpload = ({
   defaultFileList = [],
   onChange = () => {
   },
+  title,
   disbaled,
+  imgTypes = ['png', 'jpg', 'jpeg']
 }) => {
 
   const uploadProps = {
@@ -38,10 +40,10 @@ const FileUpload = ({
     },
     beforeUpload(file) {
       const type = file.name.substring(file.name.lastIndexOf('.') + 1);
-      const flag = ['png', 'jpg', 'jpeg'].includes(type);
+      const flag = imgTypes.includes(type);
       if (!flag) {
         message.warn('请上传正确格式的文件！');
-        return false;
+        return Upload.LIST_IGNORE;
       }
       // toLowerCase
       return true;
@@ -49,7 +51,7 @@ const FileUpload = ({
   };
   return <Upload disabled={disbaled} defaultFileList={defaultFileList} {...uploadProps}>
     <Button disabled={disbaled} type="primary" ghost icon={<UploadOutlined/>}>
-      上传文件
+      {title || '上传文件'}
     </Button>
   </Upload>;
 };

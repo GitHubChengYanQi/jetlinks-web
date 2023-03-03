@@ -1,51 +1,73 @@
-import {Spin, Transfer} from 'antd';
+import {Checkbox, Select, Space, Spin, Tag, Transfer} from 'antd';
 import React, {useState} from 'react';
 import {useRequest} from '@/util/Request';
 import {alarmContactFindAll} from '@/pages/alarm/ContactGroup/url';
+import {isObject} from '@/util/Tools';
 
 const ContactGroupTransfer = ({
   value,
   onChange = () => {
   }
 }) => {
-  const [mockData, setMockData] = useState([]);
-  const [targetKeys, setTargetKeys] = useState([]);
+  const [data, setData] = useState([]);
 
   const {loading} = useRequest(
     alarmContactFindAll,
     {
       onSuccess: (res) => {
         const alarmContacts = res || [];
-        setTargetKeys(value || []);
-        setMockData(alarmContacts.map(item => ({key: item.groupId, title: item.name})));
+        setData(alarmContacts.map(item => ({value: item.groupId, label: item.name})));
       }
     }
   );
-
-  const filterOption = (inputValue, option) => option.title.indexOf(inputValue) > -1;
-
-  const handleChange = (newTargetKeys) => {
-    onChange(newTargetKeys);
-    setTargetKeys(newTargetKeys);
-  };
 
   if (loading) {
     return <Spin spinning/>;
   }
 
+  const options = data.map(item => ({
+    label: <Space align="center">
+      <Checkbox checked={value.find(id => id === `${item.value}`)} />{item.label}
+    </Space>,
+    name: item.label,
+    value: `${item.value}`
+  }));
+
+  const tagRender = (props) => {
+    const {value, closable, onClose} = props;
+    const onPreventMouseDown = event => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    return (
+      <Tag
+        color="green"
+        onMouseDown={onPreventMouseDown}
+        closable={closable}
+        onClose={onClose}
+        style={{marginRight: 3}}
+      >
+        {isObject(options.find(item => item.value === value)).name}
+      </Tag>
+    );
+  };
+
+
   return (
-    <Transfer
-      titles={['待选报警组', '已关联报警组']}
-      listStyle={{
-        width: 300,
-        height: 400,
-      }}
-      dataSource={mockData}
+    <Select
+      maxTagCount={3}
+      placeholder='请选择报警组'
+      mode="multiple"
+      showArrow
+      allowClear
       showSearch
-      filterOption={filterOption}
-      targetKeys={targetKeys}
-      onChange={handleChange}
-      render={(item) => item.title}
+      value={Array.isArray(value) ? value : []}
+      tagRender={tagRender}
+      style={{width: '100%'}}
+      options={options}
+      onChange={(value) => {
+        onChange(value);
+      }}
     />
   );
 };

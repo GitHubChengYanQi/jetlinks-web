@@ -16,11 +16,9 @@ import {
 import {isArray} from '@/util/Tools';
 import store from '@/store';
 
-const Edit = () => {
+const Edit = ({groupId}) => {
 
   const [dataSource] = store.useModel('dataSource');
-
-  const searchParams = getSearchParams();
 
   const history = useHistory();
 
@@ -89,8 +87,8 @@ const Edit = () => {
 
   const {loading} = useRequest(contactAllList, {
     onSuccess: (res) => {
-      if (searchParams.groupId) {
-        detailRun({data: {groupId: searchParams.groupId}});
+      if (groupId) {
+        detailRun({data: {groupId}});
       }
       setList(res);
     }
@@ -189,13 +187,13 @@ const Edit = () => {
           });
         });
         const data = {
-          groupId: searchParams.groupId,
+          groupId,
           name,
           contactIds: checkList.map(item => item.contactId),
           itemParams,
           classifyIds: area
         };
-        if (searchParams.groupId) {
+        if (groupId) {
           editRun({data});
         } else {
           addRun({data});

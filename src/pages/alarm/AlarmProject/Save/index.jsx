@@ -27,7 +27,6 @@ const Save = ({
   // console.log(data);
   return (
     <AntForm
-      width={800}
       apis={{
         add: alarmItemEdit,
         edit: alarmItemEdit,
@@ -51,7 +50,18 @@ const Save = ({
       }}
     >
       <Form.Item
-        initialValue={data.reservePlan}
+        initialValue={data.title}
+        key="title"
+        label="报警名称"
+        name="title"
+        rules={[
+          {required: true, message: '报警名称'},
+        ]}
+      >
+        <Input disabled placeholder="报警名称"/>
+      </Form.Item>
+      <Form.Item
+        initialValue={data.alarmItemResult?.reservePlan || data.reservePlan}
         key="reservePlan"
         label="报警通知预案"
         name="reservePlan"
@@ -62,7 +72,7 @@ const Save = ({
         <Input.TextArea placeholder="请输入报警通知预案"/>
       </Form.Item>
       <Form.Item
-        initialValue={data.alarmItemResult?.viewTime || undefined}
+        initialValue={data.alarmItemResult?.viewTime || data.viewTime || undefined}
         key="timeSpan"
         name="timeSpan"
         label="报警时间间隔"
