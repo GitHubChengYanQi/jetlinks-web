@@ -417,8 +417,9 @@ const DeviceChar = ({device = {}, defaultType, date = []}) => {
     />
 
     <Drawer
+      push={false}
       destroyOnClose
-      width="50vw"
+      width="70vw"
       title="查看本设备报警规则"
       open={alarmVisible}
       onClose={() => setAlarmVisible(false)}

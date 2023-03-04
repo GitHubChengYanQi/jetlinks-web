@@ -298,6 +298,7 @@ const Monitor = () => {
     </Row>
 
     <Drawer
+      push={false}
       className={styles.infoDrawer}
       destroyOnClose
       title={`终端备注：${infoVisible.remarks}    设备型号：${infoVisible.modelName}`}
@@ -328,6 +329,7 @@ const Monitor = () => {
     />
 
     <Drawer
+      push={false}
       title={`终端备注：${open.remarks || '-'}    设备型号：${open.modelName}`}
       destroyOnClose
       style={{minWidth: '50vw'}}

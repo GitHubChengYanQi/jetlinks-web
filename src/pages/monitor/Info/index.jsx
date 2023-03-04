@@ -249,7 +249,7 @@ const Info = ({
 
     <Drawer
       destroyOnClose
-      width="50vw"
+      width="70vw"
       title="查看本设备报警规则"
       open={saveVisible}
       onClose={() => setSaveVisible(false)}

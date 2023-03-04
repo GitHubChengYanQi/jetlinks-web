@@ -72,7 +72,7 @@ const Equipment = (
     },
   });
 
-  const columns = [
+  let columns = [
     {
       title: '设备状态',
       dataIndex: 'status',
@@ -91,7 +91,7 @@ const Equipment = (
       render: (remarks, record) => {
         return <div style={{display: 'flex', alignItems: 'center'}}>
           <Render style={{flexGrow: 1}}>{remarks || '-'}</Render>
-          {!customer.customerId && <EditOutlined
+          {customer.customerId && <EditOutlined
             style={{float: 'right', marginLeft: 8}}
             onClick={() => setNoteVisible({deviceId: record.deviceId, remarks})}
           />}
@@ -102,49 +102,53 @@ const Equipment = (
       title: '登记名称',
       dataIndex: 'name',
       align: 'center',
-      render: (text) => <Render text={text || '-'} />
+      render: (text) => <Render text={text || '-'}/>
     },
     {
       title: customer.customerId ? '设备分组' : '所属客户',
       dataIndex: customer.customerId ? 'classifyName' : 'customerName',
       align: 'center',
-      render: (text) => <Render text={text || '-'} />
+      render: (text) => <Render text={text || '-'}/>
     },
     {
       title: '设备类别',
       dataIndex: 'categoryName',
       align: 'center',
-      render: (text) => <Render text={text} />
+      render: (text) => <Render text={text}/>
     },
     {
       title: '设备型号',
       dataIndex: 'modelName',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
-    },
-    {
-      title: '报警类目',
-      dataIndex: 'alarmCustom',
-      align: 'center',
-      render: (text) => <Render width={120} text={text ? '自定义' : '全局'} />
-    },
-    {
-      title: '报警状态',
-      dataIndex: 'alarmStatus',
-      align: 'center',
-      render: (value) => {
-        const open = value === 'online';
-        return <Render>
-          <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
-        </Render>;
+      render: (text) => <Render width={120} text={text}/>
+    }
+  ];
+
+  if (customer.customerId) {
+    columns = [
+      ...columns,
+      {
+        title: '报警类目',
+        dataIndex: 'alarmCustom',
+        align: 'center',
+        render: (text) => <Render width={120} text={text ? '自定义' : '全局'}/>
+      },
+      {
+        title: '报警状态',
+        dataIndex: 'alarmStatus',
+        align: 'center',
+        render: (value) => {
+          const open = value === 1;
+          return <Render>
+            <span className={open ? 'green' : 'red'}>{open ? '启用' : '停用'}</span>
+          </Render>;
+        }
       }
-    },
-    {
-      title: '报警联系组',
-      dataIndex: 'modelName',
-      align: 'center',
-      render: (text) => <Render width={120} text='' />
-    },
+    ];
+  }
+
+  columns = [
+    ...columns,
     {
       title: '设备IP地址',
       dataIndex: 'ip',
@@ -161,12 +165,13 @@ const Equipment = (
       title: '设备MAC地址',
       dataIndex: 'mac',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
-    }, {
+      render: (text) => <Render width={120} text={text}/>
+    },
+    {
       title: '批次',
       dataIndex: 'batchCoding',
       align: 'center',
-      render: (text) => <Render width={120} text={text} />
+      render: (text) => <Render width={120} text={text}/>
     },
     {
       title: '设备版本',
@@ -183,8 +188,9 @@ const Equipment = (
       title: '位置信息',
       dataIndex: 'area',
       align: 'center',
-      render: (text, record) => <Render width={200} text={text + record.address} />
-    }, {
+      render: (text, record) => <Render width={200} text={text + record.address}/>
+    },
+    {
       title: '经纬度信息',
       dataIndex: '10',
       align: 'center',
@@ -199,7 +205,7 @@ const Equipment = (
       render: (value, record) => {
         const open = record.status === 'online';
         if (!open) {
-          return <Render width={150} text="-" />;
+          return <Render width={150} text="-"/>;
         }
         const oldsecond = moment(new Date()).diff(value, 'second');
         const day = Math.floor(oldsecond / 86400) || 0;
@@ -217,7 +223,7 @@ const Equipment = (
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={open ? value : '-'} />;
+        return <Render width={150} text={open ? value : '-'}/>;
       }
     },
     {
@@ -226,7 +232,7 @@ const Equipment = (
       align: 'center',
       render: (value, record) => {
         const open = record.status === 'online';
-        return <Render width={150} text={!open ? value : '-'} />;
+        return <Render width={150} text={!open ? value : '-'}/>;
       }
     },
     {
@@ -269,21 +275,53 @@ const Equipment = (
           />;
         }}
       />
-      <FormItem label="终端备注" name="remarks" component={Input} />
-      <FormItem label="登记名称" name="name" component={Input} />
+      <FormItem label="终端备注" name="remarks" component={Input}/>
+      <FormItem label="登记名称" name="name" component={Input}/>
       <div style={{display: customer.customerId && 'none'}}>
-        <FormItem label="所属客户" name="customerId" component={SelectCustomer} />
+        <FormItem label="所属客户" name="customerId" component={SelectCustomer}/>
       </div>
       <div style={{display: !customer.customerId && 'none'}}>
-        <FormItem label="设备分组" name="classifyId" component={SelectGroup} />
+        <FormItem label="设备分组" name="classifyId" component={SelectGroup}/>
       </div>
       <div style={{display: modelId && 'none'}}>
-        <FormItem label="设备型号" name="modelId" component={SelectModle} />
+        <FormItem label="设备型号" name="modelId" component={SelectModle}/>
       </div>
-      <FormItem label="设备MAC" name="mac" component={Input} />
-      <FormItem label="批次" name="batchId" component={SelectBatch} />
-      <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area} />
-      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker />
+      <FormItem label="设备MAC" name="mac" component={Input}/>
+      <FormItem label="批次" name="batchId" component={SelectBatch}/>
+      <FormItem label="位置信息" name="positionId" component={Cascader} options={dataSource.area}/>
+      <FormItem label="离线时间" name="time" component={DatePicker} RangePicker/>
+      <div style={{display: !customer.customerId && 'none'}}>
+        <FormItem
+          label="报警类目"
+          name="alarmCustom"
+          component={({value, onChange}) => {
+            return <AntSelect
+              defaultValue="all"
+              value={typeof value === 'number' ? value : 'all'}
+              options={[{label: '全部', value: 'all'}, {label: '自定义', value: 1}, {label: '全局', value: 0}]}
+              onChange={(value) => {
+                onChange(value === 'all' ? null : value);
+              }}
+            />;
+          }}
+        />
+      </div>
+      <div style={{display: !customer.customerId && 'none'}}>
+        <FormItem
+          label="报警状态"
+          name="alarmStatus"
+          component={({value, onChange}) => {
+            return <AntSelect
+              defaultValue="all"
+              value={typeof value === 'number' ? value : 'all'}
+              options={[{label: '全部', value: 'all'}, {label: '启用', value: 1}, {label: '停用', value: 0}]}
+              onChange={(value) => {
+                onChange(value === 'all' ? null : value);
+              }}
+            />;
+          }}
+        />
+      </div>
     </>;
   };
 
@@ -296,8 +334,10 @@ const Equipment = (
           values = {...values, positionIds: [values.positionId]};
         }
         if (isArray(values.time).length > 0) {
-          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
-            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
+          values = {
+            ...values, startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),
+          };
         }
         return {modelId, ...values,};
       }}
@@ -390,7 +430,7 @@ const Equipment = (
       }}
     />
 
-    <Modal headTitle="设备版本管理" width={1500} ref={editionRef} component={Edition} />
+    <Modal headTitle="设备版本管理" width={1500} ref={editionRef} component={Edition}/>
   </>;
 };
 

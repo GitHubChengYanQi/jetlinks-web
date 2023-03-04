@@ -21,13 +21,25 @@ import BatchImport from '@/components/BatchImport';
 import {DangerButton, PrimaryButton} from '@/components/Button';
 import {isArray} from '@/util/Tools';
 import DatePicker from '@/components/DatePicker';
-import SelectGroup from '@/pages/equipment/OutStock/Save/components/SelectGroup';
 import store from '@/store';
 import Select from '@/components/Select';
 import {alarmContactFindAll} from '@/pages/alarm/ContactGroup/url';
-import Note from '@/components/Note';
 
 const formActionsPublic = createFormActions();
+
+export const selectGroup = ({value, onChange}) => {
+  return <Select
+    placeholder="请选择报警联系组"
+    value={value}
+    onChange={(value) => {
+      onChange(value);
+    }}
+    api={alarmContactFindAll}
+    format={(data) => {
+      return isArray(data).map(item => ({value: item.groupId, label: item.name}));
+    }}
+  />;
+};
 
 const Contacts = ({
   noAction,
@@ -136,19 +148,7 @@ const Contacts = ({
         noLabel={noAction}
         label="报警联系组"
         name="groupId"
-        component={({value, onChange}) => {
-          return <Select
-            placeholder="请选择报警联系组"
-            value={value}
-            onChange={(value) => {
-              onChange(value);
-            }}
-            api={alarmContactFindAll}
-            format={(data) => {
-              return isArray(data).map(item => ({value: item.groupId, label: item.name}));
-            }}
-          />;
-        }}
+        component={selectGroup}
       />
       {!noAction && <FormItem label="创建时间" name="time" component={DatePicker} RangePicker/>}
     </>;
@@ -235,7 +235,7 @@ const Contacts = ({
     />
 
     <Modal
-      title="负责区域"
+      title="报警联系组"
       open={array.length > 0}
       footer={null}
       onCancel={() => setArray([])}

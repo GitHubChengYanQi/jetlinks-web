@@ -72,7 +72,7 @@ const Save = props => {
         label="终端备注"
         name="remarks"
       >
-        <Input disabled={customer.customerId} placeholder="请输入终端备注"/>
+        <Input disabled={!customer.customerId} placeholder="请输入终端备注"/>
       </Form.Item>
       <Form.Item
         initialValue={data.name}
@@ -105,21 +105,21 @@ const Save = props => {
       </Form.Item>
       <Form.Item
         initialValue={data.alarmCustom ? '自定义' : '全局'}
-        key="alarmCustom"
+        key="alarmCustomText"
         label="报警类目"
-        name="alarmCustom"
+        name="alarmCustomText"
       >
         <Input disabled/>
       </Form.Item>
       <Form.Item
-        initialValue={data.alarmCustom}
+        initialValue={data.alarmStatus}
         key="alarmStatus"
         label="报警状态"
         name="alarmStatus"
       >
         <Radio.Group>
-          <Radio>启用</Radio>
-          <Radio>停用</Radio>
+          <Radio value={1}>启用</Radio>
+          <Radio value={0}>停用</Radio>
         </Radio.Group>
       </Form.Item>
       <Form.Item

@@ -109,10 +109,16 @@ const Rule = () => {
       destroyOnClose
       title='报警项设置'
       closable={false}
-      extra={<CloseOutlined onClick={() => setModel({})}/>}
+      extra={<CloseOutlined onClick={() => {
+        ref.current.refresh();
+        setModel({});
+      }}/>}
       width="70vw"
       open={model.modelId}
-      onClose={() => setModel({})}
+      onClose={() => {
+        ref.current.refresh();
+        setModel({});
+      }}
     >
       <AlarmProject modelId={model.modelId} modelName={model.name} categoryName={model.categoryResult?.name}/>
     </Drawer>
