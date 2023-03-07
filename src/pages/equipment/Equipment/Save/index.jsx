@@ -103,15 +103,15 @@ const Save = props => {
       >
         <Select disabled api={deviceModelListSelect} placeholder="请选择设备所属型号"/>
       </Form.Item>
-      <Form.Item
+      {!!customer.customerId && <Form.Item
         initialValue={data.alarmCustom ? '自定义' : '全局'}
         key="alarmCustomText"
         label="报警类目"
         name="alarmCustomText"
       >
         <Input disabled/>
-      </Form.Item>
-      <Form.Item
+      </Form.Item>}
+      {!!customer.customerId && <Form.Item
         initialValue={data.alarmStatus}
         key="alarmStatus"
         label="报警状态"
@@ -121,7 +121,7 @@ const Save = props => {
           <Radio value={1}>启用</Radio>
           <Radio value={0}>停用</Radio>
         </Radio.Group>
-      </Form.Item>
+      </Form.Item>}
       <Form.Item
         initialValue={data.position}
         key="position"

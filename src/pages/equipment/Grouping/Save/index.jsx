@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Radio,Form} from 'antd';
+import {Input, Radio, Form} from 'antd';
 import SelectTopClass from '@/pages/monitor/LeftTree/components/Group/Save/components/SelectTopClass';
 import AntForm from '@/components/AntForm';
 import {deviceClassifyAdd, deviceClassifyEdit} from '@/pages/equipment/Grouping/url';
@@ -20,6 +20,9 @@ const Save = props => {
       success={success}
       visible={visible}
       close={close}
+      format={(values) => {
+        return {...values, pid: values.pid || 0};
+      }}
     >
       <Form.Item
         initialValue={data?.name}

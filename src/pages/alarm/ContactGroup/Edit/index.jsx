@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Input, message, Space, Spin, Table as AntTable, Tree, TreeSelect} from 'antd';
 import {ArrowLeftOutlined, ArrowRightOutlined, LinkOutlined} from '@ant-design/icons';
 import ProSkeleton from '@ant-design/pro-skeleton';
-import {getSearchParams, useHistory} from 'ice';
+import {useHistory} from 'ice';
 import styles from './index.module.less';
 import Render from '@/components/Render';
 import style from '@/components/Table/index.module.less';
@@ -11,12 +11,17 @@ import {contactAllList} from '@/pages/alarm/Contacts/url';
 import {
   alarmContactGroupAdd,
   alarmContactGroupDetail,
-  alarmContactGroupEdit, deviceClassifyTreeList, findListByClassify,
+  alarmContactGroupEdit,
+  findListByClassify,
 } from '@/pages/alarm/ContactGroup/url';
 import {isArray} from '@/util/Tools';
 import store from '@/store';
 
-const Edit = ({groupId}) => {
+const Edit = ({
+  groupId,
+  onClose = () => {
+  }
+}) => {
 
   const [dataSource] = store.useModel('dataSource');
 
@@ -98,7 +103,7 @@ const Edit = ({groupId}) => {
     manual: true,
     onSuccess: () => {
       message.success('添加成功！');
-      history.goBack();
+      onClose();
     }
   });
 
@@ -106,7 +111,7 @@ const Edit = ({groupId}) => {
     manual: true,
     onSuccess: () => {
       message.success('修改成功！');
-      history.goBack();
+      onClose();
     }
   });
 
@@ -147,7 +152,6 @@ const Edit = ({groupId}) => {
         <Input placeholder="请输入组名称" value={name} onChange={({target: {value}}) => setName(value)}/>
       </Space>
       <Space>
-        <span style={{color: 'red'}}>*</span>
         负责区域：
         <TreeSelect
           maxTagCount={5}
@@ -170,9 +174,6 @@ const Edit = ({groupId}) => {
       <Button style={{float: 'right'}} loading={addLoading || editLoading} type="primary" onClick={() => {
         if (!name) {
           message.warning('请输入报警联系组名称!');
-          return;
-        } else if (area.length === 0) {
-          message.warning('请选择负责区域!');
           return;
         } else if (checkList.length === 0) {
           message.warning('请添加报警联系人!');

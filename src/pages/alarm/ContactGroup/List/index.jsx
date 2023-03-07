@@ -236,14 +236,26 @@ const List = () => {
 
     <Drawer
       destroyOnClose
-      title="报警项设置"
+      title="报警联系组设置"
       closable={false}
-      extra={<CloseOutlined onClick={() => setOpen(false)}/>}
+      extra={<CloseOutlined onClick={() => {
+        ref.current.refresh();
+        setOpen(false);
+      }}/>}
       width="90vw"
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={() => {
+        ref.current.refresh();
+        setOpen(false);
+      }}
     >
-      <Edit groupId={groupId}/>
+      <Edit
+        groupId={groupId}
+        onClose={()=>{
+          ref.current.refresh();
+          setOpen(false);
+        }}
+      />
     </Drawer>
   </>;
 };
