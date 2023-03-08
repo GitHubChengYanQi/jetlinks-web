@@ -85,19 +85,24 @@ const Role = () => {
       title: '分组权限',
       dataIndex: 'roleBindResults',
       align: 'center',
-      render: (roleBindResults = []) => <Render
-        width={200}
-        className="green"
-        style={{cursor: 'pointer'}}
-        onClick={() => groupRef.current.open(roleBindResults.map(item => `${item.classifyId}`))}
-      >
-        <Note
-          tooltip={false}
-          className="primaryColor"
-          maxWidth={400}>
-          {isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}
-        </Note>
-      </Render>
+      render: (roleBindResults = []) => {
+        if (isArray(roleBindResults).length === 0) {
+          return '-';
+        }
+        return <Render
+          width={200}
+          className="green"
+          style={{cursor: 'pointer'}}
+          onClick={() => groupRef.current.open(roleBindResults.map(item => `${item.classifyId}`))}
+        >
+          <Note
+            tooltip={false}
+            className="primaryColor"
+            maxWidth={400}>
+            {isArray(roleBindResults).map(item => item.classifyName || '全部分组').toString()}
+          </Note>
+        </Render>;
+      }
     },
     {
       title: '角色状态', dataIndex: 'status', align: 'center', render: (text) => {
@@ -159,8 +164,10 @@ const Role = () => {
       selectedRowKeys={keys}
       formSubmit={(values) => {
         if (isArray(values.time).length > 0) {
-          values = {...values,  startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
-            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),};
+          values = {
+            ...values, startTime: moment(values.time[0]).format('YYYY/MM/DD 00:00:00'),
+            endTime: moment(values.time[1]).format('YYYY/MM/DD 23:59:59'),
+          };
         }
         return {...values, deptId: info.deptId};
       }}

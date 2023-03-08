@@ -218,7 +218,15 @@ const Category = (
       data={saveVisible || {}}
     />
 
-    <Modal headTitle="设备型号管理" width={1500} ref={modelRef} component={Model}/>
+    <Modal
+      headTitle="设备型号管理"
+      width={1500}
+      ref={modelRef}
+      component={Model}
+      onClose={()=>{
+        ref.current.refresh();
+      }}
+    />
   </>;
 };
 export default Category;

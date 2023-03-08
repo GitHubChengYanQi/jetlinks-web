@@ -102,6 +102,29 @@ const AlarmProject = (
     },
     {title: '报警名称', dataIndex: 'title', render: (text) => <Render text={text}/>},
     {
+      title: '监测类别',
+      dataIndex: 'category',
+      onCell: (record, index) => {
+        let num = 0;
+        let stop = false;
+        dataSource.forEach((dataItem, dataIndex) => {
+          if (dataIndex >= index && !stop) {
+            if (dataItem.category === record.category) {
+              num += 1;
+            } else {
+              stop = true;
+            }
+          }
+
+        });
+        return {
+          // eslint-disable-next-line no-nested-ternary
+          rowSpan: index === 0 ? num : (record.category === dataSource[index - 1].category ? 0 : num),
+        };
+      },
+      render: (text) => <Render text={text}/>
+    },
+    {
       title: '报警通知预案',
       dataIndex: 'alarmItemResult',
       render: (alarmItemResult, record) =>
@@ -122,7 +145,7 @@ const AlarmProject = (
         const day = times[0] || 0;
         const hour = times[1] || 0;
         const min = times[2] || 0;
-        return <Render>{`${day} 天 ${hour} 小时 ${min} 分钟`}</Render>;
+        return <Render width={110}>{`${day} 天 ${hour} 小时 ${min} 分钟`}</Render>;
       }
     },
     {
@@ -185,6 +208,35 @@ const AlarmProject = (
     };
   };
 
+
+  const getRows = () => {
+    const updateParams = [];
+    const addParams = [];
+    rows.forEach(item => {
+      const data = {
+        reservePlan: item.alarmItemResult?.reservePlan || item.reservePlan,
+        viewTime: item.alarmItemResult?.viewTime || item.viewTime || '',
+        timeSpan: item.alarmItemResult?.timeSpan || item.timeSpan
+      };
+      if (item.alarmItemResult?.itemId) {
+        updateParams.push({
+          itemId: item.alarmItemResult?.itemId,
+          ...data
+        });
+      } else {
+        addParams.push({
+          itemKey: item.key,
+          ...data
+        });
+      }
+    });
+    return {
+      modelId: currentModelId,
+      updateParams,
+      addParams
+    };
+  };
+
   return <>
     <div hidden={custom || global}>
       <h3>设备类型：{categoryName}</h3>
@@ -208,7 +260,7 @@ const AlarmProject = (
           disabled={rows.length === 0}
           type="primary"
           onClick={() => {
-            startBatchRun({data: {...getIds(), deviceId}});
+            startBatchRun({data: {...getRows(), deviceId}});
           }}
         >
           批量启用

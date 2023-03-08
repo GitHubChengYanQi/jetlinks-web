@@ -95,6 +95,9 @@ const List = () => {
     {title: '报警联系组', dataIndex: 'name', align: 'center',},
     {
       title: '负责区域', dataIndex: 'classifies', align: 'center', render(classifies) {
+        if (isArray(classifies).length === 0) {
+          return '-';
+        }
         return <Button type="link" onClick={() => {
           setClassifies(isArray(classifies));
         }}>
@@ -251,7 +254,7 @@ const List = () => {
     >
       <Edit
         groupId={groupId}
-        onClose={()=>{
+        onClose={() => {
           ref.current.refresh();
           setOpen(false);
         }}
